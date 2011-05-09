@@ -106,4 +106,8 @@
    <string name="other_title">Other applications</string>
    <string name="other_summary">Take a look on my applications</string>
    
+   <string name="shortcut_edit_hint">Touch the icon to change it</string>
+   <string name="shortcut_ok_button">Ok</string>
+   <string name="photo_picker_not_found">No pictures are available on the phone.</string>
+   <string name="error_text">Error: %1$s</string>
 </resources>

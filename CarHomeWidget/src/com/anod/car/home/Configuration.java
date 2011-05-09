@@ -45,6 +45,7 @@ public class Configuration extends PreferenceActivity {
 	private static final int REQUEST_PICK_SHORTCUT = 2;
 	private static final int REQUEST_PICK_APPLICATION = 3;
 	private static final int REQUEST_CREATE_SHORTCUT=4;
+	private static final int REQUEST_EDIT_SHORTCUT=5;
 	
 	public static final String EXTRA_CELL_ID = "CarHomeWidgetCellId";
 	public static final int INVALID_CELL_ID=-1;
@@ -486,6 +487,9 @@ public class Configuration extends PreferenceActivity {
                 case REQUEST_CREATE_SHORTCUT:
                 	completeAddShortcut(data,false);
                 	break;
+                case REQUEST_EDIT_SHORTCUT:
+                	completeEditShortcut(data);
+                	break;
                 case REQUEST_PICK_SHORTCUT:
                     processShortcut(data);
                     break;
@@ -557,12 +561,28 @@ public class Configuration extends PreferenceActivity {
     		String key = Preferences.getLaunchComponentName(mCurrentCellId, mAppWidgetId);
 			IconPreference p = (IconPreference)findPreference(key);
 	    	setShortcutPreference(p,info);
+	    	
+            Intent editIntent = new Intent(this, ShortcutEditActivity.class);
+            editIntent.putExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, info.id);
+            editIntent.putExtra(ShortcutEditActivity.EXTRA_CELL_ID, mCurrentCellId);            
+            startActivityForResultSafely(editIntent, REQUEST_CREATE_SHORTCUT);
     	}
         mCurrentCellId = INVALID_CELL_ID;
     	try {
     		dismissDialog(DIALOG_WAIT);
     	} catch (IllegalArgumentException e) {
     		
+    	}
+    }
+    
+    private void completeEditShortcut(Intent data) {
+    	int cellId = data.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, INVALID_CELL_ID);
+    	long shortcutId = data.getLongExtra(ShortcutEditActivity.EXTRA_CELL_ID, ShortcutInfo.NO_ID);
+    	if (cellId != INVALID_CELL_ID && shortcutId != ShortcutInfo.NO_ID) {
+    		ShortcutInfo info = mModel.loadShortcut(this, shortcutId);
+    		String key = Preferences.getLaunchComponentName(mCurrentCellId, mAppWidgetId);
+    		IconPreference p = (IconPreference)findPreference(key);
+    		setShortcutPreference(p,info);
     	}
     }
     
