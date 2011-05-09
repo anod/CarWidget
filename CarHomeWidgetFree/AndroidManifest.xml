@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.anod.car.home.free"
+      android:versionCode="1"
+      android:versionName="1.0"
+      android:installLocation="internalOnly">
+      
+    <uses-sdk android:minSdkVersion="8" />
+
+    <permission
+        android:name="com.anod.car.home.permission.READ_SETTINGS"
+        android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
+        android:protectionLevel="normal"
+        android:label="@string/permlab_read_settings"
+        android:description="@string/permdesc_read_settings"/>
+    <permission
+        android:name="com.anod.car.home.permission.WRITE_SETTINGS"
+        android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
+        android:protectionLevel="normal"
+        android:label="@string/permlab_write_settings"
+        android:description="@string/permdesc_write_settings"/>
+        
+	<uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="com.anod.car.home.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.anod.car.home.permission.WRITE_SETTINGS" />
+    
+    <application android:icon="@drawable/icon" android:label="@string/app_name_free">
+		<service android:name="com.anod.car.home.UpdateService" />
+		<activity android:name="com.anod.car.home.Configuration">
+		    <intent-filter>
+		        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+		    </intent-filter>
+		</activity>
+		<receiver android:name="com.anod.car.home.LargeProvider" android:label="@string/app_name_free">
+		    <intent-filter>
+		        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+		    </intent-filter>
+		    <meta-data android:name="android.appwidget.provider"
+		               android:resource="@xml/carhome_appwidget_info_4x4" />
+		</receiver>
+		        <!-- The settings provider contains Home's data, like the workspace favorites -->
+        <provider
+            android:name="com.anod.car.home.LauncherProvider"
+            android:authorities="com.anod.car.home.settings"
+            android:writePermission="com.anod.car.home.permission.WRITE_SETTINGS"
+            android:readPermission="com.anod.car.home.permission.READ_SETTINGS" />
+    </application>
+</manifest>
