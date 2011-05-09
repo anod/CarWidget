@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <dimen name="workspace_cell_width">160.0dip</dimen>
+    <dimen name="workspace_cell_height">125.0dip</dimen>
+    <dimen name="dots_height">20.0dip</dimen>
+    <dimen name="dots_width">53.0dip</dimen>
+</resources>

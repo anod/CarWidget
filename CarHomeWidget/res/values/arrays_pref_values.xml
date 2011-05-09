@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="skin_titles">
+        <item>Glossy</item>
+        <item>Car Home</item>
+        <item>Metro</item>
+    </string-array>
+    <string-array name="skin_values">
+        <item>glossy</item>
+        <item>carhome</item>
+        <item>windows7</item>
+    </string-array>
+    <string-array name="colors_values" translatable="false">
+        <item>black</item>
+        <item>white</item>
+        <item>green</item>
+        <item>red</item>
+        <item>blue</item>
+        <item>yellow</item>
+        <item>cyan</item>
+        <item>#800080</item>
+        <item>#ffc0cb</item>
+        <item>#ffa500</item>
+        <item>#add8e6</item>
+        <item>#B1E400</item>
+        <item>darkgray</item>
+        <item>gray</item>
+        <item>lightgray</item>
+        <item>custom</item>
+    </string-array>
+	<string-array name="brightness_mode_values">
+		<item>disabled</item>
+		<item>auto</item>
+		<item>day</item>
+		<item>night</item>
+    </string-array>
+</resources>

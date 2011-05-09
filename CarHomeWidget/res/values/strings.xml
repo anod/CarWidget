@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name_free">Car Widget</string>
+    <string name="app_name_pro">Car Widget Pro</string>
+    
+    <!-- Permission short label -->
+    <string name="permlab_read_settings">read Car Widget settings and shortcuts</string>
+    <!-- Permission description -->
+    <string name="permdesc_read_settings">Allows an application to read the settings and
+        shortcuts in Car Widget.</string>
+    <!-- Permission short label -->
+    <string name="permlab_write_settings">write Car Widget settings and shortcuts</string>
+    <!-- Permission description -->
+    <string name="permdesc_write_settings">Allows an application to change the settings and
+        shortcuts in Car Widget.</string>
+ 
+    <string name="pref_dialog_title_select">Select</string>
+ 
+	<string name="color_dialog_title">Pick a color</string>
+	<string name="color_dialog_button_ok">Ok</string>
+	<string name="color_dialog_button_cancel">Cancel</string>
+
+    <string name="pref_tile_color_title">Tile color</string>
+    <string name="pref_tile_color_summary">Select color of tile, enabled only for Windows 7 skin</string>
+
+    <string name="pref_bg_color_title">Background color</string>
+    <string name="pref_bg_color_summary">Select color of background</string>
+
+    <string name="pref_icons_mono_title">Monochrome icons</string>
+    <string name="pref_icons_mono_summary">Use one tone icons</string>
+	
+    <string name="pref_tint_color_title">Tint color</string>
+    <string name="pref_tint_color_summary">Select tint color of icons</string>
+	
+   <string name="pref_font_color_title">Font color</string>
+   <string name="pref_font_color_summary">Select color of title</string>
+
+   <string name="pref_font_size_title">Font size</string>
+   <string name="pref_font_size_summary">Select size of title</string>
+
+   <string name="dialog_donate_title">Sorry,</string>
+   <string name="dialog_donate_message">This feature is available only in Car Widget donate version.\n\n Would you like to donate $1.00 USD and get it now?</string>
+   <string name="dialog_donate_btn_yes">Yes, please!</string>
+   <string name="dialog_donate_btn_no">No, thanks</string>
+   
+   <string name="please_wait">Please, wait...</string>
+   <string name="shortcuts">Shortcuts</string>
+   <string name="set_shortcut">Set shortcut</string>
+   <string name="advanced">Advanced</string>
+   
+   <string name="pref_look_and_feel_title">Look &amp; Feel</string>
+   <string name="pref_look_and_feel_summary">Customize skin, colors and font size</string>
+   
+   <string name="pref_incar_mode_title">In Car mode</string>
+   <string name="pref_incar_mode_summary">Choose how to detect when you in car, and settings that will be adjusted</string>
+   
+   <string name="pref_incar_mode_enabled">Enable "In Car" mode</string>
+   <string name="pref_power_contorl_bt">Power control Bluetooth</string>
+   <string name="pref_power_plugged_bt_on_title">On when plugged</string>
+   <string name="pref_power_plugged_bt_on_summary">Switch Bluetooth On when power cable plugged in</string>
+   <string name="pref_power_unplugged_bt_off_title">Off when unplugged</string>
+   <string name="pref_power_unplugged_bt_off_summary">Switch Bluetooth Off when power cable unplugged in</string>
+   
+   <string name="pref_detection">Detection</string>
+   <string name="pref_blutooth_device_title">Bluetooth device</string>
+   <string name="pref_blutooth_device_summary">Choose bluetooth device which enable In Car mode</string>
+   <string name="load_paired_device">Loading paired device</string>
+   <string name="bluetooth">Bluetooth</string>
+   <string name="turn_on_bluetooth_summary">Turn on Bluetooth</string>
+   <string name="turn_off_bluetooth_summary">Turn off Bluetooth</string>
+   <string name="bluetooth_device_category_title">Enable "In Car" mode on connect with:</string>
+   <string name="no_paired_devices_found_title">No paired devices found.</string>
+   <string name="no_paired_devices_found_summary">Before a device can be selected, it needs to be paired and Bluetooth has to be enabled</string>
+   
+   <string name="pref_headset_connected_title">Headset connected</string>
+   <string name="pref_headset_connected_summary">Enable In Car mode when audio jack connected</string>
+
+   <string name="pref_power_connected_title">Power connected</string>
+   <string name="pref_power_connected_summary">Enable In Car mode when power cable connected</string>
+
+   <string name="pref_actions">Actions</string>
+   <string name="pref_screen_timeout">Disable screen timeout</string>
+   <string name="pref_screen_timeout_summary">When checked, prevents screen from automatically turning off</string>
+   <string name="pref_brightness_mode">Brightness mode</string>
+   <string name="pref_brightness_mode_summary">Select how to adjust brightness setting</string>
+   <string name="pref_change_media_volume">Change media volume</string>
+   <string name="pref_change_media_volume_summary">Adjust volume of media to certain level</string>
+   <string name="pref_media_volume_level">Volume level</string>
+   <string name="pref_media_volume_level_summary">Change desired level of volume</string>
+   
+   <string name="incar_mode_enabled">In Car mode enabled</string>
+   <string name="click_to_disable">Click to disable</string>
+   
+   <string name="bluetooth_device_laptop">Computer</string>
+   <string name="bluetooth_device_cellphone">Phone</string>
+   <string name="bluetooth_device_headphones">Headphones</string>
+   <string name="bluetooth_device_headset">Headset</string>
+   
+   <string name="information_title">Information</string>
+   <string name="version_title">%1$s ver. %2$s</string>   
+   <string name="version_summary">Please rate this widget in the market</string>
+   
+   <string name="issue_title">Issue tracker</string>
+   <string name="issue_summary">Send a feature request or report a bug</string>
+   
+   <string name="other_title">Other applications</string>
+   <string name="other_summary">Take a look on my applications</string>
+   
+</resources>

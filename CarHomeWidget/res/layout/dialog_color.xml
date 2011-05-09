@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:id="@+id/color_dialog_chooser"  
+  android:orientation="vertical" 
+  android:gravity="center_horizontal"  	
+
+  >
+  <LinearLayout
+  	 android:orientation="horizontal"
+ 	 android:layout_width="wrap_content"
+ 	 android:layout_height="wrap_content" 
+ 	 android:padding="6.0dp"
+  >
+    <Button 
+    	android:text="@string/color_dialog_button_ok" 
+    	android:id="@+id/color_dialog_button_ok" 
+    	android:layout_width="wrap_content" 
+    	android:layout_height="wrap_content"
+		android:minWidth="75dp"
+	/>
+  	<Button
+	  	android:text="@string/color_dialog_button_cancel"
+	 	android:id="@+id/color_dialog_button_cancel"
+	 	android:layout_width="wrap_content"
+	 	android:layout_height="wrap_content"
+	 	android:minWidth="75dp"
+  	/>
+  </LinearLayout>
+</LinearLayout>

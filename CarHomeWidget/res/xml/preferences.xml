@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/shortcuts">       
+        <com.anod.car.home.IconPreference android:key="launch-component-0-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
+        <com.anod.car.home.IconPreference android:key="launch-component-1-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
+        <com.anod.car.home.IconPreference android:key="launch-component-2-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
+        <com.anod.car.home.IconPreference android:key="launch-component-3-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
+        <com.anod.car.home.IconPreference android:key="launch-component-4-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
+        <com.anod.car.home.IconPreference android:key="launch-component-5-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/advanced">
+    	<PreferenceScreen android:title="@string/pref_look_and_feel_title" android:summary="@string/pref_look_and_feel_summary">
+    		<ListPreference android:key="skin-%d" android:title="Skin" android:entryValues="@array/skin_values"	android:entries="@array/skin_titles" />
+	        <Preference android:key="button-color-%d" android:title="@string/pref_tile_color_title" android:summary="@string/pref_tile_color_summary"  />
+    		<Preference 
+    			android:key="bg-color-%d"
+    			android:title="@string/pref_bg_color_title"
+    			android:summary="@string/pref_bg_color_summary"
+    		/>
+    		<CheckBoxPreference 
+    			android:key="icons-mono-%d" 
+    			android:title="@string/pref_icons_mono_title"
+    			android:summary="@string/pref_icons_mono_summary"
+    			android:shouldDisableView="true"
+    		/>
+    		<Preference 
+    			android:key="icons-color-%d" 
+    			android:title="@string/pref_tint_color_title"
+    			android:summary="@string/pref_tint_color_summary"
+    		/>
+	   		<com.anod.car.home.SeekBarPreference
+                android:key="font-size-%d"
+                android:title="@string/pref_font_size_title"
+                android:summary="@string/pref_font_size_summary"
+                android:text="px"
+                android:defaultValue="30" 
+                android:max="100"
+            />
+    		<Preference 
+    			android:key="font-color-%d" 
+    			android:title="@string/pref_font_color_title"
+    			android:summary="@string/pref_font_color_summary"
+    		/>
+    	</PreferenceScreen>
+
+    	<PreferenceScreen android:title='@string/pref_incar_mode_title' android:summary="@string/pref_incar_mode_summary">
+		    <CheckBoxPreference android:key="incar-mode-enabled" android:title='@string/pref_incar_mode_enabled' />
+		    <PreferenceCategory android:title="@string/pref_power_contorl_bt">
+    			<CheckBoxPreference android:key="power-bt-enable" android:title="@string/pref_power_plugged_bt_on_title" android:summary="@string/pref_power_plugged_bt_on_summary" />
+    			<CheckBoxPreference android:key="power-bt-disable" android:title="@string/pref_power_unplugged_bt_off_title" android:summary="@string/pref_power_unplugged_bt_off_summary" />
+    		</PreferenceCategory>
+    		<PreferenceCategory android:title="@string/pref_detection">
+	   			<PreferenceScreen android:key="bt-device-screen" android:title="@string/pref_blutooth_device_title" android:summary="@string/pref_blutooth_device_summary" >
+					<CheckBoxPreference android:key="bt-switch" android:title="@string/bluetooth" android:summaryOn="@string/turn_off_bluetooth_summary" android:summaryOff="@string/turn_on_bluetooth_summary" />
+					<PreferenceCategory android:key="bt-device-category" android:title="@string/bluetooth_device_category_title">
+   						<CheckBoxPreference android:key="bt-device-address" android:title="Device 1"/>
+   					</PreferenceCategory>
+	   			</PreferenceScreen>
+	    		<CheckBoxPreference android:key="headset-required" android:title="@string/pref_headset_connected_title" android:summary="@string/pref_headset_connected_summary" />
+	    		<CheckBoxPreference android:key="power-required" android:title="@string/pref_power_connected_title" android:summary="@string/pref_power_connected_summary"  />
+    		</PreferenceCategory>
+    		<PreferenceCategory android:title="@string/pref_actions">
+    			<CheckBoxPreference android:key="bluetooth" android:title="@string/turn_on_bluetooth_summary" />
+    			<CheckBoxPreference android:key="screen-timeout" android:title="@string/pref_screen_timeout" android:summary="@string/pref_screen_timeout_summary"/>
+    			<ListPreference 
+    				android:key="brightness" 
+    				android:title="@string/pref_brightness_mode"
+    				android:summary="@string/pref_brightness_mode_summary"
+    				android:entryValues="@array/brightness_mode_values"
+    				android:entries="@array/brightness_mode_titles" 
+    				android:defaultValue="disabled"
+    			/>
+    			<CheckBoxPreference android:key="adjust-volume-level" android:title="@string/pref_change_media_volume" android:summary="@string/pref_change_media_volume_summary"/>
+            	<com.anod.car.home.incar.SeekBarPreference
+                	android:key="volume-level"
+                	android:title="@string/pref_media_volume_level"
+                	android:summary="@string/pref_media_volume_level_summary"
+                	android:text=""
+                	android:defaultValue="100" 
+                	android:max="100"
+                	android:dependency="adjust-volume-level"
+            	/> 
+    		</PreferenceCategory>
+    	</PreferenceScreen>
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/information_title">  
+    	<Preference 
+        	android:key="version"
+        	android:title="@string/version_title" 
+        	android:summary="@string/version_summary" 
+    	/>
+    	<Preference 
+        	android:key="other"
+        	android:title="@string/other_title" 
+        	android:summary="@string/other_summary" 
+    	/>
+    	<Preference 
+        	android:key="issue-tracker"
+        	android:title="@string/issue_title" 
+        	android:summary="@string/issue_summary" 
+    	/>
+    </PreferenceCategory>	   
+</PreferenceScreen>

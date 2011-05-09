@@ -1,0 +1,5 @@
+syntax: glob
+bin/com/anod/car/home/*.class
+bin/afzkl/development/mColorPicker/**.class
+bin/com/anod/car/home/incar/*.class
+glob:gen/com/anod/car/home/R.java

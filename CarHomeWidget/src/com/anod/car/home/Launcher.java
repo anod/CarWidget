@@ -1,0 +1,206 @@
+package com.anod.car.home;
+
+import java.util.ArrayList;
+
+import com.anod.car.home.incar.ModeService;
+
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
+import android.util.Log;
+import android.view.View;
+import android.widget.RemoteViews;
+
+public class Launcher {
+	public static final String PACKAGE_FREE = "com.anod.car.home.free";
+	
+	public static boolean isFreeVersion(String packageName) {
+		return PACKAGE_FREE.equals(packageName);
+	}
+	
+	private static int getSkinLayout(String skin) {
+		if (skin.equals(Preferences.SKIN_CARHOME)) {
+			return R.layout.carhome;
+		} else if (skin.equals(Preferences.SKIN_WINDOWS7)) {
+			return R.layout.windows7;			
+		}
+		return R.layout.glass;
+	}
+	
+    public static RemoteViews update(int appWidgetId, Context context) {
+    	
+    	Resources resources = context.getResources();
+    	String skinName = Preferences.getSkin(context, appWidgetId);
+
+        RemoteViews views =  new RemoteViews(context.getPackageName(), getSkinLayout(skinName));
+        
+
+		String packageName = context.getPackageName();
+		String type = "id";
+		LauncherModel model = new LauncherModel();
+		if (Preferences.isFirstTime(context,appWidgetId)) {
+			model.initShortcuts(context,appWidgetId);
+			Preferences.setFirstTime(false,context,appWidgetId);
+		}
+		
+		setInCarButton(packageName, skinName, context, views);
+		
+        ArrayList<Long> launchers = Preferences.getLauncherComponents(context, appWidgetId);
+        
+		setBackground(context,appWidgetId,views);
+		
+		int tileColor = Preferences.COLOR_UNDEFINED;
+		if (skinName.equals(Preferences.SKIN_WINDOWS7)) {
+			tileColor = Preferences.getTileColor(context, appWidgetId);
+		}
+		boolean grayIcon = Preferences.isIconsMono(context, appWidgetId); 
+		int iconColor = Preferences.getIconsColor(context, appWidgetId);
+		int fontColor = Preferences.getFontColor(context, appWidgetId);
+		int fontSize = Preferences.getFontSize(context, appWidgetId);
+		float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+		
+        for (int i=0;i<launchers.size();i++) {
+        	int res = resources.getIdentifier("btn"+i, type, packageName);
+        	int resText = resources.getIdentifier("btn_text"+i, type, packageName);
+        	Long shortcutId = launchers.get(i);
+        	ShortcutInfo info = null;
+        	if (shortcutId != ShortcutInfo.NO_ID) {
+        		info = model.loadShortcut(context, shortcutId);
+        	}
+        	if (info == null) {
+                PendingIntent configIntent = getSettingsPendingInent(appWidgetId, context, i);
+        		views.setOnClickPendingIntent(res, configIntent);
+        	} else {
+        		setShortcut(res,resText,info,grayIcon,iconColor,views,context,appWidgetId);
+        	}
+        	setFont(fontColor,fontSize,res,resText,scaledDensity,views);
+        	if (tileColor != Preferences.COLOR_UNDEFINED) {
+        		setTile(tileColor,res,views);
+        	}
+        }
+    	
+        PendingIntent configIntent = getSettingsPendingInent(appWidgetId, context, Configuration.INVALID_CELL_ID);
+      	views.setOnClickPendingIntent(R.id.btn_settings, configIntent);
+		return views;
+	}
+	
+    private static void setInCarButton(String packageName, String skinName,
+			Context context, RemoteViews views) {
+		if (!isFreeVersion(packageName) && Preferences.isInCarModeEnabled(context)) {
+			views.setViewVisibility(R.id.btn_incar_switch, View.VISIBLE);
+			if (ModeService.sInCarMode == true) {
+				int rImg = (skinName.equals(Preferences.SKIN_WINDOWS7)) ? R.drawable.ic_incar_exit_win7 : R.drawable.ic_incar_exit;
+				views.setImageViewResource(R.id.btn_incar_switch, rImg);
+				Intent notificationIntent = new Intent(context, ModeService.class);
+				notificationIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_OFF);
+		    	Uri data = Uri.parse("com.anod.car.home.pro://mode/0/");
+		    	notificationIntent.setData(data);
+				PendingIntent contentIntent = PendingIntent.getService(context, 0, notificationIntent, 0);
+        		views.setOnClickPendingIntent(R.id.btn_incar_switch, contentIntent);
+			} else {
+				int rImg = (skinName.equals(Preferences.SKIN_WINDOWS7)) ? R.drawable.ic_incar_enter_win7 : R.drawable.ic_incar_enter;
+				views.setImageViewResource(R.id.btn_incar_switch, rImg);
+				Intent notificationIntent = new Intent(context, ModeService.class);
+				notificationIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_ON);
+		    	Uri data = Uri.parse("com.anod.car.home.pro://mode/1/");
+		    	notificationIntent.setData(data);
+				PendingIntent contentIntent = PendingIntent.getService(context, 0, notificationIntent, 0);
+        		views.setOnClickPendingIntent(R.id.btn_incar_switch, contentIntent);
+			}
+		} else {
+			views.setViewVisibility(R.id.btn_incar_switch, View.GONE);
+		}
+
+	}
+
+	private static void setFont(int fontColor,int fontSize,int res,int resText,float scaledDensity,RemoteViews views) {
+    	if (fontColor != Preferences.COLOR_UNDEFINED) {
+    		views.setTextColor(resText, fontColor);
+    	}
+    	if (fontSize != Preferences.FONT_SIZE_UNDEFINED) {
+    		if (fontSize == 0) {
+    			views.setViewVisibility(resText, View.GONE);    			
+    		} else {
+    			/*
+    			 * Limitation of RemoteViews to use setTextSize with only one argument
+    			 * (without providing scale unit) 
+    			 * size already in scaled pixel format so we revert it to pixels 
+    			 * to get properly converted after re-applying setTextSize function
+    			 */
+    			float cSize = (float)fontSize /	scaledDensity;
+    			
+    			views.setFloat(resText, "setTextSize", cSize);	
+    			views.setViewVisibility(resText, View.VISIBLE);
+    		}
+    	}
+    		
+    }
+       
+    private static void setTile(int tileColor, int res, RemoteViews views) {
+		Log.d("Launcher.Update", " Tile color " + tileColor);
+		if (Color.alpha(tileColor) == 0) {
+			views.setViewVisibility(res, View.GONE);
+		} else {
+			views.setViewVisibility(res, View.VISIBLE);
+			views.setInt(res, "setBackgroundColor",  tileColor);
+		}
+    }
+    
+    private static void setShortcut(int res, int resText, ShortcutInfo info, boolean grayIcon, int iconColor,  RemoteViews views, Context context, int appWidgetId) {
+		Bitmap icon = info.getIcon();
+		if (grayIcon) {
+			icon = Utilities.applyBitmapFilter(icon,context);
+			 if (iconColor != Preferences.COLOR_UNDEFINED) {
+				icon = Utilities.tint(icon, iconColor);
+			 }
+		};
+    	views.setBitmap(res, "setImageBitmap", icon);
+        String title = String.valueOf(info.title);
+    	views.setTextViewText(resText, title);
+		PendingIntent shortcutIntent = getShortcutPendingInent(info.intent, appWidgetId, context);
+		views.setOnClickPendingIntent(res, shortcutIntent);
+    }
+    
+    private static void setBackground(Context context,int appWidgetId, RemoteViews views) {
+		int bgColor = Preferences.getBackgroundColor(context, appWidgetId);
+		if (bgColor != Preferences.COLOR_UNDEFINED) {
+			Log.d("Launcher.Update", " BG color " + bgColor);
+			views.setInt(R.id.container, "setBackgroundColor",  bgColor);
+		}
+    }
+    /**
+     * Create an Intent to launch Configuration
+     * @param appWidgetId
+     * @param context
+     * @return
+     */
+    private static PendingIntent getSettingsPendingInent(int appWidgetId, Context context, int cellId) {
+    	Intent intent = new Intent(context, Configuration.class);
+    	intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+    	if (cellId != Configuration.INVALID_CELL_ID) {
+    		intent.putExtra(Configuration.EXTRA_CELL_ID, cellId);
+    	}
+    	String path = String.valueOf(appWidgetId) + " - " + String.valueOf(cellId);
+    	Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
+    	intent.setData(data);
+    	intent.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
+    	return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+    /**
+     * 
+     * @param componentName
+     * @param appWidgetId
+     * @param context
+     * @return
+     */
+    private static PendingIntent getShortcutPendingInent(Intent intent,int appWidgetId, Context context) {
+        return PendingIntent.getActivity(context, 0 /* no requestCode */, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+    
+    
+}
