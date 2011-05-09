@@ -81,8 +81,11 @@ public final class R {
         public static final int color_dialog_chooser=0x7f0a0010;
         public static final int color_picker_view=0x7f0a0013;
         public static final int container=0x7f0a0000;
+        public static final int icon_edit=0x7f0a0019;
+        public static final int label_edit=0x7f0a001a;
         public static final int loader=0x7f0a0016;
         public static final int new_color_panel=0x7f0a0015;
+        public static final int ok_button=0x7f0a001b;
         public static final int old_color_panel=0x7f0a0014;
         public static final int pref_icon_view=0x7f0a0018;
         public static final int progressBar1=0x7f0a0017;
@@ -95,7 +98,8 @@ public final class R {
         public static final int glass=0x7f030003;
         public static final int loader=0x7f030004;
         public static final int pref_icon=0x7f030005;
-        public static final int windows7=0x7f030006;
+        public static final int shortcut_edit=0x7f030006;
+        public static final int windows7=0x7f030007;
     }
     public static final class string {
         public static final int advanced=0x7f09001d;
@@ -115,6 +119,7 @@ public final class R {
         public static final int dialog_donate_btn_yes=0x7f090018;
         public static final int dialog_donate_message=0x7f090017;
         public static final int dialog_donate_title=0x7f090016;
+        public static final int error_text=0x7f09004f;
         public static final int incar_mode_enabled=0x7f09003f;
         public static final int information_title=0x7f090045;
         public static final int issue_summary=0x7f090049;
@@ -136,6 +141,7 @@ public final class R {
         /**  Permission short label 
          */
         public static final int permlab_write_settings=0x7f090004;
+        public static final int photo_picker_not_found=0x7f09004e;
         public static final int please_wait=0x7f09001a;
         public static final int pref_actions=0x7f090036;
         public static final int pref_bg_color_summary=0x7f09000d;
@@ -177,6 +183,8 @@ public final class R {
         public static final int pref_tint_color_summary=0x7f090011;
         public static final int pref_tint_color_title=0x7f090010;
         public static final int set_shortcut=0x7f09001c;
+        public static final int shortcut_edit_hint=0x7f09004c;
+        public static final int shortcut_ok_button=0x7f09004d;
         public static final int shortcuts=0x7f09001b;
         public static final int turn_off_bluetooth_summary=0x7f09002e;
         public static final int turn_on_bluetooth_summary=0x7f09002d;

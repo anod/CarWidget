@@ -26,6 +26,7 @@
     
     <application android:icon="@drawable/icon" android:label="@string/app_name_free">
 		<service android:name="com.anod.car.home.UpdateService" />
+		<activity android:theme="@android:style/Theme.Dialog" android:name="com.anod.car.home.ShortcutEditActivity" />
 		<activity android:name="com.anod.car.home.Configuration">
 		    <intent-filter>
 		        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
