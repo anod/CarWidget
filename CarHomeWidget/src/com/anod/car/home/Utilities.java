@@ -1,5 +1,8 @@
 package com.anod.car.home;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -11,6 +14,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
+import android.util.Log;
 
 public class Utilities {
 
@@ -134,4 +138,20 @@ public class Utilities {
         return icon;
     }
 
+    
+    static byte[] flattenBitmap(Bitmap bitmap) {
+        // Try go guesstimate how much space the icon will take when serialized
+        // to avoid unnecessary allocations/copies during the write.
+        int size = bitmap.getWidth() * bitmap.getHeight() * 4;
+        ByteArrayOutputStream out = new ByteArrayOutputStream(size);
+        try {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+            return out.toByteArray();
+        } catch (IOException e) {
+            Log.w("Favorite", "Could not write icon");
+            return null;
+        }
+    }    
 }

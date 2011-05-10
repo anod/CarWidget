@@ -1,5 +1,7 @@
 package com.anod.car.home;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +49,7 @@ public class LauncherModel {
    	   );
     }
     
-    ShortcutInfo addShortcut(Context context, Intent data, int cellId, long appWidgetId, boolean isAppShortcut) {
+    public ShortcutInfo addShortcut(Context context, Intent data, int cellId, long appWidgetId, boolean isAppShortcut) {
     	ShortcutInfo info = null;
     	if (isAppShortcut) {
     		info = infoFromApplicationIntent(context, data);
@@ -321,12 +323,10 @@ public class LauncherModel {
      * Add an item to the database in a specified container. Sets the container, screen, cellX and
      * cellY fields of the item. Also assigns an ID to the item.
      */
-    static void addItemToDatabase(Context context, ShortcutInfo item, int cellId, long appWidgetId) {
+    public void addItemToDatabase(Context context, ShortcutInfo item, int cellId, long appWidgetId) {
 
-        final ContentValues values = new ContentValues();
         final ContentResolver cr = context.getContentResolver();
-
-        item.onAddToDatabase(values);
+        final ContentValues values = createShortcutContentValues(item);
 
         Uri result = cr.insert(LauncherSettings.Favorites.getContentUri(context.getPackageName()),values);
 
@@ -338,15 +338,51 @@ public class LauncherModel {
     /**
      * Update an item to the database in a specified container.
      */
-    static void updateItemInDatabase(Context context, ShortcutInfo item) {
-        final ContentValues values = new ContentValues();
+    public void updateItemInDatabase(Context context, ShortcutInfo item) {
         final ContentResolver cr = context.getContentResolver();
 
-        item.onAddToDatabase(values);
+        final ContentValues values = createShortcutContentValues(item);
 
         cr.update(LauncherSettings.Favorites.getContentUri(context.getPackageName(),item.id), values, null, null);
     }
 
+    private ContentValues createShortcutContentValues(ShortcutInfo item) {
+        final ContentValues values = new ContentValues();
+    	values.put(LauncherSettings.Favorites.ITEM_TYPE, item.itemType);
+
+        String titleStr = item.title != null ? item.title.toString() : null;
+        values.put(LauncherSettings.Favorites.TITLE, titleStr);
+
+        String uri = item.intent != null ? item.intent.toUri(0) : null;
+        values.put(LauncherSettings.Favorites.INTENT, uri);
+
+        if (item.customIcon) {
+            values.put(LauncherSettings.Favorites.ICON_TYPE,
+                    LauncherSettings.Favorites.ICON_TYPE_BITMAP);
+            writeBitmap(values, item.getIcon());
+        } else {
+            if (!item.usingFallbackIcon) {
+                writeBitmap(values, item.getIcon());
+            }
+            values.put(LauncherSettings.Favorites.ICON_TYPE,
+                    LauncherSettings.Favorites.ICON_TYPE_RESOURCE);
+            if (item.iconResource != null) {
+                values.put(LauncherSettings.Favorites.ICON_PACKAGE,
+                		item.iconResource.packageName);
+                values.put(LauncherSettings.Favorites.ICON_RESOURCE,
+                		item.iconResource.resourceName);
+            }
+        }
+        return values;
+    }    
+
+    private static void writeBitmap(ContentValues values, Bitmap bitmap) {
+        if (bitmap != null) {
+            byte[] data = Utilities.flattenBitmap(bitmap);
+            values.put(LauncherSettings.Favorites.ICON, data);
+        }
+    }
+    
     /**
      * Removes the specified item from the database
      * @param context

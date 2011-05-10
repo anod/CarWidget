@@ -79,29 +79,6 @@ class ShortcutInfo  {
         customIcon = info.customIcon;
     }
 
-    static byte[] flattenBitmap(Bitmap bitmap) {
-        // Try go guesstimate how much space the icon will take when serialized
-        // to avoid unnecessary allocations/copies during the write.
-        int size = bitmap.getWidth() * bitmap.getHeight() * 4;
-        ByteArrayOutputStream out = new ByteArrayOutputStream(size);
-        try {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            out.flush();
-            out.close();
-            return out.toByteArray();
-        } catch (IOException e) {
-            Log.w("Favorite", "Could not write icon");
-            return null;
-        }
-    }
-
-    static void writeBitmap(ContentValues values, Bitmap bitmap) {
-        if (bitmap != null) {
-            byte[] data = flattenBitmap(bitmap);
-            values.put(LauncherSettings.Favorites.ICON, data);
-        }
-    }
- 
     public void setIcon(Bitmap b) {
         mIcon = b;
     }
@@ -125,33 +102,6 @@ class ShortcutInfo  {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
     }
 
-    void onAddToDatabase(ContentValues values) {
-    	values.put(LauncherSettings.Favorites.ITEM_TYPE, itemType);
-
-        String titleStr = title != null ? title.toString() : null;
-        values.put(LauncherSettings.Favorites.TITLE, titleStr);
-
-        String uri = intent != null ? intent.toUri(0) : null;
-        values.put(LauncherSettings.Favorites.INTENT, uri);
-
-        if (customIcon) {
-            values.put(LauncherSettings.Favorites.ICON_TYPE,
-                    LauncherSettings.Favorites.ICON_TYPE_BITMAP);
-            writeBitmap(values, mIcon);
-        } else {
-            if (!usingFallbackIcon) {
-                writeBitmap(values, mIcon);
-            }
-            values.put(LauncherSettings.Favorites.ICON_TYPE,
-                    LauncherSettings.Favorites.ICON_TYPE_RESOURCE);
-            if (iconResource != null) {
-                values.put(LauncherSettings.Favorites.ICON_PACKAGE,
-                        iconResource.packageName);
-                values.put(LauncherSettings.Favorites.ICON_RESOURCE,
-                        iconResource.resourceName);
-            }
-        }
-    }
 
     @Override
     public String toString() {

@@ -510,7 +510,8 @@ public class Configuration extends PreferenceActivity {
         Bundle bundle = new Bundle();
 
         ArrayList<String> shortcutNames = new ArrayList<String>();
-        shortcutNames.add("Applications");
+
+        shortcutNames.add(getResources().getString(R.string.applications));
         bundle.putStringArrayList(Intent.EXTRA_SHORTCUT_NAME, shortcutNames);
 
         ArrayList<ShortcutIconResource> shortcutIcons = new ArrayList<ShortcutIconResource>();
@@ -531,7 +532,7 @@ public class Configuration extends PreferenceActivity {
 
     void processShortcut(Intent intent) {
         // Handle case where user selected "Applications"
-        String applicationName = "Applications";
+        String applicationName = getResources().getString(R.string.applications);
         String shortcutName = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
         mCurrentCellId = INVALID_CELL_ID;
         if (applicationName != null && applicationName.equals(shortcutName)) {
@@ -565,7 +566,7 @@ public class Configuration extends PreferenceActivity {
             Intent editIntent = new Intent(this, ShortcutEditActivity.class);
             editIntent.putExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, info.id);
             editIntent.putExtra(ShortcutEditActivity.EXTRA_CELL_ID, mCurrentCellId);            
-            startActivityForResultSafely(editIntent, REQUEST_CREATE_SHORTCUT);
+            startActivityForResultSafely(editIntent, REQUEST_EDIT_SHORTCUT);
     	}
         mCurrentCellId = INVALID_CELL_ID;
     	try {
@@ -577,16 +578,16 @@ public class Configuration extends PreferenceActivity {
     
     private void completeEditShortcut(Intent data) {
     	int cellId = data.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, INVALID_CELL_ID);
-    	long shortcutId = data.getLongExtra(ShortcutEditActivity.EXTRA_CELL_ID, ShortcutInfo.NO_ID);
+    	long shortcutId = data.getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);
     	if (cellId != INVALID_CELL_ID && shortcutId != ShortcutInfo.NO_ID) {
     		ShortcutInfo info = mModel.loadShortcut(this, shortcutId);
-    		String key = Preferences.getLaunchComponentName(mCurrentCellId, mAppWidgetId);
+    		String key = Preferences.getLaunchComponentName(cellId, mAppWidgetId);
     		IconPreference p = (IconPreference)findPreference(key);
     		setShortcutPreference(p,info);
     	}
     }
     
-    void startActivityForResultSafely(Intent intent, int requestCode) {
+    private void startActivityForResultSafely(Intent intent, int requestCode) {
         try {
             startActivityForResult(intent, requestCode);
         } catch (ActivityNotFoundException e) {

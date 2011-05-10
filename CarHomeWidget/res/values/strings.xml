@@ -110,4 +110,6 @@
    <string name="shortcut_ok_button">Ok</string>
    <string name="photo_picker_not_found">No pictures are available on the phone.</string>
    <string name="error_text">Error: %1$s</string>
+   
+	<string name="applications">Applications</string>
 </resources>

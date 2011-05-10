@@ -1,9 +1,8 @@
 package com.anod.car.home.incar;
 
-import com.anod.car.home.R;
-import com.anod.car.home.R.string;
-
 import android.bluetooth.BluetoothClass;
+
+import com.anod.car.home.R;
 
 public class BluetoothClassHelper {
     public static final int PROFILE_HEADSET = 0;

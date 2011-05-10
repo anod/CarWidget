@@ -21,6 +21,7 @@ public class IconPreference extends Preference {
     }
     public void setIconBitmap(Bitmap iconBitmap) {
     	mIconBitmap = iconBitmap;
+    	notifyChanged();
     }
     @Override
     protected void onBindView(View view) {
