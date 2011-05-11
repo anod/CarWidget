@@ -6,6 +6,7 @@ import java.util.HashMap;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,7 +22,6 @@ public class Preferences {
 	public static final String BRIGHTNESS_DAY = "day";
 	public static final String BRIGHTNESS_NIGHT = "night";
 	
-	public static final int COLOR_UNDEFINED = -1;
 	public static final int FONT_SIZE_UNDEFINED = -1;
 	public static final boolean DEFAULT_ICONS_MONO = true;
 	public static final int DEFAULT_VOLUME_LEVEL = 100;
@@ -112,7 +112,7 @@ public class Preferences {
     public static int getTileColor(Context context, int appWidgetId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String prefName = getName(BUTTON_COLOR, appWidgetId);
-        return prefs.getInt(prefName, COLOR_UNDEFINED);      	    	
+        return prefs.getInt(prefName, context.getResources().getColor(R.color.w7_tale_default_background));      	    	
     }
 
 	public static boolean isIconsMono(Context context, int appWidgetId) {
@@ -136,22 +136,25 @@ public class Preferences {
         return prefs.getInt(VOLUME_LEVEL, DEFAULT_VOLUME_LEVEL);
 	}
 	
-    public static int getIconsColor(Context context, int appWidgetId) {
+    public static Integer getIconsColor(Context context, int appWidgetId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String prefName = getName(ICONS_COLOR, appWidgetId);
-        return prefs.getInt(prefName, COLOR_UNDEFINED);     	    	
+        if (!prefs.contains(prefName)) {
+        	return null;
+        }
+        return prefs.getInt(prefName, Color.WHITE);     	    	
     }
     
     public static int getBackgroundColor(Context context, int appWidgetId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String prefName = getName(BG_COLOR, appWidgetId);
-        return prefs.getInt(prefName, COLOR_UNDEFINED);    	    	
+        return prefs.getInt(prefName, context.getResources().getColor(R.color.default_background));    	    	
     }
 
-    public static int getFontColor(Context context, int appWidgetId) {
+    public static Integer getFontColor(Context context, int appWidgetId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String prefName = getName(FONT_COLOR, appWidgetId);
-        return prefs.getInt(prefName, COLOR_UNDEFINED);   
+        return prefs.getInt(prefName, context.getResources().getColor(R.color.default_font_color));   
     }
     
     public static int getFontSize(Context context, int appWidgetId) {

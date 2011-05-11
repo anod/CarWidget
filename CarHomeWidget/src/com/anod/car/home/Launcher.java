@@ -54,12 +54,12 @@ public class Launcher {
         
 		setBackground(context,appWidgetId,views);
 		
-		int tileColor = Preferences.COLOR_UNDEFINED;
+		Integer tileColor = null;
 		if (skinName.equals(Preferences.SKIN_WINDOWS7)) {
 			tileColor = Preferences.getTileColor(context, appWidgetId);
 		}
 		boolean grayIcon = Preferences.isIconsMono(context, appWidgetId); 
-		int iconColor = Preferences.getIconsColor(context, appWidgetId);
+		Integer iconColor = Preferences.getIconsColor(context, appWidgetId);
 		int fontColor = Preferences.getFontColor(context, appWidgetId);
 		int fontSize = Preferences.getFontSize(context, appWidgetId);
 		float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
@@ -79,7 +79,7 @@ public class Launcher {
         		setShortcut(res,resText,info,grayIcon,iconColor,views,context,appWidgetId);
         	}
         	setFont(fontColor,fontSize,res,resText,scaledDensity,views);
-        	if (tileColor != Preferences.COLOR_UNDEFINED) {
+        	if (tileColor != null) {
         		setTile(tileColor,res,views);
         	}
         }
@@ -119,9 +119,7 @@ public class Launcher {
 	}
 
 	private static void setFont(int fontColor,int fontSize,int res,int resText,float scaledDensity,RemoteViews views) {
-    	if (fontColor != Preferences.COLOR_UNDEFINED) {
-    		views.setTextColor(resText, fontColor);
-    	}
+   		views.setTextColor(resText, fontColor);
     	if (fontSize != Preferences.FONT_SIZE_UNDEFINED) {
     		if (fontSize == 0) {
     			views.setViewVisibility(resText, View.GONE);    			
@@ -151,11 +149,11 @@ public class Launcher {
 		}
     }
     
-    private static void setShortcut(int res, int resText, ShortcutInfo info, boolean grayIcon, int iconColor,  RemoteViews views, Context context, int appWidgetId) {
+    private static void setShortcut(int res, int resText, ShortcutInfo info, boolean grayIcon, Integer iconColor,  RemoteViews views, Context context, int appWidgetId) {
 		Bitmap icon = info.getIcon();
 		if (grayIcon) {
 			icon = Utilities.applyBitmapFilter(icon,context);
-			 if (iconColor != Preferences.COLOR_UNDEFINED) {
+			 if (iconColor != null) {
 				icon = Utilities.tint(icon, iconColor);
 			 }
 		};
@@ -168,10 +166,7 @@ public class Launcher {
     
     private static void setBackground(Context context,int appWidgetId, RemoteViews views) {
 		int bgColor = Preferences.getBackgroundColor(context, appWidgetId);
-		if (bgColor != Preferences.COLOR_UNDEFINED) {
-			Log.d("Launcher.Update", " BG color " + bgColor);
-			views.setInt(R.id.container, "setBackgroundColor",  bgColor);
-		}
+		views.setInt(R.id.container, "setBackgroundColor",  bgColor);
     }
     /**
      * Create an Intent to launch Configuration

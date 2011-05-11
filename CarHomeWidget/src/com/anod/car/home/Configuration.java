@@ -72,7 +72,11 @@ public class Configuration extends PreferenceActivity {
     public static final String ISSUE_TRACKER = "issue-tracker";
     public static final String OTHER = "other";
     
-	public static final boolean BUILD_AMAZON = false;   
+	public static final boolean BUILD_AMAZON = false;
+	private static final String PRO_PACKAGE_NAME="com.anod.car.home.pro";
+
+    private static final String DETAIL_MARKET_URL="market://details?id=%s";
+    private static final String DETAIL_AMAZON_URL="http://www.amazon.com/gp/mas/dl/android?p=%s";
     private static final String OTHER_MARKET_URL="market://search?q=pub:\"Alex Gavrishev\"";
     private static final String OTHER_AMAZON_URL="http://www.amazon.com/gp/mas/dl/android?p=com.anod.car.home.free&showAll=1";
   
@@ -142,8 +146,14 @@ public class Configuration extends PreferenceActivity {
 			Preferences.POWER_BT_ENABLE,
 			Preferences.HEADSET_REQUIRED,
 			Preferences.POWER_REQUIRED,
-			SCREEN_BT_DEVICE
+			Preferences.SCREEN_TIMEOUT,
+			Preferences.BRIGHTNESS,
+			Preferences.BLUETOOTH,
+			Preferences.ADJUST_VOLUME_LEVEL,
+			Preferences.VOLUME_LEVEL
 		};
+		final PreferenceScreen prefScr = (PreferenceScreen)findPreference(SCREEN_BT_DEVICE);
+		prefScr.setEnabled(false);
 		for(String prefName : prefNames) {
 	    	final Preference pref = (Preference)findPreference(prefName);
 	    	pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -151,6 +161,8 @@ public class Configuration extends PreferenceActivity {
 				public boolean onPreferenceClick(Preference preference) {
 					if (preference instanceof CheckBoxPreference) {
 						((CheckBoxPreference) preference).setChecked(false);
+					} else if (preference instanceof ListPreference) {
+						((ListPreference) preference).getDialog().hide();
 					}
 					showDialog(DIALOG_DONATE);
 					return true;
@@ -203,8 +215,7 @@ public class Configuration extends PreferenceActivity {
     	btnColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				int btnColorValue = Preferences.getTileColor(mContext, mAppWidgetId);
-				int value = (btnColorValue != Preferences.COLOR_UNDEFINED) ? btnColorValue : getResources().getColor(R.color.w7_tale_default_background);
+				int value = Preferences.getTileColor(mContext, mAppWidgetId);
 				OnClickListener listener = new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -254,8 +265,7 @@ public class Configuration extends PreferenceActivity {
     	bgColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-		    	int bgColorValue = Preferences.getBackgroundColor(mContext, mAppWidgetId);
-		    	int value = (bgColorValue != Preferences.COLOR_UNDEFINED) ? bgColorValue : getResources().getColor(R.color.default_background);
+		    	int value = Preferences.getBackgroundColor(mContext, mAppWidgetId);
 				OnClickListener listener = new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -285,8 +295,8 @@ public class Configuration extends PreferenceActivity {
        	icnColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-		    	int icnColorValue = Preferences.getIconsColor(mContext, mAppWidgetId);
-		       	int value = (icnColorValue != Preferences.COLOR_UNDEFINED) ? icnColorValue : Color.WHITE;
+		    	Integer icnTintColor = Preferences.getIconsColor(mContext, mAppWidgetId);
+		    	int value = (icnTintColor != null) ? icnTintColor : Color.WHITE;
 				OnClickListener listener = new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -322,8 +332,7 @@ public class Configuration extends PreferenceActivity {
     	fontColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-		    	int icnColorValue = Preferences.getFontColor(mContext, mAppWidgetId);
-		       	int value = (icnColorValue != Preferences.COLOR_UNDEFINED) ? icnColorValue : getResources().getColor(R.color.default_font_color);
+		    	int value = Preferences.getFontColor(mContext, mAppWidgetId);
 				OnClickListener listener = new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -381,7 +390,8 @@ public class Configuration extends PreferenceActivity {
     	version.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				Uri uri = Uri.parse("market://details?id="+getPackageName());
+				String url = (BUILD_AMAZON) ? DETAIL_AMAZON_URL : DETAIL_MARKET_URL;
+				Uri uri = Uri.parse(String.format(url,getPackageName()));
 				Intent intent = new Intent (Intent.ACTION_VIEW, uri); 
 				startActivity(intent);
 				return false;
@@ -442,8 +452,10 @@ public class Configuration extends PreferenceActivity {
 				builder.setPositiveButton(R.string.dialog_donate_btn_yes, new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						String url = (BUILD_AMAZON) ? DETAIL_AMAZON_URL : DETAIL_MARKET_URL;
+						Uri uri = Uri.parse(String.format(url,PRO_PACKAGE_NAME));
 						Intent intent = new Intent(Intent.ACTION_VIEW);
-						intent.setData(Uri.parse("market://details?id=com.anod.calendar"));
+						intent.setData(uri);
 						startActivity(intent);
 						dialog.dismiss();
 					}

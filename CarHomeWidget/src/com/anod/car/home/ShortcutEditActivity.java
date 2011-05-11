@@ -32,7 +32,8 @@ public class ShortcutEditActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shortcut_edit);
-
+		setTitle(R.string.shortcut_edit_title);
+		
 		mLabelEdit = (EditText)findViewById(R.id.label_edit);
 		mIconView = (ImageView)findViewById(R.id.icon_edit);
 		

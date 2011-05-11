@@ -39,7 +39,7 @@
    <string name="pref_font_size_summary">Select size of title</string>
 
    <string name="dialog_donate_title">Sorry,</string>
-   <string name="dialog_donate_message">This feature is available only in Car Widget donate version.\n\n Would you like to donate $1.00 USD and get it now?</string>
+   <string name="dialog_donate_message">This feature is available only in Car Widget Pro version. You can get it for $0.99 USD\n\n Would you like to get it now?</string>
    <string name="dialog_donate_btn_yes">Yes, please!</string>
    <string name="dialog_donate_btn_no">No, thanks</string>
    
@@ -106,6 +106,7 @@
    <string name="other_title">Other applications</string>
    <string name="other_summary">Take a look on my applications</string>
    
+	<string name="shortcut_edit_title">Edit shortcut</string>
    <string name="shortcut_edit_hint">Touch the icon to change it</string>
    <string name="shortcut_ok_button">Ok</string>
    <string name="photo_picker_not_found">No pictures are available on the phone.</string>
