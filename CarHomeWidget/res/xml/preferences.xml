@@ -60,6 +60,7 @@
 	    		<CheckBoxPreference android:key="power-required" android:title="@string/pref_power_connected_title" android:summary="@string/pref_power_connected_summary"  />
     		</PreferenceCategory>
     		<PreferenceCategory android:title="@string/pref_actions">
+    			<CheckBoxPreference android:key="auto_speaker" android:title="@string/pref_route_to_speaker" android:summary="@string/pref_route_to_speaker_summary"/>
     			<CheckBoxPreference android:key="bluetooth" android:title="@string/turn_on_bluetooth_summary" />
     			<CheckBoxPreference android:key="screen-timeout" android:title="@string/pref_screen_timeout" android:summary="@string/pref_screen_timeout_summary"/>
     			<ListPreference 

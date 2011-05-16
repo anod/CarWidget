@@ -25,10 +25,8 @@ public class UpdateService extends Service implements Runnable {
         if (!Launcher.isFreeVersion(getPackageName())) {
             boolean inCarEnabled = Preferences.isInCarModeEnabled(context);
             if (inCarEnabled) {
-            	if (BroadcastService.sRegistred == false) {
-                    final Intent updateIntent = new Intent(context, BroadcastService.class);
-                    context.startService(updateIntent);            		
-            	}
+                   final Intent updateIntent = new Intent(context, BroadcastService.class);
+                   context.startService(updateIntent);            		
             } else {
             	if (BroadcastService.sRegistred == true) {
                     final Intent updateIntent = new Intent(context, BroadcastService.class);

@@ -3,14 +3,20 @@ package com.anod.car.home.incar;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.IBinder;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 
+import com.anod.car.home.Preferences;
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 
 public class ModeService extends Service{
+	private PhoneStateListener mPhoneListener;
 	public static boolean sInCarMode = false;
 	private static final int NOTIFICATION_ID = 1;
 	public static String EXTRA_MODE = "extra_mode";
@@ -38,11 +44,13 @@ public class ModeService extends Service{
 		super.onCreate();
 	}
 
-
 	@Override
 	public void onDestroy() {
 		stopForeground(true);
 		Handler.switchOff(this);
+        if (mPhoneListener != null) {
+        	detachPhoneListener();
+        }
 		sInCarMode = false;
 		requestWidgetsUpdate();
 		super.onDestroy();
@@ -63,9 +71,36 @@ public class ModeService extends Service{
 		}
 		sInCarMode = true;
 		Handler.switchOn(this);
+		handlePhoneListener();
 		requestWidgetsUpdate();		
 	}
 
+	private void handlePhoneListener() {
+    	if (Preferences.getBool(Preferences.AUTO_SPEAKER, false, this)) {
+    		if (mPhoneListener == null) {
+    			attachPhoneListener();
+    		}
+    	} else {
+            if (mPhoneListener != null) {
+            	detachPhoneListener();
+            }
+    	}		
+	}
+	
+	private void attachPhoneListener() {
+		Log.d("HomeCarWidget", "Set phone listener");
+		TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+		mPhoneListener = new ModePhoneStateListener(this);
+		tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+	}
+	
+	private void detachPhoneListener() {
+    	Log.d("HomeCarWidget", "Remove phone listener");
+    	TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+    	tm.listen(mPhoneListener, PhoneStateListener.LISTEN_NONE);
+    	mPhoneListener = null;
+	}
+	
 	@Override
 	public IBinder onBind(Intent arg0) {
 		// TODO Auto-generated method stub

@@ -51,6 +51,8 @@ public class Preferences {
     public static final String BLUETOOTH = "bluetooth";
     public static final String ADJUST_VOLUME_LEVEL = "adjust-volume-level";
     public static final String VOLUME_LEVEL = "volume-level";
+    public static final String AUTO_SPEAKER = "auto_speaker";
+    public static final String AUTO_ANSWER = "auto_answer";
     
     public static HashMap<String,String> getBtDevices(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

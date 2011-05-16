@@ -9,14 +9,14 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class BroadcastService extends Service {
+
 	public static boolean sRegistred = false;
-    	
     @Override
 	public void onCreate() {
    		register(this);
 		super.onCreate();
 	}
-
+	
 	@Override
 	public void onDestroy() {
    		unregister(this);
@@ -29,7 +29,7 @@ public class BroadcastService extends Service {
 		return null;
 	}
 
-	public static void register(Context context) {
+	private void register(Context context) {
 		sRegistred=true;
 
     	IntentFilter filter = new IntentFilter();
@@ -38,12 +38,12 @@ public class BroadcastService extends Service {
     	filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
     	filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
     	filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-    	
+
         context.registerReceiver(ModeBroadcastReceiver.getInstance(), filter);
 		Log.d("HomeCarWidget", "Register");
 	}
 
-	public static void unregister(Context context) {
+	private void unregister(Context context) {
 		sRegistred=false;
         context.unregisterReceiver(ModeBroadcastReceiver.getInstance());
         Log.d("HomeCarWidget", "unregister");

@@ -113,4 +113,10 @@
    <string name="error_text">Error: %1$s</string>
    
 	<string name="applications">Applications</string>
+	
+   <string name="pref_route_to_speaker">Route to speaker</string>
+   <string name="pref_route_to_speaker_summary">Route all incoming calls to phones speaker</string>
+   <string name="pref_autoanswer">Call auto-answer</string>
+   <string name="pref_autoanswer_summary">Automatically pick-up incoming calls</string>
+
 </resources>

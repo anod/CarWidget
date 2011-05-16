@@ -145,6 +145,8 @@ public final class R {
         public static final int photo_picker_not_found=0x7f09004f;
         public static final int please_wait=0x7f09001a;
         public static final int pref_actions=0x7f090036;
+        public static final int pref_autoanswer=0x7f090054;
+        public static final int pref_autoanswer_summary=0x7f090055;
         public static final int pref_bg_color_summary=0x7f09000d;
         public static final int pref_bg_color_title=0x7f09000c;
         public static final int pref_blutooth_device_summary=0x7f09002a;
@@ -177,6 +179,8 @@ public final class R {
         public static final int pref_power_plugged_bt_on_title=0x7f090024;
         public static final int pref_power_unplugged_bt_off_summary=0x7f090027;
         public static final int pref_power_unplugged_bt_off_title=0x7f090026;
+        public static final int pref_route_to_speaker=0x7f090052;
+        public static final int pref_route_to_speaker_summary=0x7f090053;
         public static final int pref_screen_timeout=0x7f090037;
         public static final int pref_screen_timeout_summary=0x7f090038;
         public static final int pref_tile_color_summary=0x7f09000b;

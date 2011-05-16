@@ -94,7 +94,11 @@ public class Handler {
 			return;
 		}
 		if (Intent.ACTION_HEADSET_PLUG.equals(action)) {
-			sEventState[FLAG_HEADSET] = (intent.getIntExtra("state",0) == 1);
+			if (intent.getIntExtra("state",0) == 0) {
+				sEventState[FLAG_HEADSET] = false;
+			} else {
+				sEventState[FLAG_HEADSET] = true;
+			}
 			return;
 		}
 		if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
@@ -298,7 +302,7 @@ public class Handler {
     	btActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     	context.startActivity(btActivity);                 		
 	}
-		
+/*		
 	private static void turnGPSOn(Context context){
 	    String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 
@@ -322,5 +326,5 @@ public class Handler {
 	        context.sendBroadcast(poke);
 	    }
 	}
-
+*/
 }
