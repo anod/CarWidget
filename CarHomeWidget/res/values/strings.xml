@@ -64,7 +64,7 @@
    <string name="pref_detection">Detection</string>
    <string name="pref_blutooth_device_title">Bluetooth device</string>
    <string name="pref_blutooth_device_summary">Choose bluetooth device which enable In Car mode</string>
-   <string name="load_paired_device">Loading paired device</string>
+   <string name="load_paired_device">Loading paired devices</string>
    <string name="bluetooth">Bluetooth</string>
    <string name="turn_on_bluetooth_summary">Turn on Bluetooth</string>
    <string name="turn_off_bluetooth_summary">Turn off Bluetooth</string>
@@ -119,4 +119,6 @@
    <string name="pref_autoanswer">Call auto-answer</string>
    <string name="pref_autoanswer_summary">Automatically pick-up incoming calls</string>
 
+	<string name="pref_skin">Skin</string>
+	<string name="pref_scale_icon">Scale icon</string>
 </resources>

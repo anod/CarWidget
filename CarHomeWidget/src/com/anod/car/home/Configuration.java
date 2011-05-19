@@ -312,6 +312,8 @@ public class Configuration extends PreferenceActivity {
 			}
     	});
        	
+    	ListPreference icnScale = (ListPreference)findPreference(Preferences.ICONS_SCALE);
+    	icnScale.setKey(Preferences.getName(Preferences.ICONS_SCALE, mAppWidgetId));
 
     }
 

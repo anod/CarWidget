@@ -60,6 +60,7 @@ public class Launcher {
 		}
 		boolean grayIcon = Preferences.isIconsMono(context, appWidgetId); 
 		Integer iconColor = Preferences.getIconsColor(context, appWidgetId);
+		float iconScale = Preferences.getIconsScale(context, appWidgetId);
 		int fontColor = Preferences.getFontColor(context, appWidgetId);
 		int fontSize = Preferences.getFontSize(context, appWidgetId);
 		float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
@@ -76,7 +77,7 @@ public class Launcher {
                 PendingIntent configIntent = getSettingsPendingInent(appWidgetId, context, i);
         		views.setOnClickPendingIntent(res, configIntent);
         	} else {
-        		setShortcut(res,resText,info,grayIcon,iconColor,views,context,appWidgetId);
+        		setShortcut(res,resText,iconScale,info,grayIcon,iconColor,views,context,appWidgetId);
         	}
         	setFont(fontColor,fontSize,res,resText,scaledDensity,views);
         	if (tileColor != null) {
@@ -149,7 +150,7 @@ public class Launcher {
 		}
     }
     
-    private static void setShortcut(int res, int resText, ShortcutInfo info, boolean grayIcon, Integer iconColor,  RemoteViews views, Context context, int appWidgetId) {
+    private static void setShortcut(int res, int resText, float scale, ShortcutInfo info, boolean grayIcon, Integer iconColor,  RemoteViews views, Context context, int appWidgetId) {
 		Bitmap icon = info.getIcon();
 		if (grayIcon) {
 			icon = Utilities.applyBitmapFilter(icon,context);
@@ -157,6 +158,9 @@ public class Launcher {
 				icon = Utilities.tint(icon, iconColor);
 			 }
 		};
+		if (scale > 1.0f) {
+			icon = Utilities.scaleBitmap(icon,scale);
+		}
     	views.setBitmap(res, "setImageBitmap", icon);
         String title = String.valueOf(info.title);
     	views.setTextViewText(resText, title);

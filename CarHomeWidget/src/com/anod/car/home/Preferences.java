@@ -32,6 +32,7 @@ public class Preferences {
     public static final String BUTTON_COLOR = "button-color-%d";
     public static final String ICONS_MONO = "icons-mono-%d";
     public static final String ICONS_COLOR = "icons-color-%d";
+    public static final String ICONS_SCALE = "icons-scale-%d";
     public static final String FONT_SIZE = "font-size-%d";
     public static final String FONT_COLOR = "font-color-%d";
     public static final String FIRST_TIME = "first-time-%d";
@@ -123,6 +124,17 @@ public class Preferences {
         return prefs.getBoolean(prefName, DEFAULT_ICONS_MONO);
 	}
 
+	public static float getIconsScale(Context context, int appWidgetId) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String prefName = getName(ICONS_SCALE, appWidgetId);
+        String scaleString = prefs.getString(prefName, null);
+        Log.d("CarHomeWidget", "IconScale: "+scaleString);
+        if (scaleString == null || scaleString.equals("1")) {
+        	return 1.0f;
+        }
+       
+        return 1.0f+0.1f*Integer.valueOf(scaleString);
+	}	
 	public static boolean getBool(String prefName, boolean defValue, Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(prefName, defValue);
@@ -218,6 +230,7 @@ public class Preferences {
     		edit.remove(getName(BUTTON_COLOR, appWidgetId));
     		edit.remove(getName(ICONS_MONO, appWidgetId));
     		edit.remove(getName(ICONS_COLOR, appWidgetId));
+    		edit.remove(getName(ICONS_SCALE, appWidgetId));
     		edit.remove(getName(FONT_COLOR, appWidgetId));
     		edit.remove(getName(FONT_SIZE, appWidgetId));
     		edit.remove(getName(FIRST_TIME, appWidgetId));

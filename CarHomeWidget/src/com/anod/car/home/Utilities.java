@@ -108,7 +108,11 @@ public class Utilities {
         }
     }
 
- 
+ 	static Bitmap scaleBitmap(Bitmap icon, float scale) {
+ 		int scW = (int)(sIconWidth*scale);
+ 		int scH = (int)(sIconHeight*scale);
+       	return Bitmap.createScaledBitmap(icon,scW ,scH, false);
+    }
     static Bitmap applyBitmapFilter(Bitmap icon, Context context) {
         if (sIconWidth == -1) {
             initStatics(context);
@@ -117,15 +121,14 @@ public class Utilities {
                 Bitmap.Config.ARGB_8888);
         final Canvas canvas = sCanvas;
         canvas.setBitmap(bitmap);
-
+		
         BitmapDrawable d = new BitmapDrawable(context.getResources(), icon);
         sOldBounds.set(d.getBounds());
         d.setBounds(0, 0, sIconWidth, sIconHeight);
        	d.setColorFilter(sGreyColorMatrixColorFilter);
        	d.draw(canvas);       
         d.setBounds(sOldBounds);
-        
-        return bitmap; 
+		return bitmap;
     }
     
     static Bitmap tint(Bitmap icon, int color) {

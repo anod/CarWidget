@@ -10,7 +10,7 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/advanced">
     	<PreferenceScreen android:title="@string/pref_look_and_feel_title" android:summary="@string/pref_look_and_feel_summary">
-    		<ListPreference android:key="skin-%d" android:title="Skin" android:entryValues="@array/skin_values"	android:entries="@array/skin_titles" />
+    		<ListPreference android:key="skin-%d" android:title="@string/pref_skin" android:entryValues="@array/skin_values"	android:entries="@array/skin_titles" />
 	        <Preference android:key="button-color-%d" android:title="@string/pref_tile_color_title" android:summary="@string/pref_tile_color_summary"  />
     		<Preference 
     			android:key="bg-color-%d"
@@ -27,6 +27,12 @@
     			android:key="icons-color-%d" 
     			android:title="@string/pref_tint_color_title"
     			android:summary="@string/pref_tint_color_summary"
+    		/>
+    		<ListPreference 
+    			android:key="icons-scale-%d" 
+    			android:title="@string/pref_scale_icon"
+				android:entryValues="@array/icon_scale_values"
+				android:entries="@array/icon_scale_titles" 
     		/>
 	   		<com.anod.car.home.SeekBarPreference
                 android:key="font-size-%d"
