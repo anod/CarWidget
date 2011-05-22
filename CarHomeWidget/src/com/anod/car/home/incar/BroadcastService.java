@@ -1,6 +1,7 @@
 package com.anod.car.home.incar;
 
 import android.app.Service;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
@@ -38,7 +39,7 @@ public class BroadcastService extends Service {
     	filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
     	filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
     	filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-
+    	filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         context.registerReceiver(ModeBroadcastReceiver.getInstance(), filter);
 		Log.d("HomeCarWidget", "Register");
 	}

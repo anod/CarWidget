@@ -12,7 +12,7 @@ public class Bluetooth {
 	public static void switchOn() {
 		BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
 		btAdapter.enable();
-		btAdapter.startDiscovery();
+		//btAdapter.startDiscovery();
 	}
 	
 	public static void switchOff() {

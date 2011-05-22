@@ -112,6 +112,12 @@ public class Handler {
 			}
 			return;
 		}
+		if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+			if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_OFF){
+				sEventState[FLAG_BLUETOOTH] = false;
+			}
+			return;
+		}
 		if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
 			HashMap<String, String> devices = Preferences.getBtDevices(context);
 			if (devices != null ) {
