@@ -101,7 +101,7 @@ public class Configuration extends PreferenceActivity {
         mFreeVersion = Launcher.isFreeVersion(this.getPackageName());
         mModel = new LauncherModel();
         mContext = (Context)this;
-
+        
        	initActivityChooser();
        	initButtonSkin();
        	initBackground();
@@ -120,6 +120,7 @@ public class Configuration extends PreferenceActivity {
        	}
        	
     }
+
     
     @Override
     protected void onPause()
