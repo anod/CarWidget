@@ -1,7 +1,0 @@
-
-syntax: regexp
-^bin/CarHomeWidgetPro\.apk$
-syntax: regexp
-^bin/classes\.dex$
-syntax: regexp
-^bin/resources\.ap_$
