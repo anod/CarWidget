@@ -33,6 +33,7 @@ public class AllAppsActivity extends ListActivity implements OnItemClickListener
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         getListView().setOnItemClickListener(this);
+        setVisible(false);
         
         mAllAppsList = ((CarWidgetApplication)this.getApplicationContext()).getAllAppCache();
         mAllAppsListCache = mAllAppsList.getCacheEntries();
@@ -49,6 +50,7 @@ public class AllAppsActivity extends ListActivity implements OnItemClickListener
         allAppsAdapter adapter = new allAppsAdapter(this, R.layout.all_apps_row, mAllAppsListCache);
         // Bind to our new adapter.
         setListAdapter(adapter);
+        setVisible(true);        
     }
     
     private class allAppsAdapter extends ArrayAdapter<CacheEntry> {
