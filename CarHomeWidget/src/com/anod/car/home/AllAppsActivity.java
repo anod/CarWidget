@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -31,11 +32,11 @@ public class AllAppsActivity extends ListActivity implements OnItemSelectedListe
 	
     @Override
     protected void onCreate(Bundle savedInstanceState){
+    	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         getListView().setOnItemSelectedListener(this);
         
-        CarWidgetApplication app = (CarWidgetApplication)this.getApplicationContext();
-        mAllAppsList = app.mAllAppCache;
+        mAllAppsList = ((CarWidgetApplication)this.getApplicationContext()).getAllAppCache();
         mAllAppsListCache = mAllAppsList.getCacheEntries();
         if (mAllAppsListCache == null || mAllAppsListCache.size() == 0) {
         	new loadAllAppsCache().execute(0);
@@ -47,7 +48,7 @@ public class AllAppsActivity extends ListActivity implements OnItemSelectedListe
     private void showList(){
         // Now create a new list adapter bound to the cursor.
         // SimpleListAdapter is designed for binding to a Cursor.
-        allAppsAdapter adapter = new allAppsAdapter(this);
+        allAppsAdapter adapter = new allAppsAdapter(this, R.layout.all_apps_row, mAllAppsListCache);
         // Bind to our new adapter.
         setListAdapter(adapter);
     }
@@ -66,22 +67,25 @@ public class AllAppsActivity extends ListActivity implements OnItemSelectedListe
     }
 
     
-    private class allAppsAdapter extends ArrayAdapter {
-
-		public allAppsAdapter(Context context) {
-			super(context, R.layout.all_apps_row);
-		}
+    private class allAppsAdapter extends ArrayAdapter<CacheEntry> {
+    	private int resource;
+    	
+    	public allAppsAdapter(Context _context, int _resource, List<CacheEntry> _items) {
+    		super(_context, _resource, _items);
+    		resource = _resource;
+    	}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View v = convertView;
 			if (v == null) {
 	            LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.all_apps_row, null);
+                v = vi.inflate(resource, null);
 			}
+			CacheEntry entry = getItem(position);
+
 			TextView title = (TextView) v.findViewById(R.id.app_title);
 	        ImageView icon = (ImageView) v.findViewById(R.id.app_icon);
-	        CacheEntry entry = mAllAppsListCache.get(position);
 	        title.setText(entry.title);
 	        icon.setImageBitmap(entry.icon);
 	        return v;

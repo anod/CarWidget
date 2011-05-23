@@ -487,6 +487,8 @@ public class Configuration extends PreferenceActivity {
 	        Provider appWidgetProvider = Provider.getInstance();
 	        appWidgetProvider.performUpdate(this, appWidgetIds);
 		}
+		AllAppsListCache allAppsList = ((CarWidgetApplication)this.getApplicationContext()).getAllAppCache();
+		allAppsList.flush();
 		super.onBackPressed();
 	}
 	

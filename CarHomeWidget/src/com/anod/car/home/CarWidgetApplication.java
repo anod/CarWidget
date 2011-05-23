@@ -11,5 +11,13 @@ public class CarWidgetApplication extends Application {
 
         mAllAppCache = new AllAppsListCache(this);
     }
+
+	public AllAppsListCache getAllAppCache() {
+		return mAllAppCache;
+	}
+
+	public void setAllAppCache(AllAppsListCache mAllAppCache) {
+		this.mAllAppCache = mAllAppCache;
+	}
     
 }
