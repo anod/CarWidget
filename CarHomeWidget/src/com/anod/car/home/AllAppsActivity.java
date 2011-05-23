@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.app.Dialog;
 import android.app.ListActivity;
-import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,23 +17,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anod.car.home.AllAppsListCache.CacheEntry;
 
-public class AllAppsActivity extends ListActivity implements OnItemSelectedListener {
+public class AllAppsActivity extends ListActivity implements OnItemClickListener {
 	private AllAppsListCache mAllAppsList;
 	private ArrayList<CacheEntry> mAllAppsListCache;
-	private static final int DIALOG_WAIT=1;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState){
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        getListView().setOnItemSelectedListener(this);
+        getListView().setOnItemClickListener(this);
         
         mAllAppsList = ((CarWidgetApplication)this.getApplicationContext()).getAllAppCache();
         mAllAppsListCache = mAllAppsList.getCacheEntries();
@@ -52,20 +50,6 @@ public class AllAppsActivity extends ListActivity implements OnItemSelectedListe
         // Bind to our new adapter.
         setListAdapter(adapter);
     }
-    
-    @Override
-    public Dialog onCreateDialog(int id) {
-    	switch(id) {
-	    	case DIALOG_WAIT :
-	    		ProgressDialog waitDialog = new ProgressDialog(this);
-	    		waitDialog.setCancelable(true);
-	    		String message = getResources().getString(R.string.please_wait);
-	    		waitDialog.setMessage(message);
-	    		return waitDialog;
-		}
-    	return null;
-    }
-
     
     private class allAppsAdapter extends ArrayAdapter<CacheEntry> {
     	private int resource;
@@ -88,6 +72,7 @@ public class AllAppsActivity extends ListActivity implements OnItemSelectedListe
 	        ImageView icon = (ImageView) v.findViewById(R.id.app_icon);
 	        title.setText(entry.title);
 	        icon.setImageBitmap(entry.icon);
+	        v.setId(position);
 	        return v;
 		}
     	
@@ -100,13 +85,9 @@ public class AllAppsActivity extends ListActivity implements OnItemSelectedListe
 			super.onPostExecute(result);
 			mAllAppsListCache = mAllAppsList.getCacheEntries();
 			showList();
-			try{
-				dismissDialog(DIALOG_WAIT);
-			} catch (Exception e) {}
 		}
 		@Override
 		protected void onPreExecute() {
-			showDialog(DIALOG_WAIT);
 			super.onPreExecute();
 		}
 		protected Object doInBackground(Integer... param) {
@@ -126,18 +107,22 @@ public class AllAppsActivity extends ListActivity implements OnItemSelectedListe
             } 
         }
     }
-
-	@Override
-	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
-			long arg3) {
-		// TODO Auto-generated method stub
-		
+ 
+    final Intent getActivityIntent(ComponentName className) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setComponent(className);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        return intent;
 	}
 
 	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
-		
+	public void onItemClick(AdapterView<?> parent, View view,
+	        int position, long id) {
+		CacheEntry entry = mAllAppsListCache.get(position);
+
+        Intent intent = getActivityIntent(entry.componentName);
+        setResult(RESULT_OK, intent);
+        finish();
 	}
-        
 }
