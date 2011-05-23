@@ -549,14 +549,14 @@ public class Configuration extends PreferenceActivity {
         String shortcutName = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
         mCurrentCellId = INVALID_CELL_ID;
         if (applicationName != null && applicationName.equals(shortcutName)) {
-            Intent mainIntent = new Intent(this, AllAppsActivity.class);
+        	Intent mainIntent = new Intent(Configuration.this, AllAppsActivity.class);
 //            	new Intent(Intent.ACTION_MAIN, null);
 //            mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             mCurrentCellId = intent.getIntExtra(EXTRA_CELL_ID, INVALID_CELL_ID);
             Intent pickIntent = new Intent(Intent.ACTION_PICK_ACTIVITY);
             pickIntent.putExtra(Intent.EXTRA_INTENT, mainIntent);
             pickIntent.putExtra(Intent.EXTRA_TITLE, "");
-            startActivityForResultSafely(pickIntent, REQUEST_PICK_APPLICATION);
+            startActivityForResultSafely(mainIntent, REQUEST_PICK_APPLICATION);
         } else {
             mCurrentCellId = intent.getIntExtra(EXTRA_CELL_ID, INVALID_CELL_ID);
             startActivityForResultSafely(intent, REQUEST_CREATE_SHORTCUT);

@@ -95,6 +95,7 @@ public class AllAppsActivity extends ListActivity implements OnItemSelectedListe
 		protected void onPostExecute(Object result) {
 			super.onPostExecute(result);
 			mAllAppsListCache = mAllAppsList.getCacheEntries();
+			showList();
 			try{
 				dismissDialog(DIALOG_WAIT);
 			} catch (Exception e) {}
