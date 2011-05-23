@@ -33,6 +33,7 @@
 		<service android:name="com.anod.car.home.incar.ModeService" />
 		<service android:name="com.anod.car.home.incar.BroadcastService" />
 		<activity android:theme="@android:style/Theme.Dialog" android:name="com.anod.car.home.ShortcutEditActivity" />
+		<activity android:theme="@android:style/Theme.Dialog" android:name="com.anod.car.home.AllAppsActivity" />
 		<activity android:name="com.anod.car.home.Configuration" android:configChanges="orientation">
 		    <intent-filter>
 		        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
