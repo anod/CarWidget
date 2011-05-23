@@ -30,7 +30,7 @@ class ApplicationCacheInfo {
     /**
      * Must not hold the Context.
      */
-    public ApplicationCacheInfo(ResolveInfo info, AllAppsIconCache iconCache) {
+    public ApplicationCacheInfo(ResolveInfo info, AllAppsListCache iconCache) {
         this.componentName = new ComponentName(
                 info.activityInfo.applicationInfo.packageName,
                 info.activityInfo.name);
@@ -38,7 +38,6 @@ class ApplicationCacheInfo {
         this.setActivity(componentName,
                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
-        iconCache.getTitleAndIcon(this, info);
     }
  
     /**

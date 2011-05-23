@@ -79,7 +79,6 @@ public class Configuration extends PreferenceActivity {
     private static final String DETAIL_AMAZON_URL="http://www.amazon.com/gp/mas/dl/android?p=%s";
     private static final String OTHER_MARKET_URL="market://search?q=pub:\"Alex Gavrishev\"";
     private static final String OTHER_AMAZON_URL="http://www.amazon.com/gp/mas/dl/android?p=com.anod.car.home.free&showAll=1";
-  
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +119,6 @@ public class Configuration extends PreferenceActivity {
        	}
        	
     }
-
     
     @Override
     protected void onPause()
@@ -551,8 +549,9 @@ public class Configuration extends PreferenceActivity {
         String shortcutName = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
         mCurrentCellId = INVALID_CELL_ID;
         if (applicationName != null && applicationName.equals(shortcutName)) {
-            Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-            mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+            Intent mainIntent = new Intent(this, AllAppsActivity.class);
+//            	new Intent(Intent.ACTION_MAIN, null);
+//            mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             mCurrentCellId = intent.getIntExtra(EXTRA_CELL_ID, INVALID_CELL_ID);
             Intent pickIntent = new Intent(Intent.ACTION_PICK_ACTIVITY);
             pickIntent.putExtra(Intent.EXTRA_INTENT, mainIntent);
