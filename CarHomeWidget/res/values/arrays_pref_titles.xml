@@ -28,6 +28,7 @@
     
     <string-array name="icon_scale_titles">
         <item>x1.0</item>
+        <item>x1.1</item>
         <item>x1.2</item>
         <item>x1.3</item>
         <item>x1.4</item>

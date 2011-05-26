@@ -159,7 +159,7 @@ public class Launcher {
 			 }
 		};
 		if (scale > 1.0f) {
-			icon = Utilities.scaleBitmap(icon,scale);
+			icon = Utilities.scaleBitmap(icon,scale,context);
 		}
     	views.setBitmap(res, "setImageBitmap", icon);
         String title = String.valueOf(info.title);

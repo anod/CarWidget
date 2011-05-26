@@ -124,15 +124,15 @@ public class Preferences {
         return prefs.getBoolean(prefName, DEFAULT_ICONS_MONO);
 	}
 
-	public static float getIconsScale(Context context, int appWidgetId) {
+	public static String getIconsScaleString(Context context, int appWidgetId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String prefName = getName(ICONS_SCALE, appWidgetId);
-        String scaleString = prefs.getString(prefName, null);
+        String scaleString = prefs.getString(prefName, "0");
         Log.d("CarHomeWidget", "IconScale: "+scaleString);
-        if (scaleString == null || scaleString.equals("1")) {
-        	return 1.0f;
-        }
-       
+        return scaleString;
+	}
+	public static float getIconsScale(Context context, int appWidgetId) {
+		String scaleString = getIconsScaleString(context, appWidgetId); 
         return 1.0f+0.1f*Integer.valueOf(scaleString);
 	}	
 	public static boolean getBool(String prefName, boolean defValue, Context context) {

@@ -108,7 +108,10 @@ public class Utilities {
         }
     }
 
- 	static Bitmap scaleBitmap(Bitmap icon, float scale) {
+ 	static Bitmap scaleBitmap(Bitmap icon, float scale, Context context) {
+        if (sIconWidth == -1) {
+            initStatics(context);
+        }
  		int scW = (int)(sIconWidth*scale);
  		int scH = (int)(sIconHeight*scale);
        	return Bitmap.createScaledBitmap(icon,scW ,scH, false);
