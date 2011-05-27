@@ -35,7 +35,7 @@
   <string name="pref_look_and_feel_summary">Настройки скина, цвета и размера шрифта</string>
   <string name="pref_incar_mode_title">Режим «В автомобиле»</string>
   <string name="pref_incar_mode_summary">Выберите способ определить, когда вы в машине, и параметры, которые будут скорректированы</string>
-  <string name="pref_incar_mode_enabled">Включите режим «В автомобиле»</string>
+  <string name="pref_incar_mode_enabled">Включить «В автомобиле»</string>
   <string name="pref_power_contorl_bt">Питание контролирует Bluetooth</string>
   <string name="pref_power_plugged_bt_on_title">Вкл, когда подключено</string>
   <string name="pref_power_plugged_bt_on_summary">Включить Bluetooth при подключении кабеля питания</string>
@@ -60,7 +60,7 @@
   <string name="pref_screen_timeout_summary">Когда отмечено, препятствует автоматическому выключению экрана</string>
   <string name="pref_brightness_mode">Режим яркости</string>
   <string name="pref_brightness_mode_summary">Выберите, как регулировать настройки яркости</string>
-  <string name="pref_change_media_volume">Изменение громкости Мултимедия</string>
+  <string name="pref_change_media_volume">Громкость Мультимедия</string>
   <string name="pref_change_media_volume_summary">Регулеровка громкость Мультимедиа до определенного уровня</string>
   <string name="pref_media_volume_level">Уровень громкости</string>
   <string name="pref_media_volume_level_summary">Изменить желаемый уровень громкости</string>

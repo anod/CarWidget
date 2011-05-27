@@ -20,7 +20,7 @@
     <item>מותאמת אישית ...</item>
   </string-array>
   <string-array name="brightness_mode_titles">
-    <item>לא לשנות</item>
+    <item>ללא שינוי</item>
     <item>אוטומטי</item>
     <item>יום</item>
     <item>לילה</item>

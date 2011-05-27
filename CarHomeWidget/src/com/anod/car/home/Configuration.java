@@ -151,7 +151,9 @@ public class Configuration extends PreferenceActivity {
 			PreferencesStorage.BRIGHTNESS,
 			PreferencesStorage.BLUETOOTH,
 			PreferencesStorage.ADJUST_VOLUME_LEVEL,
-			PreferencesStorage.VOLUME_LEVEL
+			PreferencesStorage.VOLUME_LEVEL,
+			PreferencesStorage.ADJUST_WIFI,
+			PreferencesStorage.AUTO_SPEAKER
 		};
 		final PreferenceScreen prefScr = (PreferenceScreen)findPreference(SCREEN_BT_DEVICE);
 		prefScr.setEnabled(false);
