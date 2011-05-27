@@ -8,12 +8,11 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.PowerManager;
-import android.provider.Settings;
 import android.util.Log;
 
-import com.anod.car.home.PreferencesLoader;
+import com.anod.car.home.Preferences;
+import com.anod.car.home.PreferencesStorage;
 
 
 public class Handler {
@@ -36,18 +35,19 @@ public class Handler {
 	private static PowerManager.WakeLock mWakeLock;
 		
 	public static void onBroadcastReceive(Context context, Intent intent) {
-		if (!PreferencesLoader.isInCarModeEnabled(context)) { // TODO remove it
+		if (!PreferencesStorage.isInCarModeEnabled(context)) { // TODO remove it
 			return;
 		}
+		Preferences.InCar prefs = PreferencesStorage.loadInCar(context);
 		if (Intent.ACTION_POWER_DISCONNECTED.equals(intent.getAction())
 		) {
-			onPowerDisconnected(context);
+			onPowerDisconnected(prefs);
 		} else if (Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())) {
-			onPowerConnected(context);
+			onPowerConnected(prefs);
 		}
 				
-		updatePrefState(context);
-		updateEventState(context,intent);
+		updatePrefState(prefs);
+		updateEventState(prefs,intent);
 		for (int i=0; i<3; i++) {
 			Log.d("CarHomeWidget", "Pref state [" +i +"] : " + sPrefState[i]);	
 			Log.d("CarHomeWidget", "Event state [" +i +"] : " + sEventState[i]);	
@@ -64,26 +64,25 @@ public class Handler {
 		}
 	}
 	
-	private static void updatePrefState(Context context) {
-		sPrefState[FLAG_POWER] = isPlugRequired(FLAG_POWER,context);
-		sPrefState[FLAG_BLUETOOTH] = isPlugRequired(FLAG_BLUETOOTH,context);
-		sPrefState[FLAG_HEADSET] = isPlugRequired(FLAG_HEADSET,context);
+	private static void updatePrefState(Preferences.InCar prefs) {
+		sPrefState[FLAG_POWER] = isPlugRequired(FLAG_POWER,prefs);
+		sPrefState[FLAG_BLUETOOTH] = isPlugRequired(FLAG_BLUETOOTH,prefs);
+		sPrefState[FLAG_HEADSET] = isPlugRequired(FLAG_HEADSET,prefs);
 	}
 	
-	private static boolean isPlugRequired(byte flag, Context context) {
+	private static boolean isPlugRequired(byte flag, Preferences.InCar prefs) {
 		switch(flag) {
 			case FLAG_POWER:
-				return PreferencesLoader.isPlugRequired(PreferencesLoader.POWER_REQUIRED,context);
+				return prefs.isPowerRequired();
 			case FLAG_BLUETOOTH:
-				HashMap<String,String> devices = PreferencesLoader.getBtDevices(context);
-				return (devices != null && devices.size() > 0);
+				return prefs.isBluetoothRequired();
 			case FLAG_HEADSET:
-				return PreferencesLoader.isPlugRequired(PreferencesLoader.HEADSET_REQUIRED,context);
+				return prefs.isHeadsetRequired();
 		}
 		throw new IllegalArgumentException("Unsupported");
 	}
 	
-	private static void updateEventState(Context context, Intent intent ) {
+	private static void updateEventState(Preferences.InCar prefs, Intent intent ) {
 		String action = intent.getAction();
 		if (Intent.ACTION_POWER_DISCONNECTED.equals(action)) {
 			sEventState[FLAG_POWER] = false;
@@ -102,7 +101,7 @@ public class Handler {
 			return;
 		}
 		if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-			HashMap<String, String> devices = PreferencesLoader.getBtDevices(context);
+			HashMap<String, String> devices = prefs.getBtDevices();
 			if (devices != null ) {
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 				if (devices.containsKey(device.getAddress())) {
@@ -119,7 +118,7 @@ public class Handler {
 			return;
 		}
 		if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-			HashMap<String, String> devices = PreferencesLoader.getBtDevices(context);
+			HashMap<String, String> devices = prefs.getBtDevices();
 			if (devices != null ) {
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 				if (devices.containsKey(device.getAddress())) {
@@ -145,52 +144,51 @@ public class Handler {
 		return newMode;
 	}
 	
-	private static void onPowerConnected(Context context) {
-		if (PreferencesLoader.enableBluetoothOnPower(context)) {
+	private static void onPowerConnected(Preferences.InCar prefs) {
+		if (prefs.isEnableBluetoothOnPower()) {
 			if (Bluetooth.getState() != BluetoothAdapter.STATE_ON) {
 				Bluetooth.switchOn();
 			}
-
 		}
 	}
 
-	private static void onPowerDisconnected(Context context) {
-		if (PreferencesLoader.disableBluetoothOnPower(context)) {
+	private static void onPowerDisconnected(Preferences.InCar prefs) {
+		if (prefs.isDisableBluetoothOnPower()) {
 			if (Bluetooth.getState() != BluetoothAdapter.STATE_OFF) {
 				Bluetooth.switchOff();
 			}
 		}
 	}
 	
-	public static void switchOn(Context context) {
-		if (PreferencesLoader.getBool(PreferencesLoader.SCREEN_TIMEOUT, false, context)) {
+	public static void switchOn(Preferences.InCar prefs, Context context) {
+		if (prefs.isDisableScreenTimeout()) {
 			acquireWakeLock(context);
 		}
-		if (PreferencesLoader.getBool(PreferencesLoader.ADJUST_VOLUME_LEVEL, false, context)) {
-			adjustVolume(context);
+		if (prefs.isAdjustVolumeLevel()) {
+			adjustVolume(prefs,context);
 		}
-		if (PreferencesLoader.getBool(PreferencesLoader.BLUETOOTH, false, context)) {
+		if (prefs.isEnableBluetooth()) {
 			enableBluetooth();
 		}
 
-		String brightSetting = PreferencesLoader.getBrightness(context);
-		if (brightSetting != PreferencesLoader.BRIGHTNESS_DEFAULT) {
+		String brightSetting = prefs.getBrightness();
+		if (brightSetting != PreferencesStorage.BRIGHTNESS_DEFAULT) {
 			adjustBrightness(brightSetting,context);
 		}
 	}	
 	
-	public static void switchOff(Context context) {
-		if (PreferencesLoader.getBool(PreferencesLoader.SCREEN_TIMEOUT, false, context)) {
+	public static void switchOff(Preferences.InCar prefs, Context context) {
+		if (prefs.isDisableScreenTimeout()) {
 			releaseWakeLock();
 		}
-		if (PreferencesLoader.getBool(PreferencesLoader.ADJUST_VOLUME_LEVEL, false, context)) {
+		if (prefs.isAdjustVolumeLevel()) {
 			restoreVolume(context);
 		}
-		if (PreferencesLoader.getBool(PreferencesLoader.BLUETOOTH, false, context)) {
+		if (prefs.isEnableBluetooth()) {
 			restoreBluetooth();
 		}
-		String brightSetting = PreferencesLoader.getBrightness(context);
-		if (brightSetting != PreferencesLoader.BRIGHTNESS_DEFAULT) {
+		String brightSetting = prefs.getBrightness();
+		if (brightSetting != PreferencesStorage.BRIGHTNESS_DEFAULT) {
 			restoreBrightness(brightSetting,context);
 		}
 	}
@@ -232,15 +230,15 @@ public class Handler {
 		
 		int newBrightLevel = -1;
 		int newBrightMode = -1;
-		if (PreferencesLoader.BRIGHTNESS_AUTO.equals(brightSetting)) {
+		if (PreferencesStorage.BRIGHTNESS_AUTO.equals(brightSetting)) {
 			if (!mCurrentAutoBrightness) {
 				newBrightLevel = mCurrentBrightness;
 				newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
 			}
-		} else if (PreferencesLoader.BRIGHTNESS_DAY.equals(brightSetting)) {
+		} else if (PreferencesStorage.BRIGHTNESS_DAY.equals(brightSetting)) {
 			newBrightLevel = BRIGHTNESS_DAY;
 			newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
-		} else if (PreferencesLoader.BRIGHTNESS_NIGHT.equals(brightSetting)) {
+		} else if (PreferencesStorage.BRIGHTNESS_NIGHT.equals(brightSetting)) {
 			newBrightLevel = BRIGHTNESS_NIGHT;
 			newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;			
 		}
@@ -263,7 +261,7 @@ public class Handler {
 
 	private static void restoreBrightness(String brightSetting,Context context) {
 		ContentResolver cr = context.getContentResolver();
-		if (mCurrentAutoBrightness && PreferencesLoader.BRIGHTNESS_AUTO.equals(brightSetting)) {
+		if (mCurrentAutoBrightness && PreferencesStorage.BRIGHTNESS_AUTO.equals(brightSetting)) {
 			return;
 		}
 		int newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
@@ -276,11 +274,11 @@ public class Handler {
 		startBrightnessActivity(mCurrentBrightness, context);
 	}
 	
-	private static void adjustVolume(Context context) {
+	private static void adjustVolume(Preferences.InCar prefs,Context context) {
 		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-		int adjVolume = PreferencesLoader.getVolumeLevel(context);
-		int volume = PreferencesLoader.DEFAULT_VOLUME_LEVEL;
-		if (adjVolume != PreferencesLoader.DEFAULT_VOLUME_LEVEL) {
+		int adjVolume = prefs.getMediaVolumeLevel();
+		int volume = PreferencesStorage.DEFAULT_VOLUME_LEVEL;
+		if (adjVolume != PreferencesStorage.DEFAULT_VOLUME_LEVEL) {
 			int maxVolume = audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 			volume = (int)((maxVolume*adjVolume)/100);
 		}

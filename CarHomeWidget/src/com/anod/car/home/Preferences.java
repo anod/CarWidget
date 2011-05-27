@@ -1,70 +1,186 @@
 package com.anod.car.home;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Preferences {
-	private ArrayList<Long> launcherComponents;
-	private String skin;		
-	private Integer tileColor;
-	private boolean iconsMono;
-	private Integer iconsColor;
-	private String iconsScale;
-	private int fontColor;
-	private int fontSize;
-	private int backgroundColor;
-	public ArrayList<Long> getLauncherComponents() {
-		return launcherComponents;
+	private Main main;
+	private InCar incar;
+	
+	public Main getMain() {
+		if (main == null) {
+			this.main = new Main();
+		}
+		return main;
 	}
-	public String getSkin() {
-		return skin;
+
+	public InCar getIncar() {
+		if (incar == null) {
+			this.incar = new InCar();
+		}
+		return incar;
 	}
-	public Integer getTileColor() {
-		return tileColor;
-	}
-	public boolean isIconsMono() {
-		return iconsMono;
-	}
-	public Integer getIconsColor() {
-		return iconsColor;
-	}
-	public String getIconsScale() {
-		return iconsScale;
-	}
-	public int getFontColor() {
-		return fontColor;
-	}
-	public int getFontSize() {
-		return fontSize;
-	}
-	public int getBackgroundColor() {
-		return backgroundColor;
-	}
-	public void setLauncherComponents(ArrayList<Long> launcherComponents) {
-		this.launcherComponents = launcherComponents;
-	}
-	public void setSkin(String skin) {
-		this.skin = skin;
-	}
-	public void setTileColor(Integer tileColor) {
-		this.tileColor = tileColor;
-	}
-	public void setIconsMono(boolean iconsMono) {
-		this.iconsMono = iconsMono;
-	}
-	public void setIconsColor(Integer iconsColor) {
-		this.iconsColor = iconsColor;
-	}
-	public void setIconsScaleString(String iconsScale) {
-		this.iconsScale = iconsScale;
-	}
-	public void setFontColor(int fontColor) {
-		this.fontColor = fontColor;
-	}
-	public void setFontSize(int fontSize) {
-		this.fontSize = fontSize;
-	}
-	public void setBackgroundColor(int backgroundColor) {
-		this.backgroundColor = backgroundColor;
+
+	public class Main {
+		private ArrayList<Long> launcherComponents;
+		private String skin;		
+		private Integer tileColor;
+		private boolean iconsMono;
+		private Integer iconsColor;
+		private String iconsScale;
+		private int fontColor;
+		private int fontSize;
+		private int backgroundColor;
+		public ArrayList<Long> getLauncherComponents() {
+			return launcherComponents;
+		}
+		public String getSkin() {
+			return skin;
+		}
+		public Integer getTileColor() {
+			return tileColor;
+		}
+		public boolean isIconsMono() {
+			return iconsMono;
+		}
+		public Integer getIconsColor() {
+			return iconsColor;
+		}
+		public String getIconsScale() {
+			return iconsScale;
+		}
+		public int getFontColor() {
+			return fontColor;
+		}
+		public int getFontSize() {
+			return fontSize;
+		}
+		public int getBackgroundColor() {
+			return backgroundColor;
+		}
+		public void setLauncherComponents(ArrayList<Long> launcherComponents) {
+			this.launcherComponents = launcherComponents;
+		}
+		public void setSkin(String skin) {
+			this.skin = skin;
+		}
+		public void setTileColor(Integer tileColor) {
+			this.tileColor = tileColor;
+		}
+		public void setIconsMono(boolean iconsMono) {
+			this.iconsMono = iconsMono;
+		}
+		public void setIconsColor(Integer iconsColor) {
+			this.iconsColor = iconsColor;
+		}
+		public void setIconsScaleString(String iconsScale) {
+			this.iconsScale = iconsScale;
+		}
+		public void setFontColor(int fontColor) {
+			this.fontColor = fontColor;
+		}
+		public void setFontSize(int fontSize) {
+			this.fontSize = fontSize;
+		}
+		public void setBackgroundColor(int backgroundColor) {
+			this.backgroundColor = backgroundColor;
+		}
 	}
 	
+	public class InCar {
+		private boolean powerRequired;
+		private boolean headsetRequired;
+		private boolean bluetoothRequired = false;
+		private HashMap<String,String> btDevices;
+		
+		private boolean disableBluetoothOnPower;
+		private boolean enableBluetoothOnPower;
+		
+		private boolean  disableScreenTimeout;
+		private boolean adjustVolumeLevel;
+		private int mediaVolumeLevel;
+		private boolean enableBluetooth;
+		private String brightness;
+		private String wifi;
+		private boolean autoSpeaker;
+		
+		public boolean isAutoSpeaker() {
+			return autoSpeaker;
+		}
+		public HashMap<String, String> getBtDevices() {
+			return btDevices;
+		}
+		public void setBtDevices(HashMap<String, String> btDevices) {
+			this.btDevices = btDevices;
+			this.bluetoothRequired = (btDevices != null && btDevices.size() > 0);
+		}
+
+		public boolean isPowerRequired() {
+			return powerRequired;
+		}
+		public boolean isHeadsetRequired() {
+			return headsetRequired;
+		}
+		public boolean isBluetoothRequired() {
+			return bluetoothRequired;
+		}
+		public boolean isDisableBluetoothOnPower() {
+			return disableBluetoothOnPower;
+		}
+		public boolean isEnableBluetoothOnPower() {
+			return enableBluetoothOnPower;
+		}
+		public boolean isDisableScreenTimeout() {
+			return disableScreenTimeout;
+		}
+		public boolean isAdjustVolumeLevel() {
+			return adjustVolumeLevel;
+		}
+		public int getMediaVolumeLevel() {
+			return mediaVolumeLevel;
+		}
+		public boolean isEnableBluetooth() {
+			return enableBluetooth;
+		}
+		public String getBrightness() {
+			return brightness;
+		}
+		public String getWifi() {
+			return wifi;
+		}
+		public void setPowerRequired(boolean powerRequired) {
+			this.powerRequired = powerRequired;
+		}
+		public void setHeadsetRequired(boolean headsetRequired) {
+			this.headsetRequired = headsetRequired;
+		}
+		public void setDisableBluetoothOnPower(boolean disableBluetoothOnPower) {
+			this.disableBluetoothOnPower = disableBluetoothOnPower;
+		}
+		public void setEnableBluetoothOnPower(boolean enableBluetoothOnPower) {
+			this.enableBluetoothOnPower = enableBluetoothOnPower;
+		}
+		public void setDisableScreenTimeout(boolean screenTimeout) {
+			this.disableScreenTimeout = screenTimeout;
+		}
+		public void setAdjustVolumeLevel(boolean adjustVolumeLevel) {
+			this.adjustVolumeLevel = adjustVolumeLevel;
+		}
+		public void setMediaVolumeLevel(int mediaVolumeLevel) {
+			this.mediaVolumeLevel = mediaVolumeLevel;
+		}
+		public void setEnableBluetooth(boolean bluetooth) {
+			this.enableBluetooth = bluetooth;
+		}
+		public void setBrightness(String brightness) {
+			this.brightness = brightness;
+		}
+		public void setWifi(String wifi) {
+			this.wifi = wifi;
+		}
+		public void setAutoSpeaker(boolean autoSpeaker) {
+			this.autoSpeaker = autoSpeaker;
+		}
+		
+	}
 }

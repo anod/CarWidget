@@ -24,16 +24,16 @@ public class Launcher {
 	}
 	
 	private static int getSkinLayout(String skin) {
-		if (skin.equals(PreferencesLoader.SKIN_CARHOME)) {
+		if (skin.equals(PreferencesStorage.SKIN_CARHOME)) {
 			return R.layout.carhome;
-		} else if (skin.equals(PreferencesLoader.SKIN_WINDOWS7)) {
+		} else if (skin.equals(PreferencesStorage.SKIN_WINDOWS7)) {
 			return R.layout.windows7;			
 		}
 		return R.layout.glass;
 	}
 	
     public static RemoteViews update(int appWidgetId, Context context) {
-    	Preferences prefs = PreferencesLoader.load(context, appWidgetId);
+    	Preferences.Main prefs = PreferencesStorage.loadMain(context, appWidgetId);
     	
     	Resources resources = context.getResources();
     	String skinName = prefs.getSkin();
@@ -43,9 +43,9 @@ public class Launcher {
 		String packageName = context.getPackageName();
 		String type = "id";
 		LauncherModel model = new LauncherModel();
-		if (PreferencesLoader.isFirstTime(context,appWidgetId)) {
+		if (PreferencesStorage.isFirstTime(context,appWidgetId)) {
 			model.initShortcuts(context,appWidgetId);
-			PreferencesLoader.setFirstTime(false,context,appWidgetId);
+			PreferencesStorage.setFirstTime(false,context,appWidgetId);
 		}
 		
 		setInCarButton(packageName, skinName, context, views);
@@ -84,10 +84,10 @@ public class Launcher {
 	
     private static void setInCarButton(String packageName, String skinName,
 			Context context, RemoteViews views) {
-		if (!isFreeVersion(packageName) && PreferencesLoader.isInCarModeEnabled(context)) {
+		if (!isFreeVersion(packageName) && PreferencesStorage.isInCarModeEnabled(context)) {
 			views.setViewVisibility(R.id.btn_incar_switch, View.VISIBLE);
 			if (ModeService.sInCarMode == true) {
-				int rImg = (skinName.equals(PreferencesLoader.SKIN_WINDOWS7)) ? R.drawable.ic_incar_exit_win7 : R.drawable.ic_incar_exit;
+				int rImg = (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) ? R.drawable.ic_incar_exit_win7 : R.drawable.ic_incar_exit;
 				views.setImageViewResource(R.id.btn_incar_switch, rImg);
 				Intent notificationIntent = new Intent(context, ModeService.class);
 				notificationIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_OFF);
@@ -96,7 +96,7 @@ public class Launcher {
 				PendingIntent contentIntent = PendingIntent.getService(context, 0, notificationIntent, 0);
         		views.setOnClickPendingIntent(R.id.btn_incar_switch, contentIntent);
 			} else {
-				int rImg = (skinName.equals(PreferencesLoader.SKIN_WINDOWS7)) ? R.drawable.ic_incar_enter_win7 : R.drawable.ic_incar_enter;
+				int rImg = (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) ? R.drawable.ic_incar_enter_win7 : R.drawable.ic_incar_enter;
 				views.setImageViewResource(R.id.btn_incar_switch, rImg);
 				Intent notificationIntent = new Intent(context, ModeService.class);
 				notificationIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_ON);
@@ -111,9 +111,9 @@ public class Launcher {
 
 	}
 
-	private static void setFont(Preferences prefs,int res,int resText,float scaledDensity,RemoteViews views) {
+	private static void setFont(Preferences.Main prefs,int res,int resText,float scaledDensity,RemoteViews views) {
    		views.setTextColor(resText, prefs.getFontColor());
-    	if (prefs.getFontSize() != PreferencesLoader.FONT_SIZE_UNDEFINED) {
+    	if (prefs.getFontSize() != PreferencesStorage.FONT_SIZE_UNDEFINED) {
     		if (prefs.getFontSize() == 0) {
     			views.setViewVisibility(resText, View.GONE);    			
     		} else {
@@ -142,7 +142,7 @@ public class Launcher {
 		}
     }
     
-    private static void setShortcut(int res, int resText, float scale, ShortcutInfo info, Preferences prefs,  RemoteViews views, Context context, int appWidgetId) {
+    private static void setShortcut(int res, int resText, float scale, ShortcutInfo info, Preferences.Main prefs,  RemoteViews views, Context context, int appWidgetId) {
 		Bitmap icon = info.getIcon();
 		if (prefs.isIconsMono()) {
 			icon = UtilitiesBitmap.applyBitmapFilter(icon,context);
@@ -160,7 +160,7 @@ public class Launcher {
 		views.setOnClickPendingIntent(res, shortcutIntent);
     }
     
-    private static void setBackground(Preferences prefs, RemoteViews views) {
+    private static void setBackground(Preferences.Main prefs, RemoteViews views) {
 		int bgColor = prefs.getBackgroundColor();
 		views.setInt(R.id.container, "setBackgroundColor",  bgColor);
     }

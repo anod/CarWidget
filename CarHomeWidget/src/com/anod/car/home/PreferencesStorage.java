@@ -12,7 +12,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-public class PreferencesLoader {
+public class PreferencesStorage {
 	public static final int LAUNCH_COMPONENT_NUMBER=6;
 	public static final String SKIN_GLOSSY = "glossy";
 	public static final String SKIN_CARHOME = "carhome";
@@ -56,17 +56,17 @@ public class PreferencesLoader {
     public static final String AUTO_SPEAKER = "auto_speaker";
     public static final String AUTO_ANSWER = "auto_answer";
     
-    public static Preferences load(Context context, int appWidgetId) {
+    public static Preferences.Main loadMain(Context context, int appWidgetId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Resources res = context.getResources();
 
-        Preferences p = new Preferences();
+        Preferences.Main p = (new Preferences()).getMain();
         String skinName = prefs.getString(getName(SKIN, appWidgetId), SKIN_GLOSSY);
     	p.setSkin(skinName);
     	p.setLauncherComponents(getLauncherComponents(prefs, appWidgetId));
     	
 		Integer tileColor = null;
-		if (skinName.equals(PreferencesLoader.SKIN_WINDOWS7)) {
+		if (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) {
 			tileColor = prefs.getInt(getName(BUTTON_COLOR, appWidgetId), res.getColor(R.color.w7_tale_default_background));
 		}
 		p.setTileColor(tileColor);
@@ -81,7 +81,20 @@ public class PreferencesLoader {
     	return p;
     }
     
-    
+    public static Preferences.InCar loadInCar(Context context) {
+    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+    	Preferences.InCar p = (new Preferences()).getIncar();
+    	
+    	p.setPowerRequired(prefs.getBoolean(PreferencesStorage.POWER_REQUIRED, false));
+    	p.setBtDevices(getBtDevices(context));
+    	p.setHeadsetRequired(prefs.getBoolean(PreferencesStorage.HEADSET_REQUIRED, false));
+    	p.setBrightness(prefs.getString(BRIGHTNESS, BRIGHTNESS_DEFAULT));
+    	p.setMediaVolumeLevel(prefs.getInt(VOLUME_LEVEL, DEFAULT_VOLUME_LEVEL));
+    	p.setDisableBluetoothOnPower(prefs.getBoolean(POWER_BT_DISABLE, false));
+    	p.setEnableBluetoothOnPower(prefs.getBoolean(POWER_BT_ENABLE, false));
+    	return p;
+    }
+
     public static HashMap<String,String> getBtDevices(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String addrStr = prefs.getString(BLUETOOTH_DEVICE_ADDRESSES, null);
@@ -125,27 +138,13 @@ public class PreferencesLoader {
     private static ArrayList<Long> getLauncherComponents(SharedPreferences prefs, int appWidgetId) {      
 		ArrayList<Long> ids = new ArrayList<Long>(LAUNCH_COMPONENT_NUMBER);
 		for (int i=0; i<LAUNCH_COMPONENT_NUMBER; i++) {
-			String key = PreferencesLoader.getLaunchComponentName(i, appWidgetId);
+			String key = PreferencesStorage.getLaunchComponentName(i, appWidgetId);
 	        long id = prefs.getLong(key, ShortcutInfo.NO_ID);
 	        ids.add(i, id);
 		}
 		return ids;
     }
 
-	public static boolean getBool(String prefName, boolean defValue, Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getBoolean(prefName, defValue);
-	}
-
-	public static String getBrightness(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(BRIGHTNESS, BRIGHTNESS_DEFAULT);
-	}
-	
-    public static int getVolumeLevel(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getInt(VOLUME_LEVEL, DEFAULT_VOLUME_LEVEL);
-	}
 	
     private static Integer getIconsColor(SharedPreferences prefs, int appWidgetId) {
         String prefName = getName(ICONS_COLOR, appWidgetId);
@@ -169,7 +168,7 @@ public class PreferencesLoader {
     
     public static void saveShortcut(Context context,long shortcutId, int cellId, int appWidgetId) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		String key = PreferencesLoader.getLaunchComponentName(cellId, appWidgetId);
+		String key = PreferencesStorage.getLaunchComponentName(cellId, appWidgetId);
 		long curShortcutId = preferences.getLong(key, ShortcutInfo.NO_ID);
 		if (curShortcutId != ShortcutInfo.NO_ID) {
 			LauncherModel.deleteItemFromDatabase(context, curShortcutId);
@@ -184,21 +183,8 @@ public class PreferencesLoader {
         return prefs.getBoolean(INCAR_MODE_ENABLED, false);
     }
     
-    public static boolean enableBluetoothOnPower(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getBoolean(POWER_BT_ENABLE, false);
-    }
-    
-    public static boolean disableBluetoothOnPower(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getBoolean(POWER_BT_DISABLE, false);
-    }
-    
-    public static boolean isPlugRequired(String prefName, Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getBoolean(prefName, false);
-    }
 
+    
     public static void DropWidgetSettings(Context context, int[] appWidgetIds) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Editor edit = prefs.edit();
@@ -214,7 +200,7 @@ public class PreferencesLoader {
     		edit.remove(getName(FIRST_TIME, appWidgetId));
     		
         	for(int i = 0; i<LAUNCH_COMPONENT_NUMBER; i++) {
-        		String key = PreferencesLoader.getLaunchComponentName(i, appWidgetId);
+        		String key = PreferencesStorage.getLaunchComponentName(i, appWidgetId);
         		long curShortcutId = prefs.getLong(key, ShortcutInfo.NO_ID);
         		if (curShortcutId!=ShortcutInfo.NO_ID) {
         			LauncherModel.deleteItemFromDatabase(context, curShortcutId);

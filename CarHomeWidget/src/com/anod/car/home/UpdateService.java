@@ -23,7 +23,7 @@ public class UpdateService extends Service implements Runnable {
         final int N = appWidgetIds.length;
     		
         if (!Launcher.isFreeVersion(getPackageName())) {
-            boolean inCarEnabled = PreferencesLoader.isInCarModeEnabled(context);
+            boolean inCarEnabled = PreferencesStorage.isInCarModeEnabled(context);
             if (inCarEnabled) {
                    final Intent updateIntent = new Intent(context, BroadcastService.class);
                    context.startService(updateIntent);            		

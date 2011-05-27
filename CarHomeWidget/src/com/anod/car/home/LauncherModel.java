@@ -1,7 +1,5 @@
 package com.anod.car.home;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +131,7 @@ public class LauncherModel {
     		info = infoFromApplicationIntent(context, data);
     		Log.d("CarHomeWidget", "Init shortcut - " + info + " Widget - " + appWidgetId);
     		addItemToDatabase(context, info, cellId, appWidgetId);
-    		PreferencesLoader.saveShortcut(context,info.id,cellId,appWidgetId);
+    		PreferencesStorage.saveShortcut(context,info.id,cellId,appWidgetId);
     		cellId++;
     	}
 

@@ -1,13 +1,8 @@
 package com.anod.car.home;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 import android.content.ComponentName;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 /**
  * Represents a launchable icon on the widget

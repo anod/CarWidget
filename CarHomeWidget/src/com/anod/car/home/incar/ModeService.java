@@ -11,7 +11,8 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.anod.car.home.PreferencesLoader;
+import com.anod.car.home.Preferences;
+import com.anod.car.home.PreferencesStorage;
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 
@@ -47,7 +48,8 @@ public class ModeService extends Service{
 	@Override
 	public void onDestroy() {
 		stopForeground(true);
-		Handler.switchOff(this);
+		Preferences.InCar prefs = PreferencesStorage.loadInCar(this);
+		Handler.switchOff(prefs,this);
         if (mPhoneListener != null) {
         	detachPhoneListener();
         }
@@ -69,14 +71,15 @@ public class ModeService extends Service{
 			stopSelf();
 			return;
 		}
+		Preferences.InCar prefs = PreferencesStorage.loadInCar(this);
 		sInCarMode = true;
-		Handler.switchOn(this);
-		handlePhoneListener();
+		Handler.switchOn(prefs,this);
+		handlePhoneListener(prefs);
 		requestWidgetsUpdate();		
 	}
 
-	private void handlePhoneListener() {
-    	if (PreferencesLoader.getBool(PreferencesLoader.AUTO_SPEAKER, false, this)) {
+	private void handlePhoneListener(Preferences.InCar prefs) {
+    	if (prefs.isAutoSpeaker()) {
     		if (mPhoneListener == null) {
     			attachPhoneListener();
     		}

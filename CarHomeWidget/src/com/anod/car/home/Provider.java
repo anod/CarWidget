@@ -46,7 +46,7 @@ public class Provider extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
             super.onDeleted(context, appWidgetIds);
             // Drop the settings if the widget is deleted
-            PreferencesLoader.DropWidgetSettings(context, appWidgetIds);
+            PreferencesStorage.DropWidgetSettings(context, appWidgetIds);
     }
     
     @Override
@@ -59,7 +59,7 @@ public class Provider extends AppWidgetProvider {
      */
     @Override
     public void onDisabled(Context context) {
-        PreferencesLoader.DropSettings(context);
+        PreferencesStorage.DropSettings(context);
     	// Launch over to service so it can perform update
     	final Intent updateIntent = new Intent(context, UpdateService.class);
     	context.stopService(updateIntent);
