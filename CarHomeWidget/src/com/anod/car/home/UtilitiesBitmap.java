@@ -16,7 +16,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.util.Log;
 
-public class Utilities {
+public class UtilitiesBitmap {
 
     private static int sIconWidth = -1;
     private static int sIconHeight = -1;
@@ -146,6 +146,7 @@ public class Utilities {
 
     
     static byte[] flattenBitmap(Bitmap bitmap) {
+
         // Try go guesstimate how much space the icon will take when serialized
         // to avoid unnecessary allocations/copies during the write.
         int size = bitmap.getWidth() * bitmap.getHeight() * 4;

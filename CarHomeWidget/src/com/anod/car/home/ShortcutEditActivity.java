@@ -108,7 +108,7 @@ public class ShortcutEditActivity extends Activity {
 	{
 		boolean needUpdate = false;
 		if (mCustomIcon != null) {
-			Bitmap icon = Utilities.createIconBitmap(new BitmapDrawable(mCustomIcon), this);
+			Bitmap icon = UtilitiesBitmap.createIconBitmap(new BitmapDrawable(mCustomIcon), this);
 			mShortuctInfo.customIcon = true;
 			mShortuctInfo.iconResource = null;
 			mShortuctInfo.setIcon(icon);

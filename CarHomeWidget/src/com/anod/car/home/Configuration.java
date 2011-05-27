@@ -101,11 +101,13 @@ public class Configuration extends PreferenceActivity {
         mModel = new LauncherModel();
         mContext = (Context)this;
         
-       	initActivityChooser();
-       	initButtonSkin();
-       	initBackground();
-       	initIcon();
-       	initFont();
+        Preferences prefs = PreferencesLoader.load(this, mAppWidgetId);
+        
+       	initActivityChooser(prefs);
+       	initButtonSkin(prefs);
+       	initBackground(prefs);
+       	initIcon(prefs);
+       	initFont(prefs);
        	if (mFreeVersion) {
        		initInCarFreeDialog();
        	} else {
@@ -140,16 +142,16 @@ public class Configuration extends PreferenceActivity {
     
     private void initInCarFreeDialog() {
 		String[] prefNames = {
-			Preferences.INCAR_MODE_ENABLED,
-			Preferences.POWER_BT_DISABLE,
-			Preferences.POWER_BT_ENABLE,
-			Preferences.HEADSET_REQUIRED,
-			Preferences.POWER_REQUIRED,
-			Preferences.SCREEN_TIMEOUT,
-			Preferences.BRIGHTNESS,
-			Preferences.BLUETOOTH,
-			Preferences.ADJUST_VOLUME_LEVEL,
-			Preferences.VOLUME_LEVEL
+			PreferencesLoader.INCAR_MODE_ENABLED,
+			PreferencesLoader.POWER_BT_DISABLE,
+			PreferencesLoader.POWER_BT_ENABLE,
+			PreferencesLoader.HEADSET_REQUIRED,
+			PreferencesLoader.POWER_REQUIRED,
+			PreferencesLoader.SCREEN_TIMEOUT,
+			PreferencesLoader.BRIGHTNESS,
+			PreferencesLoader.BLUETOOTH,
+			PreferencesLoader.ADJUST_VOLUME_LEVEL,
+			PreferencesLoader.VOLUME_LEVEL
 		};
 		final PreferenceScreen prefScr = (PreferenceScreen)findPreference(SCREEN_BT_DEVICE);
 		prefScr.setEnabled(false);
@@ -208,19 +210,19 @@ public class Configuration extends PreferenceActivity {
 
     }
     
-    private void initButtonSkin() {  	
-    	final Preference btnColor = (Preference)findPreference(Preferences.BUTTON_COLOR);
-    	btnColor.setKey(Preferences.getName(Preferences.BUTTON_COLOR, mAppWidgetId));
+    private void initButtonSkin(final Preferences prefs) {  	
+    	final Preference btnColor = (Preference)findPreference(PreferencesLoader.BUTTON_COLOR);
+    	btnColor.setKey(PreferencesLoader.getName(PreferencesLoader.BUTTON_COLOR, mAppWidgetId));
     	btnColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				int value = Preferences.getTileColor(mContext, mAppWidgetId);
+				int value = prefs.getTileColor();
 				OnClickListener listener = new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						String prefName = Preferences.getName(Preferences.BUTTON_COLOR, mAppWidgetId);
+						String prefName = PreferencesLoader.getName(PreferencesLoader.BUTTON_COLOR, mAppWidgetId);
 						int color = ((CarHomeColorPickerDialog)dialog).getColor();
-						Preferences.saveColor(mContext, prefName, color);
+						PreferencesLoader.saveColor(mContext, prefName, color);
 					}
 				};
 				final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
@@ -230,11 +232,11 @@ public class Configuration extends PreferenceActivity {
 			}
     	});
     	
-	   	ListPreference skin =  (ListPreference)findPreference(Preferences.SKIN);
-	   	skin.setKey(Preferences.getName(Preferences.SKIN, mAppWidgetId));
-		String skinValue = Preferences.getSkin(this, mAppWidgetId);
+	   	ListPreference skin =  (ListPreference)findPreference(PreferencesLoader.SKIN);
+	   	skin.setKey(PreferencesLoader.getName(PreferencesLoader.SKIN, mAppWidgetId));
+		String skinValue = prefs.getSkin();
 		skin.setValue(skinValue);
-		if (skinValue.equals(Preferences.SKIN_WINDOWS7)) {
+		if (skinValue.equals(PreferencesLoader.SKIN_WINDOWS7)) {
 			btnColor.setEnabled(true);
 		} else {
 			btnColor.setEnabled(false);
@@ -246,7 +248,7 @@ public class Configuration extends PreferenceActivity {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
 					String skinName = (String)newValue;
-					if (skinName.equals(Preferences.SKIN_WINDOWS7)) {
+					if (skinName.equals(PreferencesLoader.SKIN_WINDOWS7)) {
 						btnColor.setEnabled(true);
 					} else {
 						btnColor.setEnabled(false);
@@ -257,20 +259,20 @@ public class Configuration extends PreferenceActivity {
 		);
     }
 
-    private void initBackground() { 	
-    	Preference bgColor = (Preference)findPreference(Preferences.BG_COLOR);
-    	bgColor.setKey(Preferences.getName(Preferences.BG_COLOR, mAppWidgetId));
+    private void initBackground(final Preferences prefs) { 	
+    	Preference bgColor = (Preference)findPreference(PreferencesLoader.BG_COLOR);
+    	bgColor.setKey(PreferencesLoader.getName(PreferencesLoader.BG_COLOR, mAppWidgetId));
 
     	bgColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-		    	int value = Preferences.getBackgroundColor(mContext, mAppWidgetId);
+		    	int value = prefs.getBackgroundColor();
 				OnClickListener listener = new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						String prefName = Preferences.getName(Preferences.BG_COLOR, mAppWidgetId);
+						String prefName = PreferencesLoader.getName(PreferencesLoader.BG_COLOR, mAppWidgetId);
 						int color = ((CarHomeColorPickerDialog)dialog).getColor();
-						Preferences.saveColor(mContext, prefName, color);
+						PreferencesLoader.saveColor(mContext, prefName, color);
 					}
 				};
 				final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
@@ -282,26 +284,26 @@ public class Configuration extends PreferenceActivity {
 
     }
     
-    private void initIcon() {  	
-    	CheckBoxPreference icnMono = (CheckBoxPreference)findPreference(Preferences.ICONS_MONO);
-    	String key = Preferences.getName(Preferences.ICONS_MONO, mAppWidgetId);
+    private void initIcon(final Preferences prefs) {  	
+    	CheckBoxPreference icnMono = (CheckBoxPreference)findPreference(PreferencesLoader.ICONS_MONO);
+    	String key = PreferencesLoader.getName(PreferencesLoader.ICONS_MONO, mAppWidgetId);
     	icnMono.setKey(key);
-    	icnMono.setChecked(Preferences.isIconsMono(this, mAppWidgetId));
+    	icnMono.setChecked(prefs.isIconsMono());
 
-    	Preference icnColor = (Preference)findPreference(Preferences.ICONS_COLOR);
-    	icnColor.setKey(Preferences.getName(Preferences.ICONS_COLOR, mAppWidgetId));
+    	Preference icnColor = (Preference)findPreference(PreferencesLoader.ICONS_COLOR);
+    	icnColor.setKey(PreferencesLoader.getName(PreferencesLoader.ICONS_COLOR, mAppWidgetId));
     	icnColor.setDependency(key);
        	icnColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-		    	Integer icnTintColor = Preferences.getIconsColor(mContext, mAppWidgetId);
+		    	Integer icnTintColor = prefs.getIconsColor();
 		    	int value = (icnTintColor != null) ? icnTintColor : Color.WHITE;
 				OnClickListener listener = new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						String prefName = Preferences.getName(Preferences.ICONS_COLOR, mAppWidgetId);
+						String prefName = PreferencesLoader.getName(PreferencesLoader.ICONS_COLOR, mAppWidgetId);
 						int color = ((CarHomeColorPickerDialog)dialog).getColor();
-						Preferences.saveColor(mContext, prefName, color);
+						PreferencesLoader.saveColor(mContext, prefName, color);
 					}
 				};
 				final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
@@ -311,16 +313,16 @@ public class Configuration extends PreferenceActivity {
 			}
     	});
        	
-    	ListPreference icnScale = (ListPreference)findPreference(Preferences.ICONS_SCALE);
-    	icnScale.setKey(Preferences.getName(Preferences.ICONS_SCALE, mAppWidgetId));
-    	icnScale.setValue(Preferences.getIconsScaleString(mContext, mAppWidgetId));
+    	ListPreference icnScale = (ListPreference)findPreference(PreferencesLoader.ICONS_SCALE);
+    	icnScale.setKey(PreferencesLoader.getName(PreferencesLoader.ICONS_SCALE, mAppWidgetId));
+    	icnScale.setValue(prefs.getIconsScale());
     }
 
-    private void initFont() {
-    	SeekBarPreference sbPref = (SeekBarPreference)findPreference(Preferences.FONT_SIZE);
-       	sbPref.setKey(Preferences.getName(Preferences.FONT_SIZE, mAppWidgetId));
-       	int fontSize = Preferences.getFontSize(this, mAppWidgetId);
-       	if (fontSize != Preferences.FONT_SIZE_UNDEFINED) {
+    private void initFont(final Preferences prefs) {
+    	SeekBarPreference sbPref = (SeekBarPreference)findPreference(PreferencesLoader.FONT_SIZE);
+       	sbPref.setKey(PreferencesLoader.getName(PreferencesLoader.FONT_SIZE, mAppWidgetId));
+       	int fontSize = prefs.getFontSize();
+       	if (fontSize != PreferencesLoader.FONT_SIZE_UNDEFINED) {
        		sbPref.setValue(fontSize);	
        	} else {
        		float scaledDensity = mContext.getResources().getDisplayMetrics().scaledDensity;
@@ -328,18 +330,18 @@ public class Configuration extends PreferenceActivity {
        		sbPref.setValue((int)size);
        	}
        	
-    	Preference fontColor = (Preference)findPreference(Preferences.FONT_COLOR);
-    	fontColor.setKey(Preferences.getName(Preferences.FONT_COLOR, mAppWidgetId));
+    	Preference fontColor = (Preference)findPreference(PreferencesLoader.FONT_COLOR);
+    	fontColor.setKey(PreferencesLoader.getName(PreferencesLoader.FONT_COLOR, mAppWidgetId));
     	fontColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-		    	int value = Preferences.getFontColor(mContext, mAppWidgetId);
+		    	int value = prefs.getFontColor();
 				OnClickListener listener = new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						String prefName = Preferences.getName(Preferences.FONT_COLOR, mAppWidgetId);
+						String prefName = PreferencesLoader.getName(PreferencesLoader.FONT_COLOR, mAppWidgetId);
 						int color = ((CarHomeColorPickerDialog)dialog).getColor();
-						Preferences.saveColor(mContext, prefName, color);
+						PreferencesLoader.saveColor(mContext, prefName, color);
 					}
 				};
 				final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
@@ -350,15 +352,15 @@ public class Configuration extends PreferenceActivity {
     	});
     }
     
-    private void initActivityChooser() {
-    	ArrayList<Long> currentShortcutIds = Preferences.getLauncherComponents(this, mAppWidgetId);
-        for (int i=0; i<Preferences.LAUNCH_COMPONENT_NUMBER;i++) {
+    private void initActivityChooser(Preferences prefs) {
+    	ArrayList<Long> currentShortcutIds = prefs.getLauncherComponents();
+        for (int i=0; i<PreferencesLoader.LAUNCH_COMPONENT_NUMBER;i++) {
         	initLauncher(i,currentShortcutIds.get(i));
         }
     }
     
     private void initLauncher(final int launchComponentId, long shortcutId) {
-    	String key = Preferences.getLaunchComponentKey(launchComponentId);
+    	String key = PreferencesLoader.getLaunchComponentKey(launchComponentId);
     	IconPreference p = (IconPreference)findPreference(key);
     	if (shortcutId != ShortcutInfo.NO_ID) {
     		ShortcutInfo info = mModel.loadShortcut(this,shortcutId);
@@ -366,7 +368,7 @@ public class Configuration extends PreferenceActivity {
     			setShortcutPreference(p,info);
     		}
     	}
-    	p.setKey(Preferences.getLaunchComponentName(launchComponentId, mAppWidgetId));
+    	p.setKey(PreferencesLoader.getLaunchComponentName(launchComponentId, mAppWidgetId));
     	p.setOnPreferenceClickListener( new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
@@ -568,9 +570,9 @@ public class Configuration extends PreferenceActivity {
     	final ShortcutInfo info = mModel.addShortcut(this, data, mCurrentCellId, mAppWidgetId, isApplicationShortcut);
 
     	if (info != null && info.id != ShortcutInfo.NO_ID) {   	
-    		Preferences.saveShortcut(this,info.id,mCurrentCellId,mAppWidgetId);
+    		PreferencesLoader.saveShortcut(this,info.id,mCurrentCellId,mAppWidgetId);
 
-    		String key = Preferences.getLaunchComponentName(mCurrentCellId, mAppWidgetId);
+    		String key = PreferencesLoader.getLaunchComponentName(mCurrentCellId, mAppWidgetId);
 			IconPreference p = (IconPreference)findPreference(key);
 	    	setShortcutPreference(p,info);
 	    	
@@ -592,7 +594,7 @@ public class Configuration extends PreferenceActivity {
     	long shortcutId = data.getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);
     	if (cellId != INVALID_CELL_ID && shortcutId != ShortcutInfo.NO_ID) {
     		ShortcutInfo info = mModel.loadShortcut(this, shortcutId);
-    		String key = Preferences.getLaunchComponentName(cellId, mAppWidgetId);
+    		String key = PreferencesLoader.getLaunchComponentName(cellId, mAppWidgetId);
     		IconPreference p = (IconPreference)findPreference(key);
     		setShortcutPreference(p,info);
     	}
@@ -655,7 +657,7 @@ public class Configuration extends PreferenceActivity {
 
             // If there are paired devices, add each one to the ArrayAdapter
             if (pairedDevices.size() > 0) {
-            	HashMap<String,String> devices=Preferences.getBtDevices(mContext);
+            	HashMap<String,String> devices=PreferencesLoader.getBtDevices(mContext);
             	mPairedList = new ArrayList<CheckBoxPreference>(pairedDevices.size());
                 for (BluetoothDevice device : pairedDevices) {
                 	boolean checked = (devices == null) ? false : devices.containsKey(device.getAddress());
@@ -683,7 +685,7 @@ public class Configuration extends PreferenceActivity {
 	        pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {	
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					HashMap<String,String> devices=Preferences.getBtDevices(mContext);
+					HashMap<String,String> devices=PreferencesLoader.getBtDevices(mContext);
 					String address = preference.getKey();
 					Boolean checked = (Boolean)newValue;
 					
@@ -692,14 +694,14 @@ public class Configuration extends PreferenceActivity {
 							devices = new HashMap<String,String>();
 						}
 						devices.put(address, address);
-						Preferences.saveBtDevices(mContext, devices);
+						PreferencesLoader.saveBtDevices(mContext, devices);
 						((CheckBoxPreference)preference).setChecked(true);
 					} else {
 						if (devices == null) {
 							return true;
 						}
 						devices.remove(address);
-						Preferences.saveBtDevices(mContext, devices);
+						PreferencesLoader.saveBtDevices(mContext, devices);
 						((CheckBoxPreference)preference).setChecked(false);
 					}
 					return true;

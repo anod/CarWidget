@@ -13,7 +13,7 @@ import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.Log;
 
-import com.anod.car.home.Preferences;
+import com.anod.car.home.PreferencesLoader;
 
 
 public class Handler {
@@ -36,7 +36,7 @@ public class Handler {
 	private static PowerManager.WakeLock mWakeLock;
 		
 	public static void onBroadcastReceive(Context context, Intent intent) {
-		if (!Preferences.isInCarModeEnabled(context)) { // TODO remove it
+		if (!PreferencesLoader.isInCarModeEnabled(context)) { // TODO remove it
 			return;
 		}
 		if (Intent.ACTION_POWER_DISCONNECTED.equals(intent.getAction())
@@ -73,12 +73,12 @@ public class Handler {
 	private static boolean isPlugRequired(byte flag, Context context) {
 		switch(flag) {
 			case FLAG_POWER:
-				return Preferences.isPlugRequired(Preferences.POWER_REQUIRED,context);
+				return PreferencesLoader.isPlugRequired(PreferencesLoader.POWER_REQUIRED,context);
 			case FLAG_BLUETOOTH:
-				HashMap<String,String> devices = Preferences.getBtDevices(context);
+				HashMap<String,String> devices = PreferencesLoader.getBtDevices(context);
 				return (devices != null && devices.size() > 0);
 			case FLAG_HEADSET:
-				return Preferences.isPlugRequired(Preferences.HEADSET_REQUIRED,context);
+				return PreferencesLoader.isPlugRequired(PreferencesLoader.HEADSET_REQUIRED,context);
 		}
 		throw new IllegalArgumentException("Unsupported");
 	}
@@ -102,7 +102,7 @@ public class Handler {
 			return;
 		}
 		if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-			HashMap<String, String> devices = Preferences.getBtDevices(context);
+			HashMap<String, String> devices = PreferencesLoader.getBtDevices(context);
 			if (devices != null ) {
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 				if (devices.containsKey(device.getAddress())) {
@@ -119,7 +119,7 @@ public class Handler {
 			return;
 		}
 		if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-			HashMap<String, String> devices = Preferences.getBtDevices(context);
+			HashMap<String, String> devices = PreferencesLoader.getBtDevices(context);
 			if (devices != null ) {
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 				if (devices.containsKey(device.getAddress())) {
@@ -146,7 +146,7 @@ public class Handler {
 	}
 	
 	private static void onPowerConnected(Context context) {
-		if (Preferences.enableBluetoothOnPower(context)) {
+		if (PreferencesLoader.enableBluetoothOnPower(context)) {
 			if (Bluetooth.getState() != BluetoothAdapter.STATE_ON) {
 				Bluetooth.switchOn();
 			}
@@ -155,7 +155,7 @@ public class Handler {
 	}
 
 	private static void onPowerDisconnected(Context context) {
-		if (Preferences.disableBluetoothOnPower(context)) {
+		if (PreferencesLoader.disableBluetoothOnPower(context)) {
 			if (Bluetooth.getState() != BluetoothAdapter.STATE_OFF) {
 				Bluetooth.switchOff();
 			}
@@ -163,34 +163,34 @@ public class Handler {
 	}
 	
 	public static void switchOn(Context context) {
-		if (Preferences.getBool(Preferences.SCREEN_TIMEOUT, false, context)) {
+		if (PreferencesLoader.getBool(PreferencesLoader.SCREEN_TIMEOUT, false, context)) {
 			acquireWakeLock(context);
 		}
-		if (Preferences.getBool(Preferences.ADJUST_VOLUME_LEVEL, false, context)) {
+		if (PreferencesLoader.getBool(PreferencesLoader.ADJUST_VOLUME_LEVEL, false, context)) {
 			adjustVolume(context);
 		}
-		if (Preferences.getBool(Preferences.BLUETOOTH, false, context)) {
+		if (PreferencesLoader.getBool(PreferencesLoader.BLUETOOTH, false, context)) {
 			enableBluetooth();
 		}
 
-		String brightSetting = Preferences.getBrightness(context);
-		if (brightSetting != Preferences.BRIGHTNESS_DEFAULT) {
+		String brightSetting = PreferencesLoader.getBrightness(context);
+		if (brightSetting != PreferencesLoader.BRIGHTNESS_DEFAULT) {
 			adjustBrightness(brightSetting,context);
 		}
 	}	
 	
 	public static void switchOff(Context context) {
-		if (Preferences.getBool(Preferences.SCREEN_TIMEOUT, false, context)) {
+		if (PreferencesLoader.getBool(PreferencesLoader.SCREEN_TIMEOUT, false, context)) {
 			releaseWakeLock();
 		}
-		if (Preferences.getBool(Preferences.ADJUST_VOLUME_LEVEL, false, context)) {
+		if (PreferencesLoader.getBool(PreferencesLoader.ADJUST_VOLUME_LEVEL, false, context)) {
 			restoreVolume(context);
 		}
-		if (Preferences.getBool(Preferences.BLUETOOTH, false, context)) {
+		if (PreferencesLoader.getBool(PreferencesLoader.BLUETOOTH, false, context)) {
 			restoreBluetooth();
 		}
-		String brightSetting = Preferences.getBrightness(context);
-		if (brightSetting != Preferences.BRIGHTNESS_DEFAULT) {
+		String brightSetting = PreferencesLoader.getBrightness(context);
+		if (brightSetting != PreferencesLoader.BRIGHTNESS_DEFAULT) {
 			restoreBrightness(brightSetting,context);
 		}
 	}
@@ -232,15 +232,15 @@ public class Handler {
 		
 		int newBrightLevel = -1;
 		int newBrightMode = -1;
-		if (Preferences.BRIGHTNESS_AUTO.equals(brightSetting)) {
+		if (PreferencesLoader.BRIGHTNESS_AUTO.equals(brightSetting)) {
 			if (!mCurrentAutoBrightness) {
 				newBrightLevel = mCurrentBrightness;
 				newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
 			}
-		} else if (Preferences.BRIGHTNESS_DAY.equals(brightSetting)) {
+		} else if (PreferencesLoader.BRIGHTNESS_DAY.equals(brightSetting)) {
 			newBrightLevel = BRIGHTNESS_DAY;
 			newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
-		} else if (Preferences.BRIGHTNESS_NIGHT.equals(brightSetting)) {
+		} else if (PreferencesLoader.BRIGHTNESS_NIGHT.equals(brightSetting)) {
 			newBrightLevel = BRIGHTNESS_NIGHT;
 			newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;			
 		}
@@ -263,7 +263,7 @@ public class Handler {
 
 	private static void restoreBrightness(String brightSetting,Context context) {
 		ContentResolver cr = context.getContentResolver();
-		if (mCurrentAutoBrightness && Preferences.BRIGHTNESS_AUTO.equals(brightSetting)) {
+		if (mCurrentAutoBrightness && PreferencesLoader.BRIGHTNESS_AUTO.equals(brightSetting)) {
 			return;
 		}
 		int newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
@@ -278,9 +278,9 @@ public class Handler {
 	
 	private static void adjustVolume(Context context) {
 		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-		int adjVolume = Preferences.getVolumeLevel(context);
-		int volume = Preferences.DEFAULT_VOLUME_LEVEL;
-		if (adjVolume != Preferences.DEFAULT_VOLUME_LEVEL) {
+		int adjVolume = PreferencesLoader.getVolumeLevel(context);
+		int volume = PreferencesLoader.DEFAULT_VOLUME_LEVEL;
+		if (adjVolume != PreferencesLoader.DEFAULT_VOLUME_LEVEL) {
 			int maxVolume = audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 			volume = (int)((maxVolume*adjVolume)/100);
 		}

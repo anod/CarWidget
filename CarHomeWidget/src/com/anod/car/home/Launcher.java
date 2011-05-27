@@ -24,45 +24,37 @@ public class Launcher {
 	}
 	
 	private static int getSkinLayout(String skin) {
-		if (skin.equals(Preferences.SKIN_CARHOME)) {
+		if (skin.equals(PreferencesLoader.SKIN_CARHOME)) {
 			return R.layout.carhome;
-		} else if (skin.equals(Preferences.SKIN_WINDOWS7)) {
+		} else if (skin.equals(PreferencesLoader.SKIN_WINDOWS7)) {
 			return R.layout.windows7;			
 		}
 		return R.layout.glass;
 	}
 	
     public static RemoteViews update(int appWidgetId, Context context) {
+    	Preferences prefs = PreferencesLoader.load(context, appWidgetId);
     	
     	Resources resources = context.getResources();
-    	String skinName = Preferences.getSkin(context, appWidgetId);
-
+    	String skinName = prefs.getSkin();
         RemoteViews views =  new RemoteViews(context.getPackageName(), getSkinLayout(skinName));
         
 
 		String packageName = context.getPackageName();
 		String type = "id";
 		LauncherModel model = new LauncherModel();
-		if (Preferences.isFirstTime(context,appWidgetId)) {
+		if (PreferencesLoader.isFirstTime(context,appWidgetId)) {
 			model.initShortcuts(context,appWidgetId);
-			Preferences.setFirstTime(false,context,appWidgetId);
+			PreferencesLoader.setFirstTime(false,context,appWidgetId);
 		}
 		
 		setInCarButton(packageName, skinName, context, views);
 		
-        ArrayList<Long> launchers = Preferences.getLauncherComponents(context, appWidgetId);
+        ArrayList<Long> launchers = prefs.getLauncherComponents();
         
-		setBackground(context,appWidgetId,views);
+		setBackground(prefs,views);
 		
-		Integer tileColor = null;
-		if (skinName.equals(Preferences.SKIN_WINDOWS7)) {
-			tileColor = Preferences.getTileColor(context, appWidgetId);
-		}
-		boolean grayIcon = Preferences.isIconsMono(context, appWidgetId); 
-		Integer iconColor = Preferences.getIconsColor(context, appWidgetId);
-		float iconScale = Preferences.getIconsScale(context, appWidgetId);
-		int fontColor = Preferences.getFontColor(context, appWidgetId);
-		int fontSize = Preferences.getFontSize(context, appWidgetId);
+		float iconScale = Utils.calcIconsScale(prefs.getIconsScale());
 		float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
 		
         for (int i=0;i<launchers.size();i++) {
@@ -77,11 +69,11 @@ public class Launcher {
                 PendingIntent configIntent = getSettingsPendingInent(appWidgetId, context, i);
         		views.setOnClickPendingIntent(res, configIntent);
         	} else {
-        		setShortcut(res,resText,iconScale,info,grayIcon,iconColor,views,context,appWidgetId);
+        		setShortcut(res,resText,iconScale,info,prefs,views,context,appWidgetId);
         	}
-        	setFont(fontColor,fontSize,res,resText,scaledDensity,views);
-        	if (tileColor != null) {
-        		setTile(tileColor,res,views);
+        	setFont(prefs,res,resText,scaledDensity,views);
+        	if (prefs.getTileColor() != null) {
+        		setTile(prefs.getTileColor(),res,views);
         	}
         }
     	
@@ -92,10 +84,10 @@ public class Launcher {
 	
     private static void setInCarButton(String packageName, String skinName,
 			Context context, RemoteViews views) {
-		if (!isFreeVersion(packageName) && Preferences.isInCarModeEnabled(context)) {
+		if (!isFreeVersion(packageName) && PreferencesLoader.isInCarModeEnabled(context)) {
 			views.setViewVisibility(R.id.btn_incar_switch, View.VISIBLE);
 			if (ModeService.sInCarMode == true) {
-				int rImg = (skinName.equals(Preferences.SKIN_WINDOWS7)) ? R.drawable.ic_incar_exit_win7 : R.drawable.ic_incar_exit;
+				int rImg = (skinName.equals(PreferencesLoader.SKIN_WINDOWS7)) ? R.drawable.ic_incar_exit_win7 : R.drawable.ic_incar_exit;
 				views.setImageViewResource(R.id.btn_incar_switch, rImg);
 				Intent notificationIntent = new Intent(context, ModeService.class);
 				notificationIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_OFF);
@@ -104,7 +96,7 @@ public class Launcher {
 				PendingIntent contentIntent = PendingIntent.getService(context, 0, notificationIntent, 0);
         		views.setOnClickPendingIntent(R.id.btn_incar_switch, contentIntent);
 			} else {
-				int rImg = (skinName.equals(Preferences.SKIN_WINDOWS7)) ? R.drawable.ic_incar_enter_win7 : R.drawable.ic_incar_enter;
+				int rImg = (skinName.equals(PreferencesLoader.SKIN_WINDOWS7)) ? R.drawable.ic_incar_enter_win7 : R.drawable.ic_incar_enter;
 				views.setImageViewResource(R.id.btn_incar_switch, rImg);
 				Intent notificationIntent = new Intent(context, ModeService.class);
 				notificationIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_ON);
@@ -119,10 +111,10 @@ public class Launcher {
 
 	}
 
-	private static void setFont(int fontColor,int fontSize,int res,int resText,float scaledDensity,RemoteViews views) {
-   		views.setTextColor(resText, fontColor);
-    	if (fontSize != Preferences.FONT_SIZE_UNDEFINED) {
-    		if (fontSize == 0) {
+	private static void setFont(Preferences prefs,int res,int resText,float scaledDensity,RemoteViews views) {
+   		views.setTextColor(resText, prefs.getFontColor());
+    	if (prefs.getFontSize() != PreferencesLoader.FONT_SIZE_UNDEFINED) {
+    		if (prefs.getFontSize() == 0) {
     			views.setViewVisibility(resText, View.GONE);    			
     		} else {
     			/*
@@ -131,7 +123,7 @@ public class Launcher {
     			 * size already in scaled pixel format so we revert it to pixels 
     			 * to get properly converted after re-applying setTextSize function
     			 */
-    			float cSize = (float)fontSize /	scaledDensity;
+    			float cSize = (float)prefs.getFontSize() /	scaledDensity;
     			
     			views.setFloat(resText, "setTextSize", cSize);	
     			views.setViewVisibility(resText, View.VISIBLE);
@@ -150,16 +142,16 @@ public class Launcher {
 		}
     }
     
-    private static void setShortcut(int res, int resText, float scale, ShortcutInfo info, boolean grayIcon, Integer iconColor,  RemoteViews views, Context context, int appWidgetId) {
+    private static void setShortcut(int res, int resText, float scale, ShortcutInfo info, Preferences prefs,  RemoteViews views, Context context, int appWidgetId) {
 		Bitmap icon = info.getIcon();
-		if (grayIcon) {
-			icon = Utilities.applyBitmapFilter(icon,context);
-			 if (iconColor != null) {
-				icon = Utilities.tint(icon, iconColor);
-			 }
+		if (prefs.isIconsMono()) {
+			icon = UtilitiesBitmap.applyBitmapFilter(icon,context);
+			if (prefs.getIconsColor() != null) {
+				icon = UtilitiesBitmap.tint(icon, prefs.getIconsColor());
+			}
 		};
 		if (scale > 1.0f) {
-			icon = Utilities.scaleBitmap(icon,scale,context);
+			icon = UtilitiesBitmap.scaleBitmap(icon,scale,context);
 		}
     	views.setBitmap(res, "setImageBitmap", icon);
         String title = String.valueOf(info.title);
@@ -168,8 +160,8 @@ public class Launcher {
 		views.setOnClickPendingIntent(res, shortcutIntent);
     }
     
-    private static void setBackground(Context context,int appWidgetId, RemoteViews views) {
-		int bgColor = Preferences.getBackgroundColor(context, appWidgetId);
+    private static void setBackground(Preferences prefs, RemoteViews views) {
+		int bgColor = prefs.getBackgroundColor();
 		views.setInt(R.id.container, "setBackgroundColor",  bgColor);
     }
     /**

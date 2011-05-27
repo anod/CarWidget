@@ -44,7 +44,7 @@ public class LauncherModel {
             return null;
         }
 
-        return Utilities.createIconBitmap(
+        return UtilitiesBitmap.createIconBitmap(
         		resolveInfo.activityInfo.loadIcon(manager), context
    	   );
     }
@@ -72,7 +72,7 @@ public class LauncherModel {
         ShortcutIconResource iconResource = null;
 
         if (bitmap != null && bitmap instanceof Bitmap) {
-            icon = Utilities.createIconBitmap(new FastBitmapDrawable((Bitmap)bitmap), context);
+            icon = UtilitiesBitmap.createIconBitmap(new FastBitmapDrawable((Bitmap)bitmap), context);
             customIcon = true;
         } else {
             Parcelable extra = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
@@ -83,7 +83,7 @@ public class LauncherModel {
                     Resources resources = packageManager.getResourcesForApplication(
                             iconResource.packageName);
                     final int id = resources.getIdentifier(iconResource.resourceName, null, null);
-                    icon = Utilities.createIconBitmap(resources.getDrawable(id), context);
+                    icon = UtilitiesBitmap.createIconBitmap(resources.getDrawable(id), context);
                 } catch (Exception e) {
                     Log.w(TAG, "Could not load shortcut icon: " + extra);
                 }
@@ -133,7 +133,7 @@ public class LauncherModel {
     		info = infoFromApplicationIntent(context, data);
     		Log.d("CarHomeWidget", "Init shortcut - " + info + " Widget - " + appWidgetId);
     		addItemToDatabase(context, info, cellId, appWidgetId);
-    		Preferences.saveShortcut(context,info.id,cellId,appWidgetId);
+    		PreferencesLoader.saveShortcut(context,info.id,cellId,appWidgetId);
     		cellId++;
     	}
 
@@ -208,7 +208,7 @@ public class LauncherModel {
                 			Resources resources = manager.getResourcesForApplication(packageName);
                 			if (resources != null) {
                             	final int id = resources.getIdentifier(resourceName, null, null);
-                            	icon = Utilities.createIconBitmap(resources.getDrawable(id), context);
+                            	icon = UtilitiesBitmap.createIconBitmap(resources.getDrawable(id), context);
                         	}
                 		} catch (Exception e) {
                 			// drop this.  we have other places to look for icons	
@@ -378,7 +378,7 @@ public class LauncherModel {
 
     private static void writeBitmap(ContentValues values, Bitmap bitmap) {
         if (bitmap != null) {
-            byte[] data = Utilities.flattenBitmap(bitmap);
+            byte[] data = UtilitiesBitmap.flattenBitmap(bitmap);
             values.put(LauncherSettings.Favorites.ICON, data);
         }
     }

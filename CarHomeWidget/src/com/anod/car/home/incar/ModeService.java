@@ -11,7 +11,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.anod.car.home.Preferences;
+import com.anod.car.home.PreferencesLoader;
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 
@@ -76,7 +76,7 @@ public class ModeService extends Service{
 	}
 
 	private void handlePhoneListener() {
-    	if (Preferences.getBool(Preferences.AUTO_SPEAKER, false, this)) {
+    	if (PreferencesLoader.getBool(PreferencesLoader.AUTO_SPEAKER, false, this)) {
     		if (mPhoneListener == null) {
     			attachPhoneListener();
     		}

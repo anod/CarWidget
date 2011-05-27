@@ -63,7 +63,7 @@ public class AllAppsListCache {
         	if (entry.title == null) {
         		entry.title = info.activityInfo.name;
         	}
-        	entry.icon = Utilities.createIconBitmap(
+        	entry.icon = UtilitiesBitmap.createIconBitmap(
         			info.activityInfo.loadIcon(mPackageManager), mContext
             );
         }
