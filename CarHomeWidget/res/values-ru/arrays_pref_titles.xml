@@ -25,4 +25,9 @@
     <item>День</item>
     <item>Ночь</item>
   </string-array>
+  <string-array name="wifi_action_titles">
+    <item>Нет действия</item>
+    <item>Временно</item>
+    <item>Постоянно</item>
+  </string-array>
 </resources>

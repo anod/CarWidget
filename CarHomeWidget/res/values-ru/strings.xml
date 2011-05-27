@@ -3,7 +3,7 @@
 <resources>
   <string name="app_name_free">Авто Виджет</string>
   <string name="app_name_pro">Авто Виджет Pro</string>
-  <string name="permlab_read_settings">Читать настройки Авто Виджета и ярлыки</string>
+  <string name="permlab_read_settings">Читать настройки и ярлыки Авто Виджета</string>
   <string name="permdesc_read_settings">Позволяет приложениям читать настройки и ярлыки авто виджета.</string>
   <string name="permlab_write_settings">запись настроек и ярлыков Авто Виджета</string>
   <string name="permdesc_write_settings">Позволяет приложениям менять настройки и ярлыки авто виджета.</string>
@@ -48,7 +48,7 @@
   <string name="bluetooth">Bluetooth</string>
   <string name="turn_on_bluetooth_summary">Включить Bluetooth</string>
   <string name="turn_off_bluetooth_summary">Выключить Bluetooth</string>
-  <string name="bluetooth_device_category_title">Включить режим «В автомобиле» при подключении с:</string>
+  <string name="bluetooth_device_category_title">Включить при подключении с:</string>
   <string name="no_paired_devices_found_title">Сопряженные устройства не найдены.</string>
   <string name="no_paired_devices_found_summary">Прежде чем устройство может быть выбранно, оно должено быть сопряженно и Bluetooth должен быть включен</string>
   <string name="pref_headset_connected_title">Гарнитура подключена</string>
@@ -56,7 +56,7 @@
   <string name="pref_power_connected_title">Питание подключено</string>
   <string name="pref_power_connected_summary">Включить режим «В автомобиле», когда кабель питания подключен</string>
   <string name="pref_actions">Действия</string>
-  <string name="pref_screen_timeout">Отключение экрана ожидания</string>
+  <string name="pref_screen_timeout">Отменить экрана ожидания</string>
   <string name="pref_screen_timeout_summary">Когда отмечено, препятствует автоматическому выключению экрана</string>
   <string name="pref_brightness_mode">Режим яркости</string>
   <string name="pref_brightness_mode_summary">Выберите, как регулировать настройки яркости</string>
@@ -73,7 +73,7 @@
   <string name="information_title">Информация</string>
   <string name="version_title">%1$s вер. %2$s</string>
   <string name="version_summary">Пожалуйста, оцените этот виджет на маркете</string>
-  <string name="issue_title">Oтслеживаниe проблем</string>
+  <string name="issue_title">Баг-трекер</string>
   <string name="issue_summary">Отправить запрос на добавление функции или сообщить об ошибке</string>
   <string name="other_title">Другие приложения</string>
   <string name="other_summary">Посмотрите на мои приложения</string>
@@ -87,4 +87,8 @@
   <string name="pref_route_to_speaker_summary">Перенаправлять все звонки на громкоговоритель телефона</string>
   <string name="pref_autoanswer">Автоматический ответ вызова</string>
   <string name="pref_autoanswer_summary">Автоматически принимать входящие звонки</string>
+  <string name="pref_skin">Тема</string>
+  <string name="pref_scale_icon">Увеличить иконки</string>
+  <string name="pref_wifi">Wi-Fi</string>
+  <string name="pref_wifi_summary">Если Wi-Fi включен, вы можете отключить его временно или постоянно</string>
 </resources>
