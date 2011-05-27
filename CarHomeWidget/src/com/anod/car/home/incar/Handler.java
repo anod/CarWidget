@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.util.Log;
 
@@ -29,6 +30,7 @@ public class Handler {
 	
 	private static boolean sWakeLocked = false;
 	private static int mCurrentBtState;
+	private static int mCurrentWiFiState;
 	private static int mCurrentVolume;
 	private static int mCurrentBrightness;
 	private static boolean mCurrentAutoBrightness;
@@ -170,7 +172,9 @@ public class Handler {
 		if (prefs.isEnableBluetooth()) {
 			enableBluetooth();
 		}
-
+		if (!prefs.getDisableWifi().equals(PreferencesStorage.WIFI_NOACTION)) {
+			disableWifi(context);
+		}
 		String brightSetting = prefs.getBrightness();
 		if (brightSetting != PreferencesStorage.BRIGHTNESS_DEFAULT) {
 			adjustBrightness(brightSetting,context);
@@ -187,9 +191,27 @@ public class Handler {
 		if (prefs.isEnableBluetooth()) {
 			restoreBluetooth();
 		}
+		if (prefs.getDisableWifi().equals(PreferencesStorage.WIFI_TURNOFF)) {
+			restoreWiFi(context);
+		}
 		String brightSetting = prefs.getBrightness();
 		if (brightSetting != PreferencesStorage.BRIGHTNESS_DEFAULT) {
 			restoreBrightness(brightSetting,context);
+		}
+	}
+	
+	private static void disableWifi(Context context) {
+		WifiManager wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+		mCurrentWiFiState = wm.getWifiState();
+		if (mCurrentWiFiState != WifiManager.WIFI_STATE_DISABLED) {
+			wm.setWifiEnabled(false);
+		}
+	}
+	
+	private static void restoreWiFi(Context context) {
+		WifiManager wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+		if (mCurrentWiFiState == WifiManager.WIFI_STATE_ENABLED) {
+			wm.setWifiEnabled(true);
 		}
 	}
 	

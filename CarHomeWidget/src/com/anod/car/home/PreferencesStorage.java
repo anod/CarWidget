@@ -23,6 +23,10 @@ public class PreferencesStorage {
 	public static final String BRIGHTNESS_DAY = "day";
 	public static final String BRIGHTNESS_NIGHT = "night";
 	
+	public static final String WIFI_NOACTION = "no_action";
+	public static final String WIFI_TURNOFF = "turn_off_wifi";
+	public static final String WIFI_DISABLE = "disable_wifi";
+
 	public static final int FONT_SIZE_UNDEFINED = -1;
 	public static final boolean DEFAULT_ICONS_MONO = true;
 	public static final int DEFAULT_VOLUME_LEVEL = 100;
@@ -55,6 +59,7 @@ public class PreferencesStorage {
     public static final String VOLUME_LEVEL = "volume-level";
     public static final String AUTO_SPEAKER = "auto_speaker";
     public static final String AUTO_ANSWER = "auto_answer";
+    public static final String ADJUST_WIFI = "wi-fi";
     
     public static Preferences.Main loadMain(Context context, int appWidgetId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -92,6 +97,8 @@ public class PreferencesStorage {
     	p.setMediaVolumeLevel(prefs.getInt(VOLUME_LEVEL, DEFAULT_VOLUME_LEVEL));
     	p.setDisableBluetoothOnPower(prefs.getBoolean(POWER_BT_DISABLE, false));
     	p.setEnableBluetoothOnPower(prefs.getBoolean(POWER_BT_ENABLE, false));
+    	p.setDisableWifi(prefs.getString(ADJUST_WIFI, WIFI_NOACTION));
+    	
     	return p;
     }
 
@@ -220,6 +227,14 @@ public class PreferencesStorage {
    		edit.remove(BLUETOOTH_DEVICE_ADDRESSES);
        	edit.remove(HEADSET_REQUIRED);
    		edit.remove(POWER_REQUIRED);
+   		edit.remove(SCREEN_TIMEOUT);
+   		edit.remove(BRIGHTNESS);
+   		edit.remove(BLUETOOTH);
+   		edit.remove(ADJUST_VOLUME_LEVEL);
+   		edit.remove(VOLUME_LEVEL);
+   		edit.remove(AUTO_SPEAKER);
+   		edit.remove(AUTO_ANSWER);
+   		edit.remove(ADJUST_WIFI);
         edit.commit();
     }
     

@@ -101,7 +101,7 @@ public class Preferences {
 		private int mediaVolumeLevel;
 		private boolean enableBluetooth;
 		private String brightness;
-		private String wifi;
+		private String disableWifi;
 		private boolean autoSpeaker;
 		
 		public boolean isAutoSpeaker() {
@@ -145,9 +145,6 @@ public class Preferences {
 		public String getBrightness() {
 			return brightness;
 		}
-		public String getWifi() {
-			return wifi;
-		}
 		public void setPowerRequired(boolean powerRequired) {
 			this.powerRequired = powerRequired;
 		}
@@ -175,11 +172,14 @@ public class Preferences {
 		public void setBrightness(String brightness) {
 			this.brightness = brightness;
 		}
-		public void setWifi(String wifi) {
-			this.wifi = wifi;
-		}
 		public void setAutoSpeaker(boolean autoSpeaker) {
 			this.autoSpeaker = autoSpeaker;
+		}
+		public String getDisableWifi() {
+			return disableWifi;
+		}
+		public void setDisableWifi(String disableWifi) {
+			this.disableWifi = disableWifi;
 		}
 		
 	}

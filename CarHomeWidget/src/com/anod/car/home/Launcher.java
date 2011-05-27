@@ -33,20 +33,21 @@ public class Launcher {
 	}
 	
     public static RemoteViews update(int appWidgetId, Context context) {
+    	
+    	LauncherModel model = new LauncherModel();
+		if (PreferencesStorage.isFirstTime(context,appWidgetId)) {
+			model.initShortcuts(context,appWidgetId);
+			PreferencesStorage.setFirstTime(false,context,appWidgetId);
+		}
+    	
     	Preferences.Main prefs = PreferencesStorage.loadMain(context, appWidgetId);
     	
     	Resources resources = context.getResources();
     	String skinName = prefs.getSkin();
         RemoteViews views =  new RemoteViews(context.getPackageName(), getSkinLayout(skinName));
-        
 
 		String packageName = context.getPackageName();
 		String type = "id";
-		LauncherModel model = new LauncherModel();
-		if (PreferencesStorage.isFirstTime(context,appWidgetId)) {
-			model.initShortcuts(context,appWidgetId);
-			PreferencesStorage.setFirstTime(false,context,appWidgetId);
-		}
 		
 		setInCarButton(packageName, skinName, context, views);
 		
