@@ -46,5 +46,10 @@
         <item>8</item>
         <item>9</item>
         <item>10</item>
-    </string-array>    
+    </string-array>
+	<string-array name="wifi_action_values">
+		<item>no_action</item>
+		<item>turn_off_wifi</item>
+		<item>disable_wi_fi</item>
+    </string-array>
 </resources>

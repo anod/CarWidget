@@ -39,4 +39,10 @@
         <item>x1.9</item>
         <item>x2.0</item>
     </string-array>     
+    
+	<string-array name="wifi_action_titles">
+		<item>No Action</item>
+		<item>Turn Off Wi-Fi</item>
+		<item>Disable Wi-Fi</item>
+    </string-array>
 </resources>
