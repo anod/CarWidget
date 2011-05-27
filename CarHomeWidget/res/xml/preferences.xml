@@ -87,6 +87,14 @@
                 	android:max="100"
                 	android:dependency="adjust-volume-level"
             	/> 
+    			<ListPreference 
+    				android:key="wi-fi" 
+    				android:title="@string/pref_wifi"
+    				android:summary="@string/pref_wifi_summary"
+    				android:entryValues="@array/wifi_action_values"
+    				android:entries="@array/wifi_action_titles" 
+    				android:defaultValue="no_action"
+    			/>
     		</PreferenceCategory>
     	</PreferenceScreen>
 

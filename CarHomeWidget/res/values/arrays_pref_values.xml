@@ -47,9 +47,24 @@
         <item>9</item>
         <item>10</item>
     </string-array>
+    
 	<string-array name="wifi_action_values">
 		<item>no_action</item>
 		<item>turn_off_wifi</item>
 		<item>disable_wi_fi</item>
     </string-array>
+    
+    <string-array name="icon_scale_titles">
+        <item>x1.0</item>
+        <item>x1.1</item>
+        <item>x1.2</item>
+        <item>x1.3</item>
+        <item>x1.4</item>
+        <item>x1.5</item>
+        <item>x1.6</item>
+        <item>x1.7</item>
+        <item>x1.8</item>
+        <item>x1.9</item>
+        <item>x2.0</item>
+    </string-array>     
 </resources>

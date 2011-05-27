@@ -114,7 +114,7 @@ public class UtilitiesBitmap {
         }
  		int scW = (int)(sIconWidth*scale);
  		int scH = (int)(sIconHeight*scale);
-       	return Bitmap.createScaledBitmap(icon,scW ,scH, false);
+       	return Bitmap.createScaledBitmap(icon,scW ,scH, true);   	
     }
     static Bitmap applyBitmapFilter(Bitmap icon, Context context) {
         if (sIconWidth == -1) {
