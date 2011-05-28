@@ -89,14 +89,20 @@ public class PreferencesStorage {
     public static Preferences.InCar loadInCar(Context context) {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
     	Preferences.InCar p = (new Preferences()).getIncar();
+
+    	p.setDisableBluetoothOnPower(prefs.getBoolean(POWER_BT_DISABLE, false));
+    	p.setEnableBluetoothOnPower(prefs.getBoolean(POWER_BT_ENABLE, false));
     	
     	p.setPowerRequired(prefs.getBoolean(PreferencesStorage.POWER_REQUIRED, false));
     	p.setBtDevices(getBtDevices(context));
     	p.setHeadsetRequired(prefs.getBoolean(PreferencesStorage.HEADSET_REQUIRED, false));
+    	
+    	p.setAutoSpeaker(prefs.getBoolean(AUTO_SPEAKER, false));
+    	p.setEnableBluetooth(prefs.getBoolean(BLUETOOTH, false));
+    	p.setDisableScreenTimeout(prefs.getBoolean(SCREEN_TIMEOUT, false));
     	p.setBrightness(prefs.getString(BRIGHTNESS, BRIGHTNESS_DEFAULT));
+    	p.setAdjustVolumeLevel(prefs.getBoolean(ADJUST_VOLUME_LEVEL, false));   	
     	p.setMediaVolumeLevel(prefs.getInt(VOLUME_LEVEL, DEFAULT_VOLUME_LEVEL));
-    	p.setDisableBluetoothOnPower(prefs.getBoolean(POWER_BT_DISABLE, false));
-    	p.setEnableBluetoothOnPower(prefs.getBoolean(POWER_BT_ENABLE, false));
     	p.setDisableWifi(prefs.getString(ADJUST_WIFI, WIFI_NOACTION));
     	
     	return p;
