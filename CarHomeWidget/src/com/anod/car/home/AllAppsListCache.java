@@ -1,11 +1,19 @@
 package com.anod.car.home;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import android.content.ComponentName;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
+import android.widget.ImageView;
 
 /**
  * Cache of application icons.  Icons can be made from any thread.
@@ -16,6 +24,7 @@ public class AllAppsListCache {
     	public ComponentName componentName;
         public Bitmap icon;
         public String title;
+        public String activityName;
     }
 
     private final ArrayList<CacheEntry> mCache =
@@ -23,7 +32,8 @@ public class AllAppsListCache {
 
     private final CarWidgetApplication mContext;
     private final PackageManager mPackageManager;
-
+	private Bitmap mDefaultIcon;
+	
     public AllAppsListCache(CarWidgetApplication context) {
         mContext = context;
         mPackageManager = context.getPackageManager();
@@ -61,17 +71,73 @@ public class AllAppsListCache {
         	entry.componentName = componentName;
         	entry.title = info.loadLabel(mPackageManager).toString();
         	if (entry.title == null) {
-        		entry.title = info.activityInfo.name;
+            	entry.title = info.activityInfo.name;        		
         	}
-        	entry.icon = UtilitiesBitmap.createIconBitmap(
+    /*    	entry.icon = UtilitiesBitmap.createIconBitmap(
         			info.activityInfo.loadIcon(mPackageManager), mContext
             );
+     */
         }
     }
+    public void sort() {
+    	Collections.sort(
+    		mCache,
+    		new DisplayNameComparator()
+    	);	
+    }
+    
+    public static class DisplayNameComparator implements Comparator<CacheEntry> {
+    	private final Collator sCollator = Collator.getInstance();
 
+    	public final int compare(CacheEntry a, CacheEntry b) {
+    		return sCollator.compare(a.title, b.title);
+    	}
+
+    }
     public ArrayList<CacheEntry> getCacheEntries() {
         synchronized (mCache) {
         	return mCache;
         }
+    }
+    
+    public Bitmap fetchIcon(CacheEntry entry) {
+        if (entry.icon != null) {
+            return entry.icon;
+        }
+        
+        Drawable d;
+		try {
+			d = mPackageManager.getActivityIcon(entry.componentName);
+	        entry.icon = UtilitiesBitmap.createIconBitmap(d, mContext);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+        return entry.icon;
+    }
+    
+    public void fetchDrawableOnThread(final CacheEntry entry, final ImageView imageView) {
+    	if (entry.icon != null) {
+    		imageView.setImageBitmap(entry.icon);
+    	}
+
+    	final Handler handler = new Handler() {
+    		@Override
+    		public void handleMessage(Message message) {
+    			Bitmap icon = (Bitmap) message.obj;
+    			if (icon != null) {
+    				imageView.setImageBitmap(icon);
+    			}
+    		}
+    	};
+
+    	Thread thread = new Thread() {
+    		@Override
+    		public void run() {
+                Bitmap bitmap = fetchIcon(entry);
+                Message message = handler.obtainMessage(1, bitmap);
+                handler.sendMessage(message);
+            }
+        };
+        thread.start();
     }
 }

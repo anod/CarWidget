@@ -1,7 +1,6 @@
 package com.anod.car.home;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -10,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,6 +27,8 @@ import com.anod.car.home.AllAppsListCache.CacheEntry;
 public class AllAppsActivity extends ListActivity implements OnItemClickListener {
 	private AllAppsListCache mAllAppsList;
 	private ArrayList<CacheEntry> mAllAppsListCache;
+	private Bitmap mDefaultIcon;
+	private PackageManager mPackageManager;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -37,6 +39,8 @@ public class AllAppsActivity extends ListActivity implements OnItemClickListener
         
         mAllAppsList = ((CarWidgetApplication)this.getApplicationContext()).getAllAppCache();
         mAllAppsListCache = mAllAppsList.getCacheEntries();
+        mPackageManager = getPackageManager();
+        mDefaultIcon = UtilitiesBitmap.makeDefaultIcon(mPackageManager);
         if (mAllAppsListCache == null || mAllAppsListCache.size() == 0) {
         	new loadAllAppsCache().execute(0);
         } else {
@@ -73,7 +77,12 @@ public class AllAppsActivity extends ListActivity implements OnItemClickListener
 			TextView title = (TextView) v.findViewById(R.id.app_title);
 	        ImageView icon = (ImageView) v.findViewById(R.id.app_icon);
 	        title.setText(entry.title);
-	        icon.setImageBitmap(entry.icon);
+	        if (entry.icon == null) {
+	        	icon.setImageBitmap(mDefaultIcon);
+	        	mAllAppsList.fetchDrawableOnThread(entry, icon);
+	        } else {
+	        	icon.setImageBitmap(entry.icon);
+	        }
 	        v.setId(position);
 	        return v;
 		}
@@ -103,14 +112,14 @@ public class AllAppsActivity extends ListActivity implements OnItemClickListener
 
             final PackageManager packageManager = getPackageManager();
             List<ResolveInfo> apps = packageManager.queryIntentActivities(mainIntent, 0);
-            Collections.sort(apps,new ResolveInfo.DisplayNameComparator(packageManager));
             for(ResolveInfo appInfo : apps) {
             	mAllAppsList.put(appInfo);
-            } 
+            }
+            mAllAppsList.sort();
         }
     }
- 
-    final Intent getActivityIntent(ComponentName className) {
+    
+    final private Intent getActivityIntent(ComponentName className) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.setComponent(className);
@@ -127,4 +136,5 @@ public class AllAppsActivity extends ListActivity implements OnItemClickListener
         setResult(RESULT_OK, intent);
         finish();
 	}
+
 }

@@ -25,17 +25,6 @@ import android.util.Log;
 public class LauncherModel {
     static final String TAG = "CarHomeWidget.Model";
 
-    private Bitmap makeDefaultIcon(PackageManager manager) {
-        Drawable d = manager.getDefaultActivityIcon();
-        Bitmap b = Bitmap.createBitmap(Math.max(d.getIntrinsicWidth(), 1),
-                Math.max(d.getIntrinsicHeight(), 1),
-                Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
-        d.setBounds(0, 0, b.getWidth(), b.getHeight());
-        d.draw(c);
-        return b;
-    }
-    
     private Bitmap getIcon(ComponentName component, ResolveInfo resolveInfo, PackageManager manager, Context context) {
 
         if (resolveInfo == null || component == null) {
@@ -92,7 +81,7 @@ public class LauncherModel {
 
         if (icon == null) {
         	final PackageManager packageManager = context.getPackageManager();
-            icon = makeDefaultIcon(packageManager);
+            icon = UtilitiesBitmap.makeDefaultIcon(packageManager);
             info.usingFallbackIcon = true;
         }
         info.setIcon(icon);
@@ -228,7 +217,7 @@ public class LauncherModel {
             }
                 
             if (icon == null) {
-            	icon = makeDefaultIcon(manager);
+            	icon = UtilitiesBitmap.makeDefaultIcon(manager);
                 info.usingFallbackIcon = true;
             }
             info.setIcon(icon);
@@ -281,7 +270,7 @@ public class LauncherModel {
         }
         // the fallback icon
         if (icon == null) {
-            icon = makeDefaultIcon(manager);
+            icon = UtilitiesBitmap.makeDefaultIcon(manager);
             info.usingFallbackIcon = true;
         }
         info.setIcon(icon);

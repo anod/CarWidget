@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrixColorFilter;
@@ -46,6 +47,16 @@ public class UtilitiesBitmap {
       sCanvas.setDrawFilter(localPaintFlagsDrawFilter);
     }
  
+    public static Bitmap makeDefaultIcon(PackageManager manager) {
+        Drawable d = manager.getDefaultActivityIcon();
+        Bitmap b = Bitmap.createBitmap(Math.max(d.getIntrinsicWidth(), 1),
+                Math.max(d.getIntrinsicHeight(), 1),
+                Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(b);
+        d.setBounds(0, 0, b.getWidth(), b.getHeight());
+        d.draw(c);
+        return b;
+    }    
     /**
      * Returns a bitmap suitable for the all apps view.  The bitmap will be a power
      * of two sized ARGB_8888 bitmap that can be used as a gl texture.
