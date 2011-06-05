@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.anod.car.home.pro"
-      android:versionCode="6"
-      android:versionName="1.32"
+      android:versionCode="7"
+      android:versionName="1.33"
       android:installLocation="internalOnly">
     <uses-sdk android:minSdkVersion="8" />
     <permission
@@ -32,6 +32,8 @@
     <uses-permission android:name="com.anod.car.home.permission.READ_SETTINGS" />
     <uses-permission android:name="com.anod.car.home.permission.WRITE_SETTINGS" />
     
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
+    
     <application android:name="com.anod.car.home.CarWidgetApplication" android:icon="@drawable/icon" android:label="@string/app_name_pro">
 		<service android:name="com.anod.car.home.UpdateService" />
 		<service android:name="com.anod.car.home.incar.ModeService" />
@@ -57,8 +59,8 @@
             android:authorities="com.anod.car.home.settings.pro"
             android:writePermission="com.anod.car.home.permission.WRITE_SETTINGS"
             android:readPermission="com.anod.car.home.permission.READ_SETTINGS" />
-            
-        <activity android:theme="@style/BrightnessTheme" android:label="@string/app_name_pro" android:name="com.anod.car.home.CarHomeActivity" android:clearTaskOnLaunch="true" android:excludeFromRecents="true" android:launchMode="singleTask">
+
+        <activity android:theme="@style/BrightnessTheme" android:label="@string/app_name_pro" android:name="com.anod.car.home.CarHomeActivity"  android:excludeFromRecents="true" android:launchMode="singleTask">
             <meta-data android:name="android.dock_home" android:value="true" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -66,6 +68,5 @@
                 <category android:name="android.intent.category.CAR_DOCK" />
             </intent-filter>
         </activity>
-            
     </application>
 </manifest>
