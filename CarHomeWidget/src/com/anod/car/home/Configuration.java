@@ -67,6 +67,7 @@ public class Configuration extends PreferenceActivity {
     public static final String SCREEN_BT_DEVICE = "bt-device-screen";
     public static final String CATEGORY_BT_DEVICE = "bt-device-category";
     public static final String PREF_BT_SWITCH = "bt-switch";
+    public static final String CATEGORY_TRANSPARENT = "transparent-category";
 
     public static final String VERSION = "version";
     public static final String ISSUE_TRACKER = "issue-tracker";
@@ -108,6 +109,7 @@ public class Configuration extends PreferenceActivity {
        	initBackground(prefs);
        	initIcon(prefs);
        	initFont(prefs);
+       	initTransparent(mFreeVersion,prefs);
        	if (mFreeVersion) {
        		initInCarFreeDialog();
        	} else {
@@ -120,6 +122,24 @@ public class Configuration extends PreferenceActivity {
        		pickShortcut(cellId);
        	}
        	
+    }
+    
+    private void initTransparent(boolean isFree, final Preferences.Main prefs) {
+    	CheckBoxPreference setTrans = (CheckBoxPreference)findPreference(PreferencesStorage.TRANSPARENT_BTN_SETTINGS);
+    	String key = PreferencesStorage.getName(PreferencesStorage.TRANSPARENT_BTN_SETTINGS, mAppWidgetId);
+    	setTrans.setKey(key);
+    	setTrans.setChecked(prefs.isSettingsTransparent());
+    	
+    	CheckBoxPreference incarTrans = (CheckBoxPreference)findPreference(PreferencesStorage.TRANSPARENT_BTN_INCAR);
+
+    	if (isFree) {
+        	PreferenceCategory transCat = (PreferenceCategory)findPreference(CATEGORY_TRANSPARENT);
+        	transCat.removePreference(incarTrans);
+    	} else {
+        	key = PreferencesStorage.getName(PreferencesStorage.TRANSPARENT_BTN_INCAR, mAppWidgetId);
+        	incarTrans.setKey(key);
+        	incarTrans.setChecked(prefs.isIncarTransparent());
+    	}
     }
     
     @Override
@@ -218,7 +238,10 @@ public class Configuration extends PreferenceActivity {
     	btnColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				int value = prefs.getTileColor();
+				Integer value = prefs.getTileColor();
+				if (value == null) {
+					value = mContext.getResources().getColor(R.color.w7_tale_default_background);
+				}
 				OnClickListener listener = new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {

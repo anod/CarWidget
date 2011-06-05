@@ -91,4 +91,10 @@
   <string name="pref_scale_icon">להגדיל אייקון</string>
   <string name="pref_wifi">Wi-Fi</string>
   <string name="pref_wifi_summary">אם Wi-Fi מופעל, אתם יכולים לכבות אותו זמני או סופי</string>
+	<string name="transparent">שקוף</string>
+	<string name="pref_settings_transparent">כפתור הגדרות</string>
+	<string name="pref_settings_transparent_summary">כפתור ישאר באותו מקום אבל יהיה שקוף</string>
+	<string name="pref_incar_transparent">כפתור ברכב</string>
+	<string name="pref_incar_transparent_summary">כאשר מצב ברכב מופעל, הכפתור ישאר באותו מקום אבל יהיה שקוף</string>
+
 </resources>

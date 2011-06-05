@@ -31,6 +31,21 @@ public class Preferences {
 		private int fontColor;
 		private int fontSize;
 		private int backgroundColor;
+		private boolean settingsTransparent;
+		private boolean incarTransparent;
+		
+		public boolean isSettingsTransparent() {
+			return settingsTransparent;
+		}
+		public boolean isIncarTransparent() {
+			return incarTransparent;
+		}
+		public void setSettingsTransparent(boolean settingsTransparent) {
+			this.settingsTransparent = settingsTransparent;
+		}
+		public void setIncarTransparent(boolean incarTransparent) {
+			this.incarTransparent = incarTransparent;
+		}
 		public ArrayList<Long> getLauncherComponents() {
 			return launcherComponents;
 		}

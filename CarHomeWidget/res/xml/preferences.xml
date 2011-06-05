@@ -47,6 +47,10 @@
     			android:title="@string/pref_font_color_title"
     			android:summary="@string/pref_font_color_summary"
     		/>
+    		<PreferenceCategory android:key="transparent-category" android:title="@string/transparent">
+			    <CheckBoxPreference android:key="transparent-btn-settings-%d" android:title="@string/pref_settings_transparent" android:summary="@string/pref_settings_transparent_summary"/>
+			    <CheckBoxPreference android:key="transparent-btn-incar-%d" android:title="@string/pref_incar_transparent" android:summary="@string/pref_incar_transparent_summary"/>
+    		</PreferenceCategory>
     	</PreferenceScreen>
 
     	<PreferenceScreen android:title='@string/pref_incar_mode_title' android:summary="@string/pref_incar_mode_summary">

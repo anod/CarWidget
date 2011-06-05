@@ -41,6 +41,9 @@ public class PreferencesStorage {
     public static final String FONT_SIZE = "font-size-%d";
     public static final String FONT_COLOR = "font-color-%d";
     public static final String FIRST_TIME = "first-time-%d";
+    public static final String TRANSPARENT_BTN_SETTINGS = "transparent-btn-settings-%d";
+    public static final String TRANSPARENT_BTN_INCAR = "transparent-btn-incar-%d";
+    
     
     public static final String INCAR_MODE_ENABLED= "incar-mode-enabled";
     
@@ -72,7 +75,8 @@ public class PreferencesStorage {
     	
 		Integer tileColor = null;
 		if (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) {
-			tileColor = prefs.getInt(getName(BUTTON_COLOR, appWidgetId), res.getColor(R.color.w7_tale_default_background));
+			int defTileColor = res.getColor(R.color.w7_tale_default_background);
+			tileColor = prefs.getInt(getName(BUTTON_COLOR, appWidgetId), defTileColor);
 		}
 		p.setTileColor(tileColor);
 		
@@ -82,6 +86,8 @@ public class PreferencesStorage {
     	p.setIconsColor(getIconsColor(prefs, appWidgetId));
     	p.setFontColor(prefs.getInt(getName(FONT_COLOR, appWidgetId), res.getColor(R.color.default_font_color)));
     	p.setFontSize(prefs.getInt(getName(FONT_SIZE, appWidgetId), FONT_SIZE_UNDEFINED));
+    	p.setSettingsTransparent(prefs.getBoolean(getName(TRANSPARENT_BTN_SETTINGS, appWidgetId), false));
+    	p.setIncarTransparent(prefs.getBoolean(getName(TRANSPARENT_BTN_INCAR, appWidgetId), false));
     	
     	return p;
     }
@@ -196,8 +202,6 @@ public class PreferencesStorage {
         return prefs.getBoolean(INCAR_MODE_ENABLED, false);
     }
     
-
-    
     public static void DropWidgetSettings(Context context, int[] appWidgetIds) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Editor edit = prefs.edit();
@@ -211,6 +215,8 @@ public class PreferencesStorage {
     		edit.remove(getName(FONT_COLOR, appWidgetId));
     		edit.remove(getName(FONT_SIZE, appWidgetId));
     		edit.remove(getName(FIRST_TIME, appWidgetId));
+    		edit.remove(getName(TRANSPARENT_BTN_SETTINGS, appWidgetId));
+    		edit.remove(getName(TRANSPARENT_BTN_INCAR, appWidgetId));
     		
         	for(int i = 0; i<LAUNCH_COMPONENT_NUMBER; i++) {
         		String key = PreferencesStorage.getLaunchComponentName(i, appWidgetId);

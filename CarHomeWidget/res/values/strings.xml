@@ -124,4 +124,11 @@
 	
 	<string name="pref_wifi">Wi-Fi</string>
 	<string name="pref_wifi_summary">If Wi-Fi is On, you can temporary or permanently turn it off</string>
+	
+	<string name="transparent">Transparent</string>
+	<string name="pref_settings_transparent">Settings button</string>
+	<string name="pref_settings_transparent_summary">Settings button will remain on the same place, but will become transparent</string>
+	<string name="pref_incar_transparent">"In Car" button</string>
+	<string name="pref_incar_transparent_summary">When "In Car" mode enables, the button will stay on the same place, but will be transparent</string>
+
 </resources>

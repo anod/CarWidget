@@ -49,7 +49,11 @@ public class Launcher {
 		String packageName = context.getPackageName();
 		String type = "id";
 		
-		setInCarButton(packageName, skinName, context, views);
+		setInCarButton(prefs.isIncarTransparent(),packageName, skinName, context, views);
+		
+		if (prefs.isSettingsTransparent()) {
+			views.setImageViewResource(R.id.btn_settings, R.drawable.btn_transparent);
+		}
 		
         ArrayList<Long> launchers = prefs.getLauncherComponents();
         
@@ -83,13 +87,17 @@ public class Launcher {
 		return views;
 	}
 	
-    private static void setInCarButton(String packageName, String skinName,
+    private static void setInCarButton(boolean isInCarTrans, String packageName, String skinName,
 			Context context, RemoteViews views) {
 		if (!isFreeVersion(packageName) && PreferencesStorage.isInCarModeEnabled(context)) {
 			views.setViewVisibility(R.id.btn_incar_switch, View.VISIBLE);
 			if (ModeService.sInCarMode == true) {
-				int rImg = (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) ? R.drawable.ic_incar_exit_win7 : R.drawable.ic_incar_exit;
-				views.setImageViewResource(R.id.btn_incar_switch, rImg);
+				if (isInCarTrans) {
+					views.setImageViewResource(R.id.btn_incar_switch, R.drawable.btn_transparent);
+				} else {
+					int rImg = (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) ? R.drawable.ic_incar_exit_win7 : R.drawable.ic_incar_exit;
+					views.setImageViewResource(R.id.btn_incar_switch, rImg);
+				}
 				Intent notificationIntent = new Intent(context, ModeService.class);
 				notificationIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_OFF);
 		    	Uri data = Uri.parse("com.anod.car.home.pro://mode/0/");
@@ -97,8 +105,12 @@ public class Launcher {
 				PendingIntent contentIntent = PendingIntent.getService(context, 0, notificationIntent, 0);
         		views.setOnClickPendingIntent(R.id.btn_incar_switch, contentIntent);
 			} else {
-				int rImg = (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) ? R.drawable.ic_incar_enter_win7 : R.drawable.ic_incar_enter;
-				views.setImageViewResource(R.id.btn_incar_switch, rImg);
+				if (isInCarTrans) {
+					views.setImageViewResource(R.id.btn_incar_switch, R.drawable.btn_transparent);
+				} else {
+					int rImg = (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) ? R.drawable.ic_incar_enter_win7 : R.drawable.ic_incar_enter;
+					views.setImageViewResource(R.id.btn_incar_switch, rImg);
+				}
 				Intent notificationIntent = new Intent(context, ModeService.class);
 				notificationIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_ON);
 		    	Uri data = Uri.parse("com.anod.car.home.pro://mode/1/");
