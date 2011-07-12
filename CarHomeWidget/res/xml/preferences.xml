@@ -99,6 +99,11 @@
     				android:entries="@array/wifi_action_titles" 
     				android:defaultValue="no_action"
     			/>
+    			<Preference 
+    				android:key="stop-apps-activity" 
+    				android:title="@string/pref_stop_app_transparent"
+    				android:summary="@string/pref_stop_app_transparent_summary"
+    			/>    			
     		</PreferenceCategory>
     	</PreferenceScreen>
 

@@ -68,7 +68,8 @@ public class Configuration extends PreferenceActivity {
     public static final String CATEGORY_BT_DEVICE = "bt-device-category";
     public static final String PREF_BT_SWITCH = "bt-switch";
     public static final String CATEGORY_TRANSPARENT = "transparent-category";
-
+    public static final String PREF_STOP_APPS = "stop-apps-activity";
+    
     public static final String VERSION = "version";
     public static final String ISSUE_TRACKER = "issue-tracker";
     public static final String OTHER = "other";
@@ -197,7 +198,16 @@ public class Configuration extends PreferenceActivity {
     private void initInCar() {
     	
     	initBluetooth();
-    	
+    	Preference stopApp = (Preference)findPreference(PREF_STOP_APPS);
+    	stopApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				Intent mainIntent = new Intent(Configuration.this, AppList.class);
+		        startActivity(mainIntent);
+				return true;
+			}
+		});
     }
     
     private void initBluetooth() {

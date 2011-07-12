@@ -131,4 +131,7 @@
 	<string name="pref_incar_transparent">"In Car" button</string>
 	<string name="pref_incar_transparent_summary">When "In Car" mode enables, the button will stay on the same place, but will be transparent</string>
 
+	<string name="pref_stop_app_transparent">Stop app</string>
+	<string name="pref_stop_app_transparent_summary"></string>
+
 </resources>
