@@ -203,7 +203,7 @@ public class Configuration extends PreferenceActivity {
 			
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				Intent mainIntent = new Intent(Configuration.this, AppList.class);
+				Intent mainIntent = new Intent(Configuration.this, AppListConfiguration.class);
 		        startActivity(mainIntent);
 				return true;
 			}
