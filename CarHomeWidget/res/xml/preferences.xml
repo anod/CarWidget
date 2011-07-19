@@ -100,7 +100,7 @@
     				android:defaultValue="no_action"
     			/>
     			<Preference 
-    				android:key="stop-apps-activity" 
+    				android:key="stop-apps-packages" 
     				android:title="@string/pref_stop_app_transparent"
     				android:summary="@string/pref_stop_app_transparent_summary"
     			/>    			

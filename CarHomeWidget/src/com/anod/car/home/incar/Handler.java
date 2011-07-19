@@ -1,9 +1,13 @@
 package com.anod.car.home.incar;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +18,7 @@ import android.util.Log;
 
 import com.anod.car.home.Preferences;
 import com.anod.car.home.PreferencesStorage;
+import com.anod.car.home.Utils;
 
 
 public class Handler {
@@ -194,9 +199,24 @@ public class Handler {
 		if (prefs.getDisableWifi().equals(PreferencesStorage.WIFI_TURNOFF)) {
 			restoreWiFi(context);
 		}
+		boolean startActivity = false;
+    	Intent intent = new Intent(context, ChangeBrightnessActivity.class);
+    	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    	
+		ArrayList<String> packageNames = prefs.getStopAppPackages();
+		if (packageNames!=null && packageNames.size() > 0) {
+			intent.putExtra(ChangeBrightnessActivity.EXTRA_PACKAGE_NAMES, packageNames);
+			startActivity = true;
+		}
+    	
 		String brightSetting = prefs.getBrightness();
 		if (brightSetting != PreferencesStorage.BRIGHTNESS_DEFAULT) {
-			restoreBrightness(brightSetting,context);
+			if (restoreBrightness(intent,brightSetting,context)) {
+				startActivity = true;
+			}
+		}
+		if (startActivity) {
+			context.startActivity(intent);
 		}
 	}
 	
@@ -266,7 +286,7 @@ public class Handler {
 		}
 		
 		if (newBrightLevel == -1) {
-			Log.d("CarHomeWidget", "Wrong brightness setting : "+brightSetting);
+			Log.d("CarHomeWidget", "Wrong brightness setting Mode : "+brightSetting+" Level : "+newBrightLevel);
 			return;
 		}
 		
@@ -277,14 +297,16 @@ public class Handler {
 		android.provider.Settings.System.putInt(cr, 
                  android.provider.Settings.System.SCREEN_BRIGHTNESS, newBrightLevel);
 		
-		startBrightnessActivity(newBrightLevel, context);
-		
+    	Intent btActivity = new Intent(context, ChangeBrightnessActivity.class);		
+		setBrightnessIntent(btActivity,newBrightLevel, context);
+		context.startActivity(btActivity);              
     }
+	
 
-	private static void restoreBrightness(String brightSetting,Context context) {
+	private static boolean restoreBrightness(Intent intent,String brightSetting,Context context) {
 		ContentResolver cr = context.getContentResolver();
 		if (mCurrentAutoBrightness && PreferencesStorage.BRIGHTNESS_AUTO.equals(brightSetting)) {
-			return;
+			return false;
 		}
 		int newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
 		if (mCurrentAutoBrightness) {
@@ -293,7 +315,9 @@ public class Handler {
 		android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode);
 		android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS, mCurrentBrightness);
 		
-		startBrightnessActivity(mCurrentBrightness, context);
+	
+		setBrightnessIntent(intent,mCurrentBrightness, context);
+		return true;
 	}
 	
 	private static void adjustVolume(Preferences.InCar prefs,Context context) {
@@ -321,36 +345,22 @@ public class Handler {
 		mWakeLock = null;
 	}
 	
-	private static void startBrightnessActivity(int newBrightLevel, Context context) {
+	private static void setBrightnessIntent(Intent intent, int newBrightLevel, Context context) {
 		float bt = (float)newBrightLevel/BRIGHTNESS_MAX;
-    	Intent btActivity = new Intent(context, ChangeBrightnessActivity.class);
-    	btActivity.putExtra(ChangeBrightnessActivity.EXTRA_BRIGHT_LEVEL, bt);
-    	btActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    	context.startActivity(btActivity);                 		
-	}
-/*		
-	private static void turnGPSOn(Context context){
-	    String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-
-	    if(!provider.contains("gps")){
-	        final Intent poke = new Intent();
-	        poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider"); 
-	        poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-	        poke.setData(Uri.parse("3")); 
-	        context.sendBroadcast(poke);
-	    }
+    	intent.putExtra(ChangeBrightnessActivity.EXTRA_BRIGHT_LEVEL, bt);	
 	}
 
-	private static void turnGPSOff(Context context){
-	    String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-
-	    if(provider.contains("gps")){
-	        final Intent poke = new Intent();
-	        poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
-	        poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-	        poke.setData(Uri.parse("3")); 
-	        context.sendBroadcast(poke);
-	    }
+	private static void stopApps(ArrayList<String> packageNames,Context context) {
+		int size = packageNames.size();
+		String[] params = new String[size];
+		for(int i=0; i<size; i++) {
+			ComponentName comp = Utils.stringToComponent(packageNames.get(i));
+			params[i] = comp.getPackageName();
+		}
+		StopAppsTask task = new StopAppsTask();
+		task.setActivityManager((ActivityManager)context.getSystemService(Activity.ACTIVITY_SERVICE));
+		task.execute(params);
+		
 	}
-*/
+
 }

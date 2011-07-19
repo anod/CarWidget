@@ -23,14 +23,15 @@ import android.widget.TextView;
 
 public class AppListConfiguration extends ListActivity {
 	
-	private static ArrayList<ShortcutInfo> mShortcutList = new ArrayList<ShortcutInfo>();
-	private static ArrayList<String> mResult;
+	public static final String EXTRA_PACKAGE_NAMES = "extra_package_names";
+	private static final int DIALOG_INIT = 1;
 	private static final int REQUEST_PICK_APPLICATION = 1;
+
+	private ArrayList<ShortcutInfo> mShortcutList = new ArrayList<ShortcutInfo>();
+	private ArrayList<String> mResult;
 	private ShortcutListAdapter mAdapter;
 	private LauncherModel mModel;
 	private LayoutInflater mInflater;
-	private static final String EXTRA_PACKAGE_NAMES = "extra_package_names";
-	private static final int DIALOG_INIT = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,7 @@ public class AppListConfiguration extends ListActivity {
 			mAdapter.notifyDataSetChanged();
 			mResult.add(Utils.componentToString(shortcut.intent.getComponent()));
 			Intent resultData = new Intent();
-			data.putExtra(EXTRA_PACKAGE_NAMES, mResult);
+			resultData.putExtra(EXTRA_PACKAGE_NAMES, mResult);
 			setResult(RESULT_OK, resultData);
 		}
 	}
@@ -126,6 +127,7 @@ public class AppListConfiguration extends ListActivity {
 	   	}
 
 	   	protected void onPostExecute(Boolean result) {
+			mAdapter.notifyDataSetChanged();
 	   		try {
 	   			dismissDialog(DIALOG_INIT);
 	   		}  catch (IllegalArgumentException e) {
@@ -148,7 +150,6 @@ public class AppListConfiguration extends ListActivity {
 				data.setComponent(compName);
 				ShortcutInfo shortcut = mModel.infoFromApplicationIntent(AppListConfiguration.this,data);
 				mShortcutList.add(shortcut);
-				mAdapter.notifyDataSetChanged();
 			}
 		}
 

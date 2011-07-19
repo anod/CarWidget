@@ -46,6 +46,7 @@ public class Configuration extends PreferenceActivity {
 	private static final int REQUEST_PICK_APPLICATION = 3;
 	private static final int REQUEST_CREATE_SHORTCUT=4;
 	private static final int REQUEST_EDIT_SHORTCUT=5;
+	private static final int REQUEST_STOP_APPS=6;
 	
 	public static final String EXTRA_CELL_ID = "CarHomeWidgetCellId";
 	public static final int INVALID_CELL_ID=-1;
@@ -68,7 +69,6 @@ public class Configuration extends PreferenceActivity {
     public static final String CATEGORY_BT_DEVICE = "bt-device-category";
     public static final String PREF_BT_SWITCH = "bt-switch";
     public static final String CATEGORY_TRANSPARENT = "transparent-category";
-    public static final String PREF_STOP_APPS = "stop-apps-activity";
     
     public static final String VERSION = "version";
     public static final String ISSUE_TRACKER = "issue-tracker";
@@ -198,13 +198,18 @@ public class Configuration extends PreferenceActivity {
     private void initInCar() {
     	
     	initBluetooth();
-    	Preference stopApp = (Preference)findPreference(PREF_STOP_APPS);
+    	Preference stopApp = (Preference)findPreference(PreferencesStorage.STOP_APP_PACKAGES);
+
     	stopApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				Intent mainIntent = new Intent(Configuration.this, AppListConfiguration.class);
-		        startActivity(mainIntent);
+		    	final Preferences.InCar prefs = PreferencesStorage.loadInCar(mContext);
+		    	final ArrayList<String> packageNames = prefs.getStopAppPackages();
+				if (packageNames != null) {
+					mainIntent.putExtra(AppListConfiguration.EXTRA_PACKAGE_NAMES, packageNames);
+				}
+		        startActivityForResult(mainIntent,REQUEST_STOP_APPS);
 				return true;
 			}
 		});
@@ -545,6 +550,9 @@ public class Configuration extends PreferenceActivity {
                 case REQUEST_PICK_SHORTCUT:
                     processShortcut(data);
                     break;
+                case REQUEST_STOP_APPS:
+                	updateStopApps(data);
+                	break;
             }
         } else {
         	try {
@@ -582,7 +590,12 @@ public class Configuration extends PreferenceActivity {
         startActivityForResult(pickIntent, REQUEST_PICK_SHORTCUT);
     }
 
-    void processShortcut(Intent intent) {
+    private void updateStopApps(Intent intent) {
+		ArrayList<String> list = intent.getStringArrayListExtra(AppListConfiguration.EXTRA_PACKAGE_NAMES);
+		PreferencesStorage.saveStopAppPackages(mContext,list);
+    }
+    
+    private void processShortcut(Intent intent) {
         // Handle case where user selected "Applications"
         String applicationName = getResources().getString(R.string.applications);
         String shortcutName = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);

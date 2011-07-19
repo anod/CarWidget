@@ -32,7 +32,6 @@ public class AllAppsListCache {
 
     private final CarWidgetApplication mContext;
     private final PackageManager mPackageManager;
-	private Bitmap mDefaultIcon;
 	
     public AllAppsListCache(CarWidgetApplication context) {
         mContext = context;

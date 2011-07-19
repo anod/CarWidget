@@ -118,6 +118,7 @@ public class Preferences {
 		private String brightness;
 		private String disableWifi;
 		private boolean autoSpeaker;
+		private ArrayList<String> packageNames;
 		
 		public boolean isAutoSpeaker() {
 			return autoSpeaker;
@@ -197,5 +198,11 @@ public class Preferences {
 			this.disableWifi = disableWifi;
 		}
 		
+		public ArrayList<String> getStopAppPackages() {
+			return this.packageNames;
+		}
+		public void setStopAppPackages(ArrayList<String> packageNames) {
+			this.packageNames = packageNames;
+		}
 	}
 }

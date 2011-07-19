@@ -1,6 +1,7 @@
 package com.anod.car.home;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import android.content.Context;
@@ -63,6 +64,9 @@ public class PreferencesStorage {
     public static final String AUTO_SPEAKER = "auto_speaker";
     public static final String AUTO_ANSWER = "auto_answer";
     public static final String ADJUST_WIFI = "wi-fi";
+    public static final String STOP_APP_PACKAGES = "stop-apps-packages";
+    
+    private static final String DELIMETER_PACKAGES = "\n";
     
     public static Preferences.Main loadMain(Context context, int appWidgetId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -110,7 +114,15 @@ public class PreferencesStorage {
     	p.setAdjustVolumeLevel(prefs.getBoolean(ADJUST_VOLUME_LEVEL, false));   	
     	p.setMediaVolumeLevel(prefs.getInt(VOLUME_LEVEL, DEFAULT_VOLUME_LEVEL));
     	p.setDisableWifi(prefs.getString(ADJUST_WIFI, WIFI_NOACTION));
-    	
+
+    	String packageNamesStr = prefs.getString(STOP_APP_PACKAGES, null);
+    	ArrayList<String> packageNames = null;
+    	if (packageNamesStr!=null) {
+    		String[] arr = packageNamesStr.split(DELIMETER_PACKAGES);
+    		packageNames = new ArrayList<String>(arr.length);
+    		packageNames.addAll( Arrays.asList(arr));
+    	}
+    	p.setStopAppPackages(packageNames);
     	return p;
     }
 
@@ -163,7 +175,6 @@ public class PreferencesStorage {
 		}
 		return ids;
     }
-
 	
     private static Integer getIconsColor(SharedPreferences prefs, int appWidgetId) {
         String prefName = getName(ICONS_COLOR, appWidgetId);
@@ -194,6 +205,28 @@ public class PreferencesStorage {
 		}
 		Editor editor = preferences.edit();
 		editor.putLong(key, shortcutId);
+		editor.commit();
+    }
+    
+    public static void saveStopAppPackages(Context context, ArrayList<String> packageNames) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		Editor editor = prefs.edit();
+
+		if (packageNames != null) {
+			StringBuilder sb = new StringBuilder();
+			int last = packageNames.size() - 1;
+			for (int i = 0; i <= last; i++) {
+			    sb.append(packageNames.get(i));
+			    if (i!=last) {
+			    	sb.append(DELIMETER_PACKAGES);
+			    }
+			}
+			
+			editor.putString(STOP_APP_PACKAGES, sb.toString());
+		} else {
+			editor.remove(STOP_APP_PACKAGES);
+		}
+		
 		editor.commit();
     }
     
@@ -247,6 +280,7 @@ public class PreferencesStorage {
    		edit.remove(AUTO_SPEAKER);
    		edit.remove(AUTO_ANSWER);
    		edit.remove(ADJUST_WIFI);
+   		edit.remove(STOP_APP_PACKAGES);
         edit.commit();
     }
     

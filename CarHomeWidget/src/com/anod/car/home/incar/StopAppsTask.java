@@ -7,7 +7,7 @@ import android.util.Log;
 public class StopAppsTask extends AsyncTask<String, String, Boolean>{
 	private ActivityManager mActivityManager;
 	
-	public StopAppsTask(ActivityManager am) {
+	public void setActivityManager(ActivityManager am) {
 		mActivityManager = am;
 	}
 	
@@ -16,6 +16,7 @@ public class StopAppsTask extends AsyncTask<String, String, Boolean>{
         int count = packageNames.length;
         for (int i = 0; i < count; i++) {
         	try {
+        		Log.d("CarHomeWidget", "stop app [" + packageNames[i] + "]");
         		mActivityManager.killBackgroundProcesses(packageNames[i]);
         	} catch (Exception e) {
         		Log.d("CarHomeWidget", "Failed to stop app [" + packageNames[i] + "]");
