@@ -27,7 +27,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />    
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+     
 	<uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="com.anod.car.home.permission.READ_SETTINGS" />
     <uses-permission android:name="com.anod.car.home.permission.WRITE_SETTINGS" />
@@ -40,7 +41,7 @@
 		<service android:name="com.anod.car.home.incar.BroadcastService" />
 		<activity android:theme="@android:style/Theme.Dialog" android:name="com.anod.car.home.ShortcutEditActivity" />
 		<activity android:theme="@android:style/Theme.Dialog" android:name="com.anod.car.home.AllAppsActivity" />
-		<activity android:name="com.anod.car.home.AppList" android:configChanges="orientation"></activity>
+		<activity android:name="com.anod.car.home.AppListConfiguration" android:configChanges="orientation"></activity>
 		<activity android:name="com.anod.car.home.Configuration" android:configChanges="orientation">
 		    <intent-filter>
 		        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
