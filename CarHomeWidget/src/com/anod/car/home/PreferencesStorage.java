@@ -1,7 +1,6 @@
 package com.anod.car.home;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import android.content.Context;
@@ -64,7 +63,7 @@ public class PreferencesStorage {
     public static final String AUTO_SPEAKER = "auto_speaker";
     public static final String AUTO_ANSWER = "auto_answer";
     public static final String ADJUST_WIFI = "wi-fi";
-    public static final String STOP_APP_PACKAGES = "stop-apps-packages";
+    public static final String ACTIVATE_CAR_MODE = "activate-car-mode";
     
     private static final String DELIMETER_PACKAGES = "\n";
     
@@ -114,15 +113,7 @@ public class PreferencesStorage {
     	p.setAdjustVolumeLevel(prefs.getBoolean(ADJUST_VOLUME_LEVEL, false));   	
     	p.setMediaVolumeLevel(prefs.getInt(VOLUME_LEVEL, DEFAULT_VOLUME_LEVEL));
     	p.setDisableWifi(prefs.getString(ADJUST_WIFI, WIFI_NOACTION));
-
-    	String packageNamesStr = prefs.getString(STOP_APP_PACKAGES, null);
-    	ArrayList<String> packageNames = null;
-    	if (packageNamesStr!=null) {
-    		String[] arr = packageNamesStr.split(DELIMETER_PACKAGES);
-    		packageNames = new ArrayList<String>(arr.length);
-    		packageNames.addAll( Arrays.asList(arr));
-    	}
-    	p.setStopAppPackages(packageNames);
+    	p.setActivateCarMode(prefs.getBoolean(ACTIVATE_CAR_MODE, false));
     	return p;
     }
 
@@ -222,9 +213,9 @@ public class PreferencesStorage {
 			    }
 			}
 			
-			editor.putString(STOP_APP_PACKAGES, sb.toString());
+			editor.putString(ACTIVATE_CAR_MODE, sb.toString());
 		} else {
-			editor.remove(STOP_APP_PACKAGES);
+			editor.remove(ACTIVATE_CAR_MODE);
 		}
 		
 		editor.commit();
@@ -280,7 +271,7 @@ public class PreferencesStorage {
    		edit.remove(AUTO_SPEAKER);
    		edit.remove(AUTO_ANSWER);
    		edit.remove(ADJUST_WIFI);
-   		edit.remove(STOP_APP_PACKAGES);
+   		edit.remove(ACTIVATE_CAR_MODE);
         edit.commit();
     }
     

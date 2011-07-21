@@ -1,13 +1,10 @@
 package com.anod.car.home.incar;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.app.Activity;
-import android.app.ActivityManager;
+import android.app.UiModeManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +15,6 @@ import android.util.Log;
 
 import com.anod.car.home.Preferences;
 import com.anod.car.home.PreferencesStorage;
-import com.anod.car.home.Utils;
 
 
 public class Handler {
@@ -180,6 +176,9 @@ public class Handler {
 		if (!prefs.getDisableWifi().equals(PreferencesStorage.WIFI_NOACTION)) {
 			disableWifi(context);
 		}
+		if (prefs.activateCarMode()) {
+			activateCarMode(context);
+		}
 		String brightSetting = prefs.getBrightness();
 		if (brightSetting != PreferencesStorage.BRIGHTNESS_DEFAULT) {
 			adjustBrightness(brightSetting,context);
@@ -199,25 +198,23 @@ public class Handler {
 		if (prefs.getDisableWifi().equals(PreferencesStorage.WIFI_TURNOFF)) {
 			restoreWiFi(context);
 		}
-		boolean startActivity = false;
-    	Intent intent = new Intent(context, ChangeBrightnessActivity.class);
-    	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    	
-		ArrayList<String> packageNames = prefs.getStopAppPackages();
-		if (packageNames!=null && packageNames.size() > 0) {
-			intent.putExtra(ChangeBrightnessActivity.EXTRA_PACKAGE_NAMES, packageNames);
-			startActivity = true;
+		if (prefs.activateCarMode()) {
+			deactivateCarMode(context);
 		}
-    	
 		String brightSetting = prefs.getBrightness();
 		if (brightSetting != PreferencesStorage.BRIGHTNESS_DEFAULT) {
-			if (restoreBrightness(intent,brightSetting,context)) {
-				startActivity = true;
-			}
+			restoreBrightness(brightSetting,context);
 		}
-		if (startActivity) {
-			context.startActivity(intent);
-		}
+	}
+
+	private static void activateCarMode(Context context) {
+		UiModeManager ui = (UiModeManager)context.getSystemService(Context.UI_MODE_SERVICE);
+		ui.enableCarMode(0);
+	}
+
+	private static void deactivateCarMode(Context context) {
+		UiModeManager ui = (UiModeManager)context.getSystemService(Context.UI_MODE_SERVICE);
+		ui.disableCarMode(0);
 	}
 	
 	private static void disableWifi(Context context) {
@@ -296,14 +293,11 @@ public class Handler {
 		
 		android.provider.Settings.System.putInt(cr, 
                  android.provider.Settings.System.SCREEN_BRIGHTNESS, newBrightLevel);
-		
-    	Intent btActivity = new Intent(context, ChangeBrightnessActivity.class);		
-		setBrightnessIntent(btActivity,newBrightLevel, context);
-		context.startActivity(btActivity);              
+					
+		setBrightnessIntent(newBrightLevel, context);            
     }
-	
 
-	private static boolean restoreBrightness(Intent intent,String brightSetting,Context context) {
+	private static boolean restoreBrightness(String brightSetting,Context context) {
 		ContentResolver cr = context.getContentResolver();
 		if (mCurrentAutoBrightness && PreferencesStorage.BRIGHTNESS_AUTO.equals(brightSetting)) {
 			return false;
@@ -315,8 +309,7 @@ public class Handler {
 		android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode);
 		android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS, mCurrentBrightness);
 		
-	
-		setBrightnessIntent(intent,mCurrentBrightness, context);
+		setBrightnessIntent(mCurrentBrightness, context);
 		return true;
 	}
 	
@@ -345,22 +338,12 @@ public class Handler {
 		mWakeLock = null;
 	}
 	
-	private static void setBrightnessIntent(Intent intent, int newBrightLevel, Context context) {
+	private static void setBrightnessIntent(int newBrightLevel, Context context) {
+		Intent intent = new Intent(context, ChangeBrightnessActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		float bt = (float)newBrightLevel/BRIGHTNESS_MAX;
-    	intent.putExtra(ChangeBrightnessActivity.EXTRA_BRIGHT_LEVEL, bt);	
-	}
-
-	private static void stopApps(ArrayList<String> packageNames,Context context) {
-		int size = packageNames.size();
-		String[] params = new String[size];
-		for(int i=0; i<size; i++) {
-			ComponentName comp = Utils.stringToComponent(packageNames.get(i));
-			params[i] = comp.getPackageName();
-		}
-		StopAppsTask task = new StopAppsTask();
-		task.setActivityManager((ActivityManager)context.getSystemService(Activity.ACTIVITY_SERVICE));
-		task.execute(params);
-		
+    	intent.putExtra(ChangeBrightnessActivity.EXTRA_BRIGHT_LEVEL, bt);
+		context.startActivity(intent);    	
 	}
 
 }

@@ -196,23 +196,7 @@ public class Configuration extends PreferenceActivity {
     }
     
     private void initInCar() {
-    	
     	initBluetooth();
-    	Preference stopApp = (Preference)findPreference(PreferencesStorage.STOP_APP_PACKAGES);
-
-    	stopApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				Intent mainIntent = new Intent(Configuration.this, AppListConfiguration.class);
-		    	final Preferences.InCar prefs = PreferencesStorage.loadInCar(mContext);
-		    	final ArrayList<String> packageNames = prefs.getStopAppPackages();
-				if (packageNames != null) {
-					mainIntent.putExtra(AppListConfiguration.EXTRA_PACKAGE_NAMES, packageNames);
-				}
-		        startActivityForResult(mainIntent,REQUEST_STOP_APPS);
-				return true;
-			}
-		});
     }
     
     private void initBluetooth() {
