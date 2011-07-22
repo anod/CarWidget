@@ -100,7 +100,8 @@ public class Launcher {
 				}
 				Intent notificationIntent = new Intent(context, ModeService.class);
 				notificationIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_OFF);
-		    	Uri data = Uri.parse("com.anod.car.home.pro://mode/0/");
+				notificationIntent.putExtra(ModeService.EXTRA_FORCE_STATE, true);
+		    	Uri data = Uri.parse("com.anod.car.home.pro://mode/0/1");
 		    	notificationIntent.setData(data);
 				PendingIntent contentIntent = PendingIntent.getService(context, 0, notificationIntent, 0);
         		views.setOnClickPendingIntent(R.id.btn_incar_switch, contentIntent);
@@ -113,7 +114,8 @@ public class Launcher {
 				}
 				Intent notificationIntent = new Intent(context, ModeService.class);
 				notificationIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_ON);
-		    	Uri data = Uri.parse("com.anod.car.home.pro://mode/1/");
+				notificationIntent.putExtra(ModeService.EXTRA_FORCE_STATE, true);
+		    	Uri data = Uri.parse("com.anod.car.home.pro://mode/1/1");
 		    	notificationIntent.setData(data);
 				PendingIntent contentIntent = PendingIntent.getService(context, 0, notificationIntent, 0);
         		views.setOnClickPendingIntent(R.id.btn_incar_switch, contentIntent);

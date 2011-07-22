@@ -18,9 +18,11 @@ import com.anod.car.home.R;
 
 public class ModeService extends Service{
 	private PhoneStateListener mPhoneListener;
+	private boolean mForceState = false;
 	public static boolean sInCarMode = false;
 	private static final int NOTIFICATION_ID = 1;
 	public static String EXTRA_MODE = "extra_mode";
+	public static String EXTRA_FORCE_STATE = "extra_force_state";
 	public static final int MODE_SWITCH_OFF = 1;
 	public static final int MODE_SWITCH_ON = 0;
 
@@ -49,6 +51,9 @@ public class ModeService extends Service{
 	public void onDestroy() {
 		stopForeground(true);
 		Preferences.InCar prefs = PreferencesStorage.loadInCar(this);
+		if (mForceState) {
+			Handler.forceState(prefs, false);
+		}
 		Handler.switchOff(prefs,this);
         if (mPhoneListener != null) {
         	detachPhoneListener();
@@ -67,12 +72,16 @@ public class ModeService extends Service{
 	public void onStart(Intent intent, int startId)
 	{
 		super.onStart(intent, startId);
+		mForceState = intent.getBooleanExtra(EXTRA_FORCE_STATE, false);
 		if (intent.getIntExtra(EXTRA_MODE, MODE_SWITCH_ON) == MODE_SWITCH_OFF) {
 			stopSelf();
 			return;
 		}
 		Preferences.InCar prefs = PreferencesStorage.loadInCar(this);
 		sInCarMode = true;
+		if (mForceState) {
+			Handler.forceState(prefs, true);
+		}
 		Handler.switchOn(prefs,this);
 		handlePhoneListener(prefs);
 		requestWidgetsUpdate();		

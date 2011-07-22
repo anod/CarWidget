@@ -73,6 +73,19 @@ public class Handler {
 		sPrefState[FLAG_HEADSET] = isPlugRequired(FLAG_HEADSET,prefs);
 	}
 	
+	public static void forceState(Preferences.InCar prefs, boolean forceMode) {
+		updatePrefState(prefs);
+		if (sPrefState[FLAG_POWER]) {
+			sEventState[FLAG_POWER] = forceMode;
+		}
+		if (sPrefState[FLAG_HEADSET]) {
+			sEventState[FLAG_HEADSET] = forceMode;
+		}
+		if (sPrefState[FLAG_BLUETOOTH]) {
+			sEventState[FLAG_BLUETOOTH] = forceMode;
+		}		
+	}
+	
 	private static boolean isPlugRequired(byte flag, Preferences.InCar prefs) {
 		switch(flag) {
 			case FLAG_POWER:
