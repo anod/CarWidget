@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.model.views;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -6,12 +6,12 @@ import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
-class FastBitmapDrawable extends Drawable {
+public class FastBitmapDrawable extends Drawable {
     private Bitmap mBitmap;
     private int mWidth;
     private int mHeight;
 
-    FastBitmapDrawable(Bitmap b) {
+    public FastBitmapDrawable(Bitmap b) {
         mBitmap = b;
         if (b != null) {
             mWidth = mBitmap.getWidth();

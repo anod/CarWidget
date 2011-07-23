@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.prefs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.anod.car.home.AllAppsListCache;
 import com.anod.car.home.AllAppsListCache.CacheEntry;
+import com.anod.car.home.CarWidgetApplication;
+import com.anod.car.home.R;
+import com.anod.car.home.utils.UtilitiesBitmap;
 
 public class AllAppsActivity extends ListActivity implements OnItemClickListener {
 	private AllAppsListCache mAllAppsList;

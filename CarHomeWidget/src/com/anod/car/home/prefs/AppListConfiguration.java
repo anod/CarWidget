@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.prefs;
 
 import java.util.ArrayList;
 
@@ -20,6 +20,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.anod.car.home.R;
+import com.anod.car.home.model.LauncherModel;
+import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.utils.Utils;
 
 public class AppListConfiguration extends ListActivity {
 	

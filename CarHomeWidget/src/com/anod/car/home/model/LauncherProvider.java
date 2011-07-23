@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.model;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;

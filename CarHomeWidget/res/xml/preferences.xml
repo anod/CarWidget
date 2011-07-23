@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/shortcuts">       
-        <com.anod.car.home.IconPreference android:key="launch-component-0-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
-        <com.anod.car.home.IconPreference android:key="launch-component-1-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
-        <com.anod.car.home.IconPreference android:key="launch-component-2-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
-        <com.anod.car.home.IconPreference android:key="launch-component-3-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
-        <com.anod.car.home.IconPreference android:key="launch-component-4-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
-        <com.anod.car.home.IconPreference android:key="launch-component-5-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
+        <com.anod.car.home.prefs.views.IconPreference android:key="launch-component-0-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
+        <com.anod.car.home.prefs.views.IconPreference android:key="launch-component-1-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
+        <com.anod.car.home.prefs.views.IconPreference android:key="launch-component-2-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
+        <com.anod.car.home.prefs.views.IconPreference android:key="launch-component-3-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
+        <com.anod.car.home.prefs.views.IconPreference android:key="launch-component-4-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
+        <com.anod.car.home.prefs.views.IconPreference android:key="launch-component-5-%d" android:title="@string/set_shortcut" android:widgetLayout="@layout/pref_icon" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/advanced">
     	<PreferenceScreen android:title="@string/pref_look_and_feel_title" android:summary="@string/pref_look_and_feel_summary">
@@ -34,7 +34,7 @@
 				android:entryValues="@array/icon_scale_values"
 				android:entries="@array/icon_scale_titles" 
     		/>
-	   		<com.anod.car.home.SeekBarPreference
+	   		<com.anod.car.home.prefs.views.SeekBarPreference
                 android:key="font-size-%d"
                 android:title="@string/pref_font_size_title"
                 android:summary="@string/pref_font_size_summary"

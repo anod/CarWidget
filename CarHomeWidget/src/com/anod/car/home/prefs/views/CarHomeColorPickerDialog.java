@@ -1,4 +1,7 @@
-package com.anod.car.home;
+package com.anod.car.home.prefs.views;
+
+import com.anod.car.home.R;
+import com.anod.car.home.R.string;
 
 import afzkl.development.mColorPicker.ColorPickerDialog;
 import android.content.Context;
@@ -6,7 +9,7 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 
 public class CarHomeColorPickerDialog extends ColorPickerDialog {
-	protected CarHomeColorPickerDialog(Context context, int initialColor, OnClickListener listner) {
+	public CarHomeColorPickerDialog(Context context, int initialColor, OnClickListener listner) {
 		super(context, initialColor);
 		setTitle(R.string.color_dialog_title);
 		setAlphaSliderVisible(true);

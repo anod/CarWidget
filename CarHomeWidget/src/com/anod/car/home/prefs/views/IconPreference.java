@@ -1,4 +1,7 @@
-package com.anod.car.home;
+package com.anod.car.home.prefs.views;
+
+import com.anod.car.home.R;
+import com.anod.car.home.R.id;
 
 import android.content.Context;
 import android.graphics.Bitmap;

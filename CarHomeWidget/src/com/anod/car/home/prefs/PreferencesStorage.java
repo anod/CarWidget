@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.prefs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +11,10 @@ import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.anod.car.home.R;
+import com.anod.car.home.model.LauncherModel;
+import com.anod.car.home.model.ShortcutInfo;
 
 public class PreferencesStorage {
 	public static final int LAUNCH_COMPONENT_NUMBER=6;

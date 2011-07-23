@@ -1,5 +1,7 @@
 package com.anod.car.home;
 
+import com.anod.car.home.model.LauncherSettings;
+
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;

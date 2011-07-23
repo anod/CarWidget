@@ -15,6 +15,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.ImageView;
 
+import com.anod.car.home.utils.UtilitiesBitmap;
+
 /**
  * Cache of application icons.  Icons can be made from any thread.
  */

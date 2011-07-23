@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.model;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -16,11 +16,13 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.util.Log;
+
+import com.anod.car.home.model.views.FastBitmapDrawable;
+import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.utils.UtilitiesBitmap;
 
 public class LauncherModel {
     static final String TAG = "CarHomeWidget.Model";
@@ -375,7 +377,7 @@ public class LauncherModel {
      * @param context
      * @param item
      */
-    static void deleteItemFromDatabase(Context context, long shortcutId) {
+    public static void deleteItemFromDatabase(Context context, long shortcutId) {
         final ContentResolver cr = context.getContentResolver();
         final Uri uriToDelete = LauncherSettings.Favorites.getContentUri(context.getPackageName(),shortcutId);
         new Runnable() {

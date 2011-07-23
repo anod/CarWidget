@@ -1,13 +1,14 @@
-package com.anod.car.home;
+package com.anod.car.home.model;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
+
 
 /**
  * Settings related utilities.
  */
 public class LauncherSettings {
-	static final class Favorites implements BaseColumns {
+	public static final class Favorites implements BaseColumns {
         /**
          * The content:// style URL for this table
          */
@@ -58,11 +59,11 @@ public class LauncherSettings {
         /**
          * The gesture is an application
          */
-        static final int ITEM_TYPE_APPLICATION = 0;
+        public static final int ITEM_TYPE_APPLICATION = 0;
         /**
          * The gesture is an application created shortcut
          */
-        static final int ITEM_TYPE_SHORTCUT = 1;
+        public static final int ITEM_TYPE_SHORTCUT = 1;
         /**
          * The icon type.
          * <P>Type: INTEGER</P>

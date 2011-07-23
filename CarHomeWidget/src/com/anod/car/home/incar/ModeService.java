@@ -11,10 +11,10 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.anod.car.home.Preferences;
-import com.anod.car.home.PreferencesStorage;
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
+import com.anod.car.home.prefs.Preferences;
+import com.anod.car.home.prefs.PreferencesStorage;
 
 public class ModeService extends Service{
 	private PhoneStateListener mPhoneListener;

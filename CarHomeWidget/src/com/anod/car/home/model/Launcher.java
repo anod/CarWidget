@@ -1,8 +1,6 @@
-package com.anod.car.home;
+package com.anod.car.home.model;
 
 import java.util.ArrayList;
-
-import com.anod.car.home.incar.ModeService;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -15,6 +13,14 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
+
+import com.anod.car.home.R;
+import com.anod.car.home.incar.ModeService;
+import com.anod.car.home.prefs.Configuration;
+import com.anod.car.home.prefs.Preferences;
+import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.utils.UtilitiesBitmap;
+import com.anod.car.home.utils.Utils;
 
 public class Launcher {
 	public static final String PACKAGE_FREE = "com.anod.car.home.free";

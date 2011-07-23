@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.prefs;
 
 import java.util.ArrayList;
 import java.util.HashMap;

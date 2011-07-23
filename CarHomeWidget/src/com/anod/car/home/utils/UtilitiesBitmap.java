@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -16,6 +16,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.util.Log;
+
+import com.anod.car.home.R;
 
 public class UtilitiesBitmap {
 
@@ -61,7 +63,7 @@ public class UtilitiesBitmap {
      * Returns a bitmap suitable for the all apps view.  The bitmap will be a power
      * of two sized ARGB_8888 bitmap that can be used as a gl texture.
      */
-    static Bitmap createIconBitmap(Drawable icon, Context context) {
+    public static Bitmap createIconBitmap(Drawable icon, Context context) {
         synchronized (sCanvas) { // we share the statics :-(
             if (sIconWidth == -1) {
                 initStatics(context);
@@ -119,7 +121,7 @@ public class UtilitiesBitmap {
         }
     }
 
- 	static Bitmap scaleBitmap(Bitmap icon, float scale, Context context) {
+ 	public static Bitmap scaleBitmap(Bitmap icon, float scale, Context context) {
         if (sIconWidth == -1) {
             initStatics(context);
         }
@@ -127,7 +129,7 @@ public class UtilitiesBitmap {
  		int scH = (int)(sIconHeight*scale);
        	return Bitmap.createScaledBitmap(icon,scW ,scH, true);   	
     }
-    static Bitmap applyBitmapFilter(Bitmap icon, Context context) {
+    public static Bitmap applyBitmapFilter(Bitmap icon, Context context) {
         if (sIconWidth == -1) {
             initStatics(context);
         }
@@ -145,7 +147,7 @@ public class UtilitiesBitmap {
 		return bitmap;
     }
     
-    static Bitmap tint(Bitmap icon, int color) {
+    public static Bitmap tint(Bitmap icon, int color) {
     	Paint p = new Paint(color);
     	LightingColorFilter filter = new LightingColorFilter(color, 0);
     	p.setColorFilter(filter);
@@ -156,7 +158,7 @@ public class UtilitiesBitmap {
     }
 
     
-    static byte[] flattenBitmap(Bitmap bitmap) {
+    public static byte[] flattenBitmap(Bitmap bitmap) {
 
         // Try go guesstimate how much space the icon will take when serialized
         // to avoid unnecessary allocations/copies during the write.

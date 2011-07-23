@@ -13,8 +13,8 @@ import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.util.Log;
 
-import com.anod.car.home.Preferences;
-import com.anod.car.home.PreferencesStorage;
+import com.anod.car.home.prefs.Preferences;
+import com.anod.car.home.prefs.PreferencesStorage;
 
 
 public class Handler {

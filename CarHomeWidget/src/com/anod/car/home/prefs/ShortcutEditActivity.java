@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.prefs;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -15,6 +15,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.anod.car.home.R;
+import com.anod.car.home.R.id;
+import com.anod.car.home.R.layout;
+import com.anod.car.home.R.string;
+import com.anod.car.home.model.LauncherModel;
+import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.utils.UtilitiesBitmap;
 
 public class ShortcutEditActivity extends Activity {
 	public static final String EXTRA_SHORTCUT_ID = "extra_id";

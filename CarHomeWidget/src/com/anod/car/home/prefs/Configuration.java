@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.prefs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,8 +37,18 @@ import android.preference.PreferenceScreen;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.anod.car.home.AllAppsListCache;
+import com.anod.car.home.CarWidgetApplication;
+import com.anod.car.home.Provider;
+import com.anod.car.home.R;
 import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
+import com.anod.car.home.model.Launcher;
+import com.anod.car.home.model.LauncherModel;
+import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
+import com.anod.car.home.prefs.views.IconPreference;
+import com.anod.car.home.prefs.views.SeekBarPreference;
 
 public class Configuration extends PreferenceActivity {
     private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;

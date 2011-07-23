@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.prefs.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;

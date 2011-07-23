@@ -1,54 +1,55 @@
-package com.anod.car.home;
+package com.anod.car.home.model;
 
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
+
 /**
  * Represents a launchable icon on the widget
  */
-class ShortcutInfo  {
+public class ShortcutInfo  {
 
-    static final int NO_ID = -1;
+    public static final int NO_ID = -1;
 
     /**
      * The id in the settings database for this item
      */
-    long id = NO_ID;
+    public long id = NO_ID;
 
     /**
      * One of {@link LauncherSettings.Favorites#ITEM_TYPE_APPLICATION},
      * {@link LauncherSettings.Favorites#ITEM_TYPE_SHORTCUT},
      */
-    int itemType;
+    public int itemType;
 
     /**
      * The application name.
      */
-    CharSequence title;
+    public CharSequence title;
 
     /**
      * The intent used to start the application.
      */
-    Intent intent;
+    public Intent intent;
 
     /**
      * Indicates whether the icon comes from an application's resource (if false)
      * or from a custom Bitmap (if true.)
      */
-    boolean customIcon;
+    public boolean customIcon;
 
     /**
      * Indicates whether we're using the default fallback icon instead of something from the
      * app.
      */
-    boolean usingFallbackIcon;
+    public boolean usingFallbackIcon;
 
     /**
      * If isShortcut=true and customIcon=false, this contains a reference to the
      * shortcut icon as an application's resource.
      */
-    Intent.ShortcutIconResource iconResource;
+    public Intent.ShortcutIconResource iconResource;
 
     /**
      * The application icon.
