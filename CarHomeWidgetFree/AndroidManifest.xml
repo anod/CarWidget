@@ -27,9 +27,9 @@
  
     <application android:name="com.anod.car.home.CarWidgetApplication" android:icon="@drawable/icon" android:label="@string/app_name_free">
 		<service android:name="com.anod.car.home.UpdateService" />
-		<activity android:theme="@android:style/Theme.Dialog" android:name="com.anod.car.home.ShortcutEditActivity" />
-		<activity android:theme="@android:style/Theme.Dialog" android:name="com.anod.car.home.AllAppsActivity" />
-		<activity android:name="com.anod.car.home.Configuration">
+		<activity android:theme="@android:style/Theme.Dialog" android:name="com.anod.car.home.prefs.ShortcutEditActivity" />
+		<activity android:theme="@android:style/Theme.Dialog" android:name="com.anod.car.home.prefs.AllAppsActivity" />
+		<activity android:name="com.anod.car.home.prefs.Configuration">
 		    <intent-filter>
 		        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
 		    </intent-filter>
@@ -43,7 +43,7 @@
 		</receiver>
 		        <!-- The settings provider contains Home's data, like the workspace favorites -->
         <provider
-            android:name="com.anod.car.home.LauncherProvider"
+            android:name="com.anod.car.home.model.LauncherProvider"
             android:authorities="com.anod.car.home.settings"
             android:writePermission="com.anod.car.home.permission.WRITE_SETTINGS"
             android:readPermission="com.anod.car.home.permission.READ_SETTINGS" />

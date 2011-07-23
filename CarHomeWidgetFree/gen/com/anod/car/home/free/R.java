@@ -168,6 +168,8 @@ public final class R {
         public static final int photo_picker_not_found=0x7f09004f;
         public static final int please_wait=0x7f09001a;
         public static final int pref_actions=0x7f090036;
+        public static final int pref_activate_car_mode=0x7f09005f;
+        public static final int pref_activate_car_mode_summary=0x7f090060;
         public static final int pref_autoanswer=0x7f090054;
         public static final int pref_autoanswer_summary=0x7f090055;
         public static final int pref_bg_color_summary=0x7f09000d;
@@ -212,8 +214,6 @@ public final class R {
         public static final int pref_settings_transparent=0x7f09005b;
         public static final int pref_settings_transparent_summary=0x7f09005c;
         public static final int pref_skin=0x7f090056;
-        public static final int pref_stop_app_transparent=0x7f09005f;
-        public static final int pref_stop_app_transparent_summary=0x7f090060;
         public static final int pref_tile_color_summary=0x7f09000b;
         public static final int pref_tile_color_title=0x7f09000a;
         public static final int pref_tint_color_summary=0x7f090011;
