@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent" android:padding="6dp">
+    <TextView android:text="TextView" android:id="@+id/splashText" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <RelativeLayout android:layout_gravity="center" android:id="@+id/row" android:layout_height="wrap_content" android:layout_width="match_parent">
+        <EditText android:inputType="number" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" android:id="@+id/value" android:textSize="28dip">
+        </EditText>
+        <TextView android:layout_height="wrap_content" android:id="@+id/suffix" android:layout_width="wrap_content" android:text="TextView" android:layout_alignBaseline="@+id/value" android:layout_alignBottom="@+id/value" android:textSize="28dip" android:layout_toRightOf="@+id/value"></TextView>
+    </RelativeLayout>
+    <SeekBar android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/seekBar">
+    	<requestFocus></requestFocus>
+    </SeekBar>
+    
+</LinearLayout>

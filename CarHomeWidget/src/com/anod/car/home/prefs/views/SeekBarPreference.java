@@ -1,20 +1,26 @@
 package com.anod.car.home.prefs.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnKeyListener;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.anod.car.home.R;
 
 
 public class SeekBarPreference extends DialogPreference implements SeekBar.OnSeekBarChangeListener {
 	private static final String androidns="http://schemas.android.com/apk/res/android";
 	private SeekBar mSeekBar;
-	private TextView mSplashText,mValueText;
+	private TextView mSplashText,mValueText,mSuffixView;
 	private Context mContext;
 
 	private String mDialogMessage, mSuffix;
@@ -53,30 +59,50 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
 
 	@Override 
 	protected View onCreateDialogView() {
-		LinearLayout.LayoutParams params;
-		LinearLayout layout = new LinearLayout(mContext);
-		layout.setOrientation(LinearLayout.VERTICAL);
-		layout.setPadding(6,6,6,6);
+		LayoutInflater l = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+		LinearLayout layout = (LinearLayout) l.inflate(R.layout.seek_bar_dialog, null);
 
-		mSplashText = new TextView(mContext);
-		if (mDialogMessage != null)
+		mSplashText = (TextView) layout.findViewById(R.id.splashText);
+		if (mDialogMessage != null) {
 			mSplashText.setText(mDialogMessage);
-		layout.addView(mSplashText);
+		} else {
+			mSplashText.setText("");
+		}
 
-		mValueText = new TextView(mContext);
-		mValueText.setGravity(Gravity.CENTER_HORIZONTAL);
-		mValueText.setTextSize(32);
-		params = new LinearLayout.LayoutParams(
-			LinearLayout.LayoutParams.FILL_PARENT, 
-			LinearLayout.LayoutParams.WRAP_CONTENT);
-		layout.addView(mValueText, params);
+		mValueText = (EditText) layout.findViewById(R.id.value);
 
-		mSeekBar = new SeekBar(mContext);
+		mSeekBar = (SeekBar) layout.findViewById(R.id.seekBar);
 		mSeekBar.setOnSeekBarChangeListener(this);
-		layout.addView(mSeekBar, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
 		mSeekBar.setMax(mMax);
 		mSeekBar.setProgress(mValue);
+		
+		mValueText.setText(String.valueOf(mValue));
+		mValueText.setOnKeyListener(new OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				String value = mValueText.getText().toString();
+				int i = -1;
+				if (value != "") {
+					try {
+						i = Integer.valueOf(value);
+					} catch (Exception e) {}
+					if (i > mMax) {
+						i = mMax;
+						mValueText.setText(String.valueOf(mMax));
+					}
+					if (i != -1) {
+						mSeekBar.setProgress(i);
+					}
+				}
+				return false;
+			}
+		});
+		
+		mSuffixView = (TextView) layout.findViewById(R.id.suffix);
+        if (mSuffix != null) {
+        	mSuffixView.setText(mSuffix);
+        }
+	
 		return layout;
 	}
 
@@ -100,7 +126,9 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         String t = String.valueOf(progress);
-        mValueText.setText(mSuffix == null ? t : t.concat(mSuffix));
+        if (fromUser) {
+        	mValueText.setText(t);
+        }
 	}
 
 	@Override

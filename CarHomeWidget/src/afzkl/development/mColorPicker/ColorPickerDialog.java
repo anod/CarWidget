@@ -16,8 +16,6 @@
 
 package afzkl.development.mColorPicker;
 
-import com.anod.car.home.R;
-
 import afzkl.development.mColorPicker.views.ColorPanelView;
 import afzkl.development.mColorPicker.views.ColorPickerView;
 import afzkl.development.mColorPicker.views.ColorPickerView.OnColorChangedListener;
@@ -28,14 +26,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.anod.car.home.R;
+
 public class ColorPickerDialog extends AlertDialog implements
 		ColorPickerView.OnColorChangedListener {
 
-	private ColorPickerView mColorPicker;
+	protected ColorPickerView mColorPicker;
 
 	private ColorPanelView mOldColor;
-	private ColorPanelView mNewColor;
-
+	protected ColorPanelView mNewColor;
+	protected View mView;
+	
 	private OnColorChangedListener mListener;
 
 	protected ColorPickerDialog(Context context, int initialColor) {
@@ -55,17 +56,17 @@ public class ColorPickerDialog extends AlertDialog implements
 	private void setUp(int color) {
 		LayoutInflater inflater = (LayoutInflater) getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.dialog_color_picker, null);
+		mView = inflater.inflate(R.layout.dialog_color_picker, null);
 
-		setView(layout);
+		setView(mView);
 
 		setTitle("Pick a Color");
 		// setIcon(android.R.drawable.ic_dialog_info);
 
-		mColorPicker = (ColorPickerView) layout
+		mColorPicker = (ColorPickerView) mView
 				.findViewById(R.id.color_picker_view);
-		mOldColor = (ColorPanelView) layout.findViewById(R.id.old_color_panel);
-		mNewColor = (ColorPanelView) layout.findViewById(R.id.new_color_panel);
+		mOldColor = (ColorPanelView) mView.findViewById(R.id.old_color_panel);
+		mNewColor = (ColorPanelView) mView.findViewById(R.id.new_color_panel);
 
 		((LinearLayout) mOldColor.getParent()).setPadding(Math
 				.round(mColorPicker.getDrawingOffset()), 0, Math

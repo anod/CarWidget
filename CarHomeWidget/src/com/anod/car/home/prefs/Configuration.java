@@ -260,6 +260,7 @@ public class Configuration extends PreferenceActivity {
 					}
 				};
 				final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
+				d.setAlphaSliderVisible(true);
 				d.show();
 				return false;
 
@@ -310,6 +311,7 @@ public class Configuration extends PreferenceActivity {
 					}
 				};
 				final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
+				d.setAlphaSliderVisible(true);
 				d.show();
 				return false;
 
@@ -379,6 +381,7 @@ public class Configuration extends PreferenceActivity {
 					}
 				};
 				final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
+				d.setAlphaSliderVisible(true);
 				d.show();
 				return false;
 
