@@ -24,6 +24,8 @@ public class UtilitiesBitmap {
     private static int sIconWidth = -1;
     private static int sIconHeight = -1;
     
+    private static final Paint sPaint = new Paint();
+    private static final Rect sBounds = new Rect();    
     private static final Rect sOldBounds = new Rect();
     private static final Canvas sCanvas = new Canvas();
     private static final ColorMatrixColorFilter sGreyColorMatrixColorFilter ;
@@ -129,6 +131,7 @@ public class UtilitiesBitmap {
  		int scH = (int)(sIconHeight*scale);
        	return Bitmap.createScaledBitmap(icon,scW ,scH, true);   	
     }
+ 	
     public static Bitmap applyBitmapFilter(Bitmap icon, Context context) {
         if (sIconWidth == -1) {
             initStatics(context);
@@ -172,6 +175,71 @@ public class UtilitiesBitmap {
         } catch (IOException e) {
             Log.w("Favorite", "Could not write icon");
             return null;
+        }
+    }
+    
+    /**
+     * Returns a Bitmap representing the thumbnail of the specified Bitmap.
+     * The size of the thumbnail is defined by the dimension
+     * android.R.dimen.launcher_application_icon_size.
+     *
+     * This method is not thread-safe and should be invoked on the UI thread only.
+     *
+     * @param bitmap The bitmap to get a thumbnail of.
+     * @param context The application's context.
+     *
+     * @return A thumbnail for the specified bitmap or the bitmap itself if the
+     *         thumbnail could not be created.
+     */
+    public static Bitmap createBitmapThumbnail(Bitmap bitmap, Context context) {
+        synchronized (sCanvas) { // we share the statics :-(
+	        if (sIconWidth == -1) {
+	            initStatics(context);
+	        }
+	
+	        int width = sIconWidth;
+	        int height = sIconHeight;
+	
+	        final int bitmapWidth = bitmap.getWidth();
+	        final int bitmapHeight = bitmap.getHeight();
+	
+	        if (width > 0 && height > 0) {
+	            if (width < bitmapWidth || height < bitmapHeight) {
+	                final float ratio = (float) bitmapWidth / bitmapHeight;
+	    
+	                if (bitmapWidth > bitmapHeight) {
+	                    height = (int) (width / ratio);
+	                } else if (bitmapHeight > bitmapWidth) {
+	                    width = (int) (height * ratio);
+	                }
+	    
+	                final Bitmap.Config c = (width == sIconWidth && height == sIconHeight && bitmap.getConfig()!=null) ?
+	                        bitmap.getConfig() : Bitmap.Config.ARGB_8888;
+	                final Bitmap thumb = Bitmap.createBitmap(sIconWidth, sIconHeight, c);
+	                final Canvas canvas = sCanvas;
+	                final Paint paint = sPaint;
+	                canvas.setBitmap(thumb);
+	                paint.setDither(false);
+	                paint.setFilterBitmap(true);
+	                sBounds.set((sIconWidth - width) / 2, (sIconHeight - height) / 2, width, height);
+	                sOldBounds.set(0, 0, bitmapWidth, bitmapHeight);
+	                canvas.drawBitmap(bitmap, sOldBounds, sBounds, paint);
+	                return thumb;
+	            } else if (bitmapWidth < width || bitmapHeight < height) {
+	                final Bitmap.Config c = Bitmap.Config.ARGB_8888;
+	                final Bitmap thumb = Bitmap.createBitmap(sIconWidth, sIconHeight, c);
+	                final Canvas canvas = sCanvas;
+	                final Paint paint = sPaint;
+	                canvas.setBitmap(thumb);
+	                paint.setDither(false);
+	                paint.setFilterBitmap(true);
+	                canvas.drawBitmap(bitmap, (sIconWidth - bitmapWidth) / 2,
+	                        (sIconHeight - bitmapHeight) / 2, paint);
+	                return thumb;
+	            }
+	        }
+
+	        return bitmap;
         }
     }    
 }

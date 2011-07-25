@@ -1,13 +1,18 @@
 package com.anod.car.home.prefs;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,18 +22,23 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.anod.car.home.R;
-import com.anod.car.home.R.id;
-import com.anod.car.home.R.layout;
-import com.anod.car.home.R.string;
 import com.anod.car.home.model.LauncherModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
 public class ShortcutEditActivity extends Activity {
+	private static final String ACTION_ADW_PICK_ICON="org.adw.launcher.icons.ACTION_PICK_ICON";
+	
 	public static final String EXTRA_SHORTCUT_ID = "extra_id";
 	public static final String EXTRA_CELL_ID = "extra_cell_id";
 	
-	private static final int REQUEST_PICK_ICON = 1;
+
+	private static final int PICK_DEFAULT_ICON = 0;	
+	private static final int PICK_CUSTOM_ICON = 1;
+	private static final int PICK_ADW_ICON_PACK=2;
+	
+	private static final int DIALOG_ICON_MENU = 1;
+	
 	private Bitmap mCustomIcon;
 	private ImageView mIconView;
 	private EditText mLabelEdit;
@@ -59,6 +69,43 @@ public class ShortcutEditActivity extends Activity {
         mIconView.setImageBitmap(mShortuctInfo.getIcon());  
 	}
 	
+	protected Dialog onCreateDialog(int id) {
+	    switch(id) {
+	    	case DIALOG_ICON_MENU:
+		    	final CharSequence[] items = {
+		    		getString(R.string.icon_default), getString(R.string.icon_custom), getString(R.string.icon_adw_icon_pack)
+		    	};
+	
+		    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		    	builder.setTitle(getString(R.string.dialog_title_select));
+		    	builder.setItems(items, new DialogInterface.OnClickListener() {
+		    	    public void onClick(DialogInterface dialog, int item) {
+		    	    	iconDialogClick(item);
+		    	    }
+		    	});
+		    	
+		    	return builder.create();
+	    }
+	    return null;
+	}
+
+	private void iconDialogClick(int item) {
+		Intent chooseIntent;
+		switch(item) {
+			case  PICK_DEFAULT_ICON:
+				setDefaultIcon();
+			break;
+			case  PICK_CUSTOM_ICON:
+				chooseIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+				startActivityForResultSafetly(chooseIntent, PICK_CUSTOM_ICON);
+			break;
+			case  PICK_ADW_ICON_PACK:
+				chooseIntent=new Intent(ACTION_ADW_PICK_ICON);
+				startActivityForResultSafetly(Intent.createChooser(chooseIntent, "Select icon pack"), PICK_ADW_ICON_PACK);
+			break;
+		}
+	}
+	
 	private void updateCustomIcon(Intent data)
 	{
 		String generalError = "An error was encountered while trying to open the selected image";
@@ -80,10 +127,15 @@ public class ShortcutEditActivity extends Activity {
         	Toast.makeText(this, errStr, Toast.LENGTH_LONG).show();
         	return;
         }
-        mCustomIcon = icon;
-        mIconView.setImageBitmap(mCustomIcon);  
+        setIcon(icon);
 	}
 
+	private void setIcon(Bitmap icon)
+	{
+        mCustomIcon = icon;
+        mIconView.setImageBitmap(mCustomIcon);  	
+	}
+	
 	public String getPath(Uri uri) {
 	    ContentResolver cr = getContentResolver();
 		String[] projection = { MediaStore.Images.Media.DATA };
@@ -94,12 +146,10 @@ public class ShortcutEditActivity extends Activity {
 		return str;
 	}
 	
-	public void changeIcon(View view)
-	{
-		Intent chooseIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+	public void startActivityForResultSafetly(Intent intent, int requestCode) {
 		try
 		{
-			startActivityForResult(chooseIntent, REQUEST_PICK_ICON);
+			startActivityForResult(intent, requestCode);
 		}
 		catch (ActivityNotFoundException activityNotFoundException)
 		{
@@ -112,11 +162,16 @@ public class ShortcutEditActivity extends Activity {
 		}
 	}
 	
+	public void changeIcon(View view)
+	{
+		showDialog(DIALOG_ICON_MENU);
+	}
+	
 	public void clickedOk(View view)
 	{
 		boolean needUpdate = false;
 		if (mCustomIcon != null) {
-			Bitmap icon = UtilitiesBitmap.createIconBitmap(new BitmapDrawable(mCustomIcon), this);
+			Bitmap icon = UtilitiesBitmap.createBitmapThumbnail(mCustomIcon, this);
 			mShortuctInfo.customIcon = true;
 			mShortuctInfo.iconResource = null;
 			mShortuctInfo.setIcon(icon);
@@ -137,12 +192,43 @@ public class ShortcutEditActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == REQUEST_PICK_ICON) {
-			if (resultCode == RESULT_OK) {
+		if (resultCode == RESULT_OK) {		
+			if (requestCode == PICK_CUSTOM_ICON) {
 				updateCustomIcon(data);
+			} else if (requestCode == PICK_ADW_ICON_PACK) {
+				Bitmap icon = (Bitmap) data.getParcelableExtra("icon");
+				if (icon != null) {
+					setIcon(icon);
+				}
 			}
 		}
+				
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+	private void setDefaultIcon() {
+		Bitmap icon = getActivityIcon(mShortuctInfo);
+        // the fallback icon
+        if (icon == null) {
+            final PackageManager manager = getPackageManager();
+            icon = UtilitiesBitmap.makeDefaultIcon(manager);
+            mShortuctInfo.usingFallbackIcon = true;
+        }
+        mShortuctInfo.customIcon=false;
+        mShortuctInfo.setIcon(icon);
+	}
+	
+    private Bitmap getActivityIcon(ShortcutInfo info) {
+
+        final PackageManager manager = getPackageManager();
+        ComponentName component = info.intent.getComponent();
+        
+        final ResolveInfo resolveInfo = manager.resolveActivity(info.intent, 0);
+    	
+        if (resolveInfo == null || component == null) {
+            return null;
+        }
+
+        return UtilitiesBitmap.createIconBitmap(resolveInfo.activityInfo.loadIcon(manager), this);
+    }
 }

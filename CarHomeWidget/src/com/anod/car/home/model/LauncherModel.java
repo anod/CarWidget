@@ -239,7 +239,6 @@ public class LauncherModel {
         }
     }
     
-      
     /**
      * Make an ShortcutInfo object for a shortcut that is an application.
      *
