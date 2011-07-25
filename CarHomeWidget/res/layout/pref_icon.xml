@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
-    android:paddingRight="?android:attr/scrollbarSize">
+    android:paddingRight="?android:attr/scrollbarSize"
+    >
     
     <LinearLayout
         android:layout_width="wrap_content"
@@ -12,15 +13,26 @@
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:layout_marginLeft="6dip"
-         >
-	    <ImageView android:id="@+id/pref_icon_view" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_add_shortcut" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"></ImageView>
+     >
+	    <ImageView 
+	    	android:id="@+id/pref_icon_view" 
+	    	android:layout_width="wrap_content" 
+	    	android:layout_height="wrap_content" 
+	    	android:src="@drawable/ic_add_shortcut" 
+		>
+	    </ImageView>
      </LinearLayout>    
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="6dip"
-        android:layout_weight="1">
+        android:layout_weight="1"
+	    android:clickable="true"
+	    android:focusable="true"
+	    android:focusableInTouchMode="true"    
+        
+        >
 
         <TextView android:id="@+android:id/title"
             android:layout_width="wrap_content"
@@ -46,7 +58,18 @@
         android:layout_height="fill_parent"
         android:gravity="center_vertical"
         android:orientation="vertical" >
-	    <ImageButton android:id="@+id/ImageButton1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:src="@drawable/ic_action_edit"></ImageButton>
+        
+			<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/ImageButton1" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:src="@drawable/ic_action_edit"
+		    android:clickable="true"
+    		android:focusable="false"
+    		android:focusableInTouchMode="false"    
+
+			>
+			</ImageButton>        
      </LinearLayout>
 
 </LinearLayout>
