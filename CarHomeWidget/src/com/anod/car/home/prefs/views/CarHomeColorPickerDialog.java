@@ -76,7 +76,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
 	}
 	
 	private String getHexText(int color) {
-		String hexStr = String.format("%X", color);
+		String hexStr = String.format("%08X", color);
 		if (!mAlphaSliderVisible) {
 			hexStr = hexStr.substring(2);
 		}
