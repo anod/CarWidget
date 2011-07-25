@@ -1,8 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:id="@+id/pref_icon_view"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:src="@drawable/ic_add_shortcut"
-/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:gravity="center_vertical"
+    android:paddingRight="?android:attr/scrollbarSize">
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_marginLeft="6dip"
+         >
+	    <ImageView android:id="@+id/pref_icon_view" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_add_shortcut" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"></ImageView>
+     </LinearLayout>    
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dip"
+        android:layout_weight="1">
+
+        <TextView android:id="@+android:id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal" />
+
+        <TextView android:id="@+android:id/summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@android:id/title"
+            android:layout_alignLeft="@android:id/title"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:maxLines="2" />
+
+    </RelativeLayout>
+
+    <!-- Preference should place its actual preference widget here. -->
+    <LinearLayout android:id="@+android:id/widget_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+	    <ImageButton android:id="@+id/ImageButton1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:src="@drawable/ic_action_edit"></ImageButton>
+     </LinearLayout>
+
+</LinearLayout>

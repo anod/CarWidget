@@ -455,7 +455,7 @@ public class Configuration extends PreferenceActivity {
     	issue.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				Uri uri = Uri.parse("https://bitbucket.org/anod/carhomewidget/issues");
+				Uri uri = Uri.parse("http://www.facebook.com/pages/Car-Widget-for-Android/220355141336206");
 				Intent intent = new Intent (Intent.ACTION_VIEW, uri); 
 				startActivity(intent);
 				return false;
@@ -547,9 +547,6 @@ public class Configuration extends PreferenceActivity {
                 case REQUEST_PICK_SHORTCUT:
                     processShortcut(data);
                     break;
-                case REQUEST_STOP_APPS:
-                	updateStopApps(data);
-                	break;
             }
         } else {
         	try {
@@ -585,11 +582,6 @@ public class Configuration extends PreferenceActivity {
         pickIntent.putExtras(bundle);
 
         startActivityForResult(pickIntent, REQUEST_PICK_SHORTCUT);
-    }
-
-    private void updateStopApps(Intent intent) {
-		ArrayList<String> list = intent.getStringArrayListExtra(AppListConfiguration.EXTRA_PACKAGE_NAMES);
-		PreferencesStorage.saveStopAppPackages(mContext,list);
     }
     
     private void processShortcut(Intent intent) {
