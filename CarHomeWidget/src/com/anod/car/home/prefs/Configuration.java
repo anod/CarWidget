@@ -649,9 +649,11 @@ public class Configuration extends PreferenceActivity {
     
     private void completeEditShortcut(Intent data) {
     	int cellId = data.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, INVALID_CELL_ID);
+    	long shortcutId = data.getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);
     	if (cellId != INVALID_CELL_ID) {
     		String key = PreferencesStorage.getLaunchComponentName(cellId, mAppWidgetId);
     		LauncherItemPreference p = (LauncherItemPreference)findPreference(key);
+    		mModel.reloadShortcut(cellId, shortcutId);
     		refreshPreference(p);
     	}
     }

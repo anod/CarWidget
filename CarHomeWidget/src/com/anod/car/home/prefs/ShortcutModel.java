@@ -31,6 +31,15 @@ public class ShortcutModel {
         }
 	}
 	
+	public void reloadShortcut(int cellId, long shortcutId) {
+		if (shortcutId != ShortcutInfo.NO_ID) {
+			final ShortcutInfo info = mModel.loadShortcut(mContext, shortcutId);
+			mShortcuts.put(cellId, info);
+		} else {
+			mShortcuts.put(cellId, null);
+		}
+	}
+	
 	public ShortcutInfo getShortcut(int cellId) {
 		return mShortcuts.get(cellId);
 	}
