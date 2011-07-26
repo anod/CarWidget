@@ -77,8 +77,7 @@ public class Launcher {
         		info = model.loadShortcut(context, shortcutId);
         	}
         	if (info == null) {
-                PendingIntent configIntent = getSettingsPendingInent(appWidgetId, context, i);
-        		views.setOnClickPendingIntent(res, configIntent);
+        		setNoShortcut(res,resText,views,context,appWidgetId,i);
         	} else {
         		setShortcut(res,resText,iconScale,info,prefs,views,context,appWidgetId);
         	}
@@ -161,6 +160,14 @@ public class Launcher {
 			views.setViewVisibility(res, View.VISIBLE);
 			views.setInt(res, "setBackgroundColor",  tileColor);
 		}
+    }
+    
+    private static void setNoShortcut(int res, int resText, RemoteViews views, Context context, int appWidgetId, int cellId) {
+    	views.setImageViewResource(res, R.drawable.ic_add_shortcut);
+    	String title = context.getResources().getString(R.string.set_shortcut);
+    	views.setTextViewText(resText, title);
+        PendingIntent configIntent = getSettingsPendingInent(appWidgetId, context, cellId);
+		views.setOnClickPendingIntent(res, configIntent);    	
     }
     
     private static void setShortcut(int res, int resText, float scale, ShortcutInfo info, Preferences.Main prefs,  RemoteViews views, Context context, int appWidgetId) {

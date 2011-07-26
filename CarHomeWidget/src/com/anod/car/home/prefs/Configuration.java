@@ -46,7 +46,7 @@ import com.anod.car.home.incar.BluetoothClassHelper;
 import com.anod.car.home.model.Launcher;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
-import com.anod.car.home.prefs.views.IconPreference;
+import com.anod.car.home.prefs.views.LauncherItemPreference;
 import com.anod.car.home.prefs.views.SeekBarPreference;
 
 public class Configuration extends PreferenceActivity {
@@ -395,7 +395,7 @@ public class Configuration extends PreferenceActivity {
         }
     }
     
-    private void refreshPreference(IconPreference pref) {
+    private void refreshPreference(LauncherItemPreference pref) {
 		int cellId = pref.getCellId();
 		ShortcutInfo info = mModel.getShortcut(cellId);
 		if (info == null) {
@@ -411,13 +411,13 @@ public class Configuration extends PreferenceActivity {
     
     private void initLauncherPreference(int launchComponentId) {
     	String key = PreferencesStorage.getLaunchComponentKey(launchComponentId);
-    	IconPreference p = (IconPreference)findPreference(key);  	
+    	LauncherItemPreference p = (LauncherItemPreference)findPreference(key);  	
     	p.setKey(PreferencesStorage.getLaunchComponentName(launchComponentId, mAppWidgetId));
     	p.setCellId(launchComponentId);
     	p.setOnPreferenceClickListener( new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				IconPreference pref = (IconPreference)preference;
+				LauncherItemPreference pref = (LauncherItemPreference)preference;
 				int cellId = pref.getCellId();
 				ShortcutInfo info = mModel.getShortcut(cellId);
 				if (info == null) {
@@ -431,7 +431,7 @@ public class Configuration extends PreferenceActivity {
     	p.setOnDeleteClickListener( new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				IconPreference pref = (IconPreference)preference;
+				LauncherItemPreference pref = (LauncherItemPreference)preference;
 				mModel.dropShortcut(pref.getCellId(),mAppWidgetId);
 				refreshPreference(pref);
 				return true;
@@ -629,14 +629,14 @@ public class Configuration extends PreferenceActivity {
     	if (info != null && info.id != ShortcutInfo.NO_ID) {   	
 
     		String key = PreferencesStorage.getLaunchComponentName(mCurrentCellId, mAppWidgetId);
-			IconPreference p = (IconPreference)findPreference(key);
+			LauncherItemPreference p = (LauncherItemPreference)findPreference(key);
 	    	refreshPreference(p);
     	}
         mCurrentCellId = INVALID_CELL_ID;
     	try {
     		dismissDialog(DIALOG_WAIT);
     	} catch (IllegalArgumentException e) {
-    		
+    	
     	}
     }
     
@@ -651,7 +651,7 @@ public class Configuration extends PreferenceActivity {
     	int cellId = data.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, INVALID_CELL_ID);
     	if (cellId != INVALID_CELL_ID) {
     		String key = PreferencesStorage.getLaunchComponentName(cellId, mAppWidgetId);
-    		IconPreference p = (IconPreference)findPreference(key);
+    		LauncherItemPreference p = (LauncherItemPreference)findPreference(key);
     		refreshPreference(p);
     	}
     }

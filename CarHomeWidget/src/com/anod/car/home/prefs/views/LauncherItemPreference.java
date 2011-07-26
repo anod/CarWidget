@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 import com.anod.car.home.R;
 
-public class IconPreference extends Preference implements OnClickListener {
+public class LauncherItemPreference extends Preference implements OnClickListener {
 	private static final int INVALID_RESOURCE = 0;
 	private Bitmap mIconBitmap;
 	private int mIconResource = INVALID_RESOURCE;
@@ -19,17 +19,17 @@ public class IconPreference extends Preference implements OnClickListener {
 	private Boolean mShowEditButton = false;
 	private int mCellId;
 	
-    public IconPreference(Context context, AttributeSet attrs, int defStyle) {
+    public LauncherItemPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setLayoutResource(R.layout.pref_icon);
     }
     
-    public IconPreference(Context context, AttributeSet attrs) {
+    public LauncherItemPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         setLayoutResource(R.layout.pref_icon);
     }
     
-    public IconPreference(Context context) {
+    public LauncherItemPreference(Context context) {
         super(context);
         setLayoutResource(R.layout.pref_icon);
     }
