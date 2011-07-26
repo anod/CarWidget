@@ -44,7 +44,6 @@ import com.anod.car.home.R;
 import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
 import com.anod.car.home.model.Launcher;
-import com.anod.car.home.model.LauncherModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.prefs.views.IconPreference;
@@ -56,12 +55,11 @@ public class Configuration extends PreferenceActivity {
 	private static final int REQUEST_PICK_APPLICATION = 3;
 	private static final int REQUEST_CREATE_SHORTCUT=4;
 	private static final int REQUEST_EDIT_SHORTCUT=5;
-	private static final int REQUEST_STOP_APPS=6;
 	
 	public static final String EXTRA_CELL_ID = "CarHomeWidgetCellId";
 	public static final int INVALID_CELL_ID=-1;
 
-    private LauncherModel mModel;
+    private ShortcutModel mModel;
     private Context mContext;
     
     private static final IntentFilter INTENT_FILTER = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -110,8 +108,8 @@ public class Configuration extends PreferenceActivity {
             finish();
         }
         mFreeVersion = Launcher.isFreeVersion(this.getPackageName());
-        mModel = new LauncherModel();
         mContext = (Context)this;
+        mModel = new ShortcutModel(mContext);
         
         Preferences.Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
         
@@ -391,29 +389,56 @@ public class Configuration extends PreferenceActivity {
     
     private void initActivityChooser(Preferences.Main prefs) {
     	ArrayList<Long> currentShortcutIds = prefs.getLauncherComponents();
+    	mModel.init(currentShortcutIds);
         for (int i=0; i<PreferencesStorage.LAUNCH_COMPONENT_NUMBER;i++) {
-        	initLauncher(i,currentShortcutIds.get(i));
+        	initLauncherPreference(i);
         }
     }
     
-    private void initLauncher(final int launchComponentId, long shortcutId) {
+    private void refreshPreference(IconPreference pref) {
+		int cellId = pref.getCellId();
+		ShortcutInfo info = mModel.getShortcut(cellId);
+		if (info == null) {
+			pref.setTitle(R.string.set_shortcut);
+			pref.setIconResource(R.drawable.ic_add_shortcut);
+			pref.showButtons(false);
+		} else {
+	    	pref.setIconBitmap(info.getIcon());
+	    	pref.setTitle(info.title);
+	        pref.showButtons(true);
+		}    	
+    }
+    
+    private void initLauncherPreference(int launchComponentId) {
     	String key = PreferencesStorage.getLaunchComponentKey(launchComponentId);
-    	IconPreference p = (IconPreference)findPreference(key);
-    	if (shortcutId != ShortcutInfo.NO_ID) {
-    		ShortcutInfo info = mModel.loadShortcut(this,shortcutId);
-    		if (info != null) {
-    			setShortcutPreference(p,info);
-    		}
-    	}
+    	IconPreference p = (IconPreference)findPreference(key);  	
     	p.setKey(PreferencesStorage.getLaunchComponentName(launchComponentId, mAppWidgetId));
+    	p.setCellId(launchComponentId);
     	p.setOnPreferenceClickListener( new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				pickShortcut(launchComponentId);
+				IconPreference pref = (IconPreference)preference;
+				int cellId = pref.getCellId();
+				ShortcutInfo info = mModel.getShortcut(cellId);
+				if (info == null) {
+					pickShortcut(cellId);
+				} else {
+					startEditActivity(cellId, info.id);
+				}
 				return true;
 			}
-    		
     	});
+    	p.setOnDeleteClickListener( new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				IconPreference pref = (IconPreference)preference;
+				mModel.dropShortcut(pref.getCellId(),mAppWidgetId);
+				refreshPreference(pref);
+				return true;
+			}
+
+		});
+    	refreshPreference(p);
     }
     
     private void initOther() {
@@ -511,11 +536,6 @@ public class Configuration extends PreferenceActivity {
     	return null;
     }
     
-    private void setShortcutPreference(IconPreference preference, ShortcutInfo info) {
-    	preference.setIconBitmap(info.getIcon());
-        preference.setTitle(info.title);
-    }
-    
 	@Override
 	public void onBackPressed() {
 		if (AppWidgetManager.ACTION_APPWIDGET_CONFIGURE.equals(getIntent().getAction())
@@ -558,7 +578,7 @@ public class Configuration extends PreferenceActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 		
 	}
-
+    
     private void pickShortcut(int cellId) {
         showDialog(DIALOG_WAIT);
         Bundle bundle = new Bundle();
@@ -604,19 +624,13 @@ public class Configuration extends PreferenceActivity {
 			return;
 		}
 
-    	final ShortcutInfo info = mModel.addShortcut(this, data, mCurrentCellId, mAppWidgetId, isApplicationShortcut);
+    	final ShortcutInfo info = mModel.putShortcut(mCurrentCellId, mAppWidgetId, data, isApplicationShortcut);
 
     	if (info != null && info.id != ShortcutInfo.NO_ID) {   	
-    		PreferencesStorage.saveShortcut(this,info.id,mCurrentCellId,mAppWidgetId);
 
     		String key = PreferencesStorage.getLaunchComponentName(mCurrentCellId, mAppWidgetId);
 			IconPreference p = (IconPreference)findPreference(key);
-	    	setShortcutPreference(p,info);
-	    	
-            Intent editIntent = new Intent(this, ShortcutEditActivity.class);
-            editIntent.putExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, info.id);
-            editIntent.putExtra(ShortcutEditActivity.EXTRA_CELL_ID, mCurrentCellId);            
-            startActivityForResultSafely(editIntent, REQUEST_EDIT_SHORTCUT);
+	    	refreshPreference(p);
     	}
         mCurrentCellId = INVALID_CELL_ID;
     	try {
@@ -626,14 +640,19 @@ public class Configuration extends PreferenceActivity {
     	}
     }
     
+    private void startEditActivity(int cellId,long shortcutId) {
+        Intent editIntent = new Intent(this, ShortcutEditActivity.class);
+        editIntent.putExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, shortcutId);
+        editIntent.putExtra(ShortcutEditActivity.EXTRA_CELL_ID, cellId);            
+        startActivityForResultSafely(editIntent, REQUEST_EDIT_SHORTCUT);
+    }
+    
     private void completeEditShortcut(Intent data) {
     	int cellId = data.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, INVALID_CELL_ID);
-    	long shortcutId = data.getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);
-    	if (cellId != INVALID_CELL_ID && shortcutId != ShortcutInfo.NO_ID) {
-    		ShortcutInfo info = mModel.loadShortcut(this, shortcutId);
+    	if (cellId != INVALID_CELL_ID) {
     		String key = PreferencesStorage.getLaunchComponentName(cellId, mAppWidgetId);
     		IconPreference p = (IconPreference)findPreference(key);
-    		setShortcutPreference(p,info);
+    		refreshPreference(p);
     	}
     }
     

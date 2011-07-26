@@ -18,7 +18,7 @@
 	    	android:id="@+id/pref_icon_view" 
 	    	android:layout_width="wrap_content" 
 	    	android:layout_height="wrap_content" 
-	    	android:src="@drawable/ic_add_shortcut" 
+	    	android:src="@drawable/ic_add_shortcut"  
 		>
 	    </ImageView>
      </LinearLayout>    
@@ -48,6 +48,19 @@
 
     </RelativeLayout>
 
+    <ImageView 
+    	android:id="@+id/edit_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:scaleType="center"
+        android:background="@android:drawable/list_selector_background"
+        android:src="@drawable/ic_action_edit"
+        android:paddingLeft="14dip"
+        android:paddingRight="14dip"
+    /> 
+    
     <View android:id="@+id/divider"
         android:layout_width="1px"
         android:layout_height="match_parent"
@@ -56,14 +69,14 @@
 	    android:background="@drawable/divider_vertical_dark" 
     />
 
-    <ImageView android:id="@+id/edit_action_button"
+    <ImageView android:id="@+id/delete_action_button"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:gravity="center"
         android:scaleType="center"
         android:background="@android:drawable/list_selector_background"
-        android:src="@drawable/ic_action_edit"
+        android:src="@drawable/ic_action_delete"
         android:paddingLeft="14dip"
         android:paddingRight="14dip"
     />        

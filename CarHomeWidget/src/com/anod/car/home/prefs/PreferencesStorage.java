@@ -257,7 +257,15 @@ public class PreferencesStorage {
          }
          edit.commit();
     }
-
+    
+    public static void dropShortcutPreference(int cellId, int appWidgetId, Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Editor edit = prefs.edit();
+        String key = PreferencesStorage.getLaunchComponentName(cellId, appWidgetId);
+		edit.remove(key);
+		edit.commit();
+    }
+    
     public static void DropSettings(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Editor edit = prefs.edit();
