@@ -1,4 +1,4 @@
-package com.anod.car.home.model;
+package com.anod.car.home;
 
 import java.util.ArrayList;
 
@@ -16,6 +16,8 @@ import android.widget.RemoteViews;
 
 import com.anod.car.home.R;
 import com.anod.car.home.incar.ModeService;
+import com.anod.car.home.model.LauncherModel;
+import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.Configuration;
 import com.anod.car.home.prefs.Preferences;
 import com.anod.car.home.prefs.PreferencesStorage;
@@ -79,7 +81,7 @@ public class Launcher {
         	if (info == null) {
         		setNoShortcut(res,resText,views,context,appWidgetId,i);
         	} else {
-        		setShortcut(res,resText,iconScale,info,prefs,views,context,appWidgetId);
+        		setShortcut(res,resText,iconScale,info,prefs,views,context,appWidgetId,i);
         	}
         	setFont(prefs,res,resText,scaledDensity,views);
         	if (prefs.getTileColor() != null) {
@@ -87,7 +89,7 @@ public class Launcher {
         	}
         }
     	
-        PendingIntent configIntent = getSettingsPendingInent(appWidgetId, context, Configuration.INVALID_CELL_ID);
+        PendingIntent configIntent = ShortcutPendingIntent.getSettingsPendingInent(appWidgetId, context, Configuration.INVALID_CELL_ID);
       	views.setOnClickPendingIntent(R.id.btn_settings, configIntent);
 		return views;
 	}
@@ -166,11 +168,11 @@ public class Launcher {
     	views.setImageViewResource(res, R.drawable.ic_add_shortcut);
     	String title = context.getResources().getString(R.string.set_shortcut);
     	views.setTextViewText(resText, title);
-        PendingIntent configIntent = getSettingsPendingInent(appWidgetId, context, cellId);
+        PendingIntent configIntent = ShortcutPendingIntent.getSettingsPendingInent(appWidgetId, context, cellId);
 		views.setOnClickPendingIntent(res, configIntent);    	
     }
     
-    private static void setShortcut(int res, int resText, float scale, ShortcutInfo info, Preferences.Main prefs,  RemoteViews views, Context context, int appWidgetId) {
+    private static void setShortcut(int res, int resText, float scale, ShortcutInfo info, Preferences.Main prefs,  RemoteViews views, Context context, int appWidgetId, int cellId) {
 		Bitmap icon = info.getIcon();
 		if (prefs.isIconsMono()) {
 			icon = UtilitiesBitmap.applyBitmapFilter(icon,context);
@@ -184,7 +186,7 @@ public class Launcher {
     	views.setBitmap(res, "setImageBitmap", icon);
         String title = String.valueOf(info.title);
     	views.setTextViewText(resText, title);
-		PendingIntent shortcutIntent = getShortcutPendingInent(info.intent, appWidgetId, context);
+		PendingIntent shortcutIntent = ShortcutPendingIntent.getShortcutPendingInent(info.intent, appWidgetId, context, cellId);
 		views.setOnClickPendingIntent(res, shortcutIntent);
     }
     
@@ -192,34 +194,7 @@ public class Launcher {
 		int bgColor = prefs.getBackgroundColor();
 		views.setInt(R.id.container, "setBackgroundColor",  bgColor);
     }
-    /**
-     * Create an Intent to launch Configuration
-     * @param appWidgetId
-     * @param context
-     * @return
-     */
-    private static PendingIntent getSettingsPendingInent(int appWidgetId, Context context, int cellId) {
-    	Intent intent = new Intent(context, Configuration.class);
-    	intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-    	if (cellId != Configuration.INVALID_CELL_ID) {
-    		intent.putExtra(Configuration.EXTRA_CELL_ID, cellId);
-    	}
-    	String path = String.valueOf(appWidgetId) + " - " + String.valueOf(cellId);
-    	Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
-    	intent.setData(data);
-    	intent.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
-    	return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-    /**
-     * 
-     * @param componentName
-     * @param appWidgetId
-     * @param context
-     * @return
-     */
-    private static PendingIntent getShortcutPendingInent(Intent intent,int appWidgetId, Context context) {
-        return PendingIntent.getActivity(context, 0 /* no requestCode */, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
+
     
     
 }

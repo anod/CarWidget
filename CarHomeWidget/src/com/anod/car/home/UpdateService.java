@@ -9,7 +9,6 @@ import android.os.IBinder;
 import android.widget.RemoteViews;
 
 import com.anod.car.home.incar.BroadcastService;
-import com.anod.car.home.model.Launcher;
 import com.anod.car.home.prefs.PreferencesStorage;
 
 public class UpdateService extends Service implements Runnable {
