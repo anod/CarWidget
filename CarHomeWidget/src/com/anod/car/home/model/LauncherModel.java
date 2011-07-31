@@ -57,41 +57,36 @@ public class LauncherModel {
         Parcelable bitmap = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
 
         Bitmap icon = null;
-        boolean customIcon = false;
-        ShortcutIconResource iconResource = null;
 
+        final ShortcutInfo info = new ShortcutInfo();
+        info.title = name;
+        info.intent = intent;
+        
         if (bitmap != null && bitmap instanceof Bitmap) {
             icon = UtilitiesBitmap.createIconBitmap(new FastBitmapDrawable((Bitmap)bitmap), context);
-            customIcon = true;
+            info.setCustomIcon(icon);
         } else {
             Parcelable extra = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
             if (extra != null && extra instanceof ShortcutIconResource) {
                 try {
-                    iconResource = (ShortcutIconResource) extra;
+                	ShortcutIconResource iconResource = (ShortcutIconResource) extra;
                     final PackageManager packageManager = context.getPackageManager();
                     Resources resources = packageManager.getResourcesForApplication(
                             iconResource.packageName);
                     final int id = resources.getIdentifier(iconResource.resourceName, null, null);
                     icon = UtilitiesBitmap.createIconBitmap(resources.getDrawable(id), context);
+                    info.setIconResource(icon, iconResource);
                 } catch (Exception e) {
                     Log.w(TAG, "Could not load shortcut icon: " + extra);
                 }
             }
         }
 
-        final ShortcutInfo info = new ShortcutInfo();
-
         if (icon == null) {
         	final PackageManager packageManager = context.getPackageManager();
             icon = UtilitiesBitmap.makeDefaultIcon(packageManager);
-            info.usingFallbackIcon = true;
+            info.setFallbackIcon(icon);
         }
-        info.setIcon(icon);
-
-        info.title = name;
-        info.intent = intent;
-        info.customIcon = customIcon;
-        info.iconResource = iconResource;
 
         return info;
     }
@@ -178,19 +173,17 @@ public class LauncherModel {
             
             if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
             	icon = getIconFromCursor(c, iconIndex);
-
-            	info.setIcon(icon);
+            	info.setActivityIcon(icon);
             } else {
-            	info.customIcon = false;
             	int iconType = c.getInt(iconTypeIndex);
                 switch (iconType) {
                 	case LauncherSettings.Favorites.ICON_TYPE_RESOURCE:
                 		String packageName = c.getString(iconPackageIndex);
                 		String resourceName = c.getString(iconResourceIndex);
 
-                       	info.iconResource = new Intent.ShortcutIconResource();
-                       	info.iconResource.packageName = packageName;
-                       	info.iconResource.resourceName = resourceName;
+                		Intent.ShortcutIconResource iconResource = new Intent.ShortcutIconResource();
+                       	iconResource.packageName = packageName;
+                       	iconResource.resourceName = resourceName;
                        	
                 		// the resource
                 		try {
@@ -206,13 +199,12 @@ public class LauncherModel {
                 		if (icon == null) {
                 			icon = getIconFromCursor(c, iconIndex);
                 		}
+                		info.setIconResource(icon, iconResource);
                     break;
                 	case LauncherSettings.Favorites.ICON_TYPE_BITMAP:
                 		icon = getIconFromCursor(c, iconIndex);
-                		if (icon == null) {
-                			info.customIcon = false;
-                		} else {
-                			info.customIcon = true;
+                		if (icon != null) {
+                        	info.setCustomIcon(icon);
                 		}
                     break;
                 }
@@ -220,9 +212,8 @@ public class LauncherModel {
                 
             if (icon == null) {
             	icon = UtilitiesBitmap.makeDefaultIcon(manager);
-                info.usingFallbackIcon = true;
+            	info.setFallbackIcon(icon);
             }
-            info.setIcon(icon);
         } finally {
             c.close();
         }
@@ -268,13 +259,13 @@ public class LauncherModel {
         final ResolveInfo resolveInfo = manager.resolveActivity(intent, 0);
         if (resolveInfo != null) {
             icon = getIcon(componentName, resolveInfo, manager, context);
+            info.setActivityIcon(icon);
         }
         // the fallback icon
         if (icon == null) {
             icon = UtilitiesBitmap.makeDefaultIcon(manager);
-            info.usingFallbackIcon = true;
+            info.setFallbackIcon(icon);
         }
-        info.setIcon(icon);
 
         // from the resource
         if (resolveInfo != null) {
@@ -344,21 +335,21 @@ public class LauncherModel {
         String uri = item.intent != null ? item.intent.toUri(0) : null;
         values.put(LauncherSettings.Favorites.INTENT, uri);
 
-        if (item.customIcon) {
+        if (item.isCustomIcon()) {
             values.put(LauncherSettings.Favorites.ICON_TYPE,
                     LauncherSettings.Favorites.ICON_TYPE_BITMAP);
             writeBitmap(values, item.getIcon());
         } else {
-            if (!item.usingFallbackIcon) {
+            if (!item.isUsingFallbackIcon()) {
                 writeBitmap(values, item.getIcon());
             }
             values.put(LauncherSettings.Favorites.ICON_TYPE,
                     LauncherSettings.Favorites.ICON_TYPE_RESOURCE);
-            if (item.iconResource != null) {
+            if (item.getIconResource() != null) {
                 values.put(LauncherSettings.Favorites.ICON_PACKAGE,
-                		item.iconResource.packageName);
+                		item.getIconResource().packageName);
                 values.put(LauncherSettings.Favorites.ICON_RESOURCE,
-                		item.iconResource.resourceName);
+                		item.getIconResource().resourceName);
             }
         }
         return values;

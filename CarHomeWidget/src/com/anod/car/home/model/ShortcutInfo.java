@@ -37,19 +37,19 @@ public class ShortcutInfo  {
      * Indicates whether the icon comes from an application's resource (if false)
      * or from a custom Bitmap (if true.)
      */
-    public boolean customIcon;
+    private boolean customIcon;
 
-    /**
+	/**
      * Indicates whether we're using the default fallback icon instead of something from the
      * app.
      */
-    public boolean usingFallbackIcon;
+    private boolean usingFallbackIcon;
 
     /**
      * If isShortcut=true and customIcon=false, this contains a reference to the
      * shortcut icon as an application's resource.
      */
-    public Intent.ShortcutIconResource iconResource;
+    private Intent.ShortcutIconResource iconResource;
 
     /**
      * The application icon.
@@ -75,10 +75,34 @@ public class ShortcutInfo  {
         customIcon = info.customIcon;
     }
 
-    public void setIcon(Bitmap b) {
-        mIcon = b;
+    public void setActivityIcon(Bitmap icon) {
+    	customIcon = false;
+    	iconResource = null;
+    	usingFallbackIcon = false;
+        mIcon = icon;
+    }
+    
+    public void setFallbackIcon(Bitmap icon) {
+        mIcon = icon;
+        iconResource = null;
+        usingFallbackIcon = true;
+        customIcon = false;
     }
 
+    public void setCustomIcon(Bitmap icon) {
+    	customIcon = true;
+    	iconResource = null;
+    	usingFallbackIcon = false;
+        mIcon = icon;
+    }
+    
+    public void setIconResource(Bitmap icon,Intent.ShortcutIconResource res) {
+    	mIcon = icon;
+    	iconResource = res;
+    	usingFallbackIcon = false;
+    	customIcon = false;
+    }
+    
     public Bitmap getIcon() {
         return mIcon;
     }
@@ -90,7 +114,7 @@ public class ShortcutInfo  {
      * @param className the class name of the component representing the intent
      * @param launchFlags the launch flags
      */
-    final void setActivity(ComponentName className, int launchFlags) {
+    public final void setActivity(ComponentName className, int launchFlags) {
         intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.setComponent(className);
@@ -98,8 +122,19 @@ public class ShortcutInfo  {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
     }
 
+    public boolean isCustomIcon() {
+		return customIcon;
+	}    
 
-    @Override
+    public boolean isUsingFallbackIcon() {
+		return usingFallbackIcon;
+	}
+
+	public Intent.ShortcutIconResource getIconResource() {
+		return iconResource;
+	}
+
+	@Override
     public String toString() {
         return "ShortcutInfo(title=" + title.toString() + ")";
     }

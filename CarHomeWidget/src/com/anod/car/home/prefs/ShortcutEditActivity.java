@@ -4,12 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -33,7 +30,6 @@ public class ShortcutEditActivity extends Activity {
 	public static final String EXTRA_CELL_ID = "extra_cell_id";
 	
 
-	private static final int PICK_DEFAULT_ICON = 0;	
 	private static final int PICK_CUSTOM_ICON = 1;
 	private static final int PICK_ADW_ICON_PACK=2;
 	
@@ -73,7 +69,7 @@ public class ShortcutEditActivity extends Activity {
 	    switch(id) {
 	    	case DIALOG_ICON_MENU:
 		    	final CharSequence[] items = {
-		    		getString(R.string.icon_default), getString(R.string.icon_custom), getString(R.string.icon_adw_icon_pack)
+		    		getString(R.string.icon_custom), getString(R.string.icon_adw_icon_pack)
 		    	};
 	
 		    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -92,9 +88,6 @@ public class ShortcutEditActivity extends Activity {
 	private void iconDialogClick(int item) {
 		Intent chooseIntent;
 		switch(item) {
-			case  PICK_DEFAULT_ICON:
-				setDefaultIcon();
-			break;
 			case  PICK_CUSTOM_ICON:
 				chooseIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 				startActivityForResultSafetly(chooseIntent, PICK_CUSTOM_ICON);
@@ -172,9 +165,7 @@ public class ShortcutEditActivity extends Activity {
 		boolean needUpdate = false;
 		if (mCustomIcon != null) {
 			Bitmap icon = UtilitiesBitmap.createBitmapThumbnail(mCustomIcon, this);
-			mShortuctInfo.customIcon = true;
-			mShortuctInfo.iconResource = null;
-			mShortuctInfo.setIcon(icon);
+			mShortuctInfo.setCustomIcon(icon);
 			needUpdate = true;
 		}
 		String title = mLabelEdit.getText().toString();
@@ -206,29 +197,4 @@ public class ShortcutEditActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void setDefaultIcon() {
-		Bitmap icon = getActivityIcon(mShortuctInfo);
-        // the fallback icon
-        if (icon == null) {
-            final PackageManager manager = getPackageManager();
-            icon = UtilitiesBitmap.makeDefaultIcon(manager);
-            mShortuctInfo.usingFallbackIcon = true;
-        }
-        mShortuctInfo.customIcon=false;
-        mShortuctInfo.setIcon(icon);
-	}
-	
-    private Bitmap getActivityIcon(ShortcutInfo info) {
-
-        final PackageManager manager = getPackageManager();
-        ComponentName component = info.intent.getComponent();
-        
-        final ResolveInfo resolveInfo = manager.resolveActivity(info.intent, 0);
-    	
-        if (resolveInfo == null || component == null) {
-            return null;
-        }
-
-        return UtilitiesBitmap.createIconBitmap(resolveInfo.activityInfo.loadIcon(manager), this);
-    }
 }
