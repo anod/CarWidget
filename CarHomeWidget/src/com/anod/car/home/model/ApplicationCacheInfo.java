@@ -1,6 +1,5 @@
-package com.anod.car.home;
+package com.anod.car.home.model;
 
-import com.anod.car.home.model.LauncherSettings;
 
 import android.content.ComponentName;
 import android.content.Intent;

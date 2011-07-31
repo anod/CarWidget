@@ -1,5 +1,7 @@
 package com.anod.car.home;
 
+import com.anod.car.home.model.AllAppsListCache;
+
 import android.app.Application;
 
 public class CarWidgetApplication extends Application {

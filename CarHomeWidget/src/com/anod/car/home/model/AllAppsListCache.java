@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.model;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.ImageView;
 
+import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
 /**

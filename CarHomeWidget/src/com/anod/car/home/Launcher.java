@@ -3,7 +3,6 @@ package com.anod.car.home;
 import java.util.ArrayList;
 
 import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -14,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import com.anod.car.home.R;
 import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.model.LauncherModel;
 import com.anod.car.home.model.ShortcutInfo;
