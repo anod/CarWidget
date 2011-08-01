@@ -30,8 +30,8 @@ public class ShortcutEditActivity extends Activity {
 	public static final String EXTRA_CELL_ID = "extra_cell_id";
 	
 
-	private static final int PICK_CUSTOM_ICON = 1;
-	private static final int PICK_ADW_ICON_PACK=2;
+	private static final int PICK_CUSTOM_ICON = 0;
+	private static final int PICK_ADW_ICON_PACK=1;
 	
 	private static final int DIALOG_ICON_MENU = 1;
 	
