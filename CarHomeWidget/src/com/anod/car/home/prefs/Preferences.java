@@ -103,6 +103,7 @@ public class Preferences {
 	}
 	
 	public class InCar {
+		private boolean inCarEnabled;
 		private boolean powerRequired;
 		private boolean headsetRequired;
 		private boolean bluetoothRequired = false;
@@ -120,9 +121,32 @@ public class Preferences {
 		private boolean autoSpeaker;
 		private boolean activateCarMode;
 		
+		
+		/**
+		 * @return the inCarEnabled
+		 */
+		public boolean isInCarEnabled() {
+			return inCarEnabled;
+		}
+		/**
+		 * @param inCarEnabled the inCarEnabled to set
+		 */
+		public void setInCarEnabled(boolean incarEnabled) {
+			this.inCarEnabled = incarEnabled;
+		}
+		/**
+		 * Enable auto-speaker when receiving a call
+		 * 
+		 * @return
+		 */
 		public boolean isAutoSpeaker() {
 			return autoSpeaker;
 		}
+		/**
+		 * Map of addresses of bluetooth device on connect with one of them
+		 * enable in car mode
+		 * @return HashMap<Address,Address>
+		 */
 		public HashMap<String, String> getBtDevices() {
 			return btDevices;
 		}
@@ -130,7 +154,7 @@ public class Preferences {
 			this.btDevices = btDevices;
 			this.bluetoothRequired = (btDevices != null && btDevices.size() > 0);
 		}
-
+		
 		public boolean isPowerRequired() {
 			return powerRequired;
 		}
@@ -152,12 +176,25 @@ public class Preferences {
 		public boolean isAdjustVolumeLevel() {
 			return adjustVolumeLevel;
 		}
+		/**
+		 * Level 0-100 of media volume
+		 * @return
+		 */
 		public int getMediaVolumeLevel() {
 			return mediaVolumeLevel;
 		}
 		public boolean isEnableBluetooth() {
 			return enableBluetooth;
 		}
+		/**
+		 * Get brightness preset
+		 * 	@see PreferenceStorage.BRIGHTNESS_DEFAULT
+		 * 	@see PreferenceStorage.BRIGHTNESS_AUTO
+		 * 	@see PreferenceStorage.BRIGHTNESS_DAY
+		 *  @see PreferenceStorage.BRIGHTNESS_NIGHT
+		 * 
+		 * @return
+		 */
 		public String getBrightness() {
 			return brightness;
 		}
@@ -191,13 +228,23 @@ public class Preferences {
 		public void setAutoSpeaker(boolean autoSpeaker) {
 			this.autoSpeaker = autoSpeaker;
 		}
+		/**
+		 * Get wifi action preset
+		 * @see PreferenceStorage.WIFI_NOACTION
+		 * @see PreferenceStorage.WIFI_TURNOFF
+		 * @see PreferenceStorage.WIFI_DISABLE
+		 * @return
+		 */
 		public String getDisableWifi() {
 			return disableWifi;
 		}
 		public void setDisableWifi(String disableWifi) {
 			this.disableWifi = disableWifi;
 		}
-		
+		/**
+		 * Activate or not built-in android Car Mode
+		 * @return
+		 */
 		public boolean activateCarMode() {
 			return this.activateCarMode;
 		}
