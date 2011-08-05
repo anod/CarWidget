@@ -13,8 +13,8 @@ import android.util.Log;
 
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
-import com.anod.car.home.prefs.Preferences;
 import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.prefs.preferences.InCar;
 
 public class ModeService extends Service{
 	private PhoneStateListener mPhoneListener;
@@ -50,7 +50,7 @@ public class ModeService extends Service{
 	@Override
 	public void onDestroy() {
 		stopForeground(true);
-		Preferences.InCar prefs = PreferencesStorage.loadInCar(this);
+		InCar prefs = PreferencesStorage.loadInCar(this);
 		if (mForceState) {
 			Handler.forceState(prefs, false);
 		}
@@ -77,7 +77,7 @@ public class ModeService extends Service{
 			stopSelf();
 			return;
 		}
-		Preferences.InCar prefs = PreferencesStorage.loadInCar(this);
+		InCar prefs = PreferencesStorage.loadInCar(this);
 		sInCarMode = true;
 		if (mForceState) {
 			Handler.forceState(prefs, true);
@@ -87,7 +87,7 @@ public class ModeService extends Service{
 		requestWidgetsUpdate();		
 	}
 
-	private void handlePhoneListener(Preferences.InCar prefs) {
+	private void handlePhoneListener(InCar prefs) {
     	if (prefs.isAutoSpeaker()) {
     		if (mPhoneListener == null) {
     			attachPhoneListener();

@@ -17,8 +17,8 @@ import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.model.LauncherModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.Configuration;
-import com.anod.car.home.prefs.Preferences;
 import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
 
@@ -46,7 +46,7 @@ public class Launcher {
 			PreferencesStorage.setFirstTime(false,context,appWidgetId);
 		}
     	
-    	Preferences.Main prefs = PreferencesStorage.loadMain(context, appWidgetId);
+    	Main prefs = PreferencesStorage.loadMain(context, appWidgetId);
     	
     	Resources resources = context.getResources();
     	String skinName = prefs.getSkin();
@@ -131,7 +131,7 @@ public class Launcher {
 
 	}
 
-	private static void setFont(Preferences.Main prefs,int res,int resText,float scaledDensity,RemoteViews views) {
+	private static void setFont(Main prefs,int res,int resText,float scaledDensity,RemoteViews views) {
    		views.setTextColor(resText, prefs.getFontColor());
     	if (prefs.getFontSize() != PreferencesStorage.FONT_SIZE_UNDEFINED) {
     		if (prefs.getFontSize() == 0) {
@@ -170,7 +170,7 @@ public class Launcher {
 		views.setOnClickPendingIntent(res, configIntent);    	
     }
     
-    private static void setShortcut(int res, int resText, float scale, ShortcutInfo info, Preferences.Main prefs,  RemoteViews views, Context context, int appWidgetId, int cellId) {
+    private static void setShortcut(int res, int resText, float scale, ShortcutInfo info, Main prefs,  RemoteViews views, Context context, int appWidgetId, int cellId) {
 		Bitmap icon = info.getIcon();
 		if (prefs.isIconsMono()) {
 			icon = UtilitiesBitmap.applyBitmapFilter(icon,context);
@@ -188,7 +188,7 @@ public class Launcher {
 		views.setOnClickPendingIntent(res, shortcutIntent);
     }
     
-    private static void setBackground(Preferences.Main prefs, RemoteViews views) {
+    private static void setBackground(Main prefs, RemoteViews views) {
 		int bgColor = prefs.getBackgroundColor();
 		views.setInt(R.id.container, "setBackgroundColor",  bgColor);
     }

@@ -1,0 +1,181 @@
+package com.anod.car.home.prefs;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+import android.content.Context;
+import android.os.Environment;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.Main;
+import com.jsonobjectserialization.JSONInputStream;
+import com.jsonobjectserialization.JSONOutputStream;
+import com.jsonobjectserialization.JSONStreamException;
+
+public class BackupManager {
+    /**
+     * We serialize access to our persistent data through a global static
+     * object.  This ensures that in the unlikely event of the our backup/restore
+     * agent running to perform a backup while our UI is updating the file, the
+     * agent will not accidentally read partially-written data.
+     *
+     * <p>Curious but true: a zero-length array is slightly lighter-weight than
+     * merely allocating an Object, and can still be synchronized on.
+     */
+    static final Object[] sDataLock = new Object[0];
+
+    private Context mContext;
+    
+    public BackupManager(Context context) {
+    	mContext = context;
+    }
+    
+    
+	public void doBackupMain(String filename, int appWidgetId) {
+        String state = Environment.getExternalStorageState();
+        if (!Environment.MEDIA_MOUNTED.equals(state)) {
+            // We can read and write the media
+            Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
+        	return;
+        	
+        }
+
+        File dataFile = new File(mContext.getExternalFilesDir(null), filename);
+  
+        Main prefs = PreferencesStorage.loadMain(mContext, appWidgetId);
+        try {
+            RandomAccessFile file = new RandomAccessFile(dataFile, "rw");
+            synchronized (BackupManager.sDataLock) {
+    	        // Serializing it to JSON string
+    	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    	        JSONOutputStream jos = new JSONOutputStream(baos);
+    	        jos.writeObject(prefs);
+    	        jos.close();
+    	        
+    	        // Get the string form the output stream and print it
+    	        String jsonString = baos.toString();
+    	        file.writeUTF(jsonString);
+            }
+		} catch (IOException e) {
+            Toast.makeText(mContext, "BackupManager failed to write the file", Toast.LENGTH_SHORT).show();
+			e.printStackTrace();
+			return;
+		}
+        Toast.makeText(mContext, "Backup is done.", Toast.LENGTH_SHORT).show();
+	}
+	
+	public void doBackupInCar(String filename) {
+        String state = Environment.getExternalStorageState();
+        if (!Environment.MEDIA_MOUNTED.equals(state)) {
+            // We can read and write the media
+            Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
+        	return;
+        	
+        }
+
+        File dataFile = new File(mContext.getExternalFilesDir(null), filename);
+  
+        InCar prefs = PreferencesStorage.loadInCar(mContext);
+        try {
+            RandomAccessFile file = new RandomAccessFile(dataFile, "rw");
+            synchronized (BackupManager.sDataLock) {
+    	        // Serializing it to JSON string
+    	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    	        JSONOutputStream jos = new JSONOutputStream(baos);
+    	        jos.writeObject(prefs);
+    	        jos.close();
+    	        
+    	        // Get the string form the output stream and print it
+    	        String jsonString = baos.toString();
+    	        file.writeUTF(jsonString);
+            }
+		} catch (IOException e) {
+            Toast.makeText(mContext, "BackupManager failed to write the file", Toast.LENGTH_SHORT).show();
+			e.printStackTrace();
+			return;
+		}
+        Toast.makeText(mContext, "Backup is done.", Toast.LENGTH_SHORT).show();
+	}
+	
+	public void doRestoreInCar(String filename) {
+        String state = Environment.getExternalStorageState();
+        if (!Environment.MEDIA_MOUNTED.equals(state) && !Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
+        	return;
+        }
+
+        File dataFile = new File(mContext.getExternalFilesDir(null), filename);
+        if (!dataFile.exists()) {
+            Toast.makeText(mContext, "Backup file is not exists", Toast.LENGTH_SHORT).show();
+        	return;  
+        }
+        if (!dataFile.canRead()) {
+            Toast.makeText(mContext, "Can't read the backup", Toast.LENGTH_SHORT).show();
+        	return;       	
+        }
+        
+        InCar prefs = null;
+        try {
+            RandomAccessFile file = new RandomAccessFile(dataFile, "r");
+            synchronized (BackupManager.sDataLock) {
+            	String jsonString = file.readUTF();
+            	JSONInputStream jis = new JSONInputStream(jsonString);
+            	prefs = jis.readObject(InCar.class);
+            }
+		} catch (IOException e) {
+            Toast.makeText(mContext, "BackupManager failed to read the file", Toast.LENGTH_SHORT).show();
+			e.printStackTrace();
+			return;
+		} catch (JSONStreamException e) 
+        {
+            Toast.makeText(mContext, "Failed to deserialize backup", Toast.LENGTH_SHORT).show();
+            Log.e("JSONObjectSerialization", "Failed to deserialize the object");
+            return;
+        }
+		PreferencesStorage.saveInCar(mContext, prefs);
+        Toast.makeText(mContext, "Restore is done.", Toast.LENGTH_SHORT).show();
+	}
+
+	public void doRestoreMain(String filename, int appWidgetId) {
+        String state = Environment.getExternalStorageState();
+        if (!Environment.MEDIA_MOUNTED.equals(state) && !Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
+        	return;
+        }
+
+        File dataFile = new File(mContext.getExternalFilesDir(null), filename);
+        if (!dataFile.exists()) {
+            Toast.makeText(mContext, "Backup file is not exists", Toast.LENGTH_SHORT).show();
+        	return;  
+        }
+        if (!dataFile.canRead()) {
+            Toast.makeText(mContext, "Can't read the backup", Toast.LENGTH_SHORT).show();
+        	return;       	
+        }
+        
+        Main prefs = null;
+        try {
+            RandomAccessFile file = new RandomAccessFile(dataFile, "r");
+            synchronized (BackupManager.sDataLock) {
+            	String jsonString = file.readUTF();
+            	JSONInputStream jis = new JSONInputStream(jsonString);
+            	prefs = jis.readObject(Main.class);
+            }
+		} catch (IOException e) {
+            Toast.makeText(mContext, "BackupManager failed to read the file", Toast.LENGTH_SHORT).show();
+			e.printStackTrace();
+			return;
+		} catch (JSONStreamException e) 
+        {
+            Toast.makeText(mContext, "Failed to deserialize backup", Toast.LENGTH_SHORT).show();
+            Log.e("JSONObjectSerialization", "Failed to deserialize the object");
+            return;
+        }
+
+        Toast.makeText(mContext, "Restore is done.", Toast.LENGTH_SHORT).show();
+	}
+}

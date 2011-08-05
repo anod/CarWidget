@@ -13,8 +13,8 @@ import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.util.Log;
 
-import com.anod.car.home.prefs.Preferences;
 import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.prefs.preferences.InCar;
 
 
 public class Handler {
@@ -41,7 +41,7 @@ public class Handler {
 		if (!PreferencesStorage.isInCarModeEnabled(context)) { // TODO remove it
 			return;
 		}
-		Preferences.InCar prefs = PreferencesStorage.loadInCar(context);
+		InCar prefs = PreferencesStorage.loadInCar(context);
 		if (Intent.ACTION_POWER_DISCONNECTED.equals(intent.getAction())
 		) {
 			onPowerDisconnected(prefs);
@@ -67,13 +67,13 @@ public class Handler {
 		}
 	}
 	
-	private static void updatePrefState(Preferences.InCar prefs) {
+	private static void updatePrefState(InCar prefs) {
 		sPrefState[FLAG_POWER] = isPlugRequired(FLAG_POWER,prefs);
 		sPrefState[FLAG_BLUETOOTH] = isPlugRequired(FLAG_BLUETOOTH,prefs);
 		sPrefState[FLAG_HEADSET] = isPlugRequired(FLAG_HEADSET,prefs);
 	}
 	
-	public static void forceState(Preferences.InCar prefs, boolean forceMode) {
+	public static void forceState(InCar prefs, boolean forceMode) {
 		updatePrefState(prefs);
 		if (sPrefState[FLAG_POWER]) {
 			sEventState[FLAG_POWER] = forceMode;
@@ -86,7 +86,7 @@ public class Handler {
 		}		
 	}
 	
-	private static boolean isPlugRequired(byte flag, Preferences.InCar prefs) {
+	private static boolean isPlugRequired(byte flag, InCar prefs) {
 		switch(flag) {
 			case FLAG_POWER:
 				return prefs.isPowerRequired();
@@ -98,7 +98,7 @@ public class Handler {
 		throw new IllegalArgumentException("Unsupported");
 	}
 	
-	private static void updateEventState(Preferences.InCar prefs, Intent intent ) {
+	private static void updateEventState(InCar prefs, Intent intent ) {
 		String action = intent.getAction();
 		if (Intent.ACTION_POWER_DISCONNECTED.equals(action)) {
 			sEventState[FLAG_POWER] = false;
@@ -160,7 +160,7 @@ public class Handler {
 		return newMode;
 	}
 	
-	private static void onPowerConnected(Preferences.InCar prefs) {
+	private static void onPowerConnected(InCar prefs) {
 		if (prefs.isEnableBluetoothOnPower()) {
 			if (Bluetooth.getState() != BluetoothAdapter.STATE_ON) {
 				Bluetooth.switchOn();
@@ -168,7 +168,7 @@ public class Handler {
 		}
 	}
 
-	private static void onPowerDisconnected(Preferences.InCar prefs) {
+	private static void onPowerDisconnected(InCar prefs) {
 		if (prefs.isDisableBluetoothOnPower()) {
 			if (Bluetooth.getState() != BluetoothAdapter.STATE_OFF) {
 				Bluetooth.switchOff();
@@ -176,7 +176,7 @@ public class Handler {
 		}
 	}
 	
-	public static void switchOn(Preferences.InCar prefs, Context context) {
+	public static void switchOn(InCar prefs, Context context) {
 		if (prefs.isDisableScreenTimeout()) {
 			acquireWakeLock(context);
 		}
@@ -198,7 +198,7 @@ public class Handler {
 		}
 	}	
 	
-	public static void switchOff(Preferences.InCar prefs, Context context) {
+	public static void switchOff(InCar prefs, Context context) {
 		if (prefs.isDisableScreenTimeout()) {
 			releaseWakeLock();
 		}
@@ -326,7 +326,7 @@ public class Handler {
 		return true;
 	}
 	
-	private static void adjustVolume(Preferences.InCar prefs,Context context) {
+	private static void adjustVolume(InCar prefs,Context context) {
 		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 		int adjVolume = prefs.getMediaVolumeLevel();
 		int volume = PreferencesStorage.DEFAULT_VOLUME_LEVEL;

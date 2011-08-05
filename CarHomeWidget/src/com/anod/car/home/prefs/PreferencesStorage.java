@@ -15,6 +15,8 @@ import android.util.Log;
 import com.anod.car.home.R;
 import com.anod.car.home.model.LauncherModel;
 import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.Main;
 
 public class PreferencesStorage {
 	public static final int LAUNCH_COMPONENT_NUMBER=6;
@@ -71,11 +73,11 @@ public class PreferencesStorage {
     
     private static final String DELIMETER_PACKAGES = "\n";
     
-    public static Preferences.Main loadMain(Context context, int appWidgetId) {
+    public static Main loadMain(Context context, int appWidgetId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Resources res = context.getResources();
 
-        Preferences.Main p = (new Preferences()).getMain();
+        Main p = (new Preferences()).getMain();
         String skinName = prefs.getString(getName(SKIN, appWidgetId), SKIN_GLOSSY);
     	p.setSkin(skinName);
     	p.setLauncherComponents(getLauncherComponents(prefs, appWidgetId));
@@ -99,9 +101,37 @@ public class PreferencesStorage {
     	return p;
     }
     
-    public static Preferences.InCar loadInCar(Context context) {
+    public static void saveMain(Context context, Main prefs, int appWidgetId) {
+    	SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
+    	Editor editor = p.edit();
+    	
+		ArrayList<Long> ids = prefs.getLauncherComponents();
+		for (int i=0; i<LAUNCH_COMPONENT_NUMBER; i++) {
+	        editor.putLong(getLaunchComponentName(i, appWidgetId), ids.get(i));
+		}
+		
+    	editor.putString(getName(SKIN, appWidgetId), prefs.getSkin());
+		Integer tileColor = null;
+		if (prefs.getSkin().equals(PreferencesStorage.SKIN_WINDOWS7)) {
+			tileColor = prefs.getTileColor();
+		}
+    	editor.putInt(getName(BUTTON_COLOR, appWidgetId), tileColor);
+    	editor.putString(getName(ICONS_SCALE, appWidgetId), prefs.getIconsScale());
+    	editor.putBoolean(getName(ICONS_MONO, appWidgetId), prefs.isIconsMono());
+    	editor.putInt(getName(BG_COLOR, appWidgetId), prefs.getBackgroundColor());
+    	editor.putInt(getName(ICONS_COLOR, appWidgetId), prefs.getIconsColor());
+    	editor.putInt(getName(FONT_COLOR, appWidgetId), prefs.getFontColor());
+    	editor.putInt(getName(FONT_SIZE, appWidgetId), prefs.getFontSize());
+    	
+    	editor.putBoolean(getName(TRANSPARENT_BTN_SETTINGS, appWidgetId), prefs.isSettingsTransparent());
+    	editor.putBoolean(getName(TRANSPARENT_BTN_INCAR, appWidgetId), prefs.isSettingsTransparent());
+    	
+		editor.commit();
+		
+    }
+    public static InCar loadInCar(Context context) {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-    	Preferences.InCar p = (new Preferences()).getIncar();
+    	InCar p = (new Preferences()).getIncar();
 
     	p.setDisableBluetoothOnPower(prefs.getBoolean(POWER_BT_DISABLE, false));
     	p.setEnableBluetoothOnPower(prefs.getBoolean(POWER_BT_ENABLE, false));
@@ -121,6 +151,31 @@ public class PreferencesStorage {
     	return p;
     }
 
+    public static void saveInCar(Context context,InCar prefs) {
+    	SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
+    	Editor editor = p.edit();
+    	
+    	editor.putBoolean(INCAR_MODE_ENABLED, prefs.isInCarEnabled());
+    	editor.putBoolean(POWER_BT_DISABLE, prefs.isDisableBluetoothOnPower());
+    	editor.putBoolean(POWER_BT_ENABLE, prefs.isEnableBluetoothOnPower());
+
+    	editor.putBoolean(POWER_REQUIRED, prefs.isPowerRequired());
+    	editor.putBoolean(HEADSET_REQUIRED, prefs.isHeadsetRequired());
+
+    	editor.putBoolean(AUTO_SPEAKER, prefs.isAutoSpeaker());
+    	editor.putBoolean(BLUETOOTH, prefs.isEnableBluetooth());
+    	editor.putBoolean(SCREEN_TIMEOUT, prefs.isDisableScreenTimeout());
+    	editor.putString(BRIGHTNESS, prefs.getBrightness());
+    	editor.putBoolean(ADJUST_VOLUME_LEVEL, prefs.isAdjustVolumeLevel());
+    	editor.putInt(VOLUME_LEVEL, prefs.getMediaVolumeLevel());
+    	editor.putString(ADJUST_WIFI, prefs.getDisableWifi());
+    	editor.putBoolean(ACTIVATE_CAR_MODE, prefs.activateCarMode());
+		editor.commit();
+		
+		saveBtDevices(context, prefs.getBtDevices());
+    }
+    
+    
     public static HashMap<String,String> getBtDevices(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String addrStr = prefs.getString(BLUETOOTH_DEVICE_ADDRESSES, null);

@@ -45,12 +45,15 @@ import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
 import com.anod.car.home.model.AllAppsListCache;
 import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.prefs.views.LauncherItemPreference;
 import com.anod.car.home.prefs.views.SeekBarPreference;
 
 public class Configuration extends PreferenceActivity {
-    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private static final String RESTORE_BTN = "restore-btn-incar";
+	private static final String BACKUP_BTN = "backup-btn-incar";
+	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private static final int REQUEST_PICK_SHORTCUT = 2;
 	private static final int REQUEST_PICK_APPLICATION = 3;
 	private static final int REQUEST_CREATE_SHORTCUT=4;
@@ -95,6 +98,7 @@ public class Configuration extends PreferenceActivity {
     	super.onCreate(savedInstanceState);
 
     	addPreferencesFromResource(R.xml.preferences);
+    	addPreferencesFromResource(R.xml.preference_backup);
     	
     	Intent launchIntent = getIntent();
         Bundle extras = launchIntent.getExtras();
@@ -111,7 +115,7 @@ public class Configuration extends PreferenceActivity {
         mContext = (Context)this;
         mModel = new ShortcutModel(mContext);
         
-        Preferences.Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
+        Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
         
        	initActivityChooser(prefs);
        	initButtonSkin(prefs);
@@ -125,6 +129,7 @@ public class Configuration extends PreferenceActivity {
        		initInCar();
        	}
        	initOther();
+       	initBackup();
        	
        	int cellId = extras.getInt(EXTRA_CELL_ID,INVALID_CELL_ID);
        	if (cellId!=INVALID_CELL_ID) {
@@ -133,7 +138,7 @@ public class Configuration extends PreferenceActivity {
        	
     }
     
-    private void initTransparent(boolean isFree, final Preferences.Main prefs) {
+    private void initTransparent(boolean isFree, final Main prefs) {
     	CheckBoxPreference setTrans = (CheckBoxPreference)findPreference(PreferencesStorage.TRANSPARENT_BTN_SETTINGS);
     	String key = PreferencesStorage.getName(PreferencesStorage.TRANSPARENT_BTN_SETTINGS, mAppWidgetId);
     	setTrans.setKey(key);
@@ -239,7 +244,7 @@ public class Configuration extends PreferenceActivity {
 
     }
     
-    private void initButtonSkin(final Preferences.Main prefs) {  	
+    private void initButtonSkin(final Main prefs) {  	
     	final Preference btnColor = (Preference)findPreference(PreferencesStorage.BUTTON_COLOR);
     	btnColor.setKey(PreferencesStorage.getName(PreferencesStorage.BUTTON_COLOR, mAppWidgetId));
     	btnColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -292,7 +297,7 @@ public class Configuration extends PreferenceActivity {
 		);
     }
 
-    private void initBackground(final Preferences.Main prefs) { 	
+    private void initBackground(final Main prefs) { 	
     	Preference bgColor = (Preference)findPreference(PreferencesStorage.BG_COLOR);
     	bgColor.setKey(PreferencesStorage.getName(PreferencesStorage.BG_COLOR, mAppWidgetId));
 
@@ -318,7 +323,7 @@ public class Configuration extends PreferenceActivity {
 
     }
     
-    private void initIcon(final Preferences.Main prefs) {  	
+    private void initIcon(final Main prefs) {  	
     	CheckBoxPreference icnMono = (CheckBoxPreference)findPreference(PreferencesStorage.ICONS_MONO);
     	String key = PreferencesStorage.getName(PreferencesStorage.ICONS_MONO, mAppWidgetId);
     	icnMono.setKey(key);
@@ -352,7 +357,7 @@ public class Configuration extends PreferenceActivity {
     	icnScale.setValue(prefs.getIconsScale());
     }
 
-    private void initFont(final Preferences.Main prefs) {
+    private void initFont(final Main prefs) {
     	SeekBarPreference sbPref = (SeekBarPreference)findPreference(PreferencesStorage.FONT_SIZE);
        	sbPref.setKey(PreferencesStorage.getName(PreferencesStorage.FONT_SIZE, mAppWidgetId));
        	int fontSize = prefs.getFontSize();
@@ -387,7 +392,7 @@ public class Configuration extends PreferenceActivity {
     	});
     }
     
-    private void initActivityChooser(Preferences.Main prefs) {
+    private void initActivityChooser(Main prefs) {
     	ArrayList<Long> currentShortcutIds = prefs.getLauncherComponents();
     	mModel.init(currentShortcutIds);
         for (int i=0; i<PreferencesStorage.LAUNCH_COMPONENT_NUMBER;i++) {
@@ -487,6 +492,28 @@ public class Configuration extends PreferenceActivity {
 			}
     	});
    	
+    }
+    
+    private void initBackup() {
+    	final String fileName = "incar.json";
+    	Preference backup = (Preference)findPreference(BACKUP_BTN);
+    	backup.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				BackupManager b = new BackupManager(mContext);
+				b.doBackupInCar(fileName);
+				return false;
+			}
+    	});
+    	Preference restore = (Preference)findPreference(RESTORE_BTN);
+    	restore.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				BackupManager b = new BackupManager(mContext);
+				b.doRestoreInCar(fileName);
+				return false;
+			}
+    	});
     }
     
     @Override
