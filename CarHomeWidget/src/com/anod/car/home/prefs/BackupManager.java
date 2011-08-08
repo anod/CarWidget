@@ -17,7 +17,9 @@ import com.jsonobjectserialization.JSONOutputStream;
 import com.jsonobjectserialization.JSONStreamException;
 
 public class BackupManager {
-    /**
+    private static final String FILE_INCAR_JSON = "backup_incar.json";
+
+	/**
      * We serialize access to our persistent data through a global static
      * object.  This ensures that in the unlikely event of the our backup/restore
      * agent running to perform a backup while our UI is updating the file, the
@@ -44,8 +46,16 @@ public class BackupManager {
         	
         }
 
-        File dataFile = new File(mContext.getExternalFilesDir(null), filename);
-  
+        StringBuilder sb = new StringBuilder(mContext.getExternalFilesDir(null).getPath());
+        sb.append(File.pathSeparator);
+        sb.append("backup_main");
+
+        File dataFile = new File(sb.toString(), filename);
+
+        if (!dataFile.exists()) {
+        	dataFile.mkdirs();
+        } 
+        
         Main prefs = PreferencesStorage.loadMain(mContext, appWidgetId);
         try {
             RandomAccessFile file = new RandomAccessFile(dataFile, "rw");
@@ -58,6 +68,7 @@ public class BackupManager {
     	        
     	        // Get the string form the output stream and print it
     	        String jsonString = baos.toString();
+            	Log.d("CarHomeWidget","jsonString: " + jsonString);
     	        file.writeUTF(jsonString);
             }
 		} catch (IOException e) {
@@ -68,7 +79,7 @@ public class BackupManager {
         Toast.makeText(mContext, "Backup is done.", Toast.LENGTH_SHORT).show();
 	}
 	
-	public void doBackupInCar(String filename) {
+	public void doBackupInCar() {
         String state = Environment.getExternalStorageState();
         if (!Environment.MEDIA_MOUNTED.equals(state)) {
             // We can read and write the media
@@ -77,7 +88,7 @@ public class BackupManager {
         	
         }
 
-        File dataFile = new File(mContext.getExternalFilesDir(null), filename);
+        File dataFile = new File(mContext.getExternalFilesDir(null), FILE_INCAR_JSON);
   
         InCar prefs = PreferencesStorage.loadInCar(mContext);
         try {
@@ -91,6 +102,7 @@ public class BackupManager {
     	        
     	        // Get the string form the output stream and print it
     	        String jsonString = baos.toString();
+            	Log.d("CarHomeWidget","jsonString: " + jsonString);
     	        file.writeUTF(jsonString);
             }
 		} catch (IOException e) {
@@ -101,14 +113,14 @@ public class BackupManager {
         Toast.makeText(mContext, "Backup is done.", Toast.LENGTH_SHORT).show();
 	}
 	
-	public void doRestoreInCar(String filename) {
+	public void doRestoreInCar() {
         String state = Environment.getExternalStorageState();
         if (!Environment.MEDIA_MOUNTED.equals(state) && !Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
             Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
         	return;
         }
 
-        File dataFile = new File(mContext.getExternalFilesDir(null), filename);
+        File dataFile = new File(mContext.getExternalFilesDir(null), FILE_INCAR_JSON);
         if (!dataFile.exists()) {
             Toast.makeText(mContext, "Backup file is not exists", Toast.LENGTH_SHORT).show();
         	return;  
@@ -123,6 +135,7 @@ public class BackupManager {
             RandomAccessFile file = new RandomAccessFile(dataFile, "r");
             synchronized (BackupManager.sDataLock) {
             	String jsonString = file.readUTF();
+            	Log.d("CarHomeWidget","jsonString: " + jsonString);
             	JSONInputStream jis = new JSONInputStream(jsonString);
             	prefs = jis.readObject(InCar.class);
             }
@@ -162,6 +175,7 @@ public class BackupManager {
             RandomAccessFile file = new RandomAccessFile(dataFile, "r");
             synchronized (BackupManager.sDataLock) {
             	String jsonString = file.readUTF();
+            	Log.d("CarHomeWidget","jsonString: " + jsonString);
             	JSONInputStream jis = new JSONInputStream(jsonString);
             	prefs = jis.readObject(Main.class);
             }
@@ -175,7 +189,7 @@ public class BackupManager {
             Log.e("JSONObjectSerialization", "Failed to deserialize the object");
             return;
         }
-
+		PreferencesStorage.saveMain(mContext, prefs, appWidgetId);
         Toast.makeText(mContext, "Restore is done.", Toast.LENGTH_SHORT).show();
 	}
 }

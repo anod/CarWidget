@@ -15,6 +15,7 @@ import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
@@ -29,6 +30,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
@@ -51,8 +53,11 @@ import com.anod.car.home.prefs.views.LauncherItemPreference;
 import com.anod.car.home.prefs.views.SeekBarPreference;
 
 public class Configuration extends PreferenceActivity {
-    private static final String RESTORE_BTN = "restore-btn-incar";
-	private static final String BACKUP_BTN = "backup-btn-incar";
+    private static final String RESTORE_BTN_INCAR = "restore-btn-incar";
+	private static final String BACKUP_BTN_INCAR = "backup-btn-incar";
+    private static final String RESTORE_BTN_MAIN = "restore-btn-main";
+	private static final String BACKUP_BTN_MAIN = "backup-btn-main";
+	
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private static final int REQUEST_PICK_SHORTCUT = 2;
 	private static final int REQUEST_PICK_APPLICATION = 3;
@@ -495,22 +500,42 @@ public class Configuration extends PreferenceActivity {
     }
     
     private void initBackup() {
-    	final String fileName = "incar.json";
-    	Preference backup = (Preference)findPreference(BACKUP_BTN);
-    	backup.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+    	final String filename = "backup-"+mAppWidgetId;
+    	Preference backup_main = (Preference)findPreference(BACKUP_BTN_MAIN);
+    	
+    	backup_main.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				BackupManager b = new BackupManager(mContext);
-				b.doBackupInCar(fileName);
+				b.doBackupMain(filename, mAppWidgetId);			
 				return false;
 			}
     	});
-    	Preference restore = (Preference)findPreference(RESTORE_BTN);
-    	restore.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+    	Preference restore_main = (Preference)findPreference(RESTORE_BTN_MAIN);
+    	restore_main.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				BackupManager b = new BackupManager(mContext);
-				b.doRestoreInCar(fileName);
+				b.doRestoreMain(filename, mAppWidgetId);
+				return false;
+			}
+    	});
+    	
+    	Preference backup_incar = (Preference)findPreference(BACKUP_BTN_INCAR);
+    	backup_incar.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				BackupManager b = new BackupManager(mContext);
+				b.doBackupInCar();
+				return false;
+			}
+    	});
+    	Preference restore_incar = (Preference)findPreference(RESTORE_BTN_INCAR);
+    	restore_incar.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				BackupManager b = new BackupManager(mContext);
+				b.doRestoreInCar();
 				return false;
 			}
     	});

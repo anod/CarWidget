@@ -107,7 +107,7 @@ public class PreferencesStorage {
     	
 		ArrayList<Long> ids = prefs.getLauncherComponents();
 		for (int i=0; i<LAUNCH_COMPONENT_NUMBER; i++) {
-	        editor.putLong(getLaunchComponentName(i, appWidgetId), ids.get(i));
+	        //editor.putLong(getLaunchComponentName(i, appWidgetId), ids.get(i));
 		}
 		
     	editor.putString(getName(SKIN, appWidgetId), prefs.getSkin());
