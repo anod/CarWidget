@@ -110,15 +110,19 @@ public class PreferencesStorage {
 		}
 		
     	editor.putString(getName(SKIN, appWidgetId), prefs.getSkin());
-		Integer tileColor = null;
-		if (prefs.getSkin().equals(PreferencesStorage.SKIN_WINDOWS7)) {
-			tileColor = prefs.getTileColor();
-		}
-    	editor.putInt(getName(BUTTON_COLOR, appWidgetId), tileColor);
+
+    	Integer defTileColor = prefs.getTileColor();
+    	if (defTileColor != null) {
+    		editor.putInt(getName(BUTTON_COLOR, appWidgetId), defTileColor);
+    	}
     	editor.putString(getName(ICONS_SCALE, appWidgetId), prefs.getIconsScale());
     	editor.putBoolean(getName(ICONS_MONO, appWidgetId), prefs.isIconsMono());
     	editor.putInt(getName(BG_COLOR, appWidgetId), prefs.getBackgroundColor());
-    	editor.putInt(getName(ICONS_COLOR, appWidgetId), prefs.getIconsColor());
+    	Integer iconsColor = prefs.getIconsColor();
+    	if (iconsColor != null) {
+        	editor.putInt(getName(ICONS_COLOR, appWidgetId), iconsColor);
+    	}
+
     	editor.putInt(getName(FONT_COLOR, appWidgetId), prefs.getFontColor());
     	editor.putInt(getName(FONT_SIZE, appWidgetId), prefs.getFontSize());
     	

@@ -8,7 +8,6 @@ import java.io.RandomAccessFile;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.Main;
@@ -17,10 +16,16 @@ import com.jsonobjectserialization.JSONOutputStream;
 import com.jsonobjectserialization.JSONStreamException;
 
 public class BackupManager {
+	public static final int RESULT_DONE = 0;
+	public static final int ERROR_STORAGE_NOT_AVAILABLE = 1;
+	public static final int ERROR_FILE_NOT_EXIST = 2;
+	public static final int ERROR_FILE_READ = 3;
+	public static final int ERROR_FILE_WRITE = 4;
+	public static final int ERROR_DESERIALIZE = 5;
+
     private static final String BACKUP_MAIN_DIRNAME = "backup_main";
-
 	private static final String FILE_INCAR_JSON = "backup_incar.json";
-
+	
 	/**
      * We serialize access to our persistent data through a global static
      * object.  This ensures that in the unlikely event of the our backup/restore
@@ -54,9 +59,9 @@ public class BackupManager {
     	return dataFile.lastModified();
     }
     
-	public void doBackupMain(String filename, int appWidgetId) {
+	public int doBackupMain(String filename, int appWidgetId) {
         if (!checkMediaWritable()) {
-        	return;
+        	return ERROR_STORAGE_NOT_AVAILABLE;
         }
 
         File saveDir = getMainBackupDir();
@@ -82,17 +87,16 @@ public class BackupManager {
     	        file.writeUTF(jsonString);
             }
 		} catch (IOException e) {
-            Toast.makeText(mContext, "BackupManager failed to write the file", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
-			return;
+			return ERROR_FILE_WRITE;
 		}
 		saveDir.setLastModified(System.currentTimeMillis());
-        Toast.makeText(mContext, "Backup is done.", Toast.LENGTH_SHORT).show();
+		return RESULT_DONE;
 	}
 	
-	public void doBackupInCar() {
+	public int doBackupInCar() {
         if (!checkMediaWritable()) {
-        	return;
+        	return ERROR_STORAGE_NOT_AVAILABLE;
         }
 
         File dataFile = new File(mContext.getExternalFilesDir(null), FILE_INCAR_JSON);
@@ -113,26 +117,23 @@ public class BackupManager {
     	        file.writeUTF(jsonString);
             }
 		} catch (IOException e) {
-            Toast.makeText(mContext, "BackupManager failed to write the file", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
-			return;
+			return ERROR_FILE_WRITE;
 		}
-        Toast.makeText(mContext, "Backup is done.", Toast.LENGTH_SHORT).show();
+		return RESULT_DONE;
 	}
 	
-	public void doRestoreInCar() {
+	public int doRestoreInCar() {
 		if (!checkMediaReadable()) {
-			return;
+			return ERROR_STORAGE_NOT_AVAILABLE;
 		}
 
         File dataFile = new File(mContext.getExternalFilesDir(null), FILE_INCAR_JSON);
         if (!dataFile.exists()) {
-            Toast.makeText(mContext, "Backup file is not exists", Toast.LENGTH_SHORT).show();
-        	return;  
+        	return ERROR_FILE_NOT_EXIST;  
         }
         if (!dataFile.canRead()) {
-            Toast.makeText(mContext, "Can't read the backup", Toast.LENGTH_SHORT).show();
-        	return;       	
+        	return ERROR_FILE_READ;       	
         }
         
         InCar prefs = null;
@@ -145,33 +146,27 @@ public class BackupManager {
             	prefs = jis.readObject(InCar.class);
             }
 		} catch (IOException e) {
-            Toast.makeText(mContext, "BackupManager failed to read the file", Toast.LENGTH_SHORT).show();
-			e.printStackTrace();
-			return;
+			return ERROR_FILE_READ;
 		} catch (JSONStreamException e) 
         {
-            Toast.makeText(mContext, "Failed to deserialize backup", Toast.LENGTH_SHORT).show();
-            Log.e("JSONObjectSerialization", "Failed to deserialize the object");
-            return;
+            return ERROR_DESERIALIZE;
         }
 		PreferencesStorage.saveInCar(mContext, prefs);
-        Toast.makeText(mContext, "Restore is done.", Toast.LENGTH_SHORT).show();
+		return RESULT_DONE;
 	}
 
-	public void doRestoreMain(String filename, int appWidgetId) {
+	public int doRestoreMain(String filename, int appWidgetId) {
 		if (!checkMediaReadable()) {
-			return;
+			return ERROR_STORAGE_NOT_AVAILABLE;
 		}
 		
         File saveDir = getMainBackupDir();
         File dataFile = new File(saveDir, filename);
         if (!dataFile.exists()) {
-            Toast.makeText(mContext, "Backup file is not exists", Toast.LENGTH_SHORT).show();
-        	return;  
+        	return ERROR_FILE_NOT_EXIST;  
         }
         if (!dataFile.canRead()) {
-            Toast.makeText(mContext, "Can't read the backup", Toast.LENGTH_SHORT).show();
-        	return;       	
+        	return ERROR_FILE_READ;       	
         }
         
         Main prefs = null;
@@ -184,19 +179,14 @@ public class BackupManager {
             	prefs = jis.readObject(Main.class);
             }
 		} catch (IOException e) {
-            Toast.makeText(mContext, "BackupManager failed to read the file", Toast.LENGTH_SHORT).show();
-			e.printStackTrace();
-			return;
+			return ERROR_FILE_READ;
 		} catch (JSONStreamException e) 
         {
-            Toast.makeText(mContext, "Failed to deserialize backup", Toast.LENGTH_SHORT).show();
-            Log.e("JSONObjectSerialization", "Failed to deserialize the object");
-            return;
+            return ERROR_DESERIALIZE;
         }
 		PreferencesStorage.saveMain(mContext, prefs, appWidgetId);
-        Toast.makeText(mContext, "Restore is done.", Toast.LENGTH_SHORT).show();
+		return RESULT_DONE;
 	}
-	
 	
 	private File getMainBackupDir() {
         StringBuilder sb = new StringBuilder(mContext.getExternalFilesDir(null).getPath());
@@ -209,9 +199,7 @@ public class BackupManager {
         String state = Environment.getExternalStorageState();
         if (!Environment.MEDIA_MOUNTED.equals(state)) {
             // We can read and write the media
-            Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
-        	return false;
-        	
+        	return false;        	
         }
         return true;
 	}
@@ -219,7 +207,6 @@ public class BackupManager {
 	private boolean checkMediaReadable() {
         String state = Environment.getExternalStorageState();
         if (!Environment.MEDIA_MOUNTED.equals(state) && !Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
         	return false;
         }
         return true;
