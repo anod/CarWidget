@@ -17,7 +17,9 @@ import com.jsonobjectserialization.JSONOutputStream;
 import com.jsonobjectserialization.JSONStreamException;
 
 public class BackupManager {
-    private static final String FILE_INCAR_JSON = "backup_incar.json";
+    private static final String BACKUP_MAIN_DIRNAME = "backup_main";
+
+	private static final String FILE_INCAR_JSON = "backup_incar.json";
 
 	/**
      * We serialize access to our persistent data through a global static
@@ -36,25 +38,33 @@ public class BackupManager {
     	mContext = context;
     }
     
+    public long getMainTime() {
+    	File saveDir = getMainBackupDir();
+    	if (!saveDir.isDirectory()) {
+    		return 0;
+    	}
+    	return saveDir.lastModified();
+    }
+    
+    public long getIncarTime() {
+    	File dataFile = new File(mContext.getExternalFilesDir(null), FILE_INCAR_JSON);
+    	if (!dataFile.exists()) {
+    		return 0;
+    	}
+    	return dataFile.lastModified();
+    }
     
 	public void doBackupMain(String filename, int appWidgetId) {
-        String state = Environment.getExternalStorageState();
-        if (!Environment.MEDIA_MOUNTED.equals(state)) {
-            // We can read and write the media
-            Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
+        if (!checkMediaWritable()) {
         	return;
-        	
         }
 
-        StringBuilder sb = new StringBuilder(mContext.getExternalFilesDir(null).getPath());
-        sb.append(File.pathSeparator);
-        sb.append("backup_main");
-
-        File dataFile = new File(sb.toString(), filename);
-
-        if (!dataFile.exists()) {
-        	dataFile.mkdirs();
+        File saveDir = getMainBackupDir();
+        if (!saveDir.exists()) {
+        	saveDir.mkdirs();
         } 
+        
+        File dataFile = new File(saveDir, filename);
         
         Main prefs = PreferencesStorage.loadMain(mContext, appWidgetId);
         try {
@@ -76,16 +86,13 @@ public class BackupManager {
 			e.printStackTrace();
 			return;
 		}
+		saveDir.setLastModified(System.currentTimeMillis());
         Toast.makeText(mContext, "Backup is done.", Toast.LENGTH_SHORT).show();
 	}
 	
 	public void doBackupInCar() {
-        String state = Environment.getExternalStorageState();
-        if (!Environment.MEDIA_MOUNTED.equals(state)) {
-            // We can read and write the media
-            Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
+        if (!checkMediaWritable()) {
         	return;
-        	
         }
 
         File dataFile = new File(mContext.getExternalFilesDir(null), FILE_INCAR_JSON);
@@ -114,11 +121,9 @@ public class BackupManager {
 	}
 	
 	public void doRestoreInCar() {
-        String state = Environment.getExternalStorageState();
-        if (!Environment.MEDIA_MOUNTED.equals(state) && !Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
-        	return;
-        }
+		if (!checkMediaReadable()) {
+			return;
+		}
 
         File dataFile = new File(mContext.getExternalFilesDir(null), FILE_INCAR_JSON);
         if (!dataFile.exists()) {
@@ -154,13 +159,12 @@ public class BackupManager {
 	}
 
 	public void doRestoreMain(String filename, int appWidgetId) {
-        String state = Environment.getExternalStorageState();
-        if (!Environment.MEDIA_MOUNTED.equals(state) && !Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
-        	return;
-        }
-
-        File dataFile = new File(mContext.getExternalFilesDir(null), filename);
+		if (!checkMediaReadable()) {
+			return;
+		}
+		
+        File saveDir = getMainBackupDir();
+        File dataFile = new File(saveDir, filename);
         if (!dataFile.exists()) {
             Toast.makeText(mContext, "Backup file is not exists", Toast.LENGTH_SHORT).show();
         	return;  
@@ -191,5 +195,33 @@ public class BackupManager {
         }
 		PreferencesStorage.saveMain(mContext, prefs, appWidgetId);
         Toast.makeText(mContext, "Restore is done.", Toast.LENGTH_SHORT).show();
+	}
+	
+	
+	private File getMainBackupDir() {
+        StringBuilder sb = new StringBuilder(mContext.getExternalFilesDir(null).getPath());
+        sb.append(File.separator);
+        sb.append(BACKUP_MAIN_DIRNAME);
+        return new File(sb.toString());
+	}
+	
+	private boolean checkMediaWritable() {
+        String state = Environment.getExternalStorageState();
+        if (!Environment.MEDIA_MOUNTED.equals(state)) {
+            // We can read and write the media
+            Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
+        	return false;
+        	
+        }
+        return true;
+	}
+	
+	private boolean checkMediaReadable() {
+        String state = Environment.getExternalStorageState();
+        if (!Environment.MEDIA_MOUNTED.equals(state) && !Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
+        	return false;
+        }
+        return true;
 	}
 }

@@ -36,6 +36,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -500,9 +501,24 @@ public class Configuration extends PreferenceActivity {
     }
     
     private void initBackup() {
-    	final String filename = "backup-"+mAppWidgetId;
-    	Preference backup_main = (Preference)findPreference(BACKUP_BTN_MAIN);
+    	String summary;
+    	int format = DateUtils.FORMAT_SHOW_DATE
+			| DateUtils.FORMAT_SHOW_WEEKDAY
+    		| DateUtils.FORMAT_SHOW_TIME
+    		| DateUtils.FORMAT_SHOW_YEAR
+    	;
+    	String lastBackupStr = getString(R.string.last_backup);
     	
+    	final String filename = "backup-"+mAppWidgetId+".json";
+    	Preference backup_main = (Preference)findPreference(BACKUP_BTN_MAIN);
+		BackupManager bm = new BackupManager(mContext);
+		long timeMain = bm.getMainTime();
+		if (timeMain > 0) {
+			summary = DateUtils.formatDateTime(this, timeMain, format);
+		} else {
+			summary = getString(R.string.never);
+		}
+		backup_main.setSummary(String.format(lastBackupStr,summary));
     	backup_main.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
@@ -522,6 +538,13 @@ public class Configuration extends PreferenceActivity {
     	});
     	
     	Preference backup_incar = (Preference)findPreference(BACKUP_BTN_INCAR);
+		long timeIncar = bm.getIncarTime();
+		if (timeIncar > 0) {
+			summary = DateUtils.formatDateTime(this, timeIncar, format);
+		} else {
+			summary = getString(R.string.never);
+		}
+		backup_incar.setSummary(String.format(lastBackupStr,summary));
     	backup_incar.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {

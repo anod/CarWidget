@@ -138,4 +138,7 @@
 	<string name="icon_default">Default</string>
 	<string name="icon_custom">Custom</string>
 	<string name="icon_adw_icon_pack">ADW Icon Pack</string>
+	
+	<string name="last_backup">Last backup: %1$s</string>	
+	<string name="never">Never</string>
 </resources>

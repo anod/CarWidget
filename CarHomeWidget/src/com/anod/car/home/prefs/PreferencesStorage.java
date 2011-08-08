@@ -50,7 +50,6 @@ public class PreferencesStorage {
     public static final String TRANSPARENT_BTN_SETTINGS = "transparent-btn-settings-%d";
     public static final String TRANSPARENT_BTN_INCAR = "transparent-btn-incar-%d";
     
-    
     public static final String INCAR_MODE_ENABLED= "incar-mode-enabled";
     
     public static final String POWER_BT_ENABLE = "power-bt-enable";    
@@ -130,9 +129,12 @@ public class PreferencesStorage {
 		
     }
     public static InCar loadInCar(Context context) {
+    	boolean incarEnabled = isInCarModeEnabled(context);
+    	
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
     	InCar p = (new Preferences()).getIncar();
 
+    	p.setInCarEnabled(incarEnabled);
     	p.setDisableBluetoothOnPower(prefs.getBoolean(POWER_BT_DISABLE, false));
     	p.setEnableBluetoothOnPower(prefs.getBoolean(POWER_BT_ENABLE, false));
     	
