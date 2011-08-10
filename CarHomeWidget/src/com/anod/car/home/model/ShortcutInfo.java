@@ -1,16 +1,30 @@
 package com.anod.car.home.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.net.URISyntaxException;
+
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.anod.car.home.utils.UtilitiesBitmap;
 
 
 /**
  * Represents a launchable icon on the widget
  */
-public class ShortcutInfo  {
+public class ShortcutInfo implements Serializable {
 
-    public static final int NO_ID = -1;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public static final int NO_ID = -1;
 
     /**
      * The id in the settings database for this item
@@ -31,7 +45,7 @@ public class ShortcutInfo  {
     /**
      * The intent used to start the application.
      */
-    public Intent intent;
+    transient public Intent intent;
 
     /**
      * Indicates whether the icon comes from an application's resource (if false)
@@ -49,12 +63,12 @@ public class ShortcutInfo  {
      * If isShortcut=true and customIcon=false, this contains a reference to the
      * shortcut icon as an application's resource.
      */
-    private Intent.ShortcutIconResource iconResource;
+    transient private Intent.ShortcutIconResource iconResource;
 
     /**
      * The application icon.
      */
-    private Bitmap mIcon;
+    transient private Bitmap mIcon;
     
     ShortcutInfo() {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT;
@@ -139,4 +153,69 @@ public class ShortcutInfo  {
         return "ShortcutInfo(title=" + title.toString() + ")";
     }
 
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+
+		byte[] data = null;
+		if (mIcon != null) {
+			data = UtilitiesBitmap.flattenBitmap(mIcon);
+		}
+		if (data != null) {
+			out.writeInt(data.length);
+			out.write(data);
+		} else {
+			out.writeInt(0);
+		}
+		
+		if (intent != null) {
+        	out.writeBoolean(true);
+			out.writeUTF(intent.toUri(0));
+		} else {
+        	out.writeBoolean(false);
+		}
+		
+        if (iconResource != null) {
+        	out.writeBoolean(true);
+        	out.writeUTF(iconResource.packageName);
+        	out.writeUTF(iconResource.resourceName);
+        } else {
+        	out.writeBoolean(false);
+        }
+			
+    }    
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		int length = in.readInt();
+		if (length > 0) {
+			byte[] data = new byte[length];
+			in.read(data);
+			mIcon = getIconByteArray(data);
+		}
+		
+		if (in.readBoolean()) {
+			String intentDescription = in.readUTF();
+			if (intentDescription != null) {
+		        try {
+		        	intent = Intent.parseUri(intentDescription, 0);
+		        } catch (URISyntaxException e) { }
+	        }
+		}
+		
+		if (in.readBoolean()) {
+			String packageName = in.readUTF();
+			String resourceName = in.readUTF();
+			iconResource = new Intent.ShortcutIconResource();
+			iconResource.packageName = packageName;
+			iconResource.resourceName = resourceName;
+		}
+  	}
+	
+    private Bitmap getIconByteArray(byte[] data) {
+        try {
+            return BitmapFactory.decodeByteArray(data, 0, data.length);
+        } catch (Exception e) {
+            return null;
+        }
+    }	
 }

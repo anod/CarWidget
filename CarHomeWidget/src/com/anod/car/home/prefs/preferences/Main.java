@@ -1,7 +1,13 @@
 package com.anod.car.home.prefs.preferences;
 
+import java.io.Serializable;
 
-public class Main {
+
+public class Main implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String skin;		
 	private Integer tileColor;
 	private boolean iconsMono;

@@ -1,10 +1,15 @@
 package com.anod.car.home.prefs.preferences;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import com.anod.car.home.model.ShortcutInfo;
 
-public class ShortcutsMain {
+public class ShortcutsMain implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private HashMap<Integer,ShortcutInfo> shortcuts;
 	private Main main;
 	

@@ -1,10 +1,16 @@
 package com.anod.car.home.prefs.preferences;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import com.anod.car.home.prefs.PreferencesStorage;
 
-public class InCar {
+public class InCar implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private boolean inCarEnabled = false;
 	private boolean powerRequired = false;
 	private boolean headsetRequired = false;

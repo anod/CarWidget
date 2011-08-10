@@ -67,7 +67,7 @@ public class ConfigurationBackup extends PreferenceActivity {
     }
 	
     private void initBackup() {
-    	final String filename = "backup-"+mAppWidgetId+".json";
+    	final String filename = "backup-"+mAppWidgetId;
 		mBackupMainPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {

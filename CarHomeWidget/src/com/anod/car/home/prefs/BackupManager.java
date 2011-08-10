@@ -1,20 +1,19 @@
 package com.anod.car.home.prefs;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 
 import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
 
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.ShortcutsMain;
-import com.jsonobjectserialization.JSONInputStream;
-import com.jsonobjectserialization.JSONOutputStream;
-import com.jsonobjectserialization.JSONStreamException;
 
 public class BackupManager {
 	public static final int RESULT_DONE = 0;
@@ -25,7 +24,7 @@ public class BackupManager {
 	public static final int ERROR_DESERIALIZE = 5;
 
     private static final String BACKUP_MAIN_DIRNAME = "backup_main";
-	private static final String FILE_INCAR_JSON = "backup_incar.json";
+	private static final String FILE_INCAR_JSON = "backup_incar.dat";
 	
 	/**
      * We serialize access to our persistent data through a global static
@@ -70,7 +69,7 @@ public class BackupManager {
         	saveDir.mkdirs();
         } 
         
-        File dataFile = new File(saveDir, filename);
+        File dataFile = new File(saveDir, filename+".dat");
         
         ShortcutModel smodel = new ShortcutModel(mContext, appWidgetId);
         smodel.init();
@@ -78,18 +77,10 @@ public class BackupManager {
         ShortcutsMain prefs = new ShortcutsMain(smodel.getShortcuts(), main);
         
         try {
-            RandomAccessFile file = new RandomAccessFile(dataFile, "rw");
             synchronized (BackupManager.sDataLock) {
-    	        // Serializing it to JSON string
-    	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    	        JSONOutputStream jos = new JSONOutputStream(baos);
-    	        jos.writeObject(prefs);
-    	        jos.close();
-    	        
-    	        // Get the string form the output stream and print it
-    	        String jsonString = baos.toString();
-            	Log.d("CarHomeWidget","jsonString: " + jsonString);
-    	        file.writeUTF(jsonString);
+            	FileOutputStream fos = new FileOutputStream(dataFile);
+            	ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(prefs);
             }
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -108,18 +99,10 @@ public class BackupManager {
   
         InCar prefs = PreferencesStorage.loadInCar(mContext);
         try {
-            RandomAccessFile file = new RandomAccessFile(dataFile, "rw");
             synchronized (BackupManager.sDataLock) {
-    	        // Serializing it to JSON string
-    	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    	        JSONOutputStream jos = new JSONOutputStream(baos);
-    	        jos.writeObject(prefs);
-    	        jos.close();
-    	        
-    	        // Get the string form the output stream and print it
-    	        String jsonString = baos.toString();
-            	Log.d("CarHomeWidget","jsonString: " + jsonString);
-    	        file.writeUTF(jsonString);
+            	FileOutputStream fos = new FileOutputStream(dataFile);
+            	ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(prefs);
             }
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -143,19 +126,16 @@ public class BackupManager {
         
         InCar prefs = null;
         try {
-            RandomAccessFile file = new RandomAccessFile(dataFile, "r");
             synchronized (BackupManager.sDataLock) {
-            	String jsonString = file.readUTF();
-            	Log.d("CarHomeWidget","jsonString: " + jsonString);
-            	JSONInputStream jis = new JSONInputStream(jsonString);
-            	prefs = jis.readObject(InCar.class);
+            	FileInputStream fis = new FileInputStream(dataFile);
+            	ObjectInputStream is = new ObjectInputStream(fis);
+                prefs = (InCar) is.readObject();
             }
 		} catch (IOException e) {
 			return ERROR_FILE_READ;
-		} catch (JSONStreamException e) 
-        {
-            return ERROR_DESERIALIZE;
-        }
+		} catch (ClassNotFoundException e) {
+			return ERROR_DESERIALIZE;
+		}
 		PreferencesStorage.saveInCar(mContext, prefs);
 		return RESULT_DONE;
 	}
@@ -166,7 +146,7 @@ public class BackupManager {
 		}
 		
         File saveDir = getMainBackupDir();
-        File dataFile = new File(saveDir, filename);
+        File dataFile = new File(saveDir, filename+".dat");
         if (!dataFile.exists()) {
         	return ERROR_FILE_NOT_EXIST;  
         }
@@ -178,15 +158,13 @@ public class BackupManager {
         try {
             RandomAccessFile file = new RandomAccessFile(dataFile, "r");
             synchronized (BackupManager.sDataLock) {
-            	String jsonString = file.readUTF();
-            	Log.d("CarHomeWidget","jsonString: " + jsonString);
-            	JSONInputStream jis = new JSONInputStream(jsonString);
-            	prefs = jis.readObject(Main.class);
+            	FileInputStream fis = new FileInputStream(dataFile);
+            	ObjectInputStream is = new ObjectInputStream(fis);
+                prefs = (Main) is.readObject();
             }
 		} catch (IOException e) {
 			return ERROR_FILE_READ;
-		} catch (JSONStreamException e) 
-        {
+		} catch (ClassNotFoundException e) {
             return ERROR_DESERIALIZE;
         }
 		PreferencesStorage.saveMain(mContext, prefs, appWidgetId);
