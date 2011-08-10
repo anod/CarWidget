@@ -10,6 +10,7 @@ import java.io.RandomAccessFile;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.Main;
@@ -81,6 +82,8 @@ public class BackupManager {
             	FileOutputStream fos = new FileOutputStream(dataFile);
             	ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(prefs);
+                oos.close();
+                Log.d("CarHomeWidget",oos.toString());
             }
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -103,6 +106,7 @@ public class BackupManager {
             	FileOutputStream fos = new FileOutputStream(dataFile);
             	ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(prefs);
+                oos.close();
             }
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -130,10 +134,14 @@ public class BackupManager {
             	FileInputStream fis = new FileInputStream(dataFile);
             	ObjectInputStream is = new ObjectInputStream(fis);
                 prefs = (InCar) is.readObject();
+                is.close();
             }
 		} catch (IOException e) {
+			e.printStackTrace();
 			return ERROR_FILE_READ;
 		} catch (ClassNotFoundException e) {
+			Log.d("CarHomeWidget",e.getMessage());
+			e.printStackTrace();
 			return ERROR_DESERIALIZE;
 		}
 		PreferencesStorage.saveInCar(mContext, prefs);
@@ -154,20 +162,23 @@ public class BackupManager {
         	return ERROR_FILE_READ;       	
         }
         
-        Main prefs = null;
+        ShortcutsMain prefs = null;
         try {
-            RandomAccessFile file = new RandomAccessFile(dataFile, "r");
             synchronized (BackupManager.sDataLock) {
             	FileInputStream fis = new FileInputStream(dataFile);
             	ObjectInputStream is = new ObjectInputStream(fis);
-                prefs = (Main) is.readObject();
+                prefs = (ShortcutsMain) is.readObject();
+                is.close();
             }
 		} catch (IOException e) {
+			e.printStackTrace();
 			return ERROR_FILE_READ;
 		} catch (ClassNotFoundException e) {
+			Log.d("CarHomeWidget",e.getMessage());
+			e.printStackTrace();
             return ERROR_DESERIALIZE;
         }
-		PreferencesStorage.saveMain(mContext, prefs, appWidgetId);
+		PreferencesStorage.saveMain(mContext, prefs.getMain(), appWidgetId);
 		return RESULT_DONE;
 	}
 	

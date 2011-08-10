@@ -193,7 +193,8 @@ public class ShortcutInfo implements Serializable {
 			mIcon = getIconByteArray(data);
 		}
 		
-		if (in.readBoolean()) {
+		boolean hasIntent = in.readBoolean();
+		if (hasIntent) {
 			String intentDescription = in.readUTF();
 			if (intentDescription != null) {
 		        try {
@@ -202,7 +203,8 @@ public class ShortcutInfo implements Serializable {
 	        }
 		}
 		
-		if (in.readBoolean()) {
+		boolean hasIconResource = in.readBoolean();
+		if (hasIconResource) {
 			String packageName = in.readUTF();
 			String resourceName = in.readUTF();
 			iconResource = new Intent.ShortcutIconResource();
