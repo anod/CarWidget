@@ -157,7 +157,9 @@ public final class R {
         public static final int information_title=0x7f090045;
         public static final int issue_summary=0x7f090049;
         public static final int issue_title=0x7f090048;
+        public static final int last_backup=0x7f090066;
         public static final int load_paired_device=0x7f09002b;
+        public static final int never=0x7f090067;
         public static final int no_paired_devices_found_summary=0x7f090031;
         public static final int no_paired_devices_found_title=0x7f090030;
         public static final int other_summary=0x7f09004b;
@@ -181,6 +183,7 @@ public final class R {
         public static final int pref_activate_car_mode_summary=0x7f090060;
         public static final int pref_autoanswer=0x7f090054;
         public static final int pref_autoanswer_summary=0x7f090055;
+        public static final int pref_backup_title=0x7f090065;
         public static final int pref_bg_color_summary=0x7f09000d;
         public static final int pref_bg_color_title=0x7f09000c;
         public static final int pref_blutooth_device_summary=0x7f09002a;
@@ -247,6 +250,9 @@ public final class R {
     }
     public static final class xml {
         public static final int carhome_appwidget_info_4x4=0x7f040000;
-        public static final int preferences=0x7f040001;
+        public static final int preference_backup=0x7f040001;
+        public static final int preference_incar=0x7f040002;
+        public static final int preference_look=0x7f040003;
+        public static final int preferences=0x7f040004;
     }
 }
