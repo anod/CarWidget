@@ -47,6 +47,9 @@
 		        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
 		    </intent-filter>
 		</activity>
+		<activity android:name="com.anod.car.home.prefs.ConfigurationLook" android:configChanges="orientation" />
+		<activity android:name="com.anod.car.home.prefs.ConfigurationInCar" android:configChanges="orientation" />
+		<activity android:name="com.anod.car.home.prefs.ConfigurationBackup" android:configChanges="orientation" />
 		<activity android:name="com.anod.car.home.incar.ChangeBrightnessActivity" android:theme="@style/BrightnessTheme" />
 		<activity android:name="com.anod.car.home.ShortcutActivity" android:theme="@style/BrightnessTheme" />
 		<receiver android:name="com.anod.car.home.LargeProvider" android:label="@string/app_name_pro">
