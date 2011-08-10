@@ -1,6 +1,7 @@
 package com.anod.car.home;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -18,6 +19,7 @@ import com.anod.car.home.model.LauncherModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.Configuration;
 import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.prefs.ShortcutModel;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
@@ -40,12 +42,12 @@ public class Launcher {
 	
     public static RemoteViews update(int appWidgetId, Context context) {
     	
-    	LauncherModel model = new LauncherModel();
+		ShortcutModel smodel = new ShortcutModel(context, appWidgetId);
 		if (PreferencesStorage.isFirstTime(context,appWidgetId)) {
-			model.initShortcuts(context,appWidgetId);
+			smodel.createDefaultShortcuts();
 			PreferencesStorage.setFirstTime(false,context,appWidgetId);
 		}
-    	
+		smodel.init();
     	Main prefs = PreferencesStorage.loadMain(context, appWidgetId);
     	
     	Resources resources = context.getResources();
@@ -61,21 +63,17 @@ public class Launcher {
 			views.setImageViewResource(R.id.btn_settings, R.drawable.btn_transparent);
 		}
 		
-        ArrayList<Long> launchers = prefs.getLauncherComponents();
-        
+		HashMap<Integer, ShortcutInfo> shortcuts = smodel.getShortcuts();
+
 		setBackground(prefs,views);
 		
 		float iconScale = Utils.calcIconsScale(prefs.getIconsScale());
 		float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
 		
-        for (int i=0;i<launchers.size();i++) {
+        for (int i=0;i<shortcuts.size();i++) {
         	int res = resources.getIdentifier("btn"+i, type, packageName);
         	int resText = resources.getIdentifier("btn_text"+i, type, packageName);
-        	Long shortcutId = launchers.get(i);
-        	ShortcutInfo info = null;
-        	if (shortcutId != ShortcutInfo.NO_ID) {
-        		info = model.loadShortcut(context, shortcutId);
-        	}
+        	ShortcutInfo info = smodel.getShortcut(i);
         	if (info == null) {
         		setNoShortcut(res,resText,views,context,appWidgetId,i);
         	} else {

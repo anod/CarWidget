@@ -76,10 +76,9 @@ public class PreferencesStorage {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Resources res = context.getResources();
 
-        Main p = (new Preferences()).getMain();
+        Main p = new Main();
         String skinName = prefs.getString(getName(SKIN, appWidgetId), SKIN_GLOSSY);
     	p.setSkin(skinName);
-    	p.setLauncherComponents(getLauncherComponents(prefs, appWidgetId));
     	
 		Integer tileColor = null;
 		if (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) {
@@ -104,7 +103,7 @@ public class PreferencesStorage {
     	SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
     	Editor editor = p.edit();
     	
-		ArrayList<Long> ids = prefs.getLauncherComponents();
+		//ArrayList<Long> ids = prefs.getLauncherComponents();
 		for (int i=0; i<LAUNCH_COMPONENT_NUMBER; i++) {
 	        //editor.putLong(getLaunchComponentName(i, appWidgetId), ids.get(i));
 		}
@@ -136,7 +135,7 @@ public class PreferencesStorage {
     	boolean incarEnabled = isInCarModeEnabled(context);
     	
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-    	InCar p = (new Preferences()).getIncar();
+    	InCar p = new InCar();
 
     	p.setInCarEnabled(incarEnabled);
     	p.setDisableBluetoothOnPower(prefs.getBoolean(POWER_BT_DISABLE, false));
@@ -222,7 +221,8 @@ public class PreferencesStorage {
     	return String.format(getLaunchComponentKey(id), aAppWidgetId);
     }
     
-    private static ArrayList<Long> getLauncherComponents(SharedPreferences prefs, int appWidgetId) {      
+    public static ArrayList<Long> getLauncherComponents(Context context, int appWidgetId) {
+    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		ArrayList<Long> ids = new ArrayList<Long>(LAUNCH_COMPONENT_NUMBER);
 		for (int i=0; i<LAUNCH_COMPONENT_NUMBER; i++) {
 			String key = PreferencesStorage.getLaunchComponentName(i, appWidgetId);

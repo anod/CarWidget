@@ -80,8 +80,8 @@ public class Configuration extends PreferenceActivity {
             finish();
         }
         mContext = (Context)this;
-        mModel = new ShortcutModel(mContext);
-        
+        mModel = new ShortcutModel(mContext, mAppWidgetId);
+        mModel.init();
         Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
         
        	initActivityChooser(prefs);
@@ -119,8 +119,6 @@ public class Configuration extends PreferenceActivity {
 	}
 	
     private void initActivityChooser(Main prefs) {
-    	ArrayList<Long> currentShortcutIds = prefs.getLauncherComponents();
-    	mModel.init(currentShortcutIds);
         for (int i=0; i<PreferencesStorage.LAUNCH_COMPONENT_NUMBER;i++) {
         	initLauncherPreference(i);
         }
@@ -332,7 +330,7 @@ public class Configuration extends PreferenceActivity {
 			return;
 		}
 
-    	final ShortcutInfo info = mModel.putShortcut(mCurrentCellId, mAppWidgetId, data, isApplicationShortcut);
+    	final ShortcutInfo info = mModel.putShortcut(mCurrentCellId, data, isApplicationShortcut);
 
     	if (info != null && info.id != ShortcutInfo.NO_ID) {   	
 

@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.prefs.preferences.ShortcutsMain;
 import com.jsonobjectserialization.JSONInputStream;
 import com.jsonobjectserialization.JSONOutputStream;
 import com.jsonobjectserialization.JSONStreamException;
@@ -71,7 +72,11 @@ public class BackupManager {
         
         File dataFile = new File(saveDir, filename);
         
-        Main prefs = PreferencesStorage.loadMain(mContext, appWidgetId);
+        ShortcutModel smodel = new ShortcutModel(mContext, appWidgetId);
+        smodel.init();
+        Main main = PreferencesStorage.loadMain(mContext, appWidgetId);
+        ShortcutsMain prefs = new ShortcutsMain(smodel.getShortcuts(), main);
+        
         try {
             RandomAccessFile file = new RandomAccessFile(dataFile, "rw");
             synchronized (BackupManager.sDataLock) {

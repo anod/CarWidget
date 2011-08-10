@@ -13,13 +13,20 @@ public class ShortcutModel {
 	private HashMap<Integer, ShortcutInfo> mShortcuts = new HashMap<Integer, ShortcutInfo>(PreferencesStorage.LAUNCH_COMPONENT_NUMBER);
 	private LauncherModel mModel;
 	private Context mContext;
+	private int mAppWidgetId;
 	
-	public ShortcutModel(Context context) {
+	public ShortcutModel(Context context, int appWidgetId) {
         mModel = new LauncherModel();
         mContext = context;
+        mAppWidgetId = appWidgetId;
 	}
 	
-	public void init(ArrayList<Long> currentShortcutIds) {
+	public void createDefaultShortcuts() {
+		mModel.initShortcuts(mContext,mAppWidgetId);	
+	}
+		
+	public void init() {
+		ArrayList<Long> currentShortcutIds = PreferencesStorage.getLauncherComponents(mContext, mAppWidgetId);
         for (int cellId=0; cellId<PreferencesStorage.LAUNCH_COMPONENT_NUMBER;cellId++) {
         	long shortcutId = currentShortcutIds.get(cellId);
         	ShortcutInfo info = null;
@@ -40,14 +47,18 @@ public class ShortcutModel {
 		}
 	}
 	
+	public HashMap<Integer, ShortcutInfo> getShortcuts() {
+		return mShortcuts;
+	}
+	
 	public ShortcutInfo getShortcut(int cellId) {
 		return mShortcuts.get(cellId);
 	}
 	
-	public ShortcutInfo putShortcut(int cellId, int appWidgetId, Intent data, boolean isApplicationShortcut) {
-    	final ShortcutInfo info = mModel.addShortcut(mContext, data, cellId, appWidgetId, isApplicationShortcut);		
+	public ShortcutInfo putShortcut(int cellId, Intent data, boolean isApplicationShortcut) {
+    	final ShortcutInfo info = mModel.addShortcut(mContext, data, cellId, mAppWidgetId, isApplicationShortcut);		
 		mShortcuts.put(cellId, info);
-		PreferencesStorage.saveShortcut(mContext,info.id,cellId,appWidgetId);		
+		PreferencesStorage.saveShortcut(mContext,info.id,cellId,mAppWidgetId);		
 		return mShortcuts.get(cellId);
 	}
 	
