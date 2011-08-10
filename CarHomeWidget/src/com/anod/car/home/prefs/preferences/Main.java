@@ -1,9 +1,11 @@
 package com.anod.car.home.prefs.preferences;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+
+import com.anod.car.home.model.ShortcutInfo;
 
 public class Main {
-	private ArrayList<Long> launcherComponents;
+	private HashMap<Integer,ShortcutInfo> shortcuts;
 	private String skin;		
 	private Integer tileColor;
 	private boolean iconsMono;
@@ -27,8 +29,8 @@ public class Main {
 	public void setIncarTransparent(boolean incarTransparent) {
 		this.incarTransparent = incarTransparent;
 	}
-	public ArrayList<Long> getLauncherComponents() {
-		return launcherComponents;
+	public HashMap<Integer,ShortcutInfo> getLauncherComponents() {
+		return shortcuts;
 	}
 	public String getSkin() {
 		return skin;
@@ -54,8 +56,8 @@ public class Main {
 	public int getBackgroundColor() {
 		return backgroundColor;
 	}
-	public void setLauncherComponents(ArrayList<Long> launcherComponents) {
-		this.launcherComponents = launcherComponents;
+	public void setShortcuts(HashMap<Integer,ShortcutInfo> shortcuts) {
+		this.shortcuts = shortcuts;
 	}
 	public void setSkin(String skin) {
 		this.skin = skin;
