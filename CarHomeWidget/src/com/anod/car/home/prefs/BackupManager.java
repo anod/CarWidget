@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.RandomAccessFile;
 
 import android.content.Context;
 import android.os.Environment;
@@ -17,6 +16,7 @@ import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.ShortcutsMain;
 
 public class BackupManager {
+	private static final String DIR_BACKUP = "/data/com.anod.car.home/backup";
 	public static final int RESULT_DONE = 0;
 	public static final int ERROR_STORAGE_NOT_AVAILABLE = 1;
 	public static final int ERROR_FILE_NOT_EXIST = 2;
@@ -53,7 +53,7 @@ public class BackupManager {
     }
     
     public long getIncarTime() {
-    	File dataFile = new File(mContext.getExternalFilesDir(null), FILE_INCAR_JSON);
+    	File dataFile = new File(getBackupDir(), FILE_INCAR_JSON);
     	if (!dataFile.exists()) {
     		return 0;
     	}
@@ -97,8 +97,11 @@ public class BackupManager {
         if (!checkMediaWritable()) {
         	return ERROR_STORAGE_NOT_AVAILABLE;
         }
-
-        File dataFile = new File(mContext.getExternalFilesDir(null), FILE_INCAR_JSON);
+        File saveDir = getBackupDir();
+        if (!saveDir.exists()) {
+        	saveDir.mkdirs();
+        } 
+        File dataFile = new File(saveDir, FILE_INCAR_JSON);
   
         InCar prefs = PreferencesStorage.loadInCar(mContext);
         try {
@@ -182,8 +185,13 @@ public class BackupManager {
 		return RESULT_DONE;
 	}
 	
+	private File getBackupDir() {
+		File externalPath = Environment.getExternalStorageDirectory();
+		return new File(externalPath.getAbsolutePath() + DIR_BACKUP);
+	}
+	
 	private File getMainBackupDir() {
-        StringBuilder sb = new StringBuilder(mContext.getExternalFilesDir(null).getPath());
+        StringBuilder sb = new StringBuilder(getBackupDir().getPath());
         sb.append(File.separator);
         sb.append(BACKUP_MAIN_DIRNAME);
         return new File(sb.toString());
