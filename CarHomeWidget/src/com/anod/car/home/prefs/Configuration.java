@@ -34,6 +34,7 @@ public class Configuration extends PreferenceActivity {
 	private static final int REQUEST_PICK_APPLICATION = 3;
 	private static final int REQUEST_CREATE_SHORTCUT=4;
 	private static final int REQUEST_EDIT_SHORTCUT=5;
+	private static final int REQUEST_BACKUP=6;
 	
 	public static final String EXTRA_CELL_ID = "CarHomeWidgetCellId";
 	public static final int INVALID_CELL_ID=-1;
@@ -113,9 +114,16 @@ public class Configuration extends PreferenceActivity {
 	
 	private void initBackup() {
 		Preference pref = (Preference)findPreference(BACKUP);
-    	Intent intent = new Intent(this, ConfigurationBackup.class);
-    	intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-    	pref.setIntent(intent);
+    	pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+		    	Intent intent = new Intent(Configuration.this, ConfigurationBackup.class);
+		    	intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+				startActivityForResult(intent, REQUEST_BACKUP);
+				return true;
+			}
+		});
 	}
 	
     private void initActivityChooser(Main prefs) {
@@ -273,6 +281,9 @@ public class Configuration extends PreferenceActivity {
                 case REQUEST_PICK_SHORTCUT:
                     processShortcut(data);
                     break;
+                case REQUEST_BACKUP:
+                	refreshShortcuts(data);
+                	break;
             }
         } else {
         	try {
@@ -285,7 +296,16 @@ public class Configuration extends PreferenceActivity {
 		
 	}
     
-    private void pickShortcut(int cellId) {
+    private void refreshShortcuts(Intent data) {
+    	mModel.init();
+        for (int i=0; i<PreferencesStorage.LAUNCH_COMPONENT_NUMBER;i++) {
+    		String key = PreferencesStorage.getLaunchComponentName(i, mAppWidgetId);
+    		LauncherItemPreference p = (LauncherItemPreference)findPreference(key);
+    		refreshPreference(p);    	
+        }		
+	}
+
+	private void pickShortcut(int cellId) {
         showDialog(DIALOG_WAIT);
         Bundle bundle = new Bundle();
 
@@ -330,7 +350,7 @@ public class Configuration extends PreferenceActivity {
 			return;
 		}
 
-    	final ShortcutInfo info = mModel.putShortcut(mCurrentCellId, data, isApplicationShortcut);
+    	final ShortcutInfo info = mModel.saveShortcutIntent(mCurrentCellId, data, isApplicationShortcut);
 
     	if (info != null && info.id != ShortcutInfo.NO_ID) {   	
 

@@ -162,7 +162,7 @@ public class ShortcutInfo implements Serializable {
 		}
 		if (data != null) {
 			out.writeInt(data.length);
-			out.write(data);
+			out.write(data, 0, data.length);
 		} else {
 			out.writeInt(0);
 		}
@@ -188,9 +188,9 @@ public class ShortcutInfo implements Serializable {
 		in.defaultReadObject();
 		int length = in.readInt();
 		if (length > 0) {
-			byte[] data = new byte[length];
-			in.read(data);
-			mIcon = getIconByteArray(data);
+			byte[] dst = new byte[length];
+			in.readFully(dst, 0, length);
+			mIcon = getIconByteArray(dst);
 		}
 		
 		boolean hasIntent = in.readBoolean();

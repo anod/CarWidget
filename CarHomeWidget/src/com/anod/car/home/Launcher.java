@@ -1,6 +1,5 @@
 package com.anod.car.home;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.PendingIntent;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.anod.car.home.incar.ModeService;
-import com.anod.car.home.model.LauncherModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.Configuration;
 import com.anod.car.home.prefs.PreferencesStorage;

@@ -55,17 +55,23 @@ public class ShortcutModel {
 		return mShortcuts.get(cellId);
 	}
 	
-	public ShortcutInfo putShortcut(int cellId, Intent data, boolean isApplicationShortcut) {
+	public ShortcutInfo saveShortcutIntent(int cellId, Intent data, boolean isApplicationShortcut) {
     	final ShortcutInfo info = mModel.addShortcut(mContext, data, cellId, mAppWidgetId, isApplicationShortcut);		
+    	saveShortcut(cellId, info);
+    	return mShortcuts.get(cellId);
+	}
+	
+	public void saveShortcut(int cellId, ShortcutInfo info) {
 		mShortcuts.put(cellId, info);
 		PreferencesStorage.saveShortcut(mContext,info.id,cellId,mAppWidgetId);		
-		return mShortcuts.get(cellId);
 	}
 	
 	public void dropShortcut(int cellId, int appWidgetId) {
 		ShortcutInfo info = mShortcuts.get(cellId);
-		LauncherModel.deleteItemFromDatabase(mContext, info.id);
-		PreferencesStorage.dropShortcutPreference(cellId,appWidgetId,mContext);
-		mShortcuts.put(cellId, null);
+		if (info != null) {
+			LauncherModel.deleteItemFromDatabase(mContext, info.id);
+			PreferencesStorage.dropShortcutPreference(cellId,appWidgetId,mContext);
+			mShortcuts.put(cellId, null);
+		}
 	}
 }

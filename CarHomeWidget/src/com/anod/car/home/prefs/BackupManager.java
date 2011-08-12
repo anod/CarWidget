@@ -3,20 +3,24 @@ package com.anod.car.home.prefs;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
+import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.ShortcutsMain;
 
 public class BackupManager {
 	private static final String DIR_BACKUP = "/data/com.anod.car.home/backup";
+	private static final String FILE_EXT_DAT = ".dat";
 	public static final int RESULT_DONE = 0;
 	public static final int ERROR_STORAGE_NOT_AVAILABLE = 1;
 	public static final int ERROR_FILE_NOT_EXIST = 2;
@@ -52,6 +56,20 @@ public class BackupManager {
     	return saveDir.lastModified();
     }
     
+    public File[] getMainBackups() {
+    	File saveDir = getMainBackupDir();
+    	if (!saveDir.isDirectory()) {
+    		return null;
+    	}
+    	FilenameFilter filter = new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String filename) {
+				return filename.endsWith(FILE_EXT_DAT);
+			}
+		};
+    	return saveDir.listFiles(filter);
+    }
+    
     public long getIncarTime() {
     	File dataFile = new File(getBackupDir(), FILE_INCAR_JSON);
     	if (!dataFile.exists()) {
@@ -70,7 +88,7 @@ public class BackupManager {
         	saveDir.mkdirs();
         } 
         
-        File dataFile = new File(saveDir, filename+".dat");
+        File dataFile = new File(saveDir, filename+FILE_EXT_DAT);
         
         ShortcutModel smodel = new ShortcutModel(mContext, appWidgetId);
         smodel.init();
@@ -143,7 +161,6 @@ public class BackupManager {
 			e.printStackTrace();
 			return ERROR_FILE_READ;
 		} catch (ClassNotFoundException e) {
-			Log.d("CarHomeWidget",e.getMessage());
 			e.printStackTrace();
 			return ERROR_DESERIALIZE;
 		}
@@ -157,7 +174,7 @@ public class BackupManager {
 		}
 		
         File saveDir = getMainBackupDir();
-        File dataFile = new File(saveDir, filename+".dat");
+        File dataFile = new File(saveDir, filename+FILE_EXT_DAT);
         if (!dataFile.exists()) {
         	return ERROR_FILE_NOT_EXIST;  
         }
@@ -177,11 +194,24 @@ public class BackupManager {
 			e.printStackTrace();
 			return ERROR_FILE_READ;
 		} catch (ClassNotFoundException e) {
-			Log.d("CarHomeWidget",e.getMessage());
 			e.printStackTrace();
             return ERROR_DESERIALIZE;
         }
 		PreferencesStorage.saveMain(mContext, prefs.getMain(), appWidgetId);
+		
+        ShortcutModel smodel = new ShortcutModel(mContext, appWidgetId);
+        smodel.init();
+		
+        HashMap<Integer, ShortcutInfo> shortcuts = prefs.getShortcuts();
+		
+        for (int cellId=0;cellId<shortcuts.size();cellId++) {
+        	smodel.dropShortcut(cellId, appWidgetId);
+        	final ShortcutInfo info = shortcuts.get(cellId);
+        	if (info != null) {
+        		smodel.saveShortcut(cellId, info);
+        	}
+        }
+        
 		return RESULT_DONE;
 	}
 	
