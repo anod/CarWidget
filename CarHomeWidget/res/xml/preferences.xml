@@ -11,7 +11,7 @@
     <PreferenceCategory android:title="@string/advanced">
 		<Preference android:key="look-and-feel" android:title="@string/pref_look_and_feel_title" android:summary="@string/pref_look_and_feel_summary" />
 		<Preference android:key="incar" android:title='@string/pref_incar_mode_title' android:summary="@string/pref_incar_mode_summary" />
-		<Preference android:key="backup" android:title="@string/pref_backup_title" />
+		<Preference android:key="backup" android:title="@string/pref_backup_title" android:summary="@string/pref_backup_summary"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/information_title">  
     	<Preference 

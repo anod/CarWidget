@@ -293,7 +293,6 @@ public class Configuration extends PreferenceActivity {
         	}
         }
 		super.onActivityResult(requestCode, resultCode, data);
-		
 	}
     
     private void refreshShortcuts(Intent data) {

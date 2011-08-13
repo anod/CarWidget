@@ -37,7 +37,7 @@ public class ConfigurationRestore extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		setContentView(R.layout.restore_list);
     	Intent launchIntent = getIntent();
         Bundle extras = launchIntent.getExtras();
         if (extras != null) {
@@ -62,10 +62,7 @@ public class ConfigurationRestore extends ListActivity {
 			mDeleteListener = new DeleteClickListener();
 			mAdapter = new RestoreAdapter(this, R.layout.restore_item, new ArrayList<File>());
 			setListAdapter(mAdapter);
-			TextView emptyView = new TextView(this);
-			emptyView.setText("No backup files found.");
-			getListView().setEmptyView(emptyView);
-			new FileListTask().execute(0);			
+			new FileListTask().execute(0);
 		}
 	}
 
@@ -86,6 +83,8 @@ public class ConfigurationRestore extends ListActivity {
 		 @Override
 		 protected void onPreExecute() {
 			showDialog(DIALOG_WAIT);
+			mAdapter.clear();
+			mAdapter.notifyDataSetChanged();
 		 }
 
 		 protected File[] doInBackground(Integer... params) {
@@ -184,7 +183,7 @@ public class ConfigurationRestore extends ListActivity {
 			applyView.setOnClickListener(mRestoreListener);
 			
 			ImageView deleteView = (ImageView)v.findViewById(R.id.delete_action_button);
-			deleteView.setTag(name);
+			deleteView.setTag(entry);
 			deleteView.setOnClickListener(mDeleteListener);
 			
 	        v.setId(position);
@@ -202,7 +201,31 @@ public class ConfigurationRestore extends ListActivity {
     private class DeleteClickListener implements View.OnClickListener {
 		@Override
 		public void onClick(View v) {
-							
+			File file = (File)v.getTag();
+			new DeleteTask().execute(file);
 		}
     }
+    
+	private class DeleteTask extends AsyncTask<File, Void, Boolean> {
+	 
+		 @Override
+		 protected void onPreExecute() {
+			showDialog(DIALOG_WAIT);
+		 }
+
+		protected Boolean doInBackground(File... files) {
+			return files[0].delete();
+	     }
+
+	     protected void onPostExecute(Boolean result) {
+	     	try {
+	    		dismissDialog(DIALOG_WAIT);
+	    	} catch (IllegalArgumentException e) { }
+	    	if (!result) {
+				Toast.makeText(mContext, "Unable to delete file", Toast.LENGTH_SHORT).show();
+	    	} else {
+	    		new FileListTask().execute(0);
+	    	}
+	     }
+	}    
 }

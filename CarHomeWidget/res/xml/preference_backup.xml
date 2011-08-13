@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
   xmlns:android="http://schemas.android.com/apk/res/android">
-  <PreferenceCategory android:key="restore" android:title="Backup Current Widget">
+  <PreferenceCategory android:key="backup-main-category" android:title="@string/backup_current_widget">
 	<Preference 
 		android:key="backup-btn-main" 
-		android:title="Backup"
-		android:summary="Last backup: Never"
+		android:title="@string/backup"
+		android:summary="@string/last_backup"
 	/>
 	<Preference 
 		android:key="restore-btn-main" 
-		android:title="Restore"
+		android:title="@string/restore"
 		android:summary=""
 	/>
   </PreferenceCategory>
   
   
-  <PreferenceCategory android:key="restore" android:title="Backup / Restore">
+  <PreferenceCategory android:key="backup-incar-category" android:title="@string/backup_incar_settings">
 
 	<Preference 
 		android:key="backup-btn-incar" 
-		android:title="Backup"
-		android:summary="Last backup: Never"
+		android:title="@string/backup"
+		android:summary="@string/last_backup"
 	/>
 
 	<Preference 
 		android:key="restore-btn-incar" 
-		android:title="Restore"
+		android:title="@string/restore"
 		android:summary=""
 	/>
  

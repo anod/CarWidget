@@ -53,6 +53,10 @@ public class BackupManager {
     	if (!saveDir.isDirectory()) {
     		return 0;
     	}
+    	String[] files = saveDir.list();
+    	if (files.length == 0) {
+    		return 0;
+    	}
     	return saveDir.lastModified();
     }
     

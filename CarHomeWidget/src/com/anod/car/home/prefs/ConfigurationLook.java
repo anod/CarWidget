@@ -54,9 +54,7 @@ public class ConfigurationLook extends PreferenceActivity {
        	initIcon(prefs);
        	initFont(prefs);
        	initTransparent(mFreeVersion,prefs);
-       	
     }
-	
     
     private void initTransparent(boolean isFree, final Main prefs) {
     	CheckBoxPreference setTrans = (CheckBoxPreference)findPreference(PreferencesStorage.TRANSPARENT_BTN_SETTINGS);

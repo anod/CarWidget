@@ -1,23 +1,35 @@
 package com.anod.car.home.prefs;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.text.format.DateUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.anod.car.home.R;
 
 public class ConfigurationBackup extends PreferenceActivity {
+	private static final int REQUEST_RESTORE_MAIN = 1;
 	private static final String RESTORE_BTN_INCAR = "restore-btn-incar";
 	private static final String BACKUP_BTN_INCAR = "backup-btn-incar";
     private static final String RESTORE_BTN_MAIN = "restore-btn-main";
 	private static final String BACKUP_BTN_MAIN = "backup-btn-main";
+	
+	private static final int DIALOG_WAIT=1;
+	private static final int DIALOG_BACKUP_NAME=2;
 	
 	private static final int TYPE_MAIN = 1;
 	private static final int TYPE_INCAR = 2;
@@ -66,12 +78,47 @@ public class ConfigurationBackup extends PreferenceActivity {
        	
     }
 	
+    @Override
+    public Dialog onCreateDialog(int id) {
+    	switch(id) {
+	    	case DIALOG_WAIT :
+	    		ProgressDialog waitDialog = new ProgressDialog(this);
+	    		waitDialog.setCancelable(true);
+	    		String message = getResources().getString(R.string.please_wait);
+	    		waitDialog.setMessage(message);
+	    		return waitDialog;
+	        case DIALOG_BACKUP_NAME:
+	        	String defaultFilename = "backup-"+mAppWidgetId;
+	            // This example shows how to add a custom layout to an AlertDialog
+	            LayoutInflater factory = LayoutInflater.from(this);
+	            final View textEntryView = factory.inflate(R.layout.backup_dialog_enter_name, null);
+	            final EditText backupName = (EditText)textEntryView.findViewById(R.id.backup_name);
+	            backupName.setText(defaultFilename);
+	            return new AlertDialog.Builder(this)
+	                .setTitle(R.string.backup_current_widget)
+	                .setView(textEntryView)
+	                .setPositiveButton(R.string.backup_save, new DialogInterface.OnClickListener() {
+	                    public void onClick(DialogInterface dialog, int whichButton) {
+	                    	String filename = backupName.getText().toString();
+	                    	if (!filename.equals("")) {
+	                    		new BackupTask().execute(filename);
+	                    	}
+	                    }
+	                })
+	                .setNegativeButton(R.string.backup_cancel, new DialogInterface.OnClickListener() {
+	                    public void onClick(DialogInterface dialog, int whichButton) {
+	                    }
+	                })
+	                .create();    		
+		}
+    	return null;
+    }
+    
     private void initBackup() {
-    	final String filename = "backup-"+mAppWidgetId;
 		mBackupMainPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				new BackupTask().execute(filename);
+				showDialog(DIALOG_BACKUP_NAME);
 				return false;
 			}
     	});
@@ -86,10 +133,18 @@ public class ConfigurationBackup extends PreferenceActivity {
     	});
 		
     	Preference restore_main = (Preference)findPreference(RESTORE_BTN_MAIN);
-    	Intent intentMain = new Intent(this, ConfigurationRestore.class);
-    	intentMain.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-    	intentMain.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_MAIN);
-    	restore_main.setIntent(intentMain);
+    	restore_main.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+		    	Intent intentMain = new Intent(mContext, ConfigurationRestore.class);
+		    	intentMain.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+		    	intentMain.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_MAIN);
+		    	startActivityForResult(intentMain, REQUEST_RESTORE_MAIN);
+				return true;
+			}
+    		
+    	});
 		
     	Preference restore_incar = (Preference)findPreference(RESTORE_BTN_INCAR);
     	Intent intentInCar = new Intent(this, ConfigurationRestore.class);
@@ -122,6 +177,7 @@ public class ConfigurationBackup extends PreferenceActivity {
 	}
 
 	private void onBackupFinish(int type, int code) {
+		Resources r = getResources();
 		if (code == BackupManager.RESULT_DONE) {
 			switch (type) {
 				case TYPE_MAIN:
@@ -131,21 +187,27 @@ public class ConfigurationBackup extends PreferenceActivity {
 					updateInCarTime();
 				break;
 			}
-			Toast.makeText(mContext, "Backup is done.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, r.getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
 			return;
 		}
 		switch (code) {
 			case BackupManager.ERROR_STORAGE_NOT_AVAILABLE:
-				Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, r.getString(R.string.external_storage_not_available), Toast.LENGTH_SHORT).show();
 			break;
 			case BackupManager.ERROR_FILE_WRITE:
-            	Toast.makeText(mContext, "BackupManager failed to write the file", Toast.LENGTH_SHORT).show();
+            	Toast.makeText(mContext, r.getString(R.string.failed_to_write_file), Toast.LENGTH_SHORT).show();
             break;
 		}
 	}
 
 	private class BackupTask extends AsyncTask<String, Void, Integer> {
 		 private int mTaskType;
+		 
+		 @Override
+		 protected void onPreExecute() {
+			showDialog(DIALOG_WAIT);
+		 }
+		 
 	     protected Integer doInBackground(String... filenames) {
 	    	 String filename = filenames[0];
 	    	 if (filename == null) {
@@ -157,9 +219,22 @@ public class ConfigurationBackup extends PreferenceActivity {
 	     }
 
 	     protected void onPostExecute(Integer result) {
+	     	try {
+	    		dismissDialog(DIALOG_WAIT);
+	    	} catch (IllegalArgumentException e) { }
 	    	 onBackupFinish(mTaskType, result);
 	     }
 	}
 	
-	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_RESTORE_MAIN:
+                	updateMainTime();
+                    break;
+            }
+        }
+		super.onActivityResult(requestCode, resultCode, data);
+	}	
 }

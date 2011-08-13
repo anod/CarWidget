@@ -49,6 +49,7 @@ public class PreferencesStorage {
     public static final String FIRST_TIME = "first-time-%d";
     public static final String TRANSPARENT_BTN_SETTINGS = "transparent-btn-settings-%d";
     public static final String TRANSPARENT_BTN_INCAR = "transparent-btn-incar-%d";
+    public static final String KEEP_ORDER = "keep-order-%d";
     
     public static final String INCAR_MODE_ENABLED= "incar-mode-enabled";
     
@@ -95,7 +96,6 @@ public class PreferencesStorage {
     	p.setFontSize(prefs.getInt(getName(FONT_SIZE, appWidgetId), FONT_SIZE_UNDEFINED));
     	p.setSettingsTransparent(prefs.getBoolean(getName(TRANSPARENT_BTN_SETTINGS, appWidgetId), false));
     	p.setIncarTransparent(prefs.getBoolean(getName(TRANSPARENT_BTN_INCAR, appWidgetId), false));
-    	
     	return p;
     }
     
@@ -179,7 +179,6 @@ public class PreferencesStorage {
 		
 		saveBtDevices(context, prefs.getBtDevices());
     }
-    
     
     public static HashMap<String,String> getBtDevices(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -306,6 +305,7 @@ public class PreferencesStorage {
     		edit.remove(getName(FIRST_TIME, appWidgetId));
     		edit.remove(getName(TRANSPARENT_BTN_SETTINGS, appWidgetId));
     		edit.remove(getName(TRANSPARENT_BTN_INCAR, appWidgetId));
+    		edit.remove(getName(KEEP_ORDER, appWidgetId));
     		
         	for(int i = 0; i<LAUNCH_COMPONENT_NUMBER; i++) {
         		String key = PreferencesStorage.getLaunchComponentName(i, appWidgetId);
