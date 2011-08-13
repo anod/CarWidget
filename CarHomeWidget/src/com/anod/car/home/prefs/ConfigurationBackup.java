@@ -86,23 +86,17 @@ public class ConfigurationBackup extends PreferenceActivity {
     	});
 		
     	Preference restore_main = (Preference)findPreference(RESTORE_BTN_MAIN);
-    	restore_main.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				new RestoreTask().execute(filename);
-				return false;
-			}
-    	});
+    	Intent intentMain = new Intent(this, ConfigurationRestore.class);
+    	intentMain.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+    	intentMain.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_MAIN);
+    	restore_main.setIntent(intentMain);
 		
     	Preference restore_incar = (Preference)findPreference(RESTORE_BTN_INCAR);
-    	restore_incar.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				String arg = null;
-				new RestoreTask().execute(arg);
-				return false;
-			}
-    	});
+    	Intent intentInCar = new Intent(this, ConfigurationRestore.class);
+    	intentInCar.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+    	intentInCar.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_INCAR);
+    	restore_incar.setIntent(intentInCar);
+    	
     }
 
 	private void updateInCarTime() {
@@ -150,27 +144,6 @@ public class ConfigurationBackup extends PreferenceActivity {
 		}
 	}
 
-	private void onRestoreFinish(int type, int code) {
-		if (code == BackupManager.RESULT_DONE) {
-			Toast.makeText(mContext, "Restore is done.", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		switch (code) {
-			case BackupManager.ERROR_STORAGE_NOT_AVAILABLE:
-				Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
-			break;
-			case BackupManager.ERROR_DESERIALIZE:
-				Toast.makeText(mContext, "Failed to deserialize backup", Toast.LENGTH_SHORT).show();		
-			break;
-			case BackupManager.ERROR_FILE_READ:
-            	Toast.makeText(mContext, "BackupManager failed to read the file", Toast.LENGTH_SHORT).show();
-            break;
-			case BackupManager.ERROR_FILE_NOT_EXIST:
-	            Toast.makeText(mContext, "Backup file is not exists", Toast.LENGTH_SHORT).show();
-	        break;
-		}
-	}
-
 	private class BackupTask extends AsyncTask<String, Void, Integer> {
 		 private int mTaskType;
 	     protected Integer doInBackground(String... filenames) {
@@ -188,20 +161,5 @@ public class ConfigurationBackup extends PreferenceActivity {
 	     }
 	}
 	
-	private class RestoreTask extends AsyncTask<String, Void, Integer> {
-		 private int mTaskType;
-	     protected Integer doInBackground(String... filenames) {
-	    	 String filename = filenames[0];
-	    	 if (filename == null) {
-	    		 mTaskType = TYPE_INCAR;
-	    		 return mBackupManager.doRestoreInCar();
-	    	 }
-	    	 mTaskType = TYPE_MAIN;
-	    	 return mBackupManager.doRestoreMain(filename, mAppWidgetId);
-	     }
-
-	     protected void onPostExecute(Integer result) {
-	    	 onRestoreFinish(mTaskType, result);
-	     }
-	}	
+	
 }

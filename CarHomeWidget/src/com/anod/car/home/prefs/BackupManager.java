@@ -20,7 +20,7 @@ import com.anod.car.home.prefs.preferences.ShortcutsMain;
 
 public class BackupManager {
 	private static final String DIR_BACKUP = "/data/com.anod.car.home/backup";
-	private static final String FILE_EXT_DAT = ".dat";
+	public static final String FILE_EXT_DAT = ".dat";
 	public static final int RESULT_DONE = 0;
 	public static final int ERROR_STORAGE_NOT_AVAILABLE = 1;
 	public static final int ERROR_FILE_NOT_EXIST = 2;
@@ -141,7 +141,7 @@ public class BackupManager {
 			return ERROR_STORAGE_NOT_AVAILABLE;
 		}
 
-        File dataFile = new File(mContext.getExternalFilesDir(null), FILE_INCAR_JSON);
+        File dataFile = new File(getBackupDir(), FILE_INCAR_JSON);
         if (!dataFile.exists()) {
         	return ERROR_FILE_NOT_EXIST;  
         }

@@ -96,7 +96,7 @@ public class Configuration extends PreferenceActivity {
        	if (cellId!=INVALID_CELL_ID) {
        		pickShortcut(cellId);
        	}
-       	
+      	
     }
 
 	private void initLookAndFeel() {
