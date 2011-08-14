@@ -104,7 +104,7 @@
 
 	<string name="dialog_title_select">Выбрать</string>
 	<string name="icon_default">По-умолчанию</string>
-	<string name="icon_custom">Пользовательский'</string>
+	<string name="icon_custom">Пользовательский</string>
 	<string name="icon_adw_icon_pack">Набор иконок ADW</string>
 	
 	<string name="pref_backup_title">Резервная копия</string>
