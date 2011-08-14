@@ -100,14 +100,14 @@ public class ModeService extends Service{
 	}
 	
 	private void attachPhoneListener() {
-		Log.d("HomeCarWidget", "Set phone listener");
+		Log.d("CarHomeWidget", "Set phone listener");
 		TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 		mPhoneListener = new ModePhoneStateListener(this);
 		tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
 	}
 	
 	private void detachPhoneListener() {
-    	Log.d("HomeCarWidget", "Remove phone listener");
+    	Log.d("CarHomeWidget", "Remove phone listener");
     	TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
     	tm.listen(mPhoneListener, PhoneStateListener.LISTEN_NONE);
     	mPhoneListener = null;

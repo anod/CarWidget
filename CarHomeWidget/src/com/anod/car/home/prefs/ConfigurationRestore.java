@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -134,22 +135,22 @@ public class ConfigurationRestore extends ListActivity {
 
 	private void onRestoreFinish(int type, int code) {
 		if (code == PreferencesBackupManager.RESULT_DONE) {
-			Toast.makeText(mContext, "Restore is done.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, getString(R.string.restore_done), Toast.LENGTH_SHORT).show();
 			finish();
 			return;
 		}
 		switch (code) {
 			case PreferencesBackupManager.ERROR_STORAGE_NOT_AVAILABLE:
-				Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, getString(R.string.external_storage_not_available), Toast.LENGTH_SHORT).show();
 			break;
 			case PreferencesBackupManager.ERROR_DESERIALIZE:
-				Toast.makeText(mContext, "Failed to deserialize backup", Toast.LENGTH_SHORT).show();		
+				Toast.makeText(mContext, getString(R.string.restore_deserialize_failed), Toast.LENGTH_SHORT).show();		
 			break;
 			case PreferencesBackupManager.ERROR_FILE_READ:
-            	Toast.makeText(mContext, "PreferencesBackupManager failed to read the file", Toast.LENGTH_SHORT).show();
+            	Toast.makeText(mContext, getString(R.string.failed_to_read_file), Toast.LENGTH_SHORT).show();
             break;
 			case PreferencesBackupManager.ERROR_FILE_NOT_EXIST:
-	            Toast.makeText(mContext, "Backup file is not exists", Toast.LENGTH_SHORT).show();
+	            Toast.makeText(mContext, getString(R.string.backup_not_exist), Toast.LENGTH_SHORT).show();
 	        break;
 		}
 		finish();
@@ -223,7 +224,7 @@ public class ConfigurationRestore extends ListActivity {
 	    		dismissDialog(DIALOG_WAIT);
 	    	} catch (IllegalArgumentException e) { }
 	    	if (!result) {
-				Toast.makeText(mContext, "Unable to delete file", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, getString(R.string.unable_delete_file), Toast.LENGTH_SHORT).show();
 	    	} else {
 	    		new FileListTask().execute(0);
 	    	}

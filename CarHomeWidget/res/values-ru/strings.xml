@@ -73,8 +73,9 @@
   <string name="information_title">Информация</string>
   <string name="version_title">%1$s вер. %2$s</string>
   <string name="version_summary">Пожалуйста, оцените этот виджет на маркете</string>
-  <string name="issue_title">Баг-трекер</string>
-  <string name="issue_summary">Отправить запрос на добавление функции или сообщить об ошибке</string>
+  
+  <string name="issue_title">Facebook страница</string>
+  <string name="issue_summary">Нажмите \"Мне Нравиться\", оставить комментарий</string>
   <string name="other_title">Другие приложения</string>
   <string name="other_summary">Посмотрите на мои приложения</string>
   <string name="shortcut_edit_title">Изменить ярлык</string>
@@ -97,5 +98,39 @@
 	<string name="pref_settings_transparent_summary">Кнопка настройки останется в том же месте, но станет прозрачная</string>
 	<string name="pref_incar_transparent">Кнопка «В автомобиле»</string>
 	<string name="pref_incar_transparent_summary">Когда режим «В автомобиле» включен, кнопка останется в том же месте, но станет прозрачная</string>
+
+	<string name="pref_activate_car_mode">Встроенный "Штурман" режим</string>
+	<string name="pref_activate_car_mode_summary">Встроенный в Андройд автомобильный режим будет включен, дополнительный значок будет отображен </string>
+
+	<string name="dialog_title_select">Выбрать</string>
+	<string name="icon_default">По-умолчанию</string>
+	<string name="icon_custom">Пользовательский'</string>
+	<string name="icon_adw_icon_pack">Набор иконок ADW</string>
+	
+	<string name="pref_backup_title">Резервная копия</string>
+	<string name="pref_backup_summary">Сохранить настройки виджета на карту памяти</string>
+	<string name="last_backup">Последнее сохранение: %1$s</string>	
+	<string name="never">Никогда</string>
+	<string name="backup">Сохранить</string>
+	<string name="restore">Восстановить</string>
+	
+	<string name="backup_current_widget">Сохранить текущий виджет</string>
+	<string name="backup_incar_settings">Сохранить настройки режима «В автомобиле»</string>
+	
+	<string name="backup_name_title">Имя резервной копии:</string>
+	<string name="backup_name_summary">Пожалуйста, определите имя для резервной копии текущего виджета</string>
+	<string name="backup_save">Сохранить</string>
+	<string name="backup_cancel">Отменить</string>
+	<string name="backup_done">Резервная копия создана.</string>
+	<string name="external_storage_not_available">Карта памяти не доступна</string>
+	<string name="failed_to_write_file">Ошибка записи в файл.</string>
+	
+	<string name="restore_done">Восстановление завршено.</string>
+	<string name="restore_deserialize_failed">Ошибка децериализации резервнок копии.</string>
+	<string name="failed_to_read_file">Ошибка чтения файла.</string>
+	<string name="backup_not_exist">Резервная копия не найдена.</string>
+	<string name="unable_delete_file">Не удалось удалить файл.</string>
+	
+	<string name="activity_not_found">Активити не найдена</string>
 
 </resources>

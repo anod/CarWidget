@@ -387,9 +387,9 @@ public class Configuration extends PreferenceActivity {
         try {
             startActivityForResult(intent, requestCode);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, "Activity not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.activity_not_found), Toast.LENGTH_SHORT).show();
         } catch (SecurityException e) {
-            Toast.makeText(this, "Activity not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.activity_not_found), Toast.LENGTH_SHORT).show();
             Log.e("CarHomeWidget", "Widget does not have the permission to launch " + intent +
                     ". Make sure to create a MAIN intent-filter for the corresponding activity " +
                     "or use the exported attribute for this activity.", e);
