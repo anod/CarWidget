@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.anod.car.home.R;
+import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 
 public class ConfigurationBackup extends PreferenceActivity {
 	private static final int REQUEST_RESTORE_MAIN = 1;
@@ -38,7 +39,7 @@ public class ConfigurationBackup extends PreferenceActivity {
 	private Context mContext;
 	private Preference mBackupMainPref;
 	private Preference mBackupIncarPref;
-	private BackupManager mBackupManager;
+	private PreferencesBackupManager mBackupManager;
 	private String mLastBackupStr;
 
 	private static final int DATE_FORMAT = DateUtils.FORMAT_SHOW_DATE
@@ -70,7 +71,7 @@ public class ConfigurationBackup extends PreferenceActivity {
     	mBackupMainPref = (Preference)findPreference(BACKUP_BTN_MAIN);
     	mBackupIncarPref = (Preference)findPreference(BACKUP_BTN_INCAR);
     	
-		mBackupManager = new BackupManager(mContext);
+		mBackupManager = new PreferencesBackupManager(mContext);
 		
        	initBackup();
 		updateMainTime();
@@ -178,7 +179,7 @@ public class ConfigurationBackup extends PreferenceActivity {
 
 	private void onBackupFinish(int type, int code) {
 		Resources r = getResources();
-		if (code == BackupManager.RESULT_DONE) {
+		if (code == PreferencesBackupManager.RESULT_DONE) {
 			switch (type) {
 				case TYPE_MAIN:
 					updateMainTime();
@@ -191,10 +192,10 @@ public class ConfigurationBackup extends PreferenceActivity {
 			return;
 		}
 		switch (code) {
-			case BackupManager.ERROR_STORAGE_NOT_AVAILABLE:
+			case PreferencesBackupManager.ERROR_STORAGE_NOT_AVAILABLE:
 				Toast.makeText(mContext, r.getString(R.string.external_storage_not_available), Toast.LENGTH_SHORT).show();
 			break;
-			case BackupManager.ERROR_FILE_WRITE:
+			case PreferencesBackupManager.ERROR_FILE_WRITE:
             	Toast.makeText(mContext, r.getString(R.string.failed_to_write_file), Toast.LENGTH_SHORT).show();
             break;
 		}

@@ -20,10 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anod.car.home.R;
+import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 
 public class ConfigurationRestore extends ListActivity {
     private int mAppWidgetId; 
-	private BackupManager mBackupManager;
+	private PreferencesBackupManager mBackupManager;
 	private Context mContext;
 	private RestoreAdapter mAdapter;
 	private RestoreClickListener mRestoreListener;
@@ -47,7 +48,7 @@ public class ConfigurationRestore extends ListActivity {
             finish();
         }
         mContext = (Context)this;       
-		mBackupManager = new BackupManager(mContext);
+		mBackupManager = new PreferencesBackupManager(mContext);
        	
 		int type = extras.getInt(EXTRA_TYPE, 0);
 		if (type == 0) {
@@ -132,22 +133,22 @@ public class ConfigurationRestore extends ListActivity {
 	}
 
 	private void onRestoreFinish(int type, int code) {
-		if (code == BackupManager.RESULT_DONE) {
+		if (code == PreferencesBackupManager.RESULT_DONE) {
 			Toast.makeText(mContext, "Restore is done.", Toast.LENGTH_SHORT).show();
 			finish();
 			return;
 		}
 		switch (code) {
-			case BackupManager.ERROR_STORAGE_NOT_AVAILABLE:
+			case PreferencesBackupManager.ERROR_STORAGE_NOT_AVAILABLE:
 				Toast.makeText(mContext, "External storage is not avialable", Toast.LENGTH_SHORT).show();
 			break;
-			case BackupManager.ERROR_DESERIALIZE:
+			case PreferencesBackupManager.ERROR_DESERIALIZE:
 				Toast.makeText(mContext, "Failed to deserialize backup", Toast.LENGTH_SHORT).show();		
 			break;
-			case BackupManager.ERROR_FILE_READ:
-            	Toast.makeText(mContext, "BackupManager failed to read the file", Toast.LENGTH_SHORT).show();
+			case PreferencesBackupManager.ERROR_FILE_READ:
+            	Toast.makeText(mContext, "PreferencesBackupManager failed to read the file", Toast.LENGTH_SHORT).show();
             break;
-			case BackupManager.ERROR_FILE_NOT_EXIST:
+			case PreferencesBackupManager.ERROR_FILE_NOT_EXIST:
 	            Toast.makeText(mContext, "Backup file is not exists", Toast.LENGTH_SHORT).show();
 	        break;
 		}
@@ -173,7 +174,7 @@ public class ConfigurationRestore extends ListActivity {
 			
 			TextView titleView = (TextView)v.findViewById(android.R.id.title);
 			String name = entry.getName();
-			name = name.substring(0, name.lastIndexOf(BackupManager.FILE_EXT_DAT));
+			name = name.substring(0, name.lastIndexOf(PreferencesBackupManager.FILE_EXT_DAT));
 			titleView.setTag(name);
 			titleView.setText(name);
 

@@ -39,11 +39,6 @@
     			android:title="@string/pref_font_color_title"
     			android:summary="@string/pref_font_color_summary"
     		/>
-    		<CheckBoxPreference 
-    			android:key="keep-order-%d" 
-    			android:title="@string/pref_keep_order_title"
-    			android:summary="@string/pref_keep_order_summary"
-    		/>
     		<PreferenceCategory android:key="transparent-category" android:title="@string/transparent">
 			    <CheckBoxPreference android:key="transparent-btn-settings-%d" android:title="@string/pref_settings_transparent" android:summary="@string/pref_settings_transparent_summary"/>
 			    <CheckBoxPreference android:key="transparent-btn-incar-%d" android:title="@string/pref_incar_transparent" android:summary="@string/pref_incar_transparent_summary"/>

@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs;
+package com.anod.car.home.prefs.backup;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,16 +9,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
+import android.app.backup.BackupManager;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
 import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.prefs.ShortcutModel;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.ShortcutsMain;
 
-public class BackupManager {
+public class PreferencesBackupManager {
+	private static final String BACKUP_PACKAGE = "com.anod.car.home.pro";
 	private static final String DIR_BACKUP = "/data/com.anod.car.home/backup";
 	public static final String FILE_EXT_DAT = ".dat";
 	public static final int RESULT_DONE = 0;
@@ -29,7 +33,7 @@ public class BackupManager {
 	public static final int ERROR_DESERIALIZE = 5;
 
     private static final String BACKUP_MAIN_DIRNAME = "backup_main";
-	private static final String FILE_INCAR_JSON = "backup_incar.dat";
+	public static final String FILE_INCAR_JSON = "backup_incar.dat";
 	
 	/**
      * We serialize access to our persistent data through a global static
@@ -44,7 +48,7 @@ public class BackupManager {
 
     private Context mContext;
     
-    public BackupManager(Context context) {
+    public PreferencesBackupManager(Context context) {
     	mContext = context;
     }
     
@@ -100,7 +104,7 @@ public class BackupManager {
         ShortcutsMain prefs = new ShortcutsMain(smodel.getShortcuts(), main);
         
         try {
-            synchronized (BackupManager.sDataLock) {
+            synchronized (PreferencesBackupManager.sDataLock) {
             	FileOutputStream fos = new FileOutputStream(dataFile);
             	ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(prefs);
@@ -127,7 +131,7 @@ public class BackupManager {
   
         InCar prefs = PreferencesStorage.loadInCar(mContext);
         try {
-            synchronized (BackupManager.sDataLock) {
+            synchronized (PreferencesBackupManager.sDataLock) {
             	FileOutputStream fos = new FileOutputStream(dataFile);
             	ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(prefs);
@@ -137,6 +141,7 @@ public class BackupManager {
 			e.printStackTrace();
 			return ERROR_FILE_WRITE;
 		}
+		BackupManager.dataChanged(BACKUP_PACKAGE);
 		return RESULT_DONE;
 	}
 	
@@ -155,7 +160,7 @@ public class BackupManager {
         
         InCar prefs = null;
         try {
-            synchronized (BackupManager.sDataLock) {
+            synchronized (PreferencesBackupManager.sDataLock) {
             	FileInputStream fis = new FileInputStream(dataFile);
             	ObjectInputStream is = new ObjectInputStream(fis);
                 prefs = (InCar) is.readObject();
@@ -188,7 +193,7 @@ public class BackupManager {
         
         ShortcutsMain prefs = null;
         try {
-            synchronized (BackupManager.sDataLock) {
+            synchronized (PreferencesBackupManager.sDataLock) {
             	FileInputStream fis = new FileInputStream(dataFile);
             	ObjectInputStream is = new ObjectInputStream(fis);
                 prefs = (ShortcutsMain) is.readObject();
@@ -219,7 +224,7 @@ public class BackupManager {
 		return RESULT_DONE;
 	}
 	
-	private File getBackupDir() {
+	public File getBackupDir() {
 		File externalPath = Environment.getExternalStorageDirectory();
 		return new File(externalPath.getAbsolutePath() + DIR_BACKUP);
 	}

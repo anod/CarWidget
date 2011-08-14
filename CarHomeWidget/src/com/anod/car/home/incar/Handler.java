@@ -28,7 +28,8 @@ public class Handler {
 	
 	private static boolean[] sPrefState = {false,false,false};
 	private static boolean[] sEventState = {false,false,false};
-	
+
+	private static boolean sMode = false;	
 	private static boolean sWakeLocked = false;
 	private static int mCurrentBtState;
 	private static int mCurrentWiFiState;
@@ -148,7 +149,7 @@ public class Handler {
 	}
 
 	private static boolean detectNewMode() {
-		boolean newMode = false;
+		boolean newMode = sMode;
 		for (int i=0;i<sPrefState.length;i++) {
 			if (sPrefState[i] == true) {
 				newMode = true;
@@ -177,6 +178,7 @@ public class Handler {
 	}
 	
 	public static void switchOn(InCar prefs, Context context) {
+		sMode = true;
 		if (prefs.isDisableScreenTimeout()) {
 			acquireWakeLock(context);
 		}
@@ -199,6 +201,7 @@ public class Handler {
 	}	
 	
 	public static void switchOff(InCar prefs, Context context) {
+		sMode = false;
 		if (prefs.isDisableScreenTimeout()) {
 			releaseWakeLock();
 		}

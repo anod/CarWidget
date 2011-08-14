@@ -134,9 +134,6 @@
 	<string name="pref_activate_car_mode">Activate Car Mode</string>
 	<string name="pref_activate_car_mode_summary">Android built-in car mode will be activated, additional notification icon will be shown.</string>
 
-	<string name="pref_keep_order_title">Keep order</string>
-	<string name="pref_keep_order_summary">Order of shortcuts in landscape mode will be identical to the portrait mode</string>
-	
 	<string name="dialog_title_select">Select</string>
 	<string name="icon_default">Default</string>
 	<string name="icon_custom">Custom</string>
