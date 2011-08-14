@@ -56,13 +56,16 @@ public class ShortcutModel {
 	}
 	
 	public ShortcutInfo saveShortcutIntent(int cellId, Intent data, boolean isApplicationShortcut) {
-    	final ShortcutInfo info = mModel.addShortcut(mContext, data, cellId, mAppWidgetId, isApplicationShortcut);		
+    	final ShortcutInfo info = mModel.createShortcut(mContext, data, cellId, mAppWidgetId, isApplicationShortcut);
     	saveShortcut(cellId, info);
     	return mShortcuts.get(cellId);
 	}
 	
 	public void saveShortcut(int cellId, ShortcutInfo info) {
 		mShortcuts.put(cellId, info);
+    	if (info != null) {
+    		mModel.addItemToDatabase(mContext, info, cellId, mAppWidgetId);
+    	}		
 		PreferencesStorage.saveShortcut(mContext,info.id,cellId,mAppWidgetId);		
 	}
 	

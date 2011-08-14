@@ -38,15 +38,12 @@ public class LauncherModel {
    	   );
     }
     
-    public ShortcutInfo addShortcut(Context context, Intent data, int cellId, long appWidgetId, boolean isAppShortcut) {
+    public ShortcutInfo createShortcut(Context context, Intent data, int cellId, long appWidgetId, boolean isAppShortcut) {
     	ShortcutInfo info = null;
     	if (isAppShortcut) {
     		info = infoFromApplicationIntent(context, data);
     	} else {
     		info = infoFromShortcutIntent(context, data);
-    	}
-    	if (info != null) {
-    		addItemToDatabase(context, info, cellId, appWidgetId);
     	}
         return info;
     }

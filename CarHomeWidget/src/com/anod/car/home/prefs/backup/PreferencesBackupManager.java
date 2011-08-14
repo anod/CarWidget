@@ -217,6 +217,7 @@ public class PreferencesBackupManager {
         	smodel.dropShortcut(cellId, appWidgetId);
         	final ShortcutInfo info = shortcuts.get(cellId);
         	if (info != null) {
+        		info.id = ShortcutInfo.NO_ID;
         		smodel.saveShortcut(cellId, info);
         	}
         }
