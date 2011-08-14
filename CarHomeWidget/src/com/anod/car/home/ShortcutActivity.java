@@ -15,6 +15,9 @@ public class ShortcutActivity extends Activity {
 		Intent intent = getIntent().getParcelableExtra(EXTRA_INTENT);
 		if (intent != null) {
 			Log.d("CarHomeWidget"," Strating acticity: " + intent.toString());
+			if (intent.getSourceBounds() == null) {
+				intent.setSourceBounds(getIntent().getSourceBounds());
+			}
 			startActivity(intent);
 		}
 		finish();

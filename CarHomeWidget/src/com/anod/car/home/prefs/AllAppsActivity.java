@@ -12,6 +12,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,11 @@ public class AllAppsActivity extends ListActivity implements OnItemClickListener
         allAppsAdapter adapter = new allAppsAdapter(this, R.layout.all_apps_row, mAllAppsListCache);
         // Bind to our new adapter.
         setListAdapter(adapter);
-        setVisible(true);        
+        try {
+        	setVisible(true);
+        } catch(Exception e) {
+        	Log.d("CarHomeWidget", "Cannot set list visible");
+        }
     }
     
     private class allAppsAdapter extends ArrayAdapter<CacheEntry> {
