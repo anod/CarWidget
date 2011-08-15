@@ -3,5 +3,5 @@
     <dimen name="workspace_cell_width">146.69998dip</dimen>
     <dimen name="workspace_cell_height">147.29999dip</dimen>
     <dimen name="win7_cell_width">143.0dip</dimen>
-    <dimen name="win7_cell_height">144.0dip</dimen>
+    <dimen name="win7_cell_height">143.0dip</dimen>
 </resources>

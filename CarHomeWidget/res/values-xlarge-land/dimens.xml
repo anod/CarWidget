@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <dimen name="workspace_cell_width">143.0dip</dimen>
-    <dimen name="workspace_cell_height">157.0dip</dimen>
-    <dimen name="win7_cell_width">130.0dip</dimen>
+    <dimen name="workspace_cell_width">146.0dip</dimen>
+    <dimen name="workspace_cell_height">185.0dip</dimen>
+    <dimen name="win7_cell_width">144.0dip</dimen>
     <dimen name="win7_cell_height">144.0dip</dimen>
 </resources>

@@ -6,7 +6,7 @@
     <LinearLayout android:id="@+id/workspace" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
 		<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" >
 			<FrameLayout android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent">
-				<ImageButton android:id="@+id/btn0" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:background="@drawable/container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent"/>
+				<ImageButton android:id="@+id/btn0" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:background="@drawable/container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="@dimen/workspace_cell_height"/>
 				<TextView android:id="@+id/btn_text0"
 					 android:layout_width="fill_parent" android:layout_height="wrap_content"
 					 android:text="@string/set_shortcut"
@@ -20,7 +20,7 @@
 				/>
 			</FrameLayout>
 			<FrameLayout android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent">
-				<ImageButton android:id="@+id/btn1" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:gravity="center" android:background="@drawable/container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent" android:drawablePadding="5.0dip" />
+				<ImageButton android:id="@+id/btn1" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:gravity="center" android:background="@drawable/container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="@dimen/workspace_cell_height" android:drawablePadding="5.0dip" />
 				<TextView android:id="@+id/btn_text1"
 					 android:layout_width="fill_parent" android:layout_height="wrap_content"
 					 android:text="@string/set_shortcut"
@@ -36,7 +36,7 @@
 		</LinearLayout>
 		<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" >
 			<FrameLayout android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent">
-				<ImageButton android:id="@+id/btn2" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:gravity="center" android:background="@drawable/container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent" android:drawablePadding="5.0dip" />
+				<ImageButton android:id="@+id/btn2" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:gravity="center" android:background="@drawable/container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="@dimen/workspace_cell_height" android:drawablePadding="5.0dip" />
 				<TextView android:id="@+id/btn_text2"
 					 android:layout_width="fill_parent" android:layout_height="wrap_content"
 					 android:text="@string/set_shortcut"
@@ -50,7 +50,7 @@
 				/>
 			</FrameLayout>
 			<FrameLayout android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent">
-				<ImageButton android:id="@+id/btn3" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:gravity="center" android:background="@drawable/container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent" android:drawablePadding="5.0dip" />
+				<ImageButton android:id="@+id/btn3" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:gravity="center" android:background="@drawable/container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="@dimen/workspace_cell_height" android:drawablePadding="5.0dip" />
 				<TextView android:id="@+id/btn_text3"
 					 android:layout_width="fill_parent" android:layout_height="wrap_content"
 					 android:text="@string/set_shortcut"
@@ -66,7 +66,7 @@
 		</LinearLayout>
 		<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" >
 			<FrameLayout android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent">
-				<ImageButton android:id="@+id/btn4" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:gravity="center" android:background="@drawable/container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent" android:drawablePadding="5.0dip" />
+				<ImageButton android:id="@+id/btn4" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:gravity="center" android:background="@drawable/container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="@dimen/workspace_cell_height" android:drawablePadding="5.0dip" />
 				<TextView android:id="@+id/btn_text4"
 					 android:layout_width="fill_parent" android:layout_height="wrap_content"
 					 android:text="@string/set_shortcut"
@@ -80,7 +80,7 @@
 				/>
 			</FrameLayout>
 			<FrameLayout android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent">
-				<ImageButton android:id="@+id/btn5" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:gravity="center" android:background="@drawable/container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent" android:drawablePadding="5.0dip" />
+				<ImageButton android:id="@+id/btn5" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:gravity="center" android:background="@drawable/container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="@dimen/workspace_cell_height" android:drawablePadding="5.0dip" />
 				<TextView android:id="@+id/btn_text5"
 					 android:layout_width="fill_parent" android:layout_height="wrap_content"
 					 android:text="@string/set_shortcut"

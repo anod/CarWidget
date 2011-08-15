@@ -150,7 +150,8 @@ public class ConfigurationInCar extends PreferenceActivity {
 			PreferencesStorage.ADJUST_VOLUME_LEVEL,
 			PreferencesStorage.VOLUME_LEVEL,
 			PreferencesStorage.ADJUST_WIFI,
-			PreferencesStorage.AUTO_SPEAKER
+			PreferencesStorage.AUTO_SPEAKER,
+			PreferencesStorage.ACTIVATE_CAR_MODE
 		};
 		final PreferenceScreen prefScr = (PreferenceScreen)findPreference(SCREEN_BT_DEVICE);
 		prefScr.setEnabled(false);
