@@ -13,12 +13,14 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.anod.car.home.Launcher;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 
@@ -28,6 +30,7 @@ public class ConfigurationBackup extends PreferenceActivity {
 	private static final String BACKUP_BTN_INCAR = "backup-btn-incar";
     private static final String RESTORE_BTN_MAIN = "restore-btn-main";
 	private static final String BACKUP_BTN_MAIN = "backup-btn-main";
+	private static final String INCAR_CATEGORY = "backup-incar-category";
 	
 	private static final int DIALOG_WAIT=1;
 	private static final int DIALOG_BACKUP_NAME=2;
@@ -70,9 +73,17 @@ public class ConfigurationBackup extends PreferenceActivity {
 		mLastBackupStr = getString(R.string.last_backup);        
     	mBackupMainPref = (Preference)findPreference(BACKUP_BTN_MAIN);
     	mBackupIncarPref = (Preference)findPreference(BACKUP_BTN_INCAR);
-    	
 		mBackupManager = new PreferencesBackupManager(mContext);
-		
+
+        boolean mFreeVersion = Launcher.isFreeVersion(this.getPackageName());
+        mContext = (Context)this;
+
+        if (mFreeVersion) {
+        	PreferenceCategory preference = (PreferenceCategory)findPreference(INCAR_CATEGORY);
+        	getPreferenceScreen().removePreference(preference);
+        } else {
+    		initInCar();
+        }
        	initBackup();
 		updateMainTime();
 		updateInCarTime();       	
@@ -124,15 +135,6 @@ public class ConfigurationBackup extends PreferenceActivity {
 			}
     	});
 		
-		mBackupIncarPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				String arg = null;
-				new BackupTask().execute(arg);
-				return false;
-			}
-    	});
-		
     	Preference restore_main = (Preference)findPreference(RESTORE_BTN_MAIN);
     	restore_main.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
@@ -146,14 +148,25 @@ public class ConfigurationBackup extends PreferenceActivity {
 			}
     		
     	});
+    	
+    }
+
+	private void initInCar() {
+		mBackupIncarPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				String arg = null;
+				new BackupTask().execute(arg);
+				return false;
+			}
+    	});
 		
     	Preference restore_incar = (Preference)findPreference(RESTORE_BTN_INCAR);
     	Intent intentInCar = new Intent(this, ConfigurationRestore.class);
     	intentInCar.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
     	intentInCar.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_INCAR);
     	restore_incar.setIntent(intentInCar);
-    	
-    }
+	}
 
 	private void updateInCarTime() {
 		String summary;

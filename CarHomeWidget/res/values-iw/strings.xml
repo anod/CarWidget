@@ -73,8 +73,8 @@
   <string name="information_title">מידע</string>
   <string name="version_title">%1$s גירסה %2$s</string>
   <string name="version_summary">נא דרג את הוודג\'ט במרקט</string>
-  <string name="issue_title">בג-טרקר</string>
-  <string name="issue_summary">הוסיפו בעיה או הצעה לבג-טרקר</string>
+  <string name="issue_title">Facebook page</string>
+  <string name="issue_summary">לחץ \"אהבתי\", להשאיר תגובה</string>
   <string name="other_title">יישומים אחרים</string>
   <string name="other_summary">תראו היישומים שלי</string>
   <string name="shortcut_edit_title">עריכת קיצור דרך</string>

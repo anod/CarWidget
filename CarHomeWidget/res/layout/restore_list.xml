@@ -10,8 +10,7 @@
      	android:layout_height="wrap_content" 
      	android:layout_width="match_parent"
      	android:text="@string/choose_backup" 
-     	android:gravity="center_horizontal"
-     </TextView>
+     	android:gravity="center_horizontal" />
 
      <ListView android:id="@android:id/list"
                android:layout_width="match_parent"
