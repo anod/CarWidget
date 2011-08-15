@@ -97,39 +97,39 @@
 	<string name="pref_incar_transparent">כפתור ברכב</string>
 	<string name="pref_incar_transparent_summary">כאשר מצב ברכב מופעל, הכפתור ישאר באותו מקום אבל יהיה שקוף</string>
 
+	<string name="pref_activate_car_mode">מצב מכונית"</string>
+	<string name="pref_activate_car_mode_summary">מצב מכונית מובנה באנדרויד יופעל, אייקון נוסף יופיעה</string>
 
-
-	<string name="pref_activate_car_mode">Built-in Car Mode</string>
-	<string name="pref_activate_car_mode_summary">Android built-in car mode will be activated, additional notification icon will be shown.</string>
-
-	<string name="dialog_title_select">Select</string>
-	<string name="icon_default">Default</string>
+	<string name="dialog_title_select">בחר</string>
+	<string name="icon_default">ברירת מחדל</string>
 	<string name="icon_custom">Custom</string>
 	<string name="icon_adw_icon_pack">ADW Icon Pack</string>
 	
-	<string name="pref_backup_title">Backup / Restore</string>
-	<string name="pref_backup_summary">Backup settings of the widget to sd-card.</string>
-	<string name="last_backup">Last backup: %1$s</string>	
-	<string name="never">Never</string>
-	<string name="backup">Backup</string>
-	<string name="restore">Restore</string>
+	<string name="pref_backup_title">גיבוי / שחזור</string>
+	<string name="pref_backup_summary">גיבוי הגדרות של ווידג\'ט לכרטיס זכרון</string>
+	<string name="last_backup">גיבוי אחרון: %1$s</string>	
+	<string name="never">אף פעם</string>
+	<string name="backup">גיבוי</string>
+	<string name="restore">שחזור</string>
 	
-	<string name="backup_current_widget">Backup current widget</string>
-	<string name="backup_incar_settings">Backup InCar settings</string>
+	<string name="backup_current_widget">גיבוי של ווידג\'ט הנוכחי</string>
+	<string name="backup_incar_settings">גיבוי מצב ברכב</string>
 	
-	<string name="backup_name_title">Backup name:</string>
-	<string name="backup_name_summary">Please define name to identify backup of current widget</string>
-	<string name="backup_save">Save</string>
-	<string name="backup_cancel">Cancel</string>
-	<string name="backup_done">Backup is done.</string>
-	<string name="external_storage_not_available">External storage is not available.</string>
-	<string name="failed_to_write_file">Failed to write the file.</string>
+	<string name="backup_name_title">שם לגיבוי:</string>
+	<string name="backup_name_summary">בבקשה תגדירו שם לזיהוי של גיבוי של ווידג\'ט הנוכחי</string>
+	<string name="backup_save">לשמור</string>
+	<string name="backup_cancel">ביטול</string>
+	<string name="backup_done">גיבוי הסתיים.</string>
+	<string name="external_storage_not_available">אחסון חיצוני אינו זמין.</string>
+	<string name="failed_to_write_file">כתיבה לקובץ נכשלה.</string>
 	
-	<string name="restore_done">Restore is done.</string>
-	<string name="restore_deserialize_failed">Failed to deserialize backup.</string>
-	<string name="failed_to_read_file">Failed to read the file.</string>
-	<string name="backup_not_exist">Backup file is not exists.</string>
-	<string name="unable_delete_file">Unable to delete file.</string>
+	<string name="restore_done">שחזור הסתיים.</string>
+	<string name="restore_deserialize_failed">נכשל לבטל עריכה בסידרה גיבוי.</string>
+	<string name="failed_to_read_file">קריאה מקובצ נכשלה.</string>
+	<string name="backup_not_exist">קובץ גיבוי לא נמצא.</string>
+	<string name="unable_delete_file">לא ניתן למחוק קובץ.</string>
 	
-	<string name="activity_not_found">Activity not found</string>
+	<string name="activity_not_found">אקטיביטי לא נמצא</string>
+	<string name="no_backup_files_found">קבצי גיבוי לא נמצאו.</string>
+	<string name="choose_backup">בחר גיבוי לשחזור</string>
 </resources>
