@@ -99,8 +99,8 @@
 	<string name="pref_incar_transparent">Кнопка «В автомобиле»</string>
 	<string name="pref_incar_transparent_summary">Когда режим «В автомобиле» включен, кнопка останется в том же месте, но станет прозрачная</string>
 
-	<string name="pref_activate_car_mode">Встроенный "Штурман" режим</string>
-	<string name="pref_activate_car_mode_summary">Встроенный в Андройд автомобильный режим будет включен, дополнительный значок будет отображен </string>
+	<string name="pref_activate_car_mode">Режим "Штурман"</string>
+	<string name="pref_activate_car_mode_summary">Включить встроенный в Андройд автомобильный режим, дополнительный значок будет отображен на панели уведомлений</string>
 
 	<string name="dialog_title_select">Выбрать</string>
 	<string name="icon_default">По-умолчанию</string>
@@ -115,10 +115,10 @@
 	<string name="restore">Восстановить</string>
 	
 	<string name="backup_current_widget">Сохранить текущий виджет</string>
-	<string name="backup_incar_settings">Сохранить настройки режима «В автомобиле»</string>
+	<string name="backup_incar_settings">Сохранить режим «В автомобиле»</string>
 	
-	<string name="backup_name_title">Имя резервной копии:</string>
-	<string name="backup_name_summary">Пожалуйста, определите имя для резервной копии текущего виджета</string>
+	<string name="backup_name_title">Название резервной копии:</string>
+	<string name="backup_name_summary">Пожалуйста, введите название для резервной копии текущего виджета</string>
 	<string name="backup_save">Сохранить</string>
 	<string name="backup_cancel">Отменить</string>
 	<string name="backup_done">Резервная копия создана.</string>
