@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.anod.car.home.free"
-      android:versionCode="7"
-      android:versionName="1.33"
+      android:versionCode="9"
+      android:versionName="1.41"
       android:installLocation="internalOnly">
       
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="11" />
 
     <permission
         android:name="com.anod.car.home.permission.READ_SETTINGS"
@@ -20,7 +20,7 @@
         android:label="@string/permlab_write_settings"
         android:description="@string/permdesc_write_settings"/>
         
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />       
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="com.anod.car.home.permission.READ_SETTINGS" />
     <uses-permission android:name="com.anod.car.home.permission.WRITE_SETTINGS" />
@@ -35,6 +35,10 @@
 		        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
 		    </intent-filter>
 		</activity>
+		<activity android:name="com.anod.car.home.prefs.ConfigurationLook" android:configChanges="orientation" />
+		<activity android:name="com.anod.car.home.prefs.ConfigurationInCar" android:configChanges="orientation" />
+		<activity android:name="com.anod.car.home.prefs.ConfigurationBackup" android:configChanges="orientation" />
+		<activity android:name="com.anod.car.home.prefs.ConfigurationRestore" android:configChanges="orientation" />
 		<activity android:name="com.anod.car.home.ShortcutActivity" android:theme="@style/BrightnessTheme" />
 		<receiver android:name="com.anod.car.home.LargeProvider" android:label="@string/app_name_free">
 		    <intent-filter>
