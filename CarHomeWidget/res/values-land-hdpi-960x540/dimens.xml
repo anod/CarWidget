@@ -4,4 +4,5 @@
     <dimen name="workspace_cell_height">177.29999dip</dimen>
     <dimen name="win7_cell_width">150.0dip</dimen>
     <dimen name="win7_cell_height">150.0dip</dimen>
+    <dimen name="title_padding_bottom">15.0dip</dimen>
 </resources>

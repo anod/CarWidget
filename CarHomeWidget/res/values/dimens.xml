@@ -6,4 +6,6 @@
     <dimen name="half_status_bar_height">12.0dip</dimen>
     <dimen name="delete_zone_size">70.0dip</dimen>
     <dimen name="delete_zone_padding">14.0dip</dimen>
+    <dimen name="title_padding_bottom">13.0dip</dimen>
+    <dimen name="title_padding_bottom_win7">15.0dip</dimen>
 </resources>
