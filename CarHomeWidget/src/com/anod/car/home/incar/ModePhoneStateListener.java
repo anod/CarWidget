@@ -13,17 +13,31 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.android.internal.telephony.ITelephony;
+import com.anod.car.home.prefs.PreferencesStorage;
 
 public class ModePhoneStateListener extends PhoneStateListener {
-	private static final int ANSWER_DALAY_MS = 3000;
+	private static final int ANSWER_DALAY_MS = 5000;
 	private Context mContext;
 	private AudioManager mAudioManager;
-	private Timer mAnswerTimer; 
+	private Timer mAnswerTimer;
+	private boolean mUseAutoSpeaker;
+	private String mAutoAnswerMode; 
 	public ModePhoneStateListener(Context context)
 	{
 		mContext = context;
 		mAudioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 	}
+	
+	public void setActions(boolean useAutoSpeaker, String autoAnswerMode) {
+		mUseAutoSpeaker = useAutoSpeaker;
+		mAutoAnswerMode = autoAnswerMode;
+	}
+	
+	public void cancelActions() {
+    	mAudioManager.setSpeakerphoneOn(false);
+    	cancelAnswerTimer();
+	}
+	
 	@Override
 	public void onCallStateChanged(int state, String incomingNumber) {
 		super.onCallStateChanged(state, incomingNumber);
@@ -32,35 +46,54 @@ public class ModePhoneStateListener extends PhoneStateListener {
 	    {
 		    case TelephonyManager.CALL_STATE_IDLE:
 		    	mAudioManager.setSpeakerphoneOn(false);
-		    	if (mAnswerTimer != null) {
-		    		mAnswerTimer.cancel();
-		    		mAnswerTimer = null;
-		    	}
+		    	cancelAnswerTimer();
 		    break;
 		    //case TelephonyManager.CALL_STATE_OFFHOOK:
 		    case TelephonyManager.CALL_STATE_RINGING:
-		    	mAudioManager.setSpeakerphoneOn(true);
-		    	if (mAnswerTimer == null) {
-		    		mAnswerTimer = new Timer();
-		    		mAnswerTimer.schedule(new TimerTask() {
-		    			@Override
-		    			public void run() {
-		                    // Answer the phone
-		                    try {
-		                    	answerPhoneAidl(mContext);
-		                    }
-		                    catch (Exception e) {
-		                        e.printStackTrace();
-		                        Log.d("CarHomeWidget","Error trying to answer using telephony service.  Falling back to headset.");
-		                        answerPhoneHeadsethook(mContext);
-		                    }
-		    			}
-		    		}, ANSWER_DALAY_MS);
+		    	if (mAutoAnswerMode.equals(PreferencesStorage.AUTOANSWER_IMMEDIATLY)) {
+		    		answerCall();
+		    	} else if (mAutoAnswerMode.equals(PreferencesStorage.AUTOANSWER_DELAY_5)) {
+					answerCallDelayed();
+				} else {
+					cancelAnswerTimer();
+				}
+
+		    	if (mUseAutoSpeaker) {
+		    		mAudioManager.setSpeakerphoneOn(true);
 		    	}
 		    break;
 	    }
 	}
 
+	private void cancelAnswerTimer() {
+    	if (mAnswerTimer != null) {
+    		mAnswerTimer.cancel();
+    		mAnswerTimer = null;
+    	}
+	}
+	
+	private void answerCallDelayed() {
+    	if (mAnswerTimer == null) {
+    		mAnswerTimer = new Timer();
+    		mAnswerTimer.schedule(new TimerTask() {
+    			@Override
+    			public void run() {
+    				answerCall();
+    			}
+    		}, ANSWER_DALAY_MS);
+    	}
+	}
+	
+	private void answerCall() {
+        try {
+        	answerPhoneAidl(mContext);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            Log.d("CarHomeWidget","Error trying to answer using telephony service.  Falling back to headset.");
+            answerPhoneHeadsethook(mContext);
+        }
+	}
 	
     private void answerPhoneHeadsethook(Context context) {
 	    // Simulate a press of the headset button to pick up the call

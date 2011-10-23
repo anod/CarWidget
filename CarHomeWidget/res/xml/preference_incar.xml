@@ -1,56 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-   	<PreferenceScreen android:title='@string/pref_incar_mode_title' android:summary="@string/pref_incar_mode_summary"
-   		xmlns:android="http://schemas.android.com/apk/res/android"
-   	>
-		    <CheckBoxPreference android:key="incar-mode-enabled" android:title='@string/pref_incar_mode_enabled' />
-		    <PreferenceCategory android:title="@string/pref_power_contorl_bt">
-    			<CheckBoxPreference android:key="power-bt-enable" android:title="@string/pref_power_plugged_bt_on_title" android:summary="@string/pref_power_plugged_bt_on_summary" />
-    			<CheckBoxPreference android:key="power-bt-disable" android:title="@string/pref_power_unplugged_bt_off_title" android:summary="@string/pref_power_unplugged_bt_off_summary" />
-    		</PreferenceCategory>
-    		<PreferenceCategory android:title="@string/pref_detection">
-	   			<PreferenceScreen android:key="bt-device-screen" android:title="@string/pref_blutooth_device_title" android:summary="@string/pref_blutooth_device_summary" >
-					<CheckBoxPreference android:key="bt-switch" android:title="@string/bluetooth" android:summaryOn="@string/turn_off_bluetooth_summary" android:summaryOff="@string/turn_on_bluetooth_summary" />
-					<PreferenceCategory android:key="bt-device-category" android:title="@string/bluetooth_device_category_title">
-   						<CheckBoxPreference android:key="bt-device-address" android:title="Device 1"/>
-   					</PreferenceCategory>
-	   			</PreferenceScreen>
-	    		<CheckBoxPreference android:key="headset-required" android:title="@string/pref_headset_connected_title" android:summary="@string/pref_headset_connected_summary" />
-	    		<CheckBoxPreference android:key="power-required" android:title="@string/pref_power_connected_title" android:summary="@string/pref_power_connected_summary"  />
-    		</PreferenceCategory>
-    		<PreferenceCategory android:title="@string/pref_actions">
-    			<CheckBoxPreference android:key="auto_speaker" android:title="@string/pref_route_to_speaker" android:summary="@string/pref_route_to_speaker_summary"/>
-    			<CheckBoxPreference android:key="bluetooth" android:title="@string/turn_on_bluetooth_summary" />
-    			<CheckBoxPreference android:key="screen-timeout" android:title="@string/pref_screen_timeout" android:summary="@string/pref_screen_timeout_summary"/>
-    			<ListPreference 
-    				android:key="brightness" 
-    				android:title="@string/pref_brightness_mode"
-    				android:summary="@string/pref_brightness_mode_summary"
-    				android:entryValues="@array/brightness_mode_values"
-    				android:entries="@array/brightness_mode_titles" 
-    				android:defaultValue="disabled"
-    			/>
-    			<CheckBoxPreference android:key="adjust-volume-level" android:title="@string/pref_change_media_volume" android:summary="@string/pref_change_media_volume_summary"/>
-            	<com.anod.car.home.incar.SeekBarPreference
-                	android:key="volume-level"
-                	android:title="@string/pref_media_volume_level"
-                	android:summary="@string/pref_media_volume_level_summary"
-                	android:text=""
-                	android:defaultValue="100" 
-                	android:max="100"
-                	android:dependency="adjust-volume-level"
-            	/> 
-    			<ListPreference 
-    				android:key="wi-fi" 
-    				android:title="@string/pref_wifi"
-    				android:summary="@string/pref_wifi_summary"
-    				android:entryValues="@array/wifi_action_values"
-    				android:entries="@array/wifi_action_titles" 
-    				android:defaultValue="no_action"
-    			/>
-    			<CheckBoxPreference 
-    				android:key="activate-car-mode" 
-    				android:title="@string/pref_activate_car_mode"
-    				android:summary="@string/pref_activate_car_mode_summary"
-    			/>
-    		</PreferenceCategory>
-    	</PreferenceScreen>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:summary="@string/pref_incar_mode_summary"
+    android:title="@string/pref_incar_mode_title" >
+
+    <CheckBoxPreference
+        android:key="incar-mode-enabled"
+        android:title="@string/pref_incar_mode_enabled" />
+
+    <PreferenceCategory android:title="@string/pref_power_contorl_bt" >
+
+        <CheckBoxPreference
+            android:key="power-bt-enable"
+            android:summary="@string/pref_power_plugged_bt_on_summary"
+            android:title="@string/pref_power_plugged_bt_on_title" />
+
+        <CheckBoxPreference
+            android:key="power-bt-disable"
+            android:summary="@string/pref_power_unplugged_bt_off_summary"
+            android:title="@string/pref_power_unplugged_bt_off_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_detection" >
+
+        <PreferenceScreen
+            android:key="bt-device-screen"
+            android:summary="@string/pref_blutooth_device_summary"
+            android:title="@string/pref_blutooth_device_title" >
+
+            <CheckBoxPreference
+                android:key="bt-switch"
+                android:summaryOff="@string/turn_on_bluetooth_summary"
+                android:summaryOn="@string/turn_off_bluetooth_summary"
+                android:title="@string/bluetooth" />
+
+            <PreferenceCategory
+                android:key="bt-device-category"
+                android:title="@string/bluetooth_device_category_title" >
+
+                <CheckBoxPreference
+                    android:key="bt-device-address"
+                    android:title="Device 1" />
+            </PreferenceCategory>
+        </PreferenceScreen>
+
+        <CheckBoxPreference
+            android:key="headset-required"
+            android:summary="@string/pref_headset_connected_summary"
+            android:title="@string/pref_headset_connected_title" />
+
+        <CheckBoxPreference
+            android:key="power-required"
+            android:summary="@string/pref_power_connected_summary"
+            android:title="@string/pref_power_connected_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_actions" >
+        
+        <ListPreference
+            android:defaultValue="disabled"
+            android:entries="@array/autoanswer_titles"
+            android:entryValues="@array/autoanswer_values"
+            android:key="auto_answer"
+            android:summary="@string/pref_auto_answer_summary"
+            android:title="@string/pref_auto_answer" />
+
+        <CheckBoxPreference
+            android:key="auto_speaker"
+            android:summary="@string/pref_route_to_speaker_summary"
+            android:title="@string/pref_route_to_speaker" />
+
+        <CheckBoxPreference
+            android:key="bluetooth"
+            android:title="@string/turn_on_bluetooth_summary" />
+
+        <CheckBoxPreference
+            android:key="screen-timeout"
+            android:summary="@string/pref_screen_timeout_summary"
+            android:title="@string/pref_screen_timeout" />
+
+        <ListPreference
+            android:defaultValue="disabled"
+            android:entries="@array/brightness_mode_titles"
+            android:entryValues="@array/brightness_mode_values"
+            android:key="brightness"
+            android:summary="@string/pref_brightness_mode_summary"
+            android:title="@string/pref_brightness_mode" />
+
+        <CheckBoxPreference
+            android:key="adjust-volume-level"
+            android:summary="@string/pref_change_media_volume_summary"
+            android:title="@string/pref_change_media_volume" />
+
+        <com.anod.car.home.incar.SeekBarPreference
+            android:defaultValue="100"
+            android:dependency="adjust-volume-level"
+            android:key="volume-level"
+            android:max="100"
+            android:summary="@string/pref_media_volume_level_summary"
+            android:text=""
+            android:title="@string/pref_media_volume_level" />
+
+        <ListPreference
+            android:defaultValue="no_action"
+            android:entries="@array/wifi_action_titles"
+            android:entryValues="@array/wifi_action_values"
+            android:key="wi-fi"
+            android:summary="@string/pref_wifi_summary"
+            android:title="@string/pref_wifi" />
+
+        <CheckBoxPreference
+            android:key="activate-car-mode"
+            android:summary="@string/pref_activate_car_mode_summary"
+            android:title="@string/pref_activate_car_mode" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

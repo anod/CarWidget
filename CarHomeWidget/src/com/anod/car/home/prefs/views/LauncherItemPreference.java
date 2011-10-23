@@ -2,7 +2,6 @@ package com.anod.car.home.prefs.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.preference.Preference;
 import android.util.AttributeSet;
 import android.view.View;

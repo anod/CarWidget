@@ -66,5 +66,11 @@
         <item>x1.8</item>
         <item>x1.9</item>
         <item>x2.0</item>
-    </string-array>     
+    </string-array>    
+    
+	<string-array name="autoanswer_values">
+		<item>disabled</item>
+		<item>immediately</item>
+		<item>delay-5</item>
+    </string-array>	        
 </resources>

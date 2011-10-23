@@ -17,7 +17,7 @@ import com.anod.car.home.prefs.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.InCar;
 
 public class ModeService extends Service{
-	private PhoneStateListener mPhoneListener;
+	private ModePhoneStateListener mPhoneListener;
 	private boolean mForceState = false;
 	public static boolean sInCarMode = false;
 	private static final int NOTIFICATION_ID = 1;
@@ -88,10 +88,13 @@ public class ModeService extends Service{
 	}
 
 	private void handlePhoneListener(InCar prefs) {
-    	if (prefs.isAutoSpeaker()) {
+    	if ( prefs.isAutoSpeaker() || 
+    		!prefs.getAutoAnswer().equals(PreferencesStorage.AUTOANSWER_DISABLED)
+    	) {
     		if (mPhoneListener == null) {
     			attachPhoneListener();
     		}
+    		mPhoneListener.setActions(prefs.isAutoSpeaker(), prefs.getAutoAnswer());
     	} else {
             if (mPhoneListener != null) {
             	detachPhoneListener();
@@ -110,6 +113,7 @@ public class ModeService extends Service{
     	Log.d("CarHomeWidget", "Remove phone listener");
     	TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
     	tm.listen(mPhoneListener, PhoneStateListener.LISTEN_NONE);
+    	mPhoneListener.cancelActions();
     	mPhoneListener = null;
 	}
 	

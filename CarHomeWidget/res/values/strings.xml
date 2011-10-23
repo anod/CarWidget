@@ -166,4 +166,7 @@
 	<string name="activity_not_found">Activity not found</string>
 	<string name="no_backup_files_found">No backup files were found.</string>
 	<string name="choose_backup">Choose a backup for restore</string>
+	
+	<string name="pref_auto_answer">Auto Answer</string>
+	<string name="pref_auto_answer_summary">Auto answer to incoming calls immediately or with 5 seconds delay</string>
 </resources>

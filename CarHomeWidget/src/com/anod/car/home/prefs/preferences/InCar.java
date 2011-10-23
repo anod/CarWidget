@@ -24,6 +24,7 @@ public class InCar implements Serializable {
 	private boolean adjustVolumeLevel = false;
 	private int mediaVolumeLevel = 100;
 	private boolean enableBluetooth = false;
+	private String autoAnswer = PreferencesStorage.AUTOANSWER_DISABLED;
 	private String brightness = PreferencesStorage.BRIGHTNESS_AUTO;
 	private String disableWifi = PreferencesStorage.WIFI_NOACTION;
 	private boolean autoSpeaker = false;
@@ -97,6 +98,7 @@ public class InCar implements Serializable {
 	public boolean isEnableBluetooth() {
 		return enableBluetooth;
 	}
+
 	/**
 	 * Get brightness preset
 	 * 	@see PreferenceStorage.BRIGHTNESS_DEFAULT
@@ -162,4 +164,14 @@ public class InCar implements Serializable {
 	public void setActivateCarMode(boolean activate) {
 		this.activateCarMode = activate;
 	}
+	/**
+	 * Get auto answer mode
+	 * @return
+	 */
+	public String getAutoAnswer() {
+		return autoAnswer;
+	}
+	public void setAutoAnswer(String autoAnswer) {
+		this.autoAnswer = autoAnswer;
+	}	
 }

@@ -103,8 +103,8 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
 		final EditText input = new EditText(mContext);
 		InputFilter filter0 = new InputFilter.LengthFilter((mAlphaSliderVisible)?8:6);
 		InputFilter filter1 = new InputFilter() { 
-	        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) { 
-	        	for (int i = start; i < end; i++) { 
+	        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+	        	for (int i = start; i < end; i++) {
 	        		char ch = source.charAt(i);
 	        		if (Character.isDigit(ch) || (ch >= 'A' && ch <= 'F') || (ch >= 'a' && ch <= 'f')) { 
 	        			return null; 

@@ -29,6 +29,10 @@ public class PreferencesStorage {
 	public static final String BRIGHTNESS_DAY = "day";
 	public static final String BRIGHTNESS_NIGHT = "night";
 	
+	public static final String AUTOANSWER_DISABLED = "disabled";
+	public static final String AUTOANSWER_IMMEDIATLY = "immediately";
+	public static final String AUTOANSWER_DELAY_5 = "delay-5";
+	
 	public static final String WIFI_NOACTION = "no_action";
 	public static final String WIFI_TURNOFF = "turn_off_wifi";
 	public static final String WIFI_DISABLE = "disable_wifi";
@@ -102,11 +106,6 @@ public class PreferencesStorage {
     public static void saveMain(Context context, Main prefs, int appWidgetId) {
     	SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
     	Editor editor = p.edit();
-    	
-		//ArrayList<Long> ids = prefs.getLauncherComponents();
-		for (int i=0; i<LAUNCH_COMPONENT_NUMBER; i++) {
-	        //editor.putLong(getLaunchComponentName(i, appWidgetId), ids.get(i));
-		}
 		
     	editor.putString(getName(SKIN, appWidgetId), prefs.getSkin());
 
@@ -153,6 +152,7 @@ public class PreferencesStorage {
     	p.setMediaVolumeLevel(prefs.getInt(VOLUME_LEVEL, DEFAULT_VOLUME_LEVEL));
     	p.setDisableWifi(prefs.getString(ADJUST_WIFI, WIFI_NOACTION));
     	p.setActivateCarMode(prefs.getBoolean(ACTIVATE_CAR_MODE, false));
+    	p.setAutoAnswer(prefs.getString(AUTO_ANSWER, PreferencesStorage.AUTOANSWER_DISABLED));
     	return p;
     }
 
@@ -175,6 +175,8 @@ public class PreferencesStorage {
     	editor.putInt(VOLUME_LEVEL, prefs.getMediaVolumeLevel());
     	editor.putString(ADJUST_WIFI, prefs.getDisableWifi());
     	editor.putBoolean(ACTIVATE_CAR_MODE, prefs.activateCarMode());
+    	editor.putString(AUTO_ANSWER, prefs.getAutoAnswer());
+
 		editor.commit();
 		
 		saveBtDevices(context, prefs.getBtDevices());
