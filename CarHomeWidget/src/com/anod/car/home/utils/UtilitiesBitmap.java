@@ -18,6 +18,7 @@ import android.graphics.drawable.PaintDrawable;
 import android.util.Log;
 
 import com.anod.car.home.R;
+import com.anod.car.home.model.views.FastBitmapDrawable;
 
 public class UtilitiesBitmap {
 
