@@ -6,4 +6,5 @@
     <dimen name="win7_cell_height">105.0dip</dimen>
     <dimen name="title_padding_bottom">13.0dip</dimen>
 	<dimen name="title_padding_bottom_win7">13.0dip</dimen>
+    <dimen name="text_size">16.0dp</dimen>
 </resources>

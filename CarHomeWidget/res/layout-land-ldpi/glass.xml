@@ -24,10 +24,10 @@
                     android:id="@+id/btn0"
                     android:layout_width="@dimen/workspace_cell_width"
                     android:layout_height="@dimen/workspace_cell_height"
-                    android:background="@drawable/glass_normal"
+                    android:background="@drawable/glass_container"
                     android:paddingTop="0.0dp"
                     android:paddingBottom="@dimen/btn_padding_bottom"
-                    android:src="@drawable/ic_add_shortcut_full" />
+                    android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text0"
@@ -41,7 +41,7 @@
                     android:paddingRight="3.0dp"
                     android:text="@string/set_shortcut"
                     android:textColor="@color/default_font_color"
-                    android:textSize="18dp" />
+                    android:textSize="@dimen/text_size" />
             </FrameLayout>
 
             <FrameLayout
@@ -52,10 +52,10 @@
                     android:id="@+id/btn1"
                     android:layout_width="@dimen/workspace_cell_width"
                     android:layout_height="@dimen/workspace_cell_height"
-                    android:background="@drawable/glass_normal"
+                    android:background="@drawable/glass_container"
                     android:paddingTop="0.0dp"
                     android:paddingBottom="@dimen/btn_padding_bottom"
-                    android:src="@drawable/ic_add_shortcut_full" />
+                    android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text1"
@@ -69,7 +69,7 @@
                     android:paddingRight="3.0dp"
                     android:text="@string/set_shortcut"
                     android:textColor="@color/default_font_color"
-                    android:textSize="18dp" />
+                    android:textSize="@dimen/text_size" />
             </FrameLayout>
 
             <FrameLayout
@@ -80,10 +80,10 @@
                     android:id="@+id/btn2"
                     android:layout_width="@dimen/workspace_cell_width"
                     android:layout_height="@dimen/workspace_cell_height"
-                    android:background="@drawable/glass_normal"
+                    android:background="@drawable/glass_container"
                     android:paddingTop="0.0dp"
                     android:paddingBottom="@dimen/btn_padding_bottom"
-                    android:src="@drawable/ic_add_shortcut_full" />
+                    android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text2"
@@ -97,7 +97,7 @@
                     android:paddingRight="3.0dp"
                     android:text="@string/set_shortcut"
                     android:textColor="@color/default_font_color"
-                    android:textSize="18dp" />
+                    android:textSize="@dimen/text_size" />
             </FrameLayout>
         </LinearLayout>
 
@@ -114,10 +114,10 @@
                     android:id="@+id/btn3"
                     android:layout_width="@dimen/workspace_cell_width"
                     android:layout_height="@dimen/workspace_cell_height"
-                    android:background="@drawable/glass_normal"
+                    android:background="@drawable/glass_container"
                     android:paddingTop="0.0dp"
                     android:paddingBottom="@dimen/btn_padding_bottom"
-                    android:src="@drawable/ic_add_shortcut_full" />
+                    android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text3"
@@ -131,7 +131,7 @@
                     android:paddingRight="3.0dp"
                     android:text="@string/set_shortcut"
                     android:textColor="@color/default_font_color"
-                    android:textSize="18dp" />
+                    android:textSize="@dimen/text_size" />
             </FrameLayout>
 
             <FrameLayout
@@ -142,10 +142,10 @@
                     android:id="@+id/btn4"
                     android:layout_width="@dimen/workspace_cell_width"
                     android:layout_height="@dimen/workspace_cell_height"
-                    android:background="@drawable/glass_normal"
+                    android:background="@drawable/glass_container"
                     android:paddingTop="0.0dp"
                     android:paddingBottom="@dimen/btn_padding_bottom"
-                    android:src="@drawable/ic_add_shortcut_full" />
+                    android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text4"
@@ -159,7 +159,7 @@
                     android:paddingRight="3.0dp"
                     android:text="@string/set_shortcut"
                     android:textColor="@color/default_font_color"
-                    android:textSize="18dp" />
+                    android:textSize="@dimen/text_size" />
             </FrameLayout>
 
             <FrameLayout
@@ -170,10 +170,10 @@
                     android:id="@+id/btn5"
                     android:layout_width="@dimen/workspace_cell_width"
                     android:layout_height="@dimen/workspace_cell_height"
-                    android:background="@drawable/glass_normal"
+                    android:background="@drawable/glass_container"
                     android:paddingTop="0.0dp"
                     android:paddingBottom="@dimen/btn_padding_bottom"
-                    android:src="@drawable/ic_add_shortcut_full" />
+                    android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text5"
@@ -187,7 +187,7 @@
                     android:paddingRight="3.0dp"
                     android:text="@string/set_shortcut"
                     android:textColor="@color/default_font_color"
-                    android:textSize="18dp" />
+                    android:textSize="@dimen/text_size" />
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>

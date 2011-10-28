@@ -1,112 +1,210 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout 
-  android:id="@+id/container"
-  android:layout_width="match_parent" android:layout_height="match_parent" 
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:background="@color/default_background">
-    <LinearLayout android:id="@+id/workspace" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
-		<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" >
-			<FrameLayout android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent">
-				<ImageButton android:id="@+id/btn0" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:background="@drawable/glass_container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent"/>
-				<TextView android:id="@+id/btn_text0"
-					 android:layout_width="fill_parent" android:layout_height="wrap_content"
-					 android:text="@string/set_shortcut"
-					 android:textSize="18dp"
-					 android:textColor="@color/default_font_color"
-					 android:maxLines="2"
-					 android:paddingBottom="@dimen/title_padding_bottom"
-					 android:layout_gravity="center_horizontal|bottom" 
-					 android:gravity="center_horizontal"
-					 android:paddingLeft="3.0dp" android:paddingRight="3.0dp"
-				/>
-			</FrameLayout>
-			<FrameLayout android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent">
-				<ImageButton android:id="@+id/btn1" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:background="@drawable/glass_container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent"/>
-				<TextView android:id="@+id/btn_text1"
-					 android:layout_width="fill_parent" android:layout_height="wrap_content"
-					 android:text="@string/set_shortcut"
-					 android:textSize="18dp"
-					 android:textColor="@color/default_font_color"
-					 android:maxLines="2"
-					 android:paddingBottom="@dimen/title_padding_bottom"
-					 android:layout_gravity="center_horizontal|bottom" 
-					 android:gravity="center_horizontal"
-					 android:paddingLeft="3.0dp" android:paddingRight="3.0dp"
-				/>
-			</FrameLayout>
-			<FrameLayout android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent">
-				<ImageButton android:id="@+id/btn2" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:background="@drawable/glass_container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent"/>
-				<TextView android:id="@+id/btn_text2"
-					 android:layout_width="fill_parent" android:layout_height="wrap_content"
-					 android:text="@string/set_shortcut"
-					 android:textSize="18dp"
-					 android:textColor="@color/default_font_color"
-					 android:maxLines="2"
-					 android:paddingBottom="@dimen/title_padding_bottom"
-					 android:layout_gravity="center_horizontal|bottom" 
-					 android:gravity="center_horizontal"
-					 android:paddingLeft="3.0dp" android:paddingRight="3.0dp"
-				/>
-			</FrameLayout>
-		</LinearLayout>
-		<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" >
-			<FrameLayout android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent">
-				<ImageButton android:id="@+id/btn3" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:background="@drawable/glass_container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent"/>
-				<TextView android:id="@+id/btn_text3"
-					 android:layout_width="fill_parent" android:layout_height="wrap_content"
-					 android:text="@string/set_shortcut"
-					 android:textSize="18dp"
-					 android:textColor="@color/default_font_color"
-					 android:maxLines="2"
-					 android:paddingBottom="@dimen/title_padding_bottom"
-					 android:layout_gravity="center_horizontal|bottom" 
-					 android:gravity="center_horizontal"
-					 android:paddingLeft="3.0dp" android:paddingRight="3.0dp"
-				/>
-			</FrameLayout>
-			<FrameLayout android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent">
-				<ImageButton android:id="@+id/btn4" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:background="@drawable/glass_container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent"/>
-				<TextView android:id="@+id/btn_text4"
-					 android:layout_width="fill_parent" android:layout_height="wrap_content"
-					 android:text="@string/set_shortcut"
-					 android:textSize="18dp"
-					 android:textColor="@color/default_font_color"
-					 android:maxLines="2"
-					 android:paddingBottom="@dimen/title_padding_bottom"
-					 android:layout_gravity="center_horizontal|bottom" 
-					 android:gravity="center_horizontal"
-					 android:paddingLeft="3.0dp" android:paddingRight="3.0dp"
-				/>
-			</FrameLayout>
-			<FrameLayout android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent">
-				<ImageButton android:id="@+id/btn5" android:src="@drawable/ic_add_shortcut" android:paddingBottom="25.0dp" android:background="@drawable/glass_container" android:layout_width="@dimen/workspace_cell_width" android:layout_height="fill_parent"/>
-				<TextView android:id="@+id/btn_text5"
-					 android:layout_width="fill_parent" android:layout_height="wrap_content"
-					 android:text="@string/set_shortcut"
-					 android:textSize="18dp"
-					 android:textColor="@color/default_font_color"
-					 android:maxLines="2"
-					 android:paddingBottom="@dimen/title_padding_bottom"
-					 android:layout_gravity="center_horizontal|bottom" 
-					 android:gravity="center_horizontal"
-					 android:paddingLeft="3.0dp" android:paddingRight="3.0dp"
-				/>
-			</FrameLayout>
-		</LinearLayout>
-	</LinearLayout>
-	<ImageButton
-		android:id="@+id/btn_settings" android:src="@drawable/ic_settings"
-		android:layout_width="wrap_content"	android:layout_height="wrap_content"
-		android:layout_toRightOf="@id/workspace" android:layout_alignParentTop="true"
-		android:paddingTop="10.0dp"
-		android:background="@android:color/transparent"
-	/>
-	<ImageButton
-		android:visibility="gone"
-		android:id="@+id/btn_incar_switch" android:src="@drawable/ic_incar_enter"
-		android:layout_width="wrap_content"	android:layout_height="wrap_content"
-		android:layout_toRightOf="@id/workspace" android:layout_alignBottom="@+id/workspace"
-		android:paddingBottom="10.0dp"
-		android:background="@android:color/transparent"
-	/>	
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background" >
+
+    <LinearLayout
+        android:id="@+id/workspace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <FrameLayout
+                android:layout_width="@dimen/workspace_cell_width"
+                android:layout_height="fill_parent" >
+
+                <ImageButton
+                    android:id="@+id/btn0"
+                    android:layout_width="@dimen/workspace_cell_width"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/glass_container"
+                    android:paddingBottom="25.0dp"
+                    android:src="@drawable/ic_add_shortcut" />
+
+                <TextView
+                    android:id="@+id/btn_text0"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:gravity="center_horizontal"
+                    android:maxLines="2"
+                    android:paddingBottom="@dimen/title_padding_bottom"
+                    android:paddingLeft="3.0dp"
+                    android:paddingRight="3.0dp"
+                    android:text="@string/set_shortcut"
+                    android:textColor="@color/default_font_color"
+                    android:textSize="@dimen/text_size" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="@dimen/workspace_cell_width"
+                android:layout_height="fill_parent" >
+
+                <ImageButton
+                    android:id="@+id/btn1"
+                    android:layout_width="@dimen/workspace_cell_width"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/glass_container"
+                    android:paddingBottom="25.0dp"
+                    android:src="@drawable/ic_add_shortcut" />
+
+                <TextView
+                    android:id="@+id/btn_text1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:gravity="center_horizontal"
+                    android:maxLines="2"
+                    android:paddingBottom="@dimen/title_padding_bottom"
+                    android:paddingLeft="3.0dp"
+                    android:paddingRight="3.0dp"
+                    android:text="@string/set_shortcut"
+                    android:textColor="@color/default_font_color"
+                    android:textSize="@dimen/text_size" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="@dimen/workspace_cell_width"
+                android:layout_height="fill_parent" >
+
+                <ImageButton
+                    android:id="@+id/btn2"
+                    android:layout_width="@dimen/workspace_cell_width"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/glass_container"
+                    android:paddingBottom="25.0dp"
+                    android:src="@drawable/ic_add_shortcut" />
+
+                <TextView
+                    android:id="@+id/btn_text2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:gravity="center_horizontal"
+                    android:maxLines="2"
+                    android:paddingBottom="@dimen/title_padding_bottom"
+                    android:paddingLeft="3.0dp"
+                    android:paddingRight="3.0dp"
+                    android:text="@string/set_shortcut"
+                    android:textColor="@color/default_font_color"
+                    android:textSize="@dimen/text_size" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <FrameLayout
+                android:layout_width="@dimen/workspace_cell_width"
+                android:layout_height="fill_parent" >
+
+                <ImageButton
+                    android:id="@+id/btn3"
+                    android:layout_width="@dimen/workspace_cell_width"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/glass_container"
+                    android:paddingBottom="25.0dp"
+                    android:src="@drawable/ic_add_shortcut" />
+
+                <TextView
+                    android:id="@+id/btn_text3"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:gravity="center_horizontal"
+                    android:maxLines="2"
+                    android:paddingBottom="@dimen/title_padding_bottom"
+                    android:paddingLeft="3.0dp"
+                    android:paddingRight="3.0dp"
+                    android:text="@string/set_shortcut"
+                    android:textColor="@color/default_font_color"
+                    android:textSize="@dimen/text_size" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="@dimen/workspace_cell_width"
+                android:layout_height="fill_parent" >
+
+                <ImageButton
+                    android:id="@+id/btn4"
+                    android:layout_width="@dimen/workspace_cell_width"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/glass_container"
+                    android:paddingBottom="25.0dp"
+                    android:src="@drawable/ic_add_shortcut" />
+
+                <TextView
+                    android:id="@+id/btn_text4"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:gravity="center_horizontal"
+                    android:maxLines="2"
+                    android:paddingBottom="@dimen/title_padding_bottom"
+                    android:paddingLeft="3.0dp"
+                    android:paddingRight="3.0dp"
+                    android:text="@string/set_shortcut"
+                    android:textColor="@color/default_font_color"
+                    android:textSize="@dimen/text_size" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="@dimen/workspace_cell_width"
+                android:layout_height="fill_parent" >
+
+                <ImageButton
+                    android:id="@+id/btn5"
+                    android:layout_width="@dimen/workspace_cell_width"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/glass_container"
+                    android:paddingBottom="25.0dp"
+                    android:src="@drawable/ic_add_shortcut" />
+
+                <TextView
+                    android:id="@+id/btn_text5"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:gravity="center_horizontal"
+                    android:maxLines="2"
+                    android:paddingBottom="@dimen/title_padding_bottom"
+                    android:paddingLeft="3.0dp"
+                    android:paddingRight="3.0dp"
+                    android:text="@string/set_shortcut"
+                    android:textColor="@color/default_font_color"
+                    android:textSize="@dimen/text_size" />
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/workspace"
+        android:background="@android:color/transparent"
+        android:paddingTop="10.0dp"
+        android:src="@drawable/ic_settings" />
+
+    <ImageButton
+        android:id="@+id/btn_incar_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/workspace"
+        android:layout_toRightOf="@id/workspace"
+        android:background="@android:color/transparent"
+        android:paddingBottom="10.0dp"
+        android:src="@drawable/ic_incar_enter"
+        android:visibility="gone" />
+
 </RelativeLayout>

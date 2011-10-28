@@ -10,4 +10,5 @@
     <dimen name="title_padding_bottom_win7">15.0dip</dimen>
     <dimen name="icon_padding">5.0dip</dimen>
     <dimen name="btn_padding_bottom">25.0dp</dimen>
+    <dimen name="text_size">18.0dp</dimen>
 </resources>
