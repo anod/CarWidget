@@ -9,16 +9,18 @@ package com.anod.car.home.free;
 
 public final class R {
     public static final class array {
+        public static final int autoanswer_titles=0x7f050003;
+        public static final int autoanswer_values=0x7f05000b;
         public static final int brightness_mode_titles=0x7f050001;
-        public static final int brightness_mode_values=0x7f050006;
+        public static final int brightness_mode_values=0x7f050007;
         public static final int colors_titles=0x7f050000;
-        public static final int colors_values=0x7f050005;
-        public static final int icon_scale_titles=0x7f050009;
-        public static final int icon_scale_values=0x7f050007;
-        public static final int skin_titles=0x7f050003;
-        public static final int skin_values=0x7f050004;
+        public static final int colors_values=0x7f050006;
+        public static final int icon_scale_titles=0x7f05000a;
+        public static final int icon_scale_values=0x7f050008;
+        public static final int skin_titles=0x7f050004;
+        public static final int skin_values=0x7f050005;
         public static final int wifi_action_titles=0x7f050002;
-        public static final int wifi_action_values=0x7f050008;
+        public static final int wifi_action_values=0x7f050009;
     }
     public static final class attr {
     }
@@ -29,20 +31,23 @@ public final class R {
         public static final int w7_tale_default_background_highlight=0x7f060002;
     }
     public static final class dimen {
+        public static final int btn_padding_bottom=0x7f070009;
         public static final int delete_zone_padding=0x7f070005;
         public static final int delete_zone_size=0x7f070004;
-        public static final int dots_height=0x7f07000c;
-        public static final int dots_width=0x7f07000d;
+        public static final int dots_height=0x7f07000f;
+        public static final int dots_width=0x7f070010;
         public static final int half_status_bar_height=0x7f070003;
         public static final int hint_bubble_offset_horizontal=0x7f070001;
         public static final int hint_bubble_offset_vertical=0x7f070002;
+        public static final int icon_padding=0x7f070008;
         public static final int icon_size=0x7f070000;
+        public static final int text_size=0x7f07000a;
         public static final int title_padding_bottom=0x7f070006;
         public static final int title_padding_bottom_win7=0x7f070007;
-        public static final int win7_cell_height=0x7f07000b;
-        public static final int win7_cell_width=0x7f07000a;
-        public static final int workspace_cell_height=0x7f070009;
-        public static final int workspace_cell_width=0x7f070008;
+        public static final int win7_cell_height=0x7f07000e;
+        public static final int win7_cell_width=0x7f07000d;
+        public static final int workspace_cell_height=0x7f07000c;
+        public static final int workspace_cell_width=0x7f07000b;
     }
     public static final class drawable {
         public static final int app_header_bg=0x7f020000;
@@ -207,6 +212,8 @@ public final class R {
         public static final int pref_actions=0x7f090036;
         public static final int pref_activate_car_mode=0x7f09005f;
         public static final int pref_activate_car_mode_summary=0x7f090060;
+        public static final int pref_auto_answer=0x7f09007c;
+        public static final int pref_auto_answer_summary=0x7f09007d;
         public static final int pref_autoanswer=0x7f090054;
         public static final int pref_autoanswer_summary=0x7f090055;
         public static final int pref_backup_summary=0x7f090066;
