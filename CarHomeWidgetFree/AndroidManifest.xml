@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     android:installLocation="internalOnly"
     package="com.anod.car.home.free"
-    android:versionCode="9"
-    android:versionName="1.41" >
+    android:versionCode="10"
+    android:versionName="1.42" >
 
     <uses-sdk
         android:minSdkVersion="8"
