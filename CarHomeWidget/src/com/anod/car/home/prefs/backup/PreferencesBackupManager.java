@@ -173,6 +173,10 @@ public class PreferencesBackupManager {
 			e.printStackTrace();
 			return ERROR_DESERIALIZE;
 		}
+		//version 1.42
+		if (prefs.getAutoAnswer().equals("")) {
+			prefs.setAutoAnswer(PreferencesStorage.AUTOANSWER_DISABLED);
+		}
 		PreferencesStorage.saveInCar(mContext, prefs);
 		return RESULT_DONE;
 	}

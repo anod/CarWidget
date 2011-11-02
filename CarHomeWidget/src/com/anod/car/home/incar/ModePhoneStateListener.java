@@ -17,6 +17,8 @@ import com.anod.car.home.prefs.PreferencesStorage;
 
 public class ModePhoneStateListener extends PhoneStateListener {
 	private static final int ANSWER_DALAY_MS = 5000;
+	private boolean mSpeakerEnabled = false;
+	private boolean mAnswered = false;
 	private Context mContext;
 	private AudioManager mAudioManager;
 	private Timer mAnswerTimer;
@@ -46,20 +48,35 @@ public class ModePhoneStateListener extends PhoneStateListener {
 	    {
 		    case TelephonyManager.CALL_STATE_IDLE:
 		    	mAudioManager.setSpeakerphoneOn(false);
+		    	mSpeakerEnabled = false;
 		    	cancelAnswerTimer();
+		    	mAnswered=false;
 		    break;
-		    //case TelephonyManager.CALL_STATE_OFFHOOK:
+		    case TelephonyManager.CALL_STATE_OFFHOOK:
+		    	if (mUseAutoSpeaker && !mSpeakerEnabled) {
+		    		mAudioManager.setSpeakerphoneOn(true);
+		    		mSpeakerEnabled = true;
+		    	}		    	
+		    break;
 		    case TelephonyManager.CALL_STATE_RINGING:
 		    	if (mAutoAnswerMode.equals(PreferencesStorage.AUTOANSWER_IMMEDIATLY)) {
-		    		answerCall();
+		    		if (!mAnswered) {
+		    			answerCall();
+		    			mAnswered = true;
+		    		}
 		    	} else if (mAutoAnswerMode.equals(PreferencesStorage.AUTOANSWER_DELAY_5)) {
-					answerCallDelayed();
+		    		if (!mAnswered) {
+		    			answerCallDelayed();
+		    			mAnswered = true;
+		    		}
 				} else {
 					cancelAnswerTimer();
+					mAnswered=false;
 				}
 
-		    	if (mUseAutoSpeaker) {
+		    	if (mUseAutoSpeaker && !mSpeakerEnabled) {
 		    		mAudioManager.setSpeakerphoneOn(true);
+		    		mSpeakerEnabled = true;
 		    	}
 		    break;
 	    }
