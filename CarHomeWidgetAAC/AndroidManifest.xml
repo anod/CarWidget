@@ -67,6 +67,9 @@
         </activity>
         <activity
             android:configChanges="orientation"
+            android:name="com.anod.car.home.prefs.ConfigurationCDDShortcuts" />
+        <activity
+            android:configChanges="orientation"
             android:name="com.anod.car.home.prefs.ConfigurationQuickShortcuts" />
         <activity
             android:configChanges="orientation"
@@ -92,7 +95,7 @@
         <activity
             android:name="com.anod.car.home.ScreenNavigationActivity"
             android:theme="@style/BrightnessTheme" />
-        
+
         <receiver
             android:label="@string/app_name_aac"
             android:name="com.anod.car.home.LargeProvider" >
