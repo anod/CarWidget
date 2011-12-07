@@ -4,13 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/default_background"
-    android:gravity="center_vertical" >
+    android:gravity="center_vertical|center_horizontal" >
 
     <LinearLayout
         android:id="@+id/workspace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -31,11 +30,12 @@
                     android:gravity="center"
                     android:paddingBottom="@dimen/btn_padding_bottom"
                     android:paddingTop="0.0dp"
+                    android:rotation="90"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text0"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:gravity="center_horizontal"
@@ -43,6 +43,7 @@
                     android:paddingBottom="@dimen/title_padding_bottom"
                     android:paddingLeft="3.0dp"
                     android:paddingRight="3.0dp"
+                    android:rotation="90"
                     android:text="@string/set_shortcut"
                     android:textColor="@color/default_font_color"
                     android:textSize="@dimen/text_size" />
@@ -61,18 +62,19 @@
                     android:gravity="center"
                     android:paddingBottom="@dimen/btn_padding_bottom"
                     android:paddingTop="0.0dp"
+                    android:rotation="90"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center_horizontal"
                     android:maxLines="2"
                     android:paddingBottom="@dimen/title_padding_bottom"
                     android:paddingLeft="3.0dp"
                     android:paddingRight="3.0dp"
+                    android:rotation="90"
                     android:text="@string/set_shortcut"
                     android:textColor="@color/default_font_color"
                     android:textSize="@dimen/text_size" />
@@ -101,7 +103,7 @@
 
                 <TextView
                     android:id="@+id/btn_text2"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:gravity="center_horizontal"
@@ -109,6 +111,7 @@
                     android:paddingBottom="@dimen/title_padding_bottom"
                     android:paddingLeft="3.0dp"
                     android:paddingRight="3.0dp"
+                    android:rotation="90"
                     android:text="@string/set_shortcut"
                     android:textColor="@color/default_font_color"
                     android:textSize="@dimen/text_size" />
@@ -127,11 +130,12 @@
                     android:gravity="center"
                     android:paddingBottom="@dimen/btn_padding_bottom"
                     android:paddingTop="0.0dp"
+                    android:rotation="90"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text3"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:gravity="center_horizontal"
@@ -139,6 +143,7 @@
                     android:paddingBottom="@dimen/title_padding_bottom"
                     android:paddingLeft="3.0dp"
                     android:paddingRight="3.0dp"
+                    android:rotation="90"
                     android:text="@string/set_shortcut"
                     android:textColor="@color/default_font_color"
                     android:textSize="@dimen/text_size" />
@@ -163,11 +168,12 @@
                     android:gravity="center"
                     android:paddingBottom="@dimen/btn_padding_bottom"
                     android:paddingTop="0.0dp"
+                    android:rotation="90"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text4"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:gravity="center_horizontal"
@@ -175,6 +181,7 @@
                     android:paddingBottom="@dimen/title_padding_bottom"
                     android:paddingLeft="3.0dp"
                     android:paddingRight="3.0dp"
+                    android:rotation="90"
                     android:text="@string/set_shortcut"
                     android:textColor="@color/default_font_color"
                     android:textSize="@dimen/text_size" />
@@ -193,11 +200,12 @@
                     android:gravity="center"
                     android:paddingBottom="@dimen/btn_padding_bottom"
                     android:paddingTop="0.0dp"
+                    android:rotation="90"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text5"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:gravity="center_horizontal"
@@ -205,6 +213,7 @@
                     android:paddingBottom="@dimen/title_padding_bottom"
                     android:paddingLeft="3.0dp"
                     android:paddingRight="3.0dp"
+                    android:rotation="90"
                     android:text="@string/set_shortcut"
                     android:textColor="@color/default_font_color"
                     android:textSize="@dimen/text_size" />
@@ -213,24 +222,26 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/btn_incar_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/workspace"
-        android:layout_below="@id/workspace"
-        android:background="@android:color/transparent"
-        android:padding="10.0dp"
-        android:src="@drawable/ic_incar_enter"
-        android:visibility="gone" />
-
-    <ImageButton
         android:id="@+id/btn_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/workspace"
-        android:layout_below="@+id/workspace"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/workspace"
         android:background="@android:color/transparent"
         android:padding="10.0dp"
+        android:rotation="90"
         android:src="@drawable/ic_settings" />
+
+    <ImageButton
+        android:id="@+id/btn_incar_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/workspace"
+        android:background="@android:color/transparent"
+        android:padding="10.0dp"
+        android:rotation="90"
+        android:src="@drawable/ic_incar_enter"
+        android:visibility="gone" />
 
 </RelativeLayout>
