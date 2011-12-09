@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     android:installLocation="internalOnly"
     package="com.anod.car.home.aac"
-    android:versionCode="19"
-    android:versionName="1.0alpha6 Trial" >
+    android:versionCode="20"
+    android:versionName="1.0alpha7 Trial" >
 
     <uses-sdk
         android:minSdkVersion="8"
