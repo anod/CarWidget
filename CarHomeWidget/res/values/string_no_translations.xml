@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="arrow_right">→</string>
+	<string name="default_hex_color_text">#00000000</string>
+	<string name="textview">TextView</string>
+</resources>

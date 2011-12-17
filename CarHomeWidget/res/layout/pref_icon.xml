@@ -24,7 +24,7 @@
      </LinearLayout>    
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_margin="6dip"
         android:layout_weight="1"
@@ -52,7 +52,6 @@
     	android:id="@+id/edit_icon"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
         android:gravity="center"
         android:scaleType="center"
         android:background="@android:drawable/list_selector_background"
@@ -62,7 +61,7 @@
     /> 
     
     <View android:id="@+id/divider"
-        android:layout_width="1px"
+        android:layout_width="1dp"
         android:layout_height="match_parent"
         android:layout_marginTop="5dip"
         android:layout_marginBottom="5dip"
@@ -72,7 +71,6 @@
     <ImageView android:id="@+id/delete_action_button"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
         android:gravity="center"
         android:scaleType="center"
         android:background="@android:drawable/list_selector_background"

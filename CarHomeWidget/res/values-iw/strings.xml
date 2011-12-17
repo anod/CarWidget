@@ -28,7 +28,7 @@
     <string name="dialog_donate_message">תכונה זו זמינה רק בגירסה ווידג\'ט לרכב פרו. אתם יכולים לקבל אותה ב-0.99$ USD (~3.44 ₪) \n\nהאם אתם רוצים לקבל אותה עכשיו?</string>
     <string name="dialog_donate_btn_yes">כן, בבקשה!</string>
     <string name="dialog_donate_btn_no">לא, תודה</string>
-    <string name="please_wait">אנא המתן...</string>
+    <string name="please_wait">אנא המתן&#8230;</string>
     <string name="shortcuts">קיצורי דרך</string>
     <string name="set_shortcut">הגדר קיצור דרך</string>
     <string name="advanced">הגדרות מתקדמות</string>

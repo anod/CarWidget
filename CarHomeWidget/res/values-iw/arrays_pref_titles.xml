@@ -18,7 +18,7 @@
         <item>אפור כהה</item>
         <item>אפור</item>
         <item>אפור בהיר</item>
-        <item>מותאמת אישית ...</item>
+        <item>מותאמת אישית &#8230;</item>
     </string-array>
     <string-array name="brightness_mode_titles">
         <item>ללא שינוי</item>

@@ -28,7 +28,7 @@
     <string name="dialog_donate_message">Эта функция доступна только в Pro версии Авто Виджета. Вы можете получить его за $0.99 USD (~27 руб.)\n\n Хотели бы вы получить ее прямо сейчас?</string>
     <string name="dialog_donate_btn_yes">Да, пожалуйста!</string>
     <string name="dialog_donate_btn_no">Нет, спасибо</string>
-    <string name="please_wait">Пожалуйста, подождите...</string>
+    <string name="please_wait">Пожалуйста, подождите&#8230;</string>
     <string name="shortcuts">Ярлыки</string>
     <string name="set_shortcut">Выбрать ярлык</string>
     <string name="advanced">Дополнителные настройки</string>

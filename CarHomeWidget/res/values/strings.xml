@@ -43,7 +43,7 @@
 	<string name="dialog_donate_btn_yes">Yes, please!</string>
 	<string name="dialog_donate_btn_no">No, thanks</string>
    
-	<string name="please_wait">Please, wait...</string>
+	<string name="please_wait">Please, wait&#8230;</string>
 	<string name="shortcuts">Shortcuts</string>
 	<string name="set_shortcut">Set shortcut</string>
 	<string name="advanced">Advanced</string>

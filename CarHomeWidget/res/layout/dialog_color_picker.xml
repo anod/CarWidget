@@ -17,12 +17,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:baselineAligned="false">
 		
-	<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1">		
 		<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent">
+		    android:layout_height="0dip"
+		    android:layout_weight="1">
 		
 			<afzkl.development.mColorPicker.views.ColorPickerView
 				android:id="@+id/color_picker_view"
@@ -56,7 +57,7 @@
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="fill_parent"	
-					android:text="→"
+					android:text="@string/arrow_right"
 					android:textSize="20sp"
 					android:gravity="center"
 					android:textColor="#ffffff"
@@ -73,20 +74,16 @@
 			
 			</LinearLayout>
 		</RelativeLayout>
-	</FrameLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="54dip"
-        android:orientation="vertical" 
-        android:layout_marginTop="10dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+			android:layout_marginTop="10dp"
             android:paddingTop="4dip"
             android:paddingLeft="2dip"
             android:paddingRight="2dip"
+        	android:minHeight="54dip"            
         >
             <Button android:id="@+id/customButton1"
                 android:layout_width="0dip"
@@ -99,7 +96,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:maxLines="1"
-                android:text="#00000000"
+                android:text="@string/default_hex_color_text"
                 android:ems="9"
                 android:paddingLeft="2dip"
                 android:paddingRight="2dip"
@@ -111,5 +108,4 @@
                 android:maxLines="2"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-     </LinearLayout>
 </LinearLayout>

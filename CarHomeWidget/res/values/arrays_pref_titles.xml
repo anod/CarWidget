@@ -16,7 +16,7 @@
         <item>Dark Gray</item>
         <item>Gray</item>
         <item>Light Gray</item>
-        <item>Custom ...</item>
+        <item>Custom &#8230;</item>
     </string-array>
   
 	<string-array name="brightness_mode_titles">
