@@ -174,7 +174,7 @@ public class PreferencesBackupManager {
 			return ERROR_DESERIALIZE;
 		}
 		//version 1.42
-		if (prefs.getAutoAnswer().equals("")) {
+		if (prefs.getAutoAnswer() == null || prefs.getAutoAnswer().equals("")) {
 			prefs.setAutoAnswer(PreferencesStorage.AUTOANSWER_DISABLED);
 		}
 		PreferencesStorage.saveInCar(mContext, prefs);
