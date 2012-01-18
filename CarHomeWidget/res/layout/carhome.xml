@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/default_background"
+    android:orientation="vertical"
     android:gravity="center_vertical" >
-
+
     <LinearLayout
         android:id="@+id/workspace"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+		android:layout_height="0dip"
+		android:layout_weight="1"
+        android:baselineAligned="false"
         android:orientation="vertical" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+			android:layout_weight="1"
+            android:baselineAligned="false"
             android:orientation="horizontal" >
 
             <FrameLayout
-                android:layout_width="@dimen/workspace_cell_width"
+                android:layout_weight="1"
+                android:layout_width="0dip"
                 android:layout_height="fill_parent" >
 
                 <ImageButton
                     android:id="@+id/btn0"
-                    android:layout_width="@dimen/workspace_cell_width"
-                    android:layout_height="@dimen/workspace_cell_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/container"
                     android:paddingBottom="25.0dp"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text0"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:gravity="center_horizontal"
@@ -46,13 +51,14 @@
             </FrameLayout>
 
             <FrameLayout
-                android:layout_width="@dimen/workspace_cell_width"
+                android:layout_weight="1"
+                android:layout_width="0dip"
                 android:layout_height="fill_parent" >
 
                 <ImageButton
                     android:id="@+id/btn1"
-                    android:layout_width="@dimen/workspace_cell_width"
-                    android:layout_height="@dimen/workspace_cell_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/container"
                     android:drawablePadding="5.0dip"
                     android:gravity="center"
@@ -61,7 +67,7 @@
 
                 <TextView
                     android:id="@+id/btn_text1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:gravity="center_horizontal"
@@ -76,18 +82,21 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+			android:layout_weight="1"
+            android:baselineAligned="false"
             android:orientation="horizontal" >
-
+            
             <FrameLayout
-                android:layout_width="@dimen/workspace_cell_width"
+                android:layout_weight="1"
+                android:layout_width="0dip"
                 android:layout_height="fill_parent" >
 
                 <ImageButton
                     android:id="@+id/btn2"
-                    android:layout_width="@dimen/workspace_cell_width"
-                    android:layout_height="@dimen/workspace_cell_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/container"
                     android:drawablePadding="5.0dip"
                     android:gravity="center"
@@ -110,13 +119,14 @@
             </FrameLayout>
 
             <FrameLayout
-                android:layout_width="@dimen/workspace_cell_width"
+                android:layout_weight="1"
+                android:layout_width="0dip"
                 android:layout_height="fill_parent" >
 
                 <ImageButton
                     android:id="@+id/btn3"
-                    android:layout_width="@dimen/workspace_cell_width"
-                    android:layout_height="@dimen/workspace_cell_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/container"
                     android:drawablePadding="5.0dip"
                     android:gravity="center"
@@ -140,18 +150,21 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+			android:layout_weight="1"
+            android:baselineAligned="false"
             android:orientation="horizontal" >
 
             <FrameLayout
-                android:layout_width="@dimen/workspace_cell_width"
+                android:layout_weight="1"
+                android:layout_width="0dip"
                 android:layout_height="fill_parent" >
 
                 <ImageButton
                     android:id="@+id/btn4"
-                    android:layout_width="@dimen/workspace_cell_width"
-                    android:layout_height="@dimen/workspace_cell_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/container"
                     android:drawablePadding="5.0dip"
                     android:gravity="center"
@@ -174,13 +187,14 @@
             </FrameLayout>
 
             <FrameLayout
-                android:layout_width="@dimen/workspace_cell_width"
+                android:layout_weight="1"
+                android:layout_width="0dip"
                 android:layout_height="fill_parent" >
 
                 <ImageButton
                     android:id="@+id/btn5"
-                    android:layout_width="@dimen/workspace_cell_width"
-                    android:layout_height="@dimen/workspace_cell_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/container"
                     android:drawablePadding="5.0dip"
                     android:gravity="center"
@@ -204,25 +218,31 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/btn_incar_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/workspace"
-        android:layout_below="@id/workspace"
-        android:background="@android:color/transparent"
-        android:padding="10.0dp"
-        android:src="@drawable/ic_incar_enter"
-        android:visibility="gone" />
-
-    <ImageButton
-        android:id="@+id/btn_settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/workspace"
-        android:layout_below="@+id/workspace"
-        android:background="@android:color/transparent"
-        android:padding="10.0dp"
-        android:src="@drawable/ic_settings" />
-
-</RelativeLayout>
+    <RelativeLayout 
+     	android:layout_width="match_parent"   
+     	android:layout_height="wrap_content"
+	    android:paddingTop="5.0dp"     	
+	    android:paddingLeft="10.0dp"	    
+	    android:paddingRight="10.0dp"
+	    android:paddingBottom="5.0dp"	    
+     >
+	    <ImageButton
+	        android:id="@+id/btn_incar_switch"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@id/workspace"
+	        android:background="@android:color/transparent"
+	        android:src="@drawable/ic_incar_enter"
+	        android:visibility="gone" />
+	
+	    <ImageButton
+	        android:id="@+id/btn_settings"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@+id/workspace"
+	        android:background="@android:color/transparent"
+	        android:src="@drawable/ic_settings" />
+	</RelativeLayout>
+</LinearLayout>

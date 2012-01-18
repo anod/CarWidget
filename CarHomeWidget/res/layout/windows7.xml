@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/default_background" >
+    android:orientation="horizontal"
+	android:baselineAligned="false" 
+>
 
     <LinearLayout
         android:id="@+id/workspace"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:baselineAligned="false"
         android:orientation="vertical" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+			android:layout_weight="1"
             android:layout_margin="2dp"
             android:orientation="horizontal" >
 
             <FrameLayout
-                android:layout_width="@dimen/win7_cell_width"
-                android:layout_height="@dimen/win7_cell_height"
+                android:layout_weight="1"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
                 android:layout_margin="2dp" >
 
                 <ImageButton
                     android:id="@+id/btn0"
-                    android:layout_width="@dimen/win7_cell_width"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/win7_container"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text0"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:ellipsize="end"
@@ -44,20 +50,21 @@
             </FrameLayout>
 
             <FrameLayout
-                android:layout_width="@dimen/win7_cell_width"
-                android:layout_height="@dimen/win7_cell_height"
+                android:layout_weight="1"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
                 android:layout_margin="2dp" >
 
                 <ImageButton
                     android:id="@+id/btn1"
-                    android:layout_width="@dimen/win7_cell_width"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/win7_container"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:ellipsize="end"
@@ -71,21 +78,23 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+			android:layout_weight="1"
             android:layout_margin="2dp"
             android:orientation="horizontal" >
 
             <FrameLayout
-                android:layout_width="@dimen/win7_cell_width"
-                android:layout_height="@dimen/win7_cell_height"
+                android:layout_weight="1"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
                 android:layout_marginBottom="2dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp" >
 
                 <ImageButton
                     android:id="@+id/btn2"
-                    android:layout_width="@dimen/win7_cell_width"
+                    android:layout_width="match_parent"
                     android:layout_height="fill_parent"
                     android:background="@drawable/win7_container"
                     android:gravity="center"
@@ -106,22 +115,23 @@
             </FrameLayout>
 
             <FrameLayout
-                android:layout_width="@dimen/win7_cell_width"
-                android:layout_height="@dimen/win7_cell_height"
+                android:layout_weight="1"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
                 android:layout_marginBottom="2dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp" >
 
                 <ImageButton
                     android:id="@+id/btn3"
-                    android:layout_width="@dimen/win7_cell_width"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/win7_container"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text3"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:ellipsize="end"
@@ -135,28 +145,30 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+			android:layout_weight="1"
             android:layout_margin="2dp"
             android:orientation="horizontal" >
 
             <FrameLayout
-                android:layout_width="@dimen/win7_cell_width"
-                android:layout_height="@dimen/win7_cell_height"
+                android:layout_weight="1"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
                 android:layout_marginBottom="2dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp" >
 
                 <ImageButton
                     android:id="@+id/btn4"
-                    android:layout_width="@dimen/win7_cell_width"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/win7_container"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text4"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:ellipsize="end"
@@ -169,22 +181,23 @@
             </FrameLayout>
 
             <FrameLayout
-                android:layout_width="@dimen/win7_cell_width"
-                android:layout_height="@dimen/win7_cell_height"
+                android:layout_weight="1"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
                 android:layout_marginBottom="2dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp" >
 
                 <ImageButton
                     android:id="@+id/btn5"
-                    android:layout_width="@dimen/win7_cell_width"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/win7_container"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text5"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:ellipsize="end"
@@ -198,25 +211,30 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/btn_settings"
+    <RelativeLayout 
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/workspace"
-        android:background="@android:color/transparent"
-        android:paddingTop="10.0dp"
-        android:src="@drawable/ic_settings_win7" />
-
-    <ImageButton
-        android:id="@+id/btn_incar_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/workspace"
-        android:layout_toRightOf="@id/workspace"
-        android:background="@android:color/transparent"
-        android:paddingBottom="10.0dp"
-        android:src="@drawable/ic_incar_enter_win7"
-        android:visibility="gone" />
-
-</RelativeLayout>
+		android:layout_height="match_parent"
+		android:layout_weight="0"
+		android:paddingTop="10.0dp"
+		android:paddingBottom="10.0dp"
+		android:paddingLeft="5.0dp"
+		android:paddingRight="5.0dp"
+    >
+	    <ImageButton
+	        android:id="@+id/btn_settings"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:background="@android:color/transparent"
+	        android:src="@drawable/ic_settings_win7" />
+	
+	    <ImageButton
+	        android:id="@+id/btn_incar_switch"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:background="@android:color/transparent"
+	        android:src="@drawable/ic_incar_enter_win7"
+	        android:visibility="gone" />
+	</RelativeLayout>
+</LinearLayout>
