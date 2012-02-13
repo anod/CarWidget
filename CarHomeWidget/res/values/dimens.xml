@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <dimen name="icon_size">48.0dip</dimen>
-    <dimen name="hint_bubble_offset_horizontal">8.0dip</dimen>
-    <dimen name="hint_bubble_offset_vertical">11.0dip</dimen>
-    <dimen name="half_status_bar_height">12.0dip</dimen>
-    <dimen name="delete_zone_size">70.0dip</dimen>
     <dimen name="delete_zone_padding">14.0dip</dimen>
     <dimen name="title_padding_bottom">13.0dip</dimen>
     <dimen name="title_padding_bottom_win7">15.0dip</dimen>
