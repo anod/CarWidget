@@ -24,6 +24,7 @@ public class ModePhoneStateListener extends PhoneStateListener {
 	private Timer mAnswerTimer;
 	private boolean mUseAutoSpeaker;
 	private String mAutoAnswerMode; 
+	private int mState = -1;
 	public ModePhoneStateListener(Context context)
 	{
 		mContext = context;
@@ -43,7 +44,7 @@ public class ModePhoneStateListener extends PhoneStateListener {
 	@Override
 	public void onCallStateChanged(int state, String incomingNumber) {
 		super.onCallStateChanged(state, incomingNumber);
-		
+		mState = state;
 	    switch (state)
 	    {
 		    case TelephonyManager.CALL_STATE_IDLE:
@@ -71,7 +72,7 @@ public class ModePhoneStateListener extends PhoneStateListener {
 		    		}
 				} else {
 					cancelAnswerTimer();
-					mAnswered=false;
+					//mAnswered=false;
 				}
 
 		    	if (mUseAutoSpeaker && !mSpeakerEnabled) {
@@ -102,6 +103,9 @@ public class ModePhoneStateListener extends PhoneStateListener {
 	}
 	
 	private void answerCall() {
+		if (mState != TelephonyManager.CALL_STATE_RINGING) {
+			return;
+		}
         try {
         	answerPhoneAidl(mContext);
         }
@@ -128,6 +132,7 @@ public class ModePhoneStateListener extends PhoneStateListener {
 	private void answerPhoneAidl(Context context) throws Exception {
         // Set up communication with the telephony service (thanks to Tedd's Droid Tools!)
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
         @SuppressWarnings("rawtypes")
 		Class c = Class.forName(tm.getClass().getName());
         Method m = c.getDeclaredMethod("getITelephony");
@@ -135,9 +140,16 @@ public class ModePhoneStateListener extends PhoneStateListener {
         ITelephony telephonyService;
         telephonyService = (ITelephony)m.invoke(tm);
 
+        if (tm.getCallState() != TelephonyManager.CALL_STATE_RINGING) {
+        	return;
+        }        
         // Silence the ringer and answer the call!
         telephonyService.silenceRinger();
         telephonyService.answerRingingCall();
+
+        AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setMicrophoneMute(false);
+        //com.android.internal.telephony.Phone
 	}	
 
 }
