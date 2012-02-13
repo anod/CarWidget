@@ -147,8 +147,7 @@ public class ModePhoneStateListener extends PhoneStateListener {
         telephonyService.silenceRinger();
         telephonyService.answerRingingCall();
 
-        AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setMicrophoneMute(false);
+        mAudioManager.setMicrophoneMute(false);
         //com.android.internal.telephony.Phone
 	}	
 
