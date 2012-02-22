@@ -10,15 +10,15 @@
         android:targetSdkVersion="11" />
 
     <permission
+        android:name="com.anod.car.home.permission.READ_SETTINGS"
         android:description="@string/permdesc_read_settings"
         android:label="@string/permlab_read_settings"
-        android:name="com.anod.car.home.permission.READ_SETTINGS"
         android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
         android:protectionLevel="normal" />
     <permission
+        android:name="com.anod.car.home.permission.WRITE_SETTINGS"
         android:description="@string/permdesc_write_settings"
         android:label="@string/permlab_write_settings"
-        android:name="com.anod.car.home.permission.WRITE_SETTINGS"
         android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
         android:protectionLevel="normal" />
 
@@ -40,14 +40,25 @@
         android:required="false" />
 
     <application
+        android:name="com.anod.car.home.CarWidgetApplication"
         android:backupAgent="com.anod.car.home.prefs.backup.BackupFileHelperAgent"
         android:icon="@drawable/icon"
-        android:label="@string/app_name_pro"
-        android:name="com.anod.car.home.CarWidgetApplication" >
+        android:label="@string/app_name_pro" >
         <service android:name="com.anod.car.home.UpdateService" />
         <service android:name="com.anod.car.home.incar.ModeService" />
         <service android:name="com.anod.car.home.incar.BroadcastService" />
 
+        <activity
+            android:name="com.anod.car.home.incar.SwitchInCarActivity"
+            android:icon="@drawable/icon"
+            android:noHistory="true"
+            android:theme="@style/BrightnessTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.anod.car.home.prefs.ShortcutEditActivity"
             android:theme="@android:style/Theme.Dialog" />
@@ -55,28 +66,28 @@
             android:name="com.anod.car.home.prefs.AllAppsActivity"
             android:theme="@android:style/Theme.Dialog" />
         <activity
-            android:configChanges="orientation"
-            android:name="com.anod.car.home.prefs.AppListConfiguration" >
+            android:name="com.anod.car.home.prefs.AppListConfiguration"
+            android:configChanges="orientation" >
         </activity>
         <activity
-            android:configChanges="orientation"
-            android:name="com.anod.car.home.prefs.Configuration" >
-            <intent-filter >
+            android:name="com.anod.car.home.prefs.Configuration"
+            android:configChanges="orientation" >
+            <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
         <activity
-            android:configChanges="orientation"
-            android:name="com.anod.car.home.prefs.ConfigurationLook" />
+            android:name="com.anod.car.home.prefs.ConfigurationLook"
+            android:configChanges="orientation" />
         <activity
-            android:configChanges="orientation"
-            android:name="com.anod.car.home.prefs.ConfigurationInCar" />
+            android:name="com.anod.car.home.prefs.ConfigurationInCar"
+            android:configChanges="orientation" />
         <activity
-            android:configChanges="orientation"
-            android:name="com.anod.car.home.prefs.ConfigurationBackup" />
+            android:name="com.anod.car.home.prefs.ConfigurationBackup"
+            android:configChanges="orientation" />
         <activity
-            android:configChanges="orientation"
-            android:name="com.anod.car.home.prefs.ConfigurationRestore" />
+            android:name="com.anod.car.home.prefs.ConfigurationRestore"
+            android:configChanges="orientation" />
         <activity
             android:name="com.anod.car.home.incar.ChangeBrightnessActivity"
             android:theme="@style/BrightnessTheme" />
@@ -85,9 +96,9 @@
             android:theme="@style/BrightnessTheme" />
 
         <receiver
-            android:label="@string/app_name_pro"
-            android:name="com.anod.car.home.LargeProvider" >
-            <intent-filter >
+            android:name="com.anod.car.home.LargeProvider"
+            android:label="@string/app_name_pro" >
+            <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
@@ -97,22 +108,22 @@
         </receiver>
         <!-- The settings provider contains Home's data, like the workspace favorites -->
         <provider
-            android:authorities="com.anod.car.home.settings.pro"
             android:name="com.anod.car.home.model.LauncherProvider"
+            android:authorities="com.anod.car.home.settings.pro"
             android:readPermission="com.anod.car.home.permission.READ_SETTINGS"
             android:writePermission="com.anod.car.home.permission.WRITE_SETTINGS" />
 
         <activity
+            android:name="com.anod.car.home.CarHomeActivity"
             android:excludeFromRecents="true"
             android:label="@string/app_name_pro"
             android:launchMode="singleTask"
-            android:name="com.anod.car.home.CarHomeActivity"
             android:theme="@style/BrightnessTheme" >
             <meta-data
                 android:name="android.dock_home"
                 android:value="true" />
 
-            <intent-filter >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
