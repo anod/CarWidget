@@ -1,7 +1,12 @@
 package com.anod.car.home.prefs.preferences;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
+
+import android.content.ComponentName;
 
 import com.anod.car.home.prefs.PreferencesStorage;
 
@@ -29,6 +34,9 @@ public class InCar implements Serializable {
 	private String disableWifi = PreferencesStorage.WIFI_NOACTION;
 	private boolean autoSpeaker = false;
 	private boolean activateCarMode = false;
+	
+	transient private ComponentName launchComponent = null;
+	
 	
 	public InCar() {
 		 super();
@@ -173,5 +181,44 @@ public class InCar implements Serializable {
 	}
 	public void setAutoAnswer(String autoAnswer) {
 		this.autoAnswer = autoAnswer;
-	}	
+	}
+	
+	/**
+	 * @return the launchComponent
+	 */
+	public ComponentName getLaunchComponent() {
+		return launchComponent;
+	}
+
+	/**
+	 * @param launchComponent the launchComponent to set
+	 */
+	public void setLaunchComponent(ComponentName launchComponent) {
+		this.launchComponent = launchComponent;
+	}
+
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+		
+		if (launchComponent != null) {
+        	out.writeBoolean(true);
+        	out.writeUTF(launchComponent.getPackageName());
+			out.writeUTF(launchComponent.getClassName());
+		} else {
+        	out.writeBoolean(false);
+		}
+			
+    }    
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+
+		boolean hasComponent = in.readBoolean();
+		if (hasComponent) {
+			String pkg = in.readUTF();
+			String cls = in.readUTF();
+			launchComponent = new ComponentName(pkg, cls);
+		}
+		
+  	} 	
 }
