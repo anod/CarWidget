@@ -31,7 +31,7 @@ public class ModeService extends Service{
 		String notifTitle=getResources().getString(R.string.incar_mode_enabled);
 		String notifText=getResources().getString(R.string.click_to_disable);
 		long when = System.currentTimeMillis();
-		Notification notification = new Notification(R.drawable.notification_icon, notifTitle, when);
+		Notification notification = new Notification(R.drawable.ic_stat_incar, notifTitle, when);
 		
 		Intent notificationIntent = new Intent(this, ModeService.class);
 		notificationIntent.putExtra(EXTRA_MODE, MODE_SWITCH_OFF);

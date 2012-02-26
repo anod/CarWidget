@@ -1,5 +1,6 @@
 package com.anod.car.home.prefs.preferences;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -213,7 +214,13 @@ public class InCar implements Serializable {
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
 
-		boolean hasComponent = in.readBoolean();
+
+		boolean hasComponent = false;
+		try {
+			hasComponent = in.readBoolean();
+		} catch (EOFException e) { // old version comaptibility
+			return;
+		}
 		if (hasComponent) {
 			String pkg = in.readUTF();
 			String cls = in.readUTF();
