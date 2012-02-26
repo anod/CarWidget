@@ -52,7 +52,8 @@
             android:name="com.anod.car.home.incar.SwitchInCarActivity"
             android:icon="@drawable/icon"
             android:noHistory="true"
-            android:theme="@style/BrightnessTheme" >
+            android:theme="@style/BrightnessTheme"
+            android:clearTaskOnLaunch= "true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
