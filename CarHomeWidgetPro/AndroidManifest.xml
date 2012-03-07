@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     android:installLocation="internalOnly"
     package="com.anod.car.home.pro"
-    android:versionCode="14"
-    android:versionName="1.45" >
+    android:versionCode="15"
+    android:versionName="1.46" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -27,6 +27,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -53,10 +54,10 @@
             android:icon="@drawable/icon"
             android:noHistory="true"
             android:theme="@style/BrightnessTheme"
+            android:label="@string/switch_in_car_activity"
             android:clearTaskOnLaunch= "true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
