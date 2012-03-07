@@ -114,9 +114,17 @@ public class ModePhoneStateListener extends PhoneStateListener {
             Log.d("CarHomeWidget","Error trying to answer using telephony service.  Falling back to headset.");
             answerPhoneHeadsethook(mContext);
         }
+        mAudioManager.setMicrophoneMute(false);
+        
 	}
 	
     private void answerPhoneHeadsethook(Context context) {
+
+    	boolean headsetImmitation = false;
+	    if (!mAudioManager.isWiredHeadsetOn()) {
+	    	sendHeadsetPlug(1,context);
+	    	headsetImmitation = true;
+	    }
 	    // Simulate a press of the headset button to pick up the call
 	    Intent buttonDown = new Intent(Intent.ACTION_MEDIA_BUTTON);             
 	    buttonDown.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_HEADSETHOOK));
@@ -126,8 +134,22 @@ public class ModePhoneStateListener extends PhoneStateListener {
 	    Intent buttonUp = new Intent(Intent.ACTION_MEDIA_BUTTON);               
 	    buttonUp.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
 	    context.sendOrderedBroadcast(buttonUp, "android.permission.CALL_PRIVILEGED");
+	    
+	    if (headsetImmitation) {
+	    	sendHeadsetPlug(0,context);    	
+	    }
 	}
 	
+    private void sendHeadsetPlug(int state, Context context) {
+	    Intent headSetUnPluggedintent = new Intent(Intent.ACTION_HEADSET_PLUG);
+	    headSetUnPluggedintent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY);
+	    headSetUnPluggedintent.putExtra("state", state);
+	    headSetUnPluggedintent.putExtra("name", "Headset");
+	    // TODO: Should we require a permission?
+	    context.sendOrderedBroadcast(headSetUnPluggedintent, "android.permission.CALL_PRIVILEGED");
+	
+    }
+    
 	@SuppressWarnings("unchecked")
 	private void answerPhoneAidl(Context context) throws Exception {
         // Set up communication with the telephony service (thanks to Tedd's Droid Tools!)
@@ -147,7 +169,6 @@ public class ModePhoneStateListener extends PhoneStateListener {
         telephonyService.silenceRinger();
         telephonyService.answerRingingCall();
 
-        mAudioManager.setMicrophoneMute(false);
         //com.android.internal.telephony.Phone
 	}	
 
