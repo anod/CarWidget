@@ -116,8 +116,6 @@
 	
    <string name="pref_route_to_speaker">Route to speaker</string>
    <string name="pref_route_to_speaker_summary">Route all incoming calls to phones speaker</string>
-   <string name="pref_autoanswer">Call auto-answer</string>
-   <string name="pref_autoanswer_summary">Automatically pick-up incoming calls</string>
 
 	<string name="pref_skin">Skin</string>
 	<string name="pref_scale_icon">Scale icon</string>
@@ -169,4 +167,8 @@
 	
 	<string name="pref_auto_answer">Auto Answer</string>
 	<string name="pref_auto_answer_summary">Auto answer to incoming calls immediately or with 5 seconds delay</string>
+	<string name="switch_in_car_activity">Switch In Car</string>
+	
+    <string name="pref_autorun_app_title">App Autorun</string>
+    <string name="pref_autorun_app_disabled">Disabled</string>
 </resources>

@@ -36,5 +36,11 @@
 		<item>Disabled</item>
 		<item>Immediately</item>
 		<item>5 sec. delay</item>
-    </string-array>  
+    </string-array>
+
+	<string-array name="autorun_app_titles">
+		<item>Disabled</item>
+		<item>Choose&#8230;</item>
+    </string-array>
+	
 </resources>
