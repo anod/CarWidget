@@ -3,6 +3,7 @@ package com.anod.car.home.prefs;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -17,6 +18,7 @@ import com.anod.car.home.model.LauncherModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.utils.Utils;
 
 public class PreferencesStorage {
 	public static final int LAUNCH_COMPONENT_NUMBER=6;
@@ -74,6 +76,7 @@ public class PreferencesStorage {
     public static final String AUTO_ANSWER = "auto_answer";
     public static final String ADJUST_WIFI = "wi-fi";
     public static final String ACTIVATE_CAR_MODE = "activate-car-mode";
+    public static final String AUTORUN_APP = "autorun-app";
     
     private static final String DELIMETER_PACKAGES = "\n";
     
@@ -153,6 +156,15 @@ public class PreferencesStorage {
     	p.setDisableWifi(prefs.getString(ADJUST_WIFI, WIFI_NOACTION));
     	p.setActivateCarMode(prefs.getBoolean(ACTIVATE_CAR_MODE, false));
     	p.setAutoAnswer(prefs.getString(AUTO_ANSWER, PreferencesStorage.AUTOANSWER_DISABLED));
+    	
+    	String autorunAppString = prefs.getString(AUTORUN_APP, null);
+    	Log.d("CarWidget", "Autroun app:"+autorunAppString);
+    	ComponentName autorunApp = null;
+    	if (autorunAppString != null) {
+    		autorunApp = Utils.stringToComponent(autorunAppString);
+    	}
+    	p.setAutorunApp(autorunApp);
+    	
     	return p;
     }
 
@@ -177,9 +189,29 @@ public class PreferencesStorage {
     	editor.putBoolean(ACTIVATE_CAR_MODE, prefs.activateCarMode());
     	editor.putString(AUTO_ANSWER, prefs.getAutoAnswer());
 
+    	ComponentName autorunApp = prefs.getAutorunApp();
+    	if (autorunApp == null) {
+    		editor.remove(AUTORUN_APP);
+    	} else {
+    		String autorunAppString = Utils.componentToString(autorunApp);
+        	editor.putString(AUTORUN_APP, autorunAppString);    		
+    	}
 		editor.commit();
 		
 		saveBtDevices(context, prefs.getBtDevices());
+    }
+    
+    public static void saveAutorunApp(ComponentName component, Context context) {
+    	SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
+    	Editor editor = p.edit();
+    	
+    	if (component == null) {
+    		editor.remove(AUTORUN_APP);
+    	} else {
+    		String autorunAppString = Utils.componentToString(component);
+        	editor.putString(AUTORUN_APP, autorunAppString);    		
+    	}
+		editor.commit();    	
     }
     
     public static HashMap<String,String> getBtDevices(Context context) {

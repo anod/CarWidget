@@ -36,7 +36,7 @@ public class InCar implements Serializable {
 	private boolean autoSpeaker = false;
 	private boolean activateCarMode = false;
 	
-	transient private ComponentName launchComponent = null;
+	transient private ComponentName autorunApp = null;
 	
 	
 	public InCar() {
@@ -185,26 +185,26 @@ public class InCar implements Serializable {
 	}
 	
 	/**
-	 * @return the launchComponent
+	 * @return the autorunApp
 	 */
-	public ComponentName getLaunchComponent() {
-		return launchComponent;
+	public ComponentName getAutorunApp() {
+		return autorunApp;
 	}
 
 	/**
-	 * @param launchComponent the launchComponent to set
+	 * @param autorunApp the autorunApp to set
 	 */
-	public void setLaunchComponent(ComponentName launchComponent) {
-		this.launchComponent = launchComponent;
+	public void setAutorunApp(ComponentName autorunApp) {
+		this.autorunApp = autorunApp;
 	}
 
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.defaultWriteObject();
 		
-		if (launchComponent != null) {
+		if (autorunApp != null) {
         	out.writeBoolean(true);
-        	out.writeUTF(launchComponent.getPackageName());
-			out.writeUTF(launchComponent.getClassName());
+        	out.writeUTF(autorunApp.getPackageName());
+			out.writeUTF(autorunApp.getClassName());
 		} else {
         	out.writeBoolean(false);
 		}
@@ -224,7 +224,7 @@ public class InCar implements Serializable {
 		if (hasComponent) {
 			String pkg = in.readUTF();
 			String cls = in.readUTF();
-			launchComponent = new ComponentName(pkg, cls);
+			autorunApp = new ComponentName(pkg, cls);
 		}
 		
   	} 	

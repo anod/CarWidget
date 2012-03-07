@@ -11,11 +11,14 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -33,6 +36,8 @@ import com.anod.car.home.Launcher;
 import com.anod.car.home.R;
 import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
+import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.utils.UtilitiesBitmap;
 
 public class ConfigurationInCar extends PreferenceActivity {
 	private static final String SCREEN_BT_DEVICE = "bt-device-screen";
@@ -47,7 +52,12 @@ public class ConfigurationInCar extends PreferenceActivity {
     
 	private static final String PRO_PACKAGE_NAME="com.anod.car.home.pro";
 	
+	private static final String AUTORUN_APP_PREF="autorun-app-choose";
+	private static final String AUTORUN_APP_DISABLED="disabled";
+	private static final String AUTORUN_APP_CUSTOM="custom";
+	
     private static final IntentFilter INTENT_FILTER = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+	protected static final int REQUEST_PICK_APPLICATION = 0;
     private PreferenceCategory mBluetoothDevicesCategory;
     private BroadcastReceiver mBluetoothReceiver;
 	
@@ -152,7 +162,8 @@ public class ConfigurationInCar extends PreferenceActivity {
 			PreferencesStorage.ADJUST_WIFI,
 			PreferencesStorage.AUTO_SPEAKER,
 			PreferencesStorage.ACTIVATE_CAR_MODE,
-			PreferencesStorage.AUTO_ANSWER
+			PreferencesStorage.AUTO_ANSWER,
+			AUTORUN_APP_PREF
 		};
 		final PreferenceScreen prefScr = (PreferenceScreen)findPreference(SCREEN_BT_DEVICE);
 		prefScr.setEnabled(false);
@@ -174,10 +185,85 @@ public class ConfigurationInCar extends PreferenceActivity {
     }
     
     private void initInCar() {
+    	InCar incar = PreferencesStorage.loadInCar(this);
     	initBluetooth();
+    	initAutorunApp(incar);
     }
     
-    private void initBluetooth() {
+    private void initAutorunApp(InCar incar) {
+    	final ListPreference pref = (ListPreference)findPreference(AUTORUN_APP_PREF);
+    	ComponentName autorunApp = incar.getAutorunApp();
+    	if (autorunApp == null) {
+    		updateAutorunAppPref(null);
+    	} else {
+    		Intent intent = new Intent(Intent.ACTION_MAIN);
+    		intent.setComponent(autorunApp);
+    		updateAutorunAppPref(intent);
+    	}
+    	pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				String selection = (String)newValue;
+				if (selection.equals(AUTORUN_APP_DISABLED)) {
+					saveAutorunApp(null);
+				} else {
+		        	Intent mainIntent = new Intent(ConfigurationInCar.this, AllAppsActivity.class);
+		            startActivityForResult(mainIntent, REQUEST_PICK_APPLICATION);					
+				}
+				return false;
+			}
+		});
+	}
+
+    
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_PICK_APPLICATION:
+                	saveAutorunApp(data);
+                    break;
+            }
+        }
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	private void saveAutorunApp(Intent data) {
+		ComponentName component = null;
+		if (data!=null) {
+			component = data.getComponent();
+		}
+		//update storage
+		PreferencesStorage.saveAutorunApp(component,this);
+		updateAutorunAppPref(data);
+	}
+
+	private void updateAutorunAppPref(Intent data) {
+		final ListPreference pref = (ListPreference)findPreference(AUTORUN_APP_PREF);
+		String title = null;
+		String value = null;
+    	if (data==null) {
+    		title = getString(R.string.pref_autorun_app_disabled);
+    		value = AUTORUN_APP_DISABLED;
+    	} else {
+    		//get name
+    		PackageManager pm = getPackageManager();		
+    		final ResolveInfo resolveInfo = pm.resolveActivity(data, 0);
+    		if (resolveInfo!=null) {
+    			title = (String) resolveInfo.activityInfo.loadLabel(pm);
+    		} else {
+    			title = data.getComponent().getPackageName();
+    		}
+    		value = AUTORUN_APP_CUSTOM;
+    	}		
+    	//update preference
+    	pref.setSummary(title);
+    	pref.setValue(value);
+
+	}
+	
+	
+	private void initBluetooth() {
     	CheckBoxPreference btSwitch = (CheckBoxPreference)findPreference(PREF_BT_SWITCH);
     	btSwitch.setChecked(Bluetooth.getState() == BluetoothAdapter.STATE_ON);
     	btSwitch.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
