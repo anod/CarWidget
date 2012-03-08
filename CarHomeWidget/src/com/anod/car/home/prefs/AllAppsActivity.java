@@ -121,8 +121,10 @@ public class AllAppsActivity extends ListActivity implements OnItemClickListener
 
             final PackageManager packageManager = getPackageManager();
             List<ResolveInfo> apps = packageManager.queryIntentActivities(mainIntent, 0);
+            String selfPackage = AllAppsActivity.this.getPackageName();
             for(ResolveInfo appInfo : apps) {
-            	if (!appInfo.activityInfo.packageName.startsWith("com.anod.car.home")) {
+            	
+            	if (!appInfo.activityInfo.packageName.startsWith(selfPackage)) {
             		mAllAppsList.put(appInfo);
             	}
             }
