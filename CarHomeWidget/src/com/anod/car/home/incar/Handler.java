@@ -5,6 +5,7 @@ import java.util.HashMap;
 import android.app.UiModeManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -194,12 +195,23 @@ public class Handler {
 		if (prefs.activateCarMode()) {
 			activateCarMode(context);
 		}
+		ComponentName autorunApp = prefs.getAutorunApp();
+		if (autorunApp != null) {
+			runApp(autorunApp,context);
+		}
 		String brightSetting = prefs.getBrightness();
 		if (brightSetting != PreferencesStorage.BRIGHTNESS_DEFAULT) {
 			adjustBrightness(brightSetting,context);
 		}
 	}	
 	
+	private static void runApp(ComponentName autorunApp, Context context) {
+		Intent intent = new Intent(Intent.ACTION_MAIN)
+			.setComponent(autorunApp)
+			.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
+	}
+
 	public static void switchOff(InCar prefs, Context context) {
 		sMode = false;
 		if (prefs.isDisableScreenTimeout()) {
@@ -222,6 +234,7 @@ public class Handler {
 			restoreBrightness(brightSetting,context);
 		}
 	}
+	
 
 	private static void activateCarMode(Context context) {
 		UiModeManager ui = (UiModeManager)context.getSystemService(Context.UI_MODE_SERVICE);
@@ -310,7 +323,7 @@ public class Handler {
 		android.provider.Settings.System.putInt(cr, 
                  android.provider.Settings.System.SCREEN_BRIGHTNESS, newBrightLevel);
 					
-		setBrightnessIntent(newBrightLevel, context);            
+		sendBrightnessIntent(newBrightLevel, context);            
     }
 
 	private static boolean restoreBrightness(String brightSetting,Context context) {
@@ -325,9 +338,10 @@ public class Handler {
 		android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode);
 		android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS, mCurrentBrightness);
 		
-		setBrightnessIntent(mCurrentBrightness, context);
+		sendBrightnessIntent(mCurrentBrightness, context);
 		return true;
 	}
+	
 	
 	private static void adjustVolume(InCar prefs,Context context) {
 		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
@@ -354,12 +368,12 @@ public class Handler {
 		mWakeLock = null;
 	}
 	
-	private static void setBrightnessIntent(int newBrightLevel, Context context) {
+	private static void sendBrightnessIntent(int newBrightLevel, Context context) {
 		Intent intent = new Intent(context, ChangeBrightnessActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		float bt = (float)newBrightLevel/BRIGHTNESS_MAX;
     	intent.putExtra(ChangeBrightnessActivity.EXTRA_BRIGHT_LEVEL, bt);
-		context.startActivity(intent);    	
+		context.startActivity(intent);
 	}
 
 }
