@@ -29,7 +29,7 @@ public class SwitchInCarActivity extends Activity {
 			service.setData(data);
 			startService(service);
 		} else {
-			Toast.makeText(this, R.string.incar_mode_disabled, Toast.LENGTH_SHORT);
+			Toast.makeText(this, R.string.incar_mode_disabled, Toast.LENGTH_LONG).show();
 		}
 		finish();
 	}
