@@ -171,4 +171,6 @@
 	
     <string name="pref_autorun_app_title">App Autorun</string>
     <string name="pref_autorun_app_disabled">Disabled</string>
+    
+    <string name="incar_mode_disabled">In Car mode disabled.\n Enable it in widget settings.</string>    
 </resources>

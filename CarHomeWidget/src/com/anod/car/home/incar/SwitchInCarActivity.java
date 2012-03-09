@@ -1,11 +1,13 @@
 package com.anod.car.home.incar;
 
+import com.anod.car.home.R;
 import com.anod.car.home.prefs.PreferencesStorage;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class SwitchInCarActivity extends Activity {
 
@@ -26,6 +28,8 @@ public class SwitchInCarActivity extends Activity {
 			}
 			service.setData(data);
 			startService(service);
+		} else {
+			Toast.makeText(this, R.string.incar_mode_disabled, Toast.LENGTH_SHORT);
 		}
 		finish();
 	}
