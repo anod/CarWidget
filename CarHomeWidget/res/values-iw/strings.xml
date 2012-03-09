@@ -131,6 +131,6 @@
     <string name="pref_autorun_app_title">פעלת היישום</string>
     <string name="pref_autorun_app_disabled">לא פעיל</string>
 	<string name="switch_in_car_activity">הפעל "ברכב"</string>
-    <string name="incar_mode_disabled">מצב "ברכב" לא מופעל.\nתפעילו אותו בהגדרות בהגדרות של ווידג'ט</string>    
+    <string name="incar_mode_disabled">מצב "ברכב" לא מופעל.\nתפעילו אותו בהגדרות בהגדרות של ווידג\'ט</string>    
     
 </resources>
