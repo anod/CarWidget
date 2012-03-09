@@ -128,5 +128,9 @@
     <string name="choose_backup">בחר גיבוי לשחזור</string>
     <string name="pref_auto_answer">מענה אוטומטי</string>
     <string name="pref_auto_answer_summary">מענה מיידי או בהשהייה של 5 שניות לשיחות נכנסות</string>
-
+    <string name="pref_autorun_app_title">פעלת היישום</string>
+    <string name="pref_autorun_app_disabled">לא פעיל</string>
+	<string name="switch_in_car_activity">הפעל "ברכב"</string>
+    <string name="incar_mode_disabled">מצב "ברכב" לא מופעל.\nתפעילו אותו בהגדרות בהגדרות של ווידג'ט</string>    
+    
 </resources>
