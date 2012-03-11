@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.anod.car.home.prefs.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.utils.Utils;
 
 
 public class Handler {
@@ -209,7 +210,7 @@ public class Handler {
 		Intent intent = new Intent(Intent.ACTION_MAIN)
 			.setComponent(autorunApp)
 			.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		context.startActivity(intent);
+		Utils.startActivitySafely(intent,context);		
 	}
 
 	public static void switchOff(InCar prefs, Context context) {
