@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     android:installLocation="internalOnly"
     package="com.anod.car.home.pro"
-    android:versionCode="16"
+    android:versionCode="17"
     android:versionName="1.46" >
 
     <uses-sdk
@@ -51,13 +51,14 @@
 
         <activity
             android:name="com.anod.car.home.incar.SwitchInCarActivity"
+            android:clearTaskOnLaunch="true"
             android:icon="@drawable/ic_launcher"
-            android:noHistory="true"
-            android:theme="@style/BrightnessTheme"
             android:label="@string/switch_in_car_activity"
-            android:clearTaskOnLaunch= "true" >
+            android:noHistory="true"
+            android:theme="@style/BrightnessTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
