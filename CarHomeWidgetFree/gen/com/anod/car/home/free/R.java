@@ -209,8 +209,8 @@ public final class R {
         public static final int pref_auto_answer_summary=0x7f09007e;
         public static final int pref_autoanswer=0x7f090083;
         public static final int pref_autoanswer_summary=0x7f090084;
-        public static final int pref_autorun_app_disabled=0x7f090081;
-        public static final int pref_autorun_app_title=0x7f090080;
+        public static final int pref_autorun_app_disabled=0x7f090080;
+        public static final int pref_autorun_app_title=0x7f09007f;
         public static final int pref_backup_summary=0x7f090067;
         public static final int pref_backup_title=0x7f090066;
         public static final int pref_bg_color_summary=0x7f090010;
@@ -269,7 +269,7 @@ public final class R {
         public static final int shortcut_edit_title=0x7f09004f;
         public static final int shortcut_ok_button=0x7f090051;
         public static final int shortcuts=0x7f09001e;
-        public static final int switch_in_car_activity=0x7f09007f;
+        public static final int switch_in_car_activity=0x7f090081;
         public static final int textview=0x7f090002;
         public static final int transparent=0x7f09005b;
         public static final int turn_off_bluetooth_summary=0x7f090031;
