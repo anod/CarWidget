@@ -141,6 +141,10 @@ public class LauncherModel {
                 LauncherSettings.Favorites.getContentUri(context.getPackageName()), null, selection, selectionArgs, null
         );
 
+        if (c == null) {
+        	return null;
+        }
+        
         try {
             final int idIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites._ID);
             final int intentIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.INTENT);

@@ -133,6 +133,9 @@ public class ShortcutEditActivity extends Activity {
 	    ContentResolver cr = getContentResolver();
 		String[] projection = { MediaStore.Images.Media.DATA };
 		Cursor cursor = cr.query(uri, projection, null, null, null);
+		if (cursor == null) {
+			return null;
+		}
 		cursor.moveToFirst();
 		String str = cursor.getString(0);
 		cursor.close();
