@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.anod.car.home.pro"
     android:installLocation="internalOnly"
-    android:versionCode="21"
+    android:versionCode="22"
     android:versionName="1.491" >
 
     <uses-sdk
