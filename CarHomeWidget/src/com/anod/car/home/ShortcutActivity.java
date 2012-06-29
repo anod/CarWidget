@@ -16,10 +16,14 @@ public class ShortcutActivity extends Activity {
 
 		Intent intent = getIntent().getParcelableExtra(EXTRA_INTENT);
 		if (intent != null) {
-			Log.d("CarHomeWidget"," Strating acticity: " + intent.toString());
+			//fix for Galaxy s3
+			if (intent.getAction().equals(ShortcutPendingIntent.INTENT_ACTION_CALL_PRIVILEGED)) {
+				intent.setAction(Intent.ACTION_CALL);
+			}
 			if (intent.getSourceBounds() == null) {
 				intent.setSourceBounds(getIntent().getSourceBounds());
 			}
+			
 			startActivitySafetly(intent);
 		}
 		finish();

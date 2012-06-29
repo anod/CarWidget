@@ -5,13 +5,15 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import com.anod.car.home.prefs.Configuration;
 
 public class ShortcutPendingIntent {
 
 	
-    /**
+    public static final String INTENT_ACTION_CALL_PRIVILEGED = "android.intent.action.CALL_PRIVILEGED";
+	/**
      * Create an Intent to launch Configuration
      * @param appWidgetId
      * @param context
@@ -37,7 +39,7 @@ public class ShortcutPendingIntent {
      * @return
      */
     public static PendingIntent getShortcutPendingInent(Intent intent,int appWidgetId, Context context, int cellId) {
-    	if (intent.getExtras() == null) {
+    	if (intent.getExtras() == null && !intent.getAction().equals(INTENT_ACTION_CALL_PRIVILEGED)) { // Samsung s3 bug
     		return PendingIntent.getActivity(context, 0 /* no requestCode */, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     	}
     	Intent launchIntent = new Intent(context, ShortcutActivity.class);
