@@ -37,4 +37,9 @@
         <item>השהייה ל-5 שניות</item>
     </string-array>
 
+	<string-array name="autorun_app_titles">
+		<item>כבוי</item>
+		<item>לבחור&#8230;</item>
+    </string-array>
+    
 </resources>

@@ -69,13 +69,16 @@ public class ModeService extends Service{
 	}
 
 	@Override
-	public void onStart(Intent intent, int startId)
+	public int onStartCommand(Intent intent, int flags, int startId)
 	{
-		super.onStart(intent, startId);
+		// Tracking a bug
+		if (intent == null) {
+			Log.d("CarHomeWidget", "Intent is null...");
+		}
 		mForceState = intent.getBooleanExtra(EXTRA_FORCE_STATE, false);
 		if (intent.getIntExtra(EXTRA_MODE, MODE_SWITCH_ON) == MODE_SWITCH_OFF) {
 			stopSelf();
-			return;
+			return START_STICKY;
 		}
 		InCar prefs = PreferencesStorage.loadInCar(this);
 		sInCarMode = true;
@@ -84,7 +87,10 @@ public class ModeService extends Service{
 		}
 		Handler.switchOn(prefs,this);
 		handlePhoneListener(prefs);
-		requestWidgetsUpdate();		
+		requestWidgetsUpdate();
+		// We want this service to continue running until it is explicitly
+		// stopped, so return sticky.
+		return START_STICKY;
 	}
 
 	private void handlePhoneListener(InCar prefs) {

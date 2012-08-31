@@ -36,5 +36,9 @@
         <item>Немедленно</item>
         <item>5 сек. задержка</item>
     </string-array>
-
+    
+	<string-array name="autorun_app_titles">
+		<item>Отключено</item>
+		<item>Выбрать&#8230;</item>
+    </string-array>
 </resources>
