@@ -87,7 +87,6 @@
     <string name="pref_route_to_speaker">Направлять на динамик</string>
     <string name="pref_route_to_speaker_summary">Перенаправлять все звонки на громкоговоритель телефона</string>
     <string name="pref_autoanswer">Автоматический ответ вызова</string>
-    <string name="pref_autoanswer_summary">Автоматически принимать входящие звонки</string>
     <string name="pref_skin">Тема</string>
     <string name="pref_scale_icon">Увеличить иконки</string>
     <string name="pref_wifi">Wi-Fi</string>

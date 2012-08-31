@@ -1,16 +1,16 @@
 package com.anod.car.home.prefs;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.SparseArray;
 
 import com.anod.car.home.model.LauncherModel;
 import com.anod.car.home.model.ShortcutInfo;
 
 public class ShortcutModel {
-	private HashMap<Integer, ShortcutInfo> mShortcuts = new HashMap<Integer, ShortcutInfo>(PreferencesStorage.LAUNCH_COMPONENT_NUMBER);
+	private SparseArray<ShortcutInfo> mShortcuts = new SparseArray<ShortcutInfo>(PreferencesStorage.LAUNCH_COMPONENT_NUMBER);
 	private LauncherModel mModel;
 	private Context mContext;
 	private int mAppWidgetId;
@@ -47,7 +47,7 @@ public class ShortcutModel {
 		}
 	}
 	
-	public HashMap<Integer, ShortcutInfo> getShortcuts() {
+	public SparseArray<ShortcutInfo> getShortcuts() {
 		return mShortcuts;
 	}
 	

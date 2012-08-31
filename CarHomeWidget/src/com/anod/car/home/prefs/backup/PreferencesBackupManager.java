@@ -9,10 +9,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
+import android.annotation.SuppressLint;
 import android.app.backup.BackupManager;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
+import android.util.SparseArray;
 
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.PreferencesStorage;
@@ -101,7 +103,7 @@ public class PreferencesBackupManager {
         ShortcutModel smodel = new ShortcutModel(mContext, appWidgetId);
         smodel.init();
         Main main = PreferencesStorage.loadMain(mContext, appWidgetId);
-        ShortcutsMain prefs = new ShortcutsMain(smodel.getShortcuts(), main);
+        ShortcutsMain prefs = new ShortcutsMain(convertToHashMap(smodel.getShortcuts()), main);
         
         try {
             synchronized (PreferencesBackupManager.sDataLock) {
@@ -117,6 +119,18 @@ public class PreferencesBackupManager {
 		}
 		saveDir.setLastModified(System.currentTimeMillis());
 		return RESULT_DONE;
+	}
+	
+	@SuppressLint("UseSparseArrays")
+	private HashMap<Integer, ShortcutInfo> convertToHashMap(SparseArray<ShortcutInfo> sparseArray) {
+		HashMap<Integer, ShortcutInfo> map = new HashMap<Integer, ShortcutInfo>(sparseArray.size());
+		int key = 0;
+		for(int i = 0; i < sparseArray.size(); i++) {
+		   key = sparseArray.keyAt(i);
+		   ShortcutInfo value = sparseArray.valueAt(i);
+		   map.put(key, value);
+		}
+		return map;
 	}
 	
 	public int doBackupInCar() {

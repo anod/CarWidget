@@ -52,104 +52,99 @@ public class ConfigurationBackup extends PreferenceActivity {
 	;
 	
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
-    	super.onCreate(savedInstanceState);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-    	addPreferencesFromResource(R.xml.preference_backup);
-    	
-    	Intent launchIntent = getIntent();
-        Bundle extras = launchIntent.getExtras();
-        if (extras != null) {
-            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-       
-            Intent defaultResultValue = new Intent();
-            defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-            setResult(RESULT_OK, defaultResultValue);
-        } else {
-            finish();
-        }
-        mContext = (Context)this;
-        
-		mLastBackupStr = getString(R.string.last_backup);        
-    	mBackupMainPref = (Preference)findPreference(BACKUP_BTN_MAIN);
-    	mBackupIncarPref = (Preference)findPreference(BACKUP_BTN_INCAR);
+		addPreferencesFromResource(R.xml.preference_backup);
+
+		Intent launchIntent = getIntent();
+		Bundle extras = launchIntent.getExtras();
+		if (extras != null) {
+			mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+
+			Intent defaultResultValue = new Intent();
+			defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+			setResult(RESULT_OK, defaultResultValue);
+		} else {
+			finish();
+		}
+		mContext = (Context) this;
+
+		mLastBackupStr = getString(R.string.last_backup);
+		mBackupMainPref = (Preference) findPreference(BACKUP_BTN_MAIN);
+		mBackupIncarPref = (Preference) findPreference(BACKUP_BTN_INCAR);
 		mBackupManager = new PreferencesBackupManager(mContext);
 
-        boolean mFreeVersion = Launcher.isFreeVersion(this.getPackageName());
-        mContext = (Context)this;
+		boolean mFreeVersion = Launcher.isFreeVersion(this.getPackageName());
+		mContext = (Context) this;
 
-        if (mFreeVersion) {
-        	PreferenceCategory preference = (PreferenceCategory)findPreference(INCAR_CATEGORY);
-        	getPreferenceScreen().removePreference(preference);
-        } else {
-    		initInCar();
-        }
-       	initBackup();
-		updateMainTime();
-		updateInCarTime();       	
-       	
-    }
-	
-    @Override
-    public Dialog onCreateDialog(int id) {
-    	switch(id) {
-	    	case DIALOG_WAIT :
-	    		ProgressDialog waitDialog = new ProgressDialog(this);
-	    		waitDialog.setCancelable(true);
-	    		String message = getResources().getString(R.string.please_wait);
-	    		waitDialog.setMessage(message);
-	    		return waitDialog;
-	        case DIALOG_BACKUP_NAME:
-	        	String defaultFilename = "backup-"+mAppWidgetId;
-	            // This example shows how to add a custom layout to an AlertDialog
-	            LayoutInflater factory = LayoutInflater.from(this);
-	            final View textEntryView = factory.inflate(R.layout.backup_dialog_enter_name, null);
-	            final EditText backupName = (EditText)textEntryView.findViewById(R.id.backup_name);
-	            backupName.setText(defaultFilename);
-	            return new AlertDialog.Builder(this)
-	                .setTitle(R.string.backup_current_widget)
-	                .setView(textEntryView)
-	                .setPositiveButton(R.string.backup_save, new DialogInterface.OnClickListener() {
-	                    public void onClick(DialogInterface dialog, int whichButton) {
-	                    	String filename = backupName.getText().toString();
-	                    	if (!filename.equals("")) {
-	                    		new BackupTask().execute(filename);
-	                    	}
-	                    }
-	                })
-	                .setNegativeButton(R.string.backup_cancel, new DialogInterface.OnClickListener() {
-	                    public void onClick(DialogInterface dialog, int whichButton) {
-	                    }
-	                })
-	                .create();    		
+		if (mFreeVersion) {
+			PreferenceCategory preference = (PreferenceCategory) findPreference(INCAR_CATEGORY);
+			getPreferenceScreen().removePreference(preference);
+		} else {
+			initInCar();
 		}
-    	return null;
-    }
-    
-    private void initBackup() {
+		initBackup();
+		updateMainTime();
+		updateInCarTime();
+
+	}
+
+	@Override
+	public Dialog onCreateDialog(int id) {
+		switch (id) {
+		case DIALOG_WAIT:
+			ProgressDialog waitDialog = new ProgressDialog(this);
+			waitDialog.setCancelable(true);
+			String message = getResources().getString(R.string.please_wait);
+			waitDialog.setMessage(message);
+			return waitDialog;
+		case DIALOG_BACKUP_NAME:
+			String defaultFilename = "backup-" + mAppWidgetId;
+			// This example shows how to add a custom layout to an AlertDialog
+			LayoutInflater factory = LayoutInflater.from(this);
+			final View textEntryView = factory.inflate(R.layout.backup_dialog_enter_name, null);
+			final EditText backupName = (EditText) textEntryView.findViewById(R.id.backup_name);
+			backupName.setText(defaultFilename);
+			return new AlertDialog.Builder(this).setTitle(R.string.backup_current_widget).setView(textEntryView).setPositiveButton(R.string.backup_save, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					String filename = backupName.getText().toString();
+					if (!filename.equals("")) {
+						new BackupTask().execute(filename);
+					}
+				}
+			}).setNegativeButton(R.string.backup_cancel, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+				}
+			}).create();
+		}
+		return null;
+	}
+
+	private void initBackup() {
 		mBackupMainPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				showDialog(DIALOG_BACKUP_NAME);
 				return false;
 			}
-    	});
-		
-    	Preference restore_main = (Preference)findPreference(RESTORE_BTN_MAIN);
-    	restore_main.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+		});
+
+		Preference restore_main = (Preference) findPreference(RESTORE_BTN_MAIN);
+		restore_main.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-		    	Intent intentMain = new Intent(mContext, ConfigurationRestore.class);
-		    	intentMain.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-		    	intentMain.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_MAIN);
-		    	startActivityForResult(intentMain, REQUEST_RESTORE_MAIN);
+				Intent intentMain = new Intent(mContext, ConfigurationRestore.class);
+				intentMain.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+				intentMain.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_MAIN);
+				startActivityForResult(intentMain, REQUEST_RESTORE_MAIN);
 				return true;
 			}
-    		
-    	});
-    	
-    }
+
+		});
+
+	}
 
 	private void initInCar() {
 		mBackupIncarPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -159,13 +154,13 @@ public class ConfigurationBackup extends PreferenceActivity {
 				new BackupTask().execute(arg);
 				return false;
 			}
-    	});
-		
-    	Preference restore_incar = (Preference)findPreference(RESTORE_BTN_INCAR);
-    	Intent intentInCar = new Intent(this, ConfigurationRestore.class);
-    	intentInCar.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-    	intentInCar.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_INCAR);
-    	restore_incar.setIntent(intentInCar);
+		});
+
+		Preference restore_incar = (Preference) findPreference(RESTORE_BTN_INCAR);
+		Intent intentInCar = new Intent(this, ConfigurationRestore.class);
+		intentInCar.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+		intentInCar.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_INCAR);
+		restore_incar.setIntent(intentInCar);
 	}
 
 	private void updateInCarTime() {
@@ -176,7 +171,7 @@ public class ConfigurationBackup extends PreferenceActivity {
 		} else {
 			summary = getString(R.string.never);
 		}
-		mBackupIncarPref.setSummary(String.format(mLastBackupStr,summary));
+		mBackupIncarPref.setSummary(String.format(mLastBackupStr, summary));
 	}
 
 	private void updateMainTime() {
@@ -187,68 +182,69 @@ public class ConfigurationBackup extends PreferenceActivity {
 		} else {
 			summary = getString(R.string.never);
 		}
-		mBackupMainPref.setSummary(String.format(mLastBackupStr,summary));
+		mBackupMainPref.setSummary(String.format(mLastBackupStr, summary));
 	}
 
 	private void onBackupFinish(int type, int code) {
 		Resources r = getResources();
 		if (code == PreferencesBackupManager.RESULT_DONE) {
 			switch (type) {
-				case TYPE_MAIN:
-					updateMainTime();
+			case TYPE_MAIN:
+				updateMainTime();
 				break;
-				case TYPE_INCAR:
-					updateInCarTime();
+			case TYPE_INCAR:
+				updateInCarTime();
 				break;
 			}
 			Toast.makeText(mContext, r.getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
 			return;
 		}
 		switch (code) {
-			case PreferencesBackupManager.ERROR_STORAGE_NOT_AVAILABLE:
-				Toast.makeText(mContext, r.getString(R.string.external_storage_not_available), Toast.LENGTH_SHORT).show();
+		case PreferencesBackupManager.ERROR_STORAGE_NOT_AVAILABLE:
+			Toast.makeText(mContext, r.getString(R.string.external_storage_not_available), Toast.LENGTH_SHORT).show();
 			break;
-			case PreferencesBackupManager.ERROR_FILE_WRITE:
-            	Toast.makeText(mContext, r.getString(R.string.failed_to_write_file), Toast.LENGTH_SHORT).show();
-            break;
+		case PreferencesBackupManager.ERROR_FILE_WRITE:
+			Toast.makeText(mContext, r.getString(R.string.failed_to_write_file), Toast.LENGTH_SHORT).show();
+			break;
 		}
 	}
 
 	private class BackupTask extends AsyncTask<String, Void, Integer> {
-		 private int mTaskType;
-		 
-		 @Override
-		 protected void onPreExecute() {
-			showDialog(DIALOG_WAIT);
-		 }
-		 
-	     protected Integer doInBackground(String... filenames) {
-	    	 String filename = filenames[0];
-	    	 if (filename == null) {
-	    		 mTaskType = TYPE_INCAR;
-	    		 return mBackupManager.doBackupInCar();
-	    	 }
-	    	 mTaskType = TYPE_MAIN;
-	    	 return mBackupManager.doBackupMain(filename, mAppWidgetId);
-	     }
+		private int mTaskType;
 
-	     protected void onPostExecute(Integer result) {
-	     	try {
-	    		dismissDialog(DIALOG_WAIT);
-	    	} catch (IllegalArgumentException e) { }
-	    	 onBackupFinish(mTaskType, result);
-	     }
+		@Override
+		protected void onPreExecute() {
+			showDialog(DIALOG_WAIT);
+		}
+
+		protected Integer doInBackground(String... filenames) {
+			String filename = filenames[0];
+			if (filename == null) {
+				mTaskType = TYPE_INCAR;
+				return mBackupManager.doBackupInCar();
+			}
+			mTaskType = TYPE_MAIN;
+			return mBackupManager.doBackupMain(filename, mAppWidgetId);
+		}
+
+		protected void onPostExecute(Integer result) {
+			try {
+				dismissDialog(DIALOG_WAIT);
+			} catch (IllegalArgumentException e) {
+			}
+			onBackupFinish(mTaskType, result);
+		}
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_RESTORE_MAIN:
-                	updateMainTime();
-                    break;
-            }
-        }
+		if (resultCode == RESULT_OK) {
+			switch (requestCode) {
+			case REQUEST_RESTORE_MAIN:
+				updateMainTime();
+				break;
+			}
+		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}	
 }

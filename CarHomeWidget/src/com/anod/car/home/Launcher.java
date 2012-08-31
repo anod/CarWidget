@@ -1,7 +1,5 @@
 package com.anod.car.home;
 
-import java.util.HashMap;
-
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -61,30 +60,30 @@ public class Launcher {
 			views.setImageViewResource(R.id.btn_settings, R.drawable.btn_transparent);
 		}
 		
-		HashMap<Integer, ShortcutInfo> shortcuts = smodel.getShortcuts();
+		SparseArray<ShortcutInfo> shortcuts = smodel.getShortcuts();
 
 		setBackground(prefs,views);
 		
 		float iconScale = Utils.calcIconsScale(prefs.getIconsScale());
 		float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
 		
-        for (int cellId=0;cellId<shortcuts.size();cellId++) {
-        	int res = resources.getIdentifier("btn"+cellId, type, packageName);
-        	int resText = resources.getIdentifier("btn_text"+cellId, type, packageName);
-        	ShortcutInfo info = smodel.getShortcut(cellId);
-        	if (info == null) {
-        		setNoShortcut(res,resText,views,context,appWidgetId,cellId);
-        	} else {
-        		setShortcut(res,resText,iconScale,info,prefs,views,context,appWidgetId,cellId);
-        	}
-        	setFont(prefs,res,resText,scaledDensity,views);
-        	if (prefs.getTileColor() != null) {
-        		setTile(prefs.getTileColor(),res,views);
-        	}
-        }
-    	
-        PendingIntent configIntent = ShortcutPendingIntent.getSettingsPendingInent(appWidgetId, context, Configuration.INVALID_CELL_ID);
-      	views.setOnClickPendingIntent(R.id.btn_settings, configIntent);
+		for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
+			int res = resources.getIdentifier("btn" + cellId, type, packageName);
+			int resText = resources.getIdentifier("btn_text" + cellId, type, packageName);
+			ShortcutInfo info = smodel.getShortcut(cellId);
+			if (info == null) {
+				setNoShortcut(res, resText, views, context, appWidgetId, cellId);
+			} else {
+				setShortcut(res, resText, iconScale, info, prefs, views, context, appWidgetId, cellId);
+			}
+			setFont(prefs, res, resText, scaledDensity, views);
+			if (prefs.getTileColor() != null) {
+				setTile(prefs.getTileColor(), res, views);
+			}
+		}
+
+		PendingIntent configIntent = ShortcutPendingIntent.getSettingsPendingInent(appWidgetId, context, Configuration.INVALID_CELL_ID);
+		views.setOnClickPendingIntent(R.id.btn_settings, configIntent);
 		return views;
 	}
 	

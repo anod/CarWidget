@@ -87,7 +87,6 @@
     <string name="pref_route_to_speaker">לנתב לרמקול</string>
     <string name="pref_route_to_speaker_summary">נתב שיחות נכנסות לרמקול של טלפון</string>
     <string name="pref_autoanswer">לענות אוטומטי</string>
-    <string name="pref_autoanswer_summary">לענות לשיחות נכנסות באופן אוטומטי</string>
     <string name="pref_skin">סקין</string>
     <string name="pref_scale_icon">להגדיל אייקון</string>
     <string name="pref_wifi">Wi-Fi</string>
