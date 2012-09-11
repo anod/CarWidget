@@ -33,6 +33,8 @@ public class Launcher {
 			return R.layout.carhome;
 		} else if (skin.equals(PreferencesStorage.SKIN_WINDOWS7)) {
 			return R.layout.windows7;			
+		} else if (skin.equals(PreferencesStorage.SKIN_ICS)) {
+			return R.layout.ics;			
 		}
 		return R.layout.glass;
 	}

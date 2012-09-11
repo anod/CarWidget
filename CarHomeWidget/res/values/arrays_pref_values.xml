@@ -4,11 +4,13 @@
         <item>Glossy</item>
         <item>Car Home</item>
         <item>Metro</item>
+        <item>ICS</item>
     </string-array>
     <string-array name="skin_values">
         <item>glossy</item>
         <item>carhome</item>
         <item>windows7</item>
+        <item>ics</item>
     </string-array>
     <string-array name="colors_values" translatable="false">
         <item>black</item>
