@@ -30,24 +30,15 @@
                     android:id="@+id/btn0"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
+					android:background="@drawable/btn_default_holo_light"
                     android:paddingBottom="25.0dp"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text0"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:gravity="left"
-                    android:maxLines="2"
-                    android:paddingBottom="@dimen/title_padding_bottom"
-                    android:paddingLeft="3.0dp"
-                    android:paddingRight="3.0dp"
                     android:text="@string/set_shortcut"
-                    android:textColor="@color/default_font_color"
-                    android:background="@color/ics_text_bg"
-                    android:textSize="@dimen/text_size" />
+					style="@style/holo_btn_text"
+				/>
             </FrameLayout>
 
             <FrameLayout
@@ -60,24 +51,15 @@
                     android:id="@+id/btn1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
+					android:background="@drawable/btn_default_holo_light"
                     android:paddingBottom="25.0dp"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:gravity="left"
-                    android:maxLines="2"
-                    android:paddingBottom="@dimen/title_padding_bottom"
-                    android:paddingLeft="3.0dp"
-                    android:paddingRight="3.0dp"
                     android:text="@string/set_shortcut"
-                    android:textColor="@color/default_font_color"
-                    android:background="@color/ics_text_bg"
-                    android:textSize="@dimen/text_size" />
+					style="@style/holo_btn_text"
+				/>
             </FrameLayout>
 
             <FrameLayout
@@ -89,24 +71,15 @@
                     android:id="@+id/btn2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
+					android:background="@drawable/btn_default_holo_light"
                     android:paddingBottom="25.0dp"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:gravity="left"
-                    android:maxLines="2"
-                    android:paddingBottom="@dimen/title_padding_bottom"
-                    android:paddingLeft="3.0dp"
-                    android:paddingRight="3.0dp"
                     android:text="@string/set_shortcut"
-                    android:textColor="@color/default_font_color"
-                    android:background="@color/ics_text_bg"
-                    android:textSize="@dimen/text_size" />
+					style="@style/holo_btn_text"
+				/>
             </FrameLayout>
         </LinearLayout>
 
@@ -125,24 +98,15 @@
                     android:id="@+id/btn3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
+					android:background="@drawable/btn_default_holo_light"
                     android:paddingBottom="25.0dp"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:gravity="left"
-                    android:maxLines="2"
-                    android:paddingBottom="@dimen/title_padding_bottom"
-                    android:paddingLeft="3.0dp"
-                    android:paddingRight="3.0dp"
                     android:text="@string/set_shortcut"
-                    android:textColor="@color/default_font_color"
-                    android:background="@color/ics_text_bg"
-                    android:textSize="@dimen/text_size" />
+					style="@style/holo_btn_text"
+				/>
             </FrameLayout>
 
             <FrameLayout
@@ -154,24 +118,15 @@
                     android:id="@+id/btn4"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
+					android:background="@drawable/btn_default_holo_light"
                     android:paddingBottom="25.0dp"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:gravity="left"
-                    android:maxLines="2"
-                    android:paddingBottom="@dimen/title_padding_bottom"
-                    android:paddingLeft="3.0dp"
-                    android:paddingRight="3.0dp"
                     android:text="@string/set_shortcut"
-                    android:textColor="@color/default_font_color"
-                    android:background="@color/ics_text_bg"
-                    android:textSize="@dimen/text_size" />
+					style="@style/holo_btn_text"
+				/>
             </FrameLayout>
 
             <FrameLayout
@@ -183,24 +138,15 @@
                     android:id="@+id/btn5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
+					android:background="@drawable/btn_default_holo_light"
                     android:paddingBottom="25.0dp"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:gravity="left"
-                    android:maxLines="2"
-                    android:paddingBottom="@dimen/title_padding_bottom"
-                    android:paddingLeft="3.0dp"
-                    android:paddingRight="3.0dp"
                     android:text="@string/set_shortcut"
-                    android:textColor="@color/default_font_color"
-                    android:background="@color/ics_text_bg"
-                    android:textSize="@dimen/text_size" />
+					style="@style/holo_btn_text"
+				/>
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>
@@ -208,27 +154,30 @@
 	<RelativeLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
-	    android:paddingTop="5.0dp"     	
-	    android:paddingLeft="10.0dp"	    
-	    android:paddingRight="10.0dp"
-	    android:paddingBottom="5.0dp"
 	>
     
     <ImageButton
         android:id="@+id/btn_settings"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_settings" />
+        android:src="@drawable/ic_settings"
+	    android:paddingRight="8.0dp"
+	    android:layout_margin="0.0dp"
+	    android:scaleType="fitEnd"
+     />
 
     <ImageButton
         android:id="@+id/btn_incar_switch"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"        
         android:background="@android:color/transparent"
         android:src="@drawable/ic_incar_enter"
-        android:visibility="gone" />
+	    android:paddingLeft="8.0dp"
+	    android:layout_margin="0.0dp"
+	    android:scaleType="fitStart"
+	/>
 	</RelativeLayout>
 </LinearLayout>
