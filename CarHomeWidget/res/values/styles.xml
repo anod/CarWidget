@@ -31,7 +31,7 @@
         <item name="android:layout_marginLeft">4.0dp</item>
         <item name="android:layout_marginRight">4.0dp</item>
         <item name="android:layout_marginBottom">4.0dp</item>
-        <item name="android:background">@color/ics_text_bg</item>
+        <item name="android:background">@color/holo_text_bg</item>
     </style>
 
 </resources>
