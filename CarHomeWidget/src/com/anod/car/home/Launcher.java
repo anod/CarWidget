@@ -18,6 +18,8 @@ import com.anod.car.home.prefs.Configuration;
 import com.anod.car.home.prefs.PreferencesStorage;
 import com.anod.car.home.prefs.ShortcutModel;
 import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.skin.PropertiesFactory;
+import com.anod.car.home.skin.SkinProperties;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
 
@@ -27,18 +29,7 @@ public class Launcher {
 	public static boolean isFreeVersion(String packageName) {
 		return PACKAGE_FREE.equals(packageName);
 	}
-	
-	private static int getSkinLayout(String skin) {
-		if (skin.equals(PreferencesStorage.SKIN_CARHOME)) {
-			return R.layout.carhome;
-		} else if (skin.equals(PreferencesStorage.SKIN_WINDOWS7)) {
-			return R.layout.windows7;			
-		} else if (skin.equals(PreferencesStorage.SKIN_HOLO)) {
-			return R.layout.holo;			
-		}
-		return R.layout.glass;
-	}
-	
+		
     public static RemoteViews update(int appWidgetId, Context context) {
     	
 		ShortcutModel smodel = new ShortcutModel(context, appWidgetId);
@@ -51,12 +42,15 @@ public class Launcher {
     	
     	Resources resources = context.getResources();
     	String skinName = prefs.getSkin();
-        RemoteViews views =  new RemoteViews(context.getPackageName(), getSkinLayout(skinName));
+    	
+    	SkinProperties skinProperties = PropertiesFactory.create(skinName);
+    	
+        RemoteViews views =  new RemoteViews(context.getPackageName(), skinProperties.getLayout());
 
 		String packageName = context.getPackageName();
 		String type = "id";
 		
-		setInCarButton(prefs.isIncarTransparent(),packageName, skinName, context, views);
+		setInCarButton(prefs.isIncarTransparent(),packageName, skinProperties, context, views);
 		
 		if (prefs.isSettingsTransparent()) {
 			views.setImageViewResource(R.id.btn_settings, R.drawable.btn_transparent);
@@ -74,7 +68,7 @@ public class Launcher {
 			int resText = resources.getIdentifier("btn_text" + cellId, type, packageName);
 			ShortcutInfo info = smodel.getShortcut(cellId);
 			if (info == null) {
-				setNoShortcut(res, resText, views, context, appWidgetId, cellId);
+				setNoShortcut(res, resText, views, context, appWidgetId, cellId, skinProperties);
 			} else {
 				setShortcut(res, resText, iconScale, info, prefs, views, context, appWidgetId, cellId);
 			}
@@ -89,7 +83,9 @@ public class Launcher {
 		return views;
 	}
 	
-    private static void setInCarButton(boolean isInCarTrans, String packageName, String skinName,
+
+    
+    private static void setInCarButton(boolean isInCarTrans, String packageName, SkinProperties skinProp,
 			Context context, RemoteViews views) {
 		if (!isFreeVersion(packageName) && PreferencesStorage.isInCarModeEnabled(context)) {
 			views.setViewVisibility(R.id.btn_incar_switch, View.VISIBLE);
@@ -97,7 +93,7 @@ public class Launcher {
 				if (isInCarTrans) {
 					views.setImageViewResource(R.id.btn_incar_switch, R.drawable.btn_transparent);
 				} else {
-					int rImg = (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) ? R.drawable.ic_incar_exit_win7 : R.drawable.ic_incar_exit;
+					int rImg = skinProp.getInCarButtonExitRes();
 					views.setImageViewResource(R.id.btn_incar_switch, rImg);
 				}
 				Intent notificationIntent = new Intent(context, ModeService.class);
@@ -111,7 +107,7 @@ public class Launcher {
 				if (isInCarTrans) {
 					views.setImageViewResource(R.id.btn_incar_switch, R.drawable.btn_transparent);
 				} else {
-					int rImg = (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) ? R.drawable.ic_incar_enter_win7 : R.drawable.ic_incar_enter;
+					int rImg = skinProp.getInCarButtonEnterRes();
 					views.setImageViewResource(R.id.btn_incar_switch, rImg);
 				}
 				Intent notificationIntent = new Intent(context, ModeService.class);
@@ -159,8 +155,9 @@ public class Launcher {
 		}
     }
     
-    private static void setNoShortcut(int res, int resText, RemoteViews views, Context context, int appWidgetId, int cellId) {
-    	views.setImageViewResource(res, R.drawable.ic_add_shortcut);
+   
+    private static void setNoShortcut(int res, int resText, RemoteViews views, Context context, int appWidgetId, int cellId, SkinProperties skinProp) {
+    	views.setImageViewResource(res, skinProp.getSetShortcutRes());
     	String title = context.getResources().getString(R.string.set_shortcut);
     	views.setTextViewText(resText, title);
         PendingIntent configIntent = ShortcutPendingIntent.getSettingsPendingInent(appWidgetId, context, cellId);

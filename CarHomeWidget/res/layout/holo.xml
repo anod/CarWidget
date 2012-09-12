@@ -194,7 +194,7 @@
 	        android:layout_alignParentRight="true"
 	        android:layout_below="@+id/workspace"
 	        android:background="@android:color/transparent"
-	        android:src="@drawable/ic_settings"    	
+	        android:src="@drawable/ic_holo_settings"    	
 		    android:paddingRight="8.0dp"
 		    android:layout_margin="0.0dp"
 		    android:scaleType="fitEnd"

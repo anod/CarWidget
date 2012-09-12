@@ -1,0 +1,10 @@
+package com.anod.car.home.skin;
+
+
+public interface SkinProperties {
+	int getInCarButtonExitRes();
+	int getInCarButtonEnterRes();
+	int getSetShortcutRes();
+	int getLayout();
+
+}
