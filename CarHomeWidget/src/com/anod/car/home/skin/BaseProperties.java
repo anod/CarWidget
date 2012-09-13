@@ -19,5 +19,11 @@ public abstract class BaseProperties implements SkinProperties {
 		return R.drawable.ic_add_shortcut;
 	}
 
+	@Override
+	public IconProcessor getIconProcessor() {
+		return null;
+	}
+
+	
 	
 }

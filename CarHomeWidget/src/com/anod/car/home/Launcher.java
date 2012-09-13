@@ -18,6 +18,7 @@ import com.anod.car.home.prefs.Configuration;
 import com.anod.car.home.prefs.PreferencesStorage;
 import com.anod.car.home.prefs.ShortcutModel;
 import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.skin.IconProcessor;
 import com.anod.car.home.skin.PropertiesFactory;
 import com.anod.car.home.skin.SkinProperties;
 import com.anod.car.home.utils.UtilitiesBitmap;
@@ -70,7 +71,7 @@ public class Launcher {
 			if (info == null) {
 				setNoShortcut(res, resText, views, context, appWidgetId, cellId, skinProperties);
 			} else {
-				setShortcut(res, resText, iconScale, info, prefs, views, context, appWidgetId, cellId);
+				setShortcut(res, resText, iconScale, info, prefs, views, context, appWidgetId, cellId, skinProperties);
 			}
 			setFont(prefs, res, resText, scaledDensity, views);
 			if (prefs.getTileColor() != null) {
@@ -164,7 +165,7 @@ public class Launcher {
 		views.setOnClickPendingIntent(res, configIntent);    	
     }
     
-    private static void setShortcut(int res, int resText, float scale, ShortcutInfo info, Main prefs,  RemoteViews views, Context context, int appWidgetId, int cellId) {
+    private static void setShortcut(int res, int resText, float scale, ShortcutInfo info, Main prefs,  RemoteViews views, Context context, int appWidgetId, int cellId, SkinProperties skinProp) {
 		Bitmap icon = info.getIcon();
 		if (prefs.isIconsMono()) {
 			icon = UtilitiesBitmap.applyBitmapFilter(icon,context);
@@ -172,6 +173,10 @@ public class Launcher {
 				icon = UtilitiesBitmap.tint(icon, prefs.getIconsColor());
 			}
 		};
+		IconProcessor ip = skinProp.getIconProcessor();
+		if (ip != null) {
+			icon = ip.process(icon);
+		}
 		if (scale > 1.0f) {
 			icon = UtilitiesBitmap.scaleBitmap(icon,scale,context);
 		}

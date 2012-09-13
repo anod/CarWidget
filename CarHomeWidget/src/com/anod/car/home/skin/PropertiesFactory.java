@@ -11,6 +11,8 @@ public class PropertiesFactory {
 			return new HoloProperties();
 		} else if (skinName.equals(PreferencesStorage.SKIN_GLOSSY)) {
 			return new GlossyProperties();
+		} else if (skinName.equals(PreferencesStorage.SKIN_BBB)) {
+			return new BBBProperties();
 		}
 		return new CarHomeProperties();
 	}

@@ -5,12 +5,14 @@
         <item>Car Home</item>
         <item>Metro</item>
         <item>Holo</item>
+        <item>BlackBearBlanc</item>
     </string-array>
     <string-array name="skin_values">
         <item>glossy</item>
         <item>carhome</item>
         <item>windows7</item>
         <item>holo</item>
+        <item>blackbearblanc</item>
     </string-array>
     <string-array name="colors_values" translatable="false">
         <item>black</item>

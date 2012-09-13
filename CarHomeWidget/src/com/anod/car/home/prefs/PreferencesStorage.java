@@ -26,6 +26,7 @@ public class PreferencesStorage {
 	public static final String SKIN_CARHOME = "carhome";
 	public static final String SKIN_WINDOWS7 = "windows7";
 	public static final String SKIN_HOLO = "holo";
+	public static final String SKIN_BBB = "blackbearblanc";
 	
 	public static final String BRIGHTNESS_DEFAULT = "default";
 	public static final String BRIGHTNESS_AUTO = "auto";

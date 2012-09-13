@@ -4,4 +4,5 @@
     <dimen name="title_padding_bottom">13.0dip</dimen>
     <dimen name="title_padding_bottom_win7">15.0dip</dimen>
     <dimen name="text_size">18.0dp</dimen>
+    <dimen name="bbb_padding_top">60dp</dimen>
 </resources>
