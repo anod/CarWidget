@@ -7,7 +7,7 @@ public class BBBIconProcessor implements IconProcessor {
 	@Override
 	public Bitmap process(Bitmap icon) {
 		// TODO Auto-generated method stub
-		return null;
+		return icon;
 	}
 
 }

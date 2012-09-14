@@ -27,7 +27,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
 		setAlphaSliderVisible(false);
 
 		Button btn1 = (Button) mView.findViewById(R.id.customButton1);
-		btn1.setText(R.string.color_dialog_button_ok);
+		btn1.setText(android.R.string.ok);
 		btn1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
