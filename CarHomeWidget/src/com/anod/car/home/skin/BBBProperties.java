@@ -15,4 +15,13 @@ public class BBBProperties extends BaseProperties {
 		return new BBBIconProcessor();
 	}
 
+	@Override
+	public int getSetShortcutRes() {
+		return R.drawable.ic_add_shortcut_holo;
+	}
+
+	@Override
+	public int getSetShortcutText() {
+		return R.string.set_shortcut_short;
+	}
 }

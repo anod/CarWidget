@@ -172,4 +172,6 @@
     
 	<string name="switch_in_car_activity">Switch In Car</string>
     <string name="incar_mode_disabled">In Car mode disabled.\nEnable it in widget settings in order to use shortcut.</string>    
+	<string name="set_shortcut_short">SET</string>
+
 </resources>

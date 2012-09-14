@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
@@ -158,11 +159,12 @@ public class Launcher {
     
    
     private static void setNoShortcut(int res, int resText, RemoteViews views, Context context, int appWidgetId, int cellId, SkinProperties skinProp) {
-    	views.setImageViewResource(res, skinProp.getSetShortcutRes());
-    	String title = context.getResources().getString(R.string.set_shortcut);
+		views.setImageViewResource(res, skinProp.getSetShortcutRes());
+    	String title = context.getResources().getString(skinProp.getSetShortcutText());
     	views.setTextViewText(resText, title);
         PendingIntent configIntent = ShortcutPendingIntent.getSettingsPendingInent(appWidgetId, context, cellId);
-		views.setOnClickPendingIntent(res, configIntent);    	
+		views.setOnClickPendingIntent(res, configIntent);
+		views.setOnClickPendingIntent(resText, configIntent);
     }
     
     private static void setShortcut(int res, int resText, float scale, ShortcutInfo info, Main prefs,  RemoteViews views, Context context, int appWidgetId, int cellId, SkinProperties skinProp) {
@@ -185,6 +187,7 @@ public class Launcher {
     	views.setTextViewText(resText, title);
 		PendingIntent shortcutIntent = ShortcutPendingIntent.getShortcutPendingInent(info.intent, appWidgetId, context, cellId);
 		views.setOnClickPendingIntent(res, shortcutIntent);
+		views.setOnClickPendingIntent(resText, shortcutIntent);
     }
     
     private static void setBackground(Main prefs, RemoteViews views) {

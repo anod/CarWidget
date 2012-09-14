@@ -24,6 +24,9 @@ public abstract class BaseProperties implements SkinProperties {
 		return null;
 	}
 
-	
+	@Override
+	public int getSetShortcutText() {
+		return R.string.set_shortcut;
+	}
 	
 }

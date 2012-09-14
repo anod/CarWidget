@@ -7,4 +7,5 @@ public interface SkinProperties {
 	int getSetShortcutRes();
 	int getLayout();
 	IconProcessor getIconProcessor();
+	public int getSetShortcutText();
 }
