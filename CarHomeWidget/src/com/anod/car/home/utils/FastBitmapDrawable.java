@@ -1,4 +1,4 @@
-package com.anod.car.home.model.views;
+package com.anod.car.home.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

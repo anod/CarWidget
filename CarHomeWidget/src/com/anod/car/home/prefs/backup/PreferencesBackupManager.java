@@ -17,8 +17,8 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.ShortcutModel;
 import com.anod.car.home.prefs.PreferencesStorage;
-import com.anod.car.home.prefs.ShortcutModel;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.ShortcutsMain;

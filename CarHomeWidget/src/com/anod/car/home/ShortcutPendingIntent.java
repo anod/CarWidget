@@ -38,7 +38,9 @@ public class ShortcutPendingIntent {
      * @return
      */
     public static PendingIntent getShortcutPendingInent(Intent intent,int appWidgetId, Context context, int cellId) {
-    	if (intent.getExtras() == null && !intent.getAction().equals(INTENT_ACTION_CALL_PRIVILEGED)) { // Samsung s3 bug
+    	String action = intent.getAction();
+    	boolean isCallPrivileged = (action != null && action.equals(INTENT_ACTION_CALL_PRIVILEGED));
+    	if (intent.getExtras() == null && !isCallPrivileged) { // Samsung s3 bug
     		return PendingIntent.getActivity(context, 0 /* no requestCode */, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     	}
     	Intent launchIntent = new Intent(context, ShortcutActivity.class);

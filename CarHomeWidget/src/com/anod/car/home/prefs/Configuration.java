@@ -25,6 +25,7 @@ import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.model.AllAppsListCache;
 import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.ShortcutModel;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.views.LauncherItemPreference;
 

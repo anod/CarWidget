@@ -17,7 +17,8 @@ public class ShortcutActivity extends Activity {
 		Intent intent = getIntent().getParcelableExtra(EXTRA_INTENT);
 		if (intent != null) {
 			//fix for Galaxy s3
-			if (intent.getAction().equals(ShortcutPendingIntent.INTENT_ACTION_CALL_PRIVILEGED)) {
+			String action = intent.getAction();
+			if (action != null && action.equals(ShortcutPendingIntent.INTENT_ACTION_CALL_PRIVILEGED)) {
 				intent.setAction(Intent.ACTION_CALL);
 			}
 			if (intent.getSourceBounds() == null) {

@@ -20,8 +20,8 @@ import android.net.Uri;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.anod.car.home.model.views.FastBitmapDrawable;
 import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
 public class LauncherModel {

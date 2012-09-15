@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
@@ -15,9 +14,9 @@ import android.widget.RemoteViews;
 
 import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.ShortcutModel;
 import com.anod.car.home.prefs.Configuration;
 import com.anod.car.home.prefs.PreferencesStorage;
-import com.anod.car.home.prefs.ShortcutModel;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.skin.IconProcessor;
 import com.anod.car.home.skin.PropertiesFactory;
