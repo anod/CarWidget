@@ -10,7 +10,6 @@
     <string name="permdesc_write_settings">מאפשר ליישומים לשנות את ההגדרות ואת קיצורי דרך של ווידג\'ט לרכב.</string>
     <string name="pref_dialog_title_select">בחר</string>
     <string name="color_dialog_title">בחר צבע</string>
-    <string name="color_dialog_button_ok">אישור</string>
     <string name="color_dialog_button_cancel">ביטול</string>
     <string name="pref_tile_color_title"> צבע של משבצת</string>
     <string name="pref_tile_color_summary">בחר את הצבע של משבצת, רק לסקין Metro.</string>
@@ -86,7 +85,6 @@
     <string name="applications">יישומים</string>
     <string name="pref_route_to_speaker">לנתב לרמקול</string>
     <string name="pref_route_to_speaker_summary">נתב שיחות נכנסות לרמקול של טלפון</string>
-    <string name="pref_autoanswer">לענות אוטומטי</string>
     <string name="pref_skin">סקין</string>
     <string name="pref_scale_icon">להגדיל אייקון</string>
     <string name="pref_wifi">Wi-Fi</string>

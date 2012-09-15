@@ -10,7 +10,6 @@
     <string name="permdesc_write_settings">Позволяет приложениям менять настройки и ярлыки авто виджета.</string>
     <string name="pref_dialog_title_select">Выбрать</string>
     <string name="color_dialog_title">Выберите цвет</string>
-    <string name="color_dialog_button_ok">Ok</string>
     <string name="color_dialog_button_cancel">Отменить</string>
     <string name="pref_tile_color_title">Цвет плитки</string>
     <string name="pref_tile_color_summary">Выберите цвет плитки, доступно только для скина Metro</string>
@@ -86,7 +85,6 @@
     <string name="applications">Приложения</string>
     <string name="pref_route_to_speaker">Направлять на динамик</string>
     <string name="pref_route_to_speaker_summary">Перенаправлять все звонки на громкоговоритель телефона</string>
-    <string name="pref_autoanswer">Автоматический ответ вызова</string>
     <string name="pref_skin">Тема</string>
     <string name="pref_scale_icon">Увеличить иконки</string>
     <string name="pref_wifi">Wi-Fi</string>

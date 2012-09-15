@@ -122,7 +122,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
 		input.setText(getHexText(lastColor));
 		alert.setView(input);
 		Resources r = mContext.getResources();
-		String okText = r.getString(R.string.color_dialog_button_ok);
+		String okText = r.getString(android.R.string.ok);
 		alert.setPositiveButton(okText, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				int intValue = parseColorStr(input.getText().toString(), lastColor);
