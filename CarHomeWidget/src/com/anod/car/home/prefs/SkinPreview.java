@@ -1,37 +1,28 @@
 package com.anod.car.home.prefs;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.anod.car.home.R;
-import com.anod.car.home.prefs.views.EcoGallery;
 
-public class SkinPreview extends Activity {
+public class SkinPreview extends FragmentActivity {
 
-	private EcoGallery mGallery;
-	private TextView mThemeNameView;
-	private TextView mCurrentPositionView;
-
-	private ThemeChooserAdapter mAdapter;
-
+	private ViewPager mGallery;
+	private SkinItem[] mSkinItems;
+	
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 
-		SkinItem[] skins = createSkinList();
-		mAdapter = new ThemeChooserAdapter(this, skins);
+		mSkinItems = createSkinList();
 		inflateActivity();
 
 		// mGallery.setSelection(mAdapter.getMarkedPosition());
@@ -52,28 +43,20 @@ public class SkinPreview extends Activity {
 		return skins;
 	}
 
+	public SkinItem getSkinItem(int position) {
+		return mSkinItems[position];
+	}
+	
 	private void inflateActivity() {
 		setContentView(R.layout.skin_preview);
 
-		mCurrentPositionView = (TextView) findViewById(R.id.adapter_position);
-		mThemeNameView = (TextView) findViewById(R.id.theme_name);
+		int count = mSkinItems.length;
+		mGallery = (ViewPager) findViewById(R.id.gallery);
+		mGallery.setAdapter(new SkinPagerAdapter(count, getSupportFragmentManager()));
 
-		mGallery = (EcoGallery) findViewById(R.id.gallery);
-		mGallery.setAdapter(mAdapter);
-//		mGallery.setAdapter(mAdapter);
-//		mGallery.setOnItemSelectedListener(mItemSelected);
 		Button button = (Button) findViewById(R.id.apply);
 		button.setOnClickListener(mApplyClicked);
 	}
-
-	private final OnItemSelectedListener mItemSelected = new OnItemSelectedListener() {
-		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-			SkinItem item = (SkinItem) parent.getItemAtPosition(position);
-		}
-
-		public void onNothingSelected(AdapterView<?> parent) {
-		}
-	};
 
 	private final OnClickListener mApplyClicked = new OnClickListener() {
 		public void onClick(View v) {
@@ -88,43 +71,24 @@ public class SkinPreview extends Activity {
 		public int previewRes;
 	}
 
-	private static class ThemeChooserAdapter extends ArrayAdapter<SkinItem> {
-		private Context mContext;
+	public static class SkinPagerAdapter extends FragmentPagerAdapter {
 		
-		public ThemeChooserAdapter(Context context, SkinItem[] skins) {
-			super(context, R.layout.skin_item, android.R.id.text1, skins);
-			mContext = context;
-		}
+        private int mCount;
 
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View row = convertView;
-			if (row == null) {
-				row = newView(parent);
-			}
-			bindView(row, position);
-			return row;
-		}
-		
-		public View newView(ViewGroup parent) { 
-			View row = LayoutInflater.from(mContext).inflate(R.layout.skin_item, parent,false); 
-			row.setTag(new ViewHolder(row)); 
-			return row; 
-		}
+		public SkinPagerAdapter(int count, FragmentManager fm) {
+            super(fm);
+            mCount = count;
+        }
 
-		 public void bindView(View view, int position) { 
-			SkinItem item = getItem(position);
-			ViewHolder holder = (ViewHolder)view.getTag();
-			holder.preview.setImageResource(item.previewRes);
-		}
-	}
+        @Override
+        public int getCount() {
+            return mCount;
+        }
 
-	private static class ViewHolder {
-		public ImageView preview;
-
-		public ViewHolder(View row) {
-			preview = (ImageView) row.findViewById(R.id.theme_preview);
-		}
-	}
+        @Override
+        public Fragment getItem(int position) {
+            return SkinPreviewFragment.newInstance(position);
+        }
+    }
 }
  

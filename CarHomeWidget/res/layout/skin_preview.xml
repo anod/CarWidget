@@ -20,47 +20,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+      <android.support.v4.view.ViewPager
+           android:id="@+id/gallery"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/chooserheader_marginTop"
-        android:layout_marginBottom="@dimen/chooserheader_marginBottom"
-        android:gravity="center_horizontal"
-        style="@style/ComposedTitle" >
-
-        <TextView
-            style="@style/ChooserText.Title"
-            android:text="@string/app_name_pro" />
-
-        <TextView
-            android:id="@+id/adapter_position"
-            style="@style/ChooserText.Position" />
-
-    </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1"
-        android:layout_marginTop="8dp">
-
-        <com.anod.car.home.prefs.views.EcoGallery
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:id="@+id/gallery"
-         >
-         </com.anod.car.home.prefs.views.EcoGallery>
-
-        <TextView
-            android:id="@+id/theme_name"
-            android:layout_width="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_gravity="bottom"
-            android:gravity="center_horizontal"
-            style="@style/ChooserText"
-            />
-
-    </FrameLayout>
+       />
 
     <Button
         android:id="@+id/apply"
