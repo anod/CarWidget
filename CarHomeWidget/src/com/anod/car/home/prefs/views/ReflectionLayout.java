@@ -111,7 +111,9 @@ public class ReflectionLayout extends FrameLayout {
         int childh = child.getHeight();
         int selfh = getHeight();
         int poolh = selfh - childh;
+        int childl = child.getLeft(); 
 
+        
         /*
          * Save a layer so that we can render off screen initially in order to
          * achieve the DST_OUT xfer mode.  This allows us to have a non-solid
@@ -124,18 +126,18 @@ public class ReflectionLayout extends FrameLayout {
         /* Draw the flipped child. */
         canvas.save();
         canvas.scale(1, -1);
-        canvas.translate(0, -(childh * 2));
+        canvas.translate(childl, -(childh * 2));
         child.draw(canvas);
         canvas.restore();
 
         /* Saturate the flipped image with a dark color. */
-        canvas.drawRect(0, childh, childw, selfh, mDarkPaint);
+        canvas.drawRect(childl, childh, childl+childw, selfh, mDarkPaint);
 
         /* Carve out the reflection area's alpha channel. */
         mMatrix.setScale(1, poolh);
         mMatrix.postTranslate(0, childh);
         mShader.setLocalMatrix(mMatrix);
-        canvas.drawRect(0, childh, childw, selfh, mReflectionPaint);
+        canvas.drawRect(childl, childh, childl+childw, selfh, mReflectionPaint);
 
         /* Apply the canvas layer. */
         canvas.restore();

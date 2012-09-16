@@ -14,31 +14,42 @@
  # See the License for the specific language governing permissions and
  # limitations under the License.
  -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:gravity="center|center_horizontal"
+    android:orientation="vertical" >
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp" >
 
-      <android.support.v4.view.ViewPager
-        android:id="@+id/gallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-      >
-          <android.support.v4.view.PagerTitleStrip
+        <android.support.v4.view.ViewPager
+            android:id="@+id/gallery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top" />
-      </android.support.v4.view.ViewPager>
+        >
+
+            <android.support.v4.view.PagerTitleStrip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top" />
+        </android.support.v4.view.ViewPager>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Text" />
 
     <Button
         android:id="@+id/apply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Apply"
-        style="@style/ChooserApply"
-        />
+        android:text="Apply" />
 
 </LinearLayout>

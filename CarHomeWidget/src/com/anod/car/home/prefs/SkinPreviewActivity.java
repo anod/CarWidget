@@ -52,6 +52,8 @@ public class SkinPreviewActivity extends FragmentActivity {
 
 		int count = mSkinItems.length;
 		mGallery = (ViewPager) findViewById(R.id.gallery);
+		mGallery.setHorizontalFadingEdgeEnabled(true);
+		mGallery.setFadingEdgeLength(30);
 		mGallery.setAdapter(new SkinPagerAdapter(this,count, getSupportFragmentManager()));
 
 		Button button = (Button) findViewById(R.id.apply);
