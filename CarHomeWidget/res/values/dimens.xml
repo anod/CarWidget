@@ -5,4 +5,15 @@
     <dimen name="title_padding_bottom_win7">15.0dip</dimen>
     <dimen name="text_size">18.0dp</dimen>
     <dimen name="bbb_padding_top">60dp</dimen>
+
+    <!-- Skin Chooser -->
+    <dimen name="chooserheader_marginTop">6dp</dimen>
+    <dimen name="chooserheader_marginBottom">6dp</dimen>
+
+    <dimen name="choosertext_marginTop">305dp</dimen>
+    <dimen name="chooserapply_marginTop">8dp</dimen>
+    <dimen name="chooserapply_marginBottom">2dp</dimen>
+
+    <dimen name="preview_height_size">300dp</dimen>
+    <dimen name="preview_width_size">180dp</dimen>
 </resources>
