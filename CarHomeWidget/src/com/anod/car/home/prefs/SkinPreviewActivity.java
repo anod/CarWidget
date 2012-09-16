@@ -13,7 +13,7 @@ import android.widget.Button;
 
 import com.anod.car.home.R;
 
-public class SkinPreview extends FragmentActivity {
+public class SkinPreviewActivity extends FragmentActivity {
 
 	private ViewPager mGallery;
 	private SkinItem[] mSkinItems;
@@ -52,7 +52,7 @@ public class SkinPreview extends FragmentActivity {
 
 		int count = mSkinItems.length;
 		mGallery = (ViewPager) findViewById(R.id.gallery);
-		mGallery.setAdapter(new SkinPagerAdapter(count, getSupportFragmentManager()));
+		mGallery.setAdapter(new SkinPagerAdapter(this,count, getSupportFragmentManager()));
 
 		Button button = (Button) findViewById(R.id.apply);
 		button.setOnClickListener(mApplyClicked);
@@ -74,10 +74,12 @@ public class SkinPreview extends FragmentActivity {
 	public static class SkinPagerAdapter extends FragmentPagerAdapter {
 		
         private int mCount;
+		private SkinPreviewActivity mActivity;
 
-		public SkinPagerAdapter(int count, FragmentManager fm) {
+		public SkinPagerAdapter(SkinPreviewActivity activity, int count, FragmentManager fm) {
             super(fm);
             mCount = count;
+            mActivity = activity;
         }
 
         @Override
@@ -88,6 +90,11 @@ public class SkinPreview extends FragmentActivity {
         @Override
         public Fragment getItem(int position) {
             return SkinPreviewFragment.newInstance(position);
+        }
+        
+        @Override
+        public CharSequence getPageTitle (int position) {
+            return mActivity.getSkinItem(position).title;
         }
     }
 }
