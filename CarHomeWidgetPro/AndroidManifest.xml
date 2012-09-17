@@ -97,6 +97,10 @@
         <activity
             android:name="com.anod.car.home.ShortcutActivity"
             android:theme="@style/BrightnessTheme" />
+        <activity
+            android:name="com.anod.car.home.prefs.SkinPreviewActivity"
+            android:theme="@style/Transparent"
+        />
 
         <receiver
             android:name="com.anod.car.home.LargeProvider"

@@ -1,0 +1,2562 @@
+afzkl.development.mColorPicker.ColorPickerDialog -> afzkl.development.mColorPicker.a:
+    afzkl.development.mColorPicker.views.ColorPickerView mColorPicker -> a
+    afzkl.development.mColorPicker.views.ColorPanelView mOldColor -> d
+    afzkl.development.mColorPicker.views.ColorPanelView mNewColor -> b
+    android.view.View mView -> c
+    afzkl.development.mColorPicker.views.ColorPickerView$OnColorChangedListener mListener -> e
+    50:54:void init(int) -> b
+    57:80:void setUp(int) -> c
+    85:91:void onColorChanged(int) -> a
+    94:95:void setAlphaSliderVisible(boolean) -> a
+    98:98:int getColor() -> a
+afzkl.development.mColorPicker.drawables.AlphaPatternDrawable -> afzkl.development.mColorPicker.a.a:
+    int mRectangleSize -> a
+    android.graphics.Paint mPaint -> b
+    android.graphics.Paint mPaintWhite -> c
+    android.graphics.Paint mPaintGray -> d
+    int numRectanglesHorizontal -> e
+    int numRectanglesVertical -> f
+    android.graphics.Bitmap mBitmap -> g
+    57:58:void draw(android.graphics.Canvas) -> draw
+    62:62:int getOpacity() -> getOpacity
+    67:67:void setAlpha(int) -> setAlpha
+    72:72:void setColorFilter(android.graphics.ColorFilter) -> setColorFilter
+    77:87:void onBoundsChange(android.graphics.Rect) -> onBoundsChange
+    98:126:void generatePatternBitmap() -> a
+afzkl.development.mColorPicker.views.ColorPanelView -> afzkl.development.mColorPicker.views.ColorPanelView:
+    float mDensity -> a
+    int mBorderColor -> b
+    int mColor -> c
+    android.graphics.Paint mBorderPaint -> d
+    android.graphics.Paint mColorPaint -> e
+    android.graphics.RectF mDrawingRect -> f
+    android.graphics.RectF mColorRect -> g
+    afzkl.development.mColorPicker.drawables.AlphaPatternDrawable mAlphaPattern -> h
+    72:75:void init() -> a
+    81:95:void onDraw(android.graphics.Canvas) -> onDraw
+    100:104:void onMeasure(int,int) -> onMeasure
+    108:118:void onSizeChanged(int,int,int,int) -> onSizeChanged
+    121:137:void setUpColorRect() -> b
+    144:146:void setColor(int) -> setColor
+    153:153:int getColor() -> getColor
+    161:163:void setBorderColor(int) -> setBorderColor
+    169:169:int getBorderColor() -> getBorderColor
+afzkl.development.mColorPicker.views.ColorPickerView -> afzkl.development.mColorPicker.views.ColorPickerView:
+    float HUE_PANEL_WIDTH -> a
+    float ALPHA_PANEL_HEIGHT -> b
+    float PANEL_SPACING -> c
+    float PALETTE_CIRCLE_TRACKER_RADIUS -> d
+    float RECTANGLE_TRACKER_OFFSET -> e
+    float mDensity -> f
+    afzkl.development.mColorPicker.views.ColorPickerView$OnColorChangedListener mListener -> g
+    android.graphics.Paint mSatValPaint -> h
+    android.graphics.Paint mSatValTrackerPaint -> i
+    android.graphics.Paint mHuePaint -> j
+    android.graphics.Paint mHueTrackerPaint -> k
+    android.graphics.Paint mAlphaPaint -> l
+    android.graphics.Paint mAlphaTextPaint -> m
+    android.graphics.Paint mBorderPaint -> n
+    android.graphics.Shader mValShader -> o
+    android.graphics.Shader mSatShader -> p
+    android.graphics.Shader mHueShader -> q
+    android.graphics.Shader mAlphaShader -> r
+    int mAlpha -> s
+    float mHue -> t
+    float mSat -> u
+    float mVal -> v
+    java.lang.String mAlphaSliderText -> w
+    int mSliderTrackerColor -> x
+    int mBorderColor -> y
+    boolean mShowAlphaPanel -> z
+    int mLastTouchedPanel -> A
+    float mDrawingOffset -> B
+    android.graphics.RectF mDrawingRect -> C
+    android.graphics.RectF mSatValRect -> D
+    android.graphics.RectF mHueRect -> E
+    android.graphics.RectF mAlphaRect -> F
+    afzkl.development.mColorPicker.drawables.AlphaPatternDrawable mAlphaPattern -> G
+    android.graphics.Point mStartTouchPoint -> H
+    158:172:void init() -> a
+    176:201:void initPaintTools() -> b
+    204:207:float calculateRequiredOffset() -> c
+    212:219:int[] buildHueColorArray() -> d
+    226:232:void onDraw(android.graphics.Canvas) -> onDraw
+    236:265:void drawSatValPanel(android.graphics.Canvas) -> a
+    269:300:void drawHuePanel(android.graphics.Canvas) -> b
+    304:348:void drawAlphaPanel(android.graphics.Canvas) -> c
+    353:361:android.graphics.Point hueToPoint(float) -> a
+    366:375:android.graphics.Point satValToPoint(float,float) -> a
+    380:388:android.graphics.Point alphaToPoint(int) -> a
+    394:424:float[] pointToSatVal(float,float) -> b
+    429:443:float pointToHue(float) -> b
+    448:461:int pointToAlpha(int) -> b
+    469:564:boolean onTrackballEvent(android.view.MotionEvent) -> onTrackballEvent
+    570:609:boolean onTouchEvent(android.view.MotionEvent) -> onTouchEvent
+    614:650:boolean moveTrackersIfNeeded(android.view.MotionEvent) -> a
+    657:700:void onMeasure(int,int) -> onMeasure
+    703:706:int chooseWidth(int,int) -> a
+    711:714:int chooseHeight(int,int) -> b
+    720:727:int getPrefferedWidth() -> getPrefferedWidth
+    733:739:int getPrefferedHeight() -> getPrefferedHeight
+    746:757:void onSizeChanged(int,int,int,int) -> onSizeChanged
+    761:774:void setUpSatValRect() -> e
+    777:785:void setUpHueRect() -> f
+    789:808:void setUpAlphaRect() -> g
+    817:818:void setOnColorChangedListener(afzkl.development.mColorPicker.views.ColorPickerView$OnColorChangedListener) -> setOnColorChangedListener
+    825:827:void setBorderColor(int) -> setBorderColor
+    833:833:int getBorderColor() -> getBorderColor
+    841:841:int getColor() -> getColor
+    849:850:void setColor(int) -> setColor
+    860:879:void setColor(int,boolean) -> a
+    890:890:float getDrawingOffset() -> getDrawingOffset
+    900:916:void setAlphaSliderVisible(boolean) -> setAlphaSliderVisible
+    919:924:void setSliderTrackerColor(int) -> setSliderTrackerColor
+    927:927:int getSliderTrackerColor() -> getSliderTrackerColor
+    936:938:void setAlphaSliderText(int) -> setAlphaSliderText
+    946:948:void setAlphaSliderText(java.lang.String) -> setAlphaSliderText
+    957:957:java.lang.String getAlphaSliderText() -> getAlphaSliderText
+afzkl.development.mColorPicker.views.ColorPickerView$OnColorChangedListener -> afzkl.development.mColorPicker.views.a:
+    void onColorChanged(int) -> a
+android.support.v4.app.ActivityCompat -> android.support.v4.app.ActivityCompat:
+    61:65:boolean invalidateOptionsMenu(android.app.Activity) -> invalidateOptionsMenu
+android.support.v4.app.ActivityCompatHoneycomb -> android.support.v4.app.ActivityCompatHoneycomb:
+    29:30:void invalidateOptionsMenu(android.app.Activity) -> invalidateOptionsMenu
+    34:35:void dump(android.app.Activity,java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[]) -> dump
+android.support.v4.app.BackStackRecord -> android.support.v4.app.BackStackRecord:
+    java.lang.String TAG -> TAG
+    android.support.v4.app.FragmentManagerImpl mManager -> mManager
+    int OP_NULL -> OP_NULL
+    int OP_ADD -> OP_ADD
+    int OP_REPLACE -> OP_REPLACE
+    int OP_REMOVE -> OP_REMOVE
+    int OP_HIDE -> OP_HIDE
+    int OP_SHOW -> OP_SHOW
+    int OP_DETACH -> OP_DETACH
+    int OP_ATTACH -> OP_ATTACH
+    android.support.v4.app.BackStackRecord$Op mHead -> mHead
+    android.support.v4.app.BackStackRecord$Op mTail -> mTail
+    int mNumOp -> mNumOp
+    int mEnterAnim -> mEnterAnim
+    int mExitAnim -> mExitAnim
+    int mPopEnterAnim -> mPopEnterAnim
+    int mPopExitAnim -> mPopExitAnim
+    int mTransition -> mTransition
+    int mTransitionStyle -> mTransitionStyle
+    boolean mAddToBackStack -> mAddToBackStack
+    boolean mAllowAddToBackStack -> mAllowAddToBackStack
+    java.lang.String mName -> mName
+    boolean mCommitted -> mCommitted
+    int mIndex -> mIndex
+    int mBreadCrumbTitleRes -> mBreadCrumbTitleRes
+    java.lang.CharSequence mBreadCrumbTitleText -> mBreadCrumbTitleText
+    int mBreadCrumbShortTitleRes -> mBreadCrumbShortTitleRes
+    java.lang.CharSequence mBreadCrumbShortTitleText -> mBreadCrumbShortTitleText
+    217:289:void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[]) -> dump
+    296:296:int getId() -> getId
+    300:300:int getBreadCrumbTitleRes() -> getBreadCrumbTitleRes
+    304:304:int getBreadCrumbShortTitleRes() -> getBreadCrumbShortTitleRes
+    308:311:java.lang.CharSequence getBreadCrumbTitle() -> getBreadCrumbTitle
+    315:318:java.lang.CharSequence getBreadCrumbShortTitle() -> getBreadCrumbShortTitle
+    322:334:void addOp(android.support.v4.app.BackStackRecord$Op) -> addOp
+    337:338:android.support.v4.app.FragmentTransaction add(android.support.v4.app.Fragment,java.lang.String) -> add
+    342:343:android.support.v4.app.FragmentTransaction add(int,android.support.v4.app.Fragment) -> add
+    347:348:android.support.v4.app.FragmentTransaction add(int,android.support.v4.app.Fragment,java.lang.String) -> add
+    352:376:void doAddOp(int,android.support.v4.app.Fragment,java.lang.String,int) -> doAddOp
+    379:379:android.support.v4.app.FragmentTransaction replace(int,android.support.v4.app.Fragment) -> replace
+    383:388:android.support.v4.app.FragmentTransaction replace(int,android.support.v4.app.Fragment,java.lang.String) -> replace
+    392:397:android.support.v4.app.FragmentTransaction remove(android.support.v4.app.Fragment) -> remove
+    401:406:android.support.v4.app.FragmentTransaction hide(android.support.v4.app.Fragment) -> hide
+    410:415:android.support.v4.app.FragmentTransaction show(android.support.v4.app.Fragment) -> show
+    419:424:android.support.v4.app.FragmentTransaction detach(android.support.v4.app.Fragment) -> detach
+    428:433:android.support.v4.app.FragmentTransaction attach(android.support.v4.app.Fragment) -> attach
+    437:437:android.support.v4.app.FragmentTransaction setCustomAnimations(int,int) -> setCustomAnimations
+    442:446:android.support.v4.app.FragmentTransaction setCustomAnimations(int,int,int,int) -> setCustomAnimations
+    450:451:android.support.v4.app.FragmentTransaction setTransition(int) -> setTransition
+    455:456:android.support.v4.app.FragmentTransaction setTransitionStyle(int) -> setTransitionStyle
+    460:466:android.support.v4.app.FragmentTransaction addToBackStack(java.lang.String) -> addToBackStack
+    470:470:boolean isAddToBackStackAllowed() -> isAddToBackStackAllowed
+    474:479:android.support.v4.app.FragmentTransaction disallowAddToBackStack() -> disallowAddToBackStack
+    483:485:android.support.v4.app.FragmentTransaction setBreadCrumbTitle(int) -> setBreadCrumbTitle
+    489:491:android.support.v4.app.FragmentTransaction setBreadCrumbTitle(java.lang.CharSequence) -> setBreadCrumbTitle
+    495:497:android.support.v4.app.FragmentTransaction setBreadCrumbShortTitle(int) -> setBreadCrumbShortTitle
+    501:503:android.support.v4.app.FragmentTransaction setBreadCrumbShortTitle(java.lang.CharSequence) -> setBreadCrumbShortTitle
+    507:529:void bumpBackStackNesting(int) -> bumpBackStackNesting
+    532:532:int commit() -> commit
+    536:536:int commitAllowingStateLoss() -> commitAllowingStateLoss
+    540:549:int commitInternal(boolean) -> commitInternal
+    553:641:void run() -> run
+    644:720:void popFromBackStack(boolean) -> popFromBackStack
+    723:723:java.lang.String getName() -> getName
+    727:727:int getTransition() -> getTransition
+    731:731:int getTransitionStyle() -> getTransitionStyle
+    735:735:boolean isEmpty() -> isEmpty
+android.support.v4.app.BackStackRecord$Op -> android.support.v4.app.BackStackRecord$Op:
+    android.support.v4.app.BackStackRecord$Op next -> next
+    android.support.v4.app.BackStackRecord$Op prev -> prev
+    int cmd -> cmd
+    android.support.v4.app.Fragment fragment -> fragment
+    int enterAnim -> enterAnim
+    int exitAnim -> exitAnim
+    int popEnterAnim -> popEnterAnim
+    int popExitAnim -> popExitAnim
+    java.util.ArrayList removed -> removed
+android.support.v4.app.BackStackState -> android.support.v4.app.BackStackState:
+    int[] mOps -> mOps
+    int mTransition -> mTransition
+    int mTransitionStyle -> mTransitionStyle
+    java.lang.String mName -> mName
+    int mIndex -> mIndex
+    int mBreadCrumbTitleRes -> mBreadCrumbTitleRes
+    java.lang.CharSequence mBreadCrumbTitleText -> mBreadCrumbTitleText
+    int mBreadCrumbShortTitleRes -> mBreadCrumbShortTitleRes
+    java.lang.CharSequence mBreadCrumbShortTitleText -> mBreadCrumbShortTitleText
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    95:135:android.support.v4.app.BackStackRecord instantiate(android.support.v4.app.FragmentManagerImpl) -> instantiate
+    139:139:int describeContents() -> describeContents
+    143:152:void writeToParcel(android.os.Parcel,int) -> writeToParcel
+android.support.v4.app.BackStackState$1 -> android.support.v4.app.BackStackState$1:
+    157:157:android.support.v4.app.BackStackState createFromParcel(android.os.Parcel) -> createFromParcel
+    161:161:android.support.v4.app.BackStackState[] newArray(int) -> newArray
+    155:155:java.lang.Object[] newArray(int) -> newArray
+    155:155:java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.app.DialogFragment -> android.support.v4.app.DialogFragment:
+    int STYLE_NORMAL -> STYLE_NORMAL
+    int STYLE_NO_TITLE -> STYLE_NO_TITLE
+    int STYLE_NO_FRAME -> STYLE_NO_FRAME
+    int STYLE_NO_INPUT -> STYLE_NO_INPUT
+    java.lang.String SAVED_DIALOG_STATE_TAG -> SAVED_DIALOG_STATE_TAG
+    java.lang.String SAVED_STYLE -> SAVED_STYLE
+    java.lang.String SAVED_THEME -> SAVED_THEME
+    java.lang.String SAVED_CANCELABLE -> SAVED_CANCELABLE
+    java.lang.String SAVED_SHOWS_DIALOG -> SAVED_SHOWS_DIALOG
+    java.lang.String SAVED_BACK_STACK_ID -> SAVED_BACK_STACK_ID
+    int mStyle -> mStyle
+    int mTheme -> mTheme
+    boolean mCancelable -> mCancelable
+    boolean mShowsDialog -> mShowsDialog
+    int mBackStackId -> mBackStackId
+    android.app.Dialog mDialog -> mDialog
+    boolean mViewDestroyed -> mViewDestroyed
+    boolean mDismissed -> mDismissed
+    boolean mShownByMe -> mShownByMe
+    102:109:void setStyle(int,int) -> setStyle
+    123:128:void show(android.support.v4.app.FragmentManager,java.lang.String) -> show
+    140:145:int show(android.support.v4.app.FragmentTransaction,java.lang.String) -> show
+    155:156:void dismiss() -> dismiss
+    165:166:void dismissAllowingStateLoss() -> dismissAllowingStateLoss
+    169:192:void dismissInternal(boolean) -> dismissInternal
+    195:195:android.app.Dialog getDialog() -> getDialog
+    199:199:int getTheme() -> getTheme
+    212:214:void setCancelable(boolean) -> setCancelable
+    220:220:boolean isCancelable() -> isCancelable
+    241:242:void setShowsDialog(boolean) -> setShowsDialog
+    248:248:boolean getShowsDialog() -> getShowsDialog
+    253:259:void onAttach(android.app.Activity) -> onAttach
+    263:270:void onDetach() -> onDetach
+    274:286:void onCreate(android.os.Bundle) -> onCreate
+    291:310:android.view.LayoutInflater getLayoutInflater(android.os.Bundle) -> getLayoutInflater
+    337:337:android.app.Dialog onCreateDialog(android.os.Bundle) -> onCreateDialog
+    341:341:void onCancel(android.content.DialogInterface) -> onCancel
+    344:351:void onDismiss(android.content.DialogInterface) -> onDismiss
+    355:378:void onActivityCreated(android.os.Bundle) -> onActivityCreated
+    382:387:void onStart() -> onStart
+    391:413:void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
+    417:421:void onStop() -> onStop
+    428:437:void onDestroyView() -> onDestroyView
+android.support.v4.app.Fragment -> android.support.v4.app.Fragment:
+    java.util.HashMap sClassMap -> sClassMap
+    int INITIALIZING -> INITIALIZING
+    int CREATED -> CREATED
+    int ACTIVITY_CREATED -> ACTIVITY_CREATED
+    int STOPPED -> STOPPED
+    int STARTED -> STARTED
+    int RESUMED -> RESUMED
+    int mState -> mState
+    android.view.View mAnimatingAway -> mAnimatingAway
+    int mStateAfterAnimating -> mStateAfterAnimating
+    android.os.Bundle mSavedFragmentState -> mSavedFragmentState
+    android.util.SparseArray mSavedViewState -> mSavedViewState
+    int mIndex -> mIndex
+    java.lang.String mWho -> mWho
+    android.os.Bundle mArguments -> mArguments
+    android.support.v4.app.Fragment mTarget -> mTarget
+    int mTargetIndex -> mTargetIndex
+    int mTargetRequestCode -> mTargetRequestCode
+    boolean mAdded -> mAdded
+    boolean mRemoving -> mRemoving
+    boolean mResumed -> mResumed
+    boolean mFromLayout -> mFromLayout
+    boolean mInLayout -> mInLayout
+    boolean mRestored -> mRestored
+    int mBackStackNesting -> mBackStackNesting
+    android.support.v4.app.FragmentManagerImpl mFragmentManager -> mFragmentManager
+    android.support.v4.app.FragmentActivity mActivity -> mActivity
+    int mFragmentId -> mFragmentId
+    int mContainerId -> mContainerId
+    java.lang.String mTag -> mTag
+    boolean mHidden -> mHidden
+    boolean mDetached -> mDetached
+    boolean mRetainInstance -> mRetainInstance
+    boolean mRetaining -> mRetaining
+    boolean mHasMenu -> mHasMenu
+    boolean mMenuVisible -> mMenuVisible
+    boolean mCalled -> mCalled
+    int mNextAnim -> mNextAnim
+    android.view.ViewGroup mContainer -> mContainer
+    android.view.View mView -> mView
+    android.view.View mInnerView -> mInnerView
+    boolean mDeferStart -> mDeferStart
+    boolean mUserVisibleHint -> mUserVisibleHint
+    android.support.v4.app.LoaderManagerImpl mLoaderManager -> mLoaderManager
+    boolean mLoadersStarted -> mLoadersStarted
+    boolean mCheckedForLoaderManager -> mCheckedForLoaderManager
+    363:363:android.support.v4.app.Fragment instantiate(android.content.Context,java.lang.String) -> instantiate
+    382:403:android.support.v4.app.Fragment instantiate(android.content.Context,java.lang.String,android.os.Bundle) -> instantiate
+    410:414:void restoreViewState() -> restoreViewState
+    417:419:void setIndex(int) -> setIndex
+    422:422:boolean isInBackStack() -> isInBackStack
+    429:429:boolean equals(java.lang.Object) -> equals
+    436:436:int hashCode() -> hashCode
+    441:456:java.lang.String toString() -> toString
+    465:465:int getId() -> getId
+    472:472:java.lang.String getTag() -> getTag
+    483:487:void setArguments(android.os.Bundle) -> setArguments
+    494:494:android.os.Bundle getArguments() -> getArguments
+    506:511:void setInitialSavedState(android.support.v4.app.Fragment$SavedState) -> setInitialSavedState
+    525:527:void setTargetFragment(android.support.v4.app.Fragment,int) -> setTargetFragment
+    533:533:android.support.v4.app.Fragment getTargetFragment() -> getTargetFragment
+    540:540:int getTargetRequestCode() -> getTargetRequestCode
+    547:547:android.support.v4.app.FragmentActivity getActivity() -> getActivity
+    554:557:android.content.res.Resources getResources() -> getResources
+    567:567:java.lang.CharSequence getText(int) -> getText
+    577:577:java.lang.String getString(int) -> getString
+    590:590:java.lang.String getString(int,java.lang.Object[]) -> getString
+    601:601:android.support.v4.app.FragmentManager getFragmentManager() -> getFragmentManager
+    608:608:boolean isAdded() -> isAdded
+    617:617:boolean isDetached() -> isDetached
+    626:626:boolean isRemoving() -> isRemoving
+    637:637:boolean isInLayout() -> isInLayout
+    645:645:boolean isResumed() -> isResumed
+    654:654:boolean isVisible() -> isVisible
+    666:666:boolean isHidden() -> isHidden
+    677:677:void onHiddenChanged(boolean) -> onHiddenChanged
+    694:695:void setRetainInstance(boolean) -> setRetainInstance
+    698:698:boolean getRetainInstance() -> getRetainInstance
+    709:715:void setHasOptionsMenu(boolean) -> setHasOptionsMenu
+    727:733:void setMenuVisibility(boolean) -> setMenuVisibility
+    749:754:void setUserVisibleHint(boolean) -> setUserVisibleHint
+    761:761:boolean getUserVisibleHint() -> getUserVisibleHint
+    768:776:android.support.v4.app.LoaderManager getLoaderManager() -> getLoaderManager
+    784:788:void startActivity(android.content.Intent) -> startActivity
+    795:799:void startActivityForResult(android.content.Intent,int) -> startActivityForResult
+    816:816:void onActivityResult(int,int,android.content.Intent) -> onActivityResult
+    824:824:android.view.LayoutInflater getLayoutInflater(android.os.Bundle) -> getLayoutInflater
+    870:871:void onInflate(android.app.Activity,android.util.AttributeSet,android.os.Bundle) -> onInflate
+    878:879:void onAttach(android.app.Activity) -> onAttach
+    885:885:android.view.animation.Animation onCreateAnimation(int,boolean,int) -> onCreateAnimation
+    903:904:void onCreate(android.os.Bundle) -> onCreate
+    927:927:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> onCreateView
+    941:941:void onViewCreated(android.view.View,android.os.Bundle) -> onViewCreated
+    950:950:android.view.View getView() -> getView
+    967:968:void onActivityCreated(android.os.Bundle) -> onActivityCreated
+    976:988:void onStart() -> onStart
+    997:998:void onResume() -> onResume
+    1020:1020:void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
+    1023:1024:void onConfigurationChanged(android.content.res.Configuration) -> onConfigurationChanged
+    1032:1033:void onPause() -> onPause
+    1041:1042:void onStop() -> onStop
+    1045:1046:void onLowMemory() -> onLowMemory
+    1058:1059:void onDestroyView() -> onDestroyView
+    1066:1076:void onDestroy() -> onDestroy
+    1085:1105:void initState() -> initState
+    1112:1113:void onDetach() -> onDetach
+    1129:1129:void onCreateOptionsMenu(android.view.Menu,android.view.MenuInflater) -> onCreateOptionsMenu
+    1146:1146:void onPrepareOptionsMenu(android.view.Menu) -> onPrepareOptionsMenu
+    1156:1156:void onDestroyOptionsMenu() -> onDestroyOptionsMenu
+    1177:1177:boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
+    1188:1188:void onOptionsMenuClosed(android.view.Menu) -> onOptionsMenuClosed
+    1208:1209:void onCreateContextMenu(android.view.ContextMenu,android.view.View,android.view.ContextMenu$ContextMenuInfo) -> onCreateContextMenu
+    1222:1223:void registerForContextMenu(android.view.View) -> registerForContextMenu
+    1233:1234:void unregisterForContextMenu(android.view.View) -> unregisterForContextMenu
+    1254:1254:boolean onContextItemSelected(android.view.MenuItem) -> onContextItemSelected
+    1267:1333:void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[]) -> dump
+    1336:1340:void performStart() -> performStart
+    1343:1344:void performStop() -> performStop
+    1347:1361:void performReallyStop() -> performReallyStop
+    1364:1368:void performDestroyView() -> performDestroyView
+android.support.v4.app.Fragment$InstantiationException -> android.support.v4.app.Fragment$InstantiationException:
+android.support.v4.app.Fragment$SavedState -> android.support.v4.app.Fragment$SavedState:
+    android.os.Bundle mState -> mState
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    308:308:int describeContents() -> describeContents
+    313:314:void writeToParcel(android.os.Parcel,int) -> writeToParcel
+android.support.v4.app.Fragment$SavedState$1 -> android.support.v4.app.Fragment$SavedState$1:
+    319:319:android.support.v4.app.Fragment$SavedState createFromParcel(android.os.Parcel) -> createFromParcel
+    323:323:android.support.v4.app.Fragment$SavedState[] newArray(int) -> newArray
+    317:317:java.lang.Object[] newArray(int) -> newArray
+    317:317:java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.app.FragmentActivity -> android.support.v4.app.FragmentActivity:
+    java.lang.String TAG -> TAG
+    java.lang.String FRAGMENTS_TAG -> FRAGMENTS_TAG
+    int HONEYCOMB -> HONEYCOMB
+    int MSG_REALLY_STOPPED -> MSG_REALLY_STOPPED
+    int MSG_RESUME_PENDING -> MSG_RESUME_PENDING
+    android.os.Handler mHandler -> mHandler
+    android.support.v4.app.FragmentManagerImpl mFragments -> mFragments
+    boolean mCreated -> mCreated
+    boolean mResumed -> mResumed
+    boolean mStopped -> mStopped
+    boolean mReallyStopped -> mReallyStopped
+    boolean mRetaining -> mRetaining
+    boolean mOptionsMenuInvalidated -> mOptionsMenuInvalidated
+    boolean mCheckedForLoaderManager -> mCheckedForLoaderManager
+    boolean mLoadersStarted -> mLoadersStarted
+    android.support.v4.util.SparseArrayCompat mAllLoaderManagers -> mAllLoaderManagers
+    android.support.v4.app.LoaderManagerImpl mLoaderManager -> mLoaderManager
+    140:159:void onActivityResult(int,int,android.content.Intent) -> onActivityResult
+    166:169:void onBackPressed() -> onBackPressed
+    176:178:void onConfigurationChanged(android.content.res.Configuration) -> onConfigurationChanged
+    185:203:void onCreate(android.os.Bundle) -> onCreate
+    210:221:boolean onCreatePanelMenu(int,android.view.Menu) -> onCreatePanelMenu
+    229:304:android.view.View onCreateView(java.lang.String,android.content.Context,android.util.AttributeSet) -> onCreateView
+    312:320:void onDestroy() -> onDestroy
+    327:336:boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
+    344:346:void onLowMemory() -> onLowMemory
+    353:365:boolean onMenuItemSelected(int,android.view.MenuItem) -> onMenuItemSelected
+    374:380:void onPanelClosed(int,android.view.Menu) -> onPanelClosed
+    387:394:void onPause() -> onPause
+    407:411:void onResume() -> onResume
+    418:422:void onPostResume() -> onPostResume
+    431:432:void onResumeFragments() -> onResumeFragments
+    439:449:boolean onPreparePanel(int,android.view.View,android.view.Menu) -> onPreparePanel
+    459:490:java.lang.Object onRetainNonConfigurationInstance() -> onRetainNonConfigurationInstance
+    498:503:void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
+    511:544:void onStart() -> onStart
+    551:557:void onStop() -> onStop
+    568:568:java.lang.Object onRetainCustomNonConfigurationInstance() -> onRetainCustomNonConfigurationInstance
+    576:578:java.lang.Object getLastCustomNonConfigurationInstance() -> getLastCustomNonConfigurationInstance
+    587:597:void supportInvalidateOptionsMenu() -> supportInvalidateOptionsMenu
+    610:632:void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[]) -> dump
+    635:641:void doReallyStop(boolean) -> doReallyStop
+    651:663:void onReallyStop() -> onReallyStop
+    673:673:void onAttachFragment(android.support.v4.app.Fragment) -> onAttachFragment
+    680:680:android.support.v4.app.FragmentManager getSupportFragmentManager() -> getSupportFragmentManager
+    689:693:void startActivityForResult(android.content.Intent,int) -> startActivityForResult
+    700:708:void startActivityFromFragment(android.support.v4.app.Fragment,android.content.Intent,int) -> startActivityFromFragment
+    712:719:void invalidateSupportFragmentIndex(int) -> invalidateSupportFragmentIndex
+    729:734:android.support.v4.app.LoaderManager getSupportLoaderManager() -> getSupportLoaderManager
+    738:750:android.support.v4.app.LoaderManagerImpl getLoaderManager(int,boolean,boolean) -> getLoaderManager
+android.support.v4.app.FragmentActivity$1 -> android.support.v4.app.FragmentActivity$1:
+    android.support.v4.app.FragmentActivity this$0 -> this$0
+    83:96:void handleMessage(android.os.Message) -> handleMessage
+android.support.v4.app.FragmentActivity$FragmentTag -> android.support.v4.app.FragmentActivity$FragmentTag:
+    int[] Fragment -> Fragment
+    int Fragment_id -> Fragment_id
+    int Fragment_name -> Fragment_name
+    int Fragment_tag -> Fragment_tag
+android.support.v4.app.FragmentActivity$NonConfigurationInstances -> android.support.v4.app.FragmentActivity$NonConfigurationInstances:
+    java.lang.Object activity -> activity
+    java.lang.Object custom -> custom
+    java.util.HashMap children -> children
+    java.util.ArrayList fragments -> fragments
+    android.support.v4.util.SparseArrayCompat loaders -> loaders
+android.support.v4.app.FragmentManager -> android.support.v4.app.FragmentManager:
+    int POP_BACK_STACK_INCLUSIVE -> POP_BACK_STACK_INCLUSIVE
+    android.support.v4.app.FragmentTransaction beginTransaction() -> beginTransaction
+    139:139:android.support.v4.app.FragmentTransaction openTransaction() -> openTransaction
+    boolean executePendingTransactions() -> executePendingTransactions
+    android.support.v4.app.Fragment findFragmentById(int) -> findFragmentById
+    android.support.v4.app.Fragment findFragmentByTag(java.lang.String) -> findFragmentByTag
+    void popBackStack() -> popBackStack
+    boolean popBackStackImmediate() -> popBackStackImmediate
+    void popBackStack(java.lang.String,int) -> popBackStack
+    boolean popBackStackImmediate(java.lang.String,int) -> popBackStackImmediate
+    void popBackStack(int,int) -> popBackStack
+    boolean popBackStackImmediate(int,int) -> popBackStackImmediate
+    int getBackStackEntryCount() -> getBackStackEntryCount
+    android.support.v4.app.FragmentManager$BackStackEntry getBackStackEntryAt(int) -> getBackStackEntryAt
+    void addOnBackStackChangedListener(android.support.v4.app.FragmentManager$OnBackStackChangedListener) -> addOnBackStackChangedListener
+    void removeOnBackStackChangedListener(android.support.v4.app.FragmentManager$OnBackStackChangedListener) -> removeOnBackStackChangedListener
+    void putFragment(android.os.Bundle,java.lang.String,android.support.v4.app.Fragment) -> putFragment
+    android.support.v4.app.Fragment getFragment(android.os.Bundle,java.lang.String) -> getFragment
+    android.support.v4.app.Fragment$SavedState saveFragmentInstanceState(android.support.v4.app.Fragment) -> saveFragmentInstanceState
+    void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[]) -> dump
+    334:335:void enableDebugLogging(boolean) -> enableDebugLogging
+android.support.v4.app.FragmentManager$BackStackEntry -> android.support.v4.app.FragmentManager$BackStackEntry:
+    int getId() -> getId
+    java.lang.String getName() -> getName
+    int getBreadCrumbTitleRes() -> getBreadCrumbTitleRes
+    int getBreadCrumbShortTitleRes() -> getBreadCrumbShortTitleRes
+    java.lang.CharSequence getBreadCrumbTitle() -> getBreadCrumbTitle
+    java.lang.CharSequence getBreadCrumbShortTitle() -> getBreadCrumbShortTitle
+android.support.v4.app.FragmentManager$OnBackStackChangedListener -> android.support.v4.app.FragmentManager$OnBackStackChangedListener:
+    void onBackStackChanged() -> onBackStackChanged
+android.support.v4.app.FragmentManagerImpl -> android.support.v4.app.FragmentManagerImpl:
+    boolean DEBUG -> DEBUG
+    java.lang.String TAG -> TAG
+    boolean HONEYCOMB -> HONEYCOMB
+    java.lang.String TARGET_REQUEST_CODE_STATE_TAG -> TARGET_REQUEST_CODE_STATE_TAG
+    java.lang.String TARGET_STATE_TAG -> TARGET_STATE_TAG
+    java.lang.String VIEW_STATE_TAG -> VIEW_STATE_TAG
+    java.lang.String USER_VISIBLE_HINT_TAG -> USER_VISIBLE_HINT_TAG
+    java.util.ArrayList mPendingActions -> mPendingActions
+    java.lang.Runnable[] mTmpActions -> mTmpActions
+    boolean mExecutingActions -> mExecutingActions
+    java.util.ArrayList mActive -> mActive
+    java.util.ArrayList mAdded -> mAdded
+    java.util.ArrayList mAvailIndices -> mAvailIndices
+    java.util.ArrayList mBackStack -> mBackStack
+    java.util.ArrayList mCreatedMenus -> mCreatedMenus
+    java.util.ArrayList mBackStackIndices -> mBackStackIndices
+    java.util.ArrayList mAvailBackStackIndices -> mAvailBackStackIndices
+    java.util.ArrayList mBackStackChangeListeners -> mBackStackChangeListeners
+    int mCurState -> mCurState
+    android.support.v4.app.FragmentActivity mActivity -> mActivity
+    boolean mNeedMenuInvalidate -> mNeedMenuInvalidate
+    boolean mStateSaved -> mStateSaved
+    boolean mDestroyed -> mDestroyed
+    java.lang.String mNoTransactionsBecause -> mNoTransactionsBecause
+    boolean mHavePendingDeferredStart -> mHavePendingDeferredStart
+    android.os.Bundle mStateBundle -> mStateBundle
+    android.util.SparseArray mStateArray -> mStateArray
+    java.lang.Runnable mExecCommit -> mExecCommit
+    android.view.animation.Interpolator DECELERATE_QUINT -> DECELERATE_QUINT
+    android.view.animation.Interpolator DECELERATE_CUBIC -> DECELERATE_CUBIC
+    android.view.animation.Interpolator ACCELERATE_QUINT -> ACCELERATE_QUINT
+    android.view.animation.Interpolator ACCELERATE_CUBIC -> ACCELERATE_CUBIC
+    int ANIM_DUR -> ANIM_DUR
+    int ANIM_STYLE_OPEN_ENTER -> ANIM_STYLE_OPEN_ENTER
+    int ANIM_STYLE_OPEN_EXIT -> ANIM_STYLE_OPEN_EXIT
+    int ANIM_STYLE_CLOSE_ENTER -> ANIM_STYLE_CLOSE_ENTER
+    int ANIM_STYLE_CLOSE_EXIT -> ANIM_STYLE_CLOSE_EXIT
+    int ANIM_STYLE_FADE_ENTER -> ANIM_STYLE_FADE_ENTER
+    int ANIM_STYLE_FADE_EXIT -> ANIM_STYLE_FADE_EXIT
+    426:426:android.support.v4.app.FragmentTransaction beginTransaction() -> beginTransaction
+    431:431:boolean executePendingTransactions() -> executePendingTransactions
+    436:441:void popBackStack() -> popBackStack
+    445:447:boolean popBackStackImmediate() -> popBackStackImmediate
+    452:457:void popBackStack(java.lang.String,int) -> popBackStack
+    461:463:boolean popBackStackImmediate(java.lang.String,int) -> popBackStackImmediate
+    468:476:void popBackStack(int,int) -> popBackStack
+    480:485:boolean popBackStackImmediate(int,int) -> popBackStackImmediate
+    490:490:int getBackStackEntryCount() -> getBackStackEntryCount
+    495:495:android.support.v4.app.FragmentManager$BackStackEntry getBackStackEntryAt(int) -> getBackStackEntryAt
+    500:504:void addOnBackStackChangedListener(android.support.v4.app.FragmentManager$OnBackStackChangedListener) -> addOnBackStackChangedListener
+    508:511:void removeOnBackStackChangedListener(android.support.v4.app.FragmentManager$OnBackStackChangedListener) -> removeOnBackStackChangedListener
+    515:520:void putFragment(android.os.Bundle,java.lang.String,android.support.v4.app.Fragment) -> putFragment
+    524:537:android.support.v4.app.Fragment getFragment(android.os.Bundle,java.lang.String) -> getFragment
+    542:550:android.support.v4.app.Fragment$SavedState saveFragmentInstanceState(android.support.v4.app.Fragment) -> saveFragmentInstanceState
+    555:561:java.lang.String toString() -> toString
+    566:670:void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[]) -> dump
+    681:691:android.view.animation.Animation makeOpenCloseAnimation(android.content.Context,float,float,float,float) -> makeOpenCloseAnimation
+    695:698:android.view.animation.Animation makeFadeAnimation(android.content.Context,float,float) -> makeFadeAnimation
+    703:757:android.view.animation.Animation loadAnimation(android.support.v4.app.Fragment,int,boolean,int) -> loadAnimation
+    761:770:void performPendingDeferredStart(android.support.v4.app.Fragment) -> performPendingDeferredStart
+    775:1058:void moveToState(android.support.v4.app.Fragment,int,int,int,boolean) -> moveToState
+    1061:1062:void moveToState(android.support.v4.app.Fragment) -> moveToState
+    1065:1066:void moveToState(int,boolean) -> moveToState
+    1069:1099:void moveToState(int,int,int,boolean) -> moveToState
+    1102:1110:void startPendingDeferredFragments() -> startPendingDeferredFragments
+    1113:1129:void makeActive(android.support.v4.app.Fragment) -> makeActive
+    1132:1144:void makeInactive(android.support.v4.app.Fragment) -> makeInactive
+    1147:1163:void addFragment(android.support.v4.app.Fragment,boolean) -> addFragment
+    1166:1180:void removeFragment(android.support.v4.app.Fragment,int,int) -> removeFragment
+    1183:1199:void hideFragment(android.support.v4.app.Fragment,int,int) -> hideFragment
+    1202:1218:void showFragment(android.support.v4.app.Fragment,int,int) -> showFragment
+    1221:1236:void detachFragment(android.support.v4.app.Fragment,int,int) -> detachFragment
+    1239:1254:void attachFragment(android.support.v4.app.Fragment,int,int) -> attachFragment
+    1257:1275:android.support.v4.app.Fragment findFragmentById(int) -> findFragmentById
+    1279:1297:android.support.v4.app.Fragment findFragmentByTag(java.lang.String) -> findFragmentByTag
+    1301:1309:android.support.v4.app.Fragment findFragmentByWho(java.lang.String) -> findFragmentByWho
+    1313:1321:void checkStateLoss() -> checkStateLoss
+    1324:1340:void enqueueAction(java.lang.Runnable,boolean) -> enqueueAction
+    1343:1359:int allocBackStackIndex(android.support.v4.app.BackStackRecord) -> allocBackStackIndex
+    1363:1385:void setBackStackIndex(int,android.support.v4.app.BackStackRecord) -> setBackStackIndex
+    1388:1396:void freeBackStackIndex(int) -> freeBackStackIndex
+    1402:1451:boolean execPendingActions() -> execPendingActions
+    1455:1460:void reportBackStackChanged() -> reportBackStackChanged
+    1463:1468:void addBackStackState(android.support.v4.app.BackStackRecord) -> addBackStackState
+    1471:1530:boolean popBackStackState(android.os.Handler,java.lang.String,int,int) -> popBackStackState
+    1534:1549:java.util.ArrayList retainNonConfig() -> retainNonConfig
+    1553:1566:void saveFragmentViewState(android.support.v4.app.Fragment) -> saveFragmentViewState
+    1569:1598:android.os.Bundle saveFragmentBasicState(android.support.v4.app.Fragment) -> saveFragmentBasicState
+    1604:1720:android.os.Parcelable saveAllState() -> saveAllState
+    1726:1826:void restoreAllState(android.os.Parcelable,java.util.ArrayList) -> restoreAllState
+    1829:1831:void attachActivity(android.support.v4.app.FragmentActivity) -> attachActivity
+    1834:1835:void noteStateNotSaved() -> noteStateNotSaved
+    1838:1840:void dispatchCreate() -> dispatchCreate
+    1843:1845:void dispatchActivityCreated() -> dispatchActivityCreated
+    1848:1850:void dispatchStart() -> dispatchStart
+    1853:1855:void dispatchResume() -> dispatchResume
+    1858:1859:void dispatchPause() -> dispatchPause
+    1865:1868:void dispatchStop() -> dispatchStop
+    1871:1872:void dispatchReallyStop() -> dispatchReallyStop
+    1875:1879:void dispatchDestroy() -> dispatchDestroy
+    1882:1890:void dispatchConfigurationChanged(android.content.res.Configuration) -> dispatchConfigurationChanged
+    1893:1901:void dispatchLowMemory() -> dispatchLowMemory
+    1904:1931:boolean dispatchCreateOptionsMenu(android.view.Menu,android.view.MenuInflater) -> dispatchCreateOptionsMenu
+    1935:1945:boolean dispatchPrepareOptionsMenu(android.view.Menu) -> dispatchPrepareOptionsMenu
+    1949:1959:boolean dispatchOptionsItemSelected(android.view.MenuItem) -> dispatchOptionsItemSelected
+    1963:1973:boolean dispatchContextItemSelected(android.view.MenuItem) -> dispatchContextItemSelected
+    1977:1985:void dispatchOptionsMenuClosed(android.view.Menu) -> dispatchOptionsMenuClosed
+    1988:2000:int reverseTransit(int) -> reverseTransit
+    2012:2024:int transitToStyleIndex(int,boolean) -> transitToStyleIndex
+android.support.v4.app.FragmentManagerImpl$1 -> android.support.v4.app.FragmentManagerImpl$1:
+    android.support.v4.app.FragmentManagerImpl this$0 -> this$0
+    420:421:void run() -> run
+android.support.v4.app.FragmentManagerImpl$2 -> android.support.v4.app.FragmentManagerImpl$2:
+    android.support.v4.app.FragmentManagerImpl this$0 -> this$0
+    438:439:void run() -> run
+android.support.v4.app.FragmentManagerImpl$3 -> android.support.v4.app.FragmentManagerImpl$3:
+    java.lang.String val$name -> val$name
+    int val$flags -> val$flags
+    android.support.v4.app.FragmentManagerImpl this$0 -> this$0
+    454:455:void run() -> run
+android.support.v4.app.FragmentManagerImpl$4 -> android.support.v4.app.FragmentManagerImpl$4:
+    int val$id -> val$id
+    int val$flags -> val$flags
+    android.support.v4.app.FragmentManagerImpl this$0 -> this$0
+    473:474:void run() -> run
+android.support.v4.app.FragmentManagerImpl$5 -> android.support.v4.app.FragmentManagerImpl$5:
+    android.support.v4.app.Fragment val$fragment -> val$fragment
+    android.support.v4.app.FragmentManagerImpl this$0 -> this$0
+    984:989:void onAnimationEnd(android.view.animation.Animation) -> onAnimationEnd
+    992:992:void onAnimationRepeat(android.view.animation.Animation) -> onAnimationRepeat
+    995:995:void onAnimationStart(android.view.animation.Animation) -> onAnimationStart
+android.support.v4.app.FragmentManagerState -> android.support.v4.app.FragmentManagerState:
+    android.support.v4.app.FragmentState[] mActive -> mActive
+    int[] mAdded -> mAdded
+    android.support.v4.app.BackStackState[] mBackStack -> mBackStack
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    353:353:int describeContents() -> describeContents
+    357:360:void writeToParcel(android.os.Parcel,int) -> writeToParcel
+android.support.v4.app.FragmentManagerState$1 -> android.support.v4.app.FragmentManagerState$1:
+    365:365:android.support.v4.app.FragmentManagerState createFromParcel(android.os.Parcel) -> createFromParcel
+    369:369:android.support.v4.app.FragmentManagerState[] newArray(int) -> newArray
+    363:363:java.lang.Object[] newArray(int) -> newArray
+    363:363:java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.app.FragmentPagerAdapter -> android.support.v4.app.FragmentPagerAdapter:
+    java.lang.String TAG -> TAG
+    boolean DEBUG -> DEBUG
+    android.support.v4.app.FragmentManager mFragmentManager -> mFragmentManager
+    android.support.v4.app.FragmentTransaction mCurTransaction -> mCurTransaction
+    android.support.v4.app.Fragment mCurrentPrimaryItem -> mCurrentPrimaryItem
+    android.support.v4.app.Fragment getItem(int) -> getItem
+    80:80:void startUpdate(android.view.ViewGroup) -> startUpdate
+    84:107:java.lang.Object instantiateItem(android.view.ViewGroup,int) -> instantiateItem
+    112:118:void destroyItem(android.view.ViewGroup,int,java.lang.Object) -> destroyItem
+    122:134:void setPrimaryItem(android.view.ViewGroup,int,java.lang.Object) -> setPrimaryItem
+    138:143:void finishUpdate(android.view.ViewGroup) -> finishUpdate
+    147:147:boolean isViewFromObject(android.view.View,java.lang.Object) -> isViewFromObject
+    152:152:android.os.Parcelable saveState() -> saveState
+    157:157:void restoreState(android.os.Parcelable,java.lang.ClassLoader) -> restoreState
+    169:169:long getItemId(int) -> getItemId
+    173:173:java.lang.String makeFragmentName(int,long) -> makeFragmentName
+android.support.v4.app.FragmentState -> android.support.v4.app.FragmentState:
+    java.lang.String mClassName -> mClassName
+    int mIndex -> mIndex
+    boolean mFromLayout -> mFromLayout
+    int mFragmentId -> mFragmentId
+    int mContainerId -> mContainerId
+    java.lang.String mTag -> mTag
+    boolean mRetainInstance -> mRetainInstance
+    boolean mDetached -> mDetached
+    android.os.Bundle mArguments -> mArguments
+    android.os.Bundle mSavedFragmentState -> mSavedFragmentState
+    android.support.v4.app.Fragment mInstance -> mInstance
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    89:116:android.support.v4.app.Fragment instantiate(android.support.v4.app.FragmentActivity) -> instantiate
+    120:120:int describeContents() -> describeContents
+    124:134:void writeToParcel(android.os.Parcel,int) -> writeToParcel
+android.support.v4.app.FragmentState$1 -> android.support.v4.app.FragmentState$1:
+    139:139:android.support.v4.app.FragmentState createFromParcel(android.os.Parcel) -> createFromParcel
+    143:143:android.support.v4.app.FragmentState[] newArray(int) -> newArray
+    137:137:java.lang.Object[] newArray(int) -> newArray
+    137:137:java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.app.FragmentStatePagerAdapter -> android.support.v4.app.FragmentStatePagerAdapter:
+    java.lang.String TAG -> TAG
+    boolean DEBUG -> DEBUG
+    android.support.v4.app.FragmentManager mFragmentManager -> mFragmentManager
+    android.support.v4.app.FragmentTransaction mCurTransaction -> mCurTransaction
+    java.util.ArrayList mSavedState -> mSavedState
+    java.util.ArrayList mFragments -> mFragments
+    android.support.v4.app.Fragment mCurrentPrimaryItem -> mCurrentPrimaryItem
+    android.support.v4.app.Fragment getItem(int) -> getItem
+    86:86:void startUpdate(android.view.ViewGroup) -> startUpdate
+    94:120:java.lang.Object instantiateItem(android.view.ViewGroup,int) -> instantiateItem
+    125:139:void destroyItem(android.view.ViewGroup,int,java.lang.Object) -> destroyItem
+    143:153:void setPrimaryItem(android.view.ViewGroup,int,java.lang.Object) -> setPrimaryItem
+    157:162:void finishUpdate(android.view.ViewGroup) -> finishUpdate
+    166:166:boolean isViewFromObject(android.view.View,java.lang.Object) -> isViewFromObject
+    171:188:android.os.Parcelable saveState() -> saveState
+    193:221:void restoreState(android.os.Parcelable,java.lang.ClassLoader) -> restoreState
+android.support.v4.app.FragmentTransaction -> android.support.v4.app.FragmentTransaction:
+    int TRANSIT_ENTER_MASK -> TRANSIT_ENTER_MASK
+    int TRANSIT_EXIT_MASK -> TRANSIT_EXIT_MASK
+    int TRANSIT_UNSET -> TRANSIT_UNSET
+    int TRANSIT_NONE -> TRANSIT_NONE
+    int TRANSIT_FRAGMENT_OPEN -> TRANSIT_FRAGMENT_OPEN
+    int TRANSIT_FRAGMENT_CLOSE -> TRANSIT_FRAGMENT_CLOSE
+    int TRANSIT_FRAGMENT_FADE -> TRANSIT_FRAGMENT_FADE
+    android.support.v4.app.FragmentTransaction add(android.support.v4.app.Fragment,java.lang.String) -> add
+    android.support.v4.app.FragmentTransaction add(int,android.support.v4.app.Fragment) -> add
+    android.support.v4.app.FragmentTransaction add(int,android.support.v4.app.Fragment,java.lang.String) -> add
+    android.support.v4.app.FragmentTransaction replace(int,android.support.v4.app.Fragment) -> replace
+    android.support.v4.app.FragmentTransaction replace(int,android.support.v4.app.Fragment,java.lang.String) -> replace
+    android.support.v4.app.FragmentTransaction remove(android.support.v4.app.Fragment) -> remove
+    android.support.v4.app.FragmentTransaction hide(android.support.v4.app.Fragment) -> hide
+    android.support.v4.app.FragmentTransaction show(android.support.v4.app.Fragment) -> show
+    android.support.v4.app.FragmentTransaction detach(android.support.v4.app.Fragment) -> detach
+    android.support.v4.app.FragmentTransaction attach(android.support.v4.app.Fragment) -> attach
+    boolean isEmpty() -> isEmpty
+    android.support.v4.app.FragmentTransaction setCustomAnimations(int,int) -> setCustomAnimations
+    android.support.v4.app.FragmentTransaction setCustomAnimations(int,int,int,int) -> setCustomAnimations
+    android.support.v4.app.FragmentTransaction setTransition(int) -> setTransition
+    android.support.v4.app.FragmentTransaction setTransitionStyle(int) -> setTransitionStyle
+    android.support.v4.app.FragmentTransaction addToBackStack(java.lang.String) -> addToBackStack
+    boolean isAddToBackStackAllowed() -> isAddToBackStackAllowed
+    android.support.v4.app.FragmentTransaction disallowAddToBackStack() -> disallowAddToBackStack
+    android.support.v4.app.FragmentTransaction setBreadCrumbTitle(int) -> setBreadCrumbTitle
+    android.support.v4.app.FragmentTransaction setBreadCrumbTitle(java.lang.CharSequence) -> setBreadCrumbTitle
+    android.support.v4.app.FragmentTransaction setBreadCrumbShortTitle(int) -> setBreadCrumbShortTitle
+    android.support.v4.app.FragmentTransaction setBreadCrumbShortTitle(java.lang.CharSequence) -> setBreadCrumbShortTitle
+    int commit() -> commit
+    int commitAllowingStateLoss() -> commitAllowingStateLoss
+android.support.v4.app.ListFragment -> android.support.v4.app.ListFragment:
+    int INTERNAL_EMPTY_ID -> INTERNAL_EMPTY_ID
+    int INTERNAL_PROGRESS_CONTAINER_ID -> INTERNAL_PROGRESS_CONTAINER_ID
+    int INTERNAL_LIST_CONTAINER_ID -> INTERNAL_LIST_CONTAINER_ID
+    android.os.Handler mHandler -> mHandler
+    java.lang.Runnable mRequestFocus -> mRequestFocus
+    android.widget.AdapterView$OnItemClickListener mOnClickListener -> mOnClickListener
+    android.widget.ListAdapter mAdapter -> mAdapter
+    android.widget.ListView mList -> mList
+    android.view.View mEmptyView -> mEmptyView
+    android.widget.TextView mStandardEmptyView -> mStandardEmptyView
+    android.view.View mProgressContainer -> mProgressContainer
+    android.view.View mListContainer -> mListContainer
+    java.lang.CharSequence mEmptyText -> mEmptyText
+    boolean mListShown -> mListShown
+    91:136:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> onCreateView
+    144:146:void onViewCreated(android.view.View,android.os.Bundle) -> onViewCreated
+    153:159:void onDestroyView() -> onDestroyView
+    173:173:void onListItemClick(android.widget.ListView,android.view.View,int,long) -> onListItemClick
+    179:189:void setListAdapter(android.widget.ListAdapter) -> setListAdapter
+    198:200:void setSelection(int) -> setSelection
+    206:207:int getSelectedItemPosition() -> getSelectedItemPosition
+    214:215:long getSelectedItemId() -> getSelectedItemId
+    222:223:android.widget.ListView getListView() -> getListView
+    232:241:void setEmptyText(java.lang.CharSequence) -> setEmptyText
+    258:259:void setListShown(boolean) -> setListShown
+    266:267:void setListShownNoAnimation(boolean) -> setListShownNoAnimation
+    280:313:void setListShown(boolean,boolean) -> setListShown
+    319:319:android.widget.ListAdapter getListAdapter() -> getListAdapter
+    323:374:void ensureList() -> ensureList
+android.support.v4.app.ListFragment$1 -> android.support.v4.app.ListFragment$1:
+    android.support.v4.app.ListFragment this$0 -> this$0
+    51:52:void run() -> run
+android.support.v4.app.ListFragment$2 -> android.support.v4.app.ListFragment$2:
+    android.support.v4.app.ListFragment this$0 -> this$0
+    58:59:void onItemClick(android.widget.AdapterView,android.view.View,int,long) -> onItemClick
+android.support.v4.app.LoaderManager -> android.support.v4.app.LoaderManager:
+    android.support.v4.content.Loader initLoader(int,android.os.Bundle,android.support.v4.app.LoaderManager$LoaderCallbacks) -> initLoader
+    android.support.v4.content.Loader restartLoader(int,android.os.Bundle,android.support.v4.app.LoaderManager$LoaderCallbacks) -> restartLoader
+    void destroyLoader(int) -> destroyLoader
+    android.support.v4.content.Loader getLoader(int) -> getLoader
+    void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[]) -> dump
+    177:178:void enableDebugLogging(boolean) -> enableDebugLogging
+    184:184:boolean hasRunningLoaders() -> hasRunningLoaders
+android.support.v4.app.LoaderManager$LoaderCallbacks -> android.support.v4.app.LoaderManager$LoaderCallbacks:
+    android.support.v4.content.Loader onCreateLoader(int,android.os.Bundle) -> onCreateLoader
+    void onLoadFinished(android.support.v4.content.Loader,java.lang.Object) -> onLoadFinished
+    void onLoaderReset(android.support.v4.content.Loader) -> onLoaderReset
+android.support.v4.app.LoaderManagerImpl -> android.support.v4.app.LoaderManagerImpl:
+    java.lang.String TAG -> TAG
+    boolean DEBUG -> DEBUG
+    android.support.v4.util.SparseArrayCompat mLoaders -> mLoaders
+    android.support.v4.util.SparseArrayCompat mInactiveLoaders -> mInactiveLoaders
+    android.support.v4.app.FragmentActivity mActivity -> mActivity
+    boolean mStarted -> mStarted
+    boolean mRetaining -> mRetaining
+    boolean mRetainingStarted -> mRetainingStarted
+    boolean mCreatingLoader -> mCreatingLoader
+    481:482:void updateActivity(android.support.v4.app.FragmentActivity) -> updateActivity
+    486:489:android.support.v4.app.LoaderManagerImpl$LoaderInfo createLoader(int,android.os.Bundle,android.support.v4.app.LoaderManager$LoaderCallbacks) -> createLoader
+    495:500:android.support.v4.app.LoaderManagerImpl$LoaderInfo createAndInstallLoader(int,android.os.Bundle,android.support.v4.app.LoaderManager$LoaderCallbacks) -> createAndInstallLoader
+    505:512:void installLoader(android.support.v4.app.LoaderManagerImpl$LoaderInfo) -> installLoader
+    540:562:android.support.v4.content.Loader initLoader(int,android.os.Bundle,android.support.v4.app.LoaderManager$LoaderCallbacks) -> initLoader
+    590:644:android.support.v4.content.Loader restartLoader(int,android.os.Bundle,android.support.v4.app.LoaderManager$LoaderCallbacks) -> restartLoader
+    655:675:void destroyLoader(int) -> destroyLoader
+    683:694:android.support.v4.content.Loader getLoader(int) -> getLoader
+    698:713:void doStart() -> doStart
+    716:728:void doStop() -> doStop
+    731:744:void doRetain() -> doRetain
+    747:755:void finishRetain() -> finishRetain
+    758:761:void doReportNextStart() -> doReportNextStart
+    764:767:void doReportStart() -> doReportStart
+    770:782:void doDestroy() -> doDestroy
+    786:792:java.lang.String toString() -> toString
+    797:817:void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[]) -> dump
+    821:827:boolean hasRunningLoaders() -> hasRunningLoaders
+android.support.v4.app.LoaderManagerImpl$LoaderInfo -> android.support.v4.app.LoaderManagerImpl$LoaderInfo:
+    int mId -> mId
+    android.os.Bundle mArgs -> mArgs
+    android.support.v4.app.LoaderManager$LoaderCallbacks mCallbacks -> mCallbacks
+    android.support.v4.content.Loader mLoader -> mLoader
+    boolean mHaveData -> mHaveData
+    boolean mDeliveredData -> mDeliveredData
+    java.lang.Object mData -> mData
+    boolean mStarted -> mStarted
+    boolean mRetaining -> mRetaining
+    boolean mRetainingStarted -> mRetainingStarted
+    boolean mReportNextStart -> mReportNextStart
+    boolean mDestroyed -> mDestroyed
+    boolean mListenerRegistered -> mListenerRegistered
+    android.support.v4.app.LoaderManagerImpl$LoaderInfo mPendingLoader -> mPendingLoader
+    android.support.v4.app.LoaderManagerImpl this$0 -> this$0
+    233:265:void start() -> start
+    268:273:void retain() -> retain
+    276:298:void finishRetain() -> finishRetain
+    301:309:void reportStart() -> reportStart
+    312:322:void stop() -> stop
+    325:357:void destroy() -> destroy
+    360:413:void onLoadComplete(android.support.v4.content.Loader,java.lang.Object) -> onLoadComplete
+    416:433:void callOnLoadFinished(android.support.v4.content.Loader,java.lang.Object) -> callOnLoadFinished
+    437:445:java.lang.String toString() -> toString
+    449:472:void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[]) -> dump
+android.support.v4.app.NavUtils -> android.support.v4.app.NavUtils:
+    java.lang.String TAG -> TAG
+    java.lang.String PARENT_ACTIVITY -> PARENT_ACTIVITY
+    android.support.v4.app.NavUtils$NavUtilsImpl IMPL -> IMPL
+    139:139:boolean shouldUpRecreateTask(android.app.Activity,android.content.Intent) -> shouldUpRecreateTask
+    155:166:void navigateUpFromSameTask(android.app.Activity) -> navigateUpFromSameTask
+    182:183:void navigateUpTo(android.app.Activity,android.content.Intent) -> navigateUpTo
+    196:196:android.content.Intent getParentActivityIntent(android.app.Activity) -> getParentActivityIntent
+    211:214:android.content.Intent getParentActivityIntent(android.content.Context,java.lang.Class) -> getParentActivityIntent
+    229:231:android.content.Intent getParentActivityIntent(android.content.Context,android.content.ComponentName) -> getParentActivityIntent
+    245:248:java.lang.String getParentActivityName(android.app.Activity) -> getParentActivityName
+    263:266:java.lang.String getParentActivityName(android.content.Context,android.content.ComponentName) -> getParentActivityName
+android.support.v4.app.NavUtils$NavUtilsImpl -> android.support.v4.app.NavUtils$NavUtilsImpl:
+    android.content.Intent getParentActivityIntent(android.app.Activity) -> getParentActivityIntent
+    boolean shouldUpRecreateTask(android.app.Activity,android.content.Intent) -> shouldUpRecreateTask
+    void navigateUpTo(android.app.Activity,android.content.Intent) -> navigateUpTo
+    java.lang.String getParentActivityName(android.content.Context,android.content.pm.ActivityInfo) -> getParentActivityName
+android.support.v4.app.NavUtils$NavUtilsImplBase -> android.support.v4.app.NavUtils$NavUtilsImplBase:
+    50:52:android.content.Intent getParentActivityIntent(android.app.Activity) -> getParentActivityIntent
+    57:58:boolean shouldUpRecreateTask(android.app.Activity,android.content.Intent) -> shouldUpRecreateTask
+    63:66:void navigateUpTo(android.app.Activity,android.content.Intent) -> navigateUpTo
+    70:76:java.lang.String getParentActivityName(android.content.Context,android.content.pm.ActivityInfo) -> getParentActivityName
+android.support.v4.app.NavUtils$NavUtilsImplJB -> android.support.v4.app.NavUtils$NavUtilsImplJB:
+    86:90:android.content.Intent getParentActivityIntent(android.app.Activity) -> getParentActivityIntent
+    95:95:boolean shouldUpRecreateTask(android.app.Activity,android.content.Intent) -> shouldUpRecreateTask
+    100:101:void navigateUpTo(android.app.Activity,android.content.Intent) -> navigateUpTo
+    105:109:java.lang.String getParentActivityName(android.content.Context,android.content.pm.ActivityInfo) -> getParentActivityName
+android.support.v4.app.NavUtilsJB -> android.support.v4.app.NavUtilsJB:
+    25:25:android.content.Intent getParentActivityIntent(android.app.Activity) -> getParentActivityIntent
+    29:29:boolean shouldUpRecreateTask(android.app.Activity,android.content.Intent) -> shouldUpRecreateTask
+    33:34:void navigateUpTo(android.app.Activity,android.content.Intent) -> navigateUpTo
+    37:37:java.lang.String getParentActivityName(android.content.pm.ActivityInfo) -> getParentActivityName
+android.support.v4.app.NoSaveStateFrameLayout -> android.support.v4.app.NoSaveStateFrameLayout:
+    32:41:android.view.ViewGroup wrap(android.view.View) -> wrap
+    53:54:void dispatchSaveInstanceState(android.util.SparseArray) -> dispatchSaveInstanceState
+    61:62:void dispatchRestoreInstanceState(android.util.SparseArray) -> dispatchRestoreInstanceState
+android.support.v4.app.NotificationCompat -> android.support.v4.app.NotificationCompat:
+    int FLAG_HIGH_PRIORITY -> FLAG_HIGH_PRIORITY
+    int PRIORITY_DEFAULT -> PRIORITY_DEFAULT
+    int PRIORITY_LOW -> PRIORITY_LOW
+    int PRIORITY_MIN -> PRIORITY_MIN
+    int PRIORITY_HIGH -> PRIORITY_HIGH
+    int PRIORITY_MAX -> PRIORITY_MAX
+    android.support.v4.app.NotificationCompat$NotificationCompatImpl IMPL -> IMPL
+    30:30:android.support.v4.app.NotificationCompat$NotificationCompatImpl access$000() -> access$000
+android.support.v4.app.NotificationCompat$Action -> android.support.v4.app.NotificationCompat$Action:
+    int icon -> icon
+    java.lang.CharSequence title -> title
+    android.app.PendingIntent actionIntent -> actionIntent
+android.support.v4.app.NotificationCompat$BigPictureStyle -> android.support.v4.app.NotificationCompat$BigPictureStyle:
+    android.graphics.Bitmap mPicture -> mPicture
+    623:624:android.support.v4.app.NotificationCompat$BigPictureStyle setBigContentTitle(java.lang.CharSequence) -> setBigContentTitle
+    631:633:android.support.v4.app.NotificationCompat$BigPictureStyle setSummaryText(java.lang.CharSequence) -> setSummaryText
+    637:638:android.support.v4.app.NotificationCompat$BigPictureStyle bigPicture(android.graphics.Bitmap) -> bigPicture
+android.support.v4.app.NotificationCompat$BigTextStyle -> android.support.v4.app.NotificationCompat$BigTextStyle:
+    java.lang.CharSequence mBigText -> mBigText
+    674:675:android.support.v4.app.NotificationCompat$BigTextStyle setBigContentTitle(java.lang.CharSequence) -> setBigContentTitle
+    682:684:android.support.v4.app.NotificationCompat$BigTextStyle setSummaryText(java.lang.CharSequence) -> setSummaryText
+    688:689:android.support.v4.app.NotificationCompat$BigTextStyle bigText(java.lang.CharSequence) -> bigText
+android.support.v4.app.NotificationCompat$Builder -> android.support.v4.app.NotificationCompat$Builder:
+    android.content.Context mContext -> mContext
+    java.lang.CharSequence mContentTitle -> mContentTitle
+    java.lang.CharSequence mContentText -> mContentText
+    android.app.PendingIntent mContentIntent -> mContentIntent
+    android.app.PendingIntent mFullScreenIntent -> mFullScreenIntent
+    android.widget.RemoteViews mTickerView -> mTickerView
+    android.graphics.Bitmap mLargeIcon -> mLargeIcon
+    java.lang.CharSequence mContentInfo -> mContentInfo
+    int mNumber -> mNumber
+    int mPriority -> mPriority
+    boolean mUseChronometer -> mUseChronometer
+    android.support.v4.app.NotificationCompat$Style mStyle -> mStyle
+    java.lang.CharSequence mSubText -> mSubText
+    int mProgressMax -> mProgressMax
+    int mProgress -> mProgress
+    boolean mProgressIndeterminate -> mProgressIndeterminate
+    java.util.ArrayList mActions -> mActions
+    android.app.Notification mNotification -> mNotification
+    209:210:android.support.v4.app.NotificationCompat$Builder setWhen(long) -> setWhen
+    225:226:android.support.v4.app.NotificationCompat$Builder setUsesChronometer(boolean) -> setUsesChronometer
+    237:238:android.support.v4.app.NotificationCompat$Builder setSmallIcon(int) -> setSmallIcon
+    252:254:android.support.v4.app.NotificationCompat$Builder setSmallIcon(int,int) -> setSmallIcon
+    261:262:android.support.v4.app.NotificationCompat$Builder setContentTitle(java.lang.CharSequence) -> setContentTitle
+    269:270:android.support.v4.app.NotificationCompat$Builder setContentText(java.lang.CharSequence) -> setContentText
+    279:280:android.support.v4.app.NotificationCompat$Builder setSubText(java.lang.CharSequence) -> setSubText
+    289:290:android.support.v4.app.NotificationCompat$Builder setNumber(int) -> setNumber
+    297:298:android.support.v4.app.NotificationCompat$Builder setContentInfo(java.lang.CharSequence) -> setContentInfo
+    306:309:android.support.v4.app.NotificationCompat$Builder setProgress(int,int,boolean) -> setProgress
+    316:317:android.support.v4.app.NotificationCompat$Builder setContent(android.widget.RemoteViews) -> setContent
+    329:330:android.support.v4.app.NotificationCompat$Builder setContentIntent(android.app.PendingIntent) -> setContentIntent
+    341:342:android.support.v4.app.NotificationCompat$Builder setDeleteIntent(android.app.PendingIntent) -> setDeleteIntent
+    359:361:android.support.v4.app.NotificationCompat$Builder setFullScreenIntent(android.app.PendingIntent,boolean) -> setFullScreenIntent
+    369:370:android.support.v4.app.NotificationCompat$Builder setTicker(java.lang.CharSequence) -> setTicker
+    379:381:android.support.v4.app.NotificationCompat$Builder setTicker(java.lang.CharSequence,android.widget.RemoteViews) -> setTicker
+    388:389:android.support.v4.app.NotificationCompat$Builder setLargeIcon(android.graphics.Bitmap) -> setLargeIcon
+    396:398:android.support.v4.app.NotificationCompat$Builder setSound(android.net.Uri) -> setSound
+    408:410:android.support.v4.app.NotificationCompat$Builder setSound(android.net.Uri,int) -> setSound
+    420:421:android.support.v4.app.NotificationCompat$Builder setVibrate(long[]) -> setVibrate
+    430:436:android.support.v4.app.NotificationCompat$Builder setLights(int,int,int) -> setLights
+    451:452:android.support.v4.app.NotificationCompat$Builder setOngoing(boolean) -> setOngoing
+    460:461:android.support.v4.app.NotificationCompat$Builder setOnlyAlertOnce(boolean) -> setOnlyAlertOnce
+    471:472:android.support.v4.app.NotificationCompat$Builder setAutoCancel(boolean) -> setAutoCancel
+    486:490:android.support.v4.app.NotificationCompat$Builder setDefaults(int) -> setDefaults
+    494:499:void setFlag(int,boolean) -> setFlag
+    513:514:android.support.v4.app.NotificationCompat$Builder setPriority(int) -> setPriority
+    526:527:android.support.v4.app.NotificationCompat$Builder addAction(int,java.lang.CharSequence,android.app.PendingIntent) -> addAction
+    536:542:android.support.v4.app.NotificationCompat$Builder setStyle(android.support.v4.app.NotificationCompat$Style) -> setStyle
+    550:550:android.app.Notification getNotification() -> getNotification
+    558:558:android.app.Notification build() -> build
+android.support.v4.app.NotificationCompat$InboxStyle -> android.support.v4.app.NotificationCompat$InboxStyle:
+    java.util.ArrayList mTexts -> mTexts
+    728:729:android.support.v4.app.NotificationCompat$InboxStyle setBigContentTitle(java.lang.CharSequence) -> setBigContentTitle
+    736:738:android.support.v4.app.NotificationCompat$InboxStyle setSummaryText(java.lang.CharSequence) -> setSummaryText
+    742:743:android.support.v4.app.NotificationCompat$InboxStyle addLine(java.lang.CharSequence) -> addLine
+android.support.v4.app.NotificationCompat$NotificationCompatImpl -> android.support.v4.app.NotificationCompat$NotificationCompatImpl:
+    android.app.Notification build(android.support.v4.app.NotificationCompat$Builder) -> build
+android.support.v4.app.NotificationCompat$NotificationCompatImplBase -> android.support.v4.app.NotificationCompat$NotificationCompatImplBase:
+    83:90:android.app.Notification build(android.support.v4.app.NotificationCompat$Builder) -> build
+android.support.v4.app.NotificationCompat$NotificationCompatImplHoneycomb -> android.support.v4.app.NotificationCompat$NotificationCompatImplHoneycomb:
+    96:96:android.app.Notification build(android.support.v4.app.NotificationCompat$Builder) -> build
+android.support.v4.app.NotificationCompat$NotificationCompatImplIceCreamSandwich -> android.support.v4.app.NotificationCompat$NotificationCompatImplIceCreamSandwich:
+    104:104:android.app.Notification build(android.support.v4.app.NotificationCompat$Builder) -> build
+android.support.v4.app.NotificationCompat$NotificationCompatImplJellybean -> android.support.v4.app.NotificationCompat$NotificationCompatImplJellybean:
+    113:142:android.app.Notification build(android.support.v4.app.NotificationCompat$Builder) -> build
+android.support.v4.app.NotificationCompat$Style -> android.support.v4.app.NotificationCompat$Style:
+    android.support.v4.app.NotificationCompat$Builder mBuilder -> mBuilder
+    java.lang.CharSequence mBigContentTitle -> mBigContentTitle
+    java.lang.CharSequence mSummaryText -> mSummaryText
+    boolean mSummaryTextSet -> mSummaryTextSet
+    574:580:void setBuilder(android.support.v4.app.NotificationCompat$Builder) -> setBuilder
+    583:587:android.app.Notification build() -> build
+android.support.v4.app.NotificationCompatHoneycomb -> android.support.v4.app.NotificationCompatHoneycomb:
+    30:52:android.app.Notification add(android.content.Context,android.app.Notification,java.lang.CharSequence,java.lang.CharSequence,java.lang.CharSequence,android.widget.RemoteViews,int,android.app.PendingIntent,android.app.PendingIntent,android.graphics.Bitmap) -> add
+android.support.v4.app.NotificationCompatIceCreamSandwich -> android.support.v4.app.NotificationCompatIceCreamSandwich:
+    31:54:android.app.Notification add(android.content.Context,android.app.Notification,java.lang.CharSequence,java.lang.CharSequence,java.lang.CharSequence,android.widget.RemoteViews,int,android.app.PendingIntent,android.app.PendingIntent,android.graphics.Bitmap,int,int,boolean) -> add
+android.support.v4.app.NotificationCompatJellybean -> android.support.v4.app.NotificationCompatJellybean:
+    android.app.Notification$Builder b -> b
+    62:63:void addAction(int,java.lang.CharSequence,android.app.PendingIntent) -> addAction
+    67:73:void addBigTextStyle(java.lang.CharSequence,boolean,java.lang.CharSequence,java.lang.CharSequence) -> addBigTextStyle
+    77:83:void addBigPictureStyle(java.lang.CharSequence,boolean,java.lang.CharSequence,android.graphics.Bitmap) -> addBigPictureStyle
+    87:95:void addInboxStyle(java.lang.CharSequence,boolean,java.lang.CharSequence,java.util.ArrayList) -> addInboxStyle
+    98:98:android.app.Notification build() -> build
+android.support.v4.app.ServiceCompat -> android.support.v4.app.ServiceCompat:
+    int START_STICKY -> START_STICKY
+android.support.v4.app.ShareCompat -> android.support.v4.app.ShareCompat:
+    java.lang.String EXTRA_CALLING_PACKAGE -> EXTRA_CALLING_PACKAGE
+    java.lang.String EXTRA_CALLING_ACTIVITY -> EXTRA_CALLING_ACTIVITY
+    android.support.v4.app.ShareCompat$ShareCompatImpl IMPL -> IMPL
+    173:177:java.lang.String getCallingPackage(android.app.Activity) -> getCallingPackage
+    193:197:android.content.ComponentName getCallingActivity(android.app.Activity) -> getCallingActivity
+    232:233:void configureMenuItem(android.view.MenuItem,android.support.v4.app.ShareCompat$IntentBuilder) -> configureMenuItem
+    244:250:void configureMenuItem(android.view.Menu,int,android.support.v4.app.ShareCompat$IntentBuilder) -> configureMenuItem
+    58:58:android.support.v4.app.ShareCompat$ShareCompatImpl access$000() -> access$000
+android.support.v4.app.ShareCompat$IntentBuilder -> android.support.v4.app.ShareCompat$IntentBuilder:
+    android.app.Activity mActivity -> mActivity
+    android.content.Intent mIntent -> mIntent
+    java.lang.CharSequence mChooserTitle -> mChooserTitle
+    java.util.ArrayList mToAddresses -> mToAddresses
+    java.util.ArrayList mCcAddresses -> mCcAddresses
+    java.util.ArrayList mBccAddresses -> mBccAddresses
+    java.util.ArrayList mStreams -> mStreams
+    275:275:android.support.v4.app.ShareCompat$IntentBuilder from(android.app.Activity) -> from
+    296:336:android.content.Intent getIntent() -> getIntent
+    340:340:android.app.Activity getActivity() -> getActivity
+    344:352:void combineArrayExtra(java.lang.String,java.util.ArrayList) -> combineArrayExtra
+    356:363:void combineArrayExtra(java.lang.String,java.lang.String[]) -> combineArrayExtra
+    373:373:android.content.Intent createChooserIntent() -> createChooserIntent
+    386:387:void startChooser() -> startChooser
+    396:397:android.support.v4.app.ShareCompat$IntentBuilder setChooserTitle(java.lang.CharSequence) -> setChooserTitle
+    407:407:android.support.v4.app.ShareCompat$IntentBuilder setChooserTitle(int) -> setChooserTitle
+    418:419:android.support.v4.app.ShareCompat$IntentBuilder setType(java.lang.String) -> setType
+    431:432:android.support.v4.app.ShareCompat$IntentBuilder setText(java.lang.CharSequence) -> setText
+    447:452:android.support.v4.app.ShareCompat$IntentBuilder setHtmlText(java.lang.String) -> setHtmlText
+    466:471:android.support.v4.app.ShareCompat$IntentBuilder setStream(android.net.Uri) -> setStream
+    486:498:android.support.v4.app.ShareCompat$IntentBuilder addStream(android.net.Uri) -> addStream
+    510:514:android.support.v4.app.ShareCompat$IntentBuilder setEmailTo(java.lang.String[]) -> setEmailTo
+    525:529:android.support.v4.app.ShareCompat$IntentBuilder addEmailTo(java.lang.String) -> addEmailTo
+    540:541:android.support.v4.app.ShareCompat$IntentBuilder addEmailTo(java.lang.String[]) -> addEmailTo
+    553:554:android.support.v4.app.ShareCompat$IntentBuilder setEmailCc(java.lang.String[]) -> setEmailCc
+    565:569:android.support.v4.app.ShareCompat$IntentBuilder addEmailCc(java.lang.String) -> addEmailCc
+    580:581:android.support.v4.app.ShareCompat$IntentBuilder addEmailCc(java.lang.String[]) -> addEmailCc
+    593:594:android.support.v4.app.ShareCompat$IntentBuilder setEmailBcc(java.lang.String[]) -> setEmailBcc
+    605:609:android.support.v4.app.ShareCompat$IntentBuilder addEmailBcc(java.lang.String) -> addEmailBcc
+    620:621:android.support.v4.app.ShareCompat$IntentBuilder addEmailBcc(java.lang.String[]) -> addEmailBcc
+    632:633:android.support.v4.app.ShareCompat$IntentBuilder setSubject(java.lang.String) -> setSubject
+android.support.v4.app.ShareCompat$IntentReader -> android.support.v4.app.ShareCompat$IntentReader:
+    java.lang.String TAG -> TAG
+    android.app.Activity mActivity -> mActivity
+    android.content.Intent mIntent -> mIntent
+    java.lang.String mCallingPackage -> mCallingPackage
+    android.content.ComponentName mCallingActivity -> mCallingActivity
+    java.util.ArrayList mStreams -> mStreams
+    672:672:android.support.v4.app.ShareCompat$IntentReader from(android.app.Activity) -> from
+    691:692:boolean isShareIntent() -> isShareIntent
+    704:704:boolean isSingleShare() -> isSingleShare
+    715:715:boolean isMultipleShare() -> isMultipleShare
+    725:725:java.lang.String getType() -> getType
+    735:735:java.lang.CharSequence getText() -> getText
+    749:758:java.lang.String getHtmlText() -> getHtmlText
+    773:773:android.net.Uri getStream() -> getStream
+    786:795:android.net.Uri getStream(int) -> getStream
+    807:813:int getStreamCount() -> getStreamCount
+    823:823:java.lang.String[] getEmailTo() -> getEmailTo
+    833:833:java.lang.String[] getEmailCc() -> getEmailCc
+    843:843:java.lang.String[] getEmailBcc() -> getEmailBcc
+    853:853:java.lang.String getSubject() -> getSubject
+    870:870:java.lang.String getCallingPackage() -> getCallingPackage
+    887:887:android.content.ComponentName getCallingActivity() -> getCallingActivity
+    901:909:android.graphics.drawable.Drawable getCallingActivityIcon() -> getCallingActivityIcon
+    923:931:android.graphics.drawable.Drawable getCallingApplicationIcon() -> getCallingApplicationIcon
+    945:953:java.lang.CharSequence getCallingApplicationLabel() -> getCallingApplicationLabel
+android.support.v4.app.ShareCompat$ShareCompatImpl -> android.support.v4.app.ShareCompat$ShareCompatImpl:
+    void configureMenuItem(android.view.MenuItem,android.support.v4.app.ShareCompat$IntentBuilder) -> configureMenuItem
+    java.lang.String escapeHtml(java.lang.CharSequence) -> escapeHtml
+android.support.v4.app.ShareCompat$ShareCompatImplBase -> android.support.v4.app.ShareCompat$ShareCompatImplBase:
+    87:88:void configureMenuItem(android.view.MenuItem,android.support.v4.app.ShareCompat$IntentBuilder) -> configureMenuItem
+    91:93:java.lang.String escapeHtml(java.lang.CharSequence) -> escapeHtml
+    98:120:void withinStyle(java.lang.StringBuilder,java.lang.CharSequence,int,int) -> withinStyle
+android.support.v4.app.ShareCompat$ShareCompatImplICS -> android.support.v4.app.ShareCompat$ShareCompatImplICS:
+    125:130:void configureMenuItem(android.view.MenuItem,android.support.v4.app.ShareCompat$IntentBuilder) -> configureMenuItem
+    133:133:boolean shouldAddChooserIntent(android.view.MenuItem) -> shouldAddChooserIntent
+android.support.v4.app.ShareCompat$ShareCompatImplJB -> android.support.v4.app.ShareCompat$ShareCompatImplJB:
+    139:139:java.lang.String escapeHtml(java.lang.CharSequence) -> escapeHtml
+    144:144:boolean shouldAddChooserIntent(android.view.MenuItem) -> shouldAddChooserIntent
+android.support.v4.app.ShareCompatICS -> android.support.v4.app.ShareCompatICS:
+    java.lang.String HISTORY_FILENAME_PREFIX -> HISTORY_FILENAME_PREFIX
+    29:40:void configureMenuItem(android.view.MenuItem,android.app.Activity,android.content.Intent) -> configureMenuItem
+android.support.v4.app.ShareCompatJB -> android.support.v4.app.ShareCompatJB:
+    23:23:java.lang.String escapeHtml(java.lang.CharSequence) -> escapeHtml
+android.support.v4.app.SuperNotCalledException -> android.support.v4.app.SuperNotCalledException:
+android.support.v4.app.TaskStackBuilder -> android.support.v4.app.TaskStackBuilder:
+    java.lang.String TAG -> TAG
+    android.support.v4.app.TaskStackBuilder$TaskStackBuilderImpl IMPL -> IMPL
+    java.util.ArrayList mIntents -> mIntents
+    android.content.Context mSourceContext -> mSourceContext
+    130:130:android.support.v4.app.TaskStackBuilder create(android.content.Context) -> create
+    143:143:android.support.v4.app.TaskStackBuilder from(android.content.Context) -> from
+    154:155:android.support.v4.app.TaskStackBuilder addNextIntent(android.content.Intent) -> addNextIntent
+    166:177:android.support.v4.app.TaskStackBuilder addParentStack(android.app.Activity) -> addParentStack
+    188:199:android.support.v4.app.TaskStackBuilder addParentStack(java.lang.Class) -> addParentStack
+    206:206:int getIntentCount() -> getIntentCount
+    220:220:android.content.Intent getIntent(int) -> getIntent
+    232:232:android.content.Intent editIntentAt(int) -> editIntentAt
+    239:239:java.util.Iterator iterator() -> iterator
+    251:252:void startActivities() -> startActivities
+    266:280:void startActivities(android.os.Bundle) -> startActivities
+    294:294:android.app.PendingIntent getPendingIntent(int,int) -> getPendingIntent
+    311:320:android.app.PendingIntent getPendingIntent(int,int,android.os.Bundle) -> getPendingIntent
+    331:331:android.content.Intent[] getIntents() -> getIntents
+android.support.v4.app.TaskStackBuilder$TaskStackBuilderImpl -> android.support.v4.app.TaskStackBuilder$TaskStackBuilderImpl:
+    android.app.PendingIntent getPendingIntent(android.content.Context,android.content.Intent[],int,int,android.os.Bundle) -> getPendingIntent
+android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplBase -> android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplBase:
+    79:81:android.app.PendingIntent getPendingIntent(android.content.Context,android.content.Intent[],int,int,android.os.Bundle) -> getPendingIntent
+android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplHoneycomb -> android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplHoneycomb:
+    88:90:android.app.PendingIntent getPendingIntent(android.content.Context,android.content.Intent[],int,int,android.os.Bundle) -> getPendingIntent
+android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplJellybean -> android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplJellybean:
+    98:100:android.app.PendingIntent getPendingIntent(android.content.Context,android.content.Intent[],int,int,android.os.Bundle) -> getPendingIntent
+android.support.v4.app.TaskStackBuilderHoneycomb -> android.support.v4.app.TaskStackBuilderHoneycomb:
+    29:29:android.app.PendingIntent getActivitiesPendingIntent(android.content.Context,int,android.content.Intent[],int) -> getActivitiesPendingIntent
+android.support.v4.app.TaskStackBuilderJellybean -> android.support.v4.app.TaskStackBuilderJellybean:
+    28:28:android.app.PendingIntent getActivitiesPendingIntent(android.content.Context,int,android.content.Intent[],int,android.os.Bundle) -> getActivitiesPendingIntent
+android.support.v4.content.ContextCompat -> android.support.v4.a.a:
+    57:57:boolean startActivities(android.content.Context,android.content.Intent[]) -> startActivities
+    89:97:boolean startActivities(android.content.Context,android.content.Intent[],android.os.Bundle) -> startActivities
+android.support.v4.content.ContextCompatHoneycomb -> android.support.v4.a.b:
+    28:29:void startActivities(android.content.Context,android.content.Intent[]) -> a
+android.support.v4.content.ContextCompatJellybean -> android.support.v4.a.c:
+    26:27:void startActivities(android.content.Context,android.content.Intent[],android.os.Bundle) -> a
+android.support.v4.content.Loader -> android.support.v4.a.d:
+    int mId -> a
+    android.support.v4.content.Loader$OnLoadCompleteListener mListener -> b
+    boolean mStarted -> c
+    boolean mAbandoned -> d
+    boolean mReset -> e
+    boolean mContentChanged -> f
+    129:134:void registerListener(int,android.support.v4.content.Loader$OnLoadCompleteListener) -> a
+    142:149:void unregisterListener(android.support.v4.content.Loader$OnLoadCompleteListener) -> a
+    194:198:void startLoading() -> a
+    206:206:void onStartLoading() -> b
+    242:244:void stopLoading() -> c
+    253:253:void onStopLoading() -> d
+    261:263:void abandon() -> e
+    275:275:void onAbandon() -> f
+    290:295:void reset() -> g
+    304:304:void onReset() -> h
+    341:344:java.lang.String dataToString(java.lang.Object) -> a
+    349:354:java.lang.String toString() -> toString
+    366:372:void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[]) -> a
+android.support.v4.content.Loader$OnLoadCompleteListener -> android.support.v4.a.e:
+android.support.v4.os.ParcelableCompat -> android.support.v4.b.a:
+    36:39:android.os.Parcelable$Creator newCreator(android.support.v4.os.ParcelableCompatCreatorCallbacks) -> a
+android.support.v4.os.ParcelableCompat$CompatCreator -> android.support.v4.b.b:
+    android.support.v4.os.ParcelableCompatCreatorCallbacks mCallbacks -> a
+    51:51:java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+    56:56:java.lang.Object[] newArray(int) -> newArray
+android.support.v4.os.ParcelableCompatCreatorCallbacks -> android.support.v4.b.c:
+    java.lang.Object createFromParcel(android.os.Parcel,java.lang.ClassLoader) -> a
+    java.lang.Object[] newArray(int) -> a
+android.support.v4.os.ParcelableCompatCreatorHoneycombMR2 -> android.support.v4.b.d:
+    android.support.v4.os.ParcelableCompatCreatorCallbacks mCallbacks -> a
+    36:36:java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+    40:40:java.lang.Object createFromParcel(android.os.Parcel,java.lang.ClassLoader) -> createFromParcel
+    44:44:java.lang.Object[] newArray(int) -> newArray
+android.support.v4.os.ParcelableCompatCreatorHoneycombMR2Stub -> android.support.v4.b.e:
+    24:24:android.os.Parcelable$Creator instantiate(android.support.v4.os.ParcelableCompatCreatorCallbacks) -> a
+android.support.v4.util.DebugUtils -> android.support.v4.c.a:
+    28:43:void buildShortClassTag(java.lang.Object,java.lang.StringBuilder) -> a
+android.support.v4.util.LogWriter -> android.support.v4.c.b:
+    java.lang.String mTag -> a
+    java.lang.StringBuilder mBuilder -> b
+    44:45:void close() -> close
+    48:49:void flush() -> flush
+    52:61:void write(char[],int,int) -> write
+    64:68:void flushBuilder() -> a
+android.support.v4.util.SparseArrayCompat -> android.support.v4.c.c:
+    java.lang.Object DELETED -> a
+    boolean mGarbage -> b
+    int[] mKeys -> c
+    java.lang.Object[] mValues -> d
+    int mSize -> e
+    52:52:java.lang.Object get(int) -> a
+    60:65:java.lang.Object get(int,java.lang.Object) -> a
+    73:81:void delete(int) -> b
+    87:88:void remove(int) -> c
+    94:98:void removeAt(int) -> d
+    116:138:void gc() -> c
+    146:190:void put(int,java.lang.Object) -> b
+    197:201:int size() -> a
+    210:214:int keyAt(int) -> e
+    223:227:java.lang.Object valueAt(int) -> f
+    249:253:int indexOfKey(int) -> g
+    280:289:void clear() -> b
+    326:342:int binarySearch(int[],int,int,int) -> a
+    346:350:int idealByteArraySize(int) -> h
+    354:354:int idealIntArraySize(int) -> i
+android.support.v4.view.KeyEventCompat -> android.support.v4.view.a:
+    android.support.v4.view.KeyEventCompat$KeyEventVersionImpl IMPL -> a
+    139:139:boolean hasModifiers(android.view.KeyEvent,int) -> a
+    143:143:boolean hasNoModifiers(android.view.KeyEvent) -> a
+android.support.v4.view.KeyEventCompat$BaseKeyEventVersionImpl -> android.support.v4.view.b:
+    49:61:int metaStateFilterDirectionalModifiers(int,int,int,int,int) -> a
+    67:73:int normalizeMetaState(int) -> a
+    78:83:boolean metaStateHasModifiers(int,int) -> a
+    88:88:boolean metaStateHasNoModifiers(int) -> b
+android.support.v4.view.KeyEventCompat$HoneycombKeyEventVersionImpl -> android.support.v4.view.c:
+    103:103:boolean metaStateHasModifiers(int,int) -> a
+    108:108:boolean metaStateHasNoModifiers(int) -> b
+android.support.v4.view.KeyEventCompat$KeyEventVersionImpl -> android.support.v4.view.d:
+    boolean metaStateHasModifiers(int,int) -> a
+    boolean metaStateHasNoModifiers(int) -> b
+android.support.v4.view.KeyEventCompatHoneycomb -> android.support.v4.view.e:
+    30:30:boolean metaStateHasModifiers(int,int) -> a
+    34:34:boolean metaStateHasNoModifiers(int) -> a
+android.support.v4.view.MotionEventCompat -> android.support.v4.view.f:
+    android.support.v4.view.MotionEventCompat$MotionEventVersionImpl IMPL -> a
+    182:182:int getActionIndex(android.view.MotionEvent) -> a
+    192:192:int findPointerIndex(android.view.MotionEvent,int) -> a
+    201:201:int getPointerId(android.view.MotionEvent,int) -> b
+    210:210:float getX(android.view.MotionEvent,int) -> c
+    219:219:float getY(android.view.MotionEvent,int) -> d
+android.support.v4.view.MotionEventCompat$BaseMotionEventVersionImpl -> android.support.v4.view.g:
+    42:46:int findPointerIndex(android.view.MotionEvent,int) -> a
+    50:54:int getPointerId(android.view.MotionEvent,int) -> b
+    58:61:float getX(android.view.MotionEvent,int) -> c
+    65:68:float getY(android.view.MotionEvent,int) -> d
+android.support.v4.view.MotionEventCompat$EclairMotionEventVersionImpl -> android.support.v4.view.h:
+    78:78:int findPointerIndex(android.view.MotionEvent,int) -> a
+    82:82:int getPointerId(android.view.MotionEvent,int) -> b
+    86:86:float getX(android.view.MotionEvent,int) -> c
+    90:90:float getY(android.view.MotionEvent,int) -> d
+android.support.v4.view.MotionEventCompat$MotionEventVersionImpl -> android.support.v4.view.i:
+    int findPointerIndex(android.view.MotionEvent,int) -> a
+    int getPointerId(android.view.MotionEvent,int) -> b
+    float getX(android.view.MotionEvent,int) -> c
+    float getY(android.view.MotionEvent,int) -> d
+android.support.v4.view.MotionEventCompatEclair -> android.support.v4.view.j:
+    26:26:int findPointerIndex(android.view.MotionEvent,int) -> a
+    29:29:int getPointerId(android.view.MotionEvent,int) -> b
+    32:32:float getX(android.view.MotionEvent,int) -> c
+    35:35:float getY(android.view.MotionEvent,int) -> d
+android.support.v4.view.PagerAdapter -> android.support.v4.view.k:
+    android.database.DataSetObservable mObservable -> mObservable
+    int POSITION_UNCHANGED -> POSITION_UNCHANGED
+    int POSITION_NONE -> POSITION_NONE
+    int getCount() -> getCount
+    95:96:void startUpdate(android.view.ViewGroup) -> startUpdate
+    110:110:java.lang.Object instantiateItem(android.view.ViewGroup,int) -> instantiateItem
+    124:125:void destroyItem(android.view.ViewGroup,int,java.lang.Object) -> destroyItem
+    137:138:void setPrimaryItem(android.view.ViewGroup,int,java.lang.Object) -> setPrimaryItem
+    148:149:void finishUpdate(android.view.ViewGroup) -> finishUpdate
+    159:159:void startUpdate(android.view.View) -> startUpdate
+    175:175:java.lang.Object instantiateItem(android.view.View,int) -> instantiateItem
+    192:192:void destroyItem(android.view.View,int,java.lang.Object) -> destroyItem
+    207:207:void setPrimaryItem(android.view.View,int,java.lang.Object) -> setPrimaryItem
+    219:219:void finishUpdate(android.view.View) -> finishUpdate
+    boolean isViewFromObject(android.view.View,java.lang.Object) -> isViewFromObject
+    239:239:android.os.Parcelable saveState() -> saveState
+    250:250:void restoreState(android.os.Parcelable,java.lang.ClassLoader) -> restoreState
+    268:268:int getItemPosition(java.lang.Object) -> getItemPosition
+    276:277:void notifyDataSetChanged() -> notifyDataSetChanged
+    280:281:void registerDataSetObserver(android.database.DataSetObserver) -> registerDataSetObserver
+    284:285:void unregisterDataSetObserver(android.database.DataSetObserver) -> unregisterDataSetObserver
+    297:297:java.lang.CharSequence getPageTitle(int) -> getPageTitle
+    308:308:float getPageWidth(int) -> getPageWidth
+android.support.v4.view.VelocityTrackerCompat -> android.support.v4.view.l:
+    android.support.v4.view.VelocityTrackerCompat$VelocityTrackerVersionImpl IMPL -> a
+    82:82:float getXVelocity(android.view.VelocityTracker,int) -> a
+android.support.v4.view.VelocityTrackerCompat$BaseVelocityTrackerVersionImpl -> android.support.v4.view.m:
+    40:40:float getXVelocity(android.view.VelocityTracker,int) -> a
+android.support.v4.view.VelocityTrackerCompat$HoneycombVelocityTrackerVersionImpl -> android.support.v4.view.n:
+    54:54:float getXVelocity(android.view.VelocityTracker,int) -> a
+android.support.v4.view.VelocityTrackerCompat$VelocityTrackerVersionImpl -> android.support.v4.view.o:
+    float getXVelocity(android.view.VelocityTracker,int) -> a
+android.support.v4.view.VelocityTrackerCompatHoneycomb -> android.support.v4.view.p:
+    26:26:float getXVelocity(android.view.VelocityTracker,int) -> a
+android.support.v4.view.ViewCompat -> android.support.v4.view.q:
+    android.support.v4.view.ViewCompat$ViewCompatImpl IMPL -> a
+    253:253:boolean canScrollHorizontally(android.view.View,int) -> a
+    277:277:int getOverScrollMode(android.view.View) -> a
+    450:451:void postInvalidateOnAnimation(android.view.View) -> b
+android.support.v4.view.ViewCompat$BaseViewCompatImpl -> android.support.v4.view.r:
+    86:86:boolean canScrollHorizontally(android.view.View,int) -> a
+    92:92:int getOverScrollMode(android.view.View) -> a
+    117:118:void postInvalidateOnAnimation(android.view.View) -> b
+    129:129:long getFrameTime() -> a
+android.support.v4.view.ViewCompat$GBViewCompatImpl -> android.support.v4.view.s:
+    145:145:int getOverScrollMode(android.view.View) -> a
+android.support.v4.view.ViewCompat$HCViewCompatImpl -> android.support.v4.view.t:
+    155:155:long getFrameTime() -> a
+android.support.v4.view.ViewCompat$ICSViewCompatImpl -> android.support.v4.view.u:
+    162:162:boolean canScrollHorizontally(android.view.View,int) -> a
+android.support.v4.view.ViewCompat$JBViewCompatImpl -> android.support.v4.view.v:
+    197:198:void postInvalidateOnAnimation(android.view.View) -> b
+android.support.v4.view.ViewCompat$ViewCompatImpl -> android.support.v4.view.w:
+    boolean canScrollHorizontally(android.view.View,int) -> a
+    int getOverScrollMode(android.view.View) -> a
+    void postInvalidateOnAnimation(android.view.View) -> b
+android.support.v4.view.ViewCompatGingerbread -> android.support.v4.view.x:
+    23:23:int getOverScrollMode(android.view.View) -> a
+android.support.v4.view.ViewCompatHC -> android.support.v4.view.y:
+    23:23:long getFrameTime() -> a
+android.support.v4.view.ViewCompatICS -> android.support.v4.view.z:
+    30:30:boolean canScrollHorizontally(android.view.View,int) -> a
+android.support.v4.view.ViewCompatJB -> android.support.v4.view.aa:
+    35:36:void postInvalidateOnAnimation(android.view.View) -> a
+android.support.v4.view.ViewPager -> android.support.v4.view.ViewPager:
+    int[] LAYOUT_ATTRS -> a
+    java.util.Comparator COMPARATOR -> b
+    android.view.animation.Interpolator sInterpolator -> c
+    java.util.ArrayList mItems -> d
+    android.support.v4.view.ViewPager$ItemInfo mTempItem -> e
+    android.graphics.Rect mTempRect -> f
+    android.support.v4.view.PagerAdapter mAdapter -> g
+    int mCurItem -> h
+    int mRestoredCurItem -> i
+    android.os.Parcelable mRestoredAdapterState -> j
+    java.lang.ClassLoader mRestoredClassLoader -> k
+    android.widget.Scroller mScroller -> l
+    android.support.v4.view.ViewPager$PagerObserver mObserver -> m
+    int mPageMargin -> n
+    android.graphics.drawable.Drawable mMarginDrawable -> o
+    int mTopPageBounds -> p
+    int mBottomPageBounds -> q
+    float mFirstOffset -> r
+    float mLastOffset -> s
+    int mChildWidthMeasureSpec -> t
+    int mChildHeightMeasureSpec -> u
+    boolean mInLayout -> v
+    boolean mScrollingCacheEnabled -> w
+    boolean mPopulatePending -> x
+    int mOffscreenPageLimit -> y
+    boolean mIsBeingDragged -> z
+    boolean mIsUnableToDrag -> A
+    int mDefaultGutterSize -> B
+    int mGutterSize -> C
+    int mTouchSlop -> D
+    float mInitialMotionX -> E
+    float mLastMotionX -> F
+    float mLastMotionY -> G
+    int mActivePointerId -> H
+    android.view.VelocityTracker mVelocityTracker -> I
+    int mMinimumVelocity -> J
+    int mMaximumVelocity -> K
+    int mFlingDistance -> L
+    int mCloseEnough -> M
+    boolean mFakeDragging -> N
+    android.support.v4.widget.EdgeEffectCompat mLeftEdge -> O
+    android.support.v4.widget.EdgeEffectCompat mRightEdge -> P
+    boolean mFirstLayout -> Q
+    boolean mNeedCalculatePageOffsets -> R
+    boolean mCalledSuper -> S
+    int mDecorChildCount -> T
+    android.support.v4.view.ViewPager$OnPageChangeListener mOnPageChangeListener -> U
+    android.support.v4.view.ViewPager$OnPageChangeListener mInternalPageChangeListener -> V
+    android.support.v4.view.ViewPager$OnAdapterChangeListener mAdapterChangeListener -> W
+    int mScrollState -> Z
+    333:341:void setScrollState(int) -> setScrollState
+    349:387:void setAdapter(android.support.v4.view.PagerAdapter) -> setAdapter
+    390:398:void removeNonDecorViews() -> f
+    406:406:android.support.v4.view.PagerAdapter getAdapter() -> getAdapter
+    410:411:void setOnAdapterChangeListener(android.support.v4.view.ViewPager$OnAdapterChangeListener) -> setOnAdapterChangeListener
+    421:423:void setCurrentItem(int) -> setCurrentItem
+    432:434:void setCurrentItem(int,boolean) -> a
+    437:437:int getCurrentItem() -> getCurrentItem
+    441:442:void setCurrentItemInternal(int,boolean,boolean) -> a
+    445:495:void setCurrentItemInternal(int,boolean,boolean,int) -> a
+    504:505:void setOnPageChangeListener(android.support.v4.view.ViewPager$OnPageChangeListener) -> setOnPageChangeListener
+    527:527:int getOffscreenPageLimit() -> getOffscreenPageLimit
+    548:557:void setOffscreenPageLimit(int) -> setOffscreenPageLimit
+    568:575:void setPageMargin(int) -> setPageMargin
+    583:583:int getPageMargin() -> getPageMargin
+    592:596:void setPageMarginDrawable(android.graphics.drawable.Drawable) -> setPageMarginDrawable
+    604:605:void setPageMarginDrawable(int) -> setPageMarginDrawable
+    609:609:boolean verifyDrawable(android.graphics.drawable.Drawable) -> verifyDrawable
+    614:619:void drawableStateChanged() -> drawableStateChanged
+    626:628:float distanceInfluenceForSnapDuration(float) -> a
+    649:687:void smoothScrollTo(int,int,int) -> a
+    690:699:android.support.v4.view.ViewPager$ItemInfo addNewItem(int,int) -> a
+    705:769:void dataSetChanged() -> a
+    772:773:void populate() -> b
+    776:926:void populate(int) -> a
+    929:1012:void calculatePageOffsets(android.support.v4.view.ViewPager$ItemInfo,int,android.support.v4.view.ViewPager$ItemInfo) -> a
+    1068:1074:android.os.Parcelable onSaveInstanceState() -> onSaveInstanceState
+    1079:1095:void onRestoreInstanceState(android.os.Parcelable) -> onRestoreInstanceState
+    1099:1121:void addView(android.view.View,int,android.view.ViewGroup$LayoutParams) -> addView
+    1124:1130:android.support.v4.view.ViewPager$ItemInfo infoForChild(android.view.View) -> a
+    1135:1141:android.support.v4.view.ViewPager$ItemInfo infoForAnyChild(android.view.View) -> b
+    1145:1151:android.support.v4.view.ViewPager$ItemInfo infoForPosition(int) -> b
+    1156:1158:void onAttachedToWindow() -> onAttachedToWindow
+    1167:1253:void onMeasure(int,int) -> onMeasure
+    1257:1263:void onSizeChanged(int,int,int,int) -> onSizeChanged
+    1266:1290:void recomputeScrollPosition(int,int,int,int) -> a
+    1294:1398:void onLayout(boolean,int,int,int,int) -> onLayout
+    1402:1423:void computeScroll() -> computeScroll
+    1426:1450:boolean pageScrolled(int) -> d
+    1467:1513:void onPageScrolled(int,float,int) -> a
+    1516:1541:void completeScroll() -> g
+    1544:1544:boolean isGutterDrag(float,float) -> a
+    1555:1687:boolean onInterceptTouchEvent(android.view.MotionEvent) -> onInterceptTouchEvent
+    1692:1806:boolean onTouchEvent(android.view.MotionEvent) -> onTouchEvent
+    1810:1853:boolean performDrag(float) -> b
+    1861:1899:android.support.v4.view.ViewPager$ItemInfo infoForCurrentScrollPosition() -> h
+    1904:1918:int determineTargetPage(int,float,int,int) -> a
+    1923:1961:void draw(android.graphics.Canvas) -> draw
+    1965:2005:void onDraw(android.graphics.Canvas) -> onDraw
+    2136:2148:void onSecondaryPointerUp(android.view.MotionEvent) -> a
+    2151:2158:void endDrag() -> i
+    2161:2173:void setScrollingCacheEnabled(boolean) -> setScrollingCacheEnabled
+    2187:2206:boolean canScroll(android.view.View,boolean,int,int,int) -> a
+    2212:2212:boolean dispatchKeyEvent(android.view.KeyEvent) -> dispatchKeyEvent
+    2224:2246:boolean executeKeyEvent(android.view.KeyEvent) -> a
+    2250:2289:boolean arrowScroll(int) -> c
+    2293:2315:android.graphics.Rect getChildRectInPagerCoordinates(android.graphics.Rect,android.view.View) -> a
+    2319:2323:boolean pageLeft() -> c
+    2327:2331:boolean pageRight() -> d
+    2339:2376:void addFocusables(java.util.ArrayList,int,int) -> addFocusables
+    2386:2395:void addTouchables(java.util.ArrayList) -> addTouchables
+    2406:2427:boolean onRequestFocusInDescendants(int,android.graphics.Rect) -> onRequestFocusInDescendants
+    2437:2449:boolean dispatchPopulateAccessibilityEvent(android.view.accessibility.AccessibilityEvent) -> dispatchPopulateAccessibilityEvent
+    2454:2454:android.view.ViewGroup$LayoutParams generateDefaultLayoutParams() -> generateDefaultLayoutParams
+    2459:2459:android.view.ViewGroup$LayoutParams generateLayoutParams(android.view.ViewGroup$LayoutParams) -> generateLayoutParams
+    2464:2464:boolean checkLayoutParams(android.view.ViewGroup$LayoutParams) -> checkLayoutParams
+    2469:2469:android.view.ViewGroup$LayoutParams generateLayoutParams(android.util.AttributeSet) -> generateLayoutParams
+    82:82:int[] access$300() -> e
+android.support.v4.view.ViewPager$1 -> android.support.v4.view.ab:
+    109:109:int compare(android.support.v4.view.ViewPager$ItemInfo,android.support.v4.view.ViewPager$ItemInfo) -> a
+    106:106:int compare(java.lang.Object,java.lang.Object) -> compare
+android.support.v4.view.ViewPager$2 -> android.support.v4.view.ac:
+    115:116:float getInterpolation(float) -> getInterpolation
+android.support.v4.view.ViewPager$Decor -> android.support.v4.view.ad:
+android.support.v4.view.ViewPager$ItemInfo -> android.support.v4.view.ae:
+    java.lang.Object object -> a
+    int position -> b
+    boolean scrolling -> c
+    float widthFactor -> d
+    float offset -> e
+android.support.v4.view.ViewPager$LayoutParams -> android.support.v4.view.af:
+    boolean isDecor -> a
+    int gravity -> b
+    float widthFactor -> c
+    boolean needsMeasure -> d
+android.support.v4.view.ViewPager$OnAdapterChangeListener -> android.support.v4.view.ag:
+    void onAdapterChanged(android.support.v4.view.PagerAdapter,android.support.v4.view.PagerAdapter) -> a
+android.support.v4.view.ViewPager$OnPageChangeListener -> android.support.v4.view.ah:
+    void onPageScrolled(int,float,int) -> a
+    void onPageSelected(int) -> a
+    void onPageScrollStateChanged(int) -> b
+android.support.v4.view.ViewPager$PagerObserver -> android.support.v4.view.ai:
+    android.support.v4.view.ViewPager this$0 -> a
+    2519:2520:void onChanged() -> onChanged
+    2523:2524:void onInvalidated() -> onInvalidated
+android.support.v4.view.ViewPager$SavedState -> android.support.v4.view.ViewPager$SavedState:
+    int position -> a
+    android.os.Parcelable adapterState -> b
+    java.lang.ClassLoader loader -> c
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    1031:1034:void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    1038:1038:java.lang.String toString() -> toString
+android.support.v4.view.ViewPager$SavedState$1 -> android.support.v4.view.aj:
+    1047:1047:android.support.v4.view.ViewPager$SavedState createFromParcel(android.os.Parcel,java.lang.ClassLoader) -> b
+    1051:1051:android.support.v4.view.ViewPager$SavedState[] newArray(int) -> b
+    1044:1044:java.lang.Object[] newArray(int) -> a
+    1044:1044:java.lang.Object createFromParcel(android.os.Parcel,java.lang.ClassLoader) -> a
+android.support.v4.widget.EdgeEffectCompat -> android.support.v4.d.a:
+    java.lang.Object mEdgeEffect -> a
+    android.support.v4.widget.EdgeEffectCompat$EdgeEffectImpl IMPL -> b
+    143:144:void setSize(int,int) -> a
+    154:154:boolean isFinished() -> a
+    162:163:void finish() -> b
+    177:177:boolean onPull(float) -> a
+    189:189:boolean onRelease() -> c
+    218:218:boolean draw(android.graphics.Canvas) -> a
+android.support.v4.widget.EdgeEffectCompat$BaseEdgeEffectImpl -> android.support.v4.d.b:
+    64:64:void setSize(java.lang.Object,int,int) -> a
+    67:67:boolean isFinished(java.lang.Object) -> a
+    71:71:void finish(java.lang.Object) -> b
+    74:74:boolean onPull(java.lang.Object,float) -> a
+    78:78:boolean onRelease(java.lang.Object) -> c
+    86:86:boolean draw(java.lang.Object,android.graphics.Canvas) -> a
+android.support.v4.widget.EdgeEffectCompat$EdgeEffectIcsImpl -> android.support.v4.d.c:
+    96:97:void setSize(java.lang.Object,int,int) -> a
+    100:100:boolean isFinished(java.lang.Object) -> a
+    104:105:void finish(java.lang.Object) -> b
+    108:108:boolean onPull(java.lang.Object,float) -> a
+    112:112:boolean onRelease(java.lang.Object) -> c
+    120:120:boolean draw(java.lang.Object,android.graphics.Canvas) -> a
+android.support.v4.widget.EdgeEffectCompat$EdgeEffectImpl -> android.support.v4.d.d:
+    void setSize(java.lang.Object,int,int) -> a
+    boolean isFinished(java.lang.Object) -> a
+    void finish(java.lang.Object) -> b
+    boolean onPull(java.lang.Object,float) -> a
+    boolean onRelease(java.lang.Object) -> c
+    boolean draw(java.lang.Object,android.graphics.Canvas) -> a
+android.support.v4.widget.EdgeEffectCompatIcs -> android.support.v4.d.e:
+    34:35:void setSize(java.lang.Object,int,int) -> a
+    38:38:boolean isFinished(java.lang.Object) -> a
+    42:43:void finish(java.lang.Object) -> b
+    46:47:boolean onPull(java.lang.Object,float) -> a
+    51:53:boolean onRelease(java.lang.Object) -> c
+    62:62:boolean draw(java.lang.Object,android.graphics.Canvas) -> a
+com.android.internal.telephony.ITelephony -> com.a.a.a.a:
+    void answerRingingCall() -> a
+    void silenceRinger() -> b
+com.anod.car.home.CarHomeActivity -> com.anod.car.home.CarHomeActivity:
+    12:19:void onCreate(android.os.Bundle) -> onCreate
+    25:26:void onDestroy() -> onDestroy
+    32:33:void onPause() -> onPause
+    39:40:void onStart() -> onStart
+    46:47:void onStop() -> onStop
+    53:54:void onResume() -> onResume
+com.anod.car.home.CarWidgetApplication -> com.anod.car.home.CarWidgetApplication:
+    com.anod.car.home.model.AllAppsListCache mAllAppCache -> a
+    12:15:void onCreate() -> onCreate
+    18:18:com.anod.car.home.model.AllAppsListCache getAllAppCache() -> a
+com.anod.car.home.LargeProvider -> com.anod.car.home.LargeProvider:
+com.anod.car.home.Launcher -> com.anod.car.home.a:
+    31:31:boolean isFreeVersion(java.lang.String) -> a
+    36:84:android.widget.RemoteViews update(int,android.content.Context) -> a
+    91:126:void setInCarButton(boolean,java.lang.String,com.anod.car.home.skin.SkinProperties,android.content.Context,android.widget.RemoteViews) -> a
+    129:147:void setFont(com.anod.car.home.prefs.preferences.Main,int,int,float,android.widget.RemoteViews) -> a
+    150:157:void setTile(int,int,android.widget.RemoteViews) -> a
+    161:167:void setNoShortcut(int,int,android.widget.RemoteViews,android.content.Context,int,int,com.anod.car.home.skin.SkinProperties) -> a
+    170:190:void setShortcut(int,int,float,com.anod.car.home.model.ShortcutInfo,com.anod.car.home.prefs.preferences.Main,android.widget.RemoteViews,android.content.Context,int,int,com.anod.car.home.skin.SkinProperties) -> a
+    193:195:void setBackground(com.anod.car.home.prefs.preferences.Main,android.widget.RemoteViews) -> a
+com.anod.car.home.Provider -> com.anod.car.home.b:
+    com.anod.car.home.Provider sInstance -> a
+    20:23:com.anod.car.home.Provider getInstance() -> a
+    27:36:void performUpdate(android.content.Context,int[]) -> a
+    40:41:void onUpdate(android.content.Context,android.appwidget.AppWidgetManager,int[]) -> onUpdate
+    48:51:void onDeleted(android.content.Context,int[]) -> onDeleted
+    55:56:void onEnabled(android.content.Context) -> onEnabled
+    63:77:void onDisabled(android.content.Context) -> onDisabled
+    84:84:android.content.ComponentName getComponentName(android.content.Context) -> a
+com.anod.car.home.R -> com.anod.car.home.c:
+com.anod.car.home.R$color -> com.anod.car.home.d:
+    int default_background -> default_background
+    int default_font_color -> default_font_color
+    int holo_text_bg -> holo_text_bg
+    int w7_tale_default_background -> w7_tale_default_background
+    int w7_tale_default_background_highlight -> w7_tale_default_background_highlight
+com.anod.car.home.R$dimen -> com.anod.car.home.e:
+    int bbb_padding_top -> bbb_padding_top
+    int icon_size -> icon_size
+    int text_size -> text_size
+    int title_padding_bottom -> title_padding_bottom
+    int title_padding_bottom_win7 -> title_padding_bottom_win7
+com.anod.car.home.R$drawable -> com.anod.car.home.f:
+    int app_header_bg -> app_header_bg
+    int bbb_bg -> bbb_bg
+    int btn_default_focused_holo_light -> btn_default_focused_holo_light
+    int btn_default_holo_light -> btn_default_holo_light
+    int btn_default_normal_holo_light -> btn_default_normal_holo_light
+    int btn_default_pressed_holo_light -> btn_default_pressed_holo_light
+    int btn_transparent -> btn_transparent
+    int container -> container
+    int container_focus -> container_focus
+    int container_normal -> container_normal
+    int container_pressed -> container_pressed
+    int divider_vertical_dark -> divider_vertical_dark
+    int glass_container -> glass_container
+    int glass_focus -> glass_focus
+    int glass_normal -> glass_normal
+    int glass_pressed -> glass_pressed
+    int ic_action_apply -> ic_action_apply
+    int ic_action_delete -> ic_action_delete
+    int ic_action_edit -> ic_action_edit
+    int ic_add_shortcut -> ic_add_shortcut
+    int ic_add_shortcut_full -> ic_add_shortcut_full
+    int ic_add_shortcut_holo -> ic_add_shortcut_holo
+    int ic_add_shortcut_semi -> ic_add_shortcut_semi
+    int ic_holo_settings -> ic_holo_settings
+    int ic_incar_enter -> ic_incar_enter
+    int ic_incar_enter_holo -> ic_incar_enter_holo
+    int ic_incar_enter_win7 -> ic_incar_enter_win7
+    int ic_incar_exit -> ic_incar_exit
+    int ic_incar_exit_win7 -> ic_incar_exit_win7
+    int ic_launcher -> ic_launcher
+    int ic_launcher_application -> ic_launcher_application
+    int ic_settings -> ic_settings
+    int ic_settings_win7 -> ic_settings_win7
+    int ic_stat_incar -> ic_stat_incar
+    int ic_transparent -> ic_transparent
+    int ic_transparent_pressed -> ic_transparent_pressed
+    int notification_icon -> notification_icon
+    int widget_preview -> widget_preview
+    int win7_container -> win7_container
+com.anod.car.home.R$id -> com.anod.car.home.g:
+    int app_icon -> app_icon
+    int app_title -> app_title
+    int apply_icon -> apply_icon
+    int backup_name -> backup_name
+    int backup_name_summary -> backup_name_summary
+    int backup_name_title -> backup_name_title
+    int btn0 -> btn0
+    int btn1 -> btn1
+    int btn2 -> btn2
+    int btn3 -> btn3
+    int btn4 -> btn4
+    int btn5 -> btn5
+    int btn_incar_switch -> btn_incar_switch
+    int btn_settings -> btn_settings
+    int btn_text0 -> btn_text0
+    int btn_text1 -> btn_text1
+    int btn_text2 -> btn_text2
+    int btn_text3 -> btn_text3
+    int btn_text4 -> btn_text4
+    int btn_text5 -> btn_text5
+    int colorPanel -> colorPanel
+    int color_dialog_button_cancel -> color_dialog_button_cancel
+    int color_dialog_button_ok -> color_dialog_button_ok
+    int color_dialog_chooser -> color_dialog_chooser
+    int color_picker_view -> color_picker_view
+    int container -> container
+    int customButton1 -> customButton1
+    int customButton2 -> customButton2
+    int customButton3 -> customButton3
+    int delete_action_button -> delete_action_button
+    int divider -> divider
+    int edit_icon -> edit_icon
+    int header -> header
+    int icon_edit -> icon_edit
+    int label_edit -> label_edit
+    int new_color_panel -> new_color_panel
+    int ok_button -> ok_button
+    int old_color_panel -> old_color_panel
+    int pref_icon_view -> pref_icon_view
+    int progressBar1 -> progressBar1
+    int row -> row
+    int seekBar -> seekBar
+    int splashText -> splashText
+    int suffix -> suffix
+    int value -> value
+    int workspace -> workspace
+com.anod.car.home.R$layout -> com.anod.car.home.h:
+    int all_apps_row -> all_apps_row
+    int backup_dialog_enter_name -> backup_dialog_enter_name
+    int blackbearblanc -> blackbearblanc
+    int carhome -> carhome
+    int dialog_color -> dialog_color
+    int dialog_color_picker -> dialog_color_picker
+    int glass -> glass
+    int holo -> holo
+    int loader -> loader
+    int notification_buttons -> notification_buttons
+    int pref_icon -> pref_icon
+    int restore_item -> restore_item
+    int restore_list -> restore_list
+    int seek_bar_dialog -> seek_bar_dialog
+    int shortcut_edit -> shortcut_edit
+    int windows7 -> windows7
+com.anod.car.home.R$string -> com.anod.car.home.i:
+    int activity_not_found -> activity_not_found
+    int advanced -> advanced
+    int app_name_free -> app_name_free
+    int app_name_pro -> app_name_pro
+    int applications -> applications
+    int arrow_right -> arrow_right
+    int backup -> backup
+    int backup_cancel -> backup_cancel
+    int backup_current_widget -> backup_current_widget
+    int backup_done -> backup_done
+    int backup_incar_settings -> backup_incar_settings
+    int backup_name_summary -> backup_name_summary
+    int backup_name_title -> backup_name_title
+    int backup_not_exist -> backup_not_exist
+    int backup_save -> backup_save
+    int bluetooth -> bluetooth
+    int bluetooth_device_category_title -> bluetooth_device_category_title
+    int bluetooth_device_cellphone -> bluetooth_device_cellphone
+    int bluetooth_device_headphones -> bluetooth_device_headphones
+    int bluetooth_device_headset -> bluetooth_device_headset
+    int bluetooth_device_laptop -> bluetooth_device_laptop
+    int choose_backup -> choose_backup
+    int click_to_disable -> click_to_disable
+    int color_dialog_button_cancel -> color_dialog_button_cancel
+    int color_dialog_title -> color_dialog_title
+    int default_hex_color_text -> default_hex_color_text
+    int dialog_donate_btn_no -> dialog_donate_btn_no
+    int dialog_donate_btn_yes -> dialog_donate_btn_yes
+    int dialog_donate_message -> dialog_donate_message
+    int dialog_donate_title -> dialog_donate_title
+    int dialog_title_select -> dialog_title_select
+    int error_text -> error_text
+    int external_storage_not_available -> external_storage_not_available
+    int failed_to_read_file -> failed_to_read_file
+    int failed_to_write_file -> failed_to_write_file
+    int icon_adw_icon_pack -> icon_adw_icon_pack
+    int icon_custom -> icon_custom
+    int icon_default -> icon_default
+    int incar_mode_disabled -> incar_mode_disabled
+    int incar_mode_enabled -> incar_mode_enabled
+    int information_title -> information_title
+    int issue_summary -> issue_summary
+    int issue_title -> issue_title
+    int last_backup -> last_backup
+    int load_paired_device -> load_paired_device
+    int never -> never
+    int no_backup_files_found -> no_backup_files_found
+    int no_paired_devices_found_summary -> no_paired_devices_found_summary
+    int no_paired_devices_found_title -> no_paired_devices_found_title
+    int other_summary -> other_summary
+    int other_title -> other_title
+    int permdesc_read_settings -> permdesc_read_settings
+    int permdesc_write_settings -> permdesc_write_settings
+    int permlab_read_settings -> permlab_read_settings
+    int permlab_write_settings -> permlab_write_settings
+    int photo_picker_not_found -> photo_picker_not_found
+    int please_wait -> please_wait
+    int pref_actions -> pref_actions
+    int pref_activate_car_mode -> pref_activate_car_mode
+    int pref_activate_car_mode_summary -> pref_activate_car_mode_summary
+    int pref_auto_answer -> pref_auto_answer
+    int pref_auto_answer_summary -> pref_auto_answer_summary
+    int pref_autorun_app_disabled -> pref_autorun_app_disabled
+    int pref_autorun_app_title -> pref_autorun_app_title
+    int pref_backup_summary -> pref_backup_summary
+    int pref_backup_title -> pref_backup_title
+    int pref_bg_color_summary -> pref_bg_color_summary
+    int pref_bg_color_title -> pref_bg_color_title
+    int pref_blutooth_device_summary -> pref_blutooth_device_summary
+    int pref_blutooth_device_title -> pref_blutooth_device_title
+    int pref_brightness_mode -> pref_brightness_mode
+    int pref_brightness_mode_summary -> pref_brightness_mode_summary
+    int pref_change_media_volume -> pref_change_media_volume
+    int pref_change_media_volume_summary -> pref_change_media_volume_summary
+    int pref_detection -> pref_detection
+    int pref_dialog_title_select -> pref_dialog_title_select
+    int pref_font_color_summary -> pref_font_color_summary
+    int pref_font_color_title -> pref_font_color_title
+    int pref_font_size_summary -> pref_font_size_summary
+    int pref_font_size_title -> pref_font_size_title
+    int pref_headset_connected_summary -> pref_headset_connected_summary
+    int pref_headset_connected_title -> pref_headset_connected_title
+    int pref_icons_mono_summary -> pref_icons_mono_summary
+    int pref_icons_mono_title -> pref_icons_mono_title
+    int pref_incar_mode_enabled -> pref_incar_mode_enabled
+    int pref_incar_mode_summary -> pref_incar_mode_summary
+    int pref_incar_mode_title -> pref_incar_mode_title
+    int pref_incar_transparent -> pref_incar_transparent
+    int pref_incar_transparent_summary -> pref_incar_transparent_summary
+    int pref_look_and_feel_summary -> pref_look_and_feel_summary
+    int pref_look_and_feel_title -> pref_look_and_feel_title
+    int pref_media_volume_level -> pref_media_volume_level
+    int pref_media_volume_level_summary -> pref_media_volume_level_summary
+    int pref_power_connected_summary -> pref_power_connected_summary
+    int pref_power_connected_title -> pref_power_connected_title
+    int pref_power_contorl_bt -> pref_power_contorl_bt
+    int pref_power_plugged_bt_on_summary -> pref_power_plugged_bt_on_summary
+    int pref_power_plugged_bt_on_title -> pref_power_plugged_bt_on_title
+    int pref_power_unplugged_bt_off_summary -> pref_power_unplugged_bt_off_summary
+    int pref_power_unplugged_bt_off_title -> pref_power_unplugged_bt_off_title
+    int pref_route_to_speaker -> pref_route_to_speaker
+    int pref_route_to_speaker_summary -> pref_route_to_speaker_summary
+    int pref_scale_icon -> pref_scale_icon
+    int pref_screen_timeout -> pref_screen_timeout
+    int pref_screen_timeout_summary -> pref_screen_timeout_summary
+    int pref_settings_transparent -> pref_settings_transparent
+    int pref_settings_transparent_summary -> pref_settings_transparent_summary
+    int pref_skin -> pref_skin
+    int pref_tile_color_summary -> pref_tile_color_summary
+    int pref_tile_color_title -> pref_tile_color_title
+    int pref_tint_color_summary -> pref_tint_color_summary
+    int pref_tint_color_title -> pref_tint_color_title
+    int pref_wifi -> pref_wifi
+    int pref_wifi_summary -> pref_wifi_summary
+    int restore -> restore
+    int restore_deserialize_failed -> restore_deserialize_failed
+    int restore_done -> restore_done
+    int set_shortcut -> set_shortcut
+    int set_shortcut_short -> set_shortcut_short
+    int shortcut_edit_hint -> shortcut_edit_hint
+    int shortcut_edit_title -> shortcut_edit_title
+    int shortcut_ok_button -> shortcut_ok_button
+    int shortcuts -> shortcuts
+    int switch_in_car_activity -> switch_in_car_activity
+    int textview -> textview
+    int transparent -> transparent
+    int turn_off_bluetooth_summary -> turn_off_bluetooth_summary
+    int turn_on_bluetooth_summary -> turn_on_bluetooth_summary
+    int unable_delete_file -> unable_delete_file
+    int version_summary -> version_summary
+    int version_title -> version_title
+com.anod.car.home.R$xml -> com.anod.car.home.j:
+    int carhome_appwidget_info_4x4 -> carhome_appwidget_info_4x4
+    int preference_backup -> preference_backup
+    int preference_incar -> preference_incar
+    int preference_look -> preference_look
+    int preferences -> preferences
+com.anod.car.home.ShortcutActivity -> com.anod.car.home.ShortcutActivity:
+    15:31:void onCreate(android.os.Bundle) -> onCreate
+    35:44:void startActivitySafetly(android.content.Intent) -> a
+com.anod.car.home.ShortcutPendingIntent -> com.anod.car.home.k:
+    22:31:android.app.PendingIntent getSettingsPendingInent(int,android.content.Context,int) -> a
+    41:52:android.app.PendingIntent getShortcutPendingInent(android.content.Intent,int,android.content.Context,int) -> a
+com.anod.car.home.UpdateService -> com.anod.car.home.UpdateService:
+    17:46:void performUpdate(android.content.Context,int[]) -> a
+    50:51:void onCreate() -> onCreate
+    55:56:void onDestroy() -> onDestroy
+    61:69:int onStartCommand(android.content.Intent,int,int) -> onStartCommand
+    76:74:void run() -> run
+    91:91:android.os.IBinder onBind(android.content.Intent) -> onBind
+com.anod.car.home.WidgetState -> com.anod.car.home.l:
+    java.lang.Object sLock -> a
+    boolean sThreadRunning -> b
+    java.util.Queue sAppWidgetIds -> c
+    31:36:void requestUpdate(int[]) -> a
+    45:45:boolean hasMoreUpdates() -> a
+    55:62:int[] collectAppWidgetIdsLocked() -> b
+    71:73:void clearLocked() -> c
+com.anod.car.home.incar.Bluetooth -> com.anod.car.home.incar.a:
+    8:9:int getState() -> a
+    13:16:void switchOn() -> b
+    19:21:void switchOff() -> c
+com.anod.car.home.incar.BluetoothClassHelper -> com.anod.car.home.incar.b:
+    12:27:int getBtClassString(android.bluetooth.BluetoothClass) -> a
+    32:64:boolean doesClassMatch(int,android.bluetooth.BluetoothClass) -> a
+com.anod.car.home.incar.BroadcastService -> com.anod.car.home.incar.BroadcastService:
+    boolean sRegistred -> a
+    17:19:void onCreate() -> onCreate
+    23:25:void onDestroy() -> onDestroy
+    30:30:android.os.IBinder onBind(android.content.Intent) -> onBind
+    34:45:void register(android.content.Context) -> a
+    48:51:void unregister(android.content.Context) -> b
+com.anod.car.home.incar.ChangeBrightnessActivity -> com.anod.car.home.incar.ChangeBrightnessActivity:
+    java.lang.String EXTRA_BRIGHT_LEVEL -> a
+    12:30:void onCreate(android.os.Bundle) -> onCreate
+com.anod.car.home.incar.ChangeBrightnessActivity$1 -> com.anod.car.home.incar.c:
+    com.anod.car.home.incar.ChangeBrightnessActivity this$0 -> a
+    android.app.Activity val$activity -> b
+    24:27:void run() -> run
+com.anod.car.home.incar.Handler -> com.anod.car.home.incar.d:
+    boolean[] sPrefState -> a
+    boolean[] sEventState -> b
+    boolean sMode -> c
+    boolean sWakeLocked -> d
+    int mCurrentBtState -> e
+    int mCurrentWiFiState -> f
+    int mCurrentVolume -> g
+    int mCurrentBrightness -> h
+    boolean mCurrentAutoBrightness -> i
+    android.os.PowerManager$WakeLock mWakeLock -> j
+    44:71:void onBroadcastReceive(android.content.Context,android.content.Intent) -> a
+    74:77:void updatePrefState(com.anod.car.home.prefs.preferences.InCar) -> a
+    80:90:void forceState(com.anod.car.home.prefs.preferences.InCar,boolean) -> a
+    93:101:boolean isPlugRequired(byte,com.anod.car.home.prefs.preferences.InCar) -> a
+    105:151:void updateEventState(com.anod.car.home.prefs.preferences.InCar,android.content.Intent) -> a
+    154:163:boolean detectNewMode() -> a
+    167:172:void onPowerConnected(com.anod.car.home.prefs.preferences.InCar) -> b
+    175:180:void onPowerDisconnected(com.anod.car.home.prefs.preferences.InCar) -> c
+    183:207:void switchOn(com.anod.car.home.prefs.preferences.InCar,android.content.Context) -> a
+    210:214:void runApp(android.content.ComponentName,android.content.Context) -> a
+    217:237:void switchOff(com.anod.car.home.prefs.preferences.InCar,android.content.Context) -> b
+    241:243:void activateCarMode(android.content.Context) -> a
+    246:248:void deactivateCarMode(android.content.Context) -> b
+    251:256:void disableWifi(android.content.Context) -> c
+    259:263:void restoreWiFi(android.content.Context) -> d
+    266:270:void enableBluetooth() -> b
+    273:276:void restoreBluetooth() -> c
+    279:287:void acquireWakeLock(android.content.Context) -> e
+    290:328:void adjustBrightness(java.lang.String,android.content.Context) -> a
+    331:343:boolean restoreBrightness(java.lang.String,android.content.Context) -> b
+    348:357:void adjustVolume(com.anod.car.home.prefs.preferences.InCar,android.content.Context) -> c
+    360:362:void restoreVolume(android.content.Context) -> f
+    365:370:void releaseWakeLock() -> d
+    373:378:void sendBrightnessIntent(int,android.content.Context) -> a
+com.anod.car.home.incar.ModeBroadcastReceiver -> com.anod.car.home.incar.e:
+    com.anod.car.home.incar.ModeBroadcastReceiver sInstance -> a
+    12:16:com.anod.car.home.incar.ModeBroadcastReceiver getInstance() -> a
+    21:23:void onReceive(android.content.Context,android.content.Intent) -> onReceive
+com.anod.car.home.incar.ModePhoneStateListener -> com.anod.car.home.incar.f:
+    boolean mSpeakerEnabled -> a
+    boolean mAnswered -> b
+    android.content.Context mContext -> c
+    android.media.AudioManager mAudioManager -> d
+    java.util.Timer mAnswerTimer -> e
+    boolean mUseAutoSpeaker -> f
+    java.lang.String mAutoAnswerMode -> g
+    int mState -> h
+    35:37:void setActions(boolean,java.lang.String) -> a
+    40:42:void cancelActions() -> a
+    46:83:void onCallStateChanged(int,java.lang.String) -> onCallStateChanged
+    86:90:void cancelAnswerTimer() -> b
+    93:102:void answerCallDelayed() -> c
+    105:117:void answerCall() -> d
+    120:138:void answerPhoneHeadsethook(android.content.Context) -> a
+    141:148:void sendHeadsetPlug(int,android.content.Context) -> a
+    154:171:void answerPhoneAidl(android.content.Context) -> b
+    104:104:void access$0(com.anod.car.home.incar.ModePhoneStateListener) -> a
+com.anod.car.home.incar.ModePhoneStateListener$1 -> com.anod.car.home.incar.g:
+    com.anod.car.home.incar.ModePhoneStateListener this$0 -> a
+    98:99:void run() -> run
+com.anod.car.home.incar.ModeService -> com.anod.car.home.incar.ModeService:
+    com.anod.car.home.incar.ModePhoneStateListener mPhoneListener -> d
+    boolean mForceState -> e
+    boolean sInCarMode -> a
+    java.lang.String EXTRA_MODE -> b
+    java.lang.String EXTRA_FORCE_STATE -> c
+    31:48:void onCreate() -> onCreate
+    52:64:void onDestroy() -> onDestroy
+    67:69:void requestWidgetsUpdate() -> a
+    75:93:int onStartCommand(android.content.Intent,int,int) -> onStartCommand
+    97:109:void handlePhoneListener(com.anod.car.home.prefs.preferences.InCar) -> a
+    112:116:void attachPhoneListener() -> b
+    119:124:void detachPhoneListener() -> c
+    129:129:android.os.IBinder onBind(android.content.Intent) -> onBind
+com.anod.car.home.incar.SeekBarPreference -> com.anod.car.home.incar.SeekBarPreference:
+    android.widget.SeekBar mSeekBar -> a
+    android.widget.TextView mSplashText -> b
+    android.widget.TextView mValueText -> c
+    android.content.Context mContext -> d
+    java.lang.String mDialogMessage -> e
+    java.lang.String mSuffix -> f
+    int mMax -> g
+    int mValue -> h
+    33:39:void setValue(int) -> a
+    43:52:void onDialogClosed(boolean) -> onDialogClosed
+    57:80:android.view.View onCreateDialogView() -> onCreateDialogView
+    85:88:void onBindDialogView(android.view.View) -> onBindDialogView
+    92:92:java.lang.Object onGetDefaultValue(android.content.res.TypedArray,int) -> onGetDefaultValue
+    97:98:void onSetInitialValue(boolean,java.lang.Object) -> onSetInitialValue
+    102:104:void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
+    108:108:void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
+    112:112:void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
+com.anod.car.home.incar.SwitchInCarActivity -> com.anod.car.home.incar.SwitchInCarActivity:
+    16:35:void onCreate(android.os.Bundle) -> onCreate
+com.anod.car.home.model.AllAppsListCache -> com.anod.car.home.model.a:
+    java.util.ArrayList mCache -> a
+    com.anod.car.home.CarWidgetApplication mContext -> b
+    android.content.pm.PackageManager mPackageManager -> c
+    58:61:void flush() -> a
+    67:83:void put(android.content.pm.ResolveInfo) -> a
+    86:87:void sort() -> b
+    99:99:java.util.ArrayList getCacheEntries() -> c
+    105:116:android.graphics.Bitmap fetchIcon(com.anod.car.home.model.AllAppsListCache$CacheEntry) -> a
+    120:135:void fetchDrawableOnThread(com.anod.car.home.model.AllAppsListCache$CacheEntry,android.widget.ImageView) -> a
+com.anod.car.home.model.AllAppsListCache$1 -> com.anod.car.home.model.b:
+    com.anod.car.home.model.AllAppsListCache this$0 -> a
+    com.anod.car.home.model.AllAppsListCache$CacheEntry val$entry -> b
+    android.os.Handler val$handler -> c
+    129:132:void run() -> run
+com.anod.car.home.model.AllAppsListCache$CacheEntry -> com.anod.car.home.model.c:
+    android.content.ComponentName componentName -> a
+    android.graphics.Bitmap icon -> b
+    java.lang.String title -> c
+com.anod.car.home.model.AllAppsListCache$DisplayNameComparator -> com.anod.car.home.model.d:
+    java.text.Collator sCollator -> a
+    93:93:int compare(com.anod.car.home.model.AllAppsListCache$CacheEntry,com.anod.car.home.model.AllAppsListCache$CacheEntry) -> a
+    1:1:int compare(java.lang.Object,java.lang.Object) -> compare
+com.anod.car.home.model.AllAppsListCache$ImageViewHandler -> com.anod.car.home.model.e:
+    android.widget.ImageView mImageView -> a
+    147:151:void handleMessage(android.os.Message) -> handleMessage
+com.anod.car.home.model.LauncherModel -> com.anod.car.home.model.f:
+    32:36:android.graphics.Bitmap getIcon(android.content.ComponentName,android.content.pm.ResolveInfo,android.content.pm.PackageManager,android.content.Context) -> a
+    42:48:com.anod.car.home.model.ShortcutInfo createShortcut(android.content.Context,android.content.Intent,int,long,boolean) -> a
+    52:88:com.anod.car.home.model.ShortcutInfo infoFromShortcutIntent(android.content.Context,android.content.Intent) -> b
+    93:121:void initShortcuts(android.content.Context,int) -> a
+    124:128:boolean isIntentAvailable(android.content.Context,android.content.Intent) -> c
+    132:222:com.anod.car.home.model.ShortcutInfo loadShortcut(android.content.Context,long) -> a
+    226:230:android.graphics.Bitmap getIconFromCursor(android.database.Cursor,int) -> a
+    240:281:com.anod.car.home.model.ShortcutInfo infoFromApplicationIntent(android.content.Context,android.content.Intent) -> a
+    308:316:void addItemToDatabase(android.content.Context,com.anod.car.home.model.ShortcutInfo,int,long) -> a
+    322:327:void updateItemInDatabase(android.content.Context,com.anod.car.home.model.ShortcutInfo) -> a
+    330:356:android.content.ContentValues createShortcutContentValues(com.anod.car.home.model.ShortcutInfo) -> a
+    360:364:void writeBitmap(android.content.ContentValues,android.graphics.Bitmap) -> a
+    372:379:void deleteItemFromDatabase(android.content.Context,long) -> b
+com.anod.car.home.model.LauncherModel$1 -> com.anod.car.home.model.g:
+    android.content.ContentResolver val$cr -> a
+    android.net.Uri val$uriToDelete -> b
+    376:377:void run() -> run
+com.anod.car.home.model.LauncherProvider -> com.anod.car.home.model.LauncherProvider:
+    android.database.sqlite.SQLiteOpenHelper mOpenHelper -> a
+    33:34:boolean onCreate() -> onCreate
+    39:43:java.lang.String getType(android.net.Uri) -> getType
+    51:59:android.database.Cursor query(android.net.Uri,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String) -> query
+    64:72:android.net.Uri insert(android.net.Uri,android.content.ContentValues) -> insert
+    77:91:int bulkInsert(android.net.Uri,android.content.ContentValues[]) -> bulkInsert
+    96:101:int delete(android.net.Uri,java.lang.String,java.lang.String[]) -> delete
+    106:111:int update(android.net.Uri,android.content.ContentValues,java.lang.String,java.lang.String[]) -> update
+com.anod.car.home.model.LauncherProvider$DatabaseHelper -> com.anod.car.home.model.h:
+    123:133:void onCreate(android.database.sqlite.SQLiteDatabase) -> onCreate
+    139:139:void onUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> onUpgrade
+com.anod.car.home.model.LauncherProvider$SqlArguments -> com.anod.car.home.model.i:
+    java.lang.String table -> a
+    java.lang.String where -> b
+    java.lang.String[] args -> c
+com.anod.car.home.model.LauncherSettings -> com.anod.car.home.model.j:
+com.anod.car.home.model.LauncherSettings$Favorites -> com.anod.car.home.model.k:
+    18:22:android.net.Uri getContentUri(java.lang.String) -> a
+    33:38:android.net.Uri getContentUri(java.lang.String,long) -> a
+com.anod.car.home.model.ShortcutInfo -> com.anod.car.home.model.l:
+    long id -> a
+    int itemType -> b
+    java.lang.CharSequence title -> c
+    android.content.Intent intent -> d
+    boolean customIcon -> e
+    boolean usingFallbackIcon -> f
+    android.content.Intent$ShortcutIconResource iconResource -> g
+    android.graphics.Bitmap mIcon -> h
+    93:97:void setActivityIcon(android.graphics.Bitmap) -> a
+    100:104:void setFallbackIcon(android.graphics.Bitmap) -> b
+    107:111:void setCustomIcon(android.graphics.Bitmap) -> c
+    114:118:void setIconResource(android.graphics.Bitmap,android.content.Intent$ShortcutIconResource) -> a
+    121:121:android.graphics.Bitmap getIcon() -> a
+    132:137:void setActivity(android.content.ComponentName,int) -> a
+    140:140:boolean isCustomIcon() -> b
+    144:144:boolean isUsingFallbackIcon() -> c
+    148:148:android.content.Intent$ShortcutIconResource getIconResource() -> d
+    153:153:java.lang.String toString() -> toString
+com.anod.car.home.model.ShortcutModel -> com.anod.car.home.model.m:
+    android.util.SparseArray mShortcuts -> a
+    com.anod.car.home.model.LauncherModel mModel -> b
+    android.content.Context mContext -> c
+    int mAppWidgetId -> d
+    27:28:void createDefaultShortcuts() -> a
+    31:55:void init() -> b
+    58:64:void reloadShortcut(int,long) -> a
+    67:67:android.util.SparseArray getShortcuts() -> c
+    71:71:com.anod.car.home.model.ShortcutInfo getShortcut(int) -> a
+    75:77:com.anod.car.home.model.ShortcutInfo saveShortcutIntent(int,android.content.Intent,boolean) -> a
+    81:86:void saveShortcut(int,com.anod.car.home.model.ShortcutInfo) -> a
+    89:95:void dropShortcut(int,int) -> a
+com.anod.car.home.prefs.AllAppsActivity -> com.anod.car.home.prefs.AllAppsActivity:
+    com.anod.car.home.model.AllAppsListCache mAllAppsList -> a
+    java.util.ArrayList mAllAppsListCache -> b
+    android.graphics.Bitmap mDefaultIcon -> c
+    android.content.pm.PackageManager mPackageManager -> d
+    40:54:void onCreate(android.os.Bundle) -> onCreate
+    59:67:void showList() -> a
+    136:140:android.content.Intent getActivityIntent(android.content.ComponentName) -> a
+    146:151:void onItemClick(android.widget.AdapterView,android.view.View,int,long) -> onItemClick
+    35:35:android.graphics.Bitmap access$0(com.anod.car.home.prefs.AllAppsActivity) -> a
+    33:33:com.anod.car.home.model.AllAppsListCache access$1(com.anod.car.home.prefs.AllAppsActivity) -> b
+    34:34:void access$2(com.anod.car.home.prefs.AllAppsActivity,java.util.ArrayList) -> a
+    56:56:void access$3(com.anod.car.home.prefs.AllAppsActivity) -> c
+com.anod.car.home.prefs.AllAppsActivity$allAppsAdapter -> com.anod.car.home.prefs.a:
+    int resource -> b
+    com.anod.car.home.prefs.AllAppsActivity this$0 -> a
+    79:96:android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
+com.anod.car.home.prefs.AllAppsActivity$loadAllAppsCache -> com.anod.car.home.prefs.b:
+    com.anod.car.home.prefs.AllAppsActivity this$0 -> a
+    105:108:void onPostExecute(java.lang.Object) -> onPostExecute
+    111:112:void onPreExecute() -> onPreExecute
+    114:115:java.lang.Object doInBackground(java.lang.Integer[]) -> a
+    118:132:void loadAllAppsToCache() -> a
+    1:1:java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
+com.anod.car.home.prefs.Configuration -> com.anod.car.home.prefs.Configuration:
+    int mAppWidgetId -> a
+    com.anod.car.home.model.ShortcutModel mModel -> b
+    android.content.Context mContext -> c
+    int mCurrentCellId -> d
+    68:100:void onCreate(android.os.Bundle) -> onCreate
+    103:107:void initLookAndFeel() -> a
+    110:113:void initIncar() -> b
+    116:127:void initBackup() -> c
+    130:133:void initActivityChooser(com.anod.car.home.prefs.preferences.Main) -> a
+    136:147:void refreshPreference(com.anod.car.home.prefs.views.LauncherItemPreference) -> a
+    150:179:void initLauncherPreference(int) -> a
+    182:228:void initOther() -> d
+    232:251:android.app.Dialog onCreateDialog(int) -> onCreateDialog
+    256:265:void onBackPressed() -> onBackPressed
+    269:295:void onActivityResult(int,int,android.content.Intent) -> onActivityResult
+    298:304:void refreshShortcuts(android.content.Intent) -> a
+    307:328:void pickShortcut(int) -> b
+    332:343:void processShortcut(android.content.Intent) -> b
+    346:364:void completeAddShortcut(android.content.Intent,boolean) -> a
+    367:371:void startEditActivity(int,long) -> a
+    374:382:void completeEditShortcut(android.content.Intent) -> c
+    386:393:void startActivityForResultSafely(android.content.Intent,int) -> a
+    33:33:int access$0(com.anod.car.home.prefs.Configuration) -> a
+    43:43:com.anod.car.home.model.ShortcutModel access$1(com.anod.car.home.prefs.Configuration) -> b
+    306:306:void access$2(com.anod.car.home.prefs.Configuration,int) -> a
+    366:366:void access$3(com.anod.car.home.prefs.Configuration,int,long) -> a
+    135:135:void access$4(com.anod.car.home.prefs.Configuration,com.anod.car.home.prefs.views.LauncherItemPreference) -> a
+com.anod.car.home.prefs.Configuration$1 -> com.anod.car.home.prefs.c:
+    com.anod.car.home.prefs.Configuration this$0 -> a
+    121:124:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.anod.car.home.prefs.Configuration$2 -> com.anod.car.home.prefs.d:
+    com.anod.car.home.prefs.Configuration this$0 -> a
+    157:165:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.anod.car.home.prefs.Configuration$3 -> com.anod.car.home.prefs.e:
+    com.anod.car.home.prefs.Configuration this$0 -> a
+    171:174:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.anod.car.home.prefs.Configuration$4 -> com.anod.car.home.prefs.f:
+    com.anod.car.home.prefs.Configuration this$0 -> a
+    196:200:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.anod.car.home.prefs.Configuration$5 -> com.anod.car.home.prefs.g:
+    com.anod.car.home.prefs.Configuration this$0 -> a
+    208:213:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.anod.car.home.prefs.Configuration$6 -> com.anod.car.home.prefs.h:
+    com.anod.car.home.prefs.Configuration this$0 -> a
+    221:224:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.anod.car.home.prefs.Configuration$7 -> com.anod.car.home.prefs.i:
+    com.anod.car.home.prefs.Configuration this$0 -> a
+    240:241:void onCancel(android.content.DialogInterface) -> onCancel
+com.anod.car.home.prefs.ConfigurationBackup -> com.anod.car.home.prefs.ConfigurationBackup:
+    int mAppWidgetId -> a
+    android.content.Context mContext -> b
+    android.preference.Preference mBackupMainPref -> c
+    android.preference.Preference mBackupIncarPref -> d
+    com.anod.car.home.prefs.backup.PreferencesBackupManager mBackupManager -> e
+    java.lang.String mLastBackupStr -> f
+    56:91:void onCreate(android.os.Bundle) -> onCreate
+    95:121:android.app.Dialog onCreateDialog(int) -> onCreateDialog
+    125:147:void initBackup() -> a
+    150:164:void initInCar() -> b
+    168:175:void updateInCarTime() -> c
+    179:186:void updateMainTime() -> d
+    189:210:void onBackupFinish(int,int) -> a
+    241:249:void onActivityResult(int,int,android.content.Intent) -> onActivityResult
+    45:45:com.anod.car.home.prefs.backup.PreferencesBackupManager access$0(com.anod.car.home.prefs.ConfigurationBackup) -> a
+    41:41:int access$1(com.anod.car.home.prefs.ConfigurationBackup) -> b
+    188:188:void access$2(com.anod.car.home.prefs.ConfigurationBackup,int,int) -> a
+    42:42:android.content.Context access$3(com.anod.car.home.prefs.ConfigurationBackup) -> c
+com.anod.car.home.prefs.ConfigurationBackup$1 -> com.anod.car.home.prefs.j:
+    com.anod.car.home.prefs.ConfigurationBackup this$0 -> a
+    android.widget.EditText val$backupName -> b
+    111:115:void onClick(android.content.DialogInterface,int) -> onClick
+com.anod.car.home.prefs.ConfigurationBackup$2 -> com.anod.car.home.prefs.k:
+    com.anod.car.home.prefs.ConfigurationBackup this$0 -> a
+    118:118:void onClick(android.content.DialogInterface,int) -> onClick
+com.anod.car.home.prefs.ConfigurationBackup$3 -> com.anod.car.home.prefs.l:
+    com.anod.car.home.prefs.ConfigurationBackup this$0 -> a
+    128:129:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.anod.car.home.prefs.ConfigurationBackup$4 -> com.anod.car.home.prefs.m:
+    com.anod.car.home.prefs.ConfigurationBackup this$0 -> a
+    138:142:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.anod.car.home.prefs.ConfigurationBackup$5 -> com.anod.car.home.prefs.n:
+    com.anod.car.home.prefs.ConfigurationBackup this$0 -> a
+    153:155:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.anod.car.home.prefs.ConfigurationBackup$BackupTask -> com.anod.car.home.prefs.o:
+    int mTaskType -> b
+    com.anod.car.home.prefs.ConfigurationBackup this$0 -> a
+    217:218:void onPreExecute() -> onPreExecute
+    221:227:java.lang.Integer doInBackground(java.lang.String[]) -> a
+    232:236:void onPostExecute(java.lang.Integer) -> a
+    1:1:void onPostExecute(java.lang.Object) -> onPostExecute
+    1:1:java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
+com.anod.car.home.prefs.ConfigurationInCar -> com.anod.car.home.prefs.ConfigurationInCar:
+    android.content.IntentFilter INTENT_FILTER -> a
+    android.preference.PreferenceCategory mBluetoothDevicesCategory -> b
+    android.content.BroadcastReceiver mBluetoothReceiver -> c
+    boolean mFreeVersion -> d
+    android.content.Context mContext -> e
+    68:82:void onCreate(android.os.Bundle) -> onCreate
+    86:90:void onPause() -> onPause
+    94:98:void onResume() -> onResume
+    102:144:android.app.Dialog onCreateDialog(int) -> onCreateDialog
+    148:166:void initInCarFreeDialog() -> b
+    169:172:void initInCar() -> c
+    175:197:void initAutorunApp(com.anod.car.home.prefs.preferences.InCar) -> a
+    201:209:void onActivityResult(int,int,android.content.Intent) -> onActivityResult
+    212:219:void saveAutorunApp(android.content.Intent) -> a
+    222:243:void updateAutorunAppPref(android.content.Intent) -> b
+    246:275:void initBluetooth() -> d
+    60:60:android.preference.PreferenceCategory access$0(com.anod.car.home.prefs.ConfigurationInCar) -> a
+    64:64:android.content.Context access$1(com.anod.car.home.prefs.ConfigurationInCar) -> b
+    61:61:android.content.BroadcastReceiver access$2(com.anod.car.home.prefs.ConfigurationInCar) -> c
+    61:61:void access$3(com.anod.car.home.prefs.ConfigurationInCar,android.content.BroadcastReceiver) -> a
+    211:211:void access$4(com.anod.car.home.prefs.ConfigurationInCar,android.content.Intent) -> a
+    58:58:android.content.IntentFilter access$5() -> a
+com.anod.car.home.prefs.ConfigurationInCar$1 -> com.anod.car.home.prefs.p:
+    com.anod.car.home.prefs.ConfigurationInCar this$0 -> a
+    110:111:void onCancel(android.content.DialogInterface) -> onCancel
+com.anod.car.home.prefs.ConfigurationInCar$2 -> com.anod.car.home.prefs.q:
+    com.anod.car.home.prefs.ConfigurationInCar this$0 -> a
+    128:134:void onClick(android.content.DialogInterface,int) -> onClick
+com.anod.car.home.prefs.ConfigurationInCar$3 -> com.anod.car.home.prefs.r:
+    com.anod.car.home.prefs.ConfigurationInCar this$0 -> a
+    139:140:void onClick(android.content.DialogInterface,int) -> onClick
+com.anod.car.home.prefs.ConfigurationInCar$4 -> com.anod.car.home.prefs.s:
+    com.anod.car.home.prefs.ConfigurationInCar this$0 -> a
+    156:162:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.anod.car.home.prefs.ConfigurationInCar$5 -> com.anod.car.home.prefs.t:
+    com.anod.car.home.prefs.ConfigurationInCar this$0 -> a
+    187:194:boolean onPreferenceChange(android.preference.Preference,java.lang.Object) -> onPreferenceChange
+com.anod.car.home.prefs.ConfigurationInCar$6 -> com.anod.car.home.prefs.u:
+    com.anod.car.home.prefs.ConfigurationInCar this$0 -> a
+    251:260:boolean onPreferenceChange(android.preference.Preference,java.lang.Object) -> onPreferenceChange
+com.anod.car.home.prefs.ConfigurationInCar$7 -> com.anod.car.home.prefs.v:
+    com.anod.car.home.prefs.ConfigurationInCar this$0 -> a
+    269:270:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.anod.car.home.prefs.ConfigurationInCar$BluetoothStateReceiver -> com.anod.car.home.prefs.w:
+    com.anod.car.home.prefs.ConfigurationInCar this$0 -> a
+    381:398:void onReceive(android.content.Context,android.content.Intent) -> onReceive
+com.anod.car.home.prefs.ConfigurationInCar$InitBluetoothDevicesTask -> com.anod.car.home.prefs.x:
+    java.util.ArrayList mPairedList -> b
+    android.bluetooth.BluetoothAdapter mBtAdapter -> c
+    com.anod.car.home.prefs.ConfigurationInCar this$0 -> a
+    282:287:void onPreExecute() -> onPreExecute
+    290:306:void onPostExecute(java.lang.Boolean) -> a
+    310:310:void onProgressUpdate(java.lang.Integer[]) -> a
+    314:314:java.lang.Boolean doInBackground(java.lang.Integer[]) -> b
+    320:333:java.lang.Boolean loadPairedDevices() -> a
+    337:374:android.preference.CheckBoxPreference createPref(android.bluetooth.BluetoothDevice,boolean) -> a
+    1:1:void onPostExecute(java.lang.Object) -> onPostExecute
+    1:1:java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
+    1:1:void onProgressUpdate(java.lang.Object[]) -> onProgressUpdate
+    277:277:com.anod.car.home.prefs.ConfigurationInCar access$4(com.anod.car.home.prefs.ConfigurationInCar$InitBluetoothDevicesTask) -> a
+com.anod.car.home.prefs.ConfigurationInCar$InitBluetoothDevicesTask$1 -> com.anod.car.home.prefs.y:
+    com.anod.car.home.prefs.ConfigurationInCar$InitBluetoothDevicesTask this$1 -> a
+    352:371:boolean onPreferenceChange(android.preference.Preference,java.lang.Object) -> onPreferenceChange
+com.anod.car.home.prefs.ConfigurationLook -> com.anod.car.home.prefs.ConfigurationLook:
+    int mAppWidgetId -> a
+    android.content.Context mContext -> b
+    boolean mFreeVersion -> c
+    32:57:void onCreate(android.os.Bundle) -> onCreate
+    60:75:void initTransparent(boolean,com.anod.car.home.prefs.preferences.Main) -> a
+    78:126:void initButtonSkin(com.anod.car.home.prefs.preferences.Main) -> a
+    129:152:void initBackground(com.anod.car.home.prefs.preferences.Main) -> b
+    155:186:void initIcon(com.anod.car.home.prefs.preferences.Main) -> c
+    189:221:void initFont(com.anod.car.home.prefs.preferences.Main) -> d
+    27:27:android.content.Context access$0(com.anod.car.home.prefs.ConfigurationLook) -> a
+    26:26:int access$1(com.anod.car.home.prefs.ConfigurationLook) -> b
+com.anod.car.home.prefs.ConfigurationLook$1 -> com.anod.car.home.prefs.z:
+    com.anod.car.home.prefs.ConfigurationLook this$0 -> a
+    com.anod.car.home.prefs.preferences.Main val$prefs -> b
+    83:98:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+    80:80:com.anod.car.home.prefs.ConfigurationLook access$0(com.anod.car.home.prefs.ConfigurationLook$1) -> a
+com.anod.car.home.prefs.ConfigurationLook$1$1 -> com.anod.car.home.prefs.aa:
+    com.anod.car.home.prefs.ConfigurationLook$1 this$1 -> a
+    90:93:void onClick(android.content.DialogInterface,int) -> onClick
+com.anod.car.home.prefs.ConfigurationLook$2 -> com.anod.car.home.prefs.ab:
+    com.anod.car.home.prefs.ConfigurationLook this$0 -> a
+    android.preference.Preference val$btnColor -> b
+    117:123:boolean onPreferenceChange(android.preference.Preference,java.lang.Object) -> onPreferenceChange
+com.anod.car.home.prefs.ConfigurationLook$3 -> com.anod.car.home.prefs.ac:
+    com.anod.car.home.prefs.ConfigurationLook this$0 -> a
+    com.anod.car.home.prefs.preferences.Main val$prefs -> b
+    135:147:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+    132:132:com.anod.car.home.prefs.ConfigurationLook access$0(com.anod.car.home.prefs.ConfigurationLook$3) -> a
+com.anod.car.home.prefs.ConfigurationLook$3$1 -> com.anod.car.home.prefs.ad:
+    com.anod.car.home.prefs.ConfigurationLook$3 this$1 -> a
+    139:142:void onClick(android.content.DialogInterface,int) -> onClick
+com.anod.car.home.prefs.ConfigurationLook$4 -> com.anod.car.home.prefs.ae:
+    com.anod.car.home.prefs.ConfigurationLook this$0 -> a
+    com.anod.car.home.prefs.preferences.Main val$prefs -> b
+    166:178:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+    163:163:com.anod.car.home.prefs.ConfigurationLook access$0(com.anod.car.home.prefs.ConfigurationLook$4) -> a
+com.anod.car.home.prefs.ConfigurationLook$4$1 -> com.anod.car.home.prefs.af:
+    com.anod.car.home.prefs.ConfigurationLook$4 this$1 -> a
+    171:174:void onClick(android.content.DialogInterface,int) -> onClick
+com.anod.car.home.prefs.ConfigurationLook$5 -> com.anod.car.home.prefs.ag:
+    com.anod.car.home.prefs.ConfigurationLook this$0 -> a
+    com.anod.car.home.prefs.preferences.Main val$prefs -> b
+    205:217:boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+    202:202:com.anod.car.home.prefs.ConfigurationLook access$0(com.anod.car.home.prefs.ConfigurationLook$5) -> a
+com.anod.car.home.prefs.ConfigurationLook$5$1 -> com.anod.car.home.prefs.ah:
+    com.anod.car.home.prefs.ConfigurationLook$5 this$1 -> a
+    209:212:void onClick(android.content.DialogInterface,int) -> onClick
+com.anod.car.home.prefs.ConfigurationRestore -> com.anod.car.home.prefs.ConfigurationRestore:
+    int mAppWidgetId -> a
+    com.anod.car.home.prefs.backup.PreferencesBackupManager mBackupManager -> b
+    android.content.Context mContext -> c
+    com.anod.car.home.prefs.ConfigurationRestore$RestoreAdapter mAdapter -> d
+    com.anod.car.home.prefs.ConfigurationRestore$RestoreClickListener mRestoreListener -> e
+    com.anod.car.home.prefs.ConfigurationRestore$DeleteClickListener mDeleteListener -> f
+    40:68:void onCreate(android.os.Bundle) -> onCreate
+    72:80:android.app.Dialog onCreateDialog(int) -> onCreateDialog
+    138:158:void onRestoreFinish(int,int) -> a
+    29:29:com.anod.car.home.prefs.ConfigurationRestore$RestoreAdapter access$0(com.anod.car.home.prefs.ConfigurationRestore) -> a
+    27:27:com.anod.car.home.prefs.backup.PreferencesBackupManager access$1(com.anod.car.home.prefs.ConfigurationRestore) -> b
+    26:26:int access$2(com.anod.car.home.prefs.ConfigurationRestore) -> c
+    137:137:void access$3(com.anod.car.home.prefs.ConfigurationRestore,int,int) -> a
+    30:30:com.anod.car.home.prefs.ConfigurationRestore$RestoreClickListener access$4(com.anod.car.home.prefs.ConfigurationRestore) -> d
+    31:31:com.anod.car.home.prefs.ConfigurationRestore$DeleteClickListener access$5(com.anod.car.home.prefs.ConfigurationRestore) -> e
+    28:28:android.content.Context access$6(com.anod.car.home.prefs.ConfigurationRestore) -> f
+com.anod.car.home.prefs.ConfigurationRestore$DeleteClickListener -> com.anod.car.home.prefs.ai:
+    com.anod.car.home.prefs.ConfigurationRestore this$0 -> a
+    207:209:void onClick(android.view.View) -> onClick
+com.anod.car.home.prefs.ConfigurationRestore$DeleteTask -> com.anod.car.home.prefs.aj:
+    com.anod.car.home.prefs.ConfigurationRestore this$0 -> a
+    216:217:void onPreExecute() -> onPreExecute
+    220:220:java.lang.Boolean doInBackground(java.io.File[]) -> a
+    225:233:void onPostExecute(java.lang.Boolean) -> a
+    1:1:void onPostExecute(java.lang.Object) -> onPostExecute
+    1:1:java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
+com.anod.car.home.prefs.ConfigurationRestore$FileListTask -> com.anod.car.home.prefs.ak:
+    com.anod.car.home.prefs.ConfigurationRestore this$0 -> a
+    86:89:void onPreExecute() -> onPreExecute
+    92:92:java.io.File[] doInBackground(java.lang.Integer[]) -> a
+    96:107:void onPostExecute(java.io.File[]) -> a
+    1:1:void onPostExecute(java.lang.Object) -> onPostExecute
+    1:1:java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
+com.anod.car.home.prefs.ConfigurationRestore$RestoreAdapter -> com.anod.car.home.prefs.al:
+    int resource -> b
+    com.anod.car.home.prefs.ConfigurationRestore this$0 -> a
+    170:193:android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
+com.anod.car.home.prefs.ConfigurationRestore$RestoreClickListener -> com.anod.car.home.prefs.am:
+    com.anod.car.home.prefs.ConfigurationRestore this$0 -> a
+    200:201:void onClick(android.view.View) -> onClick
+com.anod.car.home.prefs.ConfigurationRestore$RestoreTask -> com.anod.car.home.prefs.an:
+    int mTaskType -> b
+    com.anod.car.home.prefs.ConfigurationRestore this$0 -> a
+    115:116:void onPreExecute() -> onPreExecute
+    119:125:java.lang.Integer doInBackground(java.lang.String[]) -> a
+    130:134:void onPostExecute(java.lang.Integer) -> a
+    1:1:void onPostExecute(java.lang.Object) -> onPostExecute
+    1:1:java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
+com.anod.car.home.prefs.PreferencesStorage -> com.anod.car.home.prefs.ao:
+    86:108:com.anod.car.home.prefs.preferences.Main loadMain(android.content.Context,int) -> a
+    112:137:void saveMain(android.content.Context,com.anod.car.home.prefs.preferences.Main,int) -> a
+    139:170:com.anod.car.home.prefs.preferences.InCar loadInCar(android.content.Context) -> a
+    174:204:void saveInCar(android.content.Context,com.anod.car.home.prefs.preferences.InCar) -> a
+    207:217:void saveAutorunApp(android.content.ComponentName,android.content.Context) -> a
+    220:231:java.util.HashMap getBtDevices(android.content.Context) -> b
+    235:245:void saveBtDevices(android.content.Context,java.util.HashMap) -> a
+    248:248:java.lang.String getName(java.lang.String,int) -> a
+    252:252:java.lang.String getLaunchComponentKey(int) -> a
+    256:256:java.lang.String getLaunchComponentName(int,int) -> a
+    260:267:java.util.ArrayList getLauncherComponents(android.content.Context,int) -> b
+    271:275:java.lang.Integer getIconsColor(android.content.SharedPreferences,int) -> a
+    279:280:boolean isFirstTime(android.content.Context,int) -> c
+    284:288:void setFirstTime(boolean,android.content.Context,int) -> a
+    291:300:void saveShortcut(android.content.Context,long,int,int) -> a
+    325:326:boolean isInCarModeEnabled(android.content.Context) -> c
+    330:356:void DropWidgetSettings(android.content.Context,int[]) -> a
+    359:364:void dropShortcutPreference(int,int,android.content.Context) -> a
+    367:385:void DropSettings(android.content.Context) -> d
+    388:393:void saveColor(android.content.Context,java.lang.String,int) -> a
+com.anod.car.home.prefs.ShortcutEditActivity -> com.anod.car.home.prefs.ShortcutEditActivity:
+    android.graphics.Bitmap mCustomIcon -> a
+    android.widget.ImageView mIconView -> b
+    android.widget.EditText mLabelEdit -> c
+    com.anod.car.home.model.LauncherModel mModel -> d
+    com.anod.car.home.model.ShortcutInfo mShortuctInfo -> e
+    android.content.Intent mIntent -> f
+    47:66:void onCreate(android.os.Bundle) -> onCreate
+    69:85:android.app.Dialog onCreateDialog(int) -> onCreateDialog
+    90:100:void iconDialogClick(int) -> a
+    104:124:void updateCustomIcon(android.content.Intent) -> a
+    128:130:void setIcon(android.graphics.Bitmap) -> a
+    133:142:java.lang.String getPath(android.net.Uri) -> a
+    148:159:void startActivityForResultSafetly(android.content.Intent,int) -> a
+    163:164:void changeIcon(android.view.View) -> changeIcon
+    168:185:void clickedOk(android.view.View) -> clickedOk
+    189:201:void onActivityResult(int,int,android.content.Intent) -> onActivityResult
+    88:88:void access$0(com.anod.car.home.prefs.ShortcutEditActivity,int) -> a
+com.anod.car.home.prefs.ShortcutEditActivity$1 -> com.anod.car.home.prefs.ap:
+    com.anod.car.home.prefs.ShortcutEditActivity this$0 -> a
+    79:80:void onClick(android.content.DialogInterface,int) -> onClick
+com.anod.car.home.prefs.backup.BackupFileHelperAgent -> com.anod.car.home.prefs.backup.BackupFileHelperAgent:
+    com.anod.car.home.prefs.backup.PreferencesBackupManager mManager -> a
+    35:42:void onCreate() -> onCreate
+    53:56:void onBackup(android.os.ParcelFileDescriptor,android.app.backup.BackupDataOutput,android.os.ParcelFileDescriptor) -> onBackup
+    65:73:void onRestore(android.app.backup.BackupDataInput,int,android.os.ParcelFileDescriptor) -> onRestore
+    76:88:android.app.backup.FileBackupHelper createFileBackupHelper(android.content.Context,java.io.File,java.lang.String) -> a
+    92:98:java.lang.String createRelativePath(java.lang.String) -> a
+com.anod.car.home.prefs.backup.PreferencesBackupManager -> com.anod.car.home.prefs.backup.a:
+    java.lang.Object[] sDataLock -> a
+    android.content.Context mContext -> b
+    58:66:long getMainTime() -> a
+    70:80:java.io.File[] getMainBackups() -> b
+    84:88:long getIncarTime() -> c
+    92:121:int doBackupMain(java.lang.String,int) -> a
+    126:133:java.util.HashMap convertToHashMap(android.util.SparseArray) -> a
+    137:159:int doBackupInCar() -> d
+    163:195:int doRestoreInCar() -> e
+    199:243:int doRestoreMain(java.lang.String,int) -> b
+    247:248:java.io.File getBackupDir() -> f
+    252:255:java.io.File getMainBackupDir() -> g
+    259:264:boolean checkMediaWritable() -> h
+    268:272:boolean checkMediaReadable() -> i
+com.anod.car.home.prefs.backup.PreferencesBackupManager$1 -> com.anod.car.home.prefs.backup.b:
+    com.anod.car.home.prefs.backup.PreferencesBackupManager this$0 -> a
+    77:77:boolean accept(java.io.File,java.lang.String) -> accept
+com.anod.car.home.prefs.preferences.InCar -> com.anod.car.home.prefs.a.a:
+    boolean inCarEnabled -> a
+    boolean powerRequired -> b
+    boolean headsetRequired -> c
+    boolean bluetoothRequired -> d
+    java.util.HashMap btDevices -> e
+    boolean disableBluetoothOnPower -> f
+    boolean enableBluetoothOnPower -> g
+    boolean disableScreenTimeout -> h
+    boolean adjustVolumeLevel -> i
+    int mediaVolumeLevel -> j
+    boolean enableBluetooth -> k
+    java.lang.String autoAnswer -> l
+    java.lang.String brightness -> m
+    java.lang.String disableWifi -> n
+    boolean autoSpeaker -> o
+    boolean activateCarMode -> p
+    android.content.ComponentName autorunApp -> q
+    50:50:boolean isInCarEnabled() -> a
+    56:57:void setInCarEnabled(boolean) -> a
+    64:64:boolean isAutoSpeaker() -> b
+    72:72:java.util.HashMap getBtDevices() -> c
+    75:77:void setBtDevices(java.util.HashMap) -> a
+    80:80:boolean isPowerRequired() -> d
+    83:83:boolean isHeadsetRequired() -> e
+    86:86:boolean isBluetoothRequired() -> f
+    89:89:boolean isDisableBluetoothOnPower() -> g
+    92:92:boolean isEnableBluetoothOnPower() -> h
+    95:95:boolean isDisableScreenTimeout() -> i
+    98:98:boolean isAdjustVolumeLevel() -> j
+    105:105:int getMediaVolumeLevel() -> k
+    108:108:boolean isEnableBluetooth() -> l
+    121:121:java.lang.String getBrightness() -> m
+    124:125:void setPowerRequired(boolean) -> b
+    127:128:void setHeadsetRequired(boolean) -> c
+    130:131:void setDisableBluetoothOnPower(boolean) -> d
+    133:134:void setEnableBluetoothOnPower(boolean) -> e
+    136:137:void setDisableScreenTimeout(boolean) -> f
+    139:140:void setAdjustVolumeLevel(boolean) -> g
+    142:143:void setMediaVolumeLevel(int) -> a
+    145:146:void setEnableBluetooth(boolean) -> h
+    148:149:void setBrightness(java.lang.String) -> a
+    151:152:void setAutoSpeaker(boolean) -> i
+    161:161:java.lang.String getDisableWifi() -> n
+    164:165:void setDisableWifi(java.lang.String) -> b
+    171:171:boolean activateCarMode() -> o
+    174:175:void setActivateCarMode(boolean) -> j
+    181:181:java.lang.String getAutoAnswer() -> p
+    184:185:void setAutoAnswer(java.lang.String) -> c
+    191:191:android.content.ComponentName getAutorunApp() -> q
+    198:199:void setAutorunApp(android.content.ComponentName) -> a
+com.anod.car.home.prefs.preferences.Main -> com.anod.car.home.prefs.a.b:
+    java.lang.String skin -> a
+    java.lang.Integer tileColor -> b
+    boolean iconsMono -> c
+    java.lang.Integer iconsColor -> d
+    java.lang.String iconsScale -> e
+    int fontColor -> f
+    int fontSize -> g
+    int backgroundColor -> h
+    boolean settingsTransparent -> i
+    boolean incarTransparent -> j
+    23:23:boolean isSettingsTransparent() -> a
+    26:26:boolean isIncarTransparent() -> b
+    29:30:void setSettingsTransparent(boolean) -> a
+    32:33:void setIncarTransparent(boolean) -> b
+    35:35:java.lang.String getSkin() -> c
+    38:38:java.lang.Integer getTileColor() -> d
+    41:41:boolean isIconsMono() -> e
+    44:44:java.lang.Integer getIconsColor() -> f
+    47:47:java.lang.String getIconsScale() -> g
+    50:50:int getFontColor() -> h
+    53:53:int getFontSize() -> i
+    56:56:int getBackgroundColor() -> j
+    59:60:void setSkin(java.lang.String) -> a
+    62:63:void setTileColor(java.lang.Integer) -> a
+    65:66:void setIconsMono(boolean) -> c
+    68:69:void setIconsColor(java.lang.Integer) -> b
+    71:72:void setIconsScaleString(java.lang.String) -> b
+    74:75:void setFontColor(int) -> a
+    77:78:void setFontSize(int) -> b
+    80:81:void setBackgroundColor(int) -> c
+com.anod.car.home.prefs.preferences.ShortcutsMain -> com.anod.car.home.prefs.a.c:
+    java.util.HashMap shortcuts -> a
+    com.anod.car.home.prefs.preferences.Main main -> b
+    22:22:java.util.HashMap getShortcuts() -> a
+    30:30:com.anod.car.home.prefs.preferences.Main getMain() -> b
+com.anod.car.home.prefs.views.CarHomeColorPickerDialog -> com.anod.car.home.prefs.views.a:
+    android.content.Context mContext -> d
+    afzkl.development.mColorPicker.ColorPickerDialog mDialog -> e
+    boolean mAlphaSliderVisible -> f
+    62:68:void setAlphaSliderVisible(boolean) -> a
+    72:77:void onColorChanged(int) -> a
+    80:84:java.lang.String getHexText(int) -> b
+    88:96:int parseColorStr(java.lang.String,int) -> a
+    100:142:void showHexDialog() -> b
+    19:19:afzkl.development.mColorPicker.ColorPickerDialog access$0(com.anod.car.home.prefs.views.CarHomeColorPickerDialog) -> a
+    99:99:void access$1(com.anod.car.home.prefs.views.CarHomeColorPickerDialog) -> b
+    87:87:int access$2(com.anod.car.home.prefs.views.CarHomeColorPickerDialog,java.lang.String,int) -> a
+    17:17:afzkl.development.mColorPicker.views.ColorPanelView access$3(com.anod.car.home.prefs.views.CarHomeColorPickerDialog) -> c
+    17:17:afzkl.development.mColorPicker.views.ColorPickerView access$4(com.anod.car.home.prefs.views.CarHomeColorPickerDialog) -> d
+com.anod.car.home.prefs.views.CarHomeColorPickerDialog$1 -> com.anod.car.home.prefs.views.b:
+    com.anod.car.home.prefs.views.CarHomeColorPickerDialog this$0 -> a
+    android.content.DialogInterface$OnClickListener val$listner -> b
+    34:36:void onClick(android.view.View) -> onClick
+com.anod.car.home.prefs.views.CarHomeColorPickerDialog$2 -> com.anod.car.home.prefs.views.c:
+    com.anod.car.home.prefs.views.CarHomeColorPickerDialog this$0 -> a
+    44:45:void onClick(android.view.View) -> onClick
+com.anod.car.home.prefs.views.CarHomeColorPickerDialog$3 -> com.anod.car.home.prefs.views.d:
+    com.anod.car.home.prefs.views.CarHomeColorPickerDialog this$0 -> a
+    53:54:void onClick(android.view.View) -> onClick
+com.anod.car.home.prefs.views.CarHomeColorPickerDialog$4 -> com.anod.car.home.prefs.views.e:
+    com.anod.car.home.prefs.views.CarHomeColorPickerDialog this$0 -> a
+    108:117:java.lang.CharSequence filter(java.lang.CharSequence,int,int,android.text.Spanned,int,int) -> filter
+com.anod.car.home.prefs.views.CarHomeColorPickerDialog$5 -> com.anod.car.home.prefs.views.f:
+    com.anod.car.home.prefs.views.CarHomeColorPickerDialog this$0 -> a
+    android.widget.EditText val$input -> b
+    int val$lastColor -> c
+    128:131:void onClick(android.content.DialogInterface,int) -> onClick
+com.anod.car.home.prefs.views.CarHomeColorPickerDialog$6 -> com.anod.car.home.prefs.views.g:
+    com.anod.car.home.prefs.views.CarHomeColorPickerDialog this$0 -> a
+    138:138:void onClick(android.content.DialogInterface,int) -> onClick
+com.anod.car.home.prefs.views.LauncherItemPreference -> com.anod.car.home.prefs.views.LauncherItemPreference:
+    android.graphics.Bitmap mIconBitmap -> a
+    int mIconResource -> b
+    android.preference.Preference$OnPreferenceClickListener mDeleteClickListener -> c
+    java.lang.Boolean mShowEditButton -> d
+    int mCellId -> e
+    38:39:void setCellId(int) -> a
+    42:42:int getCellId() -> a
+    46:48:void showButtons(boolean) -> a
+    51:54:void setIconResource(int) -> b
+    57:60:void setIconBitmap(android.graphics.Bitmap) -> a
+    64:87:void onBindView(android.view.View) -> onBindView
+    91:94:void onClick(android.view.View) -> onClick
+    97:98:void setOnDeleteClickListener(android.preference.Preference$OnPreferenceClickListener) -> a
+com.anod.car.home.prefs.views.SeekBarPreference -> com.anod.car.home.prefs.views.SeekBarPreference:
+    android.widget.SeekBar mSeekBar -> a
+    android.widget.TextView mSplashText -> b
+    android.widget.TextView mValueText -> c
+    android.widget.TextView mSuffixView -> d
+    android.content.Context mContext -> e
+    java.lang.String mDialogMessage -> f
+    java.lang.String mSuffix -> g
+    int mMax -> h
+    int mValue -> i
+    39:45:void setValue(int) -> a
+    49:58:void onDialogClosed(boolean) -> onDialogClosed
+    62:106:android.view.View onCreateDialogView() -> onCreateDialogView
+    111:114:void onBindDialogView(android.view.View) -> onBindDialogView
+    118:118:java.lang.Object onGetDefaultValue(android.content.res.TypedArray,int) -> onGetDefaultValue
+    123:124:void onSetInitialValue(boolean,java.lang.Object) -> onSetInitialValue
+    128:132:void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
+    136:136:void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
+    140:140:void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
+    23:23:android.widget.TextView access$0(com.anod.car.home.prefs.views.SeekBarPreference) -> a
+    27:27:int access$1(com.anod.car.home.prefs.views.SeekBarPreference) -> b
+    22:22:android.widget.SeekBar access$2(com.anod.car.home.prefs.views.SeekBarPreference) -> c
+com.anod.car.home.prefs.views.SeekBarPreference$1 -> com.anod.car.home.prefs.views.h:
+    com.anod.car.home.prefs.views.SeekBarPreference this$0 -> a
+    83:97:boolean onKey(android.view.View,int,android.view.KeyEvent) -> onKey
+com.anod.car.home.skin.BBBIconProcessor -> com.anod.car.home.a.a:
+    9:15:android.graphics.Bitmap process(android.graphics.Bitmap) -> a
+com.anod.car.home.skin.BBBProperties -> com.anod.car.home.a.b:
+    10:10:int getLayout() -> a
+    15:15:com.anod.car.home.skin.IconProcessor getIconProcessor() -> b
+    20:20:int getSetShortcutRes() -> c
+    25:25:int getSetShortcutText() -> d
+com.anod.car.home.skin.BaseProperties -> com.anod.car.home.a.c:
+    9:9:int getInCarButtonExitRes() -> e
+    14:14:int getInCarButtonEnterRes() -> f
+    19:19:int getSetShortcutRes() -> c
+    24:24:com.anod.car.home.skin.IconProcessor getIconProcessor() -> b
+    29:29:int getSetShortcutText() -> d
+com.anod.car.home.skin.CarHomeProperties -> com.anod.car.home.a.d:
+    9:9:int getLayout() -> a
+com.anod.car.home.skin.GlossyProperties -> com.anod.car.home.a.e:
+    9:9:int getLayout() -> a
+com.anod.car.home.skin.HoloProperties -> com.anod.car.home.a.f:
+    10:10:int getInCarButtonExitRes() -> e
+    15:15:int getInCarButtonEnterRes() -> f
+    20:20:int getSetShortcutRes() -> c
+    25:25:int getLayout() -> a
+com.anod.car.home.skin.IconProcessor -> com.anod.car.home.a.g:
+    android.graphics.Bitmap process(android.graphics.Bitmap) -> a
+com.anod.car.home.skin.MetroProperties -> com.anod.car.home.a.h:
+    9:9:int getInCarButtonExitRes() -> e
+    14:14:int getInCarButtonEnterRes() -> f
+    19:19:int getLayout() -> a
+com.anod.car.home.skin.PropertiesFactory -> com.anod.car.home.a.i:
+    8:17:com.anod.car.home.skin.SkinProperties create(java.lang.String) -> a
+com.anod.car.home.skin.SkinProperties -> com.anod.car.home.a.j:
+    int getInCarButtonExitRes() -> e
+    int getInCarButtonEnterRes() -> f
+    int getSetShortcutRes() -> c
+    int getLayout() -> a
+    com.anod.car.home.skin.IconProcessor getIconProcessor() -> b
+    int getSetShortcutText() -> d
+com.anod.car.home.utils.FastBitmapDrawable -> com.anod.car.home.b.a:
+    android.graphics.Bitmap mBitmap -> a
+    int mWidth -> b
+    int mHeight -> c
+    26:27:void draw(android.graphics.Canvas) -> draw
+    31:31:int getOpacity() -> getOpacity
+    36:36:void setAlpha(int) -> setAlpha
+    40:40:void setColorFilter(android.graphics.ColorFilter) -> setColorFilter
+    44:44:int getIntrinsicWidth() -> getIntrinsicWidth
+    49:49:int getIntrinsicHeight() -> getIntrinsicHeight
+    54:54:int getMinimumWidth() -> getMinimumWidth
+    59:59:int getMinimumHeight() -> getMinimumHeight
+com.anod.car.home.utils.UtilitiesBitmap -> com.anod.car.home.b.b:
+    int sIconWidth -> a
+    int sIconHeight -> b
+    android.graphics.Paint sPaint -> c
+    android.graphics.Rect sBounds -> d
+    android.graphics.Rect sOldBounds -> e
+    android.graphics.Canvas sCanvas -> f
+    android.graphics.ColorMatrixColorFilter sGreyColorMatrixColorFilter -> g
+    44:49:void initStatics(android.content.Context) -> a
+    52:57:android.graphics.Bitmap makeDefaultIcon(android.content.pm.PackageManager) -> a
+    65:65:android.graphics.Bitmap createIconBitmap(android.graphics.drawable.Drawable,android.content.Context) -> a
+    122:127:android.graphics.Bitmap scaleBitmap(android.graphics.Bitmap,float,android.content.Context) -> a
+    131:144:android.graphics.Bitmap applyBitmapFilter(android.graphics.Bitmap,android.content.Context) -> a
+    148:154:android.graphics.Bitmap tint(android.graphics.Bitmap,int) -> a
+    160:169:byte[] flattenBitmap(android.graphics.Bitmap) -> a
+    190:190:android.graphics.Bitmap createBitmapThumbnail(android.graphics.Bitmap,android.content.Context) -> b
+com.anod.car.home.utils.Utils -> com.anod.car.home.b.c:
+    15:15:float calcIconsScale(java.lang.String) -> a
+    19:19:java.lang.String componentToString(android.content.ComponentName) -> a
+    23:24:android.content.ComponentName stringToComponent(java.lang.String) -> b
+    29:38:void startActivitySafely(android.content.Intent,android.content.Context) -> a

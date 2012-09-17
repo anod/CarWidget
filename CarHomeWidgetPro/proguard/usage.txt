@@ -1,0 +1,625 @@
+afzkl.development.mColorPicker.views.ColorPanelView:
+    private static final float BORDER_WIDTH_PX
+afzkl.development.mColorPicker.views.ColorPickerView:
+    private static final int PANEL_SAT_VAL
+    private static final int PANEL_HUE
+    private static final int PANEL_ALPHA
+    private static final float BORDER_WIDTH_PX
+android.annotation.SuppressLint
+android.annotation.TargetApi
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoIcsImpl
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoStubImpl
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoVersionImpl
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompatIcs
+android.support.v4.content.AsyncTaskLoader
+android.support.v4.content.AsyncTaskLoader$LoadTask
+android.support.v4.content.ContextCompatHoneycomb:
+    25:25:ContextCompatHoneycomb()
+android.support.v4.content.ContextCompatJellybean:
+    23:23:ContextCompatJellybean()
+android.support.v4.content.CursorLoader
+android.support.v4.content.IntentCompat
+android.support.v4.content.Loader:
+    android.content.Context mContext
+    90:92:public Loader(android.content.Context)
+    102:105:public void deliverResult(java.lang.Object)
+    111:111:public android.content.Context getContext()
+    118:118:public int getId()
+    157:157:public boolean isStarted()
+    166:166:public boolean isAbandoned()
+    175:175:public boolean isReset()
+    217:218:public void forceLoad()
+    225:225:protected void onForceLoad()
+    312:314:public boolean takeContentChanged()
+    326:334:public void onContentChanged()
+android.support.v4.content.Loader$ForceLoadContentObserver
+android.support.v4.content.Loader$OnLoadCompleteListener:
+    public abstract void onLoadComplete(android.support.v4.content.Loader,java.lang.Object)
+android.support.v4.content.LocalBroadcastManager
+android.support.v4.content.LocalBroadcastManager$1
+android.support.v4.content.LocalBroadcastManager$BroadcastRecord
+android.support.v4.content.LocalBroadcastManager$ReceiverRecord
+android.support.v4.content.ModernAsyncTask
+android.support.v4.content.ModernAsyncTask$1
+android.support.v4.content.ModernAsyncTask$2
+android.support.v4.content.ModernAsyncTask$3
+android.support.v4.content.ModernAsyncTask$4
+android.support.v4.content.ModernAsyncTask$AsyncTaskResult
+android.support.v4.content.ModernAsyncTask$InternalHandler
+android.support.v4.content.ModernAsyncTask$Status
+android.support.v4.content.ModernAsyncTask$WorkerRunnable
+android.support.v4.content.pm.ActivityInfoCompat
+android.support.v4.database.DatabaseUtilsCompat
+android.support.v4.net.ConnectivityManagerCompat
+android.support.v4.net.ConnectivityManagerCompat$BaseConnectivityManagerCompatImpl
+android.support.v4.net.ConnectivityManagerCompat$ConnectivityManagerCompatImpl
+android.support.v4.net.ConnectivityManagerCompat$GingerbreadConnectivityManagerCompatImpl
+android.support.v4.net.ConnectivityManagerCompat$HoneycombMR2ConnectivityManagerCompatImpl
+android.support.v4.net.ConnectivityManagerCompat$JellyBeanConnectivityManagerCompatImpl
+android.support.v4.net.ConnectivityManagerCompatGingerbread
+android.support.v4.net.ConnectivityManagerCompatHoneycombMR2
+android.support.v4.net.ConnectivityManagerCompatJellyBean
+android.support.v4.net.TrafficStatsCompat
+android.support.v4.net.TrafficStatsCompat$1
+android.support.v4.net.TrafficStatsCompat$BaseTrafficStatsCompatImpl
+android.support.v4.net.TrafficStatsCompat$BaseTrafficStatsCompatImpl$1
+android.support.v4.net.TrafficStatsCompat$BaseTrafficStatsCompatImpl$SocketTags
+android.support.v4.net.TrafficStatsCompat$IcsTrafficStatsCompatImpl
+android.support.v4.net.TrafficStatsCompat$TrafficStatsCompatImpl
+android.support.v4.net.TrafficStatsCompatIcs
+android.support.v4.os.ParcelableCompat:
+    26:42:public ParcelableCompat()
+android.support.v4.os.ParcelableCompatCreatorHoneycombMR2Stub:
+    22:22:ParcelableCompatCreatorHoneycombMR2Stub()
+android.support.v4.util.DebugUtils:
+    25:25:public DebugUtils()
+android.support.v4.util.LongSparseArray
+android.support.v4.util.LruCache
+android.support.v4.util.SparseArrayCompat:
+    107:111:public void removeAtRange(int,int)
+    236:241:public void setValueAt(int,java.lang.Object)
+    265:273:public int indexOfValue(java.lang.Object)
+    296:323:public void append(int,java.lang.Object)
+android.support.v4.util.TimeUtils
+android.support.v4.view.AccessibilityDelegateCompat
+android.support.v4.view.AccessibilityDelegateCompat$AccessibilityDelegateIcsImpl
+android.support.v4.view.AccessibilityDelegateCompat$AccessibilityDelegateIcsImpl$1
+android.support.v4.view.AccessibilityDelegateCompat$AccessibilityDelegateImpl
+android.support.v4.view.AccessibilityDelegateCompat$AccessibilityDelegateJellyBeanImpl
+android.support.v4.view.AccessibilityDelegateCompat$AccessibilityDelegateJellyBeanImpl$1
+android.support.v4.view.AccessibilityDelegateCompat$AccessibilityDelegateStubImpl
+android.support.v4.view.AccessibilityDelegateCompatIcs
+android.support.v4.view.AccessibilityDelegateCompatIcs$1
+android.support.v4.view.AccessibilityDelegateCompatIcs$AccessibilityDelegateBridge
+android.support.v4.view.AccessibilityDelegateCompatJellyBean
+android.support.v4.view.AccessibilityDelegateCompatJellyBean$1
+android.support.v4.view.AccessibilityDelegateCompatJellyBean$AccessibilityDelegateBridgeJellyBean
+android.support.v4.view.KeyEventCompat:
+    25:95:public KeyEventCompat()
+    127:127:public static int normalizeMetaState(int)
+    131:131:public static boolean metaStateHasModifiers(int,int)
+    135:135:public static boolean metaStateHasNoModifiers(int)
+android.support.v4.view.KeyEventCompat$BaseKeyEventVersionImpl:
+    private static final int META_MODIFIER_MASK
+    private static final int META_ALL_MASK
+android.support.v4.view.KeyEventCompat$HoneycombKeyEventVersionImpl:
+    98:98:public int normalizeMetaState(int)
+android.support.v4.view.KeyEventCompat$KeyEventVersionImpl:
+    public abstract int normalizeMetaState(int)
+android.support.v4.view.KeyEventCompatHoneycomb:
+    24:24:KeyEventCompatHoneycomb()
+    26:26:public static int normalizeMetaState(int)
+android.support.v4.view.MenuCompat
+android.support.v4.view.MenuCompat$BaseMenuVersionImpl
+android.support.v4.view.MenuCompat$HoneycombMenuVersionImpl
+android.support.v4.view.MenuCompat$MenuVersionImpl
+android.support.v4.view.MenuItemCompat
+android.support.v4.view.MenuItemCompat$BaseMenuVersionImpl
+android.support.v4.view.MenuItemCompat$HoneycombMenuVersionImpl
+android.support.v4.view.MenuItemCompat$MenuVersionImpl
+android.support.v4.view.MenuItemCompatHoneycomb
+android.support.v4.view.MotionEventCompat:
+    public static final int ACTION_MASK
+    public static final int ACTION_POINTER_DOWN
+    public static final int ACTION_POINTER_UP
+    public static final int ACTION_HOVER_MOVE
+    public static final int ACTION_SCROLL
+    public static final int ACTION_POINTER_INDEX_MASK
+    public static final int ACTION_POINTER_INDEX_SHIFT
+    public static final int ACTION_HOVER_ENTER
+    public static final int ACTION_HOVER_EXIT
+    25:75:public MotionEventCompat()
+    174:174:public static int getActionMasked(android.view.MotionEvent)
+android.support.v4.view.MotionEventCompatEclair:
+    24:24:MotionEventCompatEclair()
+android.support.v4.view.PagerTabStrip
+android.support.v4.view.PagerTabStrip$1
+android.support.v4.view.PagerTabStrip$2
+android.support.v4.view.PagerTitleStrip
+android.support.v4.view.PagerTitleStrip$1
+android.support.v4.view.PagerTitleStrip$PageListener
+android.support.v4.view.PagerTitleStrip$PagerTitleStripImpl
+android.support.v4.view.PagerTitleStrip$PagerTitleStripImplBase
+android.support.v4.view.PagerTitleStrip$PagerTitleStripImplIcs
+android.support.v4.view.PagerTitleStripIcs
+android.support.v4.view.PagerTitleStripIcs$SingleLineAllCapsTransform
+android.support.v4.view.VelocityTrackerCompat:
+    25:51:public VelocityTrackerCompat()
+    91:91:public static float getYVelocity(android.view.VelocityTracker,int)
+android.support.v4.view.VelocityTrackerCompat$BaseVelocityTrackerVersionImpl:
+    44:44:public float getYVelocity(android.view.VelocityTracker,int)
+android.support.v4.view.VelocityTrackerCompat$HoneycombVelocityTrackerVersionImpl:
+    58:58:public float getYVelocity(android.view.VelocityTracker,int)
+android.support.v4.view.VelocityTrackerCompat$VelocityTrackerVersionImpl:
+    public abstract float getYVelocity(android.view.VelocityTracker,int)
+android.support.v4.view.VelocityTrackerCompatHoneycomb:
+    24:24:VelocityTrackerCompatHoneycomb()
+    29:29:public static float getYVelocity(android.view.VelocityTracker,int)
+android.support.v4.view.ViewCompat:
+    public static final int OVER_SCROLL_ALWAYS
+    public static final int OVER_SCROLL_IF_CONTENT_SCROLLS
+    public static final int OVER_SCROLL_NEVER
+    private static final long FAKE_FRAME_TIME
+    public static final int IMPORTANT_FOR_ACCESSIBILITY_AUTO
+    public static final int IMPORTANT_FOR_ACCESSIBILITY_YES
+    public static final int IMPORTANT_FOR_ACCESSIBILITY_NO
+    29:186:public ViewCompat()
+    264:264:public static boolean canScrollVertically(android.view.View,int)
+    293:294:public static void setOverScrollMode(android.view.View,int)
+    330:331:public static void onPopulateAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    363:364:public static void onInitializeAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    399:400:public static void onInitializeAccessibilityNodeInfo(android.view.View,android.support.v4.view.accessibility.AccessibilityNodeInfoCompat)
+    414:415:public static void setAccessibilityDelegate(android.view.View,android.support.v4.view.AccessibilityDelegateCompat)
+    426:426:public static boolean hasTransientState(android.view.View)
+    437:438:public static void setHasTransientState(android.view.View,boolean)
+    468:469:public static void postInvalidateOnAnimation(android.view.View,int,int,int,int)
+    482:483:public static void postOnAnimation(android.view.View,java.lang.Runnable)
+    499:500:public static void postOnAnimationDelayed(android.view.View,java.lang.Runnable,long)
+    515:515:public static int getImportantForAccessibility(android.view.View)
+    531:532:public static void setImportantForAccessibility(android.view.View,int)
+    558:558:public static android.support.v4.view.accessibility.AccessibilityNodeProviderCompat getAccessibilityNodeProvider(android.view.View)
+android.support.v4.view.ViewCompat$BaseViewCompatImpl:
+    89:89:public boolean canScrollVertically(android.view.View,int)
+    96:96:public void setOverScrollMode(android.view.View,int)
+    99:99:public void setAccessibilityDelegate(android.view.View,android.support.v4.view.AccessibilityDelegateCompat)
+    102:102:public void onPopulateAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    105:105:public void onInitializeAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    108:108:public void onInitializeAccessibilityNodeInfo(android.view.View,android.support.v4.view.accessibility.AccessibilityNodeInfoCompat)
+    111:111:public boolean hasTransientState(android.view.View)
+    115:115:public void setHasTransientState(android.view.View,boolean)
+    120:121:public void postInvalidateOnAnimation(android.view.View,int,int,int,int)
+    123:124:public void postOnAnimation(android.view.View,java.lang.Runnable)
+    126:127:public void postOnAnimationDelayed(android.view.View,java.lang.Runnable,long)
+    132:132:public int getImportantForAccessibility(android.view.View)
+    136:136:public void setImportantForAccessibility(android.view.View,int)
+    138:138:public android.support.v4.view.accessibility.AccessibilityNodeProviderCompat getAccessibilityNodeProvider(android.view.View)
+android.support.v4.view.ViewCompat$GBViewCompatImpl:
+    149:150:public void setOverScrollMode(android.view.View,int)
+android.support.v4.view.ViewCompat$ICSViewCompatImpl:
+    166:166:public boolean canScrollVertically(android.view.View,int)
+    170:171:public void onPopulateAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    174:175:public void onInitializeAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    178:179:public void onInitializeAccessibilityNodeInfo(android.view.View,android.support.v4.view.accessibility.AccessibilityNodeInfoCompat)
+    182:183:public void setAccessibilityDelegate(android.view.View,android.support.v4.view.AccessibilityDelegateCompat)
+android.support.v4.view.ViewCompat$JBViewCompatImpl:
+    189:189:public boolean hasTransientState(android.view.View)
+    193:194:public void setHasTransientState(android.view.View,boolean)
+    201:202:public void postInvalidateOnAnimation(android.view.View,int,int,int,int)
+    205:206:public void postOnAnimation(android.view.View,java.lang.Runnable)
+    209:210:public void postOnAnimationDelayed(android.view.View,java.lang.Runnable,long)
+    213:213:public int getImportantForAccessibility(android.view.View)
+    217:218:public void setImportantForAccessibility(android.view.View,int)
+    221:225:public android.support.v4.view.accessibility.AccessibilityNodeProviderCompat getAccessibilityNodeProvider(android.view.View)
+android.support.v4.view.ViewCompat$ViewCompatImpl:
+    public abstract boolean canScrollVertically(android.view.View,int)
+    public abstract void setOverScrollMode(android.view.View,int)
+    public abstract void onInitializeAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    public abstract void onPopulateAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    public abstract void onInitializeAccessibilityNodeInfo(android.view.View,android.support.v4.view.accessibility.AccessibilityNodeInfoCompat)
+    public abstract void setAccessibilityDelegate(android.view.View,android.support.v4.view.AccessibilityDelegateCompat)
+    public abstract boolean hasTransientState(android.view.View)
+    public abstract void setHasTransientState(android.view.View,boolean)
+    public abstract void postInvalidateOnAnimation(android.view.View,int,int,int,int)
+    public abstract void postOnAnimation(android.view.View,java.lang.Runnable)
+    public abstract void postOnAnimationDelayed(android.view.View,java.lang.Runnable,long)
+    public abstract int getImportantForAccessibility(android.view.View)
+    public abstract void setImportantForAccessibility(android.view.View,int)
+    public abstract android.support.v4.view.accessibility.AccessibilityNodeProviderCompat getAccessibilityNodeProvider(android.view.View)
+android.support.v4.view.ViewCompatGingerbread:
+    21:21:ViewCompatGingerbread()
+    27:28:public static void setOverScrollMode(android.view.View,int)
+android.support.v4.view.ViewCompatHC:
+    21:21:ViewCompatHC()
+android.support.v4.view.ViewCompatICS:
+    27:27:ViewCompatICS()
+    34:34:public static boolean canScrollVertically(android.view.View,int)
+    38:39:public static void setAccessibilityDelegate(android.view.View,java.lang.Object)
+    42:43:public static void onPopulateAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    46:47:public static void onInitializeAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    50:51:public static void onInitializeAccessibilityNodeInfo(android.view.View,java.lang.Object)
+android.support.v4.view.ViewCompatJB:
+    24:24:public ViewCompatJB()
+    27:27:public static boolean hasTransientState(android.view.View)
+    31:32:public static void setHasTransientState(android.view.View,boolean)
+    40:41:public static void postInvalidateOnAnimation(android.view.View,int,int,int,int)
+    44:45:public static void postOnAnimation(android.view.View,java.lang.Runnable)
+    48:49:public static void postOnAnimationDelayed(android.view.View,java.lang.Runnable,long)
+    52:52:public static int getImportantForAccessibility(android.view.View)
+    56:57:public static void setImportantForAccessibility(android.view.View,int)
+    60:60:public static java.lang.Object getAccessibilityNodeProvider(android.view.View)
+android.support.v4.view.ViewConfigurationCompat
+android.support.v4.view.ViewConfigurationCompat$BaseViewConfigurationVersionImpl
+android.support.v4.view.ViewConfigurationCompat$FroyoViewConfigurationVersionImpl
+android.support.v4.view.ViewConfigurationCompat$ViewConfigurationVersionImpl
+android.support.v4.view.ViewConfigurationCompatFroyo
+android.support.v4.view.ViewGroupCompat
+android.support.v4.view.ViewGroupCompat$ViewGroupCompatIcsImpl
+android.support.v4.view.ViewGroupCompat$ViewGroupCompatImpl
+android.support.v4.view.ViewGroupCompat$ViewGroupCompatStubImpl
+android.support.v4.view.ViewGroupCompatIcs
+android.support.v4.view.ViewPager:
+    private static final java.lang.String TAG
+    private static final boolean DEBUG
+    private static final boolean USE_CACHE
+    private static final int DEFAULT_OFFSCREEN_PAGES
+    private static final int MAX_SETTLE_DURATION
+    private static final int MIN_DISTANCE_FOR_FLING
+    private static final int DEFAULT_GUTTER_SIZE
+    private boolean mIgnoreGutter
+    private static final int INVALID_POINTER
+    private static final int CLOSE_ENOUGH
+    private long mFakeDragBeginTime
+    public static final int SCROLL_STATE_IDLE
+    public static final int SCROLL_STATE_DRAGGING
+    public static final int SCROLL_STATE_SETTLING
+    296:298:public ViewPager(android.content.Context)
+    301:303:public ViewPager(android.content.Context,android.util.AttributeSet)
+    306:330:void initViewPager()
+    514:516:android.support.v4.view.ViewPager$OnPageChangeListener setInternalPageChangeListener(android.support.v4.view.ViewPager$OnPageChangeListener)
+    638:639:void smoothScrollTo(int,int)
+    2025:2041:public boolean beginFakeDrag()
+    2051:2072:public void endFakeDrag()
+    2082:2120:public void fakeDragBy(float)
+    2132:2132:public boolean isFakeDragging()
+    82:82:static synthetic android.support.v4.view.PagerAdapter access$100(android.support.v4.view.ViewPager)
+    82:82:static synthetic int access$200(android.support.v4.view.ViewPager)
+android.support.v4.view.ViewPager$MyAccessibilityDelegate
+android.support.v4.view.ViewPager$SimpleOnPageChangeListener
+android.support.v4.view.accessibility.AccessibilityEventCompat
+android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventIcsImpl
+android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventStubImpl
+android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventVersionImpl
+android.support.v4.view.accessibility.AccessibilityEventCompatIcs
+android.support.v4.view.accessibility.AccessibilityManagerCompat
+android.support.v4.view.accessibility.AccessibilityManagerCompat$AccessibilityManagerIcsImpl
+android.support.v4.view.accessibility.AccessibilityManagerCompat$AccessibilityManagerIcsImpl$1
+android.support.v4.view.accessibility.AccessibilityManagerCompat$AccessibilityManagerStubImpl
+android.support.v4.view.accessibility.AccessibilityManagerCompat$AccessibilityManagerVersionImpl
+android.support.v4.view.accessibility.AccessibilityManagerCompat$AccessibilityStateChangeListenerCompat
+android.support.v4.view.accessibility.AccessibilityManagerCompatIcs
+android.support.v4.view.accessibility.AccessibilityManagerCompatIcs$1
+android.support.v4.view.accessibility.AccessibilityManagerCompatIcs$AccessibilityStateChangeListenerBridge
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoIcsImpl
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoImpl
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanImpl
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoStubImpl
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompatIcs
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompatJellyBean
+android.support.v4.view.accessibility.AccessibilityNodeProviderCompat
+android.support.v4.view.accessibility.AccessibilityNodeProviderCompat$AccessibilityNodeProviderImpl
+android.support.v4.view.accessibility.AccessibilityNodeProviderCompat$AccessibilityNodeProviderJellyBeanImpl
+android.support.v4.view.accessibility.AccessibilityNodeProviderCompat$AccessibilityNodeProviderJellyBeanImpl$1
+android.support.v4.view.accessibility.AccessibilityNodeProviderCompat$AccessibilityNodeProviderStubImpl
+android.support.v4.view.accessibility.AccessibilityNodeProviderCompatJellyBean
+android.support.v4.view.accessibility.AccessibilityNodeProviderCompatJellyBean$1
+android.support.v4.view.accessibility.AccessibilityNodeProviderCompatJellyBean$AccessibilityNodeInfoBridge
+android.support.v4.view.accessibility.AccessibilityRecordCompat
+android.support.v4.view.accessibility.AccessibilityRecordCompat$AccessibilityRecordIcsImpl
+android.support.v4.view.accessibility.AccessibilityRecordCompat$AccessibilityRecordIcsMr1Impl
+android.support.v4.view.accessibility.AccessibilityRecordCompat$AccessibilityRecordImpl
+android.support.v4.view.accessibility.AccessibilityRecordCompat$AccessibilityRecordJellyBeanImpl
+android.support.v4.view.accessibility.AccessibilityRecordCompat$AccessibilityRecordStubImpl
+android.support.v4.view.accessibility.AccessibilityRecordCompatIcs
+android.support.v4.view.accessibility.AccessibilityRecordCompatIcsMr1
+android.support.v4.view.accessibility.AccessibilityRecordCompatJellyBean
+android.support.v4.widget.CursorAdapter
+android.support.v4.widget.CursorAdapter$1
+android.support.v4.widget.CursorAdapter$ChangeObserver
+android.support.v4.widget.CursorAdapter$MyDataSetObserver
+android.support.v4.widget.CursorFilter
+android.support.v4.widget.CursorFilter$CursorFilterClient
+android.support.v4.widget.EdgeEffectCompat:
+    132:134:public EdgeEffectCompat(android.content.Context)
+    204:204:public boolean onAbsorb(int)
+android.support.v4.widget.EdgeEffectCompat$BaseEdgeEffectImpl:
+    60:60:public java.lang.Object newEdgeEffect(android.content.Context)
+    82:82:public boolean onAbsorb(java.lang.Object,int)
+android.support.v4.widget.EdgeEffectCompat$EdgeEffectIcsImpl:
+    92:92:public java.lang.Object newEdgeEffect(android.content.Context)
+    116:116:public boolean onAbsorb(java.lang.Object,int)
+android.support.v4.widget.EdgeEffectCompat$EdgeEffectImpl:
+    public abstract java.lang.Object newEdgeEffect(android.content.Context)
+    public abstract boolean onAbsorb(java.lang.Object,int)
+android.support.v4.widget.EdgeEffectCompatIcs:
+    28:28:EdgeEffectCompatIcs()
+    30:30:public static java.lang.Object newEdgeEffect(android.content.Context)
+    57:58:public static boolean onAbsorb(java.lang.Object,int)
+android.support.v4.widget.ResourceCursorAdapter
+android.support.v4.widget.ScrollerCompat
+android.support.v4.widget.ScrollerCompat$ScrollerCompatImplIcs
+android.support.v4.widget.ScrollerCompatIcs
+android.support.v4.widget.SearchViewCompat
+android.support.v4.widget.SearchViewCompat$OnQueryTextListenerCompat
+android.support.v4.widget.SearchViewCompat$SearchViewCompatHoneycombImpl
+android.support.v4.widget.SearchViewCompat$SearchViewCompatHoneycombImpl$1
+android.support.v4.widget.SearchViewCompat$SearchViewCompatImpl
+android.support.v4.widget.SearchViewCompat$SearchViewCompatStubImpl
+android.support.v4.widget.SearchViewCompatHoneycomb
+android.support.v4.widget.SearchViewCompatHoneycomb$1
+android.support.v4.widget.SearchViewCompatHoneycomb$OnQueryTextListenerCompatBridge
+android.support.v4.widget.SimpleCursorAdapter
+android.support.v4.widget.SimpleCursorAdapter$CursorToStringConverter
+android.support.v4.widget.SimpleCursorAdapter$ViewBinder
+com.android.internal.telephony.ITelephony$Stub
+com.android.internal.telephony.ITelephony$Stub$Proxy
+com.anod.car.home.CarWidgetApplication:
+    22:23:public void setAllAppCache(com.anod.car.home.model.AllAppsListCache)
+com.anod.car.home.Launcher:
+    public static final java.lang.String PACKAGE_FREE
+    27:27:public Launcher()
+com.anod.car.home.Manifest
+com.anod.car.home.Manifest$permission
+com.anod.car.home.R:
+    10:10:public R()
+com.anod.car.home.R$array
+com.anod.car.home.R$attr
+com.anod.car.home.R$color:
+    29:29:public R$color()
+com.anod.car.home.R$dimen:
+    36:36:public R$dimen()
+com.anod.car.home.R$drawable:
+    43:43:public R$drawable()
+com.anod.car.home.R$id:
+    84:84:public R$id()
+com.anod.car.home.R$layout:
+    132:132:public R$layout()
+com.anod.car.home.R$string:
+    150:150:public R$string()
+com.anod.car.home.R$style
+com.anod.car.home.R$xml:
+    299:299:public R$xml()
+com.anod.car.home.ReenableCarModeReceiver
+com.anod.car.home.ShortcutActivity:
+    public static final java.lang.String EXTRA_INTENT
+com.anod.car.home.ShortcutPendingIntent:
+    public static final java.lang.String INTENT_ACTION_CALL_PRIVILEGED
+    11:11:public ShortcutPendingIntent()
+com.anod.car.home.WidgetState:
+    7:7:public WidgetState()
+com.anod.car.home.incar.Bluetooth:
+    5:5:public Bluetooth()
+com.anod.car.home.incar.BluetoothClassHelper:
+    public static final int PROFILE_HEADSET
+    public static final int PROFILE_A2DP
+    7:7:public BluetoothClassHelper()
+com.anod.car.home.incar.Handler:
+    private static final int BRIGHTNESS_MAX
+    private static final int BRIGHTNESS_NIGHT
+    private static final int BRIGHTNESS_DAY
+    private static final byte FLAG_POWER
+    private static final byte FLAG_HEADSET
+    private static final byte FLAG_BLUETOOTH
+    22:22:public Handler()
+com.anod.car.home.incar.ModePhoneStateListener:
+    private static final int ANSWER_DALAY_MS
+com.anod.car.home.incar.ModeService:
+    private static final int NOTIFICATION_ID
+    public static final int MODE_SWITCH_OFF
+    public static final int MODE_SWITCH_ON
+com.anod.car.home.incar.SeekBarPreference:
+    private static final java.lang.String androidns
+com.anod.car.home.model.AllAppsListCache:
+    private static final int INITIAL_ICON_CACHE_CAPACITY
+    49:52:public void remove(android.content.ComponentName)
+com.anod.car.home.model.AllAppsListCache$CacheEntry:
+    public java.lang.String activityName
+com.anod.car.home.model.ApplicationCacheInfo
+com.anod.car.home.model.LauncherModel:
+    static final java.lang.String TAG
+    289:299:static boolean shortcutExists(android.content.Context,java.lang.String,android.content.Intent)
+com.anod.car.home.model.LauncherProvider:
+    private static final java.lang.String TAG
+    private static final boolean LOGD
+    private static final java.lang.String DATABASE_NAME
+    private static final int DATABASE_VERSION
+    public static final java.lang.String AUTHORITY_FREE
+    public static final java.lang.String AUTHORITY_PRO
+    static final java.lang.String TABLE_FAVORITES
+    148:155:static java.lang.String buildOrWhereString(java.lang.String,int[])
+com.anod.car.home.model.LauncherSettings:
+    12:12:public LauncherSettings()
+com.anod.car.home.model.LauncherSettings$Favorites:
+    static final java.lang.String TITLE
+    static final java.lang.String INTENT
+    static final java.lang.String ITEM_TYPE
+    public static final int ITEM_TYPE_APPLICATION
+    public static final int ITEM_TYPE_SHORTCUT
+    static final java.lang.String ICON_TYPE
+    static final int ICON_TYPE_RESOURCE
+    static final int ICON_TYPE_BITMAP
+    static final java.lang.String ICON_PACKAGE
+    static final java.lang.String ICON_RESOURCE
+    static final java.lang.String ICON
+    13:13:public LauncherSettings$Favorites()
+com.anod.car.home.model.ShortcutInfo:
+    private static final long serialVersionUID
+    public static final int NO_ID
+    77:90:public ShortcutInfo(com.anod.car.home.model.ShortcutInfo)
+    157:185:private void writeObject(java.io.ObjectOutputStream)
+    188:214:private void readObject(java.io.ObjectInputStream)
+    218:220:private android.graphics.Bitmap getIconByteArray(byte[])
+com.anod.car.home.prefs.Configuration:
+    private static final int REQUEST_PICK_SHORTCUT
+    private static final int REQUEST_PICK_APPLICATION
+    private static final int REQUEST_CREATE_SHORTCUT
+    private static final int REQUEST_EDIT_SHORTCUT
+    private static final int REQUEST_BACKUP
+    public static final java.lang.String EXTRA_CELL_ID
+    public static final int INVALID_CELL_ID
+    private static final int DIALOG_WAIT
+    private static final int DIALOG_INIT
+    private static final java.lang.String LOOK_AND_FEEL
+    private static final java.lang.String INCAR
+    private static final java.lang.String BACKUP
+    private static final java.lang.String VERSION
+    private static final java.lang.String ISSUE_TRACKER
+    private static final java.lang.String OTHER
+    public static final boolean BUILD_AMAZON
+    private static final java.lang.String DETAIL_MARKET_URL
+    private static final java.lang.String DETAIL_AMAZON_URL
+    private static final java.lang.String OTHER_MARKET_URL
+    private static final java.lang.String OTHER_AMAZON_URL
+com.anod.car.home.prefs.ConfigurationBackup:
+    private static final int REQUEST_RESTORE_MAIN
+    private static final java.lang.String RESTORE_BTN_INCAR
+    private static final java.lang.String BACKUP_BTN_INCAR
+    private static final java.lang.String RESTORE_BTN_MAIN
+    private static final java.lang.String BACKUP_BTN_MAIN
+    private static final java.lang.String INCAR_CATEGORY
+    private static final int DIALOG_WAIT
+    private static final int DIALOG_BACKUP_NAME
+    private static final int TYPE_MAIN
+    private static final int TYPE_INCAR
+    private static final int DATE_FORMAT
+com.anod.car.home.prefs.ConfigurationInCar:
+    private static final java.lang.String SCREEN_BT_DEVICE
+    private static final java.lang.String CATEGORY_BT_DEVICE
+    private static final java.lang.String PREF_BT_SWITCH
+    private static final int DIALOG_WAIT
+    private static final int DIALOG_DONATE
+    private static final int DIALOG_INIT
+    private static final java.lang.String DETAIL_MARKET_URL
+    private static final java.lang.String PRO_PACKAGE_NAME
+    private static final java.lang.String AUTORUN_APP_PREF
+    private static final java.lang.String AUTORUN_APP_DISABLED
+    private static final java.lang.String AUTORUN_APP_CUSTOM
+    protected static final int REQUEST_PICK_APPLICATION
+com.anod.car.home.prefs.ConfigurationLook:
+    public static final java.lang.String CATEGORY_TRANSPARENT
+com.anod.car.home.prefs.ConfigurationRestore:
+    private static final int DIALOG_WAIT
+    public static final java.lang.String EXTRA_TYPE
+    public static final int TYPE_MAIN
+    public static final int TYPE_INCAR
+com.anod.car.home.prefs.PreferencesStorage:
+    public static final int LAUNCH_COMPONENT_NUMBER
+    public static final java.lang.String SKIN_GLOSSY
+    public static final java.lang.String SKIN_CARHOME
+    public static final java.lang.String SKIN_WINDOWS7
+    public static final java.lang.String SKIN_HOLO
+    public static final java.lang.String SKIN_BBB
+    public static final java.lang.String BRIGHTNESS_DEFAULT
+    public static final java.lang.String BRIGHTNESS_AUTO
+    public static final java.lang.String BRIGHTNESS_DAY
+    public static final java.lang.String BRIGHTNESS_NIGHT
+    public static final java.lang.String AUTOANSWER_DISABLED
+    public static final java.lang.String AUTOANSWER_IMMEDIATLY
+    public static final java.lang.String AUTOANSWER_DELAY_5
+    public static final java.lang.String WIFI_NOACTION
+    public static final java.lang.String WIFI_TURNOFF
+    public static final java.lang.String WIFI_DISABLE
+    public static final int FONT_SIZE_UNDEFINED
+    public static final boolean DEFAULT_ICONS_MONO
+    public static final int DEFAULT_VOLUME_LEVEL
+    private static final java.lang.String LAUNCH_COMPONENT
+    public static final java.lang.String SKIN
+    public static final java.lang.String BG_COLOR
+    public static final java.lang.String BUTTON_COLOR
+    public static final java.lang.String ICONS_MONO
+    public static final java.lang.String ICONS_COLOR
+    public static final java.lang.String ICONS_SCALE
+    public static final java.lang.String FONT_SIZE
+    public static final java.lang.String FONT_COLOR
+    public static final java.lang.String FIRST_TIME
+    public static final java.lang.String TRANSPARENT_BTN_SETTINGS
+    public static final java.lang.String TRANSPARENT_BTN_INCAR
+    public static final java.lang.String KEEP_ORDER
+    public static final java.lang.String INCAR_MODE_ENABLED
+    public static final java.lang.String POWER_BT_ENABLE
+    public static final java.lang.String POWER_BT_DISABLE
+    public static final java.lang.String HEADSET_REQUIRED
+    public static final java.lang.String POWER_REQUIRED
+    public static final java.lang.String BLUETOOTH_DEVICE_ADDRESSES
+    public static final java.lang.String SCREEN_TIMEOUT
+    public static final java.lang.String BRIGHTNESS
+    public static final java.lang.String BLUETOOTH
+    public static final java.lang.String ADJUST_VOLUME_LEVEL
+    public static final java.lang.String VOLUME_LEVEL
+    public static final java.lang.String AUTO_SPEAKER
+    public static final java.lang.String AUTO_ANSWER
+    public static final java.lang.String ADJUST_WIFI
+    public static final java.lang.String ACTIVATE_CAR_MODE
+    public static final java.lang.String AUTORUN_APP
+    private static final java.lang.String DELIMETER_PACKAGES
+    23:23:public PreferencesStorage()
+    303:322:public static void saveStopAppPackages(android.content.Context,java.util.ArrayList)
+com.anod.car.home.prefs.ShortcutEditActivity:
+    private static final java.lang.String ACTION_ADW_PICK_ICON
+    public static final java.lang.String EXTRA_SHORTCUT_ID
+    public static final java.lang.String EXTRA_CELL_ID
+    private static final int PICK_CUSTOM_ICON
+    private static final int PICK_ADW_ICON_PACK
+    private static final int DIALOG_ICON_MENU
+com.anod.car.home.prefs.backup.BackupFileHelperAgent:
+    static final java.lang.String FILE_HELPER_KEY
+com.anod.car.home.prefs.backup.PreferencesBackupManager:
+    private static final java.lang.String BACKUP_PACKAGE
+    private static final java.lang.String DIR_BACKUP
+    public static final java.lang.String FILE_EXT_DAT
+    public static final int RESULT_DONE
+    public static final int ERROR_STORAGE_NOT_AVAILABLE
+    public static final int ERROR_FILE_NOT_EXIST
+    public static final int ERROR_FILE_READ
+    public static final int ERROR_FILE_WRITE
+    public static final int ERROR_DESERIALIZE
+    private static final java.lang.String BACKUP_MAIN_DIRNAME
+    public static final java.lang.String FILE_INCAR_JSON
+com.anod.car.home.prefs.preferences.InCar:
+    private static final long serialVersionUID
+    202:212:private void writeObject(java.io.ObjectOutputStream)
+    215:230:private void readObject(java.io.ObjectInputStream)
+com.anod.car.home.prefs.preferences.Main:
+    private static final long serialVersionUID
+com.anod.car.home.prefs.preferences.ShortcutsMain:
+    private static final long serialVersionUID
+    26:27:public void setShortcuts(java.util.HashMap)
+    34:35:public void setMain(com.anod.car.home.prefs.preferences.Main)
+com.anod.car.home.prefs.views.LauncherItemPreference:
+    private static final int INVALID_RESOURCE
+com.anod.car.home.prefs.views.SeekBarPreference:
+    private static final java.lang.String androidns
+com.anod.car.home.pro.BuildConfig
+com.anod.car.home.pro.Manifest
+com.anod.car.home.pro.Manifest$permission
+com.anod.car.home.pro.R
+com.anod.car.home.pro.R$array
+com.anod.car.home.pro.R$attr
+com.anod.car.home.pro.R$color
+com.anod.car.home.pro.R$dimen
+com.anod.car.home.pro.R$drawable
+com.anod.car.home.pro.R$id
+com.anod.car.home.pro.R$layout
+com.anod.car.home.pro.R$string
+com.anod.car.home.pro.R$style
+com.anod.car.home.pro.R$xml
+com.anod.car.home.skin.PropertiesFactory:
+    5:5:public PropertiesFactory()
+com.anod.car.home.utils.FastBitmapDrawable:
+    63:70:public void setBitmap(android.graphics.Bitmap)
+    73:73:public android.graphics.Bitmap getBitmap()
+com.anod.car.home.utils.UtilitiesBitmap:
+    22:22:public UtilitiesBitmap()
+com.anod.car.home.utils.Utils:
+    13:13:public Utils()
