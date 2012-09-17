@@ -6,6 +6,16 @@ import com.anod.car.home.R;
 public class BBBProperties extends BaseProperties {
 
 	@Override
+	public int getInCarButtonExitRes() {
+		return R.drawable.ic_incar_exit_bbb;
+	}
+
+	@Override
+	public int getInCarButtonEnterRes() {
+		return R.drawable.ic_incar_enter_bbb;
+	}
+	
+	@Override
 	public int getLayout() {
 		return R.layout.blackbearblanc;
 	}
