@@ -1,57 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/default_background"
+    android:gravity="center_vertical"
     android:orientation="vertical"
-    android:gravity="center_vertical" >
-
+    tools:ignore="NestedWeights,NestedWeights" >
+
     <LinearLayout
         android:id="@+id/workspace"
         android:layout_width="match_parent"
-		android:layout_height="0dip"
-		android:layout_weight="1"
+        android:layout_height="0dip"
+        android:layout_weight="1"
         android:baselineAligned="false"
         android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dip"
-			android:layout_weight="1"
+            android:layout_weight="1"
             android:baselineAligned="false"
             android:orientation="horizontal" >
 
             <FrameLayout
-                android:layout_weight="1"
                 android:layout_width="0dip"
-                android:layout_height="fill_parent" >
-
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
+
                 <ImageButton
                     android:id="@+id/btn0"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-					android:background="@drawable/btn_default_holo_light"
+                    android:background="@drawable/btn_default_holo_light"
                     android:paddingBottom="25.0dp"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text0"
-                    android:text="@string/set_shortcut"
-					style="@style/holo_btn_text"
-				/>
+                    style="@style/holo_btn_text"
+                    android:text="@string/set_shortcut" />
             </FrameLayout>
 
             <FrameLayout
-                android:layout_weight="1"
                 android:layout_width="0dip"
-                android:layout_height="fill_parent" >
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
 
                 <ImageButton
                     android:id="@+id/btn1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-					android:background="@drawable/btn_default_holo_light"
+                    android:background="@drawable/btn_default_holo_light"
                     android:drawablePadding="5.0dip"
                     android:gravity="center"
                     android:paddingBottom="25.0dp"
@@ -59,29 +60,28 @@
 
                 <TextView
                     android:id="@+id/btn_text1"
-                    android:text="@string/set_shortcut"
-					style="@style/holo_btn_text"
-				/>
+                    style="@style/holo_btn_text"
+                    android:text="@string/set_shortcut" />
             </FrameLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dip"
-			android:layout_weight="1"
+            android:layout_weight="1"
             android:baselineAligned="false"
             android:orientation="horizontal" >
-            
+
             <FrameLayout
-                android:layout_weight="1"
                 android:layout_width="0dip"
-                android:layout_height="fill_parent" >
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
 
                 <ImageButton
                     android:id="@+id/btn2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-					android:background="@drawable/btn_default_holo_light"
+                    android:background="@drawable/btn_default_holo_light"
                     android:drawablePadding="5.0dip"
                     android:gravity="center"
                     android:paddingBottom="25.0dp"
@@ -89,51 +89,49 @@
 
                 <TextView
                     android:id="@+id/btn_text2"
-                    android:text="@string/set_shortcut"
-					style="@style/holo_btn_text"
-				/>
+                    style="@style/holo_btn_text"
+                    android:text="@string/set_shortcut" />
             </FrameLayout>
 
             <FrameLayout
-                android:layout_weight="1"
                 android:layout_width="0dip"
-                android:layout_height="fill_parent" >
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
 
                 <ImageButton
                     android:id="@+id/btn3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-					android:background="@drawable/btn_default_holo_light"
+                    android:background="@drawable/btn_default_holo_light"
                     android:drawablePadding="5.0dip"
                     android:gravity="center"
                     android:paddingBottom="25.0dp"
                     android:src="@drawable/ic_add_shortcut" />
-                <TextView
-                    android:id="@+id/btn_text3"
-                    android:text="@string/set_shortcut"
-					style="@style/holo_btn_text"
-				/>
 
+                <TextView
+                    android:id="@+id/btn_text3"
+                    style="@style/holo_btn_text"
+                    android:text="@string/set_shortcut" />
             </FrameLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dip"
-			android:layout_weight="1"
+            android:layout_weight="1"
             android:baselineAligned="false"
             android:orientation="horizontal" >
 
             <FrameLayout
-                android:layout_weight="1"
                 android:layout_width="0dip"
-                android:layout_height="fill_parent" >
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
 
                 <ImageButton
                     android:id="@+id/btn4"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-					android:background="@drawable/btn_default_holo_light"
+                    android:background="@drawable/btn_default_holo_light"
                     android:drawablePadding="5.0dip"
                     android:gravity="center"
                     android:paddingBottom="25.0dp"
@@ -141,63 +139,49 @@
 
                 <TextView
                     android:id="@+id/btn_text4"
-                    android:text="@string/set_shortcut"
-					style="@style/holo_btn_text"
-				/>
+                    style="@style/holo_btn_text"
+                    android:text="@string/set_shortcut" />
             </FrameLayout>
 
             <FrameLayout
-                android:layout_weight="1"
                 android:layout_width="0dip"
-                android:layout_height="fill_parent" >
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
 
                 <ImageButton
                     android:id="@+id/btn5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawablePadding="5.0dip"
                     android:background="@drawable/btn_default_holo_light"
+                    android:drawablePadding="5.0dip"
                     android:gravity="center"
                     android:paddingBottom="25.0dp"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text5"
-                    android:text="@string/set_shortcut"
-					style="@style/holo_btn_text"
-				/>
+                    style="@style/holo_btn_text"
+                    android:text="@string/set_shortcut" />
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>
 
-    <RelativeLayout 
-     	android:layout_width="match_parent"   
-     	android:layout_height="wrap_content"
-     >
-	    <ImageButton
-	        android:id="@+id/btn_incar_switch"
-	        android:layout_width="140dp"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_below="@id/workspace"
-	        android:background="@android:color/transparent"
-	        android:src="@drawable/ic_incar_enter"
-		    android:paddingLeft="8.0dp"
-		    android:layout_margin="0.0dp"
-		    android:scaleType="fitStart"
-	    />
-    	    
-	    <ImageButton
-	        android:id="@+id/btn_settings"
-	        android:layout_width="140dp"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
-	        android:layout_below="@+id/workspace"
-	        android:background="@android:color/transparent"
-	        android:src="@drawable/ic_holo_settings"    	
-		    android:paddingRight="8.0dp"
-		    android:layout_margin="0.0dp"
-		    android:scaleType="fitEnd"
-	    />
-	</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageButton
+            android:id="@+id/btn_incar_switch"
+            style="@style/incarButton"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/workspace" />
+
+        <ImageButton
+            android:id="@+id/btn_settings"
+            style="@style/settingsButton"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/workspace"
+            android:src="@drawable/ic_holo_settings" />
+    </RelativeLayout>
+
 </LinearLayout>

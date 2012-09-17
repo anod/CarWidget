@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-	<style name="glass_btn"> 
+
+    <!-- Skin Chooser -->
+    <style name="Transparent">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+    </style>
+    <!-- Skins -->
+    <style name="glass_btn">
         <item name="android:background">@drawable/glass_container</item>
         <item name="android:gravity">center</item>
         <item name="android:src">@drawable/ic_add_shortcut</item>
     </style>
+
     <style name="glass_btn_text">
         <item name="android:lines">2</item>
         <item name="android:layout_width">wrap_content</item>
@@ -16,6 +25,7 @@
         <item name="android:padding">5.0dp</item>
         <item name="android:layout_gravity">center_horizontal|bottom</item>
     </style>
+
     <style name="holo_btn_text">
         <item name="android:lines">1</item>
         <item name="android:layout_width">match_parent</item>
@@ -34,29 +44,46 @@
         <item name="android:background">@color/holo_text_bg</item>
     </style>
 
-	<style name="bbb_btn_text">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">match_parent</item>
-		<item name="android:background">@drawable/bbb_bg</item>
-		<item name="android:gravity">center</item>
-		<item name="android:maxLines">1</item>
-		<item name="android:textAllCaps">true</item>
-		<item name="android:textColor">#FFFFFFFF</item>
-		<item name="android:textSize">19sp</item>
-		<item name="android:maxLength">7</item>
-		<item name="android:shadowColor">#7F000000</item>
-	</style>
-	<style name="bbb_btn_icon">
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:layout_gravity">left|bottom</item>
-		<item name="android:layout_marginBottom">3dp</item>
-		<item name="android:layout_marginLeft">3dp</item>
-	</style>
-	<!-- Skin Chooser -->
-    <style name="Transparent">
-		<item name="android:windowBackground">@android:color/transparent</item>
-		<item name="android:windowShowWallpaper">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
-     </style>
+    <style name="bbb_btn_text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/bbb_bg</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:maxLength">7</item>
+        <item name="android:shadowColor">#7F000000</item>
+    </style>
+
+    <style name="bbb_btn_icon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">left|bottom</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_marginLeft">3dp</item>
+    </style>
+
+    <style name="incarButton" parent="android:Widget.Holo.Light.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_margin">0.0dp</item>
+        <item name="android:paddingLeft">8.0dp</item>
+        <item name="android:paddingTop">1.0dp</item>
+        <item name="android:paddingBottom">1.0dp</item>
+        <item name="android:scaleType">fitStart</item>
+        <item name="android:layout_width">140dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="settingsButton" parent="android:Widget.Holo.Light.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_margin">0.0dp</item>
+        <item name="android:paddingRight">8.0dp</item>
+        <item name="android:paddingTop">1.0dp</item>
+        <item name="android:paddingBottom">1.0dp</item>
+        <item name="android:scaleType">fitEnd</item>
+        <item name="android:layout_width">140dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>
