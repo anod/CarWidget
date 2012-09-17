@@ -6,8 +6,7 @@ public class HoloProperties extends BaseProperties {
 
 	@Override
 	public int getInCarButtonExitRes() {
-		// TODO 
-		return R.drawable.ic_incar_exit;
+		return R.drawable.ic_incar_exit_holo;
 	}
 
 	@Override
