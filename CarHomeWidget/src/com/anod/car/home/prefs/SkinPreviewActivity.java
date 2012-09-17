@@ -1,6 +1,7 @@
 package com.anod.car.home.prefs;
 
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -28,7 +29,11 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 	private SkinItem[] mSkinItems;
 	private SkinPagerAdapter mAdapter;
 	private int mCurrentPage = 0;
+	private int mSelectedSkin = 0;
 	private TextView mTextView;
+	private int appWidgetId;
+	private Context mContext;
+	private Button mButton;
 	
 	private static int[] sPreviewRes = {
 		R.drawable.scr_glossy,
@@ -56,22 +61,30 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 			return;
 		}
 		
-		int appWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+		appWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 		if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
 			Log.e("CarWidget", "Invalid app widget id");
 			finish();
 			return;
 		}
-		Main prefs = PreferencesStorage.loadMain(this, appWidgetId);
+		mContext = this;
+		Main prefs = PreferencesStorage.loadMain(mContext, appWidgetId);
 
 		mSkinItems = createSkinList(prefs.getSkin());
 		int count = mSkinItems.length;
 		mAdapter = new SkinPagerAdapter(this,count, getSupportFragmentManager());
 		inflateActivity();
 
-		mGallery.setCurrentItem(mCurrentPage);
-		// mGallery.setSelection(mAdapter.getMarkedPosition());
+		mCurrentPage = mSelectedSkin;
+		mGallery.setCurrentItem(mSelectedSkin);	
+		setButtonSelected();
+		
 		showText(mCurrentPage);
+	}
+
+	private void setButtonSelected() {
+		mButton.setText(R.string.selected);
+		mButton.setEnabled(false);
 	}
 
 	private SkinItem[] createSkinList(String skinValue) {
@@ -89,7 +102,7 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 			item.textRes = sTextRes[i];
 			
 			if (item.value.equals(skinValue)) {
-				mCurrentPage = i;
+				mSelectedSkin = i;
 			}
 			
 			skins[i] = item;
@@ -114,14 +127,26 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 		mGallery.setAdapter(mAdapter);
 		mGallery.setOnPageChangeListener(this);
 		
-		Button button = (Button) findViewById(R.id.apply);
-		button.setOnClickListener(mApplyClicked);
+		
+		mButton = (Button) findViewById(R.id.apply);
+		mButton.setOnClickListener(mApplyClicked);
 	}
 	
 	@Override
 	public void onPageSelected(int position) {
 		mCurrentPage = position;
 		showText(position);
+		
+		if (mSelectedSkin == position) {
+			setButtonSelected();
+		} else {
+			setButtonApply();
+		}
+	}
+
+	private void setButtonApply() {
+		mButton.setText(R.string.apply);
+		mButton.setEnabled(true);
 	}
 
 	private void showText(int position) {
@@ -149,8 +174,10 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 	
 	private final OnClickListener mApplyClicked = new OnClickListener() {
 		public void onClick(View v) {
-		//	int selectedPos = mGallery.getSelectedItemPosition();
-
+			Main prefs = PreferencesStorage.loadMain(mContext, appWidgetId);
+			prefs.setSkin(getSkinItem(mCurrentPage).value);
+			PreferencesStorage.saveMain(mContext, prefs, appWidgetId);
+			finish();
 		}
 	};
 
