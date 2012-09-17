@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_weight="1"
-        android:layout_marginTop="8dp" >
+	 >
 
         <android.support.v4.view.ViewPager
             android:id="@+id/gallery"
@@ -40,9 +40,10 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+        android:id="@+id/skin_info"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_marginTop="20dp"
         android:text="Text" />
 

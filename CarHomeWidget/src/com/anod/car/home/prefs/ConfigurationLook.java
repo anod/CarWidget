@@ -21,6 +21,8 @@ import android.preference.PreferenceCategory;
 import android.preference.Preference.OnPreferenceClickListener;
 
 public class ConfigurationLook extends PreferenceActivity {
+	private static final String SKIN_PREVIEW = "skin-preview";
+
 	public static final String CATEGORY_TRANSPARENT = "transparent-category";
 
 	private int mAppWidgetId;
@@ -49,11 +51,19 @@ public class ConfigurationLook extends PreferenceActivity {
 
 		Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
 
+		initSkinPreview();
 		initButtonSkin(prefs);
 		initBackground(prefs);
 		initIcon(prefs);
 		initFont(prefs);
 		initTransparent(mFreeVersion, prefs);
+	}
+
+	private void initSkinPreview() {
+		Intent intent = new Intent(this, SkinPreviewActivity.class);
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+		Preference pref = (Preference) findPreference(SKIN_PREVIEW);
+		pref.setIntent(intent);
 	}
 
 	private void initTransparent(boolean isFree, final Main prefs) {
@@ -99,30 +109,13 @@ public class ConfigurationLook extends PreferenceActivity {
 
 			}
 		});
-
-		ListPreference skin = (ListPreference) findPreference(PreferencesStorage.SKIN);
-		skin.setKey(PreferencesStorage.getName(PreferencesStorage.SKIN, mAppWidgetId));
 		String skinValue = prefs.getSkin();
-		skin.setValue(skinValue);
 		if (skinValue.equals(PreferencesStorage.SKIN_WINDOWS7)) {
 			btnColor.setEnabled(true);
 		} else {
 			btnColor.setEnabled(false);
 		}
 
-		skin.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-
-			@Override
-			public boolean onPreferenceChange(Preference preference, Object newValue) {
-				String skinName = (String) newValue;
-				if (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) {
-					btnColor.setEnabled(true);
-				} else {
-					btnColor.setEnabled(false);
-				}
-				return true;
-			}
-		});
 	}
 
 	private void initBackground(final Main prefs) {

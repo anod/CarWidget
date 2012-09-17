@@ -3,11 +3,10 @@
     		xmlns:android="http://schemas.android.com/apk/res/android"
     	>
     		<Preference 
+    		    android:key="skin-preview"
     			android:title="@string/pref_skin"
     		>
-    		<intent android:targetClass="com.anod.car.home.prefs.SkinPreviewActivity" android:targetPackage="com.anod.car.home.pro"></intent>
     		</Preference>
-    		<ListPreference android:key="skin-%d" android:title="@string/pref_skin" android:entryValues="@array/skin_values"	android:entries="@array/skin_titles" />
 	        <Preference android:key="button-color-%d" android:title="@string/pref_tile_color_title" android:summary="@string/pref_tile_color_summary"  />
     		<Preference 
     			android:key="bg-color-%d"

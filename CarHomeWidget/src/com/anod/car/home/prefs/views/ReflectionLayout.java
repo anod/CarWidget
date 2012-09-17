@@ -131,7 +131,7 @@ public class ReflectionLayout extends FrameLayout {
         canvas.restore();
 
         /* Saturate the flipped image with a dark color. */
-        canvas.drawRect(childl, childh, childl+childw, selfh, mDarkPaint);
+//        canvas.drawRect(childl, childh, childl+childw, selfh, mDarkPaint);
 
         /* Carve out the reflection area's alpha channel. */
         mMatrix.setScale(1, poolh);
