@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,6 +12,9 @@ import com.anod.car.home.R;
 
 
 public class Utils {
+	
+	final public static boolean IS_HONEYCOMB_OR_GREATER = (Build.VERSION.SDK_INT >= 11);
+	
 	public static float calcIconsScale(String scaleString) {
         return 1.0f+0.1f*Integer.valueOf(scaleString);
 	}

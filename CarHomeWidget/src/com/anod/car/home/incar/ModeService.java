@@ -10,11 +10,13 @@ import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.utils.Utils;
 
 public class ModeService extends Service{
 	private ModePhoneStateListener mPhoneListener;
@@ -28,11 +30,11 @@ public class ModeService extends Service{
 
 	@Override
 	public void onCreate() {
-		String notifTitle=getResources().getString(R.string.incar_mode_enabled);
-		String notifText=getResources().getString(R.string.click_to_disable);
-		long when = System.currentTimeMillis();
-		Notification notification = new Notification(R.drawable.ic_stat_incar, notifTitle, when);
 		
+		super.onCreate();
+	}
+
+	private Notification createNotification() {
 		Intent notificationIntent = new Intent(this, ModeService.class);
 		notificationIntent.putExtra(EXTRA_MODE, MODE_SWITCH_OFF);
     	Uri data = Uri.parse("com.anod.car.home.pro://mode/0/");
@@ -40,11 +42,19 @@ public class ModeService extends Service{
 		
 		PendingIntent contentIntent = PendingIntent.getService(this, 0, notificationIntent, 0);
 
-		notification.setLatestEventInfo(this, notifTitle, notifText, contentIntent);
+		Notification notification = new Notification();
 		notification.flags |= Notification.FLAG_ONGOING_EVENT;
-		startForeground(NOTIFICATION_ID, notification);
-		
-		super.onCreate();
+		notification.icon = R.drawable.ic_stat_incar;
+		if (Utils.IS_HONEYCOMB_OR_GREATER) {
+			RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification);
+			notification.contentIntent = contentIntent;
+			notification.contentView = contentView;
+		} else {
+			String notifTitle=getResources().getString(R.string.incar_mode_enabled);
+			String notifText=getResources().getString(R.string.click_to_disable);
+			notification.setLatestEventInfo(this, notifTitle, notifText, contentIntent);
+		}
+		return notification;
 	}
 
 	@Override
@@ -88,6 +98,10 @@ public class ModeService extends Service{
 		Handler.switchOn(prefs,this);
 		handlePhoneListener(prefs);
 		requestWidgetsUpdate();
+		
+		Notification notification = createNotification();
+		startForeground(NOTIFICATION_ID, notification);
+
 		// We want this service to continue running until it is explicitly
 		// stopped, so return sticky.
 		return START_STICKY;
