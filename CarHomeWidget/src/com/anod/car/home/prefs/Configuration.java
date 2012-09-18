@@ -13,14 +13,15 @@ import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.model.AllAppsListCache;
-import com.anod.car.home.model.ShortcutModel;
+import com.anod.car.home.model.ShortcutsModel;
+import com.anod.car.home.model.LauncherShortcutsModel;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.views.LauncherItemPreference;
 
 public class Configuration extends ConfigurationActivity {
 	private static final int REQUEST_BACKUP = 6;
 
-	private ShortcutModel mModel;
+	private ShortcutsModel mModel;
 
 	private PickShortcutUtils mPickShortcutUtils;
 
@@ -51,7 +52,7 @@ public class Configuration extends ConfigurationActivity {
 	
 	@Override
 	protected void onCreateImpl(Bundle savedInstanceState) {
-		mModel = new ShortcutModel(mContext, mAppWidgetId);
+		mModel = new LauncherShortcutsModel(mContext, mAppWidgetId);
 		mModel.init();
 		mPickShortcutUtils = new PickShortcutUtils(this, mAppWidgetId, mModel);
 

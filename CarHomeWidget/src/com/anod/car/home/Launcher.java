@@ -14,7 +14,8 @@ import android.widget.RemoteViews;
 
 import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.model.ShortcutModel;
+import com.anod.car.home.model.ShortcutsModel;
+import com.anod.car.home.model.LauncherShortcutsModel;
 import com.anod.car.home.prefs.PickShortcutUtils;
 import com.anod.car.home.prefs.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.Main;
@@ -33,7 +34,7 @@ public class Launcher {
 		
     public static RemoteViews update(int appWidgetId, Context context) {
     	
-		ShortcutModel smodel = new ShortcutModel(context, appWidgetId);
+		ShortcutsModel smodel = new LauncherShortcutsModel(context, appWidgetId);
 		if (PreferencesStorage.isFirstTime(context,appWidgetId)) {
 			smodel.createDefaultShortcuts();
 			PreferencesStorage.setFirstTime(false,context,appWidgetId);

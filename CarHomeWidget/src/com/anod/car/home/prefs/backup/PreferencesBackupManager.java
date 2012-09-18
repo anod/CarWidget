@@ -17,7 +17,8 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.model.ShortcutModel;
+import com.anod.car.home.model.ShortcutsModel;
+import com.anod.car.home.model.LauncherShortcutsModel;
 import com.anod.car.home.prefs.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.Main;
@@ -100,7 +101,7 @@ public class PreferencesBackupManager {
         
         File dataFile = new File(saveDir, filename+FILE_EXT_DAT);
         
-        ShortcutModel smodel = new ShortcutModel(mContext, appWidgetId);
+        ShortcutsModel smodel = new LauncherShortcutsModel(mContext, appWidgetId);
         smodel.init();
         Main main = PreferencesStorage.loadMain(mContext, appWidgetId);
         ShortcutsMain prefs = new ShortcutsMain(convertToHashMap(smodel.getShortcuts()), main);
@@ -226,7 +227,7 @@ public class PreferencesBackupManager {
         }
 		PreferencesStorage.saveMain(mContext, prefs.getMain(), appWidgetId);
 		
-        ShortcutModel smodel = new ShortcutModel(mContext, appWidgetId);
+        ShortcutsModel smodel = new LauncherShortcutsModel(mContext, appWidgetId);
         smodel.init();
 		
         HashMap<Integer, ShortcutInfo> shortcuts = prefs.getShortcuts();

@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.anod.car.home.R;
 import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.model.ShortcutModel;
+import com.anod.car.home.model.ShortcutsModel;
 import com.anod.car.home.prefs.views.LauncherItemPreference;
 
 public class PickShortcutUtils {
@@ -32,9 +32,9 @@ public class PickShortcutUtils {
 	
 	private ConfigurationActivity mActivity;
 	private int mAppWidgetId;
-	private ShortcutModel mModel;
+	private ShortcutsModel mModel;
 	
-	public PickShortcutUtils(ConfigurationActivity activity, int appWidgetId, ShortcutModel model) {
+	public PickShortcutUtils(ConfigurationActivity activity, int appWidgetId, ShortcutsModel model) {
 		mActivity = activity;
 		mAppWidgetId = appWidgetId;
 		mModel = model;

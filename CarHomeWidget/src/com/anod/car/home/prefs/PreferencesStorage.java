@@ -289,7 +289,8 @@ public class PreferencesStorage {
 		String key = PreferencesStorage.getLaunchComponentName(cellId, appWidgetId);
 		long curShortcutId = preferences.getLong(key, ShortcutInfo.NO_ID);
 		if (curShortcutId != ShortcutInfo.NO_ID) {
-			LauncherModel.deleteItemFromDatabase(context, curShortcutId);
+			LauncherModel model = new LauncherModel();
+			model.deleteItemFromDatabase(context, curShortcutId);
 		}
 		Editor editor = preferences.edit();
 		editor.putLong(key, shortcutId);
@@ -326,6 +327,7 @@ public class PreferencesStorage {
     public static void DropWidgetSettings(Context context, int[] appWidgetIds) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Editor edit = prefs.edit();
+        LauncherModel model = new LauncherModel();
          for(int appWidgetId : appWidgetIds) {
         	edit.remove(getName(SKIN, appWidgetId));
     		edit.remove(getName(BG_COLOR, appWidgetId));
@@ -344,7 +346,7 @@ public class PreferencesStorage {
         		String key = PreferencesStorage.getLaunchComponentName(i, appWidgetId);
         		long curShortcutId = prefs.getLong(key, ShortcutInfo.NO_ID);
         		if (curShortcutId!=ShortcutInfo.NO_ID) {
-        			LauncherModel.deleteItemFromDatabase(context, curShortcutId);
+        			model.deleteItemFromDatabase(context, curShortcutId);
         		}
         		edit.remove(key);
         	}
