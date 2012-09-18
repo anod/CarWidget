@@ -261,7 +261,7 @@ public class PreferencesStorage {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		ArrayList<Long> ids = new ArrayList<Long>(NOTIFICATION_COMPONENT_NUMBER);
 		for (int i = 0; i < NOTIFICATION_COMPONENT_NUMBER; i++) {
-			String key = String.format(NOTIF_COMPONENT, i);
+			String key = getNotifComponentName(i);
 			long id = prefs.getLong(key, ShortcutInfo.NO_ID);
 			ids.add(i, id);
 		}
@@ -300,7 +300,7 @@ public class PreferencesStorage {
 	}
 
 	public static void saveNotifShortcut(Context context, long shortcutId, int position) {
-		String key = String.format(NOTIF_COMPONENT, position);
+		String key = getNotifComponentName(position);
 		saveShortcutId(context, shortcutId, key);
 	}
 
@@ -381,7 +381,7 @@ public class PreferencesStorage {
 	public static void dropNotifShortcut(int position, Context context) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		Editor edit = prefs.edit();
-		String key = String.format(NOTIF_COMPONENT, position);
+		String key = getNotifComponentName(position);
 		edit.remove(key);
 		edit.commit();
 	}
@@ -417,7 +417,7 @@ public class PreferencesStorage {
 		if (Utils.IS_HONEYCOMB_OR_GREATER) {
 			LauncherModel model = new LauncherModel();
 			for (int i = 0; i < NOTIFICATION_COMPONENT_NUMBER; i++) {
-				String key = String.format(NOTIF_COMPONENT, i);
+				String key = getNotifComponentName(i);
 				long curShortcutId = prefs.getLong(key, ShortcutInfo.NO_ID);
 				if (curShortcutId != ShortcutInfo.NO_ID) {
 					model.deleteItemFromDatabase(context, curShortcutId);
@@ -434,5 +434,9 @@ public class PreferencesStorage {
 		edit.putInt(prefName, color);
 		edit.commit();
 
+	}
+
+	public static String getNotifComponentName(int position) {
+		return String.format(NOTIF_COMPONENT, position);
 	}
 }

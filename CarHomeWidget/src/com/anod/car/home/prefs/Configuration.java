@@ -13,12 +13,12 @@ import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.model.AllAppsListCache;
-import com.anod.car.home.model.ShortcutsModel;
 import com.anod.car.home.model.LauncherShortcutsModel;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.views.LauncherItemPreference;
+import com.anod.car.home.model.ShortcutsModel;
+import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
+import com.anod.car.home.prefs.views.ShortcutPreference;
 
-public class Configuration extends ConfigurationActivity {
+public class Configuration extends ConfigurationActivity implements PreferenceKey {
 	private static final int REQUEST_BACKUP = 6;
 
 	private ShortcutsModel mModel;
@@ -54,11 +54,9 @@ public class Configuration extends ConfigurationActivity {
 	protected void onCreateImpl(Bundle savedInstanceState) {
 		mModel = new LauncherShortcutsModel(mContext, mAppWidgetId);
 		mModel.init();
-		mPickShortcutUtils = new PickShortcutUtils(this, mAppWidgetId, mModel);
+		mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
 
-		Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
-
-		initActivityChooser(prefs);
+		initActivityChooser();
 
 		setIntent(LOOK_AND_FEEL, ConfigurationLook.class, mAppWidgetId);
 		setIntent(INCAR, ConfigurationInCar.class, 0);
@@ -88,7 +86,7 @@ public class Configuration extends ConfigurationActivity {
 		});
 	}
 
-	private void initActivityChooser(Main prefs) {
+	private void initActivityChooser() {
 		for (int i = 0; i < PreferencesStorage.LAUNCH_COMPONENT_NUMBER; i++) {
 			mPickShortcutUtils.initLauncherPreference(i);
 		}
@@ -170,9 +168,19 @@ public class Configuration extends ConfigurationActivity {
 		mModel.init();
 		for (int i = 0; i < PreferencesStorage.LAUNCH_COMPONENT_NUMBER; i++) {
 			String key = PreferencesStorage.getLaunchComponentName(i, mAppWidgetId);
-			LauncherItemPreference p = (LauncherItemPreference) findPreference(key);
+			ShortcutPreference p = (ShortcutPreference) findPreference(key);
 			mPickShortcutUtils.refreshPreference(p);
 		}
+	}
+
+	@Override
+	public String getInitialKey(int position) {
+		return PreferencesStorage.getLaunchComponentKey(position);
+	}
+
+	@Override
+	public String getCompiledKey(int position) {
+		return PreferencesStorage.getLaunchComponentName(position, mAppWidgetId);
 	}
 
 

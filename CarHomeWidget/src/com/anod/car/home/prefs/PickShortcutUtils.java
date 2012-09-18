@@ -15,10 +15,15 @@ import android.widget.Toast;
 import com.anod.car.home.R;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutsModel;
-import com.anod.car.home.prefs.views.LauncherItemPreference;
+import com.anod.car.home.prefs.views.ShortcutPreference;
 
 public class PickShortcutUtils {
 
+	interface PreferenceKey {
+		String getInitialKey(int position);
+		String getCompiledKey(int position);
+	}
+	
 	private int mCurrentCellId = INVALID_CELL_ID;
 
 	private static final int REQUEST_PICK_SHORTCUT = 2;
@@ -31,30 +36,30 @@ public class PickShortcutUtils {
 
 	
 	private ConfigurationActivity mActivity;
-	private int mAppWidgetId;
 	private ShortcutsModel mModel;
+
+	private PreferenceKey mPreferenceKey;
 	
-	public PickShortcutUtils(ConfigurationActivity activity, int appWidgetId, ShortcutsModel model) {
+	public PickShortcutUtils(ConfigurationActivity activity, ShortcutsModel model, PreferenceKey key) {
 		mActivity = activity;
-		mAppWidgetId = appWidgetId;
 		mModel = model;
+		mPreferenceKey = key;
 	}
 	
-	public void initLauncherPreference(int launchComponentId) {
-		String key = PreferencesStorage.getLaunchComponentKey(launchComponentId);
-		LauncherItemPreference p = (LauncherItemPreference) mActivity.findPreference(key);
-		p.setKey(PreferencesStorage.getLaunchComponentName(launchComponentId, mAppWidgetId));
-		p.setCellId(launchComponentId);
+	public void initLauncherPreference(int position) {
+		ShortcutPreference p = (ShortcutPreference) mActivity.findPreference(mPreferenceKey.getInitialKey(position));
+		p.setKey(mPreferenceKey.getCompiledKey(position));
+		p.setShortcutPosition(position);
 		p.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				LauncherItemPreference pref = (LauncherItemPreference) preference;
-				int cellId = pref.getCellId();
-				ShortcutInfo info = mModel.getShortcut(cellId);
+				ShortcutPreference pref = (ShortcutPreference) preference;
+				int position = pref.getShortcutPosition();
+				ShortcutInfo info = mModel.getShortcut(position);
 				if (info == null) {
-					pickShortcut(cellId);
+					pickShortcut(position);
 				} else {
-					startEditActivity(cellId, info.id);
+					startEditActivity(position, info.id);
 				}
 				return true;
 			}
@@ -62,8 +67,8 @@ public class PickShortcutUtils {
 		p.setOnDeleteClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				LauncherItemPreference pref = (LauncherItemPreference) preference;
-				mModel.dropShortcut(pref.getCellId());
+				ShortcutPreference pref = (ShortcutPreference) preference;
+				mModel.dropShortcut(pref.getShortcutPosition());
 				refreshPreference(pref);
 				return true;
 			}
@@ -72,7 +77,7 @@ public class PickShortcutUtils {
 		refreshPreference(p);
 	}
 	
-	public void pickShortcut(int cellId) {
+	public void pickShortcut(int position) {
 		mActivity.showWaitDialog();
 		Bundle bundle = new Bundle();
 
@@ -86,7 +91,7 @@ public class PickShortcutUtils {
 		bundle.putParcelableArrayList(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, shortcutIcons);
 
 		Intent dataIntent = new Intent(Intent.ACTION_CREATE_SHORTCUT);
-		dataIntent.putExtra(EXTRA_CELL_ID, cellId);
+		dataIntent.putExtra(EXTRA_CELL_ID, position);
 
 		Intent pickIntent = new Intent(Intent.ACTION_PICK_ACTIVITY);
 		pickIntent.putExtra(Intent.EXTRA_INTENT, dataIntent);
@@ -136,8 +141,8 @@ public class PickShortcutUtils {
 		}
 	}
 	
-	public void refreshPreference(LauncherItemPreference pref) {
-		int cellId = pref.getCellId();
+	public void refreshPreference(ShortcutPreference pref) {
+		int cellId = pref.getShortcutPosition();
 		ShortcutInfo info = mModel.getShortcut(cellId);
 		if (info == null) {
 			pref.setTitle(R.string.set_shortcut);
@@ -159,8 +164,8 @@ public class PickShortcutUtils {
 		final ShortcutInfo info = mModel.saveShortcutIntent(mCurrentCellId, data, isApplicationShortcut);
 
 		if (info != null && info.id != ShortcutInfo.NO_ID) {
-			String key = PreferencesStorage.getLaunchComponentName(mCurrentCellId, mAppWidgetId);
-			LauncherItemPreference p = (LauncherItemPreference) mActivity.findPreference(key);
+			String key = mPreferenceKey.getCompiledKey(mCurrentCellId);
+			ShortcutPreference p = (ShortcutPreference) mActivity.findPreference(key);
 			refreshPreference(p);
 		}
 		mCurrentCellId = INVALID_CELL_ID;
@@ -185,13 +190,12 @@ public class PickShortcutUtils {
 	}
 
 
-
 	private void completeEditShortcut(Intent data) {
 		int cellId = data.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, INVALID_CELL_ID);
 		long shortcutId = data.getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);
 		if (cellId != INVALID_CELL_ID) {
-			String key = PreferencesStorage.getLaunchComponentName(cellId, mAppWidgetId);
-			LauncherItemPreference p = (LauncherItemPreference) mActivity.findPreference(key);
+			String key = mPreferenceKey.getCompiledKey(cellId);
+			ShortcutPreference p = (ShortcutPreference) mActivity.findPreference(key);
 			mModel.reloadShortcut(cellId, shortcutId);
 			refreshPreference(p);
 		}

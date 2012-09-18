@@ -1,7 +1,6 @@
 package com.anod.car.home.prefs;
 
 import android.appwidget.AppWidgetManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;

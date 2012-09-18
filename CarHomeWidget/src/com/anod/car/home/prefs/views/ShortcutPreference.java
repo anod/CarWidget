@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.anod.car.home.R;
 
-public class LauncherItemPreference extends Preference implements OnClickListener {
+public class ShortcutPreference extends Preference implements OnClickListener {
 	private static final int INVALID_RESOURCE = 0;
 	private Bitmap mIconBitmap;
 	private int mIconResource = INVALID_RESOURCE;
@@ -18,27 +18,27 @@ public class LauncherItemPreference extends Preference implements OnClickListene
 	private Boolean mShowEditButton = false;
 	private int mCellId;
 	
-    public LauncherItemPreference(Context context, AttributeSet attrs, int defStyle) {
+    public ShortcutPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setLayoutResource(R.layout.pref_icon);
     }
     
-    public LauncherItemPreference(Context context, AttributeSet attrs) {
+    public ShortcutPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         setLayoutResource(R.layout.pref_icon);
     }
     
-    public LauncherItemPreference(Context context) {
+    public ShortcutPreference(Context context) {
         super(context);
         setLayoutResource(R.layout.pref_icon);
     }
     
     
-    public void setCellId(int cellId) {
+    public void setShortcutPosition(int cellId) {
     	mCellId = cellId;
     }
     
-    public int getCellId() {
+    public int getShortcutPosition() {
     	return mCellId;
     }
     
