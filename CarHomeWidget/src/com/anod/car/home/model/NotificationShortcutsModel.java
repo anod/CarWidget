@@ -19,7 +19,7 @@ public class NotificationShortcutsModel extends AbstractShortcutsModel {
 	}
 
 	@Override
-	protected int getCount() {
+	public int getCount() {
 		return PreferencesStorage.NOTIFICATION_COMPONENT_NUMBER;
 	}
 

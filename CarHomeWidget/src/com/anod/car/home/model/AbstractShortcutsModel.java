@@ -14,7 +14,7 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 	private Context mContext;
 	private LauncherModel mModel;
 
-	abstract protected int getCount();
+	abstract public int getCount();
 	abstract protected void saveShortcutId(int position, long shortcutId);
 	abstract protected void dropShortcutId(int position);
 	abstract protected ArrayList<Long> loadShortcutIds();

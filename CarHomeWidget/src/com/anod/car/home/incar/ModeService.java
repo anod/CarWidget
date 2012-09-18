@@ -10,16 +10,26 @@ import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
+import com.anod.car.home.ShortcutPendingIntent;
+import com.anod.car.home.model.NotificationShortcutsModel;
+import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.utils.Utils;
 
 public class ModeService extends Service{
+	private static final String PREFIX_NOTIF = "notif";
 	private ModePhoneStateListener mPhoneListener;
+	private int[] sBtnIds = {
+		R.id.btn0,
+		R.id.btn1,
+		R.id.btn2
+	};
 	private boolean mForceState = false;
 	public static boolean sInCarMode = false;
 	private static final int NOTIFICATION_ID = 1;
@@ -47,6 +57,19 @@ public class ModeService extends Service{
 		notification.icon = R.drawable.ic_stat_incar;
 		if (Utils.IS_HONEYCOMB_OR_GREATER) {
 			RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification);
+			NotificationShortcutsModel model = new NotificationShortcutsModel(this);
+			model.init();
+			for (int i = 0; i < model.getCount(); i++) {
+				ShortcutInfo info = model.getShortcut(i);
+				int resId = sBtnIds[i];
+				if (info == null) {
+					contentView.setViewVisibility(resId, View.INVISIBLE);
+				} else {
+					contentView.setImageViewBitmap(resId, info.getIcon());
+					PendingIntent pendingIntent = ShortcutPendingIntent.getShortcutPendingInent(info.intent, PREFIX_NOTIF, this, i);
+					contentView.setOnClickPendingIntent(resId, pendingIntent);
+				}
+			}
 			notification.contentIntent = contentIntent;
 			notification.contentView = contentView;
 		} else {

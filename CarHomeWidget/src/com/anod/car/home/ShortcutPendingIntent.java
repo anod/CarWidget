@@ -31,25 +31,25 @@ public class ShortcutPendingIntent {
     	intent.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
     	return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
-    /**
-     * 
-     * @param componentName
-     * @param appWidgetId
-     * @param context
-     * @return
-     */
-    public static PendingIntent getShortcutPendingInent(Intent intent,int appWidgetId, Context context, int cellId) {
+
+    public static PendingIntent getShortcutPendingInent(Intent intent,int appWidgetId, Context context, int position) {
+    	return getShortcutPendingInent(intent,String.valueOf(appWidgetId),context,position);
+    }
+    public static PendingIntent getShortcutPendingInent(Intent intent,String prefix, Context context, int position) {
     	String action = intent.getAction();
     	boolean isCallPrivileged = (action != null && action.equals(INTENT_ACTION_CALL_PRIVILEGED));
     	if (intent.getExtras() == null && !isCallPrivileged) { // Samsung s3 bug
     		return PendingIntent.getActivity(context, 0 /* no requestCode */, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     	}
     	Intent launchIntent = new Intent(context, ShortcutActivity.class);
-    	String path = String.valueOf(appWidgetId) + " - " + String.valueOf(cellId);
+    	String path = prefix + " - " + String.valueOf(position);
     	Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
     	launchIntent.setData(data);
     	launchIntent.setAction(Intent.ACTION_MAIN);
     	launchIntent.putExtra(ShortcutActivity.EXTRA_INTENT, intent);
 		return PendingIntent.getActivity(context, 0 /* no requestCode */, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
+    
+    
+    
 }

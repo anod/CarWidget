@@ -36,7 +36,7 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 	}
 
 	@Override
-	protected int getCount() {
+	public int getCount() {
 		return PreferencesStorage.LAUNCH_COMPONENT_NUMBER;
 	}
 
