@@ -12,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -24,7 +23,7 @@ import com.anod.car.home.Launcher;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 
-public class ConfigurationBackup extends PreferenceActivity {
+public class ConfigurationBackup extends ConfigurationActivity {
 	private static final int REQUEST_RESTORE_MAIN = 1;
 	private static final String RESTORE_BTN_INCAR = "restore-btn-incar";
 	private static final String BACKUP_BTN_INCAR = "backup-btn-incar";
@@ -38,8 +37,6 @@ public class ConfigurationBackup extends PreferenceActivity {
 	private static final int TYPE_MAIN = 1;
 	private static final int TYPE_INCAR = 2;
 	
-    private int mAppWidgetId;   
-	private Context mContext;
 	private Preference mBackupMainPref;
 	private Preference mBackupIncarPref;
 	private PreferencesBackupManager mBackupManager;
@@ -52,23 +49,17 @@ public class ConfigurationBackup extends PreferenceActivity {
 	;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected int getTitleResource() {
+		return R.string.pref_backup_title;
+	}
 
-		addPreferencesFromResource(R.xml.preference_backup);
+	@Override
+	protected int getXmlResource() {
+		return R.xml.preference_backup;
+	}
 
-		Intent launchIntent = getIntent();
-		Bundle extras = launchIntent.getExtras();
-		if (extras != null) {
-			mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-
-			Intent defaultResultValue = new Intent();
-			defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-			setResult(RESULT_OK, defaultResultValue);
-		} else {
-			finish();
-		}
-		mContext = (Context) this;
+	@Override
+	protected void onCreateImpl(Bundle savedInstanceState) {
 
 		mLastBackupStr = getString(R.string.last_backup);
 		mBackupMainPref = (Preference) findPreference(BACKUP_BTN_MAIN);
@@ -246,5 +237,6 @@ public class ConfigurationBackup extends PreferenceActivity {
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
-	}	
+	}
+
 }

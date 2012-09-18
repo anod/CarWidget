@@ -2,8 +2,13 @@ package com.anod.car.home.prefs;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -17,11 +22,15 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
+import com.anod.car.home.utils.FastBitmapDrawable;
+import com.anod.car.home.utils.TitleBarUtils;
 
 public class SkinPreviewActivity extends FragmentActivity implements OnPageChangeListener{
 
@@ -29,11 +38,14 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 	private SkinItem[] mSkinItems;
 	private SkinPagerAdapter mAdapter;
 	private int mCurrentPage = 0;
-	private int mSelectedSkin = 0;
+	private int mSelectedSkinPosition = 0;
 	private TextView mTextView;
-	private int appWidgetId;
+	private int mAppWidgetId;
 	private Context mContext;
-	private Button mButton;
+	private Button mButtonApply;
+	private Button mButtonSelected;
+	private Button mButtonTileColor;
+	private TitleBarUtils mTitleBarUtils;
 	
 	private static int[] sPreviewRes = {
 		R.drawable.scr_glossy,
@@ -52,8 +64,9 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 	
 	@Override
 	public void onCreate(Bundle icicle) {
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		super.onCreate(icicle);
-
+	    
 		Intent intent = getIntent();
 		if (intent == null) {
 			Log.e("CarWidget", "No intent");
@@ -61,31 +74,53 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 			return;
 		}
 		
-		appWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-		if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+		mAppWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+		if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
 			Log.e("CarWidget", "Invalid app widget id");
 			finish();
 			return;
 		}
+		setContentView(R.layout.skin_preview);
+		setTitle(R.string.pref_skin);
 		mContext = this;
-		Main prefs = PreferencesStorage.loadMain(mContext, appWidgetId);
 
+		Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
 		mSkinItems = createSkinList(prefs.getSkin());
-		int count = mSkinItems.length;
-		mAdapter = new SkinPagerAdapter(this,count, getSupportFragmentManager());
+		mCurrentPage = mSelectedSkinPosition;
+
+		setupTitleBar();
 		inflateActivity();
 
-		mCurrentPage = mSelectedSkin;
-		mGallery.setCurrentItem(mSelectedSkin);	
-		setButtonSelected();
+		int count = mSkinItems.length;
+		mAdapter = new SkinPagerAdapter(this,count, getSupportFragmentManager());
+		mGallery.setAdapter(mAdapter);
+		mGallery.setCurrentItem(mSelectedSkinPosition);	
+
+		showButtonSelected();
 		
 		showText(mCurrentPage);
+		showTileColorButton(mCurrentPage);
+
+
 	}
 
-	private void setButtonSelected() {
-		mButton.setText(R.string.selected);
-		mButton.setEnabled(false);
+	private void setupTitleBar() {
+		mTitleBarUtils = new TitleBarUtils(this);
+		mTitleBarUtils.setCustomTitleBar();
+		mTitleBarUtils.setupActionBar();
+		
+		View view = getLayoutInflater().inflate(R.layout.skin_preview_buttons, null);
+		mTitleBarUtils.getTitleBar().addView(view);
+		
+		mButtonApply = (Button) view.findViewById(R.id.apply);
+		mButtonApply.setOnClickListener(mApplyClicked);
+		
+		mButtonSelected = (Button) view.findViewById(R.id.selected);
+		mButtonTileColor = (Button) view.findViewById(R.id.tile_color);
+		mButtonTileColor.setOnClickListener(mTileColorClicked);
 	}
+
+
 
 	private SkinItem[] createSkinList(String skinValue) {
 		
@@ -102,7 +137,7 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 			item.textRes = sTextRes[i];
 			
 			if (item.value.equals(skinValue)) {
-				mSelectedSkin = i;
+				mSelectedSkinPosition = i;
 			}
 			
 			skins[i] = item;
@@ -115,8 +150,6 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 	}
 	
 	private void inflateActivity() {
-		setContentView(R.layout.skin_preview);
-
 		
 		mTextView = (TextView) findViewById(R.id.skin_info);
 		mTextView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -124,12 +157,8 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 		mGallery = (ViewPager) findViewById(R.id.gallery);
 		mGallery.setHorizontalFadingEdgeEnabled(true);
 		mGallery.setFadingEdgeLength(30);
-		mGallery.setAdapter(mAdapter);
 		mGallery.setOnPageChangeListener(this);
 		
-		
-		mButton = (Button) findViewById(R.id.apply);
-		mButton.setOnClickListener(mApplyClicked);
 	}
 	
 	@Override
@@ -137,26 +166,57 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 		mCurrentPage = position;
 		showText(position);
 		
-		if (mSelectedSkin == position) {
-			setButtonSelected();
+		if (mSelectedSkinPosition == position) {
+			showButtonSelected();
 		} else {
-			setButtonApply();
+			showButtonApply();
+		}
+		showTileColorButton(mCurrentPage);
+
+	}
+
+	private void showButtonSelected() {
+		mButtonApply.setVisibility(View.GONE);
+		mButtonSelected.setVisibility(View.VISIBLE);
+	}
+
+	private void showButtonApply() {
+		mButtonApply.setVisibility(View.VISIBLE);
+		mButtonSelected.setVisibility(View.GONE);
+	}
+
+	private void showTileColorButton(int position) {
+		if (getSkinItem(position).value.equals(PreferencesStorage.SKIN_WINDOWS7)) {
+			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
+			int size = (int)getResources().getDimension(R.dimen.color_preview_size);
+			
+			Bitmap bitmap = Bitmap.createBitmap(size, size, Config.ARGB_8888);
+			Canvas c = new Canvas(bitmap);
+			c.drawColor(prefs.getTileColor());
+			Drawable d = new FastBitmapDrawable(bitmap);
+			/*
+			 * remember to first clear the callback of the drawable you are replacing to prevent memory leaks...
+			 */
+			for(Drawable myOldDrawable : mButtonTileColor.getCompoundDrawables())
+			{
+				if (myOldDrawable!=null) {
+					myOldDrawable.setCallback(null);
+				}
+			}
+			mButtonTileColor.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
+			mButtonTileColor.setVisibility(View.VISIBLE);
+		} else {
+			mButtonTileColor.setVisibility(View.GONE);
 		}
 	}
-
-	private void setButtonApply() {
-		mButton.setText(R.string.apply);
-		mButton.setEnabled(true);
-	}
-
+	
 	private void showText(int position) {
 		int textRes = getSkinItem(position).textRes;
 		if (textRes > 0) {
 	    	Spanned text = Html.fromHtml(getString(textRes));
 	    	mTextView.setText(text);
-	    	mTextView.setVisibility(View.VISIBLE);
 		} else {
-			mTextView.setVisibility(View.GONE);
+	    	mTextView.setText("");
 		}
 	}
 	
@@ -174,10 +234,30 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 	
 	private final OnClickListener mApplyClicked = new OnClickListener() {
 		public void onClick(View v) {
-			Main prefs = PreferencesStorage.loadMain(mContext, appWidgetId);
+			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
 			prefs.setSkin(getSkinItem(mCurrentPage).value);
-			PreferencesStorage.saveMain(mContext, prefs, appWidgetId);
+			PreferencesStorage.saveMain(mContext, prefs, mAppWidgetId);
 			finish();
+		}
+	};
+	
+	private final OnClickListener mTileColorClicked = new OnClickListener() {
+		public void onClick(View v) {
+			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
+			Integer value = prefs.getTileColor();
+			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					String prefName = PreferencesStorage.getName(PreferencesStorage.BUTTON_COLOR, mAppWidgetId);
+					int color = ((CarHomeColorPickerDialog) dialog).getColor();
+					PreferencesStorage.saveColor(mContext, prefName, color);
+					showTileColorButton(mCurrentPage);
+				}
+
+			};
+			final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
+			d.setAlphaSliderVisible(true);
+			d.show();
 		}
 	};
 

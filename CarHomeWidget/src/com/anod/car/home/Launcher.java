@@ -74,7 +74,7 @@ public class Launcher {
 				setShortcut(res, resText, iconScale, info, prefs, views, context, appWidgetId, cellId, skinProperties);
 			}
 			setFont(prefs, res, resText, scaledDensity, views);
-			if (prefs.getTileColor() != null) {
+			if (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) {
 				setTile(prefs.getTileColor(), res, views);
 			}
 		}

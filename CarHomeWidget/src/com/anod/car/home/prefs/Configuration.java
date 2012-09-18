@@ -16,7 +16,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,8 +28,7 @@ import com.anod.car.home.model.ShortcutModel;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.views.LauncherItemPreference;
 
-public class Configuration extends PreferenceActivity {
-	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+public class Configuration extends ConfigurationActivity {
 	private static final int REQUEST_PICK_SHORTCUT = 2;
 	private static final int REQUEST_PICK_APPLICATION = 3;
 	private static final int REQUEST_CREATE_SHORTCUT = 4;
@@ -41,7 +39,6 @@ public class Configuration extends PreferenceActivity {
 	public static final int INVALID_CELL_ID = -1;
 
 	private ShortcutModel mModel;
-	private Context mContext;
 
 	private static final int DIALOG_WAIT = 1;
 	private static final int DIALOG_INIT = 3;
@@ -64,23 +61,17 @@ public class Configuration extends PreferenceActivity {
 	private static final String OTHER_AMAZON_URL = "http://www.amazon.com/gp/mas/dl/android?p=com.anod.car.home.free&showAll=1";
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected int getTitleResource() {
+		return R.string.settings;
+	}
 
-		addPreferencesFromResource(R.xml.preferences);
-
-		Intent launchIntent = getIntent();
-		Bundle extras = launchIntent.getExtras();
-		if (extras != null) {
-			mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-
-			Intent defaultResultValue = new Intent();
-			defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-			setResult(RESULT_OK, defaultResultValue);
-		} else {
-			finish();
-		}
-		mContext = (Context) this;
+	@Override
+	protected int getXmlResource() {
+		return R.xml.preferences;
+	}
+	
+	@Override
+	protected void onCreateImpl(Bundle savedInstanceState) {
 		mModel = new ShortcutModel(mContext, mAppWidgetId);
 		mModel.init();
 		Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
@@ -92,7 +83,7 @@ public class Configuration extends PreferenceActivity {
 		initOther();
 		initBackup();
 
-		int cellId = extras.getInt(EXTRA_CELL_ID, INVALID_CELL_ID);
+		int cellId = getIntent().getExtras().getInt(EXTRA_CELL_ID, INVALID_CELL_ID);
 		if (cellId != INVALID_CELL_ID) {
 			pickShortcut(cellId);
 		}

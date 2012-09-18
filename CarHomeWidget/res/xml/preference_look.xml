@@ -7,7 +7,6 @@
     			android:title="@string/pref_skin"
     		>
     		</Preference>
-	        <Preference android:key="button-color-%d" android:title="@string/pref_tile_color_title" android:summary="@string/pref_tile_color_summary"  />
     		<Preference 
     			android:key="bg-color-%d"
     			android:title="@string/pref_bg_color_title"

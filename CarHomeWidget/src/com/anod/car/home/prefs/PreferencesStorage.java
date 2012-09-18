@@ -90,11 +90,8 @@ public class PreferencesStorage {
         String skinName = prefs.getString(getName(SKIN, appWidgetId), SKIN_GLOSSY);
     	p.setSkin(skinName);
     	
-		Integer tileColor = null;
-		if (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) {
-			int defTileColor = res.getColor(R.color.w7_tale_default_background);
-			tileColor = prefs.getInt(getName(BUTTON_COLOR, appWidgetId), defTileColor);
-		}
+		int defTileColor = res.getColor(R.color.w7_tale_default_background);
+		int tileColor = prefs.getInt(getName(BUTTON_COLOR, appWidgetId), defTileColor);
 		p.setTileColor(tileColor);
 		
     	p.setIconsScaleString(prefs.getString(getName(ICONS_SCALE, appWidgetId), "0"));

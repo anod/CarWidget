@@ -1,58 +1,49 @@
 package com.anod.car.home.prefs;
 
+import android.appwidget.AppWidgetManager;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceCategory;
+
 import com.anod.car.home.Launcher;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.prefs.views.SeekBarPreference;
 
-import android.appwidget.AppWidgetManager;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.DialogInterface.OnClickListener;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
-import android.preference.Preference.OnPreferenceClickListener;
-
-public class ConfigurationLook extends PreferenceActivity {
+public class ConfigurationLook extends ConfigurationActivity {
 	private static final String SKIN_PREVIEW = "skin-preview";
 
 	public static final String CATEGORY_TRANSPARENT = "transparent-category";
 
-	private int mAppWidgetId;
-	private Context mContext;
 	private boolean mFreeVersion;
 
+	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected int getTitleResource() {
+		return R.string.pref_look_and_feel_title;
+	}
+	
+	@Override
+	protected int getXmlResource() {
+		return R.xml.preference_look;
+	}
 
-		addPreferencesFromResource(R.xml.preference_look);
-
-		Intent launchIntent = getIntent();
-		Bundle extras = launchIntent.getExtras();
-		if (extras != null) {
-			mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-
-			Intent defaultResultValue = new Intent();
-			defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-			setResult(RESULT_OK, defaultResultValue);
-		} else {
-			finish();
-		}
-		mContext = (Context) this;
+	@Override
+	protected void onCreateImpl(Bundle savedInstanceState) {
 		mFreeVersion = Launcher.isFreeVersion(this.getPackageName());
 
 		Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
 
 		initSkinPreview();
-		initButtonSkin(prefs);
 		initBackground(prefs);
 		initIcon(prefs);
 		initFont(prefs);
@@ -82,40 +73,6 @@ public class ConfigurationLook extends PreferenceActivity {
 			incarTrans.setKey(key);
 			incarTrans.setChecked(prefs.isIncarTransparent());
 		}
-	}
-
-	private void initButtonSkin(final Main prefs) {
-		final Preference btnColor = (Preference) findPreference(PreferencesStorage.BUTTON_COLOR);
-		btnColor.setKey(PreferencesStorage.getName(PreferencesStorage.BUTTON_COLOR, mAppWidgetId));
-		btnColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				Integer value = prefs.getTileColor();
-				if (value == null) {
-					value = mContext.getResources().getColor(R.color.w7_tale_default_background);
-				}
-				OnClickListener listener = new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						String prefName = PreferencesStorage.getName(PreferencesStorage.BUTTON_COLOR, mAppWidgetId);
-						int color = ((CarHomeColorPickerDialog) dialog).getColor();
-						PreferencesStorage.saveColor(mContext, prefName, color);
-					}
-				};
-				final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
-				d.setAlphaSliderVisible(true);
-				d.show();
-				return false;
-
-			}
-		});
-		String skinValue = prefs.getSkin();
-		if (skinValue.equals(PreferencesStorage.SKIN_WINDOWS7)) {
-			btnColor.setEnabled(true);
-		} else {
-			btnColor.setEnabled(false);
-		}
-
 	}
 
 	private void initBackground(final Main prefs) {

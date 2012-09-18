@@ -28,7 +28,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 
@@ -38,7 +37,7 @@ import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
 import com.anod.car.home.prefs.preferences.InCar;
 
-public class ConfigurationInCar extends PreferenceActivity {
+public class ConfigurationInCar extends ConfigurationActivity {
 	private static final String SCREEN_BT_DEVICE = "bt-device-screen";
 	private static final String CATEGORY_BT_DEVICE = "bt-device-category";
 	private static final String PREF_BT_SWITCH = "bt-switch";
@@ -61,13 +60,24 @@ public class ConfigurationInCar extends PreferenceActivity {
 	private BroadcastReceiver mBluetoothReceiver;
 
 	private boolean mFreeVersion;
-	private Context mContext;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected int getTitleResource() {
+		return R.string.pref_incar_mode_title;
+	}
 
-		addPreferencesFromResource(R.xml.preference_incar);
+	@Override
+	protected boolean isAppWidgetIdRequired() {
+		return false;
+	}
+
+	@Override
+	protected int getXmlResource() {
+		return R.xml.preference_incar;
+	}
+
+	@Override
+	protected void onCreateImpl(Bundle savedInstanceState) {
 		setResult(RESULT_OK);
 
 		mFreeVersion = Launcher.isFreeVersion(this.getPackageName());
@@ -397,4 +407,6 @@ public class ConfigurationInCar extends PreferenceActivity {
 			}
 		}
 	}
+
+
 }
