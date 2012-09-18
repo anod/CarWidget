@@ -16,7 +16,7 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 
 	abstract protected int getCount();
 	abstract protected void saveShortcutId(int position, long shortcutId);
-	abstract protected void dropShortcutId(int position, long shortcutId);
+	abstract protected void dropShortcutId(int position);
 	abstract protected ArrayList<Long> loadShortcutIds();
 
 	public AbstractShortcutsModel(Context context) {
@@ -92,7 +92,7 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 		if (info != null) {
 			mModel.deleteItemFromDatabase(mContext, info.id);
 			mShortcuts.put(position, null);
-			dropShortcutId(position, info.id);
+			dropShortcutId(position);
 		}
 	}
 

@@ -2,15 +2,16 @@ package com.anod.car.home.model;
 
 import java.util.ArrayList;
 
+import com.anod.car.home.prefs.PreferencesStorage;
+
 import android.content.Context;
 
 public class NotificationShortcutsModel extends AbstractShortcutsModel {
-
+	private Context mContext;
 	public NotificationShortcutsModel(Context context) {
 		super(context);
+		mContext = context;
 	}
-
-	private static final int TOTAL_COUNT = 3;
 
 	@Override
 	public void createDefaultShortcuts() {
@@ -19,25 +20,23 @@ public class NotificationShortcutsModel extends AbstractShortcutsModel {
 
 	@Override
 	protected int getCount() {
-		return TOTAL_COUNT;
+		return PreferencesStorage.NOTIFICATION_COMPONENT_NUMBER;
 	}
 
 	@Override
 	protected void saveShortcutId(int position, long shortcutId) {
-		// TODO Auto-generated method stub
+		PreferencesStorage.saveNotifShortcut(mContext, shortcutId, position);
 		
 	}
 
 	@Override
-	protected void dropShortcutId(int position, long shortcutId) {
-		// TODO Auto-generated method stub
-		
+	protected void dropShortcutId(int position) {
+		PreferencesStorage.dropNotifShortcut(position, mContext);
 	}
 
 	@Override
 	protected ArrayList<Long> loadShortcutIds() {
-		// TODO Auto-generated method stub
-		return null;
+		return PreferencesStorage.getNotifComponents(mContext);
 	}
 
 

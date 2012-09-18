@@ -31,7 +31,7 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 	}
 
 	@Override
-	protected void dropShortcutId(int position, long shortcutId) {
+	protected void dropShortcutId(int position) {
 		PreferencesStorage.dropShortcutPreference(position, mAppWidgetId, mContext);
 	}
 

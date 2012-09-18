@@ -1,24 +1,18 @@
 package com.anod.car.home.model;
 
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.util.Log;
 
-import com.anod.car.home.prefs.PreferencesStorage;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
 public class LauncherModel {
