@@ -41,8 +41,8 @@ public class ConfigurationInCar extends ConfigurationActivity {
 	private static final String SCREEN_BT_DEVICE = "bt-device-screen";
 	private static final String CATEGORY_BT_DEVICE = "bt-device-category";
 	private static final String PREF_BT_SWITCH = "bt-switch";
+	private static final String PREF_NOTIF_SHORTCUTS = "notif-shortcuts";
 
-	private static final int DIALOG_WAIT = 1;
 	private static final int DIALOG_DONATE = 2;
 	private static final int DIALOG_INIT = 3;
 
@@ -121,12 +121,6 @@ public class ConfigurationInCar extends ConfigurationActivity {
 				}
 			});
 			return initDialog;
-		case DIALOG_WAIT:
-			ProgressDialog waitDialog = new ProgressDialog(this);
-			waitDialog.setCancelable(true);
-			String message = getResources().getString(R.string.please_wait);
-			waitDialog.setMessage(message);
-			return waitDialog;
 		case DIALOG_DONATE:
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.dialog_donate_title);
@@ -151,7 +145,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 			});
 			return builder.create();
 		}
-		return null;
+		return super.onCreateDialog(id);
 	}
 
 	private void initInCarFreeDialog() {
@@ -179,6 +173,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 		InCar incar = PreferencesStorage.loadInCar(this);
 		initBluetooth();
 		initAutorunApp(incar);
+		setIntent(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class, 0);
 	}
 
 	private void initAutorunApp(InCar incar) {

@@ -1,12 +1,16 @@
 package com.anod.car.home.prefs;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.view.Window;
 
+import com.anod.car.home.R;
 import com.anod.car.home.utils.TitleBarUtils;
 
 
@@ -15,6 +19,8 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 	protected Context mContext;
 	private TitleBarUtils mTitleBarUtils;
 	
+	protected static final int DIALOG_WAIT = 1;
+
 	abstract protected int getTitleResource();
 	abstract protected int getXmlResource();
 	abstract protected void onCreateImpl(Bundle savedInstanceState);
@@ -52,5 +58,35 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 		onCreateImpl(savedInstanceState);
 	}
 
-
+	protected void setIntent(String key, Class<?> cls, int appWidgetId ) {
+		Preference pref = (Preference) findPreference(key);
+		Intent intent = new Intent(this, cls);
+		if (appWidgetId > 0) {
+			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+		}
+		pref.setIntent(intent);
+	}
+	
+	@Override
+	public Dialog onCreateDialog(int id) {
+		switch (id) {
+		case DIALOG_WAIT:
+			ProgressDialog waitDialog = new ProgressDialog(this);
+			waitDialog.setCancelable(true);
+			String message = getResources().getString(R.string.please_wait);
+			waitDialog.setMessage(message);
+			return waitDialog;
+		}
+		return null;
+	}
+	
+	public void showWaitDialog() {
+		showDialog(DIALOG_WAIT);
+	}
+	
+	public void dismissWaitDialog() {
+		try {
+			dismissDialog(DIALOG_WAIT);
+		} catch (IllegalArgumentException e) {}
+	}
 }

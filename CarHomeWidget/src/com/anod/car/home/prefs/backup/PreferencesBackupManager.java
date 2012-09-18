@@ -232,7 +232,7 @@ public class PreferencesBackupManager {
         HashMap<Integer, ShortcutInfo> shortcuts = prefs.getShortcuts();
 		
         for (int cellId=0;cellId<shortcuts.size();cellId++) {
-        	smodel.dropShortcut(cellId, appWidgetId);
+        	smodel.dropShortcut(cellId);
         	final ShortcutInfo info = shortcuts.get(cellId);
         	if (info != null) {
         		info.id = ShortcutInfo.NO_ID;

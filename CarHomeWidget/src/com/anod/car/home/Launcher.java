@@ -15,7 +15,7 @@ import android.widget.RemoteViews;
 import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutModel;
-import com.anod.car.home.prefs.Configuration;
+import com.anod.car.home.prefs.PickShortcutUtils;
 import com.anod.car.home.prefs.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.skin.IconProcessor;
@@ -79,7 +79,7 @@ public class Launcher {
 			}
 		}
 
-		PendingIntent configIntent = ShortcutPendingIntent.getSettingsPendingInent(appWidgetId, context, Configuration.INVALID_CELL_ID);
+		PendingIntent configIntent = ShortcutPendingIntent.getSettingsPendingInent(appWidgetId, context, PickShortcutUtils.INVALID_CELL_ID);
 		views.setOnClickPendingIntent(R.id.btn_settings, configIntent);
 		return views;
 	}

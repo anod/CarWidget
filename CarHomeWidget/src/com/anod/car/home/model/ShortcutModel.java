@@ -85,11 +85,11 @@ public class ShortcutModel {
 		PreferencesStorage.saveShortcut(mContext, info.id, cellId, mAppWidgetId);
 	}
 
-	public void dropShortcut(int cellId, int appWidgetId) {
+	public void dropShortcut(int cellId) {
 		ShortcutInfo info = mShortcuts.get(cellId);
 		if (info != null) {
 			LauncherModel.deleteItemFromDatabase(mContext, info.id);
-			PreferencesStorage.dropShortcutPreference(cellId, appWidgetId, mContext);
+			PreferencesStorage.dropShortcutPreference(cellId, mAppWidgetId, mContext);
 			mShortcuts.put(cellId, null);
 		}
 	}

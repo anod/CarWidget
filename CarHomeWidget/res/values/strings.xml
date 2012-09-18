@@ -179,4 +179,6 @@
 	<string name="apply">Apply</string>
 	<string name="selected">Selected</string>
 	<string name="settings">Settings</string>
+	<string name="notification">Notification</string>
+	<string name="shortcuts_summary">You can place up to 3 shortcuts in status bar</string>
 </resources>

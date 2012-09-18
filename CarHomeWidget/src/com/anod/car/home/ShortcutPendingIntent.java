@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.anod.car.home.prefs.Configuration;
+import com.anod.car.home.prefs.PickShortcutUtils;
 
 public class ShortcutPendingIntent {
 
@@ -21,8 +22,8 @@ public class ShortcutPendingIntent {
     public static PendingIntent getSettingsPendingInent(int appWidgetId, Context context, int cellId) {
     	Intent intent = new Intent(context, Configuration.class);
     	intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-    	if (cellId != Configuration.INVALID_CELL_ID) {
-    		intent.putExtra(Configuration.EXTRA_CELL_ID, cellId);
+    	if (cellId != PickShortcutUtils.INVALID_CELL_ID) {
+    		intent.putExtra(PickShortcutUtils.EXTRA_CELL_ID, cellId);
     	}
     	String path = String.valueOf(appWidgetId) + " - " + String.valueOf(cellId);
     	Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);

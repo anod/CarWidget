@@ -31,7 +31,6 @@ public class ConfigurationBackup extends ConfigurationActivity {
 	private static final String BACKUP_BTN_MAIN = "backup-btn-main";
 	private static final String INCAR_CATEGORY = "backup-incar-category";
 	
-	private static final int DIALOG_WAIT=1;
 	private static final int DIALOG_BACKUP_NAME=2;
 	
 	private static final int TYPE_MAIN = 1;
@@ -84,12 +83,6 @@ public class ConfigurationBackup extends ConfigurationActivity {
 	@Override
 	public Dialog onCreateDialog(int id) {
 		switch (id) {
-		case DIALOG_WAIT:
-			ProgressDialog waitDialog = new ProgressDialog(this);
-			waitDialog.setCancelable(true);
-			String message = getResources().getString(R.string.please_wait);
-			waitDialog.setMessage(message);
-			return waitDialog;
 		case DIALOG_BACKUP_NAME:
 			String defaultFilename = "backup-" + mAppWidgetId;
 			// This example shows how to add a custom layout to an AlertDialog
@@ -109,7 +102,7 @@ public class ConfigurationBackup extends ConfigurationActivity {
 				}
 			}).create();
 		}
-		return null;
+		return super.onCreateDialog(id);
 	}
 
 	private void initBackup() {

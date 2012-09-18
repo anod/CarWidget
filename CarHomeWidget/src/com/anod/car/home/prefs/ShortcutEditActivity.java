@@ -52,9 +52,9 @@ public class ShortcutEditActivity extends Activity {
 		mIconView = (ImageView)findViewById(R.id.icon_edit);
 		
 		mIntent = getIntent();
-    	int cellId = mIntent.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, Configuration.INVALID_CELL_ID);
+    	int cellId = mIntent.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, PickShortcutUtils.INVALID_CELL_ID);
     	long shortcutId = mIntent.getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);
-    	if (cellId == Configuration.INVALID_CELL_ID || shortcutId == ShortcutInfo.NO_ID) {
+    	if (cellId == PickShortcutUtils.INVALID_CELL_ID || shortcutId == ShortcutInfo.NO_ID) {
     		setResult(RESULT_CANCELED);
     		finish();
     		return;

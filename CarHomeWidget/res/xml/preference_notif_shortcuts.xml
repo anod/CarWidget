@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/shortcuts" >
+		<com.anod.car.home.prefs.views.LauncherItemPreference android:key="notif-component-0" android:title="@string/set_shortcut" />
+		<com.anod.car.home.prefs.views.LauncherItemPreference android:key="notif-component-1" android:title="@string/set_shortcut" />
+		<com.anod.car.home.prefs.views.LauncherItemPreference android:key="notif-component-2" android:title="@string/set_shortcut" />
+</PreferenceScreen>
