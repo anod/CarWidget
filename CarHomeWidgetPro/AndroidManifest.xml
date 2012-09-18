@@ -50,6 +50,15 @@
         <service android:name="com.anod.car.home.incar.BroadcastService" />
 
         <activity
+            android:name="com.anod.car.home.MainActivity"
+            android:theme="@style/AppTheme"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="com.anod.car.home.incar.SwitchInCarActivity"
             android:clearTaskOnLaunch="true"
             android:icon="@drawable/ic_launcher"
@@ -58,7 +67,6 @@
             android:theme="@style/BrightnessTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -74,23 +82,28 @@
         </activity>
         <activity
             android:name="com.anod.car.home.prefs.Configuration"
-            android:configChanges="orientation" >
+            android:configChanges="orientation"
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.anod.car.home.prefs.ConfigurationLook"
-            android:configChanges="orientation" />
+            android:configChanges="orientation" 
+            android:theme="@style/AppTheme" />
         <activity
             android:name="com.anod.car.home.prefs.ConfigurationInCar"
-            android:configChanges="orientation" />
+            android:configChanges="orientation" 
+            android:theme="@style/AppTheme" />
         <activity
             android:name="com.anod.car.home.prefs.ConfigurationBackup"
-            android:configChanges="orientation" />
+            android:configChanges="orientation" 
+            android:theme="@style/AppTheme" />
         <activity
             android:name="com.anod.car.home.prefs.ConfigurationRestore"
-            android:configChanges="orientation" />
+            android:configChanges="orientation" 
+            android:theme="@style/AppTheme" />
         <activity
             android:name="com.anod.car.home.incar.ChangeBrightnessActivity"
             android:theme="@style/BrightnessTheme" />
@@ -99,7 +112,7 @@
             android:theme="@style/BrightnessTheme" />
         <activity
             android:name="com.anod.car.home.prefs.SkinPreviewActivity"
-            android:theme="@style/Transparent"
+            android:theme="@style/AppTheme.Transparent"
         />
 
         <receiver
