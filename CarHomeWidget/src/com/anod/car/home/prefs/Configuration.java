@@ -53,6 +53,8 @@ public class Configuration extends ConfigurationActivity {
 	protected void onCreateImpl(Bundle savedInstanceState) {
 		mModel = new ShortcutModel(mContext, mAppWidgetId);
 		mModel.init();
+		mPickShortcutUtils = new PickShortcutUtils(this, mAppWidgetId, mModel);
+
 		Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
 
 		initActivityChooser(prefs);
@@ -62,7 +64,6 @@ public class Configuration extends ConfigurationActivity {
 		initOther();
 		initBackup();
 
-		mPickShortcutUtils = new PickShortcutUtils(this, mAppWidgetId, mModel);
 		
 		int cellId = getIntent().getExtras().getInt(PickShortcutUtils.EXTRA_CELL_ID, PickShortcutUtils.INVALID_CELL_ID);
 		if (cellId != PickShortcutUtils.INVALID_CELL_ID) {
