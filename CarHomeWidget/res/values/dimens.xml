@@ -13,6 +13,6 @@
     
 	<dimen name="actionbar_compat_height">48dp</dimen>
 	
-	<dimen name="color_preview_size">24dp</dimen>
+	<dimen name="color_preview_size">20dp</dimen>
 
 </resources>

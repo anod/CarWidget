@@ -32,7 +32,7 @@
      <style name="TitleBarButton" parent="android:Widget.Button">
         <item name="android:background">@drawable/actionbar_compat_item</item>
         <item name="android:paddingLeft">5dp</item>
-        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingRight">10dp</item>
         <item name="android:textColor">#FFFFFFFF</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/actionbar_compat_height</item>

@@ -33,10 +33,11 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 	final protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(getXmlResource());
-		setTitle(getTitleResource());
 		mTitleBarUtils = new TitleBarUtils(this);
 		mTitleBarUtils.setCustomTitleBar();
+		addPreferencesFromResource(getXmlResource());
+		mTitleBarUtils.setupActionBar();		
+		setTitle(getTitleResource());
 
 		if (isAppWidgetIdRequired()) {
 			Intent launchIntent = getIntent();
@@ -53,7 +54,6 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 		}
 		
 		mContext = (Context) this;
-		mTitleBarUtils.setupActionBar();
 		
 		onCreateImpl(savedInstanceState);
 	}
