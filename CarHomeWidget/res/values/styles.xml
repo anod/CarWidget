@@ -11,7 +11,7 @@
     </style>
     
     <style name="ActionBarCompat">
-        <item name="android:background">#33000000</item>
+        <item name="android:background">@color/actionbar_bg_color</item>
     </style>
 
     <style name="ActionBarCompatTitleBase">
@@ -26,7 +26,7 @@
     </style>
 
     <style name="ActionBarCompatTitle" parent="style/ActionBarCompatTitleBase">
-        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textColor">@color/actionbar_title_color</item>
     </style>
     
      <style name="TitleBarButton" parent="android:Widget.Button">

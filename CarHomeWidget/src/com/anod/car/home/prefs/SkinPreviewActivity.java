@@ -20,17 +20,17 @@ import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.anod.car.home.R;
+import com.anod.car.home.actionbarcompat.ActionBarHelper;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.utils.FastBitmapDrawable;
-import com.anod.car.home.utils.TitleBarUtils;
 
 public class SkinPreviewActivity extends FragmentActivity implements OnPageChangeListener{
 
@@ -45,7 +45,7 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 	private Button mButtonApply;
 	private Button mButtonSelected;
 	private Button mButtonTileColor;
-	private TitleBarUtils mTitleBarUtils;
+	final private ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(this);
 	
 	private static int[] sPreviewRes = {
 		R.drawable.scr_glossy,
@@ -63,9 +63,9 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 	};
 	
 	@Override
-	public void onCreate(Bundle icicle) {
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		super.onCreate(icicle);
+	public void onCreate(Bundle savedInstanceState) {
+		mActionBarHelper.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 	    
 		Intent intent = getIntent();
 		if (intent == null) {
@@ -88,7 +88,6 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 		mSkinItems = createSkinList(prefs.getSkin());
 		mCurrentPage = mSelectedSkinPosition;
 
-		setupTitleBar();
 		inflateActivity();
 
 		int count = mSkinItems.length;
@@ -104,23 +103,29 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 
 	}
 
-	private void setupTitleBar() {
-		mTitleBarUtils = new TitleBarUtils(this);
-		mTitleBarUtils.setCustomTitleBar();
-		mTitleBarUtils.setupActionBar();
-		
-		View view = getLayoutInflater().inflate(R.layout.skin_preview_buttons, null);
-		mTitleBarUtils.getTitleBar().addView(view);
-		
-		mButtonApply = (Button) view.findViewById(R.id.apply);
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		mActionBarHelper.onPostCreate(savedInstanceState);
+		super.onPostCreate(savedInstanceState);
+	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	/**
+    	 * 		mButtonApply = (Button) view.findViewById(R.id.apply);
 		mButtonApply.setOnClickListener(mApplyClicked);
 		
 		mButtonSelected = (Button) view.findViewById(R.id.selected);
 		mButtonTileColor = (Button) view.findViewById(R.id.tile_color);
 		mButtonTileColor.setOnClickListener(mTileColorClicked);
-	}
-
-
+    	 */
+        boolean retValue = false;
+        retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
+        retValue |= super.onCreateOptionsMenu(menu);
+        
+        menu.findItem(R.id.apply).
+        return retValue;
+    }
 
 	private SkinItem[] createSkinList(String skinValue) {
 		

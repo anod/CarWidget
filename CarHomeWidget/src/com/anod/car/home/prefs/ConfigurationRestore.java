@@ -12,17 +12,17 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anod.car.home.R;
+import com.anod.car.home.actionbarcompat.ActionBarHelper;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
-import com.anod.car.home.utils.TitleBarUtils;
 
 public class ConfigurationRestore extends ListActivity {
 	private int mAppWidgetId;
@@ -31,7 +31,7 @@ public class ConfigurationRestore extends ListActivity {
 	private RestoreAdapter mAdapter;
 	private RestoreClickListener mRestoreListener;
 	private DeleteClickListener mDeleteListener;
-	private TitleBarUtils mTitleBarUtils;
+	final private ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(this);
 	private static final int DIALOG_WAIT = 1;
 
 	public static final String EXTRA_TYPE = "type";
@@ -40,12 +40,9 @@ public class ConfigurationRestore extends ListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		mActionBarHelper.onCreate(savedInstanceState);
 		super.onCreate(savedInstanceState);
-		mTitleBarUtils = new TitleBarUtils(this);
 		setContentView(R.layout.restore_list);
-		mTitleBarUtils.setCustomTitleBar();
-		mTitleBarUtils.setupActionBar();
 		
 		Intent launchIntent = getIntent();
 		Bundle extras = launchIntent.getExtras();
@@ -75,6 +72,20 @@ public class ConfigurationRestore extends ListActivity {
 		}
 	}
 
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		mActionBarHelper.onPostCreate(savedInstanceState);
+		super.onPostCreate(savedInstanceState);
+	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean retValue = false;
+        retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
+        retValue |= super.onCreateOptionsMenu(menu);
+        return retValue;
+    }
+    
 	@Override
 	public Dialog onCreateDialog(int id) {
 		switch (id) {

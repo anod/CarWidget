@@ -1,5 +1,6 @@
 package com.anod.car.home.prefs;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
@@ -8,16 +9,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.view.Window;
+import android.view.Menu;
 
 import com.anod.car.home.R;
-import com.anod.car.home.utils.TitleBarUtils;
+import com.anod.car.home.actionbarcompat.ActionBarHelper;
 
 
 abstract class ConfigurationActivity extends PreferenceActivity {
+	final private ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(this);
 	protected int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	protected Context mContext;
-	private TitleBarUtils mTitleBarUtils;
 	
 	protected static final int DIALOG_WAIT = 1;
 
@@ -31,12 +32,9 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 	
 	@Override
 	final protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        mActionBarHelper.onCreate(savedInstanceState);
 		super.onCreate(savedInstanceState);
-		mTitleBarUtils = new TitleBarUtils(this);
-		mTitleBarUtils.setCustomTitleBar();
 		addPreferencesFromResource(getXmlResource());
-		mTitleBarUtils.setupActionBar();		
 		setTitle(getTitleResource());
 
 		if (isAppWidgetIdRequired()) {
@@ -57,6 +55,20 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 		
 		onCreateImpl(savedInstanceState);
 	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		mActionBarHelper.onPostCreate(savedInstanceState);
+		super.onPostCreate(savedInstanceState);
+	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean retValue = false;
+        retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
+        retValue |= super.onCreateOptionsMenu(menu);
+        return retValue;
+    }
 
 	protected void setIntent(String key, Class<?> cls, int appWidgetId ) {
 		Preference pref = (Preference) findPreference(key);
