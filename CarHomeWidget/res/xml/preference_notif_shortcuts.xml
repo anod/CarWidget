@@ -4,5 +4,4 @@
 		<com.anod.car.home.prefs.views.ShortcutPreference android:key="notif-component-0" android:title="@string/set_shortcut" />
 		<com.anod.car.home.prefs.views.ShortcutPreference android:key="notif-component-1" android:title="@string/set_shortcut" />
 		<com.anod.car.home.prefs.views.ShortcutPreference android:key="notif-component-2" android:title="@string/set_shortcut" />
-		<com.anod.car.home.prefs.views.ShortcutPreference android:key="notif-component-3" android:title="@string/set_shortcut" /> 
 </PreferenceScreen>
