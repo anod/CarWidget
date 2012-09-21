@@ -21,6 +21,8 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -32,7 +34,7 @@ import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 
-public class SkinPreviewActivity extends FragmentActivity implements OnPageChangeListener{
+public class SkinPreviewActivity extends FragmentActivity implements OnPageChangeListener, OnMenuItemClickListener {
 
 	private ViewPager mGallery;
 	private SkinItem[] mSkinItems;
@@ -42,38 +44,26 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 	private TextView mTextView;
 	private int mAppWidgetId;
 	private Context mContext;
-	private Button mButtonApply;
-	private Button mButtonSelected;
-	private Button mButtonTileColor;
 	final private ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(this);
-	
-	private static int[] sPreviewRes = {
-		R.drawable.scr_glossy,
-		R.drawable.scr_carhome,
-		R.drawable.scr_metro,
-		R.drawable.scr_holo,
-		R.drawable.scr_bbb
-	};
-	private static int[] sTextRes = {
-		0,
-		0,
-		R.string.skin_info_metro,
-		0,
-		R.string.skin_info_bbb
-	};
-	
+	private MenuItem mItemApply;
+	private MenuItem mMenuSelected;
+	private MenuItem mMenuTileColor;
+
+	private static int[] sPreviewRes = { R.drawable.scr_glossy, R.drawable.scr_carhome, R.drawable.scr_metro, R.drawable.scr_holo, R.drawable.scr_bbb };
+	private static int[] sTextRes = { 0, 0, R.string.skin_info_metro, 0, R.string.skin_info_bbb };
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		mActionBarHelper.onCreate(savedInstanceState);
 		super.onCreate(savedInstanceState);
-	    
+
 		Intent intent = getIntent();
 		if (intent == null) {
 			Log.e("CarWidget", "No intent");
 			finish();
 			return;
 		}
-		
+
 		mAppWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 		if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
 			Log.e("CarWidget", "Invalid app widget id");
@@ -91,15 +81,12 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 		inflateActivity();
 
 		int count = mSkinItems.length;
-		mAdapter = new SkinPagerAdapter(this,count, getSupportFragmentManager());
+		mAdapter = new SkinPagerAdapter(this, count, getSupportFragmentManager());
 		mGallery.setAdapter(mAdapter);
-		mGallery.setCurrentItem(mSelectedSkinPosition);	
+		mGallery.setCurrentItem(mSelectedSkinPosition);
 
-		showButtonSelected();
-		
 		showText(mCurrentPage);
 		showTileColorButton(mCurrentPage);
-
 
 	}
 
@@ -108,43 +95,40 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 		mActionBarHelper.onPostCreate(savedInstanceState);
 		super.onPostCreate(savedInstanceState);
 	}
-	
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-    	/**
-    	 * 		mButtonApply = (Button) view.findViewById(R.id.apply);
-		mButtonApply.setOnClickListener(mApplyClicked);
-		
-		mButtonSelected = (Button) view.findViewById(R.id.selected);
-		mButtonTileColor = (Button) view.findViewById(R.id.tile_color);
-		mButtonTileColor.setOnClickListener(mTileColorClicked);
-    	 */
-        boolean retValue = false;
-        retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
-        retValue |= super.onCreateOptionsMenu(menu);
-        
-        menu.findItem(R.id.apply).
-        return retValue;
-    }
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		boolean retValue = false;
+		retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
+		retValue |= super.onCreateOptionsMenu(menu);
+
+		mItemApply = menu.findItem(R.id.apply);
+		mItemApply.setOnMenuItemClickListener(this);
+		mMenuSelected = menu.findItem(R.id.selected);
+		mMenuTileColor = menu.findItem(R.id.tile_color);
+		mMenuTileColor.setOnMenuItemClickListener(this);
+
+		showButtonSelected();
+
+		return retValue;
+	}
 
 	private SkinItem[] createSkinList(String skinValue) {
-		
-		
 		Resources r = getResources();
 		String[] titles = r.getStringArray(R.array.skin_titles);
 		String[] values = r.getStringArray(R.array.skin_values);
 		SkinItem[] skins = new SkinItem[titles.length];
-		for (int i=0; i<titles.length; i++) {
+		for (int i = 0; i < titles.length; i++) {
 			SkinItem item = new SkinItem();
 			item.title = titles[i];
 			item.value = values[i];
 			item.previewRes = sPreviewRes[i];
 			item.textRes = sTextRes[i];
-			
+
 			if (item.value.equals(skinValue)) {
 				mSelectedSkinPosition = i;
 			}
-			
+
 			skins[i] = item;
 		}
 		return skins;
@@ -153,24 +137,24 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 	public SkinItem getSkinItem(int position) {
 		return mSkinItems[position];
 	}
-	
+
 	private void inflateActivity() {
-		
+
 		mTextView = (TextView) findViewById(R.id.skin_info);
 		mTextView.setMovementMethod(LinkMovementMethod.getInstance());
-		
+
 		mGallery = (ViewPager) findViewById(R.id.gallery);
 		mGallery.setHorizontalFadingEdgeEnabled(true);
 		mGallery.setFadingEdgeLength(30);
 		mGallery.setOnPageChangeListener(this);
-		
+
 	}
-	
+
 	@Override
 	public void onPageSelected(int position) {
 		mCurrentPage = position;
 		showText(position);
-		
+
 		if (mSelectedSkinPosition == position) {
 			showButtonSelected();
 		} else {
@@ -181,62 +165,54 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 	}
 
 	private void showButtonSelected() {
-		mButtonApply.setVisibility(View.GONE);
-		mButtonSelected.setVisibility(View.VISIBLE);
+		mItemApply.setVisible(false);
+		mMenuSelected.setVisible(true);
 	}
 
 	private void showButtonApply() {
-		mButtonApply.setVisibility(View.VISIBLE);
-		mButtonSelected.setVisibility(View.GONE);
+		mItemApply.setVisible(true);
+		mMenuSelected.setVisible(false);
 	}
 
 	private void showTileColorButton(int position) {
 		if (getSkinItem(position).value.equals(PreferencesStorage.SKIN_WINDOWS7)) {
 			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
-			int size = (int)getResources().getDimension(R.dimen.color_preview_size);
-			
+			int size = (int) getResources().getDimension(R.dimen.color_preview_size);
+
 			Bitmap bitmap = Bitmap.createBitmap(size, size, Config.ARGB_8888);
 			Canvas c = new Canvas(bitmap);
 			c.drawColor(prefs.getTileColor());
 			Drawable d = new FastBitmapDrawable(bitmap);
-			/*
-			 * remember to first clear the callback of the drawable you are replacing to prevent memory leaks...
-			 */
-			for(Drawable myOldDrawable : mButtonTileColor.getCompoundDrawables())
-			{
-				if (myOldDrawable!=null) {
-					myOldDrawable.setCallback(null);
-				}
-			}
-			mButtonTileColor.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
-			mButtonTileColor.setVisibility(View.VISIBLE);
+
+			mMenuTileColor.setIcon(d);
+			mMenuTileColor.setVisible(true);
 		} else {
-			mButtonTileColor.setVisibility(View.GONE);
+			mMenuTileColor.setVisible(false);
 		}
 	}
-	
+
 	private void showText(int position) {
 		int textRes = getSkinItem(position).textRes;
 		if (textRes > 0) {
-	    	Spanned text = Html.fromHtml(getString(textRes));
-	    	mTextView.setText(text);
+			Spanned text = Html.fromHtml(getString(textRes));
+			mTextView.setText(text);
 		} else {
-	    	mTextView.setText("");
+			mTextView.setText("");
 		}
 	}
-	
+
 	@Override
 	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void onPageScrollStateChanged(int state) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	private final OnClickListener mApplyClicked = new OnClickListener() {
 		public void onClick(View v) {
 			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
@@ -245,7 +221,7 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 			finish();
 		}
 	};
-	
+
 	private final OnClickListener mTileColorClicked = new OnClickListener() {
 		public void onClick(View v) {
 			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
@@ -274,30 +250,35 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 	}
 
 	public static class SkinPagerAdapter extends FragmentPagerAdapter {
-		
-        private int mCount;
+
+		private int mCount;
 		private SkinPreviewActivity mActivity;
 
 		public SkinPagerAdapter(SkinPreviewActivity activity, int count, FragmentManager fm) {
-            super(fm);
-            mCount = count;
-            mActivity = activity;
-        }
+			super(fm);
+			mCount = count;
+			mActivity = activity;
+		}
 
-        @Override
-        public int getCount() {
-            return mCount;
-        }
+		@Override
+		public int getCount() {
+			return mCount;
+		}
 
-        @Override
-        public Fragment getItem(int position) {
-            return SkinPreviewFragment.newInstance(position);
-        }
-        
-        @Override
-        public CharSequence getPageTitle (int position) {
-            return mActivity.getSkinItem(position).title;
-        }
-    }
+		@Override
+		public Fragment getItem(int position) {
+			return SkinPreviewFragment.newInstance(position);
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return mActivity.getSkinItem(position).title;
+		}
+	}
+
+	@Override
+	public boolean onMenuItemClick(MenuItem item) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
- 
