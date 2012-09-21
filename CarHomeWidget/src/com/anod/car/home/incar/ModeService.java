@@ -28,7 +28,8 @@ public class ModeService extends Service{
 	private int[] sBtnIds = {
 		R.id.btn0,
 		R.id.btn1,
-		R.id.btn2
+		R.id.btn2,
+		R.id.btn3
 	};
 	private boolean mForceState = false;
 	public static boolean sInCarMode = false;
@@ -56,20 +57,7 @@ public class ModeService extends Service{
 		notification.flags |= Notification.FLAG_ONGOING_EVENT;
 		notification.icon = R.drawable.ic_stat_incar;
 		if (Utils.IS_HONEYCOMB_OR_GREATER) {
-			RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification);
-			NotificationShortcutsModel model = new NotificationShortcutsModel(this);
-			model.init();
-			for (int i = 0; i < model.getCount(); i++) {
-				ShortcutInfo info = model.getShortcut(i);
-				int resId = sBtnIds[i];
-				if (info == null) {
-					contentView.setViewVisibility(resId, View.INVISIBLE);
-				} else {
-					contentView.setImageViewBitmap(resId, info.getIcon());
-					PendingIntent pendingIntent = ShortcutPendingIntent.getShortcutPendingInent(info.intent, PREFIX_NOTIF, this, i);
-					contentView.setOnClickPendingIntent(resId, pendingIntent);
-				}
-			}
+			RemoteViews contentView = createShortcuts();
 			notification.contentIntent = contentIntent;
 			notification.contentView = contentView;
 		} else {
@@ -78,6 +66,26 @@ public class ModeService extends Service{
 			notification.setLatestEventInfo(this, notifTitle, notifText, contentIntent);
 		}
 		return notification;
+	}
+
+	private RemoteViews createShortcuts() {
+		RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification);
+		NotificationShortcutsModel model = new NotificationShortcutsModel(this);
+		model.init();
+		boolean viewGone = true;
+		for (int i = 0; i < model.getCount(); i++) {
+			ShortcutInfo info = model.getShortcut(i);
+			int resId = sBtnIds[i];
+			if (info == null) {
+				contentView.setViewVisibility(resId, (viewGone) ? View.GONE : View.INVISIBLE);
+			} else {
+				viewGone = false;
+				contentView.setImageViewBitmap(resId, info.getIcon());
+				PendingIntent pendingIntent = ShortcutPendingIntent.getShortcutPendingInent(info.intent, PREFIX_NOTIF, this, i);
+				contentView.setOnClickPendingIntent(resId, pendingIntent);
+			}
+		}
+		return contentView;
 	}
 
 	@Override

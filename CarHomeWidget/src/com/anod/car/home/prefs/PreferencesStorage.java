@@ -21,7 +21,7 @@ import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.utils.Utils;
 
 public class PreferencesStorage {
-	public static final int NOTIFICATION_COMPONENT_NUMBER = 3;
+	public static final int NOTIFICATION_COMPONENT_NUMBER = 4;
 
 	public static final int LAUNCH_COMPONENT_NUMBER = 6;
 	public static final String SKIN_GLOSSY = "glossy";
