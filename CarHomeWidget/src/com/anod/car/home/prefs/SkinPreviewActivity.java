@@ -93,10 +93,8 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 		mMenuSelected = menu.findItem(R.id.selected);
 		mMenuTileColor = menu.findItem(R.id.tile_color);
 
-		showButtonSelected();
-		showTileColorButton(mCurrentPage);
-		
 		mMenuInitialized  = true;
+		refreshActionBar(mCurrentPage);
         // Calling super after populating the menu is necessary here to ensure that the
         // action bar helpers have a chance to handle this event.
         return super.onCreateOptionsMenu(menu);
@@ -174,6 +172,11 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 		mCurrentPage = position;
 		showText(position);
 
+		refreshActionBar(position);
+
+	}
+
+	private void refreshActionBar(int position) {
 		if (mMenuInitialized) {
 			if (mSelectedSkinPosition == position) {
 				showButtonSelected();
@@ -182,7 +185,6 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 			}
 			showTileColorButton(mCurrentPage);
 		}
-
 	}
 
 	private void showButtonSelected() {
