@@ -98,6 +98,10 @@
             android:configChanges="orientation" 
              />
         <activity
+            android:name="com.anod.car.home.prefs.ConfigurationNotifShortcuts"
+            android:configChanges="orientation" 
+            />
+        <activity
             android:name="com.anod.car.home.incar.ChangeBrightnessActivity"
             android:theme="@style/BrightnessTheme" />
         <activity
