@@ -11,7 +11,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -21,20 +20,17 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.anod.car.home.R;
-import com.anod.car.home.actionbarcompat.ActionBarHelper;
+import com.anod.car.home.actionbarcompat.ActionBarActivity;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 
-public class SkinPreviewActivity extends FragmentActivity implements OnPageChangeListener, OnMenuItemClickListener {
+public class SkinPreviewActivity extends ActionBarActivity implements OnPageChangeListener {
 
 	private ViewPager mGallery;
 	private SkinItem[] mSkinItems;
@@ -44,17 +40,16 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 	private TextView mTextView;
 	private int mAppWidgetId;
 	private Context mContext;
-	final private ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(this);
 	private MenuItem mItemApply;
 	private MenuItem mMenuSelected;
 	private MenuItem mMenuTileColor;
+	private boolean mMenuInitialized = false;
 
 	private static int[] sPreviewRes = { R.drawable.scr_glossy, R.drawable.scr_carhome, R.drawable.scr_metro, R.drawable.scr_holo, R.drawable.scr_bbb };
 	private static int[] sTextRes = { 0, 0, R.string.skin_info_metro, 0, R.string.skin_info_bbb };
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		mActionBarHelper.onCreate(savedInstanceState);
 		super.onCreate(savedInstanceState);
 
 		Intent intent = getIntent();
@@ -86,32 +81,56 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 		mGallery.setCurrentItem(mSelectedSkinPosition);
 
 		showText(mCurrentPage);
-		showTileColorButton(mCurrentPage);
 
 	}
 
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		mActionBarHelper.onPostCreate(savedInstanceState);
-		super.onPostCreate(savedInstanceState);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		boolean retValue = false;
-		retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
-		retValue |= super.onCreateOptionsMenu(menu);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.skin_preview, menu);
 
 		mItemApply = menu.findItem(R.id.apply);
-		mItemApply.setOnMenuItemClickListener(this);
 		mMenuSelected = menu.findItem(R.id.selected);
 		mMenuTileColor = menu.findItem(R.id.tile_color);
-		mMenuTileColor.setOnMenuItemClickListener(this);
 
 		showButtonSelected();
+		showTileColorButton(mCurrentPage);
+		
+		mMenuInitialized  = true;
+        // Calling super after populating the menu is necessary here to ensure that the
+        // action bar helpers have a chance to handle this event.
+        return super.onCreateOptionsMenu(menu);
+    }
 
-		return retValue;
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+		int itemId = item.getItemId();
+		if (itemId == R.id.apply) {
+			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
+			prefs.setSkin(getSkinItem(mCurrentPage).value);
+			PreferencesStorage.saveMain(mContext, prefs, mAppWidgetId);
+			finish();
+		} else if (itemId == R.id.tile_color){
+			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
+			Integer value = prefs.getTileColor();
+			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					String prefName = PreferencesStorage.getName(PreferencesStorage.BUTTON_COLOR, mAppWidgetId);
+					int color = ((CarHomeColorPickerDialog) dialog).getColor();
+					PreferencesStorage.saveColor(mContext, prefName, color);
+					showTileColorButton(mCurrentPage);
+				}
+
+			};
+			final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
+			d.setAlphaSliderVisible(true);
+			d.show();
+		}
+		return false;
+    }
+	
+
 
 	private SkinItem[] createSkinList(String skinValue) {
 		Resources r = getResources();
@@ -155,12 +174,14 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 		mCurrentPage = position;
 		showText(position);
 
-		if (mSelectedSkinPosition == position) {
-			showButtonSelected();
-		} else {
-			showButtonApply();
+		if (mMenuInitialized) {
+			if (mSelectedSkinPosition == position) {
+				showButtonSelected();
+			} else {
+				showButtonApply();
+			}
+			showTileColorButton(mCurrentPage);
 		}
-		showTileColorButton(mCurrentPage);
 
 	}
 
@@ -213,35 +234,6 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 
 	}
 
-	private final OnClickListener mApplyClicked = new OnClickListener() {
-		public void onClick(View v) {
-			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
-			prefs.setSkin(getSkinItem(mCurrentPage).value);
-			PreferencesStorage.saveMain(mContext, prefs, mAppWidgetId);
-			finish();
-		}
-	};
-
-	private final OnClickListener mTileColorClicked = new OnClickListener() {
-		public void onClick(View v) {
-			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
-			Integer value = prefs.getTileColor();
-			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					String prefName = PreferencesStorage.getName(PreferencesStorage.BUTTON_COLOR, mAppWidgetId);
-					int color = ((CarHomeColorPickerDialog) dialog).getColor();
-					PreferencesStorage.saveColor(mContext, prefName, color);
-					showTileColorButton(mCurrentPage);
-				}
-
-			};
-			final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
-			d.setAlphaSliderVisible(true);
-			d.show();
-		}
-	};
-
 	class SkinItem {
 		public String value;
 		public String title;
@@ -274,11 +266,5 @@ public class SkinPreviewActivity extends FragmentActivity implements OnPageChang
 		public CharSequence getPageTitle(int position) {
 			return mActivity.getSkinItem(position).title;
 		}
-	}
-
-	@Override
-	public boolean onMenuItemClick(MenuItem item) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }
