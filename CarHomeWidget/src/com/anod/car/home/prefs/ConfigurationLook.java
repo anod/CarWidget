@@ -12,11 +12,11 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 
-import com.anod.car.home.Launcher;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.prefs.views.SeekBarPreference;
+import com.anod.car.home.utils.Utils;
 
 public class ConfigurationLook extends ConfigurationActivity {
 	private static final String SKIN_PREVIEW = "skin-preview";
@@ -38,7 +38,7 @@ public class ConfigurationLook extends ConfigurationActivity {
 
 	@Override
 	protected void onCreateImpl(Bundle savedInstanceState) {
-		mFreeVersion = Launcher.isFreeVersion(this.getPackageName());
+		mFreeVersion = Utils.isFreeVersion(this.getPackageName());
 
 		Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
 

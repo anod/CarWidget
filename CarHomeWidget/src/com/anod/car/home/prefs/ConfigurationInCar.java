@@ -31,11 +31,11 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 
-import com.anod.car.home.Launcher;
 import com.anod.car.home.R;
 import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.utils.Utils;
 
 public class ConfigurationInCar extends ConfigurationActivity {
 	private static final String SCREEN_BT_DEVICE = "bt-device-screen";
@@ -80,7 +80,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 	protected void onCreateImpl(Bundle savedInstanceState) {
 		setResult(RESULT_OK);
 
-		mFreeVersion = Launcher.isFreeVersion(this.getPackageName());
+		mFreeVersion = Utils.isFreeVersion(this.getPackageName());
 		mContext = (Context) this;
 
 		if (mFreeVersion) {

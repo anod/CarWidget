@@ -19,6 +19,12 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
 >
+	<LinearLayout 
+	    android:id="@+id/container_preview"
+        android:layout_width="@dimen/preview_width_size"
+        android:layout_height="@dimen/preview_height_size"
+
+	>
 
     <ImageView
         android:id="@+id/theme_preview"
@@ -28,5 +34,6 @@
         android:scaleType="fitXY"
         android:layout_gravity="center_horizontal"
         />
-
+	    
+	</LinearLayout>
 </com.anod.car.home.prefs.views.ReflectionLayout>

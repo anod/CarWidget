@@ -10,6 +10,7 @@ import android.widget.RemoteViews;
 
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.utils.Utils;
 
 public class UpdateService extends Service implements Runnable {
 
@@ -23,7 +24,7 @@ public class UpdateService extends Service implements Runnable {
 		}
 		final int N = appWidgetIds.length;
 
-		if (!Launcher.isFreeVersion(getPackageName())) {
+		if (!Utils.isFreeVersion(getPackageName())) {
 			boolean inCarEnabled = PreferencesStorage.isInCarModeEnabled(context);
 			if (inCarEnabled) {
 				final Intent updateIntent = new Intent(context, BroadcastService.class);
@@ -37,9 +38,11 @@ public class UpdateService extends Service implements Runnable {
 		}
 		// Perform this loop procedure for each App Widget that belongs to this
 		// provider
+		LauncherViewBuilder builder = new LauncherViewBuilder(context);
 		for (int i = 0; i < N; i++) {
 			int appWidgetId = appWidgetIds[i];
-			RemoteViews views = Launcher.update(appWidgetId, context);
+			builder.setAppWidgetId(appWidgetId);
+			RemoteViews views = builder.build();
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
 

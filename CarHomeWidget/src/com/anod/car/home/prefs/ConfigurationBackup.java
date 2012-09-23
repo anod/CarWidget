@@ -18,9 +18,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.anod.car.home.Launcher;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
+import com.anod.car.home.utils.Utils;
 
 public class ConfigurationBackup extends ConfigurationActivity {
 	private static final int REQUEST_RESTORE_MAIN = 1;
@@ -64,7 +64,7 @@ public class ConfigurationBackup extends ConfigurationActivity {
 		mBackupIncarPref = (Preference) findPreference(BACKUP_BTN_INCAR);
 		mBackupManager = new PreferencesBackupManager(mContext);
 
-		boolean mFreeVersion = Launcher.isFreeVersion(this.getPackageName());
+		boolean mFreeVersion = Utils.isFreeVersion(this.getPackageName());
 		mContext = (Context) this;
 
 		if (mFreeVersion) {

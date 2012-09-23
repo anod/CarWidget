@@ -269,4 +269,8 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 			return mActivity.getSkinItem(position).title;
 		}
 	}
+
+	public int getAppWidgetId() {
+		return mAppWidgetId;
+	}
 }

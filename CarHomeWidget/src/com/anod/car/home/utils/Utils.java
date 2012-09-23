@@ -19,6 +19,11 @@ public class Utils {
 	
 	final public static boolean IS_HONEYCOMB_OR_GREATER = (Build.VERSION.SDK_INT >= 11);
 	
+	public static final String PACKAGE_FREE = "com.anod.car.home.free";
+
+	public static boolean isFreeVersion(String packageName) {
+		return PACKAGE_FREE.equals(packageName);
+	}
 
 	public static boolean isIntentAvailable(Context context, Intent intent) {
 		final PackageManager packageManager = context.getPackageManager();
