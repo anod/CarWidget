@@ -6,5 +6,5 @@
     <color name="default_font_color">#ffffffff</color>
     <color name="holo_text_bg">#33000000</color>
     <color name="actionbar_title_color">#FFFFFF</color>
-    <color name="actionbar_bg_color">#66000000</color>
+    <color name="actionbar_bg_color">#88000000</color>
 </resources>

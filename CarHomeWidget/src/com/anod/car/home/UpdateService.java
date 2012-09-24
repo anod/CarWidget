@@ -41,8 +41,10 @@ public class UpdateService extends Service implements Runnable {
 		LauncherViewBuilder builder = new LauncherViewBuilder(context);
 		for (int i = 0; i < N; i++) {
 			int appWidgetId = appWidgetIds[i];
-			builder.setAppWidgetId(appWidgetId);
-			RemoteViews views = builder.build();
+			RemoteViews views = builder
+				.setAppWidgetId(appWidgetId)
+				.init()
+				.build();
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
 

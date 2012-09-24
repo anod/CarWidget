@@ -7,15 +7,13 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.RemoteViews;
 
 import com.anod.car.home.incar.ModeService;
-import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.model.ShortcutsModel;
 import com.anod.car.home.model.LauncherShortcutsModel;
+import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.PickShortcutUtils;
 import com.anod.car.home.prefs.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.Main;
@@ -28,6 +26,16 @@ import com.anod.car.home.utils.Utils;
 public class LauncherViewBuilder {
 	private Context mContext;
 	private int mAppWidgetId;
+	private Main mPrefs;
+	private LauncherShortcutsModel mSmodel;
+	private String mOverrideSkin;
+	
+	private static int[] sTextRes = { 
+		R.id.btn_text0, R.id.btn_text1, R.id.btn_text2, R.id.btn_text3, R.id.btn_text4, R.id.btn_text5
+	};
+	private static int[] sBtnRes = { 
+		R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5
+	};
 	
 	public LauncherViewBuilder(Context context) {
 		mContext = context;
@@ -38,51 +46,68 @@ public class LauncherViewBuilder {
 		return this;
 	}
 	
-    public RemoteViews build() {
+	public Main getPrefs() {
+		return mPrefs;
+	}
+	
+	public LauncherViewBuilder setOverrideSkin(String skin) {
+		mOverrideSkin = skin;
+		return this;
+	}
+	
+	public LauncherViewBuilder init() {
+		mPrefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
+		
     	
-		ShortcutsModel smodel = new LauncherShortcutsModel(mContext, mAppWidgetId);
+		mSmodel = new LauncherShortcutsModel(mContext, mAppWidgetId);
 		if (PreferencesStorage.isFirstTime(mContext,mAppWidgetId)) {
-			smodel.createDefaultShortcuts();
+			mSmodel.createDefaultShortcuts();
 			PreferencesStorage.setFirstTime(false,mContext,mAppWidgetId);
 		}
-		smodel.init();
-    	Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
-    	
-    	Resources resources = mContext.getResources();
-    	String skinName = prefs.getSkin();
+		mSmodel.init();
+		
+		return this;
+	}
+	
+	public LauncherViewBuilder reloadPrefs() {
+		mPrefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
+		return this;		
+	}
+	
+    public RemoteViews build() {
+
+    	String packageName = mContext.getPackageName();
+    	String skinName = (mOverrideSkin != null) ? mOverrideSkin : mPrefs.getSkin();
     	
     	SkinProperties skinProperties = PropertiesFactory.create(skinName);
     	
-        RemoteViews views =  new RemoteViews(mContext.getPackageName(), skinProperties.getLayout());
-
-		String packageName = mContext.getPackageName();
-		String type = "id";
+        RemoteViews views =  new RemoteViews(packageName, skinProperties.getLayout());
 		
-		setInCarButton(prefs.isIncarTransparent(),packageName, skinProperties, views);
+		setInCarButton(mPrefs.isIncarTransparent(),packageName, skinProperties, views);
 		
-		if (prefs.isSettingsTransparent()) {
+		if (mPrefs.isSettingsTransparent()) {
 			views.setImageViewResource(R.id.btn_settings, R.drawable.btn_transparent);
 		}
 		
-		SparseArray<ShortcutInfo> shortcuts = smodel.getShortcuts();
+		SparseArray<ShortcutInfo> shortcuts = mSmodel.getShortcuts();
 
-		setBackground(prefs,views);
+		setBackground(mPrefs,views);
 		
-		float iconScale = Utils.calcIconsScale(prefs.getIconsScale());
+		float iconScale = Utils.calcIconsScale(mPrefs.getIconsScale());
 		float scaledDensity = mContext.getResources().getDisplayMetrics().scaledDensity;
 		
 		for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
-			int res = resources.getIdentifier("btn" + cellId, type, packageName);
-			int resText = resources.getIdentifier("btn_text" + cellId, type, packageName);
-			ShortcutInfo info = smodel.getShortcut(cellId);
+			int res = sBtnRes[cellId];
+			int resText = sTextRes[cellId];
+			ShortcutInfo info = mSmodel.getShortcut(cellId);
 			if (info == null) {
 				setNoShortcut(res, resText, views, cellId, skinProperties);
 			} else {
-				setShortcut(res, resText, iconScale, info, prefs, views, cellId, skinProperties);
+				setShortcut(res, resText, iconScale, info, mPrefs, views, cellId, skinProperties);
 			}
-			setFont(prefs, res, resText, scaledDensity, views);
+			setFont(mPrefs, res, resText, scaledDensity, views);
 			if (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) {
-				setTile(prefs.getTileColor(), res, views);
+				setTile(mPrefs.getTileColor(), res, views);
 			}
 		}
 

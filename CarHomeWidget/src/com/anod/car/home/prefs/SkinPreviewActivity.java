@@ -22,8 +22,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
+import com.anod.car.home.LauncherViewBuilder;
 import com.anod.car.home.R;
 import com.anod.car.home.actionbarcompat.ActionBarActivity;
 import com.anod.car.home.prefs.preferences.Main;
@@ -44,8 +46,10 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 	private MenuItem mMenuSelected;
 	private MenuItem mMenuTileColor;
 	private boolean mMenuInitialized = false;
+	private View mLoaderView;
+	private boolean[] mPreviewInitialized = { false, false, false, false, false };
+	private LauncherViewBuilder mBuilder;
 
-	private static int[] sPreviewRes = { R.drawable.scr_glossy, R.drawable.scr_carhome, R.drawable.scr_metro, R.drawable.scr_holo, R.drawable.scr_bbb };
 	private static int[] sTextRes = { 0, 0, R.string.skin_info_metro, 0, R.string.skin_info_bbb };
 
 	@Override
@@ -76,6 +80,9 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 		inflateActivity();
 
 		int count = mSkinItems.length;
+		mBuilder = new LauncherViewBuilder(this);
+		mBuilder.setAppWidgetId(mAppWidgetId).init();
+		
 		mAdapter = new SkinPagerAdapter(this, count, getSupportFragmentManager());
 		mGallery.setAdapter(mAdapter);
 		mGallery.setCurrentItem(mSelectedSkinPosition);
@@ -84,6 +91,10 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 
 	}
 
+	public LauncherViewBuilder getBuilder() {
+		return mBuilder;
+	}
+	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -139,7 +150,6 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 			SkinItem item = new SkinItem();
 			item.title = titles[i];
 			item.value = values[i];
-			item.previewRes = sPreviewRes[i];
 			item.textRes = sTextRes[i];
 
 			if (item.value.equals(skinValue)) {
@@ -161,17 +171,31 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 		mTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
 		mGallery = (ViewPager) findViewById(R.id.gallery);
-		mGallery.setHorizontalFadingEdgeEnabled(true);
-		mGallery.setFadingEdgeLength(30);
 		mGallery.setOnPageChangeListener(this);
 
+		mLoaderView = (View) findViewById(R.id.loading);	
 	}
 
+	public void onPreviewStart(int position) {
+		mPreviewInitialized[position] = false;
+	}
+	
+	public void onPreviewCreated(int position) {
+		if (mCurrentPage == position) {
+			mLoaderView.setVisibility(View.GONE);
+		}
+		mPreviewInitialized[position] = true;
+	}
+	
 	@Override
 	public void onPageSelected(int position) {
 		mCurrentPage = position;
 		showText(position);
-
+		
+		if (!mPreviewInitialized[position]) {
+			mLoaderView.setVisibility(View.VISIBLE);
+		}
+		
 		refreshActionBar(position);
 
 	}
@@ -239,7 +263,6 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 	class SkinItem {
 		public String value;
 		public String title;
-		public int previewRes;
 		public int textRes;
 	}
 

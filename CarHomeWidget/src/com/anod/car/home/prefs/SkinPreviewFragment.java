@@ -7,9 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RemoteViews;
 
 import com.anod.car.home.LauncherViewBuilder;
@@ -20,9 +17,7 @@ public class SkinPreviewFragment extends Fragment {
 	private static final String ARG_POSITION = "position";
 	private int mPosition;
 	private SkinPreviewActivity mActivity;
-	private LinearLayout mContainer;
-	private ImageView mLoaderView;
-	private LauncherViewBuilder mBuilder;
+	private ViewGroup mContainer;
 	private AsyncTask<Integer, Void, View> mTask;
 	private int mAppWidgetId;
 
@@ -41,12 +36,8 @@ public class SkinPreviewFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		mPosition = getArguments().getInt(ARG_POSITION);
-		
-		mLoaderView.setImageResource(mActivity.getSkinItem(mPosition).previewRes);
-
-		mBuilder = new LauncherViewBuilder(mActivity);
-		
 		mTask = new CreateViewTask().execute(mAppWidgetId);
+		mActivity.onPreviewStart(mPosition);	
 	}
 
 	@Override
@@ -59,8 +50,7 @@ public class SkinPreviewFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.skin_item, container, false);
-		mLoaderView = (ImageView)view.findViewById(R.id.theme_preview);
-		mContainer = (LinearLayout)view.findViewById(R.id.container_preview);
+		mContainer = (ViewGroup)view.findViewById(R.id.container_preview);
 		return view;
 	}
 	
@@ -73,20 +63,19 @@ public class SkinPreviewFragment extends Fragment {
 		protected void onPreExecute() {	}
 
 		protected View doInBackground(Integer... appWidgetIds) {
+			LauncherViewBuilder builder = mActivity.getBuilder();
+			
+			builder.setOverrideSkin(mActivity.getSkinItem(mPosition).value);
+			RemoteViews rv = builder.build();
 
-	        int appWidgetId = appWidgetIds[0];
-	        RemoteViews rv = mBuilder
-	        	.setAppWidgetId(appWidgetId)
-	        	.build();
-	        
-	        return rv.apply( mActivity, null );
+	        View inflatedView =  rv.apply( mActivity, null );
+	        return inflatedView;
 	    }
 	    
 	    /** The system calls this to perform work in the UI thread and delivers
 	      * the result from doInBackground() */
 	    protected void onPostExecute(View inflatedView) {
-	    	mLoaderView.setVisibility(View.GONE);
-	    	mLoaderView = null;
+	    	mActivity.onPreviewCreated(mPosition);
             if( mContainer.getChildCount() > 0 ) {
             	mContainer.removeAllViews();
             }
@@ -94,4 +83,5 @@ public class SkinPreviewFragment extends Fragment {
             mContainer.requestLayout();
         }
 	}
+
 }
