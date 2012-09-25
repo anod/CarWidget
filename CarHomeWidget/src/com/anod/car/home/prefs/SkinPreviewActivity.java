@@ -78,15 +78,15 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 		setTitle(R.string.pref_look_and_feel_title);
 		mContext = this;
 
-		mPrefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
+		mBuilder = new LauncherViewBuilder(this);
+		mBuilder.setAppWidgetId(mAppWidgetId).init();
+		mPrefs = mBuilder.getPrefs();
 		mSkinItems = createSkinList(mPrefs.getSkin());
 		mCurrentPage = mSelectedSkinPosition;
 
 		inflateActivity();
 
 		int count = mSkinItems.length;
-		mBuilder = new LauncherViewBuilder(this);
-		mBuilder.setAppWidgetId(mAppWidgetId).init();
 		
 		mAdapter = new SkinPagerAdapter(this, count, getSupportFragmentManager());
 		mGallery.setAdapter(mAdapter);
@@ -317,7 +317,7 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 
 	private void refreshSkinPreview() {
 		if (mPreviewInitialized[mCurrentPage]) {
-			mPrefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
+			mPrefs = mBuilder.reloadPrefs().getPrefs();
 		//	((SkinPreviewFragment)mAdapter.getItem(mCurrentPage)).refresh();
 		}
 	}
