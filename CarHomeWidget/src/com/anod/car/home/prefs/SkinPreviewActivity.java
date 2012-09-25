@@ -37,6 +37,7 @@ import com.anod.car.home.utils.FastBitmapDrawable;
 
 public class SkinPreviewActivity extends ActionBarActivity implements OnPageChangeListener {
 
+	private static final int REQUEST_LOOK_ACTIVITY = 1;
 	private ViewPager mGallery;
 	private SkinItem[] mSkinItems;
 	private SkinPagerAdapter mAdapter;
@@ -137,6 +138,7 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 					int color = ((CarHomeColorPickerDialog) dialog).getColor();
 					PreferencesStorage.saveColor(mContext, prefName, color);
 					showTileColorButton(mCurrentPage);
+					refreshSkinPreview();
 				}
 
 			};
@@ -148,7 +150,7 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 		if (itemId == R.id.more) {
 			Intent intent = new Intent(this, ConfigurationLook.class);
 			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-			startActivity(intent);
+			startActivityForResult(intent, REQUEST_LOOK_ACTIVITY);
 			return false;
 		}
 		if (itemId == R.id.bg_color) {
@@ -159,6 +161,7 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 					String prefName = PreferencesStorage.getName(PreferencesStorage.BG_COLOR, mAppWidgetId);
 					int color = ((CarHomeColorPickerDialog) dialog).getColor();
 					PreferencesStorage.saveColor(mContext, prefName, color);
+					refreshSkinPreview();
 				}
 			};
 			final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
@@ -184,6 +187,7 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 			builder.setSingleChoiceItems(items, idx, new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog, int item) {
 			        Toast.makeText(getApplicationContext(), items[item], Toast.LENGTH_SHORT).show();
+			        refreshSkinPreview();
 			    }
 			});
 			builder.create().show();
@@ -191,8 +195,6 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 		}
 		return false;
     }
-	
-
 
 	private SkinItem[] createSkinList(String skinValue) {
 		Resources r = getResources();
@@ -313,6 +315,13 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 
 	}
 
+	private void refreshSkinPreview() {
+		if (mPreviewInitialized[mCurrentPage]) {
+			mPrefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
+		//	((SkinPreviewFragment)mAdapter.getItem(mCurrentPage)).refresh();
+		}
+	}
+	
 	class SkinItem {
 		public String value;
 		public String title;

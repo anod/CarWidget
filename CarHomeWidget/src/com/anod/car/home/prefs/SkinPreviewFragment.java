@@ -1,9 +1,11 @@
 package com.anod.car.home.prefs;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +14,12 @@ import android.widget.RemoteViews;
 import com.anod.car.home.LauncherViewBuilder;
 import com.anod.car.home.R;
 
-public class SkinPreviewFragment extends Fragment {
+public class SkinPreviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<View> {
 	
 	private static final String ARG_POSITION = "position";
 	private int mPosition;
 	private SkinPreviewActivity mActivity;
 	private ViewGroup mContainer;
-	private AsyncTask<Integer, Void, View> mTask;
-	private int mAppWidgetId;
 
 	public static SkinPreviewFragment newInstance(int position) {
 		SkinPreviewFragment f = new SkinPreviewFragment();
@@ -31,20 +31,27 @@ public class SkinPreviewFragment extends Fragment {
 		
 		return f;
 	}
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onResume()
+	 */
+	@Override
+	public void onResume() {
+		super.onResume();
+		getLoaderManager().initLoader(0, null, this).forceLoad();
+	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		mPosition = getArguments().getInt(ARG_POSITION);
-		mTask = new CreateViewTask().execute(mAppWidgetId);
 		mActivity.onPreviewStart(mPosition);	
+		getLoaderManager().initLoader(0, null, this);
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		mActivity = (SkinPreviewActivity)activity;
-		mAppWidgetId = mActivity.getAppWidgetId();
 	}
 
 	@Override
@@ -54,15 +61,23 @@ public class SkinPreviewFragment extends Fragment {
 		return view;
 	}
 	
-	class CreateViewTask extends AsyncTask<Integer, Void, View> {
-		
-	    /* (non-Javadoc)
-		 * @see android.os.AsyncTask#onPreExecute()
-		 */
-		@Override
-		protected void onPreExecute() {	}
+	public void refresh() {
+		getLoaderManager().initLoader(0, null, this).forceLoad();
+	}
 
-		protected View doInBackground(Integer... appWidgetIds) {
+
+	public static class ViewLoader extends	AsyncTaskLoader<View> {
+		private SkinPreviewActivity mActivity;
+		private int mPosition;
+		
+		public ViewLoader(SkinPreviewActivity activity, int position) {
+			super(activity);
+			mActivity = activity;
+			mPosition = position;
+		}
+
+		@Override
+		public View loadInBackground() {
 			LauncherViewBuilder builder = mActivity.getBuilder();
 			
 			builder.setOverrideSkin(mActivity.getSkinItem(mPosition).value);
@@ -70,18 +85,33 @@ public class SkinPreviewFragment extends Fragment {
 
 	        View inflatedView =  rv.apply( mActivity, null );
 	        return inflatedView;
-	    }
-	    
-	    /** The system calls this to perform work in the UI thread and delivers
-	      * the result from doInBackground() */
-	    protected void onPostExecute(View inflatedView) {
-	    	mActivity.onPreviewCreated(mPosition);
-            if( mContainer.getChildCount() > 0 ) {
-            	mContainer.removeAllViews();
-            }
-            mContainer.addView( inflatedView );
-            mContainer.requestLayout();
+		}
+
+	}
+	
+	@Override
+	public Loader<View> onCreateLoader(int id, Bundle args) {
+		return new ViewLoader(mActivity, mPosition);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<View> loader, View inflatedView) {
+    	mActivity.onPreviewCreated(mPosition);
+        if( mContainer.getChildCount() > 0 ) {
+        	mContainer.removeAllViews();
         }
+        // TODO
+        if (inflatedView.getParent() != null) {
+        	((ViewGroup)inflatedView.getParent()).removeView(inflatedView);
+        }
+        mContainer.addView( inflatedView );
+        mContainer.requestLayout();
+	}
+
+	@Override
+	public void onLoaderReset(Loader<View> loader) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
