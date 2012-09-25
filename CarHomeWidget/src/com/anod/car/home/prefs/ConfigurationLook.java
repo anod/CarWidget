@@ -1,9 +1,7 @@
 package com.anod.car.home.prefs;
 
-import android.appwidget.AppWidgetManager;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -19,18 +17,11 @@ import com.anod.car.home.prefs.views.SeekBarPreference;
 import com.anod.car.home.utils.Utils;
 
 public class ConfigurationLook extends ConfigurationActivity {
-	private static final String SKIN_PREVIEW = "skin-preview";
 
 	public static final String CATEGORY_TRANSPARENT = "transparent-category";
 
 	private boolean mFreeVersion;
 
-	
-	@Override
-	protected int getTitleResource() {
-		return R.string.pref_look_and_feel_title;
-	}
-	
 	@Override
 	protected int getXmlResource() {
 		return R.xml.preference_look;
@@ -42,18 +33,10 @@ public class ConfigurationLook extends ConfigurationActivity {
 
 		Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
 
-		initSkinPreview();
 		initBackground(prefs);
 		initIcon(prefs);
 		initFont(prefs);
 		initTransparent(mFreeVersion, prefs);
-	}
-
-	private void initSkinPreview() {
-		Intent intent = new Intent(this, SkinPreviewActivity.class);
-		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-		Preference pref = (Preference) findPreference(SKIN_PREVIEW);
-		pref.setIntent(intent);
 	}
 
 	private void initTransparent(boolean isFree, final Main prefs) {

@@ -1,49 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-    	<PreferenceScreen android:title="@string/pref_look_and_feel_title" android:summary="@string/pref_look_and_feel_summary"
-    		xmlns:android="http://schemas.android.com/apk/res/android"
-    	>
-    		<Preference 
-    		    android:key="skin-preview"
-    			android:title="@string/pref_skin"
-    		>
-    		</Preference>
-    		<Preference 
-    			android:key="bg-color-%d"
-    			android:title="@string/pref_bg_color_title"
-    			android:summary="@string/pref_bg_color_summary"
-    		/>
-    		<CheckBoxPreference 
-    			android:key="icons-mono-%d" 
-    			android:title="@string/pref_icons_mono_title"
-    			android:summary="@string/pref_icons_mono_summary"
-    			android:shouldDisableView="true"
-    		/>
-    		<Preference 
-    			android:key="icons-color-%d" 
-    			android:title="@string/pref_tint_color_title"
-    			android:summary="@string/pref_tint_color_summary"
-    		/>
-    		<ListPreference 
-    			android:key="icons-scale-%d" 
-    			android:title="@string/pref_scale_icon"
-				android:entryValues="@array/icon_scale_values"
-				android:entries="@array/icon_scale_titles" 
-    		/>
-	   		<com.anod.car.home.prefs.views.SeekBarPreference
-                android:key="font-size-%d"
-                android:title="@string/pref_font_size_title"
-                android:summary="@string/pref_font_size_summary"
-                android:text="px"
-                android:defaultValue="30" 
-                android:max="100"
-            />
-    		<Preference 
-    			android:key="font-color-%d" 
-    			android:title="@string/pref_font_color_title"
-    			android:summary="@string/pref_font_color_summary"
-    		/>
-    		<PreferenceCategory android:key="transparent-category" android:title="@string/transparent">
-			    <CheckBoxPreference android:key="transparent-btn-settings-%d" android:title="@string/pref_settings_transparent" android:summary="@string/pref_settings_transparent_summary"/>
-			    <CheckBoxPreference android:key="transparent-btn-incar-%d" android:title="@string/pref_incar_transparent" android:summary="@string/pref_incar_transparent_summary"/>
-    		</PreferenceCategory>
-    	</PreferenceScreen>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:summary="@string/pref_look_and_feel_summary"
+    android:title="@string/pref_look_and_feel_title" >
+
+    <Preference
+        android:key="bg-color-%d"
+        android:summary="@string/pref_bg_color_summary"
+        android:title="@string/pref_bg_color_title" />
+
+    <CheckBoxPreference
+        android:key="icons-mono-%d"
+        android:shouldDisableView="true"
+        android:summary="@string/pref_icons_mono_summary"
+        android:title="@string/pref_icons_mono_title" />
+
+    <Preference
+        android:key="icons-color-%d"
+        android:summary="@string/pref_tint_color_summary"
+        android:title="@string/pref_tint_color_title" />
+
+    <ListPreference
+        android:entries="@array/icon_scale_titles"
+        android:entryValues="@array/icon_scale_values"
+        android:key="icons-scale-%d"
+        android:title="@string/pref_scale_icon" />
+
+    <com.anod.car.home.prefs.views.SeekBarPreference
+        android:defaultValue="30"
+        android:key="font-size-%d"
+        android:max="100"
+        android:summary="@string/pref_font_size_summary"
+        android:text="px"
+        android:title="@string/pref_font_size_title" />
+
+    <Preference
+        android:key="font-color-%d"
+        android:summary="@string/pref_font_color_summary"
+        android:title="@string/pref_font_color_title" />
+
+    <PreferenceCategory
+        android:key="transparent-category"
+        android:title="@string/transparent" >
+        <CheckBoxPreference
+            android:key="transparent-btn-settings-%d"
+            android:summary="@string/pref_settings_transparent_summary"
+            android:title="@string/pref_settings_transparent" />
+        <CheckBoxPreference
+            android:key="transparent-btn-incar-%d"
+            android:summary="@string/pref_incar_transparent_summary"
+            android:title="@string/pref_incar_transparent" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

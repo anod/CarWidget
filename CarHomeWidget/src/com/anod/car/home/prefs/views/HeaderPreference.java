@@ -1,0 +1,41 @@
+package com.anod.car.home.prefs.views;
+
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.preference.Preference;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.anod.car.home.R;
+
+public class HeaderPreference extends Preference {
+	private static final String androidns="http://schemas.android.com/apk/res/android";
+    /**
+     * mIconResId is overridden by mIcon, if mIcon is specified.
+     */
+    private int mIconResId;
+    private Drawable mIcon;
+    
+	public HeaderPreference(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		mIconResId = attrs.getAttributeResourceValue(androidns, "icon", 0);
+		setLayoutResource(R.layout.header_preference); 
+	}
+
+    protected void onBindView(View view) {
+    	super.onBindView(view);
+    	ImageView imageView = (ImageView) view.findViewById(android.R.id.icon);
+        if (imageView != null) {
+            if (mIconResId != 0 ) {
+                if (mIcon == null) {
+                    mIcon = getContext().getResources().getDrawable(mIconResId);
+                }
+                if (mIcon != null) {
+                    imageView.setImageDrawable(mIcon);
+                }
+            }
+            imageView.setVisibility(mIcon != null ? View.VISIBLE : View.GONE);
+        }
+    }
+}

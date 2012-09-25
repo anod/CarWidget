@@ -45,11 +45,6 @@ public class ConfigurationBackup extends ConfigurationActivity {
 		| DateUtils.FORMAT_SHOW_TIME
 		| DateUtils.FORMAT_SHOW_YEAR
 	;
-	
-	@Override
-	protected int getTitleResource() {
-		return R.string.pref_backup_title;
-	}
 
 	@Override
 	protected int getXmlResource() {

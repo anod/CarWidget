@@ -62,11 +62,6 @@ public class ConfigurationInCar extends ConfigurationActivity {
 	private boolean mFreeVersion;
 
 	@Override
-	protected int getTitleResource() {
-		return R.string.pref_incar_mode_title;
-	}
-
-	@Override
 	protected boolean isAppWidgetIdRequired() {
 		return false;
 	}

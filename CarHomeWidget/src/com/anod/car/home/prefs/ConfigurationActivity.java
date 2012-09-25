@@ -22,7 +22,6 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 	
 	protected static final int DIALOG_WAIT = 1;
 
-	abstract protected int getTitleResource();
 	abstract protected int getXmlResource();
 	abstract protected void onCreateImpl(Bundle savedInstanceState);
 	
@@ -35,7 +34,6 @@ abstract class ConfigurationActivity extends PreferenceActivity {
         mActionBarHelper.onCreate(savedInstanceState);
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(getXmlResource());
-		setTitle(getTitleResource());
 
 		if (isAppWidgetIdRequired()) {
 			Intent launchIntent = getIntent();

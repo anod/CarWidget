@@ -18,11 +18,6 @@ public class ConfigurationNotifShortcuts extends ConfigurationActivity implement
 	}
 
 	@Override
-	protected int getTitleResource() {
-		return R.string.shortcuts;
-	}
-
-	@Override
 	protected int getXmlResource() {
 		return R.xml.preference_notif_shortcuts;
 	}

@@ -35,46 +35,9 @@
         android:title="@string/pref_icons_mono_title"
 		>
     </item>
-    <item
-        android:id="@+id/icons_color"
-        android:showAsAction="never"
-        android:title="@string/pref_tint_color_title"
-        android:enabled="false"
-		>
+    <item android:id="@+id/icons_scale" android:showAsAction="never" android:title="@string/pref_scale_icon">
     </item>
-    <item
-        android:id="@+id/icons_scale"
-        android:showAsAction="never"
-        android:title="@string/pref_scale_icon"
-		>
-    </item>
-    <item
-        android:id="@+id/font_size"
-        android:showAsAction="never"
-        android:title="@string/pref_scale_icon"
-		>
-    </item>
-    <item
-        android:id="@+id/font_color"
-        android:showAsAction="never"
-        android:title="@string/pref_font_color_title"
-		>
-    </item>
-    <item
-        android:id="@+id/transparent_incar"
-        android:showAsAction="never"
-        android:title="@string/pref_font_color_title"
-        android:checkable="true"
-        android:checked="false"
-		>
-    </item>
-    <item
-        android:id="@+id/transparent_settings"
-        android:showAsAction="never"
-        android:title="@string/pref_font_color_title"
-        android:checkable="true"
-        android:checked="false"
-		>
-    </item>
+    
+    <item android:id="@+id/more" android:title="@string/more"></item>
     
 </menu>

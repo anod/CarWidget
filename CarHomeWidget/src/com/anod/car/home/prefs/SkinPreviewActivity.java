@@ -70,7 +70,7 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 			return;
 		}
 		setContentView(R.layout.skin_preview);
-		setTitle(R.string.pref_skin);
+		setTitle(R.string.pref_look_and_feel_title);
 		mContext = this;
 
 		Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);

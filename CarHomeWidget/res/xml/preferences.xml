@@ -1,33 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/shortcuts">       
-        <com.anod.car.home.prefs.views.ShortcutPreference android:key="launch-component-0-%d" android:title="@string/set_shortcut" />
-        <com.anod.car.home.prefs.views.ShortcutPreference android:key="launch-component-1-%d" android:title="@string/set_shortcut" />
-        <com.anod.car.home.prefs.views.ShortcutPreference android:key="launch-component-2-%d" android:title="@string/set_shortcut" />
-        <com.anod.car.home.prefs.views.ShortcutPreference android:key="launch-component-3-%d" android:title="@string/set_shortcut" />
-        <com.anod.car.home.prefs.views.ShortcutPreference android:key="launch-component-4-%d" android:title="@string/set_shortcut" />
-        <com.anod.car.home.prefs.views.ShortcutPreference android:key="launch-component-5-%d" android:title="@string/set_shortcut" />
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/shortcuts" >
+        <com.anod.car.home.prefs.views.ShortcutPreference
+            android:key="launch-component-0-%d"
+            android:title="@string/set_shortcut" />
+        <com.anod.car.home.prefs.views.ShortcutPreference
+            android:key="launch-component-1-%d"
+            android:title="@string/set_shortcut" />
+        <com.anod.car.home.prefs.views.ShortcutPreference
+            android:key="launch-component-2-%d"
+            android:title="@string/set_shortcut" />
+        <com.anod.car.home.prefs.views.ShortcutPreference
+            android:key="launch-component-3-%d"
+            android:title="@string/set_shortcut" />
+        <com.anod.car.home.prefs.views.ShortcutPreference
+            android:key="launch-component-4-%d"
+            android:title="@string/set_shortcut" />
+        <com.anod.car.home.prefs.views.ShortcutPreference
+            android:key="launch-component-5-%d"
+            android:title="@string/set_shortcut" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/advanced">
-		<Preference android:key="look-and-feel" android:title="@string/pref_look_and_feel_title" android:summary="@string/pref_look_and_feel_summary" />
-		<Preference android:key="incar" android:title='@string/pref_incar_mode_title' android:summary="@string/pref_incar_mode_summary" />
-		<Preference android:key="backup" android:title="@string/pref_backup_title" android:summary="@string/pref_backup_summary"/>
+    <PreferenceCategory android:title="@string/advanced" >
+        <com.anod.car.home.prefs.views.HeaderPreference
+            android:icon="@drawable/ic_action_brush"
+            android:key="look-and-feel"
+            android:summary="@string/pref_look_and_feel_summary"
+            android:title="@string/pref_look_and_feel_title" />
+        <com.anod.car.home.prefs.views.HeaderPreference
+            android:icon="@drawable/ic_action_wheel"
+            android:key="incar"
+            android:summary="@string/pref_incar_mode_summary"
+            android:title="@string/pref_incar_mode_title" />
+        <com.anod.car.home.prefs.views.HeaderPreference
+            android:icon="@drawable/ic_action_export"
+            android:key="backup"
+            android:summary="@string/pref_backup_summary"
+            android:title="@string/pref_backup_title" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/information_title">  
-    	<Preference 
-        	android:key="version"
-        	android:title="@string/version_title" 
-        	android:summary="@string/version_summary" 
-    	/>
-    	<Preference 
-        	android:key="other"
-        	android:title="@string/other_title" 
-        	android:summary="@string/other_summary" 
-    	/>
-    	<Preference 
-        	android:key="issue-tracker"
-        	android:title="@string/issue_title" 
-        	android:summary="@string/issue_summary" 
-    	/>
-    </PreferenceCategory>	   
+    <PreferenceCategory android:title="@string/information_title" >
+        <com.anod.car.home.prefs.views.HeaderPreference
+            android:icon="@drawable/ic_action_star_10"
+            android:key="version"
+            android:summary="@string/version_summary"
+            android:title="@string/version_title" />
+        <com.anod.car.home.prefs.views.HeaderPreference
+            android:icon="@drawable/ic_action_playback_play"
+            android:key="other"
+            android:summary="@string/other_summary"
+            android:title="@string/other_title" />
+        <com.anod.car.home.prefs.views.HeaderPreference
+            android:icon="@drawable/ic_action_gplus"
+            android:key="issue-tracker"
+            android:title="@string/issue_title" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

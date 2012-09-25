@@ -41,11 +41,6 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	private static final String OTHER_AMAZON_URL = "http://www.amazon.com/gp/mas/dl/android?p=com.anod.car.home.free&showAll=1";
 
 	@Override
-	protected int getTitleResource() {
-		return R.string.settings;
-	}
-
-	@Override
 	protected int getXmlResource() {
 		return R.xml.preferences;
 	}
@@ -57,8 +52,8 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 		mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
 
 		initActivityChooser();
-
-		setIntent(LOOK_AND_FEEL, ConfigurationLook.class, mAppWidgetId);
+		
+		setIntent(LOOK_AND_FEEL, SkinPreviewActivity.class, mAppWidgetId);
 		setIntent(INCAR, ConfigurationInCar.class, 0);
 		initOther();
 		initBackup();
@@ -132,7 +127,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 		issue.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				Uri uri = Uri.parse("http://www.facebook.com/pages/Car-Widget-for-Android/220355141336206");
+				Uri uri = Uri.parse("https://plus.google.com/118206296686390552505/");
 				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 				startActivity(intent);
 				return false;
