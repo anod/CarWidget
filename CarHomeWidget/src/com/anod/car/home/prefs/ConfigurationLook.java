@@ -33,7 +33,6 @@ public class ConfigurationLook extends ConfigurationActivity {
 
 		Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
 
-		initBackground(prefs);
 		initIcon(prefs);
 		initFont(prefs);
 		initTransparent(mFreeVersion, prefs);
@@ -57,41 +56,11 @@ public class ConfigurationLook extends ConfigurationActivity {
 		}
 	}
 
-	private void initBackground(final Main prefs) {
-		Preference bgColor = (Preference) findPreference(PreferencesStorage.BG_COLOR);
-		bgColor.setKey(PreferencesStorage.getName(PreferencesStorage.BG_COLOR, mAppWidgetId));
-
-		bgColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				int value = prefs.getBackgroundColor();
-				OnClickListener listener = new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						String prefName = PreferencesStorage.getName(PreferencesStorage.BG_COLOR, mAppWidgetId);
-						int color = ((CarHomeColorPickerDialog) dialog).getColor();
-						PreferencesStorage.saveColor(mContext, prefName, color);
-					}
-				};
-				final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
-				d.setAlphaSliderVisible(true);
-				d.show();
-				return false;
-
-			}
-		});
-
-	}
 
 	private void initIcon(final Main prefs) {
-		CheckBoxPreference icnMono = (CheckBoxPreference) findPreference(PreferencesStorage.ICONS_MONO);
-		String key = PreferencesStorage.getName(PreferencesStorage.ICONS_MONO, mAppWidgetId);
-		icnMono.setKey(key);
-		icnMono.setChecked(prefs.isIconsMono());
-
 		Preference icnColor = (Preference) findPreference(PreferencesStorage.ICONS_COLOR);
+		icnColor.setEnabled(prefs.isIconsMono());
 		icnColor.setKey(PreferencesStorage.getName(PreferencesStorage.ICONS_COLOR, mAppWidgetId));
-		icnColor.setDependency(key);
 		icnColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
@@ -112,9 +81,6 @@ public class ConfigurationLook extends ConfigurationActivity {
 			}
 		});
 
-		ListPreference icnScale = (ListPreference) findPreference(PreferencesStorage.ICONS_SCALE);
-		icnScale.setKey(PreferencesStorage.getName(PreferencesStorage.ICONS_SCALE, mAppWidgetId));
-		icnScale.setValue(prefs.getIconsScale());
 	}
 
 	private void initFont(final Main prefs) {

@@ -1,8 +1,10 @@
 package com.anod.car.home.prefs;
 
+import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -24,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.anod.car.home.LauncherViewBuilder;
 import com.anod.car.home.R;
@@ -49,6 +52,7 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 	private View mLoaderView;
 	private boolean[] mPreviewInitialized = { false, false, false, false, false };
 	private LauncherViewBuilder mBuilder;
+	private Main mPrefs;
 
 	private static int[] sTextRes = { 0, 0, R.string.skin_info_metro, 0, R.string.skin_info_bbb };
 
@@ -73,8 +77,8 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 		setTitle(R.string.pref_look_and_feel_title);
 		mContext = this;
 
-		Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
-		mSkinItems = createSkinList(prefs.getSkin());
+		mPrefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
+		mSkinItems = createSkinList(mPrefs.getSkin());
 		mCurrentPage = mSelectedSkinPosition;
 
 		inflateActivity();
@@ -103,7 +107,9 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 		mItemApply = menu.findItem(R.id.apply);
 		mMenuSelected = menu.findItem(R.id.selected);
 		mMenuTileColor = menu.findItem(R.id.tile_color);
-
+		
+		menu.findItem(R.id.icons_mono).setChecked(mPrefs.isIconsMono());
+		
 		mMenuInitialized  = true;
 		refreshActionBar(mCurrentPage);
         // Calling super after populating the menu is necessary here to ensure that the
@@ -119,7 +125,9 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 			prefs.setSkin(getSkinItem(mCurrentPage).value);
 			PreferencesStorage.saveMain(mContext, prefs, mAppWidgetId);
 			finish();
-		} else if (itemId == R.id.tile_color){
+			return false;
+		}
+		if (itemId == R.id.tile_color){
 			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
 			Integer value = prefs.getTileColor();
 			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
@@ -135,6 +143,51 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 			final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
 			d.setAlphaSliderVisible(true);
 			d.show();
+			return false;
+		}
+		if (itemId == R.id.more) {
+			Intent intent = new Intent(this, ConfigurationLook.class);
+			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+			startActivity(intent);
+			return false;
+		}
+		if (itemId == R.id.bg_color) {
+			int value = mPrefs.getBackgroundColor();
+			OnClickListener listener = new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					String prefName = PreferencesStorage.getName(PreferencesStorage.BG_COLOR, mAppWidgetId);
+					int color = ((CarHomeColorPickerDialog) dialog).getColor();
+					PreferencesStorage.saveColor(mContext, prefName, color);
+				}
+			};
+			final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
+			d.setAlphaSliderVisible(true);
+			d.show();
+			return false;
+		}
+		if (itemId == R.id.icons_mono) {
+			// TODO
+			return false;
+		}
+		if (itemId == R.id.icons_scale) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			final CharSequence[] items = getResources().getStringArray(R.array.icon_scale_titles);
+			int idx = -1;
+			for(int i=0; i<items.length;i++) {
+				if (mPrefs.getIconsScale().equals(items[i])) {
+					idx = i;
+					break;
+				}
+			}
+			builder.setTitle(R.string.pref_scale_icon);
+			builder.setSingleChoiceItems(items, idx, new DialogInterface.OnClickListener() {
+			    public void onClick(DialogInterface dialog, int item) {
+			        Toast.makeText(getApplicationContext(), items[item], Toast.LENGTH_SHORT).show();
+			    }
+			});
+			builder.create().show();
+			return false;
 		}
 		return false;
     }
