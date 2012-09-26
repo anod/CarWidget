@@ -28,12 +28,19 @@ public class ConfigurationNotifShortcuts extends ConfigurationActivity implement
 		ShortcutsModel model = new NotificationShortcutsModel(this);
 		model.init();
 		mPickShortcutUtils = new PickShortcutUtils(this, model, this);
-		
+		mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
+
 		for (int i = 0; i < PreferencesStorage.NOTIFICATION_COMPONENT_NUMBER; i++) {
 			mPickShortcutUtils.initLauncherPreference(i);
 		}
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		mPickShortcutUtils.onSaveInstanceState(outState);
+	}
+	
 	@Override
 	public String getInitialKey(int position) {
 		return PreferencesStorage.getNotifComponentName(position);
