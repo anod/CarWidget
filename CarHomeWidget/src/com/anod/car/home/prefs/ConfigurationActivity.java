@@ -1,6 +1,5 @@
 package com.anod.car.home.prefs;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
@@ -32,15 +31,22 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 	@Override
 	final protected void onCreate(Bundle savedInstanceState) {
         mActionBarHelper.onCreate(savedInstanceState);
+		if (isAppWidgetIdRequired()) {
+			if (savedInstanceState != null) {
+				mAppWidgetId = savedInstanceState.getInt("appWidgetId");
+			} else {
+				Intent launchIntent = getIntent();
+				Bundle extras = launchIntent.getExtras();
+				if (extras != null) {
+					mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+				}
+			}
+		}
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(getXmlResource());
 
 		if (isAppWidgetIdRequired()) {
-			Intent launchIntent = getIntent();
-			Bundle extras = launchIntent.getExtras();
-			if (extras != null) {
-				mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-	
+			if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
 				Intent defaultResultValue = new Intent();
 				defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 				setResult(RESULT_OK, defaultResultValue);
@@ -54,6 +60,14 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 		onCreateImpl(savedInstanceState);
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (isAppWidgetIdRequired()) {
+			outState.putInt("appWidgetId", mAppWidgetId);
+		}
+	}
+	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		mActionBarHelper.onPostCreate(savedInstanceState);

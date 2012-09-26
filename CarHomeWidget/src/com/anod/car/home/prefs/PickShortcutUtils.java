@@ -200,4 +200,15 @@ public class PickShortcutUtils {
 			refreshPreference(p);
 		}
 	}
+
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putInt("currentCellId", mCurrentCellId);
+	}
+
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			mCurrentCellId = savedInstanceState.getInt("currentCellId", INVALID_CELL_ID);
+		}
+		
+	}
 }

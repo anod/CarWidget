@@ -50,7 +50,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 		mModel = new LauncherShortcutsModel(mContext, mAppWidgetId);
 		mModel.init();
 		mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
-
+		mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
 		initActivityChooser();
 		
 		setIntent(LOOK_AND_FEEL, SkinPreviewActivity.class, mAppWidgetId);
@@ -66,6 +66,12 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 
 	}
 	
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		mPickShortcutUtils.onSaveInstanceState(outState);
+	}
 
 	private void initBackup() {
 		Preference pref = (Preference) findPreference(BACKUP);
