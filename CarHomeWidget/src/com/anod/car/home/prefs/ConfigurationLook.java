@@ -59,7 +59,6 @@ public class ConfigurationLook extends ConfigurationActivity {
 
 	private void initIcon(final Main prefs) {
 		Preference icnColor = (Preference) findPreference(PreferencesStorage.ICONS_COLOR);
-		icnColor.setEnabled(prefs.isIconsMono());
 		icnColor.setKey(PreferencesStorage.getName(PreferencesStorage.ICONS_COLOR, mAppWidgetId));
 		icnColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override

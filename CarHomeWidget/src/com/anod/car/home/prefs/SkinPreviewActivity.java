@@ -129,6 +129,14 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
     }
 
     @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if (requestCode == REQUEST_LOOK_ACTIVITY) {
+    		refreshSkinPreview();
+    	}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();
 		if (itemId == R.id.apply) {
@@ -136,7 +144,7 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 			prefs.setSkin(getSkinItem(mCurrentPage).value);
 			PreferencesStorage.saveMain(mContext, prefs, mAppWidgetId);
 			finish();
-			return false;
+			return true;
 		}
 		if (itemId == R.id.tile_color){
 			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
@@ -155,13 +163,13 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 			final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
 			d.setAlphaSliderVisible(true);
 			d.show();
-			return false;
+			return true;
 		}
 		if (itemId == R.id.more) {
 			Intent intent = new Intent(this, ConfigurationLook.class);
 			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 			startActivityForResult(intent, REQUEST_LOOK_ACTIVITY);
-			return false;
+			return true;
 		}
 		if (itemId == R.id.bg_color) {
 			int value = mPrefs.getBackgroundColor();
@@ -177,34 +185,45 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 			final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
 			d.setAlphaSliderVisible(true);
 			d.show();
-			return false;
+			return true;
 		}
 		if (itemId == R.id.icons_mono) {
-			// TODO
-			return false;
+			mPrefs.setIconsMono(!item.isChecked());
+			persistPrefs();
+			item.setChecked(!item.isChecked());
+			refreshSkinPreview();
+			return true;
 		}
 		if (itemId == R.id.icons_scale) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			final CharSequence[] items = getResources().getStringArray(R.array.icon_scale_titles);
+			final String[] titles = getResources().getStringArray(R.array.icon_scale_titles);
+			final String[] values = getResources().getStringArray(R.array.icon_scale_values);
 			int idx = -1;
-			for(int i=0; i<items.length;i++) {
-				if (mPrefs.getIconsScale().equals(items[i])) {
+			for(int i=0; i<values.length;i++) {
+				if (mPrefs.getIconsScale().equals(values[i])) {
 					idx = i;
 					break;
 				}
 			}
 			builder.setTitle(R.string.pref_scale_icon);
-			builder.setSingleChoiceItems(items, idx, new DialogInterface.OnClickListener() {
+			builder.setSingleChoiceItems(titles, idx, new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog, int item) {
-			        Toast.makeText(getApplicationContext(), items[item], Toast.LENGTH_SHORT).show();
+					mPrefs.setIconsScaleString(values[item]);
+					persistPrefs();
+			        Toast.makeText(getApplicationContext(), values[item], Toast.LENGTH_SHORT).show();
+			        dialog.dismiss();
 			        refreshSkinPreview();
 			    }
 			});
 			builder.create().show();
-			return false;
+			return true;
 		}
 		return false;
     }
+
+	private void persistPrefs() {
+		PreferencesStorage.saveMain(this, mPrefs, mAppWidgetId);
+	}
 
 	private SkinItem[] createSkinList(String skinValue) {
 		Resources r = getResources();

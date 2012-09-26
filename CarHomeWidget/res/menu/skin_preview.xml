@@ -3,19 +3,19 @@
 
     <item
         android:id="@+id/tile_color"
-        android:showAsAction="ifRoom|withText"
+        android:showAsAction="always|withText"
         android:title="@string/pref_tile_color_title">
     </item>
     <item
         android:id="@+id/apply"
         android:icon="@drawable/ic_action_tick"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/apply">
+        android:showAsAction="always|withText"
+        android:title="@android:string/ok">
     </item>
     <item
         android:id="@+id/selected"
         android:enabled="false"
-        android:showAsAction="ifRoom|withText"
+        android:showAsAction="always|withText"
         android:title="@string/selected"
         android:visible="false">
     </item>

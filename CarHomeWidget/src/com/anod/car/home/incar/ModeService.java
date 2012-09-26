@@ -114,7 +114,7 @@ public class ModeService extends Service{
 	{
 		// Tracking a bug
 		if (intent == null) {
-			Log.d("CarHomeWidget", "Intent is null...");
+			Log.d("CarHomeWidget", "Intent is null... sInCarMode = "+sInCarMode);
 		}
 		mForceState = intent.getBooleanExtra(EXTRA_FORCE_STATE, false);
 		if (intent.getIntExtra(EXTRA_MODE, MODE_SWITCH_ON) == MODE_SWITCH_OFF) {
