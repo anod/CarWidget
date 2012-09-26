@@ -21,6 +21,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,8 +35,14 @@ import com.anod.car.home.actionbarcompat.ActionBarActivity;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.utils.FastBitmapDrawable;
+import com.anod.car.home.utils.Utils;
 
 public class SkinPreviewActivity extends ActionBarActivity implements OnPageChangeListener {
+	private static final int SKINS_COUNT = 5;
+
+	interface SkinRefreshListener {
+		public void refresh();
+	}
 
 	private static final int REQUEST_LOOK_ACTIVITY = 1;
 	private ViewPager mGallery;
@@ -54,9 +61,12 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 	private boolean[] mPreviewInitialized = { false, false, false, false, false };
 	private LauncherViewBuilder mBuilder;
 	private Main mPrefs;
+	private SparseArray<SkinRefreshListener> mSkinRefreshListeners = new SparseArray<SkinPreviewActivity.SkinRefreshListener>(SKINS_COUNT);
+	private boolean mPendingRefresh;
 
 	private static int[] sTextRes = { 0, 0, R.string.skin_info_metro, 0, R.string.skin_info_bbb };
 
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -316,10 +326,37 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 	}
 
 	private void refreshSkinPreview() {
+		Utils.logd("Refresh Skin Requested");
+		mPrefs = mBuilder.reloadPrefs().getPrefs();
 		if (mPreviewInitialized[mCurrentPage]) {
-			mPrefs = mBuilder.reloadPrefs().getPrefs();
-		//	((SkinPreviewFragment)mAdapter.getItem(mCurrentPage)).refresh();
+			mPendingRefresh = false;
+			for (int i = 0; i<mSkinRefreshListeners.size(); i++) {
+				SkinRefreshListener listener = mSkinRefreshListeners.valueAt(i);
+				if (listener != null) {
+					listener.refresh();
+					Utils.logd("Call refresh on listener for page: " + i);
+				} else {
+					if (i == mCurrentPage) {
+						mPendingRefresh = true;
+						Utils.logd("No listener for current page, set pending flag");
+					}
+				}
+			}
 		}
+	}
+
+	public void onFragmentAttach(SkinRefreshListener listener, int position) {
+		Utils.logd("Register listener for page: "+position);
+		mSkinRefreshListeners.put(position,listener);
+		if (mPendingRefresh && mCurrentPage == position) {
+			Utils.logd("Pending refresh");
+			listener.refresh();
+		}
+	}
+	
+	public void onFragmentDetach(int position) {
+		Utils.logd("UnRegister listener for page: "+position);
+		mSkinRefreshListeners.delete(position);
 	}
 	
 	class SkinItem {

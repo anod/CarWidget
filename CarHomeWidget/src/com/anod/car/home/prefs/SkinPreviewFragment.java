@@ -13,8 +13,9 @@ import android.widget.RemoteViews;
 
 import com.anod.car.home.LauncherViewBuilder;
 import com.anod.car.home.R;
+import com.anod.car.home.prefs.SkinPreviewActivity.SkinRefreshListener;
 
-public class SkinPreviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<View> {
+public class SkinPreviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<View>, SkinRefreshListener {
 	
 	private static final String ARG_POSITION = "position";
 	private int mPosition;
@@ -43,7 +44,6 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		mPosition = getArguments().getInt(ARG_POSITION);
 		mActivity.onPreviewStart(mPosition);	
 		getLoaderManager().initLoader(0, null, this);
 	}
@@ -51,9 +51,17 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+		mPosition = getArguments().getInt(ARG_POSITION);
 		mActivity = (SkinPreviewActivity)activity;
+		mActivity.onFragmentAttach(this, mPosition);
 	}
 
+	@Override
+	public void onDetach() {
+		mActivity.onFragmentDetach(mPosition);
+		super.onDetach();
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.skin_item, container, false);
@@ -61,6 +69,7 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 		return view;
 	}
 	
+	@Override
 	public void refresh() {
 		getLoaderManager().initLoader(0, null, this).forceLoad();
 	}
