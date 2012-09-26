@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.anod.car.home.R;
 import com.anod.car.home.actionbarcompat.ActionBarHelper;
@@ -76,6 +78,9 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.configuration, menu);
+        
         boolean retValue = false;
         retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
         retValue |= super.onCreateOptionsMenu(menu);
@@ -112,5 +117,14 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 		try {
 			dismissDialog(DIALOG_WAIT);
 		} catch (IllegalArgumentException e) {}
+	}
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.apply) {
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }
