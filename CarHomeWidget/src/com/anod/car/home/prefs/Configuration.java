@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.view.MenuItem;
 
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.Provider;
@@ -58,14 +59,22 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 		initOther();
 		initBackup();
 
-		
 		int cellId = getIntent().getExtras().getInt(PickShortcutUtils.EXTRA_CELL_ID, PickShortcutUtils.INVALID_CELL_ID);
 		if (cellId != PickShortcutUtils.INVALID_CELL_ID) {
 			mPickShortcutUtils.pickShortcut(cellId);
 		}
 
 	}
-	
+
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.apply) {
+			requestWidgetUpdate();
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -144,15 +153,19 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 
 	@Override
 	public void onBackPressed() {
+		requestWidgetUpdate();
+		AllAppsListCache allAppsList = ((CarWidgetApplication) this.getApplicationContext()).getAllAppCache();
+		allAppsList.flush();
+		super.onBackPressed();
+	}
+
+	private void requestWidgetUpdate() {
 		if (AppWidgetManager.ACTION_APPWIDGET_CONFIGURE.equals(getIntent().getAction()) && mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
 			int[] appWidgetIds = new int[1];
 			appWidgetIds[0] = mAppWidgetId;
 			Provider appWidgetProvider = Provider.getInstance();
 			appWidgetProvider.performUpdate(this, appWidgetIds);
 		}
-		AllAppsListCache allAppsList = ((CarWidgetApplication) this.getApplicationContext()).getAllAppCache();
-		allAppsList.flush();
-		super.onBackPressed();
 	}
 
 	@Override
