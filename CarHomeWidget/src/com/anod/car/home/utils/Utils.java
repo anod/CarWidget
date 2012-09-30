@@ -2,6 +2,7 @@ package com.anod.car.home.utils;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
@@ -54,6 +55,22 @@ public class Utils {
         return new ComponentName(compParts[0],compParts[1]);
     }
     
+	public static void startActivityForResultSafetly(Intent intent, int requestCode, Activity activity) {
+		try
+		{
+			activity.startActivityForResult(intent, requestCode);
+		}
+		catch (ActivityNotFoundException activityNotFoundException)
+		{
+			Toast.makeText(activity, R.string.photo_picker_not_found, Toast.LENGTH_LONG).show();
+		}
+		catch (Exception exception)
+		{
+			String errStr = String.format(activity.getResources().getString(R.string.error_text), exception.getMessage());
+			Toast.makeText(activity, errStr, Toast.LENGTH_LONG).show();
+		}
+	}
+	
     public static void startActivitySafely(Intent intent, Context context) {
         try {
         	context.startActivity(intent);

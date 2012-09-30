@@ -19,25 +19,31 @@
         android:title="@string/selected"
         android:visible="false">
     </item>
-
     <item
         android:id="@+id/bg_color"
         android:showAsAction="never"
-        android:title="@string/pref_bg_color_title"
-		>
+        android:title="@string/pref_bg_color_title">
     </item>
-
+    <item
+        android:id="@+id/icons_theme"
+        android:showAsAction="never"
+        android:title="@string/icons_theme">
+    </item>
     <item
         android:id="@+id/icons_mono"
-        android:showAsAction="never"
         android:checkable="true"
         android:checked="false"
-        android:title="@string/pref_icons_mono_title"
-		>
+        android:showAsAction="never"
+        android:title="@string/pref_icons_mono_title">
     </item>
-    <item android:id="@+id/icons_scale" android:showAsAction="never" android:title="@string/pref_scale_icon">
+    <item
+        android:id="@+id/icons_scale"
+        android:showAsAction="never"
+        android:title="@string/pref_scale_icon">
     </item>
-    
-    <item android:id="@+id/more" android:title="@string/more"></item>
-    
+    <item
+        android:id="@+id/more"
+        android:title="@string/more">
+    </item>
+
 </menu>

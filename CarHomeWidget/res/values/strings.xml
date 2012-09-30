@@ -180,5 +180,8 @@
 	<string name="settings">Settings</string>
 	<string name="notification">Notification</string>
 	<string name="shortcuts_summary">You can place up to 3 shortcuts in status bar</string>
-	<string name="more">More...</string>
+	<string name="more">More&#8230;</string>
+	<string name="icons_theme">Icons Theme</string>
+	<string name="none">None</string>
+	<string name="download">Download&#8230;</string>
 </resources>

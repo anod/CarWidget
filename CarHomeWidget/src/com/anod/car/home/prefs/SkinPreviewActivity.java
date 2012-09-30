@@ -187,6 +187,41 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 			d.show();
 			return true;
 		}
+		if (itemId == R.id.icons_theme) {
+			final CharSequence[] items = { getString(R.string.none), getString(R.string.icon_adw_icon_pack) };
+	
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.dialog_title_select);
+			builder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int item) {
+
+				}
+			}).setNegativeButton(android.R.string.cancel, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+				}
+			})
+			.setNeutralButton(R.string.download, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+				}
+			})
+			.setPositiveButton(android.R.string.ok, new OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+
+				}
+			});
+			builder.create().show();
+		    return true;
+		}
 		if (itemId == R.id.icons_mono) {
 			mPrefs.setIconsMono(!item.isChecked());
 			persistPrefs();

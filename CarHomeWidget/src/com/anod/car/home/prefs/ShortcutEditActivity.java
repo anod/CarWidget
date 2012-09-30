@@ -3,7 +3,6 @@ package com.anod.car.home.prefs;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,10 +20,11 @@ import android.widget.Toast;
 import com.anod.car.home.R;
 import com.anod.car.home.model.LauncherModel;
 import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.utils.IconPackUtils;
 import com.anod.car.home.utils.UtilitiesBitmap;
+import com.anod.car.home.utils.Utils;
 
 public class ShortcutEditActivity extends Activity {
-	private static final String ACTION_ADW_PICK_ICON="org.adw.launcher.icons.ACTION_PICK_ICON";
 	
 	public static final String EXTRA_SHORTCUT_ID = "extra_id";
 	public static final String EXTRA_CELL_ID = "extra_cell_id";
@@ -90,11 +90,10 @@ public class ShortcutEditActivity extends Activity {
 		switch(item) {
 			case  PICK_CUSTOM_ICON:
 				chooseIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				startActivityForResultSafetly(chooseIntent, PICK_CUSTOM_ICON);
+				Utils.startActivityForResultSafetly(chooseIntent, PICK_CUSTOM_ICON, this);
 			break;
 			case  PICK_ADW_ICON_PACK:
-				chooseIntent=new Intent(ACTION_ADW_PICK_ICON);
-				startActivityForResultSafetly(Intent.createChooser(chooseIntent, "Select icon pack"), PICK_ADW_ICON_PACK);
+				IconPackUtils.startAdwIconPackChooser(PICK_ADW_ICON_PACK, this);
 			break;
 		}
 	}
@@ -140,22 +139,6 @@ public class ShortcutEditActivity extends Activity {
 		String str = cursor.getString(0);
 		cursor.close();
 		return str;
-	}
-	
-	public void startActivityForResultSafetly(Intent intent, int requestCode) {
-		try
-		{
-			startActivityForResult(intent, requestCode);
-		}
-		catch (ActivityNotFoundException activityNotFoundException)
-		{
-			Toast.makeText(this, R.string.photo_picker_not_found, Toast.LENGTH_LONG).show();
-		}
-		catch (Exception exception)
-		{
-			String errStr = String.format(getResources().getString(R.string.error_text), exception.getMessage());
-			Toast.makeText(this, errStr, Toast.LENGTH_LONG).show();
-		}
 	}
 	
 	public void changeIcon(View view)
