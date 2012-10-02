@@ -200,7 +200,6 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
 					
 				}
 			})
@@ -208,7 +207,6 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
 					
 				}
 			})

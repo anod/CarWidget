@@ -31,7 +31,7 @@ class ApplicationCacheInfo {
     /**
      * Must not hold the Context.
      */
-    public ApplicationCacheInfo(ResolveInfo info, AllAppsListCache iconCache) {
+    public ApplicationCacheInfo(ResolveInfo info, AppsListCache iconCache) {
         this.componentName = new ComponentName(
                 info.activityInfo.applicationInfo.packageName,
                 info.activityInfo.name);

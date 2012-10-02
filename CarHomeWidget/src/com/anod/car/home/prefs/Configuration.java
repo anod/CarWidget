@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
-import com.anod.car.home.model.AllAppsListCache;
+import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.model.LauncherShortcutsModel;
 import com.anod.car.home.model.ShortcutsModel;
 import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
@@ -154,7 +154,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	@Override
 	public void onBackPressed() {
 		requestWidgetUpdate();
-		AllAppsListCache allAppsList = ((CarWidgetApplication) this.getApplicationContext()).getAllAppCache();
+		AppsListCache allAppsList = ((CarWidgetApplication) this.getApplicationContext()).getAppListCache();
 		allAppsList.flush();
 		super.onBackPressed();
 	}

@@ -21,7 +21,7 @@ import com.anod.car.home.utils.UtilitiesBitmap;
 /**
  * Cache of application icons. Icons can be made from any thread.
  */
-public class AllAppsListCache {
+public class AppsListCache {
 	private static final int INITIAL_ICON_CACHE_CAPACITY = 50;
 
 	public static class CacheEntry {
@@ -37,7 +37,7 @@ public class AllAppsListCache {
 	private final CarWidgetApplication mContext;
 	private final PackageManager mPackageManager;
 
-	public AllAppsListCache(CarWidgetApplication context) {
+	public AppsListCache(CarWidgetApplication context) {
 		mContext = context;
 		mPackageManager = context.getPackageManager();
 	}
