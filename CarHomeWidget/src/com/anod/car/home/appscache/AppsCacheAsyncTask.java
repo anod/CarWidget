@@ -45,7 +45,7 @@ public class AppsCacheAsyncTask extends AsyncTask<Integer, Object, Object> {
 		
         private void loadAllAppsToCache() {
         	mAppsListCache.flush();
-            final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+            final Intent mainIntent = new Intent();
             mCallback.onIntentFilterInit(mainIntent);
 
             final PackageManager packageManager = mContext.getPackageManager();

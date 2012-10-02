@@ -1,24 +1,34 @@
 package com.anod.car.home.prefs;
 
-import android.app.ListActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.content.Intent;
 
-public class IconThemesActivity extends ListActivity implements OnItemClickListener {
+import com.anod.car.home.R;
+import com.anod.car.home.appscache.AppsCacheActivity;
+import com.anod.car.home.model.AppsListCache.CacheEntry;
+import com.anod.car.home.utils.IconPackUtils;
+
+public class IconThemesActivity extends AppsCacheActivity {
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-        getListView().setOnItemClickListener(this);
-
+	public void onIntentFilterInit(Intent intent) {
+		IconPackUtils.fillAdwIconPackIntent(intent);
+		
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	protected boolean isShowTitle() {
+		return true;
+	}
+
+	@Override
+	protected int getRowLayoutId() {
+		return R.layout.icon_theme_row;
+	}
+
+	@Override
+	protected void onEntryClick(CacheEntry entry) {
 		// TODO Auto-generated method stub
-
+		
 	}
-
+	
 }

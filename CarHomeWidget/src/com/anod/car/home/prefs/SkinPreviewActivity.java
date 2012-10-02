@@ -45,6 +45,7 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 	}
 
 	private static final int REQUEST_LOOK_ACTIVITY = 1;
+	private static final int REQUEST_PICK_ICON_THEME = 2;
 	private ViewPager mGallery;
 	private SkinItem[] mSkinItems;
 	private SkinPagerAdapter mAdapter;
@@ -188,8 +189,11 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 			return true;
 		}
 		if (itemId == R.id.icons_theme) {
-			final CharSequence[] items = { getString(R.string.none), getString(R.string.icon_adw_icon_pack) };
+			//final CharSequence[] items = { getString(R.string.none), getString(R.string.icon_adw_icon_pack) };
 	
+			Intent mainIntent = new Intent(this, IconThemesActivity.class);
+			Utils.startActivityForResultSafetly(mainIntent, REQUEST_PICK_ICON_THEME, this);
+/*			
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.dialog_title_select);
 			builder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
@@ -218,6 +222,7 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 				}
 			});
 			builder.create().show();
+			*/
 		    return true;
 		}
 		if (itemId == R.id.icons_mono) {

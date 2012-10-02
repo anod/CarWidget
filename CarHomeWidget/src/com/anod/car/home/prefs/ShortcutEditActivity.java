@@ -93,7 +93,9 @@ public class ShortcutEditActivity extends Activity {
 				Utils.startActivityForResultSafetly(chooseIntent, PICK_CUSTOM_ICON, this);
 			break;
 			case  PICK_ADW_ICON_PACK:
-				IconPackUtils.startAdwIconPackChooser(PICK_ADW_ICON_PACK, this);
+				chooseIntent = new Intent();
+				IconPackUtils.fillAdwIconPackIntent(chooseIntent);
+				Utils.startActivityForResultSafetly(Intent.createChooser(chooseIntent, "Select icon pack"), PICK_ADW_ICON_PACK, this);
 			break;
 		}
 	}
