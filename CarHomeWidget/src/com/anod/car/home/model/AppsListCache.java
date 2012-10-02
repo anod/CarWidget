@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.anod.car.home.CarWidgetApplication;
@@ -31,8 +32,7 @@ public class AppsListCache {
 		public String activityName;
 	}
 
-	private final ArrayList<CacheEntry> mCache = new ArrayList<CacheEntry>(
-			INITIAL_ICON_CACHE_CAPACITY);
+	private final ArrayList<CacheEntry> mCache = new ArrayList<CacheEntry>(INITIAL_ICON_CACHE_CAPACITY);
 
 	private final CarWidgetApplication mContext;
 	private final PackageManager mPackageManager;
@@ -68,8 +68,9 @@ public class AppsListCache {
 			CacheEntry entry = new CacheEntry();
 			mCache.add(entry);
 			ComponentName componentName = new ComponentName(
-					info.activityInfo.applicationInfo.packageName,
-					info.activityInfo.name);
+				info.activityInfo.applicationInfo.packageName,
+				info.activityInfo.name
+			);
 			entry.componentName = componentName;
 			entry.title = info.loadLabel(mPackageManager).toString();
 			if (entry.title == null) {
@@ -119,6 +120,11 @@ public class AppsListCache {
 	public void fetchDrawableOnThread(final CacheEntry entry, final ImageView imageView) {
 		if (entry.icon != null) {
 			imageView.setImageBitmap(entry.icon);
+			imageView.setVisibility(View.VISIBLE);
+			return;
+		} else if (entry.componentName == null) {
+			imageView.setVisibility(View.INVISIBLE);
+			return;
 		}
 
 		final Handler handler = new ImageViewHandler(imageView);

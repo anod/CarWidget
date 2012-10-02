@@ -22,5 +22,15 @@ public class CarWidgetApplication extends Application {
 			mAppListCache = new AppsListCache(this);
 		}
 	}
-    
+
+	public AppsListCache getIconThemesCache() {
+		return mIconThemesCache;
+	}
+
+	public void initIconThemesCache() {
+		if (mIconThemesCache == null) {
+			mIconThemesCache = new AppsListCache(this);
+		}
+	}
+
 }

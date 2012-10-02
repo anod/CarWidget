@@ -3,8 +3,10 @@ package com.anod.car.home.prefs;
 import android.content.ComponentName;
 import android.content.Intent;
 
+import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.R;
 import com.anod.car.home.appscache.AppsCacheActivity;
+import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.model.AppsListCache.CacheEntry;
 
 public class AllAppsActivity extends AppsCacheActivity {
@@ -40,5 +42,12 @@ public class AllAppsActivity extends AppsCacheActivity {
         setResult(RESULT_OK, intent);
         finish();
 	}
+
+	@Override
+	protected AppsListCache getAppListCache(CarWidgetApplication app) {
+		app.initAppListCache();
+		return app.getAppListCache();
+	}
+
 
 }
