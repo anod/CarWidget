@@ -95,5 +95,9 @@ public class Utils {
                     ". Make sure to create a MAIN intent-filter for the corresponding activity " +
                     "or use the exported attribute for this activity.", e);
         }
-    }    
+    }
+
+	public static void saveAppWidgetId(Bundle outState, int mAppWidgetId) {
+		outState.putInt("appWidgetId", mAppWidgetId);
+	}    
 }

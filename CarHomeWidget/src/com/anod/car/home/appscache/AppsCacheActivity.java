@@ -22,7 +22,7 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 		
 	abstract protected boolean isShowTitle();
 	abstract protected int getRowLayoutId();
-	abstract protected void onEntryClick(CacheEntry entry);
+	abstract protected void onEntryClick(int position, CacheEntry entry);
 	abstract protected AppsListCache getAppListCache(CarWidgetApplication app);
 
 	@Override
@@ -73,7 +73,7 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		CacheEntry entry = mItems.get(position);
-		onEntryClick(entry);
+		onEntryClick(position, entry);
 	}
 
 	@Override

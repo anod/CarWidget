@@ -54,9 +54,9 @@ public class IconThemesActivity extends AppsCacheActivity {
 	}
 
 	@Override
-	protected void onEntryClick(CacheEntry entry) {
+	protected void onEntryClick(int position, CacheEntry entry) {
 		// TODO Auto-generated method stub
-		
+		getListView().setItemChecked(position, true);
 	}
 
 	@Override
@@ -79,4 +79,9 @@ public class IconThemesActivity extends AppsCacheActivity {
 		return getLayoutInflater().inflate(R.layout.icon_theme_buttons, null);
 	}
 	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		Utils.saveAppWidgetId(outState, mAppWidgetId);
+	}
 }

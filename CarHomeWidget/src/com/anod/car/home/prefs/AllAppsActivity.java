@@ -37,7 +37,7 @@ public class AllAppsActivity extends AppsCacheActivity {
 	}
 
 	@Override
-	protected void onEntryClick(CacheEntry entry) {
+	protected void onEntryClick(int position, CacheEntry entry) {
         Intent intent = getActivityIntent(entry.componentName);
         setResult(RESULT_OK, intent);
         finish();

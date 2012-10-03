@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,9 +17,13 @@ import com.anod.car.home.model.LauncherModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
+import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
 import com.anod.car.home.utils.Utils;
 
 public class PreferencesStorage {
+	private static final String ICONS_THEME = "icons-theme";
+
 	public static final int NOTIFICATION_COMPONENT_NUMBER = 3;
 
 	public static final int LAUNCH_COMPONENT_NUMBER = 6;
@@ -86,52 +89,54 @@ public class PreferencesStorage {
 	private static final String DELIMETER_PACKAGES = "\n";
 
 	public static Main loadMain(Context context, int appWidgetId) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		WidgetSharedPreferences prefs = new WidgetSharedPreferences(appWidgetId, context);
 		Resources res = context.getResources();
 
 		Main p = new Main();
-		String skinName = prefs.getString(getName(SKIN, appWidgetId), SKIN_GLOSSY);
+		String skinName = prefs.getString(SKIN, SKIN_GLOSSY);
 		p.setSkin(skinName);
 
 		int defTileColor = res.getColor(R.color.w7_tale_default_background);
-		int tileColor = prefs.getInt(getName(BUTTON_COLOR, appWidgetId), defTileColor);
+		int tileColor = prefs.getInt(BUTTON_COLOR, defTileColor);
 		p.setTileColor(tileColor);
 
-		p.setIconsScaleString(prefs.getString(getName(ICONS_SCALE, appWidgetId), "0"));
-		p.setIconsMono(prefs.getBoolean(getName(ICONS_MONO, appWidgetId), DEFAULT_ICONS_MONO));
-		p.setBackgroundColor(prefs.getInt(getName(BG_COLOR, appWidgetId), res.getColor(R.color.default_background)));
-		p.setIconsColor(getIconsColor(prefs, appWidgetId));
-		p.setFontColor(prefs.getInt(getName(FONT_COLOR, appWidgetId), res.getColor(R.color.default_font_color)));
-		p.setFontSize(prefs.getInt(getName(FONT_SIZE, appWidgetId), FONT_SIZE_UNDEFINED));
-		p.setSettingsTransparent(prefs.getBoolean(getName(TRANSPARENT_BTN_SETTINGS, appWidgetId), false));
-		p.setIncarTransparent(prefs.getBoolean(getName(TRANSPARENT_BTN_INCAR, appWidgetId), false));
+		p.setIconsScaleString(prefs.getString(ICONS_SCALE, "0"));
+		p.setIconsMono(prefs.getBoolean(ICONS_MONO, DEFAULT_ICONS_MONO));
+		p.setBackgroundColor(prefs.getInt(BG_COLOR, res.getColor(R.color.default_background)));
+		p.setIconsColor(prefs.getColor(ICONS_COLOR));
+		p.setFontColor(prefs.getInt(FONT_COLOR, res.getColor(R.color.default_font_color)));
+		p.setFontSize(prefs.getInt(FONT_SIZE, FONT_SIZE_UNDEFINED));
+		p.setSettingsTransparent(prefs.getBoolean(TRANSPARENT_BTN_SETTINGS, false));
+		p.setIncarTransparent(prefs.getBoolean(TRANSPARENT_BTN_INCAR, false));
+		p.setIconsTheme(prefs.getString(ICONS_THEME, null));
 		return p;
 	}
 
 	public static void saveMain(Context context, Main prefs, int appWidgetId) {
-		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
-		Editor editor = p.edit();
+		WidgetSharedPreferences p = new WidgetSharedPreferences(appWidgetId, context);
+		WidgetEditor editor = p.edit();
 
-		editor.putString(getName(SKIN, appWidgetId), prefs.getSkin());
+		editor.putString(SKIN, prefs.getSkin());
 
 		Integer defTileColor = prefs.getTileColor();
 		if (defTileColor != null) {
-			editor.putInt(getName(BUTTON_COLOR, appWidgetId), defTileColor);
+			editor.putInt(BUTTON_COLOR, defTileColor);
 		}
-		editor.putString(getName(ICONS_SCALE, appWidgetId), prefs.getIconsScale());
-		editor.putBoolean(getName(ICONS_MONO, appWidgetId), prefs.isIconsMono());
-		editor.putInt(getName(BG_COLOR, appWidgetId), prefs.getBackgroundColor());
+		editor.putString(ICONS_SCALE, prefs.getIconsScale());
+		editor.putBoolean(ICONS_MONO, prefs.isIconsMono());
+		editor.putInt(BG_COLOR, prefs.getBackgroundColor());
 		Integer iconsColor = prefs.getIconsColor();
 		if (iconsColor != null) {
-			editor.putInt(getName(ICONS_COLOR, appWidgetId), iconsColor);
+			editor.putInt(ICONS_COLOR, iconsColor);
 		}
 
-		editor.putInt(getName(FONT_COLOR, appWidgetId), prefs.getFontColor());
-		editor.putInt(getName(FONT_SIZE, appWidgetId), prefs.getFontSize());
+		editor.putInt(FONT_COLOR, prefs.getFontColor());
+		editor.putInt(FONT_SIZE, prefs.getFontSize());
 
-		editor.putBoolean(getName(TRANSPARENT_BTN_SETTINGS, appWidgetId), prefs.isSettingsTransparent());
-		editor.putBoolean(getName(TRANSPARENT_BTN_INCAR, appWidgetId), prefs.isSettingsTransparent());
+		editor.putBoolean(TRANSPARENT_BTN_SETTINGS, prefs.isSettingsTransparent());
+		editor.putBoolean(TRANSPARENT_BTN_INCAR, prefs.isSettingsTransparent());
 
+		editor.putStringOrRemove(ICONS_THEME, prefs.getIconsTheme());
 		editor.commit();
 
 	}
@@ -245,6 +250,12 @@ public class PreferencesStorage {
 		editor.commit();
 	}
 
+	/**
+	 * @deprecated
+	 * @param aPref
+	 * @param aAppWidgetId
+	 * @return
+	 */
 	public static String getName(String aPref, int aAppWidgetId) {
 		return String.format(aPref, aAppWidgetId);
 	}
@@ -279,23 +290,15 @@ public class PreferencesStorage {
 		return ids;
 	}
 
-	private static Integer getIconsColor(SharedPreferences prefs, int appWidgetId) {
-		String prefName = getName(ICONS_COLOR, appWidgetId);
-		if (!prefs.contains(prefName)) {
-			return null;
-		}
-		return prefs.getInt(prefName, Color.WHITE);
-	}
-
 	public static boolean isFirstTime(Context context, int appWidgetId) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		return prefs.getBoolean(getName(FIRST_TIME, appWidgetId), true);
+		WidgetSharedPreferences prefs = new WidgetSharedPreferences(appWidgetId, context);
+		return prefs.getBoolean(FIRST_TIME, true);
 	}
 
 	public static void setFirstTime(boolean value, Context context, int appWidgetId) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		Editor editor = prefs.edit();
-		editor.putBoolean(getName(FIRST_TIME, appWidgetId), value);
+		WidgetSharedPreferences prefs = new WidgetSharedPreferences(appWidgetId, context);
+		WidgetEditor editor = prefs.edit();
+		editor.putBoolean(FIRST_TIME, value);
 		editor.commit();
 	}
 
@@ -349,33 +352,33 @@ public class PreferencesStorage {
 	}
 
 	public static void DropWidgetSettings(Context context, int[] appWidgetIds) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		Editor edit = prefs.edit();
 		LauncherModel model = new LauncherModel();
 		for (int appWidgetId : appWidgetIds) {
-			edit.remove(getName(SKIN, appWidgetId));
-			edit.remove(getName(BG_COLOR, appWidgetId));
-			edit.remove(getName(BUTTON_COLOR, appWidgetId));
-			edit.remove(getName(ICONS_MONO, appWidgetId));
-			edit.remove(getName(ICONS_COLOR, appWidgetId));
-			edit.remove(getName(ICONS_SCALE, appWidgetId));
-			edit.remove(getName(FONT_COLOR, appWidgetId));
-			edit.remove(getName(FONT_SIZE, appWidgetId));
-			edit.remove(getName(FIRST_TIME, appWidgetId));
-			edit.remove(getName(TRANSPARENT_BTN_SETTINGS, appWidgetId));
-			edit.remove(getName(TRANSPARENT_BTN_INCAR, appWidgetId));
-			edit.remove(getName(KEEP_ORDER, appWidgetId));
+			WidgetSharedPreferences prefs = new WidgetSharedPreferences(appWidgetId, context);
+			WidgetEditor edit = prefs.edit();
+			edit.remove(SKIN);
+			edit.remove(BG_COLOR);
+			edit.remove(BUTTON_COLOR);
+			edit.remove(ICONS_MONO);
+			edit.remove(ICONS_COLOR);
+			edit.remove(ICONS_SCALE);
+			edit.remove(FONT_COLOR);
+			edit.remove(FONT_SIZE);
+			edit.remove(FIRST_TIME);
+			edit.remove(TRANSPARENT_BTN_SETTINGS);
+			edit.remove(TRANSPARENT_BTN_INCAR);
+			edit.remove(KEEP_ORDER);
 
 			for (int i = 0; i < LAUNCH_COMPONENT_NUMBER; i++) {
-				String key = PreferencesStorage.getLaunchComponentName(i, appWidgetId);
+				String key = PreferencesStorage.getLaunchComponentKey(i);
 				long curShortcutId = prefs.getLong(key, ShortcutInfo.NO_ID);
 				if (curShortcutId != ShortcutInfo.NO_ID) {
 					model.deleteItemFromDatabase(context, curShortcutId);
 				}
 				edit.remove(key);
 			}
+			edit.commit();
 		}
-		edit.commit();
 	}
 
 	public static void dropNotifShortcut(int position, Context context) {

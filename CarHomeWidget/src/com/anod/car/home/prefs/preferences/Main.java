@@ -18,7 +18,11 @@ public class Main implements Serializable {
 	private int backgroundColor;
 	private boolean settingsTransparent;
 	private boolean incarTransparent;
+	private String iconsTheme;
 	
+	public String getIconsTheme() {
+		return iconsTheme;
+	}
 	public boolean isSettingsTransparent() {
 		return settingsTransparent;
 	}
@@ -78,5 +82,8 @@ public class Main implements Serializable {
 	}
 	public void setBackgroundColor(int backgroundColor) {
 		this.backgroundColor = backgroundColor;
+	}
+	public void setIconsTheme(String iconsTheme) {
+		this.iconsTheme = iconsTheme;
 	}
 }
