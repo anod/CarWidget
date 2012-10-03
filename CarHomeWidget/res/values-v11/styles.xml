@@ -16,6 +16,8 @@
 
 <resources>
 
+    <style name="AppListTheme" parent="android:style/Theme.Holo.Dialog" />
+    
     <style name="AppTheme" parent="android:style/Theme.Holo">
         <item name="android:actionBarStyle">@style/ActionBar</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>

@@ -40,7 +40,7 @@ public class AppsCacheAdapter extends ArrayAdapter<CacheEntry> {
 		}
 		CacheEntry entry = getItem(position);
 
-		TextView title = (TextView) v.findViewById(R.id.app_title);
+		TextView title = (TextView) v.findViewById(android.R.id.text1);
         ImageView icon = (ImageView) v.findViewById(R.id.app_icon);
         title.setText(entry.title);
         if (entry.icon == null) {

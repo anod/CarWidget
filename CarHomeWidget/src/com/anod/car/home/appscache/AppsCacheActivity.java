@@ -3,6 +3,7 @@ package com.anod.car.home.appscache;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.appwidget.AppWidgetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +18,8 @@ import com.anod.car.home.model.AppsListCache.CacheEntry;
 
 public abstract class AppsCacheActivity extends ListActivity implements OnItemClickListener, Callback {
 	private AppsListCache mAppsList;
-
+	private ArrayList<CacheEntry> mItems;
+		
 	abstract protected boolean isShowTitle();
 	abstract protected int getRowLayoutId();
 	abstract protected void onEntryClick(CacheEntry entry);
@@ -30,8 +32,13 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 		}
 		super.onCreate(savedInstanceState);
 		getListView().setOnItemClickListener(this);
+		View footerView = getFooterView();
+		if (footerView != null) {
+			getListView().addFooterView(footerView);
+		}
 		setVisible(false);
-
+		onCreateImpl(savedInstanceState);
+		
 		mAppsList = getAppListCache((CarWidgetApplication) this.getApplicationContext());
 		ArrayList<CacheEntry> appsCacheEntries = (mAppsList == null) ? null : mAppsList.getCacheEntries();
 
@@ -42,15 +49,18 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 		}
 	}
 
+	protected void onCreateImpl(Bundle savedInstanceState) {
+	}
+	
 	private void showList(ArrayList<CacheEntry> cacheEntries) {
 		AppsCacheAdapter adapter;
-		ArrayList<CacheEntry> headItems = getHeadEntries();
-		if (headItems != null) {
-			headItems.addAll(cacheEntries);
-			adapter = new AppsCacheAdapter(this, getRowLayoutId(), headItems, mAppsList);
+		mItems = getHeadEntries();
+		if (mItems != null) {
+			mItems.addAll(cacheEntries);
 		} else {
-			adapter = new AppsCacheAdapter(this, getRowLayoutId(), cacheEntries, mAppsList);
+			mItems = cacheEntries;
 		}
+		adapter = new AppsCacheAdapter(this, getRowLayoutId(), mItems, mAppsList);
 		// Bind to our new adapter.
 		setListAdapter(adapter);
 		try {
@@ -62,7 +72,7 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		CacheEntry entry = mAppsList.getCacheEntries().get(position);
+		CacheEntry entry = mItems.get(position);
 		onEntryClick(entry);
 	}
 
@@ -72,6 +82,10 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 	}
 
 	protected ArrayList<CacheEntry> getHeadEntries() {
+		return null;
+	}
+
+	protected View getFooterView() {
 		return null;
 	}
 

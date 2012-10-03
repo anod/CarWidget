@@ -2,16 +2,40 @@ package com.anod.car.home.prefs;
 
 import java.util.ArrayList;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ListView;
 
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.R;
 import com.anod.car.home.appscache.AppsCacheActivity;
 import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.model.AppsListCache.CacheEntry;
+import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.utils.IconPackUtils;
+import com.anod.car.home.utils.Utils;
 
 public class IconThemesActivity extends AppsCacheActivity {
+	private int mCurrentSelected = 0;
+	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+	private Main mPrefs;
+
+	@Override
+	protected void onCreateImpl(Bundle savedInstanceState) {
+		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		mAppWidgetId = Utils.readAppWidgetId(savedInstanceState,getIntent());
+		mPrefs = PreferencesStorage.loadMain(this, mAppWidgetId);
+	}
+
+
+
+	@Override
+	public void onResult(ArrayList<CacheEntry> cacheEntries) {
+		super.onResult(cacheEntries);
+		getListView().setItemChecked(mCurrentSelected, true);
+	}
 
 	@Override
 	public void onIntentFilterInit(Intent intent) {
@@ -48,6 +72,11 @@ public class IconThemesActivity extends AppsCacheActivity {
 		none.title = getString(R.string.none);
 		head.add(none);
 		return head;
+	}
+
+	@Override
+	protected View getFooterView() {
+		return getLayoutInflater().inflate(R.layout.icon_theme_buttons, null);
 	}
 	
 }

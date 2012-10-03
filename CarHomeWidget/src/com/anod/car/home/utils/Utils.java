@@ -3,6 +3,7 @@ package com.anod.car.home.utils;
 import java.util.List;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -35,6 +37,17 @@ public class Utils {
 		}
 	}
 	
+	public static int readAppWidgetId(Bundle savedInstanceState, Intent launchIntent) {
+		if (savedInstanceState != null) {
+			return savedInstanceState.getInt("appWidgetId");
+		} else {
+			Bundle extras = launchIntent.getExtras();
+			if (extras != null) {
+				return extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+			}
+		}
+		return AppWidgetManager.INVALID_APPWIDGET_ID;
+	}
 	
 	public static boolean isIntentAvailable(Context context, Intent intent) {
 		final PackageManager packageManager = context.getPackageManager();

@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import com.anod.car.home.R;
 import com.anod.car.home.actionbarcompat.ActionBarHelper;
+import com.anod.car.home.utils.Utils;
 
 
 abstract class ConfigurationActivity extends PreferenceActivity {
@@ -34,15 +35,7 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 	final protected void onCreate(Bundle savedInstanceState) {
         mActionBarHelper.onCreate(savedInstanceState);
 		if (isAppWidgetIdRequired()) {
-			if (savedInstanceState != null) {
-				mAppWidgetId = savedInstanceState.getInt("appWidgetId");
-			} else {
-				Intent launchIntent = getIntent();
-				Bundle extras = launchIntent.getExtras();
-				if (extras != null) {
-					mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-				}
-			}
+			mAppWidgetId = Utils.readAppWidgetId(savedInstanceState, getIntent());
 		}
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(getXmlResource());
