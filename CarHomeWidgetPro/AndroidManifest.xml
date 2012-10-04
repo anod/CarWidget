@@ -68,7 +68,10 @@
             android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name="com.anod.car.home.prefs.AllAppsActivity"
-            android:theme="@android:style/Theme.Dialog" />
+            android:theme="@style/AppListTheme" />
+        <activity
+            android:name="com.anod.car.home.prefs.IconThemesActivity"
+            android:theme="@style/AppListTheme" />
         <activity
             android:name="com.anod.car.home.prefs.AppListConfiguration"
             android:configChanges="orientation" >
