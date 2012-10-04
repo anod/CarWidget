@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import android.app.ListActivity;
 import android.appwidget.AppWidgetManager;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +21,6 @@ import com.anod.car.home.model.AppsListCache.CacheEntry;
 public abstract class AppsCacheActivity extends ListActivity implements OnItemClickListener, Callback {
 	private AppsListCache mAppsList;
 	private ArrayList<CacheEntry> mItems;
-		
 	abstract protected boolean isShowTitle();
 	abstract protected int getRowLayoutId();
 	abstract protected void onEntryClick(int position, CacheEntry entry);
@@ -36,19 +37,32 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 		if (footerView != null) {
 			getListView().addFooterView(footerView);
 		}
-		setVisible(false);
 		onCreateImpl(savedInstanceState);
 		
 		mAppsList = getAppListCache((CarWidgetApplication) this.getApplicationContext());
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		onResumeImpl();
 		ArrayList<CacheEntry> appsCacheEntries = (mAppsList == null) ? null : mAppsList.getCacheEntries();
 
-		if (appsCacheEntries == null || appsCacheEntries.size() == 0) {
+		if (appsCacheEntries == null || appsCacheEntries.size() == 0 || isRefreshCache()) {
 			new AppsCacheAsyncTask(this, mAppsList, this).execute(0);
 		} else {
 			showList(appsCacheEntries);
 		}
 	}
-
+	
+	protected boolean isRefreshCache() {
+		return false;
+	}
+	
+	protected void onResumeImpl() {
+		
+	}
+	
 	protected void onCreateImpl(Bundle savedInstanceState) {
 	}
 	
@@ -63,13 +77,12 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 		adapter = new AppsCacheAdapter(this, getRowLayoutId(), mItems, mAppsList);
 		// Bind to our new adapter.
 		setListAdapter(adapter);
-		try {
-			setVisible(true);
-		} catch (Exception e) {
-			Log.d("CarHomeWidget", "Cannot set list visible");
-		}
+		onItemsSet(mItems);
 	}
 
+	protected void onItemsSet(ArrayList<CacheEntry> items) {
+		
+	}
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		CacheEntry entry = mItems.get(position);

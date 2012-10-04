@@ -22,7 +22,6 @@ import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
 import com.anod.car.home.utils.Utils;
 
 public class PreferencesStorage {
-	private static final String ICONS_THEME = "icons-theme";
 
 	public static final int NOTIFICATION_COMPONENT_NUMBER = 3;
 
@@ -65,6 +64,9 @@ public class PreferencesStorage {
 	public static final String TRANSPARENT_BTN_INCAR = "transparent-btn-incar-%d";
 	public static final String KEEP_ORDER = "keep-order-%d";
 
+	private static final String ICONS_THEME = "icons-theme-%d";
+
+	
 	public static final String INCAR_MODE_ENABLED = "incar-mode-enabled";
 
 	public static final String POWER_BT_ENABLE = "power-bt-enable";
