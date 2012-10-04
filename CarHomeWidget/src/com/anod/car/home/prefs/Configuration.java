@@ -155,7 +155,9 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	public void onBackPressed() {
 		requestWidgetUpdate();
 		AppsListCache allAppsList = ((CarWidgetApplication) this.getApplicationContext()).getAppListCache();
-		allAppsList.flush();
+		if (allAppsList!=null) {
+			allAppsList.flush();
+		}
 		super.onBackPressed();
 	}
 

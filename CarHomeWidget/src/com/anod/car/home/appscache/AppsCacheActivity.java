@@ -2,6 +2,7 @@ package com.anod.car.home.appscache;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -38,6 +39,7 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 			getListView().addFooterView(footerView);
 		}
 		onCreateImpl(savedInstanceState);
+		setResult(Activity.RESULT_OK);
 		
 		mAppsList = getAppListCache((CarWidgetApplication) this.getApplicationContext());
 	}

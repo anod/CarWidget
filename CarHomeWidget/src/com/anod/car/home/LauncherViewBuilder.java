@@ -3,14 +3,19 @@ package com.anod.car.home;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.RemoteViews;
 
 import com.anod.car.home.incar.ModeService;
+import com.anod.car.home.model.LauncherSettings;
 import com.anod.car.home.model.LauncherShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.PickShortcutUtils;
@@ -90,6 +95,9 @@ public class LauncherViewBuilder {
 		float iconScale = Utils.calcIconsScale(mPrefs.getIconsScale());
 		float scaledDensity = mContext.getResources().getDisplayMetrics().scaledDensity;
 
+		String themePackage = mPrefs.getIconsTheme();
+		Resources themeResources = (themePackage != null) ? getIconThemeResources(themePackage) : null;
+		
 		for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
 			int res = sBtnRes[cellId];
 			int resText = sTextRes[cellId];
@@ -97,7 +105,7 @@ public class LauncherViewBuilder {
 			if (info == null) {
 				setNoShortcut(res, resText, views, cellId, skinProperties);
 			} else {
-				setShortcut(res, resText, iconScale, info, mPrefs, views, cellId, skinProperties);
+				setShortcut(res, resText, iconScale, info, mPrefs, views, cellId, skinProperties, themePackage, themeResources);
 			}
 			setFont(mPrefs, res, resText, scaledDensity, views);
 			if (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) {
@@ -197,8 +205,8 @@ public class LauncherViewBuilder {
 		views.setOnClickPendingIntent(resText, configIntent);
 	}
 
-	private void setShortcut(int res, int resText, float scale, ShortcutInfo info, Main prefs, RemoteViews views, int cellId, SkinProperties skinProp) {
-		Bitmap icon = info.getIcon();
+	private void setShortcut(int res, int resText, float scale, ShortcutInfo info, Main prefs, RemoteViews views, int cellId, SkinProperties skinProp, String themePackage, Resources themeResources) {
+		Bitmap icon = getShortcutIcon(info, themePackage, themeResources);
 		if (prefs.isIconsMono()) {
 			icon = UtilitiesBitmap.applyBitmapFilter(icon, mContext);
 			if (prefs.getIconsColor() != null) {
@@ -226,4 +234,42 @@ public class LauncherViewBuilder {
 		views.setInt(R.id.container, "setBackgroundColor", bgColor);
 	}
 
+	private Bitmap getShortcutIcon(ShortcutInfo info,String themePackage,Resources themeResources) {
+		if (themeResources == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon()) {
+			return info.getIcon();
+		}
+		Bitmap icon = getIconThemeIcon(info.intent.getComponent().getClassName(), themePackage, themeResources);
+		if (icon == null) {
+			return info.getIcon();
+		}
+		return icon;
+	}
+	
+	private Resources getIconThemeResources(String themePackage) {
+		 // get from theme
+        Resources themeResources = null;
+        try {
+            themeResources = mContext.getPackageManager().getResourcesForApplication(themePackage);
+        } catch (NameNotFoundException e) {
+            //e.printStackTrace();
+        }
+        return themeResources;
+	}
+	
+	private Bitmap getIconThemeIcon(String className, String themePackage,  Resources themeResources) {
+		String name = className;
+		String resName= name.toLowerCase().replace(".", "_");
+		Utils.logd("Look for icon for resource: R.drawable." + resName);
+		int resource_id = themeResources.getIdentifier(resName, "drawable", themePackage);
+		Drawable iconDrawable = null;
+		if(resource_id!=0){
+			iconDrawable = themeResources.getDrawable(resource_id);
+         }
+		
+		if (iconDrawable != null) {
+			return UtilitiesBitmap.createIconBitmap(iconDrawable, mContext);
+		}
+		return null;
+	}
+	
 }

@@ -32,6 +32,10 @@ public class IconThemesActivity extends AppsCacheActivity implements OnClickList
 	protected void onCreateImpl(Bundle savedInstanceState) {
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		mAppWidgetId = Utils.readAppWidgetId(savedInstanceState,getIntent());
+		if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+			Utils.logd("Invalid AppWidgetId");
+			finish();
+		}
 		mRefresh = false;
 	}
 

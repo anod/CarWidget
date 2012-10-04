@@ -131,7 +131,7 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	if (requestCode == REQUEST_LOOK_ACTIVITY) {
+    	if (requestCode == REQUEST_LOOK_ACTIVITY || requestCode == REQUEST_PICK_ICON_THEME) {
     		refreshSkinPreview();
     	}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -189,40 +189,10 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 			return true;
 		}
 		if (itemId == R.id.icons_theme) {
-			//final CharSequence[] items = { getString(R.string.none), getString(R.string.icon_adw_icon_pack) };
-	
 			Intent mainIntent = new Intent(this, IconThemesActivity.class);
+			mainIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 			Utils.startActivityForResultSafetly(mainIntent, REQUEST_PICK_ICON_THEME, this);
-/*			
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.dialog_title_select);
-			builder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int item) {
 
-				}
-			}).setNegativeButton(android.R.string.cancel, new OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					
-				}
-			})
-			.setNeutralButton(R.string.download, new OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					
-				}
-			})
-			.setPositiveButton(android.R.string.ok, new OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-
-				}
-			});
-			builder.create().show();
-			*/
 		    return true;
 		}
 		if (itemId == R.id.icons_mono) {
