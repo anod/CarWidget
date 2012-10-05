@@ -94,7 +94,7 @@
     <string name="pref_settings_transparent_summary">Кнопка настройки останется в том же месте, но станет прозрачная</string>
     <string name="pref_incar_transparent">Кнопка «В автомобиле»</string>
     <string name="pref_incar_transparent_summary">Когда режим «В автомобиле» включен, кнопка останется в том же месте, но станет прозрачная</string>
-    <string name="pref_activate_car_mode">Режим "Штурман"</string>
+    <string name="pref_activate_car_mode">Режим "Штурмpref_auto_answer_summaryан"</string>
     <string name="pref_activate_car_mode_summary">Включить встроенный в Андройд автомобильный режим, дополнительный значок будет отображен на панели уведомлений</string>
     <string name="dialog_title_select">Выбрать</string>
     <string name="icon_default">По-умолчанию</string>
@@ -124,7 +124,7 @@
 	<string name="no_backup_files_found">Файлы резервных копий не найдены.</string>    
     <string name="choose_backup">Выберите резервную копию для восстановления</string>
     <string name="pref_auto_answer">Авто-ответ</string>
-    <string name="pref_auto_answer_summary">Автоматически отвечать на входящие звонки, немедленно или с задержкой в 5 секунд</string>
+    <string name="pref_auto_answer_summary">Автоматически отвечать на входящие звонки, немедленно или с задержкой в 5 секунд (Экперементальный)</string>
     <string name="pref_autorun_app_title">Запуск приложения</string>
     <string name="pref_autorun_app_disabled">Отключен</string>
 	<string name="switch_in_car_activity">Режим «В автомобиле»</string>
