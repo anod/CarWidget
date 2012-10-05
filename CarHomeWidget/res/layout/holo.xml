@@ -174,14 +174,18 @@
             android:id="@+id/btn_incar_switch"
             style="@style/incarButton"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/workspace" />
+            android:layout_below="@id/workspace"
+            android:background="@drawable/btn_transparent"
+         />
 
         <ImageButton
             android:id="@+id/btn_settings"
             style="@style/settingsButton"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/workspace"
-            android:src="@drawable/ic_holo_settings" />
+            android:src="@drawable/ic_holo_settings"
+            android:background="@drawable/btn_transparent" 
+        />
     </RelativeLayout>
 
 </LinearLayout>

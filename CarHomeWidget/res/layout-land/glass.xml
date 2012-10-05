@@ -210,13 +210,16 @@
         android:id="@+id/btn_settings"
         style="@style/settingsButton"
         android:layout_alignParentRight="true"
-        android:src="@drawable/ic_settings" />
+        android:src="@drawable/ic_settings" 
+        android:background="@drawable/btn_transparent"
+     />
 
     <ImageButton
         android:id="@+id/btn_incar_switch"
         style="@style/incarButton"
         android:layout_alignParentLeft="true"
         android:src="@drawable/ic_incar_enter"
+        android:background="@drawable/btn_transparent"
 	 />
 	</RelativeLayout>
 </LinearLayout>

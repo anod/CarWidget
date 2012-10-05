@@ -4,11 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.ListActivity;
-import android.appwidget.AppWidgetManager;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;

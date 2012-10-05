@@ -154,14 +154,18 @@
             style="@style/incarButton"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/workspace"
-            android:src="@drawable/ic_incar_exit_bbb" />
+            android:src="@drawable/ic_incar_exit_bbb"
+            android:background="@drawable/btn_transparent"
+         />
 
         <ImageButton
             android:id="@+id/btn_settings"
             style="@style/settingsButton"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/workspace"
-            android:src="@drawable/ic_settings_bbb" />
+            android:src="@drawable/ic_settings_bbb"
+            android:background="@drawable/btn_transparent" 
+         />
     </RelativeLayout>
 
 </LinearLayout>

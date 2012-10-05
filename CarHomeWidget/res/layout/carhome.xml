@@ -230,6 +230,7 @@
 	        android:layout_alignParentLeft="true"
 	        android:layout_below="@id/workspace"
 	        android:src="@drawable/ic_incar_enter"
+	        android:background="@drawable/btn_transparent"
 		 />
 	
 	    <ImageButton
@@ -237,6 +238,8 @@
 	        style="@style/settingsButton"
 	        android:layout_alignParentRight="true"
 	        android:layout_below="@+id/workspace"
-	        android:src="@drawable/ic_settings" />
+	        android:src="@drawable/ic_settings" 
+	        android:background="@drawable/btn_transparent"
+	        />
 	</RelativeLayout>
 </LinearLayout>
