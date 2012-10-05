@@ -55,6 +55,12 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 		onCreateImpl(savedInstanceState);
 	}
 
+    /**{@inheritDoc}*/
+    @Override
+    public MenuInflater getMenuInflater() {
+        return mActionBarHelper.getMenuInflater(super.getMenuInflater());
+    }
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);

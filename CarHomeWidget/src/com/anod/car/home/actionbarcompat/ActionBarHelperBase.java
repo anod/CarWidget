@@ -215,7 +215,9 @@ public class ActionBarHelperBase extends ActionBarHelper {
                 int eventType = parser.getEventType();
                 int itemId;
                 int showAsAction;
-
+                boolean hasActionAlways;
+                boolean hasActionIfRoom;
+                
                 boolean eof = false;
                 while (!eof) {
                     switch (eventType) {
@@ -230,10 +232,11 @@ public class ActionBarHelperBase extends ActionBarHelper {
                                 break;
                             }
 
-                            showAsAction = parser.getAttributeIntValue(MENU_RES_NAMESPACE,
-                                    MENU_ATTR_SHOW_AS_ACTION, -1);
-                            if (showAsAction == MenuItem.SHOW_AS_ACTION_ALWAYS ||
-                                    showAsAction == MenuItem.SHOW_AS_ACTION_IF_ROOM) {
+                            showAsAction = parser.getAttributeIntValue(MENU_RES_NAMESPACE,MENU_ATTR_SHOW_AS_ACTION, -1);
+                            
+                            hasActionAlways = (showAsAction & MenuItem.SHOW_AS_ACTION_ALWAYS) == MenuItem.SHOW_AS_ACTION_ALWAYS;
+                            hasActionIfRoom = (showAsAction & MenuItem.SHOW_AS_ACTION_IF_ROOM) == MenuItem.SHOW_AS_ACTION_IF_ROOM;
+                            if (hasActionAlways || hasActionIfRoom) {
                                 mActionItemIds.add(itemId);
                             }
                             break;

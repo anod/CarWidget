@@ -26,7 +26,7 @@ public class IconThemesActivity extends AppsCacheActivity implements OnClickList
 	private Main mPrefs;
 	private String mThemePackageName = null;
 	private boolean mRefresh;
-	private static final String ADW_ICON_THEME_MARKET_URL = "market://search?q=ADW Icon Theme";
+	private static final String ADW_ICON_THEME_MARKET_URL = "market://search?q=ADW Theme";
 
 	@Override
 	protected void onCreateImpl(Bundle savedInstanceState) {

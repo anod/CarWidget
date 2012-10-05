@@ -36,6 +36,7 @@
     </item>
     <item
         android:id="@+id/more"
+        android:showAsAction="never"
         android:title="@string/more">
     </item>
 
