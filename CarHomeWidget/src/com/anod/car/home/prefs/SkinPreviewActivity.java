@@ -55,7 +55,6 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 	private int mAppWidgetId;
 	private Context mContext;
 	private MenuItem mItemApply;
-	private MenuItem mMenuSelected;
 	private MenuItem mMenuTileColor;
 	private boolean mMenuInitialized = false;
 	private View mLoaderView;
@@ -65,7 +64,7 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 	private SparseArray<SkinRefreshListener> mSkinRefreshListeners = new SparseArray<SkinPreviewActivity.SkinRefreshListener>(SKINS_COUNT);
 	private boolean mPendingRefresh;
 
-	private static int[] sTextRes = { 0, 0, R.string.skin_info_metro, 0, R.string.skin_info_bbb };
+	private static int[] sTextRes = { 0, 0, 0, 0, R.string.skin_info_bbb };
 
 	
 	@Override
@@ -114,10 +113,9 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.skin_preview, menu);
+        menuInflater.inflate(R.menu.look_n_feeel, menu);
 
 		mItemApply = menu.findItem(R.id.apply);
-		mMenuSelected = menu.findItem(R.id.selected);
 		mMenuTileColor = menu.findItem(R.id.tile_color);
 		
 		menu.findItem(R.id.icons_mono).setChecked(mPrefs.isIconsMono());
@@ -294,23 +292,8 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 
 	private void refreshActionBar(int position) {
 		if (mMenuInitialized) {
-			if (mSelectedSkinPosition == position) {
-				showButtonSelected();
-			} else {
-				showButtonApply();
-			}
 			showTileColorButton(mCurrentPage);
 		}
-	}
-
-	private void showButtonSelected() {
-		mItemApply.setVisible(false);
-		mMenuSelected.setVisible(true);
-	}
-
-	private void showButtonApply() {
-		mItemApply.setVisible(true);
-		mMenuSelected.setVisible(false);
 	}
 
 	private void showTileColorButton(int position) {

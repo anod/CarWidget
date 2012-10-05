@@ -157,7 +157,7 @@ public class PickShortcutUtils {
 	
 
 	private void completeAddShortcut(Intent data, boolean isApplicationShortcut) {
-		if (mCurrentCellId == INVALID_CELL_ID) {
+		if (mCurrentCellId == INVALID_CELL_ID || data == null) {
 			return;
 		}
 
