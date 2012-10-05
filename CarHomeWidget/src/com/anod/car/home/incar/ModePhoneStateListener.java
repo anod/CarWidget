@@ -143,8 +143,11 @@ public class ModePhoneStateListener extends PhoneStateListener {
 		headSetUnPluggedintent.putExtra("state", state);
 		headSetUnPluggedintent.putExtra("name", "Headset");
 		// TODO: Should we require a permission?
-		context.sendOrderedBroadcast(headSetUnPluggedintent, "android.permission.CALL_PRIVILEGED");
-
+		try {
+			context.sendOrderedBroadcast(headSetUnPluggedintent, "android.permission.CALL_PRIVILEGED");
+		} catch (Exception e) {
+			Log.e("CarHomeWidget", e.getMessage());
+		}
 	}
 
 	@SuppressWarnings("unchecked")

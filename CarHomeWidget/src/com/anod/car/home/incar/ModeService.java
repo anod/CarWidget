@@ -112,15 +112,18 @@ public class ModeService extends Service{
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
-		// Tracking a bug
+		// If service killed
 		if (intent == null) {
-			Log.d("CarHomeWidget", "Intent is null... sInCarMode = "+sInCarMode);
+			mForceState = PreferencesStorage.restoreForceState(this);
+			Log.d("CarHomeWidget", "Intent is null... sInCarMode = "+sInCarMode+", mForceState = "+mForceState);
+		} else {
+			if (intent.getIntExtra(EXTRA_MODE, MODE_SWITCH_ON) == MODE_SWITCH_OFF) {
+				stopSelf();
+				return START_STICKY;
+			}
+			mForceState = intent.getBooleanExtra(EXTRA_FORCE_STATE, false);
 		}
-		mForceState = intent.getBooleanExtra(EXTRA_FORCE_STATE, false);
-		if (intent.getIntExtra(EXTRA_MODE, MODE_SWITCH_ON) == MODE_SWITCH_OFF) {
-			stopSelf();
-			return START_STICKY;
-		}
+		
 		InCar prefs = PreferencesStorage.loadInCar(this);
 		sInCarMode = true;
 		if (mForceState) {

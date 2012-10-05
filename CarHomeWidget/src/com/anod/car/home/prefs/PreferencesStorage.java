@@ -23,6 +23,8 @@ import com.anod.car.home.utils.Utils;
 
 public class PreferencesStorage {
 
+	private static final String MODE_FORCE_STATE = "mode-force-state";
+
 	public static final int NOTIFICATION_COMPONENT_NUMBER = 3;
 
 	public static final int LAUNCH_COMPONENT_NUMBER = 6;
@@ -443,5 +445,17 @@ public class PreferencesStorage {
 
 	public static String getNotifComponentName(int position) {
 		return String.format(NOTIF_COMPONENT, position);
+	}
+
+	public static boolean restoreForceState(Context context) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		return prefs.getBoolean(MODE_FORCE_STATE, false);
+	}
+	
+	public static void saveForceState(Context context, boolean forceState) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		Editor edit = prefs.edit();
+		edit.putBoolean(MODE_FORCE_STATE, forceState);
+		edit.commit();
 	}
 }
