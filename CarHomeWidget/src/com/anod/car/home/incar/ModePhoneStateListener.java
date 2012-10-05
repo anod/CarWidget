@@ -14,10 +14,10 @@ import android.view.KeyEvent;
 
 import com.android.internal.telephony.ITelephony;
 import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.utils.Utils;
 
 public class ModePhoneStateListener extends PhoneStateListener {
 	private static final int ANSWER_DALAY_MS = 5000;
-	private boolean mSpeakerEnabled = false;
 	private boolean mAnswered = false;
 	private Context mContext;
 	private AudioManager mAudioManager;
@@ -47,36 +47,43 @@ public class ModePhoneStateListener extends PhoneStateListener {
 		mState = state;
 		switch (state) {
 		case TelephonyManager.CALL_STATE_IDLE:
+			Utils.logd("Call state idle");
 			mAudioManager.setSpeakerphoneOn(false);
-			mSpeakerEnabled = false;
 			cancelAnswerTimer();
 			mAnswered = false;
 			break;
 		case TelephonyManager.CALL_STATE_OFFHOOK:
-			if (mUseAutoSpeaker && !mSpeakerEnabled) {
+			Utils.logd("Call state offhook");
+			if (mUseAutoSpeaker && !mAudioManager.isSpeakerphoneOn()) {
+				Utils.logd("Enable speakerphone while offhook");
 				mAudioManager.setSpeakerphoneOn(true);
-				mSpeakerEnabled = true;
 			}
 			break;
 		case TelephonyManager.CALL_STATE_RINGING:
+			Utils.logd("Call state ringing");
 			if (mAutoAnswerMode.equals(PreferencesStorage.AUTOANSWER_IMMEDIATLY)) {
+				Utils.logd("Check if already answered");
 				if (!mAnswered) {
+					Utils.logd("Answer immediatly");
 					answerCall();
 					mAnswered = true;
 				}
 			} else if (mAutoAnswerMode.equals(PreferencesStorage.AUTOANSWER_DELAY_5)) {
+				Utils.logd("Check if already answered");
 				if (!mAnswered) {
+					Utils.logd("Answer delayed");
 					answerCallDelayed();
 					mAnswered = true;
 				}
 			} else {
+				Utils.logd("Cancel answer timer");
 				cancelAnswerTimer();
 				// mAnswered=false;
 			}
 
-			if (mUseAutoSpeaker && !mSpeakerEnabled) {
+			if (mUseAutoSpeaker && !mAudioManager.isSpeakerphoneOn()) {
+				Utils.logd("Enable speakerphone while ringing");
 				mAudioManager.setSpeakerphoneOn(true);
-				mSpeakerEnabled = true;
 			}
 			break;
 		}
