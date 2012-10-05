@@ -42,6 +42,7 @@ public class LauncherModel {
 			final int iconPackageIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_PACKAGE);
 			final int iconResourceIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_RESOURCE);
 			final int itemTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ITEM_TYPE);
+			final int isCustomIconIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.IS_CUSTOM_ICON);
 
 			c.moveToFirst();
 			Intent intent;
@@ -59,10 +60,11 @@ public class LauncherModel {
 			info.title = c.getString(titleIndex);
 			info.itemType = c.getInt(itemTypeIndex);
 			info.intent = intent;
-
+			
 			if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
 				icon = getIconFromCursor(c, iconIndex);
 				info.setActivityIcon(icon);
+				info.setCustomIcon(c.getInt(isCustomIconIndex) == 1);
 			} else {
 				int iconType = c.getInt(iconTypeIndex);
 				switch (iconType) {
@@ -186,6 +188,7 @@ public class LauncherModel {
 				values.put(LauncherSettings.Favorites.ICON_RESOURCE, item.getIconResource().resourceName);
 			}
 		}
+		values.put(LauncherSettings.Favorites.IS_CUSTOM_ICON,item.isCustomIcon() ? 1 : 0);
 		return values;
 	}
 

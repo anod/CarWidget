@@ -94,5 +94,10 @@ public class LauncherSettings {
          * <P>Type: BLOB</P>
          */
         static final String ICON = "icon";
+        /**
+         * Type: BOOLEAN
+         */
+        static final String IS_CUSTOM_ICON = "isCustomIcon";
+
     }
 }

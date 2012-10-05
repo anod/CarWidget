@@ -19,7 +19,7 @@ public class LauncherProvider extends ContentProvider {
 
     private static final String DATABASE_NAME = "carhomewidget.db";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public static final String AUTHORITY_FREE = "com.anod.car.home.settings";
     public static final String AUTHORITY_PRO = "com.anod.car.home.settings.pro";
@@ -129,13 +129,17 @@ public class LauncherProvider extends ContentProvider {
                     "iconPackage TEXT," +
                     "iconResource TEXT," +
                     "icon BLOB" +
+                    "isCustomIcon INTEGER" +
             ");");
         }
 
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            if (LOGD) Log.d(TAG, "onUpgrade triggered");
+        	if (LOGD) Log.d(TAG, "onUpgrade triggered");
+        	if (oldVersion == 1 && newVersion == 2) {
+        		db.execSQL("ALTER TABLE favorites ADD COLUMN isCustomIcon INTEGER DEFAULT 0");
+        	}
         }
 
     }

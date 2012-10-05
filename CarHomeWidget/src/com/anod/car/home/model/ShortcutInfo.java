@@ -136,6 +136,10 @@ public class ShortcutInfo implements Serializable {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
     }
 
+    public void setCustomIcon(boolean customIcon) {
+    	this.customIcon = customIcon;
+    }
+    
     public boolean isCustomIcon() {
 		return customIcon;
 	}    
@@ -181,7 +185,7 @@ public class ShortcutInfo implements Serializable {
         } else {
         	out.writeBoolean(false);
         }
-			
+        
     }    
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
