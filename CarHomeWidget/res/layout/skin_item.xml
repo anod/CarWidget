@@ -9,10 +9,9 @@
 	    android:layout_width="@dimen/widget_width"
 	    android:layout_height="@dimen/widget_height"
 	    android:layout_gravity="center_horizontal"
-	    android:paddingBottom="3dp"
 	    android:paddingLeft="10dp"
 	    android:paddingRight="10dp"
-	    android:paddingTop="3dp" >
+	    android:paddingTop="@dimen/widget_padding_top" >
 
 	</FrameLayout>
 

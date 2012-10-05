@@ -173,7 +173,7 @@
     <string name="incar_mode_disabled">In Car mode disabled.\nEnable it in widget settings in order to use shortcut.</string>    
 	<string name="set_shortcut_short">SET</string>
 
-	<string name="skin_info_bbb">Theme by &lt;a href=&quot;http://blackbearblanc.dk/&quot;&gt;Black Bear Blanc&lt;/a&gt;&lt;br/&gt;Icon pack: &lt;a href=&quot;https://play.google.com/store/apps/details?id=com.jaguirre.elegant&quot;&gt;ADW.Elegant Theme&lt;/a&gt;</string>
+	<string name="skin_info_bbb">Theme by &lt;a href=&quot;http://blackbearblanc.dk/&quot;&gt;Black Bear Blanc&lt;/a&gt;</string>
 	<string name="apply">Apply</string>
 	<string name="selected">Selected</string>
 	<string name="settings">Settings</string>

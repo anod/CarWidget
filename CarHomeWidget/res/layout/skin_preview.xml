@@ -14,26 +14,18 @@
  # See the License for the specific language governing permissions and
  # limitations under the License.
  -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center|center_horizontal"
     android:orientation="vertical" >
 
-    <ProgressBar
-        android:id="@+id/loading"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/gallery"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/skin_info" >
-
+	>
         <android.support.v4.view.PagerTitleStrip
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,13 +33,21 @@
             android:background="#33000000" />
     </android.support.v4.view.ViewPager>
 
+    <ProgressBar
+        android:id="@+id/loading"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+	/>
+    
     <TextView
         android:id="@+id/skin_info"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="19dp"
+        android:layout_gravity="bottom"
         android:background="#33000000"
         android:gravity="center"
-        android:text="Text" />
+        android:text="@string/skin_info_bbb" />
 
-</RelativeLayout>
+</FrameLayout>

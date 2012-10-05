@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -37,7 +38,7 @@ import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.Utils;
 
-public class SkinPreviewActivity extends ActionBarActivity implements OnPageChangeListener {
+public class LookAndFeelActivity extends ActionBarActivity implements OnPageChangeListener {
 	private static final int SKINS_COUNT = 5;
 
 	interface SkinRefreshListener {
@@ -61,7 +62,7 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 	private boolean[] mPreviewInitialized = { false, false, false, false, false };
 	private LauncherViewBuilder mBuilder;
 	private Main mPrefs;
-	private SparseArray<SkinRefreshListener> mSkinRefreshListeners = new SparseArray<SkinPreviewActivity.SkinRefreshListener>(SKINS_COUNT);
+	private SparseArray<SkinRefreshListener> mSkinRefreshListeners = new SparseArray<LookAndFeelActivity.SkinRefreshListener>(SKINS_COUNT);
 	private boolean mPendingRefresh;
 
 	private static int[] sTextRes = { 0, 0, 0, 0, R.string.skin_info_bbb };
@@ -69,6 +70,9 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			getActionBarHelper().requestFeatureNoTitle(true);
+		}
 		super.onCreate(savedInstanceState);
 
 		Intent intent = getIntent();
@@ -103,7 +107,6 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 		mGallery.setCurrentItem(mSelectedSkinPosition);
 
 		showText(mCurrentPage);
-
 	}
 
 	public LauncherViewBuilder getBuilder() {
@@ -318,8 +321,9 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 		if (textRes > 0) {
 			Spanned text = Html.fromHtml(getString(textRes));
 			mTextView.setText(text);
+			mTextView.setVisibility(View.VISIBLE);
 		} else {
-			mTextView.setText("");
+			mTextView.setVisibility(View.GONE);
 		}
 	}
 
@@ -378,9 +382,9 @@ public class SkinPreviewActivity extends ActionBarActivity implements OnPageChan
 	public static class SkinPagerAdapter extends FragmentPagerAdapter {
 
 		private int mCount;
-		private SkinPreviewActivity mActivity;
+		private LookAndFeelActivity mActivity;
 
-		public SkinPagerAdapter(SkinPreviewActivity activity, int count, FragmentManager fm) {
+		public SkinPagerAdapter(LookAndFeelActivity activity, int count, FragmentManager fm) {
 			super(fm);
 			mCount = count;
 			mActivity = activity;

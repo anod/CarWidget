@@ -33,6 +33,7 @@ import android.view.MenuInflater;
  */
 public abstract class ActionBarHelper {
     protected Activity mActivity;
+	protected boolean mRequestFeatureNoTitle = false;
 
     /**
      * Factory method for creating {@link ActionBarHelper} objects for a
@@ -49,10 +50,15 @@ public abstract class ActionBarHelper {
         }
     }
 
+    public void requestFeatureNoTitle(boolean request) {
+    	mRequestFeatureNoTitle  = request;
+    }
+    
     protected ActionBarHelper(Activity activity) {
         mActivity = activity;
     }
 
+    
     /**
      * Action bar helper code to be run in {@link Activity#onCreate(android.os.Bundle)}.
      */
@@ -88,4 +94,8 @@ public abstract class ActionBarHelper {
     public MenuInflater getMenuInflater(MenuInflater superMenuInflater) {
         return superMenuInflater;
     }
+    
+    abstract public void hide();
+    abstract public void show();
+
 }

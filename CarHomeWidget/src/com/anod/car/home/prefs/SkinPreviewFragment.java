@@ -13,13 +13,13 @@ import android.widget.RemoteViews;
 
 import com.anod.car.home.LauncherViewBuilder;
 import com.anod.car.home.R;
-import com.anod.car.home.prefs.SkinPreviewActivity.SkinRefreshListener;
+import com.anod.car.home.prefs.LookAndFeelActivity.SkinRefreshListener;
 
 public class SkinPreviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<View>, SkinRefreshListener {
 	
 	private static final String ARG_POSITION = "position";
 	private int mPosition;
-	private SkinPreviewActivity mActivity;
+	private LookAndFeelActivity mActivity;
 	private ViewGroup mContainer;
 
 	public static SkinPreviewFragment newInstance(int position) {
@@ -52,7 +52,7 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		mPosition = getArguments().getInt(ARG_POSITION);
-		mActivity = (SkinPreviewActivity)activity;
+		mActivity = (LookAndFeelActivity)activity;
 		mActivity.onFragmentAttach(this, mPosition);
 	}
 
@@ -76,10 +76,10 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 
 
 	public static class ViewLoader extends	AsyncTaskLoader<View> {
-		private SkinPreviewActivity mActivity;
+		private LookAndFeelActivity mActivity;
 		private int mPosition;
 		
-		public ViewLoader(SkinPreviewActivity activity, int position) {
+		public ViewLoader(LookAndFeelActivity activity, int position) {
 			super(activity);
 			mActivity = activity;
 			mPosition = position;

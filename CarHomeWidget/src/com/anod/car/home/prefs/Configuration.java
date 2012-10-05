@@ -54,7 +54,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 		mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
 		initActivityChooser();
 		
-		setIntent(LOOK_AND_FEEL, SkinPreviewActivity.class, mAppWidgetId);
+		setIntent(LOOK_AND_FEEL, LookAndFeelActivity.class, mAppWidgetId);
 		setIntent(INCAR, ConfigurationInCar.class, 0);
 		initOther();
 		initBackup();

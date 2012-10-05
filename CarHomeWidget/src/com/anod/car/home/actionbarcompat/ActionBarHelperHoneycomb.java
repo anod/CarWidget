@@ -16,13 +16,16 @@
 
 package com.anod.car.home.actionbarcompat;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 
 /**
  * An extension of {@link ActionBarHelper} that provides Android 3.0-specific functionality for
  * Honeycomb tablets. It thus requires API level 11.
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
     protected ActionBarHelperHoneycomb(Activity activity) {
@@ -37,4 +40,14 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
     protected Context getActionBarThemedContext() {
         return mActivity;
     }
+
+	@Override
+	public void hide() {
+		mActivity.getActionBar().hide();
+	}
+
+	@Override
+	public void show() {
+		mActivity.getActionBar().show();
+	}
 }

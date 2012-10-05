@@ -14,6 +14,7 @@
 	
 	<dimen name="color_preview_size">20dp</dimen>
 
-	<dimen name="widget_height">420dp</dimen>
+	<dimen name="widget_padding_top">1dp</dimen>
+	<dimen name="widget_height">380dp</dimen>
 	<dimen name="widget_width">320dp</dimen>
 </resources>

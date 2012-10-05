@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+    
+    <dimen name="actionbar_compat_height">38dp</dimen>
+
+	<dimen name="widget_padding_top">1dp</dimen>
 	<dimen name="widget_height">280dp</dimen>
 	<dimen name="widget_width">420dp</dimen>
 </resources>
