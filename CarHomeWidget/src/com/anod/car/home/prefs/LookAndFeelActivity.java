@@ -1,6 +1,7 @@
 package com.anod.car.home.prefs;
 
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,15 +32,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.anod.car.home.LauncherViewBuilder;
 import com.anod.car.home.R;
 import com.anod.car.home.actionbarcompat.ActionBarActivity;
+import com.anod.car.home.appwidget.LauncherViewBuilder;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.Utils;
 
-public class LookAndFeelActivity extends ActionBarActivity implements OnPageChangeListener {
+public class LookAndFeelActivity extends ActionBarActivity implements OnPageChangeListener, LauncherViewBuilder.PendingIntentHelper {
 	private static final int SKINS_COUNT = 5;
 
 	interface SkinRefreshListener {
@@ -55,7 +57,6 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 	private TextView mTextView;
 	private int mAppWidgetId;
 	private Context mContext;
-	private MenuItem mItemApply;
 	private MenuItem mMenuTileColor;
 	private boolean mMenuInitialized = false;
 	private View mLoaderView;
@@ -67,7 +68,6 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 
 	private static int[] sTextRes = { 0, 0, 0, 0, R.string.skin_info_bbb };
 
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -93,7 +93,8 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 		mContext = this;
 
 		mBuilder = new LauncherViewBuilder(this);
-		mBuilder.setAppWidgetId(mAppWidgetId).init();
+		mBuilder.setPendingIntentHelper(this).setAppWidgetId(mAppWidgetId).init();
+
 		mPrefs = mBuilder.getPrefs();
 		mSkinItems = createSkinList(mPrefs.getSkin());
 		mCurrentPage = mSelectedSkinPosition;
@@ -101,7 +102,7 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 		inflateActivity();
 
 		int count = mSkinItems.length;
-		
+
 		mAdapter = new SkinPagerAdapter(this, count, getSupportFragmentManager());
 		mGallery.setAdapter(mAdapter);
 		mGallery.setCurrentItem(mSelectedSkinPosition);
@@ -109,37 +110,35 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 		showText(mCurrentPage);
 	}
 
+	
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		refreshSkinPreview();
+	}
+
 	public LauncherViewBuilder getBuilder() {
 		return mBuilder;
 	}
-	
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.look_n_feeel, menu);
 
-		mItemApply = menu.findItem(R.id.apply);
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.look_n_feeel, menu);
+
 		mMenuTileColor = menu.findItem(R.id.tile_color);
-		
 		menu.findItem(R.id.icons_mono).setChecked(mPrefs.isIconsMono());
-		
-		mMenuInitialized  = true;
+		mMenuInitialized = true;
 		refreshActionBar(mCurrentPage);
-        // Calling super after populating the menu is necessary here to ensure that the
-        // action bar helpers have a chance to handle this event.
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	if (requestCode == REQUEST_LOOK_ACTIVITY || requestCode == REQUEST_PICK_ICON_THEME) {
-    		refreshSkinPreview();
-    	}
-		super.onActivityResult(requestCode, resultCode, data);
+		// Calling super after populating the menu is necessary here to ensure
+		// that the
+		// action bar helpers have a chance to handle this event.
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();
 		if (itemId == R.id.apply) {
 			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
@@ -148,7 +147,7 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 			finish();
 			return true;
 		}
-		if (itemId == R.id.tile_color){
+		if (itemId == R.id.tile_color) {
 			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
 			Integer value = prefs.getTileColor();
 			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
@@ -194,7 +193,7 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 			mainIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 			Utils.startActivityForResultSafetly(mainIntent, REQUEST_PICK_ICON_THEME, this);
 
-		    return true;
+			return true;
 		}
 		if (itemId == R.id.icons_mono) {
 			mPrefs.setIconsMono(!item.isChecked());
@@ -208,7 +207,7 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 			final String[] titles = getResources().getStringArray(R.array.icon_scale_titles);
 			final String[] values = getResources().getStringArray(R.array.icon_scale_values);
 			int idx = -1;
-			for(int i=0; i<values.length;i++) {
+			for (int i = 0; i < values.length; i++) {
 				if (mPrefs.getIconsScale().equals(values[i])) {
 					idx = i;
 					break;
@@ -216,19 +215,19 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 			}
 			builder.setTitle(R.string.pref_scale_icon);
 			builder.setSingleChoiceItems(titles, idx, new DialogInterface.OnClickListener() {
-			    public void onClick(DialogInterface dialog, int item) {
+				public void onClick(DialogInterface dialog, int item) {
 					mPrefs.setIconsScaleString(values[item]);
 					persistPrefs();
-			        Toast.makeText(getApplicationContext(), values[item], Toast.LENGTH_SHORT).show();
-			        dialog.dismiss();
-			        refreshSkinPreview();
-			    }
+					Toast.makeText(getApplicationContext(), values[item], Toast.LENGTH_SHORT).show();
+					dialog.dismiss();
+					refreshSkinPreview();
+				}
 			});
 			builder.create().show();
 			return true;
 		}
 		return false;
-    }
+	}
 
 	private void persistPrefs() {
 		PreferencesStorage.saveMain(this, mPrefs, mAppWidgetId);
@@ -266,29 +265,29 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 		mGallery = (ViewPager) findViewById(R.id.gallery);
 		mGallery.setOnPageChangeListener(this);
 
-		mLoaderView = (View) findViewById(R.id.loading);	
+		mLoaderView = (View) findViewById(R.id.loading);
 	}
 
 	public void onPreviewStart(int position) {
 		mPreviewInitialized[position] = false;
 	}
-	
+
 	public void onPreviewCreated(int position) {
 		if (mCurrentPage == position) {
 			mLoaderView.setVisibility(View.GONE);
 		}
 		mPreviewInitialized[position] = true;
 	}
-	
+
 	@Override
 	public void onPageSelected(int position) {
 		mCurrentPage = position;
 		showText(position);
-		
+
 		if (!mPreviewInitialized[position]) {
 			mLoaderView.setVisibility(View.VISIBLE);
 		}
-		
+
 		refreshActionBar(position);
 
 	}
@@ -329,22 +328,25 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 
 	@Override
 	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-		// TODO Auto-generated method stub
+		// Auto-generated method stub
 
 	}
 
 	@Override
 	public void onPageScrollStateChanged(int state) {
-		// TODO Auto-generated method stub
+		// Auto-generated method stub
 
 	}
 
 	private void refreshSkinPreview() {
 		Utils.logd("Refresh Skin Requested");
-		mPrefs = mBuilder.reloadPrefs().getPrefs();
+		mPrefs = mBuilder
+			.reloadShortcuts()
+			.reloadPrefs()
+			.getPrefs();
 		if (mPreviewInitialized[mCurrentPage]) {
 			mPendingRefresh = false;
-			for (int i = 0; i<mSkinRefreshListeners.size(); i++) {
+			for (int i = 0; i < mSkinRefreshListeners.size(); i++) {
 				SkinRefreshListener listener = mSkinRefreshListeners.valueAt(i);
 				if (listener != null) {
 					listener.refresh();
@@ -360,19 +362,19 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 	}
 
 	public void onFragmentAttach(SkinRefreshListener listener, int position) {
-		Utils.logd("Register listener for page: "+position);
-		mSkinRefreshListeners.put(position,listener);
+		Utils.logd("Register listener for page: " + position);
+		mSkinRefreshListeners.put(position, listener);
 		if (mPendingRefresh && mCurrentPage == position) {
 			Utils.logd("Pending refresh");
 			listener.refresh();
 		}
 	}
-	
+
 	public void onFragmentDetach(int position) {
-		Utils.logd("UnRegister listener for page: "+position);
+		Utils.logd("UnRegister listener for page: " + position);
 		mSkinRefreshListeners.delete(position);
 	}
-	
+
 	class SkinItem {
 		public String value;
 		public String title;
@@ -408,5 +410,24 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 
 	public int getAppWidgetId() {
 		return mAppWidgetId;
+	}
+
+	@Override
+	public PendingIntent createSettings(int appWidgetId, int cellId) {
+		return null;
+	}
+
+	@Override
+	public PendingIntent createShortcut(Intent intent, int appWidgetId, int position, long shortcutId) {
+		Intent editIntent = Utils.createShortcutEditIntent(this, position, shortcutId);
+    	String path = appWidgetId + " - " + String.valueOf(position);
+    	Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
+    	editIntent.setData(data);
+		return PendingIntent.getActivity(mContext, 0, editIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+	}
+
+	@Override
+	public PendingIntent createInCar(boolean on) {
+		return null;
 	}
 }

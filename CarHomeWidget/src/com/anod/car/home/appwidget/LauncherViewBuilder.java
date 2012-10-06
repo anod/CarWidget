@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.appwidget;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,11 +8,11 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.anod.car.home.R;
 import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.model.LauncherSettings;
 import com.anod.car.home.model.LauncherShortcutsModel;
@@ -27,12 +27,21 @@ import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
 
 public class LauncherViewBuilder {
+	
+	public interface PendingIntentHelper {
+		 public PendingIntent createSettings(int appWidgetId, int cellId);
+		 public PendingIntent createShortcut(Intent intent, int appWidgetId, int position, long shortcutId);
+		 public PendingIntent createInCar(boolean on);
+		 
+	}
+	
 	private Context mContext;
 	private int mAppWidgetId;
 	private Main mPrefs;
 	private LauncherShortcutsModel mSmodel;
 	private String mOverrideSkin;
-
+	private PendingIntentHelper mPendingIntentHelper;
+	
 	private static int[] sTextRes = { R.id.btn_text0, R.id.btn_text1, R.id.btn_text2, R.id.btn_text3, R.id.btn_text4, R.id.btn_text5 };
 	private static int[] sBtnRes = { R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5 };
 
@@ -40,6 +49,11 @@ public class LauncherViewBuilder {
 		mContext = context;
 	}
 
+	public LauncherViewBuilder setPendingIntentHelper(PendingIntentHelper helper) {
+		mPendingIntentHelper = helper;
+		return this;
+	}
+	
 	public LauncherViewBuilder setAppWidgetId(int appWidgetId) {
 		mAppWidgetId = appWidgetId;
 		return this;
@@ -67,6 +81,11 @@ public class LauncherViewBuilder {
 		return this;
 	}
 
+	public LauncherViewBuilder reloadShortcuts() {
+		mSmodel.init();
+		return this;
+	}
+	
 	public LauncherViewBuilder reloadPrefs() {
 		mPrefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
 		return this;
@@ -112,7 +131,7 @@ public class LauncherViewBuilder {
 			}
 		}
 
-		PendingIntent configIntent = ShortcutPendingIntent.getSettingsPendingInent(mAppWidgetId, mContext, PickShortcutUtils.INVALID_CELL_ID);
+		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId, PickShortcutUtils.INVALID_CELL_ID);
 		views.setOnClickPendingIntent(R.id.btn_settings, configIntent);
 		return views;
 	}
@@ -127,8 +146,6 @@ public class LauncherViewBuilder {
 					int rImg = skinProp.getInCarButtonExitRes();
 					views.setImageViewResource(R.id.btn_incar_switch, rImg);
 				}
-				PendingIntent contentIntent = getInCarOffIntent();
-				views.setOnClickPendingIntent(R.id.btn_incar_switch, contentIntent);
 			} else {
 				if (isInCarTrans) {
 					views.setImageViewResource(R.id.btn_incar_switch, R.drawable.btn_transparent);
@@ -136,33 +153,15 @@ public class LauncherViewBuilder {
 					int rImg = skinProp.getInCarButtonEnterRes();
 					views.setImageViewResource(R.id.btn_incar_switch, rImg);
 				}
-				PendingIntent contentIntent = getInCarOnIntent();
+			}
+			PendingIntent contentIntent = mPendingIntentHelper.createInCar(ModeService.sInCarMode != true);
+			if (contentIntent != null) {
 				views.setOnClickPendingIntent(R.id.btn_incar_switch, contentIntent);
 			}
 		} else {
 			views.setViewVisibility(R.id.btn_incar_switch, View.GONE);
 		}
 
-	}
-
-	private PendingIntent getInCarOnIntent() {
-		Intent onIntent = new Intent(mContext, ModeService.class);
-		onIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_ON);
-		onIntent.putExtra(ModeService.EXTRA_FORCE_STATE, true);
-		Uri data = Uri.parse("com.anod.car.home.pro://mode/1/1");
-		onIntent.setData(data);
-		PendingIntent contentIntent = PendingIntent.getService(mContext, 0, onIntent, 0);
-		return contentIntent;
-	}
-
-	private PendingIntent getInCarOffIntent() {
-		Intent offIntent = new Intent(mContext, ModeService.class);
-		offIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_OFF);
-		offIntent.putExtra(ModeService.EXTRA_FORCE_STATE, true);
-		Uri data = Uri.parse("com.anod.car.home.pro://mode/0/1");
-		offIntent.setData(data);
-		PendingIntent contentIntent = PendingIntent.getService(mContext, 0, offIntent, 0);
-		return contentIntent;
 	}
 
 	private void setFont(Main prefs, int res, int resText, float scaledDensity, RemoteViews views) {
@@ -199,9 +198,11 @@ public class LauncherViewBuilder {
 		views.setImageViewResource(res, skinProp.getSetShortcutRes());
 		String title = mContext.getResources().getString(skinProp.getSetShortcutText());
 		views.setTextViewText(resText, title);
-		PendingIntent configIntent = ShortcutPendingIntent.getSettingsPendingInent(mAppWidgetId, mContext, cellId);
-		views.setOnClickPendingIntent(res, configIntent);
-		views.setOnClickPendingIntent(resText, configIntent);
+		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId, cellId);
+		if (configIntent != null) {
+			views.setOnClickPendingIntent(res, configIntent);
+			views.setOnClickPendingIntent(resText, configIntent);
+		}
 	}
 
 	private void setShortcut(int res, int resText, float scale, ShortcutInfo info, Main prefs, RemoteViews views, int cellId, SkinProperties skinProp, String themePackage, Resources themeResources) {
@@ -223,7 +224,7 @@ public class LauncherViewBuilder {
 		views.setBitmap(res, "setImageBitmap", icon);
 		String title = String.valueOf(info.title);
 		views.setTextViewText(resText, title);
-		PendingIntent shortcutIntent = ShortcutPendingIntent.getShortcutPendingInent(info.intent, mAppWidgetId, mContext, cellId);
+		PendingIntent shortcutIntent = mPendingIntentHelper.createShortcut(info.intent, mAppWidgetId, cellId, info.id);
 		views.setOnClickPendingIntent(res, shortcutIntent);
 		views.setOnClickPendingIntent(resText, shortcutIntent);
 	}

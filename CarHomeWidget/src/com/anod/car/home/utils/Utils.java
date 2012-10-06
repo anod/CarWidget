@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.R;
+import com.anod.car.home.prefs.ShortcutEditActivity;
 
 
 public class Utils {
@@ -100,4 +101,12 @@ public class Utils {
 	public static void saveAppWidgetId(Bundle outState, int mAppWidgetId) {
 		outState.putInt("appWidgetId", mAppWidgetId);
 	}    
+	
+
+	public static Intent createShortcutEditIntent(Context context,int cellId, long shortcutId) {
+		Intent editIntent = new Intent(context, ShortcutEditActivity.class);
+		editIntent.putExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, shortcutId);
+		editIntent.putExtra(ShortcutEditActivity.EXTRA_CELL_ID, cellId);
+		return editIntent;
+	}
 }

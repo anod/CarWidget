@@ -15,7 +15,7 @@ import android.widget.RemoteViews;
 
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
-import com.anod.car.home.ShortcutPendingIntent;
+import com.anod.car.home.appwidget.ShortcutPendingIntent;
 import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.PreferencesStorage;
@@ -73,6 +73,7 @@ public class ModeService extends Service{
 		NotificationShortcutsModel model = new NotificationShortcutsModel(this);
 		model.init();
 		boolean viewGone = true;
+		ShortcutPendingIntent spi = new ShortcutPendingIntent(this);
 		for (int i = 0; i < model.getCount(); i++) {
 			ShortcutInfo info = model.getShortcut(i);
 			int resId = sBtnIds[i];
@@ -81,7 +82,7 @@ public class ModeService extends Service{
 			} else {
 				viewGone = false;
 				contentView.setImageViewBitmap(resId, info.getIcon());
-				PendingIntent pendingIntent = ShortcutPendingIntent.getShortcutPendingInent(info.intent, PREFIX_NOTIF, this, i);
+				PendingIntent pendingIntent = spi.createShortcut(info.intent, PREFIX_NOTIF, i);
 				contentView.setOnClickPendingIntent(resId, pendingIntent);
 			}
 		}

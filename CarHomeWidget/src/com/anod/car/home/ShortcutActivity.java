@@ -1,5 +1,7 @@
 package com.anod.car.home;
 
+import com.anod.car.home.appwidget.ShortcutPendingIntent;
+
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;

@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
+import com.anod.car.home.appwidget.LauncherViewBuilder;
+import com.anod.car.home.appwidget.ShortcutPendingIntent;
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.prefs.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
@@ -39,6 +41,7 @@ public class UpdateService extends Service implements Runnable {
 		// Perform this loop procedure for each App Widget that belongs to this
 		// provider
 		LauncherViewBuilder builder = new LauncherViewBuilder(context);
+		builder.setPendingIntentHelper(new ShortcutPendingIntent(context));
 		for (int i = 0; i < N; i++) {
 			int appWidgetId = appWidgetIds[i];
 			RemoteViews views = builder

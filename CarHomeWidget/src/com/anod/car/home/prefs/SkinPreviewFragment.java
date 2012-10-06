@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RemoteViews;
 
-import com.anod.car.home.LauncherViewBuilder;
 import com.anod.car.home.R;
+import com.anod.car.home.appwidget.LauncherViewBuilder;
 import com.anod.car.home.prefs.LookAndFeelActivity.SkinRefreshListener;
 
 public class SkinPreviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<View>, SkinRefreshListener {
