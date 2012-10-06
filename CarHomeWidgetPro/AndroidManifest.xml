@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.anod.car.home.pro"
     android:installLocation="internalOnly"
-    android:versionCode="23"
-    android:versionName="1.492" >
+    android:versionCode="24"
+    android:versionName="1.5" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -22,15 +22,6 @@
         android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
         android:protectionLevel="normal" />
 
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="com.anod.car.home.permission.READ_SETTINGS" />
@@ -48,21 +39,7 @@
         android:theme="@style/AppTheme"
          >
         <service android:name="com.anod.car.home.UpdateService" />
-        <service android:name="com.anod.car.home.incar.ModeService" />
-        <service android:name="com.anod.car.home.incar.BroadcastService" />
 
-        <activity
-            android:name="com.anod.car.home.incar.SwitchInCarActivity"
-            android:clearTaskOnLaunch="true"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/switch_in_car_activity"
-            android:noHistory="true"
-            android:theme="@style/BrightnessTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name="com.anod.car.home.prefs.ShortcutEditActivity"
             android:theme="@android:style/Theme.Dialog" />
@@ -87,26 +64,19 @@
         <activity
             android:name="com.anod.car.home.prefs.ConfigurationLook"
             android:configChanges="orientation" 
-             />
+         />
         <activity
             android:name="com.anod.car.home.prefs.ConfigurationInCar"
             android:configChanges="orientation" 
-             />
+         />
         <activity
             android:name="com.anod.car.home.prefs.ConfigurationBackup"
             android:configChanges="orientation" 
-             />
+         />
         <activity
             android:name="com.anod.car.home.prefs.ConfigurationRestore"
             android:configChanges="orientation" 
-             />
-        <activity
-            android:name="com.anod.car.home.prefs.ConfigurationNotifShortcuts"
-            android:configChanges="orientation" 
-            />
-        <activity
-            android:name="com.anod.car.home.incar.ChangeBrightnessActivity"
-            android:theme="@style/BrightnessTheme" />
+        />
         <activity
             android:name="com.anod.car.home.ShortcutActivity"
             android:theme="@style/BrightnessTheme" />
@@ -150,10 +120,42 @@
                 <category android:name="android.intent.category.CAR_DOCK" />
             </intent-filter>
         </activity>
-
+        
+        <activity
+            android:name="com.anod.car.home.prefs.ConfigurationNotifShortcuts"
+            android:configChanges="orientation" 
+            />
+        <activity
+            android:name="com.anod.car.home.incar.ChangeBrightnessActivity"
+            android:theme="@style/BrightnessTheme" />
+        <activity
+            android:name="com.anod.car.home.incar.SwitchInCarActivity"
+            android:clearTaskOnLaunch="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/switch_in_car_activity"
+            android:noHistory="true"
+            android:theme="@style/BrightnessTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <service android:name="com.anod.car.home.incar.ModeService" />
+        <service android:name="com.anod.car.home.incar.BroadcastService" />
+        
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIwrTs2H7J2Rs0kglDTHtziqQ8_7YbAZGeS7bDUA" />
     </application>
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 </manifest>
