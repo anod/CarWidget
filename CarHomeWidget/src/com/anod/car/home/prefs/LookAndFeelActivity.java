@@ -38,6 +38,7 @@ import com.anod.car.home.appwidget.LauncherViewBuilder;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.utils.FastBitmapDrawable;
+import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 
 public class LookAndFeelActivity extends ActionBarActivity implements OnPageChangeListener, LauncherViewBuilder.PendingIntentHelper {
@@ -419,7 +420,7 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 
 	@Override
 	public PendingIntent createShortcut(Intent intent, int appWidgetId, int position, long shortcutId) {
-		Intent editIntent = Utils.createShortcutEditIntent(this, position, shortcutId);
+		Intent editIntent = IntentUtils.createShortcutEditIntent(this, position, shortcutId);
     	String path = appWidgetId + " - " + String.valueOf(position);
     	Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
     	editIntent.setData(data);

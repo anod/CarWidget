@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.anod.car.home.prefs.PreferencesStorage;
-import com.anod.car.home.utils.Utils;
+import com.anod.car.home.utils.IntentUtils;
 
 public class LauncherShortcutsModel extends AbstractShortcutsModel {
 	private Context mContext;
@@ -62,7 +62,7 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 			ShortcutInfo info = null;
 			Intent data = new Intent();
 			data.setComponent(list[i]);
-			if (!Utils.isIntentAvailable(mContext, data))
+			if (!IntentUtils.isIntentAvailable(mContext, data))
 				continue;
 			Log.d("CarHomeWidget", "Init shortcut - " + info + " Widget - " + appWidgetId);
 			info = ShortcutInfoUtils.infoFromApplicationIntent(mContext, data);

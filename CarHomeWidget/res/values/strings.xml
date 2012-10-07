@@ -14,19 +14,14 @@
     <string name="permdesc_write_settings">Allows an application to change the settings and
         shortcuts in Car Widget.</string>
  
-    <string name="pref_dialog_title_select">Select</string>
- 
 	<string name="color_dialog_title">Pick a color</string>
 	<string name="color_dialog_button_cancel">Cancel</string>
 
     <string name="pref_tile_color_title">Tile color</string>
-    <string name="pref_tile_color_summary">Select color of tile, enabled only for Windows 7 skin</string>
 
     <string name="pref_bg_color_title">Background color</string>
-    <string name="pref_bg_color_summary">Select color of background</string>
 
     <string name="pref_icons_mono_title">Monochrome icons</string>
-    <string name="pref_icons_mono_summary">Use one tone icons</string>
 	
     <string name="pref_tint_color_title">Tint color</string>
     <string name="pref_tint_color_summary">Select tint color of icons</string>
@@ -185,4 +180,9 @@
 	<string name="icons_theme">Icons Theme</string>
 	<string name="none">None</string>
 	<string name="download">Download&#8230;</string>
+	<string name="not_set">Not set</string>
+	<string name="default_car_dock_app">Default Car Dock app</string>
+	<string name="cardock_btn_1">Open App Info</string>
+	<string name="cardock_text1">To clear current default application:\n1. Open default App Info\n2. Click on \"Clear defaults\" button</string>
+	<string name="cardock_text2">Next time Car Dock enabled choose \"Car Widget\" as a default application.</string>
 </resources>

@@ -16,7 +16,7 @@ import com.anod.car.home.R;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutsModel;
 import com.anod.car.home.prefs.views.ShortcutPreference;
-import com.anod.car.home.utils.Utils;
+import com.anod.car.home.utils.IntentUtils;
 
 public class PickShortcutUtils {
 
@@ -104,7 +104,7 @@ public class PickShortcutUtils {
 	
 
 	private void startEditActivity(int cellId, long shortcutId) {
-		Intent editIntent = Utils.createShortcutEditIntent(mActivity, cellId, shortcutId);
+		Intent editIntent = IntentUtils.createShortcutEditIntent(mActivity, cellId, shortcutId);
 		startActivityForResultSafely(editIntent, REQUEST_EDIT_SHORTCUT);
 	}
 

@@ -37,6 +37,11 @@
             android:key="backup"
             android:summary="@string/pref_backup_summary"
             android:title="@string/pref_backup_title" />
+        <com.anod.car.home.prefs.views.HeaderPreference
+            android:icon="@drawable/ic_settings_applications"
+            android:key="default-app"
+            android:summary="Not set"
+            android:title="@string/default_car_dock_app" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/information_title" >
         <com.anod.car.home.prefs.views.HeaderPreference

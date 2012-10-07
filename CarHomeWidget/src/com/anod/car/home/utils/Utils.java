@@ -50,12 +50,6 @@ public class Utils {
 		return AppWidgetManager.INVALID_APPWIDGET_ID;
 	}
 	
-	public static boolean isIntentAvailable(Context context, Intent intent) {
-		final PackageManager packageManager = context.getPackageManager();
-		List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-		return list.size() > 0;
-	}
-	
 	public static float calcIconsScale(String scaleString) {
         return 1.0f+0.1f*Integer.valueOf(scaleString);
 	}
@@ -97,16 +91,10 @@ public class Utils {
                     "or use the exported attribute for this activity.", e);
         }
     }
+    
 
 	public static void saveAppWidgetId(Bundle outState, int mAppWidgetId) {
 		outState.putInt("appWidgetId", mAppWidgetId);
 	}    
 	
-
-	public static Intent createShortcutEditIntent(Context context,int cellId, long shortcutId) {
-		Intent editIntent = new Intent(context, ShortcutEditActivity.class);
-		editIntent.putExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, shortcutId);
-		editIntent.putExtra(ShortcutEditActivity.EXTRA_CELL_ID, cellId);
-		return editIntent;
-	}
 }

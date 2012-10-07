@@ -1,14 +1,21 @@
 package com.anod.car.home.prefs;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.appwidget.AppWidgetManager;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.Provider;
@@ -18,6 +25,8 @@ import com.anod.car.home.model.LauncherShortcutsModel;
 import com.anod.car.home.model.ShortcutsModel;
 import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
 import com.anod.car.home.prefs.views.ShortcutPreference;
+import com.anod.car.home.utils.IntentUtils;
+import com.anod.car.home.utils.Utils;
 
 public class Configuration extends ConfigurationActivity implements PreferenceKey {
 	private static final int REQUEST_BACKUP = 6;
@@ -29,6 +38,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	private static final String LOOK_AND_FEEL = "look-and-feel";
 	private static final String INCAR = "incar";
 	private static final String BACKUP = "backup";
+	private static final String DEFAULT_APP = "default-app";
 
 	private static final String VERSION = "version";
 	private static final String ISSUE_TRACKER = "issue-tracker";
@@ -58,12 +68,58 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 		setIntent(INCAR, ConfigurationInCar.class, 0);
 		initOther();
 		initBackup();
+		initDefaultApp();
 
 		int cellId = getIntent().getExtras().getInt(PickShortcutUtils.EXTRA_CELL_ID, PickShortcutUtils.INVALID_CELL_ID);
 		if (cellId != PickShortcutUtils.INVALID_CELL_ID) {
 			mPickShortcutUtils.pickShortcut(cellId);
 		}
+        
+	}
 
+	private void initDefaultApp() {
+		Preference defaultApp = (Preference)findPreference(DEFAULT_APP);
+		Intent intent = new Intent(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_CAR_DOCK);
+		final PackageManager pm = getPackageManager();
+		final ResolveInfo info = pm.resolveActivity(intent,PackageManager.MATCH_DEFAULT_ONLY);
+		if (info == null || info.activityInfo.name.equals("com.android.internal.app.ResolverActivity")) {
+			defaultApp.setSummary(R.string.not_set);
+		} else {
+			defaultApp.setSummary(info.loadLabel(pm));
+		}
+		defaultApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				Builder builder = new AlertDialog.Builder(mContext);
+				
+				View view = getLayoutInflater().inflate(R.layout.default_car_dock_app, null);
+				Button btn = (Button)view.findViewById(R.id.button1);
+				btn.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Utils.startActivitySafely(
+							IntentUtils.createApplicationDetailsIntent(info.activityInfo.applicationInfo.packageName), mContext
+						);
+					}
+				});
+				
+				builder
+					.setTitle(R.string.default_car_dock_app)
+					.setCancelable(true)
+					.setView(view)
+					.setPositiveButton(android.R.string.ok, new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					})
+					.create()
+					.show();
+				return true;
+			}
+		});
 	}
 
 	@Override
