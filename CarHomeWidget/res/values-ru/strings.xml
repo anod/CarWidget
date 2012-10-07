@@ -73,8 +73,7 @@
     <string name="information_title">Информация</string>
     <string name="version_title">%1$s вер. %2$s</string>
     <string name="version_summary">Пожалуйста, оцените этот виджет на маркете</string>
-    <string name="issue_title">Facebook страница</string>
-    <string name="issue_summary">Нажмите \"Мне Нравиться\", оставить комментарий</string>
+    <string name="issue_title">Обратная связь</string>
     <string name="other_title">Другие приложения</string>
     <string name="other_summary">Посмотрите на мои приложения</string>
     <string name="shortcut_edit_title">Изменить ярлык</string>

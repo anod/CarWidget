@@ -39,6 +39,8 @@
 
 	<string name="dialog_donate_title">Sorry,</string>
 	<string name="dialog_donate_message">This feature is available only in Car Widget Pro version. You can get it for $0.99 USD\n\n Would you like to get it now?</string>
+	<string name="dialog_donate_title_install">Thank you,</string>
+	<string name="dialog_donate_message_installed">Installation of Car Widget Pro has been found.\nPlease add the new installed widget to the home screen in order to get access to the features of Pro version.\nYou can copy settings using "Backup/Restore" option. Free version of the widget is not required anymore.</string>
 	<string name="dialog_donate_btn_yes">Yes, please!</string>
 	<string name="dialog_donate_btn_no">No, thanks</string>
    
