@@ -55,6 +55,7 @@
         </activity>
         <activity
             android:name="com.anod.car.home.prefs.Configuration"
+            android:label="@string/settings"
             android:configChanges="orientation"
              >
             <intent-filter>
