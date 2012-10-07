@@ -46,27 +46,31 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 	}
 
 	public void initShortcuts(int appWidgetId) {
-		ComponentName s1 = new ComponentName("com.google.android.apps.maps", "com.google.android.maps.driveabout.app.DestinationActivity");
-		ComponentName s2 = new ComponentName("com.android.contacts", "com.android.contacts.DialtactsActivity");
-		ComponentName s3 = new ComponentName("com.android.music", "com.android.music.MusicBrowserActivity");
-		ComponentName s4 = new ComponentName("com.android.contacts", "com.android.contacts.DialtactsContactsEntryActivity");
-
-		ArrayList<ComponentName> list = new ArrayList<ComponentName>(4);
-		list.add(s1);
-		list.add(s2);
-		list.add(s3);
-		list.add(s4);
+		ComponentName[] list = {
+			new ComponentName("com.google.android.apps.maps", "com.google.android.maps.driveabout.app.DestinationActivity"),
+			new ComponentName("com.android.contacts", "com.android.contacts.DialtactsActivity"),
+			new ComponentName("com.android.htccontacts", "com.android.htccontacts.DialerTabActivity"), //HTC Phone
+			new ComponentName("com.android.music", "com.android.music.MusicBrowserActivity"),
+			new ComponentName("com.htc.music", "com.htc.music.HtcMusic"),
+			new ComponentName("com.android.contacts", "com.android.contacts.DialtactsContactsEntryActivity"),
+			new ComponentName("com.android.htccontacts", "com.android.htccontacts.BrowseLayerCarouselActivity"),
+			new ComponentName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity"),
+		};
+		
 		int cellId = 0;
-		for (int i = 0; i < list.size(); i++) {
+		for (int i = 0; i < list.length; i++) {
 			ShortcutInfo info = null;
 			Intent data = new Intent();
-			data.setComponent(list.get(i));
+			data.setComponent(list[i]);
 			if (!Utils.isIntentAvailable(mContext, data))
 				continue;
 			Log.d("CarHomeWidget", "Init shortcut - " + info + " Widget - " + appWidgetId);
 			info = ShortcutInfoUtils.infoFromApplicationIntent(mContext, data);
 			saveShortcut(cellId, info);
 			cellId++;
+			if (cellId == 6) {
+				break;
+			}
 		}
 
 	}

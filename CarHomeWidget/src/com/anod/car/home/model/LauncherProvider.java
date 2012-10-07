@@ -128,7 +128,7 @@ public class LauncherProvider extends ContentProvider {
                     "iconType INTEGER," +
                     "iconPackage TEXT," +
                     "iconResource TEXT," +
-                    "icon BLOB" +
+                    "icon BLOB," +
                     "isCustomIcon INTEGER" +
             ");");
         }
