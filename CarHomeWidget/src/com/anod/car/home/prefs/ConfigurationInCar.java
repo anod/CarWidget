@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -30,6 +31,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 
 import com.anod.car.home.R;
 import com.anod.car.home.incar.Bluetooth;
@@ -143,6 +145,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 		return super.onCreateDialog(id);
 	}
 
+	@SuppressLint("NewApi")
 	private void initInCarFreeDialog() {
 		String[] prefNames = { PreferencesStorage.INCAR_MODE_ENABLED, PreferencesStorage.POWER_BT_DISABLE, PreferencesStorage.POWER_BT_ENABLE, PreferencesStorage.HEADSET_REQUIRED, PreferencesStorage.POWER_REQUIRED, PreferencesStorage.SCREEN_TIMEOUT, PreferencesStorage.BRIGHTNESS, PreferencesStorage.BLUETOOTH, PreferencesStorage.ADJUST_VOLUME_LEVEL, PreferencesStorage.VOLUME_LEVEL, PreferencesStorage.ADJUST_WIFI, PreferencesStorage.AUTO_SPEAKER, PreferencesStorage.ACTIVATE_CAR_MODE, PreferencesStorage.AUTO_ANSWER, AUTORUN_APP_PREF };
 		final PreferenceScreen prefScr = (PreferenceScreen) findPreference(SCREEN_BT_DEVICE);
@@ -156,6 +159,8 @@ public class ConfigurationInCar extends ConfigurationActivity {
 						((CheckBoxPreference) preference).setChecked(false);
 					} else if (preference instanceof ListPreference) {
 						((ListPreference) preference).getDialog().hide();
+					} else if (Utils.IS_ICS_OR_GREATER && preference instanceof SwitchPreference) {
+						((SwitchPreference) preference).setChecked(false);
 					}
 					showDialog(DIALOG_DONATE);
 					return true;
@@ -242,9 +247,14 @@ public class ConfigurationInCar extends ConfigurationActivity {
 
 	}
 
+	@SuppressLint("NewApi")
 	private void initBluetooth() {
-		CheckBoxPreference btSwitch = (CheckBoxPreference) findPreference(PREF_BT_SWITCH);
-		btSwitch.setChecked(Bluetooth.getState() == BluetoothAdapter.STATE_ON);
+		Preference btSwitch = (Preference) findPreference(PREF_BT_SWITCH);
+		if (Utils.IS_ICS_OR_GREATER) {
+			((SwitchPreference) btSwitch).setChecked(Bluetooth.getState() == BluetoothAdapter.STATE_ON);
+		} else {
+			((CheckBoxPreference) btSwitch).setChecked(Bluetooth.getState() == BluetoothAdapter.STATE_ON);
+		}
 		btSwitch.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {

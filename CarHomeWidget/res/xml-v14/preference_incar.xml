@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:summary="@string/pref_incar_mode_summary"
+    android:title="@string/pref_incar_mode_title" >
+
+    <SwitchPreference
+        android:key="incar-mode-enabled"
+        android:title="@string/pref_incar_mode_enabled" />
+
+    <PreferenceCategory android:title="@string/pref_power_contorl_bt" >
+        <SwitchPreference
+            android:key="power-bt-enable"
+            android:summary="@string/pref_power_plugged_bt_on_summary"
+            android:title="@string/pref_power_plugged_bt_on_title" />
+        <SwitchPreference
+            android:key="power-bt-disable"
+            android:summary="@string/pref_power_unplugged_bt_off_summary"
+            android:title="@string/pref_power_unplugged_bt_off_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_detection" >
+        <PreferenceScreen
+            android:key="bt-device-screen"
+            android:summary="@string/pref_blutooth_device_summary"
+            android:title="@string/pref_blutooth_device_title" >
+            <SwitchPreference
+                android:key="bt-switch"
+                android:summaryOff="@string/turn_on_bluetooth_summary"
+                android:summaryOn="@string/turn_off_bluetooth_summary"
+                android:title="@string/bluetooth" />
+
+            <PreferenceCategory
+                android:key="bt-device-category"
+                android:title="@string/bluetooth_device_category_title" >
+                <SwitchPreference
+                    android:key="bt-device-address"
+                    android:title="Device 1" />
+            </PreferenceCategory>
+        </PreferenceScreen>
+
+        <SwitchPreference
+            android:key="headset-required"
+            android:summary="@string/pref_headset_connected_summary"
+            android:title="@string/pref_headset_connected_title" />
+        <SwitchPreference
+            android:key="power-required"
+            android:summary="@string/pref_power_connected_summary"
+            android:title="@string/pref_power_connected_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_actions" >
+        <SwitchPreference
+            android:key="screen-timeout"
+            android:summary="@string/pref_screen_timeout_summary"
+            android:title="@string/pref_screen_timeout" />
+
+        <ListPreference
+            android:defaultValue="disabled"
+            android:entries="@array/brightness_mode_titles"
+            android:entryValues="@array/brightness_mode_values"
+            android:key="brightness"
+            android:summary="@string/pref_brightness_mode_summary"
+            android:title="@string/pref_brightness_mode" />
+
+        <SwitchPreference
+            android:key="bluetooth"
+            android:title="@string/turn_on_bluetooth_summary" />
+        <SwitchPreference
+            android:key="auto_speaker"
+            android:summary="@string/pref_route_to_speaker_summary"
+            android:title="@string/pref_route_to_speaker" />
+
+        <ListPreference
+            android:defaultValue="disabled"
+            android:entries="@array/autoanswer_titles"
+            android:entryValues="@array/autoanswer_values"
+            android:key="auto_answer"
+            android:summary="@string/pref_auto_answer_summary"
+            android:title="@string/pref_auto_answer" />
+
+        <SwitchPreference
+            android:key="adjust-volume-level"
+            android:summary="@string/pref_change_media_volume_summary"
+            android:title="@string/pref_change_media_volume" />
+
+        <com.anod.car.home.incar.SeekBarPreference
+            android:defaultValue="100"
+            android:dependency="adjust-volume-level"
+            android:key="volume-level"
+            android:max="100"
+            android:summary="@string/pref_media_volume_level_summary"
+            android:text=""
+            android:title="@string/pref_media_volume_level" />
+
+        <PreferenceScreen android:title="@string/more" >
+            <PreferenceCategory android:title="@string/pref_actions" >
+                <ListPreference
+                    android:defaultValue="no_action"
+                    android:entries="@array/wifi_action_titles"
+                    android:entryValues="@array/wifi_action_values"
+                    android:key="wi-fi"
+                    android:summary="@string/pref_wifi_summary"
+                    android:title="@string/pref_wifi" />
+
+                <SwitchPreference
+                    android:key="activate-car-mode"
+                    android:summary="@string/pref_activate_car_mode_summary"
+                    android:title="@string/pref_activate_car_mode" />
+
+                <ListPreference
+                    android:entries="@array/autorun_app_titles"
+                    android:entryValues="@array/autorun_app_values"
+                    android:key="autorun-app-choose"
+                    android:summary="@string/pref_autorun_app_disabled"
+                    android:title="@string/pref_autorun_app_title" />
+            </PreferenceCategory>
+        </PreferenceScreen>
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/notification" >
+        <Preference
+            android:key="notif-shortcuts"
+            android:summary="@string/shortcuts_summary"
+            android:title="@string/shortcuts" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
