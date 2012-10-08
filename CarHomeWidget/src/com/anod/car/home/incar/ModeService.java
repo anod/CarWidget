@@ -18,8 +18,8 @@ import com.anod.car.home.R;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
 import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.prefs.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
 
 public class ModeService extends Service{

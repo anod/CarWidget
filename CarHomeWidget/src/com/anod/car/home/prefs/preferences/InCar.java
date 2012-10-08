@@ -9,7 +9,6 @@ import java.util.HashMap;
 
 import android.content.ComponentName;
 
-import com.anod.car.home.prefs.PreferencesStorage;
 
 public class InCar implements Serializable {
 	/**

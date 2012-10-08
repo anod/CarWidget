@@ -1,7 +1,7 @@
 package com.anod.car.home.incar;
 
 import com.anod.car.home.R;
-import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -24,6 +24,7 @@ import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.model.LauncherShortcutsModel;
 import com.anod.car.home.model.ShortcutsModel;
 import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.ShortcutPreference;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;

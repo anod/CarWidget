@@ -36,6 +36,7 @@ import com.anod.car.home.R;
 import com.anod.car.home.actionbarcompat.ActionBarActivity;
 import com.anod.car.home.appwidget.LauncherViewBuilder;
 import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.IntentUtils;

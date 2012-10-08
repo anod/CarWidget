@@ -12,6 +12,7 @@ import android.preference.PreferenceCategory;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.prefs.views.SeekBarPreference;
 import com.anod.car.home.utils.Utils;

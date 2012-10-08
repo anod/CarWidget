@@ -11,7 +11,7 @@ import android.widget.RemoteViews;
 import com.anod.car.home.appwidget.LauncherViewBuilder;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
 import com.anod.car.home.incar.BroadcastService;
-import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
 
 public class UpdateService extends Service implements Runnable {

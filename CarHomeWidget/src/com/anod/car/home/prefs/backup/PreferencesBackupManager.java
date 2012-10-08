@@ -19,9 +19,9 @@ import android.util.SparseArray;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutsModel;
 import com.anod.car.home.model.LauncherShortcutsModel;
-import com.anod.car.home.prefs.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.ShortcutsMain;
 
 public class PreferencesBackupManager {

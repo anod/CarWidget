@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.IntentUtils;
 
 public class LauncherShortcutsModel extends AbstractShortcutsModel {

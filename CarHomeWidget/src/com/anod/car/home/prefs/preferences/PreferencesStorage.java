@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs;
+package com.anod.car.home.prefs.preferences;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,9 +15,6 @@ import android.util.Log;
 import com.anod.car.home.R;
 import com.anod.car.home.model.LauncherModel;
 import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.prefs.preferences.InCar;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
 import com.anod.car.home.utils.Utils;
 

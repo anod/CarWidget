@@ -3,7 +3,7 @@ package com.anod.car.home;
 
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.incar.ModeService;
-import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;

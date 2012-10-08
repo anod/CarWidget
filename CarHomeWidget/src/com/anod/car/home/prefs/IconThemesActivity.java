@@ -17,6 +17,7 @@ import com.anod.car.home.appscache.AppsCacheActivity;
 import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.model.AppsListCache.CacheEntry;
 import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.IconPackUtils;
 import com.anod.car.home.utils.Utils;
 
@@ -129,7 +130,7 @@ public class IconThemesActivity extends AppsCacheActivity implements OnClickList
 				update = true;
 			} else if(mThemePackageName != null && prevTheme == null) {
 				update = true;
-			} else if (!mThemePackageName.equals(prevTheme)) {
+			} else if (mThemePackageName != null && prevTheme != null && !mThemePackageName.equals(prevTheme)) {
 				update = true;
 			}
 			if (update) {

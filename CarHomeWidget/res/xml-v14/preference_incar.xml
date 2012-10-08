@@ -8,11 +8,11 @@
         android:title="@string/pref_incar_mode_enabled" />
 
     <PreferenceCategory android:title="@string/pref_power_contorl_bt" >
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="power-bt-enable"
             android:summary="@string/pref_power_plugged_bt_on_summary"
             android:title="@string/pref_power_plugged_bt_on_title" />
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="power-bt-disable"
             android:summary="@string/pref_power_unplugged_bt_off_summary"
             android:title="@string/pref_power_unplugged_bt_off_title" />
@@ -31,23 +31,23 @@
             <PreferenceCategory
                 android:key="bt-device-category"
                 android:title="@string/bluetooth_device_category_title" >
-                <SwitchPreference
+                <CheckBoxPreference
                     android:key="bt-device-address"
                     android:title="Device 1" />
             </PreferenceCategory>
         </PreferenceScreen>
 
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="headset-required"
             android:summary="@string/pref_headset_connected_summary"
             android:title="@string/pref_headset_connected_title" />
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="power-required"
             android:summary="@string/pref_power_connected_summary"
             android:title="@string/pref_power_connected_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_actions" >
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="screen-timeout"
             android:summary="@string/pref_screen_timeout_summary"
             android:title="@string/pref_screen_timeout" />
@@ -60,10 +60,10 @@
             android:summary="@string/pref_brightness_mode_summary"
             android:title="@string/pref_brightness_mode" />
 
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="bluetooth"
             android:title="@string/turn_on_bluetooth_summary" />
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="auto_speaker"
             android:summary="@string/pref_route_to_speaker_summary"
             android:title="@string/pref_route_to_speaker" />
@@ -76,7 +76,7 @@
             android:summary="@string/pref_auto_answer_summary"
             android:title="@string/pref_auto_answer" />
 
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="adjust-volume-level"
             android:summary="@string/pref_change_media_volume_summary"
             android:title="@string/pref_change_media_volume" />
@@ -100,7 +100,7 @@
                     android:summary="@string/pref_wifi_summary"
                     android:title="@string/pref_wifi" />
 
-                <SwitchPreference
+                <CheckBoxPreference
                     android:key="activate-car-mode"
                     android:summary="@string/pref_activate_car_mode_summary"
                     android:title="@string/pref_activate_car_mode" />

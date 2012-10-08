@@ -1,6 +1,6 @@
 package com.anod.car.home.skin;
 
-import com.anod.car.home.prefs.PreferencesStorage;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 public class PropertiesFactory {
 

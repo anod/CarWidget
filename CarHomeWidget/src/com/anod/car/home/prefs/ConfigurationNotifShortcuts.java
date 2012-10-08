@@ -7,6 +7,7 @@ import com.anod.car.home.R;
 import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.model.ShortcutsModel;
 import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 public class ConfigurationNotifShortcuts extends ConfigurationActivity implements PreferenceKey {
 
