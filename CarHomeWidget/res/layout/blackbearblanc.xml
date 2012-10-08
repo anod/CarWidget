@@ -24,11 +24,7 @@
             android:gravity="bottom"
             android:orientation="horizontal" >
 
-            <FrameLayout
-                android:layout_width="0dip"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:clipChildren="false" >
+            <FrameLayout style="@style/bbb_btn" >
 
                 <Button
                     android:id="@+id/btn_text0"
@@ -41,11 +37,7 @@
                     android:src="@drawable/ic_add_shortcut_holo" />
             </FrameLayout>
 
-            <FrameLayout
-                android:layout_width="0dip"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:clipChildren="false" >
+            <FrameLayout style="@style/bbb_btn" >
 
                 <Button
                     android:id="@+id/btn_text1"
@@ -67,11 +59,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
-            <FrameLayout
-                android:layout_width="0dip"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:clipChildren="false" >
+            <FrameLayout style="@style/bbb_btn" >
 
                 <Button
                     android:id="@+id/btn_text2"
@@ -84,11 +72,7 @@
                     android:src="@drawable/ic_add_shortcut_holo" />
             </FrameLayout>
 
-            <FrameLayout
-                android:layout_width="0dip"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:clipChildren="false" >
+            <FrameLayout style="@style/bbb_btn" >
 
                 <Button
                     android:id="@+id/btn_text3"
@@ -109,28 +93,20 @@
             android:baselineAligned="false"
             android:orientation="horizontal" >
 
-            <FrameLayout
-                android:layout_width="0dip"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:clipChildren="false" >
+            <FrameLayout style="@style/bbb_btn" >
 
                 <Button
                     android:id="@+id/btn_text4"
                     style="@style/bbb_btn_text"
                     android:text="@string/set_shortcut_short" />
 
-                <ImageView
+                ‎<ImageView
                     android:id="@+id/btn4"
                     style="@style/bbb_btn_icon"
                     android:src="@drawable/ic_add_shortcut_holo" />
             </FrameLayout>
 
-            <FrameLayout
-                android:layout_width="0dip"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:clipChildren="false" >
+            <FrameLayout style="@style/bbb_btn" >
 
                 <Button
                     android:id="@+id/btn_text5"
@@ -154,18 +130,16 @@
             style="@style/incarButton"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/workspace"
-            android:src="@drawable/ic_incar_exit_bbb"
             android:background="@drawable/btn_transparent"
-         />
+            android:src="@drawable/ic_incar_exit_bbb" />
 
         <ImageButton
             android:id="@+id/btn_settings"
             style="@style/settingsButton"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/workspace"
-            android:src="@drawable/ic_settings_bbb"
-            android:background="@drawable/btn_transparent" 
-         />
+            android:background="@drawable/btn_transparent"
+            android:src="@drawable/ic_settings_bbb" />
     </RelativeLayout>
 
 </LinearLayout>

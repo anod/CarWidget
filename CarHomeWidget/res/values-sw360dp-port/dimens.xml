@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    
-	<dimen name="widget_padding_top">20dp</dimen>
-	<dimen name="widget_height">440dp</dimen>
-	<dimen name="widget_width">340dp</dimen>
-</resources>

@@ -85,6 +85,17 @@
         <item name="android:background">@color/holo_text_bg</item>
     </style>
 
+	<style name="bbb_btn">
+		<item name="android:clipChildren">false</item>
+		<item name="android:paddingLeft">3dp</item>
+		<item name="android:paddingRight">3dp</item>
+		<item name="android:paddingTop">5dp</item>
+		<item name="android:paddingBottom">5dp</item>
+		<item name="android:layout_width">0dip</item>
+		<item name="android:layout_height">70dip</item>
+		<item name="android:layout_weight">1</item> 
+	</style>
+	
     <style name="bbb_btn_text">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -102,8 +113,6 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">left|bottom</item>
-        <item name="android:layout_marginBottom">3dp</item>
-        <item name="android:layout_marginLeft">3dp</item>
     </style>
 
     <style name="incarButton" parent="android:Widget.Holo.Light.ImageButton">
@@ -135,4 +144,6 @@
 		<item name="android:windowIsFloating">true</item> 
 		<item name="android:backgroundDimEnabled">false</item> 
 	</style>
+
+
 </resources>

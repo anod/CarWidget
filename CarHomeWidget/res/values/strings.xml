@@ -185,4 +185,5 @@
 	<string name="cardock_btn_1">Open App Info</string>
 	<string name="cardock_text1">To clear current default application:\n1. Open default App Info\n2. Click on \"Clear defaults\" button</string>
 	<string name="cardock_text2">Next time Car Dock enabled choose \"Car Widget\" as a default application.</string>
+	<string name="system">System</string>
 </resources>
