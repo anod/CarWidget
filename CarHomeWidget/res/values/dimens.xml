@@ -14,7 +14,7 @@
 	
 	<dimen name="color_preview_size">20dp</dimen>
 
-	<dimen name="skin_padding_horiz">10dp</dimen>
-	<dimen name="skin_padding_vert">2dp</dimen>
+	<dimen name="skin_padding_horiz">0dp</dimen>
+	<dimen name="skin_padding_vert">0dp</dimen>
 	
 </resources>
