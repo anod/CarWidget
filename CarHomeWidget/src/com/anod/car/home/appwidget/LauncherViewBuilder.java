@@ -213,13 +213,14 @@ public class LauncherViewBuilder {
 				icon = UtilitiesBitmap.tint(icon, prefs.getIconsColor());
 			}
 		}
-		;
+		float sizeDiff = .0f;
 		IconProcessor ip = skinProp.getIconProcessor();
 		if (ip != null) {
 			icon = ip.process(icon);
+			sizeDiff = ip.getSizeDiff();
 		}
 		if (scale > 1.0f) {
-			icon = UtilitiesBitmap.scaleBitmap(icon, scale, mContext);
+			icon = UtilitiesBitmap.scaleBitmap(icon, scale, sizeDiff, mContext);
 		}
 		views.setBitmap(res, "setImageBitmap", icon);
 		String title = String.valueOf(info.title);

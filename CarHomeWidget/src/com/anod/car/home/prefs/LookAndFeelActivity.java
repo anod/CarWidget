@@ -220,7 +220,6 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 				public void onClick(DialogInterface dialog, int item) {
 					mPrefs.setIconsScaleString(values[item]);
 					persistPrefs();
-					Toast.makeText(getApplicationContext(), values[item], Toast.LENGTH_SHORT).show();
 					dialog.dismiss();
 					refreshSkinPreview();
 				}

@@ -118,12 +118,16 @@ public class UtilitiesBitmap {
 		}
 	}
 
-	public static Bitmap scaleBitmap(Bitmap icon, float scale, Context context) {
+	public static Bitmap scaleBitmap(Bitmap icon, float scale, float sizeDiff,  Context context) {
 		if (sIconWidth == -1) {
 			initStatics(context);
 		}
-		int scW = (int) (sIconWidth * scale);
-		int scH = (int) (sIconHeight * scale);
+		int min = 0;
+		if (sizeDiff > 0) {
+			min = (int)(sIconWidth * sizeDiff);
+		}
+		int scW = (int) (sIconWidth * scale) - min;
+		int scH = (int) (sIconHeight * scale) - min;
 		return Bitmap.createScaledBitmap(icon, scW, scH, true);
 	}
 
