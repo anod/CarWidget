@@ -25,6 +25,7 @@ import com.anod.car.home.skin.PropertiesFactory;
 import com.anod.car.home.skin.SkinProperties;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
+import com.anod.car.home.utils.Version;
 
 public class LauncherViewBuilder {
 	
@@ -41,6 +42,7 @@ public class LauncherViewBuilder {
 	private LauncherShortcutsModel mSmodel;
 	private String mOverrideSkin;
 	private PendingIntentHelper mPendingIntentHelper;
+	private Version mVersion;
 	
 	private static int[] sTextRes = { R.id.btn_text0, R.id.btn_text1, R.id.btn_text2, R.id.btn_text3, R.id.btn_text4, R.id.btn_text5 };
 	private static int[] sBtnRes = { R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5 };
@@ -78,6 +80,7 @@ public class LauncherViewBuilder {
 		}
 		mSmodel.init();
 
+		mVersion = new Version(mContext);
 		return this;
 	}
 
@@ -137,7 +140,8 @@ public class LauncherViewBuilder {
 	}
 
 	private void setInCarButton(boolean isInCarTrans, String packageName, SkinProperties skinProp, RemoteViews views) {
-		if (!Utils.isFreeVersion(packageName) && PreferencesStorage.isInCarModeEnabled(mContext)) {
+		
+		if (!mVersion.isProOrTrial() && PreferencesStorage.isInCarModeEnabled(mContext)) {
 			views.setViewVisibility(R.id.btn_incar_switch, View.VISIBLE);
 			if (ModeService.sInCarMode == true) {
 				if (isInCarTrans) {

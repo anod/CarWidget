@@ -3,7 +3,7 @@ package com.anod.car.home.model;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.anod.car.home.utils.Utils;
+import com.anod.car.home.utils.Version;
 
 
 /**
@@ -15,7 +15,7 @@ public class LauncherSettings {
          * The content:// style URL for this table
          */
 		static Uri getContentUri(String packageName) {
-        	if (Utils.isFreeVersion(packageName)) {
+        	if (Version.isFreeVersion(packageName)) {
         		return Uri.parse("content://" +
 	                LauncherProvider.AUTHORITY_FREE + "/" + LauncherProvider.TABLE_FAVORITES );
         	}
@@ -30,7 +30,7 @@ public class LauncherSettings {
          * @return The unique content URL for the specified row.
          */
         static Uri getContentUri(String packageName,long id) {
-        	if (Utils.isFreeVersion(packageName)) {
+        	if (Version.isFreeVersion(packageName)) {
                 return Uri.parse("content://" + LauncherProvider.AUTHORITY_FREE +
                         "/" + LauncherProvider.TABLE_FAVORITES + "/" + id
                 );        		

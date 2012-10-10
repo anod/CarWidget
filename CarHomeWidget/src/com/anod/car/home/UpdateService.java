@@ -13,6 +13,7 @@ import com.anod.car.home.appwidget.ShortcutPendingIntent;
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
+import com.anod.car.home.utils.Version;
 
 public class UpdateService extends Service implements Runnable {
 
@@ -26,7 +27,9 @@ public class UpdateService extends Service implements Runnable {
 		}
 		final int N = appWidgetIds.length;
 
-		if (!Utils.isFreeVersion(getPackageName())) {
+		Version version = new Version(context);
+		
+		if (version.isProOrTrial()) {
 			boolean inCarEnabled = PreferencesStorage.isInCarModeEnabled(context);
 			if (inCarEnabled) {
 				final Intent updateIntent = new Intent(context, BroadcastService.class);

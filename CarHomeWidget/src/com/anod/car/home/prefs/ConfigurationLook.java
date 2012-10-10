@@ -16,12 +16,11 @@ import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.prefs.views.SeekBarPreference;
 import com.anod.car.home.utils.Utils;
+import com.anod.car.home.utils.Version;
 
 public class ConfigurationLook extends ConfigurationActivity {
 
 	public static final String CATEGORY_TRANSPARENT = "transparent-category";
-
-	private boolean mFreeVersion;
 
 	@Override
 	protected int getXmlResource() {
@@ -30,16 +29,14 @@ public class ConfigurationLook extends ConfigurationActivity {
 
 	@Override
 	protected void onCreateImpl(Bundle savedInstanceState) {
-		mFreeVersion = Utils.isFreeVersion(this.getPackageName());
-
 		Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
 
 		initIcon(prefs);
 		initFont(prefs);
-		initTransparent(mFreeVersion, prefs);
+		initTransparent(prefs);
 	}
 
-	private void initTransparent(boolean isFree, final Main prefs) {
+	private void initTransparent(final Main prefs) {
 		CheckBoxPreference setTrans = (CheckBoxPreference) findPreference(PreferencesStorage.TRANSPARENT_BTN_SETTINGS);
 		String key = PreferencesStorage.getName(PreferencesStorage.TRANSPARENT_BTN_SETTINGS, mAppWidgetId);
 		setTrans.setKey(key);
@@ -47,14 +44,9 @@ public class ConfigurationLook extends ConfigurationActivity {
 
 		CheckBoxPreference incarTrans = (CheckBoxPreference) findPreference(PreferencesStorage.TRANSPARENT_BTN_INCAR);
 
-		if (isFree) {
-			PreferenceCategory transCat = (PreferenceCategory) findPreference(CATEGORY_TRANSPARENT);
-			transCat.removePreference(incarTrans);
-		} else {
-			key = PreferencesStorage.getName(PreferencesStorage.TRANSPARENT_BTN_INCAR, mAppWidgetId);
-			incarTrans.setKey(key);
-			incarTrans.setChecked(prefs.isIncarTransparent());
-		}
+		key = PreferencesStorage.getName(PreferencesStorage.TRANSPARENT_BTN_INCAR, mAppWidgetId);
+		incarTrans.setKey(key);
+		incarTrans.setChecked(prefs.isIncarTransparent());
 	}
 
 

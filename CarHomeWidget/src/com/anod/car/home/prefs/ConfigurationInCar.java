@@ -40,6 +40,7 @@ import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
+import com.anod.car.home.utils.Version;
 
 public class ConfigurationInCar extends ConfigurationActivity {
 	private static final String SCREEN_BT_DEVICE = "bt-device-screen";
@@ -63,7 +64,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 	private PreferenceCategory mBluetoothDevicesCategory;
 	private BroadcastReceiver mBluetoothReceiver;
 
-	private boolean mFreeVersion;
+	private boolean mTrialExpired;
 
 	@Override
 	protected boolean isAppWidgetIdRequired() {
@@ -79,15 +80,16 @@ public class ConfigurationInCar extends ConfigurationActivity {
 	protected void onCreateImpl(Bundle savedInstanceState) {
 		setResult(RESULT_OK);
 
-		mFreeVersion = Utils.isFreeVersion(this.getPackageName());
+		Version version = new Version(this);
+		mTrialExpired = false;
+		
 		mContext = (Context) this;
 
-		if (mFreeVersion) {
+		initInCar();
+		if (version.isFree()) {
+			mTrialExpired = version.isTrialExpired();
 			initInCarFreeDialog();
-		} else {
-			initInCar();
 		}
-
 	}
 
 	@Override
