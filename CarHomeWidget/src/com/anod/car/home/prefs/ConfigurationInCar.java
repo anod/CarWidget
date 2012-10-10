@@ -38,6 +38,7 @@ import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 
 public class ConfigurationInCar extends ConfigurationActivity {
@@ -121,26 +122,39 @@ public class ConfigurationInCar extends ConfigurationActivity {
 			return initDialog;
 		case DIALOG_DONATE:
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.dialog_donate_title);
-			builder.setMessage(R.string.dialog_donate_message);
 			builder.setCancelable(true);
-			builder.setPositiveButton(R.string.dialog_donate_btn_yes, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					String url = DETAIL_MARKET_URL;
-					Uri uri = Uri.parse(String.format(url, PRO_PACKAGE_NAME));
-					Intent intent = new Intent(Intent.ACTION_VIEW);
-					intent.setData(uri);
-					startActivity(intent);
-					dialog.dismiss();
-				}
-			});
-			builder.setNegativeButton(R.string.dialog_donate_btn_no, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
+			
+			if (Utils.isProInstalled(this)) {
+				builder.setTitle(R.string.dialog_donate_title_install);
+				builder.setMessage(R.string.dialog_donate_message_installed);
+				builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+			} else {
+				builder.setTitle(R.string.dialog_donate_title);
+				builder.setMessage(R.string.dialog_donate_message);
+				builder.setPositiveButton(R.string.dialog_donate_btn_yes, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						String url = DETAIL_MARKET_URL;
+						Uri uri = Uri.parse(String.format(url, PRO_PACKAGE_NAME));
+						Intent intent = new Intent(Intent.ACTION_VIEW);
+						intent.setData(uri);
+						startActivity(intent);
+						dialog.dismiss();
+					}
+				});
+				builder.setNegativeButton(R.string.dialog_donate_btn_no, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});			
+			}
+			
 			return builder.create();
 		}
 		return super.onCreateDialog(id);
@@ -148,7 +162,24 @@ public class ConfigurationInCar extends ConfigurationActivity {
 
 	@SuppressLint("NewApi")
 	private void initInCarFreeDialog() {
-		String[] prefNames = { PreferencesStorage.INCAR_MODE_ENABLED, PreferencesStorage.POWER_BT_DISABLE, PreferencesStorage.POWER_BT_ENABLE, PreferencesStorage.HEADSET_REQUIRED, PreferencesStorage.POWER_REQUIRED, PreferencesStorage.SCREEN_TIMEOUT, PreferencesStorage.BRIGHTNESS, PreferencesStorage.BLUETOOTH, PreferencesStorage.ADJUST_VOLUME_LEVEL, PreferencesStorage.VOLUME_LEVEL, PreferencesStorage.ADJUST_WIFI, PreferencesStorage.AUTO_SPEAKER, PreferencesStorage.ACTIVATE_CAR_MODE, PreferencesStorage.AUTO_ANSWER, AUTORUN_APP_PREF };
+		String[] prefNames = { 
+			PreferencesStorage.INCAR_MODE_ENABLED, 
+			PreferencesStorage.POWER_BT_DISABLE, 
+			PreferencesStorage.POWER_BT_ENABLE, 
+			PreferencesStorage.HEADSET_REQUIRED, 
+			PreferencesStorage.POWER_REQUIRED, 
+			PreferencesStorage.SCREEN_TIMEOUT, 
+			PreferencesStorage.BRIGHTNESS, 
+			PreferencesStorage.BLUETOOTH, 
+			PreferencesStorage.ADJUST_VOLUME_LEVEL, 
+			PreferencesStorage.VOLUME_LEVEL, 
+			PreferencesStorage.ADJUST_WIFI, 
+			PreferencesStorage.AUTO_SPEAKER, 
+			PreferencesStorage.ACTIVATE_CAR_MODE, 
+			PreferencesStorage.AUTO_ANSWER, 
+			AUTORUN_APP_PREF,
+			PREF_NOTIF_SHORTCUTS
+		};
 		final PreferenceScreen prefScr = (PreferenceScreen) findPreference(SCREEN_BT_DEVICE);
 		prefScr.setEnabled(false);
 		for (String prefName : prefNames) {

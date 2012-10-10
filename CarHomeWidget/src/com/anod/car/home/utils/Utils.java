@@ -1,15 +1,13 @@
 package com.anod.car.home.utils;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +15,6 @@ import android.widget.Toast;
 
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.R;
-import com.anod.car.home.prefs.ShortcutEditActivity;
 
 
 public class Utils {
@@ -29,9 +26,24 @@ public class Utils {
 
 	
 	public static final String PACKAGE_FREE = "com.anod.car.home.free";
-
+	
 	public static boolean isFreeVersion(String packageName) {
 		return PACKAGE_FREE.equals(packageName);
+	}
+	
+	/**
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static boolean isProInstalled(Context context) {
+		try{
+		    ApplicationInfo info = context.getPackageManager().
+		            getApplicationInfo("com.anod.car.home.free", 0 );
+		    return true;
+		} catch( PackageManager.NameNotFoundException e ){
+		    return false;
+		}
 	}
 
 	public static void logd(String message) {
