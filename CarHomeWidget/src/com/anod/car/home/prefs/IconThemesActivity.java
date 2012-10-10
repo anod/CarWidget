@@ -38,6 +38,14 @@ public class IconThemesActivity extends AppsCacheActivity implements OnClickList
 			finish();
 		}
 		mRefresh = false;
+		
+		Button okButton = (Button)findViewById(R.id.btn_ok);
+		okButton.setOnClickListener(this);
+		Button downloadButton = (Button)findViewById(R.id.btn_download);
+		downloadButton.setOnClickListener(this);
+		Button cancelButton = (Button)findViewById(R.id.btn_cancel);
+		cancelButton.setOnClickListener(this);
+
 	}
 
 	@Override
@@ -103,16 +111,8 @@ public class IconThemesActivity extends AppsCacheActivity implements OnClickList
 	}
 
 	@Override
-	protected View getFooterView() {
-		View v = getLayoutInflater().inflate(R.layout.icon_theme_buttons, null);
-		Button okButton = (Button)v.findViewById(R.id.btn_ok);
-		okButton.setOnClickListener(this);
-		Button downloadButton = (Button)v.findViewById(R.id.btn_download);
-		downloadButton.setOnClickListener(this);
-		Button cancelButton = (Button)v.findViewById(R.id.btn_cancel);
-		cancelButton.setOnClickListener(this);
-
-		return v;
+	protected int getFooterViewId() {
+		return R.layout.icon_theme_buttons;
 	}
 	
 	@Override

@@ -30,7 +30,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.anod.car.home.R;
 import com.anod.car.home.actionbarcompat.ActionBarActivity;

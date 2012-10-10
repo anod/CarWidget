@@ -6,11 +6,13 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewStub;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.anod.car.home.CarWidgetApplication;
+import com.anod.car.home.R;
 import com.anod.car.home.appscache.AppsCacheAsyncTask.Callback;
 import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.model.AppsListCache.CacheEntry;
@@ -29,10 +31,12 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 		}
 		super.onCreate(savedInstanceState);
-		getListView().setOnItemClickListener(this);
-		View footerView = getFooterView();
-		if (footerView != null) {
-			getListView().addFooterView(footerView);
+		setContentView(R.layout.apps_cache_list);
+		getListView().setOnItemClickListener(this); 
+		int footerViewId = getFooterViewId();
+		if (footerViewId > 0) {
+			ViewStub panel = (ViewStub) findViewById(R.id.panel);
+			panel.setVisibility(View.VISIBLE);
 		}
 		onCreateImpl(savedInstanceState);
 		setResult(Activity.RESULT_OK);
@@ -96,8 +100,8 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 		return null;
 	}
 
-	protected View getFooterView() {
-		return null;
+	protected int getFooterViewId() {
+		return 0;
 	}
 
 }

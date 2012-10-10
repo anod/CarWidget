@@ -2,8 +2,8 @@
 <com.anod.car.home.prefs.views.RelativeLayoutCheckable xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal" >
+    android:gravity="center"
+>
 
     <ImageView
         android:id="@+id/app_icon"
@@ -19,12 +19,14 @@
         android:id="@android:id/text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/app_icon"
         android:checkMark="?android:attr/listChoiceIndicatorSingle"
         android:ellipsize="marquee"
         android:gravity="center_vertical"
         android:paddingLeft="16dip"
         android:paddingRight="16dip"
+        android:text="@string/app_name_pro"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </com.anod.car.home.prefs.views.RelativeLayoutCheckable>

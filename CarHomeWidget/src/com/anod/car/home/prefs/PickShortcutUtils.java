@@ -125,6 +125,7 @@ public class PickShortcutUtils {
 			switch (requestCode) {
 			case REQUEST_PICK_APPLICATION:
 				completeAddShortcut(data, true);
+				mActivity.dismissWaitDialog();
 				break;
 			case REQUEST_CREATE_SHORTCUT:
 				completeAddShortcut(data, false);
@@ -169,7 +170,6 @@ public class PickShortcutUtils {
 			refreshPreference(p);
 		}
 		mCurrentCellId = INVALID_CELL_ID;
-		mActivity.dismissWaitDialog();
 	}
 	
 
