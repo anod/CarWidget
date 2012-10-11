@@ -63,7 +63,8 @@ public class ConfigurationInCar extends ConfigurationActivity {
 	private PreferenceCategory mBluetoothDevicesCategory;
 	private BroadcastReceiver mBluetoothReceiver;
 
-	private boolean mTrialExpired;
+	private int mTrialsLeft = 0;
+	private boolean mTrialMessageShown = false;
 
 	@Override
 	protected boolean isAppWidgetIdRequired() {
@@ -80,13 +81,11 @@ public class ConfigurationInCar extends ConfigurationActivity {
 		setResult(RESULT_OK);
 
 		Version version = new Version(this);
-		mTrialExpired = false;
-		
 		mContext = (Context) this;
 
 		initInCar();
 		if (version.isFree()) {
-			mTrialExpired = version.isTrialExpired();
+			mTrialsLeft = version.getTrialTimesLeft();
 			initInCarFreeDialog();
 		}
 	}
@@ -135,9 +134,17 @@ public class ConfigurationInCar extends ConfigurationActivity {
 					}
 				});
 			} else {
-				builder.setTitle(R.string.dialog_donate_title);
-				builder.setMessage(R.string.dialog_donate_message);
-				builder.setPositiveButton(R.string.dialog_donate_btn_yes, new OnClickListener() {
+				int negativeRes = 0;
+				if (mTrialsLeft > 0) {
+					builder.setTitle(R.string.dialog_donate_title_trial);
+					builder.setMessage(getString(R.string.dialog_donate_message_trial, mTrialsLeft));
+					negativeRes = R.string.dialog_donate_btn_trial;
+				} else {
+					builder.setTitle(R.string.dialog_donate_title_expired);
+					builder.setMessage(R.string.dialog_donate_message_expired);
+					negativeRes = R.string.dialog_donate_btn_no;
+				}
+				builder.setNeutralButton(R.string.dialog_donate_btn_yes, new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						String url = DETAIL_MARKET_URL;
@@ -148,14 +155,14 @@ public class ConfigurationInCar extends ConfigurationActivity {
 						dialog.dismiss();
 					}
 				});
-				builder.setNegativeButton(R.string.dialog_donate_btn_no, new OnClickListener() {
+				builder.setNegativeButton(negativeRes, new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 					}
-				});			
+				});
 			}
-			
+			mTrialMessageShown = true;
 			return builder.create();
 		}
 		return super.onCreateDialog(id);
@@ -187,20 +194,29 @@ public class ConfigurationInCar extends ConfigurationActivity {
 			pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					showDialog(DIALOG_DONATE);
+					showTrialDialog();
 					return true;
 				}
+
 			});
 			pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 				@Override
 				public boolean onPreferenceClick(Preference preference) {
-					showDialog(DIALOG_DONATE);
+					showTrialDialog();
 					return true;
 				}
 			});
 		}
 	}
 
+
+	@SuppressWarnings("deprecation")
+	private void showTrialDialog() {
+		if (!mTrialMessageShown || mTrialsLeft == 0) {
+			showDialog(DIALOG_DONATE);
+		}
+	}
+	
 	private void initInCar() {
 		InCar incar = PreferencesStorage.loadInCar(this);
 		initBluetooth();
