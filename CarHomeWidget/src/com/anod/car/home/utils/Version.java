@@ -13,11 +13,12 @@ public class Version {
 	private int mTrialCounterCache = -1;
 	
 	
-	private static final String PACKAGE_FREE = "com.anod.car.home.free";
-	
+	private static final String FREE_PACKAGE_NAME = "com.anod.car.home.free";
+	public static final String PRO_PACKAGE_NAME = "com.anod.car.home.pro";
+
 	
 	public static boolean isFreeVersion(String packageName) {
-		return PACKAGE_FREE.equals(packageName);
+		return FREE_PACKAGE_NAME.equals(packageName);
 	}
 	
 	public Version(Context context) {
@@ -30,11 +31,11 @@ public class Version {
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 			mTrialCounterCache = prefs.getInt(PREF_TRIAL_TIMES, 0);
 		}
-		return MAX_TRIAL_TIMES - mTrialCounterCache;
+		return 0;//MAX_TRIAL_TIMES - mTrialCounterCache;
 	}
 	
 	public boolean isTrialExpired() {
-		return getTrialTimesLeft() < 0;
+		return getTrialTimesLeft() <= 0;
 	}
 	public boolean isFreeAndTrialExpired() {
 		return mIsFree && isTrialExpired();

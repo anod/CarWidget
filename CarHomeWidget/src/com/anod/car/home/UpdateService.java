@@ -12,11 +12,10 @@ import com.anod.car.home.appwidget.LauncherViewBuilder;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
 public class UpdateService extends Service implements Runnable {
-
+	
 	private void performUpdate(Context context, int[] appWidgetIds) {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 
@@ -29,18 +28,7 @@ public class UpdateService extends Service implements Runnable {
 
 		Version version = new Version(context);
 		
-		if (version.isProOrTrial()) {
-			boolean inCarEnabled = PreferencesStorage.isInCarModeEnabled(context);
-			if (inCarEnabled) {
-				final Intent updateIntent = new Intent(context, BroadcastService.class);
-				context.startService(updateIntent);
-			} else {
-				if (BroadcastService.sRegistred == true) {
-					final Intent updateIntent = new Intent(context, BroadcastService.class);
-					context.stopService(updateIntent);
-				}
-			}
-		}
+		registerBroadcastService(context, version.isProOrTrial());
 		// Perform this loop procedure for each App Widget that belongs to this
 		// provider
 		LauncherViewBuilder builder = new LauncherViewBuilder(context);
@@ -54,6 +42,19 @@ public class UpdateService extends Service implements Runnable {
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
 
+	}
+
+	private void registerBroadcastService(Context context, boolean isProOrTrial) {
+		boolean inCarEnabled = (isProOrTrial) ? PreferencesStorage.isInCarModeEnabled(context) : false;
+		if (inCarEnabled) {
+			final Intent updateIntent = new Intent(context, BroadcastService.class);
+			context.startService(updateIntent);
+		} else {
+			if (BroadcastService.sRegistred == true) {
+				final Intent updateIntent = new Intent(context, BroadcastService.class);
+				context.stopService(updateIntent);
+			}
+		}
 	}
 
 	@Override

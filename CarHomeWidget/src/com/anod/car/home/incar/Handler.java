@@ -201,7 +201,7 @@ public class Handler {
 			runApp(autorunApp,context);
 		}
 		String brightSetting = prefs.getBrightness();
-		if (brightSetting != PreferencesStorage.BRIGHTNESS_DEFAULT) {
+		if (!brightSetting.equals(PreferencesStorage.BRIGHTNESS_DISABLED)) {
 			adjustBrightness(brightSetting,context);
 		}
 	}	
@@ -231,7 +231,7 @@ public class Handler {
 			deactivateCarMode(context);
 		}
 		String brightSetting = prefs.getBrightness();
-		if (brightSetting != PreferencesStorage.BRIGHTNESS_DEFAULT) {
+		if (!brightSetting.equals(PreferencesStorage.BRIGHTNESS_DISABLED)) {
 			restoreBrightness(brightSetting,context);
 		}
 	}

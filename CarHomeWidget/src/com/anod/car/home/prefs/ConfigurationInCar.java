@@ -21,7 +21,6 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -38,6 +37,7 @@ import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
@@ -47,12 +47,8 @@ public class ConfigurationInCar extends ConfigurationActivity {
 	private static final String PREF_BT_SWITCH = "bt-switch";
 	private static final String PREF_NOTIF_SHORTCUTS = "notif-shortcuts";
 
-	private static final int DIALOG_DONATE = 2;
+	private static final int DIALOG_TRIAL = 2;
 	private static final int DIALOG_INIT = 3;
-
-	private static final String DETAIL_MARKET_URL = "market://details?id=%s";
-
-	private static final String PRO_PACKAGE_NAME = "com.anod.car.home.pro";
 
 	private static final String AUTORUN_APP_PREF = "autorun-app-choose";
 	private static final String AUTORUN_APP_DISABLED = "disabled";
@@ -86,7 +82,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 		initInCar();
 		if (version.isFree()) {
 			mTrialsLeft = version.getTrialTimesLeft();
-			initInCarFreeDialog();
+			showTrialDialog();
 		}
 	}
 
@@ -120,7 +116,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 				}
 			});
 			return initDialog;
-		case DIALOG_DONATE:
+		case DIALOG_TRIAL:
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setCancelable(true);
 			
@@ -147,13 +143,11 @@ public class ConfigurationInCar extends ConfigurationActivity {
 				builder.setNeutralButton(R.string.dialog_donate_btn_yes, new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						String url = DETAIL_MARKET_URL;
-						Uri uri = Uri.parse(String.format(url, PRO_PACKAGE_NAME));
-						Intent intent = new Intent(Intent.ACTION_VIEW);
-						intent.setData(uri);
+						Intent intent = IntentUtils.createProVersionIntent();
 						startActivity(intent);
 						dialog.dismiss();
 					}
+
 				});
 				builder.setNegativeButton(negativeRes, new OnClickListener() {
 					@Override
@@ -168,52 +162,10 @@ public class ConfigurationInCar extends ConfigurationActivity {
 		return super.onCreateDialog(id);
 	}
 
-	@SuppressLint("NewApi")
-	private void initInCarFreeDialog() {
-		String[] prefNames = { 
-			PreferencesStorage.INCAR_MODE_ENABLED, 
-			PreferencesStorage.POWER_BT_DISABLE, 
-			PreferencesStorage.POWER_BT_ENABLE, 
-			PreferencesStorage.HEADSET_REQUIRED, 
-			PreferencesStorage.POWER_REQUIRED, 
-			PreferencesStorage.SCREEN_TIMEOUT, 
-			PreferencesStorage.BRIGHTNESS, 
-			PreferencesStorage.BLUETOOTH, 
-			PreferencesStorage.ADJUST_VOLUME_LEVEL, 
-			PreferencesStorage.VOLUME_LEVEL, 
-			PreferencesStorage.ADJUST_WIFI, 
-			PreferencesStorage.AUTO_SPEAKER, 
-			PreferencesStorage.ACTIVATE_CAR_MODE, 
-			PreferencesStorage.AUTO_ANSWER, 
-			AUTORUN_APP_PREF,
-			PREF_NOTIF_SHORTCUTS
-		};
-
-		for (String prefName : prefNames) {
-			final Preference pref = (Preference) findPreference(prefName);
-			pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-				@Override
-				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					showTrialDialog();
-					return true;
-				}
-
-			});
-			pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-				@Override
-				public boolean onPreferenceClick(Preference preference) {
-					showTrialDialog();
-					return true;
-				}
-			});
-		}
-	}
-
-
 	@SuppressWarnings("deprecation")
 	private void showTrialDialog() {
 		if (!mTrialMessageShown || mTrialsLeft == 0) {
-			showDialog(DIALOG_DONATE);
+			showDialog(DIALOG_TRIAL);
 		}
 	}
 	

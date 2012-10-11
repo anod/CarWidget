@@ -31,7 +31,7 @@ public class PreferencesStorage {
 	public static final String SKIN_HOLO = "holo";
 	public static final String SKIN_BBB = "blackbearblanc";
 
-	public static final String BRIGHTNESS_DEFAULT = "default";
+	public static final String BRIGHTNESS_DISABLED = "disabled";
 	public static final String BRIGHTNESS_AUTO = "auto";
 	public static final String BRIGHTNESS_DAY = "day";
 	public static final String BRIGHTNESS_NIGHT = "night";
@@ -159,7 +159,7 @@ public class PreferencesStorage {
 		p.setAutoSpeaker(prefs.getBoolean(AUTO_SPEAKER, false));
 		p.setEnableBluetooth(prefs.getBoolean(BLUETOOTH, false));
 		p.setDisableScreenTimeout(prefs.getBoolean(SCREEN_TIMEOUT, false));
-		p.setBrightness(prefs.getString(BRIGHTNESS, BRIGHTNESS_DEFAULT));
+		p.setBrightness(prefs.getString(BRIGHTNESS, BRIGHTNESS_DISABLED));
 		p.setAdjustVolumeLevel(prefs.getBoolean(ADJUST_VOLUME_LEVEL, false));
 		p.setMediaVolumeLevel(prefs.getInt(VOLUME_LEVEL, DEFAULT_VOLUME_LEVEL));
 		p.setDisableWifi(prefs.getString(ADJUST_WIFI, WIFI_NOACTION));

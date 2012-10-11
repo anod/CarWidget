@@ -1,6 +1,7 @@
 package com.anod.car.home.incar;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -20,7 +21,9 @@ import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
+import com.anod.car.home.utils.Version;
 
 public class ModeService extends Service{
 	private static final String PREFIX_NOTIF = "notif";
@@ -38,14 +41,25 @@ public class ModeService extends Service{
 	public static String EXTRA_FORCE_STATE = "extra_force_state";
 	public static final int MODE_SWITCH_OFF = 1;
 	public static final int MODE_SWITCH_ON = 0;
+	private static final int EXPIRED_ID = 2;
 
-	@Override
-	public void onCreate() {
+
+	private void showExpiredNotification() {
+		Notification notification = new Notification();
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+		notification.icon = R.drawable.ic_stat_incar;
+		String notifTitle=getResources().getString(R.string.notif_expired);
+		String notifText=getResources().getString(R.string.notif_consider);
+		notification.tickerText = notifTitle;
+		notification.setLatestEventInfo(this, notifTitle, notifText, PendingIntent.getActivity(this, 0, new Intent(), 0));
 		
-		super.onCreate();
+		String ns = Context.NOTIFICATION_SERVICE;
+		NotificationManager notificationManager = (NotificationManager) getSystemService(ns);
+		notificationManager.notify(EXPIRED_ID, notification);
+		notificationManager.cancel(EXPIRED_ID);
 	}
-
-	private Notification createNotification() {
+	
+	private Notification createNotification(Version version) {
 		Intent notificationIntent = new Intent(this, ModeService.class);
 		notificationIntent.putExtra(EXTRA_MODE, MODE_SWITCH_OFF);
     	Uri data = Uri.parse("com.anod.car.home.pro://mode/0/");
@@ -58,11 +72,20 @@ public class ModeService extends Service{
 		notification.icon = R.drawable.ic_stat_incar;
 		if (Utils.IS_HONEYCOMB_OR_GREATER) {
 			RemoteViews contentView = createShortcuts();
+			if (version.isFree()) {
+				contentView.setTextViewText(R.id.text, getString(R.string.click_to_disable_trial, version.getTrialTimesLeft()));
+			}
 			notification.contentIntent = contentIntent;
 			notification.contentView = contentView;
 		} else {
-			String notifTitle=getResources().getString(R.string.incar_mode_enabled);
-			String notifText=getResources().getString(R.string.click_to_disable);
+			String notifTitle=getString(R.string.incar_mode_enabled);
+			String notifText;
+			if (version.isFree()) {
+				notifText = getString(R.string.click_to_disable_trial, version.getTrialTimesLeft());
+				notification.tickerText = getString(R.string.notif_activations_left, version.getTrialTimesLeft());
+			} else {
+				notifText=getString(R.string.click_to_disable);
+			}
 			notification.setLatestEventInfo(this, notifTitle, notifText, contentIntent);
 		}
 		return notification;
@@ -92,16 +115,18 @@ public class ModeService extends Service{
 	@Override
 	public void onDestroy() {
 		stopForeground(true);
-		InCar prefs = PreferencesStorage.loadInCar(this);
-		if (mForceState) {
-			Handler.forceState(prefs, false);
-		}
-		Handler.switchOff(prefs,this);
-        if (mPhoneListener != null) {
-        	detachPhoneListener();
-        }
-		sInCarMode = false;
-		requestWidgetsUpdate();
+		//if (sInCarMode) {
+			InCar prefs = PreferencesStorage.loadInCar(this);
+			if (mForceState) {
+				Handler.forceState(prefs, false);
+			}
+			Handler.switchOff(prefs,this);
+	        if (mPhoneListener != null) {
+	        	detachPhoneListener();
+	        }
+			sInCarMode = false;
+			requestWidgetsUpdate();
+		//}
 		super.onDestroy();
 	}
 
@@ -120,9 +145,16 @@ public class ModeService extends Service{
 		} else {
 			if (intent.getIntExtra(EXTRA_MODE, MODE_SWITCH_ON) == MODE_SWITCH_OFF) {
 				stopSelf();
-				return START_STICKY;
+				return START_NOT_STICKY;
 			}
 			mForceState = intent.getBooleanExtra(EXTRA_FORCE_STATE, false);
+		}
+		
+		Version version = new Version(this);
+		if (version.isFreeAndTrialExpired()) {
+			showExpiredNotification();
+			stopSelf();
+			return START_NOT_STICKY;
 		}
 		
 		InCar prefs = PreferencesStorage.loadInCar(this);
@@ -134,7 +166,7 @@ public class ModeService extends Service{
 		handlePhoneListener(prefs);
 		requestWidgetsUpdate();
 		
-		Notification notification = createNotification();
+		Notification notification = createNotification(version);
 		startForeground(NOTIFICATION_ID, notification);
 
 		// We want this service to continue running until it is explicitly
