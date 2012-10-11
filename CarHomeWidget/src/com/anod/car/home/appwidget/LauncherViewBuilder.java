@@ -141,7 +141,7 @@ public class LauncherViewBuilder {
 
 	private void setInCarButton(boolean isInCarTrans, String packageName, SkinProperties skinProp, RemoteViews views) {
 		
-		if (!mVersion.isProOrTrial() && PreferencesStorage.isInCarModeEnabled(mContext)) {
+		if (PreferencesStorage.isInCarModeEnabled(mContext)) {
 			views.setViewVisibility(R.id.btn_incar_switch, View.VISIBLE);
 			if (ModeService.sInCarMode == true) {
 				if (isInCarTrans) {
