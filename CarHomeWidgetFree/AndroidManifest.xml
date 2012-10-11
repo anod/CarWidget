@@ -128,18 +128,6 @@
         <activity
             android:name="com.anod.car.home.incar.ChangeBrightnessActivity"
             android:theme="@style/BrightnessTheme" />
-        <activity
-            android:name="com.anod.car.home.incar.SwitchInCarActivity"
-            android:clearTaskOnLaunch="true"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/switch_in_car_activity"
-            android:noHistory="true"
-            android:theme="@style/BrightnessTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         
         <service android:name="com.anod.car.home.incar.ModeService" />
         <service android:name="com.anod.car.home.incar.BroadcastService" />
