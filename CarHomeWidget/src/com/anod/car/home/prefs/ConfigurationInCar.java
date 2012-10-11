@@ -184,16 +184,16 @@ public class ConfigurationInCar extends ConfigurationActivity {
 
 		for (String prefName : prefNames) {
 			final Preference pref = (Preference) findPreference(prefName);
+			pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					showDialog(DIALOG_DONATE);
+					return true;
+				}
+			});
 			pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 				@Override
 				public boolean onPreferenceClick(Preference preference) {
-					if (preference instanceof CheckBoxPreference) {
-						((CheckBoxPreference) preference).setChecked(false);
-					} else if (preference instanceof ListPreference) {
-						((ListPreference) preference).getDialog().hide();
-					} else if (Utils.IS_ICS_OR_GREATER && preference instanceof SwitchPreference) {
-						((SwitchPreference) preference).setChecked(false);
-					}
 					showDialog(DIALOG_DONATE);
 					return true;
 				}

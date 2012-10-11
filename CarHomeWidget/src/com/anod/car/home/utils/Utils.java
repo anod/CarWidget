@@ -32,7 +32,7 @@ public class Utils {
 	public static boolean isProInstalled(Context context) {
 		try{
 		    ApplicationInfo info = context.getPackageManager().
-		            getApplicationInfo("com.anod.car.home.free", 0 );
+		            getApplicationInfo("com.anod.car.home.pro", 0 );
 		    return true;
 		} catch( PackageManager.NameNotFoundException e ){
 		    return false;
