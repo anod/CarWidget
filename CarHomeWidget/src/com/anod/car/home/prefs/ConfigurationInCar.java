@@ -182,8 +182,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 			AUTORUN_APP_PREF,
 			PREF_NOTIF_SHORTCUTS
 		};
-		final PreferenceScreen prefScr = (PreferenceScreen) findPreference(SCREEN_BT_DEVICE);
-		prefScr.setEnabled(false);
+
 		for (String prefName : prefNames) {
 			final Preference pref = (Preference) findPreference(prefName);
 			pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
