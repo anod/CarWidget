@@ -31,7 +31,7 @@ public class Version {
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 			mTrialCounterCache = prefs.getInt(PREF_TRIAL_TIMES, 0);
 		}
-		return 0;//MAX_TRIAL_TIMES - mTrialCounterCache;
+		return MAX_TRIAL_TIMES - mTrialCounterCache;
 	}
 	
 	public boolean isTrialExpired() {
