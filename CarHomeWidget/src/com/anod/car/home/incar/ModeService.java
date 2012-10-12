@@ -82,7 +82,7 @@ public class ModeService extends Service{
 			String notifText;
 			if (version.isFree()) {
 				notifText = getString(R.string.click_to_disable_trial, version.getTrialTimesLeft());
-				notification.tickerText = getString(R.string.notif_activations_left, version.getTrialTimesLeft());
+				notification.tickerText = getResources().getQuantityString(R.plurals.notif_activations_left, version.getTrialTimesLeft(), version.getTrialTimesLeft());
 			} else {
 				notifText=getString(R.string.click_to_disable);
 			}
@@ -165,6 +165,10 @@ public class ModeService extends Service{
 		Handler.switchOn(prefs,this);
 		handlePhoneListener(prefs);
 		requestWidgetsUpdate();
+		
+		if (version.isFree()) {
+			version.increaseTrialCounter();
+		}
 		
 		Notification notification = createNotification(version);
 		startForeground(NOTIFICATION_ID, notification);

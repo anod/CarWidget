@@ -132,8 +132,10 @@ public class ConfigurationInCar extends ConfigurationActivity {
 			} else {
 				int negativeRes = 0;
 				if (mTrialsLeft > 0) {
+					String activationsLeftText = getResources().getQuantityString(R.plurals.notif_activations_left, mTrialsLeft, mTrialsLeft);
+
 					builder.setTitle(R.string.dialog_donate_title_trial);
-					builder.setMessage(getString(R.string.dialog_donate_message_trial, mTrialsLeft));
+					builder.setMessage(activationsLeftText + getString(R.string.dialog_donate_message_trial));
 					negativeRes = R.string.dialog_donate_btn_trial;
 				} else {
 					builder.setTitle(R.string.dialog_donate_title_expired);

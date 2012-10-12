@@ -11,6 +11,7 @@ public class Version {
 	private Context mContext;
 	
 	private int mTrialCounterCache = -1;
+	private SharedPreferences mPrefs;
 	
 	
 	private static final String FREE_PACKAGE_NAME = "com.anod.car.home.free";
@@ -27,10 +28,7 @@ public class Version {
 	}
 
 	public int getTrialTimesLeft() {
-		if (mTrialCounterCache == -1) {
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-			mTrialCounterCache = prefs.getInt(PREF_TRIAL_TIMES, 0);
-		}
+		initTrialCounter();
 		return MAX_TRIAL_TIMES - mTrialCounterCache;
 	}
 	
@@ -51,8 +49,19 @@ public class Version {
 		}
 		return !isTrialExpired();
 	}
+
+	public void increaseTrialCounter() {
+		initTrialCounter();
+		mTrialCounterCache++;
+		mPrefs.edit().putInt(PREF_TRIAL_TIMES, mTrialCounterCache).commit();
+	}
 	
-	
+	private void initTrialCounter() {
+		if (mTrialCounterCache == -1) {
+			mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+			mTrialCounterCache = mPrefs.getInt(PREF_TRIAL_TIMES, 0);
+		}
+	}
 	
 	
 }
