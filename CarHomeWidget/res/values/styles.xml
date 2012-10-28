@@ -46,7 +46,7 @@
     <style name="AppTheme.Transparent" parent="AppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowShowWallpaper">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Activity</item>
     </style>
     <!-- Skins -->
     <style name="glass_btn">
