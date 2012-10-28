@@ -33,9 +33,9 @@
 	<string name="pref_font_size_summary">Select size of title</string>
 
 	<string name="dialog_donate_title_expired">Trial expired,</string>
-	<string name="dialog_donate_message_expired">This feature is available only in Car Widget Pro version. You can get it for $0.99 USD\n\n Would you like to get it now?</string>
+	<string name="dialog_donate_message_expired">This feature is available only in Car Widget Pro version.\n\n Would you like to get it now?</string>
 	<string name="dialog_donate_title_trial">Trial,</string>
-	<string name="dialog_donate_message_trial">\n\nUnlimimited InCar mode is available only in Car Widget Pro version. You can get it for $0.99 USD\n\n Would you like to get it now?</string>
+	<string name="dialog_donate_message_trial">\n\nUnlimimited InCar mode is available only in Car Widget Pro version.\n\n Would you like to get it now?</string>
 	<string name="dialog_donate_title_install">Pro version detected,</string>
 	<string name="dialog_donate_message_installed">Please add the new installed widget to the home screen in order to get access to the features of Pro version.\n\nCopy settings:\nYou can copy settings using "Backup/Restore" option. Free version of the widget is not required anymore.\n\nThank you.</string>
 	<string name="dialog_donate_btn_trial">Continue trial</string>
