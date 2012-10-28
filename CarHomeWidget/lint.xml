@@ -3,6 +3,7 @@
     <issue id="ContentDescription">
         <ignore path="res/layout-v11/notification.xml" />
         <ignore path="res/layout/holo.xml" />
+        <ignore path="res/layout/restore_item.xml" />
     </issue>
     <issue id="MissingTranslation">
         <ignore path="res/values/arrays_pref_values.xml" />

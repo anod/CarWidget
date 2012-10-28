@@ -41,11 +41,6 @@ public class ConfigurationBackup extends ConfigurationActivity {
 	private PreferencesBackupManager mBackupManager;
 	private String mLastBackupStr;
 
-	private static final int DATE_FORMAT = DateUtils.FORMAT_SHOW_DATE
-		| DateUtils.FORMAT_SHOW_WEEKDAY
-		| DateUtils.FORMAT_SHOW_TIME
-		| DateUtils.FORMAT_SHOW_YEAR
-	;
 
 	@Override
 	protected int getXmlResource() {
@@ -154,7 +149,7 @@ public class ConfigurationBackup extends ConfigurationActivity {
 		String summary;
 		long timeIncar = mBackupManager.getIncarTime();
 		if (timeIncar > 0) {
-			summary = DateUtils.formatDateTime(this, timeIncar, DATE_FORMAT);
+			summary = DateUtils.formatDateTime(this, timeIncar, PreferencesBackupManager.DATE_FORMAT);
 		} else {
 			summary = getString(R.string.never);
 		}
@@ -165,7 +160,7 @@ public class ConfigurationBackup extends ConfigurationActivity {
 		String summary;
 		long timeMain = mBackupManager.getMainTime();
 		if (timeMain > 0) {
-			summary = DateUtils.formatDateTime(this, timeMain, DATE_FORMAT);
+			summary = DateUtils.formatDateTime(this, timeMain, PreferencesBackupManager.DATE_FORMAT);
 		} else {
 			summary = getString(R.string.never);
 		}

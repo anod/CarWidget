@@ -13,6 +13,7 @@ import android.annotation.SuppressLint;
 import android.app.backup.BackupManager;
 import android.content.Context;
 import android.os.Environment;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -38,6 +39,11 @@ public class PreferencesBackupManager {
     private static final String BACKUP_MAIN_DIRNAME = "backup_main";
 	public static final String FILE_INCAR_JSON = "backup_incar.dat";
 	
+	public static final int DATE_FORMAT = DateUtils.FORMAT_SHOW_DATE
+			| DateUtils.FORMAT_SHOW_WEEKDAY
+			| DateUtils.FORMAT_SHOW_TIME
+			| DateUtils.FORMAT_SHOW_YEAR
+		;
 	/**
      * We serialize access to our persistent data through a global static
      * object.  This ensures that in the unlikely event of the our backup/restore

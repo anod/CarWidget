@@ -7,8 +7,8 @@
     android:paddingRight="?android:attr/scrollbarSize"
     >
 
-
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="6dip"
@@ -21,9 +21,18 @@
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:ellipsize="marquee"
-            android:fadingEdge="horizontal" />
+            android:fadingEdge="horizontal"
+            android:text="@string/backup_name_title" />
 
-    </RelativeLayout>
+        <TextView android:id="@android:id/text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:text="@string/backup_name_summary"/>
+    </LinearLayout>
 
     <ImageView 
     	android:id="@+id/apply_icon"

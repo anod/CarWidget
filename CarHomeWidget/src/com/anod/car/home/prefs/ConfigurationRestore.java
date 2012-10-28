@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -199,6 +200,10 @@ public class ConfigurationRestore extends ListActivity {
 			titleView.setTag(name);
 			titleView.setText(name);
 
+			TextView text1 = (TextView)v.findViewById(android.R.id.text2);
+			String timestamp = DateUtils.formatDateTime(mContext, entry.lastModified(), PreferencesBackupManager.DATE_FORMAT);
+			text1.setText(timestamp);
+			
 			titleView.setOnClickListener(mRestoreListener);
 			ImageView applyView = (ImageView) v.findViewById(R.id.apply_icon);
 			applyView.setTag(name);
@@ -212,6 +217,7 @@ public class ConfigurationRestore extends ListActivity {
 			return v;
 		}
 	}
+
 
 	private class RestoreClickListener implements View.OnClickListener {
 		@Override
