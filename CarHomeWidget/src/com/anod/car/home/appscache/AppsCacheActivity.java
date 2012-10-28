@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewStub;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.R;
@@ -35,7 +37,10 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 		getListView().setOnItemClickListener(this); 
 		int footerViewId = getFooterViewId();
 		if (footerViewId > 0) {
-			ViewStub panel = (ViewStub) findViewById(R.id.panel);
+			FrameLayout panel = (FrameLayout) findViewById(R.id.panel);
+			LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View footerView = inflater.inflate(R.layout.icon_theme_buttons, null);
+			panel.addView(footerView);
 			panel.setVisibility(View.VISIBLE);
 		}
 		onCreateImpl(savedInstanceState);

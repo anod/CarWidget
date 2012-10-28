@@ -8,7 +8,8 @@
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/panel" />
+        android:layout_above="@+id/panel"
+        android:layout_alignParentTop="true" />
 
     <ProgressBar
         android:id="@android:id/empty"
@@ -19,13 +20,12 @@
         android:layout_centerVertical="true"
      />
 
-    <ViewStub
+    <FrameLayout
         android:id="@+id/panel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" 
-        android:layout="@layout/icon_theme_buttons"
         android:visibility="gone"/>
  
 </RelativeLayout>
