@@ -149,8 +149,8 @@
 	<string name="backup">Backup</string>
 	<string name="restore">Restore</string>
 	
-	<string name="backup_current_widget">Backup current widget</string>
-	<string name="backup_incar_settings">Backup InCar settings</string>
+	<string name="backup_current_widget">Current widget</string>
+	<string name="backup_incar_settings">InCar settings</string>
 	
 	<string name="backup_name_title">Backup name:</string>
 	<string name="backup_name_summary">Please define name to identify backup of current widget</string>
@@ -196,4 +196,6 @@
 	<string name="cardock_text1">To clear current default application:\n1. Open default App Info\n2. Click on \"Clear defaults\" button</string>
 	<string name="cardock_text2">Next time Car Dock enabled choose \"Car Widget\" as a default application.</string>
 	<string name="system">System</string>
+	<string name="backup_path">Path</string>
+	<string name="open_folder">Open Folder</string>
 </resources>

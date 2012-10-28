@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:title="@string/pref_backup_title">
   <PreferenceCategory android:key="backup-main-category" android:title="@string/backup_current_widget">
 	<Preference 
 		android:key="backup-btn-main" 
@@ -30,4 +31,12 @@
 	/>
  
 	</PreferenceCategory>
+	
+  <PreferenceCategory android:title="@string/backup_path">
+	<Preference 
+		android:key="backup-path" 
+		android:title=""
+		android:summary="/sdcard/data/com.anod.car.home/backup"
+	/>
+      </PreferenceCategory>
 </PreferenceScreen>

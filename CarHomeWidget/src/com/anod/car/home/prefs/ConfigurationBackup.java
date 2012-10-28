@@ -1,5 +1,7 @@
 package com.anod.car.home.prefs;
 
+import java.io.File;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
@@ -7,11 +9,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceCategory;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +22,10 @@ import android.widget.Toast;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
-import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
 public class ConfigurationBackup extends ConfigurationActivity {
+	private static final String BACKUP_PATH = "backup-path";
 	private static final int REQUEST_RESTORE_MAIN = 1;
 	private static final String RESTORE_BTN_INCAR = "restore-btn-incar";
 	private static final String BACKUP_BTN_INCAR = "backup-btn-incar";
@@ -59,6 +61,23 @@ public class ConfigurationBackup extends ConfigurationActivity {
 
 		initInCar();
 		initBackup();
+		Preference backupPathPref = (Preference) findPreference(BACKUP_PATH);
+		final File backupFile = mBackupManager.getBackupDir();
+		backupPathPref.setSummary(backupFile.getAbsolutePath());
+		backupPathPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				Intent intent = new Intent();
+				intent.setAction("pl.solidexplorer.action.BROWSE_TO");
+				intent.setData(Uri.fromFile(backupFile));
+				try {
+					startActivity(intent);
+				} catch (Exception e) { }
+				return false;
+			}
+		});
+		
 		updateMainTime();
 		updateInCarTime();
 
