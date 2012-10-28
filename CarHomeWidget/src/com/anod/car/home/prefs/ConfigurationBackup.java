@@ -29,10 +29,10 @@ public class ConfigurationBackup extends ConfigurationActivity {
 	private static final String BACKUP_BTN_INCAR = "backup-btn-incar";
     private static final String RESTORE_BTN_MAIN = "restore-btn-main";
 	private static final String BACKUP_BTN_MAIN = "backup-btn-main";
-	private static final String INCAR_CATEGORY = "backup-incar-category";
 	
 	private static final int DIALOG_BACKUP_NAME=2;
-	
+	private static final int DIALOG_PRO = 3;
+
 	private static final int TYPE_MAIN = 1;
 	private static final int TYPE_INCAR = 2;
 	
@@ -90,6 +90,8 @@ public class ConfigurationBackup extends ConfigurationActivity {
 				public void onClick(DialogInterface dialog, int whichButton) {
 				}
 			}).create();
+		case DIALOG_PRO:
+			return TrialDialogs.buildProOnlyDialog(this);
 		}
 		return super.onCreateDialog(id);
 	}
@@ -130,10 +132,22 @@ public class ConfigurationBackup extends ConfigurationActivity {
 		});
 
 		Preference restore_incar = (Preference) findPreference(RESTORE_BTN_INCAR);
-		Intent intentInCar = new Intent(this, ConfigurationRestore.class);
-		intentInCar.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-		intentInCar.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_INCAR);
-		restore_incar.setIntent(intentInCar);
+		Version version = new Version(this);
+		if (version.isFree()) {
+			restore_incar.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+				
+				@Override
+				public boolean onPreferenceClick(Preference preference) {
+					showDialog(DIALOG_PRO);
+					return false;
+				}
+			});
+		} else {
+			Intent intentInCar = new Intent(this, ConfigurationRestore.class);
+			intentInCar.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+			intentInCar.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_INCAR);
+			restore_incar.setIntent(intentInCar);
+		}
 	}
 
 	private void updateInCarTime() {

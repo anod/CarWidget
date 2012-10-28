@@ -117,52 +117,17 @@ public class ConfigurationInCar extends ConfigurationActivity {
 			});
 			return initDialog;
 		case DIALOG_TRIAL:
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setCancelable(true);
-			
 			if (Utils.isProInstalled(this)) {
-				builder.setTitle(R.string.dialog_donate_title_install);
-				builder.setMessage(R.string.dialog_donate_message_installed);
-				builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
+				return TrialDialogs.buildProInstalledDialog(this);
 			} else {
-				int negativeRes = 0;
-				if (mTrialsLeft > 0) {
-					String activationsLeftText = getResources().getQuantityString(R.plurals.notif_activations_left, mTrialsLeft, mTrialsLeft);
-
-					builder.setTitle(R.string.dialog_donate_title_trial);
-					builder.setMessage(activationsLeftText + getString(R.string.dialog_donate_message_trial));
-					negativeRes = R.string.dialog_donate_btn_trial;
-				} else {
-					builder.setTitle(R.string.dialog_donate_title_expired);
-					builder.setMessage(R.string.dialog_donate_message_expired);
-					negativeRes = R.string.dialog_donate_btn_no;
-				}
-				builder.setNeutralButton(R.string.dialog_donate_btn_yes, new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Intent intent = IntentUtils.createProVersionIntent();
-						startActivity(intent);
-						dialog.dismiss();
-					}
-
-				});
-				builder.setNegativeButton(negativeRes, new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
+				mTrialMessageShown = true;
+				return TrialDialogs.buildTrialDialog(mTrialsLeft, this);
 			}
-			mTrialMessageShown = true;
-			return builder.create();
 		}
 		return super.onCreateDialog(id);
 	}
+
+
 
 	@SuppressWarnings("deprecation")
 	private void showTrialDialog() {
