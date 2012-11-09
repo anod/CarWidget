@@ -77,6 +77,9 @@ public class ModeService extends Service{
 			}
 			notification.contentIntent = contentIntent;
 			notification.contentView = contentView;
+			if (Utils.IS_JELLYBEAN_OR_GREATER) {
+				notification.priority = Notification.PRIORITY_MAX;
+			}
 		} else {
 			String notifTitle=getString(R.string.incar_mode_enabled);
 			String notifText;

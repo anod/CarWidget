@@ -23,6 +23,7 @@ public class Utils {
 
 	final public static boolean IS_HONEYCOMB_OR_GREATER = (Build.VERSION.SDK_INT >= 11);
 	final public static boolean IS_ICS_OR_GREATER = (Build.VERSION.SDK_INT >= 14);
+	final public static boolean IS_JELLYBEAN_OR_GREATER = (Build.VERSION.SDK_INT >= 16);;
 
 	/**
 	 * 
