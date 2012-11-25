@@ -127,6 +127,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
     public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.apply) {
 			requestWidgetUpdate();
+			cleanAppsCache();
 			finish();
 			return true;
 		}
@@ -211,11 +212,15 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	@Override
 	public void onBackPressed() {
 		requestWidgetUpdate();
+		cleanAppsCache();
+		super.onBackPressed();
+	}
+
+	private void cleanAppsCache() {
 		AppsListCache allAppsList = ((CarWidgetApplication) this.getApplicationContext()).getAppListCache();
 		if (allAppsList!=null) {
 			allAppsList.flush();
 		}
-		super.onBackPressed();
 	}
 
 	private void requestWidgetUpdate() {
