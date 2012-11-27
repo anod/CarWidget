@@ -1,0 +1,11 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:gravity="center_vertical"
+    android:drawablePadding="8dip"
+    android:paddingLeft="11dp"
+    android:paddingRight="11dp"
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp"
+ />

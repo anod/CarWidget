@@ -85,7 +85,12 @@
             android:name="com.anod.car.home.prefs.LookAndFeelActivity"
             android:theme="@style/AppTheme.Transparent"
         />
-
+        <activity
+            android:name="com.anod.car.home.prefs.ActivityPicker"
+            android:theme="@style/AppListTheme"
+            android:finishOnCloseSystemDialogs="true" />
+        
+        
         <receiver
             android:name="com.anod.car.home.LargeProvider"
             android:label="@string/app_name_pro" >
