@@ -173,28 +173,35 @@ public class PickShortcutUtils {
 		}
 		mCurrentCellId = INVALID_CELL_ID;
 	}
-	
-
 
 	private void processShortcut(Intent intent) {
 		// Handle case where user selected "Applications"
 		String applicationName = mActivity.getString(R.string.applications);
 		String carWidgetShortcut = mActivity.getString(R.string.car_widget_shortcuts);
 		String shortcutName = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
-		mCurrentCellId = INVALID_CELL_ID;
+		mCurrentCellId = intent.getIntExtra(EXTRA_CELL_ID, INVALID_CELL_ID);
 		if (applicationName != null && applicationName.equals(shortcutName)) {
 			Intent mainIntent = new Intent(mActivity, AllAppsActivity.class);
-			mCurrentCellId = intent.getIntExtra(EXTRA_CELL_ID, INVALID_CELL_ID);
 			startActivityForResultSafely(mainIntent, REQUEST_PICK_APPLICATION);
 		} else if (carWidgetShortcut != null && carWidgetShortcut.equals(shortcutName)) {
-		
+			showCarWidgetShortcut(mCurrentCellId);
 		} else {
-			mCurrentCellId = intent.getIntExtra(EXTRA_CELL_ID, INVALID_CELL_ID);
 			startActivityForResultSafely(intent, REQUEST_CREATE_SHORTCUT);
 		}
 	}
 
 
+	private void showCarWidgetShortcut(int cellPosition) {
+		CarWidgetShortcuts shortcuts = new CarWidgetShortcuts(mActivity);
+		Bundle bundle = shortcuts.prepareBundle(cellPosition);
+		Intent pickIntent = new Intent(mActivity, ActivityPicker.class);
+		pickIntent.putExtras(bundle);
+		pickIntent.putExtra(Intent.EXTRA_TITLE, mActivity.getString(R.string.select_shortcut_title));
+		
+		mActivity.startActivityForResult(pickIntent, REQUEST_PICK_SHORTCUT);
+	}
+	
+	
 	private void completeEditShortcut(Intent data) {
 		int cellId = data.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, INVALID_CELL_ID);
 		long shortcutId = data.getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);

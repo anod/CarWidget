@@ -50,9 +50,6 @@ public class ActivityPicker extends ListActivity {
 		Parcelable parcel = intent.getParcelableExtra(Intent.EXTRA_INTENT);
 		if (parcel instanceof Intent) {
 			mBaseIntent = (Intent) parcel;
-		} else {
-			mBaseIntent = new Intent(Intent.ACTION_MAIN, null);
-			mBaseIntent.addCategory(Intent.CATEGORY_DEFAULT);
 		}
 
 		String title = intent.getStringExtra(Intent.EXTRA_TITLE);
