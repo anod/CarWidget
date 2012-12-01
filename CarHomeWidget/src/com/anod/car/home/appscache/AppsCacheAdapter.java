@@ -17,11 +17,11 @@ import com.anod.car.home.model.AppsListCache.CacheEntry;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
 public class AppsCacheAdapter extends ArrayAdapter<CacheEntry> {
-	private AppsListCache mAppsListCache;
-	private Bitmap mDefaultIcon;
+	final private AppsListCache mAppsListCache;
+	final private Bitmap mDefaultIcon;
 
-	private int mResource;
-	private Context mContext; 
+	final private int mResource;
+	final private Context mContext; 
 	
 	public AppsCacheAdapter(Context context, int resource, List<CacheEntry> items, AppsListCache appsListCache) {
 		super(context, resource, items);

@@ -22,10 +22,10 @@ import com.anod.car.home.utils.IconPackUtils;
 import com.anod.car.home.utils.Utils;
 
 public class IconThemesActivity extends AppsCacheActivity implements OnClickListener {
-	private int mCurrentSelected = 0;
+	private int mCurrentSelected;
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private Main mPrefs;
-	private String mThemePackageName = null;
+	private String mThemePackageName;
 	private boolean mRefresh;
 	private static final String ADW_ICON_THEME_MARKET_URL = "market://search?q=ADW Theme";
 

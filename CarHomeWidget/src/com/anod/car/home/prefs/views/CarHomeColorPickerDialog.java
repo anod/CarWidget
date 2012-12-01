@@ -13,11 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.anod.car.home.R;
+import com.anod.car.home.utils.Utils;
 
 public class CarHomeColorPickerDialog extends ColorPickerDialog {
-	private Context mContext;
-	private ColorPickerDialog mDialog;
-	private boolean mAlphaSliderVisible = false;
+	private final Context mContext;
+	private final ColorPickerDialog mDialog;
+	private boolean mAlphaSliderVisible;
 
 	public CarHomeColorPickerDialog(Context context, int initialColor, final OnClickListener listner) {
 		super(context, initialColor);
@@ -58,7 +59,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
 	}
 
 	@Override
-	public void setAlphaSliderVisible(boolean visible) {
+	public final void setAlphaSliderVisible(boolean visible) {
 		super.setAlphaSliderVisible(visible);
 		mAlphaSliderVisible = visible;
 		if (visible) {
@@ -89,6 +90,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
 		try {
 			intValue = Color.parseColor("#" + hexStr);
 		} catch (IllegalArgumentException e) {
+			Utils.logd(e.getMessage());
 		}
 		if (!mAlphaSliderVisible) {
 			intValue = (intValue & 0x00FFFFFF) + 0xFF000000;

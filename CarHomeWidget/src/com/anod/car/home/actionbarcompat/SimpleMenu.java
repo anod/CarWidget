@@ -35,10 +35,10 @@ import java.util.ArrayList;
  */
 public class SimpleMenu implements Menu {
 
-    private Context mContext;
-    private Resources mResources;
+    final private Context mContext;
+    final private Resources mResources;
 
-    private ArrayList<SimpleMenuItem> mItems;
+    final private ArrayList<SimpleMenuItem> mItems;
 
     public SimpleMenu(Context context) {
         mContext = context;

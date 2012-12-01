@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.anod.car.home.R;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.UtilitiesBitmap;
+import com.anod.car.home.utils.Utils;
 
 public class ActivityPicker extends ListActivity {
 
@@ -111,7 +112,7 @@ public class ActivityPicker extends ListActivity {
 					Resources res = packageManager.getResourcesForApplication(iconResource.packageName);
 					icon = res.getDrawable(res.getIdentifier(iconResource.resourceName, null, null));
 				} catch (NameNotFoundException e) {
-					// Ignore
+					Utils.logw(e.getMessage());
 				}
 
 				items.add(new PickAdapter.Item(this, label, icon));
@@ -148,6 +149,8 @@ public class ActivityPicker extends ListActivity {
 	 * given {@link Intent}.
 	 */
 	protected static class PickAdapter extends BaseAdapter {
+		private final LayoutInflater mInflater;
+		private final List<Item> mItems;
 
 		/**
 		 * Item that appears in a {@link PickAdapter} list.
@@ -226,9 +229,6 @@ public class ActivityPicker extends ListActivity {
 			}
 		}
 
-		private final LayoutInflater mInflater;
-		private final List<Item> mItems;
-
 		/**
 		 * Create an adapter for the given items.
 		 */
@@ -262,16 +262,18 @@ public class ActivityPicker extends ListActivity {
 		 * {@inheritDoc}
 		 */
 		public View getView(int position, View convertView, ViewGroup parent) {
+			TextView textView;
 			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.pick_item, parent, false);
+				textView = (TextView)mInflater.inflate(R.layout.pick_item, parent, false);
+			} else {
+				textView = (TextView)convertView;
 			}
 
 			Item item = (Item) getItem(position);
-			TextView textView = (TextView) convertView;
 			textView.setText(item.label);
 			textView.setCompoundDrawablesWithIntrinsicBounds(item.icon, null, null, null);
 
-			return convertView;
+			return textView;
 		}
 	}
 }

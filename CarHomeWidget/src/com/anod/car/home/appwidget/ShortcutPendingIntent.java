@@ -12,10 +12,9 @@ import com.anod.car.home.prefs.Configuration;
 import com.anod.car.home.prefs.PickShortcutUtils;
 
 public class ShortcutPendingIntent implements LauncherViewBuilder.PendingIntentHelper {
-    public static final String INTENT_ACTION_CALL_PRIVILEGED = "android.intent.action.CALL_PRIVILEGED";
-    private Context mContext;
-    
-    
+	public static final String INTENT_ACTION_CALL_PRIVILEGED = "android.intent.action.CALL_PRIVILEGED";
+	final private Context mContext;
+
 	public ShortcutPendingIntent(Context context) {
 		mContext = context;
 	}
@@ -33,7 +32,7 @@ public class ShortcutPendingIntent implements LauncherViewBuilder.PendingIntentH
     	if (cellId != PickShortcutUtils.INVALID_CELL_ID) {
     		intent.putExtra(PickShortcutUtils.EXTRA_CELL_ID, cellId);
     	}
-    	String path = String.valueOf(appWidgetId) + " - " + String.valueOf(cellId);
+    	String path = appWidgetId + " - " + cellId;
     	Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
     	intent.setData(data);
     	intent.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
@@ -52,7 +51,7 @@ public class ShortcutPendingIntent implements LauncherViewBuilder.PendingIntentH
     		return PendingIntent.getActivity(mContext, 0 /* no requestCode */, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     	}
     	Intent launchIntent = new Intent(mContext, ShortcutActivity.class);
-    	String path = prefix + " - " + String.valueOf(position);
+    	String path = prefix + " - " + position;
     	Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
     	launchIntent.setData(data);
     	launchIntent.setAction(Intent.ACTION_MAIN);
@@ -74,8 +73,7 @@ public class ShortcutPendingIntent implements LauncherViewBuilder.PendingIntentH
 		onIntent.putExtra(ModeService.EXTRA_FORCE_STATE, true);
 		Uri data = Uri.parse("com.anod.car.home.pro://mode/1/1");
 		onIntent.setData(data);
-		PendingIntent contentIntent = PendingIntent.getService(mContext, 0, onIntent, 0);
-		return contentIntent;
+		return PendingIntent.getService(mContext, 0, onIntent, 0);
 	}
 
 	private PendingIntent getInCarOffIntent() {
@@ -84,7 +82,6 @@ public class ShortcutPendingIntent implements LauncherViewBuilder.PendingIntentH
 		offIntent.putExtra(ModeService.EXTRA_FORCE_STATE, true);
 		Uri data = Uri.parse("com.anod.car.home.pro://mode/0/1");
 		offIntent.setData(data);
-		PendingIntent contentIntent = PendingIntent.getService(mContext, 0, offIntent, 0);
-		return contentIntent;
+		return PendingIntent.getService(mContext, 0, offIntent, 0);
 	}
 }

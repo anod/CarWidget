@@ -12,12 +12,15 @@ import android.preference.PreferenceManager;
 
 public class WidgetSharedPreferences /* implements SharedPreferences */{
 
-	private SharedPreferences mPrefs;
+	private final SharedPreferences mPrefs;
 	private int mAppWidgetId;
 	private WidgetEditor mWidgetEdit;
 
-	public WidgetSharedPreferences(int appWidgetId, Context context) {
+	public WidgetSharedPreferences(Context context) {
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+	}
+	
+	public void setAppWidgetId(int appWidgetId) {
 		mAppWidgetId = appWidgetId;
 	}
 
@@ -92,14 +95,15 @@ public class WidgetSharedPreferences /* implements SharedPreferences */{
 
 	public ComponentName getComponentName(String key) {
 		String compString = getString(key, null);
-		if (compString == null)
+		if (compString == null) {
 			return null;
+		}
 		String[] compParts = compString.split("/");
 		return new ComponentName(compParts[0], compParts[1]);
 	}
 
 	public final class WidgetEditor implements Editor {
-		private Editor mEdit;
+		private final Editor mEdit;
 		private int mEditAppWidgetId;
 
 		public WidgetEditor(int appWidgetId, Editor edit) {

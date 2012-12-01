@@ -32,14 +32,16 @@ public class Utils {
 	 */
 	public static boolean isProInstalled(Context context) {
 		try{
-		    ApplicationInfo info = context.getPackageManager().
-		            getApplicationInfo("com.anod.car.home.pro", 0 );
+		    context.getPackageManager().getApplicationInfo("com.anod.car.home.pro", 0 );
 		    return true;
 		} catch( PackageManager.NameNotFoundException e ){
 		    return false;
 		}
 	}
 
+	public static void logw(String msg) {
+		Log.w(TAG, msg);
+	}
 	public static void logd(String message) {
 		if (BuildConfig.DEBUG) {
 			Log.d(TAG, message);
@@ -103,6 +105,6 @@ public class Utils {
 
 	public static void saveAppWidgetId(Bundle outState, int mAppWidgetId) {
 		outState.putInt("appWidgetId", mAppWidgetId);
-	}    
+	}
 	
 }

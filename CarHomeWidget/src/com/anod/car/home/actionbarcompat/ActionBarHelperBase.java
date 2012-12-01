@@ -162,13 +162,12 @@ public class ActionBarHelperBase extends ActionBarHelper {
 	 * .
 	 */
 	private View addActionItemCompatFromMenuItem(final MenuItem item) {
-		final int itemId = item.getItemId();
-
 		final ViewGroup actionBar = getActionBarCompat();
 		if (actionBar == null) {
 			return null;
 		}
 
+		final int itemId = item.getItemId();
 		// Create the button
 		ImageButton actionButton = new ImageButton(mActivity, null, itemId == android.R.id.home ? R.attr.actionbarCompatItemHomeStyle : R.attr.actionbarCompatItemStyle);
 		actionButton.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(itemId == android.R.id.home ? R.dimen.actionbar_compat_button_home_width : R.dimen.actionbar_compat_button_width), ViewGroup.LayoutParams.FILL_PARENT));
@@ -233,29 +232,22 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
 				boolean eof = false;
 				while (!eof) {
-					switch (eventType) {
-					case XmlPullParser.START_TAG:
+					if (eventType == XmlPullParser.START_TAG) {
 						if (!parser.getName().equals("item")) {
 							break;
 						}
-
 						itemId = parser.getAttributeResourceValue(MENU_RES_NAMESPACE, MENU_ATTR_ID, 0);
 						if (itemId == 0) {
 							break;
 						}
-
 						showAsAction = parser.getAttributeIntValue(MENU_RES_NAMESPACE, MENU_ATTR_SHOW_AS_ACTION, -1);
-
 						hasActionAlways = (showAsAction & MenuItem.SHOW_AS_ACTION_ALWAYS) == MenuItem.SHOW_AS_ACTION_ALWAYS;
 						hasActionIfRoom = (showAsAction & MenuItem.SHOW_AS_ACTION_IF_ROOM) == MenuItem.SHOW_AS_ACTION_IF_ROOM;
 						if (hasActionAlways || hasActionIfRoom) {
 							mActionItemIds.add(itemId);
 						}
-						break;
-
-					case XmlPullParser.END_DOCUMENT:
+					} else if (eventType == XmlPullParser.END_DOCUMENT) {
 						eof = true;
-						break;
 					}
 
 					eventType = parser.next();

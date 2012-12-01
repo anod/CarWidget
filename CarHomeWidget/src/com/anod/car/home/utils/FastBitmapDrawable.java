@@ -33,10 +33,12 @@ public class FastBitmapDrawable extends Drawable {
 
     @Override
     public void setAlpha(int alpha) {
+    	//Not supported
     }
 
     @Override
     public void setColorFilter(ColorFilter cf) {
+    	//Not Supported
     }
 
     @Override

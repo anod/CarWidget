@@ -37,12 +37,12 @@ public class ShortcutInfoUtils {
         info.title = name;
         info.intent = intent;
         
-        if (bitmap != null && bitmap instanceof Bitmap) {
+        if (bitmap instanceof Bitmap) {
             icon = UtilitiesBitmap.createIconBitmap(new FastBitmapDrawable((Bitmap)bitmap), context);
             info.setCustomIcon(icon);
         } else {
             Parcelable extra = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
-            if (extra != null && extra instanceof ShortcutIconResource) {
+            if (extra instanceof ShortcutIconResource) {
                 try {
                 	ShortcutIconResource iconResource = (ShortcutIconResource) extra;
                     final PackageManager packageManager = context.getPackageManager();
@@ -73,17 +73,16 @@ public class ShortcutInfoUtils {
      * If c is not null, then it will be used to fill in missing data like the title and icon.
      */
     public static ShortcutInfo infoFromApplicationIntent(Context context, Intent intent) {
-        Bitmap icon = null;
-        final ShortcutInfo info = new ShortcutInfo();
-
         ComponentName componentName = intent.getComponent();
         if (componentName == null) {
             return null;
         }
         Log.d("CarHomeWidget", "Component Name - " + componentName);
-        
+
         final PackageManager manager = context.getPackageManager();
-        
+        final ShortcutInfo info = new ShortcutInfo();
+        Bitmap icon = null;
+
         info.setActivity(componentName, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
         // TODO: See if the PackageManager knows about this case.  If it doesn't

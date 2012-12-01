@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.anod.car.home.utils.UtilitiesBitmap;
+import com.anod.car.home.utils.Utils;
 
 
 /**
@@ -203,7 +204,9 @@ public class ShortcutInfo implements Serializable {
 			if (intentDescription != null) {
 		        try {
 		        	intent = Intent.parseUri(intentDescription, 0);
-		        } catch (URISyntaxException e) { }
+		        } catch (URISyntaxException e) {
+		        	Utils.logd(e.getMessage());
+		        }
 	        }
 		}
 		

@@ -7,7 +7,7 @@ import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import android.content.Context;
 
 public class NotificationShortcutsModel extends AbstractShortcutsModel {
-	private Context mContext;
+	private final Context mContext;
 	public NotificationShortcutsModel(Context context) {
 		super(context);
 		mContext = context;

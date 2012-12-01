@@ -59,44 +59,38 @@ public class ShortcutEditActivity extends Activity {
     		finish();
     		return;
     	}
-        mModel = new LauncherModel();    	
-        mShortuctInfo = mModel.loadShortcut(this, shortcutId);
+        mModel = new LauncherModel(this);    	
+        mShortuctInfo = mModel.loadShortcut(shortcutId);
         mLabelEdit.setText(mShortuctInfo.title);
         mIconView.setImageBitmap(mShortuctInfo.getIcon());  
 	}
 	
 	protected Dialog onCreateDialog(int id) {
-	    switch(id) {
-	    	case DIALOG_ICON_MENU:
-		    	final CharSequence[] items = {
-		    		getString(R.string.icon_custom), getString(R.string.icon_adw_icon_pack)
-		    	};
-	
-		    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		    	builder.setTitle(getString(R.string.dialog_title_select));
-		    	builder.setItems(items, new DialogInterface.OnClickListener() {
-		    	    public void onClick(DialogInterface dialog, int item) {
-		    	    	iconDialogClick(item);
-		    	    }
-		    	});
-		    	
-		    	return builder.create();
-	    }
+	    if (id == DIALOG_ICON_MENU) {
+			final CharSequence[] items = {
+				getString(R.string.icon_custom), getString(R.string.icon_adw_icon_pack)
+			};
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(getString(R.string.dialog_title_select));
+			builder.setItems(items, new DialogInterface.OnClickListener() {
+			    public void onClick(DialogInterface dialog, int item) {
+			    	iconDialogClick(item);
+			    }
+			});
+			return builder.create();
+		}
 	    return null;
 	}
 
 	private void iconDialogClick(int item) {
 		Intent chooseIntent;
-		switch(item) {
-			case  PICK_CUSTOM_ICON:
-				chooseIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				Utils.startActivityForResultSafetly(chooseIntent, PICK_CUSTOM_ICON, this);
-			break;
-			case  PICK_ADW_ICON_PACK:
-				chooseIntent = new Intent();
-				IconPackUtils.fillAdwIconPackIntent(chooseIntent);
-				Utils.startActivityForResultSafetly(Intent.createChooser(chooseIntent, "Select icon pack"), PICK_ADW_ICON_PACK, this);
-			break;
+		if (item == PICK_CUSTOM_ICON) {
+			chooseIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+			Utils.startActivityForResultSafetly(chooseIntent, PICK_CUSTOM_ICON, this);
+		} else if (item == PICK_ADW_ICON_PACK) {
+			chooseIntent = new Intent();
+			IconPackUtils.fillAdwIconPackIntent(chooseIntent);
+			Utils.startActivityForResultSafetly(Intent.createChooser(chooseIntent, getString(R.string.select_icon_pack)), PICK_ADW_ICON_PACK, this);
 		}
 	}
 	
@@ -124,6 +118,16 @@ public class ShortcutEditActivity extends Activity {
         setIcon(icon);
 	}
 
+	/**
+	 * Called from view directly
+	 * @param view
+	 */
+	@SuppressWarnings("deprecation")
+	public void changeIcon(View view)
+	{
+		showDialog(DIALOG_ICON_MENU);
+	}
+	
 	private void setIcon(Bitmap icon)
 	{
         mCustomIcon = icon;
@@ -141,11 +145,6 @@ public class ShortcutEditActivity extends Activity {
 		String str = cursor.getString(0);
 		cursor.close();
 		return str;
-	}
-	
-	public void changeIcon(View view)
-	{
-		showDialog(DIALOG_ICON_MENU);
 	}
 	
 	public void clickedOk(View view)

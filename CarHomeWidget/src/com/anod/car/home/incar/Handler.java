@@ -18,8 +18,8 @@ import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
 
-
 public class Handler {
+	private static final String TAG = "CarHomeWidget";
 	private static final int BRIGHTNESS_MAX = 255;
 	private static final int BRIGHTNESS_NIGHT = 30;
 	private static final int BRIGHTNESS_DAY = BRIGHTNESS_MAX;
@@ -31,15 +31,19 @@ public class Handler {
 	private static boolean[] sPrefState = {false,false,false};
 	private static boolean[] sEventState = {false,false,false};
 
-	private static boolean sMode = false;	
-	private static boolean sWakeLocked = false;
+	private static boolean sMode;
+	private static boolean sWakeLocked;
 	private static int mCurrentBtState;
 	private static int mCurrentWiFiState;
 	private static int mCurrentVolume;
 	private static int mCurrentBrightness;
 	private static boolean mCurrentAutoBrightness;
 	private static PowerManager.WakeLock mWakeLock;
-		
+	/**
+	 * For thread safety
+	 */
+	private static final Object[] LOCK = new Object[0];
+	
 	public static void onBroadcastReceive(Context context, Intent intent) {
 		if (!PreferencesStorage.isInCarModeEnabled(context)) { // TODO remove it
 			return;
@@ -55,16 +59,16 @@ public class Handler {
 		updatePrefState(prefs);
 		updateEventState(prefs,intent);
 		for (int i=0; i<3; i++) {
-			Log.d("CarHomeWidget", "Pref state [" +i +"] : " + sPrefState[i]);	
-			Log.d("CarHomeWidget", "Event state [" +i +"] : " + sEventState[i]);	
+			Log.d(TAG, "Pref state [" +i +"] : " + sPrefState[i]);	
+			Log.d(TAG, "Event state [" +i +"] : " + sEventState[i]);	
 		}
 
 		boolean newMode = detectNewMode();
-		Log.d("CarHomeWidget", "New mode : " +newMode +" Car Mode:" + ModeService.sInCarMode);
-		if (ModeService.sInCarMode == false && newMode == true) {
+		Log.d(TAG, "New mode : " +newMode +" Car Mode:" + ModeService.sInCarMode);
+		if (!ModeService.sInCarMode && newMode) {
 	    	Intent service = new Intent(context, ModeService.class);
 	    	context.startService(service);
-		} else if (ModeService.sInCarMode == true && newMode == false) {
+		} else if (ModeService.sInCarMode && !newMode) {
 	    	Intent service = new Intent(context, ModeService.class);
 	    	context.stopService(service);
 		}
@@ -97,8 +101,9 @@ public class Handler {
 				return prefs.isBluetoothRequired();
 			case FLAG_HEADSET:
 				return prefs.isHeadsetRequired();
+			default:
+				throw new IllegalArgumentException("Unsupported");
 		}
-		throw new IllegalArgumentException("Unsupported");
 	}
 	
 	private static void updateEventState(InCar prefs, Intent intent ) {
@@ -153,9 +158,9 @@ public class Handler {
 	private static boolean detectNewMode() {
 		boolean newMode = sMode;
 		for (int i=0;i<sPrefState.length;i++) {
-			if (sPrefState[i] == true) {
+			if (sPrefState[i]) {
 				newMode = true;
-				if (sEventState[i] == false) {
+				if (!sEventState[i]) {
 					return false;
 				}
 			}
@@ -164,18 +169,14 @@ public class Handler {
 	}
 	
 	private static void onPowerConnected(InCar prefs) {
-		if (prefs.isEnableBluetoothOnPower()) {
-			if (Bluetooth.getState() != BluetoothAdapter.STATE_ON) {
-				Bluetooth.switchOn();
-			}
+		if (prefs.isEnableBluetoothOnPower() && Bluetooth.getState() != BluetoothAdapter.STATE_ON) {
+			Bluetooth.switchOn();
 		}
 	}
 
 	private static void onPowerDisconnected(InCar prefs) {
-		if (prefs.isDisableBluetoothOnPower()) {
-			if (Bluetooth.getState() != BluetoothAdapter.STATE_OFF) {
-				Bluetooth.switchOff();
-			}
+		if (prefs.isDisableBluetoothOnPower() && Bluetooth.getState() != BluetoothAdapter.STATE_OFF) {
+			Bluetooth.switchOff();
 		}
 	}
 	
@@ -193,7 +194,7 @@ public class Handler {
 		if (!prefs.getDisableWifi().equals(PreferencesStorage.WIFI_NOACTION)) {
 			disableWifi(context);
 		}
-		if (prefs.activateCarMode()) {
+		if (prefs.isActivateCarMode()) {
 			activateCarMode(context);
 		}
 		ComponentName autorunApp = prefs.getAutorunApp();
@@ -227,7 +228,7 @@ public class Handler {
 		if (prefs.getDisableWifi().equals(PreferencesStorage.WIFI_TURNOFF)) {
 			restoreWiFi(context);
 		}
-		if (prefs.activateCarMode()) {
+		if (prefs.isActivateCarMode()) {
 			deactivateCarMode(context);
 		}
 		String brightSetting = prefs.getBrightness();
@@ -277,13 +278,14 @@ public class Handler {
 
 	private static void acquireWakeLock(Context context) {
 		PowerManager pw = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-		mWakeLock = pw.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "CarHomeWidget");
+		mWakeLock = pw.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, TAG);
 
-		if (mWakeLock != null && !sWakeLocked && !mWakeLock.isHeld()) {
-			mWakeLock.acquire();
-			sWakeLocked = true;
+		synchronized(LOCK) {
+			if (mWakeLock != null && !sWakeLocked && !mWakeLock.isHeld()) {
+				mWakeLock.acquire();
+				sWakeLocked = true;
+			}
 		}
-		 
 	}
 	
 	private static void adjustBrightness(String brightSetting,Context context) {
@@ -313,7 +315,7 @@ public class Handler {
 		}
 		
 		if (newBrightLevel == -1) {
-			Log.d("CarHomeWidget", "Wrong brightness setting Mode : "+brightSetting+" Level : "+newBrightLevel);
+			Log.d(TAG, "Wrong brightness setting Mode : "+brightSetting+" Level : "+newBrightLevel);
 			return;
 		}
 		
@@ -328,7 +330,6 @@ public class Handler {
     }
 
 	private static boolean restoreBrightness(String brightSetting,Context context) {
-		ContentResolver cr = context.getContentResolver();
 		if (mCurrentAutoBrightness && PreferencesStorage.BRIGHTNESS_AUTO.equals(brightSetting)) {
 			return false;
 		}
@@ -336,6 +337,7 @@ public class Handler {
 		if (mCurrentAutoBrightness) {
 			newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
 		}
+		ContentResolver cr = context.getContentResolver();
 		android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode);
 		android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS, mCurrentBrightness);
 		
@@ -362,11 +364,13 @@ public class Handler {
 	}
 	
 	private static void releaseWakeLock() {
-		if (mWakeLock != null && sWakeLocked && mWakeLock.isHeld()) {
-			mWakeLock.release();
-			sWakeLocked = false;
+		synchronized (LOCK) {
+			if (mWakeLock != null && sWakeLocked && mWakeLock.isHeld()) {
+				mWakeLock.release();
+				sWakeLocked = false;
+			}
+			mWakeLock = null;
 		}
-		mWakeLock = null;
 	}
 	
 	private static void sendBrightnessIntent(int newBrightLevel, Context context) {

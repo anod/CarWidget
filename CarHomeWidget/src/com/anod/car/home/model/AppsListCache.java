@@ -18,12 +18,17 @@ import android.widget.ImageView;
 
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.utils.UtilitiesBitmap;
+import com.anod.car.home.utils.Utils;
 
 /**
  * Cache of application icons. Icons can be made from any thread.
  */
 public class AppsListCache {
 	private static final int INITIAL_ICON_CACHE_CAPACITY = 50;
+	private final ArrayList<CacheEntry> mCache = new ArrayList<CacheEntry>(INITIAL_ICON_CACHE_CAPACITY);
+
+	private final CarWidgetApplication mContext;
+	private final PackageManager mPackageManager;
 
 	public static class CacheEntry {
 		public ComponentName componentName;
@@ -32,10 +37,6 @@ public class AppsListCache {
 		public String activityName;
 	}
 
-	private final ArrayList<CacheEntry> mCache = new ArrayList<CacheEntry>(INITIAL_ICON_CACHE_CAPACITY);
-
-	private final CarWidgetApplication mContext;
-	private final PackageManager mPackageManager;
 
 	public AppsListCache(CarWidgetApplication context) {
 		mContext = context;
@@ -112,7 +113,7 @@ public class AppsListCache {
 			d = mPackageManager.getActivityIcon(entry.componentName);
 			entry.icon = UtilitiesBitmap.createIconBitmap(d, mContext);
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
+			Utils.logd(e.getMessage());
 		}
 		return entry.icon;
 	}
@@ -122,7 +123,8 @@ public class AppsListCache {
 			imageView.setImageBitmap(entry.icon);
 			imageView.setVisibility(View.VISIBLE);
 			return;
-		} else if (entry.componentName == null) {
+		}
+		if (entry.componentName == null) {
 			imageView.setVisibility(View.INVISIBLE);
 			return;
 		}
@@ -141,7 +143,7 @@ public class AppsListCache {
 	}
 
 	private static class ImageViewHandler extends Handler {
-		private ImageView mImageView;
+		private final ImageView mImageView;
 		
 		public ImageViewHandler(ImageView imageView) {
 			super();

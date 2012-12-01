@@ -8,11 +8,6 @@ public class CarWidgetApplication extends Application {
 	public AppsListCache mAppListCache;
 	public AppsListCache mIconThemesCache;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
 	public AppsListCache getAppListCache() {
 		return mAppListCache;
 	}

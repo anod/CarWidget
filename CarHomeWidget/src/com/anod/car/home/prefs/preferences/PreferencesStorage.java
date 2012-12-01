@@ -2,6 +2,7 @@ package com.anod.car.home.prefs.preferences;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -90,7 +91,8 @@ public class PreferencesStorage {
 	private static final String DELIMETER_PACKAGES = "\n";
 
 	public static Main loadMain(Context context, int appWidgetId) {
-		WidgetSharedPreferences prefs = new WidgetSharedPreferences(appWidgetId, context);
+		WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
+		prefs.setAppWidgetId(appWidgetId);
 		Resources res = context.getResources();
 
 		Main p = new Main();
@@ -114,7 +116,9 @@ public class PreferencesStorage {
 	}
 
 	public static void saveMain(Context context, Main prefs, int appWidgetId) {
-		WidgetSharedPreferences p = new WidgetSharedPreferences(appWidgetId, context);
+		WidgetSharedPreferences p = new WidgetSharedPreferences(context);
+		p.setAppWidgetId(appWidgetId);
+		
 		WidgetEditor editor = p.edit();
 
 		editor.putString(SKIN, prefs.getSkin());
@@ -195,7 +199,7 @@ public class PreferencesStorage {
 		editor.putBoolean(ADJUST_VOLUME_LEVEL, prefs.isAdjustVolumeLevel());
 		editor.putInt(VOLUME_LEVEL, prefs.getMediaVolumeLevel());
 		editor.putString(ADJUST_WIFI, prefs.getDisableWifi());
-		editor.putBoolean(ACTIVATE_CAR_MODE, prefs.activateCarMode());
+		editor.putBoolean(ACTIVATE_CAR_MODE, prefs.isActivateCarMode());
 		editor.putString(AUTO_ANSWER, prefs.getAutoAnswer());
 
 		ComponentName autorunApp = prefs.getAutorunApp();
@@ -241,7 +245,7 @@ public class PreferencesStorage {
 	public static void saveBtDevices(Context context, HashMap<String, String> devices) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		Editor editor = prefs.edit();
-		if (devices == null || devices.size() == 0) {
+		if (devices == null || devices.isEmpty()) {
 			editor.remove(BLUETOOTH_DEVICE_ADDRESSES);
 		} else {
 			String addrStr = TextUtils.join(",", devices.values());
@@ -292,12 +296,14 @@ public class PreferencesStorage {
 	}
 
 	public static boolean isFirstTime(Context context, int appWidgetId) {
-		WidgetSharedPreferences prefs = new WidgetSharedPreferences(appWidgetId, context);
+		WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
+		prefs.setAppWidgetId(appWidgetId);
 		return prefs.getBoolean(FIRST_TIME, true);
 	}
 
 	public static void setFirstTime(boolean value, Context context, int appWidgetId) {
-		WidgetSharedPreferences prefs = new WidgetSharedPreferences(appWidgetId, context);
+		WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
+		prefs.setAppWidgetId(appWidgetId);
 		WidgetEditor editor = prefs.edit();
 		editor.putBoolean(FIRST_TIME, value);
 		editor.commit();
@@ -317,8 +323,8 @@ public class PreferencesStorage {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		long curShortcutId = preferences.getLong(key, ShortcutInfo.NO_ID);
 		if (curShortcutId != ShortcutInfo.NO_ID) {
-			LauncherModel model = new LauncherModel();
-			model.deleteItemFromDatabase(context, curShortcutId);
+			LauncherModel model = new LauncherModel(context);
+			model.deleteItemFromDatabase(curShortcutId);
 		}
 		Editor editor = preferences.edit();
 		editor.putLong(key, shortcutId);
@@ -352,10 +358,11 @@ public class PreferencesStorage {
 		return prefs.getBoolean(INCAR_MODE_ENABLED, false);
 	}
 
-	public static void DropWidgetSettings(Context context, int[] appWidgetIds) {
-		LauncherModel model = new LauncherModel();
+	public static void dropWidgetSettings(Context context, int[] appWidgetIds) {
+		LauncherModel model = new LauncherModel(context);
+		WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
 		for (int appWidgetId : appWidgetIds) {
-			WidgetSharedPreferences prefs = new WidgetSharedPreferences(appWidgetId, context);
+			prefs.setAppWidgetId(appWidgetId);
 			WidgetEditor edit = prefs.edit();
 			edit.remove(SKIN);
 			edit.remove(BG_COLOR);
@@ -374,7 +381,7 @@ public class PreferencesStorage {
 				String key = PreferencesStorage.getLaunchComponentKey(i);
 				long curShortcutId = prefs.getLong(key, ShortcutInfo.NO_ID);
 				if (curShortcutId != ShortcutInfo.NO_ID) {
-					model.deleteItemFromDatabase(context, curShortcutId);
+					model.deleteItemFromDatabase(curShortcutId);
 				}
 				edit.remove(key);
 			}
@@ -398,7 +405,7 @@ public class PreferencesStorage {
 		edit.commit();
 	}
 
-	public static void DropSettings(Context context) {
+	public static void dropSettings(Context context) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		Editor edit = prefs.edit();
 
@@ -419,12 +426,12 @@ public class PreferencesStorage {
 		edit.remove(ACTIVATE_CAR_MODE);
 
 		if (Utils.IS_HONEYCOMB_OR_GREATER) {
-			LauncherModel model = new LauncherModel();
+			LauncherModel model = new LauncherModel(context);
 			for (int i = 0; i < NOTIFICATION_COMPONENT_NUMBER; i++) {
 				String key = getNotifComponentName(i);
 				long curShortcutId = prefs.getLong(key, ShortcutInfo.NO_ID);
 				if (curShortcutId != ShortcutInfo.NO_ID) {
-					model.deleteItemFromDatabase(context, curShortcutId);
+					model.deleteItemFromDatabase(curShortcutId);
 				}
 				edit.remove(key);
 			}
@@ -441,7 +448,7 @@ public class PreferencesStorage {
 	}
 
 	public static String getNotifComponentName(int position) {
-		return String.format(NOTIF_COMPONENT, position);
+		return String.format(Locale.US, NOTIF_COMPONENT, position);
 	}
 
 	public static boolean restoreForceState(Context context) {

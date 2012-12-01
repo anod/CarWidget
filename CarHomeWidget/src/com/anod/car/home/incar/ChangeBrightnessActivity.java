@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 public class ChangeBrightnessActivity extends Activity {
-	public static String EXTRA_BRIGHT_LEVEL = "bright_level";
+	public final static String EXTRA_BRIGHT_LEVEL = "bright_level";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

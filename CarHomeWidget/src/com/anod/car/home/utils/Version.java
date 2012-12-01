@@ -7,8 +7,8 @@ import android.preference.PreferenceManager;
 public class Version {
 	private static final int MAX_TRIAL_TIMES = 10;
 	private static final String PREF_TRIAL_TIMES = "trial-times";
-	private boolean mIsFree;
-	private Context mContext;
+	private final boolean mIsFree;
+	private final Context mContext;
 	
 	private int mTrialCounterCache = -1;
 	private SharedPreferences mPrefs;

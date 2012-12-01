@@ -17,7 +17,7 @@ public class SwitchInCarActivity extends Activity {
 		if (PreferencesStorage.isInCarModeEnabled(this)) {
 			Uri data;
 			Intent service = new Intent(this, ModeService.class);
-			if (ModeService.sInCarMode == true) {
+			if (ModeService.sInCarMode) {
 				service.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_OFF);
 				service.putExtra(ModeService.EXTRA_FORCE_STATE, true);		
 		    	data = Uri.parse("com.anod.car.home.pro://mode/0/2");

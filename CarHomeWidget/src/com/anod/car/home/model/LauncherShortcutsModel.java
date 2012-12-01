@@ -11,8 +11,8 @@ import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.IntentUtils;
 
 public class LauncherShortcutsModel extends AbstractShortcutsModel {
-	private Context mContext;
-	private int mAppWidgetId;
+	private final Context mContext;
+	private final int mAppWidgetId;
 	
 	public LauncherShortcutsModel(Context context, int appWidgetId) {
 		super(context);
@@ -58,12 +58,13 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 		};
 		
 		int cellId = 0;
+		Intent data = new Intent();
 		for (int i = 0; i < list.length; i++) {
 			ShortcutInfo info = null;
-			Intent data = new Intent();
 			data.setComponent(list[i]);
-			if (!IntentUtils.isIntentAvailable(mContext, data))
+			if (!IntentUtils.isIntentAvailable(mContext, data)) {
 				continue;
+			}
 			Log.d("CarHomeWidget", "Init shortcut - " + info + " Widget - " + appWidgetId);
 			info = ShortcutInfoUtils.infoFromApplicationIntent(mContext, data);
 			saveShortcut(cellId, info);

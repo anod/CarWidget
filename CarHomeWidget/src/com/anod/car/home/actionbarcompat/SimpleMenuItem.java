@@ -34,14 +34,14 @@ import android.view.View;
  */
 public class SimpleMenuItem implements MenuItem {
 
-    private SimpleMenu mMenu;
+   final private SimpleMenu mMenu;
 
     private final int mId;
     private final int mOrder;
     private CharSequence mTitle;
     private CharSequence mTitleCondensed;
     private Drawable mIconDrawable;
-    private int mIconResId = 0;
+    private int mIconResId;
     private boolean mEnabled = true;
 
     public SimpleMenuItem(SimpleMenu menu, int id, int order, CharSequence title) {
@@ -78,7 +78,7 @@ public class SimpleMenuItem implements MenuItem {
     }
 
     public CharSequence getTitleCondensed() {
-        return mTitleCondensed != null ? mTitleCondensed : mTitle;
+        return mTitleCondensed == null ? mTitle : mTitleCondensed;
     }
 
     public MenuItem setIcon(Drawable icon) {

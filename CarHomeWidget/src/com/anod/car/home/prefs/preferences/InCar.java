@@ -16,26 +16,26 @@ public class InCar implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private boolean inCarEnabled = false;
-	private boolean powerRequired = false;
-	private boolean headsetRequired = false;
-	private boolean bluetoothRequired = false;
-	private HashMap<String,String> btDevices = null;
+	private boolean inCarEnabled;
+	private boolean powerRequired;
+	private boolean headsetRequired ;
+	private boolean bluetoothRequired;
+	private HashMap<String,String> btDevices;
 	
-	private boolean disableBluetoothOnPower = false;
-	private boolean enableBluetoothOnPower = false;
+	private boolean disableBluetoothOnPower;
+	private boolean enableBluetoothOnPower;
 	
-	private boolean disableScreenTimeout = false;
-	private boolean adjustVolumeLevel = false;
+	private boolean disableScreenTimeout;
+	private boolean adjustVolumeLevel;
 	private int mediaVolumeLevel = 100;
-	private boolean enableBluetooth = false;
+	private boolean enableBluetooth;
 	private String autoAnswer = PreferencesStorage.AUTOANSWER_DISABLED;
 	private String brightness = PreferencesStorage.BRIGHTNESS_AUTO;
 	private String disableWifi = PreferencesStorage.WIFI_NOACTION;
-	private boolean autoSpeaker = false;
-	private boolean activateCarMode = false;
+	private boolean autoSpeaker;
+	private boolean activateCarMode;
 	
-	transient private ComponentName autorunApp = null;
+	transient private ComponentName autorunApp;
 	
 	
 	public InCar() {
@@ -72,7 +72,7 @@ public class InCar implements Serializable {
 	}
 	public void setBtDevices(HashMap<String, String> btDevices) {
 		this.btDevices = btDevices;
-		this.bluetoothRequired = (btDevices != null && btDevices.size() > 0);
+		this.bluetoothRequired = (btDevices != null && !btDevices.isEmpty());
 	}
 	
 	public boolean isPowerRequired() {
@@ -166,7 +166,7 @@ public class InCar implements Serializable {
 	 * Activate or not built-in android Car Mode
 	 * @return
 	 */
-	public boolean activateCarMode() {
+	public boolean isActivateCarMode() {
 		return this.activateCarMode;
 	}
 	public void setActivateCarMode(boolean activate) {

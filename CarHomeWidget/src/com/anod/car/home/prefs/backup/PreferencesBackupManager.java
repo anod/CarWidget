@@ -24,6 +24,7 @@ import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.ShortcutsMain;
+import com.anod.car.home.utils.Utils;
 
 public class PreferencesBackupManager {
 	private static final String BACKUP_PACKAGE = "com.anod.car.home.pro";
@@ -53,9 +54,9 @@ public class PreferencesBackupManager {
      * <p>Curious but true: a zero-length array is slightly lighter-weight than
      * merely allocating an Object, and can still be synchronized on.
      */
-    static final Object[] sDataLock = new Object[0];
+    static final Object[] DATA_LOCK = new Object[0];
 
-    private Context mContext;
+    private final Context mContext;
     
     public PreferencesBackupManager(Context context) {
     	mContext = context;
@@ -113,7 +114,7 @@ public class PreferencesBackupManager {
         ShortcutsMain prefs = new ShortcutsMain(convertToHashMap(smodel.getShortcuts()), main);
         
         try {
-            synchronized (PreferencesBackupManager.sDataLock) {
+            synchronized (PreferencesBackupManager.DATA_LOCK) {
             	FileOutputStream fos = new FileOutputStream(dataFile);
             	ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(prefs);
@@ -121,7 +122,7 @@ public class PreferencesBackupManager {
                 Log.d("CarHomeWidget",oos.toString());
             }
 		} catch (IOException e) {
-			e.printStackTrace();
+			Utils.logd(e.getMessage());
 			return ERROR_FILE_WRITE;
 		}
 		saveDir.setLastModified(System.currentTimeMillis());
@@ -152,14 +153,14 @@ public class PreferencesBackupManager {
   
         InCar prefs = PreferencesStorage.loadInCar(mContext);
         try {
-            synchronized (PreferencesBackupManager.sDataLock) {
+            synchronized (PreferencesBackupManager.DATA_LOCK) {
             	FileOutputStream fos = new FileOutputStream(dataFile);
             	ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(prefs);
                 oos.close();
             }
 		} catch (IOException e) {
-			e.printStackTrace();
+			Utils.logd(e.getMessage());
 			return ERROR_FILE_WRITE;
 		}
 		BackupManager.dataChanged(BACKUP_PACKAGE);
@@ -181,17 +182,17 @@ public class PreferencesBackupManager {
         
         InCar prefs = null;
         try {
-            synchronized (PreferencesBackupManager.sDataLock) {
+            synchronized (PreferencesBackupManager.DATA_LOCK) {
             	FileInputStream fis = new FileInputStream(dataFile);
             	ObjectInputStream is = new ObjectInputStream(fis);
                 prefs = (InCar) is.readObject();
                 is.close();
             }
 		} catch (IOException e) {
-			e.printStackTrace();
+			Utils.logd(e.getMessage());
 			return ERROR_FILE_READ;
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			Utils.logd(e.getMessage());
 			return ERROR_DESERIALIZE;
 		}
 		//version 1.42
@@ -218,17 +219,17 @@ public class PreferencesBackupManager {
         
         ShortcutsMain prefs = null;
         try {
-            synchronized (PreferencesBackupManager.sDataLock) {
+            synchronized (PreferencesBackupManager.DATA_LOCK) {
             	FileInputStream fis = new FileInputStream(dataFile);
             	ObjectInputStream is = new ObjectInputStream(fis);
                 prefs = (ShortcutsMain) is.readObject();
                 is.close();
             }
 		} catch (IOException e) {
-			e.printStackTrace();
+			Utils.logd(e.getMessage());
 			return ERROR_FILE_READ;
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			Utils.logd(e.getMessage());
             return ERROR_DESERIALIZE;
         }
 		PreferencesStorage.saveMain(mContext, prefs.getMain(), appWidgetId);

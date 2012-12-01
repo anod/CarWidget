@@ -9,13 +9,12 @@ public class BluetoothClassHelper {
     public static final int PROFILE_A2DP = 1;
 
     public static int getBtClassString(BluetoothClass btClass) {
-    	switch (btClass.getMajorDeviceClass()) {
-            case BluetoothClass.Device.Major.COMPUTER:
-                return R.string.bluetooth_device_laptop;
-
-            case BluetoothClass.Device.Major.PHONE:
-                return R.string.bluetooth_device_cellphone;
-        }
+    	int majorDeviceClass = btClass.getMajorDeviceClass();
+		if (majorDeviceClass == BluetoothClass.Device.Major.COMPUTER) {
+			return R.string.bluetooth_device_laptop;
+		} else if (majorDeviceClass == BluetoothClass.Device.Major.PHONE) {
+			return R.string.bluetooth_device_cellphone;
+		}
     
         if (doesClassMatch(PROFILE_A2DP,btClass)) {
         	return R.string.bluetooth_device_headphones;

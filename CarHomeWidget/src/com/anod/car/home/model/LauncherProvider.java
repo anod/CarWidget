@@ -65,11 +65,13 @@ public class LauncherProvider extends ContentProvider {
 
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final long rowId = db.insert(args.table, null, initialValues);
-        if (rowId <= 0) return null;
+        if (rowId <= 0) {
+        	return null;
+        }
 
-        uri = ContentUris.withAppendedId(uri, rowId);
+        Uri uriId = ContentUris.withAppendedId(uri, rowId);
 
-        return uri;
+        return uriId;
     }
 
     @Override
@@ -81,7 +83,9 @@ public class LauncherProvider extends ContentProvider {
         try {
             int numValues = values.length;
             for (int i = 0; i < numValues; i++) {
-                if (db.insert(args.table, null, values[i]) < 0) return 0;
+                if (db.insert(args.table, null, values[i]) < 0) {
+                	return 0;
+                }
             }
             db.setTransactionSuccessful();
         } finally {
@@ -118,7 +122,9 @@ public class LauncherProvider extends ContentProvider {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            if (LOGD) Log.d(TAG, "creating new launcher database");
+            if (LOGD) {
+            	Log.d(TAG, "creating new launcher database");
+            }
 
             db.execSQL("CREATE TABLE favorites (" +
                     "_id INTEGER PRIMARY KEY," +
@@ -136,7 +142,9 @@ public class LauncherProvider extends ContentProvider {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        	if (LOGD) Log.d(TAG, "onUpgrade triggered");
+        	if (LOGD) {
+        		Log.d(TAG, "onUpgrade triggered");
+        	}
         	if (oldVersion == 1 && newVersion == 2) {
         		db.execSQL("ALTER TABLE favorites ADD COLUMN isCustomIcon INTEGER DEFAULT 0");
         	}
@@ -151,7 +159,7 @@ public class LauncherProvider extends ContentProvider {
     static String buildOrWhereString(String column, int[] values) {
         StringBuilder selectWhere = new StringBuilder();
         for (int i = values.length - 1; i >= 0; i--) {
-            selectWhere.append(column).append("=").append(values[i]);
+            selectWhere.append(column).append('=').append(values[i]);
             if (i > 0) {
                 selectWhere.append(" OR ");
             }

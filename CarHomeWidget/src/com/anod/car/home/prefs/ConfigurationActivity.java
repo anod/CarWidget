@@ -97,8 +97,7 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 	
 	@Override
 	public Dialog onCreateDialog(int id) {
-		switch (id) {
-		case DIALOG_WAIT:
+		if (id == DIALOG_WAIT) {
 			ProgressDialog waitDialog = new ProgressDialog(this);
 			waitDialog.setCancelable(true);
 			String message = getResources().getString(R.string.please_wait);
@@ -115,7 +114,9 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 	public void dismissWaitDialog() {
 		try {
 			dismissDialog(DIALOG_WAIT);
-		} catch (IllegalArgumentException e) {}
+		} catch (IllegalArgumentException e) {
+			Utils.logd(e.getMessage());
+		}
 	}
 	
 	@Override

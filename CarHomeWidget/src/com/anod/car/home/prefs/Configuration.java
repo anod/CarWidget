@@ -170,6 +170,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 			appName = getApplicationInfo().loadLabel(pm).toString();
 			versionName = pm.getPackageInfo(getPackageName(), 0).versionName;
 		} catch (NameNotFoundException e) {
+			Utils.logw(e.getMessage());
 		}
 		version.setTitle(String.format(versionText, appName, versionName));
 		version.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -235,14 +236,14 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == REQUEST_BACKUP) {
-			refreshShortcuts(data);
+			refreshShortcuts();
 		} else {
 			mPickShortcutUtils.onActivityResult(requestCode, resultCode, data);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void refreshShortcuts(Intent data) {
+	private void refreshShortcuts() {
 		mModel.init();
 		for (int i = 0; i < PreferencesStorage.LAUNCH_COMPONENT_NUMBER; i++) {
 			String key = PreferencesStorage.getLaunchComponentName(i, mAppWidgetId);

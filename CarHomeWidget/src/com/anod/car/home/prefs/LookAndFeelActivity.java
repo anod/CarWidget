@@ -43,31 +43,29 @@ import com.anod.car.home.utils.Utils;
 
 public class LookAndFeelActivity extends ActionBarActivity implements OnPageChangeListener, LauncherViewBuilder.PendingIntentHelper {
 	private static final int SKINS_COUNT = 5;
-
-	interface SkinRefreshListener {
-		public void refresh();
-	}
-
 	private static final int REQUEST_LOOK_ACTIVITY = 1;
 	private static final int REQUEST_PICK_ICON_THEME = 2;
 	private ViewPager mGallery;
 	private SkinItem[] mSkinItems;
-	private SkinPagerAdapter mAdapter;
-	private int mCurrentPage = 0;
-	private int mSelectedSkinPosition = 0;
+	private int mCurrentPage;
+	private int mSelectedSkinPosition;
 	private TextView mTextView;
 	private int mAppWidgetId;
 	private Context mContext;
 	private MenuItem mMenuTileColor;
-	private boolean mMenuInitialized = false;
+	private boolean mMenuInitialized;
 	private View mLoaderView;
 	private boolean[] mPreviewInitialized = { false, false, false, false, false };
 	private LauncherViewBuilder mBuilder;
 	private Main mPrefs;
-	private SparseArray<SkinRefreshListener> mSkinRefreshListeners = new SparseArray<LookAndFeelActivity.SkinRefreshListener>(SKINS_COUNT);
+	private final SparseArray<SkinRefreshListener> mSkinRefreshListeners = new SparseArray<LookAndFeelActivity.SkinRefreshListener>(SKINS_COUNT);
 	private boolean mPendingRefresh;
 
 	private static int[] sTextRes = { 0, 0, 0, 0, R.string.skin_info_bbb };
+
+	interface SkinRefreshListener {
+		void refresh();
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +76,7 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 
 		Intent intent = getIntent();
 		if (intent == null) {
-			Log.e("CarWidget", "No intent");
+			Utils.logw("No intent");
 			finish();
 			return;
 		}
@@ -104,8 +102,8 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 
 		int count = mSkinItems.length;
 
-		mAdapter = new SkinPagerAdapter(this, count, getSupportFragmentManager());
-		mGallery.setAdapter(mAdapter);
+		SkinPagerAdapter adapter = new SkinPagerAdapter(this, count, getSupportFragmentManager());
+		mGallery.setAdapter(adapter);
 		mGallery.setCurrentItem(mSelectedSkinPosition);
 
 		showText(mCurrentPage);
@@ -131,7 +129,7 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 		mMenuTileColor = menu.findItem(R.id.tile_color);
 		menu.findItem(R.id.icons_mono).setChecked(mPrefs.isIconsMono());
 		mMenuInitialized = true;
-		refreshActionBar(mCurrentPage);
+		refreshActionBar();
 		// Calling super after populating the menu is necessary here to ensure
 		// that the
 		// action bar helpers have a chance to handle this event.
@@ -288,11 +286,11 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 			mLoaderView.setVisibility(View.VISIBLE);
 		}
 
-		refreshActionBar(position);
+		refreshActionBar();
 
 	}
 
-	private void refreshActionBar(int position) {
+	private void refreshActionBar() {
 		if (mMenuInitialized) {
 			showTileColorButton(mCurrentPage);
 		}
@@ -383,8 +381,8 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 
 	public static class SkinPagerAdapter extends FragmentPagerAdapter {
 
-		private int mCount;
-		private LookAndFeelActivity mActivity;
+		private final int mCount;
+		private final LookAndFeelActivity mActivity;
 
 		public SkinPagerAdapter(LookAndFeelActivity activity, int count, FragmentManager fm) {
 			super(fm);
@@ -420,7 +418,7 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 	@Override
 	public PendingIntent createShortcut(Intent intent, int appWidgetId, int position, long shortcutId) {
 		Intent editIntent = IntentUtils.createShortcutEditIntent(this, position, shortcutId);
-    	String path = appWidgetId + " - " + String.valueOf(position);
+    	String path = appWidgetId + " - " + position;
     	Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
     	editIntent.setData(data);
 		return PendingIntent.getActivity(mContext, 0, editIntent, PendingIntent.FLAG_UPDATE_CURRENT);

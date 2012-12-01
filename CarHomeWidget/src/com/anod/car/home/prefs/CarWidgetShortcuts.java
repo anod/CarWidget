@@ -12,9 +12,9 @@ import com.anod.car.home.R;
 public class CarWidgetShortcuts {
 	private static final int SHORCUTS_LENGTH = 5;
 
-	private Context mContext;
+	private final Context mContext;
 	
-	private static final String[] sTitles = {
+	private static final String[] TITLES = {
 		"Siwtch InCar",
 		"Play/Pause",
 		"Next",
@@ -22,7 +22,7 @@ public class CarWidgetShortcuts {
 		"TuneIn Radio Car Mode"
 	};
 
-	private static final int[] sIcons = {
+	private static final int[] ICONS = {
 		R.drawable.ic_launcher,
 		R.drawable.ic_launcher,
 		R.drawable.ic_launcher,
@@ -42,8 +42,8 @@ public class CarWidgetShortcuts {
 		ArrayList<ShortcutIconResource> shortcutIcons = new ArrayList<ShortcutIconResource>();
 
 		for(int i=0; i<SHORCUTS_LENGTH; i++) {
-			shortcutNames.add(sTitles[i]);
-			shortcutIcons.add(ShortcutIconResource.fromContext(mContext, sIcons[i]));
+			shortcutNames.add(TITLES[i]);
+			shortcutIcons.add(ShortcutIconResource.fromContext(mContext, ICONS[i]));
 		}
 		
 		bundle.putStringArrayList(Intent.EXTRA_SHORTCUT_NAME, shortcutNames);

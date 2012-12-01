@@ -55,7 +55,7 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 		onResumeImpl();
 		ArrayList<CacheEntry> appsCacheEntries = (mAppsList == null) ? null : mAppsList.getCacheEntries();
 
-		if (appsCacheEntries == null || appsCacheEntries.size() == 0 || isRefreshCache()) {
+		if (appsCacheEntries == null || appsCacheEntries.isEmpty() || isRefreshCache()) {
 			new AppsCacheAsyncTask(this, mAppsList, this).execute(0);
 		} else {
 			showList(appsCacheEntries);
@@ -67,19 +67,20 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 	}
 	
 	protected void onResumeImpl() {
-		
+		// Nothing by default
 	}
 	
 	protected void onCreateImpl(Bundle savedInstanceState) {
+		// Nothing by default
 	}
 	
 	private void showList(ArrayList<CacheEntry> cacheEntries) {
 		AppsCacheAdapter adapter;
 		mItems = getHeadEntries();
-		if (mItems != null) {
-			mItems.addAll(cacheEntries);
-		} else {
+		if (mItems == null) {
 			mItems = cacheEntries;
+		} else {
+			mItems.addAll(cacheEntries);
 		}
 		adapter = new AppsCacheAdapter(this, getRowLayoutId(), mItems, mAppsList);
 		// Bind to our new adapter.
@@ -88,7 +89,7 @@ public abstract class AppsCacheActivity extends ListActivity implements OnItemCl
 	}
 
 	protected void onItemsSet(ArrayList<CacheEntry> items) {
-		
+		// Nothing by default
 	}
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

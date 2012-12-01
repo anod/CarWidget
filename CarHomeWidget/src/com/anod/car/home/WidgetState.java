@@ -13,7 +13,7 @@ public class WidgetState {
      * Flag if there is an update thread already running. We only launch a new
      * thread if one isn't already running.
      */
-    public static boolean sThreadRunning = false;
+    public static boolean sThreadRunning;
     
     /**
      * Internal queue of requested widget updates. You <b>must</b> access

@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
+import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
 public class ConfigurationBackup extends ConfigurationActivity {
@@ -73,7 +74,9 @@ public class ConfigurationBackup extends ConfigurationActivity {
 				intent.setData(Uri.fromFile(backupFile));
 				try {
 					startActivity(intent);
-				} catch (Exception e) { }
+				} catch (Exception e) {
+					Utils.logw(e.getMessage());
+				}
 				return false;
 			}
 		});
@@ -85,8 +88,7 @@ public class ConfigurationBackup extends ConfigurationActivity {
 
 	@Override
 	public Dialog onCreateDialog(int id) {
-		switch (id) {
-		case DIALOG_BACKUP_NAME:
+		if (id == DIALOG_BACKUP_NAME) {
 			String defaultFilename = "backup-" + mAppWidgetId;
 			// This example shows how to add a custom layout to an AlertDialog
 			LayoutInflater factory = LayoutInflater.from(this);
@@ -102,9 +104,10 @@ public class ConfigurationBackup extends ConfigurationActivity {
 				}
 			}).setNegativeButton(R.string.backup_cancel, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
+					//Nothing
 				}
 			}).create();
-		case DIALOG_PRO:
+		} else if (id == DIALOG_PRO) {
 			return TrialDialogs.buildProOnlyDialog(this);
 		}
 		return super.onCreateDialog(id);
@@ -119,8 +122,8 @@ public class ConfigurationBackup extends ConfigurationActivity {
 			}
 		});
 
-		Preference restore_main = (Preference) findPreference(RESTORE_BTN_MAIN);
-		restore_main.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+		Preference restoreMain = (Preference) findPreference(RESTORE_BTN_MAIN);
+		restoreMain.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
@@ -145,10 +148,10 @@ public class ConfigurationBackup extends ConfigurationActivity {
 			}
 		});
 
-		Preference restore_incar = (Preference) findPreference(RESTORE_BTN_INCAR);
+		Preference restoreIncar = (Preference) findPreference(RESTORE_BTN_INCAR);
 		Version version = new Version(this);
 		if (version.isFree()) {
-			restore_incar.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			restoreIncar.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 				
 				@Override
 				public boolean onPreferenceClick(Preference preference) {
@@ -160,7 +163,7 @@ public class ConfigurationBackup extends ConfigurationActivity {
 			Intent intentInCar = new Intent(this, ConfigurationRestore.class);
 			intentInCar.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 			intentInCar.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_INCAR);
-			restore_incar.setIntent(intentInCar);
+			restoreIncar.setIntent(intentInCar);
 		}
 	}
 
@@ -189,24 +192,18 @@ public class ConfigurationBackup extends ConfigurationActivity {
 	private void onBackupFinish(int type, int code) {
 		Resources r = getResources();
 		if (code == PreferencesBackupManager.RESULT_DONE) {
-			switch (type) {
-			case TYPE_MAIN:
+			if (type == TYPE_MAIN) {
 				updateMainTime();
-				break;
-			case TYPE_INCAR:
+			} else if (type == TYPE_INCAR) {
 				updateInCarTime();
-				break;
 			}
 			Toast.makeText(mContext, r.getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
 			return;
 		}
-		switch (code) {
-		case PreferencesBackupManager.ERROR_STORAGE_NOT_AVAILABLE:
+		if (code == PreferencesBackupManager.ERROR_STORAGE_NOT_AVAILABLE) {
 			Toast.makeText(mContext, r.getString(R.string.external_storage_not_available), Toast.LENGTH_SHORT).show();
-			break;
-		case PreferencesBackupManager.ERROR_FILE_WRITE:
+		} else if (code == PreferencesBackupManager.ERROR_FILE_WRITE) {
 			Toast.makeText(mContext, r.getString(R.string.failed_to_write_file), Toast.LENGTH_SHORT).show();
-			break;
 		}
 	}
 
@@ -232,6 +229,7 @@ public class ConfigurationBackup extends ConfigurationActivity {
 			try {
 				dismissDialog(DIALOG_WAIT);
 			} catch (IllegalArgumentException e) {
+				Utils.logd(e.getMessage());
 			}
 			onBackupFinish(mTaskType, result);
 		}
@@ -239,12 +237,8 @@ public class ConfigurationBackup extends ConfigurationActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK) {
-			switch (requestCode) {
-			case REQUEST_RESTORE_MAIN:
-				updateMainTime();
-				break;
-			}
+		if (resultCode == RESULT_OK && requestCode == REQUEST_RESTORE_MAIN) {
+			updateMainTime();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

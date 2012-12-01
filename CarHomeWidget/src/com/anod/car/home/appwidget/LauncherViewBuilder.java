@@ -1,5 +1,7 @@
 package com.anod.car.home.appwidget;
 
+import java.util.Locale;
+
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -25,27 +27,24 @@ import com.anod.car.home.skin.PropertiesFactory;
 import com.anod.car.home.skin.SkinProperties;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
-import com.anod.car.home.utils.Version;
 
 public class LauncherViewBuilder {
-	
-	public interface PendingIntentHelper {
-		 public PendingIntent createSettings(int appWidgetId, int cellId);
-		 public PendingIntent createShortcut(Intent intent, int appWidgetId, int position, long shortcutId);
-		 public PendingIntent createInCar(boolean on);
-		 
-	}
-	
-	private Context mContext;
+	private static int[] sTextRes = { R.id.btn_text0, R.id.btn_text1, R.id.btn_text2, R.id.btn_text3, R.id.btn_text4, R.id.btn_text5 };
+	private static int[] sBtnRes = { R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5 };
+
+	final private Context mContext;
 	private int mAppWidgetId;
 	private Main mPrefs;
 	private LauncherShortcutsModel mSmodel;
 	private String mOverrideSkin;
 	private PendingIntentHelper mPendingIntentHelper;
-	private Version mVersion;
 	
-	private static int[] sTextRes = { R.id.btn_text0, R.id.btn_text1, R.id.btn_text2, R.id.btn_text3, R.id.btn_text4, R.id.btn_text5 };
-	private static int[] sBtnRes = { R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5 };
+	public interface PendingIntentHelper {
+		PendingIntent createSettings(int appWidgetId, int cellId);
+		PendingIntent createShortcut(Intent intent, int appWidgetId, int position, long shortcutId);
+		PendingIntent createInCar(boolean on);
+		 
+	}
 
 	public LauncherViewBuilder(Context context) {
 		mContext = context;
@@ -80,7 +79,6 @@ public class LauncherViewBuilder {
 		}
 		mSmodel.init();
 
-		mVersion = new Version(mContext);
 		return this;
 	}
 
@@ -97,13 +95,13 @@ public class LauncherViewBuilder {
 	public RemoteViews build() {
 
 		String packageName = mContext.getPackageName();
-		String skinName = (mOverrideSkin != null) ? mOverrideSkin : mPrefs.getSkin();
+		String skinName = (mOverrideSkin == null) ? mPrefs.getSkin() : mOverrideSkin;
 
 		SkinProperties skinProperties = PropertiesFactory.create(skinName);
 
 		RemoteViews views = new RemoteViews(packageName, skinProperties.getLayout());
 
-		setInCarButton(mPrefs.isIncarTransparent(), packageName, skinProperties, views);
+		setInCarButton(mPrefs.isIncarTransparent(), skinProperties, views);
 
 		if (mPrefs.isSettingsTransparent()) {
 			views.setImageViewResource(R.id.btn_settings, R.drawable.btn_transparent);
@@ -117,7 +115,7 @@ public class LauncherViewBuilder {
 		float scaledDensity = mContext.getResources().getDisplayMetrics().scaledDensity;
 
 		String themePackage = mPrefs.getIconsTheme();
-		Resources themeResources = (themePackage != null) ? getIconThemeResources(themePackage) : null;
+		Resources themeResources = (themePackage == null) ? null : getIconThemeResources(themePackage);
 		
 		for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
 			int res = sBtnRes[cellId];
@@ -128,7 +126,7 @@ public class LauncherViewBuilder {
 			} else {
 				setShortcut(res, resText, iconScale, info, mPrefs, views, cellId, skinProperties, themePackage, themeResources);
 			}
-			setFont(mPrefs, res, resText, scaledDensity, views);
+			setFont(mPrefs, resText, scaledDensity, views);
 			if (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) {
 				setTile(mPrefs.getTileColor(), res, views);
 			}
@@ -139,11 +137,11 @@ public class LauncherViewBuilder {
 		return views;
 	}
 
-	private void setInCarButton(boolean isInCarTrans, String packageName, SkinProperties skinProp, RemoteViews views) {
+	private void setInCarButton(boolean isInCarTrans, SkinProperties skinProp, RemoteViews views) {
 		
 		if (PreferencesStorage.isInCarModeEnabled(mContext)) {
 			views.setViewVisibility(R.id.btn_incar_switch, View.VISIBLE);
-			if (ModeService.sInCarMode == true) {
+			if (ModeService.sInCarMode) {
 				if (isInCarTrans) {
 					views.setImageViewResource(R.id.btn_incar_switch, R.drawable.btn_transparent);
 				} else {
@@ -158,7 +156,8 @@ public class LauncherViewBuilder {
 					views.setImageViewResource(R.id.btn_incar_switch, rImg);
 				}
 			}
-			PendingIntent contentIntent = mPendingIntentHelper.createInCar(ModeService.sInCarMode != true);
+			boolean switchOn = !ModeService.sInCarMode;
+			PendingIntent contentIntent = mPendingIntentHelper.createInCar(switchOn);
 			if (contentIntent != null) {
 				views.setOnClickPendingIntent(R.id.btn_incar_switch, contentIntent);
 			}
@@ -168,7 +167,7 @@ public class LauncherViewBuilder {
 
 	}
 
-	private void setFont(Main prefs, int res, int resText, float scaledDensity, RemoteViews views) {
+	private void setFont(Main prefs, int resText, float scaledDensity, RemoteViews views) {
 		views.setTextColor(resText, prefs.getFontColor());
 		if (prefs.getFontSize() != PreferencesStorage.FONT_SIZE_UNDEFINED) {
 			if (prefs.getFontSize() == 0) {
@@ -256,19 +255,19 @@ public class LauncherViewBuilder {
         try {
             themeResources = mContext.getPackageManager().getResourcesForApplication(themePackage);
         } catch (NameNotFoundException e) {
-            //e.printStackTrace();
+            Utils.logd(e.getMessage());
         }
         return themeResources;
 	}
 	
 	private Bitmap getIconThemeIcon(String className, String themePackage,  Resources themeResources) {
 		String name = className;
-		String resName= name.toLowerCase().replace(".", "_");
+		String resName= name.toLowerCase(Locale.US).replace(".", "_"); 
 		Utils.logd("Look for icon for resource: R.drawable." + resName);
-		int resource_id = themeResources.getIdentifier(resName, "drawable", themePackage);
+		int resourceId = themeResources.getIdentifier(resName, "drawable", themePackage);
 		Drawable iconDrawable = null;
-		if(resource_id!=0){
-			iconDrawable = themeResources.getDrawable(resource_id);
+		if(resourceId!=0){
+			iconDrawable = themeResources.getDrawable(resourceId);
          }
 		
 		if (iconDrawable != null) {

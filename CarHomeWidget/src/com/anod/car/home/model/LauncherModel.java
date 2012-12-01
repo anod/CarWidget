@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,39 +15,34 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 
 import com.anod.car.home.utils.UtilitiesBitmap;
+import com.anod.car.home.utils.Utils;
 
 public class LauncherModel {
 	static final String TAG = "CarHomeWidget.Model";
-
-	public ShortcutInfo loadShortcut(Context context, long shortcutId) {
-		final ContentResolver contentResolver = context.getContentResolver();
-		final PackageManager manager = context.getPackageManager();
-
+	private final ContentResolver mContentResolver;
+	private final PackageManager mPackageManager;
+	private final Context mContext;
+	public LauncherModel(Context context) {
+		mContentResolver = context.getContentResolver();
+		mPackageManager = context.getPackageManager();
+		mContext = context;
+	}
+	
+	public ShortcutInfo loadShortcut(long shortcutId) {
 		String selection = LauncherSettings.Favorites._ID + "=?";
 		String[] selectionArgs = { String.valueOf(shortcutId) };
 
-		ShortcutInfo info = null;
-
-		final Cursor c = contentResolver.query(LauncherSettings.Favorites.getContentUri(context.getPackageName()), null, selection, selectionArgs, null);
+		final Cursor c = mContentResolver.query(LauncherSettings.Favorites.getContentUri(mContext.getPackageName()), null, selection, selectionArgs, null);
 
 		if (c == null) {
 			return null;
 		}
 
+		ShortcutInfo info;
 		try {
-			final int idIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites._ID);
 			final int intentIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.INTENT);
-			final int titleIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.TITLE);
-			final int iconTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_TYPE);
-			final int iconIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON);
-			final int iconPackageIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_PACKAGE);
-			final int iconResourceIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_RESOURCE);
-			final int itemTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ITEM_TYPE);
-			final int isCustomIconIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.IS_CUSTOM_ICON);
-
 			c.moveToFirst();
 			Intent intent;
-			Bitmap icon = null;
 			String intentDescription = c.getString(intentIndex);
 			try {
 				intent = Intent.parseUri(intentDescription, 0);
@@ -55,54 +51,60 @@ public class LauncherModel {
 				return null;
 			}
 
+			final int idIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites._ID);
+			final int titleIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.TITLE);
+			final int iconTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_TYPE);
+			final int iconIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON);
+			final int iconPackageIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_PACKAGE);
+			final int iconResourceIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_RESOURCE);
+			final int itemTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ITEM_TYPE);
+			final int isCustomIconIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.IS_CUSTOM_ICON);
+
 			info = new ShortcutInfo();
 			info.id = c.getLong(idIndex);
 			info.title = c.getString(titleIndex);
 			info.itemType = c.getInt(itemTypeIndex);
 			info.intent = intent;
 			
+			Bitmap icon = null;
 			if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
 				icon = getIconFromCursor(c, iconIndex);
 				info.setActivityIcon(icon);
 				info.setCustomIcon(c.getInt(isCustomIconIndex) == 1);
 			} else {
 				int iconType = c.getInt(iconTypeIndex);
-				switch (iconType) {
-				case LauncherSettings.Favorites.ICON_TYPE_RESOURCE:
+				if (iconType == LauncherSettings.Favorites.ICON_TYPE_RESOURCE) {
 					String packageName = c.getString(iconPackageIndex);
 					String resourceName = c.getString(iconResourceIndex);
-
 					Intent.ShortcutIconResource iconResource = new Intent.ShortcutIconResource();
 					iconResource.packageName = packageName;
 					iconResource.resourceName = resourceName;
-
 					// the resource
 					try {
-						Resources resources = manager.getResourcesForApplication(packageName);
+						Resources resources = mPackageManager.getResourcesForApplication(packageName);
 						if (resources != null) {
 							final int id = resources.getIdentifier(resourceName, null, null);
-							icon = UtilitiesBitmap.createIconBitmap(resources.getDrawable(id), context);
+							icon = UtilitiesBitmap.createIconBitmap(resources.getDrawable(id), mContext);
 						}
-					} catch (Exception e) {
+					} catch (NameNotFoundException e) {
 						// drop this. we have other places to look for icons
+						Utils.logd(e.getMessage());
 					}
 					// the db
 					if (icon == null) {
 						icon = getIconFromCursor(c, iconIndex);
 					}
 					info.setIconResource(icon, iconResource);
-					break;
-				case LauncherSettings.Favorites.ICON_TYPE_BITMAP:
+				} else if (iconType == LauncherSettings.Favorites.ICON_TYPE_BITMAP) {
 					icon = getIconFromCursor(c, iconIndex);
 					if (icon != null) {
 						info.setCustomIcon(icon);
 					}
-					break;
 				}
 			}
 
 			if (icon == null) {
-				icon = UtilitiesBitmap.makeDefaultIcon(manager);
+				icon = UtilitiesBitmap.makeDefaultIcon(mPackageManager);
 				info.setFallbackIcon(icon);
 			}
 		} finally {
@@ -169,10 +171,10 @@ public class LauncherModel {
 		final ContentValues values = new ContentValues();
 		values.put(LauncherSettings.Favorites.ITEM_TYPE, item.itemType);
 
-		String titleStr = item.title != null ? item.title.toString() : null;
+		String titleStr = item.title == null ? null : item.title.toString();
 		values.put(LauncherSettings.Favorites.TITLE, titleStr);
 
-		String uri = item.intent != null ? item.intent.toUri(0) : null;
+		String uri = item.intent == null ? null : item.intent.toUri(0);
 		values.put(LauncherSettings.Favorites.INTENT, uri);
 
 		if (item.isCustomIcon()) {
@@ -205,12 +207,11 @@ public class LauncherModel {
 	 * @param context
 	 * @param item
 	 */
-	public void deleteItemFromDatabase(Context context, long shortcutId) {
-		final ContentResolver cr = context.getContentResolver();
-		final Uri uriToDelete = LauncherSettings.Favorites.getContentUri(context.getPackageName(), shortcutId);
+	public void deleteItemFromDatabase(long shortcutId) {
+		final Uri uriToDelete = LauncherSettings.Favorites.getContentUri(mContext.getPackageName(), shortcutId);
 		new Runnable() {
 			public void run() {
-				cr.delete(uriToDelete, null, null);
+				mContentResolver.delete(uriToDelete, null, null);
 			}
 		};
 	}

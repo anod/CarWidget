@@ -76,8 +76,8 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 
 
 	public static class ViewLoader extends	AsyncTaskLoader<View> {
-		private LookAndFeelActivity mActivity;
-		private int mPosition;
+		private final LookAndFeelActivity mActivity;
+		private final int mPosition;
 		
 		public ViewLoader(LookAndFeelActivity activity, int position) {
 			super(activity);
@@ -92,8 +92,7 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 			builder.setOverrideSkin(mActivity.getSkinItem(mPosition).value);
 			RemoteViews rv = builder.build();
 
-	        View inflatedView =  rv.apply( mActivity, null );
-	        return inflatedView;
+			return rv.apply( mActivity, null );
 		}
 
 	}

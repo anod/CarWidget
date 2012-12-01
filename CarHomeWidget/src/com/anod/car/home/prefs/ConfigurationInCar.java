@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Set;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -15,7 +14,6 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -37,7 +35,6 @@ import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
@@ -59,8 +56,8 @@ public class ConfigurationInCar extends ConfigurationActivity {
 	private PreferenceCategory mBluetoothDevicesCategory;
 	private BroadcastReceiver mBluetoothReceiver;
 
-	private int mTrialsLeft = 0;
-	private boolean mTrialMessageShown = false;
+	private int mTrialsLeft;
+	private boolean mTrialMessageShown;
 
 	@Override
 	protected boolean isAppWidgetIdRequired() {
@@ -104,8 +101,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 
 	@Override
 	public Dialog onCreateDialog(int id) {
-		switch (id) {
-		case DIALOG_INIT:
+		if (id == DIALOG_INIT) {
 			ProgressDialog initDialog = new ProgressDialog(this);
 			initDialog.setCancelable(true);
 			initDialog.setMessage(getResources().getString(R.string.load_paired_device));
@@ -116,7 +112,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 				}
 			});
 			return initDialog;
-		case DIALOG_TRIAL:
+		} else if (id == DIALOG_TRIAL) {
 			if (Utils.isProInstalled(this)) {
 				return TrialDialogs.buildProInstalledDialog(this);
 			} else {
@@ -170,12 +166,8 @@ public class ConfigurationInCar extends ConfigurationActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK) {
-			switch (requestCode) {
-			case REQUEST_PICK_APPLICATION:
-				saveAutorunApp(data);
-				break;
-			}
+		if (resultCode == RESULT_OK && requestCode == REQUEST_PICK_APPLICATION) {
+			saveAutorunApp(data);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -231,10 +223,10 @@ public class ConfigurationInCar extends ConfigurationActivity {
 				registerReceiver(mBluetoothReceiver, INTENT_FILTER);
 				if (Bluetooth.getState() == BluetoothAdapter.STATE_ON) {
 					Bluetooth.switchOff();
-					return (switchOn == false);
+					return (!switchOn);
 				} else {
 					Bluetooth.switchOn();
-					return (switchOn == true);
+					return switchOn;
 				}
 			}
 		});
@@ -264,7 +256,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 		}
 
 		protected void onPostExecute(Boolean result) {
-			if (result == true) {
+			if (result) {
 				for (int i = 0; i < mPairedList.size(); i++) {
 					mBluetoothDevicesCategory.addPreference(mPairedList.get(i));
 				}
@@ -276,14 +268,11 @@ public class ConfigurationInCar extends ConfigurationActivity {
 				mBluetoothDevicesCategory.addPreference(emptyPref);
 			}
 			mPairedList = null;
-			try {
-				dismissDialog(DIALOG_INIT);
-			} catch (IllegalArgumentException e) {
-			}
+			dismissDialogSafetly(DIALOG_INIT);
 		}
 
 		public void onProgressUpdate(Integer... values) {
-
+			//Nothing
 		}
 
 		@Override
@@ -297,7 +286,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 			Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
 
 			// If there are paired devices, add each one to the ArrayAdapter
-			if (pairedDevices.size() > 0) {
+			if (!pairedDevices.isEmpty()) {
 				HashMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
 				mPairedList = new ArrayList<CheckBoxPreference>(pairedDevices.size());
 				for (BluetoothDevice device : pairedDevices) {
@@ -357,23 +346,25 @@ public class ConfigurationInCar extends ConfigurationActivity {
 		public void onReceive(Context paramContext, Intent paramIntent) {
 			int state = paramIntent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
 			if (state == BluetoothAdapter.STATE_ON) {
-				try {
-					dismissDialog(DIALOG_WAIT);
-				} catch (IllegalArgumentException e) {
-				}
+				dismissDialogSafetly(DIALOG_WAIT);
 				unregisterReceiver(mBluetoothReceiver);
 				mBluetoothReceiver = null;
 				new InitBluetoothDevicesTask().execute(0);
 			} else if (state == BluetoothAdapter.STATE_OFF || state == BluetoothAdapter.ERROR) {
-				try {
-					dismissDialog(DIALOG_WAIT);
-				} catch (IllegalArgumentException e) {
-				}
+				dismissDialogSafetly(DIALOG_WAIT);
 				unregisterReceiver(mBluetoothReceiver);
 				mBluetoothReceiver = null;
 			}
 		}
+
 	}
 
-
+	@SuppressWarnings("deprecation")
+	private void dismissDialogSafetly(int id) {
+		try {
+			dismissDialog(id);
+		} catch (IllegalArgumentException e) {
+			Utils.logd(e.getMessage());
+		}
+	}
 }

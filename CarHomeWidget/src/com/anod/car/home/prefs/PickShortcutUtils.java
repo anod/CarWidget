@@ -19,12 +19,6 @@ import com.anod.car.home.prefs.views.ShortcutPreference;
 import com.anod.car.home.utils.IntentUtils;
 
 public class PickShortcutUtils {
-
-	interface PreferenceKey {
-		String getInitialKey(int position);
-		String getCompiledKey(int position);
-	}
-	
 	private int mCurrentCellId = INVALID_CELL_ID;
 
 	private static final int REQUEST_PICK_SHORTCUT = 2;
@@ -35,11 +29,14 @@ public class PickShortcutUtils {
 	public static final String EXTRA_CELL_ID = "CarHomeWidgetCellId";
 	public static final int INVALID_CELL_ID = -1;
 
+	private final ConfigurationActivity mActivity;
+	private final ShortcutsModel mModel;
+	private final PreferenceKey mPreferenceKey;
 	
-	private ConfigurationActivity mActivity;
-	private ShortcutsModel mModel;
-
-	private PreferenceKey mPreferenceKey;
+	interface PreferenceKey {
+		String getInitialKey(int position);
+		String getCompiledKey(int position);
+	}
 	
 	public PickShortcutUtils(ConfigurationActivity activity, ShortcutsModel model, PreferenceKey key) {
 		mActivity = activity;
@@ -138,6 +135,7 @@ public class PickShortcutUtils {
 				processShortcut(data);
 				mActivity.dismissWaitDialog();
 				break;
+			default:
 			}
 		} else {
 			mActivity.dismissWaitDialog();

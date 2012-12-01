@@ -13,8 +13,7 @@ public class BBBIconProcessor implements IconProcessor {
 		int y = (int)(icon.getHeight() * SIZE_DIFF);
 		int h = icon.getHeight() - y;
 
-		Bitmap quarter = Bitmap.createBitmap(icon, x, 0, w, h);
-		return quarter;
+		return Bitmap.createBitmap(icon, x, 0, w, h);
 	}
 
 	@Override

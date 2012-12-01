@@ -20,11 +20,14 @@ public class UpdateService extends Service implements Runnable {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 
 		AppWidgetManager gm = AppWidgetManager.getInstance(context);
+		int[] updateIds;
 		if (appWidgetIds == null || appWidgetIds.length == 0) {
 			ComponentName thisWidget = Provider.getComponentName(context);
-			appWidgetIds = gm.getAppWidgetIds(thisWidget);
+			updateIds = gm.getAppWidgetIds(thisWidget);
+		} else {
+			updateIds = appWidgetIds;
 		}
-		final int N = appWidgetIds.length;
+		final int N = updateIds.length;
 
 		Version version = new Version(context);
 		
@@ -34,7 +37,7 @@ public class UpdateService extends Service implements Runnable {
 		LauncherViewBuilder builder = new LauncherViewBuilder(context);
 		builder.setPendingIntentHelper(new ShortcutPendingIntent(context));
 		for (int i = 0; i < N; i++) {
-			int appWidgetId = appWidgetIds[i];
+			int appWidgetId = updateIds[i];
 			RemoteViews views = builder
 				.setAppWidgetId(appWidgetId)
 				.init()
@@ -50,21 +53,11 @@ public class UpdateService extends Service implements Runnable {
 			final Intent updateIntent = new Intent(context, BroadcastService.class);
 			context.startService(updateIntent);
 		} else {
-			if (BroadcastService.sRegistred == true) {
+			if (BroadcastService.sRegistred) {
 				final Intent updateIntent = new Intent(context, BroadcastService.class);
 				context.stopService(updateIntent);
 			}
 		}
-	}
-
-	@Override
-	public void onCreate() {
-		super.onCreate();
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
 	}
 
 	@Override

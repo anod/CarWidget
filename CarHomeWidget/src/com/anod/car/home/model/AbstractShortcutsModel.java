@@ -10,9 +10,9 @@ import android.util.Log;
 import android.util.SparseArray;
 
 public abstract class AbstractShortcutsModel implements ShortcutsModel {
-	private SparseArray<ShortcutInfo> mShortcuts;
-	private Context mContext;
-	private LauncherModel mModel;
+	private final SparseArray<ShortcutInfo> mShortcuts;
+	private final Context mContext;
+	private final LauncherModel mModel;
 
 	abstract public int getCount();
 	abstract protected void saveShortcutId(int position, long shortcutId);
@@ -21,7 +21,7 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 
 	public AbstractShortcutsModel(Context context) {
 		mShortcuts = new SparseArray<ShortcutInfo>(getCount());
-		mModel = new LauncherModel();
+		mModel = new LauncherModel(context);
 		mContext = context;
 	}
 	
@@ -32,7 +32,7 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 			long shortcutId = currentShortcutIds.get(cellId);
 			ShortcutInfo info = null;
 			if (shortcutId != ShortcutInfo.NO_ID) {
-				info = mModel.loadShortcut(mContext, shortcutId);;
+				info = mModel.loadShortcut(shortcutId);
 			}
 			if (info!=null && info.intent != null && info.intent.getComponent() != null) {
 				ComponentName cmp = info.intent.getComponent();
@@ -62,11 +62,11 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 
 	@Override
 	public void reloadShortcut(int position, long shortcutId) {
-		if (shortcutId != ShortcutInfo.NO_ID) {
-			final ShortcutInfo info = mModel.loadShortcut(mContext, shortcutId);;
-			mShortcuts.put(position, info);
-		} else {
+		if (shortcutId == ShortcutInfo.NO_ID) {
 			mShortcuts.put(position, null);
+		} else {
+			final ShortcutInfo info = mModel.loadShortcut(shortcutId);
+			mShortcuts.put(position, info);
 		}
 	}
 
@@ -90,7 +90,7 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 	public void dropShortcut(int position) {
 		ShortcutInfo info = mShortcuts.get(position);
 		if (info != null) {
-			mModel.deleteItemFromDatabase(mContext, info.id);
+			mModel.deleteItemFromDatabase(info.id);
 			mShortcuts.put(position, null);
 			dropShortcutId(position);
 		}

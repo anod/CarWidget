@@ -11,7 +11,7 @@ import android.util.Log;
 
 public class BroadcastService extends Service {
 
-	public static boolean sRegistred = false;
+	public static boolean sRegistred;
     @Override
 	public void onCreate() {
    		register(this);

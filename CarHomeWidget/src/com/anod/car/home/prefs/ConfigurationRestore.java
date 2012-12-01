@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.anod.car.home.R;
 import com.anod.car.home.actionbarcompat.ActionBarHelper;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
+import com.anod.car.home.utils.Utils;
 
 public class ConfigurationRestore extends ListActivity {
 	private int mAppWidgetId;
@@ -89,8 +90,7 @@ public class ConfigurationRestore extends ListActivity {
     
 	@Override
 	public Dialog onCreateDialog(int id) {
-		switch (id) {
-		case DIALOG_WAIT:
+		if (id == DIALOG_WAIT) {
 			ProgressDialog waitDialog = new ProgressDialog(this);
 			waitDialog.setCancelable(true);
 			String message = getResources().getString(R.string.please_wait);
@@ -119,16 +119,20 @@ public class ConfigurationRestore extends ListActivity {
 					mAdapter.notifyDataSetChanged();
 				}
 			}
-			try {
-				dismissDialog(DIALOG_WAIT);
-			} catch (IllegalArgumentException e) {
-			}
-
+			dismissDialogSafetly(DIALOG_WAIT);
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	private void dismissDialogSafetly(int id) {
+		try {
+			dismissDialog(id);
+		} catch (IllegalArgumentException e) {
+			Utils.logd(e.getMessage());
 		}
 	}
 
 	private class RestoreTask extends AsyncTask<String, Void, Integer> {
-		private int mTaskType;
 
 		@Override
 		protected void onPreExecute() {
@@ -138,23 +142,18 @@ public class ConfigurationRestore extends ListActivity {
 		protected Integer doInBackground(String... filenames) {
 			String filename = filenames[0];
 			if (filename == null) {
-				mTaskType = TYPE_INCAR;
 				return mBackupManager.doRestoreInCar();
 			}
-			mTaskType = TYPE_MAIN;
 			return mBackupManager.doRestoreMain(filename, mAppWidgetId);
 		}
 
 		protected void onPostExecute(Integer result) {
-			try {
-				dismissDialog(DIALOG_WAIT);
-			} catch (IllegalArgumentException e) {
-			}
-			onRestoreFinish(mTaskType, result);
+			dismissDialogSafetly(DIALOG_WAIT);
+			onRestoreFinish(result);
 		}
 	}
 
-	private void onRestoreFinish(int type, int code) {
+	private void onRestoreFinish(int code) {
 		if (code == PreferencesBackupManager.RESULT_DONE) {
 			Toast.makeText(mContext, getString(R.string.restore_done), Toast.LENGTH_SHORT).show();
 			finish();
@@ -173,16 +172,17 @@ public class ConfigurationRestore extends ListActivity {
 		case PreferencesBackupManager.ERROR_FILE_NOT_EXIST:
 			Toast.makeText(mContext, getString(R.string.backup_not_exist), Toast.LENGTH_SHORT).show();
 			break;
+		default:
 		}
 		finish();
 	}
 
 	private class RestoreAdapter extends ArrayAdapter<File> {
-		private int resource;
+		private final int mResource;
 
-		public RestoreAdapter(Context _context, int _resource, ArrayList<File> _items) {
-			super(_context, _resource, _items);
-			resource = _resource;
+		public RestoreAdapter(Context context, int resource, ArrayList<File> items) {
+			super(context, resource, items);
+			mResource = resource;
 		}
 
 		@Override
@@ -190,7 +190,7 @@ public class ConfigurationRestore extends ListActivity {
 			View v = convertView;
 			if (v == null) {
 				LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				v = vi.inflate(resource, null);
+				v = vi.inflate(mResource, null);
 			}
 			File entry = getItem(position);
 
@@ -246,10 +246,7 @@ public class ConfigurationRestore extends ListActivity {
 		}
 
 		protected void onPostExecute(Boolean result) {
-			try {
-				dismissDialog(DIALOG_WAIT);
-			} catch (IllegalArgumentException e) {
-			}
+			dismissDialogSafetly(DIALOG_WAIT);
 			if (!result) {
 				Toast.makeText(mContext, getString(R.string.unable_delete_file), Toast.LENGTH_SHORT).show();
 			} else {

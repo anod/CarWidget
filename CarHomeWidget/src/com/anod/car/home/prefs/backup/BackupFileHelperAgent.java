@@ -11,6 +11,8 @@ import android.content.Context;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
+import com.anod.car.home.utils.Utils;
+
 
 public class BackupFileHelperAgent extends BackupAgentHelper {
     /**
@@ -32,7 +34,7 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
      */
     @Override
     public void onCreate() {
-    	Log.d("CarHomeWidget.BackupAgent", "onCreate called");
+    	Utils.logd("onCreate called");
         // All we need to do when working within the BackupAgentHelper mechanism
         // is to install the helper that will process and back up the files we
         // care about.  In this case, it's just one file.
@@ -50,7 +52,7 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
     public void onBackup(ParcelFileDescriptor oldState, BackupDataOutput data,
              ParcelFileDescriptor newState) throws IOException {
         // Hold the lock while the FileBackupHelper performs the backup operation
-        synchronized (PreferencesBackupManager.sDataLock) {
+        synchronized (PreferencesBackupManager.DATA_LOCK) {
             super.onBackup(oldState, data, newState);
         }
     }
@@ -62,11 +64,11 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
     @Override
     public void onRestore(BackupDataInput data, int appVersionCode,
             ParcelFileDescriptor newState) throws IOException {
-    	Log.d("CarHomeWidget.BackupAgent", "onRestore called");
+    	Utils.logd("onRestore called");
         // Hold the lock while the FileBackupHelper restores the file from
         // the data provided here.
-        synchronized (PreferencesBackupManager.sDataLock) {
-        	Log.d("CarHomeWidget.BackupAgent", "onRestore in-lock");
+        synchronized (PreferencesBackupManager.DATA_LOCK) {
+        	Utils.logd("onRestore in-lock");
             super.onRestore(data, appVersionCode, newState);
             mManager.doRestoreInCar();
         }

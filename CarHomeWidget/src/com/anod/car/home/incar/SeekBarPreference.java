@@ -12,44 +12,47 @@ import android.widget.TextView;
 
 
 public class SeekBarPreference extends DialogPreference implements SeekBar.OnSeekBarChangeListener {
-	private static final String androidns="http://schemas.android.com/apk/res/android";
+	private static final String ANDROIDNS="http://schemas.android.com/apk/res/android";
 	private SeekBar mSeekBar;
-	private TextView mSplashText,mValueText;
-	private Context mContext;
+	private TextView mValueText;
+	private final Context mContext;
 
-	private String mDialogMessage, mSuffix;
-	private int mMax, mValue = 0;
+	private final String mDialogMessage, mSuffix;
+	private final int mMax;
+	private int mValue;
 
 	public SeekBarPreference(Context context, AttributeSet attrs) { 
 		super(context,attrs); 
 		mContext = context;
 
-		mDialogMessage = attrs.getAttributeValue(androidns,"dialogMessage");
-		mSuffix = attrs.getAttributeValue(androidns,"text");
-		mMax = attrs.getAttributeIntValue(androidns,"max", 100);
+		mDialogMessage = attrs.getAttributeValue(ANDROIDNS,"dialogMessage");
+		mSuffix = attrs.getAttributeValue(ANDROIDNS,"text");
+		mMax = attrs.getAttributeIntValue(ANDROIDNS,"max", 100);
 	}
 
-    public void setValue(int value) {
-        if (value > mMax) {
-            value = mMax;
-        }
-        mValue = value;
-        if (mSeekBar != null)
-        	mSeekBar.setProgress(mValue);
-    }
-    
-    @Override
-    protected void onDialogClosed(boolean positiveResult) {
-        super.onDialogClosed(positiveResult);
+	public void setValue(int value) {
+		if (value > mMax) {
+			mValue = mMax;
+		} else {
+			mValue = value;
+		}
+		if (mSeekBar != null) {
+			mSeekBar.setProgress(mValue);
+		}
+	}
 
-        if (positiveResult) {
-            int value = mSeekBar.getProgress();
-            if (callChangeListener(value)) {
-                setValue(value);
-                persistInt(value);
-            }
-        }
-    }
+	@Override
+	protected void onDialogClosed(boolean positiveResult) {
+		super.onDialogClosed(positiveResult);
+
+		if (positiveResult) {
+			int value = mSeekBar.getProgress();
+			if (callChangeListener(value)) {
+				setValue(value);
+				persistInt(value);
+			}
+		}
+	}
 
 	@Override 
 	protected View onCreateDialogView() {
@@ -58,10 +61,11 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
 		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setPadding(6,6,6,6);
 
-		mSplashText = new TextView(mContext);
-		if (mDialogMessage != null)
-			mSplashText.setText(mDialogMessage);
-		layout.addView(mSplashText);
+		TextView splashText = new TextView(mContext);
+		if (mDialogMessage != null) {
+			splashText.setText(mDialogMessage);
+		}
+		layout.addView(splashText);
 
 		mValueText = new TextView(mContext);
 		mValueText.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -105,11 +109,13 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
 
 	@Override
 	public void onStartTrackingTouch(SeekBar seekBar) {
+		//Nothing
 	}
 
 	@Override
 	public void onStopTrackingTouch(SeekBar seekBar) {
+		//Nothing
 	}
-    
+
 
 }
