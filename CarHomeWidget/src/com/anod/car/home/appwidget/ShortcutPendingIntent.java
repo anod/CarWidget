@@ -50,9 +50,15 @@ public class ShortcutPendingIntent implements LauncherViewBuilder.PendingIntentH
     	if (intent.getExtras() == null && !isCallPrivileged) { // Samsung s3 bug
     		return PendingIntent.getActivity(mContext, 0 /* no requestCode */, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     	}
-    	Intent launchIntent = new Intent(mContext, ShortcutActivity.class);
     	String path = prefix + " - " + position;
     	Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
+    	
+    	if (action != null && action.equals(ShortcutActivity.ACTION_MEDIA_BUTTON)) {
+    		intent.setData(data);
+    		return PendingIntent.getActivity(mContext, 0 /* no requestCode */, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    	}
+    	
+    	Intent launchIntent = new Intent(mContext, ShortcutActivity.class);
     	launchIntent.setData(data);
     	launchIntent.setAction(Intent.ACTION_MAIN);
     	launchIntent.putExtra(ShortcutActivity.EXTRA_INTENT, intent);

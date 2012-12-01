@@ -10,6 +10,7 @@ import android.os.Parcelable;
 import android.view.KeyEvent;
 
 import com.anod.car.home.R;
+import com.anod.car.home.ShortcutActivity;
 import com.anod.car.home.incar.SwitchInCarActivity;
 import com.anod.car.home.prefs.ActivityPicker.PickAdapter.Item;
 
@@ -79,9 +80,11 @@ public class CarWidgetShortcutsPicker extends ActivityPicker {
 	}
 
 	private Intent creatMediaButtonIntent(int keyCode) {
-		Intent intent = new Intent(Intent.ACTION_MEDIA_BUTTON);
-		intent.putExtra(Intent.EXTRA_KEY_EVENT, keyCode);
-		return intent;
+		Intent shortcutIntent = new Intent(this,ShortcutActivity.class);
+		shortcutIntent.setAction(ShortcutActivity.ACTION_MEDIA_BUTTON);
+		shortcutIntent.putExtra(ShortcutActivity.EXTRA_MEDIA_BUTTON, keyCode);
+		
+		return shortcutIntent;
 	}
 	/*
 	 *     public static boolean isMediaButton(int keyCode) {
