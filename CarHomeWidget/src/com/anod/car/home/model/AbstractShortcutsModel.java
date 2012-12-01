@@ -34,18 +34,6 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 			if (shortcutId != ShortcutInfo.NO_ID) {
 				info = mModel.loadShortcut(shortcutId);
 			}
-			if (info!=null && info.intent != null && info.intent.getComponent() != null) {
-				ComponentName cmp = info.intent.getComponent();
-				if (cmp.getPackageName().equals("radiotime.player")) {
-					Log.d("CarHome", cmp.toString());
-					Intent localIntent = new Intent(Intent.ACTION_RUN);
-					localIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-					localIntent.setClassName("radiotime.player", "tunein.player.pro.Proxy");
-					Uri data = Uri.parse("radiotime.player://carmode");
-					localIntent.setData(data);
-					info.intent = localIntent;
-				}
-			}
 			mShortcuts.put(cellId, info);
 		}
 	}

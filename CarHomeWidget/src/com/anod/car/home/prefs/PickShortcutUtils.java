@@ -55,7 +55,7 @@ public class PickShortcutUtils {
 				int position = pref.getShortcutPosition();
 				ShortcutInfo info = mModel.getShortcut(position);
 				if (info == null) {
-					pickShortcut(position);
+					showActivityPicker(position);
 				} else {
 					startEditActivity(position, info.id);
 				}
@@ -75,19 +75,17 @@ public class PickShortcutUtils {
 		refreshPreference(p);
 	}
 	
-	public void pickShortcut(int position) {
+	public void showActivityPicker(int position) {
 		mActivity.showWaitDialog();
 		Bundle bundle = new Bundle();
 
 		ArrayList<String> shortcutNames = new ArrayList<String>();
 
 		shortcutNames.add(mActivity.getString(R.string.applications));
-		shortcutNames.add(mActivity.getString(R.string.car_widget_shortcuts));
 		bundle.putStringArrayList(Intent.EXTRA_SHORTCUT_NAME, shortcutNames);
 
 		ArrayList<ShortcutIconResource> shortcutIcons = new ArrayList<ShortcutIconResource>();
 		shortcutIcons.add(ShortcutIconResource.fromContext(mActivity, R.drawable.ic_launcher_application));
-		shortcutIcons.add(ShortcutIconResource.fromContext(mActivity, R.drawable.ic_launcher));
 		bundle.putParcelableArrayList(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, shortcutIcons);
 
 		Intent dataIntent = new Intent(Intent.ACTION_CREATE_SHORTCUT);
@@ -132,7 +130,7 @@ public class PickShortcutUtils {
 				completeEditShortcut(data);
 				break;
 			case REQUEST_PICK_SHORTCUT:
-				processShortcut(data);
+				pickShortcut(data);
 				mActivity.dismissWaitDialog();
 				break;
 			default:
@@ -172,33 +170,20 @@ public class PickShortcutUtils {
 		mCurrentCellId = INVALID_CELL_ID;
 	}
 
-	private void processShortcut(Intent intent) {
+	private void pickShortcut(Intent intent) {
 		// Handle case where user selected "Applications"
 		String applicationName = mActivity.getString(R.string.applications);
-		String carWidgetShortcut = mActivity.getString(R.string.car_widget_shortcuts);
 		String shortcutName = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
 		mCurrentCellId = intent.getIntExtra(EXTRA_CELL_ID, INVALID_CELL_ID);
 		if (applicationName != null && applicationName.equals(shortcutName)) {
 			Intent mainIntent = new Intent(mActivity, AllAppsActivity.class);
 			startActivityForResultSafely(mainIntent, REQUEST_PICK_APPLICATION);
-		} else if (carWidgetShortcut != null && carWidgetShortcut.equals(shortcutName)) {
-			showCarWidgetShortcut(mCurrentCellId);
 		} else {
 			startActivityForResultSafely(intent, REQUEST_CREATE_SHORTCUT);
 		}
 	}
 
 
-	private void showCarWidgetShortcut(int cellPosition) {
-		CarWidgetShortcuts shortcuts = new CarWidgetShortcuts(mActivity);
-		Bundle bundle = shortcuts.prepareBundle(cellPosition);
-		Intent pickIntent = new Intent(mActivity, ActivityPicker.class);
-		pickIntent.putExtras(bundle);
-		pickIntent.putExtra(Intent.EXTRA_TITLE, mActivity.getString(R.string.select_shortcut_title));
-		
-		mActivity.startActivityForResult(pickIntent, REQUEST_PICK_SHORTCUT);
-	}
-	
 	
 	private void completeEditShortcut(Intent data) {
 		int cellId = data.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, INVALID_CELL_ID);

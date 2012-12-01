@@ -44,23 +44,28 @@ public class ActivityPicker extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		final Intent intent = getIntent();
+		
+		initPicker(intent);
+	}
 
-		// Read base intent from extras, otherwise assume default
+	protected void initPicker(final Intent intent) {
+
+		// Read base intent from extras
 		Parcelable parcel = intent.getParcelableExtra(Intent.EXTRA_INTENT);
 		if (parcel instanceof Intent) {
 			mBaseIntent = (Intent) parcel;
 		}
 
 		String title = intent.getStringExtra(Intent.EXTRA_TITLE);
-		setTitle(title);
-
+		if (title != null) {
+			setTitle(title);
+		}
+		
 		// Build list adapter of pickable items
 		List<PickAdapter.Item> items = getItems();
 		mAdapter = new PickAdapter(this, items);
 		setListAdapter(mAdapter);
-		
 	}
 
 	@Override
@@ -126,7 +131,8 @@ public class ActivityPicker extends ListActivity {
 
 		return items;
 	}
-
+	
+	
 	/**
 	 * Fill the given list with any activities matching the base {@link Intent}.
 	 */
@@ -162,7 +168,17 @@ public class ActivityPicker extends ListActivity {
 			String packageName;
 			String className;
 			Bundle extras;
-
+			Intent intent;
+			
+			/**
+			 * Create a list item from given label and icon.
+			 */
+			Item(Context context, CharSequence label, Drawable icon, Intent intent) {
+				this.label = label;
+				this.icon = createThumbnail(icon, context);
+				this.intent = intent;
+			}
+			
 			/**
 			 * Create a list item from given label and icon.
 			 */
@@ -208,7 +224,15 @@ public class ActivityPicker extends ListActivity {
 			 * item label.
 			 */
 			Intent getIntent(Intent baseIntent) {
-				Intent intent = new Intent(baseIntent);
+				if (this.intent != null) {
+					return this.intent;
+				}
+				Intent intent;
+				if (baseIntent != null) {
+					intent = new Intent(baseIntent);
+				} else {
+					intent = new Intent(Intent.ACTION_MAIN);
+				}
 				if (packageName != null && className != null) {
 					// Valid package and class, so fill details as normal intent
 					intent.setClassName(packageName, className);

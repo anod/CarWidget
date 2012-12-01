@@ -73,7 +73,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 
 		int cellId = getIntent().getExtras().getInt(PickShortcutUtils.EXTRA_CELL_ID, PickShortcutUtils.INVALID_CELL_ID);
 		if (cellId != PickShortcutUtils.INVALID_CELL_ID) {
-			mPickShortcutUtils.pickShortcut(cellId);
+			mPickShortcutUtils.showActivityPicker(cellId);
 		}
         
 	}
