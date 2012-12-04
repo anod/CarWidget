@@ -92,7 +92,8 @@
         />
         <activity
             android:name="com.anod.car.home.ShortcutActivity"
-            android:theme="@style/BrightnessTheme" />
+            android:theme="@style/BrightnessTheme"
+            android:exported="true" />
         <activity
             android:name="com.anod.car.home.prefs.LookAndFeelActivity"
             android:theme="@style/AppTheme.Transparent"
