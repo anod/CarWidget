@@ -33,8 +33,8 @@
 	<string name="dialog_donate_message_expired">"תכונה זו זמינה רק בגירסה ווידג\'ט לרכב פרו.\n\n האם רוצה לקבל אותה עכשיו?"</string>
 	<string name="dialog_donate_title_trial">"תקופת נסיון,"</string>
 	<string name="dialog_donate_message_trial">"\n\nמצב הרכב ללא הגבלה זמין רק בגרסת פרו.\n\n האם רוצה לקבל אותה עכשיו?"</string>
-	<string name="dialog_donate_title_install">"גרסת פרו מותקנת,"</string>
-	<string name="dialog_donate_message_installed">"נא להוסיף את הווידג'\ט החדש המותקן למסך הבית על מנת לקבל גישה לתכונות של גרסת פרו.\n\n העברת ההגדרות:\nניתן להעביר את ההגדרות הקיימות באמצעות אפשרות \"\גיבוי / שחזור\"\. אין צורך בגרסה חינמית יותר.\n\nתודה רבה."</string>
+	<string name="dialog_donate_title_install">"גרסה פרו מותקנת,"</string>
+	<string name="dialog_donate_message_installed">"נא להוסיף את הווידג'\ט החדש המותקן למסך הבית על מנת לקבל גישה לתכונות של גרסת פרו.\n\n העברת ההגדרות:\nניתן להעביר את ההגדרות הקיימות באמצעות אפשרות \"גיבוי / שחזור\". אין צורך בגרסה חינמית יותר.\n\nתודה רבה."</string>
 	<string name="dialog_donate_btn_trial">"המשך תקופת ניסיון"</string>
 	<string name="dialog_donate_btn_yes">"כן, בבקשה!"</string>
 	<string name="dialog_donate_btn_no">"לא, תודה."</string>
@@ -173,10 +173,9 @@
     <string name="pref_autorun_app_title">"הפעלת היישום"</string>
     <string name="pref_autorun_app_disabled">"לא פעיל"</string>
     
-	<string name="switch_in_car_activity">"הפעל \"ברכב\""</string>
+	<string name="switch_in_car_activity">"מצב ברכב"</string>
     <string name="incar_mode_disabled">"מצב \"ברכב\" לא מופעל.\nתפעילו אותו בהגדרות של ווידג\'ט"</string>    
-	<string name="set_shortcut_short">"הגדר
-"</string>
+	<string name="set_shortcut_short">"הגדר"</string>
 
 	<string name="skin_info_bbb">"Theme by &lt;a href=\"http://blackbearblanc.dk/\"&gt;Black Bear Blanc&lt;/a&gt;&lt;br/&gt;Icon pack: &lt;a href=\"https://play.google.com/store/apps/details?id=com.jaguirre.elegant\"&gt;ADW.Elegant Theme&lt;/a&gt;"</string>
 	<string name="apply">"שמור"</string>
@@ -196,7 +195,7 @@
 	<string name="system">"מערכת"</string>
 	<string name="backup_path">"נתיב"</string>
 	<string name="open_folder">"פתח תיקייה"</string>
-	<string name="car_widget_shortcuts">"יווידג\'ט לרכב"</string>
+	<string name="car_widget_shortcuts">"יווידג\'ט לרכב קיצור דרך"</string>
 	<string name="select_shortcut_title">"בחר קיצור דרך"</string>
 	<string name="select_icon_pack">"בחרבחבילת אייקון"</string>
 </resources>

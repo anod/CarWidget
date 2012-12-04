@@ -9,7 +9,7 @@
     <string name="permlab_write_settings">запись настроек и ярлыков Авто Виджета</string>
     <string name="permdesc_write_settings">Позволяет приложениям менять настройки и ярлыки авто виджета.</string>
     <string name="color_dialog_title">Выберите цвет</string>
-    <string name="color_dialog_button_cancel">Отменить</string>
+    <string name="color_dialog_button_cancel">Отмена</string>
     <string name="pref_tile_color_title">Цвет плитки</string>
     <string name="pref_bg_color_title">Цвет фона</string>
     <string name="pref_icons_mono_title">Монохромные иконки</string>
@@ -25,7 +25,7 @@
 	<string name="dialog_donate_title_trial">Пробная версия,</string>
 	<string name="dialog_donate_message_trial">\n\nНеограниченный режим «В автомобиле» доступен только в Pro версии Авто Виджета.\n\n Хотели бы вы получить ее прямо сейчас?</string>
 	<string name="dialog_donate_title_install">Pro версия обнаружена,</string>
-	<string name="dialog_donate_message_installed">Добавьте новый установленный виджет на рабочий стол, чтобы получить доступ к функциям Pro версии\n\nКопирование настроек:\Вы может перенести настройки, используя опцию "Резервная копия". Бесплатная версия виджета больше не требуется\n\nСпасибо.</string>
+	<string name="dialog_donate_message_installed">Добавьте новый установленный виджет на рабочий стол, чтобы получить доступ к функциям Pro версии\n\nКопирование настроек:\nВы может перенести настройки, используя опцию "Резервная копия". Бесплатная версия виджета больше не требуется\n\nСпасибо.</string>
 	<string name="dialog_donate_btn_trial">Продолжить</string>
 
     <string name="dialog_donate_btn_yes">Да, пожалуйста!</string>
@@ -38,7 +38,7 @@
     <string name="pref_look_and_feel_summary">Настройки скина, цвета и размера шрифта</string>
     <string name="pref_incar_mode_title">Режим «В автомобиле»</string>
     <string name="pref_incar_mode_summary">Выберите способ определить, когда вы в машине, и параметры, которые будут скорректированы</string>
-    <string name="pref_incar_mode_enabled">Включить «В автомобиле»</string>
+    <string name="pref_incar_mode_enabled">Разрешить режим</string>
     <string name="pref_power_contorl_bt">Питание контролирует Bluetooth</string>
     <string name="pref_power_plugged_bt_on_title">Вкл, когда подключено</string>
     <string name="pref_power_plugged_bt_on_summary">Включить Bluetooth при подключении кабеля питания</string>
@@ -123,7 +123,7 @@
     <string name="backup_name_title">Название резервной копии:</string>
     <string name="backup_name_summary">Пожалуйста, введите название для резервной копии текущего виджета</string>
     <string name="backup_save">Сохранить</string>
-    <string name="backup_cancel">Отменить</string>
+    <string name="backup_cancel">Отмена</string>
     <string name="backup_done">Резервная копия создана.</string>
     <string name="external_storage_not_available">Карта памяти не доступна</string>
     <string name="failed_to_write_file">Ошибка записи в файл.</string>
@@ -162,7 +162,7 @@
 	<string name="system">Система</string>
 	<string name="backup_path">Путь</string>
 	<string name="open_folder">Открыть папку</string>
-	<string name="car_widget_shortcuts">Авто виджет</string>
+	<string name="car_widget_shortcuts">Авто виджет ярлыки</string>
 	<string name="select_shortcut_title">Выберите ярлык</string>
 	<string name="select_icon_pack">Выберите набор иконок</string>
     

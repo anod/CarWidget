@@ -17,6 +17,10 @@
         <item name="android:background">@color/actionbar_bg_color</item>
     </style>
 
+	<style name="text_align_style">
+		<item name="android:gravity">left</item>
+	</style>
+	
     <style name="ActionBarCompatTitleBase">
         <item name="android:id">@id/actionbar_compat_title</item>
         <!-- layout_width/height/weight must be set in code -->
@@ -40,8 +44,8 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/actionbar_compat_height</item>
     </style>
-    
-     
+
+	
     <!-- Skin Chooser -->
     <style name="AppTheme.Transparent" parent="AppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -67,7 +71,7 @@
         <item name="android:layout_gravity">center_horizontal|bottom</item>
     </style>
 
-    <style name="holo_btn_text">
+    <style name="holo_btn_text" parent="text_align_style">
         <item name="android:lines">1</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -75,14 +79,14 @@
         <item name="android:textColor">@color/default_font_color</item>
         <item name="android:maxLines">1</item>
         <item name="android:layout_gravity">center_horizontal|bottom</item>
-        <item name="android:gravity">left</item>
-        <item name="android:paddingLeft">5.0dp</item>
         <item name="android:paddingTop">5.0dp</item>
         <item name="android:paddingBottom">5.0dp</item>
         <item name="android:layout_marginLeft">4.0dp</item>
         <item name="android:layout_marginRight">4.0dp</item>
         <item name="android:layout_marginBottom">4.0dp</item>
         <item name="android:background">@color/holo_text_bg</item>
+        <item name="android:paddingRight">5.0dp</item>
+        <item name="android:paddingLeft">5.0dp</item>
     </style>
 
 	<style name="bbb_btn">
@@ -144,6 +148,7 @@
 		<item name="android:windowIsFloating">true</item> 
 		<item name="android:backgroundDimEnabled">false</item> 
 	</style>
+
 
 
 </resources>

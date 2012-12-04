@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string-array name="skin_titles" tools:ignore="UnusedResources" translatable="false">
+        <item>Holo</item>
         <item>Glossy</item>
         <item>Car Home</item>
         <item>Metro</item>
-        <item>Holo</item>
         <item>BlackBearBlanc</item>
     </string-array>
     <string-array name="skin_values" tools:ignore="UnusedResources" translatable="false">
+        <item>holo</item>
         <item>glossy</item>
         <item>carhome</item>
         <item>windows7</item>
-        <item>holo</item>
         <item>blackbearblanc</item>
     </string-array>
 	<string-array name="brightness_mode_values" tools:ignore="UnusedResources" translatable="false">
