@@ -60,7 +60,8 @@
             android:theme="@style/AppListTheme" />
         <activity
             android:name="com.anod.car.home.prefs.IconThemesActivity"
-            android:theme="@style/AppListTheme" />
+            android:theme="@style/AppListTheme"
+            android:label="@string/icons_theme" />
         <activity
             android:name="com.anod.car.home.prefs.AppListConfiguration"
             android:configChanges="orientation" >

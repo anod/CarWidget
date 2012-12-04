@@ -186,7 +186,7 @@
 	<string name="shortcuts_summary">"ניתן להגדיר עד 3 קיצורי דרך בוילון התראות"</string>
 	<string name="more">"עוד..."</string>
 	<string name="icons_theme">"נושאי אייקונים"</string>
-	<string name="none">"לא מיושם"</string>
+	<string name="none">"אין"</string>
 	<string name="download">"הורד..."</string>
 	<string name="not_set">"לא הוגדר"</string>
 	<string name="default_car_dock_app">"ברירת מחדל לCar Dock"</string>
