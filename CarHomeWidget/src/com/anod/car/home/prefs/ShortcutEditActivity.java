@@ -131,6 +131,7 @@ public class ShortcutEditActivity extends Activity {
 		if (icon == null) {
 			final String errStr = getString(R.string.error_text, getString(R.string.custom_image_error));
 			Toast.makeText(this, errStr, Toast.LENGTH_LONG).show();
+			return;
 		}
 		Bitmap bitmap = UtilitiesBitmap.createIconBitmap(icon, this);
 		setIcon(bitmap);
