@@ -19,6 +19,15 @@
     <string name="pref_font_color_summary">Выберите цвет названия ярлыка</string>
     <string name="pref_font_size_title">Размер шрифта</string>
     <string name="pref_font_size_summary">Выберите размер названия ярлыка</string>
+    
+	<string name="dialog_donate_title_expired">Истек срок пробной версии,</string>
+	<string name="dialog_donate_message_expired">Эта функция доступна только в Pro версии Авто Виджета\n\n Хотели бы вы получить ее прямо сейчас?</string>
+	<string name="dialog_donate_title_trial">Пробная версия,</string>
+	<string name="dialog_donate_message_trial">\n\nНеограниченный режим «В автомобиле» доступен только в Pro версии Авто Виджета.\n\n Хотели бы вы получить ее прямо сейчас?</string>
+	<string name="dialog_donate_title_install">Pro версия обнаружена,</string>
+	<string name="dialog_donate_message_installed">Добавьте новый установленный виджет на рабочий стол, чтобы получить доступ к функциям Pro версии\n\nКопирование настроек:\Вы может перенести настройки, используя опцию "Резервная копия". Бесплатная версия виджета больше не требуется\n\nСпасибо.</string>
+	<string name="dialog_donate_btn_trial">Продолжить</string>
+
     <string name="dialog_donate_btn_yes">Да, пожалуйста!</string>
     <string name="dialog_donate_btn_no">Нет, спасибо</string>
     <string name="please_wait">Пожалуйста, подождите&#8230;</string>
@@ -58,8 +67,18 @@
     <string name="pref_change_media_volume_summary">Регулировка громкость Мультимедиа до определенного уровня</string>
     <string name="pref_media_volume_level">Уровень громкости</string>
     <string name="pref_media_volume_level_summary">Изменить желаемый уровень громкости</string>
+    
+    <string name="notif_expired">Истек срок пробной версии</string>
+    <string name="notif_consider">Рассмотрите возможность установки Pro версии</string>
     <string name="incar_mode_enabled">Режим «В автомобиле» включен</string>
     <string name="click_to_disable">Нажмите, чтобы отключить</string>
+    <string name="click_to_disable_trial">Нажмите, чтобы отключить, Пробная версия: %d раз осталось</string>
+    <plurals name="notif_activations_left">
+        <item quantity="one">%1$d активация осталась</item>
+        <item quantity="few">%1$d активации осталось</item>
+        <item quantity="other">%1$d активаций осталось</item>
+    </plurals>
+    
     <string name="bluetooth_device_laptop">Компьютер</string>
     <string name="bluetooth_device_cellphone">Телефон</string>
     <string name="bluetooth_device_headphones">Наушники</string>
@@ -87,7 +106,7 @@
     <string name="pref_settings_transparent_summary">Кнопка настройки останется в том же месте, но станет прозрачная</string>
     <string name="pref_incar_transparent">Кнопка «В автомобиле»</string>
     <string name="pref_incar_transparent_summary">Когда режим «В автомобиле» включен, кнопка останется в том же месте, но станет прозрачная</string>
-    <string name="pref_activate_car_mode">Режим "Штурмpref_auto_answer_summaryан"</string>
+    <string name="pref_activate_car_mode">Режим "Штурман"</string>
     <string name="pref_activate_car_mode_summary">Включить встроенный в Андройд автомобильный режим, дополнительный значок будет отображен на панели уведомлений</string>
     <string name="dialog_title_select">Выбрать</string>
     <string name="icon_default">По-умолчанию</string>
@@ -122,4 +141,29 @@
     <string name="pref_autorun_app_disabled">Отключен</string>
 	<string name="switch_in_car_activity">Режим «В автомобиле»</string>
     <string name="incar_mode_disabled">Режим «В автомобиле» отключен.\nВключите его в настройках виджета чтобы воспользоваться ярлыком.</string>    
+
+	<string name="set_shortcut_short">ВЫБРАТЬ</string>
+
+	<string name="skin_info_bbb">Theme by &lt;a href=&quot;http://blackbearblanc.dk/&quot;&gt;Black Bear Blanc&lt;/a&gt;&lt;br/&gt;Icon pack: &lt;a href=&quot;https://play.google.com/store/apps/details?id=com.jaguirre.elegant&quot;&gt;ADW.Elegant Theme&lt;/a&gt;</string>
+	<string name="apply">Применить</string>
+	<string name="selected">Выбран</string>
+	<string name="settings">Настройки</string>
+	<string name="notification">Уведомление</string>
+	<string name="shortcuts_summary">Вы можете разместить до 3 ярлыков на уведомлении</string>
+	<string name="more">Еще&#8230;</string>
+	<string name="icons_theme">Тема иконок</string>
+	<string name="none">Нет</string>
+	<string name="download">Скачать&#8230;</string>
+	<string name="not_set">Не установленно</string>
+	<string name="default_car_dock_app">Car Dock app по умолчанию</string>
+	<string name="cardock_btn_1">Открыть "О приложении"</string>
+	<string name="cardock_text1">Чтобы очистить текущее приложение запускаемое по умолчанию:\n1. Откройте информацию \"О приложении\"\n2. Нажмите на кнопку \"Удалить настройки по умолчанию\"</string>
+	<string name="cardock_text2">В следующий раз Car Dock подключен, выберите \"Авто Виджет\" приложением по умолчанию.</string>
+	<string name="system">Система</string>
+	<string name="backup_path">Путь</string>
+	<string name="open_folder">Открыть папку</string>
+	<string name="car_widget_shortcuts">Авто виджет</string>
+	<string name="select_shortcut_title">Выберите ярлык</string>
+	<string name="select_icon_pack">Выберите набор иконок</string>
+    
 </resources>

@@ -10,8 +10,7 @@
         android:layout_width="56.0dip"
         android:layout_height="56.0dip"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="8.0dip"
-        android:onClick="changeIcon" />
+        android:layout_margin="8.0dip" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,7 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="4.0dip"
-        android:onClick="clickedOk"
         android:text="@string/shortcut_ok_button" />
 
 </LinearLayout>

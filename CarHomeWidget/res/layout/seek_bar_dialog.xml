@@ -6,9 +6,9 @@
   android:layout_height="match_parent" android:padding="6dp">
     <TextView android:text="@string/textview" android:id="@+id/splashText" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
     <RelativeLayout android:layout_gravity="center" android:id="@+id/row" android:layout_height="wrap_content" android:layout_width="match_parent">
-        <EditText android:inputType="number" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" android:id="@+id/value" android:textSize="28dip">
+        <EditText android:inputType="number" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" android:id="@+id/value" android:textSize="28sp">
         </EditText>
-        <TextView android:layout_height="wrap_content" android:id="@+id/suffix" android:layout_width="wrap_content" android:text="@string/textview" android:layout_alignBaseline="@+id/value" android:layout_alignBottom="@+id/value" android:textSize="28dip" android:layout_toRightOf="@+id/value"></TextView>
+        <TextView android:layout_height="wrap_content" android:id="@+id/suffix" android:layout_width="wrap_content" android:text="@string/textview" android:layout_alignBaseline="@+id/value" android:layout_alignBottom="@+id/value" android:textSize="28sp" android:layout_toRightOf="@+id/value"></TextView>
     </RelativeLayout>
     <SeekBar android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/seekBar">
     	<requestFocus></requestFocus>
