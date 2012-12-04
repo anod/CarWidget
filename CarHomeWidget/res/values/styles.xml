@@ -22,8 +22,8 @@
         <!-- layout_width/height/weight must be set in code -->
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:paddingStart">6dp</item>
-        <item name="android:paddingEnd">6dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingRight">6dp</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">marquee</item>
     </style>
@@ -34,8 +34,8 @@
     
      <style name="TitleBarButton" parent="android:Widget.Button">
         <item name="android:background">@drawable/actionbar_compat_item</item>
-        <item name="android:paddingStart">5dp</item>
-        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">10dp</item>
         <item name="android:textColor">#FFFFFFFF</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/actionbar_compat_height</item>
@@ -75,21 +75,20 @@
         <item name="android:textColor">@color/default_font_color</item>
         <item name="android:maxLines">1</item>
         <item name="android:layout_gravity">center_horizontal|bottom</item>
-        <item name="android:gravity">start</item>
-        <item name="android:paddingStart">5.0dp</item>
-        <item name="android:paddingEnd">5.0dp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:paddingLeft">5.0dp</item>
         <item name="android:paddingTop">5.0dp</item>
         <item name="android:paddingBottom">5.0dp</item>
-        <item name="android:layout_marginStart">4.0dp</item>
-        <item name="android:layout_marginEnd">4.0dp</item>
+        <item name="android:layout_marginLeft">4.0dp</item>
+        <item name="android:layout_marginRight">4.0dp</item>
         <item name="android:layout_marginBottom">4.0dp</item>
         <item name="android:background">@color/holo_text_bg</item>
     </style>
 
 	<style name="bbb_btn">
 		<item name="android:clipChildren">false</item>
-		<item name="android:paddingStart">3dp</item>
-		<item name="android:paddingEnd">3dp</item>
+		<item name="android:paddingLeft">3dp</item>
+		<item name="android:paddingRight">3dp</item>
 		<item name="android:paddingTop">5dp</item>
 		<item name="android:paddingBottom">5dp</item>
 		<item name="android:layout_width">0dip</item>
@@ -119,7 +118,7 @@
     <style name="incarButton" parent="android:Widget.Holo.Light.ImageButton">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:layout_margin">0.0dp</item>
-        <item name="android:paddingStart">8.0dp</item>
+        <item name="android:paddingLeft">8.0dp</item>
         <item name="android:paddingTop">1.0dp</item>
         <item name="android:paddingBottom">1.0dp</item>
         <item name="android:scaleType">fitStart</item>
@@ -130,7 +129,7 @@
     <style name="settingsButton" parent="android:Widget.Holo.Light.ImageButton">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:layout_margin">0.0dp</item>
-        <item name="android:paddingEnd">8.0dp</item>
+        <item name="android:paddingRight">8.0dp</item>
         <item name="android:paddingTop">1.0dp</item>
         <item name="android:paddingBottom">1.0dp</item>
         <item name="android:scaleType">fitEnd</item>
