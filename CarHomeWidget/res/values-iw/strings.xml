@@ -175,7 +175,8 @@
     
 	<string name="switch_in_car_activity">"הפעל \"ברכב\""</string>
     <string name="incar_mode_disabled">"מצב \"ברכב\" לא מופעל.\nתפעילו אותו בהגדרות של ווידג\'ט"</string>    
-	<string name="set_shortcut_short">"הגדר"</string>
+	<string name="set_shortcut_short">"הגדר
+"</string>
 
 	<string name="skin_info_bbb">"Theme by &lt;a href=\"http://blackbearblanc.dk/\"&gt;Black Bear Blanc&lt;/a&gt;&lt;br/&gt;Icon pack: &lt;a href=\"https://play.google.com/store/apps/details?id=com.jaguirre.elegant\"&gt;ADW.Elegant Theme&lt;/a&gt;"</string>
 	<string name="apply">"שמור"</string>
@@ -188,7 +189,7 @@
 	<string name="none">"לא מיושם"</string>
 	<string name="download">"הורד..."</string>
 	<string name="not_set">"לא הוגדר"</string>
-	<string name="default_car_dock_app">"ברירת מחדל לאפליקצית Car Dock"</string>
+	<string name="default_car_dock_app">"ברירת מחדל לCar Dock"</string>
 	<string name="cardock_btn_1">"לפתוח פרטי יישום"</string>
 	<string name="cardock_text1">"על מנת לנקות את יישום ברירת מחדל נוכחי:\n1.פתח פרטי יישום\n2.לחץ על כפתור \"נקה ברירת מחדל\" "</string>
 	<string name="cardock_text2">"בפעם הבאה כאשר Car Dock יופעל, בחר \"ווידג'\ט לרכב\" כיישום ברירת מחדל."</string>
