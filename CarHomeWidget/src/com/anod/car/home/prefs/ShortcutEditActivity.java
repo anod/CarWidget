@@ -1,17 +1,26 @@
 package com.anod.car.home.prefs;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -28,6 +37,7 @@ import com.anod.car.home.utils.Utils;
 
 public class ShortcutEditActivity extends Activity {
 
+	private static final String MIME_IMAGE = "image/*";
 	public static final String EXTRA_SHORTCUT_ID = "extra_id";
 	public static final String EXTRA_CELL_ID = "extra_cell_id";
 
@@ -42,6 +52,7 @@ public class ShortcutEditActivity extends Activity {
 	private LauncherModel mModel;
 	private ShortcutInfo mShortuctInfo;
 	private Intent mIntent;
+	private File mTempFile;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +112,11 @@ public class ShortcutEditActivity extends Activity {
 	private void iconDialogClick(final int item) {
 		Intent chooseIntent;
 		if (item == PICK_CUSTOM_ICON) {
-			chooseIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+			mTempFile = getFileStreamPath("tempImage");
+			chooseIntent = new Intent(Intent.ACTION_GET_CONTENT);
+			chooseIntent.setType(MIME_IMAGE);
+			chooseIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTempFile));
+			chooseIntent.putExtra("outputFormat",Bitmap.CompressFormat.PNG.name());
 			Utils.startActivityForResultSafetly(chooseIntent, PICK_CUSTOM_ICON, this);
 		} else if (item == PICK_ADW_ICON_PACK) {
 			chooseIntent = new Intent();
@@ -110,6 +125,100 @@ public class ShortcutEditActivity extends Activity {
 		}
 	}
 
+	private void updateCustomIcon(final Intent data) {
+		Uri imageUri = data.getData();
+		Drawable icon = resolveUri(imageUri);
+		if (icon == null) {
+			final String errStr = getString(R.string.error_text, getString(R.string.custom_image_error));
+			Toast.makeText(this, errStr, Toast.LENGTH_LONG).show();
+		}
+		Bitmap bitmap = UtilitiesBitmap.createIconBitmap(icon, this);
+		setIcon(bitmap);
+		return;
+	}
+	
+	/**
+	 * Source android.widget.ImageView
+	 * @param uri
+	 * @return
+	 */
+	private Drawable resolveUri(Uri uri) {
+		Drawable d = null;
+		String scheme = uri.getScheme();
+        if (ContentResolver.SCHEME_ANDROID_RESOURCE.equals(scheme)) {
+            try {
+                // Load drawable through Resources, to get the source density information
+                OpenResourceIdResult r = getResourceId(uri);
+                d = r.r.getDrawable(r.id);
+            } catch (Exception e) {
+                Log.w("ShortcutEditActivity", "Unable to open content: " + uri, e);
+            }
+        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)
+                || ContentResolver.SCHEME_FILE.equals(scheme)) {
+            try {
+                d = Drawable.createFromStream(
+                   getContentResolver().openInputStream(uri),
+                    null);
+            } catch (Exception e) {
+                Log.w("ShortcutEditActivity", "Unable to open content: " + uri, e);
+            }
+        } else {
+            d = Drawable.createFromPath(uri.toString());
+        }
+        
+        return d;
+	}
+	
+    public class OpenResourceIdResult {
+        public Resources r;
+        public int id;
+    }
+    
+    /**
+     * From android.content.ContentResolver
+     * @param uri
+     * @return
+     * @throws FileNotFoundException
+     */
+    public OpenResourceIdResult getResourceId(Uri uri) throws FileNotFoundException {
+        String authority = uri.getAuthority();
+        Resources r;
+        if (TextUtils.isEmpty(authority)) {
+            throw new FileNotFoundException("No authority: " + uri);
+        } else {
+            try {
+                r = getPackageManager().getResourcesForApplication(authority);
+            } catch (NameNotFoundException ex) {
+                throw new FileNotFoundException("No package found for authority: " + uri);
+            }
+        }
+        List<String> path = uri.getPathSegments();
+        if (path == null) {
+            throw new FileNotFoundException("No path: " + uri);
+        }
+        int len = path.size();
+        int id;
+        if (len == 1) {
+            try {
+                id = Integer.parseInt(path.get(0));
+            } catch (NumberFormatException e) {
+                throw new FileNotFoundException("Single path segment is not a resource ID: " + uri);
+            }
+        } else if (len == 2) {
+            id = r.getIdentifier(path.get(1), path.get(0), authority);
+        } else {
+            throw new FileNotFoundException("More than two path segments: " + uri);
+        }
+        if (id == 0) {
+            throw new FileNotFoundException("No resource found for: " + uri);
+        }
+        OpenResourceIdResult res = new OpenResourceIdResult();
+        res.r = r;
+        res.id = id;
+        return res;
+    }
+
+	/*
 	private void updateCustomIcon(final Intent data) {
 		final String generalError = "An error was encountered while trying to open the selected image";
 		final Uri localUri = data.getData();
@@ -132,7 +241,7 @@ public class ShortcutEditActivity extends Activity {
 		}
 		setIcon(icon);
 	}
-
+*/
 	/**
 	 * Called from view directly
 	 * 
@@ -155,8 +264,15 @@ public class ShortcutEditActivity extends Activity {
 		if (cursor == null) {
 			return null;
 		}
+		int columnIndex;
+
+		try {
+			columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+		} catch (Exception e) {
+			return null;
+		}
 		cursor.moveToFirst();
-		String str = cursor.getString(0);
+		String str = cursor.getString(columnIndex);
 		cursor.close();
 		return str;
 	}
