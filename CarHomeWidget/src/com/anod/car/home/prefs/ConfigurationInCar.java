@@ -73,7 +73,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 	protected void onCreateImpl(Bundle savedInstanceState) {
 		setResult(RESULT_OK);
 
-		Version version = new Version(this);
+		final Version version = new Version(this);
 		mContext = (Context) this;
 
 		initInCar();
@@ -102,7 +102,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 	@Override
 	public Dialog onCreateDialog(int id) {
 		if (id == DIALOG_INIT) {
-			ProgressDialog initDialog = new ProgressDialog(this);
+			final ProgressDialog initDialog = new ProgressDialog(this);
 			initDialog.setCancelable(true);
 			initDialog.setMessage(getResources().getString(R.string.load_paired_device));
 			initDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -123,8 +123,6 @@ public class ConfigurationInCar extends ConfigurationActivity {
 		return super.onCreateDialog(id);
 	}
 
-
-
 	@SuppressWarnings("deprecation")
 	private void showTrialDialog() {
 		if (!mTrialMessageShown || mTrialsLeft == 0) {
@@ -136,7 +134,10 @@ public class ConfigurationInCar extends ConfigurationActivity {
 		InCar incar = PreferencesStorage.loadInCar(this);
 		initBluetooth();
 		initAutorunApp(incar);
-		setIntent(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class, 0);
+		
+		if (Utils.IS_ICS_OR_GREATER) {
+			setIntent(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class, 0);
+		}
 	}
 
 	private void initAutorunApp(InCar incar) {

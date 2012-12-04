@@ -114,12 +114,5 @@
             </PreferenceCategory>
         </PreferenceScreen>
     </PreferenceCategory>
-    
-    <PreferenceCategory android:title="@string/notification" >
-        <Preference
-            android:key="notif-shortcuts"
-            android:summary="@string/shortcuts_summary"
-            android:title="@string/shortcuts" />
-    </PreferenceCategory>
 
 </PreferenceScreen>
