@@ -35,7 +35,7 @@
 	<string name="dialog_donate_title_expired">Trial expired,</string>
 	<string name="dialog_donate_message_expired">This feature is available only in Car Widget Pro version.\n\n Would you like to get it now?</string>
 	<string name="dialog_donate_title_trial">Trial,</string>
-	<string name="dialog_donate_message_trial">\n\nUnlimimited InCar mode is available only in Car Widget Pro version.\n\n Would you like to get it now?</string>
+	<string name="dialog_donate_message_trial">\n\nUnlimited InCar mode is available only in Car Widget Pro version.\n\n Would you like to get it now?</string>
 	<string name="dialog_donate_title_install">Pro version detected,</string>
 	<string name="dialog_donate_message_installed">Please add the new installed widget to the home screen in order to get access to the features of Pro version.\n\nCopy settings:\nYou can copy settings using "Backup/Restore" option. Free version of the widget is not required anymore.\n\nThank you.</string>
 	<string name="dialog_donate_btn_trial">Continue trial</string>
@@ -194,7 +194,7 @@
 	<string name="default_car_dock_app">Default Car Dock app</string>
 	<string name="cardock_btn_1">Open App Info</string>
 	<string name="cardock_text1">To clear current default application:\n1. Open default App Info\n2. Click on \"Clear defaults\" button</string>
-	<string name="cardock_text2">Next time Car Dock enabled choose \"Car Widget\" as a default application.</string>
+	<string name="cardock_text2">Next time Car Dock enabled, choose \"Car Widget\" as a default application.</string>
 	<string name="system">System</string>
 	<string name="backup_path">Path</string>
 	<string name="open_folder">Open Folder</string>
