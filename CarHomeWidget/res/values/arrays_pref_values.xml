@@ -1,44 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="skin_titles">
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string-array name="skin_titles" tools:ignore="UnusedResources" translatable="false">
         <item>Glossy</item>
         <item>Car Home</item>
         <item>Metro</item>
         <item>Holo</item>
         <item>BlackBearBlanc</item>
     </string-array>
-    <string-array name="skin_values">
+    <string-array name="skin_values" tools:ignore="UnusedResources" translatable="false">
         <item>glossy</item>
         <item>carhome</item>
         <item>windows7</item>
         <item>holo</item>
         <item>blackbearblanc</item>
     </string-array>
-    <string-array name="colors_values" translatable="false">
-        <item>black</item>
-        <item>white</item>
-        <item>green</item>
-        <item>red</item>
-        <item>blue</item>
-        <item>yellow</item>
-        <item>cyan</item>
-        <item>#800080</item>
-        <item>#ffc0cb</item>
-        <item>#ffa500</item>
-        <item>#add8e6</item>
-        <item>#B1E400</item>
-        <item>darkgray</item>
-        <item>gray</item>
-        <item>lightgray</item>
-        <item>custom</item>
-    </string-array>
-	<string-array name="brightness_mode_values">
+	<string-array name="brightness_mode_values" tools:ignore="UnusedResources" translatable="false">
 		<item>disabled</item>
 		<item>auto</item>
 		<item>day</item>
 		<item>night</item>
     </string-array>
-    <string-array name="icon_scale_values">
+    <string-array name="icon_scale_values" tools:ignore="UnusedResources" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -52,13 +34,13 @@
         <item>10</item>
     </string-array>
     
-	<string-array name="wifi_action_values">
+	<string-array name="wifi_action_values" tools:ignore="UnusedResources" translatable="false">
 		<item>no_action</item>
 		<item>turn_off_wifi</item>
 		<item>disable_wi_fi</item>
     </string-array>
     
-    <string-array name="icon_scale_titles">
+    <string-array name="icon_scale_titles" tools:ignore="UnusedResources" translatable="false">
         <item>x1.0</item>
         <item>x1.1</item>
         <item>x1.2</item>
@@ -72,13 +54,13 @@
         <item>x2.0</item>
     </string-array>    
     
-	<string-array name="autoanswer_values">
+	<string-array name="autoanswer_values" tools:ignore="UnusedResources" translatable="false">
 		<item>disabled</item>
 		<item>immediately</item>
 		<item>delay-5</item>
     </string-array>
     
-	<string-array name="autorun_app_values">
+	<string-array name="autorun_app_values" tools:ignore="UnusedResources" translatable="false">
 		<item>disabled</item>
 		<item>custom</item>
     </string-array>
