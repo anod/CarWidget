@@ -26,7 +26,7 @@ public class CarWidgetShortcutsPicker extends ActivityPicker {
 	};
 
 	private static final int[] ICONS = {
-		R.drawable.ic_wheel,
+		R.drawable.ic_launcher,
 		R.drawable.ic_media_play_pause,
 		R.drawable.ic_media_next,
 		R.drawable.ic_media_prev,
