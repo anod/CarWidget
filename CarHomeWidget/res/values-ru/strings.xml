@@ -156,9 +156,9 @@
 	<string name="download">Скачать&#8230;</string>
 	<string name="not_set">Не установленно</string>
 	<string name="default_car_dock_app">Car Dock app по умолчанию</string>
-	<string name="cardock_btn_1">Открыть "О приложении"</string>
-	<string name="cardock_text1">Чтобы очистить текущее приложение запускаемое по умолчанию:\n1. Откройте информацию \"О приложении\"\n2. Нажмите на кнопку \"Удалить настройки по умолчанию\"</string>
-	<string name="cardock_text2">В следующий раз Car Dock подключен, выберите \"Авто Виджет\" приложением по умолчанию.</string>
+	<string name="cardock_btn_1">Открыть \"О приложении\"</string>
+	<string name="cardock_text1">Чтобы очистить текущее приложение запускаемое по умолчанию:\n1. Откройте \"О приложении\"\n2. Нажмите на кнопку \"Удалить настройки по умолчанию\"</string>
+	<string name="cardock_text2">В следующий раз при подключении Car Dock выберите \"Авто Виджет\" приложением по умолчанию.</string>
 	<string name="system">Система</string>
 	<string name="backup_path">Путь</string>
 	<string name="open_folder">Открыть папку</string>
