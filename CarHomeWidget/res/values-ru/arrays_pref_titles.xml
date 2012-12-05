@@ -41,4 +41,12 @@
 		<item>Отключено</item>
 		<item>Выбрать&#8230;</item>
     </string-array>
+    
+	<string-array name="carwidget_shortcuts">
+		<item>В автомобиле</item>
+		<item>Играть/Пауза</item>
+		<item>Следующий</item>
+		<item>Предыдущий</item>
+		<item>TuneIn Radio Car Mode</item>
+    </string-array>
 </resources>
