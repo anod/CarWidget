@@ -232,7 +232,8 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
 				boolean eof = false;
 				while (!eof) {
-					if (eventType == XmlPullParser.START_TAG) {
+					switch (eventType) {
+					case XmlPullParser.START_TAG:
 						if (!parser.getName().equals("item")) {
 							break;
 						}
@@ -246,8 +247,10 @@ public class ActionBarHelperBase extends ActionBarHelper {
 						if (hasActionAlways || hasActionIfRoom) {
 							mActionItemIds.add(itemId);
 						}
-					} else if (eventType == XmlPullParser.END_DOCUMENT) {
+						break;
+					case XmlPullParser.END_DOCUMENT:
 						eof = true;
+						break;
 					}
 
 					eventType = parser.next();

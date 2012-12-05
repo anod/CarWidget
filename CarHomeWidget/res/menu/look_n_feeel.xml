@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
         android:id="@+id/tile_color"
-        android:showAsAction="always|withText"
+        android:showAsAction="always"
         android:title="@string/pref_tile_color_title">
     </item>
     <item
         android:id="@+id/apply"
         android:icon="@drawable/ic_action_tick"
-        android:showAsAction="always|withText"
+        android:showAsAction="always"
         android:title="@android:string/ok">
     </item>
     <item
