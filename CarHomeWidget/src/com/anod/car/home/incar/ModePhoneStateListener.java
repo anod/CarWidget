@@ -80,11 +80,6 @@ public class ModePhoneStateListener extends PhoneStateListener {
 				cancelAnswerTimer();
 				// mAnswered=false;
 			}
-
-			if (mUseAutoSpeaker && !mAudioManager.isSpeakerphoneOn()) {
-				Utils.logd("Enable speakerphone while ringing");
-				mAudioManager.setSpeakerphoneOn(true);
-			}
 			break;
 		}
 	}
@@ -121,6 +116,10 @@ public class ModePhoneStateListener extends PhoneStateListener {
 		}
 		mAudioManager.setMicrophoneMute(false);
 
+		if (mUseAutoSpeaker && !mAudioManager.isSpeakerphoneOn()) {
+			Utils.logd("Enable speakerphone while ringing");
+			mAudioManager.setSpeakerphoneOn(true);
+		}
 	}
 	private void answerPhoneHeadsethook(Context context) {
 
