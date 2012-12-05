@@ -196,6 +196,7 @@
 	<string name="backup_path">"נתיב"</string>
 	<string name="open_folder">"פתח תיקייה"</string>
 	<string name="car_widget_shortcuts">"יווידג\'ט לרכב קיצור דרך"</string>
+	<string name="car_widget_pro_shortcuts">"יווידג\'ט פרו לרכב קיצור דרך"</string>
 	<string name="select_shortcut_title">"בחר קיצור דרך"</string>
 	<string name="select_icon_pack">"בחרבחבילת אייקון"</string>
 </resources>

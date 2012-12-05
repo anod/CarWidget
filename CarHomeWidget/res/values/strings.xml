@@ -199,6 +199,7 @@
 	<string name="backup_path">Path</string>
 	<string name="open_folder">Open Folder</string>
 	<string name="car_widget_shortcuts">Car Widget shortcuts</string>
+	<string name="car_widget_pro_shortcuts">Car Widget Pro shortcuts</string>
 	<string name="select_shortcut_title">Select shortcut</string>
 	<string name="select_icon_pack">Select icon pack</string>
 	<string name="custom_image_error">An error was encountered while trying to open the selected image</string>

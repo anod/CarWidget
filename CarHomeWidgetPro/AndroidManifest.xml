@@ -105,7 +105,7 @@
         <activity
             android:name="com.anod.car.home.prefs.CarWidgetShortcutsPicker"
             android:theme="@style/AppListTheme"
-            android:label="@string/car_widget_shortcuts"
+            android:label="@string/car_widget_pro_shortcuts"
             android:finishOnCloseSystemDialogs="true">
             <!--  This intent-filter allows your shortcuts to be created in the launcher. -->
             <intent-filter>
