@@ -43,4 +43,11 @@
 		<item>Choose&#8230;</item>
     </string-array>
 	
+	<string-array name="carwidget_shortcuts">
+		<item>Switch InCar</item>
+		<item>Play/Pause</item>
+		<item>Next</item>
+		<item>Previous</item>
+		<item>TuneIn Radio Car Mode</item>
+    </string-array>
 </resources>

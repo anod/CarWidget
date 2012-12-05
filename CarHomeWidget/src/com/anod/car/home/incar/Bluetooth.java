@@ -6,6 +6,9 @@ public class Bluetooth {
 
 	public static int getState() {
 		BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+		if (btAdapter == null) {
+			return BluetoothAdapter.STATE_OFF;
+		}
 		return btAdapter.getState();
 	}
 	

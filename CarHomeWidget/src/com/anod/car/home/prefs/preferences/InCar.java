@@ -9,22 +9,21 @@ import java.util.HashMap;
 
 import android.content.ComponentName;
 
-
 public class InCar implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private boolean inCarEnabled;
 	private boolean powerRequired;
-	private boolean headsetRequired ;
+	private boolean headsetRequired;
 	private boolean bluetoothRequired;
-	private HashMap<String,String> btDevices;
-	
+	private HashMap<String, String> btDevices;
+
 	private boolean disableBluetoothOnPower;
 	private boolean enableBluetoothOnPower;
-	
+
 	private boolean disableScreenTimeout;
 	private boolean adjustVolumeLevel;
 	private int mediaVolumeLevel = 100;
@@ -34,26 +33,28 @@ public class InCar implements Serializable {
 	private String disableWifi = PreferencesStorage.WIFI_NOACTION;
 	private boolean autoSpeaker;
 	private boolean activateCarMode;
-	
+
 	transient private ComponentName autorunApp;
-	
-	
+
 	public InCar() {
-		 super();
-	}		
-	
+		super();
+	}
+
 	/**
 	 * @return the inCarEnabled
 	 */
 	public boolean isInCarEnabled() {
 		return inCarEnabled;
 	}
+
 	/**
-	 * @param inCarEnabled the inCarEnabled to set
+	 * @param inCarEnabled
+	 *            the inCarEnabled to set
 	 */
 	public void setInCarEnabled(boolean incarEnabled) {
 		this.inCarEnabled = incarEnabled;
 	}
+
 	/**
 	 * Enable auto-speaker when receiving a call
 	 * 
@@ -62,95 +63,120 @@ public class InCar implements Serializable {
 	public boolean isAutoSpeaker() {
 		return autoSpeaker;
 	}
+
 	/**
-	 * Map of addresses of bluetooth device on connect with one of them
-	 * enable in car mode
+	 * Map of addresses of bluetooth device on connect with one of them enable
+	 * in car mode
+	 * 
 	 * @return HashMap<Address,Address>
 	 */
 	public HashMap<String, String> getBtDevices() {
 		return btDevices;
 	}
+
 	public void setBtDevices(HashMap<String, String> btDevices) {
 		this.btDevices = btDevices;
 		this.bluetoothRequired = (btDevices != null && !btDevices.isEmpty());
 	}
-	
+
 	public boolean isPowerRequired() {
 		return powerRequired;
 	}
+
 	public boolean isHeadsetRequired() {
 		return headsetRequired;
 	}
+
 	public boolean isBluetoothRequired() {
 		return bluetoothRequired;
 	}
+
 	public boolean isDisableBluetoothOnPower() {
 		return disableBluetoothOnPower;
 	}
+
 	public boolean isEnableBluetoothOnPower() {
 		return enableBluetoothOnPower;
 	}
+
 	public boolean isDisableScreenTimeout() {
 		return disableScreenTimeout;
 	}
+
 	public boolean isAdjustVolumeLevel() {
 		return adjustVolumeLevel;
 	}
+
 	/**
 	 * Level 0-100 of media volume
+	 * 
 	 * @return
 	 */
 	public int getMediaVolumeLevel() {
 		return mediaVolumeLevel;
 	}
+
 	public boolean isEnableBluetooth() {
 		return enableBluetooth;
 	}
 
 	/**
 	 * Get brightness preset
-	 * 	@see PreferenceStorage.BRIGHTNESS_DEFAULT
-	 * 	@see PreferenceStorage.BRIGHTNESS_AUTO
-	 * 	@see PreferenceStorage.BRIGHTNESS_DAY
-	 *  @see PreferenceStorage.BRIGHTNESS_NIGHT
+	 * 
+	 * @see PreferenceStorage.BRIGHTNESS_DEFAULT
+	 * @see PreferenceStorage.BRIGHTNESS_AUTO
+	 * @see PreferenceStorage.BRIGHTNESS_DAY
+	 * @see PreferenceStorage.BRIGHTNESS_NIGHT
 	 * 
 	 * @return
 	 */
 	public String getBrightness() {
 		return brightness;
 	}
+
 	public void setPowerRequired(boolean powerRequired) {
 		this.powerRequired = powerRequired;
 	}
+
 	public void setHeadsetRequired(boolean headsetRequired) {
 		this.headsetRequired = headsetRequired;
 	}
+
 	public void setDisableBluetoothOnPower(boolean disableBluetoothOnPower) {
 		this.disableBluetoothOnPower = disableBluetoothOnPower;
 	}
+
 	public void setEnableBluetoothOnPower(boolean enableBluetoothOnPower) {
 		this.enableBluetoothOnPower = enableBluetoothOnPower;
 	}
+
 	public void setDisableScreenTimeout(boolean screenTimeout) {
 		this.disableScreenTimeout = screenTimeout;
 	}
+
 	public void setAdjustVolumeLevel(boolean adjustVolumeLevel) {
 		this.adjustVolumeLevel = adjustVolumeLevel;
 	}
+
 	public void setMediaVolumeLevel(int mediaVolumeLevel) {
 		this.mediaVolumeLevel = mediaVolumeLevel;
 	}
+
 	public void setEnableBluetooth(boolean bluetooth) {
 		this.enableBluetooth = bluetooth;
 	}
+
 	public void setBrightness(String brightness) {
 		this.brightness = brightness;
 	}
+
 	public void setAutoSpeaker(boolean autoSpeaker) {
 		this.autoSpeaker = autoSpeaker;
 	}
+
 	/**
 	 * Get wifi action preset
+	 * 
 	 * @see PreferenceStorage.WIFI_NOACTION
 	 * @see PreferenceStorage.WIFI_TURNOFF
 	 * @see PreferenceStorage.WIFI_DISABLE
@@ -159,30 +185,37 @@ public class InCar implements Serializable {
 	public String getDisableWifi() {
 		return disableWifi;
 	}
+
 	public void setDisableWifi(String disableWifi) {
 		this.disableWifi = disableWifi;
 	}
+
 	/**
 	 * Activate or not built-in android Car Mode
+	 * 
 	 * @return
 	 */
 	public boolean isActivateCarMode() {
 		return this.activateCarMode;
 	}
+
 	public void setActivateCarMode(boolean activate) {
 		this.activateCarMode = activate;
 	}
+
 	/**
 	 * Get auto answer mode
+	 * 
 	 * @return
 	 */
 	public String getAutoAnswer() {
 		return autoAnswer;
 	}
+
 	public void setAutoAnswer(String autoAnswer) {
 		this.autoAnswer = autoAnswer;
 	}
-	
+
 	/**
 	 * @return the autorunApp
 	 */
@@ -191,7 +224,8 @@ public class InCar implements Serializable {
 	}
 
 	/**
-	 * @param autorunApp the autorunApp to set
+	 * @param autorunApp
+	 *            the autorunApp to set
 	 */
 	public void setAutorunApp(ComponentName autorunApp) {
 		this.autorunApp = autorunApp;
@@ -199,25 +233,25 @@ public class InCar implements Serializable {
 
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.defaultWriteObject();
-		
+
 		if (autorunApp != null) {
-        	out.writeBoolean(true);
-        	out.writeUTF(autorunApp.getPackageName());
+			out.writeBoolean(true);
+			out.writeUTF(autorunApp.getPackageName());
 			out.writeUTF(autorunApp.getClassName());
 		} else {
-        	out.writeBoolean(false);
+			out.writeBoolean(false);
 		}
-			
-    }    
 
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
 		in.defaultReadObject();
-
 
 		boolean hasComponent = false;
 		try {
 			hasComponent = in.readBoolean();
-		} catch (EOFException e) { // old version comaptibility
+		} catch (EOFException e) { // old version compatibility
 			return;
 		}
 		if (hasComponent) {
@@ -225,6 +259,6 @@ public class InCar implements Serializable {
 			String cls = in.readUTF();
 			autorunApp = new ComponentName(pkg, cls);
 		}
-		
-  	} 	
+
+	}
 }

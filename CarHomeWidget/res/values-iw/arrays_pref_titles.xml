@@ -42,4 +42,11 @@
 		<item>לבחור&#8230;</item>
     </string-array>
     
+	<string-array name="carwidget_shortcuts">
+		<item>מצב ברכב</item>
+		<item>נגן/השהה</item>
+		<item>הבא</item>
+		<item>קודם</item>
+		<item>TuneIn Radio Car Mode</item>
+    </string-array>
 </resources>
