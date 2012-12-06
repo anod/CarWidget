@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
+import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -84,10 +85,14 @@ public class LauncherModel {
 						Resources resources = mPackageManager.getResourcesForApplication(packageName);
 						if (resources != null) {
 							final int id = resources.getIdentifier(resourceName, null, null);
-							icon = UtilitiesBitmap.createIconBitmap(resources.getDrawable(id), mContext);
+							if (id > 0) {
+								icon = UtilitiesBitmap.createIconBitmap(resources.getDrawable(id), mContext);
+							}
 						}
 					} catch (NameNotFoundException e) {
 						// drop this. we have other places to look for icons
+						Utils.logd(e.getMessage());
+					} catch (NotFoundException e) {
 						Utils.logd(e.getMessage());
 					}
 					// the db
