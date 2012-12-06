@@ -133,7 +133,14 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 		// Calling super after populating the menu is necessary here to ensure
 		// that the
 		// action bar helpers have a chance to handle this event.
-		return super.onCreateOptionsMenu(menu);
+		boolean result = super.onCreateOptionsMenu(menu);
+
+		//restore apply button visibility after super
+		if (!Utils.IS_HONEYCOMB_OR_GREATER) {
+			menu.findItem(R.id.apply).setVisible(true);
+		}
+
+		return result;
 	}
 
 	@Override
