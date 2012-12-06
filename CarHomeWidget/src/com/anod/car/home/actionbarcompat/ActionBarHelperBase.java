@@ -26,6 +26,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.InflateException;
@@ -79,11 +80,16 @@ public class ActionBarHelperBase extends ActionBarHelper {
 		SimpleMenu menu = new SimpleMenu(mActivity);
 		mActivity.onCreatePanelMenu(Window.FEATURE_OPTIONS_PANEL, menu);
 		mActivity.onPrepareOptionsMenu(menu);
+		int hidden = menu.size();
 		for (int i = 0; i < menu.size(); i++) {
 			MenuItem item = menu.getItem(i);
 			if (mActionItemIds.contains(item.getItemId())) {
+				hidden--;
 				addActionItemCompatFromMenuItem(item);
 			}
+		}
+		if (hidden > 0) {
+			addMenuAction();
 		}
 	}
 
@@ -169,29 +175,54 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
 		final int itemId = item.getItemId();
 		// Create the button
-		ImageButton actionButton = new ImageButton(mActivity, null, itemId == android.R.id.home ? R.attr.actionbarCompatItemHomeStyle : R.attr.actionbarCompatItemStyle);
-		actionButton.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(itemId == android.R.id.home ? R.dimen.actionbar_compat_button_home_width : R.dimen.actionbar_compat_button_width), ViewGroup.LayoutParams.FILL_PARENT));
-
-		actionButton.setImageDrawable(item.getIcon());
-		actionButton.setScaleType(ImageView.ScaleType.CENTER);
-		actionButton.setContentDescription(item.getTitle());
+		boolean isHome = itemId == android.R.id.home;
+		ImageButton actionButton = createActionButton((String)item.getTitle(), item.getIcon(), isHome);
 		actionButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				mActivity.onMenuItemSelected(Window.FEATURE_OPTIONS_PANEL, item);
 			}
 		});
+
+		actionBar.addView(actionButton);
+
+		return actionButton;
+	}
+
+
+	private View addMenuAction() {
+		final ViewGroup actionBar = getActionBarCompat();
+		if (actionBar == null) {
+			return null;
+		}
+		
+		ImageButton actionButton = createActionButton(mActivity.getString(R.string.menu), mActivity.getResources().getDrawable(R.drawable.ic_action_overflow), false);
+		actionButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				mActivity.openOptionsMenu();
+			}
+		});
+
+		actionBar.addView(actionButton);
+		return actionButton;
+	}
+	
+	private ImageButton createActionButton(final String title, Drawable icon, boolean isHome) {
+		ImageButton actionButton = new ImageButton(mActivity, null, isHome ? R.attr.actionbarCompatItemHomeStyle : R.attr.actionbarCompatItemStyle);
+		actionButton.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(isHome ? R.dimen.actionbar_compat_button_home_width : R.dimen.actionbar_compat_button_width), ViewGroup.LayoutParams.FILL_PARENT));
+
+		actionButton.setImageDrawable(icon);
+		actionButton.setScaleType(ImageView.ScaleType.CENTER);
+		actionButton.setContentDescription(title);
+		actionButton.setBackgroundResource(R.drawable.actionbar_compat_item);
 		actionButton.setOnLongClickListener(new OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View v) {
-				Toast hint = Toast.makeText(mActivity, item.getTitle(), Toast.LENGTH_SHORT);
+				Toast hint = Toast.makeText(mActivity, title, Toast.LENGTH_SHORT);
 				hint.setGravity(Gravity.TOP | Gravity.RIGHT, 0, (int) mActivity.getResources().getDimension(R.dimen.actionbar_compat_height));
 				hint.show();
 				return true;
 			}
 		});
-
-		actionBar.addView(actionButton);
-
 		return actionButton;
 	}
 

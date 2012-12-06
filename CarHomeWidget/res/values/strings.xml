@@ -203,4 +203,5 @@
 	<string name="select_shortcut_title">Select shortcut</string>
 	<string name="select_icon_pack">Select icon pack</string>
 	<string name="custom_image_error">An error was encountered while trying to open the selected image</string>
+	<string name="menu">Menu</string>
 </resources>
