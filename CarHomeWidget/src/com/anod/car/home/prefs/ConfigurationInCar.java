@@ -348,13 +348,9 @@ public class ConfigurationInCar extends ConfigurationActivity {
 			int state = paramIntent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
 			if (state == BluetoothAdapter.STATE_ON) {
 				dismissDialogSafetly(DIALOG_WAIT);
-				unregisterReceiver(mBluetoothReceiver);
-				mBluetoothReceiver = null;
 				new InitBluetoothDevicesTask().execute(0);
 			} else if (state == BluetoothAdapter.STATE_OFF || state == BluetoothAdapter.ERROR) {
 				dismissDialogSafetly(DIALOG_WAIT);
-				unregisterReceiver(mBluetoothReceiver);
-				mBluetoothReceiver = null;
 			}
 		}
 
