@@ -257,6 +257,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 		}
 
 		protected void onPostExecute(Boolean result) {
+			mBluetoothDevicesCategory.removeAll();
 			if (result) {
 				for (int i = 0; i < mPairedList.size(); i++) {
 					mBluetoothDevicesCategory.addPreference(mPairedList.get(i));
