@@ -16,10 +16,16 @@
 
 package com.anod.car.home.actionbarcompat;
 
+import java.lang.reflect.Field;
+
+import com.anod.car.home.utils.Utils;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
+import android.view.ViewConfiguration;
 
 /**
  * An extension of {@link ActionBarHelper} that provides Android 3.0-specific functionality for
@@ -50,4 +56,25 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	public void show() {
 		mActivity.getActionBar().show();
 	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		showOverflowMenu();
+		super.onCreate(savedInstanceState);
+
+	}
+	
+	private void showOverflowMenu() {
+
+	     try {
+	        ViewConfiguration config = ViewConfiguration.get(mActivity);
+	        Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+	        if(menuKeyField != null) {
+	            menuKeyField.setAccessible(true);
+	            menuKeyField.setBoolean(config, false);
+	        }
+	    } catch (Exception e) {
+	        Utils.logd(e.getMessage());
+	    }
+	}	
 }
