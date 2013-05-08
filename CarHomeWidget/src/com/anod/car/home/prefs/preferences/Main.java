@@ -2,6 +2,8 @@ package com.anod.car.home.prefs.preferences;
 
 import java.io.Serializable;
 
+import com.anod.car.home.utils.UtilitiesBitmap.RotateDirection;
+
 
 public class Main implements Serializable {
 	/**
@@ -85,5 +87,11 @@ public class Main implements Serializable {
 	}
 	public void setIconsTheme(String iconsTheme) {
 		this.iconsTheme = iconsTheme;
+	}
+	public boolean hideTexts() {
+		return true;
+	}
+	public RotateDirection rotateIcon() {
+		return RotateDirection.LEFT;
 	}
 }

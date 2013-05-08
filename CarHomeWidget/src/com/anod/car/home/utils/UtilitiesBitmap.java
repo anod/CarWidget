@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.LightingColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Rect;
@@ -30,6 +31,8 @@ public class UtilitiesBitmap {
 	private static final Canvas sCanvas = new Canvas();
 	private static final ColorMatrixColorFilter sGreyColorMatrixColorFilter;
 
+	public enum RotateDirection { RIGHT, LEFT }
+	
 	static {
 		sCanvas.setDrawFilter(new PaintFlagsDrawFilter(Paint.DITHER_FLAG, Paint.FILTER_BITMAP_FLAG));
 		float[] greyScaleMatrix = new float[] { 0.5f, 0.5f, 0.5f, 0, 0, // red
@@ -118,6 +121,12 @@ public class UtilitiesBitmap {
 		}
 	}
 
+	public static Bitmap rotate(Bitmap icon, RotateDirection dir) {
+		Matrix matrix = new Matrix();
+		matrix.postRotate((dir == RotateDirection.LEFT) ? 90 : 270);
+		return Bitmap.createBitmap(icon, 0, 0, icon.getWidth(), icon.getHeight(), matrix, true);
+	}
+	
 	public static Bitmap scaleBitmap(Bitmap icon, float scale, float sizeDiff,  Context context) {
 		if (sIconWidth == -1) {
 			initStatics(context);

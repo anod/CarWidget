@@ -26,6 +26,7 @@ import com.anod.car.home.skin.IconProcessor;
 import com.anod.car.home.skin.PropertiesFactory;
 import com.anod.car.home.skin.SkinProperties;
 import com.anod.car.home.utils.UtilitiesBitmap;
+import com.anod.car.home.utils.UtilitiesBitmap.RotateDirection;
 import com.anod.car.home.utils.Utils;
 
 public class LauncherViewBuilder {
@@ -122,7 +123,7 @@ public class LauncherViewBuilder {
 			int resText = sTextRes[cellId];
 			ShortcutInfo info = mSmodel.getShortcut(cellId);
 			if (info == null) {
-				setNoShortcut(res, resText, views, cellId, skinProperties);
+				setNoShortcut(res, resText, mPrefs, views, cellId, skinProperties);
 			} else {
 				setShortcut(res, resText, iconScale, info, mPrefs, views, cellId, skinProperties, themePackage, themeResources);
 			}
@@ -197,10 +198,15 @@ public class LauncherViewBuilder {
 		}
 	}
 
-	private void setNoShortcut(int res, int resText, RemoteViews views, int cellId, SkinProperties skinProp) {
+	private void setNoShortcut(int res, int resText, Main prefs, RemoteViews views, int cellId, SkinProperties skinProp) {
 		views.setImageViewResource(res, skinProp.getSetShortcutRes());
-		String title = mContext.getResources().getString(skinProp.getSetShortcutText());
-		views.setTextViewText(resText, title);
+
+		if (prefs.hideTexts()) {
+			views.setViewVisibility(resText, View.GONE);
+		} else {
+			String title = mContext.getResources().getString(skinProp.getSetShortcutText());
+			views.setTextViewText(resText, title);
+		}
 		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId, cellId);
 		if (configIntent != null) {
 			views.setOnClickPendingIntent(res, configIntent);
@@ -225,9 +231,17 @@ public class LauncherViewBuilder {
 		if (scale > 1.0f) {
 			icon = UtilitiesBitmap.scaleBitmap(icon, scale, sizeDiff, mContext);
 		}
+		if (prefs.rotateIcon() != null) {
+			icon = UtilitiesBitmap.rotate(icon, prefs.rotateIcon());
+		}
 		views.setBitmap(res, "setImageBitmap", icon);
-		String title = String.valueOf(info.title);
-		views.setTextViewText(resText, title);
+
+		if (prefs.hideTexts()) {
+			views.setViewVisibility(resText, View.GONE);
+		} else {
+			String title = String.valueOf(info.title);
+			views.setTextViewText(resText, title);
+		}
 		PendingIntent shortcutIntent = mPendingIntentHelper.createShortcut(info.intent, mAppWidgetId, cellId, info.id);
 		views.setOnClickPendingIntent(res, shortcutIntent);
 		views.setOnClickPendingIntent(resText, shortcutIntent);
@@ -277,3 +291,5 @@ public class LauncherViewBuilder {
 	}
 	
 }
+
+	
