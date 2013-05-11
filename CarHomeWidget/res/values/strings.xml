@@ -204,4 +204,10 @@
 	<string name="select_icon_pack">Select icon pack</string>
 	<string name="custom_image_error">An error was encountered while trying to open the selected image</string>
 	<string name="menu">Menu</string>
+	
+	<string name="pref_rotate_icon_title">Rotate icons</string>
+	
+	<string name="pref_titles_hide_title">Hide titles</string>
+	<string name="pref_titles_hide_summary">Do not display titles for the shortcuts</string>
+	
 </resources>

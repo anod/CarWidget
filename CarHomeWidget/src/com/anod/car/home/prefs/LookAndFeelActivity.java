@@ -36,6 +36,8 @@ import com.anod.car.home.actionbarcompat.ActionBarActivity;
 import com.anod.car.home.appwidget.LauncherViewBuilder;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
+import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.IntentUtils;
@@ -60,7 +62,8 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 	private Main mPrefs;
 	private final SparseArray<SkinRefreshListener> mSkinRefreshListeners = new SparseArray<LookAndFeelActivity.SkinRefreshListener>(SKINS_COUNT);
 	private boolean mPendingRefresh;
-
+	private WidgetSharedPreferences mSharedPrefs;
+	
 	private static int[] sTextRes = { 0, 0, 0, 0, R.string.skin_info_bbb };
 
 	interface SkinRefreshListener {
@@ -98,6 +101,9 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 		mSkinItems = createSkinList(mPrefs.getSkin());
 		mCurrentPage = mSelectedSkinPosition;
 
+		mSharedPrefs = new WidgetSharedPreferences(mContext);
+		mSharedPrefs.setAppWidgetId(mAppWidgetId);
+		
 		inflateActivity();
 
 		int count = mSkinItems.length;
@@ -159,9 +165,10 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					String prefName = PreferencesStorage.getName(PreferencesStorage.BUTTON_COLOR, mAppWidgetId);
 					int color = ((CarHomeColorPickerDialog) dialog).getColor();
-					PreferencesStorage.saveColor(mContext, prefName, color);
+					final WidgetEditor edit = mSharedPrefs.edit();
+					edit.putInt(PreferencesStorage.BUTTON_COLOR, color);
+					edit.commit();
 					showTileColorButton(mCurrentPage);
 					refreshSkinPreview();
 				}
@@ -183,9 +190,10 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 			OnClickListener listener = new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					String prefName = PreferencesStorage.getName(PreferencesStorage.BG_COLOR, mAppWidgetId);
 					int color = ((CarHomeColorPickerDialog) dialog).getColor();
-					PreferencesStorage.saveColor(mContext, prefName, color);
+					final WidgetEditor edit = mSharedPrefs.edit();
+					edit.putInt(PreferencesStorage.BG_COLOR, color);
+					edit.commit();
 					refreshSkinPreview();
 				}
 			};
@@ -304,7 +312,7 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 	}
 
 	private void showTileColorButton(int position) {
-		if (getSkinItem(position).value.equals(PreferencesStorage.SKIN_WINDOWS7)) {
+		if (getSkinItem(position).value.equals(Main.SKIN_WINDOWS7)) {
 			Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
 			int size = (int) getResources().getDimension(R.dimen.color_preview_size);
 

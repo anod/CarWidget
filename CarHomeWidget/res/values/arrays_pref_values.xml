@@ -64,5 +64,10 @@
 		<item>disabled</item>
 		<item>custom</item>
     </string-array>
-		
+    
+	<string-array name="icon_rotate_values">
+		<item>NONE</item>
+		<item>LEFT</item>
+		<item>RIGHT</item>
+    </string-array>
 </resources>

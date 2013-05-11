@@ -20,8 +20,23 @@
     <Preference
         android:key="font-color-%d"
         android:summary="@string/pref_font_color_summary"
-        android:title="@string/pref_font_color_title" />
+        android:title="@string/pref_font_color_title"
+     />
 
+    <ListPreference 
+        android:key="icons-rotate-%d"
+        android:title="@string/pref_rotate_icon_title"
+        android:entries="@array/icon_rotate_titles"
+        android:entryValues="@array/icon_rotate_values"
+        android:dialogTitle="@string/pref_rotate_icon_title"
+     />
+
+    <CheckBoxPreference
+        android:key="titles-hide-%d"
+        android:title="@string/pref_titles_hide_title"
+        android:summary="@string/pref_titles_hide_summary"
+     />
+    
     <PreferenceCategory
         android:key="transparent-category"
         android:title="@string/transparent" >

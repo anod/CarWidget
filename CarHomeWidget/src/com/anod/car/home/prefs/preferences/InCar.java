@@ -10,6 +10,21 @@ import java.util.HashMap;
 import android.content.ComponentName;
 
 public class InCar implements Serializable {
+	public static final String BRIGHTNESS_DISABLED = "disabled";
+	public static final String BRIGHTNESS_AUTO = "auto";
+	public static final String BRIGHTNESS_DAY = "day";
+	public static final String BRIGHTNESS_NIGHT = "night";
+
+	public static final String AUTOANSWER_DISABLED = "disabled";
+	public static final String AUTOANSWER_IMMEDIATLY = "immediately";
+	public static final String AUTOANSWER_DELAY_5 = "delay-5";
+
+	public static final String WIFI_NOACTION = "no_action";
+	public static final String WIFI_TURNOFF = "turn_off_wifi";
+	public static final String WIFI_DISABLE = "disable_wifi";
+	
+	public static final int DEFAULT_VOLUME_LEVEL = 80;
+
 	/**
 	 * 
 	 */
@@ -28,9 +43,9 @@ public class InCar implements Serializable {
 	private boolean adjustVolumeLevel;
 	private int mediaVolumeLevel = 100;
 	private boolean enableBluetooth;
-	private String autoAnswer = PreferencesStorage.AUTOANSWER_DISABLED;
-	private String brightness = PreferencesStorage.BRIGHTNESS_AUTO;
-	private String disableWifi = PreferencesStorage.WIFI_NOACTION;
+	private String autoAnswer = AUTOANSWER_DISABLED;
+	private String brightness = BRIGHTNESS_AUTO;
+	private String disableWifi = WIFI_NOACTION;
 	private boolean autoSpeaker;
 	private boolean activateCarMode;
 

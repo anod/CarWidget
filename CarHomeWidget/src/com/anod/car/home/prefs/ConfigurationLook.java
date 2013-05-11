@@ -5,12 +5,15 @@ import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
+import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.prefs.views.SeekBarPreference;
 
@@ -27,28 +30,23 @@ public class ConfigurationLook extends ConfigurationActivity {
 	protected void onCreateImpl(Bundle savedInstanceState) {
 		Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
 
-		initIcon(prefs);
-		initFont(prefs);
-		initTransparent(prefs);
+		final WidgetSharedPreferences sharedPrefs = new WidgetSharedPreferences(mContext);
+		sharedPrefs.setAppWidgetId(mAppWidgetId);
+		
+		initIcon(prefs, sharedPrefs);
+		initFont(prefs, sharedPrefs);
+		
+		ListPreference rotatePref = (ListPreference)initWidgetPref(PreferencesStorage.ICONS_ROTATE);
+		rotatePref.setValue(prefs.getIconsRotate().name());
+		
+		initWidgetPrefCheckBox(PreferencesStorage.TITLES_HIDE, prefs.isTitlesHide());
+		initWidgetPrefCheckBox(PreferencesStorage.TRANSPARENT_BTN_SETTINGS, prefs.isSettingsTransparent());
+		initWidgetPrefCheckBox(PreferencesStorage.TRANSPARENT_BTN_INCAR, prefs.isIncarTransparent());
+
 	}
 
-	private void initTransparent(final Main prefs) {
-		CheckBoxPreference setTrans = (CheckBoxPreference) findPreference(PreferencesStorage.TRANSPARENT_BTN_SETTINGS);
-		String key = PreferencesStorage.getName(PreferencesStorage.TRANSPARENT_BTN_SETTINGS, mAppWidgetId);
-		setTrans.setKey(key);
-		setTrans.setChecked(prefs.isSettingsTransparent());
-
-		CheckBoxPreference incarTrans = (CheckBoxPreference) findPreference(PreferencesStorage.TRANSPARENT_BTN_INCAR);
-
-		key = PreferencesStorage.getName(PreferencesStorage.TRANSPARENT_BTN_INCAR, mAppWidgetId);
-		incarTrans.setKey(key);
-		incarTrans.setChecked(prefs.isIncarTransparent());
-	}
-
-
-	private void initIcon(final Main prefs) {
-		Preference icnColor = (Preference) findPreference(PreferencesStorage.ICONS_COLOR);
-		icnColor.setKey(PreferencesStorage.getName(PreferencesStorage.ICONS_COLOR, mAppWidgetId));
+	private void initIcon(final Main prefs, final WidgetSharedPreferences sharedPrefs) {
+		Preference icnColor = (Preference) initWidgetPref(PreferencesStorage.ICONS_COLOR);
 		icnColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
@@ -57,9 +55,10 @@ public class ConfigurationLook extends ConfigurationActivity {
 				OnClickListener listener = new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						String prefName = PreferencesStorage.getName(PreferencesStorage.ICONS_COLOR, mAppWidgetId);
 						int color = ((CarHomeColorPickerDialog) dialog).getColor();
-						PreferencesStorage.saveColor(mContext, prefName, color);
+						final WidgetEditor edit = sharedPrefs.edit();
+						edit.putInt(PreferencesStorage.ICONS_COLOR, color);
+						edit.commit();
 					}
 				};
 				final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
@@ -71,11 +70,10 @@ public class ConfigurationLook extends ConfigurationActivity {
 
 	}
 
-	private void initFont(final Main prefs) {
-		SeekBarPreference sbPref = (SeekBarPreference) findPreference(PreferencesStorage.FONT_SIZE);
-		sbPref.setKey(PreferencesStorage.getName(PreferencesStorage.FONT_SIZE, mAppWidgetId));
+	private void initFont(final Main prefs, final WidgetSharedPreferences sharedPrefs) {
+		SeekBarPreference sbPref = (SeekBarPreference) initWidgetPref(PreferencesStorage.FONT_SIZE);
 		int fontSize = prefs.getFontSize();
-		if (fontSize != PreferencesStorage.FONT_SIZE_UNDEFINED) {
+		if (fontSize != Main.FONT_SIZE_UNDEFINED) {
 			sbPref.setValue(fontSize);
 		} else {
 			float scaledDensity = mContext.getResources().getDisplayMetrics().scaledDensity;
@@ -83,8 +81,7 @@ public class ConfigurationLook extends ConfigurationActivity {
 			sbPref.setValue((int) size);
 		}
 
-		Preference fontColor = (Preference) findPreference(PreferencesStorage.FONT_COLOR);
-		fontColor.setKey(PreferencesStorage.getName(PreferencesStorage.FONT_COLOR, mAppWidgetId));
+		Preference fontColor = (Preference) initWidgetPref(PreferencesStorage.FONT_COLOR);
 		fontColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
@@ -92,9 +89,10 @@ public class ConfigurationLook extends ConfigurationActivity {
 				OnClickListener listener = new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						String prefName = PreferencesStorage.getName(PreferencesStorage.FONT_COLOR, mAppWidgetId);
 						int color = ((CarHomeColorPickerDialog) dialog).getColor();
-						PreferencesStorage.saveColor(mContext, prefName, color);
+						final WidgetEditor edit = sharedPrefs.edit();
+						edit.putInt(PreferencesStorage.FONT_COLOR, color);
+						edit.commit();
 					}
 				};
 				final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);

@@ -182,7 +182,7 @@ public class ModeService extends Service {
 	}
 
 	private void handlePhoneListener(InCar prefs) {
-		if (prefs.isAutoSpeaker() || !prefs.getAutoAnswer().equals(PreferencesStorage.AUTOANSWER_DISABLED)) {
+		if (prefs.isAutoSpeaker() || !prefs.getAutoAnswer().equals(InCar.AUTOANSWER_DISABLED)) {
 			if (mPhoneListener == null) {
 				attachPhoneListener();
 			}

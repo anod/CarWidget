@@ -265,7 +265,7 @@ public class PreferencesBackupManager {
 		}
 		//version 1.42
 		if (inCarBackup.getInCar().getAutoAnswer() == null || inCarBackup.getInCar().getAutoAnswer().equals("")) {
-			inCarBackup.getInCar().setAutoAnswer(PreferencesStorage.AUTOANSWER_DISABLED);
+			inCarBackup.getInCar().setAutoAnswer(InCar.AUTOANSWER_DISABLED);
 		}
 		
 		NotificationShortcutsModel model = new NotificationShortcutsModel(mContext);

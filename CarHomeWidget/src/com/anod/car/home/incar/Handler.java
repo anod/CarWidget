@@ -191,7 +191,7 @@ public class Handler {
 		if (prefs.isEnableBluetooth()) {
 			enableBluetooth();
 		}
-		if (!prefs.getDisableWifi().equals(PreferencesStorage.WIFI_NOACTION)) {
+		if (!prefs.getDisableWifi().equals(InCar.WIFI_NOACTION)) {
 			disableWifi(context);
 		}
 		if (prefs.isActivateCarMode()) {
@@ -202,7 +202,7 @@ public class Handler {
 			runApp(autorunApp,context);
 		}
 		String brightSetting = prefs.getBrightness();
-		if (!brightSetting.equals(PreferencesStorage.BRIGHTNESS_DISABLED)) {
+		if (!brightSetting.equals(InCar.BRIGHTNESS_DISABLED)) {
 			adjustBrightness(brightSetting,context);
 		}
 	}	
@@ -225,14 +225,14 @@ public class Handler {
 		if (prefs.isEnableBluetooth()) {
 			restoreBluetooth();
 		}
-		if (prefs.getDisableWifi().equals(PreferencesStorage.WIFI_TURNOFF)) {
+		if (prefs.getDisableWifi().equals(InCar.WIFI_TURNOFF)) {
 			restoreWiFi(context);
 		}
 		if (prefs.isActivateCarMode()) {
 			deactivateCarMode(context);
 		}
 		String brightSetting = prefs.getBrightness();
-		if (!brightSetting.equals(PreferencesStorage.BRIGHTNESS_DISABLED)) {
+		if (!brightSetting.equals(InCar.BRIGHTNESS_DISABLED)) {
 			restoreBrightness(brightSetting,context);
 		}
 	}
@@ -301,15 +301,15 @@ public class Handler {
 		
 		int newBrightLevel = -1;
 		int newBrightMode = -1;
-		if (PreferencesStorage.BRIGHTNESS_AUTO.equals(brightSetting)) {
+		if (InCar.BRIGHTNESS_AUTO.equals(brightSetting)) {
 			if (!mCurrentAutoBrightness) {
 				newBrightLevel = mCurrentBrightness;
 				newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
 			}
-		} else if (PreferencesStorage.BRIGHTNESS_DAY.equals(brightSetting)) {
+		} else if (InCar.BRIGHTNESS_DAY.equals(brightSetting)) {
 			newBrightLevel = BRIGHTNESS_DAY;
 			newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
-		} else if (PreferencesStorage.BRIGHTNESS_NIGHT.equals(brightSetting)) {
+		} else if (InCar.BRIGHTNESS_NIGHT.equals(brightSetting)) {
 			newBrightLevel = BRIGHTNESS_NIGHT;
 			newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;			
 		}
@@ -330,7 +330,7 @@ public class Handler {
     }
 
 	private static boolean restoreBrightness(String brightSetting,Context context) {
-		if (mCurrentAutoBrightness && PreferencesStorage.BRIGHTNESS_AUTO.equals(brightSetting)) {
+		if (mCurrentAutoBrightness && InCar.BRIGHTNESS_AUTO.equals(brightSetting)) {
 			return false;
 		}
 		int newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
@@ -349,8 +349,8 @@ public class Handler {
 	private static void adjustVolume(InCar prefs,Context context) {
 		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 		int adjVolume = prefs.getMediaVolumeLevel();
-		int volume = PreferencesStorage.DEFAULT_VOLUME_LEVEL;
-		if (adjVolume != PreferencesStorage.DEFAULT_VOLUME_LEVEL) {
+		int volume = InCar.DEFAULT_VOLUME_LEVEL;
+		if (adjVolume != InCar.DEFAULT_VOLUME_LEVEL) {
 			int maxVolume = audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 			volume = (int)((maxVolume*adjVolume)/100);
 		}

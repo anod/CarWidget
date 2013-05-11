@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.android.internal.telephony.ITelephony;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.utils.Utils;
 
 public class ModePhoneStateListener extends PhoneStateListener {
@@ -61,14 +61,14 @@ public class ModePhoneStateListener extends PhoneStateListener {
 			break;
 		case TelephonyManager.CALL_STATE_RINGING:
 			Utils.logd("Call state ringing");
-			if (mAutoAnswerMode.equals(PreferencesStorage.AUTOANSWER_IMMEDIATLY)) {
+			if (mAutoAnswerMode.equals(InCar.AUTOANSWER_IMMEDIATLY)) {
 				Utils.logd("Check if already answered");
 				if (!mAnswered) {
 					Utils.logd("Answer immediatly");
 					answerCall();
 					mAnswered = true;
 				}
-			} else if (mAutoAnswerMode.equals(PreferencesStorage.AUTOANSWER_DELAY_5)) {
+			} else if (mAutoAnswerMode.equals(InCar.AUTOANSWER_DELAY_5)) {
 				Utils.logd("Check if already answered");
 				if (!mAnswered) {
 					Utils.logd("Answer delayed");

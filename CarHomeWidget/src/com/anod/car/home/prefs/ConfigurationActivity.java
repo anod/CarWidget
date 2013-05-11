@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.view.Menu;
@@ -14,6 +15,8 @@ import android.view.MenuItem;
 
 import com.anod.car.home.R;
 import com.anod.car.home.actionbarcompat.ActionBarHelper;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
 import com.anod.car.home.utils.Utils;
 
 
@@ -31,6 +34,21 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 		return true;
 	}
 	
+	protected Preference initWidgetPrefCheckBox(String name, boolean checked) {
+		CheckBoxPreference pref = (CheckBoxPreference) initWidgetPref(name);
+		pref.setChecked(checked);
+		return pref;
+	}
+	
+	@SuppressWarnings("deprecation")
+	protected Preference initWidgetPref(String name) {
+		Preference pref = (Preference) findPreference(name);
+		String key = WidgetSharedPreferences.getName(name, mAppWidgetId);
+		pref.setKey(key);
+		return pref;
+	}
+	
+	@SuppressWarnings("deprecation")
 	@Override
 	final protected void onCreate(Bundle savedInstanceState) {
         mActionBarHelper.onCreate(savedInstanceState);
@@ -86,6 +104,7 @@ abstract class ConfigurationActivity extends PreferenceActivity {
         return retValue;
     }
 
+	@SuppressWarnings("deprecation")
 	protected void setIntent(String key, Class<?> cls, int appWidgetId ) {
 		Preference pref = (Preference) findPreference(key);
 		Intent intent = new Intent(this, cls);
@@ -107,10 +126,12 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 		return null;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void showWaitDialog() {
 		showDialog(DIALOG_WAIT);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void dismissWaitDialog() {
 		try {
 			dismissDialog(DIALOG_WAIT);

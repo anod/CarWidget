@@ -149,7 +149,7 @@ public class LauncherViewBuilder {
 				setShortcut(res, resText, info, mPrefs, views, cellId, themePackage, themeResources);
 			}
 			setFont(mPrefs, resText, scaledDensity, views);
-			if (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) {
+			if (skinName.equals(Main.SKIN_WINDOWS7)) {
 				setTile(mPrefs.getTileColor(), res, views);
 			}
 		}
@@ -171,9 +171,7 @@ public class LauncherViewBuilder {
 		if (iconScale > 1.0f) {
 			bt.setScaleSize(iconScale);
 		}
-		if (prefs.rotateIcon() != RotateDirection.NONE) {
-			bt.setRotateDirection(prefs.rotateIcon());
-		}
+		bt.setRotateDirection(prefs.getIconsRotate());
 	}
 
 	private void setInCarButton(boolean isInCarTrans, SkinProperties skinProp, RemoteViews views) {
@@ -208,7 +206,7 @@ public class LauncherViewBuilder {
 
 	private void setFont(Main prefs, int resText, float scaledDensity, RemoteViews views) {
 		views.setTextColor(resText, prefs.getFontColor());
-		if (prefs.getFontSize() != PreferencesStorage.FONT_SIZE_UNDEFINED) {
+		if (prefs.getFontSize() != Main.FONT_SIZE_UNDEFINED) {
 			if (prefs.getFontSize() == 0) {
 				views.setViewVisibility(resText, View.GONE);
 			} else {
@@ -239,7 +237,7 @@ public class LauncherViewBuilder {
 	private void setNoShortcut(int res, int resText, Main prefs, RemoteViews views, int cellId, SkinProperties skinProp) {
 		views.setImageViewResource(res, skinProp.getSetShortcutRes());
 
-		if (prefs.hideTexts()) {
+		if (prefs.isTitlesHide()) {
 			views.setViewVisibility(resText, View.GONE);
 		} else {
 			String title = mContext.getResources().getString(skinProp.getSetShortcutText());
@@ -257,7 +255,7 @@ public class LauncherViewBuilder {
 		icon = mBitmapTransform.transform(icon);
 		views.setBitmap(res, "setImageBitmap", icon);
 
-		if (prefs.hideTexts()) {
+		if (prefs.isTitlesHide()) {
 			views.setViewVisibility(resText, View.GONE);
 		} else {
 			String title = String.valueOf(info.title);

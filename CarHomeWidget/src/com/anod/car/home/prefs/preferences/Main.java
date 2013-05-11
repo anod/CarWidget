@@ -6,6 +6,14 @@ import com.anod.car.home.utils.BitmapTransform.RotateDirection;
 
 
 public class Main implements Serializable {
+	public static final String SKIN_GLOSSY = "glossy";
+	public static final String SKIN_CARHOME = "carhome";
+	public static final String SKIN_WINDOWS7 = "windows7";
+	public static final String SKIN_HOLO = "holo";
+	public static final String SKIN_BBB = "blackbearblanc";
+	
+	public static final int FONT_SIZE_UNDEFINED = -1;
+	
 	/**
 	 * 
 	 */
@@ -21,6 +29,8 @@ public class Main implements Serializable {
 	private boolean settingsTransparent;
 	private boolean incarTransparent;
 	private String iconsTheme;
+	private RotateDirection iconsRotate;
+	private boolean titlesHide;
 	
 	public String getIconsTheme() {
 		return iconsTheme;
@@ -88,10 +98,17 @@ public class Main implements Serializable {
 	public void setIconsTheme(String iconsTheme) {
 		this.iconsTheme = iconsTheme;
 	}
-	public boolean hideTexts() {
-		return false;
+	public final RotateDirection getIconsRotate() {
+		return iconsRotate;
 	}
-	public RotateDirection rotateIcon() {
-		return RotateDirection.LEFT;
+	
+	public final void setIconsRotate(RotateDirection iconsRotate) {
+		this.iconsRotate = iconsRotate;
+	}
+	public final boolean isTitlesHide() {
+		return titlesHide;
+	}
+	public final void setTitlesHide(boolean titlesHide) {
+		this.titlesHide = titlesHide;
 	}
 }
