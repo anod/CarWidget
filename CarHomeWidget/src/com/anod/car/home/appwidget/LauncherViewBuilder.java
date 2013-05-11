@@ -22,7 +22,6 @@ import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.PickShortcutUtils;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.skin.IconProcessor;
 import com.anod.car.home.skin.PropertiesFactory;
 import com.anod.car.home.skin.SkinProperties;
 import com.anod.car.home.utils.BitmapTransform;
@@ -65,7 +64,6 @@ public class LauncherViewBuilder {
 
 	public LauncherViewBuilder(Context context) {
 		mContext = context;
-		mBitmapTransform = new BitmapTransform(mContext);
 	}
 
 	public LauncherViewBuilder setPendingIntentHelper(PendingIntentHelper helper) {
@@ -96,8 +94,9 @@ public class LauncherViewBuilder {
 			PreferencesStorage.setFirstTime(false, mContext, mAppWidgetId);
 		}
 		mSmodel.init();
-
 		
+		mBitmapTransform = new BitmapTransform(mContext);
+		applyIconTransform(mBitmapTransform, mPrefs);
 		return this;
 	}
 
@@ -130,13 +129,14 @@ public class LauncherViewBuilder {
 
 		setBackground(mPrefs, views);
 
-		IconProcessor ip = skinProperties.getIconProcessor();
+		mBitmapTransform.setIconProcessor(skinProperties.getIconProcessor());
+		
 		float scaledDensity = mContext.getResources().getDisplayMetrics().scaledDensity;
 
 		String themePackage = mPrefs.getIconsTheme();
 		Resources themeResources = (themePackage == null) ? null : getIconThemeResources(themePackage);
 		
-		applyIconTransformPrefs(ip);
+
 		
 		
 		for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
@@ -159,22 +159,20 @@ public class LauncherViewBuilder {
 		return views;
 	}
 
-	private void applyIconTransformPrefs(IconProcessor iconProcessor) {
-		if (mPrefs.isIconsMono()) {
-			mBitmapTransform.setApplyGrayFilter(true);
-			if (mPrefs.getIconsColor() != null) {
-				mBitmapTransform.setTintColor(mPrefs.getIconsColor());
+	private static void applyIconTransform(BitmapTransform bt, Main prefs) {
+		if (prefs.isIconsMono()) {
+			bt.setApplyGrayFilter(true);
+			if (prefs.getIconsColor() != null) {
+				bt.setTintColor(prefs.getIconsColor());
 			}
 		}
 		
-		mBitmapTransform.setIconProcessor(iconProcessor);
-		
-		float iconScale = Utils.calcIconsScale(mPrefs.getIconsScale());
+		float iconScale = Utils.calcIconsScale(prefs.getIconsScale());
 		if (iconScale > 1.0f) {
-			mBitmapTransform.setScaleSize(iconScale);
+			bt.setScaleSize(iconScale);
 		}
-		if (mPrefs.rotateIcon() != RotateDirection.NONE) {
-			mBitmapTransform.setRotateDirection(mPrefs.rotateIcon());
+		if (prefs.rotateIcon() != RotateDirection.NONE) {
+			bt.setRotateDirection(prefs.rotateIcon());
 		}
 	}
 
