@@ -25,13 +25,29 @@ import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.skin.IconProcessor;
 import com.anod.car.home.skin.PropertiesFactory;
 import com.anod.car.home.skin.SkinProperties;
+import com.anod.car.home.utils.BitmapTransform;
+import com.anod.car.home.utils.BitmapTransform.RotateDirection;
 import com.anod.car.home.utils.UtilitiesBitmap;
-import com.anod.car.home.utils.UtilitiesBitmap.RotateDirection;
 import com.anod.car.home.utils.Utils;
 
 public class LauncherViewBuilder {
-	private static int[] sTextRes = { R.id.btn_text0, R.id.btn_text1, R.id.btn_text2, R.id.btn_text3, R.id.btn_text4, R.id.btn_text5 };
-	private static int[] sBtnRes = { R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5 };
+	private static int[] sTextRes = { 
+		R.id.btn_text0,
+		R.id.btn_text1,
+		R.id.btn_text2,
+		R.id.btn_text3,
+		R.id.btn_text4,
+		R.id.btn_text5
+	};
+
+	private static int[] sBtnRes = { 
+		R.id.btn0, 
+		R.id.btn1, 
+		R.id.btn2, 
+		R.id.btn3, 
+		R.id.btn4, 
+		R.id.btn5 
+	};
 
 	final private Context mContext;
 	private int mAppWidgetId;
@@ -39,16 +55,17 @@ public class LauncherViewBuilder {
 	private LauncherShortcutsModel mSmodel;
 	private String mOverrideSkin;
 	private PendingIntentHelper mPendingIntentHelper;
+	private BitmapTransform mBitmapTransform;
 	
 	public interface PendingIntentHelper {
 		PendingIntent createSettings(int appWidgetId, int cellId);
 		PendingIntent createShortcut(Intent intent, int appWidgetId, int position, long shortcutId);
 		PendingIntent createInCar(boolean on);
-		 
 	}
 
 	public LauncherViewBuilder(Context context) {
 		mContext = context;
+		mBitmapTransform = new BitmapTransform(mContext);
 	}
 
 	public LauncherViewBuilder setPendingIntentHelper(PendingIntentHelper helper) {
@@ -80,6 +97,7 @@ public class LauncherViewBuilder {
 		}
 		mSmodel.init();
 
+		
 		return this;
 	}
 
@@ -112,11 +130,14 @@ public class LauncherViewBuilder {
 
 		setBackground(mPrefs, views);
 
-		float iconScale = Utils.calcIconsScale(mPrefs.getIconsScale());
+		IconProcessor ip = skinProperties.getIconProcessor();
 		float scaledDensity = mContext.getResources().getDisplayMetrics().scaledDensity;
 
 		String themePackage = mPrefs.getIconsTheme();
 		Resources themeResources = (themePackage == null) ? null : getIconThemeResources(themePackage);
+		
+		applyIconTransformPrefs(ip);
+		
 		
 		for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
 			int res = sBtnRes[cellId];
@@ -125,7 +146,7 @@ public class LauncherViewBuilder {
 			if (info == null) {
 				setNoShortcut(res, resText, mPrefs, views, cellId, skinProperties);
 			} else {
-				setShortcut(res, resText, iconScale, info, mPrefs, views, cellId, skinProperties, themePackage, themeResources);
+				setShortcut(res, resText, info, mPrefs, views, cellId, themePackage, themeResources);
 			}
 			setFont(mPrefs, resText, scaledDensity, views);
 			if (skinName.equals(PreferencesStorage.SKIN_WINDOWS7)) {
@@ -136,6 +157,25 @@ public class LauncherViewBuilder {
 		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId, PickShortcutUtils.INVALID_CELL_ID);
 		views.setOnClickPendingIntent(R.id.btn_settings, configIntent);
 		return views;
+	}
+
+	private void applyIconTransformPrefs(IconProcessor iconProcessor) {
+		if (mPrefs.isIconsMono()) {
+			mBitmapTransform.setApplyGrayFilter(true);
+			if (mPrefs.getIconsColor() != null) {
+				mBitmapTransform.setTintColor(mPrefs.getIconsColor());
+			}
+		}
+		
+		mBitmapTransform.setIconProcessor(iconProcessor);
+		
+		float iconScale = Utils.calcIconsScale(mPrefs.getIconsScale());
+		if (iconScale > 1.0f) {
+			mBitmapTransform.setScaleSize(iconScale);
+		}
+		if (mPrefs.rotateIcon() != RotateDirection.NONE) {
+			mBitmapTransform.setRotateDirection(mPrefs.rotateIcon());
+		}
 	}
 
 	private void setInCarButton(boolean isInCarTrans, SkinProperties skinProp, RemoteViews views) {
@@ -214,26 +254,9 @@ public class LauncherViewBuilder {
 		}
 	}
 
-	private void setShortcut(int res, int resText, float scale, ShortcutInfo info, Main prefs, RemoteViews views, int cellId, SkinProperties skinProp, String themePackage, Resources themeResources) {
+	private void setShortcut(int res, int resText, ShortcutInfo info, Main prefs, RemoteViews views, int cellId, String themePackage, Resources themeResources) {
 		Bitmap icon = getShortcutIcon(info, themePackage, themeResources);
-		if (prefs.isIconsMono()) {
-			icon = UtilitiesBitmap.applyBitmapFilter(icon, mContext);
-			if (prefs.getIconsColor() != null) {
-				icon = UtilitiesBitmap.tint(icon, prefs.getIconsColor());
-			}
-		}
-		float sizeDiff = .0f;
-		IconProcessor ip = skinProp.getIconProcessor();
-		if (ip != null) {
-			icon = ip.process(icon);
-			sizeDiff = ip.getSizeDiff();
-		}
-		if (scale > 1.0f) {
-			icon = UtilitiesBitmap.scaleBitmap(icon, scale, sizeDiff, mContext);
-		}
-		if (prefs.rotateIcon() != null) {
-			icon = UtilitiesBitmap.rotate(icon, prefs.rotateIcon());
-		}
+		icon = mBitmapTransform.transform(icon);
 		views.setBitmap(res, "setImageBitmap", icon);
 
 		if (prefs.hideTexts()) {

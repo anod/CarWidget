@@ -2,7 +2,7 @@ package com.anod.car.home.prefs.preferences;
 
 import java.io.Serializable;
 
-import com.anod.car.home.utils.UtilitiesBitmap.RotateDirection;
+import com.anod.car.home.utils.BitmapTransform.RotateDirection;
 
 
 public class Main implements Serializable {
@@ -89,7 +89,7 @@ public class Main implements Serializable {
 		this.iconsTheme = iconsTheme;
 	}
 	public boolean hideTexts() {
-		return true;
+		return false;
 	}
 	public RotateDirection rotateIcon() {
 		return RotateDirection.LEFT;

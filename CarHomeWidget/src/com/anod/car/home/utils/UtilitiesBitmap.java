@@ -7,9 +7,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.LightingColorFilter;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Rect;
@@ -29,18 +26,10 @@ public class UtilitiesBitmap {
 	private static final Rect sBounds = new Rect();
 	private static final Rect sOldBounds = new Rect();
 	private static final Canvas sCanvas = new Canvas();
-	private static final ColorMatrixColorFilter sGreyColorMatrixColorFilter;
 
-	public enum RotateDirection { RIGHT, LEFT }
 	
 	static {
 		sCanvas.setDrawFilter(new PaintFlagsDrawFilter(Paint.DITHER_FLAG, Paint.FILTER_BITMAP_FLAG));
-		float[] greyScaleMatrix = new float[] { 0.5f, 0.5f, 0.5f, 0, 0, // red
-		0.5f, 0.5f, 0.5f, 0, 0, // green
-		0.5f, 0.5f, 0.5f, 0, 0, // blue
-		0, 0, 0, 1.0f, 0 // alpha
-		};
-		sGreyColorMatrixColorFilter = new ColorMatrixColorFilter(greyScaleMatrix);
 	}
 
 	private static void initStatics(Context paramContext) {
@@ -119,52 +108,6 @@ public class UtilitiesBitmap {
 			icon.setBounds(sOldBounds);
 			return bitmap;
 		}
-	}
-
-	public static Bitmap rotate(Bitmap icon, RotateDirection dir) {
-		Matrix matrix = new Matrix();
-		matrix.postRotate((dir == RotateDirection.LEFT) ? 90 : 270);
-		return Bitmap.createBitmap(icon, 0, 0, icon.getWidth(), icon.getHeight(), matrix, true);
-	}
-	
-	public static Bitmap scaleBitmap(Bitmap icon, float scale, float sizeDiff,  Context context) {
-		if (sIconWidth == -1) {
-			initStatics(context);
-		}
-		int min = 0;
-		if (sizeDiff > 0) {
-			min = (int)(sIconWidth * sizeDiff);
-		}
-		int scW = (int) (sIconWidth * scale) - min;
-		int scH = (int) (sIconHeight * scale) - min;
-		return Bitmap.createScaledBitmap(icon, scW, scH, true);
-	}
-
-	public static Bitmap applyBitmapFilter(Bitmap icon, Context context) {
-		if (sIconWidth == -1) {
-			initStatics(context);
-		}
-		final Bitmap bitmap = Bitmap.createBitmap(sIconWidth, sIconHeight, Bitmap.Config.ARGB_8888);
-		final Canvas canvas = sCanvas;
-		canvas.setBitmap(bitmap);
-
-		BitmapDrawable d = new BitmapDrawable(context.getResources(), icon);
-		sOldBounds.set(d.getBounds());
-		d.setBounds(0, 0, sIconWidth, sIconHeight);
-		d.setColorFilter(sGreyColorMatrixColorFilter);
-		d.draw(canvas);
-		d.setBounds(sOldBounds);
-		return bitmap;
-	}
-
-	public static Bitmap tint(Bitmap icon, int color) {
-		Paint p = new Paint(color);
-		LightingColorFilter filter = new LightingColorFilter(color, 0);
-		p.setColorFilter(filter);
-
-		final Canvas canvas = sCanvas;
-		canvas.drawBitmap(icon, 0, 0, p);
-		return icon;
 	}
 
 	public static byte[] flattenBitmap(Bitmap bitmap) {
