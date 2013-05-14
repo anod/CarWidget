@@ -79,6 +79,10 @@
             android:configChanges="orientation" 
         />
         <activity
+            android:name="com.anod.car.home.prefs.ConfigurationInCarVolume"
+            android:configChanges="orientation" 
+         />
+        <activity
             android:name="com.anod.car.home.prefs.ConfigurationInCar"
             android:configChanges="orientation"
          />
