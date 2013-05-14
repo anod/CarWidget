@@ -78,6 +78,11 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
         
 	}
 
+	@Override
+	protected int getOptionsMenuResource() {
+		return R.menu.configuration;
+	}
+	
 	private void initDefaultApp() {
 		Preference defaultApp = (Preference)findPreference(DEFAULT_APP);
 		Intent intent = new Intent(Intent.ACTION_MAIN);

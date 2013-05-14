@@ -60,6 +60,7 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 
 		if (isAppWidgetIdRequired()) {
 			if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+				Utils.logw("AppWidgetId required");
 				Intent defaultResultValue = new Intent();
 				defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 				setResult(RESULT_OK, defaultResultValue);
@@ -93,10 +94,18 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 		super.onPostCreate(savedInstanceState);
 	}
 	
+	protected int getOptionsMenuResource() {
+		return 0;
+	}
+	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+    	int res = getOptionsMenuResource();
+    	if (res == 0) {
+    		return super.onCreateOptionsMenu(menu);
+    	}
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.configuration, menu);
+        menuInflater.inflate(res, menu);
         
         boolean retValue = false;
         retValue |= mActionBarHelper.onCreateOptionsMenu(menu);

@@ -39,6 +39,7 @@ import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
 public class ConfigurationInCar extends ConfigurationActivity {
+	private static final String MEDIA_SCREEN = "media-screen";
 	private static final String SCREEN_BT_DEVICE = "bt-device-screen";
 	private static final String CATEGORY_BT_DEVICE = "bt-device-category";
 	private static final String PREF_BT_SWITCH = "bt-switch";
@@ -76,6 +77,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 		final Version version = new Version(this);
 		mContext = (Context) this;
 
+		setIntent(MEDIA_SCREEN, ConfigurationInCarVolume.class, 0);
 		initInCar();
 		if (version.isFree()) {
 			mTrialsLeft = version.getTrialTimesLeft();

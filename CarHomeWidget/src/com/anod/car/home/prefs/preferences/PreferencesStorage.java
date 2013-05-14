@@ -364,9 +364,12 @@ public class PreferencesStorage {
 		editor.commit();
 	}
 
+	public static boolean isAdjustVolumeLevel(Context context) {
+		return getBoolean(context, ADJUST_VOLUME_LEVEL, false);
+	}
+	
 	public static boolean isInCarModeEnabled(Context context) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		return prefs.getBoolean(INCAR_MODE_ENABLED, false);
+		return getBoolean(context, INCAR_MODE_ENABLED, false);
 	}
 
 	public static void dropWidgetSettings(Context context, int[] appWidgetIds) {
@@ -392,19 +395,13 @@ public class PreferencesStorage {
 	}
 
 	public static void dropNotifShortcut(int position, Context context) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		Editor edit = prefs.edit();
 		String key = getNotifComponentName(position);
-		edit.remove(key);
-		edit.commit();
+		remove(context, key);
 	}
 	
 	public static void dropShortcutPreference(int cellId, int appWidgetId, Context context) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		Editor edit = prefs.edit();
 		String key = PreferencesStorage.getLaunchComponentName(cellId, appWidgetId);
-		edit.remove(key);
-		edit.commit();
+		remove(context, key);
 	}
 
 	public static void dropSettings(Context context) {
@@ -434,14 +431,33 @@ public class PreferencesStorage {
 	}
 
 	public static boolean restoreForceState(Context context) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		return prefs.getBoolean(MODE_FORCE_STATE, false);
+		return getBoolean(context, MODE_FORCE_STATE, false);
 	}
 	
 	public static void saveForceState(Context context, boolean forceState) {
+		putBoolean(context, MODE_FORCE_STATE, forceState);
+	}
+
+	public static void setAdjustVolumeLevel(Context context, boolean isChecked) {
+		putBoolean(context, ADJUST_VOLUME_LEVEL, isChecked);
+	}
+	
+	private static boolean getBoolean(Context context, String key, boolean defaultValue) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		return prefs.getBoolean(key, defaultValue);
+	}
+	
+	private static void putBoolean(Context context, String key, boolean value) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		Editor edit = prefs.edit();
-		edit.putBoolean(MODE_FORCE_STATE, forceState);
+		edit.putBoolean(key, value);
+		edit.commit();
+	}
+	
+	private static void remove(Context context, String key) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		Editor edit = prefs.edit();
+		edit.remove(key);
 		edit.commit();
 	}
 }

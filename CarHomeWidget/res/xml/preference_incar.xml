@@ -45,6 +45,10 @@
             android:key="power-required"
             android:summary="@string/pref_power_connected_summary"
             android:title="@string/pref_power_connected_title" />
+		<com.anod.car.home.prefs.views.HeaderPreference
+            android:icon="@drawable/ic_action_tick"
+            android:key="add-trigger"
+            android:title="Add trigger" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_actions" >
         <CheckBoxPreference
@@ -75,21 +79,14 @@
             android:key="auto_answer"
             android:summary="@string/pref_auto_answer_summary"
             android:title="@string/pref_auto_answer" />
-
-        <CheckBoxPreference
-            android:key="adjust-volume-level"
+        
+        <Preference 
+            android:title="@string/pref_change_media_volume"
             android:summary="@string/pref_change_media_volume_summary"
-            android:title="@string/pref_change_media_volume" />
-
-        <com.anod.car.home.incar.SeekBarPreference
-            android:defaultValue="90"
-            android:dependency="adjust-volume-level"
-            android:key="volume-level"
-            android:max="100"
-            android:summary="@string/pref_media_volume_level_summary"
-            android:text=""
-            android:title="@string/pref_media_volume_level" />
-
+            android:key="media-screen"
+             >
+		</Preference>
+        
         <PreferenceScreen android:title="@string/more" >
             <PreferenceCategory android:title="@string/pref_actions" >
                 <ListPreference
