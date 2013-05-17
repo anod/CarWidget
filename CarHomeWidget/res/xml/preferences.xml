@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="@string/shortcuts" >
+    <PreferenceCategory android:key="shortcuts" android:title="@string/shortcuts" >
         <com.anod.car.home.prefs.views.ShortcutPreference
             android:key="launch-component-0-%d"
             android:title="@string/set_shortcut" />

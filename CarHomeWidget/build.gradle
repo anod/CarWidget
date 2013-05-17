@@ -6,7 +6,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:0.4'
     }
 }
-apply plugin: 'android-library'
+apply plugin: 'android'
 
 dependencies {
     compile files (
@@ -21,6 +21,8 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 11
+		versionCode 26
+        versionName '1.52'
     }
     sourceSets {
         main {
@@ -35,8 +37,40 @@ android {
 
         instrumentTest.setRoot('tests')
     }
-    
-    debugSigningConfig {
-        storeFile file("../debug.keystore")
+
+	signingConfigs {
+        debug {
+            storeFile file("../debug.keystore")
+        }
+
+        release {
+            storeFile file(***REMOVED***)
+            storePassword ***REMOVED***
+            keyAlias ***REMOVED***
+            keyPassword ***REMOVED***
+        }
     }
+    
+	buildTypes {
+		debug {
+            packageNameSuffix ".pro"
+        }
+        
+		freedebug.initWith(buildTypes.debug)
+        freedebug {
+            packageNameSuffix ".free"
+        }
+        
+        release {
+            packageNameSuffix ".pro"
+            signingConfig signingConfigs.release
+        }
+        
+        freerealease {
+            packageNameSuffix ".free"
+        }
+    }
+    
+    sourceSets.debug.manifest.srcFile('AndroidManifestPro.xml')
+    sourceSets.freedebug.manifest.srcFile('AndroidManifestFree.xml')
 }

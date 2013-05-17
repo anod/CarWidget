@@ -13,8 +13,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.support.v4.widget.ViewDragHelper;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewDebug;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.anod.car.home.CarWidgetApplication;
@@ -63,7 +66,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 		mModel.init();
 		mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
 		mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
-		initActivityChooser();
+		initShortcuts();
 		
 		setIntent(LOOK_AND_FEEL, LookAndFeelActivity.class, mAppWidgetId);
 		setIntent(INCAR, ConfigurationInCar.class, 0);
@@ -76,6 +79,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 			mPickShortcutUtils.showActivityPicker(cellId);
 		}
         
+		
 	}
 
 	@Override
@@ -159,14 +163,23 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 		});
 	}
 
-	private void initActivityChooser() {
+	private void initShortcuts() {
 		for (int i = 0; i < PreferencesStorage.LAUNCH_COMPONENT_NUMBER; i++) {
 			mPickShortcutUtils.initLauncherPreference(i);
 		}
+		
+		ViewDragHelper.create((ViewGroup)getListView(), new ViewDragHelper.Callback() {
+			
+			@Override
+			public boolean tryCaptureView(View child, int pointerId) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
 	}
 
 	private void initOther() {
-		Preference version = (Preference) findPreference(VERSION);
+		Preference version = (Preference) findPreference(VERSION); 
 		String versionText = getResources().getString(R.string.version_title);
 		String appName = "";
 		String versionName = "";

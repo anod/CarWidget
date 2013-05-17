@@ -10,6 +10,7 @@ import com.anod.car.home.ShortcutActivity;
 import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.prefs.Configuration;
 import com.anod.car.home.prefs.PickShortcutUtils;
+import com.anod.car.home.prefs.SettingsActivity;
 
 public class ShortcutPendingIntent implements LauncherViewBuilder.PendingIntentHelper {
 	public static final String INTENT_ACTION_CALL_PRIVILEGED = "android.intent.action.CALL_PRIVILEGED";

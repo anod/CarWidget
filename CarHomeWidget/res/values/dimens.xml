@@ -16,5 +16,6 @@
 
 	<dimen name="skin_padding_horiz">0dp</dimen>
 	<dimen name="skin_padding_vert">0dp</dimen>
+	<dimen name="preference_item_padding_side">8dp</dimen>
 	
 </resources>

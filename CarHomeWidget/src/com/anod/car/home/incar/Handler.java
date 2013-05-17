@@ -19,6 +19,7 @@ import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
 
 public class Handler {
+	private static final int VOLUME_NOT_SET = -1;
 	private static final String TAG = "CarHomeWidget";
 	private static final int BRIGHTNESS_MAX = 255;
 	private static final int BRIGHTNESS_NIGHT = 30;
@@ -35,7 +36,7 @@ public class Handler {
 	private static boolean sWakeLocked;
 	private static int mCurrentBtState;
 	private static int mCurrentWiFiState;
-	private static int mCurrentVolume;
+	private static int mCurrentVolume = VOLUME_NOT_SET;
 	private static int mCurrentBrightness;
 	private static boolean mCurrentAutoBrightness;
 	private static PowerManager.WakeLock mWakeLock;
@@ -71,6 +72,14 @@ public class Handler {
 		} else if (ModeService.sInCarMode && !newMode) {
 	    	Intent service = new Intent(context, ModeService.class);
 	    	context.stopService(service);
+		}
+		
+		String action = intent.getAction();
+		boolean inCarEnabled = ModeService.sInCarMode && newMode;
+		if (inCarEnabled && BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+			if (prefs.isAdjustVolumeLevel()) {
+				adjustVolume(prefs,context);
+			}
 		}
 	}
 	
@@ -276,6 +285,7 @@ public class Handler {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private static void acquireWakeLock(Context context) {
 		PowerManager pw = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 		mWakeLock = pw.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, TAG);
@@ -349,18 +359,23 @@ public class Handler {
 	private static void adjustVolume(InCar prefs,Context context) {
 		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 		int adjVolume = prefs.getMediaVolumeLevel();
-		int volume = InCar.DEFAULT_VOLUME_LEVEL;
-		if (adjVolume != InCar.DEFAULT_VOLUME_LEVEL) {
-			int maxVolume = audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-			volume = (int)((maxVolume*adjVolume)/100);
+		int maxVolume = audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+		int volume = (int)((maxVolume*adjVolume)/100);
+		
+		if (mCurrentVolume == VOLUME_NOT_SET) {
+			mCurrentVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
 		}
-		mCurrentVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
+
 		audio.setStreamVolume(AudioManager.STREAM_MUSIC,volume,0);
 	}
 
 	private static void restoreVolume(Context context) {
+		if (mCurrentVolume == VOLUME_NOT_SET) {
+			return;
+		}
 		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 		audio.setStreamVolume(AudioManager.STREAM_MUSIC,mCurrentVolume,0);
+		mCurrentVolume = VOLUME_NOT_SET;
 	}
 	
 	private static void releaseWakeLock() {

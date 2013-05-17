@@ -25,7 +25,6 @@ import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.skin.PropertiesFactory;
 import com.anod.car.home.skin.SkinProperties;
 import com.anod.car.home.utils.BitmapTransform;
-import com.anod.car.home.utils.BitmapTransform.RotateDirection;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
 
