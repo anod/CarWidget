@@ -44,7 +44,7 @@ public class PickShortcutUtils {
 		mPreferenceKey = key;
 	}
 	
-	public void initLauncherPreference(int position) {
+	public ShortcutPreference initLauncherPreference(int position) {
 		ShortcutPreference p = (ShortcutPreference) mActivity.findPreference(mPreferenceKey.getInitialKey(position));
 		p.setKey(mPreferenceKey.getCompiledKey(position));
 		p.setShortcutPosition(position);
@@ -73,6 +73,7 @@ public class PickShortcutUtils {
 
 		});
 		refreshPreference(p);
+        return p;
 	}
 	
 	public void showActivityPicker(int position) {

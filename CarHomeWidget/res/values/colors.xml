@@ -7,4 +7,5 @@
     <color name="holo_text_bg">#33000000</color>
     <color name="actionbar_title_color">#FFFFFF</color>
     <color name="actionbar_bg_color">#88000000</color>
+	<color name="drag_item_bg">#88d0d0d0</color>
 </resources>

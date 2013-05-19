@@ -5,7 +5,14 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
     >
-    
+
+    <ImageButton
+         android:layout_width="wrap_content"
+         android:layout_height="fill_parent"
+         android:id="@+id/dragButton"
+		 android:src="@drawable/ic_drag_normal"
+		android:background="@android:color/transparent"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
@@ -13,14 +20,14 @@
         android:orientation="vertical"
         android:layout_marginLeft="6dip"
      >
-	    <ImageView 
-	    	android:id="@+id/pref_icon_view" 
-	    	android:layout_width="wrap_content" 
-	    	android:layout_height="wrap_content" 
-	    	android:src="@drawable/ic_add_shortcut"  
+	    <ImageView
+	    	android:id="@+id/pref_icon_view"
+	    	android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:src="@drawable/ic_add_shortcut"
 		>
 	    </ImageView>
-     </LinearLayout>    
+     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="0dip"
@@ -51,7 +58,7 @@
 
     </RelativeLayout>
 
-    <ImageView 
+    <ImageView
     	android:id="@+id/edit_icon"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -61,14 +68,14 @@
         android:src="@drawable/ic_action_edit"
         android:paddingLeft="14dip"
         android:paddingRight="14dip"
-    /> 
-    
+    />
+
     <View android:id="@+id/divider"
         android:layout_width="1dp"
         android:layout_height="match_parent"
         android:layout_marginTop="5dip"
         android:layout_marginBottom="5dip"
-	    android:background="@drawable/divider_vertical_dark" 
+	    android:background="@drawable/divider_vertical_dark"
     />
 
     <ImageView android:id="@+id/delete_action_button"
@@ -80,7 +87,7 @@
         android:src="@drawable/ic_action_cancel"
         android:paddingLeft="14dip"
         android:paddingRight="14dip"
-    />        
+    />
 
     <!-- Preference should place its actual preference widget here. -->
     <LinearLayout android:id="@+android:id/widget_frame"
@@ -89,7 +96,7 @@
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:visibility="gone" >
-        
+
      </LinearLayout>
 
 </LinearLayout>

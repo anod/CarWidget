@@ -14,10 +14,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.support.v4.widget.ViewDragHelper;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewDebug;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.Button;
 
 import com.anod.car.home.CarWidgetApplication;
@@ -167,15 +164,6 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 		for (int i = 0; i < PreferencesStorage.LAUNCH_COMPONENT_NUMBER; i++) {
 			mPickShortcutUtils.initLauncherPreference(i);
 		}
-		
-		ViewDragHelper.create((ViewGroup)getListView(), new ViewDragHelper.Callback() {
-			
-			@Override
-			public boolean tryCaptureView(View child, int pointerId) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
 	}
 
 	private void initOther() {
