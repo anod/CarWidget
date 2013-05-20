@@ -23,6 +23,7 @@ android {
         targetSdkVersion 11
 		versionCode 26
         versionName '1.52'
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
     sourceSets {
         main {

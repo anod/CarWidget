@@ -58,6 +58,33 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 		}
 	}
 
+	public void move(int from, int to) {
+		if (from == to) {
+			return;
+		}
+		//update ids mapping
+		int min = Math.min(from,to);
+		int max = Math.max(from,to);
+
+		for(int i = to; i<from;i++) {
+			int j = i + 1;
+			ShortcutInfo a = mShortcuts.get(i);
+			ShortcutInfo b = mShortcuts.get(j);
+			mShortcuts.put(i,b);
+			mShortcuts.put(j,a);
+		}
+
+		//update mapping
+		for (int cellId = min; cellId <= max; cellId++) {
+			ShortcutInfo info = mShortcuts.get(cellId);
+			if (info == null) {
+				dropShortcutId(cellId);
+			} else {
+				saveShortcutId(cellId,info.id);
+			}
+		}
+	}
+
 	@Override
 	public ShortcutInfo saveShortcutIntent(int position, Intent data, boolean isApplicationShortcut) {
 		final ShortcutInfo info = ShortcutInfoUtils.createShortcut(mContext, data, position, isApplicationShortcut);

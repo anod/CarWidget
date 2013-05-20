@@ -64,16 +64,7 @@
             android:name="com.anod.car.home.prefs.AppListConfiguration"
             android:configChanges="orientation" >
         </activity>
-        <activity
-            android:name="com.anod.car.home.prefs.SettingsActivity"
-            android:label="@string/settings"
-            android:configChanges="orientation"
-             >
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-            </intent-filter>
-        </activity>
-        <activity
+		<activity
             android:name="com.anod.car.home.prefs.Configuration"
             android:label="@string/settings"
             android:configChanges="orientation"

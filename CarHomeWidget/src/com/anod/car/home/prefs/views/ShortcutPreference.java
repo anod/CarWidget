@@ -18,11 +18,16 @@ import com.anod.car.home.utils.Utils;
 public class ShortcutPreference extends Preference implements OnClickListener {
 	private static final int INVALID_RESOURCE = 0;
 
+	public interface DropCallback {
+		public boolean onDrop(int oldCellId, int newCellId);
+	}
+
 	private Bitmap mIconBitmap;
 	private int mIconResource = INVALID_RESOURCE;
 	private OnPreferenceClickListener mDeleteClickListener;
 	private Boolean mShowEditButton = false;
 	private int mCellId;
+	private DropCallback mDropCallback;
 
 	public ShortcutPreference(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -39,6 +44,9 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 		setLayoutResource(R.layout.pref_icon);
 	}
 
+	public void setDropCallback(DropCallback dropCallback) {
+		mDropCallback = dropCallback;
+	}
 
 	public void setShortcutPosition(int cellId) {
 		mCellId = cellId;
@@ -69,6 +77,8 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 	protected void onBindView(View view) {
 		super.onBindView(view);
 
+		view.setTag(mCellId);
+
 		ImageButton dragButton = (ImageButton) view.findViewById(R.id.dragButton);
 		initDragButton(dragButton, view);
 
@@ -82,7 +92,7 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 
 		ImageView editButton = (ImageView) view.findViewById(R.id.delete_action_button);
 		ImageView replaceImage = (ImageView) view.findViewById(R.id.edit_icon);
-		View divider = (View) view.findViewById(R.id.divider);
+		View divider = view.findViewById(R.id.divider);
 		if (mShowEditButton) {
 			editButton.setOnClickListener(this);
 			editButton.setVisibility(View.VISIBLE);
@@ -110,7 +120,7 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 				return true;
 			}
 		});
-		dragButton.setOnDragListener(new ShortcutDragListener(getContext()));
+		dragButton.setOnDragListener(new ShortcutDragListener(getContext(),mDropCallback));
 	}
 
 	@Override

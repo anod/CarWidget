@@ -29,7 +29,7 @@ import com.anod.car.home.prefs.views.ShortcutPreference;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 
-public class Configuration extends ConfigurationActivity implements PreferenceKey {
+public class Configuration extends ConfigurationActivity implements PreferenceKey, ShortcutPreference.DropCallback {
 	private static final int REQUEST_BACKUP = 6;
 
 	private ShortcutsModel mModel;
@@ -162,7 +162,8 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 
 	private void initShortcuts() {
 		for (int i = 0; i < PreferencesStorage.LAUNCH_COMPONENT_NUMBER; i++) {
-			mPickShortcutUtils.initLauncherPreference(i);
+			ShortcutPreference p = mPickShortcutUtils.initLauncherPreference(i);
+			p.setDropCallback(this);
 		}
 	}
 
@@ -269,6 +270,13 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	}
 
 
-
-
+	@Override
+	public boolean onDrop(int oldCellId, int newCellId) {
+		if  (oldCellId == newCellId) {
+			return false;
+		}
+		mModel.move(oldCellId,newCellId);
+		refreshShortcuts();
+		return true;
+	}
 }
