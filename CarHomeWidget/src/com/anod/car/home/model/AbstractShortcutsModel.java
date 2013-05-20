@@ -62,18 +62,32 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 		if (from == to) {
 			return;
 		}
-		//update ids mapping
-		int min = Math.min(from,to);
-		int max = Math.max(from,to);
 
-		for(int i = to; i<from;i++) {
-			int j = i + 1;
-			ShortcutInfo a = mShortcuts.get(i);
-			ShortcutInfo b = mShortcuts.get(j);
-			mShortcuts.put(i,b);
-			mShortcuts.put(j,a);
+		ShortcutInfo fromInfo = mShortcuts.get(from);
+
+		if (from > to) {
+			for(int i = from; i>to;i--) {
+				int j = i - 1;
+				ShortcutInfo a = mShortcuts.get(i);
+				ShortcutInfo b = mShortcuts.get(j);
+				mShortcuts.put(i,b);
+				mShortcuts.put(j,a);
+			}
+			mShortcuts.put(to,fromInfo);
+		} else {
+			for(int i = from; i<to-1;i++) {
+				int j = i + 1;
+				ShortcutInfo a = mShortcuts.get(i);
+				ShortcutInfo b = mShortcuts.get(j);
+				mShortcuts.put(i,b);
+				mShortcuts.put(j,a);
+			}
+			mShortcuts.put(to-1,fromInfo);
 		}
 
+
+		int min = Math.min(from,to);
+		int max = Math.max(from,to);
 		//update mapping
 		for (int cellId = min; cellId <= max; cellId++) {
 			ShortcutInfo info = mShortcuts.get(cellId);

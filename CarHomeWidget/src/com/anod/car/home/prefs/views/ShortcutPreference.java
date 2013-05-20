@@ -4,11 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.preference.Preference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.views.drag.ShortcutDragListener;
@@ -79,7 +80,7 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 
 		view.setTag(mCellId);
 
-		ImageButton dragButton = (ImageButton) view.findViewById(R.id.dragButton);
+		ImageView dragButton = (ImageView) view.findViewById(R.id.dragButton);
 		initDragButton(dragButton, view);
 
 		ImageView imageView = (ImageView) view.findViewById(R.id.pref_icon_view);
@@ -106,7 +107,7 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 	}
 
 	@SuppressLint("NewApi")
-	private void initDragButton(ImageButton dragButton, final View mainView) {
+	private void initDragButton(ImageView dragButton, final View mainView) {
 		if (!Utils.IS_HONEYCOMB_OR_GREATER) {
 			dragButton.setVisibility(View.GONE);
 			return;
@@ -115,12 +116,12 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 		dragButton.setOnLongClickListener(new View.OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View view) {
-				ClipData data = ClipData.newPlainText("cell", mCellId + "");
-				mainView.startDrag(data, new ShortcutShadowBuilder(mainView), null, 0);
-				return true;
+			ClipData data = ClipData.newPlainText(mCellId + "", mCellId + "");
+			mainView.startDrag(data, new ShortcutShadowBuilder(mainView), null, 0);
+			return true;
 			}
 		});
-		dragButton.setOnDragListener(new ShortcutDragListener(getContext(),mDropCallback));
+		dragButton.setOnDragListener(new ShortcutDragListener(getContext(), mDropCallback));
 	}
 
 	@Override

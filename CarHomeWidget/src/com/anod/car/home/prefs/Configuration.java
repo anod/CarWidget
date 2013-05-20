@@ -147,7 +147,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	}
 
 	private void initBackup() {
-		Preference pref = (Preference) findPreference(BACKUP);
+		Preference pref = findPreference(BACKUP);
 		pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
 			@Override
@@ -191,7 +191,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 			}
 		});
 
-		Preference other = (Preference) findPreference(OTHER);
+		Preference other = findPreference(OTHER);
 		other.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
@@ -204,7 +204,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 			}
 		});
 
-		Preference issue = (Preference) findPreference(ISSUE_TRACKER);
+		Preference issue = findPreference(ISSUE_TRACKER);
 		issue.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
