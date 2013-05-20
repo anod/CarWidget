@@ -161,9 +161,13 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	}
 
 	private void initShortcuts() {
+		int lastVisiblePos = getListView().getLastVisiblePosition();
+		int lastVisibleY = (int)getListView().getChildAt(lastVisiblePos).getY();
 		for (int i = 0; i < PreferencesStorage.LAUNCH_COMPONENT_NUMBER; i++) {
 			ShortcutPreference p = mPickShortcutUtils.initLauncherPreference(i);
 			p.setDropCallback(this);
+			p.setLastVisibleY(lastVisibleY);
+
 		}
 	}
 
