@@ -44,7 +44,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a281f284-1a03-4dee-b05f-596eec43ddd7" name="Default" comment="change">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/anod/car/home/prefs/Configuration.java" afterPath="$PROJECT_DIR$/src/com/anod/car/home/prefs/Configuration.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/colors.xml" afterPath="$PROJECT_DIR$/res/values/colors.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/main_activty.xml" afterPath="$PROJECT_DIR$/res/layout/main_activty.xml" />
     </list>
@@ -65,7 +64,7 @@
     <file path="/ShortcutPreference.java" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369069399238" ignored="false" />
     <file path="/PickShortcutUtils.java" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1368860182535" ignored="false" />
     <file path="/Dummy.txt" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369320254507" ignored="false" />
-    <file path="/colors.xml" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369319446751" ignored="false" />
+    <file path="/colors.xml" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369320934121" ignored="false" />
     <file path="/ShortcutDragListener.java" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369069833886" ignored="false" />
     <file path="/a.groovy" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1368874051639" ignored="false" />
     <file path="/a.html" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1368874055359" ignored="false" />
@@ -150,7 +149,7 @@
       <file leaf-file-name="colors.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="36" selection-start="720" selection-end="720" vertical-scroll-proportion="0.0">
+            <state line="19" column="40" selection-start="812" selection-end="812" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -230,9 +229,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="-1376" />
     <option name="y" value="22" />
-    <option name="width" value="1920" />
-    <option name="height" value="1058" />
+    <option name="width" value="1382" />
+    <option name="height" value="878" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -557,7 +557,7 @@
       <workItem from="1369060044559" duration="3597000" />
       <workItem from="1369069084544" duration="791000" />
       <workItem from="1369242407578" duration="6364000" />
-      <workItem from="1369300014864" duration="2152000" />
+      <workItem from="1369300014864" duration="3407000" />
     </task>
     <task id="LOCAL-00001" summary="drag n drop">
       <created>1368982106261</created>
@@ -583,7 +583,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38388000" />
+    <option name="totallyTimeSpent" value="39643000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -606,11 +606,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1920" height="1058" extended-state="6" />
-    <editor active="false" />
+    <frame x="-1376" y="22" width="1382" height="878" extended-state="1" />
+    <editor active="true" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14887941" sideWeight="0.59381664" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32924226" sideWeight="0.59381664" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20883234" sideWeight="0.49736148" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.46182635" sideWeight="0.49736148" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942432" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32959402" sideWeight="0.67164177" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -625,8 +625,8 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16915688" sideWeight="0.59381664" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40618336" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16915688" sideWeight="0.59381664" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5026385" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -783,13 +783,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/anod/car/home/prefs/Configuration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="164" column="31" selection-start="5634" selection-end="5634" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="156" column="41" selection-start="7214" selection-end="7214" vertical-scroll-proportion="0.0">
@@ -797,9 +790,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/anod/car/home/prefs/Configuration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="164" column="31" selection-start="5634" selection-end="5634" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="36" selection-start="720" selection-end="720" vertical-scroll-proportion="0.0">
+        <state line="19" column="40" selection-start="812" selection-end="812" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
