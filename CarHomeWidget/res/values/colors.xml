@@ -8,4 +8,6 @@
     <color name="actionbar_title_color">#FFFFFF</color>
     <color name="actionbar_bg_color">#88000000</color>
 	<color name="drag_item_bg">#88d0d0d0</color>
+
+	<color name="panel_bg">#2b2b2b</color><color name="activity_bg">#FF434343</color>
 </resources>
