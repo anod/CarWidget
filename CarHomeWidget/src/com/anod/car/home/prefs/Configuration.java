@@ -275,6 +275,11 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 
 
 	@Override
+	public int onScrollRequest(int direction) {
+		return 0;
+	}
+
+	@Override
 	public boolean onDrop(int oldCellId, int newCellId) {
 		if  (oldCellId == newCellId) {
 			return false;
