@@ -16,7 +16,7 @@
 				android:textAppearance="?android:attr/textAppearanceLarge"
 				android:text="Home Screen Widgets"
 				android:id="@+id/textView"
-				/>
+				android:textColor="@color/font_color"/>
 
 		<TextView
 				android:layout_width="wrap_content"
@@ -33,16 +33,18 @@
 			android:layout_marginTop="10dp"
 			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:text="@string/pref_incar_mode_title"
-			android:id="@+id/textView3"/>
+			android:id="@+id/textView3"
+			android:textColor="@color/font_color"/>
 
 	<Button
 			style="@style/panelHeader"
 			android:layout_marginTop="1dp"
 			android:text="@string/settings"
 			android:id="@+id/buttonInCarSettings"
-			android:drawableLeft="@drawable/ic_holo_settings"
+			android:drawableLeft="@drawable/ic_action_settings_dark"
 			android:gravity="left|center_vertical"
-			/>
+			android:textColor="@color/font_color"
+			android:drawablePadding="4dp"/>
 
 	<LinearLayout
 			style="@style/panelHeader"
@@ -55,10 +57,12 @@
 				android:layout_height="wrap_content"
 				android:text="@string/backup"
 				android:id="@+id/button"
-				android:drawableLeft="@drawable/ic_action_export"
+				android:drawableLeft="@drawable/ic_action_export_dark"
 				android:background="@android:color/transparent"
 				android:padding="0dp"
-				android:gravity="center_vertical|left"/>
+				android:gravity="center_vertical|left"
+				android:textColor="@color/font_color"
+				android:drawablePadding="4dp"/>
 		<View
 				android:layout_height="match_parent"
 				android:layout_width="1dp"
@@ -76,11 +80,13 @@
 				android:layout_height="wrap_content"
 				android:text="@string/restore"
 				android:id="@+id/button"
-				android:drawableLeft="@drawable/ic_action_import"
+				android:drawableLeft="@drawable/ic_action_import_dark"
 				android:background="@android:color/transparent"
 				android:padding="0dp"
 				android:gravity="center_vertical|left"
-				android:clickable="false"/>
+				android:clickable="false"
+				android:textColor="@color/font_color"
+				android:drawablePadding="4dp"/>
 	</LinearLayout>
 
 	<RelativeLayout
@@ -92,7 +98,8 @@
 				android:layout_height="wrap_content"
 				android:textAppearance="?android:attr/textAppearanceLarge"
 				android:text="@string/information_title"
-				android:id="@+id/textView5"/>
+				android:id="@+id/textView5"
+				android:textColor="@color/font_color"/>
 
 	</RelativeLayout>
 
@@ -106,13 +113,14 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:src="@drawable/ic_action_star_10"
+				android:src="@drawable/ic_action_star_10_dark"
 				/>
 
 		<RelativeLayout
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:layout_weight="1">
+				android:layout_weight="1"
+				android:paddingLeft="4dp">
 
 			<TextView
 					android:id="@android:id/title"
@@ -124,7 +132,7 @@
 					android:fadingEdge="horizontal"
 					android:text="@string/version_title"
 					style="@style/text_align_style"
-					/>
+					android:textColor="@color/font_color"/>
 
 			<TextView
 					android:id="@android:id/summary"
@@ -147,9 +155,10 @@
 			android:layout_marginTop="1dp"
 			android:text="@string/issue_title"
 			android:id="@+id/buttonInCarSettings"
-			android:drawableLeft="@drawable/ic_action_gplus"
+			android:drawableLeft="@drawable/ic_action_gplus_dark"
 			android:gravity="left|center_vertical"
-			/>
+			android:textColor="@color/font_color"
+			android:drawablePadding="4dp"/>
 
 
 
@@ -158,7 +167,8 @@
 				android:layout_marginTop="10dp"
 				android:textAppearance="?android:attr/textAppearanceLarge"
 				android:text="@string/system"
-				android:id="@+id/textView6"/>
+				android:id="@+id/textView6"
+				android:textColor="@color/font_color"/>
 
 	<LinearLayout
 			style="@style/panelHeader"
@@ -170,12 +180,13 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:src="@drawable/ic_settings_applications"/>
+				android:src="@drawable/ic_action_android_dark"/>
 
 		<RelativeLayout
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:layout_weight="1">
+				android:layout_weight="1"
+				android:paddingLeft="4dp">
 
 			<TextView
 					style="@style/text_align_style"
@@ -186,7 +197,8 @@
 					android:textAppearance="?android:attr/textAppearanceLarge"
 					android:ellipsize="marquee"
 					android:fadingEdge="horizontal"
-					android:text="@string/default_car_dock_app"/>
+					android:text="@string/default_car_dock_app"
+					android:textColor="@color/font_color"/>
 
 			<TextView
 					style="@style/text_align_style"
