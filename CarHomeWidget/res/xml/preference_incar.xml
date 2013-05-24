@@ -1,115 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:summary="@string/pref_incar_mode_summary"
-    android:title="@string/pref_incar_mode_title" >
+				  android:summary="@string/pref_incar_mode_summary"
+				  android:title="@string/pref_incar_mode_title">
 
-    <CheckBoxPreference
-        android:key="incar-mode-enabled"
-        android:title="@string/pref_incar_mode_enabled" />
+	<CheckBoxPreference
+			android:key="incar-mode-enabled"
+			android:title="@string/pref_incar_mode_enabled"
+			android:layout="@layout/pref"/>
 
-    <PreferenceCategory android:title="@string/pref_power_contorl_bt" >
-        <CheckBoxPreference
-            android:key="power-bt-enable"
-            android:summary="@string/pref_power_plugged_bt_on_summary"
-            android:title="@string/pref_power_plugged_bt_on_title" />
-        <CheckBoxPreference
-            android:key="power-bt-disable"
-            android:summary="@string/pref_power_unplugged_bt_off_summary"
-            android:title="@string/pref_power_unplugged_bt_off_title" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_detection" >
-        <PreferenceScreen
-            android:key="bt-device-screen"
-            android:summary="@string/pref_blutooth_device_summary"
-            android:title="@string/pref_blutooth_device_title" >
-            <CheckBoxPreference
-                android:key="bt-switch"
-                android:summaryOff="@string/turn_on_bluetooth_summary"
-                android:summaryOn="@string/turn_off_bluetooth_summary"
-                android:title="@string/bluetooth" />
+	<PreferenceCategory
+			android:title="@string/pref_power_contorl_bt"
+			android:layout="@layout/pref_category">
+		<CheckBoxPreference
+				android:key="power-bt-enable"
+				android:summary="@string/pref_power_plugged_bt_on_summary"
+				android:title="@string/pref_power_plugged_bt_on_title"
+				android:layout="@layout/pref"/>
+		<CheckBoxPreference
+				android:key="power-bt-disable"
+				android:summary="@string/pref_power_unplugged_bt_off_summary"
+				android:title="@string/pref_power_unplugged_bt_off_title"
+				android:layout="@layout/pref"/>
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/pref_detection" android:layout="@layout/pref_category">
+		<PreferenceScreen
+				android:key="bt-device-screen"
+				android:summary="@string/pref_blutooth_device_summary"
+				android:title="@string/pref_blutooth_device_title"
+				android:layout="@layout/pref">
+			<CheckBoxPreference
+					android:key="bt-switch"
+					android:summaryOff="@string/turn_on_bluetooth_summary"
+					android:summaryOn="@string/turn_off_bluetooth_summary"
+					android:title="@string/bluetooth"
+					android:layout="@layout/pref"/>
 
-            <PreferenceCategory
-                android:key="bt-device-category"
-                android:title="@string/bluetooth_device_category_title" >
-                <CheckBoxPreference
-                    android:key="bt-device-address"
-                    android:title="Device 1" />
-            </PreferenceCategory>
-        </PreferenceScreen>
+			<PreferenceCategory
+					android:key="bt-device-category"
+					android:title="@string/bluetooth_device_category_title"
+					android:layout="@layout/pref_category">
+				<CheckBoxPreference
+						android:key="bt-device-address"
+						android:title="Device 1"
+						android:layout="@layout/pref"/>
+			</PreferenceCategory>
+		</PreferenceScreen>
 
-        <CheckBoxPreference
-            android:key="headset-required"
-            android:summary="@string/pref_headset_connected_summary"
-            android:title="@string/pref_headset_connected_title" />
-        <CheckBoxPreference
-            android:key="power-required"
-            android:summary="@string/pref_power_connected_summary"
-            android:title="@string/pref_power_connected_title" />
+		<CheckBoxPreference
+				android:key="headset-required"
+				android:summary="@string/pref_headset_connected_summary"
+				android:title="@string/pref_headset_connected_title"
+				android:layout="@layout/pref"/>
+		<CheckBoxPreference
+				android:key="power-required"
+				android:summary="@string/pref_power_connected_summary"
+				android:title="@string/pref_power_connected_title"
+				android:layout="@layout/pref"/>
 		<com.anod.car.home.prefs.views.HeaderPreference
-            android:icon="@drawable/ic_action_tick"
-            android:key="add-trigger"
-            android:title="Add trigger" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_actions" >
-        <CheckBoxPreference
-            android:key="screen-timeout"
-            android:summary="@string/pref_screen_timeout_summary"
-            android:title="@string/pref_screen_timeout" />
+				android:icon="@drawable/ic_action_tick"
+				android:key="add-trigger"
+				android:title="Add trigger"/>
+	</PreferenceCategory>
+	<PreferenceCategory
+			android:title="@string/pref_actions"
+			android:layout="@layout/pref_category">
+		<CheckBoxPreference
+				android:key="screen-timeout"
+				android:summary="@string/pref_screen_timeout_summary"
+				android:title="@string/pref_screen_timeout"
+				android:layout="@layout/pref"/>
 
-        <ListPreference
-            android:defaultValue="disabled"
-            android:entries="@array/brightness_mode_titles"
-            android:entryValues="@array/brightness_mode_values"
-            android:key="brightness"
-            android:summary="@string/pref_brightness_mode_summary"
-            android:title="@string/pref_brightness_mode" />
+		<ListPreference
+				android:defaultValue="disabled"
+				android:entries="@array/brightness_mode_titles"
+				android:entryValues="@array/brightness_mode_values"
+				android:key="brightness"
+				android:summary="@string/pref_brightness_mode_summary"
+				android:title="@string/pref_brightness_mode"
+				android:layout="@layout/pref"/>
 
-        <CheckBoxPreference
-            android:key="bluetooth"
-            android:title="@string/turn_on_bluetooth_summary" />
-        <CheckBoxPreference
-            android:key="auto_speaker"
-            android:summary="@string/pref_route_to_speaker_summary"
-            android:title="@string/pref_route_to_speaker" />
+		<CheckBoxPreference
+				android:key="bluetooth"
+				android:title="@string/turn_on_bluetooth_summary"
+				android:layout="@layout/pref"/>
+		<CheckBoxPreference
+				android:key="auto_speaker"
+				android:summary="@string/pref_route_to_speaker_summary"
+				android:title="@string/pref_route_to_speaker"
+				android:layout="@layout/pref"/>
 
-        <ListPreference
-            android:defaultValue="disabled"
-            android:entries="@array/autoanswer_titles"
-            android:entryValues="@array/autoanswer_values"
-            android:key="auto_answer"
-            android:summary="@string/pref_auto_answer_summary"
-            android:title="@string/pref_auto_answer" />
-        
-        <Preference 
-            android:title="@string/pref_change_media_volume"
-            android:summary="@string/pref_change_media_volume_summary"
-            android:key="media-screen"
-             >
+		<ListPreference
+				android:defaultValue="disabled"
+				android:entries="@array/autoanswer_titles"
+				android:entryValues="@array/autoanswer_values"
+				android:key="auto_answer"
+				android:summary="@string/pref_auto_answer_summary"
+				android:title="@string/pref_auto_answer"
+				android:layout="@layout/pref"/>
+
+		<Preference
+				android:title="@string/pref_change_media_volume"
+				android:summary="@string/pref_change_media_volume_summary"
+				android:key="media-screen"
+				android:layout="@layout/pref"
+				>
 		</Preference>
-        
-        <PreferenceScreen android:title="@string/more" >
-            <PreferenceCategory android:title="@string/pref_actions" >
-                <ListPreference
-                    android:defaultValue="no_action"
-                    android:entries="@array/wifi_action_titles"
-                    android:entryValues="@array/wifi_action_values"
-                    android:key="wi-fi"
-                    android:summary="@string/pref_wifi_summary"
-                    android:title="@string/pref_wifi" />
 
-                <CheckBoxPreference
-                    android:key="activate-car-mode"
-                    android:summary="@string/pref_activate_car_mode_summary"
-                    android:title="@string/pref_activate_car_mode" />
+		<PreferenceScreen
+				android:title="@string/more"
+				android:layout="@layout/pref">
+			<PreferenceCategory
+					android:title="@string/pref_actions"
+					android:layout="@layout/pref_category">
+				<ListPreference
+						android:defaultValue="no_action"
+						android:entries="@array/wifi_action_titles"
+						android:entryValues="@array/wifi_action_values"
+						android:key="wi-fi"
+						android:summary="@string/pref_wifi_summary"
+						android:title="@string/pref_wifi"
+						android:layout="@layout/pref"/>
 
-                <ListPreference
-                    android:entries="@array/autorun_app_titles"
-                    android:entryValues="@array/autorun_app_values"
-                    android:key="autorun-app-choose"
-                    android:summary="@string/pref_autorun_app_disabled"
-                    android:title="@string/pref_autorun_app_title" />
-            </PreferenceCategory>
-        </PreferenceScreen>
-    </PreferenceCategory>
+				<CheckBoxPreference
+						android:key="activate-car-mode"
+						android:summary="@string/pref_activate_car_mode_summary"
+						android:title="@string/pref_activate_car_mode"
+						android:layout="@layout/pref"/>
+
+				<ListPreference
+						android:entries="@array/autorun_app_titles"
+						android:entryValues="@array/autorun_app_values"
+						android:key="autorun-app-choose"
+						android:summary="@string/pref_autorun_app_disabled"
+						android:title="@string/pref_autorun_app_title"
+						android:layout="@layout/pref"/>
+			</PreferenceCategory>
+		</PreferenceScreen>
+	</PreferenceCategory>
 
 </PreferenceScreen>

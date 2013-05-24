@@ -269,6 +269,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 				Resources r = mContext.getResources();
 				emptyPref.setTitle(r.getString(R.string.no_paired_devices_found_title));
 				emptyPref.setSummary(r.getString(R.string.no_paired_devices_found_summary));
+				emptyPref.setLayoutResource(R.layout.pref);
 				mBluetoothDevicesCategory.addPreference(emptyPref);
 			}
 			mPairedList = null;
@@ -310,6 +311,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 			pref.setDefaultValue(checked);
 			pref.setKey(device.getAddress());
 			pref.setTitle(device.getName());
+			pref.setLayoutResource(R.layout.pref);
 			BluetoothClass btClass = device.getBluetoothClass();
 			int res = BluetoothClassHelper.getBtClassString(btClass);
 			if (res > 0) {

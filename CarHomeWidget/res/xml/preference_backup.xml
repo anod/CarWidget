@@ -1,42 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:title="@string/pref_backup_title">
-  <PreferenceCategory android:key="backup-main-category" android:title="@string/backup_current_widget">
-	<Preference 
-		android:key="backup-btn-main" 
-		android:title="@string/backup"
-		android:summary="@string/last_backup"
-	/>
-	<Preference 
-		android:key="restore-btn-main" 
-		android:title="@string/restore"
-		android:summary=""
-	/>
-  </PreferenceCategory>
-  
-  
-  <PreferenceCategory android:key="backup-incar-category" android:title="@string/backup_incar_settings">
-
-	<Preference 
-		android:key="backup-btn-incar" 
-		android:title="@string/backup"
-		android:summary="@string/last_backup"
-	/>
-
-	<Preference 
-		android:key="restore-btn-incar" 
-		android:title="@string/restore"
-		android:summary=""
-	/>
- 
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:title="@string/pref_backup_title">
+	<PreferenceCategory
+			android:key="backup-main-category"
+			android:title="@string/backup_current_widget"
+			android:layout="@layout/pref_category">
+		<Preference
+				android:key="backup-btn-main"
+				android:title="@string/backup"
+				android:summary="@string/last_backup"
+				android:layout="@layout/pref"
+				/>
+		<Preference
+				android:key="restore-btn-main"
+				android:title="@string/restore"
+				android:summary=""
+				android:layout="@layout/pref"
+				/>
 	</PreferenceCategory>
-	
-  <PreferenceCategory android:title="@string/backup_path">
-	<Preference 
-		android:key="backup-path" 
-		android:title=""
-		android:summary="/sdcard/data/com.anod.car.home/backup"
-	/>
-      </PreferenceCategory>
+
+
+	<PreferenceCategory
+			android:key="backup-incar-category"
+			android:title="@string/backup_incar_settings"
+			android:layout="@layout/pref_category">
+
+		<Preference
+				android:key="backup-btn-incar"
+				android:title="@string/backup"
+				android:summary="@string/last_backup"
+				android:layout="@layout/pref"
+				/>
+
+		<Preference
+				android:key="restore-btn-incar"
+				android:title="@string/restore"
+				android:layout="@layout/pref"
+				/>
+
+	</PreferenceCategory>
+
+	<PreferenceCategory
+			android:title="@string/backup_path"
+			android:layout="@layout/pref_category">
+		<Preference
+				android:key="backup-path"
+				android:title=""
+				android:summary="/sdcard/data/com.anod.car.home/backup"
+				android:layout="@layout/pref"
+				/>
+	</PreferenceCategory>
 </PreferenceScreen>

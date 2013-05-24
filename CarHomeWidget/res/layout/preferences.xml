@@ -26,32 +26,32 @@
             <include
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                layout="@layout/pref_icon" />
+                layout="@layout/pref_shortcut" />
 
             <include
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                layout="@layout/pref_icon" />
+                layout="@layout/pref_shortcut" />
 
             <include
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                layout="@layout/pref_icon" />
+                layout="@layout/pref_shortcut" />
 
             <include
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                layout="@layout/pref_icon" />
+                layout="@layout/pref_shortcut" />
 
             <include
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                layout="@layout/pref_icon" />
+                layout="@layout/pref_shortcut" />
 
             <include
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                layout="@layout/pref_icon" />
+                layout="@layout/pref_shortcut" />
         </LinearLayout>
 
         <TextView

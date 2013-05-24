@@ -6,7 +6,7 @@
             <CheckBoxPreference
                 android:key="adjust-volume-level"
                 android:summary="@string/pref_change_media_volume_summary"
-                android:title="@string/pref_change_media_volume" />
+                android:title="@string/pref_change_media_volume" android:layout="@layout/pref"/>
 
             <com.anod.car.home.incar.SeekBarPreference
                 android:defaultValue="80"
@@ -15,7 +15,7 @@
                 android:max="100"
                 android:summary="@string/pref_media_volume_level_summary"
                 android:text=""
-                android:title="@string/pref_media_volume_level" />
+                android:title="@string/pref_media_volume_level" android:layout="@layout/pref"/>
             <com.anod.car.home.incar.SeekBarPreference
                 android:defaultValue="80"
                 android:dependency="adjust-volume-level"
@@ -23,5 +23,5 @@
                 android:max="100"
                 android:summary="@string/pref_bt_volume_level_summary"
                 android:text=""
-                android:title="@string/pref_bt_volume_level" />
+                android:title="@string/pref_bt_volume_level" android:layout="@layout/pref"/>
 </PreferenceScreen>

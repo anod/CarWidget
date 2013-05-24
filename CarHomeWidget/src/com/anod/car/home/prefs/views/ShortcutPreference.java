@@ -4,12 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.preference.Preference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.views.drag.ShortcutDragListener;
@@ -33,17 +31,17 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 
 	public ShortcutPreference(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		setLayoutResource(R.layout.pref_icon);
+		setLayoutResource(R.layout.pref_shortcut);
 	}
 
 	public ShortcutPreference(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		setLayoutResource(R.layout.pref_icon);
+		setLayoutResource(R.layout.pref_shortcut);
 	}
 
 	public ShortcutPreference(Context context) {
 		super(context);
-		setLayoutResource(R.layout.pref_icon);
+		setLayoutResource(R.layout.pref_shortcut);
 	}
 
 	public void setLastVisibleY(int lastVisibleY) {
@@ -88,12 +86,14 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 		ImageView dragButton = (ImageView) view.findViewById(R.id.dragButton);
 		initDragButton(dragButton, view);
 
-		ImageView imageView = (ImageView) view.findViewById(R.id.pref_icon_view);
-		if (imageView != null && mIconBitmap != null) {
+		ImageView imageView = (ImageView) view.findViewById(android.R.id.icon);
+		if (mIconBitmap != null) {
 			imageView.setImageBitmap(mIconBitmap);
+			imageView.setVisibility(View.VISIBLE);
 		}
-		if (imageView != null && mIconResource > 0) {
+		if (mIconResource > 0) {
 			imageView.setImageResource(mIconResource);
+			imageView.setVisibility(View.VISIBLE);
 		}
 
 		ImageView editButton = (ImageView) view.findViewById(R.id.delete_action_button);
