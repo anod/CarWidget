@@ -16,6 +16,7 @@
 	<TextView
 			android:id="@android:id/empty"
 			style="@android:style/TextAppearance.Medium"
+			android:textColor="@color/font_color_dark"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:gravity="center"

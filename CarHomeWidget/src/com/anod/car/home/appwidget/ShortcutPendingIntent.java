@@ -10,6 +10,7 @@ import com.anod.car.home.ShortcutActivity;
 import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.prefs.Configuration;
 import com.anod.car.home.prefs.PickShortcutUtils;
+import com.anod.car.home.utils.IntentUtils;
 
 public class ShortcutPendingIntent implements LauncherViewBuilder.PendingIntentHelper {
 	public static final String INTENT_ACTION_CALL_PRIVILEGED = "android.intent.action.CALL_PRIVILEGED";
@@ -22,24 +23,15 @@ public class ShortcutPendingIntent implements LauncherViewBuilder.PendingIntentH
 	/**
      * Create an Intent to launch Configuration
      * @param appWidgetId
-     * @param context
      * @return
      */
     @Override
     public PendingIntent createSettings(int appWidgetId, int cellId) {
-    	Intent intent = new Intent(mContext, Configuration.class);
-    	intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-    	if (cellId != PickShortcutUtils.INVALID_CELL_ID) {
-    		intent.putExtra(PickShortcutUtils.EXTRA_CELL_ID, cellId);
-    	}
-    	String path = appWidgetId + " - " + cellId;
-    	Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
-    	intent.setData(data);
-    	intent.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
+		Intent intent = IntentUtils.createSettingsIntent(mContext, appWidgetId, cellId);
     	return PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    @Override
+	@Override
     public PendingIntent createShortcut(Intent intent,int appWidgetId, int position, long shortcutId) {
     	return createShortcut(intent,String.valueOf(appWidgetId),position);
     }

@@ -11,30 +11,17 @@ import java.util.List;
  * @date 5/24/13
  */
 public class WidgetHelper {
-
+	public static final String PROVIDER_DEFAULT = "com.anod.car.home.LargeProvider";
 	/**
 	 * Build {@link ComponentName} describing this specific
 	 * {@link android.appwidget.AppWidgetProvider}
 	 */
 	public static int[] getAllWidgetIds(Context context) {
 		AppWidgetManager wm = AppWidgetManager.getInstance(context);
-		List<ComponentName> providers = getWidgetProviders();
+		ComponentName provider = new ComponentName(context.getPackageName(), PROVIDER_DEFAULT);
 
-		new ComponentName(PACKAGE_THIS_APPWIDGET, PROVIDER_DEFAULT);
-
-		int[] appWidgetIds = new int[0];
-		for(ComponentName provider : providers) {
-			int[] ids = wm.getAppWidgetIds(provider);
-			appWidgetIds = concat(appWidgetIds,ids);
-		}
+		int[] appWidgetIds = wm.getAppWidgetIds(provider);
 		return appWidgetIds;
 	}
 
-	private static int[] concat(int[] A, int[] B) {
-		int[] C= new int[A.length+B.length];
-		System.arraycopy(A, 0, C, 0, A.length);
-		System.arraycopy(B, 0, C, A.length, B.length);
-
-		return C;
-	}
 }

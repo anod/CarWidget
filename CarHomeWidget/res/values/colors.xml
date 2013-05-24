@@ -20,4 +20,5 @@
 	<color name="activity_bg">#FFe5e5e5</color>
 	<color name="font_color">#FFFFFF</color>
 	<color name="font_color_sec">#dfe5e6</color>
+	<color name="font_color_dark">#5b5b5b</color>
 </resources>

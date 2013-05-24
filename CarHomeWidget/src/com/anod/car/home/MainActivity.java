@@ -2,20 +2,29 @@ package com.anod.car.home;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.anod.car.home.prefs.ConfigurationInCar;
+import com.anod.car.home.prefs.ConfigurationRestore;
+import com.anod.car.home.prefs.TrialDialogs;
+import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
+import com.anod.car.home.utils.Version;
 
 /**
  * @author alex
@@ -27,13 +36,72 @@ public class MainActivity extends Activity {
 	public static final String URL_GOOGLE_PLUS = "https://plus.google.com/118206296686390552505/";
 	public static final String RESOLVER_ACTIVITY = "com.android.internal.app.ResolverActivity";
 	private Context mContext;
+	protected static final int DIALOG_WAIT = 1;
+	private static final int DIALOG_PRO = 3;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main_activty);
+		setContentView(R.layout.main_activity);
 		mContext = this;
+
+		int[] appWidgetIds = WidgetHelper.getAllWidgetIds(mContext);
+		final int widgetsCount = appWidgetIds.length;
+
+		initWidgets(widgetsCount);
+		initInCar(widgetsCount);
 		initInformation();
 		initDefaultApp();
+	}
+
+	private void initInCar(final int widgetsCount) {
+		Button settings = (Button) findViewById(R.id.incarSettings);
+		settings.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(mContext, ConfigurationInCar.class);
+				startActivity(intent);
+			}
+		});
+
+		Button backup = (Button) findViewById(R.id.incarBackup);
+		backup.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				new BackupTask().execute(null);
+			}
+		});
+
+		Button restore = (Button) findViewById(R.id.incarRestore);
+		restore.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				final Version version = new Version(mContext);
+				if (version.isFree()) {
+					showDialog(DIALOG_PRO);
+				} else {
+					Intent intentInCar = new Intent(mContext, ConfigurationRestore.class);
+					intentInCar.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_INCAR);
+					startActivity(intentInCar);
+				}
+			}
+		});
+	}
+
+	private void initWidgets(final int widgetsCount) {
+		LinearLayout widgets = (LinearLayout)findViewById(R.id.widgets);
+
+		TextView active = (TextView) widgets.findViewById(R.id.widgetsActive);
+		active.setText(getResources().getQuantityString(R.plurals.active_widgets, widgetsCount, widgetsCount));
+
+		widgets.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (widgetsCount > 0) {
+					Intent intent = new Intent(mContext, WidgetSettingsListActivity.class);
+					startActivity(intent);
+				}
+			}
+		});
 	}
 
 
@@ -121,5 +189,42 @@ public class MainActivity extends Activity {
 			}
 		});
 
+	}
+
+	public class BackupTask extends AsyncTask<String, Void, Integer> {
+
+		@Override
+		protected void onPreExecute() {
+			showDialog(DIALOG_WAIT);
+		}
+
+		protected Integer doInBackground(String... filenames) {
+			String filename = filenames[0];
+			PreferencesBackupManager backupManager = new PreferencesBackupManager(mContext);
+			return backupManager.doBackupInCar();
+		}
+
+		protected void onPostExecute(Integer result) {
+			try {
+				dismissDialog(DIALOG_WAIT);
+			} catch (IllegalArgumentException e) {
+				Utils.logd(e.getMessage());
+			}
+			Toast.makeText(mContext, mContext.getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	@Override
+	public Dialog onCreateDialog(int id) {
+		if (id == DIALOG_WAIT) {
+			ProgressDialog waitDialog = new ProgressDialog(this);
+			waitDialog.setCancelable(true);
+			String message = getResources().getString(R.string.please_wait);
+			waitDialog.setMessage(message);
+			return waitDialog;
+		} else if (id == DIALOG_PRO) {
+			return TrialDialogs.buildProOnlyDialog(this);
+		}
+		return null;
 	}
 }

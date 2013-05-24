@@ -1,7 +1,22 @@
 package com.anod.car.home;
 
 import android.app.ListActivity;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import com.anod.car.home.prefs.PickShortcutUtils;
+import com.anod.car.home.utils.IntentUtils;
+
+import java.util.AbstractList;
+import java.util.List;
 
 /**
  * @author alex
@@ -14,7 +29,7 @@ public class WidgetSettingsListActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings_list);
 
-		int[] appWidgetIds = CalWidgetManager.getAllWidgetIds(this);
+		int[] appWidgetIds = WidgetHelper.getAllWidgetIds(this);
 		if (appWidgetIds.length == 1 && appWidgetIds[0] != AppWidgetManager.INVALID_APPWIDGET_ID) {
 			startConfigActivity(appWidgetIds[0]);
 			return;
@@ -25,7 +40,7 @@ public class WidgetSettingsListActivity extends ListActivity {
 
 
 	private void startConfigActivity(int appWidgetId) {
-		Intent configIntent = Utils.createConfigIntent(this, appWidgetId);
+		Intent configIntent = IntentUtils.createSettingsIntent(this, appWidgetId, PickShortcutUtils.INVALID_CELL_ID);
 		startActivity(configIntent);
 		finish();
 	}

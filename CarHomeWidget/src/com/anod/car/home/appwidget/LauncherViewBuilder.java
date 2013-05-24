@@ -136,8 +136,6 @@ public class LauncherViewBuilder {
 		Resources themeResources = (themePackage == null) ? null : getIconThemeResources(themePackage);
 		
 
-		
-		
 		for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
 			int res = sBtnRes[cellId];
 			int resText = sTextRes[cellId];

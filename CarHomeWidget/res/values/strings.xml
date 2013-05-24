@@ -214,6 +214,12 @@
 	
 	<string name="pref_titles_hide_title">Hide titles</string>
 	<string name="pref_titles_hide_summary">Do not display titles for the shortcuts</string>
+	<string name="home_screen_widgets">Home Screen Widgets</string>
 	<string name="no_active_widgets_were_found">No active widgets were found</string>
+	<plurals name="active_widgets">
+		<item quantity="zero">No active widgets were found</item>
+		<item quantity="one">One active widget</item>
+		<item quantity="other">%d active widgets</item>
+	</plurals>
 
 </resources>

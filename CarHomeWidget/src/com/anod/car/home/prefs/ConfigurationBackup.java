@@ -155,13 +155,12 @@ public class ConfigurationBackup extends ConfigurationActivity {
 				
 				@Override
 				public boolean onPreferenceClick(Preference preference) {
-					showDialog(DIALOG_PRO);
-					return false;
+				showDialog(DIALOG_PRO);
+				return false;
 				}
 			});
 		} else {
 			Intent intentInCar = new Intent(this, ConfigurationRestore.class);
-			intentInCar.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 			intentInCar.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_INCAR);
 			restoreIncar.setIntent(intentInCar);
 		}
@@ -207,7 +206,7 @@ public class ConfigurationBackup extends ConfigurationActivity {
 		}
 	}
 
-	private class BackupTask extends AsyncTask<String, Void, Integer> {
+	public class BackupTask extends AsyncTask<String, Void, Integer> {
 		private int mTaskType;
 
 		@Override

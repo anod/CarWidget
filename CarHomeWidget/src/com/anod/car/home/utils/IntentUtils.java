@@ -2,6 +2,7 @@ package com.anod.car.home.utils;
 
 import java.util.List;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +11,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 
+import com.anod.car.home.prefs.Configuration;
+import com.anod.car.home.prefs.PickShortcutUtils;
 import com.anod.car.home.prefs.ShortcutEditActivity;
 
 public class IntentUtils {
@@ -18,6 +21,20 @@ public class IntentUtils {
 	private static final String APP_DETAILS_PACKAGE_NAME = "com.android.settings";
 	private static final String APP_DETAILS_CLASS_NAME = "com.android.settings.InstalledAppDetails";
 	private static final String DETAIL_MARKET_URL = "market://details?id=%s";
+
+
+	public static Intent createSettingsIntent(Context context, int appWidgetId, int cellId) {
+		Intent intent = new Intent(context, Configuration.class);
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+		if (cellId != PickShortcutUtils.INVALID_CELL_ID) {
+			intent.putExtra(PickShortcutUtils.EXTRA_CELL_ID, cellId);
+		}
+		String path = appWidgetId + " - " + cellId;
+		Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
+		intent.setData(data);
+		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
+		return intent;
+	}
 	/**
 	 * 
 	 * @param packageName

@@ -47,20 +47,22 @@ public class ConfigurationRestore extends ListActivity {
 		setContentView(R.layout.restore_list);
 		
 		Intent launchIntent = getIntent();
-		Bundle extras = launchIntent.getExtras();
-		if (extras != null) {
-			mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-			setResult(RESULT_OK);
-		} else {
-			finish();
-		}
 		mContext = (Context) this;
 		mBackupManager = new PreferencesBackupManager(mContext);
+		Bundle extras = launchIntent.getExtras();
 
 		int type = extras.getInt(EXTRA_TYPE, 0);
 		if (type == 0) {
 			finish();
 		}
+		if (type == TYPE_MAIN) {
+			if (extras != null) {
+				mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+			} else {
+				finish();
+			}
+		}
+		setResult(RESULT_OK);
 
 		if (type == TYPE_INCAR) {
 			String arg = null;
