@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class Version {
-	private static final int MAX_TRIAL_TIMES = 10;
+	private static final int MAX_TRIAL_TIMES = 30;
 	private static final String PREF_TRIAL_TIMES = "trial-times";
 	private final boolean mIsFree;
 	private final Context mContext;
