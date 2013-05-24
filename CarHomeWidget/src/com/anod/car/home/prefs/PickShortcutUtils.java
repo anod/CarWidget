@@ -146,7 +146,7 @@ public class PickShortcutUtils {
 		ShortcutInfo info = mModel.getShortcut(cellId);
 		if (info == null) {
 			pref.setTitle(R.string.set_shortcut);
-			pref.setIconResource(R.drawable.ic_add_shortcut);
+			pref.setIconResource(R.drawable.ic_add_shortcut_holo);
 			pref.showButtons(false);
 		} else {
 			pref.setIconBitmap(info.getIcon());
