@@ -55,31 +55,7 @@
     <option name="TOOL_WINDOW_LOG_LEVEL" value="ERROR" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a281f284-1a03-4dee-b05f-596eec43ddd7" name="Default" comment="change">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/anod/car/home/MainActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/panel_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/pref_category.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_action_android_dark.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_action_export_dark.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_action_gplus_dark.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_action_import_dark.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_action_settings_dark.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_action_star_10_dark.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/anod/car/home/MainActivty.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_drag_normal.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/ic_drag_normal.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/anod/car/home/prefs/Configuration.java" afterPath="$PROJECT_DIR$/src/com/anod/car/home/prefs/Configuration.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/anod/car/home/prefs/ConfigurationActivity.java" afterPath="$PROJECT_DIR$/src/com/anod/car/home/prefs/ConfigurationActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/colors.xml" afterPath="$PROJECT_DIR$/res/values/colors.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/dimens.xml" afterPath="$PROJECT_DIR$/res/values/dimens.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/header_preference.xml" afterPath="$PROJECT_DIR$/res/layout/header_preference.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/main_activty.xml" afterPath="$PROJECT_DIR$/res/layout/main_activty.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/pref_icon.xml" afterPath="$PROJECT_DIR$/res/layout/pref_icon.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/xml/preferences.xml" afterPath="$PROJECT_DIR$/res/xml/preferences.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/styles.xml" afterPath="$PROJECT_DIR$/res/values/styles.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values-v11/styles.xml" afterPath="$PROJECT_DIR$/res/values-v11/styles.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values-v14/styles.xml" afterPath="$PROJECT_DIR$/res/values-v14/styles.xml" />
-    </list>
+    <list default="true" id="a281f284-1a03-4dee-b05f-596eec43ddd7" name="Default" comment="change" />
     <ignored path="CarHomeWidget.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.java" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369319407850" ignored="false" />
@@ -88,7 +64,7 @@
     <file path="/a.xml" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369026861486" ignored="false" />
     <file path="/pref_icon.xml" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369381413772" ignored="false" />
     <file path="/ShortcutPreference.java" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369069399238" ignored="false" />
-    <file path="/PickShortcutUtils.java" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1368860182535" ignored="false" />
+    <file path="/PickShortcutUtils.java" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369384196695" ignored="false" />
     <file path="/Dummy.txt" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369380160547" ignored="false" />
     <file path="/colors.xml" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369376782018" ignored="false" />
     <file path="/ShortcutDragListener.java" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369069833886" ignored="false" />
@@ -111,6 +87,8 @@
     <file path="/preferences.xml" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369380148919" ignored="false" />
     <file path="/pref_category.xml" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369383124423" ignored="false" />
     <file path="/dimens.xml" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369383669432" ignored="false" />
+    <file path="$PROJECT_DIR$/build/res/all/debug/layout/header_preference.xml" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369383961010" ignored="false" />
+    <file path="/BaseProperties.java" changelist="a281f284-1a03-4dee-b05f-596eec43ddd7" time="1369384133294" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,63 +152,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="main_activty.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/main_activty.xml">
+      <file leaf-file-name="Configuration.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/anod/car/home/prefs/Configuration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="116" column="41" selection-start="3345" selection-end="3370" vertical-scroll-proportion="-12.481482">
-              <folding>
-                <element signature="e#1009#1040#0" expanded="true" />
-                <element signature="e#1163#1181#0" expanded="true" />
-                <element signature="e#1608#1624#0" expanded="true" />
-                <element signature="e#2369#2386#0" expanded="true" />
-                <element signature="e#2828#2855#0" expanded="true" />
-                <element signature="e#3688#3711#0" expanded="true" />
-                <element signature="e#4133#4158#0" expanded="true" />
-                <element signature="e#4372#4393#0" expanded="true" />
-                <element signature="e#4712#4728#0" expanded="true" />
-                <element signature="e#5574#5604#0" expanded="true" />
-                <element signature="e#6026#6043#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pref_icon.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/pref_icon.xml">
-          <provider editor-type-id="text-editor">
-            <state line="77" column="60" selection-start="2732" selection-end="2732" vertical-scroll-proportion="0.0">
+            <state line="104" column="64" selection-start="3595" selection-end="3595" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
-          <provider selected="true" editor-type-id="android-designer">
-            <state />
-          </provider>
         </entry>
       </file>
-      <file leaf-file-name="header_preference.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/res/layout/header_preference.xml">
-          <provider editor-type-id="text-editor">
-            <state line="27" column="0" selection-start="1194" selection-end="1194" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-          <provider selected="true" editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pref_category.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/pref_category.xml">
+      <file leaf-file-name="PickShortcutUtils.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/anod/car/home/prefs/PickShortcutUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="53" selection-start="320" selection-end="320" vertical-scroll-proportion="-5.0">
+            <state line="148" column="64" selection-start="5282" selection-end="5282" vertical-scroll-proportion="0.48765433">
               <folding />
             </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
           </provider>
         </entry>
       </file>
@@ -252,8 +188,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/build/res/all/debug/layout/header_preference.xml" />
-        <option value="$PROJECT_DIR$/build/res/all/debug/layout/pref_icon.xml" />
         <option value="$PROJECT_DIR$/build/res/all/debug/values/values.xml" />
         <option value="$PROJECT_DIR$/res/drawable/panel_bg.xml" />
         <option value="$PROJECT_DIR$/src/com/anod/car/home/MainActivty.java" />
@@ -261,17 +195,20 @@
         <option value="$PROJECT_DIR$/src/com/anod/car/home/MainActivity.java" />
         <option value="$PROJECT_DIR$/src/com/anod/car/home/prefs/Configuration.java" />
         <option value="$PROJECT_DIR$/res/xml/preferences.xml" />
-        <option value="$PROJECT_DIR$/res/layout/pref_icon.xml" />
         <option value="$PROJECT_DIR$/res/values/styles.xml" />
         <option value="$PROJECT_DIR$/res/values-v14/styles.xml" />
         <option value="$PROJECT_DIR$/res/values/dimens.xml" />
         <option value="$PROJECT_DIR$/res/layout/pref_category.xml" />
         <option value="$PROJECT_DIR$/res/layout/main_activty.xml" />
         <option value="$PROJECT_DIR$/res/layout/header_preference.xml" />
+        <option value="$PROJECT_DIR$/res/layout/pref_icon.xml" />
+        <option value="$PROJECT_DIR$/src/com/anod/car/home/skin/BaseProperties.java" />
+        <option value="$PROJECT_DIR$/src/com/anod/car/home/prefs/PickShortcutUtils.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="-1" />
     <option name="y" value="22" />
     <option name="width" value="1680" />
     <option name="height" value="1028" />
@@ -710,7 +647,7 @@
       <workItem from="1369060044559" duration="3597000" />
       <workItem from="1369069084544" duration="791000" />
       <workItem from="1369242407578" duration="6364000" />
-      <workItem from="1369300014864" duration="12761000" />
+      <workItem from="1369300014864" duration="13145000" />
     </task>
     <task id="LOCAL-00001" summary="drag n drop">
       <created>1368982106261</created>
@@ -736,7 +673,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48997000" />
+    <option name="totallyTimeSpent" value="49381000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -759,11 +696,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1680" height="1028" extended-state="6" />
+    <frame x="-1" y="22" width="1680" height="1028" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17074664" sideWeight="0.5803965" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15544675" sideWeight="0.5803965" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17074664" sideWeight="0.5803965" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15544675" sideWeight="0.5803965" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942432" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32959402" sideWeight="0.67164177" order="3" side_tool="false" content_ui="tabs" />
@@ -779,8 +716,8 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2677696" sideWeight="0.5803965" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41960353" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26744187" sideWeight="0.5803965" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41960353" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -881,54 +818,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/build/res/all/debug/layout/header_preference.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="34" selection-start="1488" selection-end="1488" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/res/all/debug/values/values.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="349" column="26" selection-start="19038" selection-end="19038" vertical-scroll-proportion="0.33333334">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="0" selection-start="3904" selection-end="3904" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/anod/car/home/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="24" selection-start="2560" selection-end="2560" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#1266#1314#0" expanded="true" />
-            <element signature="e#1802#2071#0" expanded="true" />
-            <element signature="e#2066#2067#0" expanded="true" />
-            <element signature="e#2163#2375#0" expanded="true" />
-            <element signature="e#2370#2371#0" expanded="true" />
-            <element signature="e#2902#2918#0" expanded="true" />
-            <element signature="e#3009#3933#0" expanded="true" />
-            <element signature="e#3336#3577#0" expanded="true" />
-            <element signature="e#3570#3571#0" expanded="true" />
-            <element signature="e#3736#3894#0" expanded="true" />
-            <element signature="e#3886#3887#0" expanded="true" />
-            <element signature="e#3928#3929#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="28" selection-start="270" selection-end="270" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/drawable/panel_bg.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="8" column="45" selection-start="386" selection-end="386" vertical-scroll-proportion="0.0">
@@ -939,13 +828,6 @@
     <entry file="file://$PROJECT_DIR$/res/drawable-hdpi/ic_drag_normal.png">
       <provider selected="true" editor-type-id="images">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/anod/car/home/prefs/Configuration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="0" selection-start="1599" selection-end="1599" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/xml/preferences.xml">
@@ -1025,16 +907,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/pref_icon.xml">
-      <provider editor-type-id="text-editor">
-        <state line="77" column="60" selection-start="2732" selection-end="2732" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/header_preference.xml">
       <provider editor-type-id="text-editor">
         <state line="27" column="0" selection-start="1194" selection-end="1194" vertical-scroll-proportion="0.0">
@@ -1043,6 +915,56 @@
       </provider>
       <provider selected="true" editor-type-id="android-designer">
         <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/pref_icon.xml">
+      <provider editor-type-id="text-editor">
+        <state line="77" column="60" selection-start="2737" selection-end="2737" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/anod/car/home/skin/SkinProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="12" selection-start="138" selection-end="138" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/anod/car/home/skin/BaseProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="36" selection-start="382" selection-end="382" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/anod/car/home/appwidget/LauncherViewBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="234" column="0" selection-start="7182" selection-end="7182" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/anod/car/home/prefs/Configuration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="104" column="64" selection-start="3595" selection-end="3595" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/ic_add_shortcut_holo.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/anod/car/home/prefs/PickShortcutUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="148" column="64" selection-start="5282" selection-end="5282" vertical-scroll-proportion="0.48765433">
+          <folding />
+        </state>
       </provider>
     </entry>
   </component>
