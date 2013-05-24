@@ -23,10 +23,12 @@ public class ShortcutDragListener implements View.OnDragListener {
 	private final Drawable mTopShadow;
 	private final ShortcutPreference.DropCallback mDropCallback;
 	private final int mLastVisibleY;
+	private final Drawable mBackground;
 
 	public ShortcutDragListener(Context context, int lastVisibleY, ShortcutPreference.DropCallback dropCallback) {
 		Resources r = context.getResources();
 		mTopShadow = r.getDrawable(R.drawable.drop_shadow_top);
+		mBackground = r.getDrawable(R.drawable.panel_bg);
 		mDropCallback = dropCallback;
 		mLastVisibleY = lastVisibleY;
 	}
@@ -42,13 +44,13 @@ public class ShortcutDragListener implements View.OnDragListener {
 			case DragEvent.ACTION_DRAG_STARTED:
 				// Determines if this View can accept the dragged data
 				if (dragEvent.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-					setBgColor(v, dragEvent, Color.DKGRAY, Color.TRANSPARENT);
+					setBackgroundColor(v, dragEvent, Color.DKGRAY, mBackground);
 					// returns true to indicate that the View can accept the dragged data.
 					return true;
 				}
 				return false;
 			case DragEvent.ACTION_DRAG_ENTERED:
-				setBg(v, dragEvent, Color.DKGRAY, mTopShadow);
+				setBackgroundColor(v, dragEvent, Color.DKGRAY, mTopShadow);
 
 				int top = v.getTop();
 				// TODO: if (top)
@@ -56,11 +58,11 @@ public class ShortcutDragListener implements View.OnDragListener {
 				return true;
 			case DragEvent.ACTION_DRAG_LOCATION:
 				// Applies a green tint to the View. Return true; the return value is ignored.
-				setBg(v, dragEvent, Color.DKGRAY, mTopShadow);
+				setBackgroundColor(v, dragEvent, Color.DKGRAY, mTopShadow);
 				return true;
 			case DragEvent.ACTION_DRAG_EXITED:
 				// Re-sets the color tint to blue. Returns true; the return value is ignored.
-				setBgColor(v, dragEvent, Color.DKGRAY, Color.TRANSPARENT);
+				setBackgroundColor(v, dragEvent, Color.DKGRAY, mBackground);
 
 				return true;
 			case DragEvent.ACTION_DROP:
@@ -71,7 +73,7 @@ public class ShortcutDragListener implements View.OnDragListener {
 				// Displays a message containing the dragged data.
 				Log.d("DragDrop", "Dragged data is " + dragData);
 
-				setBgColor(v, dragEvent, Color.TRANSPARENT, Color.TRANSPARENT);
+				setBackground(v, dragEvent, mBackground, mBackground);
 
 				if (mDropCallback == null) {
 					return true;
@@ -81,7 +83,7 @@ public class ShortcutDragListener implements View.OnDragListener {
 				//return true;
 			case DragEvent.ACTION_DRAG_ENDED:
 
-				v.setBackgroundColor(Color.TRANSPARENT);
+				v.setBackground(mBackground);
 				v.invalidate();
 				// Does a getResult(), and displays what happened.
 				if (dragEvent.getResult()) {
@@ -102,22 +104,22 @@ public class ShortcutDragListener implements View.OnDragListener {
 		return false;
 	}
 
-	private void setBgColor(View v, DragEvent dragEvent, int dragViewColor, int otherColor) {
+	private void setBackgroundColor(View v, DragEvent dragEvent, int dragViewColor, Drawable otherBg) {
 		int dragCellId = Integer.valueOf((String) dragEvent.getClipDescription().getLabel());
 		int viewCellId = (Integer) v.getTag();
 		if (dragCellId == viewCellId) {
 			v.setBackgroundColor(dragViewColor);
 		} else {
-			v.setBackgroundColor(otherColor);
+			v.setBackground(otherBg);
 		}
 		v.invalidate();
 	}
 
-	private void setBg(View v, DragEvent dragEvent, int dragViewColor, Drawable shadow) {
+	private void setBackground(View v, DragEvent dragEvent, Drawable dragView, Drawable shadow) {
 		int dragCellId = Integer.valueOf((String) dragEvent.getClipDescription().getLabel());
 		int viewCellId = (Integer) v.getTag();
 		if (dragCellId == viewCellId) {
-			v.setBackgroundColor(dragViewColor);
+			v.setBackground(dragView);
 		} else {
 			v.setBackground(mTopShadow);
 		}
