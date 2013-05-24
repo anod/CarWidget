@@ -8,11 +8,16 @@
         <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompat</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
-        
+        <item name="android:windowBackground">@color/activity_bg</item>
         <!-- for programmatic instantiation -->
         <item name="actionbarCompatTitleStyle">@style/ActionBarCompatTitle</item>
+		<item name="android:preferenceStyle">@style/AppPreference</item>
     </style>
-    
+
+	<style name="AppPreference">
+		<item name="android:background">@drawable/panel_bg</item>
+	</style>
+
     <style name="ActionBarCompat">
         <item name="android:background">@color/actionbar_bg_color</item>
     </style>
@@ -148,15 +153,24 @@
 		<item name="android:backgroundDimEnabled">false</item> 
 	</style>
 
-	<style name="panelHeader">
+	<style name="panelItem">
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_gravity">center_horizontal</item>
-		<item name="android:background">@color/panel_bg</item>
+		<item name="android:background">@drawable/panel_bg</item>
 		<item name="android:paddingLeft">10dp</item>
 		<item name="android:paddingTop">6dp</item>
 		<item name="android:paddingBottom">6dp</item>
 	</style>
 
+	<style name="panelHeaderText">
+		<item name="android:textColor">@color/font_color</item>
+		<!--		<item name="android:textAllCaps">true</item> //-->
+		<item name="android:textStyle">bold</item>
+		<item name="android:textSize">14sp</item>
+	</style>
 
+	<style name="panelHeader" parent="panelItem">
+		<item name="android:textAppearance">@style/panelHeaderText</item>
+	</style>
 </resources>

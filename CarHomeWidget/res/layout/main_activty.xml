@@ -5,40 +5,39 @@
 			  android:layout_width="match_parent"
 			  android:layout_height="match_parent"
 			  android:padding="12dp"
-			  android:background="@color/activity_bg">
+		>
 
 	<RelativeLayout
 			style="@style/panelHeader">
 
 		<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textAppearance="?android:attr/textAppearanceLarge"
-				android:text="Home Screen Widgets"
-				android:id="@+id/textView"
-				android:textColor="@color/font_color"/>
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textAppearance="@style/panelHeaderText"
+			android:text="Home Screen Widgets"
+			android:id="@+id/textView"
+		/>
 
 		<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textAppearance="?android:attr/textAppearanceSmall"
-				android:text="%d active widgets"
-				android:id="@+id/textView2"
-				android:layout_below="@+id/textView"
-				android:layout_alignParentLeft="true"
-				android:textColor="@color/font_color_sec"/>
+			android:text="%d active widgets"
+			android:id="@+id/textView2"
+			android:layout_below="@+id/textView"
+			android:layout_alignParentLeft="true"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:textColor="@color/font_color_sec"/>
 	</RelativeLayout>
 
 	<TextView
-			style="@style/panelHeader"
-			android:layout_marginTop="10dp"
-			android:textAppearance="?android:attr/textAppearanceLarge"
-			android:text="@string/pref_incar_mode_title"
-			android:id="@+id/textView3"
-			android:textColor="@color/font_color"/>
+		style="@style/panelHeader"
+		android:layout_marginTop="@dimen/panel_header_margin"
+		android:text="@string/pref_incar_mode_title"
+		android:id="@+id/textView3"
+	/>
 
 	<Button
-			style="@style/panelHeader"
+			style="@style/panelItem"
 			android:layout_marginTop="1dp"
 			android:text="@string/settings"
 			android:id="@+id/buttonInCarSettings"
@@ -48,7 +47,7 @@
 			android:drawablePadding="4dp"/>
 
 	<LinearLayout
-			style="@style/panelHeader"
+			style="@style/panelItem"
 			android:layout_marginTop="1dp"
 			>
 
@@ -90,23 +89,17 @@
 				android:drawablePadding="4dp"/>
 	</LinearLayout>
 
-	<RelativeLayout
-			style="@style/panelHeader"
-			android:layout_marginTop="10dp">
-
-		<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textAppearance="?android:attr/textAppearanceLarge"
-				android:text="@string/information_title"
-				android:id="@+id/textView5"
-				android:textColor="@color/font_color"/>
-
-	</RelativeLayout>
+	<TextView
+		style="@style/panelHeader"
+		android:layout_marginTop="@dimen/panel_header_margin"
+		android:text="@string/information_title"
+		android:id="@+id/textView5"
+	/>
 
 	<LinearLayout
-			style="@style/panelHeader"
+			style="@style/panelItem"
 			android:layout_marginTop="1dp"
+			android:id="@+id/version"
 			>
 
 		<ImageView
@@ -152,10 +145,10 @@
 	</LinearLayout>
 
 	<Button
-			style="@style/panelHeader"
+			style="@style/panelItem"
 			android:layout_marginTop="1dp"
 			android:text="@string/issue_title"
-			android:id="@+id/buttonInCarSettings"
+			android:id="@+id/feedback"
 			android:drawableLeft="@drawable/ic_action_gplus"
 			android:gravity="left|center_vertical"
 			android:textColor="@color/font_color"
@@ -164,16 +157,15 @@
 
 
 		<TextView
-				style="@style/panelHeader"
-				android:layout_marginTop="10dp"
-				android:textAppearance="?android:attr/textAppearanceLarge"
-				android:text="@string/system"
-				android:id="@+id/textView6"
-				android:textColor="@color/font_color"/>
+			style="@style/panelHeader"
+			android:layout_marginTop="@dimen/panel_header_margin"
+			android:text="@string/system"
+		/>
 
 	<LinearLayout
-			style="@style/panelHeader"
+			style="@style/panelItem"
 			android:layout_marginTop="1dp"
+			android:id="@+id/defaultApp"
 			>
 
 		<ImageView

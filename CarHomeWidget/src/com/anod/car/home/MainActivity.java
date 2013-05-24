@@ -96,7 +96,7 @@ public class MainActivity extends Activity {
 				AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
 				View dialogView = getLayoutInflater().inflate(R.layout.default_car_dock_app, null);
-				Button btn = (Button)view.findViewById(R.id.button1);
+				Button btn = (Button)dialogView.findViewById(R.id.button1);
 				btn.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {

@@ -55,6 +55,7 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 		if (isAppWidgetIdRequired()) {
 			mAppWidgetId = Utils.readAppWidgetId(savedInstanceState, getIntent());
 		}
+		setTheme(R.style.AppTheme);
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(getXmlResource());
 

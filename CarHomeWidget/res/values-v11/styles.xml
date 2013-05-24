@@ -21,6 +21,9 @@
     <style name="AppTheme" parent="android:style/Theme.Holo">
         <item name="android:actionBarStyle">@style/ActionBar</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
+		<item name="android:windowBackground">@color/activity_bg</item>
+		<item name="android:preferenceStyle">@style/AppPreference</item>
+
     </style>
 
     <style name="ActionBar" parent="android:style/Widget.Holo.ActionBar">

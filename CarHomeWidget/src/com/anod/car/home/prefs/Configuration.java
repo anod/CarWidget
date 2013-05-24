@@ -31,26 +31,11 @@ import com.anod.car.home.utils.Utils;
 
 public class Configuration extends ConfigurationActivity implements PreferenceKey, ShortcutPreference.DropCallback {
 	private static final int REQUEST_BACKUP = 6;
-
 	private ShortcutsModel mModel;
-
 	private PickShortcutUtils mPickShortcutUtils;
-
 	private static final String LOOK_AND_FEEL = "look-and-feel";
 	private static final String INCAR = "incar";
 	private static final String BACKUP = "backup";
-	private static final String DEFAULT_APP = "default-app";
-
-	private static final String VERSION = "version";
-	private static final String ISSUE_TRACKER = "issue-tracker";
-	private static final String OTHER = "other";
-
-	public static final boolean BUILD_AMAZON = false;
-
-	private static final String DETAIL_MARKET_URL = "market://details?id=%s";
-	private static final String DETAIL_AMAZON_URL = "http://www.amazon.com/gp/mas/dl/android?p=%s";
-	private static final String OTHER_MARKET_URL = "market://search?q=pub:\"Alex Gavrishev\"";
-	private static final String OTHER_AMAZON_URL = "http://www.amazon.com/gp/mas/dl/android?p=com.anod.car.home.free&showAll=1";
 
 	@Override
 	protected int getXmlResource() {
@@ -67,9 +52,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 		
 		setIntent(LOOK_AND_FEEL, LookAndFeelActivity.class, mAppWidgetId);
 		setIntent(INCAR, ConfigurationInCar.class, 0);
-		initOther();
 		initBackup();
-		initDefaultApp();
 
 		int cellId = getIntent().getExtras().getInt(PickShortcutUtils.EXTRA_CELL_ID, PickShortcutUtils.INVALID_CELL_ID);
 		if (cellId != PickShortcutUtils.INVALID_CELL_ID) {
@@ -82,51 +65,6 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	@Override
 	protected int getOptionsMenuResource() {
 		return R.menu.configuration;
-	}
-	
-	private void initDefaultApp() {
-		Preference defaultApp = (Preference)findPreference(DEFAULT_APP);
-		Intent intent = new Intent(Intent.ACTION_MAIN);
-		intent.addCategory(Intent.CATEGORY_CAR_DOCK);
-		final PackageManager pm = getPackageManager();
-		final ResolveInfo info = pm.resolveActivity(intent,PackageManager.MATCH_DEFAULT_ONLY);
-		if (info == null || info.activityInfo.name.equals("com.android.internal.app.ResolverActivity")) {
-			defaultApp.setSummary(R.string.not_set);
-		} else {
-			defaultApp.setSummary(info.loadLabel(pm));
-		}
-		defaultApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				Builder builder = new AlertDialog.Builder(mContext);
-				
-				View view = getLayoutInflater().inflate(R.layout.default_car_dock_app, null);
-				Button btn = (Button)view.findViewById(R.id.button1);
-				btn.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Utils.startActivitySafely(
-							IntentUtils.createApplicationDetailsIntent(info.activityInfo.applicationInfo.packageName), mContext
-						);
-					}
-				});
-				
-				builder
-					.setTitle(R.string.default_car_dock_app)
-					.setCancelable(true)
-					.setView(view)
-					.setPositiveButton(android.R.string.ok, new OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-						}
-					})
-					.create()
-					.show();
-				return true;
-			}
-		});
 	}
 
 	@Override
@@ -161,7 +99,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	}
 
 	private void initShortcuts() {
-		int lastVisiblePos = getListView().getLastVisiblePosition();
+		int lastVisiblePos = 0;//getListView().getLastVisiblePosition();
 		int lastVisibleY = 0;//(int)getListView().getChildAt(lastVisiblePos).getY();
 		for (int i = 0; i < PreferencesStorage.LAUNCH_COMPONENT_NUMBER; i++) {
 			ShortcutPreference p = mPickShortcutUtils.initLauncherPreference(i);
@@ -169,56 +107,6 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 			p.setLastVisibleY(lastVisibleY);
 
 		}
-	}
-
-	private void initOther() {
-		Preference version = (Preference) findPreference(VERSION); 
-		String versionText = getResources().getString(R.string.version_title);
-		String appName = "";
-		String versionName = "";
-		try {
-			PackageManager pm = getPackageManager();
-			appName = getApplicationInfo().loadLabel(pm).toString();
-			versionName = pm.getPackageInfo(getPackageName(), 0).versionName;
-		} catch (NameNotFoundException e) {
-			Utils.logw(e.getMessage());
-		}
-		version.setTitle(String.format(versionText, appName, versionName));
-		version.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				String url = (BUILD_AMAZON) ? DETAIL_AMAZON_URL : DETAIL_MARKET_URL;
-				Uri uri = Uri.parse(String.format(url, getPackageName()));
-				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-				startActivity(intent);
-				return false;
-			}
-		});
-
-		Preference other = findPreference(OTHER);
-		other.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				String url = (BUILD_AMAZON) ? OTHER_AMAZON_URL : OTHER_MARKET_URL;
-				Uri uri = Uri.parse(url);
-
-				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-				startActivity(intent);
-				return false;
-			}
-		});
-
-		Preference issue = findPreference(ISSUE_TRACKER);
-		issue.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				Uri uri = Uri.parse("https://plus.google.com/118206296686390552505/");
-				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-				startActivity(intent);
-				return false;
-			}
-		});
-
 	}
 
 	@Override

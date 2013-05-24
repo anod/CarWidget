@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
+	android:background="@drawable/panel_bg"
     >
-
     <ImageView
          android:layout_width="wrap_content"
          android:layout_height="fill_parent"
@@ -75,7 +75,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="5dip"
         android:layout_marginBottom="5dip"
-	    android:background="@drawable/divider_vertical_dark"
+	    android:background="@drawable/divider_vertical_light"
     />
 
     <ImageView android:id="@+id/delete_action_button"

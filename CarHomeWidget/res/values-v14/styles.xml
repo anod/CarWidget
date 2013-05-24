@@ -14,4 +14,10 @@
         <item name="android:shadowColor">#7F000000</item>
     </style>
 
+	<style name="panelHeaderText">
+		<item name="android:textColor">@color/font_color</item>
+		<item name="android:textAllCaps">true</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textSize">14sp</item>
+	</style>
 </resources>
