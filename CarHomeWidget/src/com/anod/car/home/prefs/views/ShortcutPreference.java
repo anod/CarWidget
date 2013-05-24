@@ -17,7 +17,7 @@ import com.anod.car.home.utils.Utils;
 public class ShortcutPreference extends Preference implements OnClickListener {
 	private static final int INVALID_RESOURCE = 0;
 	public interface DropCallback {
-		public int onScrollRequest(int direction);
+		public int onScrollRequest(int top);
 		public boolean onDrop(int oldCellId, int newCellId);
 	}
 	private Bitmap mIconBitmap;
@@ -27,7 +27,6 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 	private Boolean mShowEditButton = false;
 	private int mCellId;
 	private DropCallback mDropCallback;
-	private int mLastVisibleY;
 
 	public ShortcutPreference(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -42,10 +41,6 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 	public ShortcutPreference(Context context) {
 		super(context);
 		setLayoutResource(R.layout.pref_shortcut);
-	}
-
-	public void setLastVisibleY(int lastVisibleY) {
-		mLastVisibleY = lastVisibleY;
 	}
 
 	public void setDropCallback(DropCallback dropCallback) {
@@ -126,7 +121,7 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 			return true;
 			}
 		});
-		dragButton.setOnDragListener(new ShortcutDragListener(getContext(), mLastVisibleY, mDropCallback));
+		dragButton.setOnDragListener(new ShortcutDragListener(getContext(), mDropCallback));
 	}
 
 	@Override

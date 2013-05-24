@@ -12,7 +12,15 @@
         <!-- for programmatic instantiation -->
         <item name="actionbarCompatTitleStyle">@style/ActionBarCompatTitle</item>
 		<item name="android:preferenceStyle">@style/AppPreference</item>
+		<item name="android:listViewStyle">@style/AppListView</item>
     </style>
+
+	<style name="AppListView" parent="@android:style/Widget.ListView">
+		<item name="android:paddingRight">12dp</item>
+		<item name="android:paddingLeft">12dp</item>
+		<item name="android:background">@color/activity_bg</item>
+		<item name="android:cacheColorHint">@color/activity_bg</item>
+	</style>
 
 	<style name="AppPreference">
 		<item name="android:background">@drawable/panel_bg</item>

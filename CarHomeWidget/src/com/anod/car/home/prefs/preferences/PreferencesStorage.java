@@ -106,6 +106,7 @@ public class PreferencesStorage {
 	};
 	
 	private static final String DELIMETER_PACKAGES = "\n";
+	public static final String DEF_VALUE = "2";
 
 	public static Main loadMain(Context context, int appWidgetId) {
 		final WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
@@ -120,7 +121,7 @@ public class PreferencesStorage {
 		int tileColor = prefs.getInt(BUTTON_COLOR, defTileColor);
 		p.setTileColor(tileColor);
 
-		p.setIconsScaleString(prefs.getString(ICONS_SCALE, "0"));
+		p.setIconsScaleString(prefs.getString(ICONS_SCALE, DEF_VALUE));
 		p.setIconsMono(prefs.getBoolean(ICONS_MONO, false));
 		p.setBackgroundColor(prefs.getInt(BG_COLOR, res.getColor(R.color.default_background)));
 		p.setIconsColor(prefs.getColor(ICONS_COLOR));

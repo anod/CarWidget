@@ -56,10 +56,6 @@
 				android:summary="@string/pref_power_connected_summary"
 				android:title="@string/pref_power_connected_title"
 				android:layout="@layout/pref"/>
-		<com.anod.car.home.prefs.views.HeaderPreference
-				android:icon="@drawable/ic_action_tick"
-				android:key="add-trigger"
-				android:title="Add trigger"/>
 	</PreferenceCategory>
 	<PreferenceCategory
 			android:title="@string/pref_actions"

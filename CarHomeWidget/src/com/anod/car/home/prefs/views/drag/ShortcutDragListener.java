@@ -22,15 +22,13 @@ public class ShortcutDragListener implements View.OnDragListener {
 
 	private final Drawable mTopShadow;
 	private final ShortcutPreference.DropCallback mDropCallback;
-	private final int mLastVisibleY;
 	private final Drawable mBackground;
 
-	public ShortcutDragListener(Context context, int lastVisibleY, ShortcutPreference.DropCallback dropCallback) {
+	public ShortcutDragListener(Context context, ShortcutPreference.DropCallback dropCallback) {
 		Resources r = context.getResources();
 		mTopShadow = r.getDrawable(R.drawable.drop_shadow_top);
 		mBackground = r.getDrawable(R.drawable.panel_bg);
 		mDropCallback = dropCallback;
-		mLastVisibleY = lastVisibleY;
 	}
 
 	@Override
@@ -52,8 +50,7 @@ public class ShortcutDragListener implements View.OnDragListener {
 			case DragEvent.ACTION_DRAG_ENTERED:
 				setBackgroundColor(v, dragEvent, Color.DKGRAY, mTopShadow);
 
-				int top = v.getTop();
-				// TODO: if (top)
+				mDropCallback.onScrollRequest(v.getTop());
 				// Ignore the event
 				return true;
 			case DragEvent.ACTION_DRAG_LOCATION:

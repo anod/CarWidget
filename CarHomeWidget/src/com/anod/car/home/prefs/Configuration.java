@@ -1,5 +1,6 @@
 package com.anod.car.home.prefs;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.appwidget.AppWidgetManager;
@@ -10,10 +11,12 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.support.v4.widget.ViewDragHelper;
+import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 
@@ -99,13 +102,9 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	}
 
 	private void initShortcuts() {
-		int lastVisiblePos = 0;//getListView().getLastVisiblePosition();
-		int lastVisibleY = 0;//(int)getListView().getChildAt(lastVisiblePos).getY();
 		for (int i = 0; i < PreferencesStorage.LAUNCH_COMPONENT_NUMBER; i++) {
 			ShortcutPreference p = mPickShortcutUtils.initLauncherPreference(i);
 			p.setDropCallback(this);
-			p.setLastVisibleY(lastVisibleY);
-
 		}
 	}
 
@@ -162,8 +161,17 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	}
 
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
-	public int onScrollRequest(int direction) {
+	public int onScrollRequest(int top) {
+
+		int lastVisiblePos = getListView().getLastVisiblePosition();
+		int lastVisibleY = (int)getListView().getChildAt(lastVisiblePos).getY();
+		if (top >= lastVisiblePos) {
+//			getListView().sc
+		}
+		Log.d("onScrollRequest", "Last visible Y: " + lastVisibleY + " Top: " + top);
+
 		return 0;
 	}
 
