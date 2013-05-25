@@ -170,6 +170,7 @@
 			</intent-filter>
 		</activity>
 		<activity android:name=".WidgetSettingsListActivity"/>
+		<activity android:name=".WizardActivity"/>
 
 		<service android:name="com.anod.car.home.incar.ModeService" />
         <service android:name="com.anod.car.home.incar.BroadcastService" />

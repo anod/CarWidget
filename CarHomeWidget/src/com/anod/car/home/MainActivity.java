@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.anod.car.home.actionbarcompat.ActionBarActivity;
 import com.anod.car.home.prefs.ConfigurationInCar;
 import com.anod.car.home.prefs.ConfigurationRestore;
 import com.anod.car.home.prefs.TrialDialogs;
@@ -30,7 +31,7 @@ import com.anod.car.home.utils.Version;
  * @author alex
  * @date 5/22/13
  */
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 
 	private static final String DETAIL_MARKET_URL = "market://details?id=%s";
 	public static final String URL_GOOGLE_PLUS = "https://plus.google.com/118206296686390552505/";
@@ -47,10 +48,16 @@ public class MainActivity extends Activity {
 		int[] appWidgetIds = WidgetHelper.getAllWidgetIds(mContext);
 		final int widgetsCount = appWidgetIds.length;
 
+
+		Intent intent = new Intent(mContext, WizardActivity.class);
+		startActivity(intent);
+finish();
+		/*
 		initWidgets(widgetsCount);
 		initInCar(widgetsCount);
 		initInformation();
 		initDefaultApp();
+		*/
 	}
 
 	private void initInCar(final int widgetsCount) {

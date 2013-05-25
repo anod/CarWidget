@@ -1,5 +1,6 @@
 package com.anod.car.home.appwidget;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 import android.app.PendingIntent;
@@ -25,6 +26,7 @@ import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.skin.PropertiesFactory;
 import com.anod.car.home.skin.SkinProperties;
 import com.anod.car.home.utils.BitmapTransform;
+import com.anod.car.home.utils.IconTheme;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
 
@@ -133,8 +135,7 @@ public class LauncherViewBuilder {
 		float scaledDensity = mContext.getResources().getDisplayMetrics().scaledDensity;
 
 		String themePackage = mPrefs.getIconsTheme();
-		Resources themeResources = (themePackage == null) ? null : getIconThemeResources(themePackage);
-		
+		IconTheme themeIcons = (themePackage == null) ? null : loadThemeIcons(themePackage);
 
 		for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
 			int res = sBtnRes[cellId];
@@ -143,7 +144,7 @@ public class LauncherViewBuilder {
 			if (info == null) {
 				setNoShortcut(res, resText, mPrefs, views, cellId, skinProperties);
 			} else {
-				setShortcut(res, resText, info, mPrefs, views, cellId, themePackage, themeResources);
+				setShortcut(res, resText, info, mPrefs, views, cellId, themeIcons);
 			}
 			setFont(mPrefs, resText, scaledDensity, views);
 			if (skinName.equals(Main.SKIN_WINDOWS7)) {
@@ -154,6 +155,26 @@ public class LauncherViewBuilder {
 		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId, PickShortcutUtils.INVALID_CELL_ID);
 		views.setOnClickPendingIntent(R.id.btn_settings, configIntent);
 		return views;
+	}
+
+	private IconTheme loadThemeIcons(String themePackage) {
+		SparseArray<ShortcutInfo> shortcuts = mSmodel.getShortcuts();
+
+		IconTheme theme = new IconTheme(mContext, themePackage);
+		if (!theme.loadThemeResources()) {
+			return null;
+		}
+
+		HashMap<String,Integer> cmpMap = new HashMap<String,Integer>(shortcuts.size());
+		for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
+			ShortcutInfo info = mSmodel.getShortcut(cellId);
+			if (info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon()) {
+				continue;
+			}
+			cmpMap.put(info.intent.getComponent().getClassName(), cellId);
+		}
+		theme.loadFromXml(cmpMap);
+		return theme;
 	}
 
 	private static void applyIconTransform(BitmapTransform bt, Main prefs) {
@@ -247,8 +268,8 @@ public class LauncherViewBuilder {
 		}
 	}
 
-	private void setShortcut(int res, int resText, ShortcutInfo info, Main prefs, RemoteViews views, int cellId, String themePackage, Resources themeResources) {
-		Bitmap icon = getShortcutIcon(info, themePackage, themeResources);
+	private void setShortcut(int res, int resText, ShortcutInfo info, Main prefs, RemoteViews views, int cellId, IconTheme themeIcons) {
+		Bitmap icon = getShortcutIcon(info, themeIcons);
 		icon = mBitmapTransform.transform(icon);
 		views.setBitmap(res, "setImageBitmap", icon);
 
@@ -268,44 +289,20 @@ public class LauncherViewBuilder {
 		views.setInt(R.id.container, "setBackgroundColor", bgColor);
 	}
 
-	private Bitmap getShortcutIcon(ShortcutInfo info,String themePackage,Resources themeResources) {
-		if (themeResources == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon()) {
+	private Bitmap getShortcutIcon(ShortcutInfo info, IconTheme themeIcons) {
+		if (themeIcons == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon()) {
 			return info.getIcon();
 		}
-		Bitmap icon = getIconThemeIcon(info.intent.getComponent().getClassName(), themePackage, themeResources);
-		if (icon == null) {
-			return info.getIcon();
-		}
-		return icon;
-	}
-	
-	private Resources getIconThemeResources(String themePackage) {
-		 // get from theme
-        Resources themeResources = null;
-        try {
-            themeResources = mContext.getPackageManager().getResourcesForApplication(themePackage);
-        } catch (NameNotFoundException e) {
-            Utils.logd(e.getMessage());
-        }
-        return themeResources;
-	}
-	
-	private Bitmap getIconThemeIcon(String className, String themePackage,  Resources themeResources) {
-		String name = className;
-		String resName= name.toLowerCase(Locale.US).replace(".", "_"); 
-		Utils.logd("Look for icon for resource: R.drawable." + resName);
-		int resourceId = themeResources.getIdentifier(resName, "drawable", themePackage);
+
+		int resourceId = themeIcons.getIcon(info.intent.getComponent().getClassName());
 		Drawable iconDrawable = null;
 		if(resourceId!=0){
-			iconDrawable = themeResources.getDrawable(resourceId);
-         }
-		
+			iconDrawable = themeIcons.getDrawable(resourceId);
+		}
 		if (iconDrawable != null) {
 			return UtilitiesBitmap.createIconBitmap(iconDrawable, mContext);
 		}
-		return null;
+		return info.getIcon();
 	}
-	
 }
 
-	
