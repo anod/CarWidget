@@ -23,6 +23,7 @@ import com.anod.car.home.prefs.ConfigurationInCar;
 import com.anod.car.home.prefs.ConfigurationRestore;
 import com.anod.car.home.prefs.TrialDialogs;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
@@ -34,11 +35,13 @@ import com.anod.car.home.utils.Version;
 public class MainActivity extends ActionBarActivity {
 
 	private static final String DETAIL_MARKET_URL = "market://details?id=%s";
-	public static final String URL_GOOGLE_PLUS = "https://plus.google.com/118206296686390552505/";
-	public static final String RESOLVER_ACTIVITY = "com.android.internal.app.ResolverActivity";
-	private Context mContext;
-	protected static final int DIALOG_WAIT = 1;
+	private static final String URL_GOOGLE_PLUS = "https://plus.google.com/118206296686390552505/";
+	private static final String RESOLVER_ACTIVITY = "com.android.internal.app.ResolverActivity";
+
+	private static final int DIALOG_WAIT = 1;
 	private static final int DIALOG_PRO = 3;
+
+	private Context mContext;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,16 +51,16 @@ public class MainActivity extends ActionBarActivity {
 		int[] appWidgetIds = WidgetHelper.getAllWidgetIds(mContext);
 		final int widgetsCount = appWidgetIds.length;
 
-
-		Intent intent = new Intent(mContext, WizardActivity.class);
-		startActivity(intent);
-finish();
-		/*
 		initWidgets(widgetsCount);
 		initInCar(widgetsCount);
 		initInformation();
 		initDefaultApp();
-		*/
+
+		if (PreferencesStorage.isShowWizard()) {
+			Intent intent = new Intent(mContext, WizardActivity.class);
+			startActivity(intent);
+			return;
+		}
 	}
 
 	private void initInCar(final int widgetsCount) {

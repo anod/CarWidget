@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	style="@style/WizardPageContainer"
+	android:orientation="vertical">
+
+	<TextView
+		style="@style/WizardPageTitle"
+		android:text="Configure the widget"
+	/>
+
+	<TextView style="@style/wizardTextItem" android:text="Set shortcuts" />
+	<TextView style="@style/wizardTextItem" android:text="Configure look of the widget" />
+	<TextView style="@style/wizardTextItem" android:text="Choose different skin" />
+	<TextView style="@style/wizardTextItem" android:text="Apply filters and effects" />
+
+</LinearLayout>

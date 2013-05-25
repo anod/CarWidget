@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import com.anod.car.home.actionbarcompat.ActionBarActivity;
 import com.example.android.wizardpager.wizard.ui.StepPagerStrip;
 
@@ -20,7 +21,13 @@ public class WizardActivity extends ActionBarActivity {
 	/**
 	 * The number of pages (wizard steps) to show in this demo.
 	 */
-	private static final int NUM_PAGES = 5;
+	private static final Integer TYPE_NEXT = 1;
+	private static final Integer TYPE_FINISH = 2;
+
+	/**
+	 * The number of pages (wizard steps) to show in this demo.
+	 */
+	private static final int NUM_PAGES = 4;
 
 	/**
 	 * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -44,6 +51,25 @@ public class WizardActivity extends ActionBarActivity {
 		mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
 
+		final Button nextButton =(Button)findViewById(R.id.buttonNext);
+		nextButton.setTag(TYPE_NEXT);
+		nextButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (nextButton.getTag() == TYPE_FINISH) {
+					finishWizard();
+				}
+			}
+		});
+
+		final Button skipButton = (Button)findViewById(R.id.buttonSkip);
+		skipButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				finishWizard();
+			}
+		});
+
 		mStepPagerStrip = (StepPagerStrip) findViewById(R.id.strip);
 		mStepPagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
 			@Override
@@ -58,10 +84,20 @@ public class WizardActivity extends ActionBarActivity {
 		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
-			mStepPagerStrip.setCurrentPage(position);
+				mStepPagerStrip.setCurrentPage(position);
+				if (position == (NUM_PAGES - 1)) {
+					nextButton.setTag(TYPE_FINISH);
+					nextButton.setText("Finish");
+					skipButton.setVisibility(View.GONE);
+				}
 			}
 		});
 		mStepPagerStrip.setPageCount(NUM_PAGES);
+
+	}
+
+	private void finishWizard() {
+		WizardActivity.this.finish();
 	}
 
 	@Override
@@ -100,10 +136,9 @@ public class WizardActivity extends ActionBarActivity {
 		private int mPosition;
 		private static int[] sFragments = new int[] {
 			R.layout.wizard_fragment_1,
-			R.layout.wizard_fragment_1,
-			R.layout.wizard_fragment_1,
-			R.layout.wizard_fragment_1,
-			R.layout.wizard_fragment_1
+			R.layout.wizard_fragment_2,
+			R.layout.wizard_fragment_3,
+			R.layout.wizard_fragment_4
 		};
 		public ScreenSlidePageFragment(int mPosition) {
 			this.mPosition = mPosition;

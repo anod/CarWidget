@@ -461,4 +461,8 @@ public class PreferencesStorage {
 		edit.remove(key);
 		edit.commit();
 	}
+
+	public static boolean isShowWizard() {
+		return true;
+	}
 }

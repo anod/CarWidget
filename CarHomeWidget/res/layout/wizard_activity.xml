@@ -37,7 +37,7 @@
 		<Button
 				android:textColor="@color/font_color_dark"
 				android:background="@drawable/selectable_item_background"
-				android:id="@+id/prev_button"
+				android:id="@+id/buttonSkip"
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
 		<Button
 				android:textColor="@color/font_color_dark"
 				android:background="@drawable/selectable_item_background"
-				android:id="@+id/next_button"
+				android:id="@+id/buttonNext"
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:layout_height="wrap_content"
