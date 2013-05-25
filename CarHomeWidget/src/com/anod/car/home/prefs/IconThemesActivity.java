@@ -75,7 +75,7 @@ public class IconThemesActivity extends AppsCacheActivity implements OnClickList
 
 	@Override
 	public void onIntentFilterInit(Intent intent) {
-		IconPackUtils.fillAdwIconPackIntent(intent);
+		IconPackUtils.fillAdwThemeIntent(intent);
 		
 	}
 
