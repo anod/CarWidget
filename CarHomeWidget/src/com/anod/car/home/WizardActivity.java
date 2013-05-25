@@ -58,9 +58,10 @@ public class WizardActivity extends ActionBarActivity {
 		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
-				mStepPagerStrip.setCurrentPage(position);
+			mStepPagerStrip.setCurrentPage(position);
 			}
 		});
+		mStepPagerStrip.setPageCount(NUM_PAGES);
 	}
 
 	@Override

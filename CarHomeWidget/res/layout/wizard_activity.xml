@@ -13,8 +13,8 @@
 			android:layout_marginRight="16dp"
 			android:paddingTop="16dp"
 			android:paddingBottom="8dp"
-			android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-			android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+			android:paddingLeft="12dp"
+			android:paddingRight="12dp"
 			android:gravity="left" />
 
 	<android.support.v4.view.ViewPager
