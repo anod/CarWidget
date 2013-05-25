@@ -16,6 +16,17 @@
         android:readPermission="com.anod.car.home.permission.READ_SETTINGS"
         android:writePermission="com.anod.car.home.permission.WRITE_SETTINGS" />
 
+		<receiver
+				android:name="com.anod.car.home.LargeProvider"
+				android:label="@string/app_name_free" >
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+			</intent-filter>
+
+			<meta-data
+					android:name="android.appwidget.provider"
+					android:resource="@xml/carhome_appwidget_info_4x4" />
+		</receiver>
     </application>
 
 </manifest>

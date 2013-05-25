@@ -1,9 +1,7 @@
 package com.anod.car.home;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
@@ -12,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.anod.car.home.actionbarcompat.ActionBarActivity;
+import com.example.android.wizardpager.wizard.ui.StepPagerStrip;
 
 /**
  * @author alex
@@ -33,6 +32,7 @@ public class WizardActivity extends ActionBarActivity {
 	 * The pager adapter, which provides the pages to the view pager widget.
 	 */
 	private PagerAdapter mPagerAdapter;
+	private StepPagerStrip mStepPagerStrip;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,24 @@ public class WizardActivity extends ActionBarActivity {
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
+
+		mStepPagerStrip = (StepPagerStrip) findViewById(R.id.strip);
+		mStepPagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
+			@Override
+			public void onPageStripSelected(int position) {
+				position = Math.min(mPagerAdapter.getCount() - 1, position);
+				if (mPager.getCurrentItem() != position) {
+					mPager.setCurrentItem(position);
+				}
+			}
+		});
+
+		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+			@Override
+			public void onPageSelected(int position) {
+				mStepPagerStrip.setCurrentPage(position);
+			}
+		});
 	}
 
 	@Override
@@ -68,7 +86,7 @@ public class WizardActivity extends ActionBarActivity {
 
 		@Override
 		public Fragment getItem(int position) {
-			return new ScreenSlidePageFragment();
+			return new ScreenSlidePageFragment(position);
 		}
 
 		@Override
@@ -78,10 +96,21 @@ public class WizardActivity extends ActionBarActivity {
 	}
 
 	public static class ScreenSlidePageFragment extends Fragment {
+		private int mPosition;
+		private static int[] sFragments = new int[] {
+			R.layout.wizard_fragment_1,
+			R.layout.wizard_fragment_1,
+			R.layout.wizard_fragment_1,
+			R.layout.wizard_fragment_1,
+			R.layout.wizard_fragment_1
+		};
+		public ScreenSlidePageFragment(int mPosition) {
+			this.mPosition = mPosition;
+		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.wizard_fragment, container, false);
+			ViewGroup rootView = (ViewGroup) inflater.inflate(sFragments[mPosition], container, false);
 			return rootView;
 		}
 	}

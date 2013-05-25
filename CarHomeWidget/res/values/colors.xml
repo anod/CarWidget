@@ -21,4 +21,11 @@
 	<color name="font_color">#FFFFFF</color>
 	<color name="font_color_sec">#dfe5e6</color>
 	<color name="font_color_dark">#5b5b5b</color>
+
+
+<!-- Wizard -->
+	<color name="step_pager_previous_tab_color">#4433b5e5</color>
+	<color name="step_pager_selected_tab_color">#ff0099cc</color>
+	<color name="step_pager_selected_last_tab_color">#ff669900</color>
+	<color name="step_pager_next_tab_color">#10000000</color>
 </resources>
