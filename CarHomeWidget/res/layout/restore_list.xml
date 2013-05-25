@@ -5,12 +5,16 @@
          android:layout_height="match_parent"
          android:paddingLeft="8dp"
          android:paddingRight="8dp">
-	 
-     <TextView android:id="@+id/header" 
+
+	<View android:layout_height="@dimen/panel_header_margin"
+		  android:layout_width="match_parent" />
+
+     <TextView android:id="@+id/header"
+		style="@style/panelHeader"
      	android:layout_height="wrap_content" 
      	android:layout_width="match_parent"
      	android:text="@string/choose_backup" 
-     	android:gravity="center_horizontal" />
+     	/>
 
      <ListView android:id="@android:id/list"
                android:layout_width="match_parent"
