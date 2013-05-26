@@ -11,6 +11,73 @@
 
 	<TextView style="@style/wizardTextItem" android:text="Detect when you inside the car" />
 
-	<TextView style="@style/wizardTextItem" android:text="Adjust settings" />
+	<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="left|center_vertical">
+
+		<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:id="@+id/imageView"
+				android:src="@drawable/ic_action_bluetooth_connected"/>
+
+		<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:id="@+id/imageView2"
+				android:src="@drawable/ic_action_usb"/>
+
+		<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:id="@+id/imageView3"
+				android:src="@drawable/ic_action_headphones"/>
+	</LinearLayout>
+
+	<TextView style="@style/wizardTextItem" android:text="Adjust common settings" />
+
+	<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="left|center_vertical"
+			android:id="@+id/linearLayout">
+
+		<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:id="@+id/imageView4"
+				android:src="@drawable/ic_action_brightness_medium"/>
+
+		<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:id="@+id/imageView5"
+				android:src="@drawable/ic_action_bulb"/>
+
+		<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:id="@+id/imageView6"
+				android:src="@drawable/ic_action_speakerphone"/>
+
+		<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:id="@+id/imageView7"
+				android:src="@drawable/ic_action_volume_on"/>
+
+		<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:id="@+id/imageView8"
+				android:src="@drawable/ic_action_bluetooth"/>
+
+		<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:id="@+id/imageView9"
+				android:src="@drawable/ic_action_network_wifi"/>
+	</LinearLayout>
 
 </LinearLayout>
