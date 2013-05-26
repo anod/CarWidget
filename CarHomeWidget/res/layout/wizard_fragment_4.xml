@@ -9,10 +9,10 @@
 		android:text="InCar mode"
 	/>
 
-	<TextView style="@style/wizardTextItem" android:text="Detect when you inside the car" />
+	<TextView style="@style/wizardTextItem" android:text="Detects when you inside the car" />
 
 	<LinearLayout
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="left|center_vertical">
 
@@ -20,25 +20,28 @@
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:id="@+id/imageView"
-				android:src="@drawable/ic_action_bluetooth_connected"/>
+				android:src="@drawable/ic_action_bluetooth_connected"
+				android:padding="10dp"/>
 
 		<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:id="@+id/imageView2"
-				android:src="@drawable/ic_action_usb"/>
+				android:src="@drawable/ic_action_usb"
+				android:padding="10dp"/>
 
 		<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:id="@+id/imageView3"
-				android:src="@drawable/ic_action_headphones"/>
+				android:src="@drawable/ic_action_headphones"
+				android:padding="10dp"/>
 	</LinearLayout>
 
 	<TextView style="@style/wizardTextItem" android:text="Adjust common settings" />
 
 	<LinearLayout
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="left|center_vertical"
 			android:id="@+id/linearLayout">
@@ -47,37 +50,47 @@
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:id="@+id/imageView4"
-				android:src="@drawable/ic_action_brightness_medium"/>
+				android:src="@drawable/ic_action_brightness_medium"
+				android:padding="10dp"/>
 
 		<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:id="@+id/imageView5"
-				android:src="@drawable/ic_action_bulb"/>
+				android:src="@drawable/ic_action_bulb"
+				android:padding="10dp"/>
 
 		<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:id="@+id/imageView6"
-				android:src="@drawable/ic_action_speakerphone"/>
+				android:src="@drawable/ic_action_speakerphone"
+				android:padding="10dp"/>
 
 		<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:id="@+id/imageView7"
-				android:src="@drawable/ic_action_volume_on"/>
+				android:src="@drawable/ic_action_volume_on"
+				android:padding="10dp"/>
 
 		<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:id="@+id/imageView8"
-				android:src="@drawable/ic_action_bluetooth"/>
+				android:src="@drawable/ic_action_bluetooth"
+				android:padding="10dp"/>
 
 		<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:id="@+id/imageView9"
-				android:src="@drawable/ic_action_network_wifi"/>
+				android:src="@drawable/ic_action_network_wifi"
+				android:padding="10dp"/>
 	</LinearLayout>
+
+	<TextView style="@style/wizardTextItem" android:text="Enable InCar mode in the settings." />
+
+	<TextView style="@style/wizardTextItem" android:text="Trial 30 activations in the free version." />
 
 </LinearLayout>
