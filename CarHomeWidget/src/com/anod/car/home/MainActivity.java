@@ -73,6 +73,24 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 
+		final Version version = new Version(mContext);
+
+		TextView active = (TextView)findViewById(R.id.incarActive);
+		if (widgetsCount == 0) {
+			active.setText(R.string.not_active);
+		} else {
+
+			if (version.isProOrTrial()) {
+				if (PreferencesStorage.isInCarModeEnabled(this)){
+					active.setText(R.string.enabled);
+				} else {
+					active.setText(R.string.disabled);
+				}
+			} else {
+				active.setText(R.string.disabled_trial_expired);
+			}
+		}
+
 		Button backup = (Button) findViewById(R.id.incarBackup);
 		backup.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -85,7 +103,7 @@ public class MainActivity extends ActionBarActivity {
 		restore.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				final Version version = new Version(mContext);
+
 				if (version.isFree()) {
 					showDialog(DIALOG_PRO);
 				} else {

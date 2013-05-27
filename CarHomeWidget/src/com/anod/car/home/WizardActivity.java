@@ -113,17 +113,21 @@ public class WizardActivity extends ActionBarActivity {
 	}
 
 	/**
-	 * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-	 * sequence.
+	 *
 	 */
-	private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+	public static class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 		public ScreenSlidePagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
 
 		@Override
 		public Fragment getItem(int position) {
-			return new ScreenSlidePageFragment(position);
+			ScreenSlidePageFragment f = new ScreenSlidePageFragment();
+			// Supply index input as an argument.
+			Bundle args = new Bundle();
+			args.putInt("position", position);
+			f.setArguments(args);
+			return f;
 		}
 
 		@Override
@@ -133,20 +137,17 @@ public class WizardActivity extends ActionBarActivity {
 	}
 
 	public static class ScreenSlidePageFragment extends Fragment {
-		private int mPosition;
 		private static int[] sFragments = new int[] {
 			R.layout.wizard_fragment_1,
 			R.layout.wizard_fragment_2,
 			R.layout.wizard_fragment_3,
 			R.layout.wizard_fragment_4
 		};
-		public ScreenSlidePageFragment(int mPosition) {
-			this.mPosition = mPosition;
-		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			ViewGroup rootView = (ViewGroup) inflater.inflate(sFragments[mPosition], container, false);
+			int pos = getArguments().getInt("position", 1);
+			ViewGroup rootView = (ViewGroup) inflater.inflate(sFragments[pos], container, false);
 			return rootView;
 		}
 	}
