@@ -65,47 +65,41 @@
 			android:drawablePadding="4dp"/>
 
 	<LinearLayout
-		style="@style/panelItem"
-		android:paddingTop="0dp"
+			android:paddingTop="0dp"
 		android:paddingBottom="0dp"
 		android:layout_marginTop="1dp"
-	>
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
 		<Button
 				android:layout_width="0dp"
-				android:layout_weight="10"
+				android:layout_weight="1"
 				android:layout_height="wrap_content"
 				android:text="@string/backup"
 				android:id="@+id/incarBackup"
 				android:drawableLeft="@drawable/ic_action_export"
 				android:background="@drawable/panel_bg"
-				android:padding="0dp"
 				android:gravity="center_vertical|left"
 				android:textColor="@color/font_color"
+				android:paddingLeft="10dp"
 				android:drawablePadding="4dp"/>
 		<View
 				android:layout_height="match_parent"
 				android:layout_width="1dp"
 				android:background="@color/activity_bg"
-				android:paddingTop="0dp"
-				android:paddingBottom="0dp"
-				android:paddingLeft="4dp"
-				android:paddingRight="4dp"
-				android:layout_marginLeft="10dp"
-				android:layout_marginRight="10dp"/>
+		/>
 
 		<Button
-				android:layout_width="wrap_content"
-				android:layout_weight="5"
+				android:layout_width="0dp"
+				android:layout_weight="1"
 				android:layout_height="wrap_content"
 				android:text="@string/restore"
 				android:id="@+id/incarRestore"
 				android:drawableLeft="@drawable/ic_action_import"
 				android:background="@drawable/panel_bg"
-				android:padding="0dp"
 				android:gravity="center_vertical|left"
-				android:clickable="false"
 				android:textColor="@color/font_color"
+				android:paddingLeft="10dp"
 				android:drawablePadding="4dp"/>
 	</LinearLayout>
 
