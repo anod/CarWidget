@@ -35,8 +35,8 @@
 			android:layout_marginTop="4dp"/>
 
 	<ImageView
-			android:layout_width="271dp"
-			android:layout_height="225dp"
+			android:layout_width="fill_parent"
+			android:layout_height="273dp"
 			android:id="@+id/imageView"
 			android:src="@drawable/settings_preview"
 			android:paddingTop="12dp"
