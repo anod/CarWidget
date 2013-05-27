@@ -6,12 +6,40 @@
 
 	<TextView
 		style="@style/WizardPageTitle"
-		android:text="Configure the widget"
+		android:text="Configure"
 	/>
 
-	<TextView style="@style/wizardTextItem" android:text="Set shortcuts" />
-	<TextView style="@style/wizardTextItem" android:text="Configure look of the widget" />
-	<TextView style="@style/wizardTextItem" android:text="Choose different skin" />
-	<TextView style="@style/wizardTextItem" android:text="Apply filters and effects" />
+	<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+	>
+
+		<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/imageView2"
+				android:src="@drawable/ic_holo_settings"
+				android:background="@color/panel_bg_pressed"
+				android:layout_gravity="center"/>
+
+		<TextView style="@style/wizardTextItem" android:text="Press Settings button in order to open configuration screen"
+				  android:paddingLeft="4dp"/>
+	</LinearLayout>
+
+	<TextView
+			style="@style/wizardTextItem"
+			android:text="Inside settings of the widget you can define sortcuts, configure its look by changing skin or applying filters and effects"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/textView"
+			android:layout_marginTop="4dp"/>
+
+	<ImageView
+			android:layout_width="271dp"
+			android:layout_height="225dp"
+			android:id="@+id/imageView"
+			android:src="@drawable/settings_preview"
+			android:paddingTop="12dp"
+			android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

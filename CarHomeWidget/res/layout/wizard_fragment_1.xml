@@ -16,14 +16,23 @@
 		android:layout_gravity="center"
 		android:textSize="24dp"
 		android:id="@+id/textView2"
-		android:layout_marginTop="48dp"
-		android:gravity="center_horizontal"/>
+		android:gravity="center_horizontal"
+			/>
 
 	<TextView
 		android:layout_gravity="center"
 		style="@style/wizardTextItem"
-		android:text="Swipe to discover features →"
+		android:text="Swipe to continue →"
 		android:textSize="20dp"
-		android:textColor="@color/step_pager_selected_tab_color"/>
+		android:textColor="@color/step_pager_selected_tab_color"
+		android:padding="12dp"/>
+
+	<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/imageView"
+			android:layout_gravity="center"
+			android:src="@drawable/widget_preview"
+			/>
 
 </LinearLayout>

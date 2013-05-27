@@ -9,15 +9,6 @@
 		android:text="Install a widget"
 	/>
 
-	<ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:id="@+id/imageView"
-			android:layout_gravity="center"
-			android:src="@drawable/install_widget"
-			android:cropToPadding="false"
-			android:adjustViewBounds="true"/>
-
 	<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -26,5 +17,16 @@
 			android:id="@+id/textView"
 			android:layout_gravity="left|center_vertical"
 			android:textColor="@color/font_color_dark"
+			/>
+
+	<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/imageView"
+			android:layout_gravity="center"
+			android:src="@drawable/install_widget"
+			android:cropToPadding="false"
+			android:adjustViewBounds="true"
 			android:paddingTop="12dp"/>
+
 </LinearLayout>

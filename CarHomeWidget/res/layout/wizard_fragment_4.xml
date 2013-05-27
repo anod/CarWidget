@@ -91,6 +91,10 @@
 
 	<TextView style="@style/wizardTextItem" android:text="Enable InCar mode in the settings." />
 
-	<TextView style="@style/wizardTextItem" android:text="Trial 30 activations in the free version." />
+	<TextView style="@style/wizardTextItem" android:text="Trial 30 activations in the free version."
+			  android:layout_width="fill_parent"
+			  android:gravity="center_horizontal"
+			  android:padding="12dp"
+			  android:textColor="@color/font_green"/>
 
 </LinearLayout>
