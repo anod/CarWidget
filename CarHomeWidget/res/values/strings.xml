@@ -214,12 +214,26 @@
 	<string name="pref_titles_hide_summary">Do not display titles for the shortcuts</string>
 	<string name="home_screen_widgets">Home Screen Widgets</string>
 	<string name="no_active_widgets_were_found">No active widgets were found</string>
-	<string name="install_widget">Go to home screen and open your app drawer. Choose the widget tab then take Car Widget and put it on the free screen.</string>
 	<string name="not_active">Not active</string>
 	<string name="enabled">Enabled</string>
 	<string name="disabled">Disabled</string>
 	<string name="disabled_trial_expired">Disabled - Trial expired</string>
 	<string name="no_items">No items</string>
+
+	<string name="welcome">Welcome</string>
+	<string name="welcome_text"><![CDATA[<b>Car Widget</b> make easier and quicker access to phone feature when you in the car.]]></string>
+	<string name="install_a_widget">Install a widget</string>
+	<string name="configure">Configure</string>
+
+	<string name="install_widget"><![CDATA[Go to <b>home screen</b> and open your <b>app drawer</b>. Choose the <b>widget tab</b> then choose <b>Car Widget</b> and put it on the free screen.]]></string>
+	<string name="configure_text"><![CDATA[Inside settings of the widget you can define <b>shortcuts</b>, configure its look by changing <b>skin</b> or applying <b>effects</b>]]></string>
+	<string name="open_settings_description"><![CDATA[Press <b>Settings</b> button in order to open configuration screen]]></string>
+	<string name="incar_mode">InCar mode</string>
+	<string name="detect_incar_description"><![CDATA[<b>Detects</b> when you inside the car]]></string>
+	<string name="adjust_incar_description"><![CDATA[<b>Adjust</b> common settings]]></string>
+	<string name="enable_incar_description"><![CDATA[<b>Enable</b> InCar mode in the settings.]]></string>
+	<string name="trial_description">Trial %d activations in the free version.</string>
+	<string name="swipe_continue">Swipe to continue →</string>
 	<plurals name="active_widgets">
 		<item quantity="zero">No active widgets were found</item>
 		<item quantity="one">One active widget</item>

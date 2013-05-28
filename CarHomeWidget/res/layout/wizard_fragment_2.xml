@@ -6,19 +6,18 @@
 
 	<TextView
 		style="@style/WizardPageTitle"
-		android:text="Install a widget"
+		android:text="@string/install_a_widget"
 	/>
 
 	<TextView
 			style="@style/wizardTextItem"
 			android:text="@string/install_widget"
-			android:id="@+id/textView"
+			android:id="@+id/desc1"
 		/>
 
 	<ImageView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:id="@+id/imageView"
 			android:layout_gravity="center"
 			android:src="@drawable/install_widget"
 			android:cropToPadding="false"

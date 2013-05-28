@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	style="@style/WizardPageContainer"
-	android:orientation="vertical">
+			  style="@style/WizardPageContainer"
+			  android:orientation="vertical">
 
 	<TextView
-		style="@style/WizardPageTitle"
-		android:text="InCar mode"
-	/>
+			style="@style/WizardPageTitle"
+			android:text="@string/incar_mode"
+			/>
 
-	<TextView style="@style/wizardTextItem"
-			 android:text="Detects when you inside the car"
-	/>
+	<TextView
+			style="@style/wizardTextItem"
+			android:text="@string/detect_incar_description"
+			android:id="@+id/desc1"
+			/>
 
 	<LinearLayout
 			android:layout_width="match_parent"
@@ -41,9 +43,11 @@
 				android:padding="10dp"/>
 	</LinearLayout>
 
-	<TextView style="@style/wizardTextItem"
-			android:text="Adjust common settings"
-	/>
+	<TextView
+			style="@style/wizardTextItem"
+			android:text="@string/adjust_incar_description"
+			android:id="@+id/desc2"
+			/>
 
 	<LinearLayout
 			android:layout_width="match_parent"
@@ -94,15 +98,19 @@
 				android:padding="10dp"/>
 	</LinearLayout>
 
-	<TextView style="@style/wizardTextItem"
-			 android:text="Enable InCar mode in the settings."
-	/>
+	<TextView
+			style="@style/wizardTextItem"
+			android:text="@string/enable_incar_description"
+			android:id="@+id/desc3"
+			/>
 
-	<TextView style="@style/wizardTextItem"
-			  android:text="Trial 30 activations in the free version."
-			  android:layout_width="fill_parent"
-			  android:padding="12dp"
-			  android:textColor="@color/font_green"
-	/>
+	<TextView
+			style="@style/wizardTextItem"
+			android:text="@string/trial_description"
+			android:layout_width="fill_parent"
+			android:padding="12dp"
+			android:textColor="@color/font_green"
+			android:id="@+id/desc4"
+			/>
 
 </LinearLayout>

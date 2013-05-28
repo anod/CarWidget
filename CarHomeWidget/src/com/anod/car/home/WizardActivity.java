@@ -6,11 +6,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import com.anod.car.home.actionbarcompat.ActionBarActivity;
+import com.anod.car.home.prefs.TrialDialogs;
+import com.anod.car.home.utils.Version;
 import com.example.android.wizardpager.wizard.ui.StepPagerStrip;
 
 /**
@@ -147,7 +151,31 @@ public class WizardActivity extends ActionBarActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			int pos = getArguments().getInt("position", 1);
-			ViewGroup rootView = (ViewGroup) inflater.inflate(sFragments[pos], container, false);
+			int layoutId = sFragments[pos];
+			ViewGroup rootView = (ViewGroup) inflater.inflate(layoutId, container, false);
+
+			TextView desc2;
+			TextView desc1 = (TextView)rootView.findViewById(R.id.desc1);
+			if (layoutId == R.layout.wizard_fragment_1) {
+				desc1.setText(Html.fromHtml(getString(R.string.welcome_text)));
+			} else if (layoutId == R.layout.wizard_fragment_2) {
+				desc1.setText(Html.fromHtml(getString(R.string.install_widget)));
+			} else if (layoutId == R.layout.wizard_fragment_3) {
+				desc1.setText(Html.fromHtml(getString(R.string.configure_text)));
+				desc2 = (TextView)rootView.findViewById(R.id.desc2);
+				desc2.setText(Html.fromHtml(getString(R.string.open_settings_description)));
+			} else if (layoutId == R.layout.wizard_fragment_4) {
+				desc1.setText(Html.fromHtml(getString(R.string.detect_incar_description)));
+				desc2 = (TextView)rootView.findViewById(R.id.desc2);
+				desc2.setText(Html.fromHtml(getString(R.string.adjust_incar_description)));
+				TextView desc3 = (TextView)rootView.findViewById(R.id.desc3);
+				desc3.setText(Html.fromHtml(getString(R.string.enable_incar_description)));
+
+				Version v = new Version(getActivity());
+				TextView desc4 = (TextView)rootView.findViewById(R.id.desc4);
+				desc4.setText(Html.fromHtml(getString(R.string.trial_description, v.getMaxTrialTimes())));
+			}
+
 			return rootView;
 		}
 	}

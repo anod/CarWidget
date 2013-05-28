@@ -7,18 +7,18 @@
 
 	<TextView
 		style="@style/WizardPageTitle"
-		android:text="Welcome"
+		android:text="@string/welcome"
 	/>
 
 	<TextView
 		style="@style/wizardTextItem"
-		android:text="Car Widget make easier and quicker access to phone feature when you in the car."
-		android:id="@+id/textView2"
+		android:text="@string/welcome_text"
+		android:id="@+id/desc1"
 	/>
 
 	<TextView
 		style="@style/wizardTextItem"
-		android:text="Swipe to continue →"
+		android:text="@string/swipe_continue"
 		android:textSize="20dp"
 		android:textColor="@color/step_pager_selected_tab_color"
 		android:padding="12dp"/>
@@ -26,7 +26,6 @@
 	<ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:id="@+id/imageView"
 		android:layout_gravity="center"
 		android:src="@drawable/widget_preview"
 		/>

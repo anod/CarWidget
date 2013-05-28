@@ -27,6 +27,10 @@ public class Version {
 		mContext = context;
 	}
 
+	public int getMaxTrialTimes() {
+		return MAX_TRIAL_TIMES;
+	}
+
 	public int getTrialTimesLeft() {
 		initTrialCounter();
 		return MAX_TRIAL_TIMES - mTrialCounterCache;
