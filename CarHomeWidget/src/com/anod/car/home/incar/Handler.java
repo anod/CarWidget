@@ -2,6 +2,7 @@ package com.anod.car.home.incar;
 
 import java.util.HashMap;
 
+import android.annotation.TargetApi;
 import android.app.UiModeManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -11,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.PowerManager;
 import android.util.Log;
 
@@ -34,17 +36,19 @@ public class Handler {
 
 	private static boolean sMode;
 	private static boolean sWakeLocked;
-	private static int mCurrentBtState;
-	private static int mCurrentWiFiState;
-	private static int mCurrentVolume = VOLUME_NOT_SET;
-	private static int mCurrentBrightness;
-	private static boolean mCurrentAutoBrightness;
-	private static PowerManager.WakeLock mWakeLock;
+	private static int sCurrentBtState;
+	private static int sCurrentWiFiState;
+	private static int sCurrentMediaVolume = VOLUME_NOT_SET;
+	private static int sCurrentCallVolume = VOLUME_NOT_SET;
+
+	private static int sCurrentBrightness;
+	private static boolean sCurrentAutoBrightness;
+	private static PowerManager.WakeLock sWakeLock;
 	/**
 	 * For thread safety
 	 */
 	private static final Object[] LOCK = new Object[0];
-	
+
 	public static void onBroadcastReceive(Context context, Intent intent) {
 		if (!PreferencesStorage.isInCarModeEnabled(context)) { // TODO remove it
 			return;
@@ -247,11 +251,13 @@ public class Handler {
 	}
 	
 
+	@TargetApi(Build.VERSION_CODES.FROYO)
 	private static void activateCarMode(Context context) {
 		UiModeManager ui = (UiModeManager)context.getSystemService(Context.UI_MODE_SERVICE);
 		ui.enableCarMode(0);
 	}
 
+	@TargetApi(Build.VERSION_CODES.FROYO)
 	private static void deactivateCarMode(Context context) {
 		UiModeManager ui = (UiModeManager)context.getSystemService(Context.UI_MODE_SERVICE);
 		ui.disableCarMode(0);
@@ -259,28 +265,28 @@ public class Handler {
 	
 	private static void disableWifi(Context context) {
 		WifiManager wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
-		mCurrentWiFiState = wm.getWifiState();
-		if (mCurrentWiFiState != WifiManager.WIFI_STATE_DISABLED) {
+		sCurrentWiFiState = wm.getWifiState();
+		if (sCurrentWiFiState != WifiManager.WIFI_STATE_DISABLED) {
 			wm.setWifiEnabled(false);
 		}
 	}
 	
 	private static void restoreWiFi(Context context) {
 		WifiManager wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
-		if (mCurrentWiFiState == WifiManager.WIFI_STATE_ENABLED) {
+		if (sCurrentWiFiState == WifiManager.WIFI_STATE_ENABLED) {
 			wm.setWifiEnabled(true);
 		}
 	}
 	
 	private static void enableBluetooth() {
-		mCurrentBtState = Bluetooth.getState(); 
-		if (mCurrentBtState != BluetoothAdapter.STATE_ON) {
+		sCurrentBtState = Bluetooth.getState();
+		if (sCurrentBtState != BluetoothAdapter.STATE_ON) {
 			Bluetooth.switchOn();
 		}
 	}
 
 	private static void restoreBluetooth() {
-		if (mCurrentBtState != BluetoothAdapter.STATE_ON) {
+		if (sCurrentBtState != BluetoothAdapter.STATE_ON) {
 			Bluetooth.switchOff();
 		}
 	}
@@ -288,11 +294,11 @@ public class Handler {
 	@SuppressWarnings("deprecation")
 	private static void acquireWakeLock(Context context) {
 		PowerManager pw = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-		mWakeLock = pw.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, TAG);
+		sWakeLock = pw.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, TAG);
 
 		synchronized(LOCK) {
-			if (mWakeLock != null && !sWakeLocked && !mWakeLock.isHeld()) {
-				mWakeLock.acquire();
+			if (sWakeLock != null && !sWakeLocked && !sWakeLock.isHeld()) {
+				sWakeLock.acquire();
 				sWakeLocked = true;
 			}
 		}
@@ -301,10 +307,10 @@ public class Handler {
 	private static void adjustBrightness(String brightSetting,Context context) {
 		ContentResolver cr = context.getContentResolver();
 		
-		mCurrentBrightness = android.provider.Settings.System.getInt(cr, 
+		sCurrentBrightness = android.provider.Settings.System.getInt(cr,
 			android.provider.Settings.System.SCREEN_BRIGHTNESS, BRIGHTNESS_MAX
 		);
-		mCurrentAutoBrightness = (android.provider.Settings.System.getInt(cr, 
+		sCurrentAutoBrightness = (android.provider.Settings.System.getInt(cr,
 			android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE,
 			android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
 		) == android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
@@ -312,8 +318,8 @@ public class Handler {
 		int newBrightLevel = -1;
 		int newBrightMode = -1;
 		if (InCar.BRIGHTNESS_AUTO.equals(brightSetting)) {
-			if (!mCurrentAutoBrightness) {
-				newBrightLevel = mCurrentBrightness;
+			if (!sCurrentAutoBrightness) {
+				newBrightLevel = sCurrentBrightness;
 				newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
 			}
 		} else if (InCar.BRIGHTNESS_DAY.equals(brightSetting)) {
@@ -340,18 +346,18 @@ public class Handler {
     }
 
 	private static boolean restoreBrightness(String brightSetting,Context context) {
-		if (mCurrentAutoBrightness && InCar.BRIGHTNESS_AUTO.equals(brightSetting)) {
+		if (sCurrentAutoBrightness && InCar.BRIGHTNESS_AUTO.equals(brightSetting)) {
 			return false;
 		}
 		int newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
-		if (mCurrentAutoBrightness) {
+		if (sCurrentAutoBrightness) {
 			newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
 		}
 		ContentResolver cr = context.getContentResolver();
 		android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode);
-		android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS, mCurrentBrightness);
+		android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS, sCurrentBrightness);
 		
-		sendBrightnessIntent(mCurrentBrightness, context);
+		sendBrightnessIntent(sCurrentBrightness, context);
 		return true;
 	}
 	
@@ -362,29 +368,46 @@ public class Handler {
 		int maxVolume = audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 		int volume = (int)((maxVolume*adjVolume)/100);
 		
-		if (mCurrentVolume == VOLUME_NOT_SET) {
-			mCurrentVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
+		if (sCurrentMediaVolume == VOLUME_NOT_SET) {
+			sCurrentMediaVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
 		}
 
 		audio.setStreamVolume(AudioManager.STREAM_MUSIC,volume,0);
+
+		int adjCallVolume = prefs.getCallVolumeLevel();
+		int maxCallVolume = audio.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL);
+		int callVolume = (int)((maxCallVolume*adjCallVolume)/100);
+
+		if (sCurrentCallVolume == VOLUME_NOT_SET) {
+			sCurrentCallVolume = audio.getStreamVolume(AudioManager.STREAM_VOICE_CALL);
+		}
+
+		audio.setStreamVolume(AudioManager.STREAM_VOICE_CALL,callVolume,0);
 	}
 
+
 	private static void restoreVolume(Context context) {
-		if (mCurrentVolume == VOLUME_NOT_SET) {
-			return;
-		}
 		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-		audio.setStreamVolume(AudioManager.STREAM_MUSIC,mCurrentVolume,0);
-		mCurrentVolume = VOLUME_NOT_SET;
+
+		if (sCurrentMediaVolume != VOLUME_NOT_SET) {
+			audio.setStreamVolume(AudioManager.STREAM_MUSIC, sCurrentMediaVolume, 0);
+			sCurrentMediaVolume = VOLUME_NOT_SET;
+		}
+
+		if (sCurrentCallVolume != VOLUME_NOT_SET) {
+			audio.setStreamVolume(AudioManager.STREAM_VOICE_CALL, sCurrentCallVolume, 0);
+			sCurrentCallVolume = VOLUME_NOT_SET;
+		}
+
 	}
 	
 	private static void releaseWakeLock() {
 		synchronized (LOCK) {
-			if (mWakeLock != null && sWakeLocked && mWakeLock.isHeld()) {
-				mWakeLock.release();
+			if (sWakeLock != null && sWakeLocked && sWakeLock.isHeld()) {
+				sWakeLock.release();
 				sWakeLocked = false;
 			}
-			mWakeLock = null;
+			sWakeLock = null;
 		}
 	}
 	

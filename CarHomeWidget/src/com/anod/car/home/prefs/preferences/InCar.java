@@ -41,7 +41,8 @@ public class InCar implements Serializable {
 
 	private boolean disableScreenTimeout;
 	private boolean adjustVolumeLevel;
-	private int mediaVolumeLevel = 100;
+	private int mediaVolumeLevel = 80;
+	private int callVolumeLevel = 80;
 	private boolean enableBluetooth;
 	private String autoAnswer = AUTOANSWER_DISABLED;
 	private String brightness = BRIGHTNESS_AUTO;
@@ -63,11 +64,11 @@ public class InCar implements Serializable {
 	}
 
 	/**
-	 * @param inCarEnabled
+	 * @param enabled
 	 *            the inCarEnabled to set
 	 */
-	public void setInCarEnabled(boolean incarEnabled) {
-		this.inCarEnabled = incarEnabled;
+	public void setInCarEnabled(boolean enabled) {
+		this.inCarEnabled = enabled;
 	}
 
 	/**
@@ -131,6 +132,15 @@ public class InCar implements Serializable {
 		return mediaVolumeLevel;
 	}
 
+	/**
+	 * Level 0-100 of media volume
+	 *
+	 * @return
+	 */
+	public int getCallVolumeLevel() {
+		return callVolumeLevel;
+	}
+
 	public boolean isEnableBluetooth() {
 		return enableBluetooth;
 	}
@@ -138,10 +148,10 @@ public class InCar implements Serializable {
 	/**
 	 * Get brightness preset
 	 * 
-	 * @see PreferenceStorage.BRIGHTNESS_DEFAULT
-	 * @see PreferenceStorage.BRIGHTNESS_AUTO
-	 * @see PreferenceStorage.BRIGHTNESS_DAY
-	 * @see PreferenceStorage.BRIGHTNESS_NIGHT
+	 * @see BRIGHTNESS_DEFAULT
+	 * @see BRIGHTNESS_AUTO
+	 * @see BRIGHTNESS_DAY
+	 * @see BRIGHTNESS_NIGHT
 	 * 
 	 * @return
 	 */
@@ -177,6 +187,10 @@ public class InCar implements Serializable {
 		this.mediaVolumeLevel = mediaVolumeLevel;
 	}
 
+	public void setCallVolumeLevel(int level) {
+		callVolumeLevel = level;
+	}
+
 	public void setEnableBluetooth(boolean bluetooth) {
 		this.enableBluetooth = bluetooth;
 	}
@@ -192,9 +206,9 @@ public class InCar implements Serializable {
 	/**
 	 * Get wifi action preset
 	 * 
-	 * @see PreferenceStorage.WIFI_NOACTION
-	 * @see PreferenceStorage.WIFI_TURNOFF
-	 * @see PreferenceStorage.WIFI_DISABLE
+	 * @see WIFI_NOACTION
+	 * @see WIFI_TURNOFF
+	 * @see WIFI_DISABLE
 	 * @return
 	 */
 	public String getDisableWifi() {

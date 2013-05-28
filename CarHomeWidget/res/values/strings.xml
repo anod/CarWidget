@@ -87,10 +87,8 @@
    <string name="pref_media_volume_level">Media level</string>
    <string name="pref_media_volume_level_summary">Change desired level of volume</string>
 
-   <string name="pref_bt_volume_level">Bluetooth level</string>
-   <string name="pref_bt_volume_level_summary">Change desired level of volume</string>
-   
-   
+   <string name="pref_phone_volume_level">Call level</string>
+   <string name="pref_phone_volume_level_summary">Change desired level of volume</string>
    
    <string name="notif_expired">Trial expired</string>
    <string name="notif_consider">Consider to install Pro version</string>

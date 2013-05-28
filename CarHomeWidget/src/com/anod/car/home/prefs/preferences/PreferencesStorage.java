@@ -78,12 +78,14 @@ public class PreferencesStorage {
 	public static final String BRIGHTNESS = "brightness";
 	public static final String BLUETOOTH = "bluetooth";
 	public static final String ADJUST_VOLUME_LEVEL = "adjust-volume-level";
-	public static final String VOLUME_LEVEL = "volume-level";
+	public static final String MEDIA_VOLUME_LEVEL = "volume-level";
 	public static final String AUTO_SPEAKER = "auto_speaker";
 	public static final String AUTO_ANSWER = "auto_answer";
 	public static final String ADJUST_WIFI = "wi-fi";
 	public static final String ACTIVATE_CAR_MODE = "activate-car-mode";
 	public static final String AUTORUN_APP = "autorun-app";
+
+	public static final String CALL_VOLUME_LEVEL = "call-volume-level";
 
 	private static final String[] sCommonPrefs = {
 		INCAR_MODE_ENABLED,
@@ -96,13 +98,14 @@ public class PreferencesStorage {
 		BRIGHTNESS,
 		BLUETOOTH,
 		ADJUST_VOLUME_LEVEL,
-		VOLUME_LEVEL,
+		MEDIA_VOLUME_LEVEL,
 		AUTO_SPEAKER,
 		AUTO_ANSWER,
 		ADJUST_WIFI,
 		ACTIVATE_CAR_MODE,
 		AUTORUN_APP,
-		MODE_FORCE_STATE
+		MODE_FORCE_STATE,
+		CALL_VOLUME_LEVEL
 	};
 	
 	private static final String DELIMETER_PACKAGES = "\n";
@@ -187,7 +190,8 @@ public class PreferencesStorage {
 		p.setDisableScreenTimeout(prefs.getBoolean(SCREEN_TIMEOUT, true));
 		p.setBrightness(prefs.getString(BRIGHTNESS, InCar.BRIGHTNESS_DISABLED));
 		p.setAdjustVolumeLevel(prefs.getBoolean(ADJUST_VOLUME_LEVEL, false));
-		p.setMediaVolumeLevel(prefs.getInt(VOLUME_LEVEL, InCar.DEFAULT_VOLUME_LEVEL));
+		p.setMediaVolumeLevel(prefs.getInt(MEDIA_VOLUME_LEVEL, InCar.DEFAULT_VOLUME_LEVEL));
+		p.setCallVolumeLevel(prefs.getInt(CALL_VOLUME_LEVEL, InCar.DEFAULT_VOLUME_LEVEL));
 		p.setDisableWifi(prefs.getString(ADJUST_WIFI, InCar.WIFI_NOACTION));
 		p.setActivateCarMode(prefs.getBoolean(ACTIVATE_CAR_MODE, false));
 		p.setAutoAnswer(prefs.getString(AUTO_ANSWER, InCar.AUTOANSWER_DISABLED));
@@ -219,7 +223,8 @@ public class PreferencesStorage {
 		editor.putBoolean(SCREEN_TIMEOUT, prefs.isDisableScreenTimeout());
 		editor.putString(BRIGHTNESS, prefs.getBrightness());
 		editor.putBoolean(ADJUST_VOLUME_LEVEL, prefs.isAdjustVolumeLevel());
-		editor.putInt(VOLUME_LEVEL, prefs.getMediaVolumeLevel());
+		editor.putInt(MEDIA_VOLUME_LEVEL, prefs.getMediaVolumeLevel());
+		editor.putInt(CALL_VOLUME_LEVEL, prefs.getCallVolumeLevel());
 		editor.putString(ADJUST_WIFI, prefs.getDisableWifi());
 		editor.putBoolean(ACTIVATE_CAR_MODE, prefs.isActivateCarMode());
 		editor.putString(AUTO_ANSWER, prefs.getAutoAnswer());
