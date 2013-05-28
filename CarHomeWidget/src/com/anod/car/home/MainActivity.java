@@ -1,6 +1,5 @@
 package com.anod.car.home;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -12,7 +11,6 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -24,6 +22,7 @@ import com.anod.car.home.prefs.ConfigurationRestore;
 import com.anod.car.home.prefs.TrialDialogs;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.ui.WidgetsListActivity;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
@@ -125,7 +124,7 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View view) {
 				if (widgetsCount > 0) {
-					Intent intent = new Intent(mContext, WidgetSettingsListActivity.class);
+					Intent intent = new Intent(mContext, WidgetsListActivity.class);
 					startActivity(intent);
 				}
 			}

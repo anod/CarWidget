@@ -156,7 +156,7 @@
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
-		<activity android:name=".WidgetSettingsListActivity"/>
+		<activity android:name=".ui.WidgetsListActivity"/>
 		<activity android:name=".WizardActivity"/>
 
 		<service android:name="com.anod.car.home.incar.ModeService" />

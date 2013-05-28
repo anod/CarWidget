@@ -16,7 +16,7 @@
      	android:layout_alignParentLeft="true"
      	android:layout_centerVertical="true"
      	android:src="@drawable/ic_launcher_application"
-     />
+		android:padding="4dp"/>
      
      <TextView android:id="@android:id/text1"
          android:textSize="18sp"
