@@ -9,12 +9,15 @@
 		android:text="InCar mode"
 	/>
 
-	<TextView style="@style/wizardTextItem" android:text="Detects when you inside the car" />
+	<TextView style="@style/wizardTextItem"
+			 android:text="Detects when you inside the car"
+	/>
 
 	<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_gravity="left|center_vertical">
+			android:layout_gravity="left|center_vertical"
+			>
 
 		<ImageView
 				android:layout_width="wrap_content"
@@ -38,7 +41,9 @@
 				android:padding="10dp"/>
 	</LinearLayout>
 
-	<TextView style="@style/wizardTextItem" android:text="Adjust common settings" />
+	<TextView style="@style/wizardTextItem"
+			android:text="Adjust common settings"
+	/>
 
 	<LinearLayout
 			android:layout_width="match_parent"
@@ -89,12 +94,15 @@
 				android:padding="10dp"/>
 	</LinearLayout>
 
-	<TextView style="@style/wizardTextItem" android:text="Enable InCar mode in the settings." />
+	<TextView style="@style/wizardTextItem"
+			 android:text="Enable InCar mode in the settings."
+	/>
 
-	<TextView style="@style/wizardTextItem" android:text="Trial 30 activations in the free version."
+	<TextView style="@style/wizardTextItem"
+			  android:text="Trial 30 activations in the free version."
 			  android:layout_width="fill_parent"
-			  android:gravity="center_horizontal"
 			  android:padding="12dp"
-			  android:textColor="@color/font_green"/>
+			  android:textColor="@color/font_green"
+	/>
 
 </LinearLayout>

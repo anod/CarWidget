@@ -214,7 +214,7 @@
 	<string name="pref_titles_hide_summary">Do not display titles for the shortcuts</string>
 	<string name="home_screen_widgets">Home Screen Widgets</string>
 	<string name="no_active_widgets_were_found">No active widgets were found</string>
-	<string name="install_widget">Go to home screen and open your app drawer. Choose the widget tab. Long press on Car Widget and put it on the free screen.</string>
+	<string name="install_widget">Go to home screen and open your app drawer. Choose the widget tab then take Car Widget and put it on the free screen.</string>
 	<string name="not_active">Not active</string>
 	<string name="enabled">Enabled</string>
 	<string name="disabled">Disabled</string>

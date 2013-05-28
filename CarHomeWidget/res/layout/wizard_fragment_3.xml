@@ -9,10 +9,26 @@
 		android:text="Configure"
 	/>
 
+	<TextView
+			android:text="Inside settings of the widget you can define shortcuts, configure its look by changing skin or applying filters and effects"
+			style="@style/wizardTextItem"
+			android:id="@+id/textView"
+	/>
+
+	<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/imageView"
+			android:src="@drawable/settings_preview"
+			android:paddingTop="12dp"
+			android:adjustViewBounds="true"
+			android:layout_gravity="center_horizontal"/>
+
 	<LinearLayout
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-	>
+			android:layout_marginTop="4dp"
+			>
 
 		<ImageView
 				android:layout_width="wrap_content"
@@ -22,24 +38,12 @@
 				android:background="@color/panel_bg_pressed"
 				android:layout_gravity="center"/>
 
-		<TextView style="@style/wizardTextItem" android:text="Press Settings button in order to open configuration screen"
-				  android:paddingLeft="4dp"/>
+		<TextView style="@style/wizardTextItem"
+				  android:text="Press Settings button in order to open configuration screen"
+				  android:paddingLeft="4dp"
+				  android:textSize="18dp"
+				  android:gravity="left"
+				/>
 	</LinearLayout>
-
-	<TextView
-			style="@style/wizardTextItem"
-			android:text="Inside settings of the widget you can define sortcuts, configure its look by changing skin or applying filters and effects"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:id="@+id/textView"
-			android:layout_marginTop="4dp"/>
-
-	<ImageView
-			android:layout_width="fill_parent"
-			android:layout_height="273dp"
-			android:id="@+id/imageView"
-			android:src="@drawable/settings_preview"
-			android:paddingTop="12dp"
-			android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>
