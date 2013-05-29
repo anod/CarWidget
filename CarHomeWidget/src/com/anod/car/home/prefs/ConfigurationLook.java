@@ -2,6 +2,7 @@ package com.anod.car.home.prefs;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -20,6 +21,8 @@ import com.anod.car.home.prefs.views.SeekBarPreference;
 public class ConfigurationLook extends ConfigurationActivity {
 
 	public static final String CATEGORY_TRANSPARENT = "transparent-category";
+	private String[] mIconRotateValues;
+	private String[] mIconRotateTitles;
 
 	@Override
 	protected int getXmlResource() {
@@ -38,11 +41,32 @@ public class ConfigurationLook extends ConfigurationActivity {
 		
 		ListPreference rotatePref = (ListPreference)initWidgetPref(PreferencesStorage.ICONS_ROTATE);
 		rotatePref.setValue(prefs.getIconsRotate().name());
-		
+
+		Resources r = getResources();
+		mIconRotateValues = r.getStringArray(R.array.icon_rotate_values);
+		mIconRotateTitles = r.getStringArray(R.array.icon_rotate_titles);
+		updateRotateSummary(rotatePref, prefs.getIconsRotate().name());
+		rotatePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object o) {
+				updateRotateSummary((ListPreference)preference, (String)o);
+				return true;
+			}
+		});
+
 		initWidgetPrefCheckBox(PreferencesStorage.TITLES_HIDE, prefs.isTitlesHide());
 		initWidgetPrefCheckBox(PreferencesStorage.TRANSPARENT_BTN_SETTINGS, prefs.isSettingsTransparent());
 		initWidgetPrefCheckBox(PreferencesStorage.TRANSPARENT_BTN_INCAR, prefs.isIncarTransparent());
 
+	}
+
+	private void updateRotateSummary(ListPreference rotatePref, String value) {
+		for(int i = 0; i<mIconRotateValues.length; i++) {
+			if (value.equals(mIconRotateValues[i])) {
+				rotatePref.setSummary(mIconRotateTitles[i]);
+				break;
+			}
+		}
 	}
 
 	private void initIcon(final Main prefs, final WidgetSharedPreferences sharedPrefs) {

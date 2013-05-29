@@ -55,6 +55,9 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 		// Start out with a progress indicator.
 		setListShown(false);
 
+		int padding = (int)getResources().getDimension(R.dimen.panel_header_margin);
+		ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) getListView().getLayoutParams();
+		mlp.setMargins(padding,padding,padding,padding);
 		// Prepare the loader.  Either re-connect with an existing one,
 		// or start a new one.
 		getLoaderManager().initLoader(0, null, this);
