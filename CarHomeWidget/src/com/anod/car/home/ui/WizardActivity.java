@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import com.anod.car.home.R;
 import com.anod.car.home.actionbarcompat.ActionBarActivity;
-import com.anod.car.home.prefs.TrialDialogs;
 import com.anod.car.home.utils.Version;
 import com.example.android.wizardpager.wizard.ui.StepPagerStrip;
 
@@ -62,6 +62,8 @@ public class WizardActivity extends ActionBarActivity {
 			public void onClick(View view) {
 				if (nextButton.getTag() == TYPE_FINISH) {
 					finishWizard();
+				} else {
+					mPager.setCurrentItem(mPager.getCurrentItem() + 1);
 				}
 			}
 		});

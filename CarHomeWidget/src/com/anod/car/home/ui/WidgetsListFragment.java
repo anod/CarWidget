@@ -5,6 +5,7 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -41,12 +42,9 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 		getLoaderManager().initLoader(0, null, this).forceLoad();
 	}
 
-	@Override public void onActivityCreated(Bundle savedInstanceState) {
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
-		// Give some text to display if there is no data.  In a real
-		// application this would come from a resource.
-		setEmptyText(getString(R.string.no_items));
 
 		// We have a menu item to show in action bar.
 		setHasOptionsMenu(true);

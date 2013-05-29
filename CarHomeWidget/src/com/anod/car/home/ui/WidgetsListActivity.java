@@ -6,13 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.RemoteViews;
-import com.anod.car.home.WidgetHelper;
-import com.anod.car.home.appwidget.LauncherViewBuilder;
-import com.anod.car.home.prefs.LookAndFeelActivity;
+import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.prefs.PickShortcutUtils;
 import com.anod.car.home.utils.IntentUtils;
 

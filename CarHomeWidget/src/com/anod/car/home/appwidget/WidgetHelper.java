@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.appwidget;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
