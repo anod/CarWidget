@@ -234,6 +234,7 @@
 	<string name="enable_incar_description"><![CDATA[<b>Enable</b> InCar mode in the settings.]]></string>
 	<string name="trial_description">Trial %d activations in the free version.</string>
 	<string name="swipe_continue">Swipe to continue →</string>
+	<string name="finish">Finish</string>
 	<plurals name="active_widgets">
 		<item quantity="zero">No active widgets were found</item>
 		<item quantity="one">One active widget</item>

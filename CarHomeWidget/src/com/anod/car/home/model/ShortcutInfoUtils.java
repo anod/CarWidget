@@ -26,7 +26,7 @@ public class ShortcutInfoUtils {
         return info;
     }
     
-    private static ShortcutInfo infoFromShortcutIntent(Context context, Intent data) {
+    public static ShortcutInfo infoFromShortcutIntent(Context context, Intent data) {
         Intent intent = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
         String name = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
         Parcelable bitmap = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);

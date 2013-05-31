@@ -6,29 +6,17 @@ import java.util.List;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Parcelable;
-import android.view.KeyEvent;
 
 import com.anod.car.home.R;
-import com.anod.car.home.ShortcutActivity;
-import com.anod.car.home.incar.SwitchInCarActivity;
 import com.anod.car.home.prefs.ActivityPicker.PickAdapter.Item;
-import com.anod.car.home.utils.UtilitiesBitmap;
+import com.anod.car.home.utils.IntentUtils;
 
 public class CarWidgetShortcutsPicker extends ActivityPicker {
-	private static final String TUNEIN_FREE_CLS = "tunein.player.Activity";
-	private static final String TUNEIN_FREE_PKG = "tunein.player";
-	
-	private static final String TUNEIN_PRO_CLS = "tunein.player.pro.Activity";
-	private static final String TUNEIN_PRO_PKG = "radiotime.player";
-	
+
 	private static final int SHORCUTS_LENGTH = 5;
-	private static final int IDX_TUNEIN = 4;
+	public static final int IDX_TUNEIN = 4;
 	
 	
 	private static final int[] ICONS = {
@@ -50,7 +38,7 @@ public class CarWidgetShortcutsPicker extends ActivityPicker {
 			if (i == IDX_TUNEIN){
 				item = addTuneInShortcut(titles[i]);
 			} else {
-				Intent intent = createLocalIntent(i,titles[i], ICONS[i]);
+				Intent intent = IntentUtils.createPickShortcutLocalIntent(i, titles[i], ICONS[i], this);
 				item = new PickAdapter.Item(this, titles[i], r.getDrawable(ICONS[i]), intent);
 			}
 			if (item!=null) {
@@ -64,85 +52,20 @@ public class CarWidgetShortcutsPicker extends ActivityPicker {
 		final PackageManager pm = getPackageManager();
 
 		boolean tuneInPro = true;
-		Intent intent = new Intent(Intent.ACTION_MAIN);
-		intent.addCategory(Intent.CATEGORY_LAUNCHER);
-		intent.setComponent(new ComponentName(TUNEIN_PRO_PKG,TUNEIN_PRO_CLS));
-
-		ResolveInfo resolveInfo = pm.resolveActivity(intent, 0);
-		if (resolveInfo == null) {
+		Drawable icon = IntentUtils.getApplicationIcon(pm, new ComponentName(IntentUtils.TUNEIN_PRO_PKG, IntentUtils.TUNEIN_PRO_CLS));
+		if (icon == null) {
 			tuneInPro = false;
-			intent.setComponent(new ComponentName(TUNEIN_FREE_PKG,TUNEIN_FREE_CLS));
-			resolveInfo = pm.resolveActivity(intent, 0);
+			icon = IntentUtils.getApplicationIcon(pm, new ComponentName(IntentUtils.TUNEIN_FREE_PKG, IntentUtils.TUNEIN_FREE_CLS));
 		}
-		if (resolveInfo == null) {
+		if (icon == null) {
 			return null;
 		}
-		
-		Drawable icon = resolveInfo.activityInfo.loadIcon(pm);
 
-		Intent launchIntent = createAppIntent(title, icon, createTuneInIntent(tuneInPro));
+		Intent launchIntent = IntentUtils.createPickShortcutAppIntent(title, icon, IntentUtils.createTuneInIntent(tuneInPro), this);
 		return new PickAdapter.Item(this, title, icon, launchIntent);
 	}
 
-	private Intent createAppIntent(String title, Drawable icon, Intent shortcutIntent) {
-        Bitmap bitmap = UtilitiesBitmap.createIconBitmap(icon, this);
-        Intent intent = commonLaunchIntent(title, shortcutIntent);
-        intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);
-		return intent;
-	}
 
-	private Intent createLocalIntent(int i, String title, int icnResId) {
-		Intent shortcutIntent = createShortcutIntent(i);
-        Intent intent = commonLaunchIntent(title, shortcutIntent);
-        Parcelable iconResource = Intent.ShortcutIconResource.fromContext(this,  icnResId);
-        intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource);
-		return intent;
-	}
-	
-	private Intent commonLaunchIntent(String title, Intent shortcutIntent) {
-		Intent intent = new Intent();
-		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, title);
-		return intent;
-	}
 
-	private Intent createShortcutIntent(int i) {        
-
-		switch(i) {
-			case 0:
-				return new Intent(this, SwitchInCarActivity.class);
-			case 1:
-				return creatMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
-			case 2:
-				return creatMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_NEXT);
-			case 3:
-				return creatMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
-			default:
-		}
-		return null;
-	}
-
-	private Intent createTuneInIntent(boolean tuneInPro) {
-		Intent localIntent = new Intent(Intent.ACTION_RUN);
-		localIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		Uri data;
-		if (tuneInPro) {
-			localIntent.setClassName(TUNEIN_PRO_PKG, "tunein.player.pro.Proxy");
-			data = Uri.parse(TUNEIN_PRO_PKG + "://carmode");
-		} else {
-			localIntent.setClassName(TUNEIN_FREE_PKG, "tunein.player.Proxy");
-			data = Uri.parse(TUNEIN_FREE_PKG + "://carmode");
-		}
-		localIntent.setData(data);
-		return localIntent;		
-	}
-	
-	private Intent creatMediaButtonIntent(int keyCode) {
-		Intent shortcutIntent = new Intent(this,ShortcutActivity.class);
-		shortcutIntent.setAction(ShortcutActivity.ACTION_MEDIA_BUTTON);
-		shortcutIntent.putExtra(ShortcutActivity.EXTRA_MEDIA_BUTTON, keyCode);
-		
-		return shortcutIntent;
-	}
 
 }

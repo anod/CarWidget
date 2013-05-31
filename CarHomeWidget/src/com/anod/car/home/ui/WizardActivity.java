@@ -93,7 +93,7 @@ public class WizardActivity extends ActionBarActivity {
 				mStepPagerStrip.setCurrentPage(position);
 				if (position == (NUM_PAGES - 1)) {
 					nextButton.setTag(TYPE_FINISH);
-					nextButton.setText("Finish");
+					nextButton.setText(R.string.finish);
 					skipButton.setVisibility(View.GONE);
 				}
 			}
