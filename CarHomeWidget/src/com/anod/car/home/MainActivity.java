@@ -57,7 +57,7 @@ public class MainActivity extends ActionBarActivity {
 		initInformation();
 		initDefaultApp();
 
-		if (PreferencesStorage.isShowWizard()) {
+		if (widgetsCount == 0) {
 			Intent intent = new Intent(mContext, WizardActivity.class);
 			startActivity(intent);
 			return;

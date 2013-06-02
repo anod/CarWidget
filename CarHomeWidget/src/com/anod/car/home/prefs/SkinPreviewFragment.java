@@ -87,8 +87,9 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 
 		@Override
 		public View loadInBackground() {
-			LauncherViewBuilder builder = mActivity.getBuilder();
-			
+			LauncherViewBuilder builder = mActivity.createBuilder();
+			builder.init();
+
 			builder.setOverrideSkin(mActivity.getSkinItem(mPosition).value);
 			RemoteViews rv = builder.build();
 
@@ -113,7 +114,8 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
         	((ViewGroup)inflatedView.getParent()).removeView(inflatedView);
         }
         mContainer.addView( inflatedView );
-        mContainer.requestLayout();
+		mContainer.invalidate();
+        //mContainer.requestLayout();
 	}
 
 	@Override

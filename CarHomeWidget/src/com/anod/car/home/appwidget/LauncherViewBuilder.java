@@ -97,8 +97,12 @@ public class LauncherViewBuilder {
 		mSmodel.init();
 		
 		mBitmapTransform = new BitmapTransform(mContext);
-		applyIconTransform(mBitmapTransform, mPrefs);
+		refershIconTransform();
 		return this;
+	}
+
+	public void refershIconTransform() {
+		applyIconTransform(mBitmapTransform, mPrefs);
 	}
 
 	public LauncherViewBuilder reloadShortcuts() {

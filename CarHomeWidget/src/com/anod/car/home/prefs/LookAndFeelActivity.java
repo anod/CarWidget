@@ -94,9 +94,7 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 		setTitle(R.string.pref_look_and_feel_title);
 		mContext = this;
 
-		mBuilder = new LauncherViewBuilder(this);
-		mBuilder.setPendingIntentHelper(this).setAppWidgetId(mAppWidgetId).init();
-
+		mBuilder = createBuilder();
 		mPrefs = mBuilder.getPrefs();
 		mSkinItems = createSkinList(mPrefs.getSkin());
 		mCurrentPage = mSelectedSkinPosition;
@@ -123,8 +121,10 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 		refreshSkinPreview();
 	}
 
-	public LauncherViewBuilder getBuilder() {
-		return mBuilder;
+	public LauncherViewBuilder createBuilder() {
+		LauncherViewBuilder builder = new LauncherViewBuilder(this);
+		builder.setPendingIntentHelper(this).setAppWidgetId(mAppWidgetId).init();
+		return builder;
 	}
 
 	@Override

@@ -467,7 +467,4 @@ public class PreferencesStorage {
 		edit.commit();
 	}
 
-	public static boolean isShowWizard() {
-		return true;
-	}
 }

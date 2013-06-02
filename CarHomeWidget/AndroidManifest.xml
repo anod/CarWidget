@@ -63,8 +63,7 @@
 		<activity
             android:name="com.anod.car.home.prefs.Configuration"
             android:label="@string/settings"
-            android:configChanges="orientation"
-             >
+        >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -75,19 +74,15 @@
          />
         <activity
             android:name="com.anod.car.home.prefs.ConfigurationInCarVolume"
-            android:configChanges="orientation" 
          />
         <activity
             android:name="com.anod.car.home.prefs.ConfigurationInCar"
-            android:configChanges="orientation" 
          />
         <activity
             android:name="com.anod.car.home.prefs.ConfigurationBackup"
-            android:configChanges="orientation" 
          />
         <activity
             android:name="com.anod.car.home.prefs.ConfigurationRestore"
-            android:configChanges="orientation" 
         />
         <activity
             android:name="com.anod.car.home.ShortcutActivity"

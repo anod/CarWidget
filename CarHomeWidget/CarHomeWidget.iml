@@ -68,6 +68,9 @@
     <orderEntry type="jdk" jdkName="Android 4.2.2" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="android-support-v4" level="project" />
+    <orderEntry type="library" name="support-v4-13.0.0" level="project" />
+    <orderEntry type="library" name="support-v13-13.0.0" level="project" />
+    <orderEntry type="library" name="play-services-3.1.36.aar" level="project" />
   </component>
 </module>
 
