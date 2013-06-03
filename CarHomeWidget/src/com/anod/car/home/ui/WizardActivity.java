@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,7 +153,7 @@ public class WizardActivity extends ActionBarActivity {
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			int pos = getArguments().getInt("position", 1);
+			int pos = getArguments().getInt("position", 0);
 			int layoutId = sFragments[pos];
 			ViewGroup rootView = (ViewGroup) inflater.inflate(layoutId, container, false);
 

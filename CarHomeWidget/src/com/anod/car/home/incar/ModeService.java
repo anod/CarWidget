@@ -15,7 +15,6 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
-
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
@@ -130,7 +129,7 @@ public class ModeService extends Service {
 		}
 		sInCarMode = false;
 		requestWidgetsUpdate();
-		// }
+
 		super.onDestroy();
 	}
 
@@ -193,6 +192,7 @@ public class ModeService extends Service {
 			}
 		}
 	}
+
 
 	private void attachPhoneListener() {
 		Log.d("CarHomeWidget", "Set phone listener");

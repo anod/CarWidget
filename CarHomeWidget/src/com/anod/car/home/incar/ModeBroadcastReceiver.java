@@ -7,6 +7,7 @@ import android.content.Intent;
 import com.anod.car.home.utils.Utils;
 
 public class ModeBroadcastReceiver extends BroadcastReceiver {
+	public static final String ACTION_ACTIVITY_RECOGNITION = "com.anod.car.home.incar.ACTION_ACTIVITY_RECOGNITION";
     /**
      * Lock used when maintaining queue of requested updates.
      */

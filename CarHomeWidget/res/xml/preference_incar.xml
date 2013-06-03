@@ -56,6 +56,11 @@
 				android:summary="@string/pref_power_connected_summary"
 				android:title="@string/pref_power_connected_title"
 				android:layout="@layout/pref"/>
+		<Preference android:key="activity-recognition"
+			android:title="Activity recognition"
+			android:summary="Google Play services are not available"
+			android:layout="@layout/pref"
+		/>
 	</PreferenceCategory>
 	<PreferenceCategory
 			android:title="@string/pref_actions"

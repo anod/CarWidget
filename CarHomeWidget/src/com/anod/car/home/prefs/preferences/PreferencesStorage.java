@@ -87,26 +87,6 @@ public class PreferencesStorage {
 
 	public static final String CALL_VOLUME_LEVEL = "call-volume-level";
 
-	private static final String[] sCommonPrefs = {
-		INCAR_MODE_ENABLED,
-		POWER_BT_ENABLE,
-		POWER_BT_DISABLE,
-		HEADSET_REQUIRED,
-		POWER_REQUIRED ,
-		BLUETOOTH_DEVICE_ADDRESSES,
-		SCREEN_TIMEOUT,
-		BRIGHTNESS,
-		BLUETOOTH,
-		ADJUST_VOLUME_LEVEL,
-		MEDIA_VOLUME_LEVEL,
-		AUTO_SPEAKER,
-		AUTO_ANSWER,
-		ADJUST_WIFI,
-		ACTIVATE_CAR_MODE,
-		AUTORUN_APP,
-		MODE_FORCE_STATE,
-		CALL_VOLUME_LEVEL
-	};
 	
 	private static final String DELIMETER_PACKAGES = "\n";
 	public static final String DEF_VALUE = "2";
@@ -410,27 +390,6 @@ public class PreferencesStorage {
 		remove(context, key);
 	}
 
-	public static void dropSettings(Context context) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		Editor edit = prefs.edit();
-
-		for(int i = 0 ; i < sCommonPrefs.length; i++) {
-			edit.remove(sCommonPrefs[i]);
-		}
-
-		if (Utils.IS_HONEYCOMB_OR_GREATER) {
-			LauncherModel model = new LauncherModel(context);
-			for (int i = 0; i < NOTIFICATION_COMPONENT_NUMBER; i++) {
-				String key = getNotifComponentName(i);
-				long curShortcutId = prefs.getLong(key, ShortcutInfo.NO_ID);
-				if (curShortcutId != ShortcutInfo.NO_ID) {
-					model.deleteItemFromDatabase(curShortcutId);
-				}
-				edit.remove(key);
-			}
-		}
-		edit.commit();
-	}
 
 	public static String getNotifComponentName(int position) {
 		return String.format(Locale.US, NOTIF_COMPONENT, position);

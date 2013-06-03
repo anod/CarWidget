@@ -67,7 +67,6 @@ public class Provider extends AppWidgetProvider {
      */
     @Override
     public void onDisabled(Context context) {
-        PreferencesStorage.dropSettings(context);
     	// Launch over to service so it can perform update
     	final Intent updateIntent = new Intent(context, UpdateService.class);
     	context.stopService(updateIntent);
