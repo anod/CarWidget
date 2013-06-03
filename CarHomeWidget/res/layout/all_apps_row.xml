@@ -21,7 +21,7 @@
      <TextView android:id="@android:id/text1"
          android:textSize="18sp"
          android:textStyle="bold"
-         android:paddingStart="3dp"
+         android:paddingLeft="3dp"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:layout_toRightOf="@id/app_icon"
