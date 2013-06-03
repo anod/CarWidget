@@ -240,5 +240,5 @@
 		<item quantity="one">One active widget</item>
 		<item quantity="other">%d active widgets</item>
 	</plurals>
-
+	<string name="crash_toast_text">Car Widget Crashed</string>
 </resources>

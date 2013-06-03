@@ -172,7 +172,7 @@ public class LauncherViewBuilder {
 		HashMap<String,Integer> cmpMap = new HashMap<String,Integer>(shortcuts.size());
 		for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
 			ShortcutInfo info = mSmodel.getShortcut(cellId);
-			if (info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon()) {
+			if (info == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon()) {
 				continue;
 			}
 			cmpMap.put(info.intent.getComponent().getClassName(), cellId);

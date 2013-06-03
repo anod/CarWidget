@@ -71,6 +71,7 @@
     <orderEntry type="library" name="support-v4-13.0.0" level="project" />
     <orderEntry type="library" name="support-v13-13.0.0" level="project" />
     <orderEntry type="library" name="play-services-3.1.36.aar" level="project" />
+    <orderEntry type="library" name="acra-4.5.0" level="project" />
   </component>
 </module>
 
