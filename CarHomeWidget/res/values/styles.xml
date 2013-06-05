@@ -199,8 +199,8 @@
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">match_parent</item>
 		<item name="android:orientation">vertical</item>
-		<item name="android:paddingLeft">16dp</item>
-		<item name="android:paddingRight">16dp</item>
+		<item name="android:paddingLeft">@dimen/wizard_page_margin</item>
+		<item name="android:paddingRight">@dimen/wizard_page_margin</item>
 	</style>
 
 	<style name="wizardTextItem">

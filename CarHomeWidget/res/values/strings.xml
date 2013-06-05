@@ -226,6 +226,7 @@
 	<string name="configure">Configure</string>
 
 	<string name="install_widget"><![CDATA[Go to <b>home screen</b> and open your <b>app drawer</b>. Choose the <b>widget tab</b> then choose <b>Car Widget</b> and put it on the free screen.]]></string>
+	<string name="install_widget_old"><![CDATA[Please note that on Android 2.3 list of widgets opens with <b>long press</b> on your home screen]]></string>
 	<string name="configure_text"><![CDATA[Inside settings of the widget you can define <b>shortcuts</b>, configure its look by changing <b>skin</b> or applying <b>effects</b>]]></string>
 	<string name="open_settings_description"><![CDATA[Press <b>Settings</b> button in order to open configuration screen]]></string>
 	<string name="incar_mode">InCar mode</string>

@@ -2,4 +2,5 @@
 <resources>
 	<dimen name="skin_padding_horiz">10dp</dimen>
 	<dimen name="skin_padding_vert">10dp</dimen>
+	<dimen name="wizard_page_margin">16dp</dimen>
 </resources>

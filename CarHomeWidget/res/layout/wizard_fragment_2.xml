@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="wrap_content" android:layout_width="match_parent">
+<LinearLayout
 	style="@style/WizardPageContainer"
 	android:orientation="vertical">
 
@@ -24,4 +24,12 @@
 			android:adjustViewBounds="true"
 			android:paddingTop="12dp"/>
 
+	<TextView
+			style="@style/wizardTextItem"
+			android:text="@string/install_widget_old"
+			android:id="@+id/desc2"
+			android:layout_marginTop="2dp"
+			android:textSize="18dp"
+	/>
 </LinearLayout>
+</ScrollView>

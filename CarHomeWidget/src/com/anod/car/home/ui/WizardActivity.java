@@ -157,19 +157,18 @@ public class WizardActivity extends ActionBarActivity {
 			int layoutId = sFragments[pos];
 			ViewGroup rootView = (ViewGroup) inflater.inflate(layoutId, container, false);
 
-			TextView desc2;
 			TextView desc1 = (TextView)rootView.findViewById(R.id.desc1);
+			TextView desc2 = (TextView)rootView.findViewById(R.id.desc2);
 			if (layoutId == R.layout.wizard_fragment_1) {
 				desc1.setText(Html.fromHtml(getString(R.string.welcome_text)));
 			} else if (layoutId == R.layout.wizard_fragment_2) {
 				desc1.setText(Html.fromHtml(getString(R.string.install_widget)));
+				desc2.setText(Html.fromHtml(getString(R.string.install_widget_old)));
 			} else if (layoutId == R.layout.wizard_fragment_3) {
 				desc1.setText(Html.fromHtml(getString(R.string.configure_text)));
-				desc2 = (TextView)rootView.findViewById(R.id.desc2);
 				desc2.setText(Html.fromHtml(getString(R.string.open_settings_description)));
 			} else if (layoutId == R.layout.wizard_fragment_4) {
 				desc1.setText(Html.fromHtml(getString(R.string.detect_incar_description)));
-				desc2 = (TextView)rootView.findViewById(R.id.desc2);
 				desc2.setText(Html.fromHtml(getString(R.string.adjust_incar_description)));
 				TextView desc3 = (TextView)rootView.findViewById(R.id.desc3);
 				desc3.setText(Html.fromHtml(getString(R.string.enable_incar_description)));
