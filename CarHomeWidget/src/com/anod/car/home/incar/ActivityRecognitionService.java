@@ -28,52 +28,9 @@ public class ActivityRecognitionService extends IntentService {
 		if (ActivityRecognitionResult.hasResult(intent)) {
 			ActivityRecognitionResult result = ActivityRecognitionResult.extractResult(intent);
 			Intent broadcast = new Intent(ModeBroadcastReceiver.ACTION_ACTIVITY_RECOGNITION);
-			DetectedActivity probActivity = result.getMostProbableActivity();
 			broadcast.putExtra(ActivityRecognitionResult.EXTRA_ACTIVITY_RESULT, result);
 			sendBroadcast(broadcast);
-			Toast.makeText(this,"Detected activity: ["+String.format("%03d", probActivity.getConfidence())+"] "+renderActivityType(probActivity.getType()), Toast.LENGTH_SHORT).show();
 		}
-	}
-
-	private String renderActivityType(int type) {
-		if (type == DetectedActivity.IN_VEHICLE) {
-			return "IN_VEHICLE";
-		}
-		if (type == DetectedActivity.ON_BICYCLE) {
-			return "ON_BICYCLE";
-		}
-		if (type == DetectedActivity.ON_FOOT) {
-			return "ON_FOOT";
-		}
-		if (type == DetectedActivity.STILL) {
-			return "STILL (NOT MOOVING)";
-		}
-		if (type == DetectedActivity.TILTING) {
-			return "TILTING";
-		}
-		return "UNKNOWN (" + type +")";
-	}
-
-	private boolean isRelevantActivityType(int type) {
-		if (type == DetectedActivity.IN_VEHICLE) {
-			return true;
-		}
-		if (type == DetectedActivity.ON_FOOT) {
-			return true;
-		}
-		return false;
-		/*
-		if (type == DetectedActivity.ON_BICYCLE) {
-			return false;
-		}
-		if (type == DetectedActivity.STILL) {
-			return false;
-		}
-		if (type == DetectedActivity.TILTING) {
-			return false;
-		}
-		return false;;
-		*/
 	}
 
 }

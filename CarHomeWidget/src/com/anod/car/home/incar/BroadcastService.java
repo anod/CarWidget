@@ -41,6 +41,8 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 		Log.d("HomeCarWidget", "Register");
 		sRegistred=true;
 
+		attachActivityRecognitionClient();
+
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_HEADSET_PLUG);
 		filter.addAction(Intent.ACTION_POWER_CONNECTED);
@@ -48,9 +50,9 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 		filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
 		filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
 		filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+		filter.addAction(ModeBroadcastReceiver.ACTION_ACTIVITY_RECOGNITION);
 		context.registerReceiver(ModeBroadcastReceiver.getInstance(), filter);
 
-		attachActivityRecognitionClient();
 	}
 
 	private void unregister(Context context) {

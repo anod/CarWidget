@@ -166,11 +166,22 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	public int onScrollRequest(int top) {
 
 		int lastVisiblePos = getListView().getLastVisiblePosition();
-		int lastVisibleY = (int)getListView().getChildAt(lastVisiblePos).getY();
-		if (top >= lastVisiblePos) {
+		int firstVisiblePos = getListView().getFirstVisiblePosition();
+		int lastVisibleIdx = lastVisiblePos - firstVisiblePos;
+		if (lastVisibleIdx > 0) {
+			lastVisibleIdx -= 1;
+		}
+		Log.d("onScrollRequest", "Last visible position: " + lastVisiblePos);
+		View child = getListView().getChildAt(lastVisibleIdx);
+		if (child == null) {
+			Log.d("onScrollRequest", "Child is null ");
+			return 0;
+		}
+		int lastVisibleTop = (int) child.getTop();
+		if (top >= lastVisibleTop) {
 //			getListView().sc
 		}
-		Log.d("onScrollRequest", "Last visible Y: " + lastVisibleY + " Top: " + top);
+		Log.d("onScrollRequest", "Last visible Top: " + lastVisibleTop + " Drop Top: " + top);
 
 		return 0;
 	}
