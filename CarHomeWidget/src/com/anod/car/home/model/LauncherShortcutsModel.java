@@ -54,7 +54,7 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 			new ComponentName("com.google.android.apps.maps", "com.google.android.maps.driveabout.app.DestinationActivity"),
 			new ComponentName("com.android.contacts", "com.android.contacts.DialtactsActivity"),
 			new ComponentName("com.android.htccontacts", "com.android.htccontacts.DialerTabActivity"), //HTC Phone
-			//Order is important see below
+			//
 			new ComponentName("com.android.music", "com.android.music.MusicBrowserActivity"),
 			new ComponentName("com.htc.music", "com.htc.music.HtcMusic"),
 			new ComponentName("com.sec.android.app.music", "com.sec.android.app.music.MusicActionTabActivity"),
@@ -66,7 +66,6 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 		int cellId = 0;
 		Intent data = new Intent();
 		ShortcutInfo info = null;
-		boolean musicfound = false;
 		for (int i = 0; i < list.length; i++) {
 			data.setComponent(list[i]);
 			if (!IntentUtils.isIntentAvailable(mContext, data)) {
@@ -76,9 +75,6 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 			info = ShortcutInfoUtils.infoFromApplicationIntent(mContext, data);
 			saveShortcut(cellId, info);
 			cellId++;
-			if (i == 3 || i == 4 || i == 5) { //Music
-				musicfound = true;
-			}
 			if (cellId == 5) {
 				break;
 			}
@@ -101,14 +97,7 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 				}
 			}
 		}
-		//Add play pause
-		if (cellId < 5 && musicfound) {
-			String[] titles =  mContext.getResources().getStringArray(R.array.carwidget_shortcuts);
-			Intent pickIntent = IntentUtils.createPickShortcutLocalIntent(1, titles[1], R.drawable.ic_media_play_pause, mContext);
-			info = ShortcutInfoUtils.infoFromShortcutIntent(mContext, pickIntent);
-			saveShortcut(cellId, info);
-			cellId++;
-		}
+
 	}
 
 	private ShortcutInfo getTuneInShortcutInfo(Drawable icon, boolean tuneInPro) {
