@@ -34,9 +34,8 @@ public class ModeBroadcastReceiver extends BroadcastReceiver {
 			ActivityRecognitionResult result = (ActivityRecognitionResult)intent.getExtras().get(ActivityRecognitionResult.EXTRA_ACTIVITY_RESULT);
 			DetectedActivity probActivity = result.getMostProbableActivity();
 			Toast.makeText(context, "Detected activity: [" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()), Toast.LENGTH_SHORT).show();
-		} else {
-			Handler.onBroadcastReceive(context, intent);
 		}
+		Handler.onBroadcastReceive(context, intent);
 	}
 
 	private String renderActivityType(int type) {

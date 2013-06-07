@@ -158,7 +158,8 @@
 
 		<service android:name="com.anod.car.home.incar.ModeService" />
         <service android:name="com.anod.car.home.incar.BroadcastService" />
-        
+		<service android:name="com.anod.car.home.incar.ActivityRecognitionService" />
+
     </application>
 
 </manifest>

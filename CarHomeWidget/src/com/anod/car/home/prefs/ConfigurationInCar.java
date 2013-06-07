@@ -37,6 +37,8 @@ import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 public class ConfigurationInCar extends ConfigurationActivity {
 	private static final String MEDIA_SCREEN = "media-screen";
@@ -136,10 +138,41 @@ public class ConfigurationInCar extends ConfigurationActivity {
 		InCar incar = PreferencesStorage.loadInCar(this);
 		initBluetooth();
 		initAutorunApp(incar);
-		
+		initActivityRecognition();
+
 		if (Utils.IS_ICS_OR_GREATER) {
 			setIntent(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class, 0);
 		}
+	}
+
+	private void initActivityRecognition() {
+		final Preference pref = (Preference) findPreference(PreferencesStorage.ACTIVITY_RECOGNITION);
+		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+		pref.setSummary(renderPlayServiceStatus(status));
+	}
+
+	/**
+	 * TODO return resource
+	 * @param status
+	 * @return
+	 */
+	private String renderPlayServiceStatus(int status) {
+		String text = "";
+		if (status == ConnectionResult.SUCCESS) {
+			return "Use Google Play Service to detect activity";
+		}
+		if (status == ConnectionResult.SERVICE_MISSING) {
+			text = "Error: ConnectionResult.SERVICE_MISSING";
+		} else if (status == ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED){
+			text = "Error: ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED";
+		} else if (status == ConnectionResult.SERVICE_DISABLED){
+			text = "Error: ConnectionResult.SERVICE_DISABLED";
+		} else if (status == ConnectionResult.SERVICE_INVALID) {
+			text = "Error: ConnectionResult.SERVICE_INVALID";
+		} else {
+			text = "Error: code " + status;
+		}
+		return text;
 	}
 
 	private void initAutorunApp(InCar incar) {

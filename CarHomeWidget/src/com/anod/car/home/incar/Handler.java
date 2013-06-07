@@ -30,9 +30,10 @@ public class Handler {
 	private static final byte FLAG_POWER = 0;
 	private static final byte FLAG_HEADSET = 1;
 	private static final byte FLAG_BLUETOOTH = 2;
-	
-	private static boolean[] sPrefState = {false,false,false};
-	private static boolean[] sEventState = {false,false,false};
+	private static final byte FLAG_ACTIVITY = 3;
+
+	private static boolean[] sPrefState = {false,false,false,false};
+	private static boolean[] sEventState = {false,false,false,false};
 
 	private static boolean sMode;
 	private static boolean sWakeLocked;
@@ -88,9 +89,10 @@ public class Handler {
 	}
 	
 	private static void updatePrefState(InCar prefs) {
-		sPrefState[FLAG_POWER] = isPlugRequired(FLAG_POWER,prefs);
-		sPrefState[FLAG_BLUETOOTH] = isPlugRequired(FLAG_BLUETOOTH,prefs);
-		sPrefState[FLAG_HEADSET] = isPlugRequired(FLAG_HEADSET,prefs);
+		sPrefState[FLAG_POWER] = prefs.isPowerRequired();
+		sPrefState[FLAG_BLUETOOTH] = prefs.isBluetoothRequired();
+		sPrefState[FLAG_HEADSET] = prefs.isHeadsetRequired();
+		sPrefState[FLAG_ACTIVITY] = prefs.isActivityRequired();
 	}
 	
 	public static void forceState(InCar prefs, boolean forceMode) {
@@ -103,24 +105,21 @@ public class Handler {
 		}
 		if (sPrefState[FLAG_BLUETOOTH]) {
 			sEventState[FLAG_BLUETOOTH] = forceMode;
-		}		
-	}
-	
-	private static boolean isPlugRequired(byte flag, InCar prefs) {
-		switch(flag) {
-			case FLAG_POWER:
-				return prefs.isPowerRequired();
-			case FLAG_BLUETOOTH:
-				return prefs.isBluetoothRequired();
-			case FLAG_HEADSET:
-				return prefs.isHeadsetRequired();
-			default:
-				throw new IllegalArgumentException("Unsupported");
+		}
+		if (sPrefState[FLAG_ACTIVITY]) {
+			sEventState[FLAG_ACTIVITY] = forceMode;
 		}
 	}
+
 	
 	private static void updateEventState(InCar prefs, Intent intent ) {
 		String action = intent.getAction();
+
+		if (ModeBroadcastReceiver.ACTION_ACTIVITY_RECOGNITION.equals(action)) {
+			sEventState[FLAG_ACTIVITY] = ActivityRecognitionHelper.checkCarState(intent, sEventState[FLAG_ACTIVITY]);
+			return;
+		}
+
 		if (Intent.ACTION_POWER_DISCONNECTED.equals(action)) {
 			sEventState[FLAG_POWER] = false;
 			return;

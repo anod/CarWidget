@@ -39,15 +39,24 @@ public class Utils {
 		}
 	}
 
+	/**
+	 *
+	 * @param msg
+	 */
 	public static void logw(String msg) {
-		Log.w(TAG, msg);
+		Log.w(TAG, msg, new Throwable());
 	}
+
+	/**
+	 *
+	 * @param message
+	 */
 	public static void logd(String message) {
 		if (BuildConfig.DEBUG) {
 			Log.d(TAG, message);
 		}
 	}
-	
+
 	public static int readAppWidgetId(Bundle savedInstanceState, Intent launchIntent) {
 		if (savedInstanceState != null) {
 			return savedInstanceState.getInt("appWidgetId");

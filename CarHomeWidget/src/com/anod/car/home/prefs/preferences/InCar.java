@@ -52,6 +52,8 @@ public class InCar implements Serializable {
 
 	transient private ComponentName autorunApp;
 
+	private boolean activityRequired;
+
 	public InCar() {
 		super();
 	}
@@ -123,6 +125,9 @@ public class InCar implements Serializable {
 		return adjustVolumeLevel;
 	}
 
+	public boolean isActivityRequired() {
+		return activityRequired;
+	}
 	/**
 	 * Level 0-100 of media volume
 	 * 
@@ -165,6 +170,10 @@ public class InCar implements Serializable {
 
 	public void setHeadsetRequired(boolean headsetRequired) {
 		this.headsetRequired = headsetRequired;
+	}
+
+	public void setActivityRequired(boolean activityRequired) {
+		this.activityRequired = activityRequired;
 	}
 
 	public void setDisableBluetoothOnPower(boolean disableBluetoothOnPower) {
@@ -290,4 +299,6 @@ public class InCar implements Serializable {
 		}
 
 	}
+
+
 }

@@ -90,6 +90,7 @@ public class PreferencesStorage {
 	
 	private static final String DELIMETER_PACKAGES = "\n";
 	public static final String DEF_VALUE = "2";
+	public static final String ACTIVITY_RECOGNITION = "activity-recognition";
 
 	public static Main loadMain(Context context, int appWidgetId) {
 		final WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
@@ -176,6 +177,7 @@ public class PreferencesStorage {
 		p.setActivateCarMode(prefs.getBoolean(ACTIVATE_CAR_MODE, false));
 		p.setAutoAnswer(prefs.getString(AUTO_ANSWER, InCar.AUTOANSWER_DISABLED));
 
+		p.setActivityRequired(prefs.getBoolean(ACTIVITY_RECOGNITION, false));// TODO
 		String autorunAppString = prefs.getString(AUTORUN_APP, null);
 		Log.d("CarWidget", "Autroun app:" + autorunAppString);
 		ComponentName autorunApp = null;
@@ -209,6 +211,7 @@ public class PreferencesStorage {
 		editor.putBoolean(ACTIVATE_CAR_MODE, prefs.isActivateCarMode());
 		editor.putString(AUTO_ANSWER, prefs.getAutoAnswer());
 
+		editor.putBoolean(ACTIVITY_RECOGNITION, prefs.isActivityRequired());
 		ComponentName autorunApp = prefs.getAutorunApp();
 		if (autorunApp == null) {
 			editor.remove(AUTORUN_APP);

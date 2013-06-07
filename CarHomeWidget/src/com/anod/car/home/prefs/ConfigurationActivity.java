@@ -61,12 +61,13 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 
 		if (isAppWidgetIdRequired()) {
 			if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-				Utils.logw("AppWidgetId required");
 				Intent defaultResultValue = new Intent();
 				defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 				setResult(RESULT_OK, defaultResultValue);
 			} else {
+				Utils.logw("AppWidgetId required");
 				finish();
+				return;
 			}
 		}
 		

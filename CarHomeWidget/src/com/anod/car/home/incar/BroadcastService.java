@@ -82,10 +82,13 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 	@Override
 	public void onConnected(Bundle bundle) {
 		Toast.makeText(this, "Activity Recognition Client Connected", Toast.LENGTH_SHORT).show();
-		Intent intent = new Intent(this, ActivityRecognitionService.class);
-		PendingIntent callbackIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		// 3 sec
-		mActivityRecognitionClient.requestActivityUpdates(3000, callbackIntent);
+		mActivityRecognitionClient.requestActivityUpdates(10000, getActivityRecognitionPendingIntent());
+	}
+
+	private PendingIntent getActivityRecognitionPendingIntent() {
+		Intent intent = new Intent(this, ActivityRecognitionService.class);
+		return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
 	@Override
