@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.util.Log;
 
+import com.anod.car.home.BuildConfig;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
@@ -64,9 +65,11 @@ public class Handler {
 				
 		updatePrefState(prefs);
 		updateEventState(prefs,intent);
-		for (int i=0; i<3; i++) {
-			Log.d(TAG, "Pref state [" +i +"] : " + sPrefState[i]);	
-			Log.d(TAG, "Event state [" +i +"] : " + sEventState[i]);	
+		if (BuildConfig.DEBUG) {
+			for (int i=0; i<sPrefState.length; i++) {
+				Log.d(TAG, "Pref state [" +i +"] : " + sPrefState[i]);
+				Log.d(TAG, "Event state [" +i +"] : " + sEventState[i]);
+			}
 		}
 
 		boolean newMode = detectNewMode();
