@@ -24,8 +24,8 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 11
-        versionCode 26
-        versionName '1.52'
+        versionCode 27
+        versionName '1.6'
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
     sourceSets {
