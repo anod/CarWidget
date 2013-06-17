@@ -5,7 +5,7 @@
 	<PreferenceCategory
 			android:key="backup-main-category"
 			android:title="@string/backup_current_widget"
-			android:layout="@layout/pref_category">
+			android:layout="@layout/pref_category_top">
 		<Preference
 				android:key="backup-btn-main"
 				android:title="@string/backup"

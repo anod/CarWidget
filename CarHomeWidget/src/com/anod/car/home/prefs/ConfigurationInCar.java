@@ -56,6 +56,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 
 	private static final IntentFilter INTENT_FILTER = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
 	protected static final int REQUEST_PICK_APPLICATION = 0;
+	public static final int PS_DIALOG_REQUEST_CODE = 4;
 	private PreferenceCategory mBluetoothDevicesCategory;
 	private BroadcastReceiver mBluetoothReceiver;
 
@@ -147,32 +148,41 @@ public class ConfigurationInCar extends ConfigurationActivity {
 
 	private void initActivityRecognition() {
 		final Preference pref = (Preference) findPreference(PreferencesStorage.ACTIVITY_RECOGNITION);
-		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+		final int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 		pref.setSummary(renderPlayServiceStatus(status));
+		if (status != ConnectionResult.SUCCESS) {
+			pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object o) {
+					Dialog d = GooglePlayServicesUtil.getErrorDialog(status, ConfigurationInCar.this, PS_DIALOG_REQUEST_CODE);
+					d.show();
+					return false;
+				}
+			});
+		}
 	}
 
 	/**
-	 * TODO return resource
-	 * @param status
+	 * @param errorCode
 	 * @return
 	 */
-	private String renderPlayServiceStatus(int status) {
-		String text = "";
-		if (status == ConnectionResult.SUCCESS) {
-			return "Use Google Play Service to detect activity";
+	private String renderPlayServiceStatus(int errorCode) {
+		if (errorCode == ConnectionResult.SUCCESS) {
+			return getString(R.string.gms_success);
 		}
-		if (status == ConnectionResult.SERVICE_MISSING) {
-			text = "Error: ConnectionResult.SERVICE_MISSING";
-		} else if (status == ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED){
-			text = "Error: ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED";
-		} else if (status == ConnectionResult.SERVICE_DISABLED){
-			text = "Error: ConnectionResult.SERVICE_DISABLED";
-		} else if (status == ConnectionResult.SERVICE_INVALID) {
-			text = "Error: ConnectionResult.SERVICE_INVALID";
-		} else {
-			text = "Error: code " + status;
+		if (errorCode == ConnectionResult.SERVICE_MISSING) {
+			return getString(R.string.gms_service_missing);
 		}
-		return text;
+		if (errorCode == ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED) {
+			return getString(R.string.gms_service_update_required);
+		}
+		if (errorCode == ConnectionResult.SERVICE_DISABLED) {
+			return getString(R.string.gms_service_disabled);
+		}
+		if (errorCode == ConnectionResult.SERVICE_INVALID) {
+			return getString(R.string.gms_service_invalid);
+		}
+		return GooglePlayServicesUtil.getErrorString(errorCode);
 	}
 
 	private void initAutorunApp(InCar incar) {

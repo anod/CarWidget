@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import android.widget.ListView;
 import com.anod.car.home.R;
 import com.anod.car.home.actionbarcompat.ActionBarHelper;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -72,7 +73,7 @@ abstract class ConfigurationActivity extends PreferenceActivity {
 		}
 		
 		mContext = (Context) this;
-		
+
 		onCreateImpl(savedInstanceState);
 	}
 

@@ -27,6 +27,7 @@
 	<dimen name="preference_widget_width">48dp</dimen>
 
 	<dimen name="panel_header_margin">12dp</dimen>
+	<dimen name="panel_header_margin_top">12dp</dimen>
 
 	<!-- wizard -->
 	<dimen name="step_pager_tab_width">32dp</dimen>

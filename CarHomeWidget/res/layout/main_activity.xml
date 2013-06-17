@@ -45,24 +45,54 @@
 				android:id="@+id/textView"
 		/>
 
-		<TextView
-				android:text="Active"
-				android:id="@+id/incarActive"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textAppearance="?android:attr/textAppearanceSmall"
-				android:textColor="@color/font_color_sec"/>
 	</LinearLayout>
 
-	<Button
+	<LinearLayout
 			style="@style/panelItem"
 			android:layout_marginTop="1dp"
-			android:text="@string/settings"
 			android:id="@+id/incarSettings"
-			android:drawableLeft="@drawable/ic_holo_settings"
-			android:gravity="left|center_vertical"
-			android:textColor="@color/font_color"
-			android:drawablePadding="4dp"/>
+			>
+
+		<ImageView
+				android:id="@android:id/icon"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:src="@drawable/ic_holo_settings"
+				/>
+
+		<RelativeLayout
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:paddingLeft="4dp">
+
+			<TextView
+					android:id="@android:id/title"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:singleLine="true"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:ellipsize="marquee"
+					android:fadingEdge="horizontal"
+					android:text="@string/settings"
+					style="@style/text_align_style"
+					android:textColor="@color/font_color"/>
+
+			<TextView
+					android:id="@+id/incarActive"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_below="@android:id/title"
+					android:layout_alignLeft="@android:id/title"
+					android:maxLines="1"
+					android:text="Active"
+					android:textAppearance="?android:attr/textAppearanceSmall"
+					android:textColor="@color/font_color_sec"/>
+
+		</RelativeLayout>
+
+	</LinearLayout>
 
 	<LinearLayout
 			android:paddingTop="0dp"

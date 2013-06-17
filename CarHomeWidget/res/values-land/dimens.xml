@@ -8,4 +8,6 @@
 
 	<!-- wizard -->
 	<dimen name="wizard_page_margin">16dp</dimen>
+
+	<dimen name="panel_header_margin_top">0dp</dimen>
 </resources>

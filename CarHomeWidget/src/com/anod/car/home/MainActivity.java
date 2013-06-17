@@ -65,7 +65,7 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void initInCar(final int widgetsCount) {
-		Button settings = (Button) findViewById(R.id.incarSettings);
+		LinearLayout settings = (LinearLayout) findViewById(R.id.incarSettings);
 		settings.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -96,7 +96,7 @@ public class MainActivity extends ActionBarActivity {
 		backup.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				new BackupTask().execute(null);
+				new InCarBackupTask().execute("");
 			}
 		});
 
@@ -220,7 +220,7 @@ public class MainActivity extends ActionBarActivity {
 
 	}
 
-	public class BackupTask extends AsyncTask<String, Void, Integer> {
+	public class InCarBackupTask extends AsyncTask<String, Void, Integer> {
 
 		@Override
 		protected void onPreExecute() {
@@ -228,7 +228,6 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		protected Integer doInBackground(String... filenames) {
-			String filename = filenames[0];
 			PreferencesBackupManager backupManager = new PreferencesBackupManager(mContext);
 			return backupManager.doBackupInCar();
 		}
