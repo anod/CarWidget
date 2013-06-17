@@ -52,16 +52,29 @@ public class MainActivity extends ActionBarActivity {
 		int[] appWidgetIds = WidgetHelper.getAllWidgetIds(mContext);
 		final int widgetsCount = appWidgetIds.length;
 
+		if (widgetsCount == 0) {
+			startWizard();
+			return;
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		int[] appWidgetIds = WidgetHelper.getAllWidgetIds(mContext);
+		final int widgetsCount = appWidgetIds.length;
+
 		initWidgets(widgetsCount);
 		initInCar(widgetsCount);
 		initInformation();
 		initDefaultApp();
 
-		if (widgetsCount == 0) {
-			Intent intent = new Intent(mContext, WizardActivity.class);
-			startActivity(intent);
-			return;
-		}
+	}
+
+	private void startWizard() {
+		Intent intent = new Intent(mContext, WizardActivity.class);
+		startActivity(intent);
 	}
 
 	private void initInCar(final int widgetsCount) {
@@ -128,6 +141,8 @@ public class MainActivity extends ActionBarActivity {
 				if (widgetsCount > 0) {
 					Intent intent = new Intent(mContext, WidgetsListActivity.class);
 					startActivity(intent);
+				} else {
+					startWizard();
 				}
 			}
 		});
