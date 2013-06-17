@@ -175,7 +175,11 @@ public class WizardActivity extends ActionBarActivity {
 
 				Version v = new Version(getActivity());
 				TextView desc4 = (TextView)rootView.findViewById(R.id.desc4);
-				desc4.setText(Html.fromHtml(getString(R.string.trial_description, v.getMaxTrialTimes())));
+				if (v.isFree()) {
+					desc4.setText(Html.fromHtml(getString(R.string.trial_description, v.getMaxTrialTimes())));
+				} else {
+					desc4.setVisibility(View.GONE);
+				}
 			}
 
 			return rootView;
