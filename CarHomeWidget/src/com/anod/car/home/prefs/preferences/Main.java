@@ -1,5 +1,10 @@
 package com.anod.car.home.prefs.preferences;
 
+import android.content.ComponentName;
+
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 import com.anod.car.home.utils.BitmapTransform.RotateDirection;
@@ -29,7 +34,7 @@ public class Main implements Serializable {
 	private boolean settingsTransparent;
 	private boolean incarTransparent;
 	private String iconsTheme;
-	private RotateDirection iconsRotate;
+	private RotateDirection iconsRotate = RotateDirection.NONE;
 	private boolean titlesHide;
 	
 	public String getIconsTheme() {
@@ -111,4 +116,13 @@ public class Main implements Serializable {
 	public final void setTitlesHide(boolean titlesHide) {
 		this.titlesHide = titlesHide;
 	}
+
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+
+        if (iconsRotate == null) {
+            iconsRotate = RotateDirection.NONE;
+        }
+    }
 }

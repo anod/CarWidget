@@ -148,6 +148,10 @@ public class PreferencesStorage {
 		editor.putBoolean(TRANSPARENT_BTN_INCAR, prefs.isSettingsTransparent());
 
 		editor.putStringOrRemove(ICONS_THEME, prefs.getIconsTheme());
+
+        editor.putString(ICONS_ROTATE, prefs.getIconsRotate().name());
+        editor.putBoolean(TITLES_HIDE, prefs.isTitlesHide());
+
 		editor.commit();
 
 	}
