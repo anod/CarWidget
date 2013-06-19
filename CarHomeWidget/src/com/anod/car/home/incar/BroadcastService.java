@@ -84,6 +84,7 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 	private void detachActivityRecognitionClient() {
 		if (mActivityRecognitionClient != null) {
 			mActivityRecognitionClient.disconnect();
+            mActivityRecognitionClient = null;
 		}
 	}
 
