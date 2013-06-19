@@ -75,6 +75,7 @@
     <plurals name="notif_activations_left">
         <item quantity="one">%1$d активация осталась</item>
         <item quantity="few">%1$d активации осталось</item>
+        <item quantity="many">%1$d активаций осталось</item>
         <item quantity="other">%1$d активаций осталось</item>
     </plurals>
     

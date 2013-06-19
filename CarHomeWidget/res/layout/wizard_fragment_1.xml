@@ -19,7 +19,7 @@
 	<TextView
 		style="@style/wizardTextItem"
 		android:text="@string/swipe_continue"
-		android:textSize="20dp"
+		android:textSize="20sp"
 		android:textColor="@color/step_pager_selected_tab_color"
 		android:padding="12dp"/>
 

@@ -1,11 +1,11 @@
 package com.anod.car.home.ui;
 
 import android.appwidget.AppWidgetManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.prefs.PickShortcutUtils;
 import com.anod.car.home.utils.IntentUtils;
@@ -15,7 +15,6 @@ import com.anod.car.home.utils.IntentUtils;
  * @date 5/24/13
  */
 public class WidgetsListActivity extends FragmentActivity {
-	private Context mContext;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +25,6 @@ public class WidgetsListActivity extends FragmentActivity {
 			startConfigActivity(appWidgetIds[0]);
 			return;
 		};
-
-		mContext = this;
 
 		// to give support on lower android version, we are not calling getFragmentManager()
 		FragmentManager fm = getSupportFragmentManager();

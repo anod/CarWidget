@@ -5,19 +5,14 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.SparseArray;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
 import com.anod.car.home.R;
 import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.prefs.LookAndFeelActivity;
 
-import java.util.AbstractList;
-import java.util.HashMap;
-import java.util.List;
-
-public class WidgetsListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<HashMap<Integer,SparseArray<ShortcutInfo>>> {
+public class WidgetsListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<SparseArray<SparseArray<ShortcutInfo>>> {
 	private WidgetsListAdapter mAdapter;
 
 	private static final String ARG_WIDGET_IDS = "appWidgetIds";
@@ -71,12 +66,12 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 	}
 
 	@Override
-	public Loader<HashMap<Integer,SparseArray<ShortcutInfo>>> onCreateLoader(int i, Bundle bundle) {
+	public Loader<SparseArray<SparseArray<ShortcutInfo>>> onCreateLoader(int i, Bundle bundle) {
 		return new WidgetsListLoader(getActivity(), mAppWidgetIds);
 	}
 
 	@Override
-	public void onLoadFinished(Loader<HashMap<Integer, SparseArray<ShortcutInfo>>> loader, HashMap<Integer, SparseArray<ShortcutInfo>> widgetShortcuts) {
+	public void onLoadFinished(Loader<SparseArray<SparseArray<ShortcutInfo>>> loader, SparseArray<SparseArray<ShortcutInfo>> widgetShortcuts) {
 		mAdapter.setWidgetShortcuts(widgetShortcuts);
 
 		if (isResumed()) {
@@ -87,7 +82,7 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 	}
 
 	@Override
-	public void onLoaderReset(Loader<HashMap<Integer,SparseArray<ShortcutInfo>>> loader) {
+	public void onLoaderReset(Loader<SparseArray<SparseArray<ShortcutInfo>>> loader) {
 		mAdapter.setWidgetShortcuts(null);
 	}
 

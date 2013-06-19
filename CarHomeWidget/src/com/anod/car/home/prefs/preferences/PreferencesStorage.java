@@ -429,4 +429,8 @@ public class PreferencesStorage {
 		edit.commit();
 	}
 
+
+	public static boolean isActivityRecognitionEnabled(Context context) {
+		return getBoolean(context, ACTIVITY_RECOGNITION, false);
+	}
 }

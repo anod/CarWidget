@@ -11,8 +11,20 @@ import com.google.android.gms.location.DetectedActivity;
  * @date 6/3/13
  */
 public class ActivityRecognitionService extends IntentService {
+	/**
+	 * Lock used when maintaining queue of requested updates.
+	 */
+	private static Object sLock = new Object();
+
 	public static final int MIN_CONFIDENCE = 10;
 	private static int sLastResult = -1;
+
+
+	public static void resetLastResult() {
+		synchronized (sLock) {
+			sLastResult = -1;
+		}
+	}
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -22,6 +34,7 @@ public class ActivityRecognitionService extends IntentService {
 	public ActivityRecognitionService() {
 		super("ActivityRecognitionService");
 	}
+
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
@@ -34,11 +47,13 @@ public class ActivityRecognitionService extends IntentService {
 			}
 			int type = probActivity.getType();
 			if (type == DetectedActivity.ON_FOOT || type == DetectedActivity.IN_VEHICLE) {
-				if (sLastResult != type) {
-					sLastResult = type;
-					Intent broadcast = new Intent(ModeBroadcastReceiver.ACTION_ACTIVITY_RECOGNITION);
-					broadcast.putExtra(ActivityRecognitionResult.EXTRA_ACTIVITY_RESULT, result);
-					sendBroadcast(broadcast);
+				synchronized (sLock) {
+					if (sLastResult != type) {
+						sLastResult = type;
+						Intent broadcast = new Intent(ModeBroadcastReceiver.ACTION_ACTIVITY_RECOGNITION);
+						broadcast.putExtra(ActivityRecognitionResult.EXTRA_ACTIVITY_RESULT, result);
+						sendBroadcast(broadcast);
+					}
 				}
 			}
 

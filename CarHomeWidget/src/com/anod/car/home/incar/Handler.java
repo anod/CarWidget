@@ -231,6 +231,9 @@ public class Handler {
 
 	public static void switchOff(InCar prefs, Context context) {
 		sMode = false;
+
+		resetActivityState();
+
 		if (prefs.isDisableScreenTimeout()) {
 			releaseWakeLock();
 		}
@@ -251,7 +254,15 @@ public class Handler {
 			restoreBrightness(brightSetting,context);
 		}
 	}
-	
+
+	/**
+	 * reset activity state flag
+	 */
+	private static void resetActivityState() {
+		sEventState[FLAG_ACTIVITY] = false;
+		ActivityRecognitionService.resetLastResult();
+	}
+
 
 	@TargetApi(Build.VERSION_CODES.FROYO)
 	private static void activateCarMode(Context context) {

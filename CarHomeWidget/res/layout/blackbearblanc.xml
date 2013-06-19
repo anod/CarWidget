@@ -92,15 +92,14 @@
             android:layout_weight="1"
             android:baselineAligned="false"
             android:orientation="horizontal" >
-
+        
             <FrameLayout style="@style/bbb_btn" >
 
                 <Button
-                    android:id="@+id/btn_text4"
-                    style="@style/bbb_btn_text"
-                    android:text="@string/set_shortcut_short" />
-
-                ‎<ImageView
+                  android:id="@+id/btn_text4"
+                  style="@style/bbb_btn_text"
+                  android:text="@string/set_shortcut_short" />
+                <ImageView
                     android:id="@+id/btn4"
                     style="@style/bbb_btn_icon"
                     android:src="@drawable/ic_add_shortcut_holo" />
@@ -129,7 +128,6 @@
             android:id="@+id/btn_incar_switch"
             style="@style/incarButton"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/workspace"
             android:background="@drawable/btn_transparent"
             android:src="@drawable/ic_incar_exit_bbb" />
 
@@ -137,7 +135,6 @@
             android:id="@+id/btn_settings"
             style="@style/settingsButton"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/workspace"
             android:background="@drawable/btn_transparent"
             android:src="@drawable/ic_settings_bbb" />
     </RelativeLayout>

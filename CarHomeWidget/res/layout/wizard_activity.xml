@@ -41,7 +41,7 @@
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:layout_height="wrap_content"
-				android:text="Skip"
+				android:text="@string/skip"
 				android:minHeight="50dp"/>
 
 		<Button
@@ -51,7 +51,7 @@
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:layout_height="wrap_content"
-				android:text="Next"
+				android:text="@string/next"
 				android:minHeight="50dp"/>
 
 	</LinearLayout>

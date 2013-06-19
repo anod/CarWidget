@@ -1,20 +1,15 @@
 package com.anod.car.home.ui;
 
-import android.annotation.TargetApi;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
-import android.os.Build;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+
 import com.anod.car.home.R;
 import com.anod.car.home.model.ShortcutInfo;
-
-import java.util.HashMap;
-import java.util.Set;
 
 /**
  * @author alex
@@ -23,8 +18,7 @@ import java.util.Set;
 
 public class WidgetsListAdapter extends ArrayAdapter<Integer> {
 
-	private AppWidgetManager mAppWidgetManager;
-	private HashMap<Integer,SparseArray<ShortcutInfo>> mWidgetShortcuts;
+	private SparseArray<SparseArray<ShortcutInfo>> mWidgetShortcuts;
 
 	private static int[] sIds = {
 		R.id.imageView0,
@@ -37,8 +31,7 @@ public class WidgetsListAdapter extends ArrayAdapter<Integer> {
 
 	public WidgetsListAdapter(Context context) {
 		super(context, R.layout.settings_item);
-		mAppWidgetManager = AppWidgetManager.getInstance(context);
-		mWidgetShortcuts = new HashMap<Integer, SparseArray<ShortcutInfo>>();
+		mWidgetShortcuts = new SparseArray<SparseArray<ShortcutInfo>>();
 	}
 
 	@Override
@@ -68,27 +61,15 @@ public class WidgetsListAdapter extends ArrayAdapter<Integer> {
 	}
 
 
-	public void setWidgetShortcuts(HashMap<Integer, SparseArray<ShortcutInfo>> widgetShortcuts) {
+	public void setWidgetShortcuts(SparseArray<SparseArray<ShortcutInfo>> widgetShortcuts) {
 		mWidgetShortcuts = widgetShortcuts;
 		if (widgetShortcuts == null) {
 			clear();
 		} else {
-			setData(widgetShortcuts.keySet());
-		}
-	}
-
-	@TargetApi(11)
-	public void setData(Set<Integer> data) {
-		clear();
-		if (data != null) {
-			//If the platform supports it, use addAll, otherwise add in loop
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				addAll(data);
-			}else{
-				for(Integer item: data){
-					add(item);
-				}
+			for(int i =0; i<widgetShortcuts.size(); i++) {
+				add(widgetShortcuts.keyAt(i));
 			}
 		}
 	}
+
 }

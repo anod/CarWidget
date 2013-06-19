@@ -3,16 +3,15 @@ package com.anod.car.home.ui;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.SparseArray;
+
 import com.anod.car.home.model.LauncherShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
-
-import java.util.HashMap;
 
 /**
  * @author alex
  * @date 5/27/13
  */
-public class WidgetsListLoader extends AsyncTaskLoader< HashMap<Integer,SparseArray<ShortcutInfo>> > {
+public class WidgetsListLoader extends AsyncTaskLoader< SparseArray<SparseArray<ShortcutInfo>> > {
 	private final Context mContext;
 	private final int[] mAppWidgetIds;
 
@@ -23,9 +22,9 @@ public class WidgetsListLoader extends AsyncTaskLoader< HashMap<Integer,SparseAr
 	}
 
 	@Override
-	public HashMap<Integer,SparseArray<ShortcutInfo>> loadInBackground() {
+	public SparseArray<SparseArray<ShortcutInfo>> loadInBackground() {
 
-		HashMap<Integer,SparseArray<ShortcutInfo>> result = new HashMap<Integer, SparseArray<ShortcutInfo>>();
+		SparseArray<SparseArray<ShortcutInfo>> result = new SparseArray<SparseArray<ShortcutInfo>>();
 
 		for (int i = 0; i < mAppWidgetIds.length; i++) {
 			LauncherShortcutsModel model = new LauncherShortcutsModel(mContext,mAppWidgetIds[i]);

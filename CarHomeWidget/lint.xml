@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
-    <issue id="ContentDescription">
+    <issue id="ContentDescription" severity="ignore">
         <ignore path="res/layout-v11/notification.xml" />
         <ignore path="res/layout/holo.xml" />
         <ignore path="res/layout/restore_item.xml" />
@@ -11,4 +11,5 @@
         <ignore path="res/values/string_no_translations.xml" />
         <ignore path="res/values/string_no_translations.xml" />
     </issue>
+    <issue id="OldTargetApi" severity="ignore" />
 </lint>

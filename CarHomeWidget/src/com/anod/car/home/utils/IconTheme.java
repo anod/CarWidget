@@ -4,34 +4,20 @@ package com.anod.car.home.utils;
  * @author alex
  * @date 5/25/13
  */
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.AssetManager;
-import android.content.res.Resources;
-import android.content.res.XmlResourceParser;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Locale;
 
-import com.anod.car.home.R;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
+
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 
 public class IconTheme
 {
@@ -81,7 +67,7 @@ public class IconTheme
 	private HashMap<String, Integer> fallback(HashMap<String, Integer> cmpMap) {
 		int found = 0;
 		int required = cmpMap.size();
-		HashMap<String, Integer> iconMap = new HashMap(required);
+		HashMap<String, Integer> iconMap = new HashMap<String, Integer>(required);
 
 		//Fallback
 		for(String className : cmpMap.keySet()) {
@@ -134,7 +120,7 @@ public class IconTheme
 
 		int found = 0;
 		int required = cmpMap.size();
-		HashMap<String, Integer> iconMap = new HashMap(required);
+		HashMap<String, Integer> iconMap = new HashMap<String, Integer>(required);
 
 		int eventType = xml.getEventType();
 		while (eventType != XmlPullParser.END_DOCUMENT) {

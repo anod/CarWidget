@@ -82,3 +82,7 @@ android {
     sourceSets.debug.manifest.srcFile('AndroidManifestPro.xml')
     sourceSets.freedebug.manifest.srcFile('AndroidManifestFree.xml')
 }
+
+tasks.withType(Compile) {
+    options.encoding = "UTF-8"
+}

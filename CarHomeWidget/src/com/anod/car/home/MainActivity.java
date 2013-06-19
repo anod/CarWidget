@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.anod.car.home.actionbarcompat.ActionBarActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.prefs.ConfigurationInCar;

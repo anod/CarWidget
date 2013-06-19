@@ -11,11 +11,12 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.ActivityRecognitionClient;
 
-public class BroadcastService extends Service  implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener{
+public class BroadcastService extends Service  implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, ModeBroadcastReceiver.UpdateActivityClientListener {
 	private ActivityRecognitionClient mActivityRecognitionClient;
 
 	public static boolean sRegistred;
@@ -41,8 +42,6 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 		Log.d("HomeCarWidget", "Register");
 		sRegistred=true;
 
-		attachActivityRecognitionClient();
-
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_HEADSET_PLUG);
 		filter.addAction(Intent.ACTION_POWER_CONNECTED);
@@ -51,23 +50,32 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 		filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
 		filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
 		filter.addAction(ModeBroadcastReceiver.ACTION_ACTIVITY_RECOGNITION);
-		context.registerReceiver(ModeBroadcastReceiver.getInstance(), filter);
+		filter.addAction(ModeBroadcastReceiver.ACTION_UPDATE_ACTIVITY_CLIENT);
+		ModeBroadcastReceiver receiver = ModeBroadcastReceiver.getInstance();
+		receiver.setUpdateClientListener(this);
+		context.registerReceiver(receiver, filter);
 
+			
+		if (PreferencesStorage.isActivityRecognitionEnabled(context)) {
+			attachActivityRecognitionClient(context);
+		}
 	}
 
 	private void unregister(Context context) {
 		Log.d("HomeCarWidget", "unregister");
 		sRegistred=false;
-		context.unregisterReceiver(ModeBroadcastReceiver.getInstance());
+		ModeBroadcastReceiver receiver = ModeBroadcastReceiver.getInstance();
+		receiver.setUpdateClientListener(null);
+		context.unregisterReceiver(receiver);
 
 
 		detachActivityRecognitionClient();
 	}
 
 
-	private void attachActivityRecognitionClient() {
-		// Connect to the ActivityRecognitionService
+	private void attachActivityRecognitionClient(Context context) {
 		if (mActivityRecognitionClient == null) {
+			// Connect to the ActivityRecognitionService
 			mActivityRecognitionClient = new ActivityRecognitionClient(this, this, this);
 			mActivityRecognitionClient.connect();
 		}
@@ -99,5 +107,15 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
 		Toast.makeText(this, "Activity Recognition Client Connection Failed: "+connectionResult.toString(),Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onUpdate(boolean enable) {
+		Log.d("HomeCarWidget", "ActivityRecognitionClientUpdate: "+enable);
+		if (enable) {
+			attachActivityRecognitionClient(this);
+		} else {
+			detachActivityRecognitionClient();
+		}
 	}
 }

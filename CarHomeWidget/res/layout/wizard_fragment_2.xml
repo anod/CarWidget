@@ -29,7 +29,7 @@
 			android:text="@string/install_widget_old"
 			android:id="@+id/desc2"
 			android:layout_marginTop="2dp"
-			android:textSize="18dp"
+			android:textSize="18sp"
 	/>
 </LinearLayout>
 </ScrollView>

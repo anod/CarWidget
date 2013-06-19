@@ -33,6 +33,7 @@ import android.preference.SwitchPreference;
 import com.anod.car.home.R;
 import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
+import com.anod.car.home.incar.ModeBroadcastReceiver;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
@@ -157,6 +158,17 @@ public class ConfigurationInCar extends ConfigurationActivity {
 					Dialog d = GooglePlayServicesUtil.getErrorDialog(status, ConfigurationInCar.this, PS_DIALOG_REQUEST_CODE);
 					d.show();
 					return false;
+				}
+			});
+		} else {
+			pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					Boolean val = (Boolean)newValue;
+					Intent intent = new Intent(ModeBroadcastReceiver.ACTION_UPDATE_ACTIVITY_CLIENT);
+					intent.putExtra(ModeBroadcastReceiver.EXTRA_STATUS, val);
+					sendBroadcast(intent);
+					return true;
 				}
 			});
 		}

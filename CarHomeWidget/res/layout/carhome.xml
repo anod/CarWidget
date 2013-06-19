@@ -228,7 +228,6 @@
             android:id="@+id/btn_incar_switch"
             style="@style/incarButton"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/workspace"
             android:background="@drawable/btn_transparent"
             android:src="@drawable/ic_incar_enter" />
 
@@ -236,7 +235,6 @@
             android:id="@+id/btn_settings"
             style="@style/settingsButton"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/workspace"
             android:background="@drawable/btn_transparent"
             android:src="@drawable/ic_settings" />
     </RelativeLayout>

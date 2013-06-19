@@ -6,7 +6,7 @@
 <LinearLayout
 			  android:orientation="vertical"
 			  android:layout_width="match_parent"
-			  android:layout_height="match_parent"
+			  android:layout_height="wrap_content"
 			  android:padding="12dp"
 		>
 
@@ -35,7 +35,7 @@
 			style="@style/panelHeader"
 			android:layout_marginTop="@dimen/panel_header_margin"
 			android:orientation="vertical"
-			android:id="@+id/widgets">
+	>
 
 		<TextView
 				android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
 					android:layout_below="@android:id/title"
 					android:layout_alignLeft="@android:id/title"
 					android:maxLines="1"
-					android:text="Active"
+					android:text="@string/enabled"
 					android:textAppearance="?android:attr/textAppearanceSmall"
 					android:textColor="@color/font_color_sec"/>
 
