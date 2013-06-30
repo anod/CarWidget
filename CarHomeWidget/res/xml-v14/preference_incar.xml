@@ -66,8 +66,8 @@
 				android:layout="@layout/pref"
 				/>
 		<CheckBoxPreference android:key="activity-recognition"
-					android:title="Activity recognition"
-					android:summary="Google Play services are not available"
+					android:title="@string/activity_recognition"
+					android:summary="@string/gms_service_missing"
 					android:layout="@layout/pref"
 				/>
 	</PreferenceCategory>
