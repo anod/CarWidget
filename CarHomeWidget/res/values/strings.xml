@@ -13,7 +13,6 @@
 	<string name="permdesc_write_settings">Allows an application to change the settings and shortcuts in Car Widget.</string>
 
 	<string name="color_dialog_title">Pick a color</string>
-	<string name="color_dialog_button_cancel">Cancel</string>
 
 	<string name="pref_tile_color_title">Tile color</string>
 
@@ -48,10 +47,10 @@
 	<string name="pref_look_and_feel_title">Look &amp; Feel</string>
 	<string name="pref_look_and_feel_summary">Customize skin, colors and font size</string>
 
-	<string name="pref_incar_mode_title">In Car mode</string>
+	<string name="pref_incar_mode_title">InCar mode</string>
 	<string name="pref_incar_mode_summary">Choose how to detect when you in car, and settings that will be adjusted</string>
 
-	<string name="pref_incar_mode_enabled">Enable "In Car" mode</string>
+	<string name="pref_incar_mode_enabled">Enable InCar mode</string>
 	<string name="pref_power_contorl_bt">Power control Bluetooth</string>
 	<string name="pref_power_plugged_bt_on_title">On when plugged</string>
 	<string name="pref_power_plugged_bt_on_summary">Switch Bluetooth On when power cable plugged in</string>
@@ -60,20 +59,20 @@
 
 	<string name="pref_detection">Detection</string>
 	<string name="pref_blutooth_device_title">Bluetooth device</string>
-	<string name="pref_blutooth_device_summary">Choose bluetooth device which enable In Car mode</string>
+	<string name="pref_blutooth_device_summary">Choose bluetooth device which enable InCar mode</string>
 	<string name="load_paired_device">Loading paired devices</string>
 	<string name="bluetooth">Bluetooth</string>
 	<string name="turn_on_bluetooth_summary">Turn on Bluetooth</string>
 	<string name="turn_off_bluetooth_summary">Turn off Bluetooth</string>
-	<string name="bluetooth_device_category_title">Enable "In Car" mode on connect with:</string>
+	<string name="bluetooth_device_category_title">Enable InCar mode when connecting to:</string>
 	<string name="no_paired_devices_found_title">No paired devices found.</string>
 	<string name="no_paired_devices_found_summary">Before a device can be selected, it needs to be paired and Bluetooth has to be enabled</string>
 
 	<string name="pref_headset_connected_title">Headset connected</string>
-	<string name="pref_headset_connected_summary">Enable In Car mode when audio jack connected</string>
+	<string name="pref_headset_connected_summary">Enable InCar mode when audio jack connected</string>
 
 	<string name="pref_power_connected_title">Power connected</string>
-	<string name="pref_power_connected_summary">Enable In Car mode when power cable connected</string>
+	<string name="pref_power_connected_summary">Enable InCar mode when power cable connected</string>
 
 	<string name="pref_actions">Actions</string>
 	<string name="pref_screen_timeout">Disable screen timeout</string>
@@ -90,7 +89,7 @@
 
 	<string name="notif_expired">Trial expired</string>
 	<string name="notif_consider">Consider to install Pro version</string>
-	<string name="incar_mode_enabled">In Car mode enabled</string>
+	<string name="incar_mode_enabled">InCar mode enabled</string>
 	<string name="click_to_disable">Click to disable</string>
 	<string name="click_to_disable_trial">Click to disable, Trial: %d times left</string>
 	<plurals name="notif_activations_left">
@@ -114,7 +113,6 @@
 
 	<string name="shortcut_edit_title">Edit shortcut</string>
 	<string name="shortcut_edit_hint">Touch the icon to change it</string>
-	<string name="shortcut_ok_button">OK</string>
 	<string name="photo_picker_not_found">No pictures are available on the phone.</string>
 	<string name="error_text">Error: %1$s</string>
 
@@ -132,8 +130,8 @@
 	<string name="transparent">Transparent</string>
 	<string name="pref_settings_transparent">Settings button</string>
 	<string name="pref_settings_transparent_summary">Settings button will remain on the same place, but will become transparent</string>
-	<string name="pref_incar_transparent">"In Car" button</string>
-	<string name="pref_incar_transparent_summary">When "In Car" mode enables, the button will stay on the same place, but will be transparent</string>
+	<string name="pref_incar_transparent">InCar button</string>
+	<string name="pref_incar_transparent_summary">When InCar mode enabled, the button will stay on the same place, but will be transparent</string>
 
 	<string name="pref_activate_car_mode">Built-in Car Mode</string>
 	<string name="pref_activate_car_mode_summary">Android built-in car mode will be activated, additional notification icon will be shown.</string>
@@ -154,8 +152,7 @@
 	<string name="backup_incar_settings">InCar settings</string>
 
 	<string name="backup_name_title">Backup name:</string>
-	<string name="backup_name_summary">Please define name to identify backup of current widget
-	</string>
+	<string name="backup_name_summary">Please define name to identify backup of current widget</string>
 	<string name="backup_save">Save</string>
 	<string name="backup_cancel">Cancel</string>
 	<string name="backup_done">Backup is done.</string>
@@ -178,8 +175,8 @@
 	<string name="pref_autorun_app_title">App Autorun</string>
 	<string name="pref_autorun_app_disabled">Disabled</string>
 
-	<string name="switch_in_car_activity">Switch In Car</string>
-	<string name="incar_mode_disabled">In Car mode disabled.\nEnable it in widget settings in order to use shortcut.</string>
+	<string name="switch_in_car_activity">Switch InCar</string>
+	<string name="incar_mode_disabled">InCar mode disabled.\nEnable it in widget settings in order to use shortcut.</string>
 	<string name="set_shortcut_short">SET</string>
 
 	<string name="skin_info_bbb">Theme by &lt;a href=&quot;http://blackbearblanc.dk/&quot;&gt;Black Bear Blanc&lt;/a&gt;&lt;br/&gt;Icon pack: &lt;a href=&quot;https://play.google.com/store/apps/details?id=com.jaguirre.elegant&quot;&gt;ADW.Elegant Theme&lt;/a&gt;</string>

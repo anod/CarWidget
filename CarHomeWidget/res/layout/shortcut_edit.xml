@@ -32,6 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="4.0dip"
-        android:text="@string/shortcut_ok_button" />
+        android:text="@android:string/ok" />
 
 </LinearLayout>

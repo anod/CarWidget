@@ -22,7 +22,7 @@
 		android:minWidth="75dp"
 	/>
   	<Button
-	  	android:text="@string/color_dialog_button_cancel"
+	  	android:text="@android:string/cancel"
 	 	android:id="@+id/color_dialog_button_cancel"
 	 	android:layout_width="wrap_content"
 	 	android:layout_height="wrap_content"

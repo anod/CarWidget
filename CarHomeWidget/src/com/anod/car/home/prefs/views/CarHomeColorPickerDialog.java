@@ -38,7 +38,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
 		});
 
 		Button btn2 = (Button) mView.findViewById(R.id.customButton2);
-		btn2.setText(R.string.color_dialog_button_cancel);
+		btn2.setText(android.R.string.cancel);
 		btn2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -133,7 +133,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
 			}
 		});
 
-		String cancelText = r.getString(R.string.color_dialog_button_cancel);
+		String cancelText = r.getString(android.R.string.cancel);
 		alert.setNegativeButton(cancelText, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				// Canceled.
