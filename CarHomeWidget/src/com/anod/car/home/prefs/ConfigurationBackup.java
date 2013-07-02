@@ -102,7 +102,7 @@ public class ConfigurationBackup extends ConfigurationActivity {
 						new BackupTask().execute(filename);
 					}
 				}
-			}).setNegativeButton(R.string.backup_cancel, new DialogInterface.OnClickListener() {
+			}).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					//Nothing
 				}

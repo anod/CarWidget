@@ -245,7 +245,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 		String title = null;
 		String value = null;
 		if (data == null) {
-			title = getString(R.string.pref_autorun_app_disabled);
+			title = getString(R.string.disabled);
 			value = AUTORUN_APP_DISABLED;
 		} else {
 			// get name

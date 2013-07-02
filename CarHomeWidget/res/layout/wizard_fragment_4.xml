@@ -98,6 +98,13 @@
 				android:padding="10dp"/>
 	</LinearLayout>
 
+	<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_gravity="center"
+			android:background="#339ccc">
+	</FrameLayout>
+
 	<TextView
 			style="@style/wizardTextItem"
 			android:text="@string/enable_incar_description"

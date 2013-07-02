@@ -3,4 +3,8 @@
 	<string name="arrow_right" translatable="false">→</string>
 	<string name="default_hex_color_text" translatable="false">#00000000</string>
 	<string name="textview" translatable="false">TextView</string>
+	<string name="skin_info_bbb">Theme by &lt;a href=&quot;http://blackbearblanc.dk/&quot;&gt;Black Bear Blanc&lt;/a&gt;&lt;br/&gt;Icon pack: &lt;a href=&quot;https://play.google.com/store/apps/details?id=com.jaguirre.elegant&quot;&gt;ADW.Elegant Theme&lt;/a&gt;</string>
+	<string name="activity_not_found">Activity not found</string>
+	<string name="crash_toast_text">Car Widget Crashed</string>
+
 </resources>

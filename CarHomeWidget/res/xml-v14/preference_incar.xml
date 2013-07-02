@@ -147,7 +147,7 @@
 						android:entries="@array/autorun_app_titles"
 						android:entryValues="@array/autorun_app_values"
 						android:key="autorun-app-choose"
-						android:summary="@string/pref_autorun_app_disabled"
+						android:summary="@string/disabled"
 						android:title="@string/pref_autorun_app_title"
 						android:layout="@layout/pref"
 						/>

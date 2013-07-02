@@ -13,7 +13,7 @@
                 android:dependency="adjust-volume-level"
                 android:key="volume-level"
                 android:max="100"
-                android:summary="@string/pref_media_volume_level_summary"
+                android:summary="@string/pref_volume_level_summary"
                 android:text=""
                 android:title="@string/pref_media_volume_level" android:layout="@layout/pref"/>
             <com.anod.car.home.prefs.views.SeekBarPreference
@@ -21,7 +21,7 @@
                 android:dependency="adjust-volume-level"
                 android:key="call-volume-level"
                 android:max="100"
-                android:summary="@string/pref_phone_volume_level_summary"
+                android:summary="@string/pref_volume_level_summary"
                 android:text=""
                 android:title="@string/pref_phone_volume_level" android:layout="@layout/pref"/>
 </PreferenceScreen>

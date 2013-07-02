@@ -14,7 +14,7 @@
 		style="@style/wizardTextItem"
 		android:text="@string/welcome_text"
 		android:id="@+id/desc1"
-	/>
+			/>
 
 	<TextView
 		style="@style/wizardTextItem"
