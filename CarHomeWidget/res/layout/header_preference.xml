@@ -17,12 +17,13 @@
 <!-- Layout for a Preference in a PreferenceActivity. The
      Preference is able to place a specific widget for its particular
      type in the "widget_frame" layout. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
-    android:paddingEnd="?android:attr/scrollbarSize"
+    android:paddingLeft="10dp"
+	android:paddingRight="10dp"
 	android:background="@drawable/panel_bg"
 >
 
@@ -50,7 +51,7 @@
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:ellipsize="marquee"
-            android:fadingEdge="horizontal" 
+            android:fadingEdge="horizontal"
             android:text="@string/pref_look_and_feel_title"
             style="@style/text_align_style"
             />
@@ -61,7 +62,7 @@
             android:layout_below="@android:id/title"
             android:layout_alignLeft="@android:id/title"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:maxLines="4" 
+            android:maxLines="4"
             android:text="@string/pref_look_and_feel_summary"
             style="@style/text_align_style"
             />

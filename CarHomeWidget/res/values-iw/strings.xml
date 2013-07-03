@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name_free">ווידג'\ט לרכב</string>
+	<string name="app_name_free">ווידג\'ט לרכב</string>
 	<string name="app_name_pro">ווידג\'ט לרכב פרו</string>
 	<string name="permlab_read_settings">לקרוא הגדרות וקיצורי דרך של ווידג\'ט לרכב</string>
 	<string name="permdesc_read_settings">מאפשר ליישומים לקרוא את ההגדרות ואת קיצורי דרך של ווידג\'ט לרכב</string>
@@ -21,7 +21,7 @@
 	<string name="dialog_donate_title_trial">תקופת נסיון,</string>
 	<string name="dialog_donate_message_trial">\n\nמצב הרכב ללא הגבלה זמין רק בגרסת פרו.\n\n האם רוצה לקבל אותה עכשיו?</string>
 	<string name="dialog_donate_title_install">גרסה פרו מותקנת,</string>
-	<string name="dialog_donate_message_installed">נא להוסיף את הווידג\'\\ט החדש המותקן למסך הבית על מנת לקבל גישה לתכונות של גרסת פרו.\n\n העברת ההגדרות:\nניתן להעביר את ההגדרות הקיימות באמצעות אפשרות \"גיבוי / שחזור\". אין צורך בגרסה חינמית יותר.\n\nתודה רבה.</string>
+	<string name="dialog_donate_message_installed">נא להוסיף את הווידג\'ט החדש המותקן למסך הבית על מנת לקבל גישה לתכונות של גרסת פרו.\n\n העברת ההגדרות:\nניתן להעביר את ההגדרות הקיימות באמצעות אפשרות \"גיבוי / שחזור\". אין צורך בגרסה חינמית יותר.\n\nתודה רבה.</string>
 	<string name="dialog_donate_btn_trial">המשך תקופת ניסיון</string>
 	<string name="dialog_donate_btn_yes">כן, בבקשה!</string>
 	<string name="dialog_donate_btn_no">לא, תודה.</string>
@@ -43,7 +43,7 @@
 	<string name="bluetooth">Bluetooth</string>
 	<string name="turn_on_bluetooth_summary">הפעל את Bluetooth</string>
 	<string name="turn_off_bluetooth_summary">כבה את Bluetooth</string>
-	<string name="bluetooth_device_category_title">אפשר מצב \\\"ברכב\\\" על קישור עם:</string>
+	<string name="bluetooth_device_category_title">אפשר מצב \"ברכב\" על קישור עם:</string>
 	<string name="no_paired_devices_found_title">לא נמצאו מכשרים מכוברים.</string>
 	<string name="no_paired_devices_found_summary">לפני שיהיה ניתן לבחור המכשיר, הוא צריך להיות מחובר ו-Bluetooth צריך להיות מופעל</string>
 	<string name="pref_headset_connected_title">האוזניה מחוברת</string>
@@ -114,10 +114,10 @@
 	<string name="default_car_dock_app">ברירת מחדל לCar Dock</string>
 	<string name="cardock_btn_1">לפתוח פרטי יישום</string>
 	<string name="cardock_text1">על מנת לנקות את יישום ברירת מחדל נוכחי:\n1.פתח פרטי יישום\n2.לחץ על כפתור \"נקה ברירת מחדל\" </string>
-	<string name="cardock_text2">בפעם הבאה כאשר Car Dock יופעל, בחר \"ווידג\'\\ט לרכב\" כיישום ברירת מחדל.</string>
+	<string name="cardock_text2">בפעם הבאה כאשר Car Dock יופעל, בחר \"ווידג\'ט לרכב\" כיישום ברירת מחדל.</string>
 	<string name="open_folder">פתח תיקייה</string>
-	<string name="car_widget_shortcuts">ווידג'\ט לרכב קיצור דרך</string>
-	<string name="car_widget_pro_shortcuts">ווידג'\ט פרו לרכב קיצור דרך</string>
+	<string name="car_widget_shortcuts">ווידג\'ט לרכב קיצור דרך</string>
+	<string name="car_widget_pro_shortcuts">ווידג\'ט פרו לרכב קיצור דרך</string>
 	<string name="select_shortcut_title">בחר קיצור דרך</string>
 	<string name="select_icon_pack">בחרבחבילת אייקון</string>
 	
@@ -128,14 +128,14 @@
 	<string name="pref_rotate_icon_title">לסובב איקונים</string>
 	<string name="pref_titles_hide_title">להסתיר כותרות</string>
 	<string name="pref_titles_hide_summary">לא להציג כותרות לקיצורי דרך</string>
-	<string name="home_screen_widgets">ווידג'\ט במסך הראשי</string>
-	<string name="no_active_widgets_were_found">לא נמצאו ווידג'\טים פעילים</string>
+	<string name="home_screen_widgets">ווידג\'ט במסך הראשי</string>
+	<string name="no_active_widgets_were_found">לא נמצאו ווידג\'טים פעילים</string>
 	<string name="not_active">לא פעיל</string>
 	<string name="disabled_trial_expired">מופסק - תקופת נסיון הסתיימה</string>
 	<string name="no_items">אין פריטים</string>
 	<string name="welcome">ברוך הבא</string>
-	<string name="welcome_text"><![CDATA[<b>ווידג'\ט לרכב</b> מהקל ומיעיל גישה לתכונות של טלפונ במכונית]]></string>
-	<string name="install_a_widget">התקנה של הווידג'\ט</string>
+	<string name="welcome_text"><![CDATA[<b>ווידג\'ט לרכב</b> מהקל ומיעיל גישה לתכונות של טלפונ במכונית]]></string>
+	<string name="install_a_widget">התקנה של הווידג\'ט</string>
 	<string name="install_widget"><![CDATA[Go to <b>home screen</b> and open your <b>app drawer</b>. Choose the <b>widget tab</b> then choose <b>Car Widget</b> and put it on the free screen.]]></string>
 	<string name="install_widget_old"><![CDATA[Please note that on Android 2.3 list of widgets opens with <b>long press</b> on your home screen]]></string>
 	<string name="configure_text"><![CDATA[Inside settings of the widget you can define <b>shortcuts</b>, configure its look by changing <b>skin</b> or applying <b>effects</b>]]></string>

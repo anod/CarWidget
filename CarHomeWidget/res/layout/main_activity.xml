@@ -88,6 +88,7 @@
 					android:maxLines="1"
 					android:text="@string/enabled"
 					android:textAppearance="?android:attr/textAppearanceSmall"
+					style="@style/text_align_style"
 					android:textColor="@color/font_color_sec"/>
 
 		</RelativeLayout>
@@ -109,10 +110,12 @@
 				android:id="@+id/incarBackup"
 				android:drawableLeft="@drawable/ic_action_export"
 				android:background="@drawable/panel_bg"
-				android:gravity="center_vertical|left"
+				android:gravity="center_vertical"
 				android:textColor="@color/font_color"
 				android:paddingLeft="10dp"
-				android:drawablePadding="4dp"/>
+				style="@style/text_align_style"
+				android:drawablePadding="4dp"
+				android:paddingRight="10dp"/>
 		<View
 				android:layout_height="match_parent"
 				android:layout_width="1dp"
@@ -127,10 +130,15 @@
 				android:id="@+id/incarRestore"
 				android:drawableLeft="@drawable/ic_action_import"
 				android:background="@drawable/panel_bg"
-				android:gravity="center_vertical|left"
+				android:gravity="center_vertical"
 				android:textColor="@color/font_color"
 				android:paddingLeft="10dp"
-				android:drawablePadding="4dp"/>
+				style="@style/text_align_style"
+				android:drawablePadding="4dp"
+				android:paddingRight="10dp"
+				android:ellipsize="end"
+				android:maxLines="1"
+				android:enabled="false"/>
 	</LinearLayout>
 
 	<TextView
@@ -196,7 +204,9 @@
 			android:drawableLeft="@drawable/ic_action_gplus"
 			android:gravity="left|center_vertical"
 			android:textColor="@color/font_color"
-			android:drawablePadding="4dp"/>
+			android:drawablePadding="4dp"
+			android:paddingLeft="10dp"
+			android:paddingRight="10dp"/>
 
 
 
