@@ -12,4 +12,5 @@
         <ignore path="res/values/string_no_translations.xml" />
     </issue>
     <issue id="OldTargetApi" severity="ignore" />
+    <issue id="TypographyEllipsis" severity="ignore" />
 </lint>

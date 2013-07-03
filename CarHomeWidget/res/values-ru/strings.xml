@@ -145,8 +145,9 @@
 	<string name="trial_description">%d активаций в пробной версии.</string>
 	<string name="swipe_continue">Продолжение →</string>
 	<plurals name="active_widgets">
-		<item quantity="zero">Активные виджеты не были найдены</item>
 		<item quantity="one">Один активный виджет</item>
+		<item quantity="few">%d активыных виджета</item>
+		<item quantity="many">%d активыных виджетов</item>
 		<item quantity="other">%d активыных виджетов</item>
 	</plurals>
 	<string name="gms_success">Использовать Google Play services для определения активности</string>

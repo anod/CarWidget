@@ -117,7 +117,6 @@
 	<string name="cardock_btn_1">Open App Info</string>
 	<string name="cardock_text1">To clear current default application:\n1. Open default App Info\n2. Click on \"Clear defaults\" button</string>
 	<string name="cardock_text2">Next time Car Dock enabled, choose \"Car Widget\" as a default application.</string>
-	<string name="open_folder">Open Folder</string>
 	<string name="car_widget_shortcuts">Car Widget shortcuts</string>
 	<string name="car_widget_pro_shortcuts">Car Widget Pro shortcuts</string>
 	<string name="select_shortcut_title">Select shortcut</string>

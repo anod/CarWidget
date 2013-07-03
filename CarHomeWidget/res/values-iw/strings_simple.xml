@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="please_wait">אנא המתן...</string>
+	<string name="shortcuts">קיצורי דרך </string>
+	<string name="advanced">הגדרות מתקדמות</string>
+	<string name="pref_actions">פעולות</string>
+	<string name="bluetooth_device_laptop">מחשב</string>
+	<string name="bluetooth_device_cellphone">טלפון</string>
+	<string name="bluetooth_device_headphones">אוזניות</string>
+	<string name="bluetooth_device_headset">האוזנייה האלחוטית</string>
+	<string name="information_title">מידע</string>
+	<string name="issue_title">משוב</string>
+	<string name="applications">יישומים</string>
+	<string name="pref_skin">סקין</string>
+	<string name="pref_wifi">Wi-Fi</string>
+	<string name="transparent">שקוף</string>
+	<string name="dialog_title_select">בחר</string>
+	<string name="icon_default">ברירת מחדל </string>
+	<string name="icon_custom">בחר מגלריה</string>
+	<string name="icon_adw_icon_pack">ADW Icon Pack</string>
+	<string name="never">אף פעם</string>
+	<string name="backup">גיבוי</string>
+	<string name="restore">שחזור</string>
+	<string name="backup_save">לשמור</string>
+	<string name="apply">שמור</string>
+	<string name="selected">נבחר</string>
+	<string name="settings">הגדרות</string>
+	<string name="more">עוד...</string>
+	<string name="none">אין</string>
+	<string name="download">הורד...</string>
+	<string name="system">מערכת</string>
+	<string name="backup_path">נתיב</string>
+	<string name="menu">תפריט</string>
+	<string name="enabled">מופעל</string>
+	<string name="disabled">מופסק</string>
+	<string name="configure">הגדרות</string>
+	<string name="finish">סיום</string>
+	<string name="skip">דלג</string>
+	<string name="next">הבא</string>
+</resources>
