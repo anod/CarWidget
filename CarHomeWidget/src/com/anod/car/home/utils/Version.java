@@ -19,7 +19,7 @@ public class Version {
 
 	
 	public static boolean isFreeVersion(String packageName) {
-		return FREE_PACKAGE_NAME.equals(packageName);
+		return packageName.startsWith(FREE_PACKAGE_NAME);
 	}
 	
 	public Version(Context context) {

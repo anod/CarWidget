@@ -61,12 +61,12 @@ android {
 
     buildTypes {
         debug {
-            packageNameSuffix ".pro"
+            packageNameSuffix ".pro.debug"
         }
 
         freedebug.initWith(buildTypes.debug)
         freedebug {
-            packageNameSuffix ".free"
+            packageNameSuffix ".free.debug"
         }
 
         release {
