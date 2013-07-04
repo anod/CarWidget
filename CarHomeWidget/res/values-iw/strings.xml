@@ -144,12 +144,12 @@
 	<string name="detect_incar_description"><![CDATA[<b>Detects</b> when you inside the car]]></string>
 	<string name="adjust_incar_description"><![CDATA[<b>Adjust</b> common settings]]></string>
 	<string name="enable_incar_description"><![CDATA[<b>Enable</b> InCar mode in the settings.]]></string>
-	<string name="trial_description">Trial %d activations in the free version.</string>
+	<string name="trial_description">ניסיון של %d הפעלות בגירסה חינמית</string>
 	<string name="swipe_continue">Swipe to continue →</string>
 	<string name="gms_success">Use Google Play services to detect activity</string>
 	<string name="gms_service_missing">Google Play services is missing on this device.</string>
 	<string name="gms_service_update_required">The installed version of Google Play services is out of date.</string>
 	<string name="gms_service_disabled">The installed version of Google Play services has been disabled on this device.</string>
-	<string name="gms_service_invalid">The version of the Google Play services installed on this device is not authentic.</string>
-	<string name="activity_recognition">Activity recognition</string>
+	<string name="gms_service_invalid">הגרסה של Google Play services המותקת במכשיר זה לא אותנטית.</string>
+	<string name="activity_recognition">זיהוי פעילות</string>
 </resources>
