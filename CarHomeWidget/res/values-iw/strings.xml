@@ -140,7 +140,7 @@
 	<string name="install_widget_old"><![CDATA[Please note that on Android 2.3 list of widgets opens with <b>long press</b> on your home screen]]></string>
 	<string name="configure_text"><![CDATA[Inside settings of the widget you can define <b>shortcuts</b>, configure its look by changing <b>skin</b> or applying <b>effects</b>]]></string>
 	<string name="open_settings_description"><![CDATA[Press <b>Settings</b> button in order to open configuration screen]]></string>
-	<string name="incar_mode">InCar mode</string>
+	<string name="incar_mode"></string>
 	<string name="detect_incar_description"><![CDATA[<b>Detects</b> when you inside the car]]></string>
 	<string name="adjust_incar_description"><![CDATA[<b>Adjust</b> common settings]]></string>
 	<string name="enable_incar_description"><![CDATA[<b>Enable</b> InCar mode in the settings.]]></string>

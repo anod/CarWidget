@@ -202,7 +202,6 @@
 			android:text="@string/issue_title"
 			android:id="@+id/feedback"
 			android:drawableLeft="@drawable/ic_action_gplus"
-			android:gravity="left|center_vertical"
 			android:textColor="@color/font_color"
 			android:drawablePadding="4dp"
 			android:paddingLeft="10dp"
