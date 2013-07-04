@@ -19,6 +19,14 @@ import com.google.android.gms.location.ActivityRecognitionClient;
 public class BroadcastService extends Service  implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, ModeBroadcastReceiver.UpdateActivityClientListener {
 	private ActivityRecognitionClient mActivityRecognitionClient;
 
+    // Constants used to establish the activity update interval
+    public static final int MILLISECONDS_PER_SECOND = 1000;
+
+    public static final int DETECTION_INTERVAL_SECONDS = 20;
+
+    public static final int DETECTION_INTERVAL_MILLISECONDS =
+            MILLISECONDS_PER_SECOND * DETECTION_INTERVAL_SECONDS;
+
 	public static boolean sRegistred;
     @Override
 	public void onCreate() {
@@ -84,7 +92,7 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 	private void detachActivityRecognitionClient() {
 		if (mActivityRecognitionClient != null) {
 			mActivityRecognitionClient.disconnect();
-            mActivityRecognitionClient = null;
+			mActivityRecognitionClient = null;
 		}
 	}
 
@@ -92,7 +100,8 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 	public void onConnected(Bundle bundle) {
 		Toast.makeText(this, "Activity Recognition Client Connected", Toast.LENGTH_SHORT).show();
 		// 3 sec
-		mActivityRecognitionClient.requestActivityUpdates(10000, getActivityRecognitionPendingIntent());
+		mActivityRecognitionClient.requestActivityUpdates(DETECTION_INTERVAL_MILLISECONDS, getActivityRecognitionPendingIntent());
+        mActivityRecognitionClient.disconnect();
 	}
 
 	private PendingIntent getActivityRecognitionPendingIntent() {
