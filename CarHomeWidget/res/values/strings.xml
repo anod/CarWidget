@@ -143,7 +143,7 @@
 	<string name="swipe_continue">Swipe to continue →</string>
 	<plurals name="active_widgets">
 		<item quantity="zero">No active widgets were found</item>
-		<item quantity="one">PluralOne active widget</item>
+		<item quantity="one">One active widget</item>
 		<item quantity="other">%d active widgets</item>
 	</plurals>
 	<string name="gms_success">Use Google Play services to detect activity</string>

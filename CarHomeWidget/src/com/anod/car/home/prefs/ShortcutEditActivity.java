@@ -1,9 +1,5 @@
 package com.anod.car.home.prefs;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,11 +10,14 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +32,10 @@ import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.utils.IconPackUtils;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
 
 public class ShortcutEditActivity extends Activity {
 
@@ -156,12 +159,18 @@ public class ShortcutEditActivity extends Activity {
         } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)
                 || ContentResolver.SCHEME_FILE.equals(scheme)) {
             try {
-                d = Drawable.createFromStream(
-                   getContentResolver().openInputStream(uri),
-                    null);
+                //d = Drawable.createFromStream(
+                //  getContentResolver().openInputStream(uri),
+                //    null);
+				Bitmap bmp = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+				DisplayMetrics dm = getResources().getDisplayMetrics();
+				bmp.setDensity(dm.densityDpi);
+				d = new BitmapDrawable(getResources(), bmp);
             } catch (Exception e) {
                 Log.w("ShortcutEditActivity", "Unable to open content: " + uri, e);
             }
+
+
         } else {
             d = Drawable.createFromPath(uri.toString());
         }

@@ -28,7 +28,7 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 11
-        versionCode 27
+        versionCode 28
         versionName '1.6'
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
@@ -74,6 +74,7 @@ android {
             signingConfig signingConfigs.release
         }
 
+        freerealease.initWith(buildTypes.release)
         freerealease {
             packageNameSuffix ".free"
         }
@@ -81,6 +82,8 @@ android {
 
     sourceSets.debug.manifest.srcFile('AndroidManifestPro.xml')
     sourceSets.freedebug.manifest.srcFile('AndroidManifestFree.xml')
+    sourceSets.release.manifest.srcFile('AndroidManifestPro.xml')
+    //sourceSets.freerelease.manifest.srcFile('AndroidManifestFree.xml')
 }
 
 tasks.withType(Compile) {
