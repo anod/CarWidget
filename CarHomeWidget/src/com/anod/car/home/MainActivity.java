@@ -44,16 +44,23 @@ public class MainActivity extends ActionBarActivity {
 	private static final int DIALOG_PRO = 3;
 
 	private Context mContext;
+	private Version mVersion;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_activity);
+		mVersion = new Version(this);
+		setTitle(mVersion.isFree() ? R.string.app_name_free : R.string.app_name_pro);
+
 		mContext = this;
+
 
 		int[] appWidgetIds = WidgetHelper.getAllWidgetIds(mContext);
 		final int widgetsCount = appWidgetIds.length;
 
-		if (widgetsCount == 0) {
+		boolean isFreeInstalled = !mVersion.isFree() && Utils.isFreeInstalled(this);
+
+		if (widgetsCount == 0 && !isFreeInstalled) {
 			startWizard();
 			return;
 		}
@@ -152,12 +159,11 @@ public class MainActivity extends ActionBarActivity {
 
 	private void initInformation() {
 		LinearLayout version = (LinearLayout)findViewById(R.id.version);
-		String versionText = getResources().getString(R.string.version_title);
-		String appName = "";
+		String versionText = getString(R.string.version_title);
+		String appName = mVersion.isFree() ? getString(R.string.app_name_free) : getString(R.string.app_name_pro);
 		String versionName = "";
 		try {
 			PackageManager pm = getPackageManager();
-			appName = getApplicationInfo().loadLabel(pm).toString();
 			versionName = pm.getPackageInfo(getPackageName(), 0).versionName;
 		} catch (PackageManager.NameNotFoundException e) {
 			Utils.logw(e.getMessage());

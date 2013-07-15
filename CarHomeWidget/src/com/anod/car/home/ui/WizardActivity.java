@@ -50,6 +50,8 @@ public class WizardActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wizard_activity);
+		Version v = new Version(this);
+		setTitle(v.isFree() ? R.string.app_name_free : R.string.app_name_pro);
 
 		// Instantiate a ViewPager and a PagerAdapter.
 		mPager = (ViewPager) findViewById(R.id.pager);

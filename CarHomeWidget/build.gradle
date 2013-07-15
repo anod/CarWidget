@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.4.2'
+        classpath 'com.android.tools.build:gradle:0.5.+'
     }
 }
 apply plugin: 'android'
@@ -28,7 +28,7 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 11
-        versionCode 28
+        versionCode 31
         versionName '1.6'
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
@@ -61,12 +61,12 @@ android {
 
     buildTypes {
         debug {
-            packageNameSuffix ".pro.debug"
+            packageNameSuffix ".pro"
         }
 
         freedebug.initWith(buildTypes.debug)
         freedebug {
-            packageNameSuffix ".free.debug"
+            packageNameSuffix ".free"
         }
 
         release {

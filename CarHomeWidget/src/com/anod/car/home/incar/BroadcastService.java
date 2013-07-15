@@ -22,7 +22,7 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
     // Constants used to establish the activity update interval
     public static final int MILLISECONDS_PER_SECOND = 1000;
 
-    public static final int DETECTION_INTERVAL_SECONDS = 20;
+    public static final int DETECTION_INTERVAL_SECONDS = 10;
 
     public static final int DETECTION_INTERVAL_MILLISECONDS =
             MILLISECONDS_PER_SECOND * DETECTION_INTERVAL_SECONDS;
@@ -101,7 +101,7 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 		Toast.makeText(this, "Activity Recognition Client Connected", Toast.LENGTH_SHORT).show();
 		// 3 sec
 		mActivityRecognitionClient.requestActivityUpdates(DETECTION_INTERVAL_MILLISECONDS, getActivityRecognitionPendingIntent());
-        mActivityRecognitionClient.disconnect();
+		detachActivityRecognitionClient();
 	}
 
 	private PendingIntent getActivityRecognitionPendingIntent() {

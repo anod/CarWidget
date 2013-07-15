@@ -138,6 +138,10 @@ public class ConfigurationInCar extends ConfigurationActivity {
 	
 	private void initInCar() {
 		InCar incar = PreferencesStorage.loadInCar(this);
+
+		final CheckBoxPreference pref = (CheckBoxPreference) findPreference(PreferencesStorage.SCREEN_TIMEOUT);
+		pref.setChecked(incar.isDisableScreenTimeout());
+
 		initBluetooth();
 		initAutorunApp(incar);
 		initActivityRecognition();

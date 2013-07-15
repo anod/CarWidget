@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
+import com.anod.car.home.BuildConfig;
 import com.anod.car.home.R;
 import com.anod.car.home.utils.Utils;
 import com.google.android.gms.location.ActivityRecognitionResult;
@@ -50,41 +51,7 @@ public class ModeBroadcastReceiver extends BroadcastReceiver {
 			return;
 		}
 
-		if (act.equals(ACTION_ACTIVITY_RECOGNITION)) {
-			ActivityRecognitionResult result = (ActivityRecognitionResult)intent.getExtras().get(ActivityRecognitionResult.EXTRA_ACTIVITY_RESULT);
-			DetectedActivity probActivity = result.getMostProbableActivity();
-			Utils.logd( "Detected activity: [" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()));
-
-			Notification noti = new NotificationCompat.Builder(context)
-					.setContentTitle("Activity")
-					.setContentText("[" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()))
-					.setSmallIcon(R.drawable.ic_launcher_application)
-					.build();
-			NotificationManager mNotificationManager =
-					(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-			mNotificationManager.notify(122, noti);
-		}
 		Handler.onBroadcastReceive(context, intent);
 	}
-
-	private String renderActivityType(int type) {
-		if (type == DetectedActivity.IN_VEHICLE) {
-			return "IN_VEHICLE";
-		}
-		if (type == DetectedActivity.ON_BICYCLE) {
-			return "ON_BICYCLE";
-		}
-		if (type == DetectedActivity.ON_FOOT) {
-			return "ON_FOOT";
-		}
-		if (type == DetectedActivity.STILL) {
-			return "STILL (NOT MOOVING)";
-		}
-		if (type == DetectedActivity.TILTING) {
-			return "TILTING";
-		}
-		return "UNKNOWN (" + type +")";
-	}
-
 
 }

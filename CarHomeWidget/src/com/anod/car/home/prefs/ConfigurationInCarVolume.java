@@ -28,25 +28,6 @@ public class ConfigurationInCarVolume extends ConfigurationActivity implements O
 	@Override
 	protected void onCreateImpl(Bundle savedInstanceState) {
 		
-		if (Utils.IS_ICS_OR_GREATER) {
-			initGlobalSwtich();
-		}
-	}
-
-	@SuppressLint("NewApi")
-	private void initGlobalSwtich() {
-		ActionBar actionbar = getActionBar();
-		Switch actionBarSwitch = new Switch(this);
-		actionBarSwitch.setOnCheckedChangeListener(this);
-		actionBarSwitch.setChecked(PreferencesStorage.isAdjustVolumeLevel(this));
-		
-		actionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
-				ActionBar.DISPLAY_SHOW_CUSTOM);
-		actionbar.setCustomView(actionBarSwitch, new ActionBar.LayoutParams(
-				ActionBar.LayoutParams.WRAP_CONTENT,
-				ActionBar.LayoutParams.WRAP_CONTENT, Gravity.CENTER_VERTICAL
-						| Gravity.RIGHT));
-
 	}
 
 	@Override

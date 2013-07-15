@@ -3,7 +3,7 @@
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
-        <option name="SELECTED_BUILD_VARIANT" value="debug" />
+        <option name="SELECTED_BUILD_VARIANT" value="Debug" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleTest" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
@@ -69,7 +69,7 @@
     <orderEntry type="library" name="support-v4-13.0.0" level="project" />
     <orderEntry type="library" name="support-v13-13.0.0" level="project" />
     <orderEntry type="library" name="acra-4.5.0" level="project" />
-    <orderEntry type="library" name="play-services-3.1.36.aar" level="project" />
+    <orderEntry type="library" name="ComGoogleAndroidGmsPlayServices3136.aar" level="project" />
   </component>
 </module>
 

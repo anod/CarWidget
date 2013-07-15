@@ -174,7 +174,7 @@ public class PreferencesStorage {
 		p.setEnableBluetooth(prefs.getBoolean(BLUETOOTH, false));
 		p.setDisableScreenTimeout(prefs.getBoolean(SCREEN_TIMEOUT, true));
 		p.setBrightness(prefs.getString(BRIGHTNESS, InCar.BRIGHTNESS_DISABLED));
-		p.setAdjustVolumeLevel(prefs.getBoolean(ADJUST_VOLUME_LEVEL, false));
+		p.setAdjustVolumeLevel(prefs.getBoolean(ADJUST_VOLUME_LEVEL, true));
 		p.setMediaVolumeLevel(prefs.getInt(MEDIA_VOLUME_LEVEL, InCar.DEFAULT_VOLUME_LEVEL));
 		p.setCallVolumeLevel(prefs.getInt(CALL_VOLUME_LEVEL, InCar.DEFAULT_VOLUME_LEVEL));
 		p.setDisableWifi(prefs.getString(ADJUST_WIFI, InCar.WIFI_NOACTION));

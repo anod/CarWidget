@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.ActivityPicker.PickAdapter.Item;
 import com.anod.car.home.utils.IntentUtils;
+import com.anod.car.home.utils.Version;
 
 public class CarWidgetShortcutsPicker extends ActivityPicker {
 
@@ -26,8 +28,14 @@ public class CarWidgetShortcutsPicker extends ActivityPicker {
 		R.drawable.ic_media_prev,
 		0
 	};
-	
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Version v = new Version(this);
+		setTitle(v.isFree() ? R.string.car_widget_shortcuts : R.string.car_widget_pro_shortcuts);
+
+	}
 	@Override
 	protected List<Item> getItems() {
 		List<PickAdapter.Item> items = new ArrayList<PickAdapter.Item>();

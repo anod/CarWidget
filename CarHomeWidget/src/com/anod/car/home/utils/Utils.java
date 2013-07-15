@@ -40,6 +40,20 @@ public class Utils {
 
 	/**
 	 *
+	 * @param context
+	 * @return
+	 */
+	public static boolean isFreeInstalled(Context context) {
+		try{
+			context.getPackageManager().getApplicationInfo("com.anod.car.home.free", 0 );
+			return true;
+		} catch( PackageManager.NameNotFoundException e ){
+			return false;
+		}
+	}
+
+	/**
+	 *
 	 * @param msg
 	 */
 	public static void logw(String msg) {
