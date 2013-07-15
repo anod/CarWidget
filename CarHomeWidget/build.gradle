@@ -34,7 +34,7 @@ android {
     }
     sourceSets {
         main {
-            manifest.srcFile 'AndroidManifest.xml'
+            manifest.srcFile('AndroidManifest.xml')
             java.srcDirs = ['src']
             resources.srcDirs = ['src']
             aidl.srcDirs = ['src']
@@ -61,29 +61,25 @@ android {
 
     buildTypes {
         debug {
-            packageNameSuffix ".pro"
-        }
 
-        freedebug.initWith(buildTypes.debug)
-        freedebug {
-            packageNameSuffix ".free"
         }
 
         release {
-            packageNameSuffix ".pro"
             signingConfig signingConfigs.release
-        }
-
-        freerealease.initWith(buildTypes.release)
-        freerealease {
-            packageNameSuffix ".free"
         }
     }
 
-    sourceSets.debug.manifest.srcFile('AndroidManifestPro.xml')
-    sourceSets.freedebug.manifest.srcFile('AndroidManifestFree.xml')
-    sourceSets.release.manifest.srcFile('AndroidManifestPro.xml')
-    //sourceSets.freerelease.manifest.srcFile('AndroidManifestFree.xml')
+    productFlavors {
+        pro {
+            packageName "com.anod.car.home.pro"
+        }
+        free {
+            packageName "com.anod.car.home.free"
+        }
+    }
+
+    sourceSets.pro.manifest.srcFile('AndroidManifestPro.xml')
+    sourceSets.free.manifest.srcFile('AndroidManifestFree.xml')
 }
 
 tasks.withType(Compile) {

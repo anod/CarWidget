@@ -40,9 +40,6 @@
 					android:resource="@xml/carhome_appwidget_info_4x4" />
 		</receiver>
 
-        <meta-data
-            android:name="com.google.android.backup.api_key"
-            android:value="AEdPqrEAAAAIwrTs2H7J2Rs0kglDTHtziqQ8_7YbAZGeS7bDUA" />
     </application>
 
 </manifest>

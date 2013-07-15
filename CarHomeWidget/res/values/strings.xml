@@ -129,7 +129,7 @@
 	<string name="disabled_trial_expired">Disabled - Trial expired</string>
 	<string name="no_items">No items</string>
 	<string name="welcome">Welcome</string>
-	<string name="welcome_text"><![CDATA[<b>Car Widget</b> make easier and quicker access to phone feature when you in the car.]]></string>
+	<string name="welcome_text"><![CDATA[<b>Car Widget</b> make easier and quicker access to phone features when you in the car.]]></string>
 	<string name="install_a_widget">Install a widget</string>
 	<string name="install_widget"><![CDATA[Go to <b>home screen</b> and open your <b>app drawer</b>. Choose the <b>widget tab</b> then choose <b>Car Widget</b> and put it on the free screen.]]></string>
 	<string name="install_widget_old"><![CDATA[Please note that on Android 2.3 list of widgets opens with <b>long press</b> on your home screen]]></string>
