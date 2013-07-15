@@ -68,8 +68,6 @@ android {
         }
     }
 
-    sourceSets.pro.manifest.srcFile('AndroidManifestPro.xml')
-    sourceSets.free.manifest.srcFile('AndroidManifestFree.xml')
 }
 
 tasks.withType(Compile) {
