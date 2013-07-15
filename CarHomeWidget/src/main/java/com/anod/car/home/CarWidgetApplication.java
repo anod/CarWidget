@@ -20,8 +20,10 @@ public class CarWidgetApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 
-		// The following line triggers the initialization of ACRA
-		ACRA.init(this);
+		if (BuildConfig.DEBUG) {
+			// The following line triggers the initialization of ACRA
+			ACRA.init(this);
+		}
 	}
 
 	public AppsListCache getAppListCache() {
