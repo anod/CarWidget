@@ -29,7 +29,6 @@
 		<item>Играть/Пауза</item>
 		<item>Следующий</item>
 		<item>Предыдущий</item>
-		<item>TuneIn Radio Car Mode</item>
     </string-array>
 
 	<string-array name="icon_rotate_titles">

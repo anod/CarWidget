@@ -105,21 +105,6 @@ public class IntentUtils {
 		return null;
 	}
 
-	public static Intent createTuneInIntent(boolean tuneInPro) {
-		Intent localIntent = new Intent(Intent.ACTION_RUN);
-		localIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		Uri data;
-		if (tuneInPro) {
-			localIntent.setClassName(TUNEIN_PRO_PKG, "tunein.player.pro.Proxy");
-			data = Uri.parse(TUNEIN_PRO_PKG + "://carmode");
-		} else {
-			localIntent.setClassName(TUNEIN_FREE_PKG, "tunein.player.Proxy");
-			data = Uri.parse(TUNEIN_FREE_PKG + "://carmode");
-		}
-		localIntent.setData(data);
-		return localIntent;
-	}
-
 	public static Intent creatMediaButtonIntent(Context context, int keyCode) {
 		Intent shortcutIntent = new Intent(context,ShortcutActivity.class);
 		shortcutIntent.setAction(ShortcutActivity.ACTION_MEDIA_BUTTON);

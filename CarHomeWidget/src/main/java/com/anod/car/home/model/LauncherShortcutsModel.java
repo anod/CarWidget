@@ -79,35 +79,8 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 				break;
 			}
 		}
-		//Add TuneIn car mode
-		if (cellId < 5) {
-			Drawable icon = null;
-			final PackageManager pm = mContext.getPackageManager();
-			icon = IntentUtils.getApplicationIcon(pm,new ComponentName("radiotime.player","tunein.player.pro.Activity"));
-			if (icon != null) {
-				info = getTuneInShortcutInfo(icon, true);
-				saveShortcut(cellId, info);
-				cellId++;
-			} else {
-				icon = IntentUtils.getApplicationIcon(pm,new ComponentName("tunein.player","tunein.player.Activity"));
-				if (icon != null) {
-					info = getTuneInShortcutInfo(icon, false);
-					saveShortcut(cellId, info);
-					cellId++;
-				}
-			}
-		}
+
 
 	}
 
-	private ShortcutInfo getTuneInShortcutInfo(Drawable icon, boolean tuneInPro) {
-		String[] titles;
-		ShortcutInfo info;
-		titles = mContext.getResources().getStringArray(R.array.carwidget_shortcuts);
-		Intent pickIntent = IntentUtils.createPickShortcutAppIntent(
-			titles[CarWidgetShortcutsPicker.IDX_TUNEIN], icon, IntentUtils.createTuneInIntent(tuneInPro), mContext
-		);
-		info = ShortcutInfoUtils.infoFromShortcutIntent(mContext, pickIntent);
-		return info;
-	}
 }
