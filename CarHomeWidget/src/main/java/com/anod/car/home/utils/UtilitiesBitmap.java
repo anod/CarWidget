@@ -70,6 +70,7 @@ public class UtilitiesBitmap {
 				// Ensure the bitmap has a density.
 				BitmapDrawable bitmapDrawable = (BitmapDrawable) icon;
 				Bitmap bitmap = bitmapDrawable.getBitmap();
+
 				if (bitmap.getDensity() == Bitmap.DENSITY_NONE) {
 					bitmapDrawable.setTargetDensity(context.getResources().getDisplayMetrics());
 				}

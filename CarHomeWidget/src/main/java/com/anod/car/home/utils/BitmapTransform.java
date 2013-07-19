@@ -145,7 +145,23 @@ public class BitmapTransform {
 		}
 		int scW = (int) (mIconWidth * scale) - min;
 		int scH = (int) (mIconHeight * scale) - min;
-		return Bitmap.createScaledBitmap(src, scW, scH, true);
+
+		Bitmap scaledBitmap = Bitmap.createBitmap(scW, scH, Bitmap.Config.ARGB_8888);
+
+		float ratioX = scW / (float) src.getWidth();
+		float ratioY = scH / (float) src.getHeight();
+		float middleX = scW / 2.0f;
+		float middleY = scH / 2.0f;
+
+		Matrix scaleMatrix = new Matrix();
+		scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+		Canvas canvas = new Canvas(scaledBitmap);
+		canvas.setMatrix(scaleMatrix);
+		canvas.drawBitmap(src, middleX - src.getWidth() / 2, middleY - src.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+		return scaledBitmap;
+		//return Bitmap.createScaledBitmap(src, scW, scH, true);
 	}
 	
 
