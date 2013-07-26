@@ -4,16 +4,16 @@ import com.anod.car.home.prefs.preferences.Main;
 
 public class PropertiesFactory {
 
-	public static SkinProperties create(String skinName) {
+	public static SkinProperties create(String skinName, boolean isKeyguard) {
 		if (skinName.equals(Main.SKIN_WINDOWS7)) {
-			return new MetroProperties();
+			return new MetroProperties(isKeyguard);
 		} else if (skinName.equals(Main.SKIN_HOLO)) {
-			return new HoloProperties();
+			return new HoloProperties(isKeyguard);
 		} else if (skinName.equals(Main.SKIN_GLOSSY)) {
-			return new GlossyProperties();
+			return new GlossyProperties(isKeyguard);
 		} else if (skinName.equals(Main.SKIN_BBB)) {
-			return new BBBProperties();
+			return new BBBProperties(isKeyguard);
 		}
-		return new CarHomeProperties();
+		return new CarHomeProperties(isKeyguard);
 	}
 }

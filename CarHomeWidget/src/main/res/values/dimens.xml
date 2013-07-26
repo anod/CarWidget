@@ -34,4 +34,6 @@
 	<dimen name="step_pager_tab_spacing">4dp</dimen>
 	<dimen name="wizard_page_margin">4dp</dimen>
 
+	<!-- Preference widget area width (to the left of the text) -->
+	<dimen name="lockscreen_widget_height">500dp</dimen>
 </resources>

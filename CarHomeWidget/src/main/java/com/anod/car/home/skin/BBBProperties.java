@@ -5,6 +5,10 @@ import com.anod.car.home.R;
 
 public class BBBProperties extends BaseProperties {
 
+	protected BBBProperties(boolean keyguard) {
+		super(keyguard);
+	}
+
 	@Override
 	public int getInCarButtonExitRes() {
 		return R.drawable.ic_incar_exit_bbb;

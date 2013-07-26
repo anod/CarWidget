@@ -89,19 +89,41 @@ public class MainActivity extends ActionBarActivity {
 		settings.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent intent = new Intent(mContext, ConfigurationInCar.class);
-				startActivity(intent);
+			Intent intent = new Intent(mContext, ConfigurationInCar.class);
+			startActivity(intent);
 			}
 		});
 
-		final Version version = new Version(mContext);
+		TextView trialText = (TextView)findViewById(R.id.incarTrial);
+		LinearLayout incarHeader = (LinearLayout) findViewById(R.id.incarHeader);
+		if (mVersion.isFreeAndTrialExpired()) {
+			trialText.setText(getString(R.string.dialog_donate_title_expired) + " " + getString(R.string.notif_consider));
+			incarHeader.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+				startActivity(IntentUtils.createProVersionIntent());
+				}
+			});
+		} else if (mVersion.isFree()) {
+			String activationsLeft = getResources().getQuantityString(R.plurals.notif_activations_left, mVersion.getTrialTimesLeft(), mVersion.getTrialTimesLeft());
+			trialText.setText(getString(R.string.dialog_donate_title_trial) + " " + activationsLeft);
+			incarHeader.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					startActivity(IntentUtils.createProVersionIntent());
+				}
+			});
+		} else {
+			trialText.setVisibility(View.GONE);
+		}
+
 
 		TextView active = (TextView)findViewById(R.id.incarActive);
 		if (widgetsCount == 0) {
 			active.setText(R.string.not_active);
 		} else {
 
-			if (version.isProOrTrial()) {
+			if (mVersion.isProOrTrial()) {
 				if (PreferencesStorage.isInCarModeEnabled(this)){
 					active.setText(R.string.enabled);
 				} else {
@@ -125,7 +147,7 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View view) {
 
-				if (version.isFree()) {
+				if (mVersion.isFree()) {
 					showDialog(DIALOG_PRO);
 				} else {
 					Intent intentInCar = new Intent(mContext, ConfigurationRestore.class);

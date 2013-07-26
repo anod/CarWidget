@@ -56,7 +56,8 @@ public class LauncherViewBuilder {
 	private String mOverrideSkin;
 	private PendingIntentHelper mPendingIntentHelper;
 	private BitmapTransform mBitmapTransform;
-	
+	private boolean mIsKeyguard = true;
+
 	public interface PendingIntentHelper {
 		PendingIntent createSettings(int appWidgetId, int cellId);
 		PendingIntent createShortcut(Intent intent, int appWidgetId, int position, long shortcutId);
@@ -120,9 +121,11 @@ public class LauncherViewBuilder {
 		String packageName = mContext.getPackageName();
 		String skinName = (mOverrideSkin == null) ? mPrefs.getSkin() : mOverrideSkin;
 
-		SkinProperties skinProperties = PropertiesFactory.create(skinName);
+		SkinProperties skinProperties = PropertiesFactory.create(skinName, mIsKeyguard);
 
 		RemoteViews views = new RemoteViews(packageName, skinProperties.getLayout());
+
+		float scaledDensity = mContext.getResources().getDisplayMetrics().scaledDensity;
 
 		setInCarButton(mPrefs.isIncarTransparent(), skinProperties, views);
 
@@ -136,7 +139,7 @@ public class LauncherViewBuilder {
 
 		mBitmapTransform.setIconProcessor(skinProperties.getIconProcessor());
 		
-		float scaledDensity = mContext.getResources().getDisplayMetrics().scaledDensity;
+
 
 		String themePackage = mPrefs.getIconsTheme();
 		IconTheme themeIcons = (themePackage == null) ? null : loadThemeIcons(themePackage);

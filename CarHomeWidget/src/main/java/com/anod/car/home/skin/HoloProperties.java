@@ -4,6 +4,10 @@ import com.anod.car.home.R;
 
 public class HoloProperties extends BaseProperties {
 
+	protected HoloProperties(boolean keyguard) {
+		super(keyguard);
+	}
+
 	@Override
 	public int getInCarButtonExitRes() {
 		return R.drawable.ic_incar_exit_holo;
@@ -21,7 +25,7 @@ public class HoloProperties extends BaseProperties {
 
 	@Override
 	public int getLayout() {
-		return R.layout.holo;
+		return (mIsKeyguard) ? R.layout.holo_keyguard : R.layout.holo;
 	}
 
 }

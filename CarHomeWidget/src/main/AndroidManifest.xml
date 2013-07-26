@@ -42,6 +42,8 @@
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
+	
+	<uses-feature android:name="android.software.app_widgets" android:required="true" />
 
     <application
 			android:name="com.anod.car.home.CarWidgetApplication"
