@@ -96,9 +96,9 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 		setTitle(R.string.pref_look_and_feel_title);
 		mContext = this;
 
-		Bundle widgetOptions = AppWidgetManager.getInstance(mContext).getAppWidgetOptions(mAppWidgetId);
-		int category = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1);
-		mIsKeyguard = category == AppWidgetProviderInfo.WIDGET_CATEGORY_KEYGUARD;
+		if (Utils.IS_JELLYBEAN_OR_GREATER) {
+			initKeyguard();
+		}
 
 		mBuilder = createBuilder();
 		mPrefs = mBuilder.getPrefs();
@@ -119,8 +119,13 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 		showText(mCurrentPage);
 	}
 
-	
-	
+	private void initKeyguard() {
+		Bundle widgetOptions = AppWidgetManager.getInstance(mContext).getAppWidgetOptions(mAppWidgetId);
+		int category = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1);
+		mIsKeyguard = category == AppWidgetProviderInfo.WIDGET_CATEGORY_KEYGUARD;
+	}
+
+
 	@Override
 	protected void onResume() {
 		super.onResume();

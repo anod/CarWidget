@@ -155,18 +155,9 @@ public class LauncherViewBuilder {
 		boolean isSmallKeyguard = mIsKeyguard && mWidgetHeightDp != -1 && mWidgetHeightDp < 200;
 		int keyguardHiddenShortcuts = isLandscape ? 1 : 2;
 
-		if (isSmallKeyguard) {
-			views.setViewVisibility(R.id.row1, View.GONE);
-			if (!isLandscape) {
-				views.setViewVisibility(R.id.row2, View.GONE);
-			}
-		} else {
-			views.setViewVisibility(R.id.row1, View.VISIBLE);
-			if (!isLandscape) {
-				views.setViewVisibility(R.id.row2, View.VISIBLE);
-			}
+		if (mIsKeyguard) {
+			hideKeyguardRows(isLandscape, views, isSmallKeyguard);
 		}
-
 
 		for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
 			int res = sBtnRes[cellId];
@@ -191,6 +182,20 @@ public class LauncherViewBuilder {
 		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId, PickShortcutUtils.INVALID_CELL_ID);
 		views.setOnClickPendingIntent(R.id.btn_settings, configIntent);
 		return views;
+	}
+
+	private void hideKeyguardRows(boolean landscape, RemoteViews views, boolean smallKeyguard) {
+		if (smallKeyguard) {
+			views.setViewVisibility(R.id.row1, View.GONE);
+			if (!landscape) {
+				views.setViewVisibility(R.id.row2, View.GONE);
+			}
+		} else {
+			views.setViewVisibility(R.id.row1, View.VISIBLE);
+			if (!landscape) {
+				views.setViewVisibility(R.id.row2, View.VISIBLE);
+			}
+		}
 	}
 
 	private IconTheme loadThemeIcons(String themePackage) {
