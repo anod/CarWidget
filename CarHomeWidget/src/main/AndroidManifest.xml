@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.anod.car.home"
-    android:installLocation="internalOnly"
-    android:versionCode="32"
-    android:versionName="1.6" xmlns:tools="http://schemas.android.com/tools">
+    android:installLocation="internalOnly" xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -135,10 +133,8 @@
             android:icon="@drawable/ic_launcher"
             android:label="@string/switch_in_car_activity"
             android:noHistory="true"
+			android:exported="true"
             android:theme="@style/BrightnessTheme" >
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
 		<activity android:name=".MainActivity">
@@ -152,7 +148,7 @@
 
 		<service android:name="com.anod.car.home.incar.ModeService" />
         <service android:name="com.anod.car.home.incar.BroadcastService" />
-		<service android:name="com.anod.car.home.incar.ActivityRecognitionService" />
+		<service android:name="com.anod.car.home.incar.ActivityRecognitionService" android:exported="true"/>
 
 		<meta-data
 				android:name="com.google.android.backup.api_key"

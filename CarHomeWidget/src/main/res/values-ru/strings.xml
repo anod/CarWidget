@@ -43,7 +43,7 @@
 	<string name="turn_off_bluetooth_summary">Выключить Bluetooth</string>
 	<string name="bluetooth_device_category_title">Включить при подключении с:</string>
 	<string name="no_paired_devices_found_title">Сопряженные устройства не найдены.</string>
-	<string name="no_paired_devices_found_summary">Прежде чем устройство может быть выбранно, оно должено быть сопряженно и Bluetooth должен быть включен</string>
+	<string name="no_paired_devices_found_summary">Прежде чем устройство может быть выбрано, оно должно быть сопряженно и Bluetooth должен быть включен</string>
 	<string name="pref_headset_connected_title">Гарнитура подключена</string>
 	<string name="pref_headset_connected_summary">Включить режим «В автомобиле», когда аудио разъем подключен</string>
 	<string name="pref_power_connected_title">Питание подключено</string>
@@ -52,7 +52,7 @@
 	<string name="pref_screen_timeout_summary">Когда отмечено, препятствует автоматическому выключению экрана</string>
 	<string name="pref_brightness_mode">Режим яркости</string>
 	<string name="pref_brightness_mode_summary">Выберите, как регулировать настройки яркости</string>
-	<string name="pref_change_media_volume">Громкость Мультимедия</string>
+	<string name="pref_change_media_volume">Громкость Мультимедиа</string>
 	<string name="pref_change_media_volume_summary">Регулировка громкость Мультимедиа до определенного уровня</string>
 	<string name="pref_media_volume_level">Уровень громкости</string>
 	<string name="pref_volume_level_summary">Установить желаемый уровень громкости</string>
@@ -94,15 +94,15 @@
 	<string name="backup_done">Резервная копия создана.</string>
 	<string name="external_storage_not_available">Карта памяти не доступна</string>
 	<string name="failed_to_write_file">Ошибка записи в файл.</string>
-	<string name="restore_done">Восстановление завршено.</string>
-	<string name="restore_deserialize_failed">Ошибка децериализации резервнок копии.</string>
+	<string name="restore_done">Восстановление завершено.</string>
+	<string name="restore_deserialize_failed">Ошибка десириализации резервной копии.</string>
 	<string name="failed_to_read_file">Ошибка чтения файла.</string>
 	<string name="backup_not_exist">Резервная копия не найдена.</string>
 	<string name="unable_delete_file">Не удалось удалить файл.</string>
 	<string name="no_backup_files_found">Файлы резервных копий не найдены.</string>
 	<string name="choose_backup">Выберите резервную копию для восстановления</string>
 	<string name="pref_auto_answer">Авто-ответ</string>
-	<string name="pref_auto_answer_summary">Автоматически отвечать на входящие звонки, немедленно или с задержкой в 5 секунд (Экперементальный)</string>
+	<string name="pref_auto_answer_summary">Автоматически отвечать на входящие звонки, немедленно или с задержкой в 5 секунд (Экспериментальный)</string>
 	<string name="pref_autorun_app_title">Запуск приложения</string>
 	<string name="switch_in_car_activity">Режим «В автомобиле»</string>
 	<string name="incar_mode_disabled">Режим «В автомобиле» отключен.\nВключите его в настройках виджета чтобы воспользоваться ярлыком.</string>
@@ -110,7 +110,7 @@
 	<string name="notification">Уведомление</string>
 	<string name="shortcuts_summary">Вы можете разместить до 3 ярлыков на уведомлении</string>
 	<string name="icons_theme">Тема иконок</string>
-	<string name="not_set">Не установленно</string>
+	<string name="not_set">Не установлено</string>
 	<string name="default_car_dock_app">Car Dock app по умолчанию</string>
 	<string name="cardock_btn_1">Открыть \"О приложении\"</string>
 	<string name="cardock_text1">Чтобы очистить текущее приложение запускаемое по умолчанию:\n1. Откройте \"О приложении\"\n2. Нажмите на кнопку \"Удалить настройки по умолчанию\"</string>
@@ -144,14 +144,14 @@
 	<string name="swipe_continue">Продолжение →</string>
 	<plurals name="active_widgets">
 		<item quantity="one">Один активный виджет</item>
-		<item quantity="few">%d активыных виджета</item>
-		<item quantity="many">%d активыных виджетов</item>
-		<item quantity="other">%d активыных виджетов</item>
+		<item quantity="few">%d активных виджета</item>
+		<item quantity="many">%d активных виджетов</item>
+		<item quantity="other">%d активных виджетов</item>
 	</plurals>
 	<string name="gms_success">Использовать Google Play services для определения активности</string>
 	<string name="gms_service_missing">Google Play services отсутствует на этом устройстве.</string>
 	<string name="gms_service_update_required">Установленная версия Google Play services устарела.</string>
 	<string name="gms_service_disabled">Установленная версия Google Play services была отключена на этом устройства.</string>
-	<string name="gms_service_invalid">Версия Google Play services установленая на этом устройстве не подлинная.</string>
-	<string name="activity_recognition">Распознование активности</string>
+	<string name="gms_service_invalid">Версия Google Play services установленная на этом устройстве не подлинная.</string>
+	<string name="activity_recognition">Распознавание активности</string>
 </resources>
