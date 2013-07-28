@@ -197,7 +197,7 @@ public class MainActivity extends ActionBarActivity {
 				String url = DETAIL_MARKET_URL;
 				Uri uri = Uri.parse(String.format(url, getPackageName()));
 				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-				startActivity(intent);
+				Utils.startActivitySafely(intent, mContext);
 			}
 		});
 
