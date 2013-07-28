@@ -8,7 +8,7 @@
 	<string name="pref_tile_color_title">Цвет плитки</string>
 	<string name="pref_bg_color_title">Цвет фона</string>
 	<string name="pref_icons_mono_title">Монохромные иконки</string>
-	<string name="pref_tint_color_title">Цвет oттенка</string>
+	<string name="pref_tint_color_title">Цвет оттенка</string>
 	<string name="pref_tint_color_summary">Выбор цвет оттенка иконок</string>
 	<string name="pref_font_color_title">Цвет шрифта</string>
 	<string name="pref_font_color_summary">Выберите цвет названия ярлыка</string>

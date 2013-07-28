@@ -128,7 +128,7 @@ public class LauncherViewBuilder {
 		Resources r = mContext.getResources();
 		String packageName = mContext.getPackageName();
 		String skinName = (mOverrideSkin == null) ? mPrefs.getSkin() : mOverrideSkin;
-		boolean isLandscape = r.getBoolean(R.bool.is_landscape);
+		//boolean isLandscape = r.getBoolean(R.bool.is_landscape);
 		float scaledDensity = r.getDisplayMetrics().scaledDensity;
 
 		SkinProperties skinProperties = PropertiesFactory.create(skinName, mIsKeyguard);
@@ -153,10 +153,10 @@ public class LauncherViewBuilder {
 		IconTheme themeIcons = (themePackage == null) ? null : loadThemeIcons(themePackage);
 
 		boolean isSmallKeyguard = mIsKeyguard && mWidgetHeightDp != -1 && mWidgetHeightDp < 200;
-		int keyguardHiddenShortcuts = isLandscape ? 1 : 2;
+		int keyguardHiddenShortcuts = 1;//isLandscape ? 1 : 2;
 
 		if (mIsKeyguard) {
-			hideKeyguardRows(isLandscape, views, isSmallKeyguard);
+			hideKeyguardRows(views, isSmallKeyguard);
 		}
 
 		for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
@@ -184,17 +184,17 @@ public class LauncherViewBuilder {
 		return views;
 	}
 
-	private void hideKeyguardRows(boolean landscape, RemoteViews views, boolean smallKeyguard) {
+	private void hideKeyguardRows(RemoteViews views, boolean smallKeyguard) {
 		if (smallKeyguard) {
 			views.setViewVisibility(R.id.row1, View.GONE);
-			if (!landscape) {
+			//if (!landscape) {
 				views.setViewVisibility(R.id.row2, View.GONE);
-			}
+			//}
 		} else {
 			views.setViewVisibility(R.id.row1, View.VISIBLE);
-			if (!landscape) {
+			//if (!landscape) {
 				views.setViewVisibility(R.id.row2, View.VISIBLE);
-			}
+			//}
 		}
 	}
 
