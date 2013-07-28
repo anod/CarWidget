@@ -2,7 +2,7 @@
 <resources>
 	<string name="please_wait">Пожалуйста, подождите...</string>
 	<string name="shortcuts">Ярлыки</string>
-	<string name="advanced">Дополнителные настройки</string>
+	<string name="advanced">Дополнительные настройки</string>
 	<string name="pref_actions">Действия</string>
 	<string name="bluetooth_device_laptop">Компьютер</string>
 	<string name="bluetooth_device_cellphone">Телефон</string>
