@@ -3,10 +3,6 @@ package com.anod.car.home.skin;
 import com.anod.car.home.R;
 
 public abstract class BaseProperties implements SkinProperties {
-	protected boolean mIsKeyguard;
-	protected BaseProperties(boolean keyguard) {
-		mIsKeyguard = keyguard;
-	}
 
 	@Override
 	public int getInCarButtonExitRes() {

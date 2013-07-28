@@ -3,6 +3,7 @@ package com.anod.car.home.prefs;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -65,6 +66,7 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 	private WidgetSharedPreferences mSharedPrefs;
 	
 	private static int[] sTextRes = { 0, 0, 0, 0, R.string.skin_info_bbb };
+	private boolean mIsKeyguard;
 
 	interface SkinRefreshListener {
 		void refresh();
@@ -93,6 +95,10 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 		setContentView(R.layout.skin_preview);
 		setTitle(R.string.pref_look_and_feel_title);
 		mContext = this;
+
+		Bundle widgetOptions = AppWidgetManager.getInstance(mContext).getAppWidgetOptions(mAppWidgetId);
+		int category = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1);
+		mIsKeyguard = category == AppWidgetProviderInfo.WIDGET_CATEGORY_KEYGUARD;
 
 		mBuilder = createBuilder();
 		mPrefs = mBuilder.getPrefs();
@@ -247,10 +253,23 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 	}
 
 	private SkinItem[] createSkinList(String skinValue) {
+		SkinItem[] skins;
+
+		if (mIsKeyguard) {
+			skins = new SkinItem[1];
+			SkinItem item = new SkinItem();
+			item.title = "Keyguard";
+			item.value = "holo";
+			item.textRes = 0;
+			skins[0] = item;
+			mSelectedSkinPosition = 0;
+			return skins;
+		}
+
 		Resources r = getResources();
 		String[] titles = r.getStringArray(R.array.skin_titles);
 		String[] values = r.getStringArray(R.array.skin_values);
-		SkinItem[] skins = new SkinItem[titles.length];
+		skins = new SkinItem[titles.length];
 		for (int i = 0; i < titles.length; i++) {
 			SkinItem item = new SkinItem();
 			item.title = titles[i];

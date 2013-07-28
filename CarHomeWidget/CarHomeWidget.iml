@@ -68,6 +68,30 @@
       <sourceFolder url="file://$MODULE_DIR$/tests/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests/res" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/source/buildConfig/free/debug" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/free/res" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/res/rs/free/debug" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/free/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/source/aidl/free/debug" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/free/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/source/rs/free/debug" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/free/assets" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/source/r/free/debug" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/free/jni" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/free/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/free/aidl" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/instrumentTestFree/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/instrumentTestFree/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/instrumentTestFree/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/res/rs/free/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/source/r/free/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/source/rs/free/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/instrumentTestFree/res" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/instrumentTestFree/rs" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/instrumentTestFree/jni" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/source/buildConfig/free/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/instrumentTestFree/assets" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/source/aidl/free/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.externalToolBuilders" />
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/.idea" />

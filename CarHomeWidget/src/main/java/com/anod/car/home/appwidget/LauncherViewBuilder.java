@@ -1,16 +1,15 @@
 package com.anod.car.home.appwidget;
 
 import java.util.HashMap;
-import java.util.Locale;
 
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -56,7 +55,8 @@ public class LauncherViewBuilder {
 	private String mOverrideSkin;
 	private PendingIntentHelper mPendingIntentHelper;
 	private BitmapTransform mBitmapTransform;
-	private boolean mIsKeyguard = true;
+	private boolean mIsKeyguard = false;
+	private int mWidgetHeightDp = -1;
 
 	public interface PendingIntentHelper {
 		PendingIntent createSettings(int appWidgetId, int cellId);
@@ -66,6 +66,14 @@ public class LauncherViewBuilder {
 
 	public LauncherViewBuilder(Context context) {
 		mContext = context;
+	}
+
+	public void setIsKeyguard(boolean isKeyguard) {
+		mIsKeyguard = isKeyguard;
+	}
+
+	public void setWidgetHeightDp(int widgetHeightDp) {
+		mWidgetHeightDp = widgetHeightDp;
 	}
 
 	public LauncherViewBuilder setPendingIntentHelper(PendingIntentHelper helper) {
@@ -98,11 +106,11 @@ public class LauncherViewBuilder {
 		mSmodel.init();
 		
 		mBitmapTransform = new BitmapTransform(mContext);
-		refershIconTransform();
+		refreshIconTransform();
 		return this;
 	}
 
-	public void refershIconTransform() {
+	public void refreshIconTransform() {
 		applyIconTransform(mBitmapTransform, mPrefs);
 	}
 
@@ -117,15 +125,15 @@ public class LauncherViewBuilder {
 	}
 
 	public RemoteViews build() {
-
+		Resources r = mContext.getResources();
 		String packageName = mContext.getPackageName();
 		String skinName = (mOverrideSkin == null) ? mPrefs.getSkin() : mOverrideSkin;
+		boolean isLandscape = r.getBoolean(R.bool.is_landscape);
+		float scaledDensity = r.getDisplayMetrics().scaledDensity;
 
 		SkinProperties skinProperties = PropertiesFactory.create(skinName, mIsKeyguard);
 
 		RemoteViews views = new RemoteViews(packageName, skinProperties.getLayout());
-
-		float scaledDensity = mContext.getResources().getDisplayMetrics().scaledDensity;
 
 		setInCarButton(mPrefs.isIncarTransparent(), skinProperties, views);
 
@@ -144,10 +152,31 @@ public class LauncherViewBuilder {
 		String themePackage = mPrefs.getIconsTheme();
 		IconTheme themeIcons = (themePackage == null) ? null : loadThemeIcons(themePackage);
 
+		boolean isSmallKeyguard = mIsKeyguard && mWidgetHeightDp != -1 && mWidgetHeightDp < 200;
+		int keyguardHiddenShortcuts = isLandscape ? 1 : 2;
+
+		if (isSmallKeyguard) {
+			views.setViewVisibility(R.id.row1, View.GONE);
+			if (!isLandscape) {
+				views.setViewVisibility(R.id.row2, View.GONE);
+			}
+		} else {
+			views.setViewVisibility(R.id.row1, View.VISIBLE);
+			if (!isLandscape) {
+				views.setViewVisibility(R.id.row2, View.VISIBLE);
+			}
+		}
+
+
 		for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
 			int res = sBtnRes[cellId];
 			int resText = sTextRes[cellId];
 			ShortcutInfo info = mSmodel.getShortcut(cellId);
+
+			if (isSmallKeyguard && cellId > keyguardHiddenShortcuts) {
+				continue;
+			}
+
 			if (info == null) {
 				setNoShortcut(res, resText, mPrefs, views, cellId, skinProperties);
 			} else {
