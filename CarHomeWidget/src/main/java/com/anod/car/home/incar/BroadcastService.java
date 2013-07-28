@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.anod.car.home.BuildConfig;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.ActivityRecognitionClient;
@@ -91,6 +94,7 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 
 	private void detachActivityRecognitionClient() {
 		if (mActivityRecognitionClient != null) {
+			mActivityRecognitionClient.removeActivityUpdates(getActivityRecognitionPendingIntent());
 			mActivityRecognitionClient.disconnect();
 			mActivityRecognitionClient = null;
 		}
@@ -98,10 +102,11 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 
 	@Override
 	public void onConnected(Bundle bundle) {
-		Toast.makeText(this, "Activity Recognition Client Connected", Toast.LENGTH_SHORT).show();
+		if (BuildConfig.DEBUG) {
+			Toast.makeText(this, "Activity Recognition Client Connected", Toast.LENGTH_SHORT).show();
+		}
 		// 3 sec
 		mActivityRecognitionClient.requestActivityUpdates(DETECTION_INTERVAL_MILLISECONDS, getActivityRecognitionPendingIntent());
-		detachActivityRecognitionClient();
 	}
 
 	private PendingIntent getActivityRecognitionPendingIntent() {
@@ -111,17 +116,21 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 
 	@Override
 	public void onDisconnected() {
-		Toast.makeText(this, "Activity Recognition Client Disconnected",Toast.LENGTH_SHORT).show();
+		if (BuildConfig.DEBUG) {
+			Toast.makeText(this, "Activity Recognition Client Disconnected",Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
-		Toast.makeText(this, "Activity Recognition Client Connection Failed: "+connectionResult.toString(),Toast.LENGTH_SHORT).show();
+		if (BuildConfig.DEBUG) {
+			Toast.makeText(this, "Activity Recognition Client Connection Failed: "+connectionResult.toString(),Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	@Override
 	public void onUpdate(boolean enable) {
-		Log.d("HomeCarWidget", "ActivityRecognitionClientUpdate: "+enable);
+		Utils.logd("ActivityRecognitionClientUpdate: "+enable);
 		if (enable) {
 			attachActivityRecognitionClient(this);
 		} else {
