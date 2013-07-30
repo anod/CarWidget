@@ -154,4 +154,75 @@
 	<string name="gms_service_disabled">Установленная версия Google Play services была отключена на этом устройства.</string>
 	<string name="gms_service_invalid">Версия Google Play services установленная на этом устройстве не подлинная.</string>
 	<string name="activity_recognition">Распознавание активности</string>
+	<string name="please_wait">Пожалуйста, подождите...</string>
+	<string name="shortcuts">Ярлыки</string>
+	<string name="advanced">Дополнительные настройки</string>
+	<string name="pref_actions">Действия</string>
+	<string name="bluetooth_device_laptop">Компьютер</string>
+	<string name="bluetooth_device_cellphone">Телефон</string>
+	<string name="bluetooth_device_headphones">Наушники</string>
+	<string name="bluetooth_device_headset">Гарнитура</string>
+	<string name="information_title">Информация</string>
+	<string name="issue_title">Обратная связь</string>
+	<string name="applications">Приложения</string>
+	<string name="pref_skin">Тема</string>
+	<string name="pref_wifi">Wi-Fi</string>
+	<string name="transparent">Прозрачные</string>
+	<string name="dialog_title_select">Выбрать</string>
+	<string name="icon_default">По-умолчанию</string>
+	<string name="icon_custom">Пользовательский</string>
+	<string name="icon_adw_icon_pack">Набор иконок ADW</string>
+	<string name="never">Никогда</string>
+	<string name="backup">Сохранить</string>
+	<string name="restore">Восстановить</string>
+	<string name="backup_save">Сохранить</string>
+	<string name="apply">Применить</string>
+	<string name="selected">Выбран</string>
+	<string name="settings">Настройки</string>
+	<string name="more">Еще&#8230;</string>
+	<string name="none">Нет</string>
+	<string name="download">Скачать&#8230;</string>
+	<string name="system">Система</string>
+	<string name="backup_path">Путь</string>
+	<string name="menu">Меню</string>
+	<string name="enabled">Включен</string>
+	<string name="disabled">Отключен</string>
+	<string name="configure">Настройка</string>
+	<string name="finish">Конец</string>
+	<string name="skip">Пропустить</string>
+	<string name="next">Следующий</string>
+	<string-array name="brightness_mode_titles">
+		<item>Системный</item>
+		<item>Автоматически</item>
+		<item>День</item>
+		<item>Ночь</item>
+	</string-array>
+	<string-array name="wifi_action_titles">
+		<item>Нет действия</item>
+		<item>Временно</item>
+		<item>Постоянно</item>
+	</string-array>
+	<string-array name="autoanswer_titles">
+		<item>Отключено</item>
+		<item>Немедленно</item>
+		<item>5 сек. задержка</item>
+	</string-array>
+
+	<string-array name="autorun_app_titles">
+		<item>Отключено</item>
+		<item>Выбрать&#8230;</item>
+	</string-array>
+
+	<string-array name="carwidget_shortcuts">
+		<item>В автомобиле</item>
+		<item>Играть/Пауза</item>
+		<item>Следующий</item>
+		<item>Предыдущий</item>
+	</string-array>
+
+	<string-array name="icon_rotate_titles">
+		<item>Нет</item>
+		<item>90&#186; Влево</item>
+		<item>90&#186; Вправо</item>
+	</string-array>
 </resources>
