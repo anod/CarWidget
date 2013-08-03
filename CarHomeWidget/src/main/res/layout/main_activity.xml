@@ -121,10 +121,12 @@
 				android:background="@drawable/panel_bg"
 				android:gravity="center_vertical"
 				android:textColor="@color/font_color"
-				android:paddingLeft="10dp"
 				style="@style/text_align_style"
 				android:drawablePadding="4dp"
-				android:paddingRight="10dp"/>
+				android:ellipsize="end"
+				android:maxLines="1"
+				android:padding="10dp"
+				/>
 		<View
 				android:layout_height="match_parent"
 				android:layout_width="1dp"
@@ -141,12 +143,11 @@
 				android:background="@drawable/panel_bg"
 				android:gravity="center_vertical"
 				android:textColor="@color/font_color"
-				android:paddingLeft="10dp"
 				style="@style/text_align_style"
 				android:drawablePadding="4dp"
-				android:paddingRight="10dp"
 				android:ellipsize="end"
 				android:maxLines="1"
+				android:padding="10dp"
 			/>
 	</LinearLayout>
 

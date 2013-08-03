@@ -117,7 +117,6 @@ public class MainActivity extends ActionBarActivity {
 			trialText.setVisibility(View.GONE);
 		}
 
-
 		TextView active = (TextView)findViewById(R.id.incarActive);
 		if (widgetsCount == 0) {
 			active.setText(R.string.not_active);

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="permlab_read_settings">Läs inställningar och genvägar för Bil Widget</string>
+	<string name="permdesc_read_settings">Tillåter att en app läser inställningar och genvägar på Car Widget.</string>
+	<string name="permlab_write_settings">skriv Car Widget inställningar och genvägar</string>
+	<string name="permdesc_write_settings">Tillåter att en app ändrar inställningar och genvägar på Car Widget.</string>
+	<string name="color_dialog_title">Välj en färg</string>
+	<string name="pref_tile_color_title">Tile färg</string>
+	<string name="pref_bg_color_title">Bakgrundsfärg</string>
+	<string name="pref_icons_mono_title">Monokroma ikoner</string>
+	<string name="pref_tint_color_title">Färgnyans</string>
+	<string name="pref_tint_color_summary">Välj färgnyans av ikoner</string>
+	<string name="pref_font_color_title">Textfärg</string>
+	<string name="pref_font_color_summary">Välj färg på titel</string>
+	<string name="pref_font_size_title">Textstorlek</string>
+	<string name="pref_font_size_summary">Välj storlek på titel</string>
+	<string name="dialog_donate_title_expired">Testperioden har gått ut</string>
+	<string name="dialog_donate_message_expired">Den här funktionen är endast tillgänglig i Car Widget Pro-versionen.\n\n Vill du få det nu?</string>
+	<string name="dialog_donate_title_trial">Testperiod</string>
+	<string name="dialog_donate_message_trial">\n\nObegränsad InCar läge är endast tillgängligt i Car Widget Pro-versionen.\n\n Vill du få det nu?</string>
+	<string name="dialog_donate_title_install">Pro version detekteras,</string>
+	<string name="dialog_donate_message_installed">Vänligen tillägg den nya installerade widgeten på startskärmen för att få tillgång till funktionerna i Pro-versionen.\n\nKopiera inställningar:\nDu kan kopiera inställningarna med \"Säkerhetskopiering/Återställing\" alternativet. Fri version av widgeten krävs inte längre.\n\nTack.</string>
+	<string name="dialog_donate_btn_trial">Fortsätt testperioden</string>
+	<string name="dialog_donate_btn_yes">Ja, tack!</string>
+	<string name="dialog_donate_btn_no">Nej tack.</string>
+	<string name="set_shortcut">Ställ in genväg</string>
+	<string name="pref_look_and_feel_title">Utseende och Känsla</string>
+	<string name="pref_look_and_feel_summary">Anpassa hud, färger och textstorlek</string>
+	<string name="pref_incar_mode_title">InCar läge</string>
+	<string name="pref_incar_mode_summary">Välj hur man upptäcker när man i bilen, och inställningarna som ska justeras</string>
+	<string name="pref_incar_mode_enabled">Aktivera InCar läge</string>
+	<string name="pref_power_contorl_bt">Effektstyrning Bluetooth</string>
+	<string name="pref_power_plugged_bt_on_title">På när ansluten</string>
+	<string name="pref_power_plugged_bt_on_summary">Slå på Bluetooth när strömkabeln är inkopplad</string>
+	<string name="pref_power_unplugged_bt_off_title">Av när urkopplad</string>
+	<string name="pref_power_unplugged_bt_off_summary">Stäng av Bluetooth när nätkabeln är urkopplad</string>
+	<string name="pref_detection">Detektion</string>
+	<string name="pref_blutooth_device_title">Bluetooth-enhet</string>
+	<string name="pref_blutooth_device_summary">Välj Bluetooth-enhet som möjliggör InCar läge</string>
+	<string name="load_paired_device">Laddar ihopkopplade enheter</string>
+	<string name="bluetooth">Bluetooth</string>
+	<string name="turn_on_bluetooth_summary">Slå på Bluetooth</string>
+	<string name="turn_off_bluetooth_summary">Stäng av Bluetooth</string>
+	<string name="bluetooth_device_category_title">Aktivera InCar läge vid anslutning till:</string>
+	<string name="no_paired_devices_found_title">Inga ihopkopplade enheter hittades.</string>
+	<string name="no_paired_devices_found_summary">Innan en enhet kan väljas måste den kopplas ihop och Bluetooth måste aktiveras</string>
+	<string name="pref_headset_connected_title">Headset anslutet</string>
+	<string name="pref_headset_connected_summary">Aktivera InCar läge när ljudutgång ansluten</string>
+	<string name="pref_power_connected_title">Strömansluten</string>
+	<string name="pref_power_connected_summary">Aktivera InCar läge när nätkabeln ansluts</string>
+	<string name="pref_screen_timeout">Inaktivera skärmtimeout</string>
+	<string name="pref_screen_timeout_summary">När kryssad så hindras skärmen från att automatiskt stänga av</string>
+	<string name="pref_brightness_mode">Ljusstyrka läge</string>
+	<string name="pref_brightness_mode_summary">Välj hur du justerar inställningen av ljusstyrkan</string>
+	<string name="pref_change_media_volume">Justera volymen</string>
+	<string name="pref_change_media_volume_summary">Ändra volymen till viss nivå</string>
+	<string name="pref_media_volume_level">Media nivå</string>
+	<string name="pref_volume_level_summary">Ändra önskad volymnivå</string>
+	<string name="pref_phone_volume_level">Telefon samtalsnivå</string>
+	<string name="notif_expired">Testperioden har gått ut</string>
+	<string name="notif_consider">Överväg att installera Pro version</string>
+	<string name="incar_mode_enabled">InCar läge aktiverad</string>
+	<string name="click_to_disable">Klicka för att inaktivera</string>
+	<string name="click_to_disable_trial">Klicka för att inaktivera, Försök: %d gånger kvar</string>
+	<plurals name="notif_activations_left">
+    <item quantity="zero">%1$d noll aktiveringar kvar</item>
+    <item quantity="one">%1$d en aktivering kvar</item>
+    <item quantity="two">%1$d två aktiveringar kvar</item>
+    <item quantity="few">%1$d få aktiveringar kvar</item>
+    <item quantity="many">%1$d många aktiveringar kvar</item>
+    <item quantity="other">%1$d andra aktiveringar kvar</item>
+  </plurals>
+	<string name="version_title">%1$s ver. %2$s</string>
+	<string name="version_summary">Bedöm denna widget på marknaden</string>
+	<string name="shortcut_edit_title">Redigera genväg</string>
+	<string name="shortcut_edit_hint">Rör på ikonen för att ändra det</string>
+	<string name="photo_picker_not_found">Inga bilder finns tillgängliga på telefonen.</string>
+	<string name="error_text">Fel: %1$s</string>
+	<string name="pref_route_to_speaker">Dirigera till högtalare</string>
+	<string name="pref_route_to_speaker_summary">Dirigera alla inkommande samtal till telefonens högtalare</string>
+	<string name="pref_scale_icon">Skala ikon</string>
+	<string name="pref_wifi_summary">Om Wi-Fi är På, kan du tillfälligt eller permanent stänga av den</string>
+	<string name="pref_settings_transparent">Inställningsknappen</string>
+	<string name="pref_settings_transparent_summary">Inställningsknappen kommer att stanna på samma plats, men kommer att blir genomskinlig</string>
+	<string name="pref_incar_transparent">InCar knapp</string>
+	<string name="pref_incar_transparent_summary">När InCar läget är aktiverad, kommer knappen att stanna på samma plats, men kommer att vara transparent</string>
+	<string name="pref_activate_car_mode">Inbyggd Bil Läge</string>
+	<string name="pref_activate_car_mode_summary">Android inbyggda bil läget kommer att aktiveras, ytterligare notifieringsikon kommer att visas.</string>
+	<string name="pref_backup_title">Säkerhetskopiering / Återställning</string>
+	<string name="pref_backup_summary">Backup inställningar för widgeten till SD-kortet.</string>
+	<string name="last_backup">Senaste säkerhetskopia: %1$s</string>
+	<string name="backup_current_widget">Nuvarande widget</string>
+	<string name="backup_incar_settings">InCar inställningar</string>
+	<string name="backup_name_title">Säkerhetskopieringens namn:</string>
+	<string name="backup_name_summary">Vänligen ange namn för att identifiera säkerhetskopian av aktuell widget</string>
+	<string name="backup_done">Säkerhetskopieringen har gjorts.</string>
+	<string name="external_storage_not_available">Extern lagringsenhet är inte tillgänglig.</string>
+	<string name="failed_to_write_file">Det gick inte att skriva filen.</string>
+	<string name="restore_done">Återställningen har gjorts.</string>
+	<string name="restore_deserialize_failed">Det gick inte att avserialisera säkerhetskopieringen.</string>
+	<string name="failed_to_read_file">Det gick inte att läsa filen.</string>
+	<string name="backup_not_exist">Säkerhetskopieringsfilen existerar inte.</string>
+	<string name="unable_delete_file">Kan inte radera fil.</string>
+	<string name="no_backup_files_found">Inga säkerhetskopior hittades.</string>
+	<string name="choose_backup">Välj en säkerhetskopia för återställning</string>
+	<string name="pref_auto_answer">Autosvar</string>
+	<string name="pref_auto_answer_summary">Autosvar på inkommande samtal omedelbart eller med 5 sekunders fördröjning. (Experimentell)</string>
+	<string name="pref_autorun_app_title">App Autorun</string>
+	<string name="switch_in_car_activity">Koppla in InCar</string>
+	<string name="incar_mode_disabled">InCar läge inaktiverad.\nAktivera det i inställningarna för widgeten för att använda genvägen.</string>
+	<string name="set_shortcut_short">INSTÄLLNING</string>
+	<string name="notification">Notifikationer</string>
+	<string name="shortcuts_summary">Du kan placera upp till 3 genvägar i statusfältet</string>
+	<string name="icons_theme">Ikontema</string>
+	<string name="not_set">Inte inställd</string>
+	<string name="default_car_dock_app">Standard Bil Dock app</string>
+	<string name="cardock_btn_1">Öppna App Info</string>
+	<string name="cardock_text1">För att ta bort aktuella standardprogram:\n1. Öppna standard App Info\n2. Klicka på \"Ta bort förinställningar\" knappen</string>
+	<string name="cardock_text2">Nästa gång Car Dock aktiverat, välj \"Car Widget\" som ett standardprogram.</string>
+	<string name="car_widget_shortcuts">Bil Widget genvägar</string>
+	<string name="car_widget_pro_shortcuts">Bil Widget Pro genvägar</string>
+	<string name="select_shortcut_title">Välj genväg</string>
+	<string name="select_icon_pack">Välj ikon pack</string>
+	<string name="custom_image_error">Ett fel inträffade vid försök att öppna den valda bilden</string>
+	<string name="pref_rotate_icon_title">Rotera ikoner</string>
+	<string name="pref_titles_hide_title">Göm titlar</string>
+	<string name="pref_titles_hide_summary">Visa inte titlar för genvägar</string>
+	<string name="home_screen_widgets">Widgetar för startskärmen</string>
+	<string name="no_active_widgets_were_found">Inga aktiva widgets hittades</string>
+	<string name="not_active">Ej aktiv</string>
+	<string name="disabled_trial_expired">Har inaktiverats - testperioden har gått ut</string>
+	<string name="no_items">Inga varor</string>
+	<string name="welcome">Välkommen</string>
+	<string name="welcome_text">&lt;b&gt; Bil Widget &lt;/ b&gt; gör tillgången lättare och snabbare till telefonens funktioner när du är i bilen.</string>
+	<string name="install_a_widget">Installera en widget</string>
+	<string name="install_widget">Gå till &lt;b&gt; startskärmen &lt;/ b&gt; och öppna din &lt;b&gt; app låda &lt;/ b&gt;. Välj &lt;b&gt; widget fliken &lt;/ b&gt; och välj sedan &lt;b&gt; Bil Widget &lt;/ b&gt; och lägg det på tillgängliga skärmen.</string>
+	<string name="install_widget_old">Observera att på Android 2.3 listan med widgetar öppnas med &lt;b&gt; långt tryck &lt;/ b&gt; på startskärmen</string>
+	<string name="configure_text">Inne i dialogrutan med inställningar för widgeten kan du definiera &lt;b&gt; genvägar &lt;/ b&gt;, konfigurera dess utseende genom att ändra &lt;b&gt; skin &lt;/ b&gt; eller tillämpa &lt;b&gt; effekter &lt;/ b&gt;</string>
+	<string name="open_settings_description">Tryck &lt;b&gt; Inställningar &lt;/ b&gt;-knappen för att öppna konfigurationsskärmen</string>
+	<string name="incar_mode">InCar läge</string>
+	<string name="detect_incar_description">&lt;b&gt; Upptäcker &lt;/ b&gt; när du är inne i bilen</string>
+	<string name="adjust_incar_description">&lt;b&gt; Justera &lt;/ b&gt; vanliga inställningar</string>
+	<string name="enable_incar_description">&lt;b&gt; Aktivera &lt;/ b&gt; InCar läget i inställningsdialogrutan.</string>
+	<string name="trial_description">Gratis testversion för %d aktiveringar.</string>
+	<string name="swipe_continue">Svep för att fortsätta →</string>
+	<plurals name="active_widgets">
+    <item quantity="zero">Noll aktiva widgets hittades</item>
+    <item quantity="one">En aktiv widget</item>
+    <item quantity="two">%d två aktiva widgets</item>
+    <item quantity="few">%d få aktiva widgets</item>
+    <item quantity="many">%d många aktiva widgets</item>
+    <item quantity="other">%d andra aktiva widgets</item>
+  </plurals>
+	<string name="gms_success">Använd Google Play tjänster för att upptäcka aktivitet</string>
+	<string name="gms_service_missing">Google Play tjänster saknas på den här enheten.</string>
+	<string name="gms_service_update_required">Den installerade versionen av Google Play tjänster är inaktuell.</string>
+	<string name="gms_service_disabled">Den installerade versionen av Google Play tjänster har inaktiverats på den här enheten.</string>
+	<string name="gms_service_invalid">Den installerade versionen av Google Play tjänster på den här enheten är inte autentisk.</string>
+	<string name="activity_recognition">Aktivitet erkännande</string>
+	<string name="please_wait">Var god vänta...</string>
+	<string name="shortcuts">Genvägar</string>
+	<string name="advanced">Avancerad</string>
+	<string name="pref_actions">Handlingar</string>
+	<string name="bluetooth_device_laptop">Dator</string>
+	<string name="bluetooth_device_cellphone">Telefon</string>
+	<string name="bluetooth_device_headphones">Hörlurar</string>
+	<string name="bluetooth_device_headset">Headset</string>
+	<string name="information_title">Information</string>
+	<string name="issue_title">Gensvar</string>
+	<string name="applications">Tillämpningar</string>
+	<string name="pref_wifi">Wi-Fi</string>
+	<string name="transparent">Transparent</string>
+	<string name="dialog_title_select">Välj</string>
+	<string name="icon_custom">Anpassning</string>
+	<string name="icon_adw_icon_pack">ADW Ikon Pack</string>
+	<string name="never">Aldrig</string>
+	<string name="backup">Säkerhetskopiera</string>
+	<string name="restore">Återställ...</string>
+	<string name="backup_save">Spara</string>
+	<string name="settings">Inställningar</string>
+	<string name="more">Mer(...)</string>
+	<string name="none">Ingen</string>
+	<string name="download">Ladda ner</string>
+	<string name="system">System</string>
+	<string name="backup_path">Sökväg</string>
+	<string name="menu">Meny</string>
+	<string name="enabled">Aktiverad</string>
+	<string name="disabled">Har inaktiverats</string>
+	<string name="configure">Konfigurera</string>
+	<string name="finish">Slutför</string>
+	<string name="skip">Hoppa över</string>
+	<string name="next">Nästa</string>
+	<string-array name="brightness_mode_titles">
+    <item>System</item>
+    <item>Auto</item>
+    <item>Dag</item>
+    <item>Natt</item>
+  </string-array>
+
+	<string-array name="wifi_action_titles">
+    <item>Ingen åtgärd</item>
+    <item>Tillfällig</item>
+    <item>Permanent</item>
+  </string-array>
+
+	<string-array name="autoanswer_titles">
+    <item>Har inaktiverats</item>
+    <item>Omedelbart</item>
+    <item>5 sek. fördröjning</item>
+  </string-array>
+
+	<string-array name="autorun_app_titles">
+    <item>Har inaktiverats</item>
+    <item>Välj...</item>
+  </string-array>
+
+	<string-array name="carwidget_shortcuts">
+    <item>Koppla in InCar</item>
+    <item>Spela/Paus</item>
+    <item>Nästa</item>
+    <item>Föregående</item>
+  </string-array>
+
+	<string-array name="icon_rotate_titles">
+    <item>Ingen</item>
+    <item>90 º Vänster</item>
+    <item>90 º Höger</item>
+  </string-array>
+</resources>
