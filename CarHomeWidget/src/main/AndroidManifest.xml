@@ -37,11 +37,10 @@
 
 	<uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION"/>
 
-    <uses-feature
-        android:name="android.hardware.telephony"
-        android:required="false" />
-	
-	<uses-feature android:name="android.software.app_widgets" android:required="true" />
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
+	<uses-feature android:name="android.hardware.bluetooth" android:required="false" />
+	<uses-feature android:name="android.hardware.wifi" android:required="false" />
+	<uses-feature android:name="android.software.app_widgets" android:required="false" />
 
     <application
 			android:name="com.anod.car.home.CarWidgetApplication"

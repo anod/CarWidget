@@ -25,7 +25,7 @@ public class ActivityRecognitionService extends IntentService {
 	private static Object sLock = new Object();
 
 	public static final int MIN_CONFIDENCE = 40;
-	public static final int MIN_VEHICLE_CONFIDENCE = 80;
+	public static final int MIN_VEHICLE_CONFIDENCE = 89;
 	private static int sLastResult = -1;
 
 
