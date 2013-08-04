@@ -12,8 +12,8 @@
 <TextView
 	style="@style/panelHeader"
 	android:id="@+android:id/title"
-	android:paddingStart="@dimen/preference_item_padding_side"
-	android:paddingEnd="@dimen/preference_item_padding_side"
+	android:paddingLeft="@dimen/preference_item_padding_side"
+	android:paddingRight="@dimen/preference_item_padding_side"
 	android:text="@string/shortcuts"
 />
 </LinearLayout>

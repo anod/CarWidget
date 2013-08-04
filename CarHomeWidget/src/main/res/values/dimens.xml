@@ -17,7 +17,7 @@
 	<dimen name="skin_padding_vert">0dp</dimen>
 
 	<dimen name="preference_item_padding_side">8dp</dimen>
-	<dimen name="preference_item_padding_inner">8dip</dimen>
+	<dimen name="preference_item_padding_inner">8dp</dimen>
 	<!-- Minimum space to allocate to the left of a preference item for an icon.
 			This helps in aligning titles when some items have icons and some don't. When space is
 			at a premium, we don't pre-allocate any space. -->
