@@ -14,12 +14,15 @@ public class Bluetooth {
 	
 	public static void switchOn() {
 		BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-		btAdapter.enable();
-		//btAdapter.startDiscovery();
+		if (btAdapter != null) {
+			btAdapter.enable();
+		}
 	}
 	
 	public static void switchOff() {
 		BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-		btAdapter.disable();
+		if (btAdapter != null) {
+			btAdapter.disable();
+		}
 	}
 }
