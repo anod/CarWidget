@@ -307,7 +307,10 @@ public class Handler {
 	@SuppressWarnings("deprecation")
 	private static void acquireWakeLock(Context context) {
 		PowerManager pw = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-		sWakeLock = pw.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, TAG);
+		sWakeLock = pw.newWakeLock(
+			PowerManager.SCREEN_BRIGHT_WAKE_LOCK |
+			PowerManager.ACQUIRE_CAUSES_WAKEUP
+		, TAG);
 
 		synchronized(LOCK) {
 			if (sWakeLock != null && !sWakeLocked && !sWakeLock.isHeld()) {
