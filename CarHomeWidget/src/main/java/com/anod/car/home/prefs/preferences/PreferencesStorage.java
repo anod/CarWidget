@@ -92,6 +92,9 @@ public class PreferencesStorage {
 	public static final String DEF_VALUE = "2";
 	public static final String ACTIVITY_RECOGNITION = "activity-recognition";
 
+	public static final String SAMSUNG_DRIVING_MODE = "sam_driving_mode";
+
+
 	public static Main loadMain(Context context, int appWidgetId) {
 		final WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
 		prefs.setAppWidgetId(appWidgetId);
@@ -190,6 +193,8 @@ public class PreferencesStorage {
 		}
 		p.setAutorunApp(autorunApp);
 
+		p.setSamsungDrivingMode(prefs.getBoolean(SAMSUNG_DRIVING_MODE, false));
+
 		return p;
 	}
 
@@ -223,6 +228,9 @@ public class PreferencesStorage {
 			String autorunAppString = Utils.componentToString(autorunApp);
 			editor.putString(AUTORUN_APP, autorunAppString);
 		}
+
+		editor.putBoolean(SAMSUNG_DRIVING_MODE, prefs.isSamsungDrivingMode());
+
 		editor.commit();
 
 		saveBtDevices(context, prefs.getBtDevices());

@@ -34,6 +34,7 @@ import com.anod.car.home.R;
 import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
 import com.anod.car.home.incar.ModeBroadcastReceiver;
+import com.anod.car.home.incar.SamsungDrivingMode;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
@@ -148,6 +149,12 @@ public class ConfigurationInCar extends ConfigurationActivity {
 
 		if (Utils.IS_ICS_OR_GREATER) {
 			setIntent(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class, 0);
+		}
+
+		if (!SamsungDrivingMode.hasMode()) {
+			final Preference samDrivingPref = (Preference) findPreference(PreferencesStorage.SAMSUNG_DRIVING_MODE);
+			((PreferenceCategory)findPreference("incar-more-category"))
+					.removePreference(samDrivingPref);
 		}
 	}
 

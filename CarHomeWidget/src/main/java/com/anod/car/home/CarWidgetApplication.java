@@ -5,8 +5,10 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
 import android.app.Application;
+import android.os.Build;
 
 import com.anod.car.home.model.AppsListCache;
+import com.anod.car.home.utils.Utils;
 
 @ReportsCrashes(formKey = "", // will not be used
 		mailTo = "alex.gavrishev@gmail.com",
@@ -24,6 +26,7 @@ public class CarWidgetApplication extends Application {
 			// The following line triggers the initialization of ACRA
 			ACRA.init(this);
 		}
+
 	}
 
 	public AppsListCache getAppListCache() {

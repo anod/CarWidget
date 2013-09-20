@@ -25,7 +25,7 @@ public class Utils {
 	final public static boolean IS_JELLYBEAN_OR_GREATER = (Build.VERSION.SDK_INT >= 16);
 
 	/**
-	 * 
+	 *
 	 * @param context
 	 * @return
 	 */

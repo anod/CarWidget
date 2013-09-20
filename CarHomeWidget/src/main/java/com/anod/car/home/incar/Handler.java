@@ -212,6 +212,11 @@ public class Handler {
 		if (prefs.isActivateCarMode()) {
 			activateCarMode(context);
 		}
+
+		if (SamsungDrivingMode.hasMode() && prefs.isSamsungDrivingMode()) {
+			SamsungDrivingMode.enable(context);
+		}
+
 		ComponentName autorunApp = prefs.getAutorunApp();
 		if (autorunApp != null) {
 			runApp(autorunApp,context);
@@ -249,6 +254,11 @@ public class Handler {
 		if (prefs.isActivateCarMode()) {
 			deactivateCarMode(context);
 		}
+
+		if (SamsungDrivingMode.hasMode() && prefs.isSamsungDrivingMode()) {
+			SamsungDrivingMode.disable(context);
+		}
+
 		String brightSetting = prefs.getBrightness();
 		if (!brightSetting.equals(InCar.BRIGHTNESS_DISABLED)) {
 			restoreBrightness(brightSetting,context);

@@ -121,9 +121,11 @@
 				/>
 
 		<PreferenceScreen
+				android:key="incar-more-screen"
 				android:title="@string/more"
 				android:layout="@layout/pref">
 			<PreferenceCategory
+					android:key="incar-more-category"
 					android:title="@string/pref_actions"
 					android:layout="@layout/pref_category">
 				<ListPreference
@@ -151,6 +153,12 @@
 						android:title="@string/pref_autorun_app_title"
 						android:layout="@layout/pref"
 						/>
+
+				<CheckBoxPreference
+						android:key="sam_driving_mode"
+						android:summary="Enable built-in Samsung Driving Mode"
+						android:title="Samsung Driving Mode"
+						android:layout="@layout/pref"/>
 			</PreferenceCategory>
 		</PreferenceScreen>
 	</PreferenceCategory>

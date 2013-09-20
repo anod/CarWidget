@@ -22,7 +22,7 @@ public class InCar implements Serializable {
 	public static final String WIFI_NOACTION = "no_action";
 	public static final String WIFI_TURNOFF = "turn_off_wifi";
 	public static final String WIFI_DISABLE = "disable_wifi";
-	
+
 	public static final int DEFAULT_VOLUME_LEVEL = 80;
 
 	/**
@@ -49,6 +49,8 @@ public class InCar implements Serializable {
 	private String disableWifi = WIFI_NOACTION;
 	private boolean autoSpeaker;
 	private boolean activateCarMode;
+
+	private boolean samsungDrivingMode;
 
 	transient private ComponentName autorunApp;
 
@@ -267,6 +269,14 @@ public class InCar implements Serializable {
 	 */
 	public void setAutorunApp(ComponentName autorunApp) {
 		this.autorunApp = autorunApp;
+	}
+
+	public boolean isSamsungDrivingMode() {
+		return samsungDrivingMode;
+	}
+
+	public void setSamsungDrivingMode(boolean samsungDrivingMode) {
+		this.samsungDrivingMode = samsungDrivingMode;
 	}
 
 	private void writeObject(ObjectOutputStream out) throws IOException {
