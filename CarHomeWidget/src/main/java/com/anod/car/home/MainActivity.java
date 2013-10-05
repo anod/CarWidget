@@ -48,6 +48,9 @@ public class MainActivity extends ActionBarActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		setTheme(R.style.AppThemeHolo);
+
 		setContentView(R.layout.main_activity);
 		mVersion = new Version(this);
 

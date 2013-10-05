@@ -11,7 +11,7 @@
 		>
 
 	<LinearLayout
-			style="@style/panelHeader"
+			style="?attr/panelHeader"
 			android:orientation="vertical"
 			android:id="@+id/widgets">
 
@@ -32,7 +32,7 @@
 	</LinearLayout>
 
 	<LinearLayout
-			style="@style/panelHeader"
+			style="?attr/panelHeader"
 			android:id="@+id/incarHeader"
 			android:layout_marginTop="@dimen/panel_header_margin"
 			android:orientation="vertical"
@@ -57,7 +57,7 @@
 	</LinearLayout>
 
 	<LinearLayout
-			style="@style/panelItem"
+			style="?attr/panelItem"
 			android:layout_marginTop="1dp"
 			android:id="@+id/incarSettings"
 			>
@@ -85,7 +85,7 @@
 					android:ellipsize="marquee"
 					android:fadingEdge="horizontal"
 					android:text="@string/settings"
-					style="@style/text_align_style"
+					style="@style/textAlignStyle"
 					android:textColor="@color/font_color"/>
 
 			<TextView
@@ -97,7 +97,7 @@
 					android:maxLines="1"
 					android:text="@string/enabled"
 					android:textAppearance="?android:attr/textAppearanceSmall"
-					style="@style/text_align_style"
+					style="@style/textAlignStyle"
 					android:textColor="@color/font_color_sec"/>
 
 		</RelativeLayout>
@@ -121,7 +121,7 @@
 				android:background="@drawable/panel_bg"
 				android:gravity="center_vertical"
 				android:textColor="@color/font_color"
-				style="@style/text_align_style"
+				style="@style/textAlignStyle"
 				android:drawablePadding="4dp"
 				android:ellipsize="end"
 				android:maxLines="1"
@@ -143,7 +143,7 @@
 				android:background="@drawable/panel_bg"
 				android:gravity="center_vertical"
 				android:textColor="@color/font_color"
-				style="@style/text_align_style"
+				style="@style/textAlignStyle"
 				android:drawablePadding="4dp"
 				android:ellipsize="end"
 				android:maxLines="1"
@@ -152,14 +152,14 @@
 	</LinearLayout>
 
 	<TextView
-		style="@style/panelHeader"
+		style="?attr/panelHeader"
 		android:layout_marginTop="@dimen/panel_header_margin"
 		android:text="@string/information_title"
 		android:id="@+id/textView5"
 	/>
 
 	<LinearLayout
-			style="@style/panelItem"
+			style="?attr/panelItem"
 			android:layout_marginTop="1dp"
 			android:id="@+id/version"
 			>
@@ -187,7 +187,7 @@
 					android:ellipsize="marquee"
 					android:fadingEdge="horizontal"
 					android:text="@string/version_title"
-					style="@style/text_align_style"
+					style="@style/textAlignStyle"
 					android:textColor="@color/font_color"/>
 
 			<TextView
@@ -199,7 +199,7 @@
 					android:textAppearance="?android:attr/textAppearanceSmall"
 					android:maxLines="4"
 					android:text="@string/version_summary"
-					style="@style/text_align_style"
+					style="@style/textAlignStyle"
 					android:textColor="@color/font_color_sec"/>
 
 		</RelativeLayout>
@@ -207,7 +207,7 @@
 	</LinearLayout>
 
 	<Button
-			style="@style/panelItem"
+			style="?attr/panelItem"
 			android:layout_marginTop="1dp"
 			android:text="@string/issue_title"
 			android:id="@+id/feedback"
@@ -220,13 +220,13 @@
 
 
 		<TextView
-			style="@style/panelHeader"
+			style="?attr/panelHeader"
 			android:layout_marginTop="@dimen/panel_header_margin"
 			android:text="@string/system"
 		/>
 
 	<LinearLayout
-			style="@style/panelItem"
+			style="?attr/panelItem"
 			android:layout_marginTop="1dp"
 			android:id="@+id/defaultApp"
 			>
@@ -245,7 +245,7 @@
 				android:paddingLeft="4dp">
 
 			<TextView
-					style="@style/text_align_style"
+					style="@style/textAlignStyle"
 					android:id="@android:id/title"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -257,7 +257,7 @@
 					android:textColor="@color/font_color"/>
 
 			<TextView
-					style="@style/text_align_style"
+					style="@style/textAlignStyle"
 					android:id="@android:id/summary"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"

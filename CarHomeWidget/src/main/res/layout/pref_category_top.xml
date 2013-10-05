@@ -10,7 +10,7 @@
 	android:layout_height="@dimen/panel_header_margin_top"
 />
 <TextView
-	style="@style/panelHeader"
+	style="?attr/panelHeader"
 	android:id="@+android:id/title"
 	android:paddingLeft="@dimen/preference_item_padding_side"
 	android:paddingRight="@dimen/preference_item_padding_side"

@@ -47,7 +47,7 @@
 			android:backupAgent="com.anod.car.home.prefs.backup.BackupFileHelperAgent"
 			android:icon="@drawable/ic_launcher"
 			android:label="@string/app_name"
-			android:theme="@style/AppTheme"
+			android:theme="@style/AppThemeHolo"
 			android:allowBackup="true"
          >
         <service android:name="com.anod.car.home.UpdateService" />

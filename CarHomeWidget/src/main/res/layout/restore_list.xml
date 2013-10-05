@@ -10,7 +10,7 @@
 		  android:layout_width="match_parent" />
 
      <TextView android:id="@+id/header"
-		style="@style/panelHeader"
+		style="?attr/panelHeader"
      	android:layout_height="wrap_content" 
      	android:layout_width="match_parent"
      	android:text="@string/choose_backup" 

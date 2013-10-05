@@ -16,10 +16,13 @@
 
 <resources>
 
-    <declare-styleable name="AppTheme">
+    <declare-styleable name="AppThemeGray">
         <attr name="actionbarCompatTitleStyle" format="reference" />
         <attr name="actionbarCompatItemStyle" format="reference" />
         <attr name="actionbarCompatItemHomeStyle" format="reference" />
     </declare-styleable>
 
+	<attr name="panelItem" format="reference" />
+	<attr name="panelHeader" format="reference" />
+	<attr name="PreferencesItem" format="reference"/>
 </resources>

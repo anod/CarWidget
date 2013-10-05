@@ -3,7 +3,7 @@
 
     <style name="AppListTheme" parent="android:style/Theme.Dialog" />
     
-    <style name="AppTheme" parent="android:style/Theme">
+    <style name="AppThemeGray" parent="android:style/Theme">
         <item name="android:windowTitleSize">@dimen/actionbar_compat_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompat</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
@@ -30,7 +30,7 @@
         <item name="android:background">@color/actionbar_bg_color</item>
     </style>
 
-	<style name="text_align_style">
+	<style name="textAlignStyle">
 		<item name="android:gravity">left</item>
 	</style>
 	
@@ -60,7 +60,7 @@
 
 	
     <!-- Skin Chooser -->
-    <style name="AppTheme.Transparent" parent="AppTheme">
+    <style name="AppTheme.Transparent" parent="AppThemeGray">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowShowWallpaper">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Activity</item>
@@ -84,7 +84,7 @@
         <item name="android:layout_gravity">center_horizontal|bottom</item>
     </style>
 
-    <style name="holo_btn_text" parent="text_align_style">
+    <style name="holo_btn_text" parent="textAlignStyle">
         <item name="android:lines">1</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -161,15 +161,18 @@
 		<item name="android:backgroundDimEnabled">false</item> 
 	</style>
 
-	<style name="panelItem" parent="text_align_style">
+	<style name="panelItemBasic" parent="textAlignStyle">
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_gravity">center_horizontal</item>
-		<item name="android:background">@drawable/panel_bg</item>
 		<item name="android:paddingLeft">10dp</item>
 		<item name="android:paddingRight">10dp</item>
 		<item name="android:paddingTop">6dp</item>
 		<item name="android:paddingBottom">6dp</item>
+	</style>
+
+	<style name="panelItemGray" parent="panelItemBasic">
+		<item name="android:background">@drawable/panel_bg</item>
 	</style>
 
 	<style name="panelHeaderText">
@@ -179,11 +182,15 @@
 		<item name="android:textSize">14sp</item>
 	</style>
 
-	<style name="panelHeader" parent="panelItem">
+	<style name="panelHeaderBasic" parent="panelItemBasic">
 		<item name="android:textAppearance">@style/panelHeaderText</item>
 	</style>
 
-	<style name="WizardPageTitle" parent="text_align_style">
+	<style name="panelHeaderGray" parent="panelItemGray">
+		<item name="android:textAppearance">@style/panelHeaderText</item>
+	</style>
+
+	<style name="WizardPageTitle" parent="textAlignStyle">
 		<item name="android:id">@android:id/title</item>
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">wrap_content</item>
@@ -212,4 +219,14 @@
 		<item name="android:gravity">center_horizontal</item>
 		<item name="android:textColor">@color/font_color_dark</item>
 	</style>
+
+	<style name="PreferencesItem">
+		<item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
+		<item name="android:gravity">center_vertical</item>
+	</style>
+
+	<style name="PreferencesItemGray" parent="PreferencesItem">
+		<item name="android:background">@drawable/panel_bg</item>
+	</style>
+
 </resources>

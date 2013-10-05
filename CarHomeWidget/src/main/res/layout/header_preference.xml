@@ -20,11 +20,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:gravity="center_vertical"
     android:paddingLeft="10dp"
 	android:paddingRight="10dp"
-	android:background="@drawable/panel_bg"
+	style="?attr/PreferencesItem"
 >
 
     <ImageView
@@ -53,7 +51,7 @@
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:text="@string/pref_look_and_feel_title"
-            style="@style/text_align_style"
+            style="@style/textAlignStyle"
             />
 
         <TextView android:id="@android:id/summary"
@@ -64,7 +62,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:maxLines="4"
             android:text="@string/pref_look_and_feel_summary"
-            style="@style/text_align_style"
+            style="@style/textAlignStyle"
             />
 
     </RelativeLayout>

@@ -1,14 +1,12 @@
 package com.anod.car.home;
 
+import android.app.Application;
+
+import com.anod.car.home.model.AppsListCache;
+
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
-
-import android.app.Application;
-import android.os.Build;
-
-import com.anod.car.home.model.AppsListCache;
-import com.anod.car.home.utils.Utils;
 
 @ReportsCrashes(formKey = "", // will not be used
 		mailTo = "alex.gavrishev@gmail.com",
