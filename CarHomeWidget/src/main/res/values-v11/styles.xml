@@ -22,6 +22,8 @@
 		<item name="panelItem">@style/panelItemBasic</item>
 		<item name="panelHeader">@style/panelHeaderBasic</item>
 		<item name="PreferencesItem">@style/PreferencesItem</item>
+		<item name="buttonStyle">@style/buttonStyleDefault</item>
+		<item name="activityBgColor">@android:color/transparent</item>
 	</style>
 
     <style name="AppThemeGray" parent="android:style/Theme.Holo">
@@ -32,6 +34,8 @@
 		<item name="panelItem">@style/panelItemGray</item>
 		<item name="panelHeader">@style/panelHeaderGray</item>
 		<item name="PreferencesItem">@style/PreferencesItemGray</item>
+		<item name="buttonStyle">@style/buttonStyleGray</item>
+		<item name="activityBgColor">@color/activity_bg</item>
     </style>
 
     <style name="ActionBar" parent="android:style/Widget.Holo.ActionBar">

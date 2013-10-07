@@ -11,6 +11,8 @@
 		>
 
 	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
 			style="?attr/panelHeader"
 			android:orientation="vertical"
 			android:id="@+id/widgets">
@@ -32,6 +34,8 @@
 	</LinearLayout>
 
 	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
 			style="?attr/panelHeader"
 			android:id="@+id/incarHeader"
 			android:layout_marginTop="@dimen/panel_header_margin"
@@ -57,6 +61,8 @@
 	</LinearLayout>
 
 	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
 			style="?attr/panelItem"
 			android:layout_marginTop="1dp"
 			android:id="@+id/incarSettings"
@@ -105,7 +111,7 @@
 	</LinearLayout>
 
 	<LinearLayout
-			android:paddingTop="0dp"
+		android:paddingTop="0dp"
 		android:paddingBottom="0dp"
 		android:layout_marginTop="1dp"
 		android:layout_width="match_parent"
@@ -118,10 +124,10 @@
 				android:text="@string/backup"
 				android:id="@+id/incarBackup"
 				android:drawableLeft="@drawable/ic_action_export"
-				android:background="@drawable/panel_bg"
+
 				android:gravity="center_vertical"
 				android:textColor="@color/font_color"
-				style="@style/textAlignStyle"
+				style="?attr/buttonStyle"
 				android:drawablePadding="4dp"
 				android:ellipsize="end"
 				android:maxLines="1"
@@ -130,7 +136,7 @@
 		<View
 				android:layout_height="match_parent"
 				android:layout_width="1dp"
-				android:background="@color/activity_bg"
+				android:background="?attr/activityBgColor"
 		/>
 
 		<Button
@@ -140,10 +146,9 @@
 				android:text="@string/restore"
 				android:id="@+id/incarRestore"
 				android:drawableLeft="@drawable/ic_action_import"
-				android:background="@drawable/panel_bg"
+				style="?attr/buttonStyle"
 				android:gravity="center_vertical"
 				android:textColor="@color/font_color"
-				style="@style/textAlignStyle"
 				android:drawablePadding="4dp"
 				android:ellipsize="end"
 				android:maxLines="1"
@@ -152,6 +157,8 @@
 	</LinearLayout>
 
 	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
 		style="?attr/panelHeader"
 		android:layout_marginTop="@dimen/panel_header_margin"
 		android:text="@string/information_title"
@@ -159,6 +166,8 @@
 	/>
 
 	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
 			style="?attr/panelItem"
 			android:layout_marginTop="1dp"
 			android:id="@+id/version"
@@ -207,6 +216,8 @@
 	</LinearLayout>
 
 	<Button
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
 			style="?attr/panelItem"
 			android:layout_marginTop="1dp"
 			android:text="@string/issue_title"
@@ -215,17 +226,22 @@
 			android:textColor="@color/font_color"
 			android:drawablePadding="4dp"
 			android:paddingLeft="10dp"
-			android:paddingRight="10dp"/>
+			android:paddingRight="10dp"
+	/>
 
 
 
 		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
 			style="?attr/panelHeader"
 			android:layout_marginTop="@dimen/panel_header_margin"
 			android:text="@string/system"
 		/>
 
 	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
 			style="?attr/panelItem"
 			android:layout_marginTop="1dp"
 			android:id="@+id/defaultApp"

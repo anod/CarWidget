@@ -17,6 +17,10 @@
 	<color name="panel_bg_focused">#5b5b5b</color>
 	<color name="panel_bg_pressed">#cecece</color>
 
+	<color name="panel_bg_dark_normal">#252525</color>
+	<color name="panel_bg_dark_focused">#5b5b5b</color>
+	<color name="panel_bg_dark_pressed">#cecece</color>
+
 	<color name="activity_bg">#FFe5e5e5</color>
 	<color name="font_color">#FFFFFF</color>
 	<color name="font_color_sec">#dfe5e6</color>

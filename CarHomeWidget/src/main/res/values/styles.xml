@@ -169,6 +169,7 @@
 		<item name="android:paddingRight">10dp</item>
 		<item name="android:paddingTop">6dp</item>
 		<item name="android:paddingBottom">6dp</item>
+		<item name="android:background">@drawable/panel_bg_dark</item>
 	</style>
 
 	<style name="panelItemGray" parent="panelItemBasic">
@@ -226,6 +227,14 @@
 	</style>
 
 	<style name="PreferencesItemGray" parent="PreferencesItem">
+		<item name="android:background">@drawable/panel_bg</item>
+	</style>
+
+	<style name="buttonStyleDefault" parent="textAlignStyle">
+		<item name="android:background">@drawable/panel_bg_dark</item>
+	</style>
+
+	<style name="buttonStyleGray" parent="buttonStyleDefault">
 		<item name="android:background">@drawable/panel_bg</item>
 	</style>
 

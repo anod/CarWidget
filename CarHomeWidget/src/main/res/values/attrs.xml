@@ -25,4 +25,7 @@
 	<attr name="panelItem" format="reference" />
 	<attr name="panelHeader" format="reference" />
 	<attr name="PreferencesItem" format="reference"/>
+	<attr name="buttonStyle" format="reference"/>
+	<attr name="panelItem" format="reference" />
+	<attr name="activityBgColor" format="reference" />
 </resources>
