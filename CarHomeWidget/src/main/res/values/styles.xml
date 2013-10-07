@@ -23,7 +23,7 @@
 	</style>
 
 	<style name="AppPreference">
-		<item name="android:background">@drawable/panel_bg</item>
+		<item name="android:background">@drawable/panel_item_bg_grey</item>
 	</style>
 
     <style name="ActionBarCompat">
@@ -60,7 +60,7 @@
 
 	
     <!-- Skin Chooser -->
-    <style name="AppTheme.Transparent" parent="AppThemeGray">
+    <style name="AppThemeGray.Transparent" parent="AppThemeGray">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowShowWallpaper">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Activity</item>
@@ -169,11 +169,11 @@
 		<item name="android:paddingRight">10dp</item>
 		<item name="android:paddingTop">6dp</item>
 		<item name="android:paddingBottom">6dp</item>
-		<item name="android:background">@drawable/panel_bg_dark</item>
+		<item name="android:background">@drawable/panel_item_bg_dark</item>
 	</style>
 
 	<style name="panelItemGray" parent="panelItemBasic">
-		<item name="android:background">@drawable/panel_bg</item>
+		<item name="android:background">@drawable/panel_item_bg_grey</item>
 	</style>
 
 	<style name="panelHeaderText">
@@ -185,6 +185,7 @@
 
 	<style name="panelHeaderBasic" parent="panelItemBasic">
 		<item name="android:textAppearance">@style/panelHeaderText</item>
+		<item name="android:background">@drawable/panel_header_bg_dark</item>
 	</style>
 
 	<style name="panelHeaderGray" parent="panelItemGray">
@@ -227,15 +228,15 @@
 	</style>
 
 	<style name="PreferencesItemGray" parent="PreferencesItem">
-		<item name="android:background">@drawable/panel_bg</item>
+		<item name="android:background">@drawable/panel_item_bg_grey</item>
 	</style>
 
 	<style name="buttonStyleDefault" parent="textAlignStyle">
-		<item name="android:background">@drawable/panel_bg_dark</item>
+		<item name="android:background">@drawable/panel_item_bg_dark</item>
 	</style>
 
 	<style name="buttonStyleGray" parent="buttonStyleDefault">
-		<item name="android:background">@drawable/panel_bg</item>
+		<item name="android:background">@drawable/panel_item_bg_grey</item>
 	</style>
 
 </resources>

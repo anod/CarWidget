@@ -27,7 +27,7 @@ public class ShortcutDragListener implements View.OnDragListener {
 	public ShortcutDragListener(Context context, ShortcutPreference.DropCallback dropCallback) {
 		Resources r = context.getResources();
 		mTopShadow = r.getDrawable(R.drawable.drop_shadow_top);
-		mBackground = r.getDrawable(R.drawable.panel_bg);
+		mBackground = r.getDrawable(R.drawable.panel_item_bg_grey);
 		mDropCallback = dropCallback;
 	}
 
