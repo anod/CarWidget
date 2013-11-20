@@ -28,7 +28,6 @@ public class CarWidgetApplication extends Application {
 			ACRA.init(this);
 		}
 		mThemeIdx = AppTheme.getTheme(this);
-		setTheme(AppTheme.getMainResource(mThemeIdx));
 	}
 
 	public AppsListCache getAppListCache() {
@@ -38,6 +37,10 @@ public class CarWidgetApplication extends Application {
 
 	public int getThemeIdx() {
 		return mThemeIdx;
+	}
+
+	public int setThemeIdx(int theme) {
+		return mThemeIdx = theme;
 	}
 
 	public void initAppListCache() {

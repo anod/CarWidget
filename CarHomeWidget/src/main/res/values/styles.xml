@@ -213,13 +213,20 @@
 		<item name="android:paddingRight">@dimen/wizard_page_margin</item>
 	</style>
 
-	<style name="wizardTextItem">
+	<style name="wizardTextItemBase">
 		<item name="android:textSize">24sp</item>
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
 		<item name="android:gravity">center_horizontal</item>
+	</style>
+
+	<style name="wizardTextItemGray" parent="wizardTextItemBase">
 		<item name="android:textColor">@color/font_color_dark</item>
+	</style>
+
+	<style name="wizardTextItemHolo" parent="wizardTextItemBase">
+		<item name="android:textColor">@android:color/white</item>
 	</style>
 
 	<style name="PreferencesItem">

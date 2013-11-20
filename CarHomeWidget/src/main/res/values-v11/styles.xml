@@ -24,6 +24,8 @@
 		<item name="PreferencesItem">@style/PreferencesItem</item>
 		<item name="buttonStyle">@style/buttonStyleDefault</item>
 		<item name="activityBgColor">@android:color/transparent</item>
+		<item name="wizardTextItem">@style/wizardTextItemHolo</item>
+		<item name="textColor">@android:color/white</item>
 	</style>
 
     <style name="AppThemeGray" parent="@style/Theme.AppCompat">
@@ -36,6 +38,8 @@
 		<item name="PreferencesItem">@style/PreferencesItemGray</item>
 		<item name="buttonStyle">@style/buttonStyleGray</item>
 		<item name="activityBgColor">@color/activity_bg</item>
+		<item name="wizardTextItem">@style/wizardTextItemGray</item>
+		<item name="textColor">@color/font_color_dark</item>
     </style>
 
 	<!-- Skin Chooser -->

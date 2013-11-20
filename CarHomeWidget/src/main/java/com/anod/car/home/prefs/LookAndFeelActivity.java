@@ -36,6 +36,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.anod.car.home.R;
+import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.LauncherViewBuilder;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -46,7 +47,7 @@ import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 
-public class LookAndFeelActivity extends ActionBarActivity implements OnPageChangeListener, LauncherViewBuilder.PendingIntentHelper {
+public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChangeListener, LauncherViewBuilder.PendingIntentHelper {
 	private static final int SKINS_COUNT = 5;
 	private static final int REQUEST_LOOK_ACTIVITY = 1;
 	private static final int REQUEST_PICK_ICON_THEME = 2;
@@ -72,6 +73,11 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 
 	interface SkinRefreshListener {
 		void refresh();
+	}
+
+	@Override
+	protected boolean isTransparentAppTheme() {
+		return true;
 	}
 
 	@Override

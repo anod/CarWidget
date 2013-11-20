@@ -8,15 +8,15 @@ import android.preference.Preference;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.preference.PreferenceFragment;
-import android.support.v7.app.ActionBarActivity;
 
+import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.model.AppsListCache;
 
 
-public class ConfigurationActivity extends ActionBarActivity implements PreferenceFragment.OnPreferenceStartFragmentCallback {
+public class ConfigurationActivity extends CarWidgetActivity implements PreferenceFragment.OnPreferenceStartFragmentCallback {
 	private static final String BACK_STACK_PREFS = ":carwidget:prefs";
 
 	public static Intent createFragmentIntent(Context context, Class<?> fragment) {

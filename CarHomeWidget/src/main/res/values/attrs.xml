@@ -27,4 +27,6 @@
 	<attr name="PreferencesItem" format="reference"/>
 	<attr name="buttonStyle" format="reference"/>
 	<attr name="activityBgColor" format="reference" />
+	<attr name="wizardTextItem" format="reference" />
+	<attr name="textColor" format="reference" />
 </resources>

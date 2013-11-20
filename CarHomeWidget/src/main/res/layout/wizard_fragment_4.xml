@@ -10,16 +10,16 @@
 			/>
 
 	<TextView
-			style="@style/wizardTextItem"
+			style="?attr/wizardTextItem"
 			android:text="@string/detect_incar_description"
 			android:id="@+id/desc1"
 			/>
 
 	<LinearLayout
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
-			>
+			android:background="#afffffff" android:gravity="center_horizontal">
 
 		<ImageView
 				android:layout_width="wrap_content"
@@ -44,16 +44,16 @@
 	</LinearLayout>
 
 	<TextView
-			style="@style/wizardTextItem"
+			style="?attr/wizardTextItem"
 			android:text="@string/adjust_incar_description"
 			android:id="@+id/desc2"
 			/>
 
 	<LinearLayout
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
-			android:id="@+id/linearLayout">
+			android:id="@+id/linearLayout" android:background="#afffffff" android:gravity="center_horizontal">
 
 		<ImageView
 				android:layout_width="wrap_content"
@@ -106,13 +106,13 @@
 	</FrameLayout>
 
 	<TextView
-			style="@style/wizardTextItem"
+			style="?attr/wizardTextItem"
 			android:text="@string/enable_incar_description"
 			android:id="@+id/desc3"
 			/>
 
 	<TextView
-			style="@style/wizardTextItem"
+			style="?attr/wizardTextItem"
 			android:text="@string/trial_description"
 			android:layout_width="fill_parent"
 			android:padding="12dp"

@@ -10,7 +10,7 @@
 	/>
 
 	<TextView
-			style="@style/wizardTextItem"
+			style="?attr/wizardTextItem"
 			android:text="@string/install_widget"
 			android:id="@+id/desc1"
 		/>
@@ -25,7 +25,7 @@
 			android:paddingTop="12dp"/>
 
 	<TextView
-			style="@style/wizardTextItem"
+			style="?attr/wizardTextItem"
 			android:text="@string/install_widget_old"
 			android:id="@+id/desc2"
 			android:layout_marginTop="2dp"

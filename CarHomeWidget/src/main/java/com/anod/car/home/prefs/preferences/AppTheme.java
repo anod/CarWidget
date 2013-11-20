@@ -17,6 +17,10 @@ public class AppTheme {
 	private static final String APP_THEME = "app_theme";
 
 
+	public static int getNameResource(int theme) {
+		return (theme == THEME_GRAY) ? R.string.theme_gray : R.string.theme_holo;
+	}
+
 	public static int getMainResource(int theme) {
 		return (theme == THEME_GRAY) ? R.style.AppThemeGray : R.style.AppThemeHolo;
 	}

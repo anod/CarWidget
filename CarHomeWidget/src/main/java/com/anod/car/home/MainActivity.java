@@ -1,5 +1,6 @@
 package com.anod.car.home;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -11,13 +12,13 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.ConfigurationInCar;
@@ -36,7 +37,7 @@ import com.anod.car.home.utils.Version;
  * @author alex
  * @date 5/22/13
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends CarWidgetActivity {
 
 	private static final String DETAIL_MARKET_URL = "market://details?id=%s";
 	private static final String URL_GOOGLE_PLUS = "https://plus.google.com/118206296686390552505/";
@@ -48,6 +49,7 @@ public class MainActivity extends ActionBarActivity {
 	private Context mContext;
 	private Version mVersion;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -304,24 +306,33 @@ public class MainActivity extends ActionBarActivity {
 
 	private void initAppTheme() {
 		LinearLayout appTheme = (LinearLayout) findViewById(R.id.appTheme);
+		final TextView summary =(TextView) appTheme.findViewById(android.R.id.summary);
+		summary.setText(AppTheme.getNameResource(getApp().getThemeIdx()));
 		appTheme.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				createThemesDialog().show();
+				createThemesDialog(summary).show();
 			}
 		});
 	}
 
 
-	protected AlertDialog createThemesDialog() {
+	protected AlertDialog createThemesDialog(final TextView summary) {
+		final Activity act = this;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder
-			.setTitle("Choose a theme")
+			.setTitle(getString(R.string.choose_a_theme))
 			.setItems(R.array.app_themes, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					AppTheme.saveAppTheme(mContext, which);
+					getApp().setThemeIdx(which);
+					summary.setText(AppTheme.getNameResource(which));
+					act.setTheme(AppTheme.getMainResource(which));
+					act.recreate();
 				}
 			});
 		return builder.create();
 	}
+
+
 }

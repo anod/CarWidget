@@ -11,13 +11,13 @@
 	/>
 
 	<TextView
-		style="@style/wizardTextItem"
+		style="?attr/wizardTextItem"
 		android:text="@string/welcome_text"
 		android:id="@+id/desc1"
 			/>
 
 	<TextView
-		style="@style/wizardTextItem"
+		style="?attr/wizardTextItem"
 		android:text="@string/swipe_continue"
 		android:textSize="20sp"
 		android:textColor="@color/step_pager_selected_tab_color"

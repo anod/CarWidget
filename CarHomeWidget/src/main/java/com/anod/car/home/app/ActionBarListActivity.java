@@ -1,11 +1,8 @@
-package com.anod.car.home.actionbar;
+package com.anod.car.home.app;
 
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -13,7 +10,7 @@ import android.widget.ListView;
  * @author alex
  * @date 11/19/13
  */
-public abstract class ActionBarListActivity extends ActionBarActivity {
+public abstract class ActionBarListActivity extends CarWidgetActivity {
 	/**
 	 * This field should be made private, so it is hidden from the SDK.
 	 * {@hide}

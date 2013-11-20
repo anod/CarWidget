@@ -11,7 +11,7 @@
 
 	<TextView
 			android:text="@string/configure_text"
-			style="@style/wizardTextItem"
+			style="?attr/wizardTextItem"
 			android:id="@+id/desc1"
 	/>
 
@@ -36,7 +36,7 @@
 				android:background="@color/panel_bg_pressed"
 				android:layout_gravity="center"/>
 
-		<TextView style="@style/wizardTextItem"
+		<TextView style="?attr/wizardTextItem"
 				  android:id="@+id/desc2"
 				  android:text="@string/open_settings_description"
 				  android:paddingLeft="4dp"
