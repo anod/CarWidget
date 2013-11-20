@@ -99,7 +99,7 @@ public class PickShortcutUtils {
 		pickIntent.putExtra(Intent.EXTRA_INTENT, dataIntent);
 		pickIntent.putExtra(Intent.EXTRA_TITLE, mActivity.getString(R.string.select_shortcut_title));
 
-		mActivity.startActivityForResult(pickIntent, REQUEST_PICK_SHORTCUT);
+		mConfigurationFragment.startActivityForResult(pickIntent, REQUEST_PICK_SHORTCUT);
 	}
 	
 
@@ -111,7 +111,7 @@ public class PickShortcutUtils {
 	
 	private void startActivityForResultSafely(Intent intent, int requestCode) {
 		try {
-			mActivity.startActivityForResult(intent, requestCode);
+			mConfigurationFragment.startActivityForResult(intent, requestCode);
 		} catch (ActivityNotFoundException e) {
 			Toast.makeText(mActivity, mActivity.getString(R.string.activity_not_found), Toast.LENGTH_SHORT).show();
 		} catch (SecurityException e) {

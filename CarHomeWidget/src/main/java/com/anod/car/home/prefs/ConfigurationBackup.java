@@ -128,7 +128,7 @@ public class ConfigurationBackup extends ConfigurationFragment {
 
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				Intent intentMain = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationRestore.class);
+				Intent intentMain = new Intent(mContext, ConfigurationRestore.class);
 				intentMain.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 				intentMain.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_MAIN);
 				startActivityForResult(intentMain, REQUEST_RESTORE_MAIN);
@@ -161,7 +161,7 @@ public class ConfigurationBackup extends ConfigurationFragment {
 				}
 			});
 		} else {
-			Intent intentInCar = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationRestore.class);
+			Intent intentInCar = new Intent(mContext, ConfigurationRestore.class);
 			intentInCar.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_INCAR);
 			restoreIncar.setIntent(intentInCar);
 		}

@@ -83,7 +83,6 @@ public class ConfigurationInCar extends ConfigurationFragment {
 
 		final Version version = new Version(mContext);
 
-		setFragmentIntent(MEDIA_SCREEN, ConfigurationInCarVolume.class, 0);
 		initInCar();
 		if (version.isFree()) {
 			mTrialsLeft = version.getTrialTimesLeft();
@@ -148,8 +147,10 @@ public class ConfigurationInCar extends ConfigurationFragment {
 		initAutorunApp(incar);
 		initActivityRecognition();
 
+		showFragmentOnClick(MEDIA_SCREEN, ConfigurationInCarVolume.class);
+
 		if (Utils.IS_ICS_OR_GREATER) {
-			setFragmentIntent(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class, 0);
+			showFragmentOnClick(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class);
 		}
 
 		if (!SamsungDrivingMode.hasMode()) {

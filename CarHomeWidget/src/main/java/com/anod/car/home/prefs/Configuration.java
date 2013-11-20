@@ -43,7 +43,8 @@ public class Configuration extends ConfigurationFragment implements PreferenceKe
 		initShortcuts();
 		
 		setIntent(LOOK_AND_FEEL, LookAndFeelActivity.class, mAppWidgetId);
-		setIntent(INCAR, ConfigurationInCar.class, 0);
+		showFragmentOnClick(BACKUP, ConfigurationBackup.class);
+		showFragmentOnClick(INCAR, ConfigurationInCar.class);
 		initBackup();
 
 		int cellId = getActivity().getIntent().getExtras().getInt(PickShortcutUtils.EXTRA_CELL_ID, PickShortcutUtils.INVALID_CELL_ID);
@@ -56,6 +57,7 @@ public class Configuration extends ConfigurationFragment implements PreferenceKe
 
 	@Override
 	protected int getOptionsMenuResource() {
+
 		return R.menu.configuration;
 	}
 

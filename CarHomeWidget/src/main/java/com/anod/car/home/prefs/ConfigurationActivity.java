@@ -1,30 +1,23 @@
 package com.anod.car.home.prefs;
 
-import android.app.ActionBar;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.preference.PreferenceFragment;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.model.AppsListCache;
-import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
-import com.anod.car.home.utils.Utils;
 
 
-public class ConfigurationActivity extends ActionBarActivity {
+public class ConfigurationActivity extends ActionBarActivity implements PreferenceFragment.OnPreferenceStartFragmentCallback {
+	private static final String BACK_STACK_PREFS = ":carwidget:prefs";
 
 	public static Intent createFragmentIntent(Context context, Class<?> fragment) {
 		Intent intent = new Intent(context, ConfigurationActivity.class);
@@ -100,4 +93,34 @@ public class ConfigurationActivity extends ActionBarActivity {
 		}
 	}
 
+	@Override
+	public boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref) {
+		//if (pref.getFragment() == null) {
+		//	return false;
+		//}
+		//startPreferencePanel(pref.getFragment(), pref.getExtras(), pref.getTitleRes(), pref.getTitle(), null, 0);
+		//return true;
+		return false;
+	}
+
+	public void startPreferencePanel(String fragmentClass, Preference pref) {
+		startPreferencePanel(fragmentClass, pref.getExtras(), pref.getTitleRes(), pref.getTitle(), null, 0);
+	}
+
+	public void startPreferencePanel(String fragmentClass, Bundle args, int titleRes, CharSequence titleText, Fragment resultTo, int resultRequestCode) {
+		Fragment f = Fragment.instantiate(this, fragmentClass, args);
+		if (resultTo != null) {
+			f.setTargetFragment(resultTo, resultRequestCode);
+		}
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.main_fragment, f);
+		if (titleRes != 0) {
+			transaction.setBreadCrumbTitle(titleRes);
+		} else if (titleText != null) {
+			transaction.setBreadCrumbTitle(titleText);
+		}
+		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+		transaction.addToBackStack(BACK_STACK_PREFS);
+		transaction.commitAllowingStateLoss();
+	}
 }

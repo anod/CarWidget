@@ -15,11 +15,13 @@ public class HeaderPreference extends Preference {
      * mIconResId is overridden by mIcon, if mIcon is specified.
      */
     private final int mIconResId;
-    private Drawable mIcon;
+	//private final String mFragment;
+	private Drawable mIcon;
     
 	public HeaderPreference(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mIconResId = attrs.getAttributeResourceValue(ANDROIDNS, "icon", 0);
+		//mFragment = attrs.getAttributeValue(ANDROIDNS, "fragment");
 		setLayoutResource(R.layout.header_preference); 
 	}
 

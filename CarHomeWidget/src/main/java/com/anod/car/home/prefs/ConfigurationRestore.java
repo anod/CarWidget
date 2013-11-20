@@ -33,6 +33,7 @@ public class ConfigurationRestore extends ActionBarListActivity {
 	private RestoreAdapter mAdapter;
 	private RestoreClickListener mRestoreListener;
 	private DeleteClickListener mDeleteListener;
+
 	private static final int DIALOG_WAIT = 1;
 
 	public static final String EXTRA_TYPE = "type";
@@ -78,14 +79,7 @@ public class ConfigurationRestore extends ActionBarListActivity {
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 	}
-	
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        boolean retValue = false;
-        retValue |= super.onCreateOptionsMenu(menu);
-        return retValue;
-    }
-    
+
 	@Override
 	public Dialog onCreateDialog(int id) {
 		if (id == DIALOG_WAIT) {

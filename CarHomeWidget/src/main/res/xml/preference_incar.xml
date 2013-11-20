@@ -105,6 +105,7 @@
 				android:summary="@string/pref_change_media_volume_summary"
 				android:key="media-screen"
 				android:layout="@layout/pref"
+				android:fragment="com.anod.car.home.prefs.ConfigurationInCarVolume"
 				>
 		</Preference>
 

@@ -118,7 +118,8 @@
 				android:summary="@string/pref_change_media_volume_summary"
 				android:key="media-screen"
 				android:layout="@layout/pref"
-				/>
+				android:fragment="com.anod.car.home.prefs.ConfigurationInCarVolume"
+		/>
 
 		<PreferenceScreen
 				android:key="incar-more-screen"
@@ -171,6 +172,7 @@
 				android:summary="@string/shortcuts_summary"
 				android:title="@string/shortcuts"
 				android:layout="@layout/pref"
+				android:fragment="com.anod.car.home.prefs.ConfigurationNotifShortcuts"
 				/>
 	</PreferenceCategory>
 

@@ -27,7 +27,6 @@
             android:key="look-and-feel"
             android:summary="@string/pref_look_and_feel_summary"
             android:title="@string/pref_look_and_feel_title"
-			android:fragment="com.anod.car.home.prefs.ConfigurationLook"
 		/>
         <com.anod.car.home.prefs.views.HeaderPreference
             android:icon="@drawable/ic_action_wheel"

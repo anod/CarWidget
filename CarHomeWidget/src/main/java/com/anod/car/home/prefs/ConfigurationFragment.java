@@ -69,12 +69,16 @@ abstract public class ConfigurationFragment extends PreferenceFragment {
 			mAppWidgetId = Utils.readAppWidgetId(savedInstanceState, getActivity().getIntent());
 		}
 		super.onCreate(savedInstanceState);
+		if (getOptionsMenuResource() > 0) {
+			setHasOptionsMenu(true);
+		}
 		addPreferencesFromResource(getXmlResource());
 
 		if (isAppWidgetIdRequired()) {
 			if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
 				Intent defaultResultValue = new Intent();
 				defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+				((ConfigurationActivity)getActivity()).setAppWidgetId(mAppWidgetId);
 				getActivity().setResult(Activity.RESULT_OK, defaultResultValue);
 			} else {
 				Utils.logw("AppWidgetId required");
@@ -101,9 +105,6 @@ abstract public class ConfigurationFragment extends PreferenceFragment {
 		return 0;
 	}
 
-
-
-	@SuppressWarnings("deprecation")
 	protected void setIntent(String key, Class<?> cls, int appWidgetId ) {
 		Preference pref = (Preference) findPreference(key);
 		Intent intent = new Intent(mContext, cls);
@@ -113,14 +114,16 @@ abstract public class ConfigurationFragment extends PreferenceFragment {
 		pref.setIntent(intent);
 	}
 
-	@SuppressWarnings("deprecation")
-	protected void setFragmentIntent(String key, Class<?> fragment, int appWidgetId ) {
-		Preference pref = (Preference) findPreference(key);
-		Intent intent = ConfigurationActivity.createFragmentIntent(mContext, fragment);
-		if (appWidgetId > 0) {
-			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-		}
-		pref.setIntent(intent);
+	protected void showFragmentOnClick(final String key,final Class<?> fragmentCls) {
+		Preference pref = findPreference(key);
+		pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				((ConfigurationActivity)getActivity()).startPreferencePanel(fragmentCls.getName(), preference);
+				return true;
+			}
+		});
+
 	}
 
 	@Override

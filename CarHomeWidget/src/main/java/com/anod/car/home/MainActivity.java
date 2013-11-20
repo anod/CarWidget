@@ -153,7 +153,7 @@ public class MainActivity extends ActionBarActivity {
 				if (mVersion.isFree()) {
 					showDialog(DIALOG_PRO);
 				} else {
-					Intent intentInCar = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationRestore.class);
+					Intent intentInCar = new Intent(mContext, ConfigurationRestore.class);
 					intentInCar.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_INCAR);
 					startActivity(intentInCar);
 				}
