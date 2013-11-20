@@ -1,24 +1,15 @@
 package com.anod.car.home.prefs;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.appwidget.AppWidgetManager;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.support.v4.widget.ViewDragHelper;
 import android.util.Log;
-import android.view.*;
-import android.widget.Button;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.Provider;
@@ -29,10 +20,8 @@ import com.anod.car.home.model.ShortcutsModel;
 import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.ShortcutPreference;
-import com.anod.car.home.utils.IntentUtils;
-import com.anod.car.home.utils.Utils;
 
-public class Configuration extends ConfigurationActivity implements PreferenceKey, ShortcutPreference.DropCallback {
+public class Configuration extends ConfigurationFragment implements PreferenceKey, ShortcutPreference.DropCallback {
 	private static final int REQUEST_BACKUP = 6;
 	private ShortcutsModel mModel;
 	private PickShortcutUtils mPickShortcutUtils;
@@ -57,7 +46,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 		setIntent(INCAR, ConfigurationInCar.class, 0);
 		initBackup();
 
-		int cellId = getIntent().getExtras().getInt(PickShortcutUtils.EXTRA_CELL_ID, PickShortcutUtils.INVALID_CELL_ID);
+		int cellId = getActivity().getIntent().getExtras().getInt(PickShortcutUtils.EXTRA_CELL_ID, PickShortcutUtils.INVALID_CELL_ID);
 		if (cellId != PickShortcutUtils.INVALID_CELL_ID) {
 			mPickShortcutUtils.showActivityPicker(cellId);
 		}
@@ -73,9 +62,9 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.apply) {
-			requestWidgetUpdate();
-			cleanAppsCache();
-			finish();
+			ConfigurationActivity act = (ConfigurationActivity)getActivity();
+			act.beforeFinish();
+			act.finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -93,7 +82,7 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				Intent intent = new Intent(Configuration.this, ConfigurationBackup.class);
+				Intent intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationBackup.class);
 				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 				startActivityForResult(intent, REQUEST_BACKUP);
 				return true;
@@ -108,31 +97,9 @@ public class Configuration extends ConfigurationActivity implements PreferenceKe
 		}
 	}
 
-	@Override
-	public void onBackPressed() {
-		requestWidgetUpdate();
-		cleanAppsCache();
-		super.onBackPressed();
-	}
-
-	private void cleanAppsCache() {
-		AppsListCache allAppsList = ((CarWidgetApplication) this.getApplicationContext()).getAppListCache();
-		if (allAppsList!=null) {
-			allAppsList.flush();
-		}
-	}
-
-	private void requestWidgetUpdate() {
-		if (AppWidgetManager.ACTION_APPWIDGET_CONFIGURE.equals(getIntent().getAction()) && mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-			int[] appWidgetIds = new int[1];
-			appWidgetIds[0] = mAppWidgetId;
-			Provider appWidgetProvider = Provider.getInstance();
-			appWidgetProvider.performUpdate(this, appWidgetIds);
-		}
-	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == REQUEST_BACKUP) {
 			refreshShortcuts();
 		} else {

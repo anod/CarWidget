@@ -29,6 +29,7 @@ public class PickShortcutUtils {
 	public static final String EXTRA_CELL_ID = "CarHomeWidgetCellId";
 	public static final int INVALID_CELL_ID = -1;
 
+	private final ConfigurationFragment mConfigurationFragment;
 	private final ConfigurationActivity mActivity;
 	private final ShortcutsModel mModel;
 	private final PreferenceKey mPreferenceKey;
@@ -38,14 +39,15 @@ public class PickShortcutUtils {
 		String getCompiledKey(int position);
 	}
 	
-	public PickShortcutUtils(ConfigurationActivity activity, ShortcutsModel model, PreferenceKey key) {
-		mActivity = activity;
+	public PickShortcutUtils(ConfigurationFragment fragment, ShortcutsModel model, PreferenceKey key) {
+		mConfigurationFragment = fragment;
+		mActivity = (ConfigurationActivity)mConfigurationFragment.getActivity();
 		mModel = model;
 		mPreferenceKey = key;
 	}
 	
 	public ShortcutPreference initLauncherPreference(int position) {
-		ShortcutPreference p = (ShortcutPreference) mActivity.findPreference(mPreferenceKey.getInitialKey(position));
+		ShortcutPreference p = (ShortcutPreference) mConfigurationFragment.findPreference(mPreferenceKey.getInitialKey(position));
 		p.setKey(mPreferenceKey.getCompiledKey(position));
 		p.setShortcutPosition(position);
 		p.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -77,7 +79,7 @@ public class PickShortcutUtils {
 	}
 	
 	public void showActivityPicker(int position) {
-		mActivity.showWaitDialog();
+		mConfigurationFragment.showDialog(ConfigurationFragment.DIALOG_WAIT);
 		Bundle bundle = new Bundle();
 
 		ArrayList<String> shortcutNames = new ArrayList<String>();
@@ -132,12 +134,12 @@ public class PickShortcutUtils {
 				break;
 			case REQUEST_PICK_SHORTCUT:
 				pickShortcut(data);
-				mActivity.dismissWaitDialog();
+				mConfigurationFragment.dismissDialog(ConfigurationFragment.DIALOG_WAIT);
 				break;
 			default:
 			}
 		} else {
-			mActivity.dismissWaitDialog();
+			mConfigurationFragment.dismissDialog(ConfigurationFragment.DIALOG_WAIT);
 		}
 	}
 	
@@ -165,7 +167,7 @@ public class PickShortcutUtils {
 
 		if (info != null && info.id != ShortcutInfo.NO_ID) {
 			String key = mPreferenceKey.getCompiledKey(mCurrentCellId);
-			ShortcutPreference p = (ShortcutPreference) mActivity.findPreference(key);
+			ShortcutPreference p = (ShortcutPreference) mConfigurationFragment.findPreference(key);
 			refreshPreference(p);
 		}
 		mCurrentCellId = INVALID_CELL_ID;
@@ -191,7 +193,7 @@ public class PickShortcutUtils {
 		long shortcutId = data.getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);
 		if (cellId != INVALID_CELL_ID) {
 			String key = mPreferenceKey.getCompiledKey(cellId);
-			ShortcutPreference p = (ShortcutPreference) mActivity.findPreference(key);
+			ShortcutPreference p = (ShortcutPreference) mConfigurationFragment.findPreference(key);
 			mModel.reloadShortcut(cellId, shortcutId);
 			refreshPreference(p);
 		}

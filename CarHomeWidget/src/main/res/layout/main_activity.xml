@@ -291,7 +291,7 @@
 			android:layout_height="wrap_content"
 			style="?attr/panelItem"
 			android:layout_marginTop="1dp"
-			android:id="@+id/defaultApp"
+			android:id="@+id/appTheme"
 			>
 
 		<ImageView

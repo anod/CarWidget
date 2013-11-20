@@ -19,6 +19,7 @@ import android.view.KeyEvent;
 import com.anod.car.home.ShortcutActivity;
 import com.anod.car.home.incar.SwitchInCarActivity;
 import com.anod.car.home.prefs.Configuration;
+import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.PickShortcutUtils;
 import com.anod.car.home.prefs.ShortcutEditActivity;
 
@@ -36,7 +37,7 @@ public class IntentUtils {
 	public static final String TUNEIN_PRO_PKG = "radiotime.player";
 
 	public static Intent createSettingsIntent(Context context, int appWidgetId, int cellId) {
-		Intent intent = new Intent(context, Configuration.class);
+		Intent intent = ConfigurationActivity.createFragmentIntent(context, Configuration.class);
 		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 		if (cellId != PickShortcutUtils.INVALID_CELL_ID) {
 			intent.putExtra(PickShortcutUtils.EXTRA_CELL_ID, cellId);

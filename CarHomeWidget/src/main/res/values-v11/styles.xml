@@ -18,7 +18,7 @@
 
     <style name="AppListTheme" parent="android:style/Theme.Holo.Dialog" />
 
-	<style name="AppThemeHolo" parent="android:style/Theme.Holo">
+	<style name="AppThemeHolo" parent="@style/Theme.AppCompat">
 		<item name="panelItem">@style/panelItemBasic</item>
 		<item name="panelHeader">@style/panelHeaderBasic</item>
 		<item name="PreferencesItem">@style/PreferencesItem</item>
@@ -26,7 +26,7 @@
 		<item name="activityBgColor">@android:color/transparent</item>
 	</style>
 
-    <style name="AppThemeGray" parent="android:style/Theme.Holo">
+    <style name="AppThemeGray" parent="@style/Theme.AppCompat">
         <item name="android:actionBarStyle">@style/ActionBar</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
 		<item name="android:windowBackground">@color/activity_bg</item>

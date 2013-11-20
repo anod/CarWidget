@@ -18,7 +18,7 @@ import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.prefs.views.SeekBarPreference;
 
-public class ConfigurationLook extends ConfigurationActivity {
+public class ConfigurationLook extends ConfigurationFragment {
 
 	public static final String CATEGORY_TRANSPARENT = "transparent-category";
 	private String[] mIconRotateValues;
@@ -31,7 +31,7 @@ public class ConfigurationLook extends ConfigurationActivity {
 
 	@Override
 	protected void onCreateImpl(Bundle savedInstanceState) {
-		Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
+		Main prefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
 
 		final WidgetSharedPreferences sharedPrefs = new WidgetSharedPreferences(mContext);
 		sharedPrefs.setAppWidgetId(mAppWidgetId);

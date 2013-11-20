@@ -1,5 +1,6 @@
 package com.anod.car.home.prefs;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -15,12 +16,14 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -33,7 +36,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.anod.car.home.R;
-import com.anod.car.home.actionbarcompat.ActionBarActivity;
 import com.anod.car.home.appwidget.LauncherViewBuilder;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -75,7 +77,8 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			getActionBarHelper().requestFeatureNoTitle(true);
+			getSupportActionBar().hide();
+			//getActionBarHelper().requestFeatureNoTitle(true);
 		}
 		super.onCreate(savedInstanceState);
 
@@ -119,6 +122,7 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 		showText(mCurrentPage);
 	}
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	private void initKeyguard() {
 		Bundle widgetOptions = AppWidgetManager.getInstance(mContext).getAppWidgetOptions(mAppWidgetId);
 		int category = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1);
@@ -191,7 +195,7 @@ public class LookAndFeelActivity extends ActionBarActivity implements OnPageChan
 			return true;
 		}
 		if (itemId == R.id.more) {
-			Intent intent = new Intent(this, ConfigurationLook.class);
+			Intent intent = ConfigurationActivity.createFragmentIntent(this, ConfigurationLook.class);
 			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 			startActivityForResult(intent, REQUEST_LOOK_ACTIVITY);
 			return true;

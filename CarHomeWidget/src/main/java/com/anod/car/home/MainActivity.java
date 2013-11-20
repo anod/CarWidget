@@ -11,18 +11,20 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.anod.car.home.actionbarcompat.ActionBarActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
+import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.ConfigurationInCar;
 import com.anod.car.home.prefs.ConfigurationRestore;
 import com.anod.car.home.prefs.TrialDialogs;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
+import com.anod.car.home.prefs.preferences.AppTheme;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.ui.WidgetsListActivity;
 import com.anod.car.home.ui.WizardActivity;
@@ -48,8 +50,6 @@ public class MainActivity extends ActionBarActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		setTheme(R.style.AppThemeHolo);
 
 		setContentView(R.layout.main_activity);
 		mVersion = new Version(this);
@@ -79,6 +79,7 @@ public class MainActivity extends ActionBarActivity {
 		initInCar(widgetsCount);
 		initInformation();
 		initDefaultApp();
+		initAppTheme();
 
 	}
 
@@ -92,7 +93,7 @@ public class MainActivity extends ActionBarActivity {
 		settings.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-			Intent intent = new Intent(mContext, ConfigurationInCar.class);
+			Intent intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationInCar.class);
 			startActivity(intent);
 			}
 		});
@@ -152,7 +153,7 @@ public class MainActivity extends ActionBarActivity {
 				if (mVersion.isFree()) {
 					showDialog(DIALOG_PRO);
 				} else {
-					Intent intentInCar = new Intent(mContext, ConfigurationRestore.class);
+					Intent intentInCar = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationRestore.class);
 					intentInCar.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_INCAR);
 					startActivity(intentInCar);
 				}
@@ -299,5 +300,28 @@ public class MainActivity extends ActionBarActivity {
 			return TrialDialogs.buildProOnlyDialog(this);
 		}
 		return null;
+	}
+
+	private void initAppTheme() {
+		LinearLayout appTheme = (LinearLayout) findViewById(R.id.appTheme);
+		appTheme.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				createThemesDialog().show();
+			}
+		});
+	}
+
+
+	protected AlertDialog createThemesDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder
+			.setTitle("Choose a theme")
+			.setItems(R.array.app_themes, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					AppTheme.saveAppTheme(mContext, which);
+				}
+			});
+		return builder.create();
 	}
 }

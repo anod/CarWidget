@@ -10,7 +10,7 @@ import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.ShortcutPreference;
 
-public class ConfigurationNotifShortcuts extends ConfigurationActivity implements PreferenceKey, ShortcutPreference.DropCallback {
+public class ConfigurationNotifShortcuts extends ConfigurationFragment implements PreferenceKey, ShortcutPreference.DropCallback {
 
 	private PickShortcutUtils mPickShortcutUtils;
 	private NotificationShortcutsModel mModel;
@@ -28,7 +28,7 @@ public class ConfigurationNotifShortcuts extends ConfigurationActivity implement
 	@Override
 	protected void onCreateImpl(Bundle savedInstanceState) {
 
-		mModel = new NotificationShortcutsModel(this);
+		mModel = new NotificationShortcutsModel(mContext);
 		mModel.init();
 		mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
 		mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
@@ -56,7 +56,7 @@ public class ConfigurationNotifShortcuts extends ConfigurationActivity implement
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		mPickShortcutUtils.onActivityResult(requestCode, resultCode, data);
 		super.onActivityResult(requestCode, resultCode, data);
 	}

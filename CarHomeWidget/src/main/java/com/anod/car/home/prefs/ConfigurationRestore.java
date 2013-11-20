@@ -22,18 +22,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anod.car.home.R;
-import com.anod.car.home.actionbarcompat.ActionBarHelper;
+import com.anod.car.home.actionbar.ActionBarListActivity;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 import com.anod.car.home.utils.Utils;
 
-public class ConfigurationRestore extends ListActivity {
+public class ConfigurationRestore extends ActionBarListActivity {
 	private int mAppWidgetId;
 	private PreferencesBackupManager mBackupManager;
 	private Context mContext;
 	private RestoreAdapter mAdapter;
 	private RestoreClickListener mRestoreListener;
 	private DeleteClickListener mDeleteListener;
-	final private ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(this);
 	private static final int DIALOG_WAIT = 1;
 
 	public static final String EXTRA_TYPE = "type";
@@ -42,7 +41,6 @@ public class ConfigurationRestore extends ListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		mActionBarHelper.onCreate(savedInstanceState);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.restore_list);
 		
@@ -78,14 +76,12 @@ public class ConfigurationRestore extends ListActivity {
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
-		mActionBarHelper.onPostCreate(savedInstanceState);
 		super.onPostCreate(savedInstanceState);
 	}
 	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean retValue = false;
-        retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
         retValue |= super.onCreateOptionsMenu(menu);
         return retValue;
     }

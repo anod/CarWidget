@@ -2,6 +2,7 @@ package com.anod.car.home.prefs;
 
 import java.io.File;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
@@ -25,7 +26,7 @@ import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
-public class ConfigurationBackup extends ConfigurationActivity {
+public class ConfigurationBackup extends ConfigurationFragment {
 	private static final String BACKUP_PATH = "backup-path";
 	private static final int REQUEST_RESTORE_MAIN = 1;
 	private static final String RESTORE_BTN_INCAR = "restore-btn-incar";
@@ -58,8 +59,6 @@ public class ConfigurationBackup extends ConfigurationActivity {
 		mBackupIncarPref = (Preference) findPreference(BACKUP_BTN_INCAR);
 		mBackupManager = new PreferencesBackupManager(mContext);
 
-		mContext = (Context) this;
-
 		initInCar();
 		initBackup();
 		Preference backupPathPref = (Preference) findPreference(BACKUP_PATH);
@@ -86,16 +85,18 @@ public class ConfigurationBackup extends ConfigurationActivity {
 
 	}
 
-	@Override
 	public Dialog onCreateDialog(int id) {
 		if (id == DIALOG_BACKUP_NAME) {
 			String defaultFilename = "backup-" + mAppWidgetId;
 			// This example shows how to add a custom layout to an AlertDialog
-			LayoutInflater factory = LayoutInflater.from(this);
+			LayoutInflater factory = LayoutInflater.from(mContext);
 			final View textEntryView = factory.inflate(R.layout.backup_dialog_enter_name, null);
 			final EditText backupName = (EditText) textEntryView.findViewById(R.id.backup_name);
 			backupName.setText(defaultFilename);
-			return new AlertDialog.Builder(this).setTitle(R.string.backup_current_widget).setView(textEntryView).setPositiveButton(R.string.backup_save, new DialogInterface.OnClickListener() {
+			return new AlertDialog.Builder(mContext)
+					.setTitle(R.string.backup_current_widget)
+					.setView(textEntryView)
+					.setPositiveButton(R.string.backup_save, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					String filename = backupName.getText().toString();
 					if (!filename.equals("")) {
@@ -108,17 +109,17 @@ public class ConfigurationBackup extends ConfigurationActivity {
 				}
 			}).create();
 		} else if (id == DIALOG_PRO) {
-			return TrialDialogs.buildProOnlyDialog(this);
+			return TrialDialogs.buildProOnlyDialog(mContext);
 		}
-		return super.onCreateDialog(id);
+		return null;
 	}
 
 	private void initBackup() {
 		mBackupMainPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				showDialog(DIALOG_BACKUP_NAME);
-				return false;
+			showDialog(DIALOG_BACKUP_NAME);
+			return false;
 			}
 		});
 
@@ -127,7 +128,7 @@ public class ConfigurationBackup extends ConfigurationActivity {
 
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				Intent intentMain = new Intent(mContext, ConfigurationRestore.class);
+				Intent intentMain = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationRestore.class);
 				intentMain.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 				intentMain.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_MAIN);
 				startActivityForResult(intentMain, REQUEST_RESTORE_MAIN);
@@ -149,7 +150,7 @@ public class ConfigurationBackup extends ConfigurationActivity {
 		});
 
 		Preference restoreIncar = (Preference) findPreference(RESTORE_BTN_INCAR);
-		Version version = new Version(this);
+		Version version = new Version(mContext);
 		if (version.isFree()) {
 			restoreIncar.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 				
@@ -160,7 +161,7 @@ public class ConfigurationBackup extends ConfigurationActivity {
 				}
 			});
 		} else {
-			Intent intentInCar = new Intent(this, ConfigurationRestore.class);
+			Intent intentInCar = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationRestore.class);
 			intentInCar.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_INCAR);
 			restoreIncar.setIntent(intentInCar);
 		}
@@ -170,7 +171,7 @@ public class ConfigurationBackup extends ConfigurationActivity {
 		String summary;
 		long timeIncar = mBackupManager.getIncarTime();
 		if (timeIncar > 0) {
-			summary = DateUtils.formatDateTime(this, timeIncar, PreferencesBackupManager.DATE_FORMAT);
+			summary = DateUtils.formatDateTime(mContext, timeIncar, PreferencesBackupManager.DATE_FORMAT);
 		} else {
 			summary = getString(R.string.never);
 		}
@@ -181,7 +182,7 @@ public class ConfigurationBackup extends ConfigurationActivity {
 		String summary;
 		long timeMain = mBackupManager.getMainTime();
 		if (timeMain > 0) {
-			summary = DateUtils.formatDateTime(this, timeMain, PreferencesBackupManager.DATE_FORMAT);
+			summary = DateUtils.formatDateTime(mContext, timeMain, PreferencesBackupManager.DATE_FORMAT);
 		} else {
 			summary = getString(R.string.never);
 		}
@@ -225,18 +226,14 @@ public class ConfigurationBackup extends ConfigurationActivity {
 		}
 
 		protected void onPostExecute(Integer result) {
-			try {
-				dismissDialog(DIALOG_WAIT);
-			} catch (IllegalArgumentException e) {
-				Utils.logd(e.getMessage());
-			}
+			dismissDialog(DIALOG_WAIT);
 			onBackupFinish(mTaskType, result);
 		}
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK && requestCode == REQUEST_RESTORE_MAIN) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_RESTORE_MAIN) {
 			updateMainTime();
 		}
 		super.onActivityResult(requestCode, resultCode, data);

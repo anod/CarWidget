@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -29,6 +30,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
+import android.support.v4.preference.PreferenceFragment;
 
 import com.anod.car.home.R;
 import com.anod.car.home.incar.Bluetooth;
@@ -42,7 +44,7 @@ import com.anod.car.home.utils.Version;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-public class ConfigurationInCar extends ConfigurationActivity {
+public class ConfigurationInCar extends ConfigurationFragment {
 	private static final String MEDIA_SCREEN = "media-screen";
 	private static final String SCREEN_BT_DEVICE = "bt-device-screen";
 	private static final String CATEGORY_BT_DEVICE = "bt-device-category";
@@ -77,12 +79,11 @@ public class ConfigurationInCar extends ConfigurationActivity {
 
 	@Override
 	protected void onCreateImpl(Bundle savedInstanceState) {
-		setResult(RESULT_OK);
+		getActivity().setResult(Activity.RESULT_OK);
 
-		final Version version = new Version(this);
-		mContext = (Context) this;
+		final Version version = new Version(mContext);
 
-		setIntent(MEDIA_SCREEN, ConfigurationInCarVolume.class, 0);
+		setFragmentIntent(MEDIA_SCREEN, ConfigurationInCarVolume.class, 0);
 		initInCar();
 		if (version.isFree()) {
 			mTrialsLeft = version.getTrialTimesLeft();
@@ -91,40 +92,40 @@ public class ConfigurationInCar extends ConfigurationActivity {
 	}
 
 	@Override
-	protected void onPause() {
+	public void onPause() {
 		super.onPause();
 		if (mBluetoothReceiver != null) {
-			unregisterReceiver(mBluetoothReceiver);
+			getActivity().unregisterReceiver(mBluetoothReceiver);
 		}
 	}
 
 	@Override
-	protected void onResume() {
+	public void onResume() {
 		super.onResume();
 		if (mBluetoothReceiver != null) {
-			registerReceiver(mBluetoothReceiver, INTENT_FILTER);
+			getActivity().registerReceiver(mBluetoothReceiver, INTENT_FILTER);
 		}
 	}
 
 	@Override
 	public Dialog onCreateDialog(int id) {
 		if (id == DIALOG_INIT) {
-			final ProgressDialog initDialog = new ProgressDialog(this);
+			final ProgressDialog initDialog = new ProgressDialog(mContext);
 			initDialog.setCancelable(true);
 			initDialog.setMessage(getResources().getString(R.string.load_paired_device));
 			initDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 				@Override
 				public void onCancel(DialogInterface arg0) {
-					finish();
+					getActivity().finish();
 				}
 			});
 			return initDialog;
 		} else if (id == DIALOG_TRIAL) {
-			if (Utils.isProInstalled(this)) {
-				return TrialDialogs.buildProInstalledDialog(this);
+			if (Utils.isProInstalled(mContext)) {
+				return TrialDialogs.buildProInstalledDialog(mContext);
 			} else {
 				mTrialMessageShown = true;
-				return TrialDialogs.buildTrialDialog(mTrialsLeft, this);
+				return TrialDialogs.buildTrialDialog(mTrialsLeft, mContext);
 			}
 		}
 		return super.onCreateDialog(id);
@@ -138,7 +139,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 	}
 	
 	private void initInCar() {
-		InCar incar = PreferencesStorage.loadInCar(this);
+		InCar incar = PreferencesStorage.loadInCar(mContext);
 
 		final CheckBoxPreference pref = (CheckBoxPreference) findPreference(PreferencesStorage.SCREEN_TIMEOUT);
 		pref.setChecked(incar.isDisableScreenTimeout());
@@ -148,7 +149,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 		initActivityRecognition();
 
 		if (Utils.IS_ICS_OR_GREATER) {
-			setIntent(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class, 0);
+			setFragmentIntent(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class, 0);
 		}
 
 		if (!SamsungDrivingMode.hasMode()) {
@@ -160,13 +161,13 @@ public class ConfigurationInCar extends ConfigurationActivity {
 
 	private void initActivityRecognition() {
 		final Preference pref = (Preference) findPreference(PreferencesStorage.ACTIVITY_RECOGNITION);
-		final int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+		final int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext);
 		pref.setSummary(renderPlayServiceStatus(status));
 		if (status != ConnectionResult.SUCCESS) {
 			pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object o) {
-					Dialog d = GooglePlayServicesUtil.getErrorDialog(status, ConfigurationInCar.this, PS_DIALOG_REQUEST_CODE);
+					Dialog d = GooglePlayServicesUtil.getErrorDialog(status, getActivity(), PS_DIALOG_REQUEST_CODE);
 					d.show();
 					return false;
 				}
@@ -178,7 +179,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 					Boolean val = (Boolean)newValue;
 					Intent intent = new Intent(ModeBroadcastReceiver.ACTION_UPDATE_ACTIVITY_CLIENT);
 					intent.putExtra(ModeBroadcastReceiver.EXTRA_STATUS, val);
-					sendBroadcast(intent);
+					getActivity().sendBroadcast(intent);
 					return true;
 				}
 			});
@@ -225,7 +226,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 				if (selection.equals(AUTORUN_APP_DISABLED)) {
 					saveAutorunApp(null);
 				} else {
-					Intent mainIntent = new Intent(ConfigurationInCar.this, AllAppsActivity.class);
+					Intent mainIntent = new Intent(mContext, AllAppsActivity.class);
 					startActivityForResult(mainIntent, REQUEST_PICK_APPLICATION);
 				}
 				return false;
@@ -234,8 +235,8 @@ public class ConfigurationInCar extends ConfigurationActivity {
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK && requestCode == REQUEST_PICK_APPLICATION) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_PICK_APPLICATION) {
 			saveAutorunApp(data);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -247,7 +248,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 			component = data.getComponent();
 		}
 		// update storage
-		PreferencesStorage.saveAutorunApp(component, this);
+		PreferencesStorage.saveAutorunApp(component, mContext);
 		updateAutorunAppPref(data);
 	}
 
@@ -260,7 +261,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 			value = AUTORUN_APP_DISABLED;
 		} else {
 			// get name
-			PackageManager pm = getPackageManager();
+			PackageManager pm = mContext.getPackageManager();
 			final ResolveInfo resolveInfo = pm.resolveActivity(data, 0);
 			if (resolveInfo != null) {
 				title = (String) resolveInfo.activityInfo.loadLabel(pm);
@@ -289,7 +290,7 @@ public class ConfigurationInCar extends ConfigurationActivity {
 				Boolean switchOn = (Boolean) newValue;
 				showDialog(DIALOG_WAIT);
 				mBluetoothReceiver = new BluetoothStateReceiver();
-				registerReceiver(mBluetoothReceiver, INTENT_FILTER);
+				getActivity().registerReceiver(mBluetoothReceiver, INTENT_FILTER);
 				if (Bluetooth.getState() == BluetoothAdapter.STATE_ON) {
 					Bluetooth.switchOff();
 					return (!switchOn);

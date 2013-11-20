@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.util.Log;
 
@@ -122,8 +123,8 @@ public class ShortcutInfoUtils {
             return null;
         }
 
-        return UtilitiesBitmap.createIconBitmap(
-        		resolveInfo.activityInfo.loadIcon(manager), context
-   	   );
+		Drawable drawable = resolveInfo.activityInfo.loadIcon(manager);
+
+        return UtilitiesBitmap.createIconBitmap(drawable, context);
     }
 }

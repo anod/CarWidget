@@ -63,28 +63,16 @@
             android:theme="@style/AppListTheme"
             android:label="@string/icons_theme" />
 		<activity
-            android:name="com.anod.car.home.prefs.Configuration"
+            android:name="com.anod.car.home.prefs.ConfigurationActivity"
             android:label="@string/settings"
             android:launchMode="singleTop"
 			android:clearTaskOnLaunch="true"
+			android:fragment="com.anod.car.home.prefs."
         >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.anod.car.home.prefs.ConfigurationLook"
-            android:configChanges="orientation" 
-         />
-        <activity
-            android:name="com.anod.car.home.prefs.ConfigurationInCarVolume"
-         />
-        <activity
-            android:name="com.anod.car.home.prefs.ConfigurationInCar"
-         />
-        <activity
-            android:name="com.anod.car.home.prefs.ConfigurationBackup"
-         />
         <activity
             android:name="com.anod.car.home.prefs.ConfigurationRestore"
         />
@@ -117,11 +105,7 @@
                 <category android:name="android.intent.category.CAR_DOCK" />
             </intent-filter>
         </activity>
-        
-        <activity
-            android:name="com.anod.car.home.prefs.ConfigurationNotifShortcuts"
-            android:configChanges="orientation" 
-            />
+
         <activity
             android:name="com.anod.car.home.incar.ChangeBrightnessActivity"
             android:theme="@style/BrightnessTheme" />
@@ -153,6 +137,11 @@
 				android:name="com.google.android.backup.api_key"
 				android:value="AEdPqrEAAAAIwrTs2H7J2Rs0kglDTHtziqQ8_7YbAZGeS7bDUA" />
 
+		<activity android:name="org.acra.CrashReportDialog"
+				  android:theme="@android:style/Theme.Dialog"
+				  android:launchMode="singleInstance"
+				  android:excludeFromRecents="true"
+				  android:finishOnTaskLaunch="true" />
 	</application>
 
 </manifest>

@@ -13,7 +13,7 @@ import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
 
-public class ConfigurationInCarVolume extends ConfigurationActivity implements OnCheckedChangeListener {
+public class ConfigurationInCarVolume extends ConfigurationFragment implements OnCheckedChangeListener {
 	
 	@Override
 	protected boolean isAppWidgetIdRequired() {
@@ -32,7 +32,7 @@ public class ConfigurationInCarVolume extends ConfigurationActivity implements O
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		PreferencesStorage.setAdjustVolumeLevel(this, isChecked);
+		PreferencesStorage.setAdjustVolumeLevel(mContext, isChecked);
 	}
 
 }

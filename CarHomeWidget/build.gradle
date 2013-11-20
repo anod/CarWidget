@@ -3,18 +3,18 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.+'
+        classpath 'com.android.tools.build:gradle:0.6.+'
     }
 }
 apply plugin: 'android'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.6'
+    gradleVersion = '1.8'
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:13.0.0'
-    compile 'com.android.support:support-v13:13.0.0'
+    compile 'com.android.support:support-v4:18.0.+'
+    compile 'com.android.support:appcompat-v7:18.0.+'
     compile 'com.google.android.gms:play-services:3.1.36'
     compile files (
        'libs/acra-4.5.0.jar'
@@ -68,8 +68,4 @@ android {
         }
     }
 
-}
-
-tasks.withType(Compile) {
-    options.encoding = "UTF-8"
 }

@@ -22,16 +22,26 @@
     </string-array>
     <string-array name="icon_scale_values" tools:ignore="UnusedResources" translatable="false">
         <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+		<item>4</item>
+		<item>5</item>
+		<item>6</item>
+		<item>7</item>
+		<item>8</item>
+		<item>9</item>
+		<item>10</item>
+		<item>11</item>
+		<item>12</item>
+		<item>13</item>
+		<item>14</item>
+		<item>15</item>
+		<item>16</item>
+		<item>17</item>
+		<item>18</item>
+		<item>19</item>
+		<item>20</item>
     </string-array>
     
 	<string-array name="wifi_action_values" tools:ignore="UnusedResources" translatable="false">
@@ -52,6 +62,16 @@
         <item>x1.8</item>
         <item>x1.9</item>
         <item>x2.0</item>
+		<item>x2.1</item>
+		<item>x2.2</item>
+		<item>x2.3</item>
+		<item>x2.4</item>
+		<item>x2.5</item>
+		<item>x2.6</item>
+		<item>x2.7</item>
+		<item>x2.8</item>
+		<item>x2.9</item>
+		<item>x3.0</item>
     </string-array>    
     
 	<string-array name="autoanswer_values" tools:ignore="UnusedResources" translatable="false">
@@ -70,4 +90,9 @@
 		<item>LEFT</item>
 		<item>RIGHT</item>
     </string-array>
+
+	<string-array name="app_themes">
+		<item>Light</item>
+		<item>Dark</item>
+	</string-array>
 </resources>

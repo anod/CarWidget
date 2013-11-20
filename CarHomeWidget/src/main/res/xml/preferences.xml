@@ -26,16 +26,22 @@
             android:icon="@drawable/ic_action_brush"
             android:key="look-and-feel"
             android:summary="@string/pref_look_and_feel_summary"
-            android:title="@string/pref_look_and_feel_title" />
+            android:title="@string/pref_look_and_feel_title"
+			android:fragment="com.anod.car.home.prefs.ConfigurationLook"
+		/>
         <com.anod.car.home.prefs.views.HeaderPreference
             android:icon="@drawable/ic_action_wheel"
             android:key="incar"
             android:summary="@string/pref_incar_mode_summary"
-            android:title="@string/pref_incar_mode_title" />
+            android:title="@string/pref_incar_mode_title"
+			android:fragment="com.anod.car.home.prefs.ConfigurationInCar"
+			/>
         <com.anod.car.home.prefs.views.HeaderPreference
             android:icon="@drawable/ic_action_export"
             android:key="backup"
             android:summary="@string/pref_backup_summary"
-            android:title="@string/pref_backup_title" />
+            android:title="@string/pref_backup_title"
+			android:fragment="com.anod.car.home.prefs.ConfigurationBackup"
+		/>
     </PreferenceCategory>
 </PreferenceScreen>
