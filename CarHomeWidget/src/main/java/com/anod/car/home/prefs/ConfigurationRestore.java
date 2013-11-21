@@ -32,8 +32,6 @@ public class ConfigurationRestore extends ActionBarListActivity {
 	private RestoreClickListener mRestoreListener;
 	private DeleteClickListener mDeleteListener;
 
-	private static final int DIALOG_WAIT = 1;
-
 	public static final String EXTRA_TYPE = "type";
 	public static final int TYPE_MAIN = 1;
 	public static final int TYPE_INCAR = 2;
@@ -78,22 +76,9 @@ public class ConfigurationRestore extends ActionBarListActivity {
 		super.onPostCreate(savedInstanceState);
 	}
 
-	@Override
-	public Dialog onCreateDialog(int id) {
-		if (id == DIALOG_WAIT) {
-			ProgressDialog waitDialog = new ProgressDialog(this);
-			waitDialog.setCancelable(true);
-			String message = getResources().getString(R.string.please_wait);
-			waitDialog.setMessage(message);
-			return waitDialog;
-		}
-		return null;
-	}
-
 	private class FileListTask extends AsyncTask<Integer, Void, File[]> {
 		@Override
 		protected void onPreExecute() {
-			showDialog(DIALOG_WAIT);
 			mAdapter.clear();
 			mAdapter.notifyDataSetChanged();
 		}
@@ -109,24 +94,14 @@ public class ConfigurationRestore extends ActionBarListActivity {
 					mAdapter.notifyDataSetChanged();
 				}
 			}
-			dismissDialogSafetly(DIALOG_WAIT);
 		}
 	}
-	
-	@SuppressWarnings("deprecation")
-	private void dismissDialogSafetly(int id) {
-		try {
-			dismissDialog(id);
-		} catch (IllegalArgumentException e) {
-			Utils.logd(e.getMessage());
-		}
-	}
+
 
 	private class RestoreTask extends AsyncTask<String, Void, Integer> {
 
 		@Override
 		protected void onPreExecute() {
-			showDialog(DIALOG_WAIT);
 		}
 
 		protected Integer doInBackground(String... filenames) {
@@ -138,7 +113,6 @@ public class ConfigurationRestore extends ActionBarListActivity {
 		}
 
 		protected void onPostExecute(Integer result) {
-			dismissDialogSafetly(DIALOG_WAIT);
 			onRestoreFinish(result);
 		}
 	}
@@ -228,7 +202,6 @@ public class ConfigurationRestore extends ActionBarListActivity {
 
 		@Override
 		protected void onPreExecute() {
-			showDialog(DIALOG_WAIT);
 		}
 
 		protected Boolean doInBackground(File... files) {
@@ -236,7 +209,6 @@ public class ConfigurationRestore extends ActionBarListActivity {
 		}
 
 		protected void onPostExecute(Boolean result) {
-			dismissDialogSafetly(DIALOG_WAIT);
 			if (!result) {
 				Toast.makeText(mContext, getString(R.string.unable_delete_file), Toast.LENGTH_SHORT).show();
 			} else {

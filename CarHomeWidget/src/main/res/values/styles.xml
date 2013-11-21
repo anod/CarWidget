@@ -22,7 +22,7 @@
 		<item name="wizardTextItem">@style/wizardTextItemGray</item>
 		<item name="textColor">@color/font_color_dark</item>
 
-		<item name="actionBarStyle">@style/ActionBarCompat</item>
+		<item name="actionBarStyle">@style/ActionBarCompatGrey</item>
 
 		<item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
 		<item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
@@ -43,7 +43,7 @@
 		<item name="android:background">@drawable/panel_item_bg_grey</item>
 	</style>
 
-    <style name="ActionBarCompat" parent="@style/Widget.AppCompat.ActionBar">
+    <style name="ActionBarCompatGrey" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:background">@color/actionbar_bg_color</item>
 		<item name="background">@color/actionbar_bg_color</item>
 		<item name="backgroundStacked">@color/actionbar_bg_color</item>
@@ -53,38 +53,23 @@
 	<style name="textAlignStyle">
 		<item name="android:gravity">left</item>
 	</style>
-	
-    <style name="ActionBarCompatTitleBase" parent="Widget.AppCompat.ActionBar">
-        <item name="android:id">@id/actionbar_compat_title</item>
-        <!-- layout_width/height/weight must be set in code -->
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:paddingLeft">6dp</item>
-        <item name="android:paddingRight">6dp</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:ellipsize">marquee</item>
-    </style>
 
-    <style name="ActionBarCompatTitle" parent="style/ActionBarCompatTitleBase">
-        <item name="android:textColor">@color/actionbar_title_color</item>
-    </style>
-    
-     <style name="TitleBarButton" parent="android:Widget.Button">
-        <item name="android:background">@drawable/actionbar_compat_item</item>
-        <item name="android:paddingLeft">5dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:textColor">#FFFFFFFF</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">@dimen/actionbar_compat_height</item>
-    </style>
-
-	
     <!-- Skin Chooser -->
     <style name="AppThemeGray.Transparent" parent="AppThemeGray">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowShowWallpaper">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Activity</item>
-    </style>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+
+	</style>
+
+	<!-- Skin Chooser -->
+	<style name="AppThemeHolo.Transparent" parent="AppThemeHolo">
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:windowShowWallpaper">true</item>
+		<item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+
+	</style>
+
     <!-- Skins -->
     <style name="glass_btn">
         <item name="android:background">@drawable/glass_container</item>

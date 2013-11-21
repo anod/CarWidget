@@ -13,12 +13,7 @@
 		carwidget:showAsAction="always"
         android:title="@android:string/ok">
     </item>
-	<item
-			android:id="@+id/overflow"
-			android:icon="@drawable/ic_action_overflow"
-			carwidget:showAsAction="always"
-			android:title="@string/menu">
-		<menu>
+
 			<item
 					android:id="@+id/bg_color"
 					carwidget:showAsAction="never"
@@ -46,8 +41,6 @@
 					carwidget:showAsAction="never"
 					android:title="@string/more">
 			</item>
-		</menu>
-	</item>
 
 
 </menu>

@@ -42,13 +42,6 @@
 		<item name="textColor">@color/font_color_dark</item>
     </style>
 
-	<!-- Skin Chooser -->
-	<style name="AppThemeHolo.Transparent" parent="AppThemeHolo">
-		<item name="android:windowBackground">@android:color/transparent</item>
-		<item name="android:windowShowWallpaper">true</item>
-		<item name="android:windowAnimationStyle">@android:style/Animation.Activity</item>
-	</style>
-
     <style name="ActionBar" parent="android:style/Widget.Holo.ActionBar">
         <item name="android:background">@color/actionbar_bg_color</item>
         <item name="android:titleTextStyle">@style/ActionBarTitle</item>
