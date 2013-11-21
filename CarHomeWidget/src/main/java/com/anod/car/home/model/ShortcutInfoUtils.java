@@ -131,7 +131,7 @@ public class ShortcutInfoUtils {
             return null;
         }
 
-		if (Utils.IS_ISC_MR1_OR_GREATER) {
+		if (Utils.IS_JELLYBEAN_OR_GREATER) {
 			return loadFullSizeIcon(manager, resolveInfo, context);
 		}
 

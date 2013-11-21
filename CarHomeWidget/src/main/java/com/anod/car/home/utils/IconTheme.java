@@ -13,11 +13,14 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.util.DisplayMetrics;
 
 public class IconTheme
 {
@@ -31,7 +34,7 @@ public class IconTheme
 	String mPkgName;
 	Resources mThemeResources;
 	HashMap<String, Integer> mIconMap;
-
+	public static Object sLock = new Object();
 	public IconTheme(Context context, String packageName)
 	{
 		mContext = context;
@@ -55,13 +58,14 @@ public class IconTheme
 			return;
 		}
 		try {
-			mIconMap = parseXml(xml, cmpMap);
+			synchronized (sLock) {
+				mIconMap = parseXml(xml, cmpMap);
+			}
 		} catch (XmlPullParserException e) {
 			Utils.logd(e.getMessage());
 		} catch (IOException e) {
 			Utils.logd(e.getMessage());
 		}
-
 	}
 
 	private HashMap<String, Integer> fallback(HashMap<String, Integer> cmpMap) {
@@ -118,7 +122,6 @@ public class IconTheme
 
 	private HashMap<String, Integer> parseXml(XmlPullParser xml, HashMap<String, Integer> cmpMap) throws XmlPullParserException, IOException {
 
-		int found = 0;
 		int required = cmpMap.size();
 		HashMap<String, Integer> iconMap = new HashMap<String, Integer>(required);
 
@@ -136,21 +139,20 @@ public class IconTheme
 					int drawableId = mThemeResources.getIdentifier(drawable, "drawable", mPkgName);
 					if (drawableId != 0) {
 						iconMap.put(componentName.getClassName(), drawableId);
-						found++;
 					}
 				}
-				if (found == required) {
+				if (iconMap.size() == required) {
 					break;
 				}
 			}
 			eventType = xml.next();
 		}
 
-		if (found == required) {
+		if (iconMap.size() == required) {
 			return iconMap;
 		}
 
-		if (found == 0) {
+		if (iconMap.size() == 0) {
 			return null;
 		}
 		return iconMap;
@@ -165,7 +167,13 @@ public class IconTheme
 		return 0;
 	}
 
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 	public Drawable getDrawable(int resId) {
+
+		if (Utils.IS_JELLYBEAN_OR_GREATER) {
+			return mThemeResources.getDrawableForDensity(resId, DisplayMetrics.DENSITY_XXHIGH);
+		}
+
 		return mThemeResources.getDrawable(resId);
 	}
 }
