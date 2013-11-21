@@ -1,10 +1,13 @@
 package com.anod.car.home.app;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import com.anod.car.home.R;
 
 /**
  * @author alex
@@ -46,6 +49,16 @@ public abstract class ActionBarListActivity extends CarWidgetActivity {
 	}
 
 	/**
+	 * Ensures the list view has been created before Activity restores all
+	 * of the view states.
+	 *
+	 */
+	@Override
+	protected void onRestoreInstanceState(Bundle state) {
+		ensureList();
+		super.onRestoreInstanceState(state);
+	}
+	/**
 	 */
 	@Override
 	protected void onDestroy() {
@@ -64,9 +77,7 @@ public abstract class ActionBarListActivity extends CarWidgetActivity {
 		View emptyView = findViewById(android.R.id.empty);
 		mList = (ListView)findViewById(android.R.id.list);
 		if (mList == null) {
-			throw new RuntimeException(
-					"Your content must have a ListView whose id attribute is " +
-							"'android.R.id.list'");
+			return;
 		}
 		if (emptyView != null) {
 			mList.setEmptyView(emptyView);
@@ -84,6 +95,7 @@ public abstract class ActionBarListActivity extends CarWidgetActivity {
 	 */
 	public void setListAdapter(ListAdapter adapter) {
 		synchronized (this) {
+			ensureList();
 			mAdapter = adapter;
 			mList.setAdapter(adapter);
 		}
@@ -117,6 +129,7 @@ public abstract class ActionBarListActivity extends CarWidgetActivity {
 	 * Get the activity's list view widget.
 	 */
 	public ListView getListView() {
+		ensureList();
 		return mList;
 	}
 
@@ -127,6 +140,17 @@ public abstract class ActionBarListActivity extends CarWidgetActivity {
 		return mAdapter;
 	}
 
+	private void ensureList() {
+		if (mList != null) {
+			return;
+		}
+		mList = (ListView)findViewById(android.R.id.list);
+		if (mList != null) {
+			return;
+		}
+		setContentView(R.layout.restore_list);
+
+	}
 
 	private AdapterView.OnItemClickListener mOnClickListener = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> parent, View v, int position, long id)

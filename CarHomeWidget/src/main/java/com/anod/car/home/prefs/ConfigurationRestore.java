@@ -42,7 +42,7 @@ public class ConfigurationRestore extends ActionBarListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.restore_list);
-		
+
 		Intent launchIntent = getIntent();
 		mContext = (Context) this;
 		mBackupManager = new PreferencesBackupManager(mContext);

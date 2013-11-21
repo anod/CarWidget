@@ -43,11 +43,11 @@
 	>
 
 		<TextView
+				android:id="@+id/incarTitle"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textAppearance="@style/panelHeaderText"
 				android:text="@string/pref_incar_mode_title"
-				android:id="@+id/textView"
 		/>
 
 		<TextView
@@ -63,50 +63,25 @@
 	<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			style="?attr/panelItem"
 			android:layout_marginTop="1dp"
-			android:id="@+id/incarSettings"
-			>
+	>
 
-		<ImageView
-				android:id="@android:id/icon"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:src="@drawable/ic_holo_settings"
-				/>
-
-		<RelativeLayout
+		<Button
 				android:layout_width="0dp"
-				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				android:paddingLeft="4dp">
+				android:layout_height="wrap_content"
+				android:text="@string/settings"
+				android:id="@+id/incarSettings"
+				android:drawableLeft="@drawable/ic_holo_settings"
 
-			<TextView
-					android:id="@android:id/title"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:singleLine="true"
-					android:textAppearance="?android:attr/textAppearanceMedium"
-					android:ellipsize="marquee"
-					android:fadingEdge="horizontal"
-					android:text="@string/settings"
-					style="@style/textAlignStyle"
-					android:textColor="@color/font_color"/>
-
-			<TextView
-					android:id="@+id/incarActive"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_below="@android:id/title"
-					android:layout_alignLeft="@android:id/title"
-					android:maxLines="1"
-					android:text="@string/enabled"
-					android:textAppearance="?android:attr/textAppearanceSmall"
-					style="@style/textAlignStyle"
-					android:textColor="@color/font_color_sec"/>
-
-		</RelativeLayout>
+				android:gravity="center_vertical"
+				android:textColor="@color/font_color"
+				style="?attr/buttonStyle"
+				android:drawablePadding="4dp"
+				android:ellipsize="end"
+				android:maxLines="1"
+				android:padding="10dp"
+		/>
 
 	</LinearLayout>
 

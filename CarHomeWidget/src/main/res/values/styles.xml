@@ -2,18 +2,35 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppListTheme" parent="android:style/Theme.Dialog" />
-    
-    <style name="AppThemeGray" parent="@style/Theme.AppCompat">
-        <item name="android:windowTitleSize">@dimen/actionbar_compat_height</item>
-        <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompat</item>
-        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
-        <item name="android:windowBackground">@color/activity_bg</item>
-        <!-- for programmatic instantiation -->
-        <item name="actionbarCompatTitleStyle">@style/ActionBarCompatTitle</item>
+
+	<style name="AppThemeHolo" parent="@style/Theme.AppCompat">
+		<item name="panelItem">@style/panelItemBasic</item>
+		<item name="panelHeader">@style/panelHeaderBasic</item>
+		<item name="PreferencesItem">@style/PreferencesItem</item>
+		<item name="buttonStyle">@style/buttonStyleDefault</item>
+		<item name="activityBgColor">@android:color/transparent</item>
+		<item name="wizardTextItem">@style/wizardTextItemHolo</item>
+		<item name="textColor">@android:color/white</item>
+	</style>
+
+	<style name="AppThemeGray" parent="@style/Theme.AppCompat">
+		<item name="panelItem">@style/panelItemGray</item>
+		<item name="panelHeader">@style/panelHeaderGray</item>
+		<item name="PreferencesItem">@style/PreferencesItemGray</item>
+		<item name="buttonStyle">@style/buttonStyleGray</item>
+		<item name="activityBgColor">@color/activity_bg</item>
+		<item name="wizardTextItem">@style/wizardTextItemGray</item>
+		<item name="textColor">@color/font_color_dark</item>
+
+		<item name="actionBarStyle">@style/ActionBarCompat</item>
+
+		<item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
+		<item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+		<item name="android:windowBackground">@color/activity_bg</item>
+
 		<item name="android:preferenceStyle">@style/AppPreference</item>
 		<item name="android:listViewStyle">@style/AppListView</item>
-    </style>
+	</style>
 
 	<style name="AppListView" parent="@android:style/Widget.ListView">
 		<item name="android:paddingRight">12dp</item>
@@ -26,15 +43,18 @@
 		<item name="android:background">@drawable/panel_item_bg_grey</item>
 	</style>
 
-    <style name="ActionBarCompat">
+    <style name="ActionBarCompat" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:background">@color/actionbar_bg_color</item>
+		<item name="background">@color/actionbar_bg_color</item>
+		<item name="backgroundStacked">@color/actionbar_bg_color</item>
+		<item name="backgroundSplit">@color/actionbar_bg_color</item>
     </style>
 
 	<style name="textAlignStyle">
 		<item name="android:gravity">left</item>
 	</style>
 	
-    <style name="ActionBarCompatTitleBase">
+    <style name="ActionBarCompatTitleBase" parent="Widget.AppCompat.ActionBar">
         <item name="android:id">@id/actionbar_compat_title</item>
         <!-- layout_width/height/weight must be set in code -->
         <item name="android:gravity">center_vertical</item>

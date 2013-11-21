@@ -1,6 +1,7 @@
 package com.anod.car.home;
 
 import android.app.Application;
+import android.view.ViewConfiguration;
 
 import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.prefs.preferences.AppTheme;
@@ -8,6 +9,8 @@ import com.anod.car.home.prefs.preferences.AppTheme;
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
+
+import java.lang.reflect.Field;
 
 @ReportsCrashes(formKey = "", // will not be used
 	mailTo = "alex.gavrishev@gmail.com",
@@ -28,6 +31,7 @@ public class CarWidgetApplication extends Application {
 			ACRA.init(this);
 		}
 		mThemeIdx = AppTheme.getTheme(this);
+
 	}
 
 	public AppsListCache getAppListCache() {

@@ -1,6 +1,7 @@
 package com.anod.car.home;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
+import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.ConfigurationInCar;
 import com.anod.car.home.prefs.ConfigurationRestore;
@@ -91,7 +93,7 @@ public class MainActivity extends CarWidgetActivity {
 	}
 
 	private void initInCar(final int widgetsCount) {
-		LinearLayout settings = (LinearLayout) findViewById(R.id.incarSettings);
+		Button settings = (Button) findViewById(R.id.incarSettings);
 		settings.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -123,21 +125,14 @@ public class MainActivity extends CarWidgetActivity {
 			trialText.setVisibility(View.GONE);
 		}
 
-		TextView active = (TextView)findViewById(R.id.incarActive);
-		if (widgetsCount == 0) {
-			active.setText(R.string.not_active);
-		} else {
+		String active = getActiveString(widgetsCount);
+		StringBuilder incarTitle = new StringBuilder();
+		incarTitle.append(getString(R.string.pref_incar_mode_title));
+		incarTitle.append(" - ");
+		incarTitle.append(active);
 
-			if (mVersion.isProOrTrial()) {
-				if (PreferencesStorage.isInCarModeEnabled(this)){
-					active.setText(R.string.enabled);
-				} else {
-					active.setText(R.string.disabled);
-				}
-			} else {
-				active.setText(R.string.disabled_trial_expired);
-			}
-		}
+		TextView incarTitleView = (TextView)findViewById(R.id.incarTitle);
+		incarTitleView.setText(incarTitle.toString());
 
 		Button backup = (Button) findViewById(R.id.incarBackup);
 		backup.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +158,25 @@ public class MainActivity extends CarWidgetActivity {
 		});
 	}
 
+	private String getActiveString(int widgetsCount) {
+		String active;
+		if (widgetsCount == 0) {
+			active = getString(R.string.not_active);
+		} else {
+
+			if (mVersion.isProOrTrial()) {
+				if (PreferencesStorage.isInCarModeEnabled(this)){
+					active = getString(R.string.enabled);
+				} else {
+					active = getString(R.string.disabled);
+				}
+			} else {
+				active = getString(R.string.disabled);
+			}
+		}
+		return active;
+	}
+
 	private void initWidgets(final int widgetsCount) {
 		LinearLayout widgets = (LinearLayout)findViewById(R.id.widgets);
 
@@ -181,7 +195,6 @@ public class MainActivity extends CarWidgetActivity {
 			}
 		});
 	}
-
 
 	private void initInformation() {
 		LinearLayout version = (LinearLayout)findViewById(R.id.version);
@@ -318,7 +331,7 @@ public class MainActivity extends CarWidgetActivity {
 
 
 	protected AlertDialog createThemesDialog(final TextView summary) {
-		final Activity act = this;
+		final MainActivity act = this;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder
 			.setTitle(getString(R.string.choose_a_theme))

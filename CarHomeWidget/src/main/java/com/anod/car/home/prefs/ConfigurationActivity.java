@@ -104,19 +104,18 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 	}
 
 	public void startPreferencePanel(String fragmentClass, Preference pref) {
-		startPreferencePanel(fragmentClass, pref.getExtras(), pref.getTitleRes(), pref.getTitle(), null, 0);
+		startPreferencePanel(fragmentClass, pref.getTitle(), null, 0);
 	}
 
-	public void startPreferencePanel(String fragmentClass, Bundle args, int titleRes, CharSequence titleText, Fragment resultTo, int resultRequestCode) {
+	public void startPreferencePanel(String fragmentClass, CharSequence titleText, Fragment resultTo, int resultRequestCode) {
+		Bundle args = new Bundle();
 		Fragment f = Fragment.instantiate(this, fragmentClass, args);
 		if (resultTo != null) {
 			f.setTargetFragment(resultTo, resultRequestCode);
 		}
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.main_fragment, f);
-		if (titleRes != 0) {
-			transaction.setBreadCrumbTitle(titleRes);
-		} else if (titleText != null) {
+		if (titleText != null) {
 			transaction.setBreadCrumbTitle(titleText);
 		}
 		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
