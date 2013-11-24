@@ -22,13 +22,13 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 17
+    compileSdkVersion 19
     buildToolsVersion "18.0.1"
 
     defaultConfig {
         minSdkVersion 8
-        targetSdkVersion 11
-        versionCode 38
+        targetSdkVersion 19
+        versionCode 39
         versionName '1.6.3'
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }

@@ -209,7 +209,7 @@ public class ActivityPicker extends ListActivity {
 			 * @return
 			 */
 			private Drawable createThumbnail(Drawable source, Context context) {
-				Bitmap bitmap = UtilitiesBitmap.createIconBitmap(source, context);
+				Bitmap bitmap = UtilitiesBitmap.createSystemIconBitmap(source, context);
 				if (bitmap == null) {
 					final PackageManager manager = context.getPackageManager();
 					bitmap = UtilitiesBitmap.makeDefaultIcon(manager);

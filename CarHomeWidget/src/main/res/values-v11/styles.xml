@@ -18,6 +18,8 @@
 
     <style name="AppListTheme" parent="android:style/Theme.Holo.Dialog" />
 
+	<style name="DialogTheme" parent="android:style/Theme.Holo.Dialog" />
+
 	<style name="AppThemeHolo" parent="@style/Theme.AppCompat">
 		<item name="panelItem">@style/panelItemBasic</item>
 		<item name="panelHeader">@style/panelHeaderBasic</item>

@@ -170,8 +170,8 @@ public class IconTheme
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 	public Drawable getDrawable(int resId) {
 
-		if (Utils.IS_JELLYBEAN_OR_GREATER) {
-			return mThemeResources.getDrawableForDensity(resId, DisplayMetrics.DENSITY_XXHIGH);
+		if (UtilitiesBitmap.HAS_HIRES_SUPPORT) {
+			return mThemeResources.getDrawableForDensity(resId, UtilitiesBitmap.getTargetDensity(mContext));
 		}
 
 		return mThemeResources.getDrawable(resId);

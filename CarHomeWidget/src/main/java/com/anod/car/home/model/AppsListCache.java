@@ -111,7 +111,7 @@ public class AppsListCache {
 		Drawable d;
 		try {
 			d = mPackageManager.getActivityIcon(entry.componentName);
-			entry.icon = UtilitiesBitmap.createIconBitmap(d, mContext);
+			entry.icon = UtilitiesBitmap.createSystemIconBitmap(d, mContext);
 		} catch (NameNotFoundException e) {
 			Utils.logd(e.getMessage());
 		}

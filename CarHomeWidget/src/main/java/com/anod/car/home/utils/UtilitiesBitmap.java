@@ -3,41 +3,112 @@ package com.anod.car.home.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
+import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 
 import com.anod.car.home.R;
 
 public class UtilitiesBitmap {
+	private static final int SIZE_ICON = 0; // icon with higher density
+	private static final int SIZE_SYSTEM = 1; // default system icon size
+	private static final int SIZE_MAX = 2; // max scale size
 
-	private static int sIconWidth = -1;
-	private static int sIconHeight = -1;
+	public static final boolean HAS_HIRES_SUPPORT = Utils.IS_ISC_MR1_OR_GREATER;
+
+	public static final int MAX_SCALE = 3;
+	private static int sIconSize = -1;
+	private static int sIconSystem = -1;
+	private static int sIconMaxScale = -1;
+	private static int sSystemDensity = -1;
+	private static int sIconDensity = -1;
 
 	private static final Paint sPaint = new Paint();
 	private static final Rect sBounds = new Rect();
 	private static final Rect sOldBounds = new Rect();
 	private static final Canvas sCanvas = new Canvas();
 
-	
+
 	static {
 		sCanvas.setDrawFilter(new PaintFlagsDrawFilter(Paint.DITHER_FLAG, Paint.FILTER_BITMAP_FLAG));
 	}
 
 	private static void initStatics(Context paramContext) {
-		int i = (int) paramContext.getResources().getDimension(R.dimen.icon_size);
-		sIconHeight = i;
-		sIconWidth = i;
+		Resources r = paramContext.getResources();
+
+		DisplayMetrics metrics = r.getDisplayMetrics();
+		sSystemDensity = metrics.densityDpi;
+		sIconDensity =getHigherDensity(sSystemDensity);
+
+		sIconSystem = (int) r.getDimension(R.dimen.icon_size);
+		sIconSize = (int) convertForDensity(sIconSystem, sIconDensity, metrics.densityDpi);
+
+		sIconMaxScale = sIconSize * MAX_SCALE;
+
 		PaintFlagsDrawFilter localPaintFlagsDrawFilter = new PaintFlagsDrawFilter(4, 2);
 		sCanvas.setDrawFilter(localPaintFlagsDrawFilter);
+	}
+
+	private static float convertForDensity(int value, int densityDpi, int deviceDensityDpi) {
+		if (deviceDensityDpi == densityDpi) {
+			return value;
+		}
+		return (densityDpi/(float)deviceDensityDpi) * value;
+	}
+
+
+	public static int getIconSize(Context context) {
+		synchronized (sCanvas) { // we share the statics :-(
+			if (sIconSize == -1) {
+				initStatics(context);
+			}
+
+			return sIconSize;
+		}
+	}
+
+	public static int getTargetDensity(Context context) {
+		synchronized (sCanvas) { // we share the statics :-(
+			if (sIconSize == -1) {
+				initStatics(context);
+			}
+
+			return sIconDensity;
+		}
+	}
+
+	public static int getHigherDensity(int deviceDensity) {
+
+		if (HAS_HIRES_SUPPORT == false) {
+			return deviceDensity;
+		}
+
+		if (deviceDensity >= DisplayMetrics.DENSITY_XXXHIGH) {
+			return deviceDensity;
+		} else if (deviceDensity == DisplayMetrics.DENSITY_XXHIGH) {
+			return DisplayMetrics.DENSITY_XXXHIGH;
+		} else if (deviceDensity == DisplayMetrics.DENSITY_XHIGH) {
+			return DisplayMetrics.DENSITY_XXHIGH;
+		} else if (deviceDensity == DisplayMetrics.DENSITY_HIGH) {
+			return DisplayMetrics.DENSITY_XHIGH;
+		} else if (deviceDensity == DisplayMetrics.DENSITY_MEDIUM) {
+			return DisplayMetrics.DENSITY_HIGH;
+		}
+		return deviceDensity;
 	}
 
 	public static Bitmap makeDefaultIcon(PackageManager manager) {
@@ -49,18 +120,40 @@ public class UtilitiesBitmap {
 		return b;
 	}
 
+	public static Bitmap createSystemIconBitmap(Drawable icon, Context context) {
+		return createIconBitmapSize(icon, SIZE_SYSTEM, context);
+	}
+	public static Bitmap createHiResIconBitmap(Drawable icon, Context context) {
+		return createIconBitmapSize(icon, SIZE_ICON, context);
+	}
+
+	public static Bitmap createMaxSizeIcon(Drawable icon, Context context) {
+		return createIconBitmapSize(icon, SIZE_MAX, context);
+	}
+
+
 	/**
 	 * Returns a bitmap suitable for the all apps view. The bitmap will be a
 	 * power of two sized ARGB_8888 bitmap that can be used as a gl texture.
 	 */
-	public static Bitmap createIconBitmap(Drawable icon, Context context) {
+	private static Bitmap createIconBitmapSize(Drawable icon, int size, Context context) {
 		synchronized (sCanvas) { // we share the statics :-(
-			if (sIconWidth == -1) {
+			if (sIconSize == -1) {
 				initStatics(context);
 			}
 
-			int width = sIconWidth;
-			int height = sIconHeight;
+			int width, height;
+
+			if (size == SIZE_ICON) {
+				width = sIconSize;
+				height = sIconSize;
+			} else if (size == SIZE_MAX) {
+				width = sIconMaxScale;
+				height = sIconMaxScale;
+			} else {
+				width = sIconSystem;
+				height = sIconSystem;
+			}
 
 			if (icon instanceof PaintDrawable) {
 				PaintDrawable painter = (PaintDrawable) icon;
@@ -88,22 +181,38 @@ public class UtilitiesBitmap {
 					} else if (sourceHeight > sourceWidth) {
 						width = (int) (height * ratio);
 					}
-				} else if (sourceWidth < width && sourceHeight < height) {
+				} else if (width > sourceWidth && height > sourceHeight) {
 					// It's small, use the size they gave us.
 					width = sourceWidth;
 					height = sourceHeight;
+				} else if (width == sourceWidth && height == sourceHeight){
+					// no processing required
+					if (icon instanceof BitmapDrawable) {
+						return ((BitmapDrawable) icon).getBitmap();
+					}
 				}
 			}
 
-			final Bitmap bitmap = Bitmap.createBitmap(sIconWidth, sIconHeight, Bitmap.Config.ARGB_8888);
+			int bitmapSize;
+			if (size == SIZE_MAX && (width >= sIconMaxScale || height >= sIconMaxScale)){
+				bitmapSize = sIconMaxScale;
+			} else if (size == SIZE_ICON && (width >= sIconSize && height >= sIconSize)) {
+				bitmapSize = sIconSize;
+			} else {
+				bitmapSize = sIconSystem;
+			}
+
+
+			final Bitmap bitmap = Bitmap.createBitmap(bitmapSize, bitmapSize, Bitmap.Config.ARGB_8888);
 			final Canvas canvas = sCanvas;
 			canvas.setBitmap(bitmap);
 
-			final int left = (sIconWidth - width) / 2;
-			final int top = (sIconHeight - height) / 2;
-
 			sOldBounds.set(icon.getBounds());
+
+			final int left = (bitmapSize - width) / 2;
+			final int top = (bitmapSize - height) / 2;
 			icon.setBounds(left, top, left + width, top + height);
+
 			icon.setColorFilter(null);
 			icon.draw(canvas);
 			icon.setBounds(sOldBounds);
@@ -131,26 +240,23 @@ public class UtilitiesBitmap {
 	 * Returns a Bitmap representing the thumbnail of the specified Bitmap. The
 	 * size of the thumbnail is defined by the dimension
 	 * android.R.dimen.launcher_application_icon_size.
-	 * 
+	 * <p/>
 	 * This method is not thread-safe and should be invoked on the UI thread
 	 * only.
-	 * 
-	 * @param bitmap
-	 *            The bitmap to get a thumbnail of.
-	 * @param context
-	 *            The application's context.
-	 * 
+	 *
+	 * @param bitmap  The bitmap to get a thumbnail of.
+	 * @param context The application's context.
 	 * @return A thumbnail for the specified bitmap or the bitmap itself if the
-	 *         thumbnail could not be created.
+	 * thumbnail could not be created.
 	 */
 	public static Bitmap createBitmapThumbnail(Bitmap bitmap, Context context) {
 		synchronized (sCanvas) { // we share the statics :-(
-			if (sIconWidth == -1) {
+			if (sIconSize == -1) {
 				initStatics(context);
 			}
 
-			int width = sIconWidth;
-			int height = sIconHeight;
+			int width = sIconSize;
+			int height = sIconSize;
 
 			final int bitmapWidth = bitmap.getWidth();
 			final int bitmapHeight = bitmap.getHeight();
@@ -165,26 +271,26 @@ public class UtilitiesBitmap {
 						width = (int) (height * ratio);
 					}
 
-					final Bitmap.Config c = (width == sIconWidth && height == sIconHeight && bitmap.getConfig() != null) ? bitmap.getConfig() : Bitmap.Config.ARGB_8888;
-					final Bitmap thumb = Bitmap.createBitmap(sIconWidth, sIconHeight, c);
+					final Bitmap.Config c = (width == sIconSize && height == sIconSize && bitmap.getConfig() != null) ? bitmap.getConfig() : Bitmap.Config.ARGB_8888;
+					final Bitmap thumb = Bitmap.createBitmap(sIconSize, sIconSize, c);
 					final Canvas canvas = sCanvas;
 					final Paint paint = sPaint;
 					canvas.setBitmap(thumb);
 					paint.setDither(false);
 					paint.setFilterBitmap(true);
-					sBounds.set((sIconWidth - width) / 2, (sIconHeight - height) / 2, width, height);
+					sBounds.set((sIconSize - width) / 2, (sIconSize - height) / 2, width, height);
 					sOldBounds.set(0, 0, bitmapWidth, bitmapHeight);
 					canvas.drawBitmap(bitmap, sOldBounds, sBounds, paint);
 					return thumb;
 				} else if (bitmapWidth < width || bitmapHeight < height) {
 					final Bitmap.Config c = Bitmap.Config.ARGB_8888;
-					final Bitmap thumb = Bitmap.createBitmap(sIconWidth, sIconHeight, c);
+					final Bitmap thumb = Bitmap.createBitmap(sIconSize, sIconSize, c);
 					final Canvas canvas = sCanvas;
 					final Paint paint = sPaint;
 					canvas.setBitmap(thumb);
 					paint.setDither(false);
 					paint.setFilterBitmap(true);
-					canvas.drawBitmap(bitmap, (sIconWidth - bitmapWidth) / 2, (sIconHeight - bitmapHeight) / 2, paint);
+					canvas.drawBitmap(bitmap, (sIconSize - bitmapWidth) / 2, (sIconSize - bitmapHeight) / 2, paint);
 					return thumb;
 				}
 			}
@@ -192,4 +298,5 @@ public class UtilitiesBitmap {
 			return bitmap;
 		}
 	}
+
 }

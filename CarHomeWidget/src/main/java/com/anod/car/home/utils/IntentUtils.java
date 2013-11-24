@@ -127,7 +127,7 @@ public class IntentUtils {
 	}
 
 	public static Intent createPickShortcutAppIntent(String title, Drawable icon, Intent shortcutIntent, Context ctx) {
-		Bitmap bitmap = UtilitiesBitmap.createIconBitmap(icon, ctx);
+		Bitmap bitmap = UtilitiesBitmap.createSystemIconBitmap(icon, ctx);
 		Intent intent = commonPickShortcutIntent(title, shortcutIntent);
 		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);
 		return intent;

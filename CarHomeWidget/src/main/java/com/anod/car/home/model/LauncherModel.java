@@ -86,7 +86,7 @@ public class LauncherModel {
 						if (resources != null) {
 							final int id = resources.getIdentifier(resourceName, null, null);
 							if (id > 0) {
-								icon = UtilitiesBitmap.createIconBitmap(resources.getDrawable(id), mContext);
+								icon = UtilitiesBitmap.createHiResIconBitmap(resources.getDrawable(id), mContext);
 							}
 						}
 					} catch (NameNotFoundException e) {

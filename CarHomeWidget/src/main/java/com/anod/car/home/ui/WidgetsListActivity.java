@@ -26,14 +26,17 @@ public class WidgetsListActivity extends FragmentActivity {
 			return;
 		};
 
-		// to give support on lower android version, we are not calling getFragmentManager()
-		FragmentManager fm = getSupportFragmentManager();
+		if (savedInstanceState == null) {
+			// to give support on lower android version, we are not calling getFragmentManager()
+			FragmentManager fm = getSupportFragmentManager();
 
-		// Create the list fragment and add it as our sole content.
-		if (fm.findFragmentById(android.R.id.content) == null) {
-			WidgetsListFragment f = WidgetsListFragment.newInstance(appWidgetIds);
-			fm.beginTransaction().add(android.R.id.content, f).commit();
+			// Create the list fragment and add it as our sole content.
+			if (fm.findFragmentById(android.R.id.content) == null) {
+				WidgetsListFragment f = WidgetsListFragment.newInstance(appWidgetIds);
+				fm.beginTransaction().add(android.R.id.content, f).commit();
+			}
 		}
+
 	}
 
 	public void startConfigActivity(int appWidgetId) {

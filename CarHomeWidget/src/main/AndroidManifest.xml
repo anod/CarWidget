@@ -5,7 +5,7 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="11" />
+        android:targetSdkVersion="19" />
 
     <permission
         android:name="com.anod.car.home.permission.READ_SETTINGS"
@@ -53,7 +53,7 @@
 
         <activity
             android:name="com.anod.car.home.prefs.ShortcutEditActivity"
-            android:theme="@android:style/Theme.Dialog" />
+            android:theme="@style/DialogTheme" />
         <activity
             android:name="com.anod.car.home.prefs.AllAppsActivity"
             android:theme="@style/AppListTheme" />

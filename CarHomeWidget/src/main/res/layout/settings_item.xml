@@ -5,41 +5,41 @@
 		android:layout_height="wrap_content"
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		style="?attr/panelItem"
-		android:addStatesFromChildren="true">
+		android:addStatesFromChildren="true" android:gravity="center">
 
 	<ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="fill_parent"
+			android:layout_width="@dimen/icon_size"
+			android:layout_height="@dimen/icon_size"
 			android:id="@+id/imageView0"
 			android:src="@drawable/ic_launcher"/>
 
 	<ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="fill_parent"
+			android:layout_width="@dimen/icon_size"
+			android:layout_height="@dimen/icon_size"
 			android:id="@+id/imageView1"
 			android:src="@drawable/ic_launcher"/>
 
 	<ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="fill_parent"
+			android:layout_width="@dimen/icon_size"
+			android:layout_height="@dimen/icon_size"
 			android:id="@+id/imageView2"
 			android:src="@drawable/ic_launcher"/>
 
 	<ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="fill_parent"
+			android:layout_width="@dimen/icon_size"
+			android:layout_height="@dimen/icon_size"
 			android:id="@+id/imageView3"
 			android:src="@drawable/ic_launcher"/>
 
 	<ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="fill_parent"
+			android:layout_width="@dimen/icon_size"
+			android:layout_height="@dimen/icon_size"
 			android:id="@+id/imageView4"
 			android:src="@drawable/ic_launcher"/>
 
 	<ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="fill_parent"
+			android:layout_width="@dimen/icon_size"
+			android:layout_height="@dimen/icon_size"
 			android:id="@+id/imageView5"
 			android:src="@drawable/ic_launcher"/>
 

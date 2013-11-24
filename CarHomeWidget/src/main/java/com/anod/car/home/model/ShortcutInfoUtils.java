@@ -22,6 +22,7 @@ import android.util.Log;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
+import com.google.android.gms.internal.el;
 
 public class ShortcutInfoUtils {
     static final String TAG = "CarHomeWidget.ShortcutInfoUtils";
@@ -47,18 +48,14 @@ public class ShortcutInfoUtils {
         info.intent = intent;
         
         if (bitmap instanceof Bitmap) {
-            icon = UtilitiesBitmap.createIconBitmap(new FastBitmapDrawable((Bitmap)bitmap), context);
+			icon = UtilitiesBitmap.createMaxSizeIcon(new FastBitmapDrawable((Bitmap) bitmap), context);
             info.setCustomIcon(icon);
         } else {
             Parcelable extra = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
             if (extra instanceof ShortcutIconResource) {
                 try {
                 	ShortcutIconResource iconResource = (ShortcutIconResource) extra;
-                    final PackageManager packageManager = context.getPackageManager();
-                    Resources resources = packageManager.getResourcesForApplication(
-                            iconResource.packageName);
-                    final int id = resources.getIdentifier(iconResource.resourceName, null, null);
-                    icon = UtilitiesBitmap.createIconBitmap(resources.getDrawable(id), context);
+					icon = getPackageIcon(context, icon, iconResource);
                     info.setIconResource(icon, iconResource);
                 } catch (Exception e) {
                     Log.w(TAG, "Could not load shortcut icon: " + extra);
@@ -74,7 +71,28 @@ public class ShortcutInfoUtils {
 
         return info;
     }
-    
+
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+	private static Bitmap getPackageIcon(Context context, Bitmap icon, ShortcutIconResource iconResource) throws PackageManager.NameNotFoundException {
+		final PackageManager packageManager = context.getPackageManager();
+		Resources resources = packageManager.getResourcesForApplication(iconResource.packageName);
+		final int id = resources.getIdentifier(iconResource.resourceName, null, null);
+
+		Drawable drawableIcon = null;
+		if (UtilitiesBitmap.HAS_HIRES_SUPPORT) {
+			drawableIcon = resources.getDrawableForDensity(id, UtilitiesBitmap.getTargetDensity(context));
+			if (drawableIcon instanceof BitmapDrawable) {
+				icon = ((BitmapDrawable) drawableIcon).getBitmap();
+			} else {
+				icon = UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context);
+			}
+		} else {
+			drawableIcon = resources.getDrawable(id);
+			icon = UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context);
+		}
+		return icon;
+	}
+
     
     /**
      * Make an ShortcutInfo object for a shortcut that is an application.
@@ -131,56 +149,35 @@ public class ShortcutInfoUtils {
             return null;
         }
 
-		if (Utils.IS_JELLYBEAN_OR_GREATER) {
-			return loadFullSizeIcon(manager, resolveInfo, context);
+		Drawable drawable = null;
+		if (UtilitiesBitmap.HAS_HIRES_SUPPORT) {
+			drawable = loadHighResIcon(manager, resolveInfo, context);
+		}
+		if (drawable == null) {
+			drawable = resolveInfo.activityInfo.loadIcon(manager);
 		}
 
-		Drawable drawable = resolveInfo.activityInfo.loadIcon(manager);
-        return UtilitiesBitmap.createIconBitmap(drawable, context);
+		if (drawable == null) {
+			return null;
+		}
+
+        return UtilitiesBitmap.createHiResIconBitmap(drawable, context);
     }
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-	private static Bitmap loadFullSizeIcon(PackageManager manager, ResolveInfo resolveInfo, Context context) {
+	private static Drawable loadHighResIcon(PackageManager manager, ResolveInfo resolveInfo, Context context) {
 		try {
 			Context otherAppCtxt = context.createPackageContext(resolveInfo.activityInfo.packageName, Context.CONTEXT_IGNORE_SECURITY);
 			int icon = (resolveInfo.activityInfo.icon > 0) ? resolveInfo.activityInfo.icon : resolveInfo.activityInfo.applicationInfo.icon;
 			if (icon == 0) {
 				return null;
 			}
-			Drawable drawableAppIcon = otherAppCtxt.getResources().getDrawableForDensity(icon, DisplayMetrics.DENSITY_XXHIGH);
-			if (drawableAppIcon instanceof BitmapDrawable) {
-				return ((BitmapDrawable) drawableAppIcon).getBitmap();
-			}
+			Drawable drawableAppIcon = otherAppCtxt.getResources().getDrawableForDensity(icon, UtilitiesBitmap.getTargetDensity(context));
+			return drawableAppIcon;
 		} catch (PackageManager.NameNotFoundException e) {
 			Utils.logd("NameNotFoundException: "+e.getMessage());
 		}
 		return null;
 	}
 
-	public static Drawable loadIcon(PackageManager pm, ApplicationInfo appInfo) {
-// Get the application's resources
-		Resources res = null;
-		try {
-			res = pm.getResourcesForApplication(appInfo);
-		} catch (PackageManager.NameNotFoundException e) {
-			return null;
-		}
-
-// Get a copy of the configuration, and set it to the desired resolution
-		Configuration config = res.getConfiguration();
-		Configuration originalConfig = new Configuration(config);
-		config.densityDpi = DisplayMetrics.DENSITY_XXHIGH;
-
-// Update the configuration with the desired resolution
-		DisplayMetrics dm = res.getDisplayMetrics();
-		res.updateConfiguration(config, dm);
-
-// Grab the app icon
-		Drawable appIcon = res.getDrawable(appInfo.icon);
-
-// Set our configuration back to what it was
-		res.updateConfiguration(originalConfig, dm);
-
-		return appIcon;
-	}
 }

@@ -1,5 +1,6 @@
 package com.anod.car.home.prefs;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -52,7 +54,7 @@ public class ShortcutEditActivity extends Activity {
 	private ImageView mIconView;
 	private EditText mLabelEdit;
 	private LauncherModel mModel;
-	private ShortcutInfo mShortuctInfo;
+	private ShortcutInfo mShortcutInfo;
 	private Intent mIntent;
 	private File mTempFile;
 
@@ -74,9 +76,9 @@ public class ShortcutEditActivity extends Activity {
 			return;
 		}
 		mModel = new LauncherModel(this);
-		mShortuctInfo = mModel.loadShortcut(shortcutId);
-		mLabelEdit.setText(mShortuctInfo.title);
-		mIconView.setImageBitmap(mShortuctInfo.getIcon());
+		mShortcutInfo = mModel.loadShortcut(shortcutId);
+		mLabelEdit.setText(mShortcutInfo.title);
+		mIconView.setImageBitmap(mShortcutInfo.getIcon());
 
 		mIconView.setOnClickListener(new OnClickListener() {
 
@@ -135,8 +137,8 @@ public class ShortcutEditActivity extends Activity {
 			Toast.makeText(this, errStr, Toast.LENGTH_LONG).show();
 			return;
 		}
-		Bitmap bitmap = UtilitiesBitmap.createIconBitmap(icon, this);
-		setIcon(bitmap);
+		Bitmap bitmap = UtilitiesBitmap.createMaxSizeIcon(icon, this);
+		setCustomIcon(bitmap);
 		return;
 	}
 	
@@ -149,19 +151,10 @@ public class ShortcutEditActivity extends Activity {
 		Drawable d = null;
 		String scheme = uri.getScheme();
         if (ContentResolver.SCHEME_ANDROID_RESOURCE.equals(scheme)) {
+			d = getDrawableByUri(uri);
+		} else if (ContentResolver.SCHEME_CONTENT.equals(scheme) || ContentResolver.SCHEME_FILE.equals(scheme)) {
             try {
-                // Load drawable through Resources, to get the source density information
-                OpenResourceIdResult r = getResourceId(uri);
-                d = r.r.getDrawable(r.id);
-            } catch (Exception e) {
-                Log.w("ShortcutEditActivity", "Unable to open content: " + uri, e);
-            }
-        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)
-                || ContentResolver.SCHEME_FILE.equals(scheme)) {
-            try {
-                //d = Drawable.createFromStream(
-                //  getContentResolver().openInputStream(uri),
-                //    null);
+
 				Bitmap bmp = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
 				DisplayMetrics dm = getResources().getDisplayMetrics();
 				bmp.setDensity(dm.densityDpi);
@@ -177,8 +170,25 @@ public class ShortcutEditActivity extends Activity {
         
         return d;
 	}
-	
-    public class OpenResourceIdResult {
+
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+	private Drawable getDrawableByUri(Uri uri) {
+		Drawable d = null;
+		try {
+			// Load drawable through Resources, to get the source density information
+			OpenResourceIdResult r = getResourceId(uri);
+			if (UtilitiesBitmap.HAS_HIRES_SUPPORT) {
+				d = r.r.getDrawableForDensity(r.id, UtilitiesBitmap.getTargetDensity(this));
+			} else {
+				d = r.r.getDrawable(r.id);
+			}
+		} catch (Exception e) {
+			Log.w("ShortcutEditActivity", "Unable to open content: " + uri, e);
+		}
+		return d;
+	}
+
+	public class OpenResourceIdResult {
         public Resources r;
         public int id;
     }
@@ -227,30 +237,6 @@ public class ShortcutEditActivity extends Activity {
         return res;
     }
 
-	/*
-	private void updateCustomIcon(final Intent data) {
-		final String generalError = "An error was encountered while trying to open the selected image";
-		final Uri localUri = data.getData();
-		if (localUri == null) {
-			final String errStr = String.format(getResources().getString(R.string.error_text), generalError);
-			Toast.makeText(this, errStr, Toast.LENGTH_LONG).show();
-			return;
-		}
-		final String imagePath = getPath(localUri);
-		if (imagePath == null || imagePath.equals("")) {
-			final String errStr = String.format(getResources().getString(R.string.error_text), generalError);
-			Toast.makeText(this, errStr, Toast.LENGTH_LONG).show();
-			return;
-		}
-		final Bitmap icon = BitmapFactory.decodeFile(imagePath);
-		if (icon == null) {
-			final String errStr = String.format(getResources().getString(R.string.error_text), generalError);
-			Toast.makeText(this, errStr, Toast.LENGTH_LONG).show();
-			return;
-		}
-		setIcon(icon);
-	}
-*/
 	/**
 	 * Called from view directly
 	 * 
@@ -261,45 +247,25 @@ public class ShortcutEditActivity extends Activity {
 		showDialog(DIALOG_ICON_MENU);
 	}
 
-	private void setIcon(Bitmap icon) {
+	private void setCustomIcon(Bitmap icon) {
 		mCustomIcon = icon;
 		mIconView.setImageBitmap(mCustomIcon);
-	}
-
-	public String getPath(Uri uri) {
-		ContentResolver cr = getContentResolver();
-		String[] projection = { MediaStore.Images.Media.DATA };
-		Cursor cursor = cr.query(uri, projection, null, null, null);
-		if (cursor == null) {
-			return null;
-		}
-		int columnIndex;
-
-		try {
-			columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-		} catch (Exception e) {
-			return null;
-		}
-		cursor.moveToFirst();
-		String str = cursor.getString(columnIndex);
-		cursor.close();
-		return str;
 	}
 
 	private void clickedOk(View view) {
 		boolean needUpdate = false;
 		if (mCustomIcon != null) {
-			Bitmap icon = UtilitiesBitmap.createBitmapThumbnail(mCustomIcon, this);
-			mShortuctInfo.setCustomIcon(icon);
+			//Bitmap icon = UtilitiesBitmap.createBitmapThumbnail(mCustomIcon, this);
+			mShortcutInfo.setCustomIcon(mCustomIcon);
 			needUpdate = true;
 		}
 		String title = mLabelEdit.getText().toString();
-		if (!title.equals(mShortuctInfo.title)) {
-			mShortuctInfo.title = title;
+		if (!title.equals(mShortcutInfo.title)) {
+			mShortcutInfo.title = title;
 			needUpdate = true;
 		}
 		if (needUpdate) {
-			mModel.updateItemInDatabase(this, mShortuctInfo);
+			mModel.updateItemInDatabase(this, mShortcutInfo);
 		}
 
 		setResult(RESULT_OK, mIntent);
@@ -312,14 +278,31 @@ public class ShortcutEditActivity extends Activity {
 			if (requestCode == PICK_CUSTOM_ICON) {
 				updateCustomIcon(data);
 			} else if (requestCode == PICK_ADW_ICON_PACK) {
-				Bitmap icon = (Bitmap) data.getParcelableExtra("icon");
-				if (icon != null) {
-					setIcon(icon);
+				Bitmap bitmap = getBitmapIconPackIntent(data);
+				if (bitmap != null) {
+					setCustomIcon(bitmap);
 				}
 			}
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private Bitmap getBitmapIconPackIntent(Intent data) {
+		Bitmap bitmap = null;
+		Uri imageUri = data.getData();
+		if (imageUri != null) {
+			String scheme = imageUri.getScheme();
+			if (ContentResolver.SCHEME_ANDROID_RESOURCE.equals(scheme)) {
+				Drawable icon = resolveUri(imageUri);
+				if (icon != null) {
+					bitmap = UtilitiesBitmap.createHiResIconBitmap(icon, this);
+				}
+			}
+		} else {
+			bitmap = (Bitmap) data.getParcelableExtra("icon");
+		}
+		return bitmap;
 	}
 
 }

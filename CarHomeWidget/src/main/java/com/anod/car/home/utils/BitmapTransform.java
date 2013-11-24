@@ -15,8 +15,7 @@ import com.anod.car.home.R;
 import com.anod.car.home.skin.IconProcessor;
 
 public class BitmapTransform {
-	private int mIconWidth = -1;
-	private int mIconHeight = -1;
+	private int mIconSize = -1;
 
 	private final Rect mOldBounds = new Rect();
 	private final Canvas mCanvas = new Canvas();
@@ -43,9 +42,7 @@ public class BitmapTransform {
 	public BitmapTransform(Context context) {
 		mCanvas.setDrawFilter(new PaintFlagsDrawFilter(Paint.DITHER_FLAG, Paint.FILTER_BITMAP_FLAG));
 		mGreyColorMatrixColorFilter = new ColorMatrixColorFilter(sGreyScaleMatrix);
-		int i = (int) context.getResources().getDimension(R.dimen.icon_size);
-		mIconHeight = i;
-		mIconWidth = i;
+		mIconSize = UtilitiesBitmap.getIconSize(context);
 		mCanvas.setDrawFilter(new PaintFlagsDrawFilter(4, 2));
 		mContext = context;
 	}
@@ -109,8 +106,35 @@ public class BitmapTransform {
 		if (mPaddingTop > 0) {
 			output = pad(output, 0, mPaddingTop);
 		}
-		
-		if (mScaleSize > 1.0f) {
+
+
+		/*
+		boolean doScale = (mScaleSize > 1.0f);
+		float scaleFactor = mScaleSize;
+		int height = src.getHeight();
+		int width = src.getWidth();
+		int size = (height > width) ? height : width;
+		if (size > 0) {
+			if (size < mIconSize) {
+				scaleFactor = scaleFactor * (mIconSize/((float)size));
+				doScale = true;
+			} else if (size >= mIconSize) {
+				float newSize = (mIconSize * scaleFactor);
+				scaleFactor = newSize/size;
+				doScale = true;
+			}
+		}
+*/
+
+		boolean doScale = (mScaleSize > 1.0f);
+		int height = src.getHeight();
+		int width = src.getWidth();
+		int size = (height > width) ? height : width;
+		if (size > 0 && size != mIconSize) {
+			doScale = true;
+		}
+
+		if (doScale) {
 			output = scale(output, mScaleSize, sizeDiff );
 		}
 		
@@ -118,12 +142,12 @@ public class BitmapTransform {
 	}
 	
 	private final Bitmap applyBitmapFilter(Bitmap src) {
-		final Bitmap bitmap = Bitmap.createBitmap(mIconWidth, mIconHeight, Bitmap.Config.ARGB_8888);
+		final Bitmap bitmap = Bitmap.createBitmap(mIconSize, mIconSize, Bitmap.Config.ARGB_8888);
 		mCanvas.setBitmap(bitmap);
 
 		BitmapDrawable d = new BitmapDrawable(mContext.getResources(), src);
 		mOldBounds.set(d.getBounds());
-		d.setBounds(0, 0, mIconWidth, mIconHeight);
+		d.setBounds(0, 0, mIconSize, mIconSize);
 		d.setColorFilter(mGreyColorMatrixColorFilter);
 		d.draw(mCanvas);
 		d.setBounds(mOldBounds);
@@ -141,10 +165,10 @@ public class BitmapTransform {
 	private final Bitmap scale(Bitmap src, float scale, float sizeDiff) {
 		int min = 0;
 		if (sizeDiff > 0) {
-			min = (int)(mIconWidth * sizeDiff);
+			min = (int)(mIconSize * sizeDiff);
 		}
-		int scW = (int) (mIconWidth * scale) - min;
-		int scH = (int) (mIconHeight * scale) - min;
+		int scW = (int) (mIconSize * scale) - min;
+		int scH = (int) (mIconSize * scale) - min;
 
 		Bitmap scaledBitmap = Bitmap.createBitmap(scW, scH, Bitmap.Config.ARGB_8888);
 
@@ -166,7 +190,7 @@ public class BitmapTransform {
 	
 
 	private final Bitmap pad(Bitmap src, int left, int top){
-		final Bitmap bitmap = Bitmap.createBitmap(mIconWidth + left, mIconHeight + top, Bitmap.Config.ARGB_8888);
+		final Bitmap bitmap = Bitmap.createBitmap(mIconSize + left, mIconSize + top, Bitmap.Config.ARGB_8888);
 		mCanvas.setBitmap(bitmap);
 		mCanvas.drawColor(android.R.color.transparent);
 		mCanvas.drawBitmap(src, left, top, null);
@@ -175,7 +199,7 @@ public class BitmapTransform {
 	}
 	
 	private final Bitmap rotate(Bitmap src) {
-		return Bitmap.createBitmap(src, 0, 0, mIconWidth, mIconHeight, mMatrix, true);
+		return Bitmap.createBitmap(src, 0, 0, mIconSize, mIconSize, mMatrix, true);
 	}
 
 }
