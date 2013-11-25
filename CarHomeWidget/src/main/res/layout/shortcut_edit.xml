@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+>
+<LinearLayout
     android:layout_width="270.0dip"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10.0dip" >
+    android:padding="10.0dip" android:gravity="right" android:layout_centerHorizontal="true">
 
     <ImageButton
         android:id="@+id/icon_edit"
@@ -35,3 +39,4 @@
         android:text="@android:string/ok" />
 
 </LinearLayout>
+</RelativeLayout>

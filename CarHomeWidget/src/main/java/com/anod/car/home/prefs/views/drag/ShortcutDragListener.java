@@ -10,7 +10,10 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
+
+import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.R;
+import com.anod.car.home.prefs.preferences.AppTheme;
 import com.anod.car.home.prefs.views.ShortcutPreference;
 
 /**
@@ -24,10 +27,12 @@ public class ShortcutDragListener implements View.OnDragListener {
 	private final ShortcutPreference.DropCallback mDropCallback;
 	private final Drawable mBackground;
 
-	public ShortcutDragListener(Context context, ShortcutPreference.DropCallback dropCallback) {
+	public ShortcutDragListener(Context context, int appThemeIdx, ShortcutPreference.DropCallback dropCallback) {
 		Resources r = context.getResources();
 		mTopShadow = r.getDrawable(R.drawable.drop_shadow_top);
-		mBackground = r.getDrawable(R.drawable.panel_item_bg_grey);
+
+		int bgRes = AppTheme.getBackgroundResource(appThemeIdx);
+		mBackground = r.getDrawable(bgRes);
 		mDropCallback = dropCallback;
 	}
 

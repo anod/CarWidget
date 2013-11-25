@@ -16,6 +16,8 @@ import com.anod.car.home.utils.Utils;
 
 public class ShortcutPreference extends Preference implements OnClickListener {
 	private static final int INVALID_RESOURCE = 0;
+	private int mAppTheme;
+
 	public interface DropCallback {
 		public int onScrollRequest(int top);
 		public boolean onDrop(int oldCellId, int newCellId);
@@ -58,6 +60,10 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 	public void showButtons(boolean show) {
 		mShowEditButton = show;
 		notifyChanged();
+	}
+
+	public void setAppTheme(int theme) {
+		mAppTheme = theme;
 	}
 
 	public void setIconResource(int resId) {
@@ -116,12 +122,12 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 		dragButton.setOnLongClickListener(new View.OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View view) {
-			ClipData data = ClipData.newPlainText(mCellId + "", mCellId + "");
-			mainView.startDrag(data, new ShortcutShadowBuilder(mainView), null, 0);
-			return true;
+				ClipData data = ClipData.newPlainText(mCellId + "", mCellId + "");
+				mainView.startDrag(data, new ShortcutShadowBuilder(mainView), null, 0);
+				return true;
 			}
 		});
-		dragButton.setOnDragListener(new ShortcutDragListener(getContext(), mDropCallback));
+		dragButton.setOnDragListener(new ShortcutDragListener(getContext(), mAppTheme, mDropCallback));
 	}
 
 	@Override

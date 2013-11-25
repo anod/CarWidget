@@ -31,7 +31,7 @@ abstract public class CarWidgetActivity extends ActionBarActivity {
 		return false;
 	}
 
-	protected CarWidgetApplication getApp() {
+	public CarWidgetApplication getApp() {
 		return ((CarWidgetApplication)getApplication());
 	}
 

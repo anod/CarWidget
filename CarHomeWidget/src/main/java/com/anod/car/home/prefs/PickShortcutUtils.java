@@ -146,6 +146,7 @@ public class PickShortcutUtils {
 	public void refreshPreference(ShortcutPreference pref) {
 		int cellId = pref.getShortcutPosition();
 		ShortcutInfo info = mModel.getShortcut(cellId);
+		pref.setAppTheme(mActivity.getApp().getThemeIdx());
 		if (info == null) {
 			pref.setTitle(R.string.set_shortcut);
 			pref.setIconResource(R.drawable.ic_add_shortcut_holo);

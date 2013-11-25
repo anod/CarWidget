@@ -45,4 +45,7 @@ public class AppTheme {
 		edit.commit();
 	}
 
+	public static int getBackgroundResource(int theme) {
+		return (theme == THEME_GRAY) ? R.drawable.panel_item_bg_grey : R.drawable.panel_item_bg_dark;
+	}
 }
