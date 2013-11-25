@@ -70,6 +70,15 @@ public class UtilitiesBitmap {
 		return (densityDpi/(float)deviceDensityDpi) * value;
 	}
 
+	public static int getSystemIconSize(Context context) {
+		synchronized (sCanvas) { // we share the statics :-(
+			if (sIconSize == -1) {
+				initStatics(context);
+			}
+
+			return sIconSystem;
+		}
+	}
 
 	public static int getIconSize(Context context) {
 		synchronized (sCanvas) { // we share the statics :-(

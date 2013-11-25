@@ -42,7 +42,7 @@ public class BitmapTransform {
 	public BitmapTransform(Context context) {
 		mCanvas.setDrawFilter(new PaintFlagsDrawFilter(Paint.DITHER_FLAG, Paint.FILTER_BITMAP_FLAG));
 		mGreyColorMatrixColorFilter = new ColorMatrixColorFilter(sGreyScaleMatrix);
-		mIconSize = UtilitiesBitmap.getIconSize(context);
+		mIconSize = UtilitiesBitmap.getSystemIconSize(context);
 		mCanvas.setDrawFilter(new PaintFlagsDrawFilter(4, 2));
 		mContext = context;
 	}
@@ -107,24 +107,6 @@ public class BitmapTransform {
 			output = pad(output, 0, mPaddingTop);
 		}
 
-
-		/*
-		boolean doScale = (mScaleSize > 1.0f);
-		float scaleFactor = mScaleSize;
-		int height = src.getHeight();
-		int width = src.getWidth();
-		int size = (height > width) ? height : width;
-		if (size > 0) {
-			if (size < mIconSize) {
-				scaleFactor = scaleFactor * (mIconSize/((float)size));
-				doScale = true;
-			} else if (size >= mIconSize) {
-				float newSize = (mIconSize * scaleFactor);
-				scaleFactor = newSize/size;
-				doScale = true;
-			}
-		}
-*/
 
 		boolean doScale = (mScaleSize > 1.0f);
 		int height = src.getHeight();
