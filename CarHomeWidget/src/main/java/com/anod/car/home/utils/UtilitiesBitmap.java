@@ -97,17 +97,13 @@ public class UtilitiesBitmap {
 			return deviceDensity;
 		}
 
-		if (deviceDensity >= DisplayMetrics.DENSITY_XXXHIGH) {
-			return deviceDensity;
-		} else if (deviceDensity == DisplayMetrics.DENSITY_XXHIGH) {
-			return DisplayMetrics.DENSITY_XXXHIGH;
-		} else if (deviceDensity == DisplayMetrics.DENSITY_XHIGH) {
-			return DisplayMetrics.DENSITY_XXHIGH;
-		} else if (deviceDensity == DisplayMetrics.DENSITY_HIGH) {
+		if (deviceDensity <= DisplayMetrics.DENSITY_TV) {
 			return DisplayMetrics.DENSITY_XHIGH;
-		} else if (deviceDensity == DisplayMetrics.DENSITY_MEDIUM) {
-			return DisplayMetrics.DENSITY_HIGH;
+		} else if (deviceDensity < DisplayMetrics.DENSITY_XXXHIGH) {
+			return DisplayMetrics.DENSITY_XXXHIGH;
 		}
+
+
 		return deviceDensity;
 	}
 
