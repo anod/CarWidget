@@ -18,6 +18,7 @@ import com.anod.car.home.model.LauncherModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
 import com.anod.car.home.utils.BitmapTransform.RotateDirection;
+import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
 
 public class PreferencesStorage {
@@ -89,7 +90,7 @@ public class PreferencesStorage {
 
 	
 	private static final String DELIMETER_PACKAGES = "\n";
-	public static final String DEF_VALUE = "5";
+	private static final String ICONS_DEF_VALUE = (UtilitiesBitmap.HAS_HIRES_SUPPORT) ? "5" : "2";
 	public static final String ACTIVITY_RECOGNITION = "activity-recognition";
 
 	public static final String SAMSUNG_DRIVING_MODE = "sam_driving_mode";
@@ -108,7 +109,7 @@ public class PreferencesStorage {
 		int tileColor = prefs.getInt(BUTTON_COLOR, defTileColor);
 		p.setTileColor(tileColor);
 
-		p.setIconsScaleString(prefs.getString(ICONS_SCALE, DEF_VALUE));
+		p.setIconsScaleString(prefs.getString(ICONS_SCALE, ICONS_DEF_VALUE));
 		p.setIconsMono(prefs.getBoolean(ICONS_MONO, false));
 		p.setBackgroundColor(prefs.getInt(BG_COLOR, res.getColor(R.color.default_background)));
 		p.setIconsColor(prefs.getColor(ICONS_COLOR));
