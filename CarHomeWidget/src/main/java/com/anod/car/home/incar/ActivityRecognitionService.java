@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.R;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
@@ -52,7 +53,7 @@ public class ActivityRecognitionService extends IntentService {
 
 			if (BuildConfig.DEBUG) {
 				DetectedActivity probActivity = result.getMostProbableActivity();
-				Utils.logd("Detected activity: [" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()));
+				AppLog.d("Detected activity: [" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()));
 
 				Notification noti = new NotificationCompat.Builder(this)
 						.setContentTitle("Activity")

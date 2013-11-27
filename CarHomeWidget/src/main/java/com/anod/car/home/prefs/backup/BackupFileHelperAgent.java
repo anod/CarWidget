@@ -11,6 +11,7 @@ import android.content.Context;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 
 
@@ -34,7 +35,7 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
      */
     @Override
     public void onCreate() {
-    	Utils.logd("onCreate called");
+    	AppLog.d("onCreate called");
         // All we need to do when working within the BackupAgentHelper mechanism
         // is to install the helper that will process and back up the files we
         // care about.  In this case, it's just one file.
@@ -64,11 +65,11 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
     @Override
     public void onRestore(BackupDataInput data, int appVersionCode,
             ParcelFileDescriptor newState) throws IOException {
-    	Utils.logd("onRestore called");
+    	AppLog.d("onRestore called");
         // Hold the lock while the FileBackupHelper restores the file from
         // the data provided here.
         synchronized (PreferencesBackupManager.DATA_LOCK) {
-        	Utils.logd("onRestore in-lock");
+        	AppLog.d("onRestore in-lock");
             super.onRestore(data, appVersionCode, newState);
             mManager.doRestoreInCar();
         }

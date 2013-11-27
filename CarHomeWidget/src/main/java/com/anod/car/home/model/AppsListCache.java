@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.anod.car.home.CarWidgetApplication;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
 
@@ -113,7 +114,7 @@ public class AppsListCache {
 			d = mPackageManager.getActivityIcon(entry.componentName);
 			entry.icon = UtilitiesBitmap.createSystemIconBitmap(d, mContext);
 		} catch (NameNotFoundException e) {
-			Utils.logd(e.getMessage());
+			AppLog.d(e.getMessage());
 		}
 		return entry.icon;
 	}

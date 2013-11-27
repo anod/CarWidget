@@ -9,6 +9,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.R;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
@@ -44,7 +45,7 @@ public class ModeBroadcastReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		String act = intent.getAction();
-		Utils.logd(" Action: " + act);
+		AppLog.d(" Action: " + act);
 
 		if (mUpdateClientListener != null && act.equals(ACTION_UPDATE_ACTIVITY_CLIENT)) {
 			mUpdateClientListener.onUpdate(intent.getBooleanExtra(EXTRA_STATUS, false));

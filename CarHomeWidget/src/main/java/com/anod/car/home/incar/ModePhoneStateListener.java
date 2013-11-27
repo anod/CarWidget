@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 
 import com.android.internal.telephony.ITelephony;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 
 public class ModePhoneStateListener extends PhoneStateListener {
@@ -47,36 +48,36 @@ public class ModePhoneStateListener extends PhoneStateListener {
 		mState = state;
 		switch (state) {
 		case TelephonyManager.CALL_STATE_IDLE:
-			Utils.logd("Call state idle");
+			AppLog.d("Call state idle");
 			mAudioManager.setSpeakerphoneOn(false);
 			cancelAnswerTimer();
 			mAnswered = false;
 			break;
 		case TelephonyManager.CALL_STATE_OFFHOOK:
-			Utils.logd("Call state offhook");
+			AppLog.d("Call state offhook");
 			if (mUseAutoSpeaker && !mAudioManager.isSpeakerphoneOn()) {
-				Utils.logd("Enable speakerphone while offhook");
+				AppLog.d("Enable speakerphone while offhook");
 				mAudioManager.setSpeakerphoneOn(true);
 			}
 			break;
 		case TelephonyManager.CALL_STATE_RINGING:
-			Utils.logd("Call state ringing");
+			AppLog.d("Call state ringing");
 			if (mAutoAnswerMode.equals(InCar.AUTOANSWER_IMMEDIATLY)) {
-				Utils.logd("Check if already answered");
+				AppLog.d("Check if already answered");
 				if (!mAnswered) {
-					Utils.logd("Answer immediatly");
+					AppLog.d("Answer immediatly");
 					answerCall();
 					mAnswered = true;
 				}
 			} else if (mAutoAnswerMode.equals(InCar.AUTOANSWER_DELAY_5)) {
-				Utils.logd("Check if already answered");
+				AppLog.d("Check if already answered");
 				if (!mAnswered) {
-					Utils.logd("Answer delayed");
+					AppLog.d("Answer delayed");
 					answerCallDelayed();
 					mAnswered = true;
 				}
 			} else {
-				Utils.logd("Cancel answer timer");
+				AppLog.d("Cancel answer timer");
 				cancelAnswerTimer();
 				// mAnswered=false;
 			}
@@ -117,7 +118,7 @@ public class ModePhoneStateListener extends PhoneStateListener {
 		mAudioManager.setMicrophoneMute(false);
 
 		if (mUseAutoSpeaker && !mAudioManager.isSpeakerphoneOn()) {
-			Utils.logd("Enable speakerphone while ringing");
+			AppLog.d("Enable speakerphone while ringing");
 			mAudioManager.setSpeakerphoneOn(true);
 		}
 	}

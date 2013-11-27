@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
-import com.anod.car.home.appwidget.LauncherViewBuilder;
+import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -39,7 +39,7 @@ public class UpdateService extends Service implements Runnable {
 		registerBroadcastService(context, version.isProOrTrial());
 		// Perform this loop procedure for each App Widget that belongs to this
 		// provider
-		LauncherViewBuilder builder = new LauncherViewBuilder(context);
+		WidgetViewBuilder builder = new WidgetViewBuilder(context);
 		builder.setPendingIntentHelper(new ShortcutPendingIntent(context));
 		for (int i = 0; i < N; i++) {
 			int appWidgetId = updateIds[i];
@@ -58,7 +58,7 @@ public class UpdateService extends Service implements Runnable {
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	private void setKeyguardSettings(AppWidgetManager appWidgetManager, LauncherViewBuilder builder, int appWidgetId) {
+	private void setKeyguardSettings(AppWidgetManager appWidgetManager, WidgetViewBuilder builder, int appWidgetId) {
 		Bundle myOptions = appWidgetManager.getAppWidgetOptions (appWidgetId);
 		int category = myOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1);
 		int maxHeight = myOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, -1);

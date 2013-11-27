@@ -1,18 +1,15 @@
 package com.anod.car.home.appwidget;
 
 import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
 import com.anod.car.home.ShortcutActivity;
 import com.anod.car.home.incar.ModeService;
-import com.anod.car.home.prefs.Configuration;
-import com.anod.car.home.prefs.PickShortcutUtils;
 import com.anod.car.home.utils.IntentUtils;
 
-public class ShortcutPendingIntent implements LauncherViewBuilder.PendingIntentHelper {
+public class ShortcutPendingIntent implements WidgetViewBuilder.PendingIntentHelper {
 	public static final String INTENT_ACTION_CALL_PRIVILEGED = "android.intent.action.CALL_PRIVILEGED";
 	final private Context mContext;
 

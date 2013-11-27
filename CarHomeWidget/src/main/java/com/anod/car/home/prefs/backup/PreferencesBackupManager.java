@@ -27,6 +27,7 @@ import com.anod.car.home.prefs.preferences.InCarBackup;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.ShortcutsMain;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 
 public class PreferencesBackupManager {
@@ -125,7 +126,7 @@ public class PreferencesBackupManager {
                 Log.d("CarHomeWidget",oos.toString());
             }
 		} catch (IOException e) {
-			Utils.logd(e.getMessage());
+			AppLog.d(e.getMessage());
 			return ERROR_FILE_WRITE;
 		}
 		saveDir.setLastModified(System.currentTimeMillis());
@@ -155,7 +156,7 @@ public class PreferencesBackupManager {
                 oos.close();
             }
 		} catch (IOException e) {
-			Utils.logd(e.getMessage());
+			AppLog.d(e.getMessage());
 			return ERROR_FILE_WRITE;
 		}
 		BackupManager.dataChanged(BACKUP_PACKAGE);
@@ -207,10 +208,10 @@ public class PreferencesBackupManager {
                 is.close();
             }
 		} catch (IOException e) {
-			Utils.logd(e.getMessage());
+			AppLog.d(e.getMessage());
 			return ERROR_FILE_READ;
 		} catch (ClassNotFoundException e) {
-			Utils.logd(e.getMessage());
+			AppLog.d(e.getMessage());
             return ERROR_DESERIALIZE;
         }
 		PreferencesStorage.saveMain(mContext, prefs.getMain(), appWidgetId);
@@ -257,10 +258,10 @@ public class PreferencesBackupManager {
                 is.close();
             }
 		} catch (IOException e) {
-			Utils.logd(e.getMessage());
+			AppLog.d(e.getMessage());
 			return ERROR_FILE_READ;
 		} catch (ClassNotFoundException e) {
-			Utils.logd(e.getMessage());
+			AppLog.d(e.getMessage());
 			return ERROR_DESERIALIZE;
 		}
 		//version 1.42

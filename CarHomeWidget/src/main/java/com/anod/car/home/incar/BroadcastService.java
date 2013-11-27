@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -130,7 +131,7 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 
 	@Override
 	public void onUpdate(boolean enable) {
-		Utils.logd("ActivityRecognitionClientUpdate: "+enable);
+		AppLog.d("ActivityRecognitionClientUpdate: " + enable);
 		if (enable) {
 			attachActivityRecognitionClient(this);
 		} else {

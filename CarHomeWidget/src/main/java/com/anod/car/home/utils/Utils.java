@@ -17,8 +17,6 @@ import com.anod.car.home.R;
 
 
 public class Utils {
-	
-	public static final String TAG = "CarHomeWidget";
 
 	final public static boolean IS_HONEYCOMB_OR_GREATER = (Build.VERSION.SDK_INT >= 11);
 	final public static boolean IS_ICS_OR_GREATER = (Build.VERSION.SDK_INT >= 14);
@@ -50,24 +48,6 @@ public class Utils {
 			return true;
 		} catch( PackageManager.NameNotFoundException e ){
 			return false;
-		}
-	}
-
-	/**
-	 *
-	 * @param msg
-	 */
-	public static void logw(String msg) {
-		Log.w(TAG, msg, new Throwable());
-	}
-
-	/**
-	 *
-	 * @param message
-	 */
-	public static void logd(String message) {
-		if (BuildConfig.DEBUG) {
-			Log.d(TAG, message);
 		}
 	}
 
@@ -119,7 +99,7 @@ public class Utils {
             Toast.makeText(context, context.getString(R.string.activity_not_found), Toast.LENGTH_SHORT).show();
         } catch (SecurityException e) {
             Toast.makeText(context, context.getString(R.string.activity_not_found), Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Widget does not have the permission to launch " + intent +
+            AppLog.e("Widget does not have the permission to launch " + intent +
                     ". Make sure to create a MAIN intent-filter for the corresponding activity " +
                     "or use the exported attribute for this activity.", e);
         }

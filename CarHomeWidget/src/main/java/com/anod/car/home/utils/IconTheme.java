@@ -45,7 +45,7 @@ public class IconTheme
 		try {
 			mThemeResources = mContext.getPackageManager().getResourcesForApplication(mPkgName);
 		} catch (PackageManager.NameNotFoundException e) {
-			Utils.logd(e.getMessage());
+			AppLog.d(e.getMessage());
 		}
 		return mThemeResources != null;
 	}
@@ -62,9 +62,9 @@ public class IconTheme
 				mIconMap = parseXml(xml, cmpMap);
 			}
 		} catch (XmlPullParserException e) {
-			Utils.logd(e.getMessage());
+			AppLog.d(e.getMessage());
 		} catch (IOException e) {
-			Utils.logd(e.getMessage());
+			AppLog.d(e.getMessage());
 		}
 	}
 
@@ -77,7 +77,7 @@ public class IconTheme
 		for(String className : cmpMap.keySet()) {
 			if (!iconMap.containsKey(className)) {
 				String resName= className.toLowerCase(Locale.US).replace(".", "_");
-				Utils.logd("Look for icon for resource: R.drawable." + resName);
+				AppLog.d("Look for icon for resource: R.drawable." + resName);
 				int resourceId = mThemeResources.getIdentifier(resName, "drawable", mPkgName);
 				if(resourceId!=0){
 					iconMap.put(className, resourceId);
@@ -111,11 +111,11 @@ public class IconTheme
 			}
 		} catch (IOException localIOException2)
 		{
-			Utils.logd(localIOException2.getMessage());
+			AppLog.d(localIOException2.getMessage());
 		}
 		catch (XmlPullParserException localXmlPullParserException1)
 		{
-			Utils.logd(localXmlPullParserException1.getMessage());
+			AppLog.d(localXmlPullParserException1.getMessage());
 		}
 		return xml;
 	}

@@ -18,6 +18,7 @@ import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.model.AppsListCache.CacheEntry;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.IconPackUtils;
 import com.anod.car.home.utils.Utils;
 
@@ -34,7 +35,7 @@ public class IconThemesActivity extends AppsCacheActivity implements OnClickList
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		mAppWidgetId = Utils.readAppWidgetId(savedInstanceState,getIntent());
 		if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-			Utils.logd("Invalid AppWidgetId");
+			AppLog.d("Invalid AppWidgetId");
 			finish();
 		}
 		mRefresh = false;

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
@@ -74,7 +75,7 @@ public class ConfigurationBackup extends ConfigurationFragment {
 				try {
 					startActivity(intent);
 				} catch (Exception e) {
-					Utils.logw(e.getMessage());
+					AppLog.w(e.getMessage());
 				}
 				return false;
 			}

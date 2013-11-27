@@ -15,6 +15,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.anod.car.home.R;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 
 
@@ -91,7 +92,7 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
 					try {
 						i = Integer.valueOf(value);
 					} catch (Exception e) {
-						Utils.logd(e.getMessage());
+						AppLog.d(e.getMessage());
 					}
 					if (i > mMax) {
 						i = mMax;

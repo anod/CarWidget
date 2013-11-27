@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -30,7 +29,7 @@ import com.anod.car.home.utils.IconTheme;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
 
-public class LauncherViewBuilder {
+public class WidgetViewBuilder {
 	private static int[] sTextRes = { 
 		R.id.btn_text0,
 		R.id.btn_text1,
@@ -65,7 +64,7 @@ public class LauncherViewBuilder {
 		PendingIntent createInCar(boolean on);
 	}
 
-	public LauncherViewBuilder(Context context) {
+	public WidgetViewBuilder(Context context) {
 		mContext = context;
 	}
 
@@ -77,12 +76,12 @@ public class LauncherViewBuilder {
 		mWidgetHeightDp = widgetHeightDp;
 	}
 
-	public LauncherViewBuilder setPendingIntentHelper(PendingIntentHelper helper) {
+	public WidgetViewBuilder setPendingIntentHelper(PendingIntentHelper helper) {
 		mPendingIntentHelper = helper;
 		return this;
 	}
 	
-	public LauncherViewBuilder setAppWidgetId(int appWidgetId) {
+	public WidgetViewBuilder setAppWidgetId(int appWidgetId) {
 		mAppWidgetId = appWidgetId;
 		return this;
 	}
@@ -91,12 +90,12 @@ public class LauncherViewBuilder {
 		return mPrefs;
 	}
 
-	public LauncherViewBuilder setOverrideSkin(String skin) {
+	public WidgetViewBuilder setOverrideSkin(String skin) {
 		mOverrideSkin = skin;
 		return this;
 	}
 
-	public LauncherViewBuilder init() {
+	public WidgetViewBuilder init() {
 		mPrefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
 
 		mSmodel = new LauncherShortcutsModel(mContext, mAppWidgetId);
@@ -115,12 +114,12 @@ public class LauncherViewBuilder {
 		applyIconTransform(mBitmapTransform, mPrefs);
 	}
 
-	public LauncherViewBuilder reloadShortcuts() {
+	public WidgetViewBuilder reloadShortcuts() {
 		mSmodel.init();
 		return this;
 	}
 	
-	public LauncherViewBuilder reloadPrefs() {
+	public WidgetViewBuilder reloadPrefs() {
 		mPrefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
 		return this;
 	}

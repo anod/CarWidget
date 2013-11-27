@@ -19,6 +19,7 @@ import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
@@ -175,7 +176,7 @@ public class ShortcutInfoUtils {
 			Drawable drawableAppIcon = otherAppCtxt.getResources().getDrawableForDensity(icon, UtilitiesBitmap.getTargetDensity(context));
 			return drawableAppIcon;
 		} catch (PackageManager.NameNotFoundException e) {
-			Utils.logd("NameNotFoundException: "+e.getMessage());
+			AppLog.d("NameNotFoundException: " + e.getMessage());
 		}
 		return null;
 	}

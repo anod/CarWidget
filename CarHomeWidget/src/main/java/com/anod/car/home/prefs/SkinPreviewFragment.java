@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.RemoteViews;
 
 import com.anod.car.home.R;
-import com.anod.car.home.appwidget.LauncherViewBuilder;
+import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.prefs.LookAndFeelActivity.SkinRefreshListener;
 
 public class SkinPreviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<View>, SkinRefreshListener {
@@ -87,7 +87,7 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 
 		@Override
 		public View loadInBackground() {
-			LauncherViewBuilder builder = mActivity.createBuilder();
+			WidgetViewBuilder builder = mActivity.createBuilder();
 			builder.init();
 
 			builder.setOverrideSkin(mActivity.getSkinItem(mPosition).value);

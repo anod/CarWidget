@@ -17,6 +17,7 @@ import android.view.MenuItem;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 
 /**
@@ -81,7 +82,7 @@ abstract public class ConfigurationFragment extends PreferenceFragment {
 				((ConfigurationActivity)getActivity()).setAppWidgetId(mAppWidgetId);
 				getActivity().setResult(Activity.RESULT_OK, defaultResultValue);
 			} else {
-				Utils.logw("AppWidgetId required");
+				AppLog.w("AppWidgetId required");
 				getActivity().finish();
 				return;
 			}

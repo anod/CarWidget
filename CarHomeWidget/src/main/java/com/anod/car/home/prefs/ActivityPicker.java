@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.anod.car.home.R;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
@@ -117,7 +118,7 @@ public class ActivityPicker extends ListActivity {
 					Resources res = packageManager.getResourcesForApplication(iconResource.packageName);
 					icon = res.getDrawable(res.getIdentifier(iconResource.resourceName, null, null));
 				} catch (NameNotFoundException e) {
-					Utils.logw(e.getMessage());
+					AppLog.w(e.getMessage());
 				}
 
 				items.add(new PickAdapter.Item(this, label, icon));

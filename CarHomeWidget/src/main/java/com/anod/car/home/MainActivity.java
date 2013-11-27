@@ -31,6 +31,7 @@ import com.anod.car.home.prefs.preferences.AppTheme;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.ui.WidgetsListActivity;
 import com.anod.car.home.ui.WizardActivity;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
@@ -205,7 +206,7 @@ public class MainActivity extends CarWidgetActivity {
 			PackageManager pm = getPackageManager();
 			versionName = pm.getPackageInfo(getPackageName(), 0).versionName;
 		} catch (PackageManager.NameNotFoundException e) {
-			Utils.logw(e.getMessage());
+			AppLog.w(e.getMessage());
 		}
 		TextView title = (TextView)version.findViewById(android.R.id.title);
 		title.setText(String.format(versionText, appName, versionName));
@@ -297,7 +298,7 @@ public class MainActivity extends CarWidgetActivity {
 			try {
 				dismissDialog(DIALOG_WAIT);
 			} catch (IllegalArgumentException e) {
-				Utils.logd(e.getMessage());
+				AppLog.d(e.getMessage());
 			}
 			Toast.makeText(mContext, mContext.getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
 		}

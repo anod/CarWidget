@@ -39,6 +39,7 @@ import com.anod.car.home.incar.ModeBroadcastReceiver;
 import com.anod.car.home.incar.SamsungDrivingMode;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 import com.google.android.gms.common.ConnectionResult;
@@ -434,7 +435,7 @@ public class ConfigurationInCar extends ConfigurationFragment {
 		try {
 			dismissDialog(id);
 		} catch (IllegalArgumentException e) {
-			Utils.logd(e.getMessage());
+			AppLog.d(e.getMessage());
 		}
 	}
 }

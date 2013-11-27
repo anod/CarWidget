@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
 
@@ -91,9 +92,9 @@ public class LauncherModel {
 						}
 					} catch (NameNotFoundException e) {
 						// drop this. we have other places to look for icons
-						Utils.logd(e.getMessage());
+						AppLog.d(e.getMessage());
 					} catch (NotFoundException e) {
-						Utils.logd(e.getMessage());
+						AppLog.d(e.getMessage());
 					}
 					// the db
 					if (icon == null) {

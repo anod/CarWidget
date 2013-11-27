@@ -23,7 +23,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -37,17 +36,18 @@ import android.widget.TextView;
 
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
-import com.anod.car.home.appwidget.LauncherViewBuilder;
+import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 
-public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChangeListener, LauncherViewBuilder.PendingIntentHelper {
+public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChangeListener, WidgetViewBuilder.PendingIntentHelper {
 	private static final int SKINS_COUNT = 5;
 	private static final int REQUEST_LOOK_ACTIVITY = 1;
 	private static final int REQUEST_PICK_ICON_THEME = 2;
@@ -62,7 +62,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 	private boolean mMenuInitialized;
 	private View mLoaderView;
 	private boolean[] mPreviewInitialized = { false, false, false, false, false };
-	private LauncherViewBuilder mBuilder;
+	private WidgetViewBuilder mBuilder;
 	private Main mPrefs;
 	private final SparseArray<SkinRefreshListener> mSkinRefreshListeners = new SparseArray<LookAndFeelActivity.SkinRefreshListener>(SKINS_COUNT);
 	private boolean mPendingRefresh;
@@ -90,7 +90,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 
 		Intent intent = getIntent();
 		if (intent == null) {
-			Utils.logw("No intent");
+			AppLog.w("No intent");
 			finish();
 			return;
 		}
@@ -142,8 +142,8 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 		refreshSkinPreview();
 	}
 
-	public LauncherViewBuilder createBuilder() {
-		LauncherViewBuilder builder = new LauncherViewBuilder(this);
+	public WidgetViewBuilder createBuilder() {
+		WidgetViewBuilder builder = new WidgetViewBuilder(this);
 		builder.setPendingIntentHelper(this).setAppWidgetId(mAppWidgetId).init();
 		return builder;
 	}
@@ -386,7 +386,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 	}
 
 	private void refreshSkinPreview() {
-		Utils.logd("Refresh Skin Requested");
+		AppLog.d("Refresh Skin Requested");
 		mPrefs = mBuilder
 			.reloadShortcuts()
 			.reloadPrefs()
@@ -397,11 +397,11 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 				SkinRefreshListener listener = mSkinRefreshListeners.valueAt(i);
 				if (listener != null) {
 					listener.refresh();
-					Utils.logd("Call refresh on listener for page: " + i);
+					AppLog.d("Call refresh on listener for page: " + i);
 				} else {
 					if (i == mCurrentPage) {
 						mPendingRefresh = true;
-						Utils.logd("No listener for current page, set pending flag");
+						AppLog.d("No listener for current page, set pending flag");
 					}
 				}
 			}
@@ -409,16 +409,16 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 	}
 
 	public void onFragmentAttach(SkinRefreshListener listener, int position) {
-		Utils.logd("Register listener for page: " + position);
+		AppLog.d("Register listener for page: " + position);
 		mSkinRefreshListeners.put(position, listener);
 		if (mPendingRefresh && mCurrentPage == position) {
-			Utils.logd("Pending refresh");
+			AppLog.d("Pending refresh");
 			listener.refresh();
 		}
 	}
 
 	public void onFragmentDetach(int position) {
-		Utils.logd("UnRegister listener for page: " + position);
+		AppLog.d("UnRegister listener for page: " + position);
 		mSkinRefreshListeners.delete(position);
 	}
 

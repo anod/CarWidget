@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.anod.car.home.R;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 
 public class CarHomeColorPickerDialog extends ColorPickerDialog {
@@ -90,7 +91,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
 		try {
 			intValue = Color.parseColor("#" + hexStr);
 		} catch (IllegalArgumentException e) {
-			Utils.logd(e.getMessage());
+			AppLog.d(e.getMessage());
 		}
 		if (!mAlphaSliderVisible) {
 			intValue = (intValue & 0x00FFFFFF) + 0xFF000000;
