@@ -144,7 +144,7 @@ public class ShortcutInfoUtils {
         return info;
     }
     
-    private static Bitmap getIcon(ComponentName component, ResolveInfo resolveInfo, PackageManager manager, Context context) {
+    public static Bitmap getIcon(ComponentName component, ResolveInfo resolveInfo, PackageManager manager, Context context) {
 
         if (resolveInfo == null || component == null) {
             return null;

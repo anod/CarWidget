@@ -4,10 +4,13 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -30,7 +33,9 @@ import android.widget.Toast;
 
 import com.anod.car.home.R;
 import com.anod.car.home.model.LauncherModel;
+import com.anod.car.home.model.LauncherSettings;
 import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.ShortcutInfoUtils;
 import com.anod.car.home.utils.IconPackUtils;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
@@ -47,6 +52,7 @@ public class ShortcutEditActivity extends Activity {
 
 	private static final int PICK_CUSTOM_ICON = 0;
 	private static final int PICK_ADW_ICON_PACK = 1;
+	private static final int PICK_DEFAULT_ICON = 2;
 
 	private static final int DIALOG_ICON_MENU = 1;
 
@@ -57,6 +63,7 @@ public class ShortcutEditActivity extends Activity {
 	private ShortcutInfo mShortcutInfo;
 	private Intent mIntent;
 	private File mTempFile;
+	private Bitmap mIconDefault;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +107,18 @@ public class ShortcutEditActivity extends Activity {
 
 	protected Dialog onCreateDialog(int id) {
 		if (id == DIALOG_ICON_MENU) {
-			final CharSequence[] items = { getString(R.string.icon_custom), getString(R.string.icon_adw_icon_pack) };
+			final CharSequence[] items;
+			if (mShortcutInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
+				items = new CharSequence[3];
+				items[PICK_CUSTOM_ICON] = getString(R.string.icon_custom);
+				items[PICK_ADW_ICON_PACK] = getString(R.string.icon_adw_icon_pack);
+				items[PICK_DEFAULT_ICON] = getString(R.string.icon_default);
+			} else {
+				items = new CharSequence[2];
+				items[PICK_CUSTOM_ICON] = getString(R.string.icon_custom);
+				items[PICK_ADW_ICON_PACK] = getString(R.string.icon_adw_icon_pack);
+			}
+
 			final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(getString(R.string.dialog_title_select));
 			builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -126,6 +144,23 @@ public class ShortcutEditActivity extends Activity {
 			chooseIntent = new Intent();
 			IconPackUtils.fillAdwIconPackIntent(chooseIntent);
 			Utils.startActivityForResultSafetly(Intent.createChooser(chooseIntent, getString(R.string.select_icon_pack)), PICK_ADW_ICON_PACK, this);
+		} else if (item == PICK_DEFAULT_ICON) {
+
+			ComponentName componentName = mShortcutInfo.intent.getComponent();
+			if (componentName == null) {
+				Toast.makeText(this, R.string.failed_fetch_icon, Toast.LENGTH_LONG).show();
+				return;
+			}
+			final PackageManager manager = getPackageManager();
+			final ResolveInfo resolveInfo = manager.resolveActivity(mShortcutInfo.intent, 0);
+			Bitmap icon = ShortcutInfoUtils.getIcon(componentName, resolveInfo, manager, this);
+			if (icon != null) {
+				mIconDefault = icon;
+				mCustomIcon = null;
+				mIconView.setImageBitmap(icon);
+			} else {
+				Toast.makeText(this, R.string.failed_fetch_icon, Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 
@@ -249,14 +284,17 @@ public class ShortcutEditActivity extends Activity {
 
 	private void setCustomIcon(Bitmap icon) {
 		mCustomIcon = icon;
+		mIconDefault = null;
 		mIconView.setImageBitmap(mCustomIcon);
 	}
 
 	private void clickedOk(View view) {
 		boolean needUpdate = false;
 		if (mCustomIcon != null) {
-			//Bitmap icon = UtilitiesBitmap.createBitmapThumbnail(mCustomIcon, this);
 			mShortcutInfo.setCustomIcon(mCustomIcon);
+			needUpdate = true;
+		} else if (mIconDefault != null) {
+			mShortcutInfo.setActivityIcon(mIconDefault);
 			needUpdate = true;
 		}
 		String title = mLabelEdit.getText().toString();

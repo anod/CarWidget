@@ -186,6 +186,8 @@
 	<string name="choose_a_theme">Choose a theme</string>
 	<string name="theme_gray">Light</string>
 	<string name="theme_holo">Dark</string>
+	<string name="icon_default">Default</string>
+	<string name="failed_fetch_icon">Failed to fetch the default icon.</string>
 	<string-array name="brightness_mode_titles">
 		<item>System</item>
 		<item>Auto</item>

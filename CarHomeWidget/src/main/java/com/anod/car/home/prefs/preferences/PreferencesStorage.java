@@ -89,7 +89,7 @@ public class PreferencesStorage {
 
 	
 	private static final String DELIMETER_PACKAGES = "\n";
-	public static final String DEF_VALUE = "2";
+	public static final String DEF_VALUE = "5";
 	public static final String ACTIVITY_RECOGNITION = "activity-recognition";
 
 	public static final String SAMSUNG_DRIVING_MODE = "sam_driving_mode";
