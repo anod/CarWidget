@@ -1,6 +1,5 @@
 package com.anod.car.home.prefs.views;
 
-import afzkl.development.mColorPicker.ColorPickerDialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,29 +10,33 @@ import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.anod.car.home.R;
 import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Utils;
+
+import afzkl.development.colorpickerview.dialog.ColorPickerDialog;
 
 public class CarHomeColorPickerDialog extends ColorPickerDialog {
 	private final Context mContext;
 	private final ColorPickerDialog mDialog;
 	private boolean mAlphaSliderVisible;
 
-	public CarHomeColorPickerDialog(Context context, int initialColor, final OnClickListener listner) {
+	public CarHomeColorPickerDialog(Context context, int initialColor, final OnClickListener listener) {
 		super(context, initialColor);
 		mContext = context;
 		mDialog = this;
 		setTitle(R.string.color_dialog_title);
 		setAlphaSliderVisible(false);
 
+
 		Button btn1 = (Button) mView.findViewById(R.id.customButton1);
 		btn1.setText(android.R.string.ok);
 		btn1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				listner.onClick(mDialog, R.id.customButton1);
+				listener.onClick(mDialog, R.id.customButton1);
 				mDialog.dismiss();
 			}
 		});

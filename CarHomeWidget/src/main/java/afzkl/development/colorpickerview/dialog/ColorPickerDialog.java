@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package afzkl.development.mColorPicker;
+package afzkl.development.colorpickerview.dialog;
 
-import afzkl.development.mColorPicker.views.ColorPanelView;
-import afzkl.development.mColorPicker.views.ColorPickerView;
-import afzkl.development.mColorPicker.views.ColorPickerView.OnColorChangedListener;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.PixelFormat;
@@ -28,49 +25,74 @@ import android.widget.LinearLayout;
 
 import com.anod.car.home.R;
 
+import afzkl.development.colorpickerview.view.ColorPanelView;
+import afzkl.development.colorpickerview.view.ColorPickerView;
+import afzkl.development.colorpickerview.view.ColorPickerView.OnColorChangedListener;
+
 public class ColorPickerDialog extends AlertDialog implements
 		ColorPickerView.OnColorChangedListener {
 
 	protected ColorPickerView mColorPicker;
 
-	private ColorPanelView mOldColor;
+	protected ColorPanelView mOldColor;
 	protected ColorPanelView mNewColor;
+
+	protected OnColorChangedListener mListener;
+
 	protected View mView;
-	
-	private OnColorChangedListener mListener;
 
-	protected ColorPickerDialog(Context context, int initialColor) {
+	public ColorPickerDialog(Context context, int initialColor) {
+		this(context, initialColor, null);
+
+		init(initialColor);
+	}
+
+	public ColorPickerDialog(Context context, int initialColor, OnColorChangedListener listener) {
 		super(context);
-
+		mListener = listener;
 		init(initialColor);
 	}
 
 	private void init(int color) {
 		// To fight color branding.
 		getWindow().setFormat(PixelFormat.RGBA_8888);
-
 		setUp(color);
-
 	}
 
 	private void setUp(int color) {
+		boolean isLandscapeLayout = false;
+
 		LayoutInflater inflater = (LayoutInflater) getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		mView = inflater.inflate(R.layout.dialog_color_picker, null);
+		View layout = mView = inflater.inflate(R.layout.dialog_color_picker, null);
 
-		setView(mView);
+		setView(layout);
 
 		setTitle("Pick a Color");
 		// setIcon(android.R.drawable.ic_dialog_info);
 
-		mColorPicker = (ColorPickerView) mView
-				.findViewById(R.id.color_picker_view);
-		mOldColor = (ColorPanelView) mView.findViewById(R.id.old_color_panel);
-		mNewColor = (ColorPanelView) mView.findViewById(R.id.new_color_panel);
+		LinearLayout landscapeLayout = (LinearLayout) layout.findViewById(R.id.dialog_color_picker_extra_layout_landscape);
 
-		((LinearLayout) mOldColor.getParent()).setPadding(Math
-				.round(mColorPicker.getDrawingOffset()), 0, Math
-				.round(mColorPicker.getDrawingOffset()), 0);
+		if(landscapeLayout != null) {
+			isLandscapeLayout = true;
+		}
+
+
+		mColorPicker = (ColorPickerView) layout
+				.findViewById(R.id.color_picker_view);
+		mOldColor = (ColorPanelView) layout.findViewById(R.id.color_panel_old);
+		mNewColor = (ColorPanelView) layout.findViewById(R.id.color_panel_new);
+
+		if(!isLandscapeLayout) {
+			((LinearLayout) mOldColor.getParent()).setPadding(Math
+					.round(mColorPicker.getDrawingOffset()), 0, Math
+					.round(mColorPicker.getDrawingOffset()), 0);
+
+		}
+		else {
+			landscapeLayout.setPadding(0, 0, Math.round(mColorPicker.getDrawingOffset()), 0);
+			setTitle(null);
+		}
 
 		mColorPicker.setOnColorChangedListener(this);
 
@@ -81,11 +103,11 @@ public class ColorPickerDialog extends AlertDialog implements
 
 	@Override
 	public void onColorChanged(int color) {
-
 		mNewColor.setColor(color);
 
 		if (mListener != null) {
 			mListener.onColorChanged(color);
+
 		}
 
 	}

@@ -14,98 +14,91 @@
      limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:baselineAligned="false">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="12dp">
 		
-		<RelativeLayout
-		    android:layout_width="fill_parent"
-		    android:layout_height="0dip"
-		    android:layout_weight="1">
+	<afzkl.development.colorpickerview.view.ColorPickerView
+		android:id="@+id/color_picker_view"
+		android:layout_alignParentTop="true"
+		android:layout_centerHorizontal="true"
+		style="@style/dialog_color_pciker_view_portrait"
+	/>
 		
-			<afzkl.development.mColorPicker.views.ColorPickerView
-				android:id="@+id/color_picker_view"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_centerHorizontal="true"
-				android:layout_marginLeft="10dp"
-				android:layout_marginRight="10dp"
-			/>
-			
-			
-			<LinearLayout
-			android:id="@+id/colorPanel"
-			android:layout_width="fill_parent"
-			android:layout_height="40dp"
-			android:orientation="horizontal"
-			android:layout_below="@id/color_picker_view"
-			android:layout_alignLeft="@id/color_picker_view"
-			android:layout_alignRight="@id/color_picker_view"
-			android:layout_marginTop="10dp"
-			>
-		
-			
-				<afzkl.development.mColorPicker.views.ColorPanelView
-					android:id="@+id/old_color_panel"
-					android:layout_width="0px"
-					android:layout_height="fill_parent"
-					android:layout_weight="0.5"
-				/>
-			
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="fill_parent"	
-					android:text="@string/arrow_right"
-					android:textSize="20sp"
-					android:gravity="center"
-					android:textColor="#ffffff"
-					android:layout_marginLeft="10dp"
-					android:layout_marginRight="10dp"
-				/>
-			
-				<afzkl.development.mColorPicker.views.ColorPanelView
-					android:id="@+id/new_color_panel"
-					android:layout_width="0px"
-					android:layout_height="fill_parent"
-					android:layout_weight="0.5"
-				/>
-			
-			</LinearLayout>
-		</RelativeLayout>
+	<LinearLayout
+	android:layout_width="wrap_content"
+	android:layout_height="40dp"
+	android:orientation="horizontal"
+	android:layout_marginTop="10dp"
+	android:layout_below="@id/color_picker_view"
+	android:layout_alignLeft="@id/color_picker_view"
+	android:layout_alignRight="@id/color_picker_view" android:id="@+id/linearLayout">
+	
+		<afzkl.development.colorpickerview.view.ColorPanelView
+			android:id="@id/color_panel_old"
+			android:layout_width="0px"
+			android:layout_height="fill_parent"
+			android:layout_weight="0.5"
+		/>
+	
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"	
+			android:text="→"
+			android:textSize="20sp"
+			android:gravity="center"
+			android:textColor="#ffffff"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
+		/>
+	
+		<afzkl.development.colorpickerview.view.ColorPanelView
+			android:id="@id/color_panel_new"
+			android:layout_width="0px"
+			android:layout_height="fill_parent"
+			android:layout_weight="0.5"
+		/>
+	
+	</LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-			android:layout_marginTop="10dp"
-            android:paddingTop="4dip"
-            android:paddingLeft="2dip"
-            android:paddingRight="2dip"
-        	android:minHeight="54dip"            
-        >
-            <Button android:id="@+id/customButton1"
-                android:layout_width="0dip"
-                android:layout_gravity="left"
-                android:layout_weight="1"
-                android:maxLines="2"
-                android:layout_height="wrap_content" />
-            <Button android:id="@+id/customButton3"
-                android:layout_width="0dip"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:maxLines="1"
-                android:text="@string/default_hex_color_text"
-                android:ems="9"
-                android:paddingLeft="2dip"
-                android:paddingRight="2dip"
-                android:layout_height="wrap_content" />
-            <Button android:id="@+id/customButton2"
-                android:layout_width="0dip"
-                android:layout_gravity="right"
-                android:layout_weight="1"
-                android:maxLines="2"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-</LinearLayout>
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:paddingTop="4dip"
+			android:paddingLeft="2dip"
+			android:paddingRight="2dip"
+			android:minHeight="54dip"
+			android:layout_below="@+id/linearLayout">
+		<Button android:id="@+id/customButton1"
+				android:layout_width="0dip"
+				android:layout_gravity="left"
+				android:layout_weight="1"
+				android:maxLines="2"
+				android:text="@android:string/ok"
+				android:layout_height="wrap_content"/>
+		<Button android:id="@+id/customButton3"
+				android:layout_width="0dip"
+				android:layout_gravity="center_horizontal"
+				android:layout_weight="1"
+				android:maxLines="1"
+				android:text="@string/default_hex_color_text"
+				android:ems="9"
+				android:paddingLeft="2dip"
+				android:paddingRight="2dip"
+				android:layout_height="wrap_content"/>
+		<Button android:id="@+id/customButton2"
+				android:layout_width="0dip"
+				android:layout_gravity="right"
+				android:layout_weight="1"
+				android:maxLines="2"
+				android:layout_height="wrap_content"
+				android:text="@android:string/cancel"
+				/>
+	</LinearLayout>
+</RelativeLayout>

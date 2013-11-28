@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package afzkl.development.mColorPicker.drawables;
+package afzkl.development.colorpickerview.drawable;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -25,7 +25,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.drawable.Drawable;
 
 /**
- * This drawable that draws a simple white and gray chessboard pattern.
+ * This drawable will draw a simple white and gray chessboard pattern.
  * It's pattern you will often see as a background behind a 
  * partly transparent image in many applications.
  * @author Daniel Nilsson
@@ -42,7 +42,10 @@ public class AlphaPatternDrawable extends Drawable {
 	private int numRectanglesVertical;
 
 	/**
-	 * Bitmap in which the pattern will be cahched.
+	 * Bitmap in which the pattern will be cached. 
+	 * This is so the pattern will not have to be recreated each time draw() gets called.
+	 * Because recreating the pattern i rather expensive. I will only be recreated if the
+	 * size changes.
 	 */
 	private Bitmap		mBitmap;
 	

@@ -15,9 +15,9 @@
  */
 
 
-package afzkl.development.mColorPicker.views;
+package afzkl.development.colorpickerview.view;
 
-import afzkl.development.mColorPicker.drawables.AlphaPatternDrawable;
+import afzkl.development.colorpickerview.drawable.AlphaPatternDrawable;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
