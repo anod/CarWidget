@@ -83,10 +83,6 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			getSupportActionBar().hide();
-			//getActionBarHelper().requestFeatureNoTitle(true);
-		}
 
 		Intent intent = getIntent();
 		if (intent == null) {

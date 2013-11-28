@@ -6,5 +6,10 @@
 	<string name="skin_info_bbb">Theme by &lt;a href=&quot;http://blackbearblanc.dk/&quot;&gt;Black Bear Blanc&lt;/a&gt;&lt;br/&gt;Icon pack: &lt;a href=&quot;https://play.google.com/store/apps/details?id=com.jaguirre.elegant&quot;&gt;ADW.Elegant Theme&lt;/a&gt;</string>
 	<string name="activity_not_found">Activity not found</string>
 	<string name="crash_toast_text">Car Widget Crashed</string>
-
+	<string name="crash_dialog_title">Car Widget has crashed</string>
+	<string name="crash_dialog_text">An unexpected error occurred forcing the
+		application to stop. Please help us fix this by sending us error data,
+		all you have to do is click OK.</string>
+	<string name="crash_dialog_comment_prompt">You might add your comments about the problem below:</string>
+	<string name="crash_dialog_ok_toast">Thank you!</string>
 </resources>

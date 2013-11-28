@@ -137,7 +137,7 @@
 				android:value="AEdPqrEAAAAIwrTs2H7J2Rs0kglDTHtziqQ8_7YbAZGeS7bDUA" />
 
 		<activity android:name="org.acra.CrashReportDialog"
-				  android:theme="@android:style/Theme.Dialog"
+				  android:theme="@style/DialogTheme"
 				  android:launchMode="singleInstance"
 				  android:excludeFromRecents="true"
 				  android:finishOnTaskLaunch="true" />

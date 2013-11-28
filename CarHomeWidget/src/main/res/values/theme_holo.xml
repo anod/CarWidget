@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<style name="AppThemeHolo" parent="@style/Theme.AppCompat">
+		<item name="panelItem">@style/panelItemBasic</item>
+		<item name="panelHeader">@style/panelHeaderBasic</item>
+		<item name="PreferencesItem">@style/PreferencesItem</item>
+		<item name="buttonStyle">@style/buttonStyleDefault</item>
+		<item name="activityBgColor">@android:color/transparent</item>
+		<item name="wizardTextItem">@style/wizardTextItemHolo</item>
+		<item name="textColor">@android:color/white</item>
+
+		<item name="actionBarStyle">@style/ActionBarCompatHolo</item>
+	</style>
+
+	<style name="ActionBarCompatHolo" parent="@style/Widget.AppCompat.ActionBar">
+
+	</style>
+
+	<style name="ActionBarCompatHolo.Transparent" parent="@style/ActionBarCompatHolo">
+		<item name="android:background">@null</item>
+		<item name="android:actionBarDivider">@null</item>
+		<item name="android:backgroundStacked">@null</item>
+		<item name="android:backgroundSplit">@null</item>
+
+		<!-- Support library compatibility -->
+		<item name="background">@null</item>
+		<item name="actionBarDivider">@null</item>
+		<item name="backgroundStacked">@null</item>
+		<item name="backgroundSplit">@null</item>
+	</style>
+
+	<!-- Skin Chooser -->
+	<style name="AppThemeHolo.Transparent" parent="AppThemeHolo">
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:windowShowWallpaper">true</item>
+		<item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+		<item name="android:windowActionBarOverlay">true</item>
+		<item name="android:actionBarStyle">@style/ActionBarCompatHolo.Transparent</item>
+
+		<!-- Support library compatibility -->
+		<item name="actionBarStyle">@style/ActionBarCompatHolo.Transparent</item>
+		<item name="windowActionBarOverlay">true</item>
+	</style>
+
+</resources>

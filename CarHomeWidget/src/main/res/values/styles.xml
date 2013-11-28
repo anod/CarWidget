@@ -5,35 +5,6 @@
 
 	<style name="DialogTheme" parent="android:style/Theme.Dialog" />
 
-	<style name="AppThemeHolo" parent="@style/Theme.AppCompat">
-		<item name="panelItem">@style/panelItemBasic</item>
-		<item name="panelHeader">@style/panelHeaderBasic</item>
-		<item name="PreferencesItem">@style/PreferencesItem</item>
-		<item name="buttonStyle">@style/buttonStyleDefault</item>
-		<item name="activityBgColor">@android:color/transparent</item>
-		<item name="wizardTextItem">@style/wizardTextItemHolo</item>
-		<item name="textColor">@android:color/white</item>
-	</style>
-
-	<style name="AppThemeGray" parent="@style/Theme.AppCompat">
-		<item name="panelItem">@style/panelItemGray</item>
-		<item name="panelHeader">@style/panelHeaderGray</item>
-		<item name="PreferencesItem">@style/PreferencesItemGray</item>
-		<item name="buttonStyle">@style/buttonStyleGray</item>
-		<item name="activityBgColor">@color/activity_bg</item>
-		<item name="wizardTextItem">@style/wizardTextItemGray</item>
-		<item name="textColor">@color/font_color_dark</item>
-
-		<item name="actionBarStyle">@style/ActionBarCompatGrey</item>
-
-		<item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
-		<item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
-		<item name="android:windowBackground">@color/activity_bg</item>
-
-		<item name="android:preferenceStyle">@style/AppPreference</item>
-		<item name="android:listViewStyle">@style/AppListView</item>
-	</style>
-
 	<style name="AppListView" parent="@android:style/Widget.ListView">
 		<item name="android:paddingRight">12dp</item>
 		<item name="android:paddingLeft">12dp</item>
@@ -45,32 +16,11 @@
 		<item name="android:background">@drawable/panel_item_bg_grey</item>
 	</style>
 
-    <style name="ActionBarCompatGrey" parent="@style/Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/actionbar_bg_color</item>
-		<item name="background">@color/actionbar_bg_color</item>
-		<item name="backgroundStacked">@color/actionbar_bg_color</item>
-		<item name="backgroundSplit">@color/actionbar_bg_color</item>
-    </style>
 
 	<style name="textAlignStyle">
 		<item name="android:gravity">left</item>
 	</style>
 
-    <!-- Skin Chooser -->
-    <style name="AppThemeGray.Transparent" parent="AppThemeGray">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowShowWallpaper">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
-
-	</style>
-
-	<!-- Skin Chooser -->
-	<style name="AppThemeHolo.Transparent" parent="AppThemeHolo">
-		<item name="android:windowBackground">@android:color/transparent</item>
-		<item name="android:windowShowWallpaper">true</item>
-		<item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
-
-	</style>
 
     <!-- Skins -->
     <style name="glass_btn">

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    
-    <dimen name="actionbar_compat_height">38dp</dimen>
+	<!--
+	<dimen name="action_bar_default_height">40dip</dimen>
+	//-->
+	<dimen name="actionbar_padding">0dp</dimen>
 
 	<dimen name="skin_padding_horiz">0dp</dimen>
 	<dimen name="skin_padding_vert">0dp</dimen>
