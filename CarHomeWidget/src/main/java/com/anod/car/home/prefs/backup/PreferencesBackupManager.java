@@ -285,10 +285,7 @@ public class PreferencesBackupManager {
 	}
 	
 	private File getMainBackupDir() {
-        StringBuilder sb = new StringBuilder(getBackupDir().getPath());
-        sb.append(File.separator);
-        sb.append(BACKUP_MAIN_DIRNAME);
-        return new File(sb.toString());
+		return new File(getBackupDir().getPath() + File.separator + BACKUP_MAIN_DIRNAME);
 	}
 	
 	private boolean checkMediaWritable() {

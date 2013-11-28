@@ -127,13 +127,9 @@ public class MainActivity extends CarWidgetActivity {
 		}
 
 		String active = getActiveString(widgetsCount);
-		StringBuilder incarTitle = new StringBuilder();
-		incarTitle.append(getString(R.string.pref_incar_mode_title));
-		incarTitle.append(" - ");
-		incarTitle.append(active);
 
 		TextView incarTitleView = (TextView)findViewById(R.id.incarTitle);
-		incarTitleView.setText(incarTitle.toString());
+		incarTitleView.setText(getString(R.string.pref_incar_mode_title) + " - " + active);
 
 		Button backup = (Button) findViewById(R.id.incarBackup);
 		backup.setOnClickListener(new View.OnClickListener() {

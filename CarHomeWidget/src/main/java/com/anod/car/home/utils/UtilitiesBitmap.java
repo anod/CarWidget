@@ -102,12 +102,12 @@ public class UtilitiesBitmap {
 
 	public static int getHigherDensity(int deviceDensity) {
 
-		if (HAS_HIRES_SUPPORT == false) {
+		if (!HAS_HIRES_SUPPORT) {
 			return deviceDensity;
 		}
 
 		if (deviceDensity <= DisplayMetrics.DENSITY_TV) {
-			return DisplayMetrics.DENSITY_XHIGH;
+			return DisplayMetrics.DENSITY_XXHIGH;
 		} else if (deviceDensity < DisplayMetrics.DENSITY_XXXHIGH) {
 			return DisplayMetrics.DENSITY_XXXHIGH;
 		}

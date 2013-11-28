@@ -66,8 +66,6 @@
 	</plurals>
 	<string name="version_title">%1$s גרסה %2$s</string>
 	<string name="version_summary">נא דרג את הוודג\'ט במרקט</string>
-	<string name="other_title">יישומים אחרים</string>
-	<string name="other_summary">תראו היישומים שלי</string>
 	<string name="shortcut_edit_title">עריכת קיצור דרך</string>
 	<string name="shortcut_edit_hint">לחץ על האייקון כדי לשנות אותו</string>
 	<string name="photo_picker_not_found">לא נמצאו תמונות בטלפון</string>
@@ -113,7 +111,6 @@
 	<string name="cardock_btn_1">לפתוח פרטי יישום</string>
 	<string name="cardock_text1">על מנת לנקות את יישום ברירת מחדל נוכחי:\n1.פתח פרטי יישום\n2.לחץ על כפתור \"נקה ברירת מחדל\" </string>
 	<string name="cardock_text2">בפעם הבאה כאשר Car Dock יופעל, בחר \"ווידג\'ט לרכב\" כיישום ברירת מחדל.</string>
-	<string name="open_folder">פתח תיקייה</string>
 	<string name="car_widget_shortcuts">ווידג\'ט לרכב קיצור דרך</string>
 	<string name="car_widget_pro_shortcuts">ווידג\'ט פרו לרכב קיצור דרך</string>
 	<string name="select_shortcut_title">בחר קיצור דרך</string>
@@ -161,7 +158,6 @@
 	<string name="information_title">מידע</string>
 	<string name="issue_title">משוב</string>
 	<string name="applications">יישומים</string>
-	<string name="pref_skin">סקין</string>
 	<string name="pref_wifi">Wi-Fi</string>
 	<string name="transparent">שקוף</string>
 	<string name="dialog_title_select">בחר</string>
@@ -172,8 +168,6 @@
 	<string name="backup">גיבוי</string>
 	<string name="restore">שחזור</string>
 	<string name="backup_save">לשמור</string>
-	<string name="apply">שמור</string>
-	<string name="selected">נבחר</string>
 	<string name="settings">הגדרות</string>
 	<string name="more">עוד...</string>
 	<string name="none">אין</string>

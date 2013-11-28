@@ -111,8 +111,8 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 		mShortcuts.put(position, info);
 		if (info != null) {
 			mModel.addItemToDatabase(mContext, info, position);
+			saveShortcutId(position, info.id);
 		}
-		saveShortcutId(position, info.id);
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class WidgetsListActivity extends FragmentActivity {
 		if (appWidgetIds.length == 1 && appWidgetIds[0] != AppWidgetManager.INVALID_APPWIDGET_ID) {
 			startConfigActivity(appWidgetIds[0]);
 			return;
-		};
+		}
 
 		if (savedInstanceState == null) {
 			// to give support on lower android version, we are not calling getFragmentManager()

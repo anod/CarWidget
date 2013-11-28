@@ -62,7 +62,6 @@ public class ShortcutEditActivity extends Activity {
 	private LauncherModel mModel;
 	private ShortcutInfo mShortcutInfo;
 	private Intent mIntent;
-	private File mTempFile;
 	private Bitmap mIconDefault;
 
 	@Override
@@ -134,10 +133,10 @@ public class ShortcutEditActivity extends Activity {
 	private void iconDialogClick(final int item) {
 		Intent chooseIntent;
 		if (item == PICK_CUSTOM_ICON) {
-			mTempFile = getFileStreamPath("tempImage");
+			File tempFile = getFileStreamPath("tempImage");
 			chooseIntent = new Intent(Intent.ACTION_GET_CONTENT);
 			chooseIntent.setType(MIME_IMAGE);
-			chooseIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTempFile));
+			chooseIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
 			chooseIntent.putExtra("outputFormat",Bitmap.CompressFormat.PNG.name());
 			Utils.startActivityForResultSafetly(chooseIntent, PICK_CUSTOM_ICON, this);
 		} else if (item == PICK_ADW_ICON_PACK) {

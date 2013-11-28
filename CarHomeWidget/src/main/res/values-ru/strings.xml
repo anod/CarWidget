@@ -68,8 +68,6 @@
 	</plurals>
 	<string name="version_title">%1$s вер. %2$s</string>
 	<string name="version_summary">Пожалуйста, оцените этот виджет на маркете</string>
-	<string name="other_title">Другие приложения</string>
-	<string name="other_summary">Посмотрите на мои приложения</string>
 	<string name="shortcut_edit_title">Изменить ярлык</string>
 	<string name="shortcut_edit_hint">Нажмите на икону, чтобы изменить его</string>
 	<string name="photo_picker_not_found">Нет доступных изображений на телефоне.</string>
@@ -115,7 +113,6 @@
 	<string name="cardock_btn_1">Открыть \"О приложении\"</string>
 	<string name="cardock_text1">Чтобы очистить текущее приложение запускаемое по умолчанию:\n1. Откройте \"О приложении\"\n2. Нажмите на кнопку \"Удалить настройки по умолчанию\"</string>
 	<string name="cardock_text2">В следующий раз при подключении Car Dock выберите \"Авто Виджет\" приложением по умолчанию.</string>
-	<string name="open_folder">Открыть папку</string>
 	<string name="car_widget_shortcuts">Авто виджет ярлыки</string>
 	<string name="car_widget_pro_shortcuts">Авто виджет Pro ярлыки</string>
 	<string name="select_shortcut_title">Выберите ярлык</string>
@@ -165,7 +162,6 @@
 	<string name="information_title">Информация</string>
 	<string name="issue_title">Обратная связь</string>
 	<string name="applications">Приложения</string>
-	<string name="pref_skin">Тема</string>
 	<string name="pref_wifi">Wi-Fi</string>
 	<string name="transparent">Прозрачные</string>
 	<string name="dialog_title_select">Выбрать</string>
@@ -176,8 +172,6 @@
 	<string name="backup">Сохранить</string>
 	<string name="restore">Восстановить</string>
 	<string name="backup_save">Сохранить</string>
-	<string name="apply">Применить</string>
-	<string name="selected">Выбран</string>
 	<string name="settings">Настройки</string>
 	<string name="more">Еще&#8230;</string>
 	<string name="none">Нет</string>

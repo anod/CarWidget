@@ -19,7 +19,7 @@ import com.anod.car.home.skin.IconProcessor;
 public class BitmapTransform {
 	private int mIconSize = -1;
 
-	public enum RotateDirection { NONE, RIGHT, LEFT };
+	public enum RotateDirection { NONE, RIGHT, LEFT }
 
 	private boolean mApplyGrayFilter = false;
 	private Integer mTintColor = null;
