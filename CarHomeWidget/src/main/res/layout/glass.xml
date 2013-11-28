@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/glass_container"
-                    android:paddingBottom="25.0dp"
+
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
@@ -62,7 +62,7 @@
                     android:background="@drawable/glass_container"
                     android:drawablePadding="5.0dip"
                     android:gravity="center"
-                    android:paddingBottom="25.0dp"
+
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
@@ -100,7 +100,7 @@
                     android:background="@drawable/glass_container"
                     android:drawablePadding="5.0dip"
                     android:gravity="center"
-                    android:paddingBottom="25.0dp"
+
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
@@ -130,7 +130,7 @@
                     android:background="@drawable/glass_container"
                     android:drawablePadding="5.0dip"
                     android:gravity="center"
-                    android:paddingBottom="25.0dp"
+
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
@@ -168,7 +168,7 @@
                     android:background="@drawable/glass_container"
                     android:drawablePadding="5.0dip"
                     android:gravity="center"
-                    android:paddingBottom="25.0dp"
+
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
@@ -198,7 +198,7 @@
                     android:background="@drawable/glass_container"
                     android:drawablePadding="5.0dip"
                     android:gravity="center"
-                    android:paddingBottom="25.0dp"
+
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView

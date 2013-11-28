@@ -31,7 +31,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
 					android:background="@drawable/btn_default_holo_light"
-                    android:paddingBottom="25.0dp"
+
                     android:src="@drawable/ic_add_shortcut_holo" />
 
                 <TextView
@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
 					android:background="@drawable/btn_default_holo_light"
-                    android:paddingBottom="25.0dp"
+
                     android:src="@drawable/ic_add_shortcut_holo" />
 
                 <TextView
@@ -72,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
 					android:background="@drawable/btn_default_holo_light"
-                    android:paddingBottom="25.0dp"
+
                     android:src="@drawable/ic_add_shortcut_holo" />
 
                 <TextView
@@ -99,7 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
 					android:background="@drawable/btn_default_holo_light"
-                    android:paddingBottom="25.0dp"
+
                     android:src="@drawable/ic_add_shortcut_holo" />
 
                 <TextView
@@ -119,7 +119,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
 					android:background="@drawable/btn_default_holo_light"
-                    android:paddingBottom="25.0dp"
+
                     android:src="@drawable/ic_add_shortcut_holo" />
 
                 <TextView
@@ -139,7 +139,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
 					android:background="@drawable/btn_default_holo_light"
-                    android:paddingBottom="25.0dp"
+
                     android:src="@drawable/ic_add_shortcut_holo" />
 
                 <TextView

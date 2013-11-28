@@ -3,6 +3,8 @@ package com.anod.car.home.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.LightingColorFilter;
 import android.graphics.Matrix;
@@ -10,8 +12,8 @@ import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
-import com.anod.car.home.R;
 import com.anod.car.home.skin.IconProcessor;
 
 public class BitmapTransform {
@@ -19,8 +21,6 @@ public class BitmapTransform {
 
 	private final Rect mOldBounds = new Rect();
 	private final Canvas mCanvas = new Canvas();
-	private final Matrix mMatrix = new Matrix();
-	private final ColorMatrixColorFilter mGreyColorMatrixColorFilter;
 	private final Context mContext;
 	
 	public enum RotateDirection { NONE, RIGHT, LEFT };
@@ -29,21 +29,12 @@ public class BitmapTransform {
 	private Integer mTintColor = null;
 	private float mScaleSize = 1.0f;
 	private RotateDirection mRotateDirection = RotateDirection.NONE;
-	private int mPaddingTop = 0;
+	private int mPaddingBottom = 0;
 	private IconProcessor mIconProcessor;
-	
-	private static final float[] sGreyScaleMatrix = new float[] { 
-			0.5f, 0.5f, 0.5f, 0, 0, // red
-			0.5f, 0.5f, 0.5f, 0, 0, // green
-			0.5f, 0.5f, 0.5f, 0, 0, // blue
-			0, 0, 0, 1.0f, 0 // alpha
-	};
-	
+
 	public BitmapTransform(Context context) {
 		mCanvas.setDrawFilter(new PaintFlagsDrawFilter(Paint.DITHER_FLAG, Paint.FILTER_BITMAP_FLAG));
-		mGreyColorMatrixColorFilter = new ColorMatrixColorFilter(sGreyScaleMatrix);
 		mIconSize = UtilitiesBitmap.getSystemIconSize(context);
-		mCanvas.setDrawFilter(new PaintFlagsDrawFilter(4, 2));
 		mContext = context;
 	}
 	
@@ -64,16 +55,11 @@ public class BitmapTransform {
 
 	public BitmapTransform setRotateDirection(RotateDirection dir) {
 		mRotateDirection = dir;
-		if (dir != RotateDirection.NONE) {
-			mMatrix.postRotate((dir == RotateDirection.LEFT) ? 90 : 270);
-		} else {
-			mMatrix.postRotate(0);
-		}
 		return this;
 	}
 
-	public BitmapTransform setPaddingTop(int paddingTop) {
-		mPaddingTop = paddingTop;
+	public BitmapTransform setPaddingBottom(int paddingBottom) {
+		mPaddingBottom = paddingBottom;
 		return this;
 	}
 	
@@ -84,66 +70,73 @@ public class BitmapTransform {
 	}
 
 	public Bitmap transform(Bitmap src) {
-		Bitmap output = src;
-		
+
+		int height = src.getHeight();
+		int width = src.getWidth();
+
+		int degrees = 0;
 		if (mRotateDirection != RotateDirection.NONE) {
-			output = rotate(output);
+			degrees = (mRotateDirection == RotateDirection.LEFT) ? 90 : 270;
 		}
-		
+
+		Paint paint = new Paint();
+
 		if (mApplyGrayFilter) {
-			output = applyBitmapFilter(output);
+			final ColorMatrix cm = new ColorMatrix();
+			cm.setSaturation(0);
+
+			if (mTintColor != null) {
+
+				float r = Color.red(mTintColor)/255.0f;
+				float g = Color.green(mTintColor)/255.0f;
+				float b = Color.blue(mTintColor)/255.0f;
+
+				float[] matrix = {
+						r, 0, 0, 0, 0, //red
+						0, g, 0, 0, 0,//green
+						0, 0, b, 0, 0, //blue
+						0, 0, 0, 1.0f, 0 //alpha
+				};
+
+				cm.postConcat(new ColorMatrix(matrix));
+			}
+
+			ColorMatrixColorFilter filter = new ColorMatrixColorFilter(cm);
+			paint.setColorFilter(filter);
 		}
-		if (mTintColor != null) {
-			applyTint(output, mTintColor);
-		}
+
+
+		paint.setFilterBitmap(true);
+
+		float middleX = width / 2.0f;
+		float middleY = height / 2.0f;
+
+
+		Matrix matrix = new Matrix();
+		matrix.postRotate(degrees, middleX, middleY);
+
+		//height += mPaddingBottom;
+
+		Bitmap output = Bitmap.createBitmap(width, height + mPaddingBottom, Bitmap.Config.ARGB_8888);
+		mCanvas.setBitmap(output);
+
+		mCanvas.setMatrix(matrix);
+		mCanvas.drawBitmap(src, 0, 0, paint);
+
+
 
 		float sizeDiff = 0;
 		if (mIconProcessor != null) {
 			output = mIconProcessor.process(output);
 			sizeDiff = mIconProcessor.getSizeDiff();
 		}
-		
-		if (mPaddingTop > 0) {
-			output = pad(output, 0, mPaddingTop);
-		}
 
 
-		boolean doScale = (mScaleSize > 1.0f);
-		int height = src.getHeight();
-		int width = src.getWidth();
-		int size = (height > width) ? height : width;
-		if (size > 0 && size != mIconSize) {
-			doScale = true;
-		}
+//		output = scale(output, mScaleSize, sizeDiff );
 
-		if (doScale) {
-			output = scale(output, mScaleSize, sizeDiff );
-		}
-		
 		return output;
 	}
-	
-	private final Bitmap applyBitmapFilter(Bitmap src) {
-		final Bitmap bitmap = Bitmap.createBitmap(mIconSize, mIconSize, Bitmap.Config.ARGB_8888);
-		mCanvas.setBitmap(bitmap);
 
-		BitmapDrawable d = new BitmapDrawable(mContext.getResources(), src);
-		mOldBounds.set(d.getBounds());
-		d.setBounds(0, 0, mIconSize, mIconSize);
-		d.setColorFilter(mGreyColorMatrixColorFilter);
-		d.draw(mCanvas);
-		d.setBounds(mOldBounds);
-		return bitmap;
-	}
-
-	private void applyTint(Bitmap src, int color) {
-		Paint p = new Paint(color);
-		LightingColorFilter filter = new LightingColorFilter(color, 0);
-		p.setColorFilter(filter);
-
-		mCanvas.drawBitmap(src, 0, 0, p);
-	}
-	
 	private final Bitmap scale(Bitmap src, float scale, float sizeDiff) {
 		int min = 0;
 		if (sizeDiff > 0) {
@@ -171,17 +164,17 @@ public class BitmapTransform {
 	}
 	
 
-	private final Bitmap pad(Bitmap src, int left, int top){
-		final Bitmap bitmap = Bitmap.createBitmap(mIconSize + left, mIconSize + top, Bitmap.Config.ARGB_8888);
+	private final Bitmap pad(Bitmap src, int bottom){
+		int height = src.getHeight();
+		int width = src.getWidth();
+		final Bitmap bitmap = Bitmap.createBitmap(width, height + bottom, Bitmap.Config.ARGB_8888);
 		mCanvas.setBitmap(bitmap);
 		mCanvas.drawColor(android.R.color.transparent);
-		mCanvas.drawBitmap(src, left, top, null);
+		mCanvas.drawBitmap(src, 0, 0, null);
+
 
 		return bitmap;
 	}
 	
-	private final Bitmap rotate(Bitmap src) {
-		return Bitmap.createBitmap(src, 0, 0, mIconSize, mIconSize, mMatrix, true);
-	}
 
 }

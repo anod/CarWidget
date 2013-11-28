@@ -8,4 +8,5 @@ public interface SkinProperties {
 	int getLayout();
 	IconProcessor getIconProcessor();
 	int getSetShortcutText();
+	int getIconPaddingRes();
 }

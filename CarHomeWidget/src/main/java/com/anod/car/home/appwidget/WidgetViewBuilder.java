@@ -104,7 +104,7 @@ public class WidgetViewBuilder {
 			PreferencesStorage.setFirstTime(false, mContext, mAppWidgetId);
 		}
 		mSmodel.init();
-		
+
 		mBitmapTransform = new BitmapTransform(mContext);
 		refreshIconTransform();
 		return this;
@@ -132,6 +132,13 @@ public class WidgetViewBuilder {
 		float scaledDensity = r.getDisplayMetrics().scaledDensity;
 
 		SkinProperties skinProperties = PropertiesFactory.create(skinName, mIsKeyguard);
+
+
+		int iconPaddingRes = skinProperties.getIconPaddingRes();
+		if (iconPaddingRes > 0 && !mPrefs.isTitlesHide()) {
+			int iconPadding = (int)r.getDimension(iconPaddingRes);
+			mBitmapTransform.setPaddingBottom(iconPadding);
+		}
 
 		RemoteViews views = new RemoteViews(packageName, skinProperties.getLayout());
 
@@ -169,11 +176,15 @@ public class WidgetViewBuilder {
 			}
 
 			if (info == null) {
-				setNoShortcut(res, resText, mPrefs, views, cellId, skinProperties);
+				setNoShortcut(res, resText, views, cellId, skinProperties);
 			} else {
-				setShortcut(res, resText, info, mPrefs, views, cellId, themeIcons);
+				setShortcut(res, resText, info, views, cellId, themeIcons);
 			}
-			setFont(mPrefs, resText, scaledDensity, views);
+			if (mPrefs.isTitlesHide()) {
+				views.setViewVisibility(resText, View.GONE);
+			} else {
+				setFont(resText, scaledDensity, views);
+			}
 			if (skinName.equals(Main.SKIN_WINDOWS7)) {
 				setTile(mPrefs.getTileColor(), res, views);
 			}
@@ -225,7 +236,7 @@ public class WidgetViewBuilder {
 				bt.setTintColor(prefs.getIconsColor());
 			}
 		}
-		
+
 		float iconScale = Utils.calcIconsScale(prefs.getIconsScale());
 		if (iconScale > 1.0f) {
 			bt.setScaleSize(iconScale);
@@ -263,10 +274,10 @@ public class WidgetViewBuilder {
 
 	}
 
-	private void setFont(Main prefs, int resText, float scaledDensity, RemoteViews views) {
-		views.setTextColor(resText, prefs.getFontColor());
-		if (prefs.getFontSize() != Main.FONT_SIZE_UNDEFINED) {
-			if (prefs.getFontSize() == 0) {
+	private void setFont(int resText, float scaledDensity, RemoteViews views) {
+		views.setTextColor(resText, mPrefs.getFontColor());
+		if (mPrefs.getFontSize() != Main.FONT_SIZE_UNDEFINED) {
+			if (mPrefs.getFontSize() == 0) {
 				views.setViewVisibility(resText, View.GONE);
 			} else {
 				/*
@@ -275,7 +286,7 @@ public class WidgetViewBuilder {
 				 * scaled pixel format so we revert it to pixels to get properly
 				 * converted after re-applying setTextSize function
 				 */
-				float cSize = (float) prefs.getFontSize() / scaledDensity;
+				float cSize = (float) mPrefs.getFontSize() / scaledDensity;
 
 				views.setFloat(resText, "setTextSize", cSize);
 				views.setViewVisibility(resText, View.VISIBLE);
@@ -293,12 +304,10 @@ public class WidgetViewBuilder {
 		}
 	}
 
-	private void setNoShortcut(int res, int resText, Main prefs, RemoteViews views, int cellId, SkinProperties skinProp) {
+	private void setNoShortcut(int res, int resText,RemoteViews views, int cellId, SkinProperties skinProp) {
 		views.setImageViewResource(res, skinProp.getSetShortcutRes());
 
-		if (prefs.isTitlesHide()) {
-			views.setViewVisibility(resText, View.GONE);
-		} else {
+		if (!mPrefs.isTitlesHide()) {
 			String title = mContext.getResources().getString(skinProp.getSetShortcutText());
 			views.setTextViewText(resText, title);
 		}
@@ -309,14 +318,12 @@ public class WidgetViewBuilder {
 		}
 	}
 
-	private void setShortcut(int res, int resText, ShortcutInfo info, Main prefs, RemoteViews views, int cellId, IconTheme themeIcons) {
+	private void setShortcut(int res, int resText, ShortcutInfo info, RemoteViews views, int cellId, IconTheme themeIcons) {
 		Bitmap icon = getShortcutIcon(info, themeIcons);
 		icon = mBitmapTransform.transform(icon);
 		views.setBitmap(res, "setImageBitmap", icon);
 
-		if (prefs.isTitlesHide()) {
-			views.setViewVisibility(resText, View.GONE);
-		} else {
+		if (!mPrefs.isTitlesHide()) {
 			String title = String.valueOf(info.title);
 			views.setTextViewText(resText, title);
 		}

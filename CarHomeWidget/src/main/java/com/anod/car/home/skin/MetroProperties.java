@@ -19,4 +19,6 @@ public class MetroProperties extends BaseProperties {
 		return R.layout.windows7;
 	}
 
+	@Override
+	public int getIconPaddingRes() { return 0; }
 }

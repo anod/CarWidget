@@ -25,7 +25,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
 					android:background="@drawable/btn_default_holo_light"
-					android:paddingBottom="25.0dp"
+
 					android:src="@drawable/ic_add_shortcut"/>
 
 			<TextView
@@ -46,7 +46,7 @@
 					android:background="@drawable/btn_default_holo_light"
 					android:drawablePadding="5.0dip"
 					android:gravity="center"
-					android:paddingBottom="25.0dp"
+
 					android:src="@drawable/ic_add_shortcut"/>
 
 			<TextView
@@ -75,7 +75,7 @@
 					android:background="@drawable/btn_default_holo_light"
 					android:drawablePadding="5.0dip"
 					android:gravity="center"
-					android:paddingBottom="25.0dp"
+
 					android:src="@drawable/ic_add_shortcut"/>
 
 			<TextView
@@ -96,7 +96,7 @@
 					android:background="@drawable/btn_default_holo_light"
 					android:drawablePadding="5.0dip"
 					android:gravity="center"
-					android:paddingBottom="25.0dp"
+
 					android:src="@drawable/ic_add_shortcut"/>
 
 			<TextView
@@ -125,7 +125,7 @@
 					android:background="@drawable/btn_default_holo_light"
 					android:drawablePadding="5.0dip"
 					android:gravity="center"
-					android:paddingBottom="25.0dp"
+
 					android:src="@drawable/ic_add_shortcut"/>
 
 			<TextView
@@ -146,7 +146,7 @@
 					android:background="@drawable/btn_default_holo_light"
 					android:drawablePadding="5.0dip"
 					android:gravity="center"
-					android:paddingBottom="25.0dp"
+
 					android:src="@drawable/ic_add_shortcut"/>
 
 			<TextView

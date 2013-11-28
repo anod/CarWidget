@@ -28,5 +28,7 @@ public abstract class BaseProperties implements SkinProperties {
 	public int getSetShortcutText() {
 		return R.string.set_shortcut;
 	}
-	
+
+	@Override
+	public int getIconPaddingRes() { return R.dimen.icon_padding_bottom; }
 }
