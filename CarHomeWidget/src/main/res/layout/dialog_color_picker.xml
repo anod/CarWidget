@@ -27,7 +27,9 @@
 		android:id="@+id/color_picker_view"
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
-		style="@style/dialog_color_pciker_view_portrait"
+		android:layout_width="240dp"
+		android:layout_height="wrap_content"
+
 	/>
 		
 	<LinearLayout
@@ -37,7 +39,7 @@
 	android:layout_marginTop="10dp"
 	android:layout_below="@id/color_picker_view"
 	android:layout_alignLeft="@id/color_picker_view"
-	android:layout_alignRight="@id/color_picker_view" android:id="@+id/linearLayout">
+	android:layout_alignRight="@id/color_picker_view" android:id="@+id/linearLayout" android:layout_centerHorizontal="true">
 	
 		<afzkl.development.colorpickerview.view.ColorPanelView
 			android:id="@id/color_panel_old"
@@ -45,10 +47,10 @@
 			android:layout_height="fill_parent"
 			android:layout_weight="0.5"
 		/>
-	
+
 		<TextView
 			android:layout_width="wrap_content"
-			android:layout_height="fill_parent"	
+			android:layout_height="fill_parent"
 			android:text="→"
 			android:textSize="20sp"
 			android:gravity="center"
@@ -56,14 +58,14 @@
 			android:layout_marginLeft="10dp"
 			android:layout_marginRight="10dp"
 		/>
-	
+
 		<afzkl.development.colorpickerview.view.ColorPanelView
 			android:id="@id/color_panel_new"
 			android:layout_width="0px"
 			android:layout_height="fill_parent"
 			android:layout_weight="0.5"
 		/>
-	
+
 	</LinearLayout>
 
 	<LinearLayout
