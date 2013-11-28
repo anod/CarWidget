@@ -136,6 +136,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">left|bottom</item>
+		<item name="android:scaleType">fitStart</item>
     </style>
 
     <style name="incarButton" parent="android:Widget.Holo.Light.ImageButton">

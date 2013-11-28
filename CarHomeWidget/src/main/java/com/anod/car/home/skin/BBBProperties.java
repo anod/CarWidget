@@ -34,4 +34,7 @@ public class BBBProperties extends BaseProperties {
 	public int getSetShortcutText() {
 		return R.string.set_shortcut_short;
 	}
+
+	@Override
+	public int getIconPaddingRes() { return 0; }
 }

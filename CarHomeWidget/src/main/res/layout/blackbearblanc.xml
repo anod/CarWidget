@@ -34,7 +34,7 @@
                 <ImageView
                     android:id="@+id/btn0"
                     style="@style/bbb_btn_icon"
-                    android:src="@drawable/ic_add_shortcut_holo" />
+                    android:src="@drawable/ic_add_shortcut_holo"/>
             </FrameLayout>
 
             <FrameLayout style="@style/bbb_btn" >
