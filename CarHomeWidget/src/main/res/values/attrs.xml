@@ -16,11 +16,6 @@
 
 <resources>
 
-    <declare-styleable name="AppThemeGray">
-        <attr name="actionbarCompatTitleStyle" format="reference" />
-        <attr name="actionbarCompatItemStyle" format="reference" />
-        <attr name="actionbarCompatItemHomeStyle" format="reference" />
-    </declare-styleable>
 
 	<attr name="panelItem" format="reference" />
 	<attr name="panelHeader" format="reference" />
@@ -29,4 +24,8 @@
 	<attr name="activityBgColor" format="reference" />
 	<attr name="wizardTextItem" format="reference" />
 	<attr name="textColor" format="reference" />
+
+	<attr name="textColorPrimary" format="reference" />
+	<attr name="textColorSecondary" format="reference" />
+
 </resources>

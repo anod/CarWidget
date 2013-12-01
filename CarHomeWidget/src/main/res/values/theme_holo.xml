@@ -10,8 +10,14 @@
 		<item name="wizardTextItem">@style/wizardTextItemHolo</item>
 		<item name="textColor">@android:color/white</item>
 
+		<item name="android:actionBarStyle">@style/ActionBarCompatHolo</item>
 		<item name="actionBarStyle">@style/ActionBarCompatHolo</item>
+
+		<item name="textColorPrimary">?android:attr/textColorPrimary</item>
+		<item name="textColorSecondary">?android:attr/textColorSecondary</item>
+
 	</style>
+
 
 	<style name="ActionBarCompatHolo" parent="@style/Widget.AppCompat.ActionBar">
 

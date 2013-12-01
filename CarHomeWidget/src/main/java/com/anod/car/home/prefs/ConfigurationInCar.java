@@ -30,11 +30,14 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
+import android.preference.TwoStatePreference;
 import android.support.v4.preference.PreferenceFragment;
 
 import com.anod.car.home.R;
+import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
+import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.incar.ModeBroadcastReceiver;
 import com.anod.car.home.incar.SamsungDrivingMode;
 import com.anod.car.home.prefs.preferences.InCar;
@@ -46,6 +49,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 public class ConfigurationInCar extends ConfigurationFragment {
+
 	private static final String MEDIA_SCREEN = "media-screen";
 	private static final String SCREEN_BT_DEVICE = "bt-device-screen";
 	private static final String CATEGORY_BT_DEVICE = "bt-device-category";
@@ -141,8 +145,37 @@ public class ConfigurationInCar extends ConfigurationFragment {
 	private void initInCar() {
 		InCar incar = PreferencesStorage.loadInCar(mContext);
 
-		final CheckBoxPreference pref = (CheckBoxPreference) findPreference(PreferencesStorage.SCREEN_TIMEOUT);
-		pref.setChecked(incar.isDisableScreenTimeout());
+		int[] appWidgetIds = WidgetHelper.getAllWidgetIds(mContext);
+		final int widgetsCount = appWidgetIds.length;
+
+		final TwoStatePreference incarSwitch = (TwoStatePreference) findPreference(PreferencesStorage.INCAR_MODE_ENABLED);
+
+		if (widgetsCount == 0) {
+			incarSwitch.setEnabled(false);
+			incarSwitch.setSummary(R.string.please_add_widget);
+		} else {
+			incarSwitch.setEnabled(true);
+			incarSwitch.setSummary("");
+		}
+
+		incarSwitch.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				if ((Boolean)newValue) {
+					final Intent updateIntent = new Intent(mContext, BroadcastService.class);
+					mContext.startService(updateIntent);
+				} else if (BroadcastService.sRegistred) {
+					final Intent updateIntent = new Intent(mContext, BroadcastService.class);
+					mContext.stopService(updateIntent);
+				}
+				return true;
+			}
+		});
+
+
+
+		final CheckBoxPreference timeout = (CheckBoxPreference) findPreference(PreferencesStorage.SCREEN_TIMEOUT);
+		timeout.setChecked(incar.isDisableScreenTimeout());
 
 		initBluetooth();
 		initAutorunApp(incar);

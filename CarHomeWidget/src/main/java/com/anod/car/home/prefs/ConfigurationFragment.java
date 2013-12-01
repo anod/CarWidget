@@ -6,19 +6,25 @@ import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.support.v4.preference.PreferenceFragment;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
+import com.google.android.gms.internal.r;
 
 /**
  * @author alex
@@ -90,9 +96,21 @@ abstract public class ConfigurationFragment extends PreferenceFragment {
 
 		mContext = (Context) getActivity();
 
+
+
 		onCreateImpl(savedInstanceState);
 	}
 
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		ListView lv = getListView();
+		Resources r = getResources();
+
+		lv.setDivider(r.getDrawable(android.R.color.transparent));
+		lv.setDividerHeight(r.getDimensionPixelSize(R.dimen.preference_item_margin));
+	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {

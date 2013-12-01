@@ -18,8 +18,12 @@
 		<item name="android:preferenceStyle">@style/AppPreference</item>
 		<item name="android:listViewStyle">@style/AppListView</item>
 
-
+		<item name="android:actionBarStyle">@style/ActionBarCompatGrey</item>
 		<item name="actionBarStyle">@style/ActionBarCompatGrey</item>
+
+		<item name="textColorPrimary">@color/primary_text_grey</item>
+		<item name="textColorSecondary">@color/secondary_text_grey</item>
+
 	</style>
 
 	<style name="AppThemeGray.Transparent" parent="AppThemeGray">
