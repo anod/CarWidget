@@ -148,7 +148,7 @@ public class ConfigurationInCar extends ConfigurationFragment {
 		int[] appWidgetIds = WidgetHelper.getAllWidgetIds(mContext);
 		final int widgetsCount = appWidgetIds.length;
 
-		final TwoStatePreference incarSwitch = (TwoStatePreference) findPreference(PreferencesStorage.INCAR_MODE_ENABLED);
+		Preference incarSwitch = findPreference(PreferencesStorage.INCAR_MODE_ENABLED);
 
 		if (widgetsCount == 0) {
 			incarSwitch.setEnabled(false);

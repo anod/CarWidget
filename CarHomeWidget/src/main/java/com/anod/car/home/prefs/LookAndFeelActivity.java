@@ -142,7 +142,12 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 			protected int sizeOf(String key, Bitmap bitmap) {
 				// The cache size will be measured in kilobytes rather than
 				// number of items.
-				return bitmap.getByteCount() / 1024;
+
+				if (Utils.IS_HONEYCOMB_MR1_OR_GREATER) {
+					return bitmap.getByteCount() / 1024;
+				}
+				// Pre HC-MR1
+				return (bitmap.getRowBytes() * bitmap.getHeight()) / 1024;
 			}
 		};
 	}
