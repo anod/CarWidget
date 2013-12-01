@@ -21,4 +21,9 @@ public class BBBIconProcessor implements IconProcessor {
 		return SIZE_DIFF;
 	}
 
+	@Override
+	public String id() {
+		return "bbb";
+	}
+
 }
