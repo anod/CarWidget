@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.util.LruCache;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -57,6 +58,12 @@ public class WidgetViewBuilder {
 	private BitmapTransform mBitmapTransform;
 	private boolean mIsKeyguard = false;
 	private int mWidgetHeightDp = -1;
+	private LruCache<String, Bitmap> mBitmapMemoryCache;
+
+	public WidgetViewBuilder setBitmapMemoryCache(LruCache<String, Bitmap> bitmapMemoryCache) {
+		mBitmapMemoryCache = bitmapMemoryCache;
+		return this;
+	}
 
 	public interface PendingIntentHelper {
 		PendingIntent createSettings(int appWidgetId, int cellId);
@@ -133,7 +140,6 @@ public class WidgetViewBuilder {
 
 		SkinProperties skinProperties = PropertiesFactory.create(skinName, mIsKeyguard);
 
-
 		int iconPaddingRes = skinProperties.getIconPaddingRes();
 		if (iconPaddingRes > 0 && !mPrefs.isTitlesHide()) {
 			int iconPadding = (int)r.getDimension(iconPaddingRes);
@@ -146,6 +152,8 @@ public class WidgetViewBuilder {
 
 		if (mPrefs.isSettingsTransparent()) {
 			views.setImageViewResource(R.id.btn_settings, R.drawable.btn_transparent);
+		} else {
+			views.setImageViewResource(R.id.btn_settings, skinProperties.getSettingsButtonRes());
 		}
 
 		SparseArray<ShortcutInfo> shortcuts = mSmodel.getShortcuts();
@@ -153,7 +161,6 @@ public class WidgetViewBuilder {
 		setBackground(mPrefs, views);
 
 		mBitmapTransform.setIconProcessor(skinProperties.getIconProcessor());
-		
 
 
 		String themePackage = mPrefs.getIconsTheme();
@@ -319,8 +326,17 @@ public class WidgetViewBuilder {
 	}
 
 	private void setShortcut(int res, int resText, ShortcutInfo info, RemoteViews views, int cellId, IconTheme themeIcons) {
-		Bitmap icon = getShortcutIcon(info, themeIcons);
-		icon = mBitmapTransform.transform(icon);
+
+		String themePackage = (themeIcons == null) ? "null" : themeIcons.getPackageName();
+		String transformKey = mBitmapTransform.getCacheKey();
+		final String imageKey = String.valueOf(info.id)+":"+themePackage+":"+transformKey;
+
+		Bitmap icon = getBitmapFromMemCache(imageKey);
+		if (icon == null) {
+			icon = getShortcutIcon(info, themeIcons);
+			icon = mBitmapTransform.transform(icon);
+			addBitmapToMemCache(imageKey, icon);
+		}
 		views.setBitmap(res, "setImageBitmap", icon);
 
 		if (!mPrefs.isTitlesHide()) {
@@ -354,6 +370,26 @@ public class WidgetViewBuilder {
 			return UtilitiesBitmap.createHiResIconBitmap(iconDrawable, mContext);
 		}
 		return info.getIcon();
+	}
+
+	public void addBitmapToMemCache(String key, Bitmap bitmap) {
+		if (mBitmapMemoryCache == null) {
+			return;
+		}
+		synchronized (mBitmapMemoryCache) {
+			if (getBitmapFromMemCache(key) == null) {
+				mBitmapMemoryCache.put(key, bitmap);
+			}
+		}
+	}
+
+	public Bitmap getBitmapFromMemCache(String key) {
+		if (mBitmapMemoryCache == null) {
+			return null;
+		}
+		synchronized (mBitmapMemoryCache) {
+			return mBitmapMemoryCache.get(key);
+		}
 	}
 }
 

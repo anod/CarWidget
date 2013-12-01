@@ -7,4 +7,6 @@ public interface IconProcessor {
 	Bitmap process(Bitmap icon);
 
 	float getSizeDiff();
+
+	String id();
 }

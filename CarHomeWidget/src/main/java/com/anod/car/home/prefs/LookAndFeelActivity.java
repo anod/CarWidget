@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.Html;
@@ -34,6 +35,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
@@ -70,6 +72,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 	
 	private static int[] sTextRes = { 0, 0, 0, 0, R.string.skin_info_bbb };
 	private boolean mIsKeyguard;
+	private LruCache<String, Bitmap> mBitmapMemoryCache;
 
 	interface SkinRefreshListener {
 		void refresh();
@@ -121,7 +124,27 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 		mGallery.setAdapter(adapter);
 		mGallery.setCurrentItem(mSelectedSkinPosition);
 
+		mBitmapMemoryCache = createBitmapMemoryCache();
 		showText(mCurrentPage);
+	}
+
+	private LruCache<String, Bitmap> createBitmapMemoryCache() {
+		// Get max available VM memory, exceeding this amount will throw an
+		// OutOfMemory exception. Stored in kilobytes as LruCache takes an
+		// int in its constructor.
+		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
+		// Use 1/8th of the available memory for this memory cache.
+		final int cacheSize = maxMemory / 8;
+
+		return new LruCache<String, Bitmap>(cacheSize) {
+			@Override
+			protected int sizeOf(String key, Bitmap bitmap) {
+				// The cache size will be measured in kilobytes rather than
+				// number of items.
+				return bitmap.getByteCount() / 1024;
+			}
+		};
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -140,7 +163,11 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 
 	public WidgetViewBuilder createBuilder() {
 		WidgetViewBuilder builder = new WidgetViewBuilder(this);
-		builder.setPendingIntentHelper(this).setAppWidgetId(mAppWidgetId).init();
+		builder
+			.setPendingIntentHelper(this)
+			.setAppWidgetId(mAppWidgetId)
+			.setBitmapMemoryCache(mBitmapMemoryCache)
+			.init();
 		return builder;
 	}
 
@@ -383,6 +410,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 
 	private void refreshSkinPreview() {
 		AppLog.d("Refresh Skin Requested");
+
 		mPrefs = mBuilder
 			.reloadShortcuts()
 			.reloadPrefs()

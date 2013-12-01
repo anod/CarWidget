@@ -41,6 +41,10 @@ public class IconTheme
 		mPkgName = packageName;
 	}
 
+	public String getPackageName() {
+		return mPkgName;
+	}
+
 	public boolean loadThemeResources() {
 		try {
 			mThemeResources = mContext.getPackageManager().getResourcesForApplication(mPkgName);

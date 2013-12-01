@@ -1,6 +1,7 @@
 package com.anod.car.home;
 
 import android.app.Application;
+import android.content.Context;
 import android.view.ViewConfiguration;
 
 import com.anod.car.home.model.AppsListCache;
@@ -24,7 +25,12 @@ import java.lang.reflect.Field;
 public class CarWidgetApplication extends Application {
 	public AppsListCache mAppListCache;
 	public AppsListCache mIconThemesCache;
+
 	private int mThemeIdx;
+
+	public static CarWidgetApplication getApplication(Context context) {
+		return (CarWidgetApplication) context.getApplicationContext();
+	}
 
 	@Override
 	public void onCreate() {
@@ -34,9 +40,12 @@ public class CarWidgetApplication extends Application {
 			// The following line triggers the initialization of ACRA
 			ACRA.init(this);
 		}
+
+
 		mThemeIdx = AppTheme.getTheme(this);
 
 	}
+
 
 	public AppsListCache getAppListCache() {
 		return mAppListCache;

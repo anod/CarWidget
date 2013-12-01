@@ -31,7 +31,24 @@ public class BitmapTransform {
 	public BitmapTransform(Context context) {
 		mIconSize = UtilitiesBitmap.getSystemIconSize(context);
 	}
-	
+
+	public String getCacheKey() {
+		return String.valueOf(mApplyGrayFilter) + "," +
+				String.valueOf(mTintColor) + "," +
+				String.valueOf(mScaleSize) + "," +
+				mRotateDirection.name() + "," +
+				String.valueOf(mPaddingBottom) + "," +
+				getIconProcessorId()
+		;
+	}
+
+	public String getIconProcessorId() {
+		if (mIconProcessor != null) {
+			return mIconProcessor.id();
+		}
+		return "none";
+	}
+
 	public BitmapTransform setApplyGrayFilter(boolean applyGrayFilter) {
 		mApplyGrayFilter = applyGrayFilter;
 		return this;
