@@ -149,7 +149,7 @@ public class PreferencesStorage {
 		editor.putInt(FONT_SIZE, prefs.getFontSize());
 
 		editor.putBoolean(TRANSPARENT_BTN_SETTINGS, prefs.isSettingsTransparent());
-		editor.putBoolean(TRANSPARENT_BTN_INCAR, prefs.isSettingsTransparent());
+		editor.putBoolean(TRANSPARENT_BTN_INCAR, prefs.isIncarTransparent());
 
 		editor.putStringOrRemove(ICONS_THEME, prefs.getIconsTheme());
 

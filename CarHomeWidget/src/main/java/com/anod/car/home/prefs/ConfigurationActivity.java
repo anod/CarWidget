@@ -87,7 +87,7 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 
 
 	private void cleanAppsCache() {
-		AppsListCache allAppsList = ((CarWidgetApplication) this.getApplicationContext()).getAppListCache();
+		AppsListCache allAppsList = getApp().getAppListCache();
 		if (allAppsList!=null) {
 			allAppsList.flush();
 		}

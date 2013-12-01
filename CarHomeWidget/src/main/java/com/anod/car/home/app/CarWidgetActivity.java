@@ -32,7 +32,7 @@ abstract public class CarWidgetActivity extends ActionBarActivity {
 	}
 
 	public CarWidgetApplication getApp() {
-		return ((CarWidgetApplication)getApplication());
+		return CarWidgetApplication.getApplication(this);
 	}
 
 	// Backwards compatible recreate().
