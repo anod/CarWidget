@@ -9,4 +9,5 @@ public interface SkinProperties {
 	IconProcessor getIconProcessor();
 	int getSetShortcutText();
 	int getIconPaddingRes();
+	int getSettingsButtonRes();
 }

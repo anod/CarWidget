@@ -8,4 +8,9 @@ public class CarHomeProperties extends BaseProperties {
 	public int getLayout() {
 		return R.layout.carhome;
 	}
+
+	@Override
+	public int getSettingsButtonRes() {
+		return R.drawable.ic_settings;
+	}
 }

@@ -37,4 +37,9 @@ public class BBBProperties extends BaseProperties {
 
 	@Override
 	public int getIconPaddingRes() { return 0; }
+
+	@Override
+	public int getSettingsButtonRes() {
+		return R.drawable.ic_settings_bbb;
+	}
 }

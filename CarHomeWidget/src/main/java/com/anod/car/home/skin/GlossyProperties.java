@@ -9,4 +9,8 @@ public class GlossyProperties extends BaseProperties {
 		return R.layout.glass;
 	}
 
+	@Override
+	public int getSettingsButtonRes() {
+		return R.drawable.ic_settings;
+	}
 }
