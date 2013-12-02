@@ -187,10 +187,20 @@ public class ConfigurationInCar extends ConfigurationFragment {
 			showFragmentOnClick(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class);
 		}
 
+		initSamsungHandsfree();
+	}
+
+	private void initSamsungHandsfree() {
 		if (!SamsungDrivingMode.hasMode()) {
-			final Preference samDrivingPref = (Preference) findPreference(PreferencesStorage.SAMSUNG_DRIVING_MODE);
+			final Preference samDrivingPref = findPreference(PreferencesStorage.SAMSUNG_DRIVING_MODE);
 			((PreferenceCategory)findPreference("incar-more-category"))
 					.removePreference(samDrivingPref);
+		} else {
+			final Preference samDrivingPref = findPreference(PreferencesStorage.SAMSUNG_DRIVING_MODE);
+			if (Utils.IS_JELLYBEAN_MR2_OR_GREATER) {
+				samDrivingPref.setTitle(R.string.samsung_handsfree_title);
+				samDrivingPref.setSummary(R.string.samsung_handsfree_summary);
+			}
 		}
 	}
 
@@ -415,7 +425,10 @@ public class ConfigurationInCar extends ConfigurationFragment {
 			pref.setTitle(device.getName());
 			pref.setLayoutResource(R.layout.pref);
 			BluetoothClass btClass = device.getBluetoothClass();
-			int res = BluetoothClassHelper.getBtClassString(btClass);
+			int res = 0;
+			if (btClass != null) {
+				res = BluetoothClassHelper.getBtClassString(btClass);
+			}
 			if (res > 0) {
 				String title = mContext.getResources().getString(res);
 				pref.setSummary(title);

@@ -17,7 +17,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:18.0.+'
     compile 'com.google.android.gms:play-services:3.1.36'
     compile files (
-       'libs/acra-4.5.0.jar'
+       'libs/acra-4.5.0.jar',
+       'libs/commons-codec-1.5.jar'
     )
 }
 
@@ -28,7 +29,7 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 19
-        versionCode 40
+        versionCode 41
         versionName '1.6.6'
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }

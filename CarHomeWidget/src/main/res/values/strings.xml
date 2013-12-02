@@ -189,6 +189,10 @@
 	<string name="icon_default">Default</string>
 	<string name="failed_fetch_icon">Failed to fetch the default icon.</string>
 	<string name="please_add_widget">Please add widget to the homescreen</string>
+	<string name="samsung_driving_summary">Enable built-in Samsung Driving Mode</string>
+	<string name="samsung_driving_title">Samsung Driving Mode</string>
+	<string name="samsung_handsfree_title">Samsung Handsfree</string>
+	<string name="samsung_handsfree_summary">Enable built-in Samsung Handsfree Mode</string>
 	<string-array name="brightness_mode_titles">
 		<item>System</item>
 		<item>Auto</item>

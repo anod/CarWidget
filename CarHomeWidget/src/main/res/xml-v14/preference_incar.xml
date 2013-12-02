@@ -157,8 +157,8 @@
 
 				<CheckBoxPreference
 						android:key="sam_driving_mode"
-						android:summary="Enable built-in Samsung Driving Mode"
-						android:title="Samsung Driving Mode"
+						android:summary="@string/samsung_driving_summary"
+						android:title="@string/samsung_driving_title"
 						android:layout="@layout/pref"/>
 			</PreferenceCategory>
 		</PreferenceScreen>
