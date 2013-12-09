@@ -60,30 +60,21 @@
 
 	</LinearLayout>
 
-	<LinearLayout
+	<Button
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:text="@string/settings"
+			android:id="@+id/incarSettings"
+			android:drawableLeft="@drawable/ic_holo_settings"
+			android:gravity="center_vertical"
+			android:textColor="@color/font_color"
+			style="?attr/buttonStyle"
+			android:drawablePadding="4dp"
+			android:ellipsize="end"
+			android:maxLines="1"
+			android:padding="10dp"
 			android:layout_marginTop="1dp"
-	>
-
-		<Button
-				android:layout_width="0dp"
-				android:layout_weight="1"
-				android:layout_height="wrap_content"
-				android:text="@string/settings"
-				android:id="@+id/incarSettings"
-				android:drawableLeft="@drawable/ic_holo_settings"
-
-				android:gravity="center_vertical"
-				android:textColor="@color/font_color"
-				style="?attr/buttonStyle"
-				android:drawablePadding="4dp"
-				android:ellipsize="end"
-				android:maxLines="1"
-				android:padding="10dp"
-		/>
-
-	</LinearLayout>
+	/>
 
 	<LinearLayout
 		android:paddingTop="0dp"
@@ -202,6 +193,7 @@
 			android:drawablePadding="4dp"
 			android:paddingLeft="10dp"
 			android:paddingRight="10dp"
+			android:gravity="center_vertical"
 	/>
 
 
@@ -307,5 +299,6 @@
 					android:textColor="@color/font_color_sec"/>
 		</RelativeLayout>
 	</LinearLayout>
+
 </LinearLayout>
 </ScrollView>
