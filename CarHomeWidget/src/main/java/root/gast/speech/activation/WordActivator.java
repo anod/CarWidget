@@ -22,11 +22,13 @@ import root.gast.speech.text.WordList;
 import root.gast.speech.text.match.SoundsLikeWordMatcher;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.util.Log;
+
+import com.anod.car.home.utils.AppLog;
 
 /**
  * Uses direct speech recognition to activate when the user speaks
@@ -37,20 +39,22 @@ import android.util.Log;
 public class WordActivator implements SpeechActivator, RecognitionListener
 {
     private static final String TAG = "WordActivator";
+	private final AudioManager mAudioManager;
 
-    private Context context;
+	private Context mContext;
     private SpeechRecognizer recognizer;
-    private SoundsLikeWordMatcher matcher;
+    private SoundsLikeWordMatcher mMatcher;
 
-    private SpeechActivationListener resultListener;
+    private SpeechActivationListener mResultListener;
 
-    public WordActivator(Context context,
-            SpeechActivationListener resultListener, String... targetWords)
+    public WordActivator(Context context, SpeechActivationListener resultListener, String... targetWords)
     {
-        this.context = context;
-        this.matcher = new SoundsLikeWordMatcher(targetWords);
-        this.resultListener = resultListener;
-    }
+        mContext = context;
+        mMatcher = new SoundsLikeWordMatcher(targetWords);
+        mResultListener = resultListener;
+		mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+
+	}
 
     @Override
     public void detectActivation()
@@ -60,14 +64,11 @@ public class WordActivator implements SpeechActivator, RecognitionListener
 
     private void recognizeSpeechDirectly()
     {
-        Intent recognizerIntent =
-                new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
+        Intent recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
         // accept partial results if they come
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
-        SpeechRecognitionUtil.recognizeSpeechDirectly(context,
-                recognizerIntent, this, getSpeechRecognizer());
+        SpeechRecognitionUtil.recognizeSpeechDirectly(mContext, recognizerIntent, this, getSpeechRecognizer());
     }
 
     public void stop()
@@ -83,14 +84,14 @@ public class WordActivator implements SpeechActivator, RecognitionListener
     @Override
     public void onResults(Bundle results)
     {
-        Log.d(TAG, "full results");
+		AppLog.d(TAG + ": full results");
         receiveResults(results);
     }
 
     @Override
     public void onPartialResults(Bundle partialResults)
     {
-        Log.d(TAG, "partial results");
+		AppLog.d(TAG + ": partial results");
         receiveResults(partialResults);
     }
 
@@ -110,7 +111,7 @@ public class WordActivator implements SpeechActivator, RecognitionListener
         }
         else
         {
-            Log.d(TAG, "no results");
+			AppLog.d(TAG + ": no results");
         }
     }
 
@@ -121,9 +122,9 @@ public class WordActivator implements SpeechActivator, RecognitionListener
         for (String possible : heard)
         {
             WordList wordList = new WordList(possible);
-            if (matcher.isIn(wordList.getWords()))
+            if (mMatcher.isIn(wordList.getWords()))
             {
-                Log.d(TAG, "HEARD IT!");
+				AppLog.d(TAG + ": HEARD IT!");
                 heardTargetWord = true;
                 break;
             }
@@ -132,7 +133,7 @@ public class WordActivator implements SpeechActivator, RecognitionListener
         if (heardTargetWord)
         {
             stop();
-            resultListener.activated(true);
+            mResultListener.activated(true);
         }
         else
         {
@@ -144,19 +145,16 @@ public class WordActivator implements SpeechActivator, RecognitionListener
     @Override
     public void onError(int errorCode)
     {
-        if ((errorCode == SpeechRecognizer.ERROR_NO_MATCH)
-                || (errorCode == SpeechRecognizer.ERROR_SPEECH_TIMEOUT))
+        if ((errorCode == SpeechRecognizer.ERROR_NO_MATCH) || (errorCode == SpeechRecognizer.ERROR_SPEECH_TIMEOUT))
         {
-            Log.d(TAG, "didn't recognize anything");
+			AppLog.d(TAG + ": didn't recognize anything");
+			mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, true);
             // keep going
             recognizeSpeechDirectly();
         }
         else
         {
-            Log.d(TAG,
-                    "FAILED "
-                            + SpeechRecognitionUtil
-                                    .diagnoseErrorCode(errorCode));
+			AppLog.e(TAG + ": FAILED " + SpeechRecognitionUtil.diagnoseErrorCode(errorCode));
         }
     }
 
@@ -167,7 +165,7 @@ public class WordActivator implements SpeechActivator, RecognitionListener
     {
         if (recognizer == null)
         {
-            recognizer = SpeechRecognizer.createSpeechRecognizer(context);
+            recognizer = SpeechRecognizer.createSpeechRecognizer(mContext);
         }
         return recognizer;
     }
@@ -177,7 +175,7 @@ public class WordActivator implements SpeechActivator, RecognitionListener
     @Override
     public void onReadyForSpeech(Bundle params)
     {
-        Log.d(TAG, "ready for speech " + params);
+		AppLog.d(TAG + ": ready for speech " + params);
     }
 
     @Override

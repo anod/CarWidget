@@ -26,6 +26,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.anod.car.home.R;
+import com.anod.car.home.utils.AppLog;
 
 /**
  * Persistently run a speech activator in the background.
@@ -66,11 +67,10 @@ public class SpeechActivationService extends Service implements
         isStarted = false;
     }
 
-    public static Intent makeStartServiceIntent(Context context,
-            String activationType)
+    public static Intent makeStartServiceIntent(Context context)
     {
         Intent i = new Intent(context, SpeechActivationService.class);
-        i.putExtra(ACTIVATION_TYPE_INTENT_KEY, activationType);
+   //     i.putExtra(ACTIVATION_TYPE_INTENT_KEY, activationType);
         return i;
     }
 
@@ -92,7 +92,7 @@ public class SpeechActivationService extends Service implements
         {
             if (intent.hasExtra(ACTIVATION_STOP_INTENT_KEY))
             {
-                Log.d(TAG, "stop service intent");
+				AppLog.d("stop service intent");
                 activated(false);
             }
             else
@@ -103,16 +103,7 @@ public class SpeechActivationService extends Service implements
                     // if the intent is requesting a new activator
                     // stop the current activator and start
                     // the new one
-                    if (isDifferentType(intent))
-                    {
-                        Log.d(TAG, "is differnet type");
-                        stopActivator();
-                        startDetecting(intent);
-                    }
-                    else
-                    {
-                        Log.d(TAG, "already started this type");
-                    }
+					AppLog.d("already started this type");
                 }
                 else
                 {
@@ -128,46 +119,18 @@ public class SpeechActivationService extends Service implements
 
     private void startDetecting(Intent intent)
     {
-        Log.d(TAG, "extras: " + intent.getExtras().toString());
         if (activator == null)
         {
-            Log.d(TAG, "null activator");
+			AppLog.d("null activator");
         }
-            
-        activator = getRequestedActivator(intent);
-        Log.d(TAG, "started: " + activator.getClass().getSimpleName());
+
+		activator = new WordActivator(this, this, "hello");
+        AppLog.d("started: " + activator.getClass().getSimpleName());
         isStarted = true;
         activator.detectActivation();
         startForeground(NOTIFICATION_ID, getNotification(intent));
     }
 
-    private SpeechActivator getRequestedActivator(Intent intent)
-    {
-        String type = intent.getStringExtra(ACTIVATION_TYPE_INTENT_KEY);
-        // create based on a type name
-        SpeechActivator speechActivator = new WordActivator(this, this, "hello");
-        return speechActivator;
-    }
-
-    /**
-     * determine if the intent contains an activator type 
-     * that is different than the currently running type
-     */
-    private boolean isDifferentType(Intent intent)
-    {
-        boolean different = false;
-        if (activator == null)
-        {
-            return true;
-        }
-        else
-        {
-            SpeechActivator possibleOther = getRequestedActivator(intent);
-            different = !(possibleOther.getClass().getName().
-                    equals(activator.getClass().getName()));
-        }
-        return different;
-    }
 
     @Override
     public void activated(boolean success)
@@ -187,7 +150,7 @@ public class SpeechActivationService extends Service implements
     @Override
     public void onDestroy()
     {
-        Log.d(TAG, "On destroy");
+		AppLog.d("On destroy");
         super.onDestroy();
         stopActivator();
         stopForeground(true);
@@ -197,7 +160,7 @@ public class SpeechActivationService extends Service implements
     {
         if (activator != null)
         {
-            Log.d(TAG, "stopped: " + activator.getClass().getSimpleName());
+            AppLog.d("stopped: " + activator.getClass().getSimpleName());
             activator.stop();
             isStarted = false;
         }

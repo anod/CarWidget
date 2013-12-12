@@ -98,8 +98,7 @@ public abstract class SpeechRecognizingActivity extends Activity implements
      * Handle the results from the RecognizerIntent.
      */
     @Override
-    protected void
-            onActivityResult(int requestCode, int resultCode, Intent data)
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE)
         {
@@ -321,4 +320,5 @@ public abstract class SpeechRecognizingActivity extends Activity implements
             receiveResults(partialResults);
         }
     }
+
 }

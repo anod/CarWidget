@@ -138,9 +138,7 @@ public class SpeechRecognitionUtil
         return scores;
     }
 
-    public static void recognizeSpeechDirectly(Context context, 
-            Intent recognizerIntent, RecognitionListener listener,
-            SpeechRecognizer recognizer)
+    public static void recognizeSpeechDirectly(Context context,  Intent recognizerIntent, RecognitionListener listener, SpeechRecognizer recognizer)
     {
         //need to have a calling package for it to work
         if (!recognizerIntent.hasExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE))

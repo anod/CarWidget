@@ -21,6 +21,8 @@ import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
 
+import root.gast.speech.activation.SpeechActivationService;
+
 public class Handler {
 	private static final int VOLUME_NOT_SET = -1;
 	private static final String TAG = "CarHomeWidget";
@@ -217,6 +219,9 @@ public class Handler {
 			SamsungDrivingMode.enable(context);
 		}
 
+
+		context.startService(SpeechActivationService.makeStartServiceIntent(context));
+
 		ComponentName autorunApp = prefs.getAutorunApp();
 		if (autorunApp != null) {
 			runApp(autorunApp,context);
@@ -258,6 +263,8 @@ public class Handler {
 		if (SamsungDrivingMode.hasMode() && prefs.isSamsungDrivingMode()) {
 			SamsungDrivingMode.disable(context);
 		}
+
+		context.stopService(SpeechActivationService.makeServiceStopIntent(context));
 
 		String brightSetting = prefs.getBrightness();
 		if (!brightSetting.equals(InCar.BRIGHTNESS_DISABLED)) {

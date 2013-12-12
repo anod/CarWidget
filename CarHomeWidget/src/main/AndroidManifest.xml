@@ -37,6 +37,11 @@
 
 	<uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION"/>
 
+	<!--
+	<uses-permission android:name="android.permission.INTERNET" />
+	//-->
+	<uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <uses-feature android:name="android.hardware.telephony" android:required="false" />
 	<uses-feature android:name="android.hardware.bluetooth" android:required="false" />
 	<uses-feature android:name="android.hardware.wifi" android:required="false" />
@@ -141,6 +146,16 @@
 				  android:launchMode="singleInstance"
 				  android:excludeFromRecents="true"
 				  android:finishOnTaskLaunch="true" />
+
+		<service android:name="root.gast.speech.activation.SpeechActivationService" />
+		<activity android:name="root.gast.speech.SpeechRecognitionLauncher"/>
+		<receiver android:name="root.gast.speech.activation.ShowResultsSpeechActivationBroadcastReceiver">
+			<intent-filter >
+				<action android:name="root.gast.playground.speech.ACTIVATION"/>
+			</intent-filter>
+		</receiver>
+
+
 	</application>
 
 </manifest>
