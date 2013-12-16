@@ -93,6 +93,7 @@
     <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71800.aar" level="project" />
     <orderEntry type="library" exported="" name="ComGoogleAndroidGmsPlayServices3136.aar" level="project" />
     <orderEntry type="library" exported="" name="commons-codec-1.5" level="project" />
+    <orderEntry type="library" exported="" name="crashlytics-1.1.5" level="project" />
     <orderEntry type="library" exported="" name="acra-4.5.0" level="project" />
   </component>
 </module>

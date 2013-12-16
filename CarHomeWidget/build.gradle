@@ -1,12 +1,21 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url 'http://download.crashlytics.com/maven' }
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.6.+'
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+
     }
 }
 apply plugin: 'android'
+apply plugin: 'crashlytics'
+repositories {
+    maven { url 'http://download.crashlytics.com/maven' }
+}
+
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.8'
@@ -20,6 +29,8 @@ dependencies {
        'libs/acra-4.5.0.jar',
        'libs/commons-codec-1.5.jar'
     )
+    compile 'com.crashlytics.android:crashlytics:1.+'
+
 }
 
 android {

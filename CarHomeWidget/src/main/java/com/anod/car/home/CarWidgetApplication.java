@@ -13,6 +13,7 @@ import org.acra.annotation.ReportsCrashes;
 
 import java.lang.reflect.Field;
 
+
 @ReportsCrashes(formKey = "", // will not be used
 	mailTo = "alex.gavrishev@gmail.com",
 	mode = ReportingInteractionMode.DIALOG,
@@ -38,7 +39,7 @@ public class CarWidgetApplication extends Application {
 
 		if (BuildConfig.DEBUG) {
 			// The following line triggers the initialization of ACRA
-			ACRA.init(this);
+			//ACRA.init(this);
 		}
 
 

@@ -30,6 +30,7 @@ public class ModeService extends Service {
 	private ModePhoneStateListener mPhoneListener;
 	private static final int[] NOTIF_BTN_IDS = { R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3 };
 	public static boolean sInCarMode;
+	private static final int DEBUG_ID = 3;
 	private static final int EXPIRED_ID = 2;
 	private static final int NOTIFICATION_ID = 1;
 	public static final String EXTRA_MODE = "extra_mode";
