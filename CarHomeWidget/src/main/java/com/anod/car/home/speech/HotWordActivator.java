@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package root.gast.speech.activation;
+package com.anod.car.home.speech;
 
 import java.util.List;
 
 import root.gast.speech.SpeechRecognitionUtil;
+import root.gast.speech.activation.SpeechActivationListener;
+import root.gast.speech.activation.SpeechActivator;
 import root.gast.speech.text.WordList;
-import root.gast.speech.text.match.SoundsLikeWordMatcher;
+
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -36,21 +38,22 @@ import com.anod.car.home.utils.AppLog;
  * @author Greg Milette &#60;<a
  *         href="mailto:gregorym@gmail.com">gregorym@gmail.com</a>&#62;
  */
-public class WordActivator implements SpeechActivator, RecognitionListener
+public class HotWordActivator implements SpeechActivator, RecognitionListener
 {
-    private static final String TAG = "WordActivator";
+    private static final String TAG = "HotWordActivator";
 	private final AudioManager mAudioManager;
 
 	private Context mContext;
     private SpeechRecognizer recognizer;
-    private SoundsLikeWordMatcher mMatcher;
+    private DoubleMetaphoneWordMatcher mMatcher;
 
     private SpeechActivationListener mResultListener;
 
-    public WordActivator(Context context, SpeechActivationListener resultListener, String... targetWords)
+    public HotWordActivator(Context context, SpeechActivationListener resultListener, String... hotword)
     {
         mContext = context;
-        mMatcher = new SoundsLikeWordMatcher(targetWords);
+
+        mMatcher = new DoubleMetaphoneWordMatcher(hotword);
         mResultListener = resultListener;
 		mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
@@ -121,8 +124,12 @@ public class WordActivator implements SpeechActivator, RecognitionListener
         // find the target word
         for (String possible : heard)
         {
-            WordList wordList = new WordList(possible);
-            if (mMatcher.isIn(wordList.getWords()))
+			if ("".equals(possible)) {
+				continue;
+			}
+
+			AppLog.d(TAG + " Possible - '"+possible+"'");
+            if (mMatcher.isIn(possible.toLowerCase()))
             {
 				AppLog.d(TAG + ": HEARD IT!");
                 heardTargetWord = true;

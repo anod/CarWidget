@@ -1,24 +1,33 @@
-package root.gast.speech;
+package com.anod.car.home.speech;
 
 /**
  * @author alex
  * @date 12/12/13
  */
 
+import android.app.ActivityOptions;
+import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.Utils;
 
 import java.util.List;
 
+import root.gast.speech.SpeechRecognizingAndSpeakingActivity;
 import root.gast.speech.tts.TextToSpeechUtils;
 
 /**
  * Starts a speech recognition dialog and then sends the results to
- * {@link SpeechRecognitionResultsActivity}
+ //* {@link SpeechRecognitionResultsActivity}
  *
  * @author Greg Milette &#60;<a
  *         href="mailto:gregorym@gmail.com">gregorym@gmail.com</a>&#62;
@@ -51,11 +60,26 @@ public class SpeechRecognitionLauncher extends SpeechRecognizingAndSpeakingActiv
 				TextToSpeech.QUEUE_FLUSH,
 				TextToSpeechUtils.makeParamsWith(ON_DONE_PROMPT_TTS_PARAM));
 		*/
-		Intent intent = new Intent(RecognizerIntent.ACTION_WEB_SEARCH);
-		startActivity(intent);
-		finish();
+		startVoice();
 	}
 
+	public void startVoice() {
+		try {
+			final SearchManager searchManager =
+					(SearchManager) getSystemService(Context.SEARCH_SERVICE);
+			ComponentName activityName = searchManager.getGlobalSearchActivity();
+			Intent intent = new Intent(RecognizerIntent.ACTION_WEB_SEARCH);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			if (activityName != null) {
+				intent.setPackage(activityName.getPackageName());
+			}
+			startActivity(intent);
+		} catch (ActivityNotFoundException e) {
+			Intent intent = new Intent(RecognizerIntent.ACTION_WEB_SEARCH);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			Utils.startActivitySafely(intent, this);
+		}
+	}
 
 	/**
 	 * super class handles registering the UtteranceProgressListener

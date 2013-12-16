@@ -147,8 +147,8 @@
 				  android:excludeFromRecents="true"
 				  android:finishOnTaskLaunch="true" />
 
-		<service android:name="root.gast.speech.activation.SpeechActivationService" />
-		<activity android:name="root.gast.speech.SpeechRecognitionLauncher"/>
+		<service android:name=".speech.SpeechActivationService" />
+		<activity android:name=".speech.SpeechRecognitionLauncher"/>
 		<receiver android:name="root.gast.speech.activation.ShowResultsSpeechActivationBroadcastReceiver">
 			<intent-filter >
 				<action android:name="root.gast.playground.speech.ACTIVATION"/>

@@ -22,7 +22,8 @@ import com.anod.car.home.R;
 
 import java.util.ArrayList;
 
-import root.gast.speech.text.match.SoundsLikeWordMatcher;
+import com.anod.car.home.speech.DoubleMetaphoneWordMatcher;
+
 import root.gast.speech.text.match.WordMatcher;
 
 /**
@@ -130,7 +131,7 @@ public class VoiceAlertDialog extends MultiCommandVoiceAction
 //                matcher = new StemmedWordMatcher(words);
 //                break;
             case MATCH_LEVEL_PHONETIC:
-                matcher = new SoundsLikeWordMatcher(words);
+                matcher = new DoubleMetaphoneWordMatcher(words);
                 break;
 //            case MATCH_LEVEL_PHONETIC_LESS_STRICT:
 //                matcher = new SoundsLikeThresholdWordMatcher(3, words);

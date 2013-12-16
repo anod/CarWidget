@@ -21,7 +21,7 @@ import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
 
-import root.gast.speech.activation.SpeechActivationService;
+import com.anod.car.home.speech.SpeechActivationService;
 
 public class Handler {
 	private static final int VOLUME_NOT_SET = -1;

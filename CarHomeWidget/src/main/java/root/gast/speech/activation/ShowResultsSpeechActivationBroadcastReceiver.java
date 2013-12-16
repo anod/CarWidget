@@ -3,12 +3,11 @@ package root.gast.speech.activation;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.speech.RecognizerIntent;
 
 import com.anod.car.home.utils.AppLog;
 
-import root.gast.speech.SpeechRecognitionLauncher;
-import root.gast.speech.activation.SpeechActivationService;
+import com.anod.car.home.speech.SpeechRecognitionLauncher;
+import com.anod.car.home.speech.SpeechActivationService;
 
 /**
  * @author alex
@@ -30,8 +29,6 @@ public class ShowResultsSpeechActivationBroadcastReceiver extends BroadcastRecei
 				Intent i = new Intent(context, SpeechRecognitionLauncher.class);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(i);
-	
-
 
 			}
 		}

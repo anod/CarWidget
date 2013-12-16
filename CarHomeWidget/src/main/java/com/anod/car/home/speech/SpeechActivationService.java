@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package root.gast.speech.activation;
+package com.anod.car.home.speech;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -23,42 +23,38 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.anod.car.home.R;
 import com.anod.car.home.utils.AppLog;
 
+import root.gast.speech.activation.SpeechActivationListener;
+import root.gast.speech.activation.SpeechActivator;
+
 /**
- * Persistently run a speech activator in the background.
+ * Persistently run a speech mActivator in the background.
  * Use {@link Intent}s to start and stop it
  * @author Greg Milette &#60;<a
  *         href="mailto:gregorym@gmail.com">gregorym@gmail.com</a>&#62;
  * 
  */
-public class SpeechActivationService extends Service implements
-        SpeechActivationListener
+public class SpeechActivationService extends Service implements SpeechActivationListener
 {
     private static final String TAG = "SpeechActivationService";
-    public static final String NOTIFICATION_ICON_RESOURCE_INTENT_KEY =
-        "NOTIFICATION_ICON_RESOURCE_INTENT_KEY";
-    public static final String ACTIVATION_TYPE_INTENT_KEY =
-            "ACTIVATION_TYPE_INTENT_KEY";
-    public static final String ACTIVATION_RESULT_INTENT_KEY =
-            "ACTIVATION_RESULT_INTENT_KEY";
-    public static final String ACTIVATION_RESULT_BROADCAST_NAME =
-            "root.gast.playground.speech.ACTIVATION";
+    public static final String NOTIFICATION_ICON_RESOURCE_INTENT_KEY = "NOTIFICATION_ICON_RESOURCE_INTENT_KEY";
+    public static final String ACTIVATION_TYPE_INTENT_KEY = "ACTIVATION_TYPE_INTENT_KEY";
+    public static final String ACTIVATION_RESULT_INTENT_KEY = "ACTIVATION_RESULT_INTENT_KEY";
+    public static final String ACTIVATION_RESULT_BROADCAST_NAME = "root.gast.playground.speech.ACTIVATION";
 
     /**
      * send this when external code wants the Service to stop
      */
-    public static final String ACTIVATION_STOP_INTENT_KEY =
-            "ACTIVATION_STOP_INTENT_KEY";
+    public static final String ACTIVATION_STOP_INTENT_KEY = "ACTIVATION_STOP_INTENT_KEY";
 
     public static final int NOTIFICATION_ID = 10298;
 
     private boolean isStarted;
 
-    private SpeechActivator activator;
+    private SpeechActivator mActivator;
 
     @Override
     public void onCreate()
@@ -70,7 +66,6 @@ public class SpeechActivationService extends Service implements
     public static Intent makeStartServiceIntent(Context context)
     {
         Intent i = new Intent(context, SpeechActivationService.class);
-   //     i.putExtra(ACTIVATION_TYPE_INTENT_KEY, activationType);
         return i;
     }
 
@@ -82,8 +77,8 @@ public class SpeechActivationService extends Service implements
     }
 
     /**
-     * stop or start an activator based on the activator type and if an
-     * activator is currently running
+     * stop or start an mActivator based on the mActivator type and if an
+     * mActivator is currently running
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
@@ -99,15 +94,15 @@ public class SpeechActivationService extends Service implements
             {
                 if (isStarted)
                 {
-                    // the activator is currently started
-                    // if the intent is requesting a new activator
-                    // stop the current activator and start
+                    // the mActivator is currently started
+                    // if the intent is requesting a new mActivator
+                    // stop the current mActivator and start
                     // the new one
 					AppLog.d("already started this type");
                 }
                 else
                 {
-                    // activator not started, start it
+                    // mActivator not started, start it
                     startDetecting(intent);
                 }
             }
@@ -119,15 +114,15 @@ public class SpeechActivationService extends Service implements
 
     private void startDetecting(Intent intent)
     {
-        if (activator == null)
+        if (mActivator == null)
         {
-			AppLog.d("null activator");
+			AppLog.d("null mActivator");
         }
 
-		activator = new WordActivator(this, this, "hello");
-        AppLog.d("started: " + activator.getClass().getSimpleName());
+		mActivator = new HotWordActivator(this, this, "Okay Widget", "Ok widget", "ok VJ", "Okay VJ");
+        AppLog.d("started: " + mActivator.getClass().getSimpleName());
         isStarted = true;
-        activator.detectActivation();
+        mActivator.detectActivation();
         startForeground(NOTIFICATION_ID, getNotification(intent));
     }
 
@@ -135,7 +130,7 @@ public class SpeechActivationService extends Service implements
     @Override
     public void activated(boolean success)
     {
-        // make sure the activator is stopped before doing anything else
+        // make sure the mActivator is stopped before doing anything else
         stopActivator();
 
         // broadcast result
@@ -158,10 +153,10 @@ public class SpeechActivationService extends Service implements
 
     private void stopActivator()
     {
-        if (activator != null)
+        if (mActivator != null)
         {
-            AppLog.d("stopped: " + activator.getClass().getSimpleName());
-            activator.stop();
+            AppLog.d("stopped: " + mActivator.getClass().getSimpleName());
+            mActivator.stop();
             isStarted = false;
         }
     }
@@ -170,17 +165,13 @@ public class SpeechActivationService extends Service implements
     private Notification getNotification(Intent intent)
     {
         // determine label based on the class
-        String name = "Hello";
-        String message =
-                getString(R.string.speech_activation_notification_listening)
-                        + " " + name;
+        String name = "Okay Widget";
+        String message = getString(R.string.speech_activation_notification_listening) + " " + name;
         String title = getString(R.string.speech_activation_notification_title);
 
-        PendingIntent pi =
-                PendingIntent.getService(this, 0, makeServiceStopIntent(this),
-                        0);
+        PendingIntent pi = PendingIntent.getService(this, 0, makeServiceStopIntent(this), 0);
 
-        int icon = intent.getIntExtra(NOTIFICATION_ICON_RESOURCE_INTENT_KEY, R.drawable.ic_action_headphones);
+        int icon = intent.getIntExtra(NOTIFICATION_ICON_RESOURCE_INTENT_KEY, R.drawable.ic_stat_ic_action_mic);
 
         Notification notification;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)

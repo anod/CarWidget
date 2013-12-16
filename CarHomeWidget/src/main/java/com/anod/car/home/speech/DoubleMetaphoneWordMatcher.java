@@ -13,33 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package root.gast.speech.text.match;
+package com.anod.car.home.speech;
+
+import com.anod.car.home.utils.AppLog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.codec.language.DoubleMetaphone;
 import org.apache.commons.codec.language.Soundex;
+
+import root.gast.speech.text.match.WordMatcher;
 
 /**
  * encode strings using soundex
  * @author Greg Milette &#60;<a href="mailto:gregorym@gmail.com">gregorym@gmail.com</a>&#62;
  */
-public class SoundsLikeWordMatcher extends WordMatcher
+public class DoubleMetaphoneWordMatcher extends WordMatcher
 {
-    protected static Soundex soundex;
+    protected static DoubleMetaphone sMetaphone;
     
     static
     {
-        soundex = new Soundex();
+		sMetaphone = new DoubleMetaphone();
+		sMetaphone.setMaxCodeLen(1000);
     }
-    
-    public SoundsLikeWordMatcher(String... wordsIn)
+
+    public DoubleMetaphoneWordMatcher(String... wordsIn)
     {
         this(Arrays.asList(wordsIn));
     }
 
-    public SoundsLikeWordMatcher(List<String> wordsIn)
+    public DoubleMetaphoneWordMatcher(List<String> wordsIn)
     {
         super(encode(wordsIn));
     }
@@ -55,7 +61,7 @@ public class SoundsLikeWordMatcher extends WordMatcher
         List<String> encoded = new ArrayList<String>();
         for (String in : input)
         {
-            encoded.add(encode(in));
+            encoded.add(encode(in.toLowerCase()));
         }
         return encoded;
     }
@@ -65,12 +71,12 @@ public class SoundsLikeWordMatcher extends WordMatcher
         String encoded = in;
         try
         {
-            encoded = soundex.encode(in);
+            encoded = sMetaphone.encode(in);
+			AppLog.d(in + " == " + encoded);
         }
         catch (IllegalArgumentException e)
         {
-            //for weird characters that soundex doesn't understand
-            
+			AppLog.e("word encode exception", e);
         }
         return encoded;
     }
