@@ -6,6 +6,7 @@ import android.view.ViewConfiguration;
 
 import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.prefs.preferences.AppTheme;
+import com.crashlytics.android.Crashlytics;
 
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
@@ -37,9 +38,12 @@ public class CarWidgetApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 
+		Crashlytics.start(this);
+
 		if (BuildConfig.DEBUG) {
 			// The following line triggers the initialization of ACRA
 			//ACRA.init(this);
+
 		}
 
 

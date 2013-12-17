@@ -76,7 +76,7 @@ public class DoubleMetaphoneWordMatcher extends WordMatcher
         }
         catch (IllegalArgumentException e)
         {
-			AppLog.e("word encode exception", e);
+			AppLog.ex(e);
         }
         return encoded;
     }

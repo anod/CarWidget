@@ -38,7 +38,7 @@ public class Version implements Action {
 		try {
 			manager.check(Manager.getVersionCode(mContext));
 		} catch (PackageManager.NameNotFoundException e) {
-			AppLog.e("Cannot get version code",e);
+			AppLog.ex(e);
 		}
 	}
 

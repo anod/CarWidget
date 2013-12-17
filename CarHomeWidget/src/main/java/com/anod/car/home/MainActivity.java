@@ -35,7 +35,6 @@ import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
-import com.crashlytics.android.Crashlytics;
 
 /**
  * @author alex
@@ -56,8 +55,6 @@ public class MainActivity extends CarWidgetActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Crashlytics.start(this);
-
 
 		setContentView(R.layout.main_activity);
 		mVersion = new Version(this);
@@ -74,6 +71,7 @@ public class MainActivity extends CarWidgetActivity {
 			startWizard();
 			return;
 		}
+
 	}
 
 	@Override
