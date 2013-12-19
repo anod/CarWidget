@@ -150,12 +150,15 @@
 				  android:finishOnTaskLaunch="true" />
 
 		<service android:name=".speech.SpeechActivationService" />
-		<activity android:name=".speech.SpeechRecognitionLauncher"/>
-		<receiver android:name="root.gast.speech.activation.ShowResultsSpeechActivationBroadcastReceiver">
+		<activity android:name=".speech.SpeechRecognitionLauncher" android:theme="@style/BrightnessTheme" />
+		<receiver android:name=".speech.ShowResultsSpeechActivationBroadcastReceiver">
 			<intent-filter >
-				<action android:name="root.gast.playground.speech.ACTIVATION"/>
+				<action android:name="com.anod.car.home.speech.ACTIVATION"/>
 			</intent-filter>
 		</receiver>
+
+
+
         <meta-data android:name="com.crashlytics.ApiKey" android:value="37454d25f5bb26cdb68b79a6ca77eef421fa17c1"/>
 
 

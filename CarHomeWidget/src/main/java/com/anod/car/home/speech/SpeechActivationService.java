@@ -22,13 +22,15 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 
 import com.anod.car.home.R;
+import com.anod.car.home.app.StoppableService;
+import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.utils.AppLog;
 
 import root.gast.speech.activation.SpeechActivationListener;
-import root.gast.speech.activation.SpeechActivator;
 
 /**
  * Persistently run a speech mActivator in the background.
@@ -37,109 +39,71 @@ import root.gast.speech.activation.SpeechActivator;
  *         href="mailto:gregorym@gmail.com">gregorym@gmail.com</a>&#62;
  * 
  */
-public class SpeechActivationService extends Service implements SpeechActivationListener
+public class SpeechActivationService extends StoppableService implements SpeechActivationListener
 {
     private static final String TAG = "SpeechActivationService";
-    public static final String NOTIFICATION_ICON_RESOURCE_INTENT_KEY = "NOTIFICATION_ICON_RESOURCE_INTENT_KEY";
-    public static final String ACTIVATION_TYPE_INTENT_KEY = "ACTIVATION_TYPE_INTENT_KEY";
     public static final String ACTIVATION_RESULT_INTENT_KEY = "ACTIVATION_RESULT_INTENT_KEY";
-    public static final String ACTIVATION_RESULT_BROADCAST_NAME = "root.gast.playground.speech.ACTIVATION";
-
-    /**
-     * send this when external code wants the Service to stop
-     */
-    public static final String ACTIVATION_STOP_INTENT_KEY = "ACTIVATION_STOP_INTENT_KEY";
+    public static final String ACTIVATION_RESULT_BROADCAST_NAME = "com.anod.car.home.speech.ACTIVATION";
+	public static final long DELAY_MILLIS = 2000L;
 
     public static final int NOTIFICATION_ID = 10298;
 
-    private boolean isStarted;
-
-    private SpeechActivator mActivator;
+    private HotWordActivator mActivator;
 
     @Override
     public void onCreate()
     {
         super.onCreate();
-        isStarted = false;
     }
 
-    public static Intent makeStartServiceIntent(Context context)
+    public static Intent makeStartIntent(Context context)
     {
         Intent i = new Intent(context, SpeechActivationService.class);
         return i;
     }
 
-    public static Intent makeServiceStopIntent(Context context)
+    public static Intent makeStopIntent(Context context)
     {
         Intent i = new Intent(context, SpeechActivationService.class);
-        i.putExtra(ACTIVATION_STOP_INTENT_KEY, true);
+		fillStopIntent(i);
         return i;
     }
 
-    /**
-     * stop or start an mActivator based on the mActivator type and if an
-     * mActivator is currently running
-     */
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId)
-    {
-        if (intent != null)
-        {
-            if (intent.hasExtra(ACTIVATION_STOP_INTENT_KEY))
-            {
-				AppLog.d("stop service intent");
-                activated(false);
-            }
-            else
-            {
-                if (isStarted)
-                {
-                    // the mActivator is currently started
-                    // if the intent is requesting a new mActivator
-                    // stop the current mActivator and start
-                    // the new one
-					AppLog.d("already started this type");
-                }
-                else
-                {
-                    // mActivator not started, start it
-                    startDetecting(intent);
-                }
-            }
-        }
+	@Override
+	protected void onBeforeStop(Intent intent) {
+		
+		stopActivator();
+	}
 
-        // restart in case the Service gets canceled
-        return START_REDELIVER_INTENT;
-    }
+	@Override
+	protected void onAfterStart(Intent intent) {
+		if (mActivator == null)
+		{
+			AppLog.d("mActivator = null");
+			mActivator = new HotWordActivator(this, this, "Okay Widget", "Ok widget", "ok VJ", "Okay VJ");
+		}
 
-    private void startDetecting(Intent intent)
-    {
-        if (mActivator == null)
-        {
-			AppLog.d("null mActivator");
-        }
+		if (mActivator.canStartHotword())
+		{
+			startDetection();
+		} else {
+			AppLog.d("Delayed start " + mActivator.getClass().getSimpleName());
+		}
 
-		mActivator = new HotWordActivator(this, this, "Okay Widget", "Ok widget", "ok VJ", "Okay VJ");
-        AppLog.d("started: " + mActivator.getClass().getSimpleName());
-        isStarted = true;
-        mActivator.detectActivation();
-        startForeground(NOTIFICATION_ID, getNotification(intent));
-    }
+		Handler localHandler = new Handler();
+		localHandler.postDelayed(new CheckEnvironmentHandler(this, mActivator, localHandler), DELAY_MILLIS);
+	}
+
+
 
 
     @Override
     public void activated(boolean success)
     {
-        // make sure the mActivator is stopped before doing anything else
-        stopActivator();
-
         // broadcast result
         Intent intent = new Intent(ACTIVATION_RESULT_BROADCAST_NAME);
         intent.putExtra(ACTIVATION_RESULT_INTENT_KEY, success);
         sendBroadcast(intent);
-
-        // always stop after receive an activation
-        stopSelf();
     }
 
     @Override
@@ -153,30 +117,29 @@ public class SpeechActivationService extends Service implements SpeechActivation
 
     private void stopActivator()
     {
-        if (mActivator != null)
+        if (mActivator != null && mActivator.isActive())
         {
             AppLog.d("stopped: " + mActivator.getClass().getSimpleName());
             mActivator.stop();
-            isStarted = false;
         }
     }
 
     @SuppressLint("NewApi")
-    private Notification getNotification(Intent intent)
+    public static Notification createNotification(Context context)
     {
         // determine label based on the class
         String name = "Okay Widget";
-        String message = getString(R.string.speech_activation_notification_listening) + " " + name;
-        String title = getString(R.string.speech_activation_notification_title);
+        String message = context.getString(R.string.speech_activation_notification_listening) + " " + name;
+        String title = context.getString(R.string.speech_activation_notification_title);
 
-        PendingIntent pi = PendingIntent.getService(this, 0, makeServiceStopIntent(this), 0);
+        PendingIntent pi = PendingIntent.getService(context, 0, makeStopIntent(context), 0);
 
-        int icon = intent.getIntExtra(NOTIFICATION_ICON_RESOURCE_INTENT_KEY, R.drawable.ic_stat_ic_action_mic);
+        int icon = R.drawable.ic_stat_ic_action_mic;
 
         Notification notification;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
         {
-            Notification.Builder builder = new Notification.Builder(this);
+            Notification.Builder builder = new Notification.Builder(context);
             builder.setSmallIcon(icon)
                     .setWhen(System.currentTimeMillis()).setTicker(message)
                     .setContentTitle(title).setContentText(message)
@@ -185,18 +148,65 @@ public class SpeechActivationService extends Service implements SpeechActivation
         }
         else
         {
-            notification =
-                    new Notification(icon, message,
-                            System.currentTimeMillis());
-            notification.setLatestEventInfo(this, title, message, pi);
+            notification = new Notification(icon, message, System.currentTimeMillis());
+            notification.setLatestEventInfo(context, title, message, pi);
         }
 
         return notification;
     }
+
+	public void startDetection() {
+		AppLog.d("Started " + mActivator.getClass().getSimpleName());
+		mActivator.detectActivation();
+		startForeground(NOTIFICATION_ID, createNotification(this));
+	}
+
+	public void stopDetection() {
+		mActivator.stop();
+	}
 
     @Override
     public IBinder onBind(Intent intent)
     {
         return null;
     }
+
+	final static class CheckEnvironmentHandler implements Runnable
+	{
+		private final SpeechActivationService mService;
+		private final Handler mHandler;
+		private final HotWordActivator mActivator;
+
+		CheckEnvironmentHandler(SpeechActivationService service, HotWordActivator activator, Handler handler)
+		{
+			mService = service;
+			mActivator = activator;
+			mHandler = handler;
+		}
+
+		public final void run()
+		{
+			if (!mActivator.aborting()) {
+				return;
+			}
+			if (!ModeService.sInCarMode) {
+				return;
+			}
+
+			if (mActivator.isMusicActive())
+			{
+				AppLog.d("Music is playing");
+				mService.stopDetection();
+			} else if (!mActivator.isActive()) {
+				AppLog.d("Music has stopped playing");
+				if (mActivator.canStartHotword()) {
+					mService.startDetection();
+				}
+			}
+			mHandler.postDelayed(this, DELAY_MILLIS);
+		}
+
+	}
+
+
 }

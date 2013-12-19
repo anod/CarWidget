@@ -124,11 +124,9 @@ public class SpeechRecognitionUtil
     {
         float[] scores = null;
 
-        if (bundle
-                .containsKey(UNSUPPORTED_GOOGLE_RESULTS_CONFIDENCE))
+        if (bundle.containsKey(UNSUPPORTED_GOOGLE_RESULTS_CONFIDENCE))
         {
-            scores =
-                    bundle.getFloatArray(UNSUPPORTED_GOOGLE_RESULTS_CONFIDENCE);
+            scores = bundle.getFloatArray(UNSUPPORTED_GOOGLE_RESULTS_CONFIDENCE);
         }
         else
         {

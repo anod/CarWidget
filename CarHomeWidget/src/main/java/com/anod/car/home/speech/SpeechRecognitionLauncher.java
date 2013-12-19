@@ -49,6 +49,7 @@ public class SpeechRecognitionLauncher extends SpeechRecognizingAndSpeakingActiv
 	{
 		super.onSuccessfulInit(tts);
 		prompt();
+		finish();
 	}
 
 	private void prompt()
@@ -65,8 +66,7 @@ public class SpeechRecognitionLauncher extends SpeechRecognizingAndSpeakingActiv
 
 	public void startVoice() {
 		try {
-			final SearchManager searchManager =
-					(SearchManager) getSystemService(Context.SEARCH_SERVICE);
+			final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 			ComponentName activityName = searchManager.getGlobalSearchActivity();
 			Intent intent = new Intent(RecognizerIntent.ACTION_WEB_SEARCH);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
