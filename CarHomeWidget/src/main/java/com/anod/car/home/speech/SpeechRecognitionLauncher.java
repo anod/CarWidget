@@ -5,12 +5,14 @@ package com.anod.car.home.speech;
  * @date 12/12/13
  */
 
+import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
@@ -37,11 +39,43 @@ public class SpeechRecognitionLauncher extends SpeechRecognizingAndSpeakingActiv
 	private static final String TAG = "SpeechRecognitionLauncher";
 
 	private static final String ON_DONE_PROMPT_TTS_PARAM = "ON_DONE_PROMPT";
+	public static final String VOICE_RESUME = "VOICE_RESUME";
+
+	private boolean mResume;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+
+		// Check whether we're recreating a previously destroyed instance
+		if (savedInstanceState != null) {
+			// Restore value of members from saved state
+			boolean resume = savedInstanceState.getBoolean(VOICE_RESUME);
+			if (resume) {
+				startService(SpeechActivationService.makeStartIntent(this));
+				finish();
+				return;
+			}
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (mResume) {
+			startService(SpeechActivationService.makeStartIntent(this));
+			finish();
+			return;
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		// Save the user's current game state
+		savedInstanceState.putBoolean(VOICE_RESUME, mResume);
+		// Always call the superclass so it can save the view hierarchy state
+		super.onSaveInstanceState(savedInstanceState);
 	}
 
 	@Override
@@ -49,7 +83,6 @@ public class SpeechRecognitionLauncher extends SpeechRecognizingAndSpeakingActiv
 	{
 		super.onSuccessfulInit(tts);
 		prompt();
-		finish();
 	}
 
 	private void prompt()
@@ -61,13 +94,14 @@ public class SpeechRecognitionLauncher extends SpeechRecognizingAndSpeakingActiv
 				TextToSpeech.QUEUE_FLUSH,
 				TextToSpeechUtils.makeParamsWith(ON_DONE_PROMPT_TTS_PARAM));
 		*/
+		mResume = true;
 		startVoice();
 	}
 
 	public void startVoice() {
+
 		try {
-			final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-			ComponentName activityName = searchManager.getGlobalSearchActivity();
+			ComponentName activityName = getGlobalSearchActivity();
 			Intent intent = new Intent(RecognizerIntent.ACTION_WEB_SEARCH);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			if (activityName != null) {
@@ -79,6 +113,15 @@ public class SpeechRecognitionLauncher extends SpeechRecognizingAndSpeakingActiv
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			Utils.startActivitySafely(intent, this);
 		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	private ComponentName getGlobalSearchActivity() {
+		if (Utils.IS_JELLYBEAN_OR_GREATER) {
+			final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+			return searchManager.getGlobalSearchActivity();
+		}
+		return null;
 	}
 
 	/**
@@ -110,9 +153,9 @@ public class SpeechRecognitionLauncher extends SpeechRecognizingAndSpeakingActiv
 				//showResults.setClass(this, SpeechRecognitionResultsActivity.class);
 				//startActivity(showResults);
 			}
+			finish();
 		}
 
-		finish();
 	}
 
 	@Override

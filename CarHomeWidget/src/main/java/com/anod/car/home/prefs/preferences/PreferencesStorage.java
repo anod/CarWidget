@@ -185,9 +185,9 @@ public class PreferencesStorage {
 		p.setActivateCarMode(prefs.getBoolean(ACTIVATE_CAR_MODE, false));
 		p.setAutoAnswer(prefs.getString(AUTO_ANSWER, InCar.AUTOANSWER_DISABLED));
 
-		p.setActivityRequired(prefs.getBoolean(ACTIVITY_RECOGNITION, false));// TODO
+		p.setActivityRequired(prefs.getBoolean(ACTIVITY_RECOGNITION, false));
 		String autorunAppString = prefs.getString(AUTORUN_APP, null);
-		Log.d("CarWidget", "Autroun app:" + autorunAppString);
+
 		ComponentName autorunApp = null;
 		if (autorunAppString != null) {
 			autorunApp = Utils.stringToComponent(autorunAppString);

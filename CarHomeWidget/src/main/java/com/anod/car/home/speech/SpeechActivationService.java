@@ -18,12 +18,11 @@ package com.anod.car.home.speech;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 
 import com.anod.car.home.R;
 import com.anod.car.home.app.StoppableService;
@@ -49,8 +48,11 @@ public class SpeechActivationService extends StoppableService implements SpeechA
     public static final int NOTIFICATION_ID = 10298;
 
     private HotWordActivator mActivator;
+	private Handler mEnvHandler;
+	private CheckEnvironmentRunnable mEnvRunnable;
+	private boolean isStarted = false;
 
-    @Override
+	@Override
     public void onCreate()
     {
         super.onCreate();
@@ -77,33 +79,44 @@ public class SpeechActivationService extends StoppableService implements SpeechA
 
 	@Override
 	protected void onAfterStart(Intent intent) {
-		if (mActivator == null)
-		{
-			AppLog.d("mActivator = null");
-			mActivator = new HotWordActivator(this, this, "Okay Widget", "Ok widget", "ok VJ", "Okay VJ");
+		if (!ModeService.sInCarMode) {
+			stopSelf();
+			return;
 		}
+		if (!isStarted) {
+			if (mActivator == null)
+			{
+				AppLog.d("mActivator = null");
+				mActivator = new HotWordActivator(this, this, "Okay Widget", "Ok widget", "ok VJ", "Okay VJ");
+			}
 
-		if (mActivator.canStartHotword())
-		{
-			startDetection();
-		} else {
-			AppLog.d("Delayed start " + mActivator.getClass().getSimpleName());
+			if (mActivator.canStartHotword())
+			{
+				startDetection();
+			} else {
+				AppLog.d("Delayed start " + mActivator.getClass().getSimpleName());
+			}
+
+			mEnvHandler = new Handler();
+			if (mEnvRunnable == null) {
+				mEnvRunnable = new CheckEnvironmentRunnable(this, mActivator, mEnvHandler);
+				mEnvHandler.postDelayed(mEnvRunnable, DELAY_MILLIS);
+			}
+			isStarted = true;
 		}
-
-		Handler localHandler = new Handler();
-		localHandler.postDelayed(new CheckEnvironmentHandler(this, mActivator, localHandler), DELAY_MILLIS);
 	}
-
-
-
 
     @Override
     public void activated(boolean success)
     {
+		mEnvHandler.removeCallbacks(mEnvRunnable);
+		mEnvRunnable = null;
         // broadcast result
         Intent intent = new Intent(ACTIVATION_RESULT_BROADCAST_NAME);
         intent.putExtra(ACTIVATION_RESULT_INTENT_KEY, success);
         sendBroadcast(intent);
+
+		stopSelf();
     }
 
     @Override
@@ -122,6 +135,7 @@ public class SpeechActivationService extends StoppableService implements SpeechA
             AppLog.d("stopped: " + mActivator.getClass().getSimpleName());
             mActivator.stop();
         }
+		isStarted = false;
     }
 
     @SuppressLint("NewApi")
@@ -134,23 +148,15 @@ public class SpeechActivationService extends StoppableService implements SpeechA
 
         PendingIntent pi = PendingIntent.getService(context, 0, makeStopIntent(context), 0);
 
-        int icon = R.drawable.ic_stat_ic_action_mic;
-
-        Notification notification;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-        {
-            Notification.Builder builder = new Notification.Builder(context);
-            builder.setSmallIcon(icon)
-                    .setWhen(System.currentTimeMillis()).setTicker(message)
-                    .setContentTitle(title).setContentText(message)
-                    .setContentIntent(pi);
-            notification = builder.getNotification();
-        }
-        else
-        {
-            notification = new Notification(icon, message, System.currentTimeMillis());
-            notification.setLatestEventInfo(context, title, message, pi);
-        }
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+		builder.setSmallIcon(R.drawable.ic_stat_ic_action_mic)
+				.setWhen(System.currentTimeMillis())
+				.setTicker(message)
+				.setContentTitle(title)
+				.setContentText(message)
+				.setContentIntent(pi)
+		;
+		Notification notification = builder.build();
 
         return notification;
     }
@@ -171,13 +177,13 @@ public class SpeechActivationService extends StoppableService implements SpeechA
         return null;
     }
 
-	final static class CheckEnvironmentHandler implements Runnable
+	final static class CheckEnvironmentRunnable implements Runnable
 	{
 		private final SpeechActivationService mService;
 		private final Handler mHandler;
 		private final HotWordActivator mActivator;
 
-		CheckEnvironmentHandler(SpeechActivationService service, HotWordActivator activator, Handler handler)
+		CheckEnvironmentRunnable(SpeechActivationService service, HotWordActivator activator, Handler handler)
 		{
 			mService = service;
 			mActivator = activator;
@@ -186,22 +192,28 @@ public class SpeechActivationService extends StoppableService implements SpeechA
 
 		public final void run()
 		{
-			if (!mActivator.aborting()) {
-				return;
-			}
 			if (!ModeService.sInCarMode) {
+				AppLog.d("CheckEnvironmentRunnable : STOP : !ModeService.sInCarMode");
 				return;
 			}
 
 			if (mActivator.isMusicActive())
 			{
-				AppLog.d("Music is playing");
+
+				AppLog.d("CheckEnvironmentRunnable : PAUSE : mActivator.isMusicActive");
 				mService.stopDetection();
+
 			} else if (!mActivator.isActive()) {
-				AppLog.d("Music has stopped playing");
+
 				if (mActivator.canStartHotword()) {
+					AppLog.d("CheckEnvironmentRunnable : START : mActivator.isMusicActive");
 					mService.startDetection();
+				} else {
+					AppLog.d("CheckEnvironmentRunnable : START : !mActivator.canStartHotword");
 				}
+
+			} else {
+				AppLog.d("CheckEnvironmentRunnable : IDLE : already active");
 			}
 			mHandler.postDelayed(this, DELAY_MILLIS);
 		}

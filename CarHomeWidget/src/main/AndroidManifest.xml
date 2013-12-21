@@ -150,7 +150,8 @@
 				  android:finishOnTaskLaunch="true" />
 
 		<service android:name=".speech.SpeechActivationService" />
-		<activity android:name=".speech.SpeechRecognitionLauncher" android:theme="@style/BrightnessTheme" />
+		<activity android:name=".speech.SpeechRecognitionLauncher" />
+		<!--  android:theme="@style/BrightnessTheme" //-->
 		<receiver android:name=".speech.ShowResultsSpeechActivationBroadcastReceiver">
 			<intent-filter >
 				<action android:name="com.anod.car.home.speech.ACTIVATION"/>

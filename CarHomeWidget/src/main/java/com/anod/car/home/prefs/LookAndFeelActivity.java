@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -27,7 +26,6 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,7 +33,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
@@ -96,7 +93,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 
 		mAppWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 		if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-			Log.e("CarWidget", "Invalid app widget id");
+			AppLog.e("Invalid app widget id");
 			finish();
 			return;
 		}
