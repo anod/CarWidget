@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import com.anod.car.home.R;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.utils.ArrayAdapterCompat;
-import com.anod.car.home.utils.UtilitiesBitmap;
 
 /**
  * @author alex

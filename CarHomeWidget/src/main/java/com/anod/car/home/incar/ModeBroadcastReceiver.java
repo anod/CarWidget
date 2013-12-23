@@ -1,18 +1,10 @@
 package com.anod.car.home.incar;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
 
-import com.anod.car.home.BuildConfig;
-import com.anod.car.home.R;
 import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Utils;
-import com.google.android.gms.location.ActivityRecognitionResult;
-import com.google.android.gms.location.DetectedActivity;
 
 public class ModeBroadcastReceiver extends BroadcastReceiver {
 	public static final String ACTION_ACTIVITY_RECOGNITION = "com.anod.car.home.incar.ACTION_ACTIVITY_RECOGNITION";

@@ -6,7 +6,6 @@ package com.anod.car.home.speech;
  */
 
 import android.annotation.TargetApi;
-import android.app.ActivityOptions;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -16,16 +15,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 
 import java.util.List;
 
 import root.gast.speech.SpeechRecognizingAndSpeakingActivity;
-import root.gast.speech.tts.TextToSpeechUtils;
 
 /**
  * Starts a speech recognition dialog and then sends the results to

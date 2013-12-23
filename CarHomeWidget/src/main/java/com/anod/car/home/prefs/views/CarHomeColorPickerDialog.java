@@ -10,8 +10,6 @@ import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.anod.car.home.R;
 import com.anod.car.home.utils.AppLog;

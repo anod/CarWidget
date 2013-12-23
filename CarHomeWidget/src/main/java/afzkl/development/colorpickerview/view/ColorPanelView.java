@@ -17,13 +17,14 @@
 
 package afzkl.development.colorpickerview.view;
 
-import afzkl.development.colorpickerview.drawable.AlphaPatternDrawable;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
+
+import afzkl.development.colorpickerview.drawable.AlphaPatternDrawable;
 
 /**
  * This class draws a panel which which will be filled with a color which can be set.

@@ -9,13 +9,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.ActivityRecognitionClient;
@@ -31,7 +29,7 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
     public static final int DETECTION_INTERVAL_MILLISECONDS =
             MILLISECONDS_PER_SECOND * DETECTION_INTERVAL_SECONDS;
 
-	public static boolean sRegistred;
+	public static boolean sRegistered;
     @Override
 	public void onCreate() {
    		register(this);
@@ -41,7 +39,7 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 	@Override
 	public void onDestroy() {
    		unregister(this);
-		super.onDestroy();
+		super.onDestroy(); 
 	}
 
 	@Override
@@ -51,8 +49,8 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 	}
 
 	private void register(Context context) {
-		Log.d("HomeCarWidget", "Register");
-		sRegistred=true;
+		AppLog.d("BroadcastService::register");
+		sRegistered =true;
 
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_HEADSET_PLUG);
@@ -74,8 +72,8 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 	}
 
 	private void unregister(Context context) {
-		Log.d("HomeCarWidget", "unregister");
-		sRegistred=false;
+		AppLog.d("BroadcastService::unregister");
+		sRegistered =false;
 		ModeBroadcastReceiver receiver = ModeBroadcastReceiver.getInstance();
 		receiver.setUpdateClientListener(null);
 		context.unregisterReceiver(receiver);

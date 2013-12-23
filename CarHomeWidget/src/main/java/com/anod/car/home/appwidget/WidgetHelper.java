@@ -4,8 +4,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 
-import java.util.List;
-
 /**
  * @author alex
  * @date 5/24/13

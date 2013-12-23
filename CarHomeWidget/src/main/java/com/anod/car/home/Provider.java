@@ -1,9 +1,5 @@
 package com.anod.car.home;
 
-import com.anod.car.home.incar.BroadcastService;
-import com.anod.car.home.incar.ModeService;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-
 import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -14,6 +10,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.anod.car.home.incar.BroadcastService;
+import com.anod.car.home.incar.ModeService;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 
 public class Provider extends AppWidgetProvider {
@@ -76,7 +76,7 @@ public class Provider extends AppWidgetProvider {
     	final Intent updateIntent = new Intent(context, UpdateService.class);
     	context.stopService(updateIntent);
     	
-    	if (BroadcastService.sRegistred) {
+    	if (BroadcastService.sRegistered) {
             final Intent receiverIntent = new Intent(context, BroadcastService.class);
             context.stopService(receiverIntent);
     	}    

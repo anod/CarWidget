@@ -1,9 +1,5 @@
 package com.anod.car.home.prefs;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
@@ -28,7 +24,10 @@ import com.anod.car.home.R;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.UtilitiesBitmap;
-import com.anod.car.home.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ActivityPicker extends ListActivity {
 

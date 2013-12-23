@@ -42,5 +42,9 @@
             android:title="@string/pref_backup_title"
 			android:fragment="com.anod.car.home.prefs.ConfigurationBackup"
 		/>
+		<Preference
+			android:key="debug-activity"
+			android:title="Debug Activity"
+		/>
     </PreferenceCategory>
 </PreferenceScreen>

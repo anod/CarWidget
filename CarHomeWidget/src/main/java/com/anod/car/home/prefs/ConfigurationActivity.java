@@ -9,10 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.preference.PreferenceFragment;
 
-import com.anod.car.home.app.CarWidgetActivity;
-import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
+import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.model.AppsListCache;
 
 

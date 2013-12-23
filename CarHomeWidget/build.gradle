@@ -27,7 +27,6 @@ dependencies {
        'libs/acra-4.5.0.jar',
        'libs/commons-codec-1.5.jar'
     )
-
 }
 
 android {

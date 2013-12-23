@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.anod.car.home.R;
 import com.anod.car.home.model.NotificationShortcutsModel;
-import com.anod.car.home.model.ShortcutsModel;
 import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.ShortcutPreference;

@@ -1,27 +1,23 @@
 package com.anod.car.home.utils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
-import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 
 import com.anod.car.home.R;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class UtilitiesBitmap {
 	private static final int SIZE_ICON = 0; // icon with higher density

@@ -1,7 +1,5 @@
 package com.anod.car.home.prefs;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -17,6 +15,8 @@ import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutsModel;
 import com.anod.car.home.prefs.views.ShortcutPreference;
 import com.anod.car.home.utils.IntentUtils;
+
+import java.util.ArrayList;
 
 public class PickShortcutUtils {
 	private int mCurrentCellId = INVALID_CELL_ID;

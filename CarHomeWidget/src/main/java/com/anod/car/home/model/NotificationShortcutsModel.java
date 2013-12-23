@@ -1,10 +1,10 @@
 package com.anod.car.home.model;
 
-import java.util.ArrayList;
+import android.content.Context;
 
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
-import android.content.Context;
+import java.util.ArrayList;
 
 public class NotificationShortcutsModel extends AbstractShortcutsModel {
 	private final Context mContext;

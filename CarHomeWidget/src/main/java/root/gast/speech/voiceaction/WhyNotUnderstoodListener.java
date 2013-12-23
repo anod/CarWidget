@@ -15,11 +15,11 @@
  */
 package root.gast.speech.voiceaction;
 
-import java.util.List;
-
 import android.content.Context;
 
 import com.anod.car.home.R;
+
+import java.util.List;
 
 /**
  * respond depending on why not understanding occured

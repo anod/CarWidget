@@ -1,9 +1,5 @@
 package com.anod.car.home.prefs.preferences;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,6 +16,10 @@ import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
 import com.anod.car.home.utils.BitmapTransform.RotateDirection;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
 
 public class PreferencesStorage {
 	private static final String MODE_FORCE_STATE = "mode-force-state";

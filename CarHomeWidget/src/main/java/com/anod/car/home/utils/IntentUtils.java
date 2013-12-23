@@ -1,7 +1,5 @@
 package com.anod.car.home.utils;
 
-import java.util.List;
-
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,14 +12,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Parcelable;
 import android.provider.Settings;
-
 import android.view.KeyEvent;
+
 import com.anod.car.home.ShortcutActivity;
 import com.anod.car.home.incar.SwitchInCarActivity;
 import com.anod.car.home.prefs.Configuration;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.PickShortcutUtils;
 import com.anod.car.home.prefs.ShortcutEditActivity;
+
+import java.util.List;
 
 public class IntentUtils {
 	private static final String SCHEME = "package";

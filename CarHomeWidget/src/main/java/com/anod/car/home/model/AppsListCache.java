@@ -1,10 +1,5 @@
 package com.anod.car.home.model;
 
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
 import android.content.ComponentName;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -19,7 +14,11 @@ import android.widget.ImageView;
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.UtilitiesBitmap;
-import com.anod.car.home.utils.Utils;
+
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Cache of application icons. Icons can be made from any thread.

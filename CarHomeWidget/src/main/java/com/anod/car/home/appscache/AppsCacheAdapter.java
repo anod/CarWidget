@@ -1,7 +1,5 @@
 package com.anod.car.home.appscache;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
@@ -15,6 +13,8 @@ import com.anod.car.home.R;
 import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.model.AppsListCache.CacheEntry;
 import com.anod.car.home.utils.UtilitiesBitmap;
+
+import java.util.List;
 
 public class AppsCacheAdapter extends ArrayAdapter<CacheEntry> {
 	final private AppsListCache mAppsListCache;

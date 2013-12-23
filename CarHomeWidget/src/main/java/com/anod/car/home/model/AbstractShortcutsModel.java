@@ -1,13 +1,10 @@
 package com.anod.car.home.model;
 
-import java.util.ArrayList;
-
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
 import android.util.SparseArray;
+
+import java.util.ArrayList;
 
 public abstract class AbstractShortcutsModel implements ShortcutsModel {
 	private final SparseArray<ShortcutInfo> mShortcuts;

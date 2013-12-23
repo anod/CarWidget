@@ -15,6 +15,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
+
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;

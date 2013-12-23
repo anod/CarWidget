@@ -1,7 +1,5 @@
 package com.anod.car.home.prefs;
 
-import java.util.ArrayList;
-
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,6 +19,8 @@ import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.IconPackUtils;
 import com.anod.car.home.utils.Utils;
+
+import java.util.ArrayList;
 
 public class IconThemesActivity extends AppsCacheActivity implements OnClickListener {
 	private int mCurrentSelected;

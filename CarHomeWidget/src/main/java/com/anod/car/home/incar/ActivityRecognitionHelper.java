@@ -1,6 +1,7 @@
 package com.anod.car.home.incar;
 
 import android.content.Intent;
+
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
 

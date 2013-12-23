@@ -12,8 +12,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
-import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
+import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
@@ -73,7 +73,7 @@ public class UpdateService extends Service implements Runnable {
 			final Intent updateIntent = new Intent(context, BroadcastService.class);
 			context.startService(updateIntent);
 		} else {
-			if (BroadcastService.sRegistred) {
+			if (BroadcastService.sRegistered) {
 				final Intent updateIntent = new Intent(context, BroadcastService.class);
 				context.stopService(updateIntent);
 			}

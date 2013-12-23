@@ -1,13 +1,13 @@
 package com.anod.car.home.incar;
 
-import com.anod.car.home.R;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import com.anod.car.home.R;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 public class SwitchInCarActivity extends Activity {
 

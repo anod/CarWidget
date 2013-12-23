@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Utils;
 
 public class CarHomeActivity extends Activity {
 

@@ -1,9 +1,5 @@
 package com.anod.car.home.prefs;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -30,8 +26,6 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
-import android.preference.TwoStatePreference;
-import android.support.v4.preference.PreferenceFragment;
 
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetHelper;
@@ -47,6 +41,10 @@ import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 public class ConfigurationInCar extends ConfigurationFragment {
 
@@ -164,7 +162,7 @@ public class ConfigurationInCar extends ConfigurationFragment {
 				if ((Boolean)newValue) {
 					final Intent updateIntent = new Intent(mContext, BroadcastService.class);
 					mContext.startService(updateIntent);
-				} else if (BroadcastService.sRegistred) {
+				} else if (BroadcastService.sRegistered) {
 					final Intent updateIntent = new Intent(mContext, BroadcastService.class);
 					mContext.stopService(updateIntent);
 				}

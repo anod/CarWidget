@@ -1,12 +1,9 @@
 package com.anod.car.home.prefs;
 
-import java.io.File;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -24,8 +21,9 @@ import android.widget.Toast;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
+
+import java.io.File;
 
 public class ConfigurationBackup extends ConfigurationFragment {
 	private static final String BACKUP_PATH = "backup-path";

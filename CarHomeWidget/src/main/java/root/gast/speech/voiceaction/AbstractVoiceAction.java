@@ -15,9 +15,9 @@
  */
 package root.gast.speech.voiceaction;
 
-import java.util.List;
-
 import android.util.Log;
+
+import java.util.List;
 
 /**
  * Provide some common methods for any voice action

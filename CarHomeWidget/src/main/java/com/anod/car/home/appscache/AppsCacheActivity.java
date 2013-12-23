@@ -1,7 +1,5 @@
 package com.anod.car.home.appscache;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
@@ -18,6 +16,8 @@ import com.anod.car.home.R;
 import com.anod.car.home.appscache.AppsCacheAsyncTask.Callback;
 import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.model.AppsListCache.CacheEntry;
+
+import java.util.ArrayList;
 
 public abstract class AppsCacheActivity extends ListActivity implements OnItemClickListener, Callback {
 	private AppsListCache mAppsList;

@@ -1,18 +1,14 @@
 package com.anod.car.home.model;
 
-import java.util.ArrayList;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-import com.anod.car.home.R;
-import com.anod.car.home.prefs.CarWidgetShortcutsPicker;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.IntentUtils;
+
+import java.util.ArrayList;
 
 public class LauncherShortcutsModel extends AbstractShortcutsModel {
 	private final Context mContext;

@@ -11,10 +11,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.anod.car.home.CarWidgetApplication;
-import com.anod.car.home.Provider;
+import com.anod.car.home.DebugActivity;
 import com.anod.car.home.R;
-import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.model.LauncherShortcutsModel;
 import com.anod.car.home.model.ShortcutsModel;
 import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
@@ -41,7 +39,8 @@ public class Configuration extends ConfigurationFragment implements PreferenceKe
 		mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
 		mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
 		initShortcuts();
-		
+
+		setIntent("debug-activity", DebugActivity.class, 0);
 		setIntent(LOOK_AND_FEEL, LookAndFeelActivity.class, mAppWidgetId);
 		showFragmentOnClick(BACKUP, ConfigurationBackup.class);
 		showFragmentOnClick(INCAR, ConfigurationInCar.class);

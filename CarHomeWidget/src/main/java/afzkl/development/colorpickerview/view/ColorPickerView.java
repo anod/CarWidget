@@ -30,7 +30,6 @@
 
 package afzkl.development.colorpickerview.view;
 
-import afzkl.development.colorpickerview.drawable.AlphaPatternDrawable;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -52,6 +51,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.anod.car.home.R;
+
+import afzkl.development.colorpickerview.drawable.AlphaPatternDrawable;
 
 /**
  * Displays a color picker to the user and allow them

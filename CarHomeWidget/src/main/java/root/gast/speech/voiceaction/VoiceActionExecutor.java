@@ -15,10 +15,6 @@
  */
 package root.gast.speech.voiceaction;
 
-import java.util.List;
-
-import root.gast.speech.SpeechRecognizingActivity;
-import root.gast.speech.tts.TextToSpeechUtils;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
@@ -27,6 +23,11 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
 import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
+
+import java.util.List;
+
+import root.gast.speech.SpeechRecognizingActivity;
+import root.gast.speech.tts.TextToSpeechUtils;
 
 /**
  * Helps execute {@link VoiceAction}s and say their responses and prompts.

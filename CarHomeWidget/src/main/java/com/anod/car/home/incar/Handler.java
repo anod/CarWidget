@@ -1,7 +1,5 @@
 package com.anod.car.home.incar;
 
-import java.util.HashMap;
-
 import android.annotation.TargetApi;
 import android.app.UiModeManager;
 import android.bluetooth.BluetoothAdapter;
@@ -19,9 +17,11 @@ import android.util.Log;
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.speech.SpeechActivationService;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 
-import com.anod.car.home.speech.SpeechActivationService;
+import java.util.HashMap;
 
 public class Handler {
 	private static final int VOLUME_NOT_SET = -1;
@@ -30,10 +30,10 @@ public class Handler {
 	private static final int BRIGHTNESS_NIGHT = 30;
 	private static final int BRIGHTNESS_DAY = BRIGHTNESS_MAX;
 	
-	private static final byte FLAG_POWER = 0;
-	private static final byte FLAG_HEADSET = 1;
-	private static final byte FLAG_BLUETOOTH = 2;
-	private static final byte FLAG_ACTIVITY = 3;
+	public static final byte FLAG_POWER = 0;
+	public static final byte FLAG_HEADSET = 1;
+	public static final byte FLAG_BLUETOOTH = 2;
+	public static final byte FLAG_ACTIVITY = 3;
 
 	private static boolean[] sPrefState = {false,false,false,false};
 	private static boolean[] sEventState = {false,false,false,false};
@@ -51,7 +51,11 @@ public class Handler {
 	/**
 	 * For thread safety
 	 */
-	private static final Object[] LOCK = new Object[0];
+	private static final Object[] sLock = new Object[0];
+
+	public static boolean getEventState(int flag) {
+		return sEventState[flag];
+	}
 
 	public static void onBroadcastReceive(Context context, Intent intent) {
 		if (!PreferencesStorage.isInCarModeEnabled(context)) { // TODO remove it
@@ -69,13 +73,13 @@ public class Handler {
 		updateEventState(prefs,intent);
 		if (BuildConfig.DEBUG) {
 			for (int i=0; i<sPrefState.length; i++) {
-				Log.d(TAG, "Pref state [" +i +"] : " + sPrefState[i]);
-				Log.d(TAG, "Event state [" +i +"] : " + sEventState[i]);
+				AppLog.d("Pref state [" +i +"] : " + sPrefState[i]);
+				AppLog.d("Event state [" + i + "] : " + sEventState[i]);
 			}
 		}
 
 		boolean newMode = detectNewMode();
-		Log.d(TAG, "New mode : " +newMode +" Car Mode:" + ModeService.sInCarMode);
+		AppLog.d("New mode : " +newMode +" Car Mode:" + ModeService.sInCarMode);
 		if (!ModeService.sInCarMode && newMode) {
 	    	Intent service = new Intent(context, ModeService.class);
 	    	context.startService(service);
@@ -328,7 +332,7 @@ public class Handler {
 			PowerManager.ACQUIRE_CAUSES_WAKEUP
 		, TAG);
 
-		synchronized(LOCK) {
+		synchronized(sLock) {
 			if (sWakeLock != null && !sWakeLocked && !sWakeLock.isHeld()) {
 				sWakeLock.acquire();
 				sWakeLocked = true;
@@ -371,8 +375,7 @@ public class Handler {
 			android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode);
 		}
 		
-		android.provider.Settings.System.putInt(cr, 
-                 android.provider.Settings.System.SCREEN_BRIGHTNESS, newBrightLevel);
+		android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS, newBrightLevel);
 					
 		sendBrightnessIntent(newBrightLevel, context);            
     }
@@ -434,7 +437,7 @@ public class Handler {
 	}
 	
 	private static void releaseWakeLock() {
-		synchronized (LOCK) {
+		synchronized (sLock) {
 			if (sWakeLock != null && sWakeLocked && sWakeLock.isHeld()) {
 				sWakeLock.release();
 				sWakeLocked = false;

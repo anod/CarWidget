@@ -1,19 +1,16 @@
 package com.anod.car.home.prefs;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.ActivityPicker.PickAdapter.Item;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Version;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CarWidgetShortcutsPicker extends ActivityPicker {
 

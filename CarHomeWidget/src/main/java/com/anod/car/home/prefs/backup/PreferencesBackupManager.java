@@ -1,14 +1,5 @@
 package com.anod.car.home.prefs.backup;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.HashMap;
-
 import android.annotation.SuppressLint;
 import android.app.backup.BackupManager;
 import android.content.Context;
@@ -28,7 +19,15 @@ import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.ShortcutsMain;
 import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Utils;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
 
 public class PreferencesBackupManager {
 	private static final String BACKUP_PACKAGE = "com.anod.car.home.pro";

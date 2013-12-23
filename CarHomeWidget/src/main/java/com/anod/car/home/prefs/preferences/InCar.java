@@ -1,13 +1,13 @@
 package com.anod.car.home.prefs.preferences;
 
+import android.content.ComponentName;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
-
-import android.content.ComponentName;
 
 public class InCar implements Serializable {
 	public static final String BRIGHTNESS_DISABLED = "disabled";

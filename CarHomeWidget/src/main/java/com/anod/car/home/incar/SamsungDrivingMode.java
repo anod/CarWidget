@@ -1,7 +1,6 @@
 package com.anod.car.home.incar;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
 

@@ -15,18 +15,17 @@
  */
 package root.gast.speech;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * abstract class for getting speech, handles some boiler plate code. Any

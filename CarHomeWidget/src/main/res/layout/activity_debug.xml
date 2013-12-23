@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				xmlns:tools="http://schemas.android.com/tools"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:paddingLeft="4dp"
+				android:paddingRight="4dp"
+				android:paddingTop="4dp"
+				android:paddingBottom="4dp"
+				tools:context="com.anod.car.home.DebugActivity$PlaceholderFragment">
+
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:text="InCar: Enabled"
+			android:id="@+id/incar" android:layout_alignParentTop="true" android:singleLine="false"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:text="Power: true"
+			android:id="@+id/power" android:layout_below="@+id/incar" android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:text="Headset: true"
+			android:id="@+id/headset" android:layout_below="@+id/power" android:layout_alignParentLeft="true" android:layout_alignParentStart="true" android:singleLine="false"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:text="Bluetooth: false"
+			android:id="@+id/bluetooth" android:layout_below="@+id/headset" android:layout_alignParentLeft="true" android:layout_alignParentStart="true" android:singleLine="false"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:text="Activity: true"
+			android:id="@+id/activity" android:layout_below="@+id/bluetooth" android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
+	<ListView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/log" android:layout_alignParentLeft="true" android:layout_alignParentStart="true" tools:listitem="@android:layout/simple_list_item_1" android:divider="@null" android:dividerHeight="0dp" android:layout_alignParentBottom="true" android:layout_below="@+id/activity"/>
+</RelativeLayout>

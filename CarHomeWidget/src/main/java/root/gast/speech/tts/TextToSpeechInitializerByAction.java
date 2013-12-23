@@ -15,15 +15,15 @@
  */
 package root.gast.speech.tts;
 
-import java.util.ArrayList;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Helps construct an initalized {@link TextToSpeech} using the 

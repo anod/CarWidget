@@ -1,13 +1,10 @@
 package com.anod.car.home.prefs.preferences;
 
-import android.content.ComponentName;
+import com.anod.car.home.utils.BitmapTransform.RotateDirection;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-
-import com.anod.car.home.utils.BitmapTransform.RotateDirection;
 
 
 public class Main implements Serializable {

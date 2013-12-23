@@ -1,9 +1,9 @@
 package com.anod.car.home.prefs.preferences;
 
+import com.anod.car.home.model.ShortcutInfo;
+
 import java.io.Serializable;
 import java.util.HashMap;
-
-import com.anod.car.home.model.ShortcutInfo;
 
 public class InCarBackup implements Serializable {
 	/**

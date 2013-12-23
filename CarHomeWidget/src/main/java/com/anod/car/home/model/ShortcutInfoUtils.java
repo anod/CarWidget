@@ -5,25 +5,19 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
-import android.content.pm.ActivityInfo;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcelable;
-import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.UtilitiesBitmap;
-import com.anod.car.home.utils.Utils;
-import com.google.android.gms.internal.el;
 
 public class ShortcutInfoUtils {
     static final String TAG = "CarHomeWidget.ShortcutInfoUtils";

@@ -15,12 +15,12 @@
  */
 package root.gast.speech;
 
-import java.util.Date;
-
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
+
+import java.util.Date;
 
 /**
  * just logs what it receives from the {@link SpeechRecognizer} useful for testing

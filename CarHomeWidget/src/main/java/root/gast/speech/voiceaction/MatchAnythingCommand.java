@@ -1,7 +1,6 @@
 package root.gast.speech.voiceaction;
 
 import root.gast.speech.text.WordList;
-import root.gast.speech.text.match.WordMatcher;
 
 public class MatchAnythingCommand implements VoiceActionCommand
 {

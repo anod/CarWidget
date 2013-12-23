@@ -1,7 +1,5 @@
 package com.anod.car.home.model;
 
-import java.net.URISyntaxException;
-
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -17,7 +15,8 @@ import android.net.Uri;
 
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.UtilitiesBitmap;
-import com.anod.car.home.utils.Utils;
+
+import java.net.URISyntaxException;
 
 public class LauncherModel {
 	static final String TAG = "CarHomeWidget.Model";

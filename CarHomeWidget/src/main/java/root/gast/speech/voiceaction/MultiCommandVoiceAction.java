@@ -15,10 +15,11 @@
  */
 package root.gast.speech.voiceaction;
 
+import android.util.Log;
+
 import java.util.List;
 
 import root.gast.speech.text.WordList;
-import android.util.Log;
 
 /**
  * a group of {@link VoiceAction}s

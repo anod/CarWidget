@@ -1,11 +1,5 @@
 package com.anod.car.home.model;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.net.URISyntaxException;
-
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,7 +7,12 @@ import android.graphics.BitmapFactory;
 
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.UtilitiesBitmap;
-import com.anod.car.home.utils.Utils;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.net.URISyntaxException;
 
 
 /**

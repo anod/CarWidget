@@ -55,7 +55,7 @@
 			android:icon="@drawable/ic_launcher"
 			android:label="@string/app_name"
 			android:allowBackup="true"
-         >
+	>
         <service android:name="com.anod.car.home.UpdateService" />
 
         <activity
@@ -158,10 +158,10 @@
 			</intent-filter>
 		</receiver>
 
-
-
-        <meta-data android:name="com.crashlytics.ApiKey" android:value="37454d25f5bb26cdb68b79a6ca77eef421fa17c1"/>
-
+		<activity android:name="com.anod.car.home.DebugActivity"
+		  android:launchMode="singleTop"
+		  android:clearTaskOnLaunch="true"
+		/>
 
 	</application>
 

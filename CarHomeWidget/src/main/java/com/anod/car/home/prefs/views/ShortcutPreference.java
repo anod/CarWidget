@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.views.drag.ShortcutDragListener;
 import com.anod.car.home.prefs.views.drag.ShortcutShadowBuilder;

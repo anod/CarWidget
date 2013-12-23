@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.anod.car.home.R;
 import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Utils;
 
 
 public class SeekBarPreference extends DialogPreference implements SeekBar.OnSeekBarChangeListener {

@@ -15,8 +15,6 @@
  */
 package root.gast.speech.tts;
 
-import java.util.Locale;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +22,8 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
 import android.util.Log;
+
+import java.util.Locale;
 
 /**
  * Helps construct an initalized {@link TextToSpeech}

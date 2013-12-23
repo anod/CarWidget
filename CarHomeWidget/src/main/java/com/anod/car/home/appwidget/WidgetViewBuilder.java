@@ -1,7 +1,5 @@
 package com.anod.car.home.appwidget;
 
-import java.util.HashMap;
-
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +27,8 @@ import com.anod.car.home.utils.BitmapTransform;
 import com.anod.car.home.utils.IconTheme;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
+
+import java.util.HashMap;
 
 public class WidgetViewBuilder {
 	private static int[] sTextRes = { 

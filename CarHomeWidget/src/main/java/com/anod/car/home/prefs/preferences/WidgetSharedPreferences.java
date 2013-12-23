@@ -1,7 +1,5 @@
 package com.anod.car.home.prefs.preferences;
 
-import java.util.Set;
-
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,6 +7,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+
+import java.util.Set;
 
 public class WidgetSharedPreferences /* implements SharedPreferences */{
 

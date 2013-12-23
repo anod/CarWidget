@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 
-import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.AppTheme;
 import com.anod.car.home.prefs.views.ShortcutPreference;

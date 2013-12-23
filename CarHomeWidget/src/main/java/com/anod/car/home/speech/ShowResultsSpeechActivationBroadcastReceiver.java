@@ -6,9 +6,6 @@ import android.content.Intent;
 
 import com.anod.car.home.utils.AppLog;
 
-import com.anod.car.home.speech.SpeechRecognitionLauncher;
-import com.anod.car.home.speech.SpeechActivationService;
-
 /**
  * @author alex
  * @date 12/12/13

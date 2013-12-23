@@ -19,10 +19,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 
 import com.anod.car.home.R;
+import com.anod.car.home.speech.DoubleMetaphoneWordMatcher;
 
 import java.util.ArrayList;
-
-import com.anod.car.home.speech.DoubleMetaphoneWordMatcher;
 
 import root.gast.speech.text.match.WordMatcher;
 

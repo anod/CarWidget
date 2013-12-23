@@ -17,12 +17,11 @@ package com.anod.car.home.speech;
 
 import com.anod.car.home.utils.AppLog;
 
+import org.apache.commons.codec.language.DoubleMetaphone;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.apache.commons.codec.language.DoubleMetaphone;
-import org.apache.commons.codec.language.Soundex;
 
 import root.gast.speech.text.match.WordMatcher;
 

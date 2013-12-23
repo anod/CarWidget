@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.anod.car.home.free" xmlns:tools="http://schemas.android.com/tools">
+		  package="com.anod.car.home.free">
 
     <application
         android:name="com.anod.car.home.CarWidgetApplication"

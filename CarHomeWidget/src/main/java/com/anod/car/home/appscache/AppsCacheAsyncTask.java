@@ -1,8 +1,5 @@
 package com.anod.car.home.appscache;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +8,9 @@ import android.os.AsyncTask;
 
 import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.model.AppsListCache.CacheEntry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AppsCacheAsyncTask extends AsyncTask<Integer, Object, Object> {
 	final private Callback mCallback;

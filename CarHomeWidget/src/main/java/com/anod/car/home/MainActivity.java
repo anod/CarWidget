@@ -1,7 +1,5 @@
 package com.anod.car.home;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -21,7 +19,6 @@ import android.widget.Toast;
 
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
-import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.ConfigurationInCar;
 import com.anod.car.home.prefs.ConfigurationRestore;
