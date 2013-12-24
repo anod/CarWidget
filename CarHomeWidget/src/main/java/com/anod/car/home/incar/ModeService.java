@@ -149,7 +149,7 @@ public class ModeService extends Service {
 		} else {
 			if (intent.getIntExtra(EXTRA_MODE, MODE_SWITCH_ON) == MODE_SWITCH_OFF) {
 				stopSelf();
-				return START_NOT_STICKY;
+				return START_STICKY;
 			}
 			mForceState = intent.getBooleanExtra(EXTRA_FORCE_STATE, false);
 		}
@@ -158,7 +158,7 @@ public class ModeService extends Service {
 		if (version.isFreeAndTrialExpired()) {
 			showExpiredNotification();
 			stopSelf();
-			return START_NOT_STICKY;
+			return START_STICKY;
 		}
 
 		InCar prefs = PreferencesStorage.loadInCar(this);

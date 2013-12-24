@@ -19,6 +19,7 @@ import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.speech.SpeechActivationService;
 import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.PowerUtil;
 import com.anod.car.home.utils.Utils;
 
 import java.util.HashMap;
@@ -55,6 +56,11 @@ public class Handler {
 
 	public static boolean getEventState(int flag) {
 		return sEventState[flag];
+	}
+
+	public static void onRegister(Context context) {
+		sEventState[FLAG_POWER] = PowerUtil.isConnected(context);
+
 	}
 
 	public static void onBroadcastReceive(Context context, Intent intent) {
@@ -129,14 +135,16 @@ public class Handler {
 			return;
 		}
 
-		if (Intent.ACTION_POWER_DISCONNECTED.equals(action)) {
-			sEventState[FLAG_POWER] = false;
-			return;
-		} 
 		if (Intent.ACTION_POWER_CONNECTED.equals(action)) {
 			sEventState[FLAG_POWER] = true;
 			return;
 		}
+
+		if (Intent.ACTION_POWER_DISCONNECTED.equals(action)) {
+			sEventState[FLAG_POWER] = false;
+			return;
+		} 
+
 		if (Intent.ACTION_HEADSET_PLUG.equals(action)) {
 			if (intent.getIntExtra("state",0) == 0) {
 				sEventState[FLAG_HEADSET] = false;

@@ -39,7 +39,7 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 	@Override
 	public void onDestroy() {
    		unregister(this);
-		super.onDestroy(); 
+		super.onDestroy();
 	}
 
 	@Override
@@ -51,6 +51,8 @@ public class BroadcastService extends Service  implements GooglePlayServicesClie
 	private void register(Context context) {
 		AppLog.d("BroadcastService::register");
 		sRegistered =true;
+
+		Handler.onRegister(context);
 
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_HEADSET_PLUG);

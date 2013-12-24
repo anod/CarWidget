@@ -16,7 +16,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.anod.car.home.app.CarWidgetActivity;
+import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.incar.Handler;
+import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
@@ -36,7 +38,6 @@ public class DebugActivity extends CarWidgetActivity implements AppLog.LogListen
         setContentView(R.layout.activity_debug);
 
 
-		updateStatus();
 		mListView = (ListView)findViewById(R.id.log);
 		mAdapter = new LogAdapter(this);
 		mListView.setAdapter(mAdapter);
@@ -45,6 +46,9 @@ public class DebugActivity extends CarWidgetActivity implements AppLog.LogListen
 	private void updateStatus() {
 
 		InCar incar = PreferencesStorage.loadInCar(this);
+
+		boolean isBroadcastServiceRunning = BroadcastService.sRegistered;
+		setStatusText(R.id.broadcast, (isBroadcastServiceRunning) ? "Broadcast Service: On" : "Broadcast Service: Off", Color.WHITE);
 
 		boolean isInCarEnabled = PreferencesStorage.isInCarModeEnabled(this);
 		setStatusText(R.id.incar, (isInCarEnabled) ? "InCar: Enabled" : "InCar: Disabled", Color.WHITE);
@@ -81,8 +85,10 @@ public class DebugActivity extends CarWidgetActivity implements AppLog.LogListen
 
 	@Override
 	protected void onResume() {
-		registerLogListener();
 		super.onResume();
+
+		registerLogListener();
+		updateStatus();
 	}
 
 	@Override
