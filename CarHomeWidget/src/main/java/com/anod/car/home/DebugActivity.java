@@ -66,7 +66,7 @@ public class DebugActivity extends CarWidgetActivity implements AppLog.LogListen
 
 		String devices = "";
 		if (incar.getBtDevices() != null) {
-			TextUtils.join(",", incar.getBtDevices().values());
+			devices = TextUtils.join(",", incar.getBtDevices().values());
 		}
 
 		setStatusText(R.id.bluetooth, String.format("Bluetooth: %b [%s]", btEvent,devices), (btPref) ? Color.GREEN : Color.RED);
