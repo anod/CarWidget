@@ -137,6 +137,19 @@
 
 		<service android:name="com.anod.car.home.incar.ModeService" />
         <service android:name="com.anod.car.home.incar.BroadcastService" />
+		<receiver android:name="com.anod.car.home.incar.ModeBroadcastReceiver" android:enabled="true">
+			<intent-filter>
+				<action android:name="android.intent.action.HEADSET_PLUG" />
+				<action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+				<action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+				<action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+				<action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+				<action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+				<action android:name="com.anod.car.home.incar.ACTION_ACTIVITY_RECOGNITION" />
+			</intent-filter>
+		</receiver>
+
+		<service android:name="com.anod.car.home.incar.ActivityRecognitionClientService" android:exported="true"/>
 		<service android:name="com.anod.car.home.incar.ActivityRecognitionService" android:exported="true"/>
 
 		<meta-data
@@ -149,9 +162,8 @@
 				  android:excludeFromRecents="true"
 				  android:finishOnTaskLaunch="true" />
 
-		<service android:name=".speech.SpeechActivationService" />
-		<activity android:name=".speech.SpeechRecognitionLauncher" />
-		<!--  android:theme="@style/BrightnessTheme" //-->
+		<service android:name=".speech.SpeechActivationService"/>
+		<activity android:name=".speech.SpeechRecognitionLauncher"/>
 		<receiver android:name=".speech.ShowResultsSpeechActivationBroadcastReceiver">
 			<intent-filter >
 				<action android:name="com.anod.car.home.speech.ACTIVATION"/>

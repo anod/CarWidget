@@ -73,10 +73,8 @@ public class UpdateService extends Service implements Runnable {
 			final Intent updateIntent = new Intent(context, BroadcastService.class);
 			context.startService(updateIntent);
 		} else {
-			if (BroadcastService.sRegistered) {
-				final Intent updateIntent = new Intent(context, BroadcastService.class);
-				context.stopService(updateIntent);
-			}
+			final Intent updateIntent = new Intent(context, BroadcastService.class);
+			context.stopService(updateIntent);
 		}
 	}
 

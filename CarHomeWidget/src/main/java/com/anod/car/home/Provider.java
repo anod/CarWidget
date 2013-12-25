@@ -76,11 +76,9 @@ public class Provider extends AppWidgetProvider {
     	final Intent updateIntent = new Intent(context, UpdateService.class);
     	context.stopService(updateIntent);
     	
-    	if (BroadcastService.sRegistered) {
-            final Intent receiverIntent = new Intent(context, BroadcastService.class);
-            context.stopService(receiverIntent);
-    	}    
-    	
+		final Intent receiverIntent = new Intent(context, BroadcastService.class);
+        context.stopService(receiverIntent);
+
     	if (ModeService.sInCarMode) {
             final Intent modeIntent = new Intent(context, ModeService.class);
             context.stopService(modeIntent);

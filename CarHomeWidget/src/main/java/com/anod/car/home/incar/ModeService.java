@@ -123,9 +123,9 @@ public class ModeService extends Service {
 		// if (sInCarMode) {
 		InCar prefs = PreferencesStorage.loadInCar(this);
 		if (mForceState) {
-			Handler.forceState(prefs, false);
+			ModeDetector.forceState(prefs, false);
 		}
-		Handler.switchOff(prefs, this);
+		ModeDetector.switchOff(prefs, this);
 		if (mPhoneListener != null) {
 			detachPhoneListener();
 		}
@@ -164,9 +164,9 @@ public class ModeService extends Service {
 		InCar prefs = PreferencesStorage.loadInCar(this);
 		sInCarMode = true;
 		if (mForceState) {
-			Handler.forceState(prefs, true);
+			ModeDetector.forceState(prefs, true);
 		}
-		Handler.switchOn(prefs, this);
+		ModeDetector.switchOn(prefs, this);
 		handlePhoneListener(prefs);
 		requestWidgetsUpdate();
 

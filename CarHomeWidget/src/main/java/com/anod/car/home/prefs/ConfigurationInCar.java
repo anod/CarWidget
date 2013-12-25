@@ -29,6 +29,7 @@ import android.preference.SwitchPreference;
 
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetHelper;
+import com.anod.car.home.incar.ActivityRecognitionClientService;
 import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
 import com.anod.car.home.incar.BroadcastService;
@@ -159,14 +160,14 @@ public class ConfigurationInCar extends ConfigurationFragment {
 		incarSwitch.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
-				if ((Boolean)newValue) {
-					final Intent updateIntent = new Intent(mContext, BroadcastService.class);
-					mContext.startService(updateIntent);
-				} else if (BroadcastService.sRegistered) {
-					final Intent updateIntent = new Intent(mContext, BroadcastService.class);
-					mContext.stopService(updateIntent);
-				}
-				return true;
+			if ((Boolean)newValue) {
+				final Intent updateIntent = new Intent(mContext, BroadcastService.class);
+				mContext.startService(updateIntent);
+			} else {
+				final Intent updateIntent = new Intent(mContext, BroadcastService.class);
+				mContext.stopService(updateIntent);
+			}
+			return true;
 			}
 		});
 
@@ -220,9 +221,11 @@ public class ConfigurationInCar extends ConfigurationFragment {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
 					Boolean val = (Boolean)newValue;
-					Intent intent = new Intent(ModeBroadcastReceiver.ACTION_UPDATE_ACTIVITY_CLIENT);
-					intent.putExtra(ModeBroadcastReceiver.EXTRA_STATUS, val);
-					getActivity().sendBroadcast(intent);
+					if (val) {
+						mContext.startService(ActivityRecognitionClientService.makeStartIntent(mContext));
+					} else {
+						mContext.stopService(ActivityRecognitionClientService.makeStartIntent(mContext));
+					}
 					return true;
 				}
 			});

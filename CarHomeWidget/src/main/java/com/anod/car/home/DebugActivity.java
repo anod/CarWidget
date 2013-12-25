@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.incar.Handler;
+import com.anod.car.home.incar.ModeDetector;
 import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -53,15 +54,15 @@ public class DebugActivity extends CarWidgetActivity implements AppLog.LogListen
 		boolean isInCarEnabled = PreferencesStorage.isInCarModeEnabled(this);
 		setStatusText(R.id.incar, (isInCarEnabled) ? "InCar: Enabled" : "InCar: Disabled", Color.WHITE);
 
-		boolean powerEvent = Handler.getEventState(Handler.FLAG_POWER);
+		boolean powerEvent = ModeDetector.getEventState(ModeDetector.FLAG_POWER);
 		boolean powerPref = incar.isPowerRequired();
 		setStatusText(R.id.power,  String.format("Power: %b", powerEvent), (powerPref) ? Color.GREEN : Color.RED);
 
-		boolean headsetEvent = Handler.getEventState(Handler.FLAG_HEADSET);
+		boolean headsetEvent = ModeDetector.getEventState(ModeDetector.FLAG_HEADSET);
 		boolean headsetPref = incar.isHeadsetRequired();
 		setStatusText(R.id.headset, String.format("Headset: %b", headsetEvent), (headsetPref) ? Color.GREEN : Color.RED);
 
-		boolean btEvent = Handler.getEventState(Handler.FLAG_BLUETOOTH);
+		boolean btEvent = ModeDetector.getEventState(ModeDetector.FLAG_BLUETOOTH);
 		boolean btPref = incar.isBluetoothRequired();
 
 		String devices = "";
@@ -71,7 +72,7 @@ public class DebugActivity extends CarWidgetActivity implements AppLog.LogListen
 
 		setStatusText(R.id.bluetooth, String.format("Bluetooth: %b [%s]", btEvent,devices), (btPref) ? Color.GREEN : Color.RED);
 
-		boolean activityEvent = Handler.getEventState(Handler.FLAG_HEADSET);
+		boolean activityEvent = ModeDetector.getEventState(ModeDetector.FLAG_HEADSET);
 		boolean activityPref = incar.isActivityRequired();
 		setStatusText(R.id.activity,  String.format("Activity: %b",activityEvent), (activityPref) ? Color.GREEN : Color.RED);
 	}
