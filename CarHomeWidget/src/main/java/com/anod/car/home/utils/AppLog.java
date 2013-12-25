@@ -26,7 +26,7 @@ public class AppLog {
 		}
 	}
 
-	private static SizedStack<Entry> sLogListStack = new SizedStack<Entry>(50);
+	private static SizedStack<Entry> sLogListStack = new SizedStack<Entry>(20);
 
 	public interface LogListener {
 		void onMessage(final AppLog.Entry entry);
@@ -77,9 +77,8 @@ public class AppLog {
 		synchronized (sLock) {
 			if (sListener != null) {
 				sListener.onMessage(new Entry(level, msg));
-			} else {
-				addLogStack(level, msg);
 			}
+			addLogStack(level, msg);
 		}
 	}
 
@@ -100,11 +99,13 @@ public class AppLog {
      * @param msg Current system time from {@link System#currentTimeMillis()}
      *            for calculating time difference.
      */
-    public static String format(String msg) {
+    public static String format(String msg ) {
     	long unixTime = System.currentTimeMillis();
         Time time = new Time();
         time.set(unixTime);
 
-        return String.format("[%s] %s ", time.format("%d-%m-%Y %H:%M:%S"), msg);
+		//String formatTime = (timeOnly) ? "%d-%m-%Y %H:%M:%S" : "%M:%S";
+
+        return String.format("[%s] %s ", time.format("%M:%S"), msg);
     }	
 }

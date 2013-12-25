@@ -28,6 +28,8 @@ public class ModeBroadcastReceiver extends BroadcastReceiver {
 		String act = intent.getAction();
 		AppLog.d(" Action: " + act);
 
+		context.startService(new Intent(context, BroadcastService.class));
+
 		ModeDetector.onBroadcastReceive(context, intent);
 	}
 

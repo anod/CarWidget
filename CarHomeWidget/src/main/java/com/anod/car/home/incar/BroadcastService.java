@@ -11,7 +11,7 @@ import com.anod.car.home.utils.AppLog;
 
 public class BroadcastService extends Service {
 
-	public static boolean sRegistered;
+	private static boolean sRegistered;
 
 	@Override
 	public void onDestroy() {

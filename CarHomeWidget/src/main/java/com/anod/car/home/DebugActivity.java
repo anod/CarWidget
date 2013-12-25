@@ -1,6 +1,7 @@
 package com.anod.car.home;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -42,13 +45,24 @@ public class DebugActivity extends CarWidgetActivity implements AppLog.LogListen
 		mListView = (ListView)findViewById(R.id.log);
 		mAdapter = new LogAdapter(this);
 		mListView.setAdapter(mAdapter);
+
+		ImageButton refresh = new ImageButton(this);
+		refresh.setImageResource(R.drawable.ic_action_import);
+		refresh.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				updateStatus();
+			}
+		});
+		getSupportActionBar().setCustomView(refresh);
+		getSupportActionBar().setDisplayShowCustomEnabled(true);
     }
 
 	private void updateStatus() {
 
 		InCar incar = PreferencesStorage.loadInCar(this);
 
-		boolean isBroadcastServiceRunning = BroadcastService.sRegistered;
+		boolean isBroadcastServiceRunning = isBroadcastServiceRunning();
 		setStatusText(R.id.broadcast, (isBroadcastServiceRunning) ? "Broadcast Service: On" : "Broadcast Service: Off", Color.WHITE);
 
 		boolean isInCarEnabled = PreferencesStorage.isInCarModeEnabled(this);
@@ -75,6 +89,16 @@ public class DebugActivity extends CarWidgetActivity implements AppLog.LogListen
 		boolean activityEvent = ModeDetector.getEventState(ModeDetector.FLAG_HEADSET);
 		boolean activityPref = incar.isActivityRequired();
 		setStatusText(R.id.activity,  String.format("Activity: %b",activityEvent), (activityPref) ? Color.GREEN : Color.RED);
+	}
+
+	private boolean isBroadcastServiceRunning() {
+		ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+		for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+			if (BroadcastService.class.getName().equals(service.service.getClassName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void setStatusText(int resId, String text, int color) {
