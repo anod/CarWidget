@@ -1,8 +1,6 @@
 package com.anod.car.home.incar;
 
 import android.app.Service;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -43,11 +41,11 @@ public class BroadcastService extends Service {
 
 			IntentFilter filter = new IntentFilter();
 			filter.addAction(Intent.ACTION_HEADSET_PLUG);
-			filter.addAction(Intent.ACTION_POWER_CONNECTED);
-			filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
-			filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-			filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-			filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+	//		filter.addAction(Intent.ACTION_POWER_CONNECTED);
+	//		filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+	//		filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+	//		filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+	//		filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
 			ModeBroadcastReceiver receiver = ModeBroadcastReceiver.getInstance();
 			context.registerReceiver(receiver, filter);
 
