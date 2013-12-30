@@ -3,6 +3,7 @@ package com.anod.car.home.prefs.backup;
 import android.annotation.SuppressLint;
 import android.app.backup.BackupManager;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -20,16 +21,25 @@ import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.ShortcutsMain;
 import com.anod.car.home.utils.AppLog;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 public class PreferencesBackupManager {
+
+	public static final int TYPE_MAIN = 1;
+	public static final int TYPE_INCAR = 2;
+
 	private static final String BACKUP_PACKAGE = "com.anod.car.home.pro";
 	private static final String DIR_BACKUP = "/data/com.anod.car.home/backup";
 	public static final String FILE_EXT_DAT = ".dat";
@@ -190,43 +200,70 @@ public class PreferencesBackupManager {
 		return new InCarBackup(new HashMap<Integer, ShortcutInfo>(), (InCar)readObject);
 	}
 
-	public int doRestoreMain(String filename, int appWidgetId) {
+	public File getBackupMainFile(String filename) {
+		File saveDir = getMainBackupDir();
+		File dataFile = new File(saveDir, filename+FILE_EXT_DAT);
+		return dataFile;
+	}
+
+	public int doRestoreMainLocal(String filepath, int appWidgetId) {
 		if (!checkMediaReadable()) {
 			return ERROR_STORAGE_NOT_AVAILABLE;
 		}
 		
-        File saveDir = getMainBackupDir();
-        File dataFile = new File(saveDir, filename+FILE_EXT_DAT);
+		File dataFile = new File(filepath);
         if (!dataFile.exists()) {
         	return ERROR_FILE_NOT_EXIST;  
         }
         if (!dataFile.canRead()) {
         	return ERROR_FILE_READ;       	
         }
-        
-        ShortcutsMain prefs = null;
-        try {
-            synchronized (PreferencesBackupManager.DATA_LOCK) {
-            	FileInputStream fis = new FileInputStream(dataFile);
-            	ObjectInputStream is = new ObjectInputStream(fis);
-                prefs = (ShortcutsMain) is.readObject();
-                is.close();
-            }
+
+		FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(dataFile);
+		} catch (FileNotFoundException e) {
+			AppLog.d(e.getMessage());
+			return ERROR_FILE_READ;
+		}
+
+		return doRestoreMain(inputStream, appWidgetId);
+	}
+
+	public Integer doRestoreMainUri(Uri uri, int appWidgetId) {
+		InputStream inputStream = null;
+		try {
+			inputStream = mContext.getContentResolver().openInputStream(uri);
+		} catch (FileNotFoundException e) {
+			AppLog.d(e.getMessage());
+			return ERROR_FILE_READ;
+		}
+		return doRestoreMain(inputStream, appWidgetId);
+	}
+
+	public int doRestoreMain(final InputStream inputStream, int appWidgetId) {
+		ShortcutsMain prefs = null;
+		try {
+			synchronized (PreferencesBackupManager.DATA_LOCK) {
+				ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(inputStream));
+				prefs = (ShortcutsMain) is.readObject();
+				is.close();
+			}
 		} catch (IOException e) {
 			AppLog.d(e.getMessage());
 			return ERROR_FILE_READ;
 		} catch (ClassNotFoundException e) {
 			AppLog.d(e.getMessage());
-            return ERROR_DESERIALIZE;
-        }
+			return ERROR_DESERIALIZE;
+		}
 		PreferencesStorage.saveMain(mContext, prefs.getMain(), appWidgetId);
-		
-        ShortcutsModel smodel = new LauncherShortcutsModel(mContext, appWidgetId);
-        smodel.init();
-		
-        HashMap<Integer, ShortcutInfo> shortcuts = prefs.getShortcuts();
-        restoreShortcuts((AbstractShortcutsModel) smodel, shortcuts);
-        
+
+		ShortcutsModel smodel = new LauncherShortcutsModel(mContext, appWidgetId);
+		smodel.init();
+
+		HashMap<Integer, ShortcutInfo> shortcuts = prefs.getShortcuts();
+		restoreShortcuts((AbstractShortcutsModel) smodel, shortcuts);
+
 		return RESULT_DONE;
 	}
 
@@ -241,7 +278,7 @@ public class PreferencesBackupManager {
         }
 	}
 	
-	public int doRestoreInCar() {
+	public int doRestoreInCarLocal() {
 		if (!checkMediaReadable()) {
 			return ERROR_STORAGE_NOT_AVAILABLE;
 		}
@@ -253,15 +290,35 @@ public class PreferencesBackupManager {
         if (!dataFile.canRead()) {
         	return ERROR_FILE_READ;       	
         }
-        
-        InCarBackup inCarBackup = null;
-        try {
-            synchronized (PreferencesBackupManager.DATA_LOCK) {
-            	FileInputStream fis = new FileInputStream(dataFile);
-            	ObjectInputStream is = new ObjectInputStream(fis);
-            	inCarBackup = readInCarCompat(is.readObject());
-                is.close();
-            }
+
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(dataFile);
+		} catch (FileNotFoundException e) {
+			AppLog.d(e.getMessage());
+			return ERROR_FILE_READ;
+		}
+		return doRestoreInCar(fis);
+	}
+	public int doRestoreInCarUri(Uri uri) {
+		InputStream inputStream = null;
+		try {
+			inputStream = mContext.getContentResolver().openInputStream(uri);
+		} catch (FileNotFoundException e) {
+			AppLog.d(e.getMessage());
+			return ERROR_FILE_READ;
+		}
+		return doRestoreInCar(inputStream);
+	}
+
+	public int doRestoreInCar(final InputStream inputStream) {
+		InCarBackup inCarBackup = null;
+		try {
+			synchronized (PreferencesBackupManager.DATA_LOCK) {
+				ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(inputStream));
+				inCarBackup = readInCarCompat(is.readObject());
+				is.close();
+			}
 		} catch (IOException e) {
 			AppLog.d(e.getMessage());
 			return ERROR_FILE_READ;
@@ -273,17 +330,18 @@ public class PreferencesBackupManager {
 		if (inCarBackup.getInCar().getAutoAnswer() == null || inCarBackup.getInCar().getAutoAnswer().equals("")) {
 			inCarBackup.getInCar().setAutoAnswer(InCar.AUTOANSWER_DISABLED);
 		}
-		
+
 		NotificationShortcutsModel model = new NotificationShortcutsModel(mContext);
 		model.init();
 
-        HashMap<Integer, ShortcutInfo> shortcuts = inCarBackup.getNotificationShortcuts();
-        restoreShortcuts((AbstractShortcutsModel) model, shortcuts);
-        
+		HashMap<Integer, ShortcutInfo> shortcuts = inCarBackup.getNotificationShortcuts();
+		restoreShortcuts((AbstractShortcutsModel) model, shortcuts);
+
 		PreferencesStorage.saveInCar(mContext, inCarBackup.getInCar());
 		return RESULT_DONE;
 	}
-	
+
+
 	public File getBackupDir() {
 		File externalPath = Environment.getExternalStorageDirectory();
 		return new File(externalPath.getAbsolutePath() + DIR_BACKUP);
@@ -309,4 +367,6 @@ public class PreferencesBackupManager {
         }
         return true;
 	}
+
+
 }

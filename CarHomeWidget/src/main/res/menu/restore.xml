@@ -5,10 +5,10 @@
 
 
 	<item
-			android:id="@+id/download"
-			android:icon="@drawable/ic_action_download"
+			android:id="@+id/apply"
+			android:icon="@drawable/ic_action_tick"
 			carwidget:showAsAction="always"
-			android:title="@string/download">
+			android:title="@android:string/ok">
 	</item>
 
 </menu>

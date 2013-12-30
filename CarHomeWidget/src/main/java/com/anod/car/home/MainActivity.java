@@ -24,6 +24,8 @@ import com.anod.car.home.prefs.ConfigurationInCar;
 import com.anod.car.home.prefs.ConfigurationRestore;
 import com.anod.car.home.prefs.TrialDialogs;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
+import com.anod.car.home.prefs.backup.RestoreCodeRender;
+import com.anod.car.home.prefs.backup.RestoreTask;
 import com.anod.car.home.prefs.preferences.AppTheme;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.ui.WidgetsListActivity;
@@ -37,7 +39,7 @@ import com.anod.car.home.utils.Version;
  * @author alex
  * @date 5/22/13
  */
-public class MainActivity extends CarWidgetActivity {
+public class MainActivity extends CarWidgetActivity implements RestoreTask.RestoreTaskListner {
 
 	private static final String DETAIL_MARKET_URL = "market://details?id=%s";
 	private static final String URL_GOOGLE_PLUS = "https://plus.google.com/118206296686390552505/";
@@ -143,14 +145,20 @@ public class MainActivity extends CarWidgetActivity {
 			public void onClick(View view) {
 
 				if (mVersion.isFree()) {
-					showDialog(DIALOG_PRO);
+					TrialDialogs.buildProOnlyDialog(mContext).show();
 				} else {
-					Intent intentInCar = new Intent(mContext, ConfigurationRestore.class);
-					intentInCar.putExtra(ConfigurationRestore.EXTRA_TYPE, ConfigurationRestore.TYPE_INCAR);
-					startActivity(intentInCar);
+					PreferencesBackupManager bm = new PreferencesBackupManager(mContext);
+					new RestoreTask(PreferencesBackupManager.TYPE_INCAR, bm, 0, MainActivity.this).execute(null);
 				}
 			}
 		});
+	}
+
+
+	@Override
+	public void onRestoreFinish(int type, int code) {
+		int res = RestoreCodeRender.render(code);
+		Toast.makeText(mContext, res, Toast.LENGTH_SHORT).show();
 	}
 
 	private String getActiveString(int widgetsCount) {
@@ -276,6 +284,7 @@ public class MainActivity extends CarWidgetActivity {
 
 	}
 
+
 	public class InCarBackupTask extends AsyncTask<String, Void, Integer> {
 
 		@Override
@@ -306,8 +315,6 @@ public class MainActivity extends CarWidgetActivity {
 			String message = getResources().getString(R.string.please_wait);
 			waitDialog.setMessage(message);
 			return waitDialog;
-		} else if (id == DIALOG_PRO) {
-			return TrialDialogs.buildProOnlyDialog(this);
 		}
 		return null;
 	}

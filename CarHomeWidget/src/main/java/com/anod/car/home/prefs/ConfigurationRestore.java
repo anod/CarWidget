@@ -11,12 +11,14 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.preference.Preference;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -30,15 +32,27 @@ import android.widget.Toast;
 
 import com.anod.car.home.R;
 import com.anod.car.home.app.ActionBarListActivity;
+import com.anod.car.home.prefs.backup.BackupCodeRender;
+import com.anod.car.home.prefs.backup.BackupTask;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
+import com.anod.car.home.prefs.backup.RestoreCodeRender;
+import com.anod.car.home.prefs.backup.RestoreTask;
 import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.CheatSheet;
+import com.anod.car.home.utils.DeleteFileTask;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
-public class ConfigurationRestore extends Fragment {
+public class ConfigurationRestore extends Fragment  implements RestoreTask.RestoreTaskListner, DeleteFileTask.DeleteFileTaskListener, BackupTask.BackupTaskListner {
 	private static final int DOWNLOAD_MAIN_REQUEST_CODE = 1;
 	private static final int DOWNLOAD_INCAR_REQUEST_CODE = 2;
 	private static final int UPLOAD_REQUEST_CODE = 3;
@@ -50,10 +64,10 @@ public class ConfigurationRestore extends Fragment {
 	private RestoreAdapter mAdapter;
 	private RestoreClickListener mRestoreListener;
 	private DeleteClickListener mDeleteListener;
+	private ExportClickListener mExportListener;
 
 	public static final String EXTRA_TYPE = "type";
-	public static final int TYPE_MAIN = 1;
-	public static final int TYPE_INCAR = 2;
+
 	private ImageButton mBackupMain;
 	private ImageButton mBackupIncar;
 	private ListView mListView;
@@ -64,6 +78,8 @@ public class ConfigurationRestore extends Fragment {
 	private ProgressDialog mWaitDialog;
 	private String mLastBackupStr;
 	private TextView mLastBackupIncar;
+	private String mCurBackupFile;
+
 
 
 	@Override
@@ -74,10 +90,18 @@ public class ConfigurationRestore extends Fragment {
 		mBackupMain = (ImageButton)view.findViewById(R.id.backupMain);
 		mDownloadMain = (ImageButton)view.findViewById(R.id.downloadMain);
 
+		CheatSheet.setup(mBackupMain);
+		CheatSheet.setup(mDownloadMain);
+
 		mBackupIncar = (ImageButton)view.findViewById(R.id.backupIncar);
 		mDownloadIncar = (ImageButton)view.findViewById(R.id.downloadIncar);
 		mUploadIncar = (ImageButton)view.findViewById(R.id.uploadIncar);
 		mRestoreIncar = (ImageButton)view.findViewById(R.id.restoreIncar);
+
+		CheatSheet.setup(mBackupIncar);
+		CheatSheet.setup(mDownloadIncar);
+		CheatSheet.setup(mUploadIncar);
+		CheatSheet.setup(mRestoreIncar);
 
 		mLastBackupIncar = (TextView)view.findViewById(R.id.lastBackupIncar);
 
@@ -102,6 +126,11 @@ public class ConfigurationRestore extends Fragment {
 			return;
 		}
 
+		if (savedInstanceState != null) {
+			// Restore last state for checked position.
+			mCurBackupFile = savedInstanceState.getString("curBackup");
+		}
+
 		mContext = (Context) getActivity();
 		mBackupManager = new PreferencesBackupManager(mContext);
 
@@ -117,7 +146,7 @@ public class ConfigurationRestore extends Fragment {
 		mBackupIncar.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				new BackupTask().execute(null);
+			new BackupTask(PreferencesBackupManager.TYPE_INCAR, mBackupManager, 0, ConfigurationRestore.this).execute(null);
 			}
 		});
 
@@ -133,41 +162,16 @@ public class ConfigurationRestore extends Fragment {
 			mRestoreIncar.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					new RestoreTask().execute(null);
+					new RestoreTask(PreferencesBackupManager.TYPE_INCAR, mBackupManager, 0, ConfigurationRestore.this).execute(null);
 				}
 			});
 		}
 
-		mDownloadMain.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-				intent.addCategory(Intent.CATEGORY_OPENABLE);
-				intent.setType(MIME_TYPE);
-				startActivityForResult(intent, DOWNLOAD_MAIN_REQUEST_CODE);
-			}
-		});
-
-		mDownloadIncar.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-				intent.addCategory(Intent.CATEGORY_OPENABLE);
-				intent.setType(MIME_TYPE);
-				startActivityForResult(intent, DOWNLOAD_INCAR_REQUEST_CODE);
-			}
-		});
-
-		mUploadIncar.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				File incar = mBackupManager.getBackupIncarFile();
-				uploadFile(incar.getAbsolutePath());
-			}
-		});
+		setupDownloadUpload();
 
 		mRestoreListener = new RestoreClickListener();
 		mDeleteListener = new DeleteClickListener();
+		mExportListener = new ExportClickListener();
 		mAdapter = new RestoreAdapter(mContext, R.layout.restore_item, new ArrayList<File>());
 		mListView.setAdapter(mAdapter);
 
@@ -178,7 +182,69 @@ public class ConfigurationRestore extends Fragment {
 		setHasOptionsMenu(true);
 	}
 
-	private void uploadFile(String fileName) {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.apply) {
+			getFragmentManager().popBackStack();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate( R.menu.restore, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	private void setupDownloadUpload() {
+		if (Utils.IS_KITKAT_OR_GREATER) {
+
+			mDownloadMain.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+					intent.addCategory(Intent.CATEGORY_OPENABLE);
+					intent.setType(MIME_TYPE);
+					startActivityForResult(intent, DOWNLOAD_MAIN_REQUEST_CODE);
+				}
+			});
+
+			mDownloadIncar.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+					intent.addCategory(Intent.CATEGORY_OPENABLE);
+					intent.setType(MIME_TYPE);
+					startActivityForResult(intent, DOWNLOAD_INCAR_REQUEST_CODE);
+				}
+			});
+
+			mUploadIncar.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					File incar = mBackupManager.getBackupIncarFile();
+					uploadFile("incar-backup"+PreferencesBackupManager.FILE_EXT_DAT, incar);
+				}
+			});
+
+		} else {
+			mDownloadMain.setVisibility(View.GONE);
+			mDownloadIncar.setVisibility(View.GONE);
+			mUploadIncar.setVisibility(View.GONE);
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString("curBackup", mCurBackupFile);
+	}
+
+	private void uploadFile(String fileName, File srcFile) {
+
+		mCurBackupFile = srcFile.getAbsolutePath();
+
 		Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
 
 		// Filter to only show results that can be "opened", such as
@@ -191,9 +257,10 @@ public class ConfigurationRestore extends Fragment {
 		startActivityForResult(intent, UPLOAD_REQUEST_CODE);
 	}
 
+
+
 	@Override
-	public void onActivityResult(int requestCode, int resultCode,
-								 Intent resultData) {
+	public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
 
 		// The ACTION_OPEN_DOCUMENT intent was sent with the request code
 		// READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
@@ -206,9 +273,60 @@ public class ConfigurationRestore extends Fragment {
 			// Pull that URI using resultData.getData().
 			Uri uri = null;
 			if (resultData != null) {
+
+				int type = (requestCode == DOWNLOAD_MAIN_REQUEST_CODE) ? PreferencesBackupManager.TYPE_MAIN : PreferencesBackupManager.TYPE_INCAR;
 				uri = resultData.getData();
 				AppLog.d("Uri: " + uri.toString());
+				new RestoreTask(type, mBackupManager, mAppWidgetId, ConfigurationRestore.this).execute(uri);
+
 			}
+		} else if (requestCode == UPLOAD_REQUEST_CODE && resultCode == Activity.RESULT_OK && mCurBackupFile != null) {
+			Uri uri = null;
+			if (resultData != null) {
+				uri = resultData.getData();
+				writeFile(mCurBackupFile, uri);
+			}
+
+		}
+	}
+
+	private void writeFile(String srcAbsolutePath, Uri destUri) {
+		File dataFile = new File(srcAbsolutePath);
+		FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(dataFile);
+		} catch (FileNotFoundException e) {
+			AppLog.ex(e);
+			Toast.makeText(mContext, R.string.failed_to_read_file, Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		try {
+			ParcelFileDescriptor pfd = getActivity().getContentResolver().openFileDescriptor(destUri, "w");
+			FileOutputStream fileOutputStream =  new FileOutputStream(pfd.getFileDescriptor());
+
+			copyFile(inputStream, fileOutputStream);
+
+			// Let the document provider know you're done by closing the stream.
+			fileOutputStream.close();
+			pfd.close();
+		} catch (FileNotFoundException e) {
+			AppLog.ex(e);
+			Toast.makeText(mContext, R.string.failed_to_write_file, Toast.LENGTH_SHORT).show();
+			return;
+		} catch (IOException e) {
+			AppLog.ex(e);
+			Toast.makeText(mContext, R.string.failed_to_write_file, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		Toast.makeText(mContext, R.string.export_backup_finish, Toast.LENGTH_SHORT).show();
+	}
+
+	private void copyFile(InputStream in, OutputStream out) throws IOException {
+		byte[] buffer = new byte[1024];
+		int read;
+		while((read = in.read(buffer)) != -1){
+			out.write(buffer, 0, read);
 		}
 	}
 
@@ -219,25 +337,37 @@ public class ConfigurationRestore extends Fragment {
 		final View textEntryView = factory.inflate(R.layout.backup_dialog_enter_name, null);
 		final EditText backupName = (EditText) textEntryView.findViewById(R.id.backup_name);
 		backupName.setText(defaultFilename);
+
 		return new AlertDialog.Builder(mContext)
-				.setTitle(R.string.backup_current_widget)
-				.setView(textEntryView)
-				.setPositiveButton(R.string.backup_save, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						String filename = backupName.getText().toString();
-						if (!filename.equals("")) {
-							new BackupTask().execute(filename);
-						}
+			.setTitle(R.string.backup_current_widget)
+			.setView(textEntryView)
+			.setPositiveButton(R.string.backup_save, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					String filename = backupName.getText().toString();
+					if (!filename.equals("")) {
+						new BackupTask(PreferencesBackupManager.TYPE_MAIN, mBackupManager, mAppWidgetId, ConfigurationRestore.this).execute(filename);
 					}
-				}).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						//Nothing
-					}
-				}).create();
+				}
+			}).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					//Nothing
+				}
+			}).create()
+		;
+	}
+
+	@Override
+	public void onDeleteFileFinish(boolean success) {
+		if (!success) {
+			Toast.makeText(mContext, R.string.unable_delete_file, Toast.LENGTH_SHORT).show();
+		} else {
+			new FileListTask().execute(0);
+		}
 	}
 
 
 	private class FileListTask extends AsyncTask<Integer, Void, File[]> {
+
 		@Override
 		protected void onPreExecute() {
 			mAdapter.clear();
@@ -259,45 +389,10 @@ public class ConfigurationRestore extends Fragment {
 	}
 
 
-	private class RestoreTask extends AsyncTask<String, Void, Integer> {
-
-		@Override
-		protected void onPreExecute() {
-		}
-
-		protected Integer doInBackground(String... filenames) {
-			String filename = filenames[0];
-			if (filename == null) {
-				return mBackupManager.doRestoreInCar();
-			}
-			return mBackupManager.doRestoreMain(filename, mAppWidgetId);
-		}
-
-		protected void onPostExecute(Integer result) {
-			onRestoreFinish(result);
-		}
-	}
-
-	private void onRestoreFinish(int code) {
-		if (code == PreferencesBackupManager.RESULT_DONE) {
-			Toast.makeText(mContext, getString(R.string.restore_done), Toast.LENGTH_SHORT).show();
-			return;
-		}
-		switch (code) {
-		case PreferencesBackupManager.ERROR_STORAGE_NOT_AVAILABLE:
-			Toast.makeText(mContext, getString(R.string.external_storage_not_available), Toast.LENGTH_SHORT).show();
-			break;
-		case PreferencesBackupManager.ERROR_DESERIALIZE:
-			Toast.makeText(mContext, getString(R.string.restore_deserialize_failed), Toast.LENGTH_SHORT).show();
-			break;
-		case PreferencesBackupManager.ERROR_FILE_READ:
-			Toast.makeText(mContext, getString(R.string.failed_to_read_file), Toast.LENGTH_SHORT).show();
-			break;
-		case PreferencesBackupManager.ERROR_FILE_NOT_EXIST:
-			Toast.makeText(mContext, getString(R.string.backup_not_exist), Toast.LENGTH_SHORT).show();
-			break;
-		default:
-		}
+	@Override
+	public void onRestoreFinish(int type, int code) {
+		int res = RestoreCodeRender.render(code);
+		Toast.makeText(mContext, res, Toast.LENGTH_SHORT).show();
 	}
 
 	private class RestoreAdapter extends ArrayAdapter<File> {
@@ -336,6 +431,18 @@ public class ConfigurationRestore extends Fragment {
 			deleteView.setTag(entry);
 			deleteView.setOnClickListener(mDeleteListener);
 
+			ImageView exportView = (ImageView) v.findViewById(R.id.uploadMain);
+			if (Utils.IS_KITKAT_OR_GREATER) {
+				exportView.setTag(name);
+				exportView.setOnClickListener(mExportListener);
+				CheatSheet.setup(exportView);
+			} else {
+				exportView.setVisibility(View.GONE);
+			}
+
+			CheatSheet.setup(applyView);
+			CheatSheet.setup(deleteView);
+
 			v.setId(position);
 			return v;
 		}
@@ -345,7 +452,11 @@ public class ConfigurationRestore extends Fragment {
 	private class RestoreClickListener implements View.OnClickListener {
 		@Override
 		public void onClick(View v) {
-			new RestoreTask().execute((String) v.getTag());
+
+			Uri uri = Uri.fromFile(mBackupManager.getBackupMainFile((String) v.getTag()));
+			new RestoreTask(PreferencesBackupManager.TYPE_MAIN, mBackupManager, mAppWidgetId, ConfigurationRestore.this)
+				.execute(uri)
+			;
 		}
 	}
 
@@ -353,52 +464,10 @@ public class ConfigurationRestore extends Fragment {
 		@Override
 		public void onClick(View v) {
 			File file = (File) v.getTag();
-			new DeleteTask().execute(file);
+			new DeleteFileTask(ConfigurationRestore.this).execute(file);
 		}
 	}
 
-	private class DeleteTask extends AsyncTask<File, Void, Boolean> {
-
-		@Override
-		protected void onPreExecute() {
-		}
-
-		protected Boolean doInBackground(File... files) {
-			return files[0].delete();
-		}
-
-		protected void onPostExecute(Boolean result) {
-			if (!result) {
-				Toast.makeText(mContext, getString(R.string.unable_delete_file), Toast.LENGTH_SHORT).show();
-			} else {
-				new FileListTask().execute(0);
-			}
-		}
-	}
-
-	public class BackupTask extends AsyncTask<String, Void, Integer> {
-		private int mTaskType;
-
-		@Override
-		protected void onPreExecute() {
-			showWaitDialog();
-		}
-
-		protected Integer doInBackground(String... filenames) {
-			String filename = filenames[0];
-			if (filename == null) {
-				mTaskType = TYPE_INCAR;
-				return mBackupManager.doBackupInCar();
-			}
-			mTaskType = TYPE_MAIN;
-			return mBackupManager.doBackupMain(filename, mAppWidgetId);
-		}
-
-		protected void onPostExecute(Integer result) {
-			dismissWaitDialog();
-			onBackupFinish(mTaskType, result);
-		}
-	}
 
 	private void dismissWaitDialog() {
 		if (mWaitDialog != null) {
@@ -417,23 +486,27 @@ public class ConfigurationRestore extends Fragment {
 		mWaitDialog.show();
 	}
 
-	private void onBackupFinish(int type, int code) {
+	@Override
+	public void onBackupPreExecute(int type) {
+		showWaitDialog();
+	}
+
+	@Override
+	public void onBackupFinish(int type, int code) {
+
+		dismissWaitDialog();
+
 		Resources r = getResources();
 		if (code == PreferencesBackupManager.RESULT_DONE) {
-			if (type == TYPE_MAIN) {
+			if (type == PreferencesBackupManager.TYPE_MAIN) {
 				//
 				new FileListTask().execute(0);
-			} else if (type == TYPE_INCAR) {
+			} else if (type == PreferencesBackupManager.TYPE_INCAR) {
 				updateInCarTime();
 			}
-			Toast.makeText(mContext, r.getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
-			return;
 		}
-		if (code == PreferencesBackupManager.ERROR_STORAGE_NOT_AVAILABLE) {
-			Toast.makeText(mContext, r.getString(R.string.external_storage_not_available), Toast.LENGTH_SHORT).show();
-		} else if (code == PreferencesBackupManager.ERROR_FILE_WRITE) {
-			Toast.makeText(mContext, r.getString(R.string.failed_to_write_file), Toast.LENGTH_SHORT).show();
-		}
+		int res = BackupCodeRender.render(code);
+		Toast.makeText(mContext, res, Toast.LENGTH_SHORT).show();
 	}
 
 	protected ProgressDialog createWaitDialog() {
@@ -456,4 +529,13 @@ public class ConfigurationRestore extends Fragment {
 	}
 
 
+	private class ExportClickListener implements View.OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			String name = (String) v.getTag();
+			File file = mBackupManager.getBackupMainFile(name);
+			uploadFile("car"+name+PreferencesBackupManager.FILE_EXT_DAT, file);
+		}
+	}
 }

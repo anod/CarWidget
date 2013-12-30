@@ -70,7 +70,7 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
         synchronized (PreferencesBackupManager.DATA_LOCK) {
         	AppLog.d("onRestore in-lock");
             super.onRestore(data, appVersionCode, newState);
-            mManager.doRestoreInCar();
+            mManager.doRestoreInCarLocal();
         }
     }
     

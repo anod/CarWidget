@@ -161,10 +161,10 @@ public class ConfigurationInCar extends ConfigurationFragment {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
 			if ((Boolean)newValue) {
-				final Intent updateIntent = new Intent(mContext, BroadcastService.class);
+				final Intent updateIntent = new Intent(mContext.getApplicationContext(), BroadcastService.class);
 				mContext.startService(updateIntent);
 			} else {
-				final Intent updateIntent = new Intent(mContext, BroadcastService.class);
+				final Intent updateIntent = new Intent(mContext.getApplicationContext(), BroadcastService.class);
 				mContext.stopService(updateIntent);
 			}
 			return true;

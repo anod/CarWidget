@@ -6,6 +6,9 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
 	android:paddingRight="0dp"
+	android:paddingTop="2dp"
+	android:paddingBottom="2dp"
+
     >
 
     <LinearLayout
@@ -43,22 +46,20 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:scaleType="center"
-        android:background="@android:drawable/list_selector_background"
         android:src="@drawable/ic_action_tick"
-        android:paddingLeft="14dip"
-        android:paddingRight="14dip"
+		style="@style/Widget.AppCompat.ActionButton"
+		android:contentDescription="@string/restore"
     />
 
 	<ImageView
-			android:id="@+id/download"
+			android:id="@+id/uploadMain"
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
 			android:gravity="center"
 			android:scaleType="center"
-			android:background="@android:drawable/list_selector_background"
 			android:src="@drawable/ic_action_xhdpi_ul_to_cloud"
-			android:paddingLeft="14dip"
-			android:paddingRight="14dip"
+			style="@style/Widget.AppCompat.ActionButton"
+			android:contentDescription="@string/export_backup"
 	/>
 
 
@@ -67,10 +68,9 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:scaleType="center"
-        android:background="@android:drawable/list_selector_background"
         android:src="@drawable/ic_action_cancel"
-        android:paddingLeft="14dip"
-        android:paddingRight="14dip"
+		style="@style/Widget.AppCompat.ActionButton"
+		android:contentDescription="@string/delete"
     />        
 
 </LinearLayout>

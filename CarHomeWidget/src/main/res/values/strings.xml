@@ -229,4 +229,9 @@
 		<item>90&#186; Left</item>
 		<item>90&#186; Right</item>
 	</string-array>
+
+	<string name="export_backup">Export backup file</string>
+	<string name="import_backup">Import backup file</string>
+	<string name="export_backup_finish">Export finished</string>
+	<string name="delete">Delete</string>
 </resources>

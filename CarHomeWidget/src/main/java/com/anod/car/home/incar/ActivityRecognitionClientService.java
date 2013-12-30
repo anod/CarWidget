@@ -32,13 +32,13 @@ public class ActivityRecognitionClientService extends StoppableService  implemen
 
 	public static Intent makeStartIntent(Context context)
 	{
-		Intent i = new Intent(context, ActivityRecognitionClientService.class);
+		Intent i = new Intent(context.getApplicationContext(), ActivityRecognitionClientService.class);
 		return i;
 	}
 
 	public static Intent makeStopIntent(Context context)
 	{
-		Intent i = new Intent(context, ActivityRecognitionClientService.class);
+		Intent i = new Intent(context.getApplicationContext(), ActivityRecognitionClientService.class);
 		fillStopIntent(i);
 		return i;
 	}
@@ -55,7 +55,7 @@ public class ActivityRecognitionClientService extends StoppableService  implemen
 
 	@Override
 	protected void onAfterStart(Intent intent) {
-		attachActivityRecognitionClient(this);
+		attachActivityRecognitionClient();
 	}
 
 
@@ -65,10 +65,10 @@ public class ActivityRecognitionClientService extends StoppableService  implemen
 		super.onDestroy();
 	}
 
-	private void attachActivityRecognitionClient(Context context) {
+	private void attachActivityRecognitionClient() {
 		if (mActivityRecognitionClient == null) {
 			// Connect to the ActivityRecognitionService
-			mActivityRecognitionClient = new ActivityRecognitionClient(this, this, this);
+			mActivityRecognitionClient = new ActivityRecognitionClient(getApplicationContext(), this, this);
 			mActivityRecognitionClient.connect();
 		}
 	}
@@ -91,7 +91,7 @@ public class ActivityRecognitionClientService extends StoppableService  implemen
 	}
 
 	private PendingIntent getActivityRecognitionPendingIntent() {
-		Intent intent = new Intent(this, ActivityRecognitionService.class);
+		Intent intent = new Intent(getApplicationContext(), ActivityRecognitionService.class);
 		return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
