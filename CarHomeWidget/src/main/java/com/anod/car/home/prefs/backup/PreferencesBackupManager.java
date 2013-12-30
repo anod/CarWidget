@@ -132,7 +132,12 @@ public class PreferencesBackupManager {
 		saveDir.setLastModified(System.currentTimeMillis());
 		return RESULT_DONE;
 	}
-	
+
+	public File getBackupIncarFile() {
+		File saveDir = getBackupDir();
+		return new File(saveDir, FILE_INCAR_JSON);
+	}
+
 	public int doBackupInCar() {
         if (!checkMediaWritable()) {
         	return ERROR_STORAGE_NOT_AVAILABLE;
@@ -141,7 +146,7 @@ public class PreferencesBackupManager {
         if (!saveDir.exists()) {
         	saveDir.mkdirs();
         } 
-        File dataFile = new File(saveDir, FILE_INCAR_JSON);
+        File dataFile = getBackupIncarFile();
   
 		NotificationShortcutsModel model = new NotificationShortcutsModel(mContext);
 		model.init();

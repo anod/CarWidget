@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -38,6 +39,11 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class ConfigurationRestore extends Fragment {
+	private static final int DOWNLOAD_MAIN_REQUEST_CODE = 1;
+	private static final int DOWNLOAD_INCAR_REQUEST_CODE = 2;
+	private static final int UPLOAD_REQUEST_CODE = 3;
+	public static final String MIME_TYPE = "application/octet-stream";
+
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private PreferencesBackupManager mBackupManager;
 	private Context mContext;
@@ -59,12 +65,6 @@ public class ConfigurationRestore extends Fragment {
 	private String mLastBackupStr;
 	private TextView mLastBackupIncar;
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-
-		inflater.inflate(R.menu.restore, menu);
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -117,9 +117,7 @@ public class ConfigurationRestore extends Fragment {
 		mBackupIncar.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-
 				new BackupTask().execute(null);
-
 			}
 		});
 
@@ -140,6 +138,34 @@ public class ConfigurationRestore extends Fragment {
 			});
 		}
 
+		mDownloadMain.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+				intent.addCategory(Intent.CATEGORY_OPENABLE);
+				intent.setType(MIME_TYPE);
+				startActivityForResult(intent, DOWNLOAD_MAIN_REQUEST_CODE);
+			}
+		});
+
+		mDownloadIncar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+				intent.addCategory(Intent.CATEGORY_OPENABLE);
+				intent.setType(MIME_TYPE);
+				startActivityForResult(intent, DOWNLOAD_INCAR_REQUEST_CODE);
+			}
+		});
+
+		mUploadIncar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				File incar = mBackupManager.getBackupIncarFile();
+				uploadFile(incar.getAbsolutePath());
+			}
+		});
+
 		mRestoreListener = new RestoreClickListener();
 		mDeleteListener = new DeleteClickListener();
 		mAdapter = new RestoreAdapter(mContext, R.layout.restore_item, new ArrayList<File>());
@@ -150,6 +176,40 @@ public class ConfigurationRestore extends Fragment {
 		updateInCarTime();
 
 		setHasOptionsMenu(true);
+	}
+
+	private void uploadFile(String fileName) {
+		Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+
+		// Filter to only show results that can be "opened", such as
+		// a file (as opposed to a list of contacts or timezones).
+		intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+		// Create a file with the requested MIME type.
+		intent.setType(MIME_TYPE);
+		intent.putExtra(Intent.EXTRA_TITLE, fileName);
+		startActivityForResult(intent, UPLOAD_REQUEST_CODE);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode,
+								 Intent resultData) {
+
+		// The ACTION_OPEN_DOCUMENT intent was sent with the request code
+		// READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
+		// response to some other intent, and the code below shouldn't run at all.
+
+		if ((requestCode == DOWNLOAD_MAIN_REQUEST_CODE || requestCode == DOWNLOAD_INCAR_REQUEST_CODE) && resultCode == Activity.RESULT_OK) {
+			// The document selected by the user won't be returned in the intent.
+			// Instead, a URI to that document will be contained in the return intent
+			// provided to this method as a parameter.
+			// Pull that URI using resultData.getData().
+			Uri uri = null;
+			if (resultData != null) {
+				uri = resultData.getData();
+				AppLog.d("Uri: " + uri.toString());
+			}
+		}
 	}
 
 	private AlertDialog createBackupNameDialog() {
