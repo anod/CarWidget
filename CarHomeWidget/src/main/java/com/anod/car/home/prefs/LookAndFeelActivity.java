@@ -135,6 +135,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 		final int cacheSize = maxMemory / 8;
 
 		return new LruCache<String, Bitmap>(cacheSize) {
+			@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
 			@Override
 			protected int sizeOf(String key, Bitmap bitmap) {
 				// The cache size will be measured in kilobytes rather than

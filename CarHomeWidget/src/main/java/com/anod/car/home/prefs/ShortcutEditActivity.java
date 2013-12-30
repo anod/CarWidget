@@ -41,6 +41,8 @@ import com.anod.car.home.utils.Utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class ShortcutEditActivity extends Activity {
@@ -188,7 +190,9 @@ public class ShortcutEditActivity extends Activity {
 		} else if (ContentResolver.SCHEME_CONTENT.equals(scheme) || ContentResolver.SCHEME_FILE.equals(scheme)) {
             try {
 
-				Bitmap bmp = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+				int maxIconSize = UtilitiesBitmap.getIconMaxSize(this);
+
+				Bitmap bmp = decodeSampledBitmapFromStream(uri, maxIconSize, maxIconSize);
 				DisplayMetrics dm = getResources().getDisplayMetrics();
 				bmp.setDensity(dm.densityDpi);
 				d = new BitmapDrawable(getResources(), bmp);
@@ -196,12 +200,64 @@ public class ShortcutEditActivity extends Activity {
                 Log.w("ShortcutEditActivity", "Unable to open content: " + uri, e);
             }
 
-
         } else {
             d = Drawable.createFromPath(uri.toString());
         }
         
         return d;
+	}
+
+	public Bitmap decodeSampledBitmapFromStream(Uri uri, int reqWidth, int reqHeight) throws FileNotFoundException {
+
+		// First decode with inJustDecodeBounds=true to check dimensions
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+
+		InputStream is = getContentResolver().openInputStream(uri);
+		BitmapFactory.decodeStream(is, null, options);
+		closeStream(is);
+		// Calculate inSampleSize
+		options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+		// Decode bitmap with inSampleSize set
+		options.inJustDecodeBounds = false;
+
+		is = getContentResolver().openInputStream(uri);
+		Bitmap bmp = BitmapFactory.decodeStream(is, null, options);
+		closeStream(is);
+
+		return bmp;
+	}
+
+	static void closeStream(InputStream is) {
+		if (is != null) {
+			try {
+				is.close();
+			} catch (IOException e) {
+			}
+		}
+	}
+	public static int calculateInSampleSize(
+			BitmapFactory.Options options, int reqWidth, int reqHeight) {
+		// Raw height and width of image
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+
+			final int halfHeight = height / 2;
+			final int halfWidth = width / 2;
+
+			// Calculate the largest inSampleSize value that is a power of 2 and keeps both
+			// height and width larger than the requested height and width.
+			while ((halfHeight / inSampleSize) > reqHeight
+					&& (halfWidth / inSampleSize) > reqWidth) {
+				inSampleSize *= 2;
+			}
+		}
+
+		return inSampleSize;
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)

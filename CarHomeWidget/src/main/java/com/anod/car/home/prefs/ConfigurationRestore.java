@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.preference.Preference;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +22,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -79,7 +82,8 @@ public class ConfigurationRestore extends Fragment  implements RestoreTask.Resto
 	private String mLastBackupStr;
 	private TextView mLastBackupIncar;
 	private String mCurBackupFile;
-
+	private MenuItem mRefreshMenuItem;
+	private Version mVersion;
 
 
 	@Override
@@ -150,8 +154,8 @@ public class ConfigurationRestore extends Fragment  implements RestoreTask.Resto
 			}
 		});
 
-		Version version = new Version(mContext);
-		if (version.isFree()) {
+		mVersion = new Version(mContext);
+		if (mVersion.isFree()) {
 			mRestoreIncar.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
@@ -194,7 +198,51 @@ public class ConfigurationRestore extends Fragment  implements RestoreTask.Resto
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate( R.menu.restore, menu);
+
+		mRefreshMenuItem = menu.findItem(R.id.menu_refresh);
+		mRefreshMenuItem.setVisible(false);
+
 		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+
+	/**
+	 * stop refresh button animation
+	 */
+	private void stopRefreshAnim() {
+		if (mRefreshMenuItem == null) {
+			return;
+		}
+		View actionView = MenuItemCompat.getActionView(mRefreshMenuItem);
+		if (actionView != null) {
+			actionView.clearAnimation();
+			MenuItemCompat.setActionView(mRefreshMenuItem,null);
+		}
+		mRefreshMenuItem.setVisible(false);
+	}
+
+	/**
+	 * Animate refresh button
+	 */
+	private void startRefreshAnim() {
+		if (mRefreshMenuItem == null) {
+			return;
+		}
+		View actionView = MenuItemCompat.getActionView(mRefreshMenuItem);
+		//already animating
+		if (actionView != null) {
+			return;
+		}
+		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		ImageView iv = (ImageView) inflater.inflate(R.layout.refresh_action_view, null);
+
+		Animation rotation = AnimationUtils.loadAnimation(mContext, R.anim.rotate);
+		rotation.setRepeatCount(Animation.INFINITE);
+		iv.startAnimation(rotation);
+
+		mRefreshMenuItem.setVisible(true);
+		MenuItemCompat.setActionView(mRefreshMenuItem, iv);
+
 	}
 
 	private void setupDownloadUpload() {
@@ -210,15 +258,24 @@ public class ConfigurationRestore extends Fragment  implements RestoreTask.Resto
 				}
 			});
 
-			mDownloadIncar.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-					intent.addCategory(Intent.CATEGORY_OPENABLE);
-					intent.setType(MIME_TYPE);
-					startActivityForResult(intent, DOWNLOAD_INCAR_REQUEST_CODE);
-				}
-			});
+			if (mVersion.isFree()) {
+				mDownloadIncar.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						TrialDialogs.buildProOnlyDialog(mContext).show();
+					}
+				});
+			} else {
+				mDownloadIncar.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+						intent.addCategory(Intent.CATEGORY_OPENABLE);
+						intent.setType(MIME_TYPE);
+						startActivityForResult(intent, DOWNLOAD_INCAR_REQUEST_CODE);
+					}
+				});
+			}
 
 			mUploadIncar.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -390,7 +447,13 @@ public class ConfigurationRestore extends Fragment  implements RestoreTask.Resto
 
 
 	@Override
+	public void onRestorePreExecute(int type) {
+		startRefreshAnim();
+	}
+
+	@Override
 	public void onRestoreFinish(int type, int code) {
+		stopRefreshAnim();
 		int res = RestoreCodeRender.render(code);
 		Toast.makeText(mContext, res, Toast.LENGTH_SHORT).show();
 	}
@@ -469,32 +532,13 @@ public class ConfigurationRestore extends Fragment  implements RestoreTask.Resto
 	}
 
 
-	private void dismissWaitDialog() {
-		if (mWaitDialog != null) {
-			try {
-				mWaitDialog.dismiss();
-			} catch (Exception e) {
-				//
-			}
-		}
-	}
-
-	private void showWaitDialog() {
-		if (mWaitDialog == null) {
-			mWaitDialog = createWaitDialog();
-		}
-		mWaitDialog.show();
-	}
-
 	@Override
 	public void onBackupPreExecute(int type) {
-		showWaitDialog();
+		startRefreshAnim();
 	}
 
 	@Override
 	public void onBackupFinish(int type, int code) {
-
-		dismissWaitDialog();
 
 		Resources r = getResources();
 		if (code == PreferencesBackupManager.RESULT_DONE) {
@@ -505,16 +549,10 @@ public class ConfigurationRestore extends Fragment  implements RestoreTask.Resto
 				updateInCarTime();
 			}
 		}
+
+		stopRefreshAnim();
 		int res = BackupCodeRender.render(code);
 		Toast.makeText(mContext, res, Toast.LENGTH_SHORT).show();
-	}
-
-	protected ProgressDialog createWaitDialog() {
-		ProgressDialog waitDialog = new ProgressDialog(mContext);
-		waitDialog.setCancelable(true);
-		String message = getResources().getString(R.string.please_wait);
-		waitDialog.setMessage(message);
-		return waitDialog;
 	}
 
 	private void updateInCarTime() {

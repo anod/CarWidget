@@ -20,6 +20,7 @@ public class RestoreTask extends AsyncTask<Uri, Void, Integer> {
 	private RestoreTaskListner mListener;
 
 	public interface RestoreTaskListner {
+		void onRestorePreExecute(int type);
 		void onRestoreFinish(int type,int code);
 	}
 
@@ -31,7 +32,9 @@ public class RestoreTask extends AsyncTask<Uri, Void, Integer> {
 	}
 
 	@Override
-	protected void onPreExecute() { }
+	protected void onPreExecute() {
+		mListener.onRestorePreExecute(mType);
+	}
 
 	protected Integer doInBackground(Uri... uris) {
 		Uri uri = uris[0];

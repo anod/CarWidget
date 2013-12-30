@@ -8,7 +8,7 @@ public class WidgetState {
     /**
      * Lock used when maintaining queue of requested updates.
      */
-    public static Object sLock = new Object();
+    public final static Object sLock = new Object();
     /**
      * Flag if there is an update thread already running. We only launch a new
      * thread if one isn't already running.

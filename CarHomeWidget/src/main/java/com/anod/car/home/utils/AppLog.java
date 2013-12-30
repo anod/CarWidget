@@ -14,7 +14,7 @@ import java.util.Stack;
 public class AppLog {
 
 	public static final String TAG = "CarHomeWidget";
-	private static Object sLock = new Object();
+	private final static Object sLock = new Object();
 
 	public static class Entry {
 		public String msg;
@@ -26,7 +26,7 @@ public class AppLog {
 		}
 	}
 
-	private static SizedStack<Entry> sLogListStack = new SizedStack<Entry>(20);
+	private final static SizedStack<Entry> sLogListStack = new SizedStack<Entry>(20);
 
 	public interface LogListener {
 		void onMessage(final AppLog.Entry entry);

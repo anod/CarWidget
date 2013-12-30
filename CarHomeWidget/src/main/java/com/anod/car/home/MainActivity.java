@@ -156,6 +156,11 @@ public class MainActivity extends CarWidgetActivity implements RestoreTask.Resto
 
 
 	@Override
+	public void onRestorePreExecute(int type) {
+		//
+	}
+
+	@Override
 	public void onRestoreFinish(int type, int code) {
 		int res = RestoreCodeRender.render(code);
 		Toast.makeText(mContext, res, Toast.LENGTH_SHORT).show();

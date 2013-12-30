@@ -20,7 +20,7 @@ public class Provider extends AppWidgetProvider {
     /**
      * Lock used when maintaining queue of requested updates.
      */
-	private static Object sLock = new Object();
+	private final static Object sLock = new Object();
     private static Provider sInstance;
     
     public static Provider getInstance() {

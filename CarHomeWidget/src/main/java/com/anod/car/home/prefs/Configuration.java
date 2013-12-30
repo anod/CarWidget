@@ -22,7 +22,6 @@ import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.ShortcutPreference;
 
 public class Configuration extends ConfigurationFragment implements PreferenceKey, ShortcutPreference.DropCallback {
-	private static final int REQUEST_BACKUP = 6;
 	public static final String DEBUG_ACTIVITY = "debug-activity";
 	private ShortcutsModel mModel;
 	private PickShortcutUtils mPickShortcutUtils;
@@ -38,7 +37,7 @@ public class Configuration extends ConfigurationFragment implements PreferenceKe
 	@Override
 	protected void onCreateImpl(Bundle savedInstanceState) {
 		mModel = new LauncherShortcutsModel(mContext, mAppWidgetId);
-		mModel.init();
+		//mModel.init();
 		mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
 		mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
 		initShortcuts();
@@ -59,6 +58,13 @@ public class Configuration extends ConfigurationFragment implements PreferenceKe
 		}
         
 		
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		refreshShortcuts();
+
 	}
 
 	@Override
@@ -91,17 +97,6 @@ public class Configuration extends ConfigurationFragment implements PreferenceKe
 		}
 	}
 
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == REQUEST_BACKUP) {
-			refreshShortcuts();
-		} else {
-			mPickShortcutUtils.onActivityResult(requestCode, resultCode, data);
-		}
-		super.onActivityResult(requestCode, resultCode, data);
-	}
-
 	private void refreshShortcuts() {
 		mModel.init();
 		for (int i = 0; i < PreferencesStorage.LAUNCH_COMPONENT_NUMBER; i++) {
@@ -109,6 +104,12 @@ public class Configuration extends ConfigurationFragment implements PreferenceKe
 			ShortcutPreference p = (ShortcutPreference) findPreference(key);
 			mPickShortcutUtils.refreshPreference(p);
 		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		mPickShortcutUtils.onActivityResult(requestCode, resultCode, data);
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override

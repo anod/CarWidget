@@ -106,6 +106,9 @@ public class ShortcutDragListener implements View.OnDragListener {
 	}
 
 	private void setBackgroundColor(View v, DragEvent dragEvent, int dragViewColor, Drawable otherBg) {
+		if (v == null) {
+			return;
+		}
 		int dragCellId = Integer.valueOf((String) dragEvent.getClipDescription().getLabel());
 		int viewCellId = (Integer) v.getTag();
 		if (dragCellId == viewCellId) {

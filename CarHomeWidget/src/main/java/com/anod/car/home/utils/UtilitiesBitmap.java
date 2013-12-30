@@ -76,6 +76,16 @@ public class UtilitiesBitmap {
 		}
 	}
 
+	public static int getIconMaxSize(Context context) {
+		synchronized (sCanvas) { // we share the statics :-(
+			if (sIconMaxScale == -1) {
+				initStatics(context);
+			}
+
+			return sIconMaxScale;
+		}
+	}
+
 	public static int getIconSize(Context context) {
 		synchronized (sCanvas) { // we share the statics :-(
 			if (sIconSize == -1) {

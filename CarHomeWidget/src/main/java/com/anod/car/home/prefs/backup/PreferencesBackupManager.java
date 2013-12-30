@@ -250,10 +250,13 @@ public class PreferencesBackupManager {
 				is.close();
 			}
 		} catch (IOException e) {
-			AppLog.d(e.getMessage());
+			AppLog.ex(e);
 			return ERROR_FILE_READ;
 		} catch (ClassNotFoundException e) {
-			AppLog.d(e.getMessage());
+			AppLog.ex(e);
+			return ERROR_DESERIALIZE;
+		} catch (ClassCastException e) {
+			AppLog.ex(e);
 			return ERROR_DESERIALIZE;
 		}
 		PreferencesStorage.saveMain(mContext, prefs.getMain(), appWidgetId);
@@ -320,10 +323,13 @@ public class PreferencesBackupManager {
 				is.close();
 			}
 		} catch (IOException e) {
-			AppLog.d(e.getMessage());
+			AppLog.ex(e);
 			return ERROR_FILE_READ;
 		} catch (ClassNotFoundException e) {
-			AppLog.d(e.getMessage());
+			AppLog.ex(e);
+			return ERROR_DESERIALIZE;
+		} catch (ClassCastException e) {
+			AppLog.ex(e);
 			return ERROR_DESERIALIZE;
 		}
 		//version 1.42

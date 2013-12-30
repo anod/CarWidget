@@ -62,7 +62,7 @@ public class Handler {
 			SamsungDrivingMode.enable(context);
 		}
 
-		context.startService(SpeechActivationService.makeStartIntent(context));
+		//context.startService(SpeechActivationService.makeStartIntent(context));
 
 		ComponentName autorunApp = prefs.getAutorunApp();
 		if (autorunApp != null) {
@@ -102,7 +102,7 @@ public class Handler {
 			SamsungDrivingMode.disable(context);
 		}
 
-		context.stopService(SpeechActivationService.makeStopIntent(context));
+		//context.stopService(SpeechActivationService.makeStopIntent(context));
 
 		String brightSetting = prefs.getBrightness();
 		if (!brightSetting.equals(InCar.BRIGHTNESS_DISABLED)) {

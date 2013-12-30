@@ -120,27 +120,28 @@ public class PickShortcutUtils {
 		}
 	}
 
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
 			switch (requestCode) {
 			case REQUEST_PICK_APPLICATION:
 				completeAddShortcut(data, true);
-				break;
+				return true;
 			case REQUEST_CREATE_SHORTCUT:
 				completeAddShortcut(data, false);
-				break;
+				return true;
 			case REQUEST_EDIT_SHORTCUT:
 				completeEditShortcut(data);
-				break;
+				return true;
 			case REQUEST_PICK_SHORTCUT:
 				pickShortcut(data);
 				mConfigurationFragment.dismissDialog(ConfigurationFragment.DIALOG_WAIT);
-				break;
+				return true;
 			default:
 			}
 		} else {
 			mConfigurationFragment.dismissDialog(ConfigurationFragment.DIALOG_WAIT);
 		}
+		return false;
 	}
 	
 	public void refreshPreference(ShortcutPreference pref) {

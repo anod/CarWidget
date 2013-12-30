@@ -17,7 +17,7 @@ public class ActivityRecognitionService extends IntentService {
 	/**
 	 * Lock used when maintaining queue of requested updates.
 	 */
-	private static Object sLock = new Object();
+	private final static Object sLock = new Object();
 
 	public static final int MIN_CONFIDENCE = 40;
 	public static final int MIN_VEHICLE_CONFIDENCE = 89;

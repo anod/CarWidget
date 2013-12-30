@@ -34,7 +34,7 @@ public class IconTheme
 	String mPkgName;
 	Resources mThemeResources;
 	HashMap<String, Integer> mIconMap;
-	public static Object sLock = new Object();
+	public final static Object sLock = new Object();
 	public IconTheme(Context context, String packageName)
 	{
 		mContext = context;

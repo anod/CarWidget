@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.preference.PreferenceFragment;
 
@@ -36,6 +37,7 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pref_layout);
+
 		if (savedInstanceState == null) {
 
 			ConfigurationFragment conf = createFragmentInstance();
@@ -121,4 +123,6 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 		transaction.addToBackStack(BACK_STACK_PREFS);
 		transaction.commitAllowingStateLoss();
 	}
+
+
 }

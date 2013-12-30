@@ -3,6 +3,12 @@
 <menu xmlns:carwidget="http://schemas.android.com/apk/res-auto"
 		xmlns:android="http://schemas.android.com/apk/res/android">
 
+	<item
+			android:id="@+id/menu_refresh"
+			android:icon="@drawable/ic_action_refresh"
+			carwidget:showAsAction="always"
+			android:title="@string/restore">
+	</item>
 
 	<item
 			android:id="@+id/apply"
