@@ -7,10 +7,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceCategory;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.anod.car.home.BuildConfig;
 import com.anod.car.home.DebugActivity;
 import com.anod.car.home.R;
 import com.anod.car.home.model.LauncherShortcutsModel;
@@ -21,6 +23,7 @@ import com.anod.car.home.prefs.views.ShortcutPreference;
 
 public class Configuration extends ConfigurationFragment implements PreferenceKey, ShortcutPreference.DropCallback {
 	private static final int REQUEST_BACKUP = 6;
+	public static final String DEBUG_ACTIVITY = "debug-activity";
 	private ShortcutsModel mModel;
 	private PickShortcutUtils mPickShortcutUtils;
 	private static final String LOOK_AND_FEEL = "look-and-feel";
@@ -40,11 +43,15 @@ public class Configuration extends ConfigurationFragment implements PreferenceKe
 		mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
 		initShortcuts();
 
-		setIntent("debug-activity", DebugActivity.class, 0);
+		if (BuildConfig.DEBUG) {
+			setIntent(DEBUG_ACTIVITY, DebugActivity.class, 0);
+		} else {
+			((PreferenceCategory)findPreference("advanced-category")).removePreference(findPreference(DEBUG_ACTIVITY));
+		}
+
 		setIntent(LOOK_AND_FEEL, LookAndFeelActivity.class, mAppWidgetId);
-		showFragmentOnClick(BACKUP, ConfigurationBackup.class);
+		showFragmentOnClick(BACKUP, ConfigurationRestore.class);
 		showFragmentOnClick(INCAR, ConfigurationInCar.class);
-		initBackup();
 
 		int cellId = getActivity().getIntent().getExtras().getInt(PickShortcutUtils.EXTRA_CELL_ID, PickShortcutUtils.INVALID_CELL_ID);
 		if (cellId != PickShortcutUtils.INVALID_CELL_ID) {
@@ -75,20 +82,6 @@ public class Configuration extends ConfigurationFragment implements PreferenceKe
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		mPickShortcutUtils.onSaveInstanceState(outState);
-	}
-
-	private void initBackup() {
-		Preference pref = findPreference(BACKUP);
-		pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				Intent intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationBackup.class);
-				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-				startActivityForResult(intent, REQUEST_BACKUP);
-				return true;
-			}
-		});
 	}
 
 	private void initShortcuts() {

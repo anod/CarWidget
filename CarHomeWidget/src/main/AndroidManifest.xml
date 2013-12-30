@@ -79,9 +79,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.anod.car.home.prefs.ConfigurationRestore"
-        />
+
         <activity
             android:name="com.anod.car.home.ShortcutActivity"
             android:theme="@style/BrightnessTheme"
@@ -155,12 +153,6 @@
 		<meta-data
 				android:name="com.google.android.backup.api_key"
 				android:value="AEdPqrEAAAAIwrTs2H7J2Rs0kglDTHtziqQ8_7YbAZGeS7bDUA" />
-
-		<activity android:name="org.acra.CrashReportDialog"
-				  android:theme="@style/DialogTheme"
-				  android:launchMode="singleInstance"
-				  android:excludeFromRecents="true"
-				  android:finishOnTaskLaunch="true" />
 
 		<service android:name=".speech.SpeechActivationService"/>
 		<activity android:name=".speech.SpeechRecognitionLauncher"/>

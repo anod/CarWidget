@@ -47,6 +47,7 @@ public class PreferencesBackupManager {
 			| DateUtils.FORMAT_SHOW_WEEKDAY
 			| DateUtils.FORMAT_SHOW_TIME
 			| DateUtils.FORMAT_SHOW_YEAR
+			| DateUtils.FORMAT_ABBREV_ALL
 		;
 	/**
      * We serialize access to our persistent data through a global static

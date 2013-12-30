@@ -21,7 +21,7 @@
             android:key="launch-component-5-%d"
             android:title="@string/set_shortcut" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/advanced" android:layout="@layout/pref_category">
+    <PreferenceCategory android:title="@string/advanced" android:layout="@layout/pref_category" android:key="advanced-category">
         <com.anod.car.home.prefs.views.HeaderPreference
             android:icon="@drawable/ic_action_brush"
             android:key="look-and-feel"

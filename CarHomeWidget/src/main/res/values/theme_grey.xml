@@ -69,4 +69,11 @@
 		<item name="backgroundSplit">@null</item>
 	</style>
 
+	<style name="panelItemGray" parent="panelItemBasic">
+		<item name="android:background">@drawable/panel_item_bg_grey</item>
+	</style>
+
+	<style name="panelHeaderGray" parent="panelItemGray">
+		<item name="android:textAppearance">@style/panelHeaderText</item>
+	</style>
 </resources>

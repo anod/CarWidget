@@ -1,35 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			   xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-	>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				tools:context="com.anod.car.home.prefs.ConfigurationRestore">
 
-	<View android:layout_height="@dimen/panel_header_margin"
-		  android:layout_width="match_parent" />
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="?attr/panelHeader"
+			android:orientation="horizontal"
+			android:id="@+id/header1"
 
-     <TextView android:id="@+id/header"
-		style="?attr/panelHeader"
-     	android:layout_height="wrap_content" 
-     	android:layout_width="match_parent"
-     	android:text="@string/choose_backup"
-		android:layout_marginLeft="@dimen/panel_header_margin"
-		android:layout_marginRight="@dimen/panel_header_margin"
-		android:layout_marginBottom="@dimen/preference_item_margin"
-     	/>
+			android:gravity="center_vertical"
+			android:layout_marginBottom="@dimen/preference_item_margin"
+			android:layout_alignParentTop="true"
+			android:layout_marginTop="@dimen/panel_header_margin"
+			android:layout_marginLeft="@dimen/panel_header_margin"
+			android:layout_marginRight="@dimen/panel_header_margin"
+			android:paddingRight="0dp"
+			android:paddingTop="0dp"
+			android:paddingBottom="0dp"
 
-     <ListView android:id="@android:id/list"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:drawSelectorOnTop="false"
-			   tools:listitem="@layout/restore_item"
-			   android:divider="@android:color/transparent"
-			 	android:dividerHeight="@dimen/preference_item_margin"/>
+			>
 
-     <TextView android:id="@android:id/empty"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:gravity="center"
-               android:text="@string/no_backup_files_found"/>
- </LinearLayout>
+		<TextView
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:textAppearance="@style/panelHeaderText"
+				android:text="@string/backup_current_widget"
+				/>
+
+		<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				>
+
+			<ImageButton
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:id="@+id/downloadMain"
+					android:src="@drawable/ic_action_xhdpi_dl_from_cloud"
+					style="@style/Widget.AppCompat.ActionButton"
+					android:layout_toLeftOf="@+id/backupIncar"
+					android:layout_alignParentTop="true" />
+
+			<ImageButton
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:id="@+id/backupMain"
+					android:src="@drawable/ic_action_add"
+					android:layout_alignTop="@+id/textView" android:layout_alignParentRight="true"
+					style="@style/Widget.AppCompat.ActionButton"
+					/>
+		</LinearLayout>
+	</LinearLayout>
+
+	<ListView android:id="@android:id/list"
+			  android:layout_width="match_parent"
+			  android:layout_height="match_parent"
+			  android:drawSelectorOnTop="false"
+			  tools:listitem="@layout/restore_item"
+			  android:divider="@android:color/transparent"
+			  android:dividerHeight="@dimen/preference_item_margin"
+			  android:layout_below="@+id/header1"
+			  android:layout_above="@+id/header2"/>
+
+	<TextView android:id="@android:id/empty"
+			  android:layout_width="match_parent"
+			  android:layout_height="wrap_content"
+			  android:gravity="center"
+			  android:text="@string/no_backup_files_found"
+			  android:layout_alignParentLeft="true"
+			  android:layout_marginLeft="0dp"
+			  android:layout_above="@+id/header2"
+			  android:layout_below="@+id/header1"/>
+
+
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="?attr/panelHeader"
+			android:orientation="horizontal"
+			android:id="@+id/header2"
+
+			android:gravity="center_vertical"
+
+			android:layout_marginTop="@dimen/panel_header_margin"
+			android:layout_marginLeft="@dimen/panel_header_margin"
+			android:layout_marginRight="@dimen/panel_header_margin"
+			android:layout_marginBottom="@dimen/preference_item_margin"
+
+			android:paddingRight="0dp"
+			android:paddingTop="0dp"
+			android:paddingBottom="0dp"
+
+			android:layout_above="@+id/lastBackupIncar"
+			>
+
+		<TextView
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:textAppearance="@style/panelHeaderText"
+				android:text="@string/backup_incar_settings"
+				android:id="@+id/textView" android:layout_centerVertical="true" android:layout_toLeftOf="@+id/restoreIncar"/>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			>
+
+		<ImageButton
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/restoreIncar"
+				android:src="@drawable/ic_action_tick"
+				style="@style/Widget.AppCompat.ActionButton"
+				android:layout_toLeftOf="@+id/uploadIncar"
+				android:layout_alignParentTop="true" />
+
+		<ImageButton
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/uploadIncar"
+				android:src="@drawable/ic_action_xhdpi_ul_to_cloud"
+				style="@style/Widget.AppCompat.ActionButton"
+				android:layout_toLeftOf="@+id/backupIncar"
+				android:layout_alignParentTop="true" />
+
+		<ImageButton
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/downloadIncar"
+				android:src="@drawable/ic_action_xhdpi_dl_from_cloud"
+				style="@style/Widget.AppCompat.ActionButton"
+				android:layout_toLeftOf="@+id/backupIncar"
+				android:layout_alignParentTop="true" />
+
+		<ImageButton
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/backupIncar"
+				android:src="@drawable/ic_action_add"
+				android:layout_alignTop="@+id/textView" android:layout_alignParentRight="true"
+				style="@style/Widget.AppCompat.ActionButton"
+		/>
+		</LinearLayout>
+	</LinearLayout>
+
+	<TextView
+			android:id="@+id/lastBackupIncar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="?attr/panelHeader"
+			android:text="@string/last_backup"
+			android:layout_marginBottom="@dimen/panel_header_margin"
+			android:layout_marginLeft="@dimen/panel_header_margin"
+			android:layout_marginRight="@dimen/panel_header_margin"
+			android:layout_alignParentBottom="true"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:textColor="@color/font_color_sec"
+	/>
+
+</RelativeLayout>
  

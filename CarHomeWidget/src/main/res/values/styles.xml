@@ -130,9 +130,6 @@
 		<item name="android:background">@drawable/panel_item_bg_dark</item>
 	</style>
 
-	<style name="panelItemGray" parent="panelItemBasic">
-		<item name="android:background">@drawable/panel_item_bg_grey</item>
-	</style>
 
 	<style name="panelHeaderText">
 		<item name="android:textColor">@color/font_color</item>
@@ -144,10 +141,6 @@
 	<style name="panelHeaderBasic" parent="panelItemBasic">
 		<item name="android:textAppearance">@style/panelHeaderText</item>
 		<item name="android:background">@drawable/panel_header_bg_dark</item>
-	</style>
-
-	<style name="panelHeaderGray" parent="panelItemGray">
-		<item name="android:textAppearance">@style/panelHeaderText</item>
 	</style>
 
 	<style name="WizardPageTitle" parent="textAlignStyle">
