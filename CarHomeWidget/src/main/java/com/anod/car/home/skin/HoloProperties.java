@@ -27,4 +27,9 @@ public class HoloProperties extends BaseProperties {
 	public int getSettingsButtonRes() {
 		return R.drawable.ic_holo_settings;
 	}
+
+	@Override
+	public int getRowLayout() {
+		return R.layout.holo_row;
+	}
 }

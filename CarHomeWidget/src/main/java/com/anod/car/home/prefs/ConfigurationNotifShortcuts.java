@@ -33,7 +33,8 @@ public class ConfigurationNotifShortcuts extends ConfigurationPreferenceFragment
 		mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
 
 		for (int i = 0; i < PreferencesStorage.NOTIFICATION_COMPONENT_NUMBER; i++) {
-			ShortcutPreference p = mPickShortcutUtils.initLauncherPreference(i);
+			ShortcutPreference p = (ShortcutPreference) findPreference(getInitialKey(i));
+			mPickShortcutUtils.initLauncherPreference(i,p);
 			p.setDropCallback(this);
 		}
 	}

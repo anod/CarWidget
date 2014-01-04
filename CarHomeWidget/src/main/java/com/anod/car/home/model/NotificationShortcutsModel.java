@@ -24,6 +24,11 @@ public class NotificationShortcutsModel extends AbstractShortcutsModel {
 	}
 
 	@Override
+	public void updateCount(Integer count) {
+		// :( Exception
+	}
+
+	@Override
 	protected void saveShortcutId(int position, long shortcutId) {
 		PreferencesStorage.saveNotifShortcut(mContext, shortcutId, position);
 		

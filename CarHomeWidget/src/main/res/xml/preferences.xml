@@ -1,39 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:key="shortcuts" android:title="@string/shortcuts" android:layout="@layout/pref_category">
-        <com.anod.car.home.prefs.views.ShortcutPreference
-            android:key="launch-component-0-%d"
-            android:title="@string/set_shortcut" />
-        <com.anod.car.home.prefs.views.ShortcutPreference
-            android:key="launch-component-1-%d"
-            android:title="@string/set_shortcut" />
-        <com.anod.car.home.prefs.views.ShortcutPreference
-            android:key="launch-component-2-%d"
-            android:title="@string/set_shortcut" />
-        <com.anod.car.home.prefs.views.ShortcutPreference
-            android:key="launch-component-3-%d"
-            android:title="@string/set_shortcut" />
-        <com.anod.car.home.prefs.views.ShortcutPreference
-            android:key="launch-component-4-%d"
-            android:title="@string/set_shortcut" />
-        <com.anod.car.home.prefs.views.ShortcutPreference
-            android:key="launch-component-5-%d"
-            android:title="@string/set_shortcut" />
-		<com.anod.car.home.prefs.views.ShortcutPreference
-			android:key="launch-component-6-%d"
-			android:title="@string/set_shortcut" />
-		<com.anod.car.home.prefs.views.ShortcutPreference
-			android:key="launch-component-7-%d"
-			android:title="@string/set_shortcut" />
-		<com.anod.car.home.prefs.views.ShortcutPreference
-			android:key="launch-component-8-%d"
-			android:title="@string/set_shortcut" />
-		<com.anod.car.home.prefs.views.ShortcutPreference
-			android:key="launch-component-9-%d"
-			android:title="@string/set_shortcut" />
-		<Preference android:key="launch-component-bottom" android:layout="@layout/pref_category_bottom" />
-    </PreferenceCategory>
+    <PreferenceCategory android:key="shortcuts" android:title="@string/shortcuts" android:layout="@layout/pref_category"></PreferenceCategory>
     <PreferenceCategory android:title="@string/advanced" android:layout="@layout/pref_category" android:key="advanced-category">
         <com.anod.car.home.prefs.views.HeaderPreference
             android:icon="@drawable/ic_action_brush"

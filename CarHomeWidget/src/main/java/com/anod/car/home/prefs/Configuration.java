@@ -1,13 +1,20 @@
 package com.anod.car.home.prefs;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceCategory;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.DebugActivity;
@@ -25,6 +32,7 @@ public class Configuration extends ConfigurationPreferenceFragment implements Pr
 	private static final String LOOK_AND_FEEL = "look-and-feel";
 	private static final String INCAR = "incar";
 	private static final String BACKUP = "backup";
+	private PreferenceCategory mCategory;
 
 	@Override
 	protected int getXmlResource() {
@@ -34,10 +42,9 @@ public class Configuration extends ConfigurationPreferenceFragment implements Pr
 	@Override
 	protected void onCreateImpl(Bundle savedInstanceState) {
 		mModel = new LauncherShortcutsModel(mContext, mAppWidgetId);
-		//mModel.init();
 		mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
 		mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
-		initShortcuts();
+		mCategory = (PreferenceCategory)findPreference("shortcuts");
 
 		if (BuildConfig.DEBUG) {
 			setIntent(DEBUG_ACTIVITY, DebugActivity.class, 0);
@@ -61,7 +68,6 @@ public class Configuration extends ConfigurationPreferenceFragment implements Pr
 	public void onResume() {
 		super.onResume();
 		refreshShortcuts();
-
 	}
 
 	@Override
@@ -69,6 +75,7 @@ public class Configuration extends ConfigurationPreferenceFragment implements Pr
 
 		return R.menu.configuration;
 	}
+
 
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -78,7 +85,52 @@ public class Configuration extends ConfigurationPreferenceFragment implements Pr
 			act.finish();
 			return true;
 		}
+		if (item.getItemId() == R.id.menu_number) {
+			createNumberPickerDialog().show();
+		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private AlertDialog createNumberPickerDialog() {
+		final String[] nums = mContext.getResources().getStringArray(R.array.shortcut_numbers);
+
+		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View npView = inflater.inflate(R.layout.numberpicker, null);
+
+		final NumberPicker numberPicker = (NumberPicker) npView.findViewById(R.id.numberPicker);
+		numberPicker.setMinValue(0);
+		numberPicker.setMaxValue(nums.length - 1);
+		numberPicker.setDisplayedValues(nums);
+
+		String countStr = String.valueOf(mModel.getCount());
+		for(int i = 0; i < nums.length; i++)
+		{
+			if (countStr.equals(nums[i])) {
+				numberPicker.setValue(i);
+				break;
+			}
+		}
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+		builder.setView(npView)
+				 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+					 @Override
+					 public void onClick(DialogInterface dialogInterface, int i) {
+						int value = numberPicker.getValue();
+						mModel.updateCount(Integer.valueOf(nums[value]));
+						refreshShortcuts();
+					 }
+				 })
+				 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+					 @Override
+					 public void onClick(DialogInterface dialogInterface, int i) {
+						 dialogInterface.dismiss();
+					 }
+				 })
+				.setTitle("Number of shortcuts")
+		;
+		return builder.create();
 	}
 
 	@Override
@@ -87,18 +139,15 @@ public class Configuration extends ConfigurationPreferenceFragment implements Pr
 		mPickShortcutUtils.onSaveInstanceState(outState);
 	}
 
-	private void initShortcuts() {
-		for (int i = 0; i < PreferencesStorage.LAUNCH_COMPONENT_NUMBER; i++) {
-			ShortcutPreference p = mPickShortcutUtils.initLauncherPreference(i);
-			p.setDropCallback(this);
-		}
-	}
-
 	private void refreshShortcuts() {
+
 		mModel.init();
-		for (int i = 0; i < PreferencesStorage.LAUNCH_COMPONENT_NUMBER; i++) {
-			String key = PreferencesStorage.getLaunchComponentName(i, mAppWidgetId);
-			ShortcutPreference p = (ShortcutPreference) findPreference(key);
+		mCategory.removeAll();
+		for (int i = 0; i < mModel.getCount(); i++) {
+			ShortcutPreference p = new ShortcutPreference(mContext);
+			mPickShortcutUtils.initLauncherPreference(i, p);
+			mCategory.addPreference(p);
+			p.setDropCallback(this);
 			mPickShortcutUtils.refreshPreference(p);
 		}
 	}

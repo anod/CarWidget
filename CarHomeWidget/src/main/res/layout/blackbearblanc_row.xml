@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="0dip"
+	android:layout_gravity="center_vertical|center_horizontal"
+	android:layout_weight="1"
+	android:baselineAligned="false"
+	android:gravity="bottom"
+	android:orientation="horizontal" >
+
+<FrameLayout style="@style/bbb_btn" >
+
+	<Button
+			android:id="@+id/btn_text0"
+			style="@style/bbb_btn_text"
+			android:text="@string/set_shortcut_short" />
+
+	<ImageView
+			android:id="@+id/btn0"
+			style="@style/bbb_btn_icon"
+			android:src="@drawable/ic_add_shortcut_holo"/>
+</FrameLayout>
+
+<FrameLayout style="@style/bbb_btn" >
+
+	<Button
+			android:id="@+id/btn_text1"
+			style="@style/bbb_btn_text"
+			android:text="@string/set_shortcut_short" />
+
+	<ImageView
+			android:id="@+id/btn1"
+			style="@style/bbb_btn_icon"
+			android:src="@drawable/ic_add_shortcut_holo" />
+</FrameLayout>
+</LinearLayout>

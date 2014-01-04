@@ -22,10 +22,12 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class PreferencesStorage {
+	public static final String CMP_NUMBER = "cmp-number";
 	private static final String MODE_FORCE_STATE = "mode-force-state";
 
 	public static final int NOTIFICATION_COMPONENT_NUMBER = 3;
-	public static final int LAUNCH_COMPONENT_NUMBER = 6;
+	public static final int LAUNCH_COMPONENT_NUMBER_MAX = 10;
+	private static final int LAUNCH_COMPONENT_NUMBER_DEFAULT = 6;
 
 	private static final String NOTIF_COMPONENT = "notif-component-%d";
 	private static final String LAUNCH_COMPONENT = "launch-component-%d";
@@ -297,15 +299,30 @@ public class PreferencesStorage {
 		return ids;
 	}
 
-	public static ArrayList<Long> getLauncherComponents(Context context, int appWidgetId) {
+	public static ArrayList<Long> getLauncherComponents(Context context, int appWidgetId, int count) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		ArrayList<Long> ids = new ArrayList<Long>(LAUNCH_COMPONENT_NUMBER);
-		for (int i = 0; i < LAUNCH_COMPONENT_NUMBER; i++) {
+		ArrayList<Long> ids = new ArrayList<Long>(count);
+		for (int i = 0; i < count; i++) {
 			String key = PreferencesStorage.getLaunchComponentName(i, appWidgetId);
 			long id = prefs.getLong(key, ShortcutInfo.NO_ID);
 			ids.add(i, id);
 		}
 		return ids;
+	}
+
+	public static int getLaunchComponentNumber(Context context, int appWidgetId) {
+		WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
+		prefs.setAppWidgetId(appWidgetId);
+		int num = prefs.getInt(CMP_NUMBER, LAUNCH_COMPONENT_NUMBER_DEFAULT);
+		return (num == 0) ? LAUNCH_COMPONENT_NUMBER_DEFAULT : num;
+	}
+
+	public static void saveLaunchComponentNumber(Integer count, Context context, int appWidgetId) {
+		WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
+		prefs.setAppWidgetId(appWidgetId);
+		Editor edit = prefs.edit();
+		edit.putInt(CMP_NUMBER, count);
+		edit.commit();
 	}
 
 	public static boolean isFirstTime(Context context, int appWidgetId) {
@@ -384,7 +401,7 @@ public class PreferencesStorage {
 				edit.remove(sAppWidgetPrefs[i]);
 			}
 
-			for (int i = 0; i < LAUNCH_COMPONENT_NUMBER; i++) {
+			for (int i = 0; i < LAUNCH_COMPONENT_NUMBER_MAX; i++) {
 				String key = PreferencesStorage.getLaunchComponentKey(i);
 				long curShortcutId = prefs.getLong(key, ShortcutInfo.NO_ID);
 				if (curShortcutId != ShortcutInfo.NO_ID) {
@@ -446,4 +463,6 @@ public class PreferencesStorage {
 	public static boolean isActivityRecognitionEnabled(Context context) {
 		return getBoolean(context, ACTIVITY_RECOGNITION, false);
 	}
+
+
 }

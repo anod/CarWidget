@@ -31,23 +31,6 @@ import com.anod.car.home.utils.Utils;
 import java.util.HashMap;
 
 public class WidgetViewBuilder {
-	private static int[] sTextRes = { 
-		R.id.btn_text0,
-		R.id.btn_text1,
-		R.id.btn_text2,
-		R.id.btn_text3,
-		R.id.btn_text4,
-		R.id.btn_text5
-	};
-
-	private static int[] sBtnRes = { 
-		R.id.btn0, 
-		R.id.btn1, 
-		R.id.btn2, 
-		R.id.btn3, 
-		R.id.btn4, 
-		R.id.btn5 
-	};
 
 	final private Context mContext;
 	private int mAppWidgetId;
@@ -55,13 +38,14 @@ public class WidgetViewBuilder {
 	private LauncherShortcutsModel mSmodel;
 	private String mOverrideSkin;
 	private PendingIntentHelper mPendingIntentHelper;
-	private BitmapTransform mBitmapTransform;
 	private boolean mIsKeyguard = false;
 	private int mWidgetHeightDp = -1;
-	private LruCache<String, Bitmap> mBitmapMemoryCache;
+
+	private ShortcutViewBuilder mShortcutViewBuilder;
+	private BitmapTransform mBitmapTransform;
 
 	public WidgetViewBuilder setBitmapMemoryCache(LruCache<String, Bitmap> bitmapMemoryCache) {
-		mBitmapMemoryCache = bitmapMemoryCache;
+		mShortcutViewBuilder.setBitmapMemoryCache(bitmapMemoryCache);
 		return this;
 	}
 
@@ -112,6 +96,7 @@ public class WidgetViewBuilder {
 		}
 		mSmodel.init();
 
+		mShortcutViewBuilder = new ShortcutViewBuilder(mContext, mAppWidgetId, mPendingIntentHelper);
 		mBitmapTransform = new BitmapTransform(mContext);
 		refreshIconTransform();
 		return this;
@@ -133,7 +118,6 @@ public class WidgetViewBuilder {
 
 	public RemoteViews build() {
 		Resources r = mContext.getResources();
-		String packageName = mContext.getPackageName();
 		String skinName = (mOverrideSkin == null) ? mPrefs.getSkin() : mOverrideSkin;
 		//boolean isLandscape = r.getBoolean(R.bool.is_landscape);
 		float scaledDensity = r.getDisplayMetrics().scaledDensity;
@@ -146,7 +130,7 @@ public class WidgetViewBuilder {
 			mBitmapTransform.setPaddingBottom(iconPadding);
 		}
 
-		RemoteViews views = new RemoteViews(packageName, skinProperties.getLayout());
+		RemoteViews views = new RemoteViews(mContext.getPackageName(), skinProperties.getLayout());
 
 		setInCarButton(mPrefs.isIncarTransparent(), skinProperties, views);
 
@@ -167,40 +151,35 @@ public class WidgetViewBuilder {
 		IconTheme themeIcons = (themePackage == null) ? null : loadThemeIcons(themePackage);
 
 		boolean isSmallKeyguard = mIsKeyguard && mWidgetHeightDp != -1 && mWidgetHeightDp < 200;
-		int keyguardHiddenShortcuts = 1;//isLandscape ? 1 : 2;
+		int keyguardHiddenRows = 0;//isLandscape ? 1 : 2;
 
 		if (mIsKeyguard) {
 			hideKeyguardRows(views, isSmallKeyguard);
 		}
+		mShortcutViewBuilder.init(skinName, scaledDensity, skinProperties, themeIcons, mPrefs, mSmodel, mBitmapTransform);
 
-		for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
-			int res = sBtnRes[cellId];
-			int resText = sTextRes[cellId];
-			ShortcutInfo info = mSmodel.getShortcut(cellId);
+		views.removeAllViews(R.id.workspace);
+		int totalRows = shortcuts.size() / 2;
+		for (int rowNum = 0; rowNum < totalRows; rowNum++) {
 
-			if (isSmallKeyguard && cellId > keyguardHiddenShortcuts) {
+			if (isSmallKeyguard && rowNum > keyguardHiddenRows) {
 				continue;
 			}
 
-			if (info == null) {
-				setNoShortcut(res, resText, views, cellId, skinProperties);
-			} else {
-				setShortcut(res, resText, info, views, cellId, themeIcons);
-			}
-			if (mPrefs.isTitlesHide()) {
-				views.setViewVisibility(resText, View.GONE);
-			} else {
-				setFont(resText, scaledDensity, views);
-			}
-			if (skinName.equals(Main.SKIN_WINDOWS7)) {
-				setTile(mPrefs.getTileColor(), res, views);
-			}
+			RemoteViews rowView = new RemoteViews(mContext.getPackageName(), skinProperties.getRowLayout());
+			int position = rowNum * 2;
+
+			mShortcutViewBuilder.fill(rowView, position, R.id.btn0, R.id.btn_text0);
+			mShortcutViewBuilder.fill(rowView, position+1, R.id.btn1, R.id.btn_text1);
+			views.addView(R.id.workspace, rowView);
 		}
+
 
 		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId, PickShortcutUtils.INVALID_CELL_ID);
 		views.setOnClickPendingIntent(R.id.btn_settings, configIntent);
 		return views;
 	}
+
 
 	private void hideKeyguardRows(RemoteViews views, boolean smallKeyguard) {
 		if (smallKeyguard) {
@@ -281,115 +260,13 @@ public class WidgetViewBuilder {
 
 	}
 
-	private void setFont(int resText, float scaledDensity, RemoteViews views) {
-		views.setTextColor(resText, mPrefs.getFontColor());
-		if (mPrefs.getFontSize() != Main.FONT_SIZE_UNDEFINED) {
-			if (mPrefs.getFontSize() == 0) {
-				views.setViewVisibility(resText, View.GONE);
-			} else {
-				/*
-				 * Limitation of RemoteViews to use setTextSize with only one
-				 * argument (without providing scale unit) size already in
-				 * scaled pixel format so we revert it to pixels to get properly
-				 * converted after re-applying setTextSize function
-				 */
-				float cSize = (float) mPrefs.getFontSize() / scaledDensity;
-
-				views.setFloat(resText, "setTextSize", cSize);
-				views.setViewVisibility(resText, View.VISIBLE);
-			}
-		}
-
-	}
-
-	private void setTile(int tileColor, int res, RemoteViews views) {
-		if (Color.alpha(tileColor) == 0) {
-			views.setViewVisibility(res, View.GONE);
-		} else {
-			views.setViewVisibility(res, View.VISIBLE);
-			views.setInt(res, "setBackgroundColor", tileColor);
-		}
-	}
-
-	private void setNoShortcut(int res, int resText,RemoteViews views, int cellId, SkinProperties skinProp) {
-		views.setImageViewResource(res, skinProp.getSetShortcutRes());
-
-		if (!mPrefs.isTitlesHide()) {
-			String title = mContext.getResources().getString(skinProp.getSetShortcutText());
-			views.setTextViewText(resText, title);
-		}
-		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId, cellId);
-		if (configIntent != null) {
-			views.setOnClickPendingIntent(res, configIntent);
-			views.setOnClickPendingIntent(resText, configIntent);
-		}
-	}
-
-	private void setShortcut(int res, int resText, ShortcutInfo info, RemoteViews views, int cellId, IconTheme themeIcons) {
-
-		String themePackage = (themeIcons == null) ? "null" : themeIcons.getPackageName();
-		String transformKey = mBitmapTransform.getCacheKey();
-		final String imageKey = String.valueOf(info.id)+":"+themePackage+":"+transformKey;
-
-		Bitmap icon = getBitmapFromMemCache(imageKey);
-		if (icon == null) {
-			icon = getShortcutIcon(info, themeIcons);
-			icon = mBitmapTransform.transform(icon);
-			addBitmapToMemCache(imageKey, icon);
-		}
-		views.setBitmap(res, "setImageBitmap", icon);
-
-		if (!mPrefs.isTitlesHide()) {
-			String title = String.valueOf(info.title);
-			views.setTextViewText(resText, title);
-		}
-		PendingIntent shortcutIntent = mPendingIntentHelper.createShortcut(info.intent, mAppWidgetId, cellId, info.id);
-		views.setOnClickPendingIntent(res, shortcutIntent);
-		views.setOnClickPendingIntent(resText, shortcutIntent);
-	}
-
 	private void setBackground(Main prefs, RemoteViews views) {
 		int bgColor = prefs.getBackgroundColor();
 		views.setInt(R.id.container, "setBackgroundColor", bgColor);
 	}
 
-	private Bitmap getShortcutIcon(ShortcutInfo info, IconTheme themeIcons) {
-		if (themeIcons == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon()) {
-			return info.getIcon();
-		}
 
-		int resourceId = themeIcons.getIcon(info.intent.getComponent().getClassName());
-		Drawable iconDrawable = null;
-		if(resourceId!=0){
-			iconDrawable = themeIcons.getDrawable(resourceId);
-		}
-		if (iconDrawable instanceof BitmapDrawable) {
-			return ((BitmapDrawable) iconDrawable).getBitmap();
-		}
-		if (iconDrawable != null) {
-			return UtilitiesBitmap.createHiResIconBitmap(iconDrawable, mContext);
-		}
-		return info.getIcon();
-	}
 
-	public void addBitmapToMemCache(String key, Bitmap bitmap) {
-		if (mBitmapMemoryCache == null) {
-			return;
-		}
-		synchronized (mBitmapMemoryCache) {
-			if (getBitmapFromMemCache(key) == null) {
-				mBitmapMemoryCache.put(key, bitmap);
-			}
-		}
-	}
 
-	public Bitmap getBitmapFromMemCache(String key) {
-		if (mBitmapMemoryCache == null) {
-			return null;
-		}
-		synchronized (mBitmapMemoryCache) {
-			return mBitmapMemoryCache.get(key);
-		}
-	}
 }
 

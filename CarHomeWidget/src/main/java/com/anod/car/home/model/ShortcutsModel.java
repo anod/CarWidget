@@ -22,4 +22,8 @@ public interface ShortcutsModel {
 	void dropShortcut(int cellId);
 
 	void move(int from, int to);
+
+	int getCount();
+
+	void updateCount(Integer count);
 }

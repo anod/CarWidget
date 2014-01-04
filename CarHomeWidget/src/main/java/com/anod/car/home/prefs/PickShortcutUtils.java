@@ -7,6 +7,7 @@ import android.content.Intent.ShortcutIconResource;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceCategory;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -33,7 +34,7 @@ public class PickShortcutUtils {
 	private final ConfigurationActivity mActivity;
 	private final ShortcutsModel mModel;
 	private final PreferenceKey mPreferenceKey;
-	
+
 	interface PreferenceKey {
 		String getInitialKey(int position);
 		String getCompiledKey(int position);
@@ -46,8 +47,7 @@ public class PickShortcutUtils {
 		mPreferenceKey = key;
 	}
 	
-	public ShortcutPreference initLauncherPreference(int position) {
-		ShortcutPreference p = (ShortcutPreference) mConfigurationFragment.findPreference(mPreferenceKey.getInitialKey(position));
+	public ShortcutPreference initLauncherPreference(int position, ShortcutPreference p) {
 		p.setKey(mPreferenceKey.getCompiledKey(position));
 		p.setShortcutPosition(position);
 		p.setOnPreferenceClickListener(new OnPreferenceClickListener() {

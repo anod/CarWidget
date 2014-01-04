@@ -169,8 +169,9 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 		builder
 			.setPendingIntentHelper(this)
 			.setAppWidgetId(mAppWidgetId)
+			.init()
 			.setBitmapMemoryCache(mBitmapMemoryCache)
-			.init();
+		;
 		return builder;
 	}
 

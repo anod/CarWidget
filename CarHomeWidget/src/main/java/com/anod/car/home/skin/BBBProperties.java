@@ -42,4 +42,9 @@ public class BBBProperties extends BaseProperties {
 	public int getSettingsButtonRes() {
 		return R.drawable.ic_settings_bbb;
 	}
+
+	@Override
+	public int getRowLayout() {
+		return R.layout.blackbearblanc_row;
+	}
 }

@@ -12,16 +12,16 @@
         android:layout_width="match_parent"
 		android:layout_height="0dip"
 		android:layout_weight="1"
-        android:orientation="vertical" >
+        android:orientation="horizontal" >
 
         <LinearLayout
-	        android:layout_width="match_parent"
-			android:layout_height="0dip"
+	        android:layout_width="0dip"
+			android:layout_height="match_parent"
 			android:layout_weight="1"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <FrameLayout
-		        android:layout_width="0dp"
+		        android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:layout_weight="1"
 			>
@@ -42,7 +42,7 @@
             </FrameLayout>
 
             <FrameLayout
-		        android:layout_width="0dp"
+		        android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:layout_weight="1"
 				             >
@@ -62,93 +62,108 @@
 				/>
             </FrameLayout>
 
-            <FrameLayout
-		        android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="1">
-
-                <ImageButton
-                    android:id="@+id/btn2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-					android:background="@drawable/btn_default_holo_light"
-
-                    android:src="@drawable/ic_add_shortcut_holo" />
-
-                <TextView
-                    android:id="@+id/btn_text2"
-                    android:text="@string/set_shortcut"
-					style="@style/holo_btn_text"
-				/>
-            </FrameLayout>
         </LinearLayout>
 
-        <LinearLayout
-	        android:layout_width="match_parent"
-			android:layout_height="0dip"
-			android:layout_weight="1"
-            android:orientation="horizontal" >
-
-            <FrameLayout
-		        android:layout_width="0dp"
+		<LinearLayout
+				android:layout_width="0dip"
 				android:layout_height="match_parent"
-				android:layout_weight="1" >
+				android:layout_weight="1"
+				android:orientation="vertical" >
 
-                <ImageButton
-                    android:id="@+id/btn3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-					android:background="@drawable/btn_default_holo_light"
+			<FrameLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					>
 
-                    android:src="@drawable/ic_add_shortcut_holo" />
+				<ImageButton
+						android:id="@+id/btn2"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:background="@drawable/btn_default_holo_light"
 
-                <TextView
-                    android:id="@+id/btn_text3"
-                    android:text="@string/set_shortcut"
-					style="@style/holo_btn_text"
-				/>
-            </FrameLayout>
+						android:src="@drawable/ic_add_shortcut_holo" />
 
-            <FrameLayout
-		        android:layout_width="0dp"
+				<TextView
+						android:id="@+id/btn_text2"
+						android:text="@string/set_shortcut"
+						style="@style/holo_btn_text"
+						/>
+			</FrameLayout>
+
+			<FrameLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					>
+
+				<ImageButton
+						android:id="@+id/btn3"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:background="@drawable/btn_default_holo_light"
+
+						android:src="@drawable/ic_add_shortcut_holo" />
+
+				<TextView
+						android:id="@+id/btn_text3"
+						android:text="@string/set_shortcut"
+						style="@style/holo_btn_text"
+						/>
+			</FrameLayout>
+
+		</LinearLayout>
+
+
+		<LinearLayout
+				android:layout_width="0dip"
 				android:layout_height="match_parent"
-				android:layout_weight="1" >
+				android:layout_weight="1"
+				android:orientation="vertical" >
 
-                <ImageButton
-                    android:id="@+id/btn4"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-					android:background="@drawable/btn_default_holo_light"
+			<FrameLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					>
 
-                    android:src="@drawable/ic_add_shortcut_holo" />
+				<ImageButton
+						android:id="@+id/btn4"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:background="@drawable/btn_default_holo_light"
 
-                <TextView
-                    android:id="@+id/btn_text4"
-                    android:text="@string/set_shortcut"
-					style="@style/holo_btn_text"
-				/>
-            </FrameLayout>
+						android:src="@drawable/ic_add_shortcut_holo" />
 
-            <FrameLayout
-		        android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="1" >
+				<TextView
+						android:id="@+id/btn_text4"
+						android:text="@string/set_shortcut"
+						style="@style/holo_btn_text"
+						/>
+			</FrameLayout>
 
-                <ImageButton
-                    android:id="@+id/btn5"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-					android:background="@drawable/btn_default_holo_light"
+			<FrameLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					>
 
-                    android:src="@drawable/ic_add_shortcut_holo" />
+				<ImageButton
+						android:id="@+id/btn5"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:background="@drawable/btn_default_holo_light"
 
-                <TextView
-                    android:id="@+id/btn_text5"
-                    android:text="@string/set_shortcut"
-					style="@style/holo_btn_text"
-				/>
-            </FrameLayout>
-        </LinearLayout>
+						android:src="@drawable/ic_add_shortcut_holo" />
+
+				<TextView
+						android:id="@+id/btn_text5"
+						android:text="@string/set_shortcut"
+						style="@style/holo_btn_text"
+						/>
+			</FrameLayout>
+
+		</LinearLayout>
     </LinearLayout>
 
 	<RelativeLayout 

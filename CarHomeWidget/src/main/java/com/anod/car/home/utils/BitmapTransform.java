@@ -9,11 +9,14 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
+import android.support.v4.util.LruCache;
 
 import com.anod.car.home.skin.IconProcessor;
 
 public class BitmapTransform {
 	private int mIconSize = -1;
+
+
 
 	public enum RotateDirection { NONE, RIGHT, LEFT }
 

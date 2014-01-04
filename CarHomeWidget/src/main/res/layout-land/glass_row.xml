@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="0dip"
+android:layout_height="match_parent"
+android:layout_weight="1"
+android:orientation="vertical" >
+
+<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		>
+
+	<ImageButton
+			android:id="@+id/btn1"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@drawable/glass_container"
+
+			android:src="@drawable/ic_add_shortcut" />
+
+	<TextView
+			android:id="@+id/btn_text1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal|bottom"
+			android:gravity="center_horizontal"
+			android:maxLines="2"
+			android:paddingBottom="@dimen/title_padding_bottom"
+			android:paddingLeft="3.0dp"
+			android:paddingRight="3.0dp"
+			android:text="@string/set_shortcut"
+			android:textColor="@color/default_font_color"
+			android:textSize="@dimen/text_size" />
+</FrameLayout>
+
+<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		>
+
+	<ImageButton
+			android:id="@+id/btn0"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@drawable/glass_container"
+
+			android:src="@drawable/ic_add_shortcut" />
+
+	<TextView
+			android:id="@+id/btn_text0"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal|bottom"
+			android:gravity="center_horizontal"
+			android:maxLines="2"
+			android:paddingBottom="@dimen/title_padding_bottom"
+			android:paddingLeft="3.0dp"
+			android:paddingRight="3.0dp"
+			android:text="@string/set_shortcut"
+			android:textColor="@color/default_font_color"
+			android:textSize="@dimen/text_size" />
+</FrameLayout>
+
+</LinearLayout>

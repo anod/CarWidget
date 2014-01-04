@@ -26,4 +26,9 @@ public class MetroProperties extends BaseProperties {
 	public int getSettingsButtonRes() {
 		return R.drawable.ic_settings_win7;
 	}
+
+	@Override
+	public int getRowLayout() {
+		return R.layout.windows7_row;
+	}
 }

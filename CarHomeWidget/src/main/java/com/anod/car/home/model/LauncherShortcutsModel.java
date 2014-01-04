@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.IntentUtils;
 
 import java.util.ArrayList;
@@ -13,16 +15,30 @@ import java.util.ArrayList;
 public class LauncherShortcutsModel extends AbstractShortcutsModel {
 	private final Context mContext;
 	private final int mAppWidgetId;
-	
+	private int mCount;
+
 	public LauncherShortcutsModel(Context context, int appWidgetId) {
 		super(context);
 		mContext = context;
 		mAppWidgetId = appWidgetId;
 	}
 
+	public void loadCount() {
+		if (mCount == 0) {
+			mCount = PreferencesStorage.getLaunchComponentNumber(mContext, mAppWidgetId);
+		}
+	}
+
+	@Override
+	public void updateCount(Integer count) {
+		mCount = count;
+		PreferencesStorage.saveLaunchComponentNumber(count, mContext, mAppWidgetId);
+	}
+
 	@Override
 	protected ArrayList<Long> loadShortcutIds() {
-		return PreferencesStorage.getLauncherComponents(mContext, mAppWidgetId);
+		loadCount();
+		return PreferencesStorage.getLauncherComponents(mContext, mAppWidgetId, mCount);
 	}
 
 	@Override
@@ -37,8 +53,10 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 
 	@Override
 	public int getCount() {
-		return PreferencesStorage.LAUNCH_COMPONENT_NUMBER;
+		loadCount();
+		return mCount;
 	}
+
 
 	@Override
 	public void createDefaultShortcuts() {
@@ -67,7 +85,7 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 			if (!IntentUtils.isIntentAvailable(mContext, data)) {
 				continue;
 			}
-			Log.d("CarHomeWidget", "Init shortcut - " + info + " Widget - " + appWidgetId);
+			AppLog.d("Init shortcut - " + info + " Widget - " + appWidgetId);
 			info = ShortcutInfoUtils.infoFromApplicationIntent(mContext, data);
 			saveShortcut(cellId, info);
 			cellId++;
@@ -75,7 +93,6 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 				break;
 			}
 		}
-
 
 	}
 

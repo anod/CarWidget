@@ -7,7 +7,7 @@ import android.util.SparseArray;
 import java.util.ArrayList;
 
 public abstract class AbstractShortcutsModel implements ShortcutsModel {
-	private final SparseArray<ShortcutInfo> mShortcuts;
+	private SparseArray<ShortcutInfo> mShortcuts;
 	private final Context mContext;
 	private final LauncherModel mModel;
 
@@ -17,13 +17,13 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 	abstract protected ArrayList<Long> loadShortcutIds();
 
 	public AbstractShortcutsModel(Context context) {
-		mShortcuts = new SparseArray<ShortcutInfo>(getCount());
 		mModel = new LauncherModel(context);
 		mContext = context;
 	}
 	
 	@Override
 	public void init() {
+		mShortcuts = new SparseArray<ShortcutInfo>(getCount());
 		ArrayList<Long> currentShortcutIds = loadShortcutIds();
 		for (int cellId = 0; cellId < getCount(); cellId++) {
 			long shortcutId = currentShortcutIds.get(cellId);
