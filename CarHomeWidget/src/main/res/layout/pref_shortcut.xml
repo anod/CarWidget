@@ -7,7 +7,7 @@
 	<ImageView
 			android:layout_width="wrap_content"
 			android:layout_height="fill_parent"
-			android:id="@+id/dragButton"
+			android:id="@+id/drag_button"
 			android:src="@drawable/ic_drag_normal"
 			android:background="@android:color/transparent"/>
 
@@ -59,12 +59,12 @@
 	</RelativeLayout>
 
 	<ImageView
-			android:id="@+id/edit_icon"
+			android:id="@+id/edit_button"
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
 			android:gravity="center"
 			android:scaleType="center"
-			android:background="@android:drawable/list_selector_background"
+			style="@style/Widget.AppCompat.ActionButton"
 			android:src="@drawable/ic_action_edit"
 			android:paddingLeft="14dip"
 			android:paddingRight="14dip"
@@ -80,12 +80,12 @@
 			/>
 
 	<ImageView
-			android:id="@+id/delete_action_button"
+			android:id="@+id/delete_button"
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
 			android:gravity="center"
 			android:scaleType="center"
-			android:background="@android:drawable/list_selector_background"
+			style="@style/Widget.AppCompat.ActionButton"
 			android:src="@drawable/ic_action_cancel"
 			android:paddingLeft="14dip"
 			android:paddingRight="14dip"

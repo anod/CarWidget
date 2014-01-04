@@ -85,7 +85,7 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 
 		view.setTag(mCellId);
 
-		ImageView dragButton = (ImageView) view.findViewById(R.id.dragButton);
+		ImageView dragButton = (ImageView) view.findViewById(R.id.drag_button);
 		initDragButton(dragButton, view);
 
 		ImageView imageView = (ImageView) view.findViewById(android.R.id.icon);
@@ -98,8 +98,8 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 			imageView.setVisibility(View.VISIBLE);
 		}
 
-		ImageView editButton = (ImageView) view.findViewById(R.id.delete_action_button);
-		ImageView replaceImage = (ImageView) view.findViewById(R.id.edit_icon);
+		ImageView editButton = (ImageView) view.findViewById(R.id.delete_button);
+		ImageView replaceImage = (ImageView) view.findViewById(R.id.edit_button);
 		View divider = view.findViewById(R.id.divider);
 		if (mShowEditButton) {
 			editButton.setOnClickListener(this);

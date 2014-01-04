@@ -33,7 +33,6 @@ import com.anod.car.home.incar.ActivityRecognitionClientService;
 import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
 import com.anod.car.home.incar.BroadcastService;
-import com.anod.car.home.incar.ModeBroadcastReceiver;
 import com.anod.car.home.incar.SamsungDrivingMode;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -47,7 +46,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-public class ConfigurationInCar extends ConfigurationFragment {
+public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 
 	private static final String MEDIA_SCREEN = "media-screen";
 	private static final String SCREEN_BT_DEVICE = "bt-device-screen";

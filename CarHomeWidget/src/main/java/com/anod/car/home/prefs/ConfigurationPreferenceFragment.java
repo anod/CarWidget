@@ -25,7 +25,7 @@ import com.anod.car.home.utils.Utils;
  * @author alex
  * @date 11/19/13
  */
-abstract public class ConfigurationFragment extends PreferenceFragment {
+abstract public class ConfigurationPreferenceFragment extends PreferenceFragment {
 	protected int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	protected Context mContext;
 

@@ -29,7 +29,7 @@ public class PickShortcutUtils {
 	public static final String EXTRA_CELL_ID = "CarHomeWidgetCellId";
 	public static final int INVALID_CELL_ID = -1;
 
-	private final ConfigurationFragment mConfigurationFragment;
+	private final ConfigurationPreferenceFragment mConfigurationFragment;
 	private final ConfigurationActivity mActivity;
 	private final ShortcutsModel mModel;
 	private final PreferenceKey mPreferenceKey;
@@ -39,7 +39,7 @@ public class PickShortcutUtils {
 		String getCompiledKey(int position);
 	}
 	
-	public PickShortcutUtils(ConfigurationFragment fragment, ShortcutsModel model, PreferenceKey key) {
+	public PickShortcutUtils(ConfigurationPreferenceFragment fragment, ShortcutsModel model, PreferenceKey key) {
 		mConfigurationFragment = fragment;
 		mActivity = (ConfigurationActivity)mConfigurationFragment.getActivity();
 		mModel = model;
@@ -79,7 +79,7 @@ public class PickShortcutUtils {
 	}
 	
 	public void showActivityPicker(int position) {
-		mConfigurationFragment.showDialog(ConfigurationFragment.DIALOG_WAIT);
+		mConfigurationFragment.showDialog(ConfigurationPreferenceFragment.DIALOG_WAIT);
 		Bundle bundle = new Bundle();
 
 		ArrayList<String> shortcutNames = new ArrayList<String>();
@@ -134,12 +134,12 @@ public class PickShortcutUtils {
 				return true;
 			case REQUEST_PICK_SHORTCUT:
 				pickShortcut(data);
-				mConfigurationFragment.dismissDialog(ConfigurationFragment.DIALOG_WAIT);
+				mConfigurationFragment.dismissDialog(ConfigurationPreferenceFragment.DIALOG_WAIT);
 				return true;
 			default:
 			}
 		} else {
-			mConfigurationFragment.dismissDialog(ConfigurationFragment.DIALOG_WAIT);
+			mConfigurationFragment.dismissDialog(ConfigurationPreferenceFragment.DIALOG_WAIT);
 		}
 		return false;
 	}

@@ -9,7 +9,7 @@ import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.ShortcutPreference;
 
-public class ConfigurationNotifShortcuts extends ConfigurationFragment implements PreferenceKey, ShortcutPreference.DropCallback {
+public class ConfigurationNotifShortcuts extends ConfigurationPreferenceFragment implements PreferenceKey, ShortcutPreference.DropCallback {
 
 	private PickShortcutUtils mPickShortcutUtils;
 	private NotificationShortcutsModel mModel;

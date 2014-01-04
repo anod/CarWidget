@@ -1,12 +1,9 @@
 package com.anod.car.home.prefs;
 
 import android.annotation.TargetApi;
-import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.util.Log;
 import android.view.MenuItem;
@@ -21,7 +18,7 @@ import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.ShortcutPreference;
 
-public class Configuration extends ConfigurationFragment implements PreferenceKey, ShortcutPreference.DropCallback {
+public class Configuration extends ConfigurationPreferenceFragment implements PreferenceKey, ShortcutPreference.DropCallback {
 	public static final String DEBUG_ACTIVITY = "debug-activity";
 	private ShortcutsModel mModel;
 	private PickShortcutUtils mPickShortcutUtils;

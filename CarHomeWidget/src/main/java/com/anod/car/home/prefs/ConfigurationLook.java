@@ -17,7 +17,7 @@ import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
 import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
 import com.anod.car.home.prefs.views.SeekBarPreference;
 
-public class ConfigurationLook extends ConfigurationFragment {
+public class ConfigurationLook extends ConfigurationPreferenceFragment {
 
 	public static final String CATEGORY_TRANSPARENT = "transparent-category";
 	private String[] mIconRotateValues;

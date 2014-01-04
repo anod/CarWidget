@@ -7,7 +7,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
-public class ConfigurationInCarVolume extends ConfigurationFragment implements OnCheckedChangeListener {
+public class ConfigurationInCarVolume extends ConfigurationPreferenceFragment implements OnCheckedChangeListener {
 	
 	@Override
 	protected boolean isAppWidgetIdRequired() {

@@ -26,8 +26,6 @@ public class AppLog {
 		}
 	}
 
-	private final static SizedStack<Entry> sLogListStack = new SizedStack<Entry>(20);
-
 	public interface LogListener {
 		void onMessage(final AppLog.Entry entry);
 	}
@@ -39,12 +37,6 @@ public class AppLog {
 			sListener = listener;
 			if (sListener == null) {
 				return;
-			}
-		}
-		synchronized (sLogListStack) {
-			while (!sLogListStack.isEmpty()) {
-				Entry e = sLogListStack.pop();
-				sListener.onMessage(e);
 			}
 		}
 	}
@@ -78,15 +70,9 @@ public class AppLog {
 			if (sListener != null) {
 				sListener.onMessage(new Entry(level, msg));
 			}
-			addLogStack(level, msg);
 		}
 	}
 
-	private static void addLogStack(int level, String msg) {
-		synchronized (sLogListStack) {
-			sLogListStack.push(new Entry(level, msg));
-		}
-	}
 
 	public static void w(String msg) {
 		String formatted = format(msg);

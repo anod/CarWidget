@@ -63,7 +63,7 @@
 	/>
 
 
-	<ImageView android:id="@+id/delete_action_button"
+	<ImageView android:id="@+id/delete_button"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"

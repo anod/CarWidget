@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.preference.PreferenceFragment;
 
@@ -40,14 +39,14 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 
 		if (savedInstanceState == null) {
 
-			ConfigurationFragment conf = createFragmentInstance();
+			ConfigurationPreferenceFragment conf = createFragmentInstance();
 
 			conf.setArguments(getIntent().getExtras());
 			getSupportFragmentManager().beginTransaction().add(R.id.main_fragment, conf).commit();
 		}
 	}
 
-	private ConfigurationFragment createFragmentInstance() {
+	private ConfigurationPreferenceFragment createFragmentInstance() {
 		Intent intent = getIntent();
 		if (intent == null) {
 			return new Configuration();
@@ -62,7 +61,7 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 		}
 		String fragmentClassName = fragmentClass.getName();
 		Bundle args = new Bundle();
-		ConfigurationFragment conf = (ConfigurationFragment)Fragment.instantiate(this, fragmentClassName , args);
+		ConfigurationPreferenceFragment conf = (ConfigurationPreferenceFragment)Fragment.instantiate(this, fragmentClassName , args);
 		return conf;
 	}
 

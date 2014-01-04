@@ -490,7 +490,7 @@ public class ConfigurationRestore extends Fragment  implements RestoreTask.Resto
 			applyView.setTag(name);
 			applyView.setOnClickListener(mRestoreListener);
 
-			ImageView deleteView = (ImageView) v.findViewById(R.id.delete_action_button);
+			ImageView deleteView = (ImageView) v.findViewById(R.id.delete_button);
 			deleteView.setTag(entry);
 			deleteView.setOnClickListener(mDeleteListener);
 

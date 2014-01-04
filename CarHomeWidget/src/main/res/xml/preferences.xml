@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:key="shortcuts" android:title="@string/shortcuts" android:layout="@layout/pref_category_top">
+    <PreferenceCategory android:key="shortcuts" android:title="@string/shortcuts" android:layout="@layout/pref_category">
         <com.anod.car.home.prefs.views.ShortcutPreference
             android:key="launch-component-0-%d"
             android:title="@string/set_shortcut" />
@@ -20,6 +20,19 @@
         <com.anod.car.home.prefs.views.ShortcutPreference
             android:key="launch-component-5-%d"
             android:title="@string/set_shortcut" />
+		<com.anod.car.home.prefs.views.ShortcutPreference
+			android:key="launch-component-6-%d"
+			android:title="@string/set_shortcut" />
+		<com.anod.car.home.prefs.views.ShortcutPreference
+			android:key="launch-component-7-%d"
+			android:title="@string/set_shortcut" />
+		<com.anod.car.home.prefs.views.ShortcutPreference
+			android:key="launch-component-8-%d"
+			android:title="@string/set_shortcut" />
+		<com.anod.car.home.prefs.views.ShortcutPreference
+			android:key="launch-component-9-%d"
+			android:title="@string/set_shortcut" />
+		<Preference android:key="launch-component-bottom" android:layout="@layout/pref_category_bottom" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/advanced" android:layout="@layout/pref_category" android:key="advanced-category">
         <com.anod.car.home.prefs.views.HeaderPreference

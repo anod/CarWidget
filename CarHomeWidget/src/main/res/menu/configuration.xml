@@ -8,5 +8,11 @@
 		carwidget:showAsAction="always"
         android:title="@android:string/ok">
     </item>
-    
+
+	<item
+		android:id="@+id/menu_number"
+		android:icon="@drawable/ic_action_tick"
+		carwidget:showAsAction="never"
+		android:title="Number">
+	</item>
 </menu>
