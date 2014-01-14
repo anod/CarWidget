@@ -22,7 +22,7 @@ task wrapper(type: Wrapper) {
 dependencies {
     compile 'com.android.support:support-v4:18.0.+'
     compile 'com.android.support:appcompat-v7:18.0.+'
-    compile 'com.google.android.gms:play-services:3.1.36'
+    compile 'com.google.android.gms:play-services:4.0.+'
     compile files (
        'libs/commons-codec-1.5.jar'
     )
@@ -58,10 +58,13 @@ android {
 
     buildTypes {
         debug {
-
+            runProguard true
+            proguardFile getDefaultProguardFile('proguard-android.txt')
         }
 
         release {
+            runProguard true
+            proguardFile getDefaultProguardFile('proguard-android.txt')
             signingConfig signingConfigs.release
         }
     }

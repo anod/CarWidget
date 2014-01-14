@@ -60,7 +60,6 @@ public class MainActivity extends CarWidgetActivity implements RestoreTask.Resto
 
 		mContext = this;
 
-
 		int[] appWidgetIds = WidgetHelper.getAllWidgetIds(mContext);
 		final int widgetsCount = appWidgetIds.length;
 

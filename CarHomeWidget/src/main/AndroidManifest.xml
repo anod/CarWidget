@@ -154,7 +154,7 @@
 				android:value="AEdPqrEAAAAIwrTs2H7J2Rs0kglDTHtziqQ8_7YbAZGeS7bDUA" />
 
 		<service android:name=".speech.SpeechActivationService"/>
-		<activity android:name=".speech.SpeechRecognitionLauncher"/>
+		<activity android:name=".speech.SpeechRecognitionLauncher" android:theme="@style/BrightnessTheme"/>
 		<receiver android:name=".speech.ShowResultsSpeechActivationBroadcastReceiver">
 			<intent-filter >
 				<action android:name="com.anod.car.home.speech.ACTIVATION"/>
@@ -166,6 +166,8 @@
 		  android:clearTaskOnLaunch="true"
 		/>
 
+		<meta-data android:name="com.google.android.gms.version"
+				   android:value="@integer/google_play_services_version" />
 	</application>
 
 </manifest>

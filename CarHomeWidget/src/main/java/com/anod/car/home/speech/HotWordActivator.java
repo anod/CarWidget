@@ -25,7 +25,6 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.v4.view.accessibility.AccessibilityManagerCompat;
-import android.util.Log;
 import android.view.accessibility.AccessibilityManager;
 
 import com.anod.car.home.utils.AppLog;
@@ -55,7 +54,14 @@ public class HotWordActivator implements SpeechActivator, RecognitionListener
 	private final AudioManager mAudioManager;
 	private final AccessibilityManager mAccessibilityService;
 
+	private StatusChangeListener mStatusChangeListener;
+
 	private boolean mActive;
+
+	public interface StatusChangeListener {
+		void onActivatorActive();
+		void onActivatorStop();
+	}
 
 	public HotWordActivator(Context context, SpeechActivationListener resultListener, String... targetWords)
 	{
@@ -66,6 +72,10 @@ public class HotWordActivator implements SpeechActivator, RecognitionListener
 		mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 		mAccessibilityService= (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
+	}
+
+	public void setStatusChangeListener(StatusChangeListener listener) {
+		mStatusChangeListener = listener;
 	}
 
 	public boolean isMusicActive() {
@@ -125,6 +135,9 @@ public class HotWordActivator implements SpeechActivator, RecognitionListener
 		recognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "com.anod.car.home");
 		mActive = true;
 		SpeechRecognitionUtil.recognizeSpeechDirectly(context, recognizerIntent, this, getSpeechRecognizer());
+		if (mStatusChangeListener != null) {
+			mStatusChangeListener.onActivatorActive();
+		}
 	}
 
 	public void stop()
@@ -135,20 +148,24 @@ public class HotWordActivator implements SpeechActivator, RecognitionListener
 			getSpeechRecognizer().stopListening();
 			getSpeechRecognizer().cancel();
 			getSpeechRecognizer().destroy();
+			recognizer = null;
+		}
+		if (mStatusChangeListener != null) {
+			mStatusChangeListener.onActivatorStop();
 		}
 	}
 
 	@Override
 	public void onResults(Bundle results)
 	{
-		Log.d(TAG, "full results");
+		AppLog.d(TAG + " full results");
 		receiveResults(results);
 	}
 
 	@Override
 	public void onPartialResults(Bundle partialResults)
 	{
-		Log.d(TAG, "partial results");
+		AppLog.d(TAG + " partial results");
 		receiveResults(partialResults);
 	}
 
@@ -186,7 +203,6 @@ public class HotWordActivator implements SpeechActivator, RecognitionListener
 			AppLog.d(TAG + " possible = '" + possible);
 			if (matcher.isIn(possible.toLowerCase()))
 			{
-				AppLog.d(TAG + " Hotword detected");
 				heardTargetWord = true;
 				break;
 			}
@@ -194,11 +210,13 @@ public class HotWordActivator implements SpeechActivator, RecognitionListener
 
 		if (heardTargetWord)
 		{
+			AppLog.d(TAG + " Hotword detected");
 			stop();
 			resultListener.activated(true);
 		}
 		else
 		{
+			AppLog.d(TAG + " keep going");
 			// keep going
 			recognizeSpeechDirectly();
 		}
@@ -215,6 +233,8 @@ public class HotWordActivator implements SpeechActivator, RecognitionListener
 			mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, true);
 			// keep going
 			recognizeSpeechDirectly();
+
+			mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, true);
 		}
 		else
 		{

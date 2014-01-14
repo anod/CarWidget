@@ -60,6 +60,7 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 
 	@Override
 	public void createDefaultShortcuts() {
+		init();
 		initShortcuts(mAppWidgetId);
 	}
 

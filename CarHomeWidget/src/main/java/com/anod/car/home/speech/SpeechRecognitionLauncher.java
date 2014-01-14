@@ -21,6 +21,7 @@ import com.anod.car.home.utils.Utils;
 import java.util.List;
 
 import root.gast.speech.SpeechRecognizingAndSpeakingActivity;
+import root.gast.speech.tts.TextToSpeechUtils;
 
 /**
  * Starts a speech recognition dialog and then sends the results to
@@ -84,13 +85,11 @@ public class SpeechRecognitionLauncher extends SpeechRecognizingAndSpeakingActiv
 	{
 		//AppLog.d(TAG, "Speak prompt");
 
-		/*
 		getTts().speak("Say a command.",
 				TextToSpeech.QUEUE_FLUSH,
 				TextToSpeechUtils.makeParamsWith(ON_DONE_PROMPT_TTS_PARAM));
-		*/
 		mResume = true;
-		startVoice();
+		//startVoice();
 	}
 
 	public void startVoice() {
@@ -148,6 +147,8 @@ public class SpeechRecognitionLauncher extends SpeechRecognizingAndSpeakingActiv
 				//showResults.setClass(this, SpeechRecognitionResultsActivity.class);
 				//startActivity(showResults);
 			}
+			startService(SpeechActivationService.makeStartIntent(this));
+
 			finish();
 		}
 

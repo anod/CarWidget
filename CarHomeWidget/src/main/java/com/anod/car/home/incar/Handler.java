@@ -62,7 +62,7 @@ public class Handler {
 			SamsungDrivingMode.enable(context);
 		}
 
-		//context.startService(SpeechActivationService.makeStartIntent(context));
+		context.startService(SpeechActivationService.makeStartIntent(context));
 
 		ComponentName autorunApp = prefs.getAutorunApp();
 		if (autorunApp != null) {
@@ -102,7 +102,7 @@ public class Handler {
 			SamsungDrivingMode.disable(context);
 		}
 
-		//context.stopService(SpeechActivationService.makeStopIntent(context));
+		context.stopService(SpeechActivationService.makeStopIntent(context));
 
 		String brightSetting = prefs.getBrightness();
 		if (!brightSetting.equals(InCar.BRIGHTNESS_DISABLED)) {
@@ -228,6 +228,7 @@ public class Handler {
 
 	protected static void adjustVolume(InCar prefs, Context context) {
 		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+
 		int adjVolume = prefs.getMediaVolumeLevel();
 		int maxVolume = audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 		int volume = (int) ((maxVolume * adjVolume) / 100);

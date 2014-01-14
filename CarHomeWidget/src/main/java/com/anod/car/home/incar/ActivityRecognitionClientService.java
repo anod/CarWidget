@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.app.StoppableService;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.ActivityRecognitionClient;
