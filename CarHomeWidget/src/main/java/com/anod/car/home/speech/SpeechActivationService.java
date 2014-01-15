@@ -156,6 +156,9 @@ public class SpeechActivationService extends StoppableService implements SpeechA
 		if (mEnvRunnable != null) {
 			mEnvHandler.removeCallbacks(mEnvRunnable);
 		}
+		if (mActivator != null) {
+			mActivator.setStatusChangeListener(null);
+		}
         stopActivator();
         stopForeground(true);
     }
