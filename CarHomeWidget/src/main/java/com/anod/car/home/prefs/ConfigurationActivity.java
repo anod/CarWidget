@@ -39,14 +39,14 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 
 		if (savedInstanceState == null) {
 
-			ConfigurationPreferenceFragment conf = createFragmentInstance();
+			Fragment conf = createFragmentInstance();
 
 			conf.setArguments(getIntent().getExtras());
 			getSupportFragmentManager().beginTransaction().add(R.id.main_fragment, conf).commit();
 		}
 	}
 
-	private ConfigurationPreferenceFragment createFragmentInstance() {
+	private Fragment createFragmentInstance() {
 		Intent intent = getIntent();
 		if (intent == null) {
 			return new Configuration();
@@ -61,7 +61,7 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 		}
 		String fragmentClassName = fragmentClass.getName();
 		Bundle args = new Bundle();
-		ConfigurationPreferenceFragment conf = (ConfigurationPreferenceFragment)Fragment.instantiate(this, fragmentClassName , args);
+		Fragment conf = Fragment.instantiate(this, fragmentClassName , args);
 		return conf;
 	}
 

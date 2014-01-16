@@ -38,4 +38,7 @@
 	<dimen name="lockscreen_row_height">150dp</dimen>
 
 	<dimen name="preference_item_margin">1dp</dimen>
+	<dimen name="incar_item_width">65dp</dimen>
+	<dimen name="incar_item_height">75dp</dimen>
+	<dimen name="incar_item_margin">1dp</dimen>
 </resources>

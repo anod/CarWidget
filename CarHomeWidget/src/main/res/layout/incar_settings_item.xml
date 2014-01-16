@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+	<Button xmlns:android="http://schemas.android.com/apk/res/android"
+			android:drawableTop="@drawable/ic_add_shortcut_holo"
+			android:layout_width="@dimen/incar_item_width"
+			android:layout_height="@dimen/incar_item_height"
+			android:maxWidth="65dp"
+			android:maxHeight="75dp"
+			android:text="Add"
+			android:textSize="12sp"
+			android:maxLines="2"
+			android:lines="2"
+			android:drawablePadding="0dp"
+			android:paddingTop="10dp"
+			android:paddingBottom="5dp"
+			android:paddingLeft="2dp"
+			android:paddingRight="2dp"
+			android:ellipsize="end"
+			android:id="@+id/button"
+			android:layout_marginLeft="@dimen/incar_item_margin"
+			android:layout_marginBottom="@dimen/incar_item_margin"
+			android:background="@drawable/incar_settings_item_bg_grey"
+		/>
