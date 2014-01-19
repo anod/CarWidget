@@ -17,7 +17,7 @@ public class BBBProperties extends BaseProperties {
 	
 	@Override
 	public int getLayout() {
-		return R.layout.blackbearblanc;
+		return R.layout.sk_blackbearblanc_6;
 	}
 
 	@Override
@@ -45,6 +45,6 @@ public class BBBProperties extends BaseProperties {
 
 	@Override
 	public int getRowLayout() {
-		return R.layout.blackbearblanc_row;
+		return R.layout.sk_blackbearblanc_row;
 	}
 }

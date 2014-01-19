@@ -20,7 +20,7 @@ public class HoloProperties extends BaseProperties {
 
 	@Override
 	public int getLayout() {
-		return R.layout.holo;
+		return R.layout.sk_holo_6;
 	}
 
 	@Override
@@ -30,6 +30,6 @@ public class HoloProperties extends BaseProperties {
 
 	@Override
 	public int getRowLayout() {
-		return R.layout.holo_row;
+		return R.layout.sk_holo_row;
 	}
 }

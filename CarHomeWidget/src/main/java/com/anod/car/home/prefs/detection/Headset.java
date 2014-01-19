@@ -11,7 +11,7 @@ public class Headset extends Detection{
 
 	@Override
 	public boolean isActive() {
-		return mPrefs.isHeadsetRequired();
+		return true;//mPrefs.isHeadsetRequired();
 	}
 
 	@Override

@@ -52,6 +52,7 @@
 			carwidget:columnOrderPreserved="true"
 			android:paddingTop="1dp"
 			android:paddingLeft="1dp"
+			android:baselineAligned="false"
 		>
 
 	</android.support.v7.widget.GridLayout>

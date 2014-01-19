@@ -6,7 +6,7 @@ public class GlossyProperties extends BaseProperties {
 
 	@Override
 	public int getLayout() {
-		return R.layout.glass;
+		return R.layout.sk_glass_6;
 	}
 
 	@Override
@@ -16,6 +16,6 @@ public class GlossyProperties extends BaseProperties {
 
 	@Override
 	public int getRowLayout() {
-		return R.layout.glass_row;
+		return R.layout.sk_glass_row;
 	}
 }

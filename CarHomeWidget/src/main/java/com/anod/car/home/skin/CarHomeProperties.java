@@ -6,7 +6,7 @@ public class CarHomeProperties extends BaseProperties {
 
 	@Override
 	public int getLayout() {
-		return R.layout.carhome;
+		return R.layout.sk_carhome_6;
 	}
 
 	@Override
@@ -16,6 +16,6 @@ public class CarHomeProperties extends BaseProperties {
 
 	@Override
 	public int getRowLayout() {
-		return R.layout.carhome_row;
+		return R.layout.sk_carhome_row;
 	}
 }

@@ -158,7 +158,7 @@ public class WidgetViewBuilder {
 		}
 		mShortcutViewBuilder.init(skinName, scaledDensity, skinProperties, themeIcons, mPrefs, mSmodel, mBitmapTransform);
 
-		views.removeAllViews(R.id.workspace);
+		//views.removeAllViews(R.id.workspace);
 		int totalRows = shortcuts.size() / 2;
 		for (int rowNum = 0; rowNum < totalRows; rowNum++) {
 

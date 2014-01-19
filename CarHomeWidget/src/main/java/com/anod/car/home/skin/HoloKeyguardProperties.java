@@ -10,6 +10,6 @@ public class HoloKeyguardProperties extends HoloProperties {
 
 	@Override
 	public int getLayout() {
-		return R.layout.holo_keyguard;
+		return R.layout.sk_holo_keyguard;
 	}
 }

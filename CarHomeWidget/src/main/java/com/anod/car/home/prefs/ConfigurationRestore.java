@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -45,6 +46,10 @@ import com.anod.car.home.utils.CheatSheet;
 import com.anod.car.home.utils.DeleteFileTask;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,11 +60,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-public class ConfigurationRestore extends Fragment  implements RestoreTask.RestoreTaskListner, DeleteFileTask.DeleteFileTaskListener, BackupTask.BackupTaskListner {
+public class ConfigurationRestore extends Fragment implements
+		RestoreTask.RestoreTaskListner, DeleteFileTask.DeleteFileTaskListener, BackupTask.BackupTaskListner,
+		GoogleApiClient.ConnectionCallbacks,
+		GoogleApiClient.OnConnectionFailedListener {
 	private static final int DOWNLOAD_MAIN_REQUEST_CODE = 1;
 	private static final int DOWNLOAD_INCAR_REQUEST_CODE = 2;
 	private static final int UPLOAD_REQUEST_CODE = 3;
 	public static final String MIME_TYPE = "application/octet-stream";
+	private static final int REQUEST_CODE_RESOLUTION = 123;
+	private static final int REQUEST_CODE_OPENER = 122;
 
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private PreferencesBackupManager mBackupManager;
@@ -84,6 +94,7 @@ public class ConfigurationRestore extends Fragment  implements RestoreTask.Resto
 	private String mCurBackupFile;
 	private MenuItem mRefreshMenuItem;
 	private Version mVersion;
+	private GoogleApiClient mGoogleApiClient;
 
 
 	@Override
@@ -344,6 +355,8 @@ public class ConfigurationRestore extends Fragment  implements RestoreTask.Resto
 				writeFile(mCurBackupFile, uri);
 			}
 
+		} else if (requestCode == REQUEST_CODE_RESOLUTION && resultCode == Activity.RESULT_OK) {
+			mGoogleApiClient.connect();
 		}
 	}
 
@@ -419,6 +432,55 @@ public class ConfigurationRestore extends Fragment  implements RestoreTask.Resto
 			Toast.makeText(mContext, R.string.unable_delete_file, Toast.LENGTH_SHORT).show();
 		} else {
 			new FileListTask().execute(0);
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (mGoogleApiClient == null) {
+			mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+					.addApi(Drive.API)
+					.addScope(Drive.SCOPE_FILE)
+					.addConnectionCallbacks(this)
+					.addOnConnectionFailedListener(this)
+					.build();
+		}
+		mGoogleApiClient.connect();
+	}
+
+	@Override
+	public void onConnected(Bundle bundle) {
+		//IntentSender intentSender = Drive.DriveApi
+		//		.newOpenFileActivityBuilder()
+		//		.setMimeType(new String[] { "text/plain", "text/html" })
+		//		.build(mGoogleApiClient);
+		//try {
+		//	getActivity().startIntentSenderForResult(intentSender, REQUEST_CODE_OPENER, null, 0, 0, 0);
+		//} catch (IntentSender.SendIntentException e) {
+		//	AppLog.ex(e);
+		//}
+	}
+
+	@Override
+	public void onDisconnected() {
+
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult result) {
+		AppLog.e("GoogleApiClient connection failed: " + result.toString());
+
+		if (!result.hasResolution()) {
+			// show the localized error dialog.
+			GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), getActivity(), 0).show();
+			return;
+		}
+		try {
+			result.startResolutionForResult(getActivity(), REQUEST_CODE_RESOLUTION);
+		} catch (IntentSender.SendIntentException e) {
+			AppLog.ex(e);
+			//Log.e(TAG, "Exception while starting resolution activity", e);
 		}
 	}
 

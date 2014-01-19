@@ -16,7 +16,7 @@ public class MetroProperties extends BaseProperties {
 
 	@Override
 	public int getLayout() {
-		return R.layout.windows7;
+		return R.layout.sk_windows7_6;
 	}
 
 	@Override
@@ -29,6 +29,6 @@ public class MetroProperties extends BaseProperties {
 
 	@Override
 	public int getRowLayout() {
-		return R.layout.windows7_row;
+		return R.layout.sk_windows7_row;
 	}
 }

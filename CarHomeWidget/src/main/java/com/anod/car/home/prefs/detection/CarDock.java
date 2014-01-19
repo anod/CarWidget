@@ -1,5 +1,6 @@
 package com.anod.car.home.prefs.detection;
 
+import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.InCar;
 
 /**
@@ -11,17 +12,17 @@ public class CarDock extends Detection {
 
 	@Override
 	public boolean isActive() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public int getIconRes() {
-		return 0;
+		return R.drawable.ic_action_wheel;
 	}
 
 	@Override
 	public int getShortTitleRes() {
-		return 0;
+		return R.string.cardock;
 	}
 
 	@Override
