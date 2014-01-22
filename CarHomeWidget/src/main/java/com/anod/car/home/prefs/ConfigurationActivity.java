@@ -18,6 +18,16 @@ import com.anod.car.home.model.AppsListCache;
 public class ConfigurationActivity extends CarWidgetActivity implements PreferenceFragment.OnPreferenceStartFragmentCallback {
 	private static final String BACK_STACK_PREFS = ":carwidget:prefs";
 
+	private onActivityResultListener mActivityResultListener;
+
+	public void setActivityResultListener(onActivityResultListener activityResultListener) {
+		mActivityResultListener = activityResultListener;
+	}
+
+	public interface onActivityResultListener {
+		public void onActivityResult(int requestCode, int resultCode, Intent data);
+	}
+
 	public static Intent createFragmentIntent(Context context, Class<?> fragment) {
 		Intent intent = new Intent(context, ConfigurationActivity.class);
 		intent.putExtra(EXTRA_FRAGMENT, fragment);
@@ -123,5 +133,11 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 		transaction.commitAllowingStateLoss();
 	}
 
-
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (mActivityResultListener != null) {
+			mActivityResultListener.onActivityResult(requestCode, resultCode, data);
+		}
+	}
 }

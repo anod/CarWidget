@@ -7,13 +7,11 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
-import android.preference.Preference;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.text.format.DateUtils;
@@ -26,7 +24,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -35,9 +32,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anod.car.home.R;
-import com.anod.car.home.app.ActionBarListActivity;
 import com.anod.car.home.prefs.backup.BackupCodeRender;
 import com.anod.car.home.prefs.backup.BackupTask;
+import com.anod.car.home.prefs.backup.GDriveBackup;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 import com.anod.car.home.prefs.backup.RestoreCodeRender;
 import com.anod.car.home.prefs.backup.RestoreTask;
@@ -46,10 +43,7 @@ import com.anod.car.home.utils.CheatSheet;
 import com.anod.car.home.utils.DeleteFileTask;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Drive;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -61,15 +55,12 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class ConfigurationRestore extends Fragment implements
-		RestoreTask.RestoreTaskListner, DeleteFileTask.DeleteFileTaskListener, BackupTask.BackupTaskListner,
-		GoogleApiClient.ConnectionCallbacks,
-		GoogleApiClient.OnConnectionFailedListener {
+		RestoreTask.RestoreTaskListner, DeleteFileTask.DeleteFileTaskListener, BackupTask.BackupTaskListner {
 	private static final int DOWNLOAD_MAIN_REQUEST_CODE = 1;
 	private static final int DOWNLOAD_INCAR_REQUEST_CODE = 2;
 	private static final int UPLOAD_REQUEST_CODE = 3;
-	public static final String MIME_TYPE = "application/octet-stream";
-	private static final int REQUEST_CODE_RESOLUTION = 123;
-	private static final int REQUEST_CODE_OPENER = 122;
+
+
 
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private PreferencesBackupManager mBackupManager;
@@ -88,13 +79,12 @@ public class ConfigurationRestore extends Fragment implements
 	private ImageButton mDownloadIncar;
 	private ImageButton mUploadIncar;
 	private ImageButton mRestoreIncar;
-	private ProgressDialog mWaitDialog;
 	private String mLastBackupStr;
 	private TextView mLastBackupIncar;
 	private String mCurBackupFile;
 	private MenuItem mRefreshMenuItem;
 	private Version mVersion;
-	private GoogleApiClient mGoogleApiClient;
+	private GDriveBackup mGDriveBackup;
 
 
 	@Override
@@ -148,6 +138,10 @@ public class ConfigurationRestore extends Fragment implements
 
 		mContext = (Context) getActivity();
 		mBackupManager = new PreferencesBackupManager(mContext);
+
+		mGDriveBackup = new GDriveBackup(getActivity());
+
+		((ConfigurationActivity)getActivity()).setActivityResultListener(mGDriveBackup);
 
 		mLastBackupStr = getString(R.string.last_backup);
 
@@ -262,10 +256,7 @@ public class ConfigurationRestore extends Fragment implements
 			mDownloadMain.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-					intent.addCategory(Intent.CATEGORY_OPENABLE);
-					intent.setType(MIME_TYPE);
-					startActivityForResult(intent, DOWNLOAD_MAIN_REQUEST_CODE);
+				mGDriveBackup.download();
 				}
 			});
 
@@ -280,10 +271,7 @@ public class ConfigurationRestore extends Fragment implements
 				mDownloadIncar.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-						intent.addCategory(Intent.CATEGORY_OPENABLE);
-						intent.setType(MIME_TYPE);
-						startActivityForResult(intent, DOWNLOAD_INCAR_REQUEST_CODE);
+					mGDriveBackup.download();
 					}
 				});
 			}
@@ -292,7 +280,7 @@ public class ConfigurationRestore extends Fragment implements
 				@Override
 				public void onClick(View view) {
 					File incar = mBackupManager.getBackupIncarFile();
-					uploadFile("incar-backup"+PreferencesBackupManager.FILE_EXT_DAT, incar);
+					mGDriveBackup.upload("incar-backup"+PreferencesBackupManager.FILE_EXT_DAT, incar);
 				}
 			});
 
@@ -308,24 +296,6 @@ public class ConfigurationRestore extends Fragment implements
 		super.onSaveInstanceState(outState);
 		outState.putString("curBackup", mCurBackupFile);
 	}
-
-	private void uploadFile(String fileName, File srcFile) {
-
-		mCurBackupFile = srcFile.getAbsolutePath();
-
-		Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-
-		// Filter to only show results that can be "opened", such as
-		// a file (as opposed to a list of contacts or timezones).
-		intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-		// Create a file with the requested MIME type.
-		intent.setType(MIME_TYPE);
-		intent.putExtra(Intent.EXTRA_TITLE, fileName);
-		startActivityForResult(intent, UPLOAD_REQUEST_CODE);
-	}
-
-
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
@@ -355,8 +325,8 @@ public class ConfigurationRestore extends Fragment implements
 				writeFile(mCurBackupFile, uri);
 			}
 
-		} else if (requestCode == REQUEST_CODE_RESOLUTION && resultCode == Activity.RESULT_OK) {
-			mGoogleApiClient.connect();
+		} else if (mGDriveBackup.checkRequestCode(requestCode)) {
+			mGDriveBackup.onActivityResult(requestCode,resultCode,resultData);
 		}
 	}
 
@@ -436,54 +406,10 @@ public class ConfigurationRestore extends Fragment implements
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-		if (mGoogleApiClient == null) {
-			mGoogleApiClient = new GoogleApiClient.Builder(mContext)
-					.addApi(Drive.API)
-					.addScope(Drive.SCOPE_FILE)
-					.addConnectionCallbacks(this)
-					.addOnConnectionFailedListener(this)
-					.build();
-		}
-		mGoogleApiClient.connect();
+	public void onPause() {
+		mGDriveBackup.disconnect();
+		super.onPause();
 	}
-
-	@Override
-	public void onConnected(Bundle bundle) {
-		//IntentSender intentSender = Drive.DriveApi
-		//		.newOpenFileActivityBuilder()
-		//		.setMimeType(new String[] { "text/plain", "text/html" })
-		//		.build(mGoogleApiClient);
-		//try {
-		//	getActivity().startIntentSenderForResult(intentSender, REQUEST_CODE_OPENER, null, 0, 0, 0);
-		//} catch (IntentSender.SendIntentException e) {
-		//	AppLog.ex(e);
-		//}
-	}
-
-	@Override
-	public void onDisconnected() {
-
-	}
-
-	@Override
-	public void onConnectionFailed(ConnectionResult result) {
-		AppLog.e("GoogleApiClient connection failed: " + result.toString());
-
-		if (!result.hasResolution()) {
-			// show the localized error dialog.
-			GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), getActivity(), 0).show();
-			return;
-		}
-		try {
-			result.startResolutionForResult(getActivity(), REQUEST_CODE_RESOLUTION);
-		} catch (IntentSender.SendIntentException e) {
-			AppLog.ex(e);
-			//Log.e(TAG, "Exception while starting resolution activity", e);
-		}
-	}
-
 
 	private class FileListTask extends AsyncTask<Integer, Void, File[]> {
 
@@ -635,7 +561,7 @@ public class ConfigurationRestore extends Fragment implements
 		public void onClick(View v) {
 			String name = (String) v.getTag();
 			File file = mBackupManager.getBackupMainFile(name);
-			uploadFile("car"+name+PreferencesBackupManager.FILE_EXT_DAT, file);
+			mGDriveBackup.upload("car" + name + PreferencesBackupManager.FILE_EXT_DAT, file);
 		}
 	}
 }
