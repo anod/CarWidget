@@ -96,7 +96,7 @@ public class SpeechActivationService extends StoppableService implements SpeechA
 			if (mActivator == null)
 			{
 				AppLog.d("mActivator = null");
-				mActivator = new HotWordActivator(this, this, "Okay Widget", "Ok widget", "ok VJ", "Okay VJ");
+				mActivator = new HotWordActivator(this, this, "Okay Widget", "Ok widget", "ok VJ", "Okay VJ", "okay we just", "okay video");
 				mActivator.setStatusChangeListener(this);
 			}
 
@@ -146,6 +146,7 @@ public class SpeechActivationService extends StoppableService implements SpeechA
 		intent.putExtra(ACTIVATION_RESULT_INTENT_KEY, success);
 		sendBroadcast(intent);
 
+		stopSelf();
 	}
 
     @Override
@@ -276,6 +277,11 @@ public class SpeechActivationService extends StoppableService implements SpeechA
 				AppLog.d("CheckEnvironmentRunnable : PAUSE : mActivator.isMusicActive");
 				mService.stopDetection();
 
+			} else if (isGoogleNowActive()) {
+
+				AppLog.d("CheckEnvironmentRunnable : PAUSE : isGoogleNowActive");
+				mService.stopDetection();
+
 			} else if (!mActivator.isActive()) {
 
 				if (mActivator.canStartHotword()) {
@@ -303,6 +309,21 @@ public class SpeechActivationService extends StoppableService implements SpeechA
 
 		public void setActive(boolean active) {
 			mActive = active;
+		}
+
+		public boolean isGoogleNowActive() {
+			List<ActivityManager.RunningAppProcessInfo> processes = mActivityManager.getRunningAppProcesses();
+			if (processes == null) {
+				return false;
+			}
+			ActivityManager.RunningAppProcessInfo process = processes.get(0);
+			if (process == null || process.processName == null) {
+				return false;
+			}
+			if (process.processName.startsWith("com.google.android.googlequicksearchbox")) {
+				return true;
+			}
+			return false;
 		}
 	}
 
