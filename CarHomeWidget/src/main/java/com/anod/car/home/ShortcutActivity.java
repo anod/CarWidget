@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
+import com.anod.car.home.utils.MusicUtils;
 
 public class ShortcutActivity extends Activity {
 	public static final String EXTRA_INTENT = "intent";
@@ -29,22 +30,9 @@ public class ShortcutActivity extends Activity {
 		}
 		Integer keyCode = getIntent().getIntExtra(EXTRA_MEDIA_BUTTON, 0);
 		if (keyCode > 0) {
-			broadCastMediaCode(keyCode);
+			MusicUtils.sendKeyEvent(keyCode, this);
 		}
 		finish();
-	}
-
-	private void broadCastMediaCode(Integer keyCode) {
-        Intent mediaButtonDownIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
-        KeyEvent downKe = new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, keyCode, 0);
-        mediaButtonDownIntent.putExtra(Intent.EXTRA_KEY_EVENT, downKe);
-
-        Intent mediaButtonUpIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
-        KeyEvent upKe = new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_UP, keyCode, 0);
-        mediaButtonUpIntent.putExtra(Intent.EXTRA_KEY_EVENT, upKe);
-        
-        sendOrderedBroadcast(mediaButtonDownIntent, null, null, null, Activity.RESULT_OK, null, null);
-        sendOrderedBroadcast(mediaButtonUpIntent, null, null, null, Activity.RESULT_OK, null, null);
 	}
 
 	private void runFromIntent(Intent intent) {

@@ -96,7 +96,7 @@ public class SpeechActivationService extends StoppableService implements SpeechA
 			if (mActivator == null)
 			{
 				AppLog.d("mActivator = null");
-				mActivator = new HotWordActivator(this, this, "Okay Widget", "Ok widget", "ok VJ", "Okay VJ", "okay we just", "okay video");
+				mActivator = new HotWordActivator(this, this, "okay google", "ok google");
 				mActivator.setStatusChangeListener(this);
 			}
 
