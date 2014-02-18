@@ -41,6 +41,28 @@ public class WidgetViewBuilder {
 	private boolean mIsKeyguard = false;
 	private int mWidgetHeightDp = -1;
 
+	private int[] mBtnIds = new int[] {
+		R.id.btn0,
+		R.id.btn1,//2
+		R.id.btn2,
+		R.id.btn3,//4
+		R.id.btn4,
+		R.id.btn5,//6
+		R.id.btn6,
+		R.id.btn7//8
+	};
+
+	private int[] mTextIds = new int[] {
+		R.id.btn_text0,
+		R.id.btn_text1,//2
+		R.id.btn_text2,
+		R.id.btn_text3,//4
+		R.id.btn_text4,
+		R.id.btn_text5,//6
+		R.id.btn_text6,
+		R.id.btn_text7//8
+	};
+
 	private ShortcutViewBuilder mShortcutViewBuilder;
 	private BitmapTransform mBitmapTransform;
 
@@ -158,7 +180,6 @@ public class WidgetViewBuilder {
 		}
 		mShortcutViewBuilder.init(skinName, scaledDensity, skinProperties, themeIcons, mPrefs, mSmodel, mBitmapTransform);
 
-		//views.removeAllViews(R.id.workspace);
 		int totalRows = shortcuts.size() / 2;
 		for (int rowNum = 0; rowNum < totalRows; rowNum++) {
 
@@ -166,12 +187,11 @@ public class WidgetViewBuilder {
 				continue;
 			}
 
-			RemoteViews rowView = new RemoteViews(mContext.getPackageName(), skinProperties.getRowLayout());
-			int position = rowNum * 2;
+			int firstBtn = rowNum * 2;
+			int secondBtn = firstBtn+1;
 
-			mShortcutViewBuilder.fill(rowView, position, R.id.btn0, R.id.btn_text0);
-			mShortcutViewBuilder.fill(rowView, position+1, R.id.btn1, R.id.btn_text1);
-			views.addView(R.id.workspace, rowView);
+			mShortcutViewBuilder.fill(views, firstBtn ,mBtnIds[firstBtn], mTextIds[firstBtn]);
+			mShortcutViewBuilder.fill(views, secondBtn, mBtnIds[secondBtn], mTextIds[secondBtn]);
 		}
 
 
