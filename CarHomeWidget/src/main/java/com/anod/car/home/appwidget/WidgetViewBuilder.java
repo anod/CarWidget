@@ -139,6 +139,8 @@ public class WidgetViewBuilder {
 	}
 
 	public RemoteViews build() {
+		SparseArray<ShortcutInfo> shortcuts = mSmodel.getShortcuts();
+
 		Resources r = mContext.getResources();
 		String skinName = (mOverrideSkin == null) ? mPrefs.getSkin() : mOverrideSkin;
 		//boolean isLandscape = r.getBoolean(R.bool.is_landscape);
@@ -152,7 +154,7 @@ public class WidgetViewBuilder {
 			mBitmapTransform.setPaddingBottom(iconPadding);
 		}
 
-		RemoteViews views = new RemoteViews(mContext.getPackageName(), skinProperties.getLayout());
+		RemoteViews views = new RemoteViews(mContext.getPackageName(), skinProperties.getLayout(shortcuts.size()));
 
 		setInCarButton(mPrefs.isIncarTransparent(), skinProperties, views);
 
@@ -162,7 +164,6 @@ public class WidgetViewBuilder {
 			views.setImageViewResource(R.id.btn_settings, skinProperties.getSettingsButtonRes());
 		}
 
-		SparseArray<ShortcutInfo> shortcuts = mSmodel.getShortcuts();
 
 		setBackground(mPrefs, views);
 

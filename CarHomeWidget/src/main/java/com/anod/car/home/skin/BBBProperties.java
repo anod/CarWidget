@@ -16,7 +16,13 @@ public class BBBProperties extends BaseProperties {
 	}
 	
 	@Override
-	public int getLayout() {
+	public int getLayout(int number) {
+		if (number == 4) {
+			return R.layout.sk_blackbearblanc_4;
+		}
+		if (number == 8) {
+			return R.layout.sk_blackbearblanc_8;
+		}
 		return R.layout.sk_blackbearblanc_6;
 	}
 

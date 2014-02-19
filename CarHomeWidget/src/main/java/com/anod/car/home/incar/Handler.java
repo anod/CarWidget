@@ -14,7 +14,6 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import com.anod.car.home.prefs.preferences.InCar;
-import com.anod.car.home.speech.SpeechActivationService;
 import com.anod.car.home.utils.Utils;
 
 public class Handler {
@@ -62,8 +61,6 @@ public class Handler {
 			SamsungDrivingMode.enable(context);
 		}
 
-		context.startService(SpeechActivationService.makeStartIntent(context));
-
 		ComponentName autorunApp = prefs.getAutorunApp();
 		if (autorunApp != null) {
 			runApp(autorunApp, context);
@@ -101,8 +98,6 @@ public class Handler {
 		if (SamsungDrivingMode.hasMode() && prefs.isSamsungDrivingMode()) {
 			SamsungDrivingMode.disable(context);
 		}
-
-		context.stopService(SpeechActivationService.makeStopIntent(context));
 
 		String brightSetting = prefs.getBrightness();
 		if (!brightSetting.equals(InCar.BRIGHTNESS_DISABLED)) {

@@ -12,6 +12,7 @@ import com.anod.car.home.utils.AppLog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.MetadataChangeSet;
@@ -22,7 +23,7 @@ import java.io.File;
  * @author alex
  * @date 1/19/14
  */
-public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, DriveApi.OnNewContentsCallback, ConfigurationActivity.onActivityResultListener {
+public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ConfigurationActivity.onActivityResultListener, ResultCallback<DriveApi.ContentsResult> {
 	public static final int REQUEST_CODE_RESOLUTION = 123;
 	public static final int REQUEST_CODE_OPENER = 122;
 	public static final int REQUEST_CODE_CREATOR = 124;
@@ -74,7 +75,7 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
 	}
 
 	@Override
-	public void onDisconnected() {
+	public void onConnectionSuspended(int i) {
 
 	}
 
@@ -130,7 +131,7 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
 	}
 
 	private void requestNewContents() {
-		Drive.DriveApi.newContents(mGoogleApiClient).addResultCallback(this);
+		Drive.DriveApi.newContents(mGoogleApiClient).setResultCallback(this);
 	}
 
 	private void uploadConnected(String targetName, File file) {
@@ -142,22 +143,6 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
 		return mGoogleApiClient != null && mGoogleApiClient.isConnected();
 	}
 
-	@Override
-	public void onNewContents(DriveApi.ContentsResult result) {
-		MetadataChangeSet metadataChangeSet = new MetadataChangeSet.Builder()
-				.setMimeType(MIME_TYPE)
-				.build();
-		IntentSender intentSender = Drive.DriveApi
-				.newCreateFileActivityBuilder()
-				.setInitialMetadata(metadataChangeSet)
-				.setInitialContents(result.getContents())
-				.build(mGoogleApiClient);
-		try {
-			mActivity.startIntentSenderForResult(intentSender, REQUEST_CODE_CREATOR, null, 0, 0, 0);
-		} catch (IntentSender.SendIntentException e) {
-			AppLog.ex(e);
-		}
-	}
 
 	public boolean checkRequestCode(int requestCode) {
 		if (requestCode == REQUEST_CODE_OPENER) {
@@ -180,6 +165,23 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
 			Uri uri = resultData.getData();
 			AppLog.d("Uri: " + uri.toString());
 
+		}
+	}
+
+	@Override
+	public void onResult(DriveApi.ContentsResult contentsResult) {
+		MetadataChangeSet metadataChangeSet = new MetadataChangeSet.Builder()
+				.setMimeType(MIME_TYPE)
+				.build();
+		IntentSender intentSender = Drive.DriveApi
+				.newCreateFileActivityBuilder()
+				.setInitialMetadata(metadataChangeSet)
+				.setInitialContents(contentsResult.getContents())
+				.build(mGoogleApiClient);
+		try {
+			mActivity.startIntentSenderForResult(intentSender, REQUEST_CODE_CREATOR, null, 0, 0, 0);
+		} catch (IntentSender.SendIntentException e) {
+			AppLog.ex(e);
 		}
 	}
 }

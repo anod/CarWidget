@@ -19,10 +19,15 @@ public class HoloProperties extends BaseProperties {
 	}
 
 	@Override
-	public int getLayout() {
+	public int getLayout(int number) {
+		if (number == 4) {
+			return R.layout.sk_holo_4;
+		}
+		if (number == 8) {
+			return R.layout.sk_holo_8;
+		}
 		return R.layout.sk_holo_6;
 	}
-
 	@Override
 	public int getSettingsButtonRes() {
 		return R.drawable.ic_holo_settings;

@@ -15,10 +15,15 @@ public class MetroProperties extends BaseProperties {
 	}
 
 	@Override
-	public int getLayout() {
+	public int getLayout(int number) {
+		if (number == 4) {
+			return R.layout.sk_windows7_4;
+		}
+		if (number == 8) {
+			return R.layout.sk_windows7_8;
+		}
 		return R.layout.sk_windows7_6;
 	}
-
 	@Override
 	public int getIconPaddingRes() { return 0; }
 

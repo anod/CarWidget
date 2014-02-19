@@ -5,7 +5,7 @@ public interface SkinProperties {
 	int getInCarButtonExitRes();
 	int getInCarButtonEnterRes();
 	int getSetShortcutRes();
-	int getLayout();
+	int getLayout(int number);
 	IconProcessor getIconProcessor();
 	int getSetShortcutText();
 	int getIconPaddingRes();
