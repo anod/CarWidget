@@ -61,6 +61,11 @@ public class Handler {
 			SamsungDrivingMode.enable(context);
 		}
 
+		Intent intent = new Intent()
+				.setComponent(new ComponentName("com.RSen.OpenMic.Pheonix", "com.RSen.OpenMic.Pheonix.StartListeningActivity"))
+				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		Utils.startActivitySafely(intent, context);
+
 		ComponentName autorunApp = prefs.getAutorunApp();
 		if (autorunApp != null) {
 			runApp(autorunApp, context);
@@ -98,6 +103,10 @@ public class Handler {
 		if (SamsungDrivingMode.hasMode() && prefs.isSamsungDrivingMode()) {
 			SamsungDrivingMode.disable(context);
 		}
+		Intent intent = new Intent()
+				.setComponent(new ComponentName("com.RSen.OpenMic.Pheonix", "com.RSen.OpenMic.Pheonix.StopListeningActivity"))
+				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		Utils.startActivitySafely(intent, context);
 
 		String brightSetting = prefs.getBrightness();
 		if (!brightSetting.equals(InCar.BRIGHTNESS_DISABLED)) {
