@@ -236,4 +236,5 @@
 	<string name="delete">Delete</string>
 	<string name="add">Add</string>
 	<string name="cardock">CarDock</string>
+	<string name="number">Number</string>
 </resources>

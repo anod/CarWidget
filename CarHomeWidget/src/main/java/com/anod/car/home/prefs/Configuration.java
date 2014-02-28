@@ -91,7 +91,6 @@ public class Configuration extends ConfigurationPreferenceFragment implements Pr
 		return super.onOptionsItemSelected(item);
 	}
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private AlertDialog createNumberPickerDialog() {
 		final String[] nums = mContext.getResources().getStringArray(R.array.shortcut_numbers);
 
@@ -169,7 +168,6 @@ public class Configuration extends ConfigurationPreferenceFragment implements Pr
 	}
 
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public int onScrollRequest(int top) {
 

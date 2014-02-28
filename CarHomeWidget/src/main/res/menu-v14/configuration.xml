@@ -11,8 +11,8 @@
 
 	<item
 		android:id="@+id/menu_number"
-		android:icon="@drawable/ic_action_tick"
-		carwidget:showAsAction="never"
-		android:title="Number">
+		android:icon="@drawable/ic_action_dash"
+		carwidget:showAsAction="always"
+		android:title="@string/number">
 	</item>
 </menu>
