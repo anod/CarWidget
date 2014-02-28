@@ -49,6 +49,7 @@ public class PreferencesBackupManager {
 	public static final int ERROR_FILE_READ = 3;
 	public static final int ERROR_FILE_WRITE = 4;
 	public static final int ERROR_DESERIALIZE = 5;
+	public static final int ERROR_UNEXPECTED = 6;
 
     private static final String BACKUP_MAIN_DIRNAME = "backup_main";
 	public static final String FILE_INCAR_JSON = "backup_incar.dat";

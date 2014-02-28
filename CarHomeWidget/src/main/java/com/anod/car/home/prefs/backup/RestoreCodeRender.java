@@ -21,6 +21,7 @@ public class RestoreCodeRender {
 				return R.string.failed_to_read_file;
 			case PreferencesBackupManager.ERROR_FILE_NOT_EXIST:
 				return R.string.backup_not_exist;
+			case PreferencesBackupManager.ERROR_UNEXPECTED:
 			default:
 				return R.string.unexpected_error;
 		}

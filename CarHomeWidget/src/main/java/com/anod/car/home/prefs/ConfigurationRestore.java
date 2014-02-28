@@ -2,7 +2,6 @@ package com.anod.car.home.prefs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,7 +10,6 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.text.format.DateUtils;
@@ -43,23 +41,14 @@ import com.anod.car.home.utils.CheatSheet;
 import com.anod.car.home.utils.DeleteFileTask;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class ConfigurationRestore extends Fragment implements
-		RestoreTask.RestoreTaskListner, DeleteFileTask.DeleteFileTaskListener, BackupTask.BackupTaskListner {
+		RestoreTask.RestoreTaskListner, DeleteFileTask.DeleteFileTaskListener, BackupTask.BackupTaskListner, GDriveBackup.Listener {
 	private static final int DOWNLOAD_MAIN_REQUEST_CODE = 1;
 	private static final int DOWNLOAD_INCAR_REQUEST_CODE = 2;
-	private static final int UPLOAD_REQUEST_CODE = 3;
-
 
 
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -81,11 +70,12 @@ public class ConfigurationRestore extends Fragment implements
 	private ImageButton mRestoreIncar;
 	private String mLastBackupStr;
 	private TextView mLastBackupIncar;
-	private String mCurBackupFile;
 	private MenuItem mRefreshMenuItem;
 	private Version mVersion;
 	private GDriveBackup mGDriveBackup;
 
+
+	private boolean mIsGDriveSupported;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -131,15 +121,11 @@ public class ConfigurationRestore extends Fragment implements
 			return;
 		}
 
-		if (savedInstanceState != null) {
-			// Restore last state for checked position.
-			mCurBackupFile = savedInstanceState.getString("curBackup");
-		}
-
 		mContext = (Context) getActivity();
 		mBackupManager = new PreferencesBackupManager(mContext);
 
-		mGDriveBackup = new GDriveBackup(getActivity());
+		mGDriveBackup = new GDriveBackup(getActivity(), this);
+		mIsGDriveSupported = mGDriveBackup.isSupported();
 
 		((ConfigurationActivity)getActivity()).setActivityResultListener(mGDriveBackup);
 
@@ -200,6 +186,7 @@ public class ConfigurationRestore extends Fragment implements
 		return super.onOptionsItemSelected(item);
 	}
 
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate( R.menu.restore, menu);
@@ -209,7 +196,6 @@ public class ConfigurationRestore extends Fragment implements
 
 		super.onCreateOptionsMenu(menu, inflater);
 	}
-
 
 	/**
 	 * stop refresh button animation
@@ -251,12 +237,12 @@ public class ConfigurationRestore extends Fragment implements
 	}
 
 	private void setupDownloadUpload() {
-		if (Utils.IS_KITKAT_OR_GREATER) {
+		if (mIsGDriveSupported) {
 
 			mDownloadMain.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-				mGDriveBackup.download();
+				mGDriveBackup.download(mAppWidgetId);
 				}
 			});
 
@@ -271,7 +257,7 @@ public class ConfigurationRestore extends Fragment implements
 				mDownloadIncar.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-					mGDriveBackup.download();
+					mGDriveBackup.download(0);
 					}
 				});
 			}
@@ -294,7 +280,6 @@ public class ConfigurationRestore extends Fragment implements
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putString("curBackup", mCurBackupFile);
 	}
 
 	@Override
@@ -318,55 +303,8 @@ public class ConfigurationRestore extends Fragment implements
 				new RestoreTask(type, mBackupManager, mAppWidgetId, ConfigurationRestore.this).execute(uri);
 
 			}
-		} else if (requestCode == UPLOAD_REQUEST_CODE && resultCode == Activity.RESULT_OK && mCurBackupFile != null) {
-			Uri uri = null;
-			if (resultData != null) {
-				uri = resultData.getData();
-				writeFile(mCurBackupFile, uri);
-			}
-
 		} else if (mGDriveBackup.checkRequestCode(requestCode)) {
 			mGDriveBackup.onActivityResult(requestCode,resultCode,resultData);
-		}
-	}
-
-	private void writeFile(String srcAbsolutePath, Uri destUri) {
-		File dataFile = new File(srcAbsolutePath);
-		FileInputStream inputStream = null;
-		try {
-			inputStream = new FileInputStream(dataFile);
-		} catch (FileNotFoundException e) {
-			AppLog.ex(e);
-			Toast.makeText(mContext, R.string.failed_to_read_file, Toast.LENGTH_SHORT).show();
-			return;
-		}
-
-		try {
-			ParcelFileDescriptor pfd = getActivity().getContentResolver().openFileDescriptor(destUri, "w");
-			FileOutputStream fileOutputStream =  new FileOutputStream(pfd.getFileDescriptor());
-
-			copyFile(inputStream, fileOutputStream);
-
-			// Let the document provider know you're done by closing the stream.
-			fileOutputStream.close();
-			pfd.close();
-		} catch (FileNotFoundException e) {
-			AppLog.ex(e);
-			Toast.makeText(mContext, R.string.failed_to_write_file, Toast.LENGTH_SHORT).show();
-			return;
-		} catch (IOException e) {
-			AppLog.ex(e);
-			Toast.makeText(mContext, R.string.failed_to_write_file, Toast.LENGTH_SHORT).show();
-			return;
-		}
-		Toast.makeText(mContext, R.string.export_backup_finish, Toast.LENGTH_SHORT).show();
-	}
-
-	private void copyFile(InputStream in, OutputStream out) throws IOException {
-		byte[] buffer = new byte[1024];
-		int read;
-		while((read = in.read(buffer)) != -1){
-			out.write(buffer, 0, read);
 		}
 	}
 
@@ -411,6 +349,27 @@ public class ConfigurationRestore extends Fragment implements
 		super.onPause();
 	}
 
+	@Override
+	public void onGDriveActionStart() {
+		startRefreshAnim();
+	}
+
+	@Override
+	public void onGDriveDownloadFinish() {
+		onRestoreFinish(0, PreferencesBackupManager.RESULT_DONE);
+	}
+
+	@Override
+	public void onGDriveUploadFinish() {
+		onBackupFinish(0, PreferencesBackupManager.RESULT_DONE);
+	}
+
+	@Override
+	public void onGDriveError() {
+		onRestoreFinish(0, PreferencesBackupManager.ERROR_UNEXPECTED);
+	}
+
+
 	private class FileListTask extends AsyncTask<Integer, Void, File[]> {
 
 		@Override
@@ -422,7 +381,6 @@ public class ConfigurationRestore extends Fragment implements
 		protected File[] doInBackground(Integer... params) {
 			return mBackupManager.getMainBackups();
 		}
-
 		protected void onPostExecute(File[] result) {
 			if (result != null) {
 				for (int i = 0; i < result.length; i++) {
@@ -431,8 +389,8 @@ public class ConfigurationRestore extends Fragment implements
 				}
 			}
 		}
-	}
 
+	}
 
 	@Override
 	public void onRestorePreExecute(int type) {
@@ -483,7 +441,7 @@ public class ConfigurationRestore extends Fragment implements
 			deleteView.setOnClickListener(mDeleteListener);
 
 			ImageView exportView = (ImageView) v.findViewById(R.id.uploadMain);
-			if (Utils.IS_KITKAT_OR_GREATER) {
+			if (mIsGDriveSupported) {
 				exportView.setTag(name);
 				exportView.setOnClickListener(mExportListener);
 				CheatSheet.setup(exportView);
