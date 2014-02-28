@@ -7,12 +7,7 @@
 		carwidget:showAsAction="always"
         android:title="@string/pref_tile_color_title">
     </item>
-    <item
-        android:id="@+id/apply"
-        android:icon="@drawable/ic_action_tick"
-		carwidget:showAsAction="always"
-        android:title="@android:string/ok">
-    </item>
+
 	<item
 			android:id="@+id/overflow"
 			android:icon="@drawable/ic_action_overflow"
