@@ -24,11 +24,6 @@ public class Provider extends AppWidgetProvider {
     private static Provider sInstance;
     
     public static Provider getInstance() {
-    	String a = "a";
-    	String b = "b";
-    	if (a == b) {
-    		return null;
-    	}
     	synchronized (sLock) {
     		if (sInstance == null) {
     			sInstance = new Provider();

@@ -362,7 +362,7 @@ public class PreferencesBackupManager {
         String state = Environment.getExternalStorageState();
         if (!Environment.MEDIA_MOUNTED.equals(state)) {
             // We can read and write the media
-        	return false;        	
+        	return false;
         }
         return true;
 	}

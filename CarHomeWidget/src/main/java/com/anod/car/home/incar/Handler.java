@@ -14,6 +14,7 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 
 public class Handler {
@@ -61,10 +62,10 @@ public class Handler {
 			SamsungDrivingMode.enable(context);
 		}
 
-		Intent intent = new Intent()
-				.setComponent(new ComponentName("com.RSen.OpenMic.Pheonix", "com.RSen.OpenMic.Pheonix.StartListeningActivity"))
-				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		Utils.startActivitySafely(intent, context);
+//		Intent intent = new Intent()
+//				.setComponent(new ComponentName("com.RSen.OpenMic.Pheonix", "com.RSen.OpenMic.Pheonix.StartListeningActivity"))
+//				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//		Utils.startActivitySafely(intent, context);
 
 		ComponentName autorunApp = prefs.getAutorunApp();
 		if (autorunApp != null) {
@@ -103,10 +104,10 @@ public class Handler {
 		if (SamsungDrivingMode.hasMode() && prefs.isSamsungDrivingMode()) {
 			SamsungDrivingMode.disable(context);
 		}
-		Intent intent = new Intent()
-				.setComponent(new ComponentName("com.RSen.OpenMic.Pheonix", "com.RSen.OpenMic.Pheonix.StopListeningActivity"))
-				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		Utils.startActivitySafely(intent, context);
+	//	Intent intent = new Intent()
+//				.setComponent(new ComponentName("com.RSen.OpenMic.Pheonix", "com.RSen.OpenMic.Pheonix.StopListeningActivity"))
+	//			.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	//	Utils.startActivitySafely(intent, context);
 
 		String brightSetting = prefs.getBrightness();
 		if (!brightSetting.equals(InCar.BRIGHTNESS_DISABLED)) {
@@ -200,7 +201,7 @@ public class Handler {
 		}
 
 		if (newBrightLevel == -1) {
-			Log.d(TAG, "Wrong brightness setting Mode : " + brightSetting + " Level : " + newBrightLevel);
+			AppLog.d( "Wrong brightness setting Mode : " + brightSetting + " Level : " + newBrightLevel);
 			return;
 		}
 

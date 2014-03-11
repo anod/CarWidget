@@ -176,17 +176,6 @@ public class ConfigurationRestore extends Fragment implements
 
 		setHasOptionsMenu(true);
 	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.apply) {
-			getFragmentManager().popBackStack();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate( R.menu.restore, menu);
@@ -346,6 +335,7 @@ public class ConfigurationRestore extends Fragment implements
 	@Override
 	public void onPause() {
 		mGDriveBackup.disconnect();
+		stopRefreshAnim();
 		super.onPause();
 	}
 

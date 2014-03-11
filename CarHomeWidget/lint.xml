@@ -7,8 +7,6 @@
     </issue>
     <issue id="MissingTranslation">
         <ignore path="res/values/arrays_pref_values.xml" />
-        <ignore path="res/values/arrays_pref_values.xml" />
-        <ignore path="res/values/string_no_translations.xml" />
         <ignore path="res/values/string_no_translations.xml" />
     </issue>
     <issue id="OldTargetApi" severity="ignore" />

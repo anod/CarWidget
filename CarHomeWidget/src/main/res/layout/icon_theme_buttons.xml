@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:measureWithLargestChild="true"
-    android:orientation="horizontal" >
+	style="?android:attr/buttonBarStyle"
+	android:orientation="horizontal" >
 
     <Button
         android:id="@+id/btn_cancel"
@@ -14,6 +15,7 @@
         android:maxLines="2"
         android:minHeight="48dip"
         android:textSize="14sp"
+		style="?android:attr/buttonBarButtonStyle"
         android:text="@android:string/cancel" />
 
     <Button
@@ -25,7 +27,8 @@
         android:maxLines="2"
         android:minHeight="48dip"
         android:textSize="14sp"
-        android:text="@string/download" />
+		style="?android:attr/buttonBarButtonStyle"
+		android:text="@string/download" />
 
     <Button
         android:id="@+id/btn_ok"
@@ -36,6 +39,7 @@
         android:maxLines="2"
         android:minHeight="48dip"
         android:textSize="14sp"
-        android:text="@android:string/ok"  />
+		style="?android:attr/buttonBarButtonStyle"
+		android:text="@android:string/ok"  />
 
 </LinearLayout>

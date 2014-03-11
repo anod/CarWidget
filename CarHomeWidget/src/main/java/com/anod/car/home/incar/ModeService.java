@@ -23,6 +23,7 @@ import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
@@ -145,7 +146,7 @@ public class ModeService extends Service {
 		// If service killed
 		if (intent == null) {
 			mForceState = PreferencesStorage.restoreForceState(this);
-			Log.d("CarHomeWidget", "Intent is null... sInCarMode = " + sInCarMode + ", mForceState = " + mForceState);
+			AppLog.d("Intent is null... sInCarMode = " + sInCarMode + ", mForceState = " + mForceState);
 		} else {
 			if (intent.getIntExtra(EXTRA_MODE, MODE_SWITCH_ON) == MODE_SWITCH_OFF) {
 				stopSelf();
@@ -197,14 +198,14 @@ public class ModeService extends Service {
 
 
 	private void attachPhoneListener() {
-		Log.d("CarHomeWidget", "Set phone listener");
+		AppLog.d("Set phone listener");
 		TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
 		mPhoneListener = new ModePhoneStateListener(this);
 		tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
 	}
 
 	private void detachPhoneListener() {
-		Log.d("CarHomeWidget", "Remove phone listener");
+		AppLog.d("Remove phone listener");
 		TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
 		tm.listen(mPhoneListener, PhoneStateListener.LISTEN_NONE);
 		mPhoneListener.cancelActions();

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string-array name="skin_titles" tools:ignore="UnusedResources" translatable="false">
+    <string-array name="skin_titles" tools:ignore="MissingTranslation" translatable="false">
         <item>Holo</item>
         <item>Glossy</item>
         <item>Car Home</item>
         <item>Metro</item>
         <item>BlackBearBlanc</item>
     </string-array>
-    <string-array name="skin_values" tools:ignore="UnusedResources" translatable="false">
+    <string-array name="skin_values" tools:ignore="MissingTranslation" translatable="false">
         <item>holo</item>
         <item>glossy</item>
         <item>carhome</item>
         <item>windows7</item>
         <item>blackbearblanc</item>
     </string-array>
-	<string-array name="brightness_mode_values" tools:ignore="UnusedResources" translatable="false">
+	<string-array name="brightness_mode_values" tools:ignore="MissingTranslation" translatable="false">
 		<item>disabled</item>
 		<item>auto</item>
 		<item>day</item>
 		<item>night</item>
     </string-array>
-    <string-array name="icon_scale_values" tools:ignore="UnusedResources" translatable="false">
+    <string-array name="icon_scale_values" tools:ignore="MissingTranslation" translatable="false">
         <item>0</item>
 		<item>1</item>
 		<item>2</item>
@@ -44,13 +44,13 @@
 		<item>20</item>
     </string-array>
     
-	<string-array name="wifi_action_values" tools:ignore="UnusedResources" translatable="false">
+	<string-array name="wifi_action_values" tools:ignore="MissingTranslation" translatable="false">
 		<item>no_action</item>
 		<item>turn_off_wifi</item>
 		<item>disable_wi_fi</item>
     </string-array>
     
-    <string-array name="icon_scale_titles" tools:ignore="UnusedResources" translatable="false">
+    <string-array name="icon_scale_titles" tools:ignore="MissingTranslation" translatable="false">
         <item>x1.0</item>
         <item>x1.1</item>
         <item>x1.2</item>
@@ -74,29 +74,29 @@
 		<item>x3.0</item>
     </string-array>    
     
-	<string-array name="autoanswer_values" tools:ignore="UnusedResources" translatable="false">
+	<string-array name="autoanswer_values" tools:ignore="MissingTranslation" translatable="false">
 		<item>disabled</item>
 		<item>immediately</item>
 		<item>delay-5</item>
     </string-array>
     
-	<string-array name="autorun_app_values" tools:ignore="UnusedResources" translatable="false">
+	<string-array name="autorun_app_values" tools:ignore="MissingTranslation" translatable="false">
 		<item>disabled</item>
 		<item>custom</item>
     </string-array>
     
-	<string-array name="icon_rotate_values">
+	<string-array name="icon_rotate_values" tools:ignore="MissingTranslation">
 		<item>NONE</item>
 		<item>LEFT</item>
 		<item>RIGHT</item>
     </string-array>
 
-	<string-array name="app_themes">
+	<string-array name="app_themes" tools:ignore="MissingTranslation">
 		<item>Light</item>
 		<item>Dark</item>
 	</string-array>
 
-	<string-array name="shortcut_numbers">
+	<string-array name="shortcut_numbers" tools:ignore="MissingTranslation">
 		<item>4</item>
 		<item>6</item>
 		<item>8</item>

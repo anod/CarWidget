@@ -40,7 +40,6 @@
 	<!--
 	<uses-permission android:name="android.permission.INTERNET" />
 	//-->
-	<uses-permission android:name="android.permission.RECORD_AUDIO" />
 
 	<uses-feature android:name="android.hardware.microphone" android:required="false" />
     <uses-feature android:name="android.hardware.telephony" android:required="false" />
@@ -146,20 +145,12 @@
 			</intent-filter>
 		</receiver>
 
-		<service android:name="com.anod.car.home.incar.ActivityRecognitionClientService" android:exported="true"/>
-		<service android:name="com.anod.car.home.incar.ActivityRecognitionService" android:exported="true"/>
+		<service android:name="com.anod.car.home.incar.ActivityRecognitionClientService" android:exported="false" />
+		<service android:name="com.anod.car.home.incar.ActivityRecognitionService" android:exported="false" />
 
 		<meta-data
 				android:name="com.google.android.backup.api_key"
 				android:value="AEdPqrEAAAAIwrTs2H7J2Rs0kglDTHtziqQ8_7YbAZGeS7bDUA" />
-
-		<service android:name=".speech.SpeechActivationService"/>
-		<activity android:name=".speech.SpeechRecognitionLauncher" android:theme="@style/BrightnessTheme"/>
-		<receiver android:name=".speech.ShowResultsSpeechActivationBroadcastReceiver">
-			<intent-filter >
-				<action android:name="com.anod.car.home.speech.ACTIVATION"/>
-			</intent-filter>
-		</receiver>
 
 		<activity android:name="com.anod.car.home.DebugActivity"
 		  android:launchMode="singleTop"

@@ -19,9 +19,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingTop="5dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingBottom="12dp">
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingBottom="0dp">
 		
 	<afzkl.development.colorpickerview.view.ColorPickerView
 		android:id="@+id/color_picker_view"
@@ -76,14 +76,17 @@
 			android:paddingLeft="2dip"
 			android:paddingRight="2dip"
 			android:minHeight="54dip"
+			style="?android:attr/buttonBarStyle"
 			android:layout_below="@+id/linearLayout">
-		<Button android:id="@+id/customButton1"
+		<Button android:id="@+id/customButton2"
 				android:layout_width="0dip"
-				android:layout_gravity="left"
+				android:layout_gravity="right"
 				android:layout_weight="1"
 				android:maxLines="2"
-				android:text="@android:string/ok"
-				android:layout_height="wrap_content"/>
+				android:layout_height="wrap_content"
+				style="?android:attr/buttonBarButtonStyle"
+				android:text="@android:string/cancel"
+				/>
 		<Button android:id="@+id/customButton3"
 				android:layout_width="0dip"
 				android:layout_gravity="center_horizontal"
@@ -93,14 +96,15 @@
 				android:ems="9"
 				android:paddingLeft="2dip"
 				android:paddingRight="2dip"
+				style="?android:attr/buttonBarButtonStyle"
 				android:layout_height="wrap_content"/>
-		<Button android:id="@+id/customButton2"
+		<Button android:id="@+id/customButton1"
 				android:layout_width="0dip"
-				android:layout_gravity="right"
+				android:layout_gravity="left"
 				android:layout_weight="1"
 				android:maxLines="2"
-				android:layout_height="wrap_content"
-				android:text="@android:string/cancel"
-				/>
+				android:text="@android:string/ok"
+				style="?android:attr/buttonBarButtonStyle"
+				android:layout_height="wrap_content"/>
 	</LinearLayout>
 </RelativeLayout>

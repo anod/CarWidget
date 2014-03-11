@@ -21,8 +21,6 @@ import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.ConfigurationInCar;
-import com.anod.car.home.prefs.ConfigurationInCarGrid;
-import com.anod.car.home.prefs.ConfigurationRestore;
 import com.anod.car.home.prefs.TrialDialogs;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 import com.anod.car.home.prefs.backup.RestoreCodeRender;
@@ -98,7 +96,8 @@ public class MainActivity extends CarWidgetActivity implements RestoreTask.Resto
 		settings.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-			Intent intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationInCarGrid.class);
+			//Intent intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationInCarGrid.class);
+				Intent intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationInCar.class);
 			startActivity(intent);
 			}
 		});

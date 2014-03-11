@@ -65,6 +65,7 @@
 	<plurals name="notif_activations_left">
 		<item quantity="one">%1$d активация осталась</item>
 		<item quantity="other">%1$d активаций осталось</item>
+		<item quantity="few">%1$d активаций осталось</item>
 	</plurals>
 	<string name="version_title">%1$s вер. %2$s</string>
 	<string name="version_summary">Пожалуйста, оцените этот виджет на маркете</string>

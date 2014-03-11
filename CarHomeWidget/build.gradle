@@ -5,13 +5,13 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.7.+'
+        classpath 'com.android.tools.build:gradle:0.9.+'
 
     }
 }
 apply plugin: 'android'
 repositories {
-    maven { url 'http://download.crashlytics.com/maven' }
+    mavenCentral()
 }
 
 
@@ -31,13 +31,13 @@ dependencies {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+    buildToolsVersion "19.0.3"
 
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 19
-        versionCode 42
-        versionName '1.6.7'
+        versionCode 43
+        versionName '1.6.8'
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
     sourceSets {
@@ -81,4 +81,10 @@ android {
         }
     }
 
+    lintOptions {
+        checkReleaseBuilds true
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
 }
