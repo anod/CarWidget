@@ -215,4 +215,12 @@
 		<item>90&#186; שמאלה</item>
 		<item>90&#186; ימינה</item>
 	</string-array>
+
+	<plurals name="active_widgets">
+		<item quantity="zero">לא נמצאו ווידג׳טים פעילים</item>
+		<item quantity="one">ווידג׳ט אחד פעיל</item>
+		<item quantity="other">%d ווידג׳טים פעילים</item>
+	</plurals>
+
+
 </resources>

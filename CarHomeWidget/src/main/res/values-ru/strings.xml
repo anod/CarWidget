@@ -66,6 +66,7 @@
 		<item quantity="one">%1$d активация осталась</item>
 		<item quantity="other">%1$d активаций осталось</item>
 		<item quantity="few">%1$d активаций осталось</item>
+		<item quantity="many">%1$d активаций осталось</item>
 	</plurals>
 	<string name="version_title">%1$s вер. %2$s</string>
 	<string name="version_summary">Пожалуйста, оцените этот виджет на маркете</string>
@@ -123,7 +124,7 @@
 	<string name="pref_titles_hide_title">Скрыть названия</string>
 	<string name="pref_titles_hide_summary">Не отображать названия ярлыков</string>
 	<string name="home_screen_widgets">Виджеты</string>
-	<string name="no_active_widgets_were_found">Активные виджеты не были найдены</string>
+	<string name="no_active_widgets_were_found">Активные виджеты не найдены</string>
 	<string name="not_active">Не активен</string>
 	<string name="disabled_trial_expired">Отключен - Истек срок пробной версии</string>
 	<string name="no_items">Нет элементов</string>
@@ -146,7 +147,7 @@
 		<item quantity="many">%d активных виджетов</item>
 		<item quantity="other">%d активных виджетов</item>
 	</plurals>
-	<string name="gms_success">Использовать Google Play services для определения активности</string>
+	<string name="gms_success">Использовать сенсоры для определения движения</string>
 	<string name="gms_service_missing">Google Play services отсутствует на этом устройстве.</string>
 	<string name="gms_service_update_required">Установленная версия Google Play services устарела.</string>
 	<string name="gms_service_disabled">Установленная версия Google Play services была отключена на этом устройства.</string>
@@ -220,4 +221,23 @@
 		<item>90&#186; Влево</item>
 		<item>90&#186; Вправо</item>
 	</string-array>
+
+	<string-array name="app_themes">
+		<item>Светлая</item>
+		<item>Темная</item>
+	</string-array>
+
+	<string name="samsung_driving_summary">Включить встроенный Samsung Driving Mode</string>
+	<string name="samsung_driving_title">Samsung Driving Mode</string>
+	<string name="samsung_handsfree_title">Samsung Handsfree</string>
+	<string name="export_backup">Экспорт</string>
+	<string name="import_backup">Импорт</string>
+	<string name="export_backup_finish">Экспорт завершен</string>
+	<string name="delete">Удалить</string>
+	<string name="add">Добавить</string>
+	<string name="number">Количество</string>
+	<string name="choose_a_theme">Выбрать тему</string>
+	<string name="theme_gray">Светлая</string>
+	<string name="theme_holo">Темная</string>
+	<string name="number_shortcuts_title">Количество ярлыков</string>
 </resources>

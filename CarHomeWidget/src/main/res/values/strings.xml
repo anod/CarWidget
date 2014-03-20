@@ -237,4 +237,5 @@
 	<string name="add">Add</string>
 	<string name="cardock">CarDock</string>
 	<string name="number">Number</string>
+	<string name="number_shortcuts_title">Number of shortcuts</string>
 </resources>

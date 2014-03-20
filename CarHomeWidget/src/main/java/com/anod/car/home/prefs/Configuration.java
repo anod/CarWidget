@@ -116,9 +116,9 @@ public class Configuration extends ConfigurationPreferenceFragment implements Pr
 				 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					 @Override
 					 public void onClick(DialogInterface dialogInterface, int i) {
-						int value = numberPicker.getValue();
-						mModel.updateCount(Integer.valueOf(nums[value]));
-						refreshShortcuts();
+						 int value = numberPicker.getValue();
+						 mModel.updateCount(Integer.valueOf(nums[value]));
+						 refreshShortcuts();
 					 }
 				 })
 				 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -127,7 +127,7 @@ public class Configuration extends ConfigurationPreferenceFragment implements Pr
 						 dialogInterface.dismiss();
 					 }
 				 })
-				.setTitle("Number of shortcuts")
+				.setTitle(R.string.number_shortcuts_title)
 		;
 		return builder.create();
 	}
