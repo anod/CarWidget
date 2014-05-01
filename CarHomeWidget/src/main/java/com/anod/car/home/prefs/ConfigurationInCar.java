@@ -181,9 +181,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 
 		showFragmentOnClick(MEDIA_SCREEN, ConfigurationInCarVolume.class);
 
-		if (Utils.IS_ICS_OR_GREATER) {
-			showFragmentOnClick(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class);
-		}
+		showFragmentOnClick(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class);
 
 		initSamsungHandsfree();
 	}
@@ -324,11 +322,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 	@SuppressLint("NewApi")
 	private void initBluetooth() {
 		Preference btSwitch = (Preference) findPreference(PREF_BT_SWITCH);
-		if (Utils.IS_ICS_OR_GREATER) {
-			((SwitchPreference) btSwitch).setChecked(Bluetooth.getState() == BluetoothAdapter.STATE_ON);
-		} else {
-			((CheckBoxPreference) btSwitch).setChecked(Bluetooth.getState() == BluetoothAdapter.STATE_ON);
-		}
+		((SwitchPreference) btSwitch).setChecked(Bluetooth.getState() == BluetoothAdapter.STATE_ON);
 		btSwitch.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {

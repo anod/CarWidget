@@ -1,10 +1,10 @@
 package com.anod.car.home.app;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.prefs.preferences.AppTheme;
@@ -14,7 +14,7 @@ import com.anod.car.home.utils.Utils;
  * @author alex
  * @date 11/20/13
  */
-abstract public class CarWidgetActivity extends ActionBarActivity {
+abstract public class CarWidgetActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,20 +35,4 @@ abstract public class CarWidgetActivity extends ActionBarActivity {
 		return CarWidgetApplication.getApplication(this);
 	}
 
-	// Backwards compatible recreate().
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	@Override
-	public void recreate()
-	{
-		if (Utils.IS_HONEYCOMB_OR_GREATER)
-		{
-			super.recreate();
-		}
-		else
-		{
-			Intent intent = getIntent();
-			finish();
-			startActivity(intent);
-		}
-	}
 }

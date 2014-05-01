@@ -47,7 +47,7 @@
         android:gravity="center"
         android:scaleType="center"
         android:src="@drawable/ic_action_tick"
-		style="@style/Widget.AppCompat.ActionButton"
+		style="@android:style/Widget.ActionButton"
 		android:contentDescription="@string/restore"
     />
 
@@ -58,7 +58,7 @@
 			android:gravity="center"
 			android:scaleType="center"
 			android:src="@drawable/ic_action_xhdpi_ul_to_cloud"
-			style="@style/Widget.AppCompat.ActionButton"
+			style="@android:style/Widget.ActionButton"
 			android:contentDescription="@string/export_backup"
 	/>
 
@@ -69,7 +69,7 @@
         android:gravity="center"
         android:scaleType="center"
         android:src="@drawable/ic_action_cancel"
-		style="@style/Widget.AppCompat.ActionButton"
+		style="@android:style/Widget.ActionButton"
 		android:contentDescription="@string/delete"
     />        
 

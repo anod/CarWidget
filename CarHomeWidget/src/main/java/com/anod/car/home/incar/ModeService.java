@@ -68,25 +68,15 @@ public class ModeService extends Service {
 		Notification notification = new Notification();
 		notification.flags |= Notification.FLAG_ONGOING_EVENT;
 		notification.icon = R.drawable.ic_stat_incar;
-		if (Utils.IS_HONEYCOMB_OR_GREATER) {
-			RemoteViews contentView = createShortcuts();
-			if (version.isFree()) {
-				contentView.setTextViewText(R.id.text, getString(R.string.click_to_disable_trial, version.getTrialTimesLeft()));
-			}
-			notification.contentIntent = contentIntent;
-			notification.contentView = contentView;
-			setNotificationPriority(notification);
-		} else {
-			String notifTitle = getString(R.string.incar_mode_enabled);
-			String notifText;
-			if (version.isFree()) {
-				notifText = getString(R.string.click_to_disable_trial, version.getTrialTimesLeft());
-				notification.tickerText = getResources().getQuantityString(R.plurals.notif_activations_left, version.getTrialTimesLeft(), version.getTrialTimesLeft());
-			} else {
-				notifText = getString(R.string.click_to_disable);
-			}
-			notification.setLatestEventInfo(this, notifTitle, notifText, contentIntent);
+
+		RemoteViews contentView = createShortcuts();
+		if (version.isFree()) {
+			contentView.setTextViewText(R.id.text, getString(R.string.click_to_disable_trial, version.getTrialTimesLeft()));
 		}
+		notification.contentIntent = contentIntent;
+		notification.contentView = contentView;
+		setNotificationPriority(notification);
+
 		return notification;
 	}
 

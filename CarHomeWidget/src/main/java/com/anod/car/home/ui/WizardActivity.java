@@ -1,9 +1,9 @@
 package com.anod.car.home.ui;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
@@ -53,7 +53,7 @@ public class WizardActivity extends CarWidgetActivity {
 
 		// Instantiate a ViewPager and a PagerAdapter.
 		mPager = (ViewPager) findViewById(R.id.pager);
-		mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+		mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
 
 		final Button nextButton =(Button)findViewById(R.id.buttonNext);

@@ -18,7 +18,7 @@ public class SamsungDrivingMode {
 	final public static boolean IS_SAMSUNG = (Build.MANUFACTURER.equals(DEVICE_SAMSUNG));
 
 	public static boolean hasMode() {
-		return IS_SAMSUNG && Utils.IS_ICS_OR_GREATER;
+		return IS_SAMSUNG;
 	}
 
 	public static boolean enabled(Context context) {

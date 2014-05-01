@@ -2,6 +2,7 @@ package com.anod.car.home.prefs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,8 +11,6 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -193,10 +192,10 @@ public class ConfigurationRestore extends Fragment implements
 		if (mRefreshMenuItem == null) {
 			return;
 		}
-		View actionView = MenuItemCompat.getActionView(mRefreshMenuItem);
+		View actionView = mRefreshMenuItem.getActionView();
 		if (actionView != null) {
 			actionView.clearAnimation();
-			MenuItemCompat.setActionView(mRefreshMenuItem,null);
+			mRefreshMenuItem.setActionView(null);
 		}
 		mRefreshMenuItem.setVisible(false);
 	}
@@ -208,7 +207,7 @@ public class ConfigurationRestore extends Fragment implements
 		if (mRefreshMenuItem == null) {
 			return;
 		}
-		View actionView = MenuItemCompat.getActionView(mRefreshMenuItem);
+		View actionView = mRefreshMenuItem.getActionView();
 		//already animating
 		if (actionView != null) {
 			return;
@@ -221,7 +220,7 @@ public class ConfigurationRestore extends Fragment implements
 		iv.startAnimation(rotation);
 
 		mRefreshMenuItem.setVisible(true);
-		MenuItemCompat.setActionView(mRefreshMenuItem, iv);
+		mRefreshMenuItem.setActionView(iv);
 
 	}
 

@@ -24,16 +24,15 @@
 			android:layout_marginTop="@dimen/panel_header_margin"
 			/>
 
-	<android.support.v7.widget.GridLayout
+	<GridLayout
 			android:id="@+id/grid_detections"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			carwidget:columnCount="5"
+			android:columnCount="5"
 			android:paddingTop="1dp"
 			android:paddingLeft="1dp"
 		>
-
-	</android.support.v7.widget.GridLayout>
+	</GridLayout>
 
 	<TextView
 			android:layout_width="fill_parent"
@@ -44,18 +43,18 @@
 			android:layout_marginTop="@dimen/panel_header_margin"
 			/>
 
-	<android.support.v7.widget.GridLayout
+	<GridLayout
 			android:id="@+id/grid_actions"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			carwidget:columnCount="5"
-			carwidget:columnOrderPreserved="true"
+			android:columnCount="5"
+			android:columnOrderPreserved="true"
 			android:paddingTop="1dp"
 			android:paddingLeft="1dp"
 			android:baselineAligned="false"
 		>
 
-	</android.support.v7.widget.GridLayout>
+	</GridLayout>
 
 </LinearLayout>
 </ScrollView>

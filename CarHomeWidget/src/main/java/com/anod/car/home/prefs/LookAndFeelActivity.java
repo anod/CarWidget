@@ -2,6 +2,8 @@ package com.anod.car.home.prefs;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -17,15 +19,12 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.util.LruCache;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.util.LruCache;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,7 +45,7 @@ import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 
-public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChangeListener, WidgetViewBuilder.PendingIntentHelper {
+public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentHelper {
 	private static final int SKINS_COUNT = 5;
 	private static final int REQUEST_LOOK_ACTIVITY = 1;
 	private static final int REQUEST_PICK_ICON_THEME = 2;
@@ -117,7 +116,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 
 		int count = mSkinItems.length;
 
-		SkinPagerAdapter adapter = new SkinPagerAdapter(this, count, getSupportFragmentManager());
+		SkinPagerAdapter adapter = new SkinPagerAdapter(this, count, getFragmentManager());
 		mGallery.setAdapter(adapter);
 		mGallery.setCurrentItem(mSelectedSkinPosition);
 
@@ -141,11 +140,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 				// The cache size will be measured in kilobytes rather than
 				// number of items.
 
-				if (Utils.IS_HONEYCOMB_MR1_OR_GREATER) {
-					return bitmap.getByteCount() / 1024;
-				}
-				// Pre HC-MR1
-				return (bitmap.getRowBytes() * bitmap.getHeight()) / 1024;
+				return bitmap.getByteCount() / 1024;
 			}
 		};
 	}
@@ -188,11 +183,6 @@ public class LookAndFeelActivity extends CarWidgetActivity implements OnPageChan
 		// that the
 		// action bar helpers have a chance to handle this event.
 		boolean result = super.onCreateOptionsMenu(menu);
-
-		//restore apply button visibility after super
-		if (!Utils.IS_HONEYCOMB_OR_GREATER) {
-			menu.findItem(R.id.apply).setVisible(true);
-		}
 
 		return result;
 	}

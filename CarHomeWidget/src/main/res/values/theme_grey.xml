@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<style name="AppThemeGray" parent="@style/Theme.AppCompat">
+	<style name="AppThemeGray" parent="android:style/Theme.Holo">
 		<item name="panelItem">@style/panelItemGray</item>
 		<item name="panelHeader">@style/panelHeaderGray</item>
 		<item name="PreferencesItem">@style/PreferencesItemGray</item>
@@ -19,7 +19,6 @@
 		<item name="android:listViewStyle">@style/AppListView</item>
 
 		<item name="android:actionBarStyle">@style/ActionBarCompatGrey</item>
-		<item name="actionBarStyle">@style/ActionBarCompatGrey</item>
 
 		<item name="textColorPrimary">@color/primary_text_grey</item>
 		<item name="textColorSecondary">@color/secondary_text_grey</item>
@@ -35,24 +34,14 @@
 		<item name="android:windowActionBarOverlay">true</item>
 		<item name="android:actionBarStyle">@style/ActionBarCompatGrey.Transparent</item>
 
-		<!-- Support library compatibility -->
-		<item name="windowActionBarOverlay">true</item>
-		<item name="actionBarStyle">@style/ActionBarCompatGrey.Transparent</item>
-
 	</style>
 
 	<!-- Skin Chooser -->
-	<style name="ActionBarCompatGrey" parent="@style/Widget.AppCompat.ActionBar">
+	<style name="ActionBarCompatGrey" parent="android:style/Widget.ActionBar">
 		<item name="android:background">@color/actionbar_bg_color</item>
 		<item name="android:actionBarDivider">@color/actionbar_bg_color</item>
 		<item name="android:backgroundStacked">@color/actionbar_bg_color</item>
 		<item name="android:backgroundSplit">@color/actionbar_bg_color</item>
-
-		<!-- Support library compatibility -->
-		<item name="background">@color/actionbar_bg_color</item>
-		<item name="actionBarDivider">@color/actionbar_bg_color</item>
-		<item name="backgroundStacked">@color/actionbar_bg_color</item>
-		<item name="backgroundSplit">@color/actionbar_bg_color</item>
 	</style>
 
 	<!-- Skin Chooser -->
@@ -61,12 +50,6 @@
 		<item name="android:actionBarDivider">@null</item>
 		<item name="android:backgroundStacked">@null</item>
 		<item name="android:backgroundSplit">@null</item>
-
-		<!-- Support library compatibility -->
-		<item name="background">@null</item>
-		<item name="actionBarDivider">@null</item>
-		<item name="backgroundStacked">@null</item>
-		<item name="backgroundSplit">@null</item>
 	</style>
 
 	<style name="panelItemGray" parent="panelItemBasic">

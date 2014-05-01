@@ -16,9 +16,6 @@ import com.anod.car.home.R;
 
 public class Utils {
 
-	final public static boolean IS_HONEYCOMB_OR_GREATER = (Build.VERSION.SDK_INT >= 11);
-	final public static boolean IS_HONEYCOMB_MR1_OR_GREATER = (Build.VERSION.SDK_INT >= 12);
-	final public static boolean IS_ICS_OR_GREATER = (Build.VERSION.SDK_INT >= 14);
 	final public static boolean IS_ISC_MR1_OR_GREATER = (Build.VERSION.SDK_INT >= 15);
 	final public static boolean IS_JELLYBEAN_OR_GREATER = (Build.VERSION.SDK_INT >= 16);
 	final public static boolean IS_JELLYBEAN_MR2_OR_GREATER = (Build.VERSION.SDK_INT >= 18); // 4.3 JELLY_BEAN_MR2

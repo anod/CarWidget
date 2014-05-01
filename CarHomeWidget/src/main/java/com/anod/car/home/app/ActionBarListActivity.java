@@ -72,8 +72,7 @@ public abstract class ActionBarListActivity extends CarWidgetActivity {
 	 *
 	 */
 	@Override
-	public void onSupportContentChanged() {
-		super.onSupportContentChanged();
+	public void onContentChanged() {
 		View emptyView = findViewById(android.R.id.empty);
 		mList = (ListView)findViewById(android.R.id.list);
 		if (mList == null) {

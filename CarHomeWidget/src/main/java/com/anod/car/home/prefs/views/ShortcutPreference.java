@@ -115,11 +115,6 @@ public class ShortcutPreference extends Preference implements OnClickListener {
 
 	@SuppressLint("NewApi")
 	private void initDragButton(ImageView dragButton, final View mainView) {
-		if (!Utils.IS_HONEYCOMB_OR_GREATER) {
-			dragButton.setVisibility(View.GONE);
-			return;
-		}
-
 		dragButton.setOnLongClickListener(new View.OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View view) {

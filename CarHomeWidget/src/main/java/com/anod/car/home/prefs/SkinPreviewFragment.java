@@ -1,11 +1,11 @@
 package com.anod.car.home.prefs;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
+import android.content.Loader;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +75,7 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 	}
 
 
-	public static class ViewLoader extends	AsyncTaskLoader<View> {
+	public static class ViewLoader extends AsyncTaskLoader<View> {
 		private final LookAndFeelActivity mActivity;
 		private final int mPosition;
 		

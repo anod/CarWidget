@@ -6,7 +6,7 @@
 	<item
 			android:id="@+id/menu_refresh"
 			android:icon="@drawable/ic_action_refresh"
-			carwidget:showAsAction="always"
+			android:showAsAction="always"
 			android:title="@string/restore">
 	</item>
 

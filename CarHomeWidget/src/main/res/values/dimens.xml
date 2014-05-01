@@ -41,4 +41,7 @@
 	<dimen name="incar_item_width">65dp</dimen>
 	<dimen name="incar_item_height">75dp</dimen>
 	<dimen name="incar_item_margin">1dp</dimen>
+
+	<dimen name="notification_button">48.0dip</dimen>
+	<dimen name="notification_padding">8.0dip</dimen>
 </resources>

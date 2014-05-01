@@ -3,7 +3,7 @@
 				  android:summary="@string/pref_incar_mode_summary"
 				  android:title="@string/pref_incar_mode_title">
 
-	<CheckBoxPreference
+	<SwitchPreference
 			android:key="incar-mode-enabled"
 			android:title="@string/pref_incar_mode_enabled"
 			android:layout="@layout/pref"/>
@@ -15,34 +15,41 @@
 				android:key="power-bt-enable"
 				android:summary="@string/pref_power_plugged_bt_on_summary"
 				android:title="@string/pref_power_plugged_bt_on_title"
-				android:layout="@layout/pref"/>
+				android:layout="@layout/pref"
+				/>
+
 		<CheckBoxPreference
 				android:key="power-bt-disable"
 				android:summary="@string/pref_power_unplugged_bt_off_summary"
 				android:title="@string/pref_power_unplugged_bt_off_title"
-				android:layout="@layout/pref"/>
+				android:layout="@layout/pref"
+				/>
+
 	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/pref_detection" android:layout="@layout/pref_category">
+	<PreferenceCategory
+			android:title="@string/pref_detection"
+			android:layout="@layout/pref_category">
 		<PreferenceScreen
 				android:key="bt-device-screen"
 				android:summary="@string/pref_blutooth_device_summary"
 				android:title="@string/pref_blutooth_device_title"
 				android:layout="@layout/pref">
-			<CheckBoxPreference
+			<SwitchPreference
 					android:key="bt-switch"
 					android:summaryOff="@string/turn_on_bluetooth_summary"
 					android:summaryOn="@string/turn_off_bluetooth_summary"
 					android:title="@string/bluetooth"
-					android:layout="@layout/pref"/>
+					android:layout="@layout/pref" />
 
 			<PreferenceCategory
 					android:key="bt-device-category"
 					android:title="@string/bluetooth_device_category_title"
 					android:layout="@layout/pref_category">
 				<CheckBoxPreference
-						android:key="bt-device-address"
-						android:title="Device 1"
-						android:layout="@layout/pref"/>
+					android:key="bt-device-address"
+					android:title="Device 1"
+					android:layout="@layout/pref"
+				/>
 			</PreferenceCategory>
 		</PreferenceScreen>
 
@@ -50,18 +57,19 @@
 				android:key="headset-required"
 				android:summary="@string/pref_headset_connected_summary"
 				android:title="@string/pref_headset_connected_title"
-				android:layout="@layout/pref"/>
+				android:layout="@layout/pref"
+				/>
 		<CheckBoxPreference
 				android:key="power-required"
 				android:summary="@string/pref_power_connected_summary"
 				android:title="@string/pref_power_connected_title"
-				android:layout="@layout/pref"/>
-		<CheckBoxPreference
-				android:key="activity-recognition"
-				android:title="@string/activity_recognition"
-				android:summary="@string/gms_service_missing"
 				android:layout="@layout/pref"
-		/>
+				/>
+		<CheckBoxPreference android:key="activity-recognition"
+					android:title="@string/activity_recognition"
+					android:summary="@string/gms_service_missing"
+					android:layout="@layout/pref"
+				/>
 	</PreferenceCategory>
 	<PreferenceCategory
 			android:title="@string/pref_actions"
@@ -70,7 +78,8 @@
 				android:key="screen-timeout"
 				android:summary="@string/pref_screen_timeout_summary"
 				android:title="@string/pref_screen_timeout"
-				android:layout="@layout/pref"/>
+				android:layout="@layout/pref"
+				/>
 
 		<ListPreference
 				android:defaultValue="disabled"
@@ -79,17 +88,20 @@
 				android:key="brightness"
 				android:summary="@string/pref_brightness_mode_summary"
 				android:title="@string/pref_brightness_mode"
-				android:layout="@layout/pref"/>
+				android:layout="@layout/pref"
+				/>
 
 		<CheckBoxPreference
 				android:key="bluetooth"
 				android:title="@string/turn_on_bluetooth_summary"
-				android:layout="@layout/pref"/>
+				android:layout="@layout/pref"
+				/>
 		<CheckBoxPreference
 				android:key="auto_speaker"
 				android:summary="@string/pref_route_to_speaker_summary"
 				android:title="@string/pref_route_to_speaker"
-				android:layout="@layout/pref"/>
+				android:layout="@layout/pref"
+				/>
 
 		<ListPreference
 				android:defaultValue="disabled"
@@ -98,7 +110,8 @@
 				android:key="auto_answer"
 				android:summary="@string/pref_auto_answer_summary"
 				android:title="@string/pref_auto_answer"
-				android:layout="@layout/pref"/>
+				android:layout="@layout/pref"
+				/>
 
 		<Preference
 				android:title="@string/pref_change_media_volume"
@@ -106,8 +119,7 @@
 				android:key="media-screen"
 				android:layout="@layout/pref"
 				android:fragment="com.anod.car.home.prefs.ConfigurationInCarVolume"
-				>
-		</Preference>
+		/>
 
 		<PreferenceScreen
 				android:key="incar-more-screen"
@@ -124,13 +136,15 @@
 						android:key="wi-fi"
 						android:summary="@string/pref_wifi_summary"
 						android:title="@string/pref_wifi"
-						android:layout="@layout/pref"/>
+						android:layout="@layout/pref"
+						/>
 
 				<CheckBoxPreference
 						android:key="activate-car-mode"
 						android:summary="@string/pref_activate_car_mode_summary"
 						android:title="@string/pref_activate_car_mode"
-						android:layout="@layout/pref"/>
+						android:layout="@layout/pref"
+						/>
 
 				<ListPreference
 						android:entries="@array/autorun_app_titles"
@@ -138,16 +152,28 @@
 						android:key="autorun-app-choose"
 						android:summary="@string/disabled"
 						android:title="@string/pref_autorun_app_title"
-						android:layout="@layout/pref"/>
+						android:layout="@layout/pref"
+						/>
 
 				<CheckBoxPreference
 						android:key="sam_driving_mode"
-						android:summary="Enable built-in Samsung Driving Mode"
-						android:title="Samsung Driving Mode"
+						android:summary="@string/samsung_driving_summary"
+						android:title="@string/samsung_driving_title"
 						android:layout="@layout/pref"/>
-
 			</PreferenceCategory>
 		</PreferenceScreen>
+	</PreferenceCategory>
+
+	<PreferenceCategory
+			android:title="@string/notification"
+			android:layout="@layout/pref_category">
+		<Preference
+				android:key="notif-shortcuts"
+				android:summary="@string/shortcuts_summary"
+				android:title="@string/shortcuts"
+				android:layout="@layout/pref"
+				android:fragment="com.anod.car.home.prefs.ConfigurationNotifShortcuts"
+				/>
 	</PreferenceCategory>
 
 </PreferenceScreen>

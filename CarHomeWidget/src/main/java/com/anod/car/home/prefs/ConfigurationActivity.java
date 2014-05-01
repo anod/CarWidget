@@ -1,13 +1,13 @@
 package com.anod.car.home.prefs;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.preference.PreferenceFragment;
+import android.preference.PreferenceFragment;
 
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
@@ -52,7 +52,7 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 			Fragment conf = createFragmentInstance();
 
 			conf.setArguments(getIntent().getExtras());
-			getSupportFragmentManager().beginTransaction().add(R.id.main_fragment, conf).commit();
+			getFragmentManager().beginTransaction().add(R.id.main_fragment, conf).commit();
 		}
 	}
 
@@ -123,7 +123,7 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 		if (resultTo != null) {
 			f.setTargetFragment(resultTo, resultRequestCode);
 		}
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		transaction.replace(R.id.main_fragment, f);
 		if (titleText != null) {
 			transaction.setBreadCrumbTitle(titleText);

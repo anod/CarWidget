@@ -5,7 +5,7 @@
 
 	<style name="DialogTheme" parent="android:style/Theme.Dialog" />
 
-	<style name="AppListView" parent="@android:style/Widget.ListView">
+	<style name="AppListView" parent="android:style/Widget.ListView">
 		<item name="android:paddingRight">12dp</item>
 		<item name="android:paddingLeft">12dp</item>
 		<item name="android:background">@color/activity_bg</item>

@@ -43,7 +43,7 @@
 					android:layout_height="wrap_content"
 					android:id="@+id/downloadMain"
 					android:src="@drawable/ic_action_xhdpi_dl_from_cloud"
-					style="@style/Widget.AppCompat.ActionButton"
+					style="@android:style/Widget.ActionButton"
 					android:layout_toLeftOf="@+id/backupIncar"
 					android:layout_alignParentTop="true"
 					android:contentDescription="@string/import_backup"
@@ -55,7 +55,7 @@
 					android:id="@+id/backupMain"
 					android:src="@drawable/ic_action_add"
 					android:layout_alignTop="@+id/textView" android:layout_alignParentRight="true"
-					style="@style/Widget.AppCompat.ActionButton"
+					style="@android:style/Widget.ActionButton"
 					android:contentDescription="@string/backup"
 					/>
 		</LinearLayout>
@@ -122,7 +122,7 @@
 				android:layout_height="wrap_content"
 				android:id="@+id/restoreIncar"
 				android:src="@drawable/ic_action_tick"
-				style="@style/Widget.AppCompat.ActionButton"
+				style="@android:style/Widget.ActionButton"
 				android:layout_toLeftOf="@+id/uploadIncar"
 				android:layout_alignParentTop="true"
 				android:contentDescription="@string/restore"
@@ -133,7 +133,7 @@
 				android:layout_height="wrap_content"
 				android:id="@+id/uploadIncar"
 				android:src="@drawable/ic_action_xhdpi_ul_to_cloud"
-				style="@style/Widget.AppCompat.ActionButton"
+				style="@android:style/Widget.ActionButton"
 				android:layout_toLeftOf="@+id/backupIncar"
 				android:layout_alignParentTop="true"
 				android:contentDescription="@string/export_backup"
@@ -144,7 +144,7 @@
 				android:layout_height="wrap_content"
 				android:id="@+id/downloadIncar"
 				android:src="@drawable/ic_action_xhdpi_dl_from_cloud"
-				style="@style/Widget.AppCompat.ActionButton"
+				style="@android:style/Widget.ActionButton"
 				android:layout_toLeftOf="@+id/backupIncar"
 				android:layout_alignParentTop="true"
 				android:contentDescription="@string/import_backup"
@@ -156,7 +156,7 @@
 				android:id="@+id/backupIncar"
 				android:src="@drawable/ic_action_add"
 				android:layout_alignTop="@+id/textView" android:layout_alignParentRight="true"
-				style="@style/Widget.AppCompat.ActionButton"
+				style="@android:style/Widget.ActionButton"
 				android:contentDescription="@string/backup"
 		/>
 		</LinearLayout>

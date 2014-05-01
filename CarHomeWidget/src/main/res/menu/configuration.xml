@@ -5,8 +5,14 @@
     <item
         android:id="@+id/apply"
         android:icon="@drawable/ic_action_tick"
-		carwidget:showAsAction="always"
+		android:showAsAction="always"
         android:title="@android:string/ok">
     </item>
 
+	<item
+		android:id="@+id/menu_number"
+		android:icon="@drawable/ic_action_dash"
+		android:showAsAction="always"
+		android:title="@string/number">
+	</item>
 </menu>

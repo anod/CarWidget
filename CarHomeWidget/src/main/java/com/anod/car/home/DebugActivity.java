@@ -54,8 +54,8 @@ public class DebugActivity extends CarWidgetActivity implements AppLog.LogListen
 				updateStatus();
 			}
 		});
-		getSupportActionBar().setCustomView(refresh);
-		getSupportActionBar().setDisplayShowCustomEnabled(true);
+		getActionBar().setCustomView(refresh);
+		getActionBar().setDisplayShowCustomEnabled(true);
     }
 
 	private void updateStatus() {

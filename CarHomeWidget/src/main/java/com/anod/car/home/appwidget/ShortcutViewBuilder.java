@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v4.util.LruCache;
+import android.util.LruCache;
 import android.view.View;
 import android.widget.RemoteViews;
 

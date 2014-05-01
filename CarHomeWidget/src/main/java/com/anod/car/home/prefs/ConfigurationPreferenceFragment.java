@@ -10,10 +10,11 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
-import android.support.v4.preference.PreferenceFragment;
+import android.preference.PreferenceFragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import com.anod.car.home.R;
@@ -31,6 +32,7 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 
 
 	protected static final int DIALOG_WAIT = 1;
+	private ListView mListView;
 
 	abstract protected int getXmlResource();
 	abstract protected void onCreateImpl(Bundle savedInstanceState);
@@ -97,14 +99,18 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
 
-		ListView lv = getListView();
+		mListView = (ListView) view.findViewById(android.R.id.list);
+
 		Resources r = getResources();
+		mListView.setDivider(r.getDrawable(android.R.color.transparent));
+		mListView.setDividerHeight(r.getDimensionPixelSize(R.dimen.preference_item_margin));
+	}
 
-		lv.setDivider(r.getDrawable(android.R.color.transparent));
-		lv.setDividerHeight(r.getDimensionPixelSize(R.dimen.preference_item_margin));
+	public ListView getListView() {
+		return mListView;
 	}
 
 	@Override
