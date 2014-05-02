@@ -11,7 +11,7 @@ import com.anod.car.home.model.AppsListCache.CacheEntry;
 
 public class AllAppsActivity extends AppsCacheActivity {
 	
-    final private Intent getActivityIntent(ComponentName className) {
+    private Intent getActivityIntent(ComponentName className) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.setComponent(className);
