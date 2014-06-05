@@ -27,8 +27,7 @@ public class CarWidgetShortcutsPicker extends ActivityPicker {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Version v = new Version(this);
-		setTitle(v.isFree() ? R.string.car_widget_shortcuts : R.string.car_widget_pro_shortcuts);
+		setTitle(R.string.car_widget_shortcuts);
 
 	}
 	@Override

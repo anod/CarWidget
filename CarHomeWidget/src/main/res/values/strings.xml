@@ -113,8 +113,6 @@
 	<string name="cardock_btn_1">Open App Info</string>
 	<string name="cardock_text1">To clear current default application:\n1. Open default App Info\n2. Click on \"Clear defaults\" button</string>
 	<string name="cardock_text2">Next time Car Dock enabled, choose \"Car Widget\" as a default application.</string>
-	<string name="car_widget_shortcuts">Car Widget shortcuts</string>
-	<string name="car_widget_pro_shortcuts">Car Widget Pro shortcuts</string>
 	<string name="select_shortcut_title">Select shortcut</string>
 	<string name="select_icon_pack">Select icon pack</string>
 	<string name="custom_image_error">An error was encountered while trying to open the selected image</string>
@@ -189,10 +187,8 @@
 	<string name="icon_default">Default</string>
 	<string name="failed_fetch_icon">Failed to fetch the default icon.</string>
 	<string name="please_add_widget">Please add widget to the homescreen</string>
-	<string name="samsung_driving_summary">Enable built-in Samsung Driving Mode</string>
-	<string name="samsung_driving_title">Samsung Driving Mode</string>
-	<string name="samsung_handsfree_title">Samsung Handsfree</string>
-	<string name="samsung_handsfree_summary">Enable built-in Samsung Handsfree Mode</string>
+	<string name="samsung_driving_summary">Enable built-in Samsung Car Mode</string>
+	<string name="samsung_driving_title">Samsung Car Mode</string>
 	<string-array name="brightness_mode_titles">
 		<item>System</item>
 		<item>Auto</item>
@@ -238,4 +234,6 @@
 	<string name="cardock">CarDock</string>
 	<string name="number">Number</string>
 	<string name="number_shortcuts_title">Number of shortcuts</string>
+	<string name="car_dock">Car Dock</string>
+	<string name="car_dock_summary">Enable InCar mode when phone is docked into car dock</string>
 </resources>

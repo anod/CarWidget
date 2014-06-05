@@ -9,24 +9,6 @@
 			android:layout="@layout/pref"/>
 
 	<PreferenceCategory
-			android:title="@string/pref_power_contorl_bt"
-			android:layout="@layout/pref_category">
-		<CheckBoxPreference
-				android:key="power-bt-enable"
-				android:summary="@string/pref_power_plugged_bt_on_summary"
-				android:title="@string/pref_power_plugged_bt_on_title"
-				android:layout="@layout/pref"
-				/>
-
-		<CheckBoxPreference
-				android:key="power-bt-disable"
-				android:summary="@string/pref_power_unplugged_bt_off_summary"
-				android:title="@string/pref_power_unplugged_bt_off_title"
-				android:layout="@layout/pref"
-				/>
-
-	</PreferenceCategory>
-	<PreferenceCategory
 			android:title="@string/pref_detection"
 			android:layout="@layout/pref_category">
 		<PreferenceScreen
@@ -70,6 +52,11 @@
 					android:summary="@string/gms_service_missing"
 					android:layout="@layout/pref"
 				/>
+		<CheckBoxPreference android:key="car-dock"
+			android:title="@string/car_dock"
+			android:summary="@string/car_dock_summary"
+			android:layout="@layout/pref"
+		/>
 	</PreferenceCategory>
 	<PreferenceCategory
 			android:title="@string/pref_actions"
@@ -119,7 +106,8 @@
 				android:key="media-screen"
 				android:layout="@layout/pref"
 				android:fragment="com.anod.car.home.prefs.ConfigurationInCarVolume"
-		/>
+		>
+		</Preference>
 
 		<PreferenceScreen
 				android:key="incar-more-screen"
@@ -161,7 +149,27 @@
 						android:title="@string/samsung_driving_title"
 						android:layout="@layout/pref"/>
 			</PreferenceCategory>
+
 		</PreferenceScreen>
+	</PreferenceCategory>
+
+	<PreferenceCategory
+			android:title="@string/pref_power_contorl_bt"
+			android:layout="@layout/pref_category">
+		<CheckBoxPreference
+				android:key="power-bt-enable"
+				android:summary="@string/pref_power_plugged_bt_on_summary"
+				android:title="@string/pref_power_plugged_bt_on_title"
+				android:layout="@layout/pref"
+				/>
+
+		<CheckBoxPreference
+				android:key="power-bt-disable"
+				android:summary="@string/pref_power_unplugged_bt_off_summary"
+				android:title="@string/pref_power_unplugged_bt_off_title"
+				android:layout="@layout/pref"
+				/>
+
 	</PreferenceCategory>
 
 	<PreferenceCategory
@@ -175,5 +183,4 @@
 				android:fragment="com.anod.car.home.prefs.ConfigurationNotifShortcuts"
 				/>
 	</PreferenceCategory>
-
 </PreferenceScreen>

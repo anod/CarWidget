@@ -111,8 +111,6 @@
 	<string name="cardock_btn_1">לפתוח פרטי יישום</string>
 	<string name="cardock_text1">על מנת לנקות את יישום ברירת מחדל נוכחי:\n1.פתח פרטי יישום\n2.לחץ על כפתור \"נקה ברירת מחדל\" </string>
 	<string name="cardock_text2">בפעם הבאה כאשר Car Dock יופעל, בחר \"ווידג\'ט לרכב\" כיישום ברירת מחדל.</string>
-	<string name="car_widget_shortcuts">ווידג\'ט לרכב קיצור דרך</string>
-	<string name="car_widget_pro_shortcuts">ווידג\'ט פרו לרכב קיצור דרך</string>
 	<string name="select_shortcut_title">בחר קיצור דרך</string>
 	<string name="select_icon_pack">בחרבחבילת אייקון</string>
 	

@@ -115,8 +115,6 @@
 	<string name="cardock_btn_1">Открыть \"О приложении\"</string>
 	<string name="cardock_text1">Чтобы очистить текущее приложение запускаемое по умолчанию:\n1. Откройте \"О приложении\"\n2. Нажмите на кнопку \"Удалить настройки по умолчанию\"</string>
 	<string name="cardock_text2">В следующий раз при подключении Car Dock выберите \"Авто Виджет\" приложением по умолчанию.</string>
-	<string name="car_widget_shortcuts">Авто виджет ярлыки</string>
-	<string name="car_widget_pro_shortcuts">Авто виджет Pro ярлыки</string>
 	<string name="select_shortcut_title">Выберите ярлык</string>
 	<string name="select_icon_pack">Выберите набор иконок</string>
 	<string name="custom_image_error">Произошла ошибка при попытке открыть выбранное изображение</string>
@@ -227,9 +225,7 @@
 		<item>Темная</item>
 	</string-array>
 
-	<string name="samsung_driving_summary">Включить встроенный Samsung Driving Mode</string>
-	<string name="samsung_driving_title">Samsung Driving Mode</string>
-	<string name="samsung_handsfree_title">Samsung Handsfree</string>
+	<string name="samsung_driving_summary">Включить встроенный Samsung Car Mode</string>
 	<string name="export_backup">Экспорт</string>
 	<string name="import_backup">Импорт</string>
 	<string name="export_backup_finish">Экспорт завершен</string>

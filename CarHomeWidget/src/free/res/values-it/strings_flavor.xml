@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">Car Widget</string>
-	<string name="car_widget_shortcuts">Car Widget shortcuts</string>
+	<string name="car_widget_shortcuts">Scorciatoie Car Widget</string>
 </resources>

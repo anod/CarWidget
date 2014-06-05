@@ -55,7 +55,6 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 	private static final String PREF_NOTIF_SHORTCUTS = "notif-shortcuts";
 
 	private static final int DIALOG_TRIAL = 2;
-	private static final int DIALOG_INIT = 3;
 
 	private static final String AUTORUN_APP_PREF = "autorun-app-choose";
 	private static final String AUTORUN_APP_DISABLED = "disabled";
@@ -111,18 +110,8 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 
 	@Override
 	public Dialog onCreateDialog(int id) {
-		if (id == DIALOG_INIT) {
-			final ProgressDialog initDialog = new ProgressDialog(mContext);
-			initDialog.setCancelable(true);
-			initDialog.setMessage(getResources().getString(R.string.load_paired_device));
-			initDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-				@Override
-				public void onCancel(DialogInterface arg0) {
-					getActivity().finish();
-				}
-			});
-			return initDialog;
-		} else if (id == DIALOG_TRIAL) {
+//		initDialog.setMessage(getResources().getString(R.string.load_paired_device));
+		 if (id == DIALOG_TRIAL) {
 			if (Utils.isProInstalled(mContext)) {
 				return TrialDialogs.buildProInstalledDialog(mContext);
 			} else {
@@ -191,12 +180,6 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 			final Preference samDrivingPref = findPreference(PreferencesStorage.SAMSUNG_DRIVING_MODE);
 			((PreferenceCategory)findPreference("incar-more-category"))
 					.removePreference(samDrivingPref);
-		} else {
-			final Preference samDrivingPref = findPreference(PreferencesStorage.SAMSUNG_DRIVING_MODE);
-			if (Utils.IS_JELLYBEAN_MR2_OR_GREATER) {
-				samDrivingPref.setTitle(R.string.samsung_handsfree_title);
-				samDrivingPref.setSummary(R.string.samsung_handsfree_summary);
-			}
 		}
 	}
 
@@ -327,7 +310,6 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
 				Boolean switchOn = (Boolean) newValue;
-				showDialog(DIALOG_WAIT);
 				mBluetoothReceiver = new BluetoothStateReceiver();
 				getActivity().registerReceiver(mBluetoothReceiver, INTENT_FILTER);
 				if (Bluetooth.getState() == BluetoothAdapter.STATE_ON) {
@@ -357,7 +339,6 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 		private BluetoothAdapter mBtAdapter;
 
 		protected void onPreExecute() {
-			showDialog(DIALOG_INIT);
 			mBluetoothDevicesCategory.removeAll();
 			// Get the local Bluetooth adapter
 			mBtAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -379,7 +360,6 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 				mBluetoothDevicesCategory.addPreference(emptyPref);
 			}
 			mPairedList = null;
-			dismissDialogSafetly(DIALOG_INIT);
 		}
 
 		public void onProgressUpdate(Integer... values) {
@@ -461,21 +441,11 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 		public void onReceive(Context paramContext, Intent paramIntent) {
 			int state = paramIntent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
 			if (state == BluetoothAdapter.STATE_ON) {
-				dismissDialogSafetly(DIALOG_WAIT);
 				new InitBluetoothDevicesTask().execute(0);
 			} else if (state == BluetoothAdapter.STATE_OFF || state == BluetoothAdapter.ERROR) {
-				dismissDialogSafetly(DIALOG_WAIT);
 			}
 		}
 
 	}
 
-	@SuppressWarnings("deprecation")
-	private void dismissDialogSafetly(int id) {
-		try {
-			dismissDialog(id);
-		} catch (IllegalArgumentException e) {
-			AppLog.d(e.getMessage());
-		}
-	}
 }

@@ -117,8 +117,6 @@
 	<string name="cardock_btn_1">App-Info öffnen</string>
 	<string name="cardock_text1">Um die aktuellen Standard-Anwendung zu löschen:\n1. Standard App-Info öffnen\n2. \"Clear Defaults\" drücken</string>
 	<string name="cardock_text2">Wählen Sie bei der nächsten Car Dock-Aktivierung \"Car Widget\" als Standard-Anwendung.</string>
-	<string name="car_widget_shortcuts">Car Widget-Verknüpfungen</string>
-	<string name="car_widget_pro_shortcuts">Car Widget Pro-Verknüpfungen</string>
 	<string name="select_shortcut_title">Wählen Sie eine Verknüpfung</string>
 	<string name="select_icon_pack">Symbolpaket wählen</string>
 	<string name="custom_image_error">Beim Versuch das ausgewählte Bild zu öffnen, ist ein Fehler aufgetreten</string>

@@ -117,8 +117,6 @@
 	<string name="cardock_btn_1">Apri Informazioni applicazione</string>
 	<string name="cardock_text1">Per cancellare l\'applicazione predefinita:\n1. Aprire le informazioni sulle applicazioni predefinite\n2. Cliccare sul pulsante \"Cancella predefinite\"</string>
 	<string name="cardock_text2">La prossima volta che Car Dock verrà abilitato, scegliere \"Widget Car\" come applicazione predefinita.</string>
-	<string name="car_widget_shortcuts">Scorciatoie Car Widget</string>
-	<string name="car_widget_pro_shortcuts">Scorciatoie Car Widget Pro</string>
 	<string name="select_shortcut_title">Seleziona scorciatoia</string>
 	<string name="select_icon_pack">Seleziona un pacchetto di icone</string>
 	<string name="custom_image_error">Si è verificato un errore durante il tentativo di aprire l\'immagine selezionata</string>

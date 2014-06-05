@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">ווידג\'ט לרכב פרו</string>
+	<string name="car_widget_shortcuts">ווידג\'ט פרו לרכב קיצור דרך</string>
 </resources>

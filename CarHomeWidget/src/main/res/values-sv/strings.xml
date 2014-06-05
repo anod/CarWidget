@@ -117,8 +117,6 @@
 	<string name="cardock_btn_1">Öppna App Info</string>
 	<string name="cardock_text1">För att ta bort aktuella standardprogram:\n1. Öppna standard App Info\n2. Klicka på \"Ta bort förinställningar\" knappen</string>
 	<string name="cardock_text2">Nästa gång Car Dock aktiverat, välj \"Car Widget\" som ett standardprogram.</string>
-	<string name="car_widget_shortcuts">Bil Widget genvägar</string>
-	<string name="car_widget_pro_shortcuts">Bil Widget Pro genvägar</string>
 	<string name="select_shortcut_title">Välj genväg</string>
 	<string name="select_icon_pack">Välj ikon pack</string>
 	<string name="custom_image_error">Ett fel inträffade vid försök att öppna den valda bilden</string>

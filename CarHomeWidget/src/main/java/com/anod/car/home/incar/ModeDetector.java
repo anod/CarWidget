@@ -1,5 +1,6 @@
 package com.anod.car.home.incar;
 
+import android.app.UiModeManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -22,9 +23,10 @@ public class ModeDetector {
 	public static final byte FLAG_HEADSET = 1;
 	public static final byte FLAG_BLUETOOTH = 2;
 	public static final byte FLAG_ACTIVITY = 3;
+	private static final byte FLAG_CAR_DOCK = 4;
 
-	private static boolean[] sPrefState = {false, false, false, false};
-	private static boolean[] sEventState = {false, false, false, false};
+	private static boolean[] sPrefState = {false, false, false, false, false};
+	private static boolean[] sEventState = {false, false, false, false, false};
 
 	private static boolean sMode;
 
@@ -42,6 +44,7 @@ public class ModeDetector {
 		sPrefState[FLAG_BLUETOOTH] = prefs.isBluetoothRequired();
 		sPrefState[FLAG_HEADSET] = prefs.isHeadsetRequired();
 		sPrefState[FLAG_ACTIVITY] = prefs.isActivityRequired();
+		sPrefState[FLAG_CAR_DOCK] = prefs.isCarDockRequired();
 	}
 
 	public static void forceState(InCar prefs, boolean forceMode) {
@@ -57,6 +60,9 @@ public class ModeDetector {
 		}
 		if (sPrefState[FLAG_ACTIVITY]) {
 			sEventState[FLAG_ACTIVITY] = forceMode;
+		}
+		if (sPrefState[FLAG_CAR_DOCK]) {
+			sEventState[FLAG_CAR_DOCK] = forceMode;
 		}
 	}
 
@@ -129,6 +135,29 @@ public class ModeDetector {
 			}
 			return;
 		}
+
+		if (Intent.ACTION_DOCK_EVENT.equals(action)) {
+			int state = intent.getIntExtra(Intent.EXTRA_DOCK_STATE, 0);
+			if (state == Intent.EXTRA_DOCK_STATE_CAR) {
+				sEventState[FLAG_CAR_DOCK] = true;
+				return;
+			} else // if it was previously docked
+			if (sEventState[FLAG_CAR_DOCK] && state == Intent.EXTRA_DOCK_STATE_UNDOCKED) {
+				sEventState[FLAG_CAR_DOCK] = false;
+				return;
+			}
+		}
+
+		if (UiModeManager.ACTION_ENTER_CAR_MODE.equals(action)) {
+			sEventState[FLAG_CAR_DOCK] = true;
+			return;
+		}
+
+		if (UiModeManager.ACTION_EXIT_CAR_MODE.equals(action)) {
+			sEventState[FLAG_CAR_DOCK] = false;
+			return;
+		}
+
 		if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
 			HashMap<String, String> devices = prefs.getBtDevices();
 			if (devices != null) {

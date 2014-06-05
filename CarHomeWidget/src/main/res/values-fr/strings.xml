@@ -117,8 +117,6 @@
 	<string name="cardock_btn_1">Ouvrir l\'application Info</string>
 	<string name="cardock_text1">Pour effacer l\'application par défaut actuelle :\n1. Ouvrir l\'application Info par défaut\n2. Cliquer sur le bouton \"Supprimer par défaut\"</string>
 	<string name="cardock_text2">La prochaine fois que le Socle de voiture est activé, choisissez \"Widget Voiture\" comme application par défaut.</string>
-	<string name="car_widget_shortcuts">Raccourcis du widget Voiture</string>
-	<string name="car_widget_pro_shortcuts">Raccourcis du widget Voiture version Pro</string>
 	<string name="select_shortcut_title">Sélectionner un raccourci</string>
 	<string name="select_icon_pack">Sélectionner un pack d\'icônes</string>
 	<string name="custom_image_error">Une erreur s\'est produite lors de l\'ouverture de l\'image sélectionnée</string>

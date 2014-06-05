@@ -131,6 +131,20 @@
 		<activity android:name=".ui.WidgetsListActivity"/>
 		<activity android:name=".ui.WizardActivity"/>
 
+		<activity
+				android:name="com.anod.car.home.prefs.CarWidgetShortcutsPicker"
+				android:theme="@style/AppListTheme"
+				android:label="@string/car_widget_shortcuts"
+				android:finishOnCloseSystemDialogs="true">
+			<!--  This intent-filter allows your shortcuts to be created in the launcher. -->
+			<intent-filter>
+				<!--
+				<action android:name="android.intent.action.CREATE_SHORTCUT" />
+				//-->
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+
 		<service android:name="com.anod.car.home.incar.ModeService" />
         <service android:name="com.anod.car.home.incar.BroadcastService" />
 		<receiver android:name="com.anod.car.home.incar.ModeBroadcastReceiver" android:enabled="true" android:exported="true">
@@ -142,6 +156,10 @@
 				<action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
 				<action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
 				<action android:name="com.anod.car.home.incar.ACTION_ACTIVITY_RECOGNITION" />
+
+				<action android:name="android.intent.action.ACTION_DOCK_EVENT" />
+				<action android:name="android.app.action.ENTER_CAR_MODE" />
+				<action android:name="android.app.action.EXIT_CAR_MODE" />
 			</intent-filter>
 		</receiver>
 
