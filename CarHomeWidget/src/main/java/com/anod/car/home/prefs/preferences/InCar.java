@@ -55,6 +55,7 @@ public class InCar implements Serializable {
 	transient private ComponentName autorunApp;
 
 	private boolean activityRequired;
+	private boolean mCarDockRequired;
 
 	public InCar() {
 		super();
@@ -155,10 +156,10 @@ public class InCar implements Serializable {
 	/**
 	 * Get brightness preset
 	 * 
-	 * @see BRIGHTNESS_DEFAULT
-	 * @see BRIGHTNESS_AUTO
-	 * @see BRIGHTNESS_DAY
-	 * @see BRIGHTNESS_NIGHT
+	 * @see this.BRIGHTNESS_DEFAULT
+	 * @see this.BRIGHTNESS_AUTO
+	 * @see this.BRIGHTNESS_DAY
+	 * @see this.BRIGHTNESS_NIGHT
 	 * 
 	 * @return
 	 */
@@ -176,6 +177,14 @@ public class InCar implements Serializable {
 
 	public void setActivityRequired(boolean activityRequired) {
 		this.activityRequired = activityRequired;
+	}
+
+	public boolean isCarDockRequired() {
+		return mCarDockRequired;
+	}
+
+	public void setCarDockRequired(boolean carDockRequired) {
+		mCarDockRequired = carDockRequired;
 	}
 
 	public void setDisableBluetoothOnPower(boolean disableBluetoothOnPower) {
@@ -217,9 +226,9 @@ public class InCar implements Serializable {
 	/**
 	 * Get wifi action preset
 	 * 
-	 * @see WIFI_NOACTION
-	 * @see WIFI_TURNOFF
-	 * @see WIFI_DISABLE
+	 * @see this.WIFI_NOACTION
+	 * @see this.WIFI_TURNOFF
+	 * @see this.WIFI_DISABLE
 	 * @return
 	 */
 	public String getDisableWifi() {
@@ -309,6 +318,5 @@ public class InCar implements Serializable {
 		}
 
 	}
-
 
 }
