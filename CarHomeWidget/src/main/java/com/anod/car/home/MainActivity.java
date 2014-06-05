@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.prefs.ConfigurationActivity;
-import com.anod.car.home.prefs.ConfigurationInCar;
+import com.anod.car.home.prefs.ConfigurationInCarGrid;
 import com.anod.car.home.prefs.TrialDialogs;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 import com.anod.car.home.prefs.backup.RestoreCodeRender;
@@ -96,8 +96,7 @@ public class MainActivity extends CarWidgetActivity implements RestoreTask.Resto
 		settings.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-			//Intent intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationInCarGrid.class);
-				Intent intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationInCar.class);
+			Intent intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationInCarGrid.class);
 			startActivity(intent);
 			}
 		});
@@ -147,7 +146,8 @@ public class MainActivity extends CarWidgetActivity implements RestoreTask.Resto
 					TrialDialogs.buildProOnlyDialog(mContext).show();
 				} else {
 					PreferencesBackupManager bm = new PreferencesBackupManager(mContext);
-					new RestoreTask(PreferencesBackupManager.TYPE_INCAR, bm, 0, MainActivity.this).execute(null);
+					Uri uri = null;
+					new RestoreTask(PreferencesBackupManager.TYPE_INCAR, bm, 0, MainActivity.this).execute(uri);
 				}
 			}
 		});

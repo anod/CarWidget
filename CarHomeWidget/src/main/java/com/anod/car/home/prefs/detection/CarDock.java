@@ -12,7 +12,7 @@ public class CarDock extends Detection {
 
 	@Override
 	public boolean isActive() {
-		return true;
+		return mPrefs.isCarDockRequired();
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public class BluetoothDevice extends Detection {
 
 	@Override
 	public boolean isActive() {
-		return true; //mPrefs.isBluetoothRequired();
+		return mPrefs.isBluetoothRequired();
 	}
 
 	@Override

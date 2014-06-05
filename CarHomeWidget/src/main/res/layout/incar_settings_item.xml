@@ -4,7 +4,7 @@
 		android:drawableTop="@drawable/ic_add_shortcut_holo"
 		android:layout_width="@dimen/incar_item_width"
 		android:layout_height="@dimen/incar_item_height"
-		android:text="@string/add"
+		android:text="Very long piece of text"
 		android:textSize="12sp"
 		android:drawablePadding="0dp"
 		android:paddingTop="10dp"

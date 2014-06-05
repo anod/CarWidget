@@ -27,10 +27,10 @@
     <item>
 		<shape>
 			<solid android:color="@color/panel_bg_normal"/>
-			<corners android:topLeftRadius="10dp"
-					 android:topRightRadius="2dp"
-					 android:bottomLeftRadius="2dp"
-					 android:bottomRightRadius="10dp"
+			<corners android:topLeftRadius="5dp"
+					 android:topRightRadius="5dp"
+					 android:bottomLeftRadius="5dp"
+					 android:bottomRightRadius="5dp"
 					/>
 		</shape>
 	</item>
