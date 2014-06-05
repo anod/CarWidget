@@ -85,10 +85,13 @@ public class PickShortcutUtils {
 		ArrayList<String> shortcutNames = new ArrayList<String>();
 
 		shortcutNames.add(mActivity.getString(R.string.applications));
+		shortcutNames.add(mActivity.getString(R.string.car_widget_shortcuts));
 		bundle.putStringArrayList(Intent.EXTRA_SHORTCUT_NAME, shortcutNames);
 
 		ArrayList<ShortcutIconResource> shortcutIcons = new ArrayList<ShortcutIconResource>();
 		shortcutIcons.add(ShortcutIconResource.fromContext(mActivity, R.drawable.ic_launcher_application));
+		shortcutIcons.add(ShortcutIconResource.fromContext(mActivity, R.drawable.ic_launcher));
+
 		bundle.putParcelableArrayList(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, shortcutIcons);
 
 		Intent dataIntent = new Intent(Intent.ACTION_CREATE_SHORTCUT);
@@ -178,18 +181,21 @@ public class PickShortcutUtils {
 	private void pickShortcut(Intent intent) {
 		// Handle case where user selected "Applications"
 		String applicationName = mActivity.getString(R.string.applications);
+		String shortcutsName = mActivity.getString(R.string.car_widget_shortcuts);
+
 		String shortcutName = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
 		mCurrentCellId = intent.getIntExtra(EXTRA_CELL_ID, INVALID_CELL_ID);
 		if (applicationName != null && applicationName.equals(shortcutName)) {
 			Intent mainIntent = new Intent(mActivity, AllAppsActivity.class);
 			startActivityForResultSafely(mainIntent, REQUEST_PICK_APPLICATION);
+		} else	if (shortcutsName != null && shortcutsName.equals(shortcutName)) {
+			Intent mainIntent = new Intent(mActivity, CarWidgetShortcutsPicker.class);
+			startActivityForResultSafely(mainIntent, REQUEST_CREATE_SHORTCUT);
 		} else {
 			startActivityForResultSafely(intent, REQUEST_CREATE_SHORTCUT);
 		}
 	}
 
-
-	
 	private void completeEditShortcut(Intent data) {
 		int cellId = data.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, INVALID_CELL_ID);
 		long shortcutId = data.getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);
