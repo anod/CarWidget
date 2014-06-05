@@ -16,7 +16,7 @@ public class ActivityRecognition extends Detection {
 
 	@Override
 	public int getIconRes() {
-		return R.drawable.ic_action_wheel;
+		return R.drawable.ic_action_bulb;
 	}
 
 	@Override

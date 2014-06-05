@@ -1,12 +1,13 @@
 package com.anod.car.home.prefs.action;
 
+import com.anod.car.home.prefs.InCarItem;
 import com.anod.car.home.prefs.preferences.InCar;
 
 /**
  * @author alex
  * @date 6/5/14
  */
-public abstract class Action {
+public abstract class Action implements InCarItem {
 
 	protected InCar mPrefs;
 
@@ -18,4 +19,5 @@ public abstract class Action {
 	public abstract int getIconRes();
 	public abstract int getShortTitleRes();
 	public abstract int getSummaryRes();
+
 }

@@ -1,12 +1,13 @@
 package com.anod.car.home.prefs.detection;
 
+import com.anod.car.home.prefs.InCarItem;
 import com.anod.car.home.prefs.preferences.InCar;
 
 /**
  * @author alex
  * @date 1/15/14
  */
-public abstract class Detection {
+public abstract class Detection implements InCarItem {
 
 	protected InCar mPrefs;
 
