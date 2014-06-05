@@ -11,4 +11,5 @@
     </issue>
     <issue id="OldTargetApi" severity="ignore" />
     <issue id="TypographyEllipsis" severity="ignore" />
+	<issue id="MissingTranslation" severity="warning" />
 </lint>
