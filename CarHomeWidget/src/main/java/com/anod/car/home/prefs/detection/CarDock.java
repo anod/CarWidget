@@ -1,14 +1,16 @@
 package com.anod.car.home.prefs.detection;
 
+import android.content.Context;
+
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 /**
  * @author alex
  * @date 1/15/14
  */
 public class CarDock extends Detection {
-
 
 	@Override
 	public boolean isActive() {
@@ -22,11 +24,17 @@ public class CarDock extends Detection {
 
 	@Override
 	public int getShortTitleRes() {
-		return R.string.cardock;
+		return R.string.car_dock;
 	}
 
 	@Override
 	public int getSummaryRes() {
-		return 0;
+		return R.string.car_dock_summary;
+	}
+
+	@Override
+	public void onClick() {
+		mPrefs.setCarDockRequired(!mPrefs.isCarDockRequired());
+		PreferencesStorage.saveInCar(mContext, mPrefs);
 	}
 }

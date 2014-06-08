@@ -26,4 +26,9 @@ public class AutoAnswer extends Action {
 	public int getSummaryRes() {
 		return R.string.pref_auto_answer_summary;
 	}
+
+	@Override
+	public void onClick() {
+
+	}
 }

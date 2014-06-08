@@ -149,7 +149,7 @@
 	<string name="gms_service_invalid">The version of the Google Play services installed on this device is not authentic.</string>
 	<string name="activity_recognition">Activity recognition</string>
 	<string name="please_wait">Please, wait...</string>
-	<string name="shortcuts">Shortcuts</string>
+	<string name="shortcuts">Notification shortcuts</string>
 	<string name="advanced">Advanced</string>
 	<string name="pref_actions">Actions</string>
 	<string name="bluetooth_device_laptop">Computer</string>
@@ -231,7 +231,6 @@
 	<string name="export_backup_finish">Export finished</string>
 	<string name="delete">Delete</string>
 	<string name="add">Add</string>
-	<string name="cardock">CarDock</string>
 	<string name="number">Number</string>
 	<string name="number_shortcuts_title">Number of shortcuts</string>
 	<string name="car_dock">Car Dock</string>

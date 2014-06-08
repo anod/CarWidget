@@ -1,5 +1,6 @@
 package com.anod.car.home.prefs.detection;
 
+import android.content.Context;
 import android.util.SparseArray;
 
 import com.anod.car.home.prefs.preferences.InCar;
@@ -21,13 +22,14 @@ public class Collection {
 		new CarDock()
 	};
 
-	public Collection(InCar prefs) {
-		init(prefs);
+	public Collection(Context context, InCar prefs) {
+		init(context, prefs);
 	}
 
-	private void init(InCar prefs) {
+	private void init(Context context, InCar prefs) {
 		for(int i=0; i < mList.length; i++) {
 			mList[i].setPrefs(prefs);
+			mList[i].setContext(context);
 		}
 	}
 

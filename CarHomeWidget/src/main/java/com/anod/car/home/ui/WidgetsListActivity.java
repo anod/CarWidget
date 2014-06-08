@@ -1,10 +1,10 @@
 package com.anod.car.home.ui;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.prefs.PickShortcutUtils;
@@ -14,7 +14,7 @@ import com.anod.car.home.utils.IntentUtils;
  * @author alex
  * @date 5/24/13
  */
-public class WidgetsListActivity extends FragmentActivity {
+public class WidgetsListActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class WidgetsListActivity extends FragmentActivity {
 
 		if (savedInstanceState == null) {
 			// to give support on lower android version, we are not calling getFragmentManager()
-			FragmentManager fm = getSupportFragmentManager();
+			FragmentManager fm = getFragmentManager();
 
 			// Create the list fragment and add it as our sole content.
 			if (fm.findFragmentById(android.R.id.content) == null) {

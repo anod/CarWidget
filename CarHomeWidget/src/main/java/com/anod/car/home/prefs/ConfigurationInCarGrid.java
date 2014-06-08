@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.Toast;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.action.Action;
@@ -24,8 +24,6 @@ import com.anod.car.home.prefs.detection.Detection;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
-
-import java.util.List;
 
 /**
  * @author alex
@@ -36,7 +34,9 @@ public class ConfigurationInCarGrid extends Fragment {
 	private GridLayout mDetectionsGrid;
 	private GridLayout mActionsGrid;
 	private int mActiveBackgroundColor;
+	private int mInactiveBackgroundColor;
 	private Drawable mActiveBackground;
+	private Drawable mInactiveBackground;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,6 +70,10 @@ public class ConfigurationInCarGrid extends Fragment {
 
 		mActiveBackground = r.getDrawable(R.drawable.incar_item_bg_active_grey);
 		mActiveBackgroundColor = r.getColor(R.color.panel_bg_normal);
+		mInactiveBackground = r.getDrawable(R.drawable.incar_item_bg_grey);
+		mInactiveBackgroundColor = r.getColor(R.color.panel_bg_pressed);
+
+
 		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		initDetections(incar, r, height, width, margin, inflater);
@@ -106,6 +110,11 @@ public class ConfigurationInCarGrid extends Fragment {
 			public int getSummaryRes() {
 				return 0;
 			}
+
+			@Override
+			public void onClick() {
+
+			}
 		};
 
 
@@ -115,7 +124,7 @@ public class ConfigurationInCarGrid extends Fragment {
 	}
 
 	private void initDetections(InCar incar, Resources r, int height, int width, int margin, LayoutInflater inflater) {
-		Collection detections = new Collection(incar);
+		Collection detections = new Collection(getActivity(), incar);
 		Detection[] list = detections.getAll();
 		for (Detection detection : list) {
 			Button button = (Button) inflater.inflate(R.layout.incar_settings_item, null, false);
@@ -126,7 +135,7 @@ public class ConfigurationInCarGrid extends Fragment {
 
 	}
 
-	private void setupButton(Resources r, int height, int width, int margin, InCarItem item, Button button) {
+	private void setupButton(Resources r, int height, int width, int margin,final InCarItem item, Button button) {
 		GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
 		layoutParams.width = width;
 	//	layoutParams.height = height;
@@ -136,18 +145,45 @@ public class ConfigurationInCarGrid extends Fragment {
 		Drawable icon = r.getDrawable(item.getIconRes());
 		button.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
 		button.setText(item.getShortTitleRes());
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				item.onClick();
+				if (item.isActive()) {
+					setButtonBackground((Button) v, true);
+				} else {
+					setButtonBackground((Button) v, false);
+				}
+			}
+		});
+		button.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				Toast.makeText(getActivity(), item.getSummaryRes(), Toast.LENGTH_SHORT).show();
+				return true;
+			}
+		});
 		if (item.isActive()) {
-			setActiveBackground(button);
+			setButtonBackground(button, true);
 		}
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	private void setActiveBackground(Button button) {
+	private void setButtonBackground(Button button, boolean active) {
 		if (Utils.IS_JELLYBEAN_OR_GREATER) {
-			Drawable clone = mActiveBackground.getConstantState().newDrawable();
+			Drawable clone;
+			if (active) {
+				clone = mActiveBackground.getConstantState().newDrawable();
+			} else {
+				clone = mInactiveBackground.getConstantState().newDrawable();
+			}
 			button.setBackground(clone);
 		} else {
-			button.setBackgroundColor(mActiveBackgroundColor);
+			if (active) {
+				button.setBackgroundColor(mActiveBackgroundColor);
+			} else {
+				button.setBackgroundColor(mInactiveBackgroundColor);
+			}
 		}
 	}
 }

@@ -26,4 +26,9 @@ public class RouteToSpeaker extends Action {
 	public int getSummaryRes() {
 		return R.string.pref_route_to_speaker_summary;
 	}
+
+	@Override
+	public void onClick() {
+
+	}
 }

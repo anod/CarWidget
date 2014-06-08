@@ -26,4 +26,9 @@ public class ScreenTimeout extends Action {
 	public int getSummaryRes() {
 		return R.string.pref_screen_timeout_summary;
 	}
+
+	@Override
+	public void onClick() {
+
+	}
 }

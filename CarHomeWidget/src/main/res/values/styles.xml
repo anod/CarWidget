@@ -3,7 +3,18 @@
 
     <style name="AppListTheme" parent="android:style/Theme.Dialog" />
 
-	<style name="DialogTheme" parent="android:style/Theme.Dialog" />
+	<style name="DialogTheme" parent="android:style/Theme.Holo.Dialog">
+		<item name="panelItem">@style/panelItemBasic</item>
+		<item name="panelHeader">@style/panelHeaderBasic</item>
+		<item name="PreferencesItem">@style/PreferencesItem</item>
+		<item name="buttonStyle">@style/buttonStyleDefault</item>
+		<item name="activityBgColor">@android:color/transparent</item>
+		<item name="wizardTextItem">@style/wizardTextItemHolo</item>
+		<item name="textColor">@android:color/white</item>
+
+		<item name="textColorPrimary">?android:attr/textColorPrimary</item>
+		<item name="textColorSecondary">?android:attr/textColorSecondary</item>
+	</style>
 
 	<style name="AppListView" parent="android:style/Widget.ListView">
 		<item name="android:paddingRight">12dp</item>

@@ -1,7 +1,7 @@
 package com.anod.car.home.ui;
 
+import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
 import android.util.SparseArray;
 
 import com.anod.car.home.model.LauncherShortcutsModel;

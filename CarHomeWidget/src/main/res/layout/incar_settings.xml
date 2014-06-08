@@ -23,7 +23,7 @@
 			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:textColor="?attr/textColorSecondary"
-			android:text="Choose how app detects when you in the car"
+			android:text="Select how app detects when you in the car"
 			android:gravity="center"/>
 
 	<GridLayout
@@ -50,7 +50,7 @@
 			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:textColor="?attr/textColorSecondary"
-			android:text="Choose actions to be applied when InCar mode detected"
+			android:text="Add actions to be applied when InCar mode detected"
 			android:gravity="center"/>
 
 	<GridLayout
@@ -88,7 +88,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:src="@drawable/ic_action_usb"
+				android:src="@drawable/ic_action_bluetooth_connected"
 				/>
 
 		<RelativeLayout
@@ -123,13 +123,6 @@
 
 		</RelativeLayout>
 
-		<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
-				  android:id="@android:id/checkbox"
-				  android:layout_width="wrap_content"
-				  android:layout_height="wrap_content"
-				  android:layout_gravity="center"
-				  android:focusable="false"
-				  android:clickable="false" />
 	</LinearLayout>
 
 	<LinearLayout
@@ -145,7 +138,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:src="@drawable/ic_action_star_10"
+				android:src="@drawable/ic_add_shortcut_holo"
 				/>
 
 		<RelativeLayout

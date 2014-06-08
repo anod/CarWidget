@@ -26,4 +26,9 @@ public class Bluetooth  extends Action {
 	public int getSummaryRes() {
 		return R.string.pref_blutooth_device_summary;
 	}
+
+	@Override
+	public void onClick() {
+
+	}
 }

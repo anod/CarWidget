@@ -15,7 +15,7 @@ public class BluetoothClassHelper {
 		} else if (majorDeviceClass == BluetoothClass.Device.Major.PHONE) {
 			return R.string.bluetooth_device_cellphone;
 		}
-    
+
         if (doesClassMatch(PROFILE_A2DP,btClass)) {
         	return R.string.bluetooth_device_headphones;
 

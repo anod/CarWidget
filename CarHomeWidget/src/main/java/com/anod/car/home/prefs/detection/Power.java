@@ -2,6 +2,7 @@ package com.anod.car.home.prefs.detection;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 /**
  * @author alex
@@ -29,5 +30,9 @@ public class Power extends Detection {
 		return R.string.pref_power_connected_summary;
 	}
 
-
+	@Override
+	public void onClick() {
+		mPrefs.setPowerRequired(!mPrefs.isPowerRequired());
+		PreferencesStorage.saveInCar(mContext, mPrefs);
+	}
 }

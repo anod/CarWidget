@@ -1,6 +1,9 @@
 package com.anod.car.home.prefs.detection;
 
+import android.content.Intent;
+
 import com.anod.car.home.R;
+import com.anod.car.home.prefs.BluetoothDeviceActivity;
 import com.anod.car.home.prefs.preferences.InCar;
 
 /**
@@ -28,5 +31,11 @@ public class BluetoothDevice extends Detection {
 	@Override
 	public int getSummaryRes() {
 		return R.string.pref_blutooth_device_summary;
+	}
+
+	@Override
+	public void onClick() {
+		Intent intent = new Intent(mContext, BluetoothDeviceActivity.class);
+		mContext.startActivity(intent);
 	}
 }

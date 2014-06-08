@@ -9,4 +9,6 @@ public interface InCarItem {
 	public int getIconRes();
 	public int getShortTitleRes();
 	public int getSummaryRes();
+
+	public void onClick();
 }

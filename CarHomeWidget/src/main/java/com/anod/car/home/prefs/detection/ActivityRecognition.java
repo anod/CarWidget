@@ -2,6 +2,7 @@ package com.anod.car.home.prefs.detection;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 /**
  * @author alex
@@ -27,5 +28,11 @@ public class ActivityRecognition extends Detection {
 	@Override
 	public int getSummaryRes() {
 		return R.string.gms_success;
+	}
+
+	@Override
+	public void onClick() {
+		mPrefs.setActivityRequired(!mPrefs.isActivityRequired());
+		PreferencesStorage.saveInCar(mContext, mPrefs);
 	}
 }

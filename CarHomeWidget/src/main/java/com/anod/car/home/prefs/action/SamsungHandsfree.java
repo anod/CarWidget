@@ -26,4 +26,9 @@ public class SamsungHandsfree extends Action {
 	public int getSummaryRes() {
 		return R.string.samsung_driving_summary;
 	}
+
+	@Override
+	public void onClick() {
+
+	}
 }

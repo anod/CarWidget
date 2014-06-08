@@ -52,7 +52,6 @@
 			android:backupAgent="com.anod.car.home.prefs.backup.BackupFileHelperAgent"
 			android:icon="@drawable/ic_launcher"
 			android:label="@string/app_name"
-			android:allowBackup="true"
 	>
         <service android:name="com.anod.car.home.UpdateService" />
 
@@ -130,7 +129,7 @@
 		</activity>
 		<activity android:name=".ui.WidgetsListActivity"/>
 		<activity android:name=".ui.WizardActivity"/>
-
+		<activity android:name=".prefs.BluetoothDeviceActivity" android:theme="@style/DialogTheme" android:label="@string/pref_blutooth_device_title"/>
 		<activity
 				android:name="com.anod.car.home.prefs.CarWidgetShortcutsPicker"
 				android:theme="@style/AppListTheme"

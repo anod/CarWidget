@@ -26,4 +26,9 @@ public class Volume extends Action {
 	public int getSummaryRes() {
 		return R.string.pref_change_media_volume_summary;
 	}
+
+	@Override
+	public void onClick() {
+
+	}
 }

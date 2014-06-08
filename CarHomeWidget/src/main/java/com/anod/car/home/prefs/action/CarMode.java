@@ -26,4 +26,9 @@ public class CarMode extends Action {
 	public int getSummaryRes() {
 		return R.string.pref_activate_car_mode_summary;
 	}
+
+	@Override
+	public void onClick() {
+
+	}
 }
