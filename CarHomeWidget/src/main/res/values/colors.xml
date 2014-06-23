@@ -10,12 +10,12 @@
 
 	<color name="actionbar_bg_color">#5b5b5b</color>
 
-	<color name="panel_bg_normal">#949494</color>
+	<color name="panel_bg_normal">#666666</color>
 	<color name="panel_bg_focused">#5b5b5b</color>
 	<color name="panel_bg_pressed">#cecece</color>
 
 	<color name="panel_bg_dark_normal">#252525</color>
-	<color name="panel_bg_dark_focused">#949494</color>
+	<color name="panel_bg_dark_focused">#666666</color>
 	<color name="panel_bg_dark_pressed">#5b5b5b</color>
 
 	<color name="activity_bg">#FFe5e5e5</color>

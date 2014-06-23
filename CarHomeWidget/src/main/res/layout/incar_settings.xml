@@ -22,7 +22,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:textColor="?attr/textColorSecondary"
+			android:textColor="?attr/textColorOpposite"
 			android:text="Select how app detects when you in the car"
 			android:gravity="center"/>
 
@@ -49,7 +49,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:textColor="?attr/textColorSecondary"
+			android:textColor="?attr/textColorOpposite"
 			android:text="Add actions to be applied when InCar mode detected"
 			android:gravity="center"/>
 

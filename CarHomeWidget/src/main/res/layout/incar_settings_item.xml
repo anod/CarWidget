@@ -14,5 +14,6 @@
 		android:ellipsize="end"
 		android:lines="2"
 		android:id="@+id/button"
+		android:textColor="?attr/textColorPrimary"
 		android:background="@drawable/incar_item_bg_grey"
 		/>

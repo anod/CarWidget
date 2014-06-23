@@ -22,7 +22,7 @@
 
 		<item name="textColorPrimary">@color/primary_text_grey</item>
 		<item name="textColorSecondary">@color/secondary_text_grey</item>
-
+		<item name="textColorOpposite">@color/panel_bg_normal</item>
 	</style>
 
 	<style name="AppThemeGray.Transparent" parent="AppThemeGray">

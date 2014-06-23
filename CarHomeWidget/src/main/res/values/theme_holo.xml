@@ -14,6 +14,7 @@
 
 		<item name="textColorPrimary">?android:attr/textColorPrimary</item>
 		<item name="textColorSecondary">?android:attr/textColorSecondary</item>
+		<item name="textColorOpposite">?android:attr/textColorPrimary</item>
 
 	</style>
 

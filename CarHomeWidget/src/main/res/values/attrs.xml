@@ -27,5 +27,6 @@
 
 	<attr name="textColorPrimary" format="reference" />
 	<attr name="textColorSecondary" format="reference" />
+	<attr name="textColorOpposite" format="reference" />
 
 </resources>
