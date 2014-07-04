@@ -4,7 +4,7 @@ buildscript {
         maven { url 'http://download.crashlytics.com/maven' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.11.+'
+        classpath 'com.android.tools.build:gradle:0.12.+'
 
     }
 }
@@ -21,7 +21,7 @@ task wrapper(type: Wrapper) {
 dependencies {
     compile 'com.android.support:support-v4:19.1.+'
     compile 'com.android.support:support-v13:19.0.+'
-    compile 'com.google.android.gms:play-services:4.3.+'
+    compile 'com.google.android.gms:play-services:5.0.+'
     compile files('libs/commons-codec-1.5.jar')
 }
 

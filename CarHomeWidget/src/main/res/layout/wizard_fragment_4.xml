@@ -19,7 +19,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
-			android:background="#afffffff" android:gravity="center_horizontal">
+			android:background="@color/panel_bg_normal" android:gravity="center_horizontal">
 
 		<ImageView
 				android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
-			android:id="@+id/linearLayout" android:background="#afffffff" android:gravity="center_horizontal">
+			android:id="@+id/linearLayout" android:background="@color/panel_bg_normal" android:gravity="center_horizontal">
 
 		<ImageView
 				android:layout_width="wrap_content"
@@ -80,7 +80,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:id="@+id/imageView7"
-				android:src="@drawable/ic_action_volume_on"
+				android:src="@drawable/ic_action_volume_up"
 				android:padding="10dp"/>
 
 		<ImageView
@@ -94,7 +94,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:id="@+id/imageView9"
-				android:src="@drawable/ic_action_network_wifi"
+				android:src="@drawable/ic_action_wifi"
 				android:padding="10dp"/>
 	</LinearLayout>
 
