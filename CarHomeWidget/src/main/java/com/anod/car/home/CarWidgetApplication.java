@@ -5,6 +5,8 @@ import android.content.Context;
 
 import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.prefs.preferences.AppTheme;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 
 public class CarWidgetApplication extends Application {
 	public AppsListCache mAppListCache;
@@ -25,6 +27,7 @@ public class CarWidgetApplication extends Application {
 
 		mThemeIdx = AppTheme.getTheme(this);
 
+        Tracker t = GoogleAnalytics.getInstance(this).newTracker(R.xml.tracker_config);
 	}
 
 
