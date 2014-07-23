@@ -27,7 +27,6 @@ public class CarWidgetApplication extends Application {
 
 		mThemeIdx = AppTheme.getTheme(this);
 
-        Tracker t = GoogleAnalytics.getInstance(this).newTracker(R.xml.tracker_config);
 	}
 
 

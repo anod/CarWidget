@@ -14,7 +14,7 @@ public class Volume extends Action {
 
 	@Override
 	public int getIconRes() {
-		return R.drawable.ic_action_volume_on;
+		return R.drawable.ic_action_volume_up;
 	}
 
 	@Override
