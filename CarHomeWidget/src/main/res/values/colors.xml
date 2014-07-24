@@ -10,18 +10,18 @@
 
 	<color name="actionbar_bg_color">#5b5b5b</color>
 
-	<color name="panel_bg_normal">#666666</color>
-	<color name="panel_bg_focused">#5b5b5b</color>
-	<color name="panel_bg_pressed">#cecece</color>
+	<color name="panel_bg_normal">#616161</color>
+	<color name="panel_bg_focused">#424242</color>
+	<color name="panel_bg_pressed">#bdbdbd</color>
 
-	<color name="panel_bg_dark_normal">#252525</color>
-	<color name="panel_bg_dark_focused">#666666</color>
-	<color name="panel_bg_dark_pressed">#5b5b5b</color>
+	<color name="panel_bg_dark_normal">#212121</color>
+	<color name="panel_bg_dark_focused">#616161</color>
+	<color name="panel_bg_dark_pressed">#424242</color>
 
-	<color name="activity_bg">#FFe5e5e5</color>
+	<color name="activity_bg">#FFfafafa</color>
 	<color name="font_color">#FFFFFF</color>
-	<color name="font_color_sec">#dfe5e6</color>
-	<color name="font_color_dark">#5b5b5b</color>
+	<color name="font_color_sec">#eeeeee</color>
+	<color name="font_color_dark">#424242</color>
 
 	<color name="font_green">#ff669900</color>
 
@@ -38,6 +38,6 @@
 	<color name="dim_foreground_holo_dark">#bebebe</color>
 	<color name="dim_foreground_disabled_holo_dark">#80bebebe</color>
 
-	<color name="bright_foreground_disabled_grey">#bebebe</color>
+	<color name="bright_foreground_disabled_grey">#bdbdbd</color>
 
 </resources>

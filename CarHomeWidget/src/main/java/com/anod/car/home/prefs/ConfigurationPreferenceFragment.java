@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -105,7 +106,8 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 		mListView = (ListView) view.findViewById(android.R.id.list);
 
 		Resources r = getResources();
-		mListView.setDivider(r.getDrawable(android.R.color.transparent));
+        ColorDrawable d = new ColorDrawable(r.getColor(android.R.color.transparent));
+		mListView.setDivider(d);
 		mListView.setDividerHeight(r.getDimensionPixelSize(R.dimen.preference_item_margin));
 	}
 

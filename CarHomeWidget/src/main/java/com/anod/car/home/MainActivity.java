@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.prefs.ConfigurationActivity;
-import com.anod.car.home.prefs.ConfigurationInCarGrid;
+import com.anod.car.home.prefs.ConfigurationInCar;
 import com.anod.car.home.prefs.TrialDialogs;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 import com.anod.car.home.prefs.backup.RestoreCodeRender;
@@ -38,7 +38,7 @@ import com.anod.car.home.utils.Version;
  * @author alex
  * @date 5/22/13
  */
-public class MainActivity extends CarWidgetActivity implements RestoreTask.RestoreTaskListner {
+public class MainActivity extends CarWidgetActivity {
 
 	private static final String DETAIL_MARKET_URL = "market://details?id=%s";
 	private static final String URL_GOOGLE_PLUS = "https://plus.google.com/118206296686390552505/";
@@ -96,7 +96,7 @@ public class MainActivity extends CarWidgetActivity implements RestoreTask.Resto
 		settings.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-			Intent intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationInCarGrid.class);
+			Intent intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationInCar.class);
 			startActivity(intent);
 			}
 		});
@@ -129,40 +129,6 @@ public class MainActivity extends CarWidgetActivity implements RestoreTask.Resto
 		TextView incarTitleView = (TextView)findViewById(R.id.incarTitle);
 		incarTitleView.setText(getString(R.string.pref_incar_mode_title) + " - " + active);
 
-		Button backup = (Button) findViewById(R.id.incarBackup);
-		backup.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				new InCarBackupTask().execute("");
-			}
-		});
-
-		Button restore = (Button) findViewById(R.id.incarRestore);
-		restore.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-
-				if (mVersion.isFree()) {
-					TrialDialogs.buildProOnlyDialog(mContext).show();
-				} else {
-					PreferencesBackupManager bm = new PreferencesBackupManager(mContext);
-					Uri uri = null;
-					new RestoreTask(PreferencesBackupManager.TYPE_INCAR, bm, 0, MainActivity.this).execute(uri);
-				}
-			}
-		});
-	}
-
-
-	@Override
-	public void onRestorePreExecute(int type) {
-		//
-	}
-
-	@Override
-	public void onRestoreFinish(int type, int code) {
-		int res = RestoreCodeRender.render(code);
-		Toast.makeText(mContext, res, Toast.LENGTH_SHORT).show();
 	}
 
 	private String getActiveString(int widgetsCount) {
@@ -286,29 +252,6 @@ public class MainActivity extends CarWidgetActivity implements RestoreTask.Resto
 			}
 		});
 
-	}
-
-
-	public class InCarBackupTask extends AsyncTask<String, Void, Integer> {
-
-		@Override
-		protected void onPreExecute() {
-			showDialog(DIALOG_WAIT);
-		}
-
-		protected Integer doInBackground(String... filenames) {
-			PreferencesBackupManager backupManager = new PreferencesBackupManager(mContext);
-			return backupManager.doBackupInCar();
-		}
-
-		protected void onPostExecute(Integer result) {
-			try {
-				dismissDialog(DIALOG_WAIT);
-			} catch (IllegalArgumentException e) {
-				AppLog.d(e.getMessage());
-			}
-			Toast.makeText(mContext, mContext.getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
-		}
 	}
 
 	@Override

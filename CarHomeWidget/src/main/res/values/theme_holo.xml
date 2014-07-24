@@ -19,7 +19,7 @@
 	</style>
 
 
-	<style name="ActionBarCompatHolo" parent="android:style/Widget.ActionBar">
+	<style name="ActionBarCompatHolo" parent="android:style/Widget.Holo.ActionBar">
 
 	</style>
 

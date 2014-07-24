@@ -140,7 +140,9 @@ public class ConfigurationRestore extends Fragment implements
 		mBackupIncar.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-			new BackupTask(PreferencesBackupManager.TYPE_INCAR, mBackupManager, 0, ConfigurationRestore.this).execute(null);
+            String snull = null;
+			new BackupTask(PreferencesBackupManager.TYPE_INCAR, mBackupManager, 0, ConfigurationRestore.this)
+                    .execute(snull);
 			}
 		});
 
@@ -156,7 +158,9 @@ public class ConfigurationRestore extends Fragment implements
 			mRestoreIncar.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					new RestoreTask(PreferencesBackupManager.TYPE_INCAR, mBackupManager, 0, ConfigurationRestore.this).execute(null);
+                    Uri uri = null;
+					new RestoreTask(PreferencesBackupManager.TYPE_INCAR, mBackupManager, 0, ConfigurationRestore.this)
+                            .execute(uri);
 				}
 			});
 		}

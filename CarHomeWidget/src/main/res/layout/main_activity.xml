@@ -76,53 +76,6 @@
 			android:layout_marginTop="1dp"
 	/>
 
-	<LinearLayout
-		android:paddingTop="0dp"
-		android:paddingBottom="0dp"
-		android:layout_marginTop="1dp"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-
-		<Button
-				android:layout_width="0dp"
-				android:layout_weight="1"
-				android:layout_height="wrap_content"
-				android:text="@string/backup"
-				android:id="@+id/incarBackup"
-				android:drawableLeft="@drawable/ic_action_export"
-
-				android:gravity="center_vertical"
-				android:textColor="@color/font_color"
-				style="?attr/buttonStyle"
-				android:drawablePadding="4dp"
-				android:ellipsize="end"
-				android:maxLines="1"
-				android:padding="10dp"
-				/>
-		<View
-				android:layout_height="match_parent"
-				android:layout_width="1dp"
-				android:background="?attr/activityBgColor"
-		/>
-
-		<Button
-				android:layout_width="0dp"
-				android:layout_weight="1"
-				android:layout_height="wrap_content"
-				android:text="@string/restore"
-				android:id="@+id/incarRestore"
-				android:drawableLeft="@drawable/ic_action_import"
-				style="?attr/buttonStyle"
-				android:gravity="center_vertical"
-				android:textColor="@color/font_color"
-				android:drawablePadding="4dp"
-				android:ellipsize="end"
-				android:maxLines="1"
-				android:padding="10dp"
-			/>
-	</LinearLayout>
-
-
 	<TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
