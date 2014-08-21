@@ -1,51 +1,98 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				xmlns:tools="http://schemas.android.com/tools"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:paddingLeft="4dp"
-				android:paddingRight="4dp"
-				android:paddingTop="4dp"
-				android:paddingBottom="4dp"
-				tools:context="com.anod.car.home.DebugActivity$PlaceholderFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="4dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="4dp"
+                tools:context="com.anod.car.home.DebugActivity$PlaceholderFragment">
 
-	<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:text="InCar: Enabled"
-			android:id="@+id/incar" android:singleLine="false" android:paddingRight="4dp" android:layout_above="@+id/headset" android:layout_alignParentRight="true" android:layout_alignParentEnd="true"/>
-	<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:text="Power: true"
-			android:id="@+id/power" android:paddingRight="4dp" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
-	<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:text="Headset: true"
-			android:id="@+id/headset" android:singleLine="false" android:layout_below="@+id/power" android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
-	<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:text="Bluetooth: false"
-			android:id="@+id/bluetooth" android:layout_below="@+id/headset" android:layout_alignParentLeft="true" android:layout_alignParentStart="true" android:singleLine="false"/>
-	<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:text="Activity: true"
-			android:id="@+id/activity" android:layout_below="@+id/bluetooth" android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
-	<ListView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:id="@+id/log" android:layout_alignParentLeft="true" android:layout_alignParentStart="true" tools:listitem="@android:layout/simple_list_item_1" android:divider="@null" android:dividerHeight="0dp" android:layout_alignParentBottom="true" android:layout_below="@+id/activity"/>
-	<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:text="Broadcast Service: ON"
-			android:id="@+id/broadcast" android:textIsSelectable="false" android:layout_alignBaseline="@+id/headset" android:layout_alignParentRight="true" android:layout_alignParentEnd="true"/>
+    <TextView
+        android:id="@+id/incar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/headset"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:paddingRight="4dp"
+        android:singleLine="false"
+        android:text="InCar: Enabled"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <TextView
+        android:id="@+id/power"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:paddingRight="4dp"
+        android:text="Power: true"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <TextView
+        android:id="@+id/headset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/power"
+        android:singleLine="false"
+        android:text="Headset: true"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <TextView
+        android:id="@+id/bluetooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/headset"
+        android:singleLine="false"
+        android:text="Bluetooth: false"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <TextView
+        android:id="@+id/activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/bluetooth"
+        android:text="Activity: true"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <TextView
+        android:id="@+id/cardock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/activity"
+        android:text="CarDock: true"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <ListView
+        android:id="@+id/log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/cardock"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        tools:listitem="@android:layout/simple_list_item_1"/>
+
+    <TextView
+        android:id="@+id/broadcast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/headset"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="Broadcast Service: ON"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textIsSelectable="false"/>
 </RelativeLayout>

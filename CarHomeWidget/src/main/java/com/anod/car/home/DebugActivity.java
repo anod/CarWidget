@@ -31,7 +31,7 @@ import org.apache.commons.codec.binary.StringUtils;
 
 import java.util.HashMap;
 
-public class DebugActivity extends CarWidgetActivity implements AppLog.LogListener {
+public class DebugActivity extends Activity implements AppLog.LogListener {
 
 	private ListView mListView;
 	private LogAdapter mAdapter;
@@ -47,7 +47,7 @@ public class DebugActivity extends CarWidgetActivity implements AppLog.LogListen
 		mListView.setAdapter(mAdapter);
 
 		ImageButton refresh = new ImageButton(this);
-		refresh.setImageResource(R.drawable.ic_action_import);
+		refresh.setImageResource(R.drawable.ic_action_refresh);
 		refresh.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -70,11 +70,11 @@ public class DebugActivity extends CarWidgetActivity implements AppLog.LogListen
 
 		boolean powerEvent = ModeDetector.getEventState(ModeDetector.FLAG_POWER);
 		boolean powerPref = incar.isPowerRequired();
-		setStatusText(R.id.power,  String.format("Power: %b", powerEvent), (powerPref) ? Color.GREEN : Color.RED);
+		setStatusText(R.id.power,  String.format("Power: %b", powerEvent), getColor(powerPref, powerEvent));
 
 		boolean headsetEvent = ModeDetector.getEventState(ModeDetector.FLAG_HEADSET);
 		boolean headsetPref = incar.isHeadsetRequired();
-		setStatusText(R.id.headset, String.format("Headset: %b", headsetEvent), (headsetPref) ? Color.GREEN : Color.RED);
+		setStatusText(R.id.headset, String.format("Headset: %b", headsetEvent), getColor(headsetPref, headsetEvent));
 
 		boolean btEvent = ModeDetector.getEventState(ModeDetector.FLAG_BLUETOOTH);
 		boolean btPref = incar.isBluetoothRequired();
@@ -84,12 +84,19 @@ public class DebugActivity extends CarWidgetActivity implements AppLog.LogListen
 			devices = TextUtils.join(",", incar.getBtDevices().values());
 		}
 
-		setStatusText(R.id.bluetooth, String.format("Bluetooth: %b [%s]", btEvent,devices), (btPref) ? Color.GREEN : Color.RED);
+		setStatusText(R.id.bluetooth, String.format("Bluetooth: %b [%s]", btEvent,devices), getColor(btPref, btEvent));
 
 		boolean activityEvent = ModeDetector.getEventState(ModeDetector.FLAG_HEADSET);
 		boolean activityPref = incar.isActivityRequired();
-		setStatusText(R.id.activity,  String.format("Activity: %b",activityEvent), (activityPref) ? Color.GREEN : Color.RED);
+		setStatusText(R.id.activity,  String.format("Activity: %b",activityEvent), getColor(activityPref, activityEvent));
+
+        boolean dockEvent = ModeDetector.getEventState(ModeDetector.FLAG_CAR_DOCK);
+        boolean docPref = incar.isCarDockRequired();
+        setStatusText(R.id.cardock, String.format("CarDock: %b", dockEvent), getColor(docPref, dockEvent));
 	}
+    private int getColor(boolean pref, boolean event) {
+        return (pref) ? (event) ? Color.GREEN : Color.RED : Color.GRAY;
+    }
 
 	private boolean isBroadcastServiceRunning() {
 		ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -114,6 +121,7 @@ public class DebugActivity extends CarWidgetActivity implements AppLog.LogListen
 
 		registerLogListener();
 		updateStatus();
+        AppLog.d("Debug activity resumed");
 	}
 
 	@Override
@@ -149,7 +157,10 @@ public class DebugActivity extends CarWidgetActivity implements AppLog.LogListen
 			super(context, R.layout.logrow);
 		}
 
-
+        @Override
+        public AppLog.Entry getItem(int position) {
+            return super.getItem(super.getCount() - position - 1);
+        }
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {

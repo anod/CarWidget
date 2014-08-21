@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-			android:layout_width="match_parent"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
 			android:layout_height="match_parent"
 		>
 <LinearLayout
@@ -251,6 +252,19 @@
 			android:paddingRight="10dp"
 			android:gravity="center_vertical"
 	/>
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?attr/panelItem"
+        android:layout_marginTop="1dp"
+        android:text="DebugActivity"
+        android:id="@+id/debug_activity"
+        android:drawableLeft="@drawable/ic_settings_applications"
+        android:textColor="@color/font_color"
+        android:drawablePadding="4dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center_vertical"
+        />
 </LinearLayout>
 </ScrollView>

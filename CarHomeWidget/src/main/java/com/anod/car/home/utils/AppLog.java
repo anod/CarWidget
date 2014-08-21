@@ -92,6 +92,6 @@ public class AppLog {
 
 		//String formatTime = (timeOnly) ? "%d-%m-%Y %H:%M:%S" : "%M:%S";
 
-        return String.format("[%s] %s ", time.format("%M:%S"), msg);
+        return String.format("[%s.%s] %s ", time.format("%M:%S"), String.valueOf(unixTime % 1000), msg);
     }	
 }

@@ -1,23 +1,17 @@
 package com.anod.car.home.prefs;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceCategory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
-import com.anod.car.home.BuildConfig;
-import com.anod.car.home.DebugActivity;
 import com.anod.car.home.R;
 import com.anod.car.home.model.LauncherShortcutsModel;
 import com.anod.car.home.model.ShortcutsModel;
@@ -26,7 +20,6 @@ import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.ShortcutPreference;
 
 public class Configuration extends ConfigurationPreferenceFragment implements PreferenceKey, ShortcutPreference.DropCallback {
-	public static final String DEBUG_ACTIVITY = "debug-activity";
 	private ShortcutsModel mModel;
 	private PickShortcutUtils mPickShortcutUtils;
 	private static final String LOOK_AND_FEEL = "look-and-feel";
@@ -45,12 +38,6 @@ public class Configuration extends ConfigurationPreferenceFragment implements Pr
 		mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
 		mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
 		mCategory = (PreferenceCategory)findPreference("shortcuts");
-
-		if (BuildConfig.DEBUG) {
-			setIntent(DEBUG_ACTIVITY, DebugActivity.class, 0);
-		} else {
-			((PreferenceCategory)findPreference("advanced-category")).removePreference(findPreference(DEBUG_ACTIVITY));
-		}
 
 		setIntent(LOOK_AND_FEEL, LookAndFeelActivity.class, mAppWidgetId);
 		showFragmentOnClick(BACKUP, ConfigurationRestore.class);

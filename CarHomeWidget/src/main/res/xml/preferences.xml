@@ -22,9 +22,6 @@
             android:summary="@string/pref_backup_summary"
             android:title="@string/pref_backup_title"
 		/>
-		<Preference
-			android:key="debug-activity"
-			android:title="Debug Activity"
-		/>
+
     </PreferenceCategory>
 </PreferenceScreen>
