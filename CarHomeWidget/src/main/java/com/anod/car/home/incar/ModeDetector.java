@@ -23,10 +23,11 @@ public class ModeDetector {
 	public static final byte FLAG_HEADSET = 1;
 	public static final byte FLAG_BLUETOOTH = 2;
 	public static final byte FLAG_ACTIVITY = 3;
-	private static final byte FLAG_CAR_DOCK = 4;
+    public static final byte FLAG_CAR_DOCK = 4;
 
 	private static boolean[] sPrefState = {false, false, false, false, false};
 	private static boolean[] sEventState = {false, false, false, false, false};
+    private static String[] sTitles = {"Power", "Headset", "Bluetooth", "Activity", "CarDock"};
 
 	private static boolean sMode;
 
@@ -82,8 +83,7 @@ public class ModeDetector {
 		updateEventState(prefs, intent);
 		if (BuildConfig.DEBUG) {
 			for (int i = 0; i < sPrefState.length; i++) {
-				AppLog.d("Pref state [" + i + "] : " + sPrefState[i]);
-				AppLog.d("Event state [" + i + "] : " + sEventState[i]);
+				AppLog.d(sTitles[i]+": pref - " + sPrefState[i]+", event - "+sEventState[i]);
 			}
 		}
 
