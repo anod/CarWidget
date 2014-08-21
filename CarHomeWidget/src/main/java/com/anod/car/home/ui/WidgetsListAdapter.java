@@ -26,7 +26,9 @@ public class WidgetsListAdapter extends ArrayAdapterCompat<Integer> {
 		R.id.imageView2,
 		R.id.imageView3,
 		R.id.imageView4,
-		R.id.imageView5
+		R.id.imageView5,
+        R.id.imageView6,
+        R.id.imageView7,
 	};
 
 	public WidgetsListAdapter(Context context) {

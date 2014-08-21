@@ -3,6 +3,8 @@ package com.anod.car.home.ui;
 import android.app.ListFragment;
 import android.app.LoaderManager;
 import android.content.Loader;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.View;
@@ -10,21 +12,16 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.anod.car.home.R;
+import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.model.ShortcutInfo;
 
 public class WidgetsListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<SparseArray<SparseArray<ShortcutInfo>>> {
 	private WidgetsListAdapter mAdapter;
 
-	private static final String ARG_WIDGET_IDS = "appWidgetIds";
 	private int[] mAppWidgetIds;
 
-	public static WidgetsListFragment newInstance(int[] appWidgetIds) {
+	public static WidgetsListFragment newInstance() {
 		WidgetsListFragment f = new WidgetsListFragment();
-
-		Bundle args = new Bundle();
-		args.putIntArray(ARG_WIDGET_IDS, appWidgetIds);
-
-		f.setArguments(args);
 
 		return f;
 	}
@@ -43,16 +40,17 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 
 		// We have a menu item to show in action bar.
 		setHasOptionsMenu(true);
-		mAppWidgetIds = getArguments().getIntArray(ARG_WIDGET_IDS);
+		mAppWidgetIds = WidgetHelper.getAllWidgetIds(getActivity());
 		mAdapter = new WidgetsListAdapter(getActivity());
 		setListAdapter(mAdapter);
 
 		// Start out with a progress indicator.
 		setListShown(false);
-
+        getListView().setDivider(new ColorDrawable(Color.TRANSPARENT));
+        getListView().setDividerHeight(getResources().getDimensionPixelOffset(R.dimen.preference_item_margin));
 		int padding = (int)getResources().getDimension(R.dimen.panel_header_margin);
 		ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) getListView().getLayoutParams();
-		mlp.setMargins(padding,padding,padding,padding);
+		mlp.setMargins(0,padding,0,0);
 		// Prepare the loader.  Either re-connect with an existing one,
 		// or start a new one.
 		getLoaderManager().initLoader(0, null, this);
