@@ -1,10 +1,15 @@
 package com.anod.car.home.incar;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 
 import com.anod.car.home.BuildConfig;
+import com.anod.car.home.R;
 import com.anod.car.home.utils.AppLog;
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
@@ -47,7 +52,16 @@ public class ActivityRecognitionService extends IntentService {
 
 			if (BuildConfig.DEBUG) {
 				DetectedActivity probActivity = result.getMostProbableActivity();
-				AppLog.d("Detected activity: [" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()));
+				AppLog.d("Activity: [" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()));
+
+                Notification noti = new NotificationCompat.Builder(this)
+                        .setContentTitle("Activity")
+                        .setContentText("[" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()))
+                        .setSmallIcon(R.drawable.ic_launcher_application)
+                        .setTicker("[" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()))
+                        .build();
+                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                mNotificationManager.notify(122, noti);
 			}
 
 			DetectedActivity probActivity = result.getMostProbableActivity();
@@ -70,7 +84,9 @@ public class ActivityRecognitionService extends IntentService {
 				}
 			}
 
-		}
+		} else {
+            AppLog.d("ActivityRecognitionResult: No Result");
+        }
 	}
 
 
