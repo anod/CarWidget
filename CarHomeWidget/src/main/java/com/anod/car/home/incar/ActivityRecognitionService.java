@@ -25,7 +25,7 @@ public class ActivityRecognitionService extends IntentService {
 	private final static Object sLock = new Object();
 
 	public static final int MIN_CONFIDENCE = 40;
-	public static final int MIN_VEHICLE_CONFIDENCE = 89;
+	public static final int MIN_VEHICLE_CONFIDENCE = 75;
 	private static int sLastResult = -1;
 
 
@@ -54,14 +54,14 @@ public class ActivityRecognitionService extends IntentService {
 				DetectedActivity probActivity = result.getMostProbableActivity();
 				AppLog.d("Activity: [" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()));
 
-                Notification noti = new NotificationCompat.Builder(this)
-                        .setContentTitle("Activity")
-                        .setContentText("[" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()))
-                        .setSmallIcon(R.drawable.ic_launcher_application)
-                        .setTicker("[" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()))
-                        .build();
-                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                mNotificationManager.notify(122, noti);
+//                Notification noti = new NotificationCompat.Builder(this)
+//                       .setContentTitle("Activity")
+//                        .setContentText("[" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()))
+//                        .setSmallIcon(R.drawable.ic_launcher_application)
+//                        .setTicker("[" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()))
+//                        .build();
+//                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                mNotificationManager.notify(122, noti);
 			}
 
 			DetectedActivity probActivity = result.getMostProbableActivity();
