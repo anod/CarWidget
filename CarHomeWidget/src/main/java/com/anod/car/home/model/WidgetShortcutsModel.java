@@ -73,6 +73,7 @@ public class WidgetShortcutsModel extends AbstractShortcutsModel {
 			//new ComponentName("com.android.contacts", "com.android.contacts.DialtactsContactsEntryActivity"),
 			//new ComponentName("com.android.htccontacts", "com.android.htccontacts.BrowseLayerCarouselActivity"),
 			new ComponentName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity"),
+            new ComponentName("com.google.android.googlequicksearchbox", "com.google.android.googlequicksearchbox.VoiceSearchActivity"),
 		};
 
 		int cellId = 0;
