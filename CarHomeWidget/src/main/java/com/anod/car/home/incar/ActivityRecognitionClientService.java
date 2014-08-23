@@ -10,15 +10,11 @@ import android.widget.Toast;
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.app.StoppableService;
 import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.ActivityRecognition;
-import com.google.android.gms.location.ActivityRecognitionApi;
-import com.google.android.gms.location.ActivityRecognitionClient;
 
 /**
  * @author alex

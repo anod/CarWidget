@@ -1,13 +1,7 @@
 package com.anod.car.home.prefs.backup;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.widget.Toast;
-
-import com.anod.car.home.R;
-
-import java.io.InputStream;
 
 /**
  * @author alex

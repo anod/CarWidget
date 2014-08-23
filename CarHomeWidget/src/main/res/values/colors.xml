@@ -33,10 +33,8 @@
 
 	<color name="background_holo_light">#fff3f3f3</color>
 	<color name="bright_foreground_holo_dark">@color/background_holo_light</color>
-	<color name="bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
 
 	<color name="dim_foreground_holo_dark">#bebebe</color>
-	<color name="dim_foreground_disabled_holo_dark">#80bebebe</color>
 
 	<color name="bright_foreground_disabled_grey">#bdbdbd</color>
 

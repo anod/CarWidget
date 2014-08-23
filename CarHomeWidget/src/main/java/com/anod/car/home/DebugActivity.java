@@ -2,10 +2,7 @@ package com.anod.car.home;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,23 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.incar.BroadcastService;
-import com.anod.car.home.incar.Handler;
 import com.anod.car.home.incar.ModeDetector;
-import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
-
-import org.apache.commons.codec.binary.StringUtils;
-
-import java.util.HashMap;
 
 public class DebugActivity extends Activity implements AppLog.LogListener {
 

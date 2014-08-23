@@ -5,8 +5,6 @@ import android.content.Context;
 
 import com.anod.car.home.model.AppsListCache;
 import com.anod.car.home.prefs.preferences.AppTheme;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
 
 public class CarWidgetApplication extends Application {
 	public AppsListCache mAppListCache;

@@ -10,10 +10,10 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import com.anod.car.home.model.AbstractShortcutsModel;
-import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutsModel;
+import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.InCarBackup;
 import com.anod.car.home.prefs.preferences.Main;

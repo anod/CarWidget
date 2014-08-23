@@ -7,7 +7,6 @@ import android.content.Intent.ShortcutIconResource;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceCategory;
 import android.util.Log;
 import android.widget.Toast;
 

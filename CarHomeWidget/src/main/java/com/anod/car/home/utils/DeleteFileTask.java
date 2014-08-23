@@ -1,10 +1,6 @@
 package com.anod.car.home.utils;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
-
-import com.anod.car.home.R;
 
 import java.io.File;
 

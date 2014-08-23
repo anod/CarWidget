@@ -8,7 +8,8 @@ import android.view.View;
 import com.anod.car.home.R;
 
 /**
- * Created by alex on 5/18/13.
+ * @author alex
+ * @date 2014-08-23
  */
 @SuppressLint("NewApi")
 public class ShortcutShadowBuilder extends View.DragShadowBuilder {

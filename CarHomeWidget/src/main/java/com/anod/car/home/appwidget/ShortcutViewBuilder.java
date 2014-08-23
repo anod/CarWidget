@@ -11,8 +11,8 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.anod.car.home.model.LauncherSettings;
-import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.skin.SkinProperties;
 import com.anod.car.home.utils.BitmapTransform;

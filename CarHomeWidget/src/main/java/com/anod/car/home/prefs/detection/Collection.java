@@ -1,7 +1,6 @@
 package com.anod.car.home.prefs.detection;
 
 import android.content.Context;
-import android.util.SparseArray;
 
 import com.anod.car.home.prefs.preferences.InCar;
 

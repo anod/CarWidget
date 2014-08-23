@@ -230,7 +230,6 @@
 	<string name="import_backup">Импорт</string>
 	<string name="export_backup_finish">Экспорт завершен</string>
 	<string name="delete">Удалить</string>
-	<string name="add">Добавить</string>
 	<string name="number">Количество</string>
 	<string name="choose_a_theme">Выбрать тему</string>
 	<string name="theme_gray">Светлая</string>

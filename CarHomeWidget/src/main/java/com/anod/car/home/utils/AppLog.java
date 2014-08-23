@@ -1,15 +1,9 @@
 package com.anod.car.home.utils;
 
-import android.support.v4.util.LruCache;
-import android.support.v4.util.SparseArrayCompat;
 import android.text.format.Time;
 import android.util.Log;
-import android.util.SparseArray;
 
 import com.anod.car.home.BuildConfig;
-
-import java.util.ArrayList;
-import java.util.Stack;
 
 public class AppLog {
 

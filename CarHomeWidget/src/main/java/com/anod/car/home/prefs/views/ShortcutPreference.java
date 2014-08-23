@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.views.drag.ShortcutDragListener;
 import com.anod.car.home.prefs.views.drag.ShortcutShadowBuilder;
-import com.anod.car.home.utils.Utils;
 
 public class ShortcutPreference extends Preference implements OnClickListener {
 	private static final int INVALID_RESOURCE = 0;

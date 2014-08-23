@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
 
-import com.anod.car.home.utils.Utils;
-
 /**
  * @author alex
  * @date 9/19/13

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.ActivityPicker.PickAdapter.Item;
 import com.anod.car.home.utils.IntentUtils;
-import com.anod.car.home.utils.Version;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +35,9 @@ public class CarWidgetShortcutsPicker extends ActivityPicker {
 		Resources r = getResources();
 		String[] titles = r.getStringArray(R.array.carwidget_shortcuts);
 		for(int i=0; i< SHORCUTS_LENGTH; i++) {
-			PickAdapter.Item item = null;
 			Intent intent = IntentUtils.createPickShortcutLocalIntent(i, titles[i], ICONS[i], this);
-			item = new PickAdapter.Item(this, titles[i], r.getDrawable(ICONS[i]), intent);
-			if (item!=null) {
-				items.add(item);
-			}
+            PickAdapter.Item item = new PickAdapter.Item(this, titles[i], r.getDrawable(ICONS[i]), intent);
+			items.add(item);
 		}
 		return items;
 	}

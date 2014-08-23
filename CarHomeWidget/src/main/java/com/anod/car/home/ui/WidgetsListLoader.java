@@ -4,8 +4,8 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.SparseArray;
 
-import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.WidgetShortcutsModel;
 
 /**
  * @author alex

@@ -4,7 +4,6 @@ import android.content.Intent;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.BluetoothDeviceActivity;
-import com.anod.car.home.prefs.preferences.InCar;
 
 /**
  * @author alex

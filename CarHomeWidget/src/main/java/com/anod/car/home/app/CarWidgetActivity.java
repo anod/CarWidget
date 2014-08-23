@@ -1,14 +1,10 @@
 package com.anod.car.home.app;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.prefs.preferences.AppTheme;
-import com.anod.car.home.utils.Utils;
 
 /**
  * @author alex

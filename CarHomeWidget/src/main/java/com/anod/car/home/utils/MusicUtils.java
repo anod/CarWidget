@@ -1,10 +1,8 @@
 package com.anod.car.home.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.view.KeyEvent;
 
 /**
