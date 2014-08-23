@@ -78,7 +78,9 @@ public class PreferencesStorage {
 	public static final String BLUETOOTH_DEVICE_ADDRESSES = "bt-device-addresses";
 
 	public static final String SCREEN_TIMEOUT = "screen-timeout";
-	public static final String BRIGHTNESS = "brightness";
+    public static final String SCREEN_TIMEOUT_CHARGING = "screen-timeout-charging";
+
+    public static final String BRIGHTNESS = "brightness";
 	public static final String BLUETOOTH = "bluetooth";
 	public static final String ADJUST_VOLUME_LEVEL = "adjust-volume-level";
 	public static final String MEDIA_VOLUME_LEVEL = "volume-level";
@@ -99,7 +101,7 @@ public class PreferencesStorage {
 	private static final String CAR_DOCK = "car-dock";
 
 
-	public static Main loadMain(Context context, int appWidgetId) {
+    public static Main loadMain(Context context, int appWidgetId) {
 		final WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
 		prefs.setAppWidgetId(appWidgetId);
 		Resources res = context.getResources();
@@ -179,7 +181,12 @@ public class PreferencesStorage {
 
 		p.setAutoSpeaker(prefs.getBoolean(AUTO_SPEAKER, false));
 		p.setEnableBluetooth(prefs.getBoolean(BLUETOOTH, false));
-		p.setDisableScreenTimeout(prefs.getBoolean(SCREEN_TIMEOUT, true));
+        boolean disableScreenTimeout = prefs.getBoolean(SCREEN_TIMEOUT, true);
+		p.setDisableScreenTimeout(disableScreenTimeout);
+        if (disableScreenTimeout) {
+            p.setDisableScreenTimeoutCharging(prefs.getBoolean(SCREEN_TIMEOUT_CHARGING, false));
+        }
+
 		p.setBrightness(prefs.getString(BRIGHTNESS, InCar.BRIGHTNESS_DISABLED));
 		p.setAdjustVolumeLevel(prefs.getBoolean(ADJUST_VOLUME_LEVEL, true));
 		p.setMediaVolumeLevel(prefs.getInt(MEDIA_VOLUME_LEVEL, InCar.DEFAULT_VOLUME_LEVEL));
@@ -216,7 +223,13 @@ public class PreferencesStorage {
 
 		editor.putBoolean(AUTO_SPEAKER, prefs.isAutoSpeaker());
 		editor.putBoolean(BLUETOOTH, prefs.isEnableBluetooth());
-		editor.putBoolean(SCREEN_TIMEOUT, prefs.isDisableScreenTimeout());
+        boolean disableScreenTimeout = prefs.isDisableScreenTimeout();
+		editor.putBoolean(SCREEN_TIMEOUT, disableScreenTimeout);
+        if (disableScreenTimeout) {
+            editor.putBoolean(SCREEN_TIMEOUT_CHARGING, prefs.isDisableScreenTimeoutCharging());
+        } else {
+            editor.putBoolean(SCREEN_TIMEOUT_CHARGING, false);
+        }
 		editor.putString(BRIGHTNESS, prefs.getBrightness());
 		editor.putBoolean(ADJUST_VOLUME_LEVEL, prefs.isAdjustVolumeLevel());
 		editor.putInt(MEDIA_VOLUME_LEVEL, prefs.getMediaVolumeLevel());
@@ -467,4 +480,8 @@ public class PreferencesStorage {
 	}
 
 
+    public static void saveScreenTimeout(boolean disabled, boolean disableCharging, Context context) {
+        putBoolean(context,SCREEN_TIMEOUT,disabled);
+        putBoolean(context,SCREEN_TIMEOUT_CHARGING,disableCharging);
+    }
 }

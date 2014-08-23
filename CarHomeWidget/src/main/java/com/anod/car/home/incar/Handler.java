@@ -15,6 +15,7 @@ import android.util.Log;
 
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.PowerUtil;
 import com.anod.car.home.utils.Utils;
 
 public class Handler {
@@ -24,8 +25,6 @@ public class Handler {
 	private static final int BRIGHTNESS_NIGHT = 30;
 	private static final int BRIGHTNESS_DAY = BRIGHTNESS_MAX;
 
-
-	private static boolean sWakeLocked;
 	private static int sCurrentBtState;
 	private static int sCurrentWiFiState;
 	private static int sCurrentMediaVolume = VOLUME_NOT_SET;
@@ -43,7 +42,13 @@ public class Handler {
 
 	public static void enable(InCar prefs, Context context) {
 		if (prefs.isDisableScreenTimeout()) {
-			acquireWakeLock(context);
+            if (prefs.isDisableScreenTimeoutCharging()) {
+                if (PowerUtil.isConnected(context)) {
+                    acquireWakeLock(context);
+                }
+            } else {
+                acquireWakeLock(context);
+            }
 		}
 		if (prefs.isAdjustVolumeLevel()) {
 			adjustVolume(prefs, context);
@@ -159,18 +164,17 @@ public class Handler {
 	}
 
 	@SuppressWarnings("deprecation")
-	private static void acquireWakeLock(Context context) {
+	public static void acquireWakeLock(Context context) {
 		PowerManager pw = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-		sWakeLock = pw.newWakeLock(
-				PowerManager.SCREEN_BRIGHT_WAKE_LOCK |
-						PowerManager.ACQUIRE_CAUSES_WAKEUP
-				, TAG);
-
-		synchronized (sLock) {
-			if (sWakeLock != null && !sWakeLocked && !sWakeLock.isHeld()) {
-				sWakeLock.acquire();
-				sWakeLocked = true;
-			}
+        synchronized (sLock) {
+            if (sWakeLock == null) {
+                sWakeLock = pw.newWakeLock(
+                        PowerManager.SCREEN_BRIGHT_WAKE_LOCK |
+                        PowerManager.ACQUIRE_CAUSES_WAKEUP
+                      , TAG);
+            }
+			sWakeLock.acquire();
+            AppLog.d("WakeLock acquired");
 		}
 	}
 
@@ -271,14 +275,14 @@ public class Handler {
 
 	}
 
-	private static void releaseWakeLock() {
+    public static void releaseWakeLock() {
 		synchronized (sLock) {
-			if (sWakeLock != null && sWakeLocked && sWakeLock.isHeld()) {
+			if (sWakeLock != null && sWakeLock.isHeld()) {
 				sWakeLock.release();
-				sWakeLocked = false;
 			}
 			sWakeLock = null;
-		}
+            AppLog.d("WakeLock released");
+        }
 	}
 
 	private static void sendBrightnessIntent(int newBrightLevel, Context context) {

@@ -40,6 +40,7 @@ public class InCar implements Serializable {
 	private boolean enableBluetoothOnPower;
 
 	private boolean disableScreenTimeout;
+    private boolean disableScreenTimeoutCharging;
 	private boolean adjustVolumeLevel;
 	private int mediaVolumeLevel = 80;
 	private int callVolumeLevel = 80;
@@ -319,4 +320,11 @@ public class InCar implements Serializable {
 
 	}
 
+    public boolean isDisableScreenTimeoutCharging() {
+        return disableScreenTimeoutCharging;
+    }
+
+    public void setDisableScreenTimeoutCharging(boolean disableScreenTimeoutCharging) {
+        this.disableScreenTimeoutCharging = disableScreenTimeoutCharging;
+    }
 }

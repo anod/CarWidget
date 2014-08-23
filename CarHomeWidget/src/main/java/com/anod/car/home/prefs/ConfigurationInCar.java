@@ -48,7 +48,7 @@ import java.util.Set;
 
 public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 
-	private static final String MEDIA_SCREEN = "media-screen";
+    private static final String MEDIA_SCREEN = "media-screen";
 	private static final String SCREEN_BT_DEVICE = "bt-device-screen";
 	private static final String CATEGORY_BT_DEVICE = "bt-device-category";
 	private static final String PREF_BT_SWITCH = "bt-switch";
@@ -63,7 +63,8 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 	private static final IntentFilter INTENT_FILTER = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
 	protected static final int REQUEST_PICK_APPLICATION = 0;
 	public static final int PS_DIALOG_REQUEST_CODE = 4;
-	private PreferenceCategory mBluetoothDevicesCategory;
+    public static final String SCREEN_TIMEOUT_LIST = "screen-timeout-list";
+    private PreferenceCategory mBluetoothDevicesCategory;
 	private BroadcastReceiver mBluetoothReceiver;
 
 	private int mTrialsLeft;
@@ -159,14 +160,11 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 			}
 		});
 
-
-
-		final CheckBoxPreference timeout = (CheckBoxPreference) findPreference(PreferencesStorage.SCREEN_TIMEOUT);
-		timeout.setChecked(incar.isDisableScreenTimeout());
-
 		initBluetooth();
 		initAutorunApp(incar);
 		initActivityRecognition();
+        initScreenTimeout(incar);
+
 
 		showFragmentOnClick(MEDIA_SCREEN, ConfigurationInCarVolume.class);
 
@@ -175,7 +173,40 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 		initSamsungHandsfree();
 	}
 
-	private void initSamsungHandsfree() {
+    private void initScreenTimeout(InCar incar) {
+        final ListPreference pref = (ListPreference) findPreference(SCREEN_TIMEOUT_LIST);
+
+        if (incar.isDisableScreenTimeout()) {
+            if (incar.isDisableScreenTimeoutCharging()) {
+                pref.setValue("disabled-charging");
+            } else {
+                pref.setValue("disabled");
+            }
+        } else {
+            pref.setValue("enabled");
+        }
+
+
+        pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String value = (String) newValue;
+                if ("disabled-charging".equals(value)) {
+                    PreferencesStorage.saveScreenTimeout(true, true, mContext);
+                    pref.setValue("disabled-charging");
+                } else if ("disabled".equals(value)) {
+                    PreferencesStorage.saveScreenTimeout(true, false, mContext);
+                    pref.setValue("disabled");
+                } else {
+                    PreferencesStorage.saveScreenTimeout(false, false, mContext);
+                    pref.setValue("enabled");
+                }
+                return false;
+            }
+        });
+    }
+
+    private void initSamsungHandsfree() {
 		if (!SamsungDrivingMode.hasMode()) {
 			final Preference samDrivingPref = findPreference(PreferencesStorage.SAMSUNG_DRIVING_MODE);
 			((PreferenceCategory)findPreference("incar-more-category"))
