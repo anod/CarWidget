@@ -10,7 +10,7 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import com.anod.car.home.model.AbstractShortcutsModel;
-import com.anod.car.home.model.LauncherShortcutsModel;
+import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutsModel;
@@ -22,7 +22,6 @@ import com.anod.car.home.prefs.preferences.ShortcutsMain;
 import com.anod.car.home.utils.AppLog;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,7 +29,6 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
@@ -123,7 +121,7 @@ public class PreferencesBackupManager {
         
         File dataFile = new File(saveDir, filename+FILE_EXT_DAT);
         
-        ShortcutsModel smodel = new LauncherShortcutsModel(mContext, appWidgetId);
+        ShortcutsModel smodel = new WidgetShortcutsModel(mContext, appWidgetId);
         smodel.init();
         Main main = PreferencesStorage.loadMain(mContext, appWidgetId);
         ShortcutsMain prefs = new ShortcutsMain(convertToHashMap(smodel.getShortcuts()), main);
@@ -262,7 +260,7 @@ public class PreferencesBackupManager {
 		}
 		PreferencesStorage.saveMain(mContext, prefs.getMain(), appWidgetId);
 
-		ShortcutsModel smodel = new LauncherShortcutsModel(mContext, appWidgetId);
+		ShortcutsModel smodel = new WidgetShortcutsModel(mContext, appWidgetId);
 		smodel.init();
 
 		HashMap<Integer, ShortcutInfo> shortcuts = prefs.getShortcuts();

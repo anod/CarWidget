@@ -4,7 +4,7 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.SparseArray;
 
-import com.anod.car.home.model.LauncherShortcutsModel;
+import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
 
 /**
@@ -27,7 +27,7 @@ public class WidgetsListLoader extends AsyncTaskLoader< SparseArray<SparseArray<
 		SparseArray<SparseArray<ShortcutInfo>> result = new SparseArray<SparseArray<ShortcutInfo>>();
 
 		for (int i = 0; i < mAppWidgetIds.length; i++) {
-			LauncherShortcutsModel model = new LauncherShortcutsModel(mContext,mAppWidgetIds[i]);
+			WidgetShortcutsModel model = new WidgetShortcutsModel(mContext,mAppWidgetIds[i]);
 			model.init();
 
 			result.put(mAppWidgetIds[i], model.getShortcuts());

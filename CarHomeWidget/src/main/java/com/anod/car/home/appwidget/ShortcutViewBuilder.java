@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.anod.car.home.model.LauncherSettings;
-import com.anod.car.home.model.LauncherShortcutsModel;
+import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.skin.SkinProperties;
@@ -32,7 +32,7 @@ public class ShortcutViewBuilder {
 	private Context mContext;
 	private WidgetViewBuilder.PendingIntentHelper mPendingIntentHelper;
 	private int mAppWidgetId;
-	private LauncherShortcutsModel mSmodel;
+	private WidgetShortcutsModel mSmodel;
 	private LruCache<String, Bitmap> mBitmapMemoryCache;
 	private BitmapTransform mBitmapTransform;
 
@@ -42,7 +42,7 @@ public class ShortcutViewBuilder {
 		mAppWidgetId = appWidgetId;
 	}
 
-	public void init(String skinName, float scaledDensity, SkinProperties skinProperties, IconTheme iconTheme, Main prefs, LauncherShortcutsModel smodel, BitmapTransform bitmapTransform) {
+	public void init(String skinName, float scaledDensity, SkinProperties skinProperties, IconTheme iconTheme, Main prefs, WidgetShortcutsModel smodel, BitmapTransform bitmapTransform) {
 		mSkinName = skinName;
 		mScaledDensity = scaledDensity;
 		mSkinProperties = skinProperties;

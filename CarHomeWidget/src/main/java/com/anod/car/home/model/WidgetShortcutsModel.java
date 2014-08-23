@@ -12,21 +12,19 @@ import com.anod.car.home.utils.IntentUtils;
 
 import java.util.ArrayList;
 
-public class LauncherShortcutsModel extends AbstractShortcutsModel {
+public class WidgetShortcutsModel extends AbstractShortcutsModel {
 	private final Context mContext;
 	private final int mAppWidgetId;
 	private int mCount;
 
-	public LauncherShortcutsModel(Context context, int appWidgetId) {
+	public WidgetShortcutsModel(Context context, int appWidgetId) {
 		super(context);
 		mContext = context;
 		mAppWidgetId = appWidgetId;
 	}
 
 	public void loadCount() {
-		if (mCount == 0) {
-			mCount = PreferencesStorage.getLaunchComponentNumber(mContext, mAppWidgetId);
-		}
+		mCount = PreferencesStorage.getLaunchComponentNumber(mContext, mAppWidgetId);
 	}
 
 	@Override
@@ -53,7 +51,6 @@ public class LauncherShortcutsModel extends AbstractShortcutsModel {
 
 	@Override
 	public int getCount() {
-		loadCount();
 		return mCount;
 	}
 

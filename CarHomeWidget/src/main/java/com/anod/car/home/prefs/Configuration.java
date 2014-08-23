@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.NumberPicker;
 
 import com.anod.car.home.R;
-import com.anod.car.home.model.LauncherShortcutsModel;
+import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.model.ShortcutsModel;
 import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -34,7 +34,7 @@ public class Configuration extends ConfigurationPreferenceFragment implements Pr
 	
 	@Override
 	protected void onCreateImpl(Bundle savedInstanceState) {
-		mModel = new LauncherShortcutsModel(mContext, mAppWidgetId);
+		mModel = new WidgetShortcutsModel(mContext, mAppWidgetId);
 		mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
 		mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
 		mCategory = (PreferenceCategory)findPreference("shortcuts");
