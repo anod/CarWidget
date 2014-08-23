@@ -43,8 +43,9 @@ public class MainActivity extends CarWidgetActivity {
 
 	private Context mContext;
 	private Version mVersion;
+    private boolean mWizardShown;
 
-	@Override
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -58,14 +59,25 @@ public class MainActivity extends CarWidgetActivity {
 
 		boolean isFreeInstalled = !mVersion.isFree() && Utils.isFreeInstalled(this);
 
-		if (widgetsCount == 0 && !isFreeInstalled) {
+        if (savedInstanceState!=null) {
+            mWizardShown = savedInstanceState.getBoolean("wizard-shown");
+        }
+
+		if (!mWizardShown && widgetsCount == 0 && !isFreeInstalled) {
+            mWizardShown = true;
 			startWizard();
 			return;
 		}
 
 	}
 
-	@Override
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("wizard-shown", mWizardShown);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
 	protected void onResume() {
 		super.onResume();
 
