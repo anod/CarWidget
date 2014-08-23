@@ -11,7 +11,8 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 	private final Context mContext;
 	private final LauncherModel mModel;
 
-	abstract public int getCount();
+    abstract protected void loadCount();
+    abstract public int getCount();
 	abstract protected void saveShortcutId(int position, long shortcutId);
 	abstract protected void dropShortcutId(int position);
 	abstract protected ArrayList<Long> loadShortcutIds();
@@ -23,6 +24,7 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 	
 	@Override
 	public void init() {
+        loadCount();
 		mShortcuts = new SparseArray<ShortcutInfo>(getCount());
 		ArrayList<Long> currentShortcutIds = loadShortcutIds();
 		for (int cellId = 0; cellId < getCount(); cellId++) {
@@ -34,8 +36,9 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 			mShortcuts.put(cellId, info);
 		}
 	}
-	
-	@Override
+
+
+    @Override
 	public SparseArray<ShortcutInfo> getShortcuts() {
 		return mShortcuts;
 	}
