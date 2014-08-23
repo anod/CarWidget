@@ -73,7 +73,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:id="@+id/imageView6"
-				android:src="@drawable/ic_action_speakerphone"
+				android:src="@drawable/ic_action_ring_volume"
 				android:padding="10dp"/>
 
 		<ImageView
