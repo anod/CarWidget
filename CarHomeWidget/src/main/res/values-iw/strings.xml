@@ -219,6 +219,18 @@
 		<item quantity="one">ווידג׳ט אחד פעיל</item>
 		<item quantity="other">%d ווידג׳טים פעילים</item>
 	</plurals>
+    <string name="choose_a_theme">בחר צבעים</string>
+    <string name="delete">מחק</string>
+    <string name="export_backup">שמירה</string>
+    <string name="export_backup_finish">שמירה הסתיימה</string>
+    <string name="failed_fetch_icon">בעית קבלת איקוון</string>
+    <string name="import_backup">משיכה</string>
+    <string name="number">מספר</string>
+    <string name="number_shortcuts_title">מספר קיצורי דרך</string>
+    <string name="theme_gray">בהיר</string>
+    <string name="theme_holo">חשוך</string>
+    <string name="widgets">ווידג׳טים</string>
+    <string name="please_add_widget">בבקשה תוסיפו ווידג׳ט למסך הבית</string>
 
 
 </resources>

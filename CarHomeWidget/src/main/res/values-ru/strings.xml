@@ -235,4 +235,9 @@
 	<string name="theme_gray">Светлая</string>
 	<string name="theme_holo">Темная</string>
 	<string name="number_shortcuts_title">Количество ярлыков</string>
+    <string name="car_dock">Авто Док</string>
+    <string name="car_dock_summary">Включить при подключении к док-станции</string>
+    <string name="failed_fetch_icon">Поблема при получении стандарной иконки</string>
+    <string name="please_add_widget">Пожалуйста добавте виджет на домашний экран</string>
+    <string name="widgets">Виджеты</string>
 </resources>
