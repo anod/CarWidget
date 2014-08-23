@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class PreferencesStorage {
-	public static final String CMP_NUMBER = "cmp-number";
+	public static final String CMP_NUMBER = "cmp-number-%d";
 	private static final String MODE_FORCE_STATE = "mode-force-state";
 
 	public static final int NOTIFICATION_COMPONENT_NUMBER = 3;
@@ -315,7 +315,7 @@ public class PreferencesStorage {
 	public static int getLaunchComponentNumber(Context context, int appWidgetId) {
 		WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
 		prefs.setAppWidgetId(appWidgetId);
-		int num = prefs.getInt(CMP_NUMBER, LAUNCH_COMPONENT_NUMBER_DEFAULT);
+		int num = prefs.getInt(CMP_NUMBER, prefs.getInt("cmp-number",LAUNCH_COMPONENT_NUMBER_DEFAULT));
 		return (num == 0) ? LAUNCH_COMPONENT_NUMBER_DEFAULT : num;
 	}
 
