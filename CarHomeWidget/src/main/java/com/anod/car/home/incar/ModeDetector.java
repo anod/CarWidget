@@ -208,7 +208,7 @@ public class ModeDetector {
 		}
         if (ModeService.sInCarMode) {
             if (prefs.isDisableScreenTimeoutCharging()) {
-                Handler.acquireWakeLock(context);
+                ModeService.acquireWakeLock(context);
             }
         }
     }
@@ -219,7 +219,7 @@ public class ModeDetector {
 		}
         if (ModeService.sInCarMode) {
             if (prefs.isDisableScreenTimeoutCharging()) {
-                Handler.releaseWakeLock(context);
+                ModeService.releaseWakeLock(context);
             }
         }
 	}
