@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <application
+        android:name="com.anod.car.home.CarWidgetApplication"
+        android:backupAgent="com.anod.car.home.prefs.backup.BackupFileHelperAgent"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:allowBackup="true" >
+
+
+        <activity android:name="com.anod.car.home.DebugActivity"
+                  android:launchMode="singleTop"
+                  android:clearTaskOnLaunch="true"
+                  android:label="Debug"
+         >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+            <category android:name="android.intent.category.LAUNCHER"/>
+        </intent-filter>
+        </activity>
+
+        <!-- The settings provider contains Home's data, like the workspace favorites -->
+        <provider
+            android:name="com.anod.car.home.model.LauncherProvider"
+            android:authorities="com.anod.car.home.settings.pro"
+            android:readPermission="com.anod.car.home.permission.READ_SETTINGS"
+            android:writePermission="com.anod.car.home.permission.WRITE_SETTINGS" />
+
+		<receiver
+				android:name="com.anod.car.home.LargeProvider"
+				android:label="@string/app_name" >
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+			</intent-filter>
+
+			<meta-data
+					android:name="android.appwidget.provider"
+					android:resource="@xml/carhome_appwidget_info_4x4" />
+		</receiver>
+
+    </application>
+
+</manifest>

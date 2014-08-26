@@ -74,7 +74,7 @@ public class ModeDetector {
 		InCar prefs = PreferencesStorage.loadInCar(context);
 		if (Intent.ACTION_POWER_DISCONNECTED.equals(intent.getAction())
 				) {
-			onPowerDisconnected(prefs);
+			onPowerDisconnected(prefs, context);
 		} else if (Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())) {
 			onPowerConnected(prefs, context);
 		}
@@ -213,13 +213,13 @@ public class ModeDetector {
         }
     }
 
-	private static void onPowerDisconnected(InCar prefs) {
+	private static void onPowerDisconnected(InCar prefs, Context context) {
 		if (prefs.isDisableBluetoothOnPower() && Bluetooth.getState() != BluetoothAdapter.STATE_OFF) {
 			Bluetooth.switchOff();
 		}
         if (ModeService.sInCarMode) {
             if (prefs.isDisableScreenTimeoutCharging()) {
-                Handler.releaseWakeLock();
+                Handler.releaseWakeLock(context);
             }
         }
 	}

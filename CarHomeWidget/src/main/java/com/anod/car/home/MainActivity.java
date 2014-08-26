@@ -208,19 +208,6 @@ public class MainActivity extends CarWidgetActivity {
 			}
 		});
 
-        Button debug = (Button) findViewById(R.id.debug_activity);
-        if (BuildConfig.DEBUG) {
-            debug.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mContext, DebugActivity.class);
-                    startActivity(intent);
-                }
-            });
-        } else {
-            debug.setVisibility(View.GONE);
-        }
-
 	}
 
 

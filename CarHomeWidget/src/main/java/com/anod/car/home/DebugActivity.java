@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +20,22 @@ import com.anod.car.home.incar.ModeDetector;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.LogCatCollector;
 
-public class DebugActivity extends Activity implements AppLog.LogListener {
+import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class DebugActivity extends Activity{
 
 	private ListView mListView;
 	private LogAdapter mAdapter;
+    private Timer mLogTimer;
+    private Handler mHandle;
+    private Runnable mRunnable;
 
-	@Override
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
@@ -45,6 +55,9 @@ public class DebugActivity extends Activity implements AppLog.LogListener {
 		});
 		getActionBar().setCustomView(refresh);
 		getActionBar().setDisplayShowCustomEnabled(true);
+
+        mHandle = new Handler();
+
     }
 
 	private void updateStatus() {
@@ -120,34 +133,40 @@ public class DebugActivity extends Activity implements AppLog.LogListener {
 	}
 
 
-	private void registerLogListener() {
-		AppLog.setListener(this);
-	}
+    private void registerLogListener() {
+        mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                final LinkedList<String> out = LogCatCollector.collectLogCat("main");
+
+                mAdapter.clear();
+                mAdapter.addAll(out);
+                mAdapter.notifyDataSetChanged();
+
+                mHandle.postDelayed(mRunnable, 1000L);
+            }
+        };
+
+        mHandle.postDelayed(mRunnable, 1000L);
+
+    }
 
 	private void unregisterLogListener() {
-		AppLog.setListener(null);
-	}
-
-	@Override
-	public void onMessage(final AppLog.Entry entry) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				mAdapter.add(entry);
-				mAdapter.notifyDataSetChanged();
-			}
-		});
+        if (mHandle !=null) {
+            mHandle.removeCallbacks(mRunnable);
+            mRunnable=null;
+        }
 	}
 
 
-	public static class LogAdapter extends ArrayAdapter<AppLog.Entry> {
+	public static class LogAdapter extends ArrayAdapter<String> {
 
 		public LogAdapter(Context context) {
 			super(context, R.layout.logrow);
 		}
 
         @Override
-        public AppLog.Entry getItem(int position) {
+        public String getItem(int position) {
             return super.getItem(super.getCount() - position - 1);
         }
 		@Override
@@ -157,9 +176,9 @@ public class DebugActivity extends Activity implements AppLog.LogListener {
 				convertView = inflater.inflate(R.layout.logrow, parent, false);
 			}
 
-			AppLog.Entry entry = getItem(position);
+			String entry = getItem(position);
 			TextView text = (TextView) convertView.findViewById(android.R.id.text1);
-			text.setText(entry.msg);
+			text.setText(entry);
 
 			return convertView;
 		}
