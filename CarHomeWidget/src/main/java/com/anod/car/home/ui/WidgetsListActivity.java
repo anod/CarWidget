@@ -48,5 +48,4 @@ public class WidgetsListActivity extends CarWidgetActivity {
 		finish();
 	}
 
-
 }

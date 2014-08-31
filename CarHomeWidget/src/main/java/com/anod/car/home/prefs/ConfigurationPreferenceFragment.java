@@ -23,6 +23,9 @@ import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Utils;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * @author alex
  * @date 11/19/13
@@ -33,7 +36,7 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 
 
 	protected static final int DIALOG_WAIT = 1;
-	private ListView mListView;
+	@InjectView(android.R.id.list) ListView mListView;
 
 	abstract protected int getXmlResource();
 	abstract protected void onCreateImpl(Bundle savedInstanceState);
@@ -103,7 +106,7 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		mListView = (ListView) view.findViewById(android.R.id.list);
+        ButterKnife.inject(this, view);
 
 		Resources r = getResources();
         ColorDrawable d = new ColorDrawable(r.getColor(android.R.color.transparent));

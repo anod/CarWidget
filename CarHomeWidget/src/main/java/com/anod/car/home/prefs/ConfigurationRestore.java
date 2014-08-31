@@ -44,6 +44,10 @@ import com.anod.car.home.utils.Version;
 import java.io.File;
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.Optional;
+
 public class ConfigurationRestore extends Fragment implements
 		RestoreTask.RestoreTaskListner, DeleteFileTask.DeleteFileTaskListener, BackupTask.BackupTaskListner, GDriveBackup.Listener {
 	private static final int DOWNLOAD_MAIN_REQUEST_CODE = 1;
@@ -60,15 +64,16 @@ public class ConfigurationRestore extends Fragment implements
 
 	public static final String EXTRA_TYPE = "type";
 
-	private ImageButton mBackupMain;
-	private ImageButton mBackupIncar;
-	private ListView mListView;
-	private ImageButton mDownloadMain;
-	private ImageButton mDownloadIncar;
-	private ImageButton mUploadIncar;
-	private ImageButton mRestoreIncar;
+	@InjectView(R.id.backupMain) ImageButton mBackupMain;
+	@InjectView(R.id.backupIncar) ImageButton mBackupIncar;
+    @InjectView(android.R.id.list) ListView mListView;
+    @InjectView(R.id.downloadMain) ImageButton mDownloadMain;
+    @InjectView(R.id.downloadIncar) ImageButton mDownloadIncar;
+    @InjectView(R.id.uploadIncar) ImageButton mUploadIncar;
+    @InjectView(R.id.restoreIncar) ImageButton mRestoreIncar;
+    @InjectView(R.id.lastBackupIncar) TextView mLastBackupIncar;
+
 	private String mLastBackupStr;
-	private TextView mLastBackupIncar;
 	private MenuItem mRefreshMenuItem;
 	private Version mVersion;
 	private GDriveBackup mGDriveBackup;
@@ -81,26 +86,16 @@ public class ConfigurationRestore extends Fragment implements
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.restore_list, container, false);
 
-		mBackupMain = (ImageButton)view.findViewById(R.id.backupMain);
-		mDownloadMain = (ImageButton)view.findViewById(R.id.downloadMain);
+        ButterKnife.inject(this,view);
 
 		CheatSheet.setup(mBackupMain);
 		CheatSheet.setup(mDownloadMain);
-
-		mBackupIncar = (ImageButton)view.findViewById(R.id.backupIncar);
-		mDownloadIncar = (ImageButton)view.findViewById(R.id.downloadIncar);
-		mUploadIncar = (ImageButton)view.findViewById(R.id.uploadIncar);
-		mRestoreIncar = (ImageButton)view.findViewById(R.id.restoreIncar);
-
 		CheatSheet.setup(mBackupIncar);
 		CheatSheet.setup(mDownloadIncar);
 		CheatSheet.setup(mUploadIncar);
 		CheatSheet.setup(mRestoreIncar);
 
-		mLastBackupIncar = (TextView)view.findViewById(R.id.lastBackupIncar);
-
-		mListView = (ListView)view.findViewById(android.R.id.list);
-		mListView.setEmptyView(view.findViewById(android.R.id.empty));
+		mListView.setEmptyView(ButterKnife.findById(view,android.R.id.empty));
 		return view;
 	}
 
@@ -397,6 +392,18 @@ public class ConfigurationRestore extends Fragment implements
 		Toast.makeText(mContext, res, Toast.LENGTH_SHORT).show();
 	}
 
+    static class ViewHolder {
+        @InjectView(android.R.id.title) TextView title;
+        @InjectView(android.R.id.text2) TextView text2;
+        @InjectView(R.id.apply_icon) ImageView apply;
+        @InjectView(R.id.delete_button) ImageView delete;
+        @InjectView(R.id.uploadMain) ImageView export;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
+    }
+
 	private class RestoreAdapter extends ArrayAdapter<File> {
 		private final int mResource;
 
@@ -406,47 +413,46 @@ public class ConfigurationRestore extends Fragment implements
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View v = convertView;
-			if (v == null) {
-				LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				v = vi.inflate(mResource, null);
-			}
+		public View getView(int position, View view, ViewGroup parent) {
+            ViewHolder holder;
+            if (view != null) {
+                holder = (ViewHolder) view.getTag();
+            } else {
+                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(mResource, parent, false);
+                holder = new ViewHolder(view);
+                view.setTag(holder);
+            }
+
 			File entry = getItem(position);
 
-			TextView titleView = (TextView) v.findViewById(android.R.id.title);
 			String name = entry.getName();
 			name = name.substring(0, name.lastIndexOf(PreferencesBackupManager.FILE_EXT_DAT));
-			titleView.setTag(name);
-			titleView.setText(name);
+            holder.title.setTag(name);
+            holder.title.setText(name);
+            holder.title.setOnClickListener(mRestoreListener);
 
-			TextView text1 = (TextView)v.findViewById(android.R.id.text2);
 			String timestamp = DateUtils.formatDateTime(mContext, entry.lastModified(), PreferencesBackupManager.DATE_FORMAT);
-			text1.setText(timestamp);
-			
-			titleView.setOnClickListener(mRestoreListener);
-			ImageView applyView = (ImageView) v.findViewById(R.id.apply_icon);
-			applyView.setTag(name);
-			applyView.setOnClickListener(mRestoreListener);
+            holder.text2.setText(timestamp);
 
-			ImageView deleteView = (ImageView) v.findViewById(R.id.delete_button);
-			deleteView.setTag(entry);
-			deleteView.setOnClickListener(mDeleteListener);
+            holder.apply.setTag(name);
+			holder.apply.setOnClickListener(mRestoreListener);
+            CheatSheet.setup(holder.apply);
 
-			ImageView exportView = (ImageView) v.findViewById(R.id.uploadMain);
+            holder.delete.setTag(entry);
+            holder.delete.setOnClickListener(mDeleteListener);
+            CheatSheet.setup(holder.delete);
+
 			if (mIsGDriveSupported) {
-				exportView.setTag(name);
-				exportView.setOnClickListener(mExportListener);
-				CheatSheet.setup(exportView);
+                holder.export.setTag(name);
+                holder.export.setOnClickListener(mExportListener);
+				CheatSheet.setup(holder.export);
 			} else {
-				exportView.setVisibility(View.GONE);
+                holder.export.setVisibility(View.GONE);
 			}
 
-			CheatSheet.setup(applyView);
-			CheatSheet.setup(deleteView);
-
-			v.setId(position);
-			return v;
+            view.setId(position);
+			return view;
 		}
 	}
 

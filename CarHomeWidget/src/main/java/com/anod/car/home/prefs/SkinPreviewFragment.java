@@ -15,12 +15,15 @@ import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.prefs.LookAndFeelActivity.SkinRefreshListener;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class SkinPreviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<View>, SkinRefreshListener {
 	
 	private static final String ARG_POSITION = "position";
 	private int mPosition;
 	private LookAndFeelActivity mActivity;
-	private ViewGroup mContainer;
+	@InjectView(R.id.container_preview) ViewGroup mContainer;
 
 	public static SkinPreviewFragment newInstance(int position) {
 		SkinPreviewFragment f = new SkinPreviewFragment();
@@ -65,7 +68,7 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.skin_item, container, false);
-		mContainer = (ViewGroup)view.findViewById(R.id.container_preview);
+        ButterKnife.inject(this,view);
 		return view;
 	}
 	

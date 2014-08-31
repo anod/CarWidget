@@ -22,7 +22,10 @@ import com.anod.car.home.utils.Utils;
 
 import java.util.ArrayList;
 
-public class IconThemesActivity extends AppsCacheActivity implements OnClickListener {
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class IconThemesActivity extends AppsCacheActivity {
 	private int mCurrentSelected;
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private Main mPrefs;
@@ -39,14 +42,8 @@ public class IconThemesActivity extends AppsCacheActivity implements OnClickList
 			finish();
 		}
 		mRefresh = false;
-		
-		Button okButton = (Button)findViewById(R.id.btn_ok);
-		okButton.setOnClickListener(this);
-		Button downloadButton = (Button)findViewById(R.id.btn_download);
-		downloadButton.setOnClickListener(this);
-		Button cancelButton = (Button)findViewById(R.id.btn_cancel);
-		cancelButton.setOnClickListener(this);
 
+        ButterKnife.inject(this);
 	}
 
 	@Override
@@ -122,36 +119,33 @@ public class IconThemesActivity extends AppsCacheActivity implements OnClickList
 		Utils.saveAppWidgetId(outState, mAppWidgetId);
 	}
 
-	@Override
-	public void onClick(View v) {
-		if (v.getId() == R.id.btn_ok) {
-			String prevTheme = mPrefs.getIconsTheme();
-			boolean update = false;
-			if (mThemePackageName == null && prevTheme != null) {
-				update = true;
-			} else if(mThemePackageName != null && prevTheme == null) {
-				update = true;
-			} else if (mThemePackageName != null && prevTheme != null && !mThemePackageName.equals(prevTheme)) {
-				update = true;
-			}
-			if (update) {
-				mPrefs.setIconsTheme(mThemePackageName);
-				PreferencesStorage.saveMain(this, mPrefs, mAppWidgetId);
-			}
-			finish();
-			return;
-		}
-		if (v.getId() == R.id.btn_download) {
-			Uri uri = Uri.parse(ADW_ICON_THEME_MARKET_URL);
-			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-			mRefresh = true;
-			startActivity(intent);
-			return;
-		}
-		if (v.getId() == R.id.btn_cancel) {
-			finish();
-			return;
-		}
-		
+    @OnClick(R.id.btn_ok)
+    public void onSave() {
+        String prevTheme = mPrefs.getIconsTheme();
+        boolean update = false;
+        if (mThemePackageName == null && prevTheme != null) {
+            update = true;
+        } else if(mThemePackageName != null && prevTheme == null) {
+            update = true;
+        } else if (mThemePackageName != null && prevTheme != null && !mThemePackageName.equals(prevTheme)) {
+            update = true;
+        }
+        if (update) {
+            mPrefs.setIconsTheme(mThemePackageName);
+            PreferencesStorage.saveMain(this, mPrefs, mAppWidgetId);
+        }
+        finish();
+    }
+    @OnClick(R.id.btn_download)
+    public void onDownload() {
+        Uri uri = Uri.parse(ADW_ICON_THEME_MARKET_URL);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        mRefresh = true;
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.btn_cancel)
+	public void onCancel(View v) {
+		finish();
 	}
 }

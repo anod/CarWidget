@@ -18,6 +18,10 @@ import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.utils.Version;
 import com.example.android.wizardpager.wizard.ui.StepPagerStrip;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+
 /**
  * @author alex
  * @date 5/24/13
@@ -38,8 +42,9 @@ public class WizardActivity extends CarWidgetActivity {
 	 * The pager widget, which handles animation and allows swiping horizontally to access previous
 	 * and next wizard steps.
 	 */
-	private ViewPager mPager;
-
+	@InjectView(R.id.pager) ViewPager mPager;
+    @InjectView(R.id.buttonNext) Button mNextButton;
+    @InjectView(R.id.buttonSkip) Button mSkipButton;
 	/**
 	 * The pager adapter, which provides the pages to the view pager widget.
 	 */
@@ -51,31 +56,13 @@ public class WizardActivity extends CarWidgetActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wizard_activity);
 
+        ButterKnife.inject(this);
 		// Instantiate a ViewPager and a PagerAdapter.
-		mPager = (ViewPager) findViewById(R.id.pager);
 		mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
 
-		final Button nextButton =(Button)findViewById(R.id.buttonNext);
-		nextButton.setTag(TYPE_NEXT);
-		nextButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				if (nextButton.getTag() == TYPE_FINISH) {
-					finishWizard();
-				} else {
-					mPager.setCurrentItem(mPager.getCurrentItem() + 1);
-				}
-			}
-		});
+        mNextButton.setTag(TYPE_NEXT);
 
-		final Button skipButton = (Button)findViewById(R.id.buttonSkip);
-		skipButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				finishWizard();
-			}
-		});
 
 		mStepPagerStrip = (StepPagerStrip) findViewById(R.id.strip);
 		mStepPagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
@@ -93,9 +80,9 @@ public class WizardActivity extends CarWidgetActivity {
 			public void onPageSelected(int position) {
 				mStepPagerStrip.setCurrentPage(position);
 				if (position == (NUM_PAGES - 1)) {
-					nextButton.setTag(TYPE_FINISH);
-					nextButton.setText(R.string.finish);
-					skipButton.setVisibility(View.GONE);
+                    mNextButton.setTag(TYPE_FINISH);
+                    mNextButton.setText(R.string.finish);
+                    mSkipButton.setVisibility(View.GONE);
 				}
 			}
 		});
@@ -106,6 +93,20 @@ public class WizardActivity extends CarWidgetActivity {
 	private void finishWizard() {
 		WizardActivity.this.finish();
 	}
+
+    @OnClick(R.id.buttonSkip)
+    public void onSkip() {
+        finishWizard();
+    }
+
+    @OnClick(R.id.buttonNext)
+    public void onNext() {
+        if (mNextButton.getTag() == TYPE_FINISH) {
+            finishWizard();
+        } else {
+            mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+        }
+    }
 
 	@Override
 	public void onBackPressed() {

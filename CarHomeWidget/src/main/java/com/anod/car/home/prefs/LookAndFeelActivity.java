@@ -45,20 +45,23 @@ import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentHelper {
 	private static final int SKINS_COUNT = 5;
 	private static final int REQUEST_LOOK_ACTIVITY = 1;
 	private static final int REQUEST_PICK_ICON_THEME = 2;
-	private ViewPager mGallery;
+
 	private SkinItem[] mSkinItems;
 	private int mCurrentPage;
 	private int mSelectedSkinPosition;
-	private TextView mTextView;
+
 	private int mAppWidgetId;
 	private Context mContext;
 	private MenuItem mMenuTileColor;
 	private boolean mMenuInitialized;
-	private View mLoaderView;
+
 	private boolean[] mPreviewInitialized = { false, false, false, false, false };
 	private WidgetViewBuilder mBuilder;
 	private Main mPrefs;
@@ -69,6 +72,10 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
 	private static int[] sTextRes = { 0, 0, 0, 0, R.string.skin_info_bbb };
 	private boolean mIsKeyguard;
 	private LruCache<String, Bitmap> mBitmapMemoryCache;
+
+    @InjectView(R.id.skin_info) TextView mTextView;
+    @InjectView(R.id.gallery) ViewPager mGallery;
+    @InjectView(R.id.loading)  View mLoaderView;
 
 	interface SkinRefreshListener {
 		void refresh();
@@ -111,11 +118,14 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
 
 		mSharedPrefs = new WidgetSharedPreferences(mContext);
 		mSharedPrefs.setAppWidgetId(mAppWidgetId);
-		
-		inflateActivity();
+
+        ButterKnife.inject(this);
+
+        mTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
 		int count = mSkinItems.length;
 
+        mGallery.setOnPageChangeListener(this);
 		SkinPagerAdapter adapter = new SkinPagerAdapter(this, count, getFragmentManager());
 		mGallery.setAdapter(adapter);
 		mGallery.setCurrentItem(mSelectedSkinPosition);
@@ -321,16 +331,6 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
 		return mSkinItems[position];
 	}
 
-	private void inflateActivity() {
-
-		mTextView = (TextView) findViewById(R.id.skin_info);
-		mTextView.setMovementMethod(LinkMovementMethod.getInstance());
-
-		mGallery = (ViewPager) findViewById(R.id.gallery);
-		mGallery.setOnPageChangeListener(this);
-
-		mLoaderView = (View) findViewById(R.id.loading);
-	}
 
 	public void onPreviewStart(int position) {
 		mPreviewInitialized[position] = false;

@@ -45,6 +45,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+
 public class ShortcutEditActivity extends Activity {
 
 	private static final String MIME_IMAGE = "image/*";
@@ -58,9 +62,10 @@ public class ShortcutEditActivity extends Activity {
 	private static final int DIALOG_ICON_MENU = 1;
 
 	private Bitmap mCustomIcon;
-	private ImageView mIconView;
-	private EditText mLabelEdit;
-	private LauncherModel mModel;
+	@InjectView(R.id.icon_edit) ImageView mIconView;
+    @InjectView(R.id.label_edit) EditText mLabelEdit;
+
+    private LauncherModel mModel;
 	private ShortcutInfo mShortcutInfo;
 	private Intent mIntent;
 	private Bitmap mIconDefault;
@@ -71,8 +76,7 @@ public class ShortcutEditActivity extends Activity {
 		setContentView(R.layout.shortcut_edit);
 		setTitle(R.string.shortcut_edit_title);
 
-		mLabelEdit = (EditText) findViewById(R.id.label_edit);
-		mIconView = (ImageView) findViewById(R.id.icon_edit);
+        ButterKnife.inject(this);
 
 		mIntent = getIntent();
 		final int cellId = mIntent.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, PickShortcutUtils.INVALID_CELL_ID);
@@ -86,22 +90,6 @@ public class ShortcutEditActivity extends Activity {
 		mShortcutInfo = mModel.loadShortcut(shortcutId);
 		mLabelEdit.setText(mShortcutInfo.title);
 		mIconView.setImageBitmap(mShortcutInfo.getIcon());
-
-		mIconView.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				changeIcon(v);
-			}
-		});
-
-		final Button okButton = (Button) findViewById(R.id.ok_button);
-		okButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				clickedOk(v);
-			}
-		});
 
 	}
 
@@ -326,14 +314,10 @@ public class ShortcutEditActivity extends Activity {
         return res;
     }
 
-	/**
-	 * Called from view directly
-	 * 
-	 * @param view
-	 */
-	@SuppressWarnings("deprecation")
-	private void changeIcon(View view) {
-		showDialog(DIALOG_ICON_MENU);
+
+    @OnClick(R.id.icon_edit)
+	public void changeIcon(View view) {
+        showDialog(DIALOG_ICON_MENU);
 	}
 
 	private void setCustomIcon(Bitmap icon) {
@@ -342,7 +326,8 @@ public class ShortcutEditActivity extends Activity {
 		mIconView.setImageBitmap(mCustomIcon);
 	}
 
-	private void clickedOk(View view) {
+    @OnClick(R.id.ok_button)
+    public void clickedOk(View view) {
 		boolean needUpdate = false;
 		if (mCustomIcon != null) {
 			mShortcutInfo.setCustomIcon(mCustomIcon);

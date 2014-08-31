@@ -26,9 +26,12 @@ import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class DebugActivity extends Activity{
 
-	private ListView mListView;
+	@InjectView(R.id.log) ListView mListView;
 	private LogAdapter mAdapter;
     private Timer mLogTimer;
     private Handler mHandle;
@@ -40,8 +43,7 @@ public class DebugActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
 
-
-		mListView = (ListView)findViewById(R.id.log);
+        ButterKnife.inject(this);
 		mAdapter = new LogAdapter(this);
 		mListView.setAdapter(mAdapter);
 
@@ -111,7 +113,7 @@ public class DebugActivity extends Activity{
 	}
 
 	private void setStatusText(int resId, String text, int color) {
-		TextView textView = (TextView) findViewById(resId);
+		TextView textView = ButterKnife.findById(this,resId);
 
 		textView.setText(text);
 		textView.setTextColor(color);
@@ -177,7 +179,7 @@ public class DebugActivity extends Activity{
 			}
 
 			String entry = getItem(position);
-			TextView text = (TextView) convertView.findViewById(android.R.id.text1);
+			TextView text = ButterKnife.findById(convertView, android.R.id.text1);
 			text.setText(entry);
 
 			return convertView;

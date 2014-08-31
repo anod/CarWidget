@@ -29,6 +29,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * @author alex
  * @date 6/6/14
@@ -36,7 +39,7 @@ import java.util.Set;
 public class BluetoothDeviceActivity extends Activity implements AdapterView.OnItemClickListener {
 	private BroadcastReceiver mBluetoothReceiver;
 	private static final IntentFilter INTENT_FILTER = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-	private ListView mDevicesList;
+	@InjectView(android.R.id.list) ListView mDevicesList;
 	private DeviceAdapter mListAdapter;
 	private Context mContext;
 
@@ -45,12 +48,11 @@ public class BluetoothDeviceActivity extends Activity implements AdapterView.OnI
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bluetooth_device_activity);
 
-		mDevicesList = (ListView) findViewById(android.R.id.list);
+        ButterKnife.inject(this);
 		mDevicesList.setOnItemClickListener(this);
 		mListAdapter = new DeviceAdapter(this);
 
-		TextView emptyView = (TextView)findViewById(android.R.id.empty);
-		mDevicesList.setEmptyView(emptyView);
+		mDevicesList.setEmptyView(ButterKnife.findById(this,android.R.id.empty));
 		mDevicesList.setAdapter(mListAdapter);
 
 		mContext = this;
