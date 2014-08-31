@@ -69,7 +69,7 @@ public class LogCatCollector {
         // "-t n" argument has been introduced in FroYo (API level 8). For
         // devices with lower API level, we will have to emulate its job.
         final int tailCount;
-        String[] logcatArguments = new String[]{"-t", "100", "tag", "CarHomeWidget:V", "*:W" };
+        String[] logcatArguments = new String[]{"-t", "300", "tag", "CarHomeWidget:V", "*:S" };
         final List<String> logcatArgumentsList = new ArrayList<String>(
                 Arrays.asList(logcatArguments)
         );

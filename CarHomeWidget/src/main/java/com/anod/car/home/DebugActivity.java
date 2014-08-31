@@ -17,25 +17,40 @@ import android.widget.TextView;
 
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.incar.ModeDetector;
+import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.LogCatCollector;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.InjectViews;
 
 public class DebugActivity extends Activity{
 
 	@InjectView(R.id.log) ListView mListView;
+    @InjectViews({
+        R.id.broadcast,
+        R.id.incar,
+        R.id.power,
+        R.id.headset,
+        R.id.bluetooth,
+        R.id.activity,
+        R.id.cardock,
+        R.id.wakelock
+    })
+    TextView[] mTextViews;
 	private LogAdapter mAdapter;
     private Timer mLogTimer;
     private Handler mHandle;
     private Runnable mRunnable;
+    private InCar mInCarPrefs;
 
 
     @Override
@@ -47,56 +62,46 @@ public class DebugActivity extends Activity{
 		mAdapter = new LogAdapter(this);
 		mListView.setAdapter(mAdapter);
 
-		ImageButton refresh = new ImageButton(this);
-		refresh.setImageResource(R.drawable.ic_action_refresh);
-		refresh.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				updateStatus();
-			}
-		});
-		getActionBar().setCustomView(refresh);
-		getActionBar().setDisplayShowCustomEnabled(true);
-
         mHandle = new Handler();
-
     }
 
 	private void updateStatus() {
 
-		InCar incar = PreferencesStorage.loadInCar(this);
-
 		boolean isBroadcastServiceRunning = isBroadcastServiceRunning();
-		setStatusText(R.id.broadcast, (isBroadcastServiceRunning) ? "Broadcast Service: On" : "Broadcast Service: Off", Color.WHITE);
+		setStatusText(mTextViews[0], (isBroadcastServiceRunning) ? "Broadcast Service: On" : "Broadcast Service: Off", Color.WHITE);
 
 		boolean isInCarEnabled = PreferencesStorage.isInCarModeEnabled(this);
-		setStatusText(R.id.incar, (isInCarEnabled) ? "InCar: Enabled" : "InCar: Disabled", Color.WHITE);
+		setStatusText(mTextViews[1], (isInCarEnabled) ? "InCar: Enabled" : "InCar: Disabled", Color.WHITE);
 
 		boolean powerEvent = ModeDetector.getEventState(ModeDetector.FLAG_POWER);
-		boolean powerPref = incar.isPowerRequired();
-		setStatusText(R.id.power,  String.format("Power: %b", powerEvent), getColor(powerPref, powerEvent));
+		boolean powerPref = mInCarPrefs.isPowerRequired();
+		setStatusText(mTextViews[2],  String.format("Power: %b", powerEvent), getColor(powerPref, powerEvent));
 
 		boolean headsetEvent = ModeDetector.getEventState(ModeDetector.FLAG_HEADSET);
-		boolean headsetPref = incar.isHeadsetRequired();
-		setStatusText(R.id.headset, String.format("Headset: %b", headsetEvent), getColor(headsetPref, headsetEvent));
+		boolean headsetPref = mInCarPrefs.isHeadsetRequired();
+		setStatusText(mTextViews[3], String.format("Headset: %b", headsetEvent), getColor(headsetPref, headsetEvent));
 
 		boolean btEvent = ModeDetector.getEventState(ModeDetector.FLAG_BLUETOOTH);
-		boolean btPref = incar.isBluetoothRequired();
+		boolean btPref = mInCarPrefs.isBluetoothRequired();
 
 		String devices = "";
-		if (incar.getBtDevices() != null) {
-			devices = TextUtils.join(",", incar.getBtDevices().values());
+		if (mInCarPrefs.getBtDevices() != null) {
+			devices = TextUtils.join(",", mInCarPrefs.getBtDevices().values());
 		}
 
-		setStatusText(R.id.bluetooth, String.format("Bluetooth: %b [%s]", btEvent,devices), getColor(btPref, btEvent));
+		setStatusText(mTextViews[4], String.format("Bluetooth: %b [%s]", btEvent,devices), getColor(btPref, btEvent));
 
-		boolean activityEvent = ModeDetector.getEventState(ModeDetector.FLAG_HEADSET);
-		boolean activityPref = incar.isActivityRequired();
-		setStatusText(R.id.activity,  String.format("Activity: %b",activityEvent), getColor(activityPref, activityEvent));
+		boolean activityEvent = ModeDetector.getEventState(ModeDetector.FLAG_ACTIVITY);
+		boolean activityPref = mInCarPrefs.isActivityRequired();
+		setStatusText(mTextViews[5],  String.format("Activity: %b",activityEvent), getColor(activityPref, activityEvent));
 
         boolean dockEvent = ModeDetector.getEventState(ModeDetector.FLAG_CAR_DOCK);
-        boolean docPref = incar.isCarDockRequired();
-        setStatusText(R.id.cardock, String.format("CarDock: %b", dockEvent), getColor(docPref, dockEvent));
+        boolean docPref = mInCarPrefs.isCarDockRequired();
+        setStatusText(mTextViews[6], String.format("CarDock: %b", dockEvent), getColor(docPref, dockEvent));
+
+        boolean wlHeld = ModeService.isWakeLockHeld(this);
+        setStatusText(mTextViews[7], String.format("WakeLock Held: %b", wlHeld), Color.WHITE);
+
 	}
     private int getColor(boolean pref, boolean event) {
         return (pref) ? (event) ? Color.GREEN : Color.RED : Color.GRAY;
@@ -112,9 +117,7 @@ public class DebugActivity extends Activity{
 		return false;
 	}
 
-	private void setStatusText(int resId, String text, int color) {
-		TextView textView = ButterKnife.findById(this,resId);
-
+	private void setStatusText(TextView textView, String text, int color) {
 		textView.setText(text);
 		textView.setTextColor(color);
 	}
@@ -123,7 +126,9 @@ public class DebugActivity extends Activity{
 	protected void onResume() {
 		super.onResume();
 
-		registerLogListener();
+
+        mInCarPrefs = PreferencesStorage.loadInCar(this);
+        registerLogListener();
 		updateStatus();
         AppLog.d("Debug activity resumed");
 	}
@@ -144,6 +149,8 @@ public class DebugActivity extends Activity{
                 mAdapter.clear();
                 mAdapter.addAll(out);
                 mAdapter.notifyDataSetChanged();
+
+                updateStatus();
 
                 mHandle.postDelayed(mRunnable, 1000L);
             }

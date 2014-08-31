@@ -56,6 +56,11 @@ public class ModeService extends Service {
         return(sLockStatic);
     }
 
+    public static boolean isWakeLockHeld(Context context) {
+        PowerManager.WakeLock lock = ModeService.getLock(context.getApplicationContext());
+        return lock.isHeld();
+    }
+
     public static void acquireWakeLock(Context context) {
         PowerManager.WakeLock lock = ModeService.getLock(context.getApplicationContext());
         if (!lock.isHeld()) {

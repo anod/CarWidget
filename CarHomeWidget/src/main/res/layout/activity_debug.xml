@@ -95,4 +95,15 @@
         android:text="Broadcast Service: ON"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textIsSelectable="false"/>
+
+    <TextView
+        android:id="@+id/wakelock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/bluetooth"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="Wakelock: Held"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textIsSelectable="false"/>
 </RelativeLayout>
