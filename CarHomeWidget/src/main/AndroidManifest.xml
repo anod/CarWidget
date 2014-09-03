@@ -144,7 +144,12 @@
 			</intent-filter>
 		</activity>
         <activity
-            android:name="com.anod.car.home.prefs.MusicAppsActivity"
+            android:name=".prefs.MusicAppSettingsActivity"
+            android:label="Music app"
+            android:theme="@style/AppListTheme" />
+
+        <activity
+            android:name=".app.MusicAppChoiceActivity"
             android:theme="@style/AppListTheme.Light" />
 
 		<service android:name="com.anod.car.home.incar.ModeService" />

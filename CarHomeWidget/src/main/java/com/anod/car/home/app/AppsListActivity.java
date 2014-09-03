@@ -46,7 +46,7 @@ abstract public class AppsListActivity extends ListActivity implements AdapterVi
             requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.apps_cache_list);
+        setContentView(R.layout.apps_list);
         getListView().setOnItemClickListener(this);
         int footerViewId = getFooterViewId();
         if (footerViewId > 0) {

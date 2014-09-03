@@ -78,7 +78,7 @@ public class PickShortcutUtils {
 	}
 	
 	public void showActivityPicker(int position) {
-		mConfigurationFragment.showDialog(ConfigurationPreferenceFragment.DIALOG_WAIT);
+        mActivity.showProgress();
 		Bundle bundle = new Bundle();
 
 		ArrayList<String> shortcutNames = new ArrayList<String>();
@@ -136,12 +136,12 @@ public class PickShortcutUtils {
 				return true;
 			case REQUEST_PICK_SHORTCUT:
 				pickShortcut(data);
-				mConfigurationFragment.dismissDialog(ConfigurationPreferenceFragment.DIALOG_WAIT);
+                mActivity.hideProgress();
 				return true;
 			default:
 			}
 		} else {
-			mConfigurationFragment.dismissDialog(ConfigurationPreferenceFragment.DIALOG_WAIT);
+            mActivity.hideProgress();
 		}
 		return false;
 	}

@@ -17,6 +17,9 @@ import com.anod.car.home.utils.UtilitiesBitmap;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class AppsListAdapter extends ArrayAdapter<AppsList.Entry> {
 	final private Bitmap mDefaultIcon;
 
@@ -33,25 +36,36 @@ public class AppsListAdapter extends ArrayAdapter<AppsList.Entry> {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View v = convertView;
-		if (v == null) {
-            LayoutInflater vi = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(mResource, null);
-		}
+	public View getView(int position, View view, ViewGroup parent) {
+        ViewHolder holder;
+        if (view != null) {
+            holder = (ViewHolder) view.getTag();
+        } else {
+            LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(mResource, parent, false);
+            holder = new ViewHolder(view);
+            view.setTag(holder);
+        }
+
 		AppsList.Entry entry = getItem(position);
 
-		TextView title = (TextView) v.findViewById(android.R.id.text1);
-        ImageView icon = (ImageView) v.findViewById(R.id.app_icon);
-        title.setText(entry.title);
+        holder.title.setText(entry.title);
         if (entry.icon == null) {
-        	icon.setImageBitmap(mDefaultIcon);
-            mAppIconUtils.fetchDrawableOnThread(entry, icon);
+            holder.icon.setImageBitmap(mDefaultIcon);
+            mAppIconUtils.fetchDrawableOnThread(entry, holder.icon);
         } else {
-        	icon.setImageBitmap(entry.icon);
+            holder.icon.setImageBitmap(entry.icon);
         }
-        v.setId(position);
-        return v;
+        view.setId(position);
+        return view;
 	}
-	
+
+    static class ViewHolder {
+        @InjectView(android.R.id.text1) TextView title;
+        @InjectView(android.R.id.icon) ImageView icon;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
+    }
 }

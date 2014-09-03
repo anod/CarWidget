@@ -89,6 +89,7 @@ public class PreferencesStorage {
 	public static final String ADJUST_WIFI = "wi-fi";
 	public static final String ACTIVATE_CAR_MODE = "activate-car-mode";
 	public static final String AUTORUN_APP = "autorun-app";
+    public static final String MUSIC_APP = "music-app";
 
 	public static final String CALL_VOLUME_LEVEL = "call-volume-level";
 
@@ -376,28 +377,6 @@ public class PreferencesStorage {
 		editor.commit();
 	}
 
-	public static void saveStopAppPackages(Context context, ArrayList<String> packageNames) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		Editor editor = prefs.edit();
-
-		if (packageNames != null) {
-			StringBuilder sb = new StringBuilder();
-			int last = packageNames.size() - 1;
-			for (int i = 0; i <= last; i++) {
-				sb.append(packageNames.get(i));
-				if (i != last) {
-					sb.append(DELIMETER_PACKAGES);
-				}
-			}
-
-			editor.putString(ACTIVATE_CAR_MODE, sb.toString());
-		} else {
-			editor.remove(ACTIVATE_CAR_MODE);
-		}
-
-		editor.commit();
-	}
-
 	public static boolean isAdjustVolumeLevel(Context context) {
 		return getBoolean(context, ADJUST_VOLUME_LEVEL, false);
 	}
@@ -479,9 +458,33 @@ public class PreferencesStorage {
 		return getBoolean(context, ACTIVITY_RECOGNITION, false);
 	}
 
-
     public static void saveScreenTimeout(boolean disabled, boolean disableCharging, Context context) {
         putBoolean(context,SCREEN_TIMEOUT,disabled);
         putBoolean(context,SCREEN_TIMEOUT_CHARGING,disableCharging);
+    }
+
+    public static void saveMusicApp(Context context, ComponentName musicApp, boolean delayed) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Editor edit = prefs.edit();
+        if (musicApp == null) {
+            edit.remove(MUSIC_APP);
+        } else {
+            edit.putString(MUSIC_APP, musicApp.flattenToString());
+        }
+        if (delayed) {
+            edit.apply();
+        } else {
+            edit.commit();
+        }
+    }
+
+    public static ComponentName getMusicApp(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String musicAppString = prefs.getString(MUSIC_APP, null);
+
+        if (musicAppString != null) {
+            return ComponentName.unflattenFromString(musicAppString);
+        }
+        return null;
     }
 }

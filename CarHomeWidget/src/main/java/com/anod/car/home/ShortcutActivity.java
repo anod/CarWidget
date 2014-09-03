@@ -2,12 +2,17 @@ package com.anod.car.home;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.anod.car.home.app.MusicAppChoiceActivity;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.MusicUtils;
 
 public class ShortcutActivity extends Activity {
@@ -28,12 +33,31 @@ public class ShortcutActivity extends Activity {
 		}
 		Integer keyCode = getIntent().getIntExtra(EXTRA_MEDIA_BUTTON, 0);
 		if (keyCode > 0) {
-			MusicUtils.sendKeyEvent(keyCode, this);
-		}
+            handleKeyCode(keyCode);
+        }
 		finish();
 	}
 
-	private void runFromIntent(Intent intent) {
+    private void handleKeyCode(Integer keyCode) {
+        if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
+            AudioManager audio = (AudioManager)getSystemService(AUDIO_SERVICE);
+            // pause
+            if (audio.isMusicActive()) {
+                MusicUtils.sendKeyEvent(keyCode, this);
+            } else {
+                ComponentName musicCmp = PreferencesStorage.getMusicApp(this);
+                if (musicCmp == null) {
+                    startActivity(new Intent(this, MusicAppChoiceActivity.class));
+                } else {
+                    MusicUtils.sendKeyEventComponent(keyCode, this, musicCmp, false);
+                }
+            }
+        } else {
+            MusicUtils.sendKeyEvent(keyCode, this);
+        }
+    }
+
+    private void runFromIntent(Intent intent) {
 		//fix for Galaxy s3
 		String action = intent.getAction();
 		if (action != null && action.equals(ShortcutPendingIntent.INTENT_ACTION_CALL_PRIVILEGED)) {
@@ -43,10 +67,10 @@ public class ShortcutActivity extends Activity {
 			intent.setSourceBounds(getIntent().getSourceBounds());
 		}
 		
-		startActivitySafetly(intent);
+		startActivitySafely(intent);
 	}
 	
-    private void startActivitySafetly(Intent intent) {
+    private void startActivitySafely(Intent intent) {
         try {
             startActivity(intent);
         } catch (ActivityNotFoundException e) {

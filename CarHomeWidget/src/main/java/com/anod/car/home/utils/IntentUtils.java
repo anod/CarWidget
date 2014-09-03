@@ -96,17 +96,17 @@ public class IntentUtils {
 			case 0:
 				return new Intent(context, SwitchInCarActivity.class);
 			case 1:
-				return creatMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
+				return createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
 			case 2:
-				return creatMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT);
+				return createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT);
 			case 3:
-				return creatMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_PREVIOUS);
+				return createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_PREVIOUS);
 			default:
 		}
 		return null;
 	}
 
-	public static Intent creatMediaButtonIntent(Context context, int keyCode) {
+	public static Intent createMediaButtonIntent(Context context, int keyCode) {
 		Intent shortcutIntent = new Intent(context,ShortcutActivity.class);
 		shortcutIntent.setAction(ShortcutActivity.ACTION_MEDIA_BUTTON);
 		shortcutIntent.putExtra(ShortcutActivity.EXTRA_MEDIA_BUTTON, keyCode);

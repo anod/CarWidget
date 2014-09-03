@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.view.Window;
 
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
@@ -45,6 +46,7 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.pref_layout);
 
 		if (savedInstanceState == null) {
@@ -140,4 +142,13 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 			mActivityResultListener.onActivityResult(requestCode, resultCode, data);
 		}
 	}
+
+    public void showProgress() {
+        setProgressBarIndeterminateVisibility(true);
+    }
+
+    public void hideProgress() {
+        setProgressBarIndeterminateVisibility(false);
+    }
+
 }

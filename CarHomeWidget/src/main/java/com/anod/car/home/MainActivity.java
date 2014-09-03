@@ -3,9 +3,11 @@ package com.anod.car.home;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -17,10 +19,10 @@ import android.widget.TextView;
 
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
-import com.anod.car.home.prefs.AllAppsActivity;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.ConfigurationInCar;
-import com.anod.car.home.prefs.MusicAppsActivity;
+import com.anod.car.home.app.MusicAppsActivity;
+import com.anod.car.home.prefs.MusicAppSettingsActivity;
 import com.anod.car.home.prefs.preferences.AppTheme;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.ui.WidgetsListActivity;
@@ -46,6 +48,7 @@ public class MainActivity extends CarWidgetActivity {
 	private Context mContext;
 	private Version mVersion;
     private boolean mWizardShown;
+    private PackageManager mPackageManager;
 
     @Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class MainActivity extends CarWidgetActivity {
 		mVersion = new Version(this);
 
 		mContext = this;
+        mPackageManager = getPackageManager();
 
 		int[] appWidgetIds = WidgetHelper.getAllWidgetIds(mContext);
 		final int widgetsCount = appWidgetIds.length;
@@ -97,11 +101,22 @@ public class MainActivity extends CarWidgetActivity {
     private void initMusicApp() {
         LinearLayout appTheme = (LinearLayout) findViewById(R.id.musicApp);
         final TextView summary =(TextView) appTheme.findViewById(android.R.id.summary);
-        summary.setText(AppTheme.getNameResource(getApp().getThemeIdx()));
+        ComponentName musicAppCmp = PreferencesStorage.getMusicApp(mContext);
+        if (musicAppCmp == null) {
+            summary.setText(R.string.show_choice);
+        } else {
+            try {
+                ApplicationInfo info = mPackageManager.getApplicationInfo(musicAppCmp.getPackageName(), 0);
+                summary.setText(info.loadLabel(mPackageManager));
+            } catch (PackageManager.NameNotFoundException e) {
+                AppLog.ex(e);
+                summary.setText(musicAppCmp.flattenToShortString());
+            }
+        }
         appTheme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent musicAppsIntent = new Intent(mContext, MusicAppsActivity.class);
+                Intent musicAppsIntent = new Intent(mContext, MusicAppSettingsActivity.class);
                 startActivity(musicAppsIntent);
             }
         });
@@ -196,8 +211,7 @@ public class MainActivity extends CarWidgetActivity {
 		String appName = getString(R.string.app_name);
 		String versionName = "";
 		try {
-			PackageManager pm = getPackageManager();
-			versionName = pm.getPackageInfo(getPackageName(), 0).versionName;
+			versionName = mPackageManager.getPackageInfo(getPackageName(), 0).versionName;
 		} catch (PackageManager.NameNotFoundException e) {
 			AppLog.w(e.getMessage());
 		}

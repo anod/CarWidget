@@ -34,8 +34,6 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 	protected int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	protected Context mContext;
 
-
-	protected static final int DIALOG_WAIT = 1;
 	@InjectView(android.R.id.list) ListView mListView;
 
 	abstract protected int getXmlResource();
@@ -160,31 +158,4 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 		return super.onOptionsItemSelected(item);
 	}
 
-	// TODO: save/restore
-	private Dialog mCurrentDialog;
-
-
-	public Dialog onCreateDialog(int id) {
-		if (id == DIALOG_WAIT) {
-			ProgressDialog waitDialog = new ProgressDialog(mContext);
-			waitDialog.setCancelable(true);
-			String message = getResources().getString(R.string.please_wait);
-			waitDialog.setMessage(message);
-			return waitDialog;
-		}
-		return null;
-	}
-
-	public void showDialog(int id) {
-		mCurrentDialog = onCreateDialog(id);
-		if (mCurrentDialog != null) {
-			mCurrentDialog.show();
-		}
-	}
-
-	public void dismissDialog(int id) {
-		if (mCurrentDialog != null) {
-			mCurrentDialog.dismiss();
-		}
-	}
 }

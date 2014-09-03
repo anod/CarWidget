@@ -10,7 +10,7 @@
     android:paddingBottom="3dp" >
 
      <ImageView 
-     	android:id="@+id/app_icon"
+     	android:id="@android:id/icon"
      	android:layout_width="wrap_content"
      	android:layout_height="wrap_content"
      	android:layout_alignParentLeft="true"
@@ -24,7 +24,7 @@
          android:paddingLeft="3dp"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
-         android:layout_toRightOf="@id/app_icon"
+         android:layout_toRightOf="@android:id/icon"
          android:layout_alignParentRight="true"
      	 android:layout_centerVertical="true"
          android:text="@string/textview"

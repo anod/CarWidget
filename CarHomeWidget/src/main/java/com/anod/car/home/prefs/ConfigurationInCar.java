@@ -51,8 +51,6 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 	private static final String PREF_BT_SWITCH = "bt-switch";
 	private static final String PREF_NOTIF_SHORTCUTS = "notif-shortcuts";
 
-	private static final int DIALOG_TRIAL = 2;
-
 	private static final String AUTORUN_APP_PREF = "autorun-app-choose";
 	private static final String AUTORUN_APP_DISABLED = "disabled";
 	private static final String AUTORUN_APP_CUSTOM = "custom";
@@ -106,24 +104,18 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 		}
 	}
 
-	@Override
-	public Dialog onCreateDialog(int id) {
-//		initDialog.setMessage(getResources().getString(R.string.load_paired_device));
-		 if (id == DIALOG_TRIAL) {
-			if (Utils.isProInstalled(mContext)) {
-				return TrialDialogs.buildProInstalledDialog(mContext);
-			} else {
-				mTrialMessageShown = true;
-				return TrialDialogs.buildTrialDialog(mTrialsLeft, mContext);
-			}
-		}
-		return super.onCreateDialog(id);
+	public Dialog createTrialDialog() {
+        if (Utils.isProInstalled(mContext)) {
+            return TrialDialogs.buildProInstalledDialog(mContext);
+        } else {
+            mTrialMessageShown = true;
+            return TrialDialogs.buildTrialDialog(mTrialsLeft, mContext);
+        }
 	}
 
-	@SuppressWarnings("deprecation")
 	private void showTrialDialog() {
 		if (!mTrialMessageShown || mTrialsLeft == 0) {
-			showDialog(DIALOG_TRIAL);
+            createTrialDialog().show();
 		}
 	}
 	

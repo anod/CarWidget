@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs;
+package com.anod.car.home.app;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
@@ -21,10 +21,12 @@ import java.util.List;
  * @author alex
  * @date 2014-09-01
  */
-public class MusicAppsActivity extends AppsListActivity {
+public abstract class MusicAppsActivity extends AppsListActivity {
+
     @Override
-    protected boolean isShowTitle() {
-        return false;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -32,21 +34,11 @@ public class MusicAppsActivity extends AppsListActivity {
         return R.layout.all_apps_row;
     }
 
-
-    @Override
-    protected void onEntryClick(int position, AppsList.Entry entry) {
-
-    }
-
     @Override
     protected AppsList getAppList(Context context) {
         return new AppsList(CarWidgetApplication.getApplication(context));
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public Loader<ArrayList<AppsList.Entry>> onCreateLoader(int id, Bundle args) {
