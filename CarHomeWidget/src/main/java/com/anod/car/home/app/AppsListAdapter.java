@@ -1,7 +1,10 @@
 package com.anod.car.home.app;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.anod.car.home.R;
 import com.anod.car.home.model.AppsList;
 import com.anod.car.home.utils.AppIconUtils;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -25,14 +27,14 @@ public class AppsListAdapter extends ArrayAdapter<AppsList.Entry> {
 
 	final private int mResource;
 	final private Context mContext;
-    final private AppIconUtils mAppIconUtils;
+    private final AppIconLoader mIconLoader;
 
-    public AppsListAdapter(Context context, int resource) {
+    public AppsListAdapter(Context context, int resource, AppIconLoader iconLoader) {
 		super(context, resource, new ArrayList<AppsList.Entry>());
 		mResource = resource;
 		mContext = context;
-		mAppIconUtils = new AppIconUtils(context);
         mDefaultIcon = UtilitiesBitmap.makeDefaultIcon(context.getPackageManager());
+        mIconLoader = iconLoader;
 	}
 
 	@Override
@@ -50,17 +52,26 @@ public class AppsListAdapter extends ArrayAdapter<AppsList.Entry> {
 		AppsList.Entry entry = getItem(position);
 
         holder.title.setText(entry.title);
-        if (entry.icon == null) {
+
+        AppLog.d("getView #" + position);
+        if (entry.componentName == null) {
+            holder.icon.setVisibility(View.INVISIBLE);
+        } else if (entry.icon == null) {
+            holder.icon.setVisibility(View.VISIBLE);
             holder.icon.setImageBitmap(mDefaultIcon);
-            mAppIconUtils.fetchDrawableOnThread(entry, holder.icon);
+
+            mIconLoader.loadImage(entry.componentName.getPackageName(), holder.icon);
         } else {
+            holder.icon.setVisibility(View.VISIBLE);
             holder.icon.setImageBitmap(entry.icon);
         }
         view.setId(position);
         return view;
 	}
 
+
     static class ViewHolder {
+        int position;
         @InjectView(android.R.id.text1) TextView title;
         @InjectView(android.R.id.icon) ImageView icon;
 

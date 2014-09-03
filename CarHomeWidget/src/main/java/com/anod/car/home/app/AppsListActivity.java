@@ -60,7 +60,7 @@ abstract public class AppsListActivity extends ListActivity implements AdapterVi
 
         mAppsList = getAppList(this);
 
-        mAdapter = new AppsListAdapter(this, getRowLayoutId());
+        mAdapter = new AppsListAdapter(this, getRowLayoutId(),mAppsList.getAppIconLoader());
         setListAdapter(mAdapter);
     }
 

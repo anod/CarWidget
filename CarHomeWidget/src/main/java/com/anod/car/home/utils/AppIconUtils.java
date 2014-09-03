@@ -40,7 +40,7 @@ public class AppIconUtils {
         return entry.icon;
     }
 
-    public void fetchDrawableOnThread(final AppsList.Entry entry, final ImageView imageView) {
+    public void fetchDrawableOnThread(final AppsList.Entry entry, final ImageView imageView,final Object tag) {
         if (entry.icon != null) {
             imageView.setImageBitmap(entry.icon);
             imageView.setVisibility(View.VISIBLE);
@@ -51,7 +51,7 @@ public class AppIconUtils {
             return;
         }
 
-        final Handler handler = new ImageViewHandler(imageView);
+        final Handler handler = new ImageViewHandler(imageView,tag);
 
         Thread thread = new Thread() {
             @Override
@@ -66,17 +66,21 @@ public class AppIconUtils {
 
     private static class ImageViewHandler extends Handler {
         private final ImageView mImageView;
+        private final Object mTag;
 
-        public ImageViewHandler(ImageView imageView) {
+        public ImageViewHandler(ImageView imageView,Object tag) {
             super();
             mImageView = imageView;
+            mTag = tag;
         }
 
         @Override
         public void handleMessage(Message message) {
             Bitmap icon = (Bitmap) message.obj;
             if (icon != null) {
-                mImageView.setImageBitmap(icon);
+                if (mTag == null || mImageView.getTag().equals(mTag)) {
+                    mImageView.setImageBitmap(icon);
+                }
             }
         }
     }
