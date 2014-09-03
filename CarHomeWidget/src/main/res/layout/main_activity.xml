@@ -180,6 +180,52 @@
 					android:textColor="@color/font_color_sec"/>
 		</RelativeLayout>
 	</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?attr/panelItem"
+        android:layout_marginTop="1dp"
+        android:id="@+id/musicApp"
+        >
+
+        <ImageView
+            android:id="@android:id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_action_headphones"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="4dp">
+
+            <TextView
+                style="@style/textAlignStyle"
+                android:id="@android:id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:text="Music App"
+                android:textColor="@color/font_color"/>
+
+            <TextView
+                style="@style/textAlignStyle"
+                android:id="@android:id/summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@android:id/title"
+                android:layout_alignLeft="@android:id/title"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:maxLines="4"
+                android:text="List"
+                android:textColor="@color/font_color_sec"/>
+        </RelativeLayout>
+    </LinearLayout>
 
 	<TextView
 		android:layout_width="match_parent"

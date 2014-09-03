@@ -1,19 +1,17 @@
 package com.anod.car.home.prefs;
 
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.R;
 import com.anod.car.home.appscache.AppsCacheActivity;
-import com.anod.car.home.model.AppsListCache;
-import com.anod.car.home.model.AppsListCache.CacheEntry;
+import com.anod.car.home.model.AppsList;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
@@ -34,7 +32,8 @@ public class IconThemesActivity extends AppsCacheActivity {
 	private static final String ADW_ICON_THEME_MARKET_URL = "market://search?q=ADW Theme";
 
 	@Override
-	protected void onCreateImpl(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		mAppWidgetId = Utils.readAppWidgetId(savedInstanceState,getIntent());
 		if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
@@ -58,10 +57,10 @@ public class IconThemesActivity extends AppsCacheActivity {
 	}
 
 	@Override
-	public void onItemsSet(ArrayList<CacheEntry> items) {
+	public void onItemsSet(ArrayList<AppsList.Entry> items) {
 		if (mThemePackageName != null) {
 			for(int i = 1; i < items.size(); i++) {
-				CacheEntry entry = items.get(i);
+				AppsList.Entry entry = items.get(i);
 				if (entry.componentName != null && entry.componentName.getPackageName().equals(mThemePackageName)) {
 					mCurrentSelected = i;
 					break;
@@ -74,7 +73,6 @@ public class IconThemesActivity extends AppsCacheActivity {
 	@Override
 	public void onIntentFilterInit(Intent intent) {
 		IconPackUtils.fillAdwThemeIntent(intent);
-		
 	}
 
 	@Override
@@ -84,25 +82,26 @@ public class IconThemesActivity extends AppsCacheActivity {
 
 	@Override
 	protected int getRowLayoutId() {
-		return R.layout.icon_theme_row;
+        return R.layout.icon_theme_row;
 	}
 
 	@Override
-	protected void onEntryClick(int position, CacheEntry entry) {
+	protected void onEntryClick(int position, AppsList.Entry entry) {
 		mThemePackageName  = (entry.componentName == null) ? null: entry.componentName.getPackageName(); 
 		getListView().setItemChecked(position, true);
 	}
 
 	@Override
-	protected AppsListCache getAppListCache(CarWidgetApplication app) {
+	protected AppsList getAppList(Context context) {
+        CarWidgetApplication app = CarWidgetApplication.getApplication(context);
 		app.initIconThemesCache();
 		return app.getIconThemesCache();
 	}
 
 	@Override
-	protected ArrayList<CacheEntry> getHeadEntries() {
-		ArrayList<CacheEntry> head = new ArrayList<CacheEntry>(1);
-		CacheEntry none = new CacheEntry();
+	protected ArrayList<AppsList.Entry> getHeadEntries() {
+		ArrayList<AppsList.Entry> head = new ArrayList<AppsList.Entry>(1);
+		AppsList.Entry none = new AppsList.Entry();
 		none.title = getString(R.string.none);
 		head.add(none);
 		return head;
@@ -110,7 +109,7 @@ public class IconThemesActivity extends AppsCacheActivity {
 
 	@Override
 	protected int getFooterViewId() {
-		return R.layout.icon_theme_buttons;
+        return R.layout.icon_theme_buttons;
 	}
 	
 	@Override

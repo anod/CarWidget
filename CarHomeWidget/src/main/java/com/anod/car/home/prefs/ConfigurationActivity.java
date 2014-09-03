@@ -12,7 +12,7 @@ import android.preference.PreferenceFragment;
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
-import com.anod.car.home.model.AppsListCache;
+import com.anod.car.home.model.AppsList;
 
 
 public class ConfigurationActivity extends CarWidgetActivity implements PreferenceFragment.OnPreferenceStartFragmentCallback {
@@ -97,7 +97,7 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 
 
 	private void cleanAppsCache() {
-		AppsListCache allAppsList = getApp().getAppListCache();
+		AppsList allAppsList = getApp().getAppListCache();
 		if (allAppsList!=null) {
 			allAppsList.flush();
 		}

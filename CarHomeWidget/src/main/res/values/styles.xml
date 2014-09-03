@@ -3,7 +3,9 @@
 
     <style name="AppListTheme" parent="android:style/Theme.Holo.Dialog" />
 
-	<style name="DialogTheme" parent="android:style/Theme.Holo.Dialog">
+    <style name="AppListTheme.Light" parent="android:style/Theme.Holo.Light.Dialog" />
+
+    <style name="DialogTheme" parent="android:style/Theme.Holo.Dialog">
 		<item name="panelItem">@style/panelItemBasic</item>
 		<item name="panelHeader">@style/panelHeaderBasic</item>
 		<item name="PreferencesItem">@style/PreferencesItem</item>

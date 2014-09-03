@@ -3,12 +3,12 @@ package com.anod.car.home;
 import android.app.Application;
 import android.content.Context;
 
-import com.anod.car.home.model.AppsListCache;
+import com.anod.car.home.model.AppsList;
 import com.anod.car.home.prefs.preferences.AppTheme;
 
 public class CarWidgetApplication extends Application {
-	public AppsListCache mAppListCache;
-	public AppsListCache mIconThemesCache;
+	public AppsList mAppListCache;
+	public AppsList mIconThemesCache;
 
 	private int mThemeIdx;
 
@@ -28,7 +28,7 @@ public class CarWidgetApplication extends Application {
 	}
 
 
-	public AppsListCache getAppListCache() {
+	public AppsList getAppListCache() {
 		return mAppListCache;
 	}
 
@@ -43,17 +43,17 @@ public class CarWidgetApplication extends Application {
 
 	public void initAppListCache() {
 		if (mAppListCache == null) {
-			mAppListCache = new AppsListCache(this);
+			mAppListCache = new AppsList(this);
 		}
 	}
 
-	public AppsListCache getIconThemesCache() {
+	public AppsList getIconThemesCache() {
 		return mIconThemesCache;
 	}
 
 	public void initIconThemesCache() {
 		if (mIconThemesCache == null) {
-			mIconThemesCache = new AppsListCache(this);
+			mIconThemesCache = new AppsList(this);
 		}
 	}
 

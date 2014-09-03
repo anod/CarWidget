@@ -17,8 +17,10 @@ import android.widget.TextView;
 
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
+import com.anod.car.home.prefs.AllAppsActivity;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.ConfigurationInCar;
+import com.anod.car.home.prefs.MusicAppsActivity;
 import com.anod.car.home.prefs.preferences.AppTheme;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.ui.WidgetsListActivity;
@@ -89,10 +91,23 @@ public class MainActivity extends CarWidgetActivity {
 		initInformation();
 		initDefaultApp();
 		initAppTheme();
-
+        initMusicApp();
 	}
 
-	private void startWizard() {
+    private void initMusicApp() {
+        LinearLayout appTheme = (LinearLayout) findViewById(R.id.musicApp);
+        final TextView summary =(TextView) appTheme.findViewById(android.R.id.summary);
+        summary.setText(AppTheme.getNameResource(getApp().getThemeIdx()));
+        appTheme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent musicAppsIntent = new Intent(mContext, MusicAppsActivity.class);
+                startActivity(musicAppsIntent);
+            }
+        });
+    }
+
+    private void startWizard() {
 		Intent intent = new Intent(mContext, WizardActivity.class);
 		startActivity(intent);
 	}

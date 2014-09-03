@@ -1,4 +1,4 @@
-package com.anod.car.home.appscache;
+package com.anod.car.home.app;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,24 +10,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anod.car.home.R;
-import com.anod.car.home.model.AppsListCache;
-import com.anod.car.home.model.AppsListCache.CacheEntry;
+import com.anod.car.home.model.AppsList;
+import com.anod.car.home.utils.AppIconUtils;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class AppsCacheAdapter extends ArrayAdapter<CacheEntry> {
-	final private AppsListCache mAppsListCache;
+public class AppsListAdapter extends ArrayAdapter<AppsList.Entry> {
 	final private Bitmap mDefaultIcon;
 
 	final private int mResource;
-	final private Context mContext; 
-	
-	public AppsCacheAdapter(Context context, int resource, List<CacheEntry> items, AppsListCache appsListCache) {
-		super(context, resource, items);
+	final private Context mContext;
+    final private AppIconUtils mAppIconUtils;
+
+    public AppsListAdapter(Context context, int resource) {
+		super(context, resource, new ArrayList<AppsList.Entry>());
 		mResource = resource;
 		mContext = context;
-		mAppsListCache = appsListCache;
+		mAppIconUtils = new AppIconUtils(context);
         mDefaultIcon = UtilitiesBitmap.makeDefaultIcon(context.getPackageManager());
 	}
 
@@ -38,14 +39,14 @@ public class AppsCacheAdapter extends ArrayAdapter<CacheEntry> {
             LayoutInflater vi = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = vi.inflate(mResource, null);
 		}
-		CacheEntry entry = getItem(position);
+		AppsList.Entry entry = getItem(position);
 
 		TextView title = (TextView) v.findViewById(android.R.id.text1);
         ImageView icon = (ImageView) v.findViewById(R.id.app_icon);
         title.setText(entry.title);
         if (entry.icon == null) {
         	icon.setImageBitmap(mDefaultIcon);
-        	mAppsListCache.fetchDrawableOnThread(entry, icon);
+            mAppIconUtils.fetchDrawableOnThread(entry, icon);
         } else {
         	icon.setImageBitmap(entry.icon);
         }

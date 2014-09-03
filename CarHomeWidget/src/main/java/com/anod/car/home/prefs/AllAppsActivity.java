@@ -1,17 +1,17 @@
 package com.anod.car.home.prefs;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.R;
 import com.anod.car.home.appscache.AppsCacheActivity;
-import com.anod.car.home.model.AppsListCache;
-import com.anod.car.home.model.AppsListCache.CacheEntry;
+import com.anod.car.home.model.AppsList;
 
 public class AllAppsActivity extends AppsCacheActivity {
 	
-    private Intent getActivityIntent(ComponentName className) {
+    private Intent createActivityIntent(ComponentName className) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.setComponent(className);
@@ -27,24 +27,24 @@ public class AllAppsActivity extends AppsCacheActivity {
 
 	@Override
 	protected boolean isShowTitle() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	protected int getRowLayoutId() {
-		return R.layout.all_apps_row;
+        return R.layout.all_apps_row;
 	}
 
 	@Override
-	protected void onEntryClick(int position, CacheEntry entry) {
-        Intent intent = getActivityIntent(entry.componentName);
+	protected void onEntryClick(int position, AppsList.Entry entry) {
+        Intent intent = createActivityIntent(entry.componentName);
         setResult(RESULT_OK, intent);
         finish();
 	}
 
 	@Override
-	protected AppsListCache getAppListCache(CarWidgetApplication app) {
+	protected AppsList getAppList(Context context) {
+        CarWidgetApplication app = CarWidgetApplication.getApplication(context);
 		app.initAppListCache();
 		return app.getAppListCache();
 	}
