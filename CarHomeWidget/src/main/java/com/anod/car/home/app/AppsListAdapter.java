@@ -1,10 +1,7 @@
 package com.anod.car.home.app;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anod.car.home.model.AppsList;
-import com.anod.car.home.utils.AppIconUtils;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
@@ -53,14 +49,13 @@ public class AppsListAdapter extends ArrayAdapter<AppsList.Entry> {
 
         holder.title.setText(entry.title);
 
-        AppLog.d("getView #" + position);
         if (entry.componentName == null) {
             holder.icon.setVisibility(View.INVISIBLE);
         } else if (entry.icon == null) {
             holder.icon.setVisibility(View.VISIBLE);
             holder.icon.setImageBitmap(mDefaultIcon);
 
-            mIconLoader.loadImage(entry.componentName.getPackageName(), holder.icon);
+            mIconLoader.loadImage(entry.componentName.flattenToShortString(), holder.icon);
         } else {
             holder.icon.setVisibility(View.VISIBLE);
             holder.icon.setImageBitmap(entry.icon);

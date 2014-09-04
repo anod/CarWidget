@@ -48,7 +48,8 @@ public class AppsCacheLoader extends AsyncTaskLoader<ArrayList<AppsList.Entry>> 
         for (ResolveInfo appInfo : apps) {
 
             if (!appInfo.activityInfo.packageName.startsWith(selfPackage)) {
-                mAppsList.put(appInfo);
+                String title = appInfo.activityInfo.loadLabel(packageManager).toString();
+                mAppsList.put(appInfo, title);
             }
         }
         mAppsList.sort();

@@ -57,6 +57,9 @@ public class AppsList {
      * Empty out the cache.
      */
     public void flush() {
+        if (mAppIconLoader != null) {
+            mAppIconLoader.clearCache();
+        }
         synchronized (mCache) {
             mCache.clear();
         }
@@ -65,7 +68,7 @@ public class AppsList {
     /**
      * Fill in "application" with the icon and label for "info."
      */
-    public void put(ResolveInfo info) {
+    public void put(ResolveInfo info, String title) {
         synchronized (mCache) {
             Entry entry = new Entry();
             mCache.add(entry);
@@ -74,7 +77,7 @@ public class AppsList {
                     info.activityInfo.name
             );
             entry.componentName = componentName;
-            entry.title = info.activityInfo.applicationInfo.loadLabel(mPackageManager).toString();
+            entry.title = title;
             if (entry.title == null) {
                 entry.title = info.activityInfo.name;
             }

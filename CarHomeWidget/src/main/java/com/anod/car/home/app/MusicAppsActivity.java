@@ -60,7 +60,9 @@ public abstract class MusicAppsActivity extends AppsListActivity {
             List<ResolveInfo> apps = packageManager.queryBroadcastReceivers(new Intent(Intent.ACTION_MEDIA_BUTTON), 96);
 
             for (ResolveInfo appInfo : apps) {
-                mAppsList.put(appInfo);
+                // App title
+                String title = appInfo.activityInfo.applicationInfo.loadLabel(packageManager).toString();
+                mAppsList.put(appInfo, title);
             }
             mAppsList.sort();
             return mAppsList.getEntries();

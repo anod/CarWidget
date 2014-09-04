@@ -1,9 +1,9 @@
 package com.anod.car.home.app;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 
 import com.anod.car.home.utils.AppLog;
@@ -36,15 +36,23 @@ public class AppIconLoader extends ImageLoader {
 	
 	@Override
 	protected Bitmap loadBitmap(String imgUID) {
-            Drawable d;
-            Bitmap icon;
+        Drawable d = null;
+        Bitmap icon;
+        ComponentName cmp = ComponentName.unflattenFromString(imgUID);
+        try {
+            d = mPackageManager.getActivityIcon(cmp);
+        } catch (PackageManager.NameNotFoundException e) { }
+
+        if (d == null) {
             try {
-                d = mPackageManager.getApplicationIcon(imgUID);
-                icon = UtilitiesBitmap.createSystemIconBitmap(d, mContext);
-            } catch (PackageManager.NameNotFoundException e) {
-                AppLog.ex(e);
+                d = mPackageManager.getApplicationIcon(cmp.getPackageName());
+            } catch (PackageManager.NameNotFoundException e1) {
+                AppLog.ex(e1);
                 return null;
             }
-            return icon;
+        }
+        icon = UtilitiesBitmap.createSystemIconBitmap(d, mContext);
+
+        return icon;
 	}	
 }
