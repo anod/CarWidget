@@ -15,6 +15,7 @@ import com.anod.car.home.app.AppsListActivity;
 import com.anod.car.home.model.AppsList;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -22,6 +23,13 @@ import java.util.List;
  * @date 2014-09-01
  */
 public abstract class MusicAppsActivity extends AppsListActivity {
+    private static HashSet<String> sExcludePackages;
+
+    static {
+        sExcludePackages = new HashSet<String>(2);
+        sExcludePackages.add("com.amazon.kindle");
+        sExcludePackages.add("com.google.android.apps.magazines");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +69,10 @@ public abstract class MusicAppsActivity extends AppsListActivity {
 
             for (ResolveInfo appInfo : apps) {
                 // App title
-                String title = appInfo.activityInfo.applicationInfo.loadLabel(packageManager).toString();
-                mAppsList.put(appInfo, title);
+                if (!sExcludePackages.contains(appInfo.activityInfo.packageName)) {
+                    String title = appInfo.activityInfo.applicationInfo.loadLabel(packageManager).toString();
+                    mAppsList.put(appInfo, title);
+                }
             }
             mAppsList.sort();
             return mAppsList.getEntries();

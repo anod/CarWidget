@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import com.anod.car.home.BuildConfig;
 import com.anod.car.home.R;
 import com.anod.car.home.model.AppsList;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -66,7 +67,9 @@ public class MusicAppChoiceActivity extends MusicAppsActivity {
         {
             if(procInfos.get(i).processName.startsWith(musicCmp.getPackageName()))
             {
-                Toast.makeText(getApplicationContext(), musicCmp.getPackageName() + " is running", Toast.LENGTH_LONG).show();
+                if (BuildConfig.DEBUG) {
+                    Toast.makeText(getApplicationContext(), musicCmp.getPackageName() + " is running", Toast.LENGTH_LONG).show();
+                }
                 return true;
             }
         }
