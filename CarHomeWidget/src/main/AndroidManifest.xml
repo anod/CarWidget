@@ -145,11 +145,12 @@
 		</activity>
         <activity
             android:name=".prefs.MusicAppSettingsActivity"
-            android:label="Music app"
+            android:label="@string/music_app"
             android:theme="@style/AppListTheme" />
 
         <activity
             android:name=".app.MusicAppChoiceActivity"
+            android:excludeFromRecents="true"
             android:theme="@style/AppListTheme.Light" />
 
 		<service android:name="com.anod.car.home.incar.ModeService" />

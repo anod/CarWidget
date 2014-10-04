@@ -236,6 +236,7 @@
 	<string name="car_dock_summary">Enable InCar mode when phone is docked into car dock</string>
     <string name="widgets">Widgets</string>
     <string name="show_choice">Show choice</string>
+    <string name="music_app">Music app</string>
     <string-array name="disable_screen_timeout">
         <item>Disable (When Charging)</item>
         <item>Disable</item>
