@@ -33,9 +33,8 @@ public class AppsList {
 
     public static class Entry {
         public ComponentName componentName;
-        public Bitmap icon;
+        public int iconRes;
         public String title;
-        public String activityName;
     }
 
 

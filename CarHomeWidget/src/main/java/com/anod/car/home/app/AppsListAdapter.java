@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.anod.car.home.model.AppsList;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.UtilitiesBitmap;
+import com.anod.car.home.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -50,15 +51,18 @@ public class AppsListAdapter extends ArrayAdapter<AppsList.Entry> {
         holder.title.setText(entry.title);
 
         if (entry.componentName == null) {
-            holder.icon.setVisibility(View.INVISIBLE);
-        } else if (entry.icon == null) {
-            holder.icon.setVisibility(View.VISIBLE);
-            holder.icon.setImageBitmap(mDefaultIcon);
-
-            mIconLoader.loadImage(entry.componentName.flattenToShortString(), holder.icon);
+            if (entry.iconRes > 0) {
+                holder.icon.setVisibility(View.VISIBLE);
+                holder.icon.setImageResource(entry.iconRes);
+                mIconLoader.releaseImageView(holder.icon);
+            } else {
+                holder.icon.setVisibility(View.INVISIBLE);
+            }
         } else {
             holder.icon.setVisibility(View.VISIBLE);
-            holder.icon.setImageBitmap(entry.icon);
+            holder.icon.setImageBitmap(mDefaultIcon);
+            mIconLoader.loadImage(entry.componentName.flattenToShortString(), holder.icon);
+
         }
         view.setId(position);
         return view;

@@ -17,6 +17,7 @@ public class MusicAppSettingsActivity extends MusicAppsActivity {
     protected ArrayList<AppsList.Entry> getHeadEntries() {
         ArrayList<AppsList.Entry> head = new ArrayList<AppsList.Entry>(1);
         AppsList.Entry none = new AppsList.Entry();
+        none.iconRes = R.drawable.ic_action_list;
         none.title = getString(R.string.show_choice);
         head.add(none);
         return head;
