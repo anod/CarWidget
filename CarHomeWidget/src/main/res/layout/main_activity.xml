@@ -210,7 +210,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:text="Music App"
+                android:text="@string/music_app"
                 android:textColor="@color/font_color"/>
 
             <TextView

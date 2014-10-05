@@ -236,7 +236,9 @@
 	<string name="car_dock_summary">Enable InCar mode when phone is docked into car dock</string>
     <string name="widgets">Widgets</string>
     <string name="show_choice">Show choice</string>
-    <string name="music_app">Music app</string>
+    <string name="music_app">Music App</string>
+    <string name="use_as_default_music_app">Use as default music app</string>
+    <string name="choose_music_app_explanation">Choose music app that will be used for Play/Pause shortcut</string>
     <string-array name="disable_screen_timeout">
         <item>Disable (When Charging)</item>
         <item>Disable</item>

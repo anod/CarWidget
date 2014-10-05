@@ -231,6 +231,10 @@
     <string name="theme_holo">חשוך</string>
     <string name="widgets">ווידג׳טים</string>
     <string name="please_add_widget">בבקשה תוסיפו ווידג׳ט למסך הבית</string>
+    <string name="use_as_default_music_app">נגן ברירת מחדל</string>
+    <string name="show_choice">להציג בחירה</string>
+    <string name="music_app">נגן מוזיקה</string>
+    <string name="choose_music_app_explanation">בחרו אפליקציה שתשמש על ידי קיצור דרך נגן/השהה</string>
 
 
 </resources>

@@ -240,4 +240,8 @@
     <string name="failed_fetch_icon">Поблема при получении стандарной иконки</string>
     <string name="please_add_widget">Пожалуйста добавте виджет на домашний экран</string>
     <string name="widgets">Виджеты</string>
+    <string name="use_as_default_music_app">Проигрыватель по умолчанию</string>
+    <string name="show_choice">Показывать выбор</string>
+    <string name="music_app">Аудиоплеер</string>
+    <string name="choose_music_app_explanation">Выбирите приложение для ярылка Играть/Пауза</string>
 </resources>

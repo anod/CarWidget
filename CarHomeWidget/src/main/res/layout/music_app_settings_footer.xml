@@ -10,6 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Choose music app that will be used for Play/Pause shortcut"
+        android:text="@string/choose_music_app_explanation"
         android:padding="15dp"/>
 </LinearLayout>
