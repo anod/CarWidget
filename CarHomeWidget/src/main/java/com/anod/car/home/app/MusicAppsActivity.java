@@ -9,10 +9,12 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 
 
+import com.anod.car.home.BuildConfig;
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.R;
 import com.anod.car.home.app.AppsListActivity;
 import com.anod.car.home.model.AppsList;
+import com.anod.car.home.utils.AppLog;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,6 +31,14 @@ public abstract class MusicAppsActivity extends AppsListActivity {
         sExcludePackages = new HashSet<String>(2);
         sExcludePackages.add("com.amazon.kindle");
         sExcludePackages.add("com.google.android.apps.magazines");
+        // Samsung crap
+        sExcludePackages.add("com.sec.android.app.storycam");
+        sExcludePackages.add("com.sec.android.app.mediasync");
+        sExcludePackages.add("com.sec.android.mmapp");
+        sExcludePackages.add("com.sec.android.automotive.drivelink");
+        sExcludePackages.add("com.sec.android.app.mv.player");
+        sExcludePackages.add("com.sec.android.app.voicenote");
+
     }
 
     @Override
@@ -71,6 +81,9 @@ public abstract class MusicAppsActivity extends AppsListActivity {
                 // App title
                 if (!sExcludePackages.contains(appInfo.activityInfo.packageName)) {
                     String title = appInfo.activityInfo.applicationInfo.loadLabel(packageManager).toString();
+                    if (BuildConfig.DEBUG) {
+                        AppLog.d(appInfo.activityInfo.packageName+"/"+appInfo.activityInfo.applicationInfo.className);
+                    }
                     mAppsList.put(appInfo, title);
                 }
             }
