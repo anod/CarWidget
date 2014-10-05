@@ -28,3 +28,6 @@ build
 
 #IntelliJ
 .idea
+
+.iml
+CarHomeWidget/CarHomeWidget.iml
