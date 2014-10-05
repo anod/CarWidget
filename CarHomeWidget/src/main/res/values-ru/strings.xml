@@ -34,7 +34,7 @@
 	<string name="pref_power_plugged_bt_on_summary">Включить Bluetooth при подключении кабеля питания</string>
 	<string name="pref_power_unplugged_bt_off_title">Выкл, когда отключено</string>
 	<string name="pref_power_unplugged_bt_off_summary">Выключить Bluetooth при отключении кабеля питания</string>
-	<string name="pref_detection">Определение</string>
+	<string name="pref_detection">Активация</string>
 	<string name="pref_blutooth_device_title">Устройство Bluetooth</string>
 	<string name="pref_blutooth_device_summary">Выбрать устройство Bluetooth,которое включает режим «В автомобиле»</string>
 	<string name="load_paired_device">Загрузка сопряженных устройств</string>

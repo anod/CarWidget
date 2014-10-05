@@ -34,7 +34,7 @@
 	<string name="pref_power_plugged_bt_on_summary">Switch Bluetooth On when power cable plugged in</string>
 	<string name="pref_power_unplugged_bt_off_title">Off when unplugged</string>
 	<string name="pref_power_unplugged_bt_off_summary">Switch Bluetooth Off when power cable unplugged in</string>
-	<string name="pref_detection">Detection</string>
+	<string name="pref_detection">Trigger</string>
 	<string name="pref_blutooth_device_title">Bluetooth device</string>
 	<string name="pref_blutooth_device_summary">Choose bluetooth device which enable InCar mode</string>
 	<string name="load_paired_device">Loading paired devices</string>
