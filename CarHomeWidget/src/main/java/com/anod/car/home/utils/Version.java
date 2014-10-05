@@ -72,7 +72,7 @@ public class Version implements Action {
 	public void increaseTrialCounter() {
 		initTrialCounter();
 		mTrialCounterCache++;
-		mPrefs.edit().putInt(PREF_TRIAL_TIMES, mTrialCounterCache).commit();
+		mPrefs.edit().putInt(PREF_TRIAL_TIMES, mTrialCounterCache).apply();
 	}
 	
 	private void initTrialCounter() {
