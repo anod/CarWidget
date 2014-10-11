@@ -53,9 +53,9 @@ public class ModePhoneStateListener extends PhoneStateListener {
 			mAnswered = false;
 			break;
 		case TelephonyManager.CALL_STATE_OFFHOOK:
-			AppLog.d("Call state offhook");
+			AppLog.d("Call state off hook");
 			if (mUseAutoSpeaker && !mAudioManager.isSpeakerphoneOn()) {
-				AppLog.d("Enable speakerphone while offhook");
+				AppLog.d("Enable speakerphone while off hook");
 				mAudioManager.setSpeakerphoneOn(true);
 			}
 			break;
@@ -64,7 +64,7 @@ public class ModePhoneStateListener extends PhoneStateListener {
 			if (mAutoAnswerMode.equals(InCar.AUTOANSWER_IMMEDIATLY)) {
 				AppLog.d("Check if already answered");
 				if (!mAnswered) {
-					AppLog.d("Answer immediatly");
+					AppLog.d("Answer immediately");
 					answerCall();
 					mAnswered = true;
 				}
@@ -78,10 +78,10 @@ public class ModePhoneStateListener extends PhoneStateListener {
 			} else {
 				AppLog.d("Cancel answer timer");
 				cancelAnswerTimer();
-				// mAnswered=false;
 			}
 			break;
 		}
+        AppLog.d("Call state <unknown>: "+state);
 	}
 
 	private void cancelAnswerTimer() {
@@ -107,13 +107,7 @@ public class ModePhoneStateListener extends PhoneStateListener {
 		if (mState != TelephonyManager.CALL_STATE_RINGING) {
 			return;
 		}
-		try {
-			answerPhoneAidl(mContext);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Log.d("CarHomeWidget", "Error trying to answer using telephony service.  Falling back to headset.");
-			answerPhoneHeadsethook(mContext);
-		}
+		answerPhoneHeadsethook(mContext);
 		mAudioManager.setMicrophoneMute(false);
 
 		if (mUseAutoSpeaker && !mAudioManager.isSpeakerphoneOn()) {
@@ -133,7 +127,7 @@ public class ModePhoneStateListener extends PhoneStateListener {
 		buttonDown.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_HEADSETHOOK));
 		context.sendOrderedBroadcast(buttonDown, "android.permission.CALL_PRIVILEGED");
 
-		// froyo and beyond trigger on buttonUp instead of buttonDown
+		// Froyo and beyond trigger on buttonUp instead of buttonDown
 		Intent buttonUp = new Intent(Intent.ACTION_MEDIA_BUTTON);
 		buttonUp.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
 		context.sendOrderedBroadcast(buttonUp, "android.permission.CALL_PRIVILEGED");
@@ -156,27 +150,5 @@ public class ModePhoneStateListener extends PhoneStateListener {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private void answerPhoneAidl(Context context) throws Exception {
-		// Set up communication with the telephony service (thanks to Tedd's
-		// Droid Tools!)
-		TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-
-		@SuppressWarnings("rawtypes")
-		Class c = Class.forName(tm.getClass().getName());
-		Method m = c.getDeclaredMethod("getITelephony");
-		m.setAccessible(true);
-		ITelephony telephonyService;
-		telephonyService = (ITelephony) m.invoke(tm);
-
-		if (tm.getCallState() != TelephonyManager.CALL_STATE_RINGING) {
-			return;
-		}
-		// Silence the ringer and answer the call!
-		telephonyService.silenceRinger();
-		telephonyService.answerRingingCall();
-
-		// com.android.internal.telephony.Phone
-	}
 
 }
