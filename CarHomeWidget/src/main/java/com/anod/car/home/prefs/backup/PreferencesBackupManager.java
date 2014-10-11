@@ -259,11 +259,14 @@ public class PreferencesBackupManager {
 			return ERROR_DESERIALIZE;
 		}
 		PreferencesStorage.saveMain(mContext, prefs.getMain(), appWidgetId);
-
+        HashMap<Integer, ShortcutInfo> shortcuts = prefs.getShortcuts();
+        // small check
+        if (shortcuts.size() % 2 == 0) {
+            PreferencesStorage.saveLaunchComponentNumber(shortcuts.size(), mContext, appWidgetId);
+        }
 		ShortcutsModel smodel = new WidgetShortcutsModel(mContext, appWidgetId);
 		smodel.init();
 
-		HashMap<Integer, ShortcutInfo> shortcuts = prefs.getShortcuts();
 		restoreShortcuts((AbstractShortcutsModel) smodel, shortcuts);
 
 		return RESULT_DONE;
