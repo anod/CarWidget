@@ -16,6 +16,8 @@ import java.lang.reflect.Method;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.inject.Inject;
+
 public class ModePhoneStateListener extends PhoneStateListener {
 	private static final int ANSWER_DALAY_MS = 5000;
 	private boolean mAnswered = false;
@@ -26,9 +28,10 @@ public class ModePhoneStateListener extends PhoneStateListener {
 	private String mAutoAnswerMode;
 	private int mState = -1;
 
-	public ModePhoneStateListener(Context context) {
+    @Inject
+	public ModePhoneStateListener(Context context, AudioManager audioManager) {
 		mContext = context;
-		mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+		mAudioManager = audioManager;
 	}
 
 	public void setActions(boolean useAutoSpeaker, String autoAnswerMode) {

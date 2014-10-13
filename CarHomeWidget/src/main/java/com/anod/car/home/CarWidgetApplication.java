@@ -6,13 +6,19 @@ import android.content.Context;
 import com.anod.car.home.model.AppsList;
 import com.anod.car.home.prefs.preferences.AppTheme;
 
+import java.util.Arrays;
+import java.util.List;
+
+import dagger.ObjectGraph;
+
 public class CarWidgetApplication extends Application {
 	public AppsList mAppListCache;
 	public AppsList mIconThemesCache;
+    private ObjectGraph mObjectGraph;
 
 	private int mThemeIdx;
 
-	public static CarWidgetApplication getApplication(Context context) {
+	public static CarWidgetApplication get(Context context) {
 		return (CarWidgetApplication) context.getApplicationContext();
 	}
 
@@ -24,8 +30,20 @@ public class CarWidgetApplication extends Application {
 		//ACRA.init(this);
 
 		mThemeIdx = AppTheme.getTheme(this);
+        mObjectGraph = ObjectGraph.create(getModules().toArray());
+    }
 
-	}
+    /**
+     * A list of modules to use for the application graph. Subclasses can override this method to
+     * provide additional modules provided they call {@code super.getModules()}.
+     */
+    protected List<Object> getModules() {
+        return Arrays.<Object>asList(new AndroidModule(this));
+    }
+
+    public ObjectGraph getObjectGraph() {
+        return mObjectGraph;
+    }
 
 
 	public AppsList getAppListCache() {

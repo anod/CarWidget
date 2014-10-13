@@ -1,31 +1,28 @@
 package com.anod.car.home.incar;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.view.View;
-import android.widget.RemoteViews;
 
+import com.anod.car.home.AndroidModule;
+import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.Provider;
-import com.anod.car.home.R;
-import com.anod.car.home.appwidget.ShortcutPendingIntent;
-import com.anod.car.home.model.NotificationShortcutsModel;
-import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
+
+import java.util.Arrays;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
 
 public class ModeService extends Service {
     private static final String TAG = "CarHomeWidget.WakeLock";
@@ -41,9 +38,13 @@ public class ModeService extends Service {
 
     private ModePhoneStateListener mPhoneListener;
 
+    @Inject ScreenOrientation mScreenOrientation;
+    @Inject @AndroidModule.Application Context mAppContext;
+
 	private boolean mForceState;
 
     private static volatile PowerManager.WakeLock sLockStatic=null;
+    private ObjectGraph mObjectGraph;
 
     synchronized private static PowerManager.WakeLock getLock(Context context) {
         if (sLockStatic == null) {
@@ -80,7 +81,20 @@ public class ModeService extends Service {
         AppLog.d("WakeLock released");
     }
 
-	@Override
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        // extend the application-scope object graph with the modules for this service
+        mObjectGraph = CarWidgetApplication.get(this).getObjectGraph().plus(getModules().toArray());
+        mObjectGraph.inject(this);
+    }
+
+    protected List<Object> getModules() {
+        return Arrays.<Object>asList(new IncarModule());
+    }
+
+    @Override
 	public void onDestroy() {
 		stopForeground(true);
 
@@ -88,10 +102,15 @@ public class ModeService extends Service {
 		if (mForceState) {
 			ModeDetector.forceState(prefs, false);
 		}
-		ModeDetector.switchOff(prefs, this);
+		ModeDetector.switchOff(prefs, mAppContext, mScreenOrientation);
 		if (mPhoneListener != null) {
 			detachPhoneListener();
 		}
+        // Eagerly clear the reference to the activity graph to allow it to be garbage collected as
+        // soon as possible.
+        mObjectGraph = null;
+
+        mScreenOrientation  =null;
 		sInCarMode = false;
 		requestWidgetsUpdate();
 
@@ -108,6 +127,7 @@ public class ModeService extends Service {
 
         boolean redelivered = (flags & START_FLAG_REDELIVERY) == START_FLAG_REDELIVERY;
         AppLog.d("ModeService onStartCommand, sInCarMode = " + sInCarMode + ", redelivered = " + redelivered);
+
 
 		// If service killed
 		if (intent == null) {
@@ -134,7 +154,7 @@ public class ModeService extends Service {
 			ModeDetector.forceState(prefs, true);
 		}
 
-        ModeDetector.switchOn(prefs, this);
+        ModeDetector.switchOn(prefs, mAppContext, mScreenOrientation);
 		initPhoneListener(prefs);
 		requestWidgetsUpdate();
 
@@ -166,14 +186,14 @@ public class ModeService extends Service {
 
 	private void attachPhoneListener() {
 		AppLog.d("Attach phone listener");
-		TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-		mPhoneListener = new ModePhoneStateListener(this);
-		tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+		mPhoneListener = mObjectGraph.get(ModePhoneStateListener.class);
+        TelephonyManager tm = mObjectGraph.get(TelephonyManager.class);
+        tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
 	}
 
 	private void detachPhoneListener() {
 		AppLog.d("Detach phone listener");
-		TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+		TelephonyManager tm = mObjectGraph.get(TelephonyManager.class);
 		tm.listen(mPhoneListener, PhoneStateListener.LISTEN_NONE);
 		mPhoneListener.cancelActions();
 		mPhoneListener = null;

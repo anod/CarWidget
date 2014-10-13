@@ -11,6 +11,8 @@ import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.PowerManager;
+import android.provider.Settings;
+import android.view.Surface;
 
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.utils.AppLog;
@@ -32,7 +34,7 @@ public class Handler {
 	private static int sCurrentBrightness;
 	private static boolean sCurrentAutoBrightness;
 
-	public static void enable(InCar prefs, Context context) {
+	public static void enable(InCar prefs, Context context, ScreenOrientation orientation) {
 		if (prefs.isDisableScreenTimeout()) {
             if (prefs.isDisableScreenTimeoutCharging()) {
                 if (PowerUtil.isConnected(context)) {
@@ -64,6 +66,8 @@ public class Handler {
 //				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //		Utils.startActivitySafely(intent, context);
 
+        orientation.set(ScreenOrientation.LANDSCAPE);
+
 		ComponentName autorunApp = prefs.getAutorunApp();
 		if (autorunApp != null) {
 			runApp(autorunApp, context);
@@ -81,7 +85,7 @@ public class Handler {
 		Utils.startActivitySafely(intent, context);
 	}
 
-	public static void disable(InCar prefs, Context context) {
+	public static void disable(InCar prefs, Context context, ScreenOrientation orientation) {
 		if (prefs.isDisableScreenTimeout()) {
             ModeService.releaseWakeLock(context);
 		}
@@ -101,12 +105,15 @@ public class Handler {
 		if (SamsungDrivingMode.hasMode() && prefs.isSamsungDrivingMode()) {
 			SamsungDrivingMode.disable(context);
 		}
-	//	Intent intent = new Intent()
-//				.setComponent(new ComponentName("com.RSen.OpenMic.Pheonix", "com.RSen.OpenMic.Pheonix.StopListeningActivity"))
-	//			.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	//	Utils.startActivitySafely(intent, context);
 
-		String brightSetting = prefs.getBrightness();
+        orientation.set(ScreenOrientation.DISABLED);
+
+
+        ContentResolver cr = context.getContentResolver();
+        Settings.System.putInt(cr, Settings.System.ACCELEROMETER_ROTATION, 1);
+        Settings.System.putInt(cr, Settings.System.USER_ROTATION, Surface.ROTATION_90);
+
+        String brightSetting = prefs.getBrightness();
 		if (!brightSetting.equals(InCar.BRIGHTNESS_DISABLED)) {
 			restoreBrightness(brightSetting, context);
 		}

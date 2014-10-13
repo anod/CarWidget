@@ -12,7 +12,6 @@ import android.os.Bundle;
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.R;
-import com.anod.car.home.app.AppsListActivity;
 import com.anod.car.home.model.AppsList;
 import com.anod.car.home.utils.AppLog;
 
@@ -54,7 +53,7 @@ public abstract class MusicAppsActivity extends AppsListActivity {
 
     @Override
     protected AppsList getAppList(Context context) {
-        return new AppsList(CarWidgetApplication.getApplication(context));
+        return new AppsList(CarWidgetApplication.get(context));
     }
 
 

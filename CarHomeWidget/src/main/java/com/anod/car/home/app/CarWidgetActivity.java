@@ -28,7 +28,7 @@ abstract public class CarWidgetActivity extends Activity {
 	}
 
 	public CarWidgetApplication getApp() {
-		return CarWidgetApplication.getApplication(this);
+		return CarWidgetApplication.get(this);
 	}
 
 }
