@@ -43,17 +43,21 @@ public class ShortcutInfoUtils {
         info.intent = intent;
         
         if (bitmap instanceof Bitmap) {
+            AppLog.d("Custom shortcut with Bitmap");
 			icon = UtilitiesBitmap.createMaxSizeIcon(new FastBitmapDrawable((Bitmap) bitmap), context);
             info.setCustomIcon(icon);
         } else {
             Parcelable extra = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
             if (extra instanceof ShortcutIconResource) {
+                AppLog.d("Custom shortcut with Icon Resource");
                 try {
                 	ShortcutIconResource iconResource = (ShortcutIconResource) extra;
 					icon = getPackageIcon(context, icon, iconResource);
                     info.setIconResource(icon, iconResource);
-                } catch (Exception e) {
-                    Log.w(TAG, "Could not load shortcut icon: " + extra);
+                } catch (Resources.NotFoundException  e) {
+                    AppLog.ex(e);
+                } catch (PackageManager.NameNotFoundException e) {
+                    AppLog.ex(e);
                 }
             }
         }
@@ -75,12 +79,21 @@ public class ShortcutInfoUtils {
 
 		Drawable drawableIcon = null;
 		if (UtilitiesBitmap.HAS_HIRES_SUPPORT) {
-			drawableIcon = resources.getDrawableForDensity(id, UtilitiesBitmap.getTargetDensity(context));
+            try {
+
+                drawableIcon = resources.getDrawableForDensity(id, UtilitiesBitmap.getTargetDensity(context));
+            } catch (Resources.NotFoundException e) {
+                AppLog.ex(e);
+            }
+
 			if (drawableIcon instanceof BitmapDrawable) {
 				icon = ((BitmapDrawable) drawableIcon).getBitmap();
-			} else {
+			} else if(drawableIcon != null) {
 				icon = UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context);
-			}
+			} else {
+                drawableIcon = resources.getDrawable(id);
+                icon = UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context);
+            }
 		} else {
 			drawableIcon = resources.getDrawable(id);
 			icon = UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context);

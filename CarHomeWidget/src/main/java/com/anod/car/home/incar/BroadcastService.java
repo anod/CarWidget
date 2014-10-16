@@ -58,9 +58,11 @@ public class BroadcastService extends Service {
 
 	private void unregister(Context context) {
 		AppLog.d("BroadcastService::unregister");
-		sRegistered =false;
-		ModeBroadcastReceiver receiver = ModeBroadcastReceiver.getInstance();
-		context.unregisterReceiver(receiver);
+        if (sRegistered) {
+            ModeBroadcastReceiver receiver = ModeBroadcastReceiver.getInstance();
+            context.unregisterReceiver(receiver);
+        }
+        sRegistered =false;
 		stopService(ActivityRecognitionClientService.makeStartIntent(this));
 	}
 
