@@ -167,7 +167,7 @@
 	<string name="dialog_title_select">Выбрать</string>
 	<string name="icon_default">По-умолчанию</string>
 	<string name="icon_custom">Пользовательский</string>
-	<string name="icon_adw_icon_pack">Набор иконок ADW</string>
+	<string name="icon_adw_icon_pack">Набор иконок </string>
 	<string name="never">Никогда</string>
 	<string name="backup">Сохранить</string>
 	<string name="restore">Восстановить</string>
@@ -244,4 +244,9 @@
     <string name="show_choice">Показывать выбор</string>
     <string name="music_app">Аудиоплеер</string>
     <string name="choose_music_app_explanation">Выбирите приложение для ярылка Играть/Пауза</string>
+    <string-array name="disable_screen_timeout">
+        <item>Отменить (При зарядке)</item>
+        <item>Отменить</item>
+        <item>Разрешить</item>
+    </string-array>
 </resources>

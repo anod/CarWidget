@@ -161,7 +161,7 @@
 	<string name="dialog_title_select">בחר</string>
 	<string name="icon_default">ברירת מחדל </string>
 	<string name="icon_custom">בחר מגלריה</string>
-	<string name="icon_adw_icon_pack">ADW Icon Pack</string>
+	<string name="icon_adw_icon_pack">Icon Pack</string>
 	<string name="never">אף פעם</string>
 	<string name="backup">גיבוי</string>
 	<string name="restore">שחזור</string>
@@ -235,6 +235,10 @@
     <string name="show_choice">להציג בחירה</string>
     <string name="music_app">נגן מוזיקה</string>
     <string name="choose_music_app_explanation">בחרו אפליקציה שתשמש על ידי קיצור דרך נגן/השהה</string>
-
+    <string-array name="disable_screen_timeout">
+        <item>לבטל (בעת טעינה)</item>
+        <item>לבטל</item>
+        <item>לאפשר</item>
+    </string-array>
 
 </resources>
