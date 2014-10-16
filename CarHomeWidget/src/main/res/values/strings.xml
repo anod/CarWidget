@@ -240,7 +240,7 @@
     <string name="use_as_default_music_app">Use as default music app</string>
     <string name="choose_music_app_explanation">Choose music app that will be used for Play/Pause shortcut</string>
     <string-array name="disable_screen_timeout">
-        <item>Disable (When Charging)</item>
+        <item>Disable (while charging)</item>
         <item>Disable</item>
         <item>Enable</item>
     </string-array>
