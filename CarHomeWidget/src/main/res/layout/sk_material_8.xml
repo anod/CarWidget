@@ -49,6 +49,22 @@
 
         <TextView android:id="@+id/btn_text5" style="@style/holo_btn_text" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/set_shortcut"/>
     </android.support.v7.widget.CardView>
+</LinearLayout><LinearLayout xmlns:card_view="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="128dip" android:layout_weight="1" android:baselineAligned="false" android:orientation="horizontal">
+
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto" android:layout_width="0dip" android:layout_height="fill_parent" android:layout_gravity="center" android:layout_weight="1" card_view:cardCornerRadius="4dp">
+
+        <ImageButton android:id="@+id/btn6" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/ic_add_shortcut_holo" android:background="#c51162"/>
+
+        <TextView android:id="@+id/btn_text6" style="@style/holo_btn_text" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/set_shortcut"/>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto" android:layout_width="0dip" android:layout_height="fill_parent" android:layout_gravity="center" android:layout_weight="1" card_view:cardCornerRadius="4dp">
+
+        <ImageButton android:id="@+id/btn7" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/ic_add_shortcut_holo" android:background="#c51162"/>
+
+        <TextView android:id="@+id/btn_text7" style="@style/holo_btn_text" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/set_shortcut"/>
+    </android.support.v7.widget.CardView>
 </LinearLayout></LinearLayout>
 
 	<include layout="@layout/sk_holo_buttons"/>
