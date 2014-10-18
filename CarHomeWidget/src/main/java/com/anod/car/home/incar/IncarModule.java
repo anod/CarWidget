@@ -38,4 +38,10 @@ public class IncarModule {
     ModePhoneStateListener providesModePhoneStateListener(@AndroidModule.Application Context context, AudioManager am) {
         return new ModePhoneStateListener(context, am);
     }
+
+
+    @Provides @Singleton
+    Handler provideHandler(@AndroidModule.Application Context context, ScreenOrientation orientation) {
+        return new Handler(context, orientation);
+    }
 }

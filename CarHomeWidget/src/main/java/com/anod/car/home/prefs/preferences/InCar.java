@@ -58,6 +58,8 @@ public class InCar implements Serializable {
 	private boolean activityRequired;
 	private boolean mCarDockRequired;
 
+    private int screenOrientation = -1;
+
 	public InCar() {
 		super();
 	}
@@ -326,5 +328,13 @@ public class InCar implements Serializable {
 
     public void setDisableScreenTimeoutCharging(boolean disableScreenTimeoutCharging) {
         this.disableScreenTimeoutCharging = disableScreenTimeoutCharging;
+    }
+
+    public int getScreenOrientation() {
+        return screenOrientation;
+    }
+
+    public void setScreenOrientation(int screenOrientation) {
+        this.screenOrientation = screenOrientation;
     }
 }

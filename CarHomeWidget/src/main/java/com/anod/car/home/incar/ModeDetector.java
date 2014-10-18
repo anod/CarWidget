@@ -17,6 +17,9 @@ import com.anod.car.home.utils.PowerUtil;
 
 import java.util.HashMap;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import dagger.ObjectGraph;
 
 /**
@@ -110,8 +113,6 @@ public class ModeDetector {
 			}
 		}
 	}
-
-
 
 
 	private static void updateEventState(InCar prefs, Intent intent) {
@@ -237,15 +238,15 @@ public class ModeDetector {
 		ActivityRecognitionService.resetLastResult();
 	}
 
-	public static void switchOn(InCar prefs, Context context, ScreenOrientation orientation) {
+	public static void switchOn(InCar prefs, Handler handler) {
 		sMode = true;
-		Handler.enable(prefs, context, orientation);
+        handler.enable(prefs);
 	}
 
-	public static void switchOff(InCar prefs, Context context, ScreenOrientation orientation) {
+	public static void switchOff(InCar prefs, Handler handler) {
 		sMode = false;
 		resetActivityState();
 
-		Handler.disable(prefs, context, orientation);
+        handler.disable(prefs);
 	}
 }

@@ -1,6 +1,5 @@
 package com.anod.car.home.incar;
 
-import android.annotation.TargetApi;
 import android.app.UiModeManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
@@ -9,16 +8,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
-import android.os.Build;
-import android.os.PowerManager;
-import android.provider.Settings;
-import android.view.Surface;
 
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.PowerUtil;
 import com.anod.car.home.utils.Utils;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class Handler {
 	private static final int VOLUME_NOT_SET = -1;
 
@@ -34,31 +33,40 @@ public class Handler {
 	private static int sCurrentBrightness;
 	private static boolean sCurrentAutoBrightness;
 
-	public static void enable(InCar prefs, Context context, ScreenOrientation orientation) {
+    private final Context mContext;
+    private final ScreenOrientation mScreenOrientation;
+
+    @Inject
+    public Handler(Context context, ScreenOrientation orientation) {
+        mContext = context;
+        mScreenOrientation = orientation;
+    }
+
+	public void enable(InCar prefs) {
 		if (prefs.isDisableScreenTimeout()) {
             if (prefs.isDisableScreenTimeoutCharging()) {
-                if (PowerUtil.isConnected(context)) {
-                    ModeService.acquireWakeLock(context);
+                if (PowerUtil.isConnected(mContext)) {
+                    ModeService.acquireWakeLock(mContext);
                 }
             } else {
-                ModeService.acquireWakeLock(context);
+                ModeService.acquireWakeLock(mContext);
             }
 		}
 		if (prefs.isAdjustVolumeLevel()) {
-			adjustVolume(prefs, context);
+			adjustVolume(prefs, mContext);
 		}
 		if (prefs.isEnableBluetooth()) {
 			enableBluetooth();
 		}
 		if (!prefs.getDisableWifi().equals(InCar.WIFI_NOACTION)) {
-			disableWifi(context);
+			disableWifi(mContext);
 		}
 		if (prefs.isActivateCarMode()) {
-			activateCarMode(context);
+			activateCarMode(mContext);
 		}
 
 		if (SamsungDrivingMode.hasMode() && prefs.isSamsungDrivingMode()) {
-			SamsungDrivingMode.enable(context);
+			SamsungDrivingMode.enable(mContext);
 		}
 
 //		Intent intent = new Intent()
@@ -66,15 +74,17 @@ public class Handler {
 //				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //		Utils.startActivitySafely(intent, context);
 
-        orientation.set(ScreenOrientation.LANDSCAPE);
+        if (prefs.getScreenOrientation() != ScreenOrientation.DISABLED) {
+            mScreenOrientation.set(prefs.getScreenOrientation());
+        }
 
 		ComponentName autorunApp = prefs.getAutorunApp();
 		if (autorunApp != null) {
-			runApp(autorunApp, context);
+			runApp(autorunApp, mContext);
 		}
 		String brightSetting = prefs.getBrightness();
 		if (!brightSetting.equals(InCar.BRIGHTNESS_DISABLED)) {
-			adjustBrightness(brightSetting, context);
+			adjustBrightness(brightSetting, mContext);
 		}
 	}
 
@@ -85,48 +95,40 @@ public class Handler {
 		Utils.startActivitySafely(intent, context);
 	}
 
-	public static void disable(InCar prefs, Context context, ScreenOrientation orientation) {
+	public void disable(InCar prefs) {
 		if (prefs.isDisableScreenTimeout()) {
-            ModeService.releaseWakeLock(context);
+            ModeService.releaseWakeLock(mContext);
 		}
 		if (prefs.isAdjustVolumeLevel()) {
-			restoreVolume(context);
+			restoreVolume(mContext);
 		}
 		if (prefs.isEnableBluetooth()) {
 			restoreBluetooth();
 		}
 		if (prefs.getDisableWifi().equals(InCar.WIFI_TURNOFF)) {
-			restoreWiFi(context);
+			restoreWiFi(mContext);
 		}
 		if (prefs.isActivateCarMode()) {
-			deactivateCarMode(context);
+			deactivateCarMode(mContext);
 		}
 
 		if (SamsungDrivingMode.hasMode() && prefs.isSamsungDrivingMode()) {
-			SamsungDrivingMode.disable(context);
+			SamsungDrivingMode.disable(mContext);
 		}
 
-        orientation.set(ScreenOrientation.DISABLED);
-
-
-        ContentResolver cr = context.getContentResolver();
-        Settings.System.putInt(cr, Settings.System.ACCELEROMETER_ROTATION, 1);
-        Settings.System.putInt(cr, Settings.System.USER_ROTATION, Surface.ROTATION_90);
+        mScreenOrientation.set(ScreenOrientation.DISABLED);
 
         String brightSetting = prefs.getBrightness();
 		if (!brightSetting.equals(InCar.BRIGHTNESS_DISABLED)) {
-			restoreBrightness(brightSetting, context);
+			restoreBrightness(brightSetting, mContext);
 		}
 	}
 
-
-	@TargetApi(Build.VERSION_CODES.FROYO)
 	private static void activateCarMode(Context context) {
 		UiModeManager ui = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
 		ui.enableCarMode(0);
 	}
 
-	@TargetApi(Build.VERSION_CODES.FROYO)
 	private static void deactivateCarMode(Context context) {
 		UiModeManager ui = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
 		ui.disableCarMode(0);
@@ -160,7 +162,6 @@ public class Handler {
 		}
 	}
 
-
 	private static void adjustBrightness(String brightSetting, Context context) {
 		ContentResolver cr = context.getContentResolver();
 
@@ -192,10 +193,7 @@ public class Handler {
 			return;
 		}
 
-		if (newBrightMode != -1) {
-			android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode);
-		}
-
+		android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode);
 		android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS, newBrightLevel);
 
 		sendBrightnessIntent(newBrightLevel, context);
@@ -257,7 +255,6 @@ public class Handler {
 		}
 
 	}
-
 
 	private static void sendBrightnessIntent(int newBrightLevel, Context context) {
 		Intent intent = new Intent(context, ChangeBrightnessActivity.class);

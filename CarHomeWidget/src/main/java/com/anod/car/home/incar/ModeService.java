@@ -38,8 +38,8 @@ public class ModeService extends Service {
 
     private ModePhoneStateListener mPhoneListener;
 
-    @Inject ScreenOrientation mScreenOrientation;
-    @Inject @AndroidModule.Application Context mAppContext;
+    @Inject Handler mHandler;
+    //@Inject @AndroidModule.Application Context mAppContext;
 
 	private boolean mForceState;
 
@@ -102,7 +102,7 @@ public class ModeService extends Service {
 		if (mForceState) {
 			ModeDetector.forceState(prefs, false);
 		}
-		ModeDetector.switchOff(prefs, mAppContext, mScreenOrientation);
+		ModeDetector.switchOff(prefs, mHandler);
 		if (mPhoneListener != null) {
 			detachPhoneListener();
 		}
@@ -110,7 +110,6 @@ public class ModeService extends Service {
         // soon as possible.
         mObjectGraph = null;
 
-        mScreenOrientation  =null;
 		sInCarMode = false;
 		requestWidgetsUpdate();
 
@@ -154,7 +153,7 @@ public class ModeService extends Service {
 			ModeDetector.forceState(prefs, true);
 		}
 
-        ModeDetector.switchOn(prefs, mAppContext, mScreenOrientation);
+        ModeDetector.switchOn(prefs, mHandler);
 		initPhoneListener(prefs);
 		requestWidgetsUpdate();
 

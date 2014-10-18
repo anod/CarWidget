@@ -15,6 +15,7 @@ import javax.inject.Inject;
  */
 public class ScreenOrientation {
     public final static int DISABLED = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+    public final static int PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
     public final static int LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
     public final static int LANDSCAPE_REVERSE = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
 
@@ -34,9 +35,11 @@ public class ScreenOrientation {
     {
         if (orientation == ScreenOrientation.DISABLED)
         {
-            mWindowManager.removeView(mOverlayView);
-            mViewAdded = false;
+            if (mViewAdded) {
+                mWindowManager.removeView(mOverlayView);
+            }
             mOverlayView = null;
+            mViewAdded = false;
             mLayoutParams = null;
             return;
         }

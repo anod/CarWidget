@@ -81,6 +81,16 @@
 				android:layout="@layout/pref"
 				/>
 
+        <ListPreference
+            android:defaultValue="-1"
+            android:key="screen-orientation"
+            android:entries="@array/orientation_titles"
+            android:entryValues="@array/orientation_values"
+            android:summary="Force any app into orientation. Notice: not all apps can work correctly"
+            android:title="Screen Orientation"
+            android:layout="@layout/pref"
+            />
+
 		<CheckBoxPreference
 				android:key="bluetooth"
 				android:title="@string/turn_on_bluetooth_summary"
