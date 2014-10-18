@@ -1,8 +1,26 @@
 #!/usr/bin/php
 <?php
 
+$opts = getopt("an:");
 
-$files = glob("src/main/res/layout*/sk_[a-z]*_[0-9]*.xml");
+$files = [];
+if (isset($opts['a'])) {
+	$files = glob("src/main/res/layout*/sk_[a-z]*_[0-9]*.xml");
+} else if (isset($opts['n'])) {
+	$files = glob("src/main/res/layout*/sk_".$opts['n']."_[0-9]*.xml");
+	if (!$files) {
+		echo "Theme '".$opts['n']."' not found. \n";
+		exit(1);
+	}
+} else {
+	echo "Option required: 
+        -a update all layouts
+        -n <name> update layout with name
+    ";
+	exit(1);
+}
+
+
 
 foreach($files AS $path) {
 	echo "Processing $path ...\n";
