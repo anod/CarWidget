@@ -1,7 +1,6 @@
 package com.anod.car.home.prefs;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
@@ -21,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.anod.car.home.R;
+import com.anod.car.home.app.ActionBarListActivity;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.UtilitiesBitmap;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ActivityPicker extends ListActivity {
+public class ActivityPicker extends ActionBarListActivity {
 
 	/**
 	 * Adapter of items that are displayed in this dialog.

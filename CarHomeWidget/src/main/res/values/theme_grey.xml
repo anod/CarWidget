@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<style name="AppThemeGray" parent="android:style/Theme.Holo">
+	<style name="AppThemeGray" parent="Theme.AppCompat">
 		<item name="panelItem">@style/panelItemGray</item>
 		<item name="panelHeader">@style/panelHeaderGray</item>
 		<item name="PreferencesItem">@style/PreferencesItemGray</item>
@@ -10,7 +10,6 @@
 		<item name="wizardTextItem">@style/wizardTextItemGray</item>
 		<item name="textColor">@color/font_color_dark</item>
 
-
 		<item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
 		<item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
 		<item name="android:windowBackground">@color/activity_bg</item>
@@ -18,11 +17,14 @@
 		<item name="android:preferenceStyle">@style/AppPreference</item>
 		<item name="android:listViewStyle">@style/AppListView</item>
 
-		<item name="android:actionBarStyle">@style/ActionBarCompatGrey</item>
-
 		<item name="textColorPrimary">@color/primary_text_grey</item>
 		<item name="textColorSecondary">@color/secondary_text_grey</item>
 		<item name="textColorOpposite">@color/panel_bg_normal</item>
+
+        <item name="colorPrimary">@color/material_bluegray_600</item>
+        <item name="colorPrimaryDark">@color/material_bluegray_800</item>
+        <item name="colorAccent">@color/material_bluegray_300</item>
+
 	</style>
 
 	<style name="AppThemeGray.Transparent" parent="AppThemeGray">
@@ -32,20 +34,12 @@
 		<item name="android:windowContentOverlay">@null</item>
 
 		<item name="android:windowActionBarOverlay">true</item>
-		<item name="android:actionBarStyle">@style/ActionBarCompatGrey.Transparent</item>
+		<item name="actionBarStyle">@style/ActionBarCompatGrey.Transparent</item>
 
 	</style>
 
 	<!-- Skin Chooser -->
-	<style name="ActionBarCompatGrey" parent="android:style/Widget.ActionBar">
-		<item name="android:background">@color/actionbar_bg_color</item>
-		<item name="android:actionBarDivider">@color/actionbar_bg_color</item>
-		<item name="android:backgroundStacked">@color/actionbar_bg_color</item>
-		<item name="android:backgroundSplit">@color/actionbar_bg_color</item>
-	</style>
-
-	<!-- Skin Chooser -->
-	<style name="ActionBarCompatGrey.Transparent" parent="@style/ActionBarCompatGrey">
+	<style name="ActionBarCompatGrey.Transparent" parent="Widget.AppCompat.ActionBar">
 		<item name="android:background">@null</item>
 		<item name="android:actionBarDivider">@null</item>
 		<item name="android:backgroundStacked">@null</item>

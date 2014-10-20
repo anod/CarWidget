@@ -45,8 +45,9 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
 		super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.pref_layout);
 
 		if (savedInstanceState == null) {

@@ -2,6 +2,7 @@ package com.anod.car.home.app;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.prefs.preferences.AppTheme;
@@ -10,7 +11,7 @@ import com.anod.car.home.prefs.preferences.AppTheme;
  * @author alex
  * @date 11/20/13
  */
-abstract public class CarWidgetActivity extends Activity {
+abstract public class CarWidgetActivity extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

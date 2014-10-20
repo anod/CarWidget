@@ -67,7 +67,7 @@
 		<item quantity="other">%1$d activations left</item>
 	</plurals>
 	<string name="version_title">%1$s ver. %2$s</string>
-	<string name="version_summary">Please rate this widget in the market</string>
+	<string name="version_summary">Rate this widget in the Play Store</string>
 	<string name="shortcut_edit_title">Edit shortcut</string>
 	<string name="shortcut_edit_hint">Touch the icon to change it</string>
 	<string name="photo_picker_not_found">No pictures are available on the phone.</string>

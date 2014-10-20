@@ -1,18 +1,20 @@
 
 <menu
-		xmlns:android="http://schemas.android.com/apk/res/android" >
+		xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <item
         android:id="@+id/apply"
         android:icon="@drawable/ic_action_tick"
-		android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@android:string/ok">
     </item>
 
 	<item
 		android:id="@+id/menu_number"
 		android:icon="@drawable/ic_action_dash"
-		android:showAsAction="always"
+		app:showAsAction="always"
 		android:title="@string/number">
 	</item>
 </menu>

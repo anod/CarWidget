@@ -2,6 +2,7 @@ package com.anod.car.home.app;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -13,7 +14,7 @@ import com.anod.car.home.R;
  * @author alex
  * @date 11/19/13
  */
-public abstract class ActionBarListActivity extends CarWidgetActivity {
+public abstract class ActionBarListActivity extends ActionBarActivity {
 	/**
 	 * This field should be made private, so it is hidden from the SDK.
 	 * {@hide}
@@ -72,7 +73,7 @@ public abstract class ActionBarListActivity extends CarWidgetActivity {
 	 *
 	 */
 	@Override
-	public void onContentChanged() {
+	public void onSupportContentChanged() {
 		View emptyView = findViewById(android.R.id.empty);
 		mList = (ListView)findViewById(android.R.id.list);
 		if (mList == null) {
@@ -147,7 +148,7 @@ public abstract class ActionBarListActivity extends CarWidgetActivity {
 		if (mList != null) {
 			return;
 		}
-		setContentView(R.layout.restore_list);
+		setContentView(R.layout.list_content);
 
 	}
 
