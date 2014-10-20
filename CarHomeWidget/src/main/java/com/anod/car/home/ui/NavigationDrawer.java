@@ -1,6 +1,7 @@
-package com.anod.car.home.prefs;
+package com.anod.car.home.ui;
 
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.anod.car.home.R;
+import com.anod.car.home.prefs.LookAndFeelActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,14 +23,14 @@ import butterknife.InjectView;
  * @author alex
  * @date 2014-10-20
  */
-public class LookAndFeelDrawer {
+public class NavigationDrawer {
     private final ActionBarDrawerToggle mDrawerToggle;
     private final CharSequence mTitle;
     private final CharSequence mDrawerTitle;
     @InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @InjectView(R.id.left_drawer) ListView mDrawerList;
 
-    public LookAndFeelDrawer(final LookAndFeelActivity activity) {
+    public NavigationDrawer(final ActionBarActivity activity) {
         ButterKnife.inject(this,activity);
 
         mTitle = mDrawerTitle = activity.getTitle();

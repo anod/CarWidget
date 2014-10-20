@@ -27,6 +27,7 @@ import com.anod.car.home.prefs.preferences.AppTheme;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.ui.WidgetsListActivity;
 import com.anod.car.home.ui.WizardActivity;
+import com.anod.car.home.ui.views.TwoLineButton;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
@@ -39,7 +40,7 @@ import com.anod.car.home.utils.Version;
 public class MainActivity extends CarWidgetActivity {
 
 	private static final String DETAIL_MARKET_URL = "market://details?id=%s";
-	private static final String URL_GOOGLE_PLUS = "https://plus.google.com/118206296686390552505/";
+	private static final String URL_GOOGLE_PLUS = "https://plus.google.com/communities/106765737887289122631";
 	private static final String RESOLVER_ACTIVITY = "com.android.internal.app.ResolverActivity";
 
 	private static final int DIALOG_WAIT = 1;
@@ -99,21 +100,20 @@ public class MainActivity extends CarWidgetActivity {
 	}
 
     private void initMusicApp() {
-        LinearLayout appTheme = (LinearLayout) findViewById(R.id.musicApp);
-        final TextView summary =(TextView) appTheme.findViewById(android.R.id.summary);
+        TwoLineButton musicApp = (TwoLineButton) findViewById(R.id.musicApp);
         ComponentName musicAppCmp = PreferencesStorage.getMusicApp(mContext);
         if (musicAppCmp == null) {
-            summary.setText(R.string.show_choice);
+            musicApp.setSummary(R.string.show_choice);
         } else {
             try {
                 ApplicationInfo info = mPackageManager.getApplicationInfo(musicAppCmp.getPackageName(), 0);
-                summary.setText(info.loadLabel(mPackageManager));
+                musicApp.setSummary(info.loadLabel(mPackageManager));
             } catch (PackageManager.NameNotFoundException e) {
                 AppLog.ex(e);
-                summary.setText(musicAppCmp.flattenToShortString());
+                musicApp.setSummary(musicAppCmp.flattenToShortString());
             }
         }
-        appTheme.setOnClickListener(new View.OnClickListener() {
+        musicApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent musicAppsIntent = new Intent(mContext, MusicAppSettingsActivity.class);
@@ -128,7 +128,7 @@ public class MainActivity extends CarWidgetActivity {
 	}
 
 	private void initInCar(final int widgetsCount) {
-		Button settings = (Button) findViewById(R.id.incarSettings);
+        TwoLineButton settings = (TwoLineButton) findViewById(R.id.incarSettings);
 		settings.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -206,7 +206,7 @@ public class MainActivity extends CarWidgetActivity {
 	}
 
 	private void initInformation() {
-		LinearLayout version = (LinearLayout)findViewById(R.id.version);
+        TwoLineButton version = (TwoLineButton)findViewById(R.id.version);
 		String versionText = getString(R.string.version_title);
 		String appName = getString(R.string.app_name);
 		String versionName = "";
@@ -215,8 +215,8 @@ public class MainActivity extends CarWidgetActivity {
 		} catch (PackageManager.NameNotFoundException e) {
 			AppLog.w(e.getMessage());
 		}
-		TextView title = (TextView)version.findViewById(android.R.id.title);
-		title.setText(String.format(versionText, appName, versionName));
+
+        version.setTitle(String.format(versionText, appName, versionName));
 		version.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -227,7 +227,7 @@ public class MainActivity extends CarWidgetActivity {
 			}
 		});
 
-		Button feedback = (Button) findViewById(R.id.feedback);
+        TwoLineButton feedback = (TwoLineButton) findViewById(R.id.feedback);
 		feedback.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -241,7 +241,7 @@ public class MainActivity extends CarWidgetActivity {
 
 
 	private void initDefaultApp() {
-		LinearLayout defaultApp = (LinearLayout) findViewById(R.id.defaultApp);
+        TwoLineButton defaultApp = (TwoLineButton) findViewById(R.id.defaultApp);
 
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 		intent.addCategory(Intent.CATEGORY_CAR_DOCK);
@@ -249,11 +249,10 @@ public class MainActivity extends CarWidgetActivity {
 		final ResolveInfo info = pm.resolveActivity(intent,PackageManager.MATCH_DEFAULT_ONLY);
 
 
-		TextView summary = (TextView) defaultApp.findViewById(android.R.id.summary);
 		if (info == null || info.activityInfo.name.equals(RESOLVER_ACTIVITY)) {
-			summary.setText(R.string.not_set);
+            defaultApp.setSummary(R.string.not_set);
 		} else {
-			summary.setText(info.loadLabel(pm));
+            defaultApp.setSummary(info.loadLabel(pm));
 		}
 
 		defaultApp.setOnClickListener(new View.OnClickListener() {
@@ -302,19 +301,18 @@ public class MainActivity extends CarWidgetActivity {
 	}
 
 	private void initAppTheme() {
-		LinearLayout appTheme = (LinearLayout) findViewById(R.id.appTheme);
-		final TextView summary =(TextView) appTheme.findViewById(android.R.id.summary);
-		summary.setText(AppTheme.getNameResource(getApp().getThemeIdx()));
+		final TwoLineButton appTheme = (TwoLineButton) findViewById(R.id.appTheme);
+        appTheme.setSummary(AppTheme.getNameResource(getApp().getThemeIdx()));
 		appTheme.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				createThemesDialog(summary).show();
+				createThemesDialog(appTheme).show();
 			}
 		});
 	}
 
 
-	protected AlertDialog createThemesDialog(final TextView summary) {
+	protected AlertDialog createThemesDialog(final TwoLineButton appTheme) {
 		final MainActivity act = this;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder
@@ -323,7 +321,7 @@ public class MainActivity extends CarWidgetActivity {
 				public void onClick(DialogInterface dialog, int which) {
 					AppTheme.saveAppTheme(mContext, which);
 					getApp().setThemeIdx(which);
-					summary.setText(AppTheme.getNameResource(which));
+                    appTheme.setSummary(AppTheme.getNameResource(which));
 					act.setTheme(AppTheme.getMainResource(which));
 					act.recreate();
 				}

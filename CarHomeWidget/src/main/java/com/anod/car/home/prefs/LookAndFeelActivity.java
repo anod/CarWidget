@@ -7,8 +7,6 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,8 +27,8 @@ import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.prefs.model.SkinList;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.ui.NavigationDrawer;
 import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 
@@ -59,7 +57,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
     @InjectView(R.id.loading) View mLoaderView;
 
     private LookAndFeelMenu mMenu;
-    private LookAndFeelDrawer mDrawer;
+    private NavigationDrawer mDrawer;
 
     public SkinList.Item getCurrentSkinItem() {
         return getSkinItem(mCurrentPage);
@@ -112,7 +110,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
         mSkinList = SkinList.newInstance(mPrefs.getSkin(),keyguard, mContext);
         mCurrentPage = mSkinList.getSelectedSkinPosition();
 
-        mDrawer = new LookAndFeelDrawer(this);
+        mDrawer = new NavigationDrawer(this);
         mMenu = new LookAndFeelMenu(this);
 
         mTextView.setMovementMethod(LinkMovementMethod.getInstance());

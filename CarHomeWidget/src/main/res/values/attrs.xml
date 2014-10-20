@@ -29,4 +29,9 @@
 	<attr name="textColorSecondary" format="reference" />
 	<attr name="textColorOpposite" format="reference" />
 
+    <declare-styleable name="TwoLineButtonAttrs">
+        <attr name="icon_src" format="reference|color" />
+        <attr name="title_text" format="reference|string" />
+        <attr name="summary_text" format="reference|string" />
+    </declare-styleable>
 </resources>
