@@ -59,6 +59,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
     @InjectView(R.id.loading) View mLoaderView;
 
     private LookAndFeelMenu mMenu;
+    private LookAndFeelDrawer mDrawer;
 
     public SkinList.Item getCurrentSkinItem() {
         return getSkinItem(mCurrentPage);
@@ -111,6 +112,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
         mSkinList = SkinList.newInstance(mPrefs.getSkin(),keyguard, mContext);
         mCurrentPage = mSkinList.getSelectedSkinPosition();
 
+        mDrawer = new LookAndFeelDrawer(this);
         mMenu = new LookAndFeelMenu(this);
 
         mTextView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -127,6 +129,12 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
         showText(mCurrentPage);
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawer.syncState();
+    }
 
     private LruCache<String, Bitmap> createBitmapMemoryCache() {
         // Get max available VM memory, exceeding this amount will throw an
@@ -185,6 +193,11 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (mDrawer.onOptionsItemSelected(item)) {
+            return true;
+        }
         return mMenu.onOptionsItemSelected(item);
     }
 
