@@ -1,11 +1,11 @@
 package com.anod.car.home.ui;
 
-import android.app.ListFragment;
-import android.app.LoaderManager;
-import android.content.Loader;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +38,6 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		// We have a menu item to show in action bar.
-		setHasOptionsMenu(true);
 		mAppWidgetIds = WidgetHelper.getAllWidgetIds(getActivity());
 		mAdapter = new WidgetsListAdapter(getActivity());
 		setListAdapter(mAdapter);
@@ -50,10 +48,11 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
         getListView().setDividerHeight(getResources().getDimensionPixelOffset(R.dimen.preference_item_margin));
 		int padding = (int)getResources().getDimension(R.dimen.panel_header_margin);
 		ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) getListView().getLayoutParams();
-		mlp.setMargins(0,padding,0,0);
+		mlp.setMargins(padding,padding,padding,0);
 		// Prepare the loader.  Either re-connect with an existing one,
 		// or start a new one.
 		getLoaderManager().initLoader(0, null, this);
+
 	}
 
 	@Override

@@ -98,4 +98,8 @@ public class TwoLineButton extends LinearLayout {
         mSummaryView.setText(text);
         mSummaryView.setVisibility(View.VISIBLE);
     }
+
+    public void setSummaryVisibility(int visibility) {
+        mSummaryView.setVisibility(visibility);
+    }
 }

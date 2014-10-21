@@ -17,9 +17,9 @@
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        style="?attr/panelHeader"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        style="?attr/panelHeader"
         android:addStatesFromChildren="true"
         android:gravity="center"
         android:orientation="vertical">

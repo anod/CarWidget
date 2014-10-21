@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+    >
+<com.anod.car.home.ui.views.TwoLineButton
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="?attr/panelItem"
+    android:layout_marginTop="1dp"
+    android:id="@+id/action"
+    app:title_text="@string/music_app"
+    app:summary_text="List"
+    app:icon_src="@drawable/ic_action_headphones"
+
+/>
+    </FrameLayout>

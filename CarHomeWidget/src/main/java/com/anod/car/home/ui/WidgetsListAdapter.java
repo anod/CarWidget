@@ -5,18 +5,18 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
 import com.anod.car.home.R;
 import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.utils.ArrayAdapterCompat;
 
 /**
  * @author alex
  * @date 5/27/13
  */
 
-public class WidgetsListAdapter extends ArrayAdapterCompat<Integer> {
+public class WidgetsListAdapter extends ArrayAdapter<Integer> {
 
 	private SparseArray<SparseArray<ShortcutInfo>> mWidgetShortcuts;
 
@@ -41,7 +41,7 @@ public class WidgetsListAdapter extends ArrayAdapterCompat<Integer> {
 		View row = null;
 		if (convertView == null) {
 			LayoutInflater li = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			row = li.inflate(R.layout.settings_item, null);
+			row = li.inflate(R.layout.settings_item, parent, false);
 		} else {
 			row = convertView;
 		}

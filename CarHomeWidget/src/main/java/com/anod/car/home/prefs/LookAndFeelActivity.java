@@ -27,7 +27,7 @@ import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.prefs.model.SkinList;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.ui.NavigationDrawer;
+import com.anod.car.home.drawer.NavigationDrawer;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
