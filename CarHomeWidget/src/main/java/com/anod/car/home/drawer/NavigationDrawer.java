@@ -88,9 +88,10 @@ public class NavigationDrawer {
 
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
-        mAdapter.onClick(position);
-        // Highlight the selected item, update the title, and close the drawer
-        mDrawerList.setItemChecked(position, true);
-        mDrawerLayout.closeDrawer(mDrawerList);
+        if (mAdapter.onClick(position)) {
+            // Highlight the selected item, update the title, and close the drawer
+            mDrawerList.setItemChecked(position, true);
+            mDrawerLayout.closeDrawer(mDrawerList);
+        }
     }
 }

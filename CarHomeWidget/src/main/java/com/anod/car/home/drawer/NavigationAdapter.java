@@ -21,8 +21,8 @@ public class NavigationAdapter extends BaseAdapter {
     private final LayoutInflater mInflater;
     private final NavigationList mItems;
 
-    public void onClick(int position) {
-        mItems.onClick(mItems.get(position).id);
+    public boolean onClick(int position) {
+        return mItems.onClick(mItems.get(position).id);
     }
 
     public static class ViewHolder {}

@@ -1,7 +1,6 @@
 package com.anod.car.home.prefs;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -20,12 +19,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -36,6 +34,7 @@ import com.anod.car.home.model.LauncherSettings;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutInfoUtils;
 import com.anod.car.home.utils.IconPackUtils;
+import com.anod.car.home.utils.ShortcutPicker;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
 
@@ -49,7 +48,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class ShortcutEditActivity extends Activity {
+public class ShortcutEditActivity extends ActionBarActivity {
 
 	private static final String MIME_IMAGE = "image/*";
 	public static final String EXTRA_SHORTCUT_ID = "extra_id";
@@ -58,8 +57,6 @@ public class ShortcutEditActivity extends Activity {
 	private static final int PICK_CUSTOM_ICON = 0;
 	private static final int PICK_ADW_ICON_PACK = 1;
 	private static final int PICK_DEFAULT_ICON = 2;
-
-	private static final int DIALOG_ICON_MENU = 1;
 
 	private Bitmap mCustomIcon;
 	@InjectView(R.id.icon_edit) ImageView mIconView;
@@ -79,9 +76,9 @@ public class ShortcutEditActivity extends Activity {
         ButterKnife.inject(this);
 
 		mIntent = getIntent();
-		final int cellId = mIntent.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, PickShortcutUtils.INVALID_CELL_ID);
+		final int cellId = mIntent.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID);
 		final long shortcutId = mIntent.getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);
-		if (cellId == PickShortcutUtils.INVALID_CELL_ID || shortcutId == ShortcutInfo.NO_ID) {
+		if (cellId == ShortcutPicker.INVALID_CELL_ID || shortcutId == ShortcutInfo.NO_ID) {
 			setResult(RESULT_CANCELED);
 			finish();
 			return;
@@ -93,30 +90,27 @@ public class ShortcutEditActivity extends Activity {
 
 	}
 
-	protected Dialog onCreateDialog(int id) {
-		if (id == DIALOG_ICON_MENU) {
-			final CharSequence[] items;
-			if (mShortcutInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
-				items = new CharSequence[3];
-				items[PICK_CUSTOM_ICON] = getString(R.string.icon_custom);
-				items[PICK_ADW_ICON_PACK] = getString(R.string.icon_adw_icon_pack);
-				items[PICK_DEFAULT_ICON] = getString(R.string.icon_default);
-			} else {
-				items = new CharSequence[2];
-				items[PICK_CUSTOM_ICON] = getString(R.string.icon_custom);
-				items[PICK_ADW_ICON_PACK] = getString(R.string.icon_adw_icon_pack);
-			}
+	protected Dialog createIconMenu() {
+        final CharSequence[] items;
+        if (mShortcutInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
+            items = new CharSequence[3];
+            items[PICK_CUSTOM_ICON] = getString(R.string.icon_custom);
+            items[PICK_ADW_ICON_PACK] = getString(R.string.icon_adw_icon_pack);
+            items[PICK_DEFAULT_ICON] = getString(R.string.icon_default);
+        } else {
+            items = new CharSequence[2];
+            items[PICK_CUSTOM_ICON] = getString(R.string.icon_custom);
+            items[PICK_ADW_ICON_PACK] = getString(R.string.icon_adw_icon_pack);
+        }
 
-			final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(getString(R.string.dialog_title_select));
-			builder.setItems(items, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int item) {
-					iconDialogClick(item);
-				}
-			});
-			return builder.create();
-		}
-		return null;
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.dialog_title_select));
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                iconDialogClick(item);
+            }
+        });
+        return builder.create();
 	}
 
 	private void iconDialogClick(final int item) {
@@ -162,13 +156,10 @@ public class ShortcutEditActivity extends Activity {
 		}
 		Bitmap bitmap = UtilitiesBitmap.createMaxSizeIcon(icon, this);
 		setCustomIcon(bitmap);
-		return;
 	}
 	
 	/**
 	 * Source android.widget.ImageView
-	 * @param uri
-	 * @return
 	 */
 	private Drawable resolveUri(Uri uri) {
 		Drawable d = null;
@@ -317,7 +308,7 @@ public class ShortcutEditActivity extends Activity {
 
     @OnClick(R.id.icon_edit)
 	public void changeIcon(View view) {
-        showDialog(DIALOG_ICON_MENU);
+        createIconMenu().show();
 	}
 
 	private void setCustomIcon(Bitmap icon) {
@@ -326,7 +317,7 @@ public class ShortcutEditActivity extends Activity {
 		mIconView.setImageBitmap(mCustomIcon);
 	}
 
-    @OnClick(R.id.ok_button)
+    @OnClick(R.id.btn_ok)
     public void clickedOk(View view) {
 		boolean needUpdate = false;
 		if (mCustomIcon != null) {
@@ -348,6 +339,11 @@ public class ShortcutEditActivity extends Activity {
 		setResult(RESULT_OK, mIntent);
 		finish();
 	}
+
+    @OnClick(R.id.btn_delete)
+    public void onDeleteClick(View view) {
+      //  mModel.dropShortcut(m);
+    }
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

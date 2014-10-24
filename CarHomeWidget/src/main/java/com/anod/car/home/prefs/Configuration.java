@@ -18,6 +18,7 @@ import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.ShortcutPreference;
+import com.anod.car.home.utils.ShortcutPicker;
 
 public class Configuration extends ConfigurationPreferenceFragment implements PreferenceKey, ShortcutPreference.DropCallback {
 	private ShortcutsModel mModel;
@@ -43,10 +44,10 @@ public class Configuration extends ConfigurationPreferenceFragment implements Pr
 		showFragmentOnClick(BACKUP, ConfigurationRestore.class);
 		showFragmentOnClick(INCAR, ConfigurationInCar.class);
 
-		int cellId = getActivity().getIntent().getExtras().getInt(PickShortcutUtils.EXTRA_CELL_ID, PickShortcutUtils.INVALID_CELL_ID);
-		if (cellId != PickShortcutUtils.INVALID_CELL_ID) {
-			mPickShortcutUtils.showActivityPicker(cellId);
-		}
+        int cellId = getActivity().getIntent().getExtras().getInt(ShortcutPicker.EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID);
+        if (cellId != ShortcutPicker.INVALID_CELL_ID) {
+            mPickShortcutUtils.showActivityPicker(cellId);
+        }
         
 		
 	}

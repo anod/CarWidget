@@ -59,7 +59,7 @@
 
         <activity
             android:name="com.anod.car.home.prefs.ShortcutEditActivity"
-            android:theme="@style/DialogTheme" />
+            android:theme="@style/DialogTheme.Light" />
         <activity
             android:name="com.anod.car.home.prefs.AllAppsActivity"
             android:theme="@style/AppListTheme" />
@@ -74,19 +74,31 @@
 			android:clearTaskOnLaunch="true"
 			android:fragment="com.anod.car.home.prefs."
         >
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-            </intent-filter>
         </activity>
 
         <activity
             android:name="com.anod.car.home.ShortcutActivity"
             android:theme="@style/BrightnessTheme"
             android:exported="true" />
+
+        <activity
+            android:name="com.anod.car.home.app.NewShortcutActivity"
+            android:theme="@style/BrightnessTheme"
+            android:exported="true" />
+
         <activity
             android:name="com.anod.car.home.prefs.LookAndFeelActivity"
+            android:label="@string/settings"
+            android:launchMode="singleTop"
+            android:clearTaskOnLaunch="true"
+            android:taskAffinity="com.anod.car.home.settings"
             android:theme="@style/AppThemeGray.Transparent"
-        />
+         >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name="com.anod.car.home.prefs.ActivityPicker"
             android:theme="@style/AppListTheme"

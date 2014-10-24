@@ -68,7 +68,8 @@ public class WidgetViewBuilder {
 	}
 
 	public interface PendingIntentHelper {
-		PendingIntent createSettings(int appWidgetId, int cellId);
+        PendingIntent createNew(int appWidgetId, int cellId);
+    	PendingIntent createSettings(int appWidgetId);
 		PendingIntent createShortcut(Intent intent, int appWidgetId, int position, long shortcutId);
 		PendingIntent createInCar(boolean on);
 	}
@@ -192,7 +193,7 @@ public class WidgetViewBuilder {
 		}
 
 
-		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId, PickShortcutUtils.INVALID_CELL_ID);
+		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId);
 		views.setOnClickPendingIntent(R.id.btn_settings, configIntent);
 		return views;
 	}

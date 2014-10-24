@@ -145,11 +145,11 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 	}
 
     public void showProgress() {
-        setProgressBarIndeterminateVisibility(true);
+        setSupportProgressBarIndeterminateVisibility(true);
     }
 
     public void hideProgress() {
-        setProgressBarIndeterminateVisibility(false);
+        setSupportProgressBarIndeterminateVisibility(false);
     }
 
 }

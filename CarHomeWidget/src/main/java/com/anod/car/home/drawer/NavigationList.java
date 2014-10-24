@@ -1,5 +1,6 @@
 package com.anod.car.home.drawer;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -50,11 +51,13 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
     private static final int ID_MAIN = 7;
 
     private final PackageManager mPackageManager;
+    private final Activity mActivity;
     private final Context mContext;
 
-    public NavigationList(Context context) {
-        mContext = context;
-        mPackageManager = mContext.getPackageManager();
+    public NavigationList(Activity activity) {
+        mActivity = activity;
+        mContext = activity;
+        mPackageManager = activity.getPackageManager();
 
     }
 
@@ -195,35 +198,36 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
         add(new TitleItem(titleId));
     }
 
-    public void onClick(int id) {
+    public boolean onClick(int id) {
         Intent intent;
         switch (id) {
             case ID_CAR_SETTINGS:
                 intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationInCar.class);
                 mContext.startActivity(intent);
-                break;
+                return true;
             case ID_CAR_DOCK_APP:
                 onCarDockAppClick();
-                break;
+                return false;
             case ID_MUSIC_APP:
                 Intent musicAppsIntent = new Intent(mContext, MusicAppSettingsActivity.class);
                 mContext.startActivity(musicAppsIntent);
-                break;
+                return false;
             case ID_VERSION:
                 String url = DETAIL_MARKET_URL;
                 Uri uri = Uri.parse(String.format(url, mContext.getPackageName()));
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 Utils.startActivitySafely(intent, mContext);
-                break;
+                return true;
             case ID_FEEDBACK:
                 Uri feedbackUri = Uri.parse(URL_GOOGLE_PLUS);
                 intent = new Intent(Intent.ACTION_VIEW, feedbackUri);
                 mContext.startActivity(intent);
-                break;
+                return true;
             case ID_THEME:
                 createThemesDialog().show();
-
+                return false;
         }
+        return true;
     }
 
 
@@ -236,7 +240,7 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
                         AppTheme.saveAppTheme(mContext, which);
                         CarWidgetApplication.get(mContext).setThemeIdx(which);
                         mContext.setTheme(AppTheme.getMainResource(which));
-                        // TODO: act.recreate();
+                        mActivity.recreate();
                     }
                 });
         return builder.create();

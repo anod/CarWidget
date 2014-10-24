@@ -277,7 +277,13 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
     }
 
     @Override
-    public PendingIntent createSettings(int appWidgetId, int cellId) {
+    public PendingIntent createNew(int appWidgetId, int cellId) {
+        Intent intent = IntentUtils.createNewShortcutIntent(mContext, appWidgetId, cellId);
+        return PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    @Override
+    public PendingIntent createSettings(int appWidgetId) {
         return null;
     }
 

@@ -101,7 +101,7 @@ public class WidgetsListActivity extends CarWidgetActivity {
 
 
 	public void startConfigActivity(int appWidgetId) {
-		Intent configIntent = IntentUtils.createSettingsIntent(this, appWidgetId, PickShortcutUtils.INVALID_CELL_ID);
+		Intent configIntent = IntentUtils.createSettingsIntent(this, appWidgetId);
 		startActivity(configIntent);
 		finish();
 	}

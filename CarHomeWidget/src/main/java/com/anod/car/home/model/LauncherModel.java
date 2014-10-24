@@ -208,9 +208,7 @@ public class LauncherModel {
 
 	/**
 	 * Removes the specified item from the database
-	 * 
-	 * @param context
-	 * @param item
+
 	 */
 	public void deleteItemFromDatabase(long shortcutId) {
 		final Uri uriToDelete = LauncherSettings.Favorites.getContentUri(mContext.getPackageName(), shortcutId);

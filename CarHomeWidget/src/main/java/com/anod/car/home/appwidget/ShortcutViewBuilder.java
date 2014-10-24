@@ -88,7 +88,7 @@ public class ShortcutViewBuilder {
 			String title = mContext.getResources().getString(skinProp.getSetShortcutText());
 			views.setTextViewText(resText, title);
 		}
-		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId, cellId);
+		PendingIntent configIntent = mPendingIntentHelper.createNew(mAppWidgetId, cellId);
 		if (configIntent != null) {
 			views.setOnClickPendingIntent(res, configIntent);
 			views.setOnClickPendingIntent(resText, configIntent);
