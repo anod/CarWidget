@@ -17,13 +17,13 @@ import com.anod.car.home.utils.Utils;
  * @author alex
  * @date 2014-10-24
  */
-public class NewShortcutActivity extends CarWidgetActivity implements ShortcutPicker.Handler {
+public class NewShortcutActivity extends Activity implements ShortcutPicker.Handler {
     private int mAppWidgetId;
     private ShortcutPicker mShortcutPicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
 
         mAppWidgetId = Utils.readAppWidgetId(savedInstanceState, getIntent());
@@ -65,11 +65,6 @@ public class NewShortcutActivity extends CarWidgetActivity implements ShortcutPi
     }
 
     @Override
-    protected boolean isTransparentAppTheme() {
-        return true;
-    }
-
-    @Override
     public void onAddShortcut(int cellId, ShortcutInfo info) {
         Provider.getInstance().requestUpdate(this,mAppWidgetId);
         finish();
@@ -78,6 +73,12 @@ public class NewShortcutActivity extends CarWidgetActivity implements ShortcutPi
     @Override
     public void onEditComplete(int cellId) {
         finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
     }
 
 }

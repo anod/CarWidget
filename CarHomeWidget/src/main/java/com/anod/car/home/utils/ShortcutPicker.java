@@ -10,12 +10,11 @@ import android.widget.Toast;
 
 import com.anod.car.home.R;
 import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.model.ShortcutsModel;
+import com.anod.car.home.model.ShortcutsContainerModel;
 import com.anod.car.home.prefs.ActivityPicker;
 import com.anod.car.home.prefs.AllAppsActivity;
 import com.anod.car.home.prefs.CarWidgetShortcutsPicker;
 import com.anod.car.home.prefs.ShortcutEditActivity;
-import com.anod.car.home.prefs.views.ShortcutPreference;
 
 import java.util.ArrayList;
 
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 public class ShortcutPicker {
     private final Handler mHandler;
     private final Context mContext;
-    private final ShortcutsModel mModel;
+    private final ShortcutsContainerModel mModel;
 
     private int mCurrentCellId = INVALID_CELL_ID;
 
@@ -44,14 +43,14 @@ public class ShortcutPicker {
         void onEditComplete(int cellId);
     }
 
-    public ShortcutPicker(ShortcutsModel model, Handler handler, Context context) {
+    public ShortcutPicker(ShortcutsContainerModel model, Handler handler, Context context) {
         mContext = context;
         mHandler = handler;
         mModel = model;
     }
 
-    public void showEditActivity(int cellId, long shortcutId) {
-        Intent editIntent = IntentUtils.createShortcutEditIntent(mContext, cellId, shortcutId);
+    public void showEditActivity(int cellId, long shortcutId, int appWidgetId) {
+        Intent editIntent = IntentUtils.createShortcutEditIntent(mContext, cellId, shortcutId, appWidgetId);
         startActivityForResultSafely(editIntent, REQUEST_EDIT_SHORTCUT);
     }
 

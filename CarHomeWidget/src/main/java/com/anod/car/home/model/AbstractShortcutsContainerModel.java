@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.SparseArray;
 
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
+
 import java.util.ArrayList;
 
-public abstract class AbstractShortcutsModel implements ShortcutsModel {
+public abstract class AbstractShortcutsContainerModel implements ShortcutsContainerModel {
 	private SparseArray<ShortcutInfo> mShortcuts;
 	private final Context mContext;
-	private final LauncherModel mModel;
+	private final ShortcutModel mModel;
 
     abstract protected void loadCount();
     abstract public int getCount();
@@ -17,8 +19,8 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 	abstract protected void dropShortcutId(int position);
 	abstract protected ArrayList<Long> loadShortcutIds();
 
-	public AbstractShortcutsModel(Context context) {
-		mModel = new LauncherModel(context);
+	public AbstractShortcutsContainerModel(Context context) {
+		mModel = new ShortcutModel(context);
 		mContext = context;
 	}
 	
@@ -62,42 +64,14 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 		if (from == to) {
 			return;
 		}
+        ArrayList<Long> currentShortcutIds = loadShortcutIds();
+        long srcShortcutId = currentShortcutIds.get(from);
+        long dstShortcutId = currentShortcutIds.get(to);
 
-		ShortcutInfo fromInfo = mShortcuts.get(from);
+        saveShortcutId(from, dstShortcutId);
+        saveShortcutId(to, srcShortcutId);
 
-		if (from > to) {
-			for(int i = from; i>to;i--) {
-				int j = i - 1;
-				ShortcutInfo a = mShortcuts.get(i);
-				ShortcutInfo b = mShortcuts.get(j);
-				mShortcuts.put(i,b);
-				mShortcuts.put(j,a);
-			}
-			mShortcuts.put(to,fromInfo);
-		} else {
-			for(int i = from; i<to-1;i++) {
-				int j = i + 1;
-				ShortcutInfo a = mShortcuts.get(i);
-				ShortcutInfo b = mShortcuts.get(j);
-				mShortcuts.put(i,b);
-				mShortcuts.put(j,a);
-			}
-			mShortcuts.put(to-1,fromInfo);
-		}
-
-
-		int min = Math.min(from,to);
-		int max = Math.max(from,to);
-		//update mapping
-		for (int cellId = min; cellId <= max; cellId++) {
-			ShortcutInfo info = mShortcuts.get(cellId);
-			if (info == null) {
-				dropShortcutId(cellId);
-			} else {
-				saveShortcutId(cellId,info.id);
-			}
-		}
-	}
+    }
 
 	@Override
 	public ShortcutInfo saveShortcutIntent(int position, Intent data, boolean isApplicationShortcut) {
@@ -125,4 +99,7 @@ public abstract class AbstractShortcutsModel implements ShortcutsModel {
 		}
 	}
 
+    public ShortcutModel getShortcutModel() {
+        return mModel;
+    }
 }

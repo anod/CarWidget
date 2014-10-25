@@ -1,5 +1,6 @@
 package com.anod.car.home.prefs;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -7,7 +8,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 
 import com.anod.car.home.R;
 import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.model.ShortcutsModel;
+import com.anod.car.home.model.ShortcutsContainerModel;
 import com.anod.car.home.prefs.views.ShortcutPreference;
 import com.anod.car.home.utils.ShortcutPicker;
 
@@ -16,7 +17,7 @@ public class PickShortcutUtils implements ShortcutPicker.Handler {
 
 	private final ConfigurationPreferenceFragment mConfigurationFragment;
 	private final ConfigurationActivity mActivity;
-	private final ShortcutsModel mModel;
+	private final ShortcutsContainerModel mModel;
 	private final PreferenceKey mPreferenceKey;
     private final ShortcutPicker mPicker;
 
@@ -48,7 +49,7 @@ public class PickShortcutUtils implements ShortcutPicker.Handler {
 	}
 
 	
-	public PickShortcutUtils(ConfigurationPreferenceFragment fragment, ShortcutsModel model, PreferenceKey key) {
+	public PickShortcutUtils(ConfigurationPreferenceFragment fragment, ShortcutsContainerModel model, PreferenceKey key) {
 		mConfigurationFragment = fragment;
 		mActivity = (ConfigurationActivity)mConfigurationFragment.getActivity();
 		mModel = model;
@@ -93,7 +94,7 @@ public class PickShortcutUtils implements ShortcutPicker.Handler {
 
 
 	private void startEditActivity(int cellId, long shortcutId) {
-        mPicker.showEditActivity(cellId, shortcutId);
+        mPicker.showEditActivity(cellId, shortcutId, AppWidgetManager.INVALID_APPWIDGET_ID);
 	}
 
 	public void refreshPreference(ShortcutPreference pref) {

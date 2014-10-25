@@ -92,7 +92,6 @@
             android:launchMode="singleTop"
             android:clearTaskOnLaunch="true"
             android:taskAffinity="com.anod.car.home.settings"
-            android:theme="@style/AppThemeGray.Transparent"
          >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />

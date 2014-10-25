@@ -19,13 +19,16 @@ import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
-import com.anod.car.home.model.AppsList;
+import com.anod.car.home.model.WidgetShortcutsModel;
+import com.anod.car.home.prefs.drag.ShortcutDragListener;
 import com.anod.car.home.prefs.model.SkinList;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -37,7 +40,7 @@ import com.anod.car.home.utils.Utils;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentHelper {
+public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentHelper, ShortcutDragListener.DropCallback {
     private static final int SKINS_COUNT = 5;
 
     private Context mContext;
@@ -60,6 +63,8 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
 
     private LookAndFeelMenu mMenu;
     private NavigationDrawer mDrawer;
+    private WidgetShortcutsModel mModel;
+    private ShortcutDragListener mDragListener;
 
     public SkinList.Item getCurrentSkinItem() {
         return getSkinItem(mCurrentPage);
@@ -67,6 +72,43 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
 
     public Main getPrefs() {
         return mPrefs;
+    }
+
+    @Override
+    public boolean onDelete(int srcCellId) {
+        mModel.dropShortcut(srcCellId);
+        refreshSkinPreview();
+        return true;
+    }
+
+    @Override
+    public boolean onDrop(int srcCellId, int dstCellId) {
+        if  (srcCellId == dstCellId) {
+            return false;
+        }
+        mModel.move(srcCellId,dstCellId);
+        refreshSkinPreview();
+        return true;
+    }
+
+    @Override
+    public void onDragFinish() {
+        View deleteView = findViewById(R.id.drag_delete_shortcut);
+        deleteView.setVisibility(View.GONE);
+    }
+
+    public void onBeforeDragStart() {
+        View deleteView = findViewById(R.id.drag_delete_shortcut);
+        deleteView.setTag(ShortcutDragListener.TAG_DELETE_SHORTCUT);
+        deleteView.setOnDragListener(mDragListener);
+        deleteView.setVisibility(View.VISIBLE);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        deleteView.startAnimation(animation);
+    }
+
+
+    public ShortcutDragListener getDragListener() {
+        return mDragListener;
     }
 
     public interface SkinRefreshListener {
@@ -109,17 +151,21 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
 
         mBuilder = createBuilder();
         mPrefs = mBuilder.getPrefs();
+        mModel = new WidgetShortcutsModel(mContext, mAppWidgetId);
+        mModel.init();
         mSkinList = SkinList.newInstance(mPrefs.getSkin(),keyguard, mContext);
         mCurrentPage = mSkinList.getSelectedSkinPosition();
 
         mDrawer = new NavigationDrawer(this);
-        mMenu = new LookAndFeelMenu(this);
+        mMenu = new LookAndFeelMenu(this,mModel);
 
         mTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
         int count = mSkinList.getCount();
 
         mGallery.setOnPageChangeListener(this);
+
+        mDragListener = new ShortcutDragListener(this,this);
 
         SkinPagerAdapter adapter = new SkinPagerAdapter(this, count, getSupportFragmentManager());
         mGallery.setAdapter(adapter);
@@ -173,10 +219,10 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
     public WidgetViewBuilder createBuilder() {
         WidgetViewBuilder builder = new WidgetViewBuilder(mContext);
         builder
-                .setPendingIntentHelper(this)
-                .setAppWidgetId(mAppWidgetId)
-                .init()
-                .setBitmapMemoryCache(mBitmapMemoryCache)
+            .setPendingIntentHelper(this)
+            .setAppWidgetId(mAppWidgetId)
+            .init()
+            .setBitmapMemoryCache(mBitmapMemoryCache)
         ;
         return builder;
     }
@@ -201,17 +247,13 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
         return mMenu.onOptionsItemSelected(item);
     }
 
-
     public void persistPrefs() {
         PreferencesStorage.saveMain(mContext, mPrefs, mAppWidgetId);
     }
 
-
-
     public SkinList.Item getSkinItem(int position) {
         return mSkinList.get(position);
     }
-
 
     @Override
     public void onPageSelected(int position) {
@@ -223,7 +265,6 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
         }
 
         mMenu.refreshTileColorButton();
-
     }
 
 
@@ -291,8 +332,8 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
 
     @Override
     public PendingIntent createShortcut(Intent intent, int appWidgetId, int position, long shortcutId) {
-        Intent editIntent = IntentUtils.createShortcutEditIntent(mContext, position, shortcutId);
-        String path = appWidgetId + " - " + position;
+        Intent editIntent = IntentUtils.createShortcutEditIntent(mContext, position, shortcutId, appWidgetId);
+        String path = appWidgetId + "/" + position;
         Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
         editIntent.setData(data);
         return PendingIntent.getActivity(mContext, 0, editIntent, PendingIntent.FLAG_UPDATE_CURRENT);

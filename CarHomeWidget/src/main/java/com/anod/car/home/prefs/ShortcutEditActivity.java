@@ -3,6 +3,7 @@ package com.anod.car.home.prefs;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
@@ -29,10 +30,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.anod.car.home.R;
-import com.anod.car.home.model.LauncherModel;
+import com.anod.car.home.model.AbstractShortcutsContainerModel;
+import com.anod.car.home.model.NotificationShortcutsModel;
+import com.anod.car.home.model.ShortcutModel;
 import com.anod.car.home.model.LauncherSettings;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutInfoUtils;
+import com.anod.car.home.model.WidgetShortcutsModel;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.IconPackUtils;
 import com.anod.car.home.utils.ShortcutPicker;
 import com.anod.car.home.utils.UtilitiesBitmap;
@@ -62,12 +67,14 @@ public class ShortcutEditActivity extends ActionBarActivity {
 	@InjectView(R.id.icon_edit) ImageView mIconView;
     @InjectView(R.id.label_edit) EditText mLabelEdit;
 
-    private LauncherModel mModel;
+    private ShortcutModel mModel;
 	private ShortcutInfo mShortcutInfo;
 	private Intent mIntent;
 	private Bitmap mIconDefault;
+    private AbstractShortcutsContainerModel mContainerModel;
+    private int mCellId;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shortcut_edit);
@@ -76,15 +83,25 @@ public class ShortcutEditActivity extends ActionBarActivity {
         ButterKnife.inject(this);
 
 		mIntent = getIntent();
-		final int cellId = mIntent.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID);
+        mCellId = mIntent.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID);
 		final long shortcutId = mIntent.getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);
-		if (cellId == ShortcutPicker.INVALID_CELL_ID || shortcutId == ShortcutInfo.NO_ID) {
+        final int appWidgetId = mIntent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+		if (mCellId == ShortcutPicker.INVALID_CELL_ID || shortcutId == ShortcutInfo.NO_ID) {
+            AppLog.e("Missing parameter");
 			setResult(RESULT_CANCELED);
 			finish();
 			return;
 		}
-		mModel = new LauncherModel(this);
-		mShortcutInfo = mModel.loadShortcut(shortcutId);
+
+        if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+            mContainerModel = new WidgetShortcutsModel(this, appWidgetId);
+        } else {
+            mContainerModel = new NotificationShortcutsModel(this);
+        }
+        mContainerModel.init();
+        mModel = mContainerModel.getShortcutModel();
+
+        mShortcutInfo = mModel.loadShortcut(shortcutId);
 		mLabelEdit.setText(mShortcutInfo.title);
 		mIconView.setImageBitmap(mShortcutInfo.getIcon());
 
@@ -263,8 +280,6 @@ public class ShortcutEditActivity extends ActionBarActivity {
     
     /**
      * From android.content.ContentResolver
-     * @param uri
-     * @return
      * @throws FileNotFoundException
      */
     public OpenResourceIdResult getResourceId(Uri uri) throws FileNotFoundException {
@@ -342,7 +357,7 @@ public class ShortcutEditActivity extends ActionBarActivity {
 
     @OnClick(R.id.btn_delete)
     public void onDeleteClick(View view) {
-      //  mModel.dropShortcut(m);
+        mContainerModel.dropShortcut(mCellId);
     }
 
 	@Override

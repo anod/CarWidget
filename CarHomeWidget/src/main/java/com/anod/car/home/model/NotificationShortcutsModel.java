@@ -6,7 +6,7 @@ import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 import java.util.ArrayList;
 
-public class NotificationShortcutsModel extends AbstractShortcutsModel {
+public class NotificationShortcutsModel extends AbstractShortcutsContainerModel {
 	private final Context mContext;
 	public NotificationShortcutsModel(Context context) {
 		super(context);

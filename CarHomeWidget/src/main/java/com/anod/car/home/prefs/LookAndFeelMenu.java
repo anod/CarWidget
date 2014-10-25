@@ -2,16 +2,21 @@ package com.anod.car.home.prefs;
 
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.NumberPicker;
 
 import com.anod.car.home.R;
+import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
@@ -27,15 +32,17 @@ public class LookAndFeelMenu {
     public static final int REQUEST_LOOK_ACTIVITY = 1;
     public static final int REQUEST_PICK_ICON_THEME = 2;
     private final int mAppWidgetId;
+    private final WidgetShortcutsModel mModel;
     private MenuItem mMenuTileColor;
 
     private LookAndFeelActivity mActivity;
     private WidgetSharedPreferences mSharedPrefs;
     private boolean mInitialized;
 
-    public LookAndFeelMenu(LookAndFeelActivity activity) {
+    public LookAndFeelMenu(LookAndFeelActivity activity, WidgetShortcutsModel model) {
         mActivity = activity;
         mAppWidgetId = mActivity.getAppWidgetId();
+        mModel = model;
 
         mSharedPrefs = new WidgetSharedPreferences(mActivity);
         mSharedPrefs.setAppWidgetId(mAppWidgetId);
@@ -59,6 +66,10 @@ public class LookAndFeelMenu {
             PreferencesStorage.saveMain(mActivity, prefs, mAppWidgetId);
             mActivity.beforeFinish();
             mActivity.finish();
+            return true;
+        }
+        if (item.getItemId() == R.id.menu_number) {
+            createNumberPickerDialog().show();
             return true;
         }
         if (itemId == R.id.tile_color) {
@@ -168,4 +179,43 @@ public class LookAndFeelMenu {
     }
 
 
+    private AlertDialog createNumberPickerDialog() {
+        final String[] nums = mActivity.getResources().getStringArray(R.array.shortcut_numbers);
+
+        LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View npView = inflater.inflate(R.layout.numberpicker, null);
+
+        final NumberPicker numberPicker = (NumberPicker) npView.findViewById(R.id.numberPicker);
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(nums.length - 1);
+        numberPicker.setDisplayedValues(nums);
+
+        String countStr = String.valueOf(mModel.getCount());
+        for(int i = 0; i < nums.length; i++)
+        {
+            if (countStr.equals(nums[i])) {
+                numberPicker.setValue(i);
+                break;
+            }
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setView(npView)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        int value = numberPicker.getValue();
+                        mModel.updateCount(Integer.valueOf(nums[value]));
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setTitle(R.string.number_shortcuts_title)
+        ;
+        return builder.create();
+    }
 }

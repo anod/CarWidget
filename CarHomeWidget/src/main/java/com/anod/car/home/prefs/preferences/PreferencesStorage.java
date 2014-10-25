@@ -11,7 +11,7 @@ import android.util.Log;
 
 import com.anod.car.home.R;
 import com.anod.car.home.incar.ScreenOrientation;
-import com.anod.car.home.model.LauncherModel;
+import com.anod.car.home.model.ShortcutModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
 import com.anod.car.home.utils.BitmapTransform.RotateDirection;
@@ -375,7 +375,7 @@ public class PreferencesStorage {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		long curShortcutId = preferences.getLong(key, ShortcutInfo.NO_ID);
 		if (curShortcutId != ShortcutInfo.NO_ID) {
-			LauncherModel model = new LauncherModel(context);
+			ShortcutModel model = new ShortcutModel(context);
 			model.deleteItemFromDatabase(curShortcutId);
 		}
 		Editor editor = preferences.edit();
@@ -392,7 +392,7 @@ public class PreferencesStorage {
 	}
 
 	public static void dropWidgetSettings(Context context, int[] appWidgetIds) {
-		LauncherModel model = new LauncherModel(context);
+		ShortcutModel model = new ShortcutModel(context);
 		WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
 		for (int appWidgetId : appWidgetIds) {
 			prefs.setAppWidgetId(appWidgetId);

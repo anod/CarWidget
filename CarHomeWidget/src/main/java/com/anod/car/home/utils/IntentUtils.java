@@ -32,6 +32,7 @@ public class IntentUtils {
         Intent intent = new Intent(context, NewShortcutActivity.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.putExtra(ShortcutPicker.EXTRA_CELL_ID, cellId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         String path = appWidgetId + "/" + cellId;
         Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
         intent.setData(data);
@@ -60,10 +61,11 @@ public class IntentUtils {
 		return !list.isEmpty();
 	}
 	
-	public static Intent createShortcutEditIntent(Context context,int cellId, long shortcutId) {
+	public static Intent createShortcutEditIntent(Context context, int cellId, long shortcutId, int appWidgetId) {
 		Intent editIntent = new Intent(context, ShortcutEditActivity.class);
 		editIntent.putExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, shortcutId);
 		editIntent.putExtra(ShortcutEditActivity.EXTRA_CELL_ID, cellId);
+        editIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 		return editIntent;
 	}
 

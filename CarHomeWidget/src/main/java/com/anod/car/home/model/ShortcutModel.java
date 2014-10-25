@@ -18,12 +18,12 @@ import com.anod.car.home.utils.UtilitiesBitmap;
 
 import java.net.URISyntaxException;
 
-public class LauncherModel {
+public class ShortcutModel {
 	static final String TAG = "CarHomeWidget.Model";
 	private final ContentResolver mContentResolver;
 	private final PackageManager mPackageManager;
 	private final Context mContext;
-	public LauncherModel(Context context) {
+	public ShortcutModel(Context context) {
 		mContentResolver = context.getContentResolver();
 		mPackageManager = context.getPackageManager();
 		mContext = context;

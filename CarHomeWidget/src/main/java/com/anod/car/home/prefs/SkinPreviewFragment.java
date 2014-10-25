@@ -1,6 +1,7 @@
 package com.anod.car.home.prefs;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -9,10 +10,13 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
 
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
+import com.anod.car.home.model.WidgetShortcutsModel;
+import com.anod.car.home.prefs.drag.ShortcutShadowBuilder;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -114,10 +118,41 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
         if (inflatedView.getParent() != null) {
         	((ViewGroup)inflatedView.getParent()).removeView(inflatedView);
         }
+        final WidgetShortcutsModel model = new WidgetShortcutsModel(getActivity(), mActivity.getAppWidgetId());
+        model.init();
+
+        setupDragNDrop(inflatedView, model);
+
         mContainer.addView( inflatedView );
 		mContainer.invalidate();
         //mContainer.requestLayout();
 	}
+
+
+    private void setupDragNDrop(View inflatedView,final WidgetShortcutsModel model) {
+        for (int pos=0; pos< model.getCount(); pos++) {
+            int btnResId = WidgetViewBuilder.getBtnRes(pos);
+            final ImageView btn = (ImageView) inflatedView.findViewById(btnResId);
+            initDragButton(pos, btn, model);
+        }
+    }
+
+    private void initDragButton(final int cellId, ImageView dragButton,final WidgetShortcutsModel model) {
+        dragButton.setTag(String.valueOf(cellId));
+        dragButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (model.getShortcut(cellId) != null) {
+                    String dragData = "" + cellId;
+                    ClipData data = ClipData.newPlainText(dragData, dragData);
+                    mActivity.onBeforeDragStart();
+                    view.startDrag(data, new ShortcutShadowBuilder(view), null, 0);
+                }
+                return true;
+            }
+        });
+        dragButton.setOnDragListener(mActivity.getDragListener());
+    }
 
 	@Override
 	public void onLoaderReset(Loader<View> loader) {

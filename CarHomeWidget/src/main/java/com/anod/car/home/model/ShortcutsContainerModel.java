@@ -3,7 +3,7 @@ package com.anod.car.home.model;
 import android.content.Intent;
 import android.util.SparseArray;
 
-public interface ShortcutsModel {
+public interface ShortcutsContainerModel {
 
 	void createDefaultShortcuts();
 

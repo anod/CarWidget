@@ -9,10 +9,10 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.SparseArray;
 
-import com.anod.car.home.model.AbstractShortcutsModel;
+import com.anod.car.home.model.AbstractShortcutsContainerModel;
 import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.model.ShortcutsModel;
+import com.anod.car.home.model.ShortcutsContainerModel;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.InCarBackup;
@@ -121,7 +121,7 @@ public class PreferencesBackupManager {
         
         File dataFile = new File(saveDir, filename+FILE_EXT_DAT);
         
-        ShortcutsModel smodel = new WidgetShortcutsModel(mContext, appWidgetId);
+        ShortcutsContainerModel smodel = new WidgetShortcutsModel(mContext, appWidgetId);
         smodel.init();
         Main main = PreferencesStorage.loadMain(mContext, appWidgetId);
         ShortcutsMain prefs = new ShortcutsMain(convertToHashMap(smodel.getShortcuts()), main);
@@ -264,15 +264,15 @@ public class PreferencesBackupManager {
         if (shortcuts.size() % 2 == 0) {
             PreferencesStorage.saveLaunchComponentNumber(shortcuts.size(), mContext, appWidgetId);
         }
-		ShortcutsModel smodel = new WidgetShortcutsModel(mContext, appWidgetId);
+		ShortcutsContainerModel smodel = new WidgetShortcutsModel(mContext, appWidgetId);
 		smodel.init();
 
-		restoreShortcuts((AbstractShortcutsModel) smodel, shortcuts);
+		restoreShortcuts((AbstractShortcutsContainerModel) smodel, shortcuts);
 
 		return RESULT_DONE;
 	}
 
-	private void restoreShortcuts(AbstractShortcutsModel model, HashMap<Integer, ShortcutInfo> shortcuts) {
+	private void restoreShortcuts(AbstractShortcutsContainerModel model, HashMap<Integer, ShortcutInfo> shortcuts) {
 		for (int pos=0;pos<model.getCount();pos++) {
 			model.dropShortcut(pos);
         	final ShortcutInfo info = shortcuts.get(pos);
@@ -343,7 +343,7 @@ public class PreferencesBackupManager {
 		model.init();
 
 		HashMap<Integer, ShortcutInfo> shortcuts = inCarBackup.getNotificationShortcuts();
-		restoreShortcuts((AbstractShortcutsModel) model, shortcuts);
+		restoreShortcuts((AbstractShortcutsContainerModel) model, shortcuts);
 
 		PreferencesStorage.saveInCar(mContext, inCarBackup.getInCar());
 		return RESULT_DONE;

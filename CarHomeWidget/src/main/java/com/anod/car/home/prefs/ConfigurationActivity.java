@@ -61,17 +61,8 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 
 	private Fragment createFragmentInstance() {
 		Intent intent = getIntent();
-		if (intent == null) {
-			return new Configuration();
-		}
 		Bundle extras = intent.getExtras();
-		if (extras == null) {
-			return new Configuration();
-		}
 		Class fragmentClass = (Class)extras.get(EXTRA_FRAGMENT);
-		if (fragmentClass == null) {
-			return new Configuration();
-		}
 		String fragmentClassName = fragmentClass.getName();
 		Bundle args = new Bundle();
 		Fragment conf = Fragment.instantiate(this, fragmentClassName , args);
