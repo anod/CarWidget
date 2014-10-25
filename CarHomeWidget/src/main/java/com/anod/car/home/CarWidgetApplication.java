@@ -64,7 +64,11 @@ public class CarWidgetApplication extends Application {
 			mAppListCache = new AppsList(this);
 		}
 	}
-
+    public void flushAppListCache() {
+        if (mAppListCache != null) {
+            mAppListCache.flush();
+        }
+    }
 	public AppsList getIconThemesCache() {
 		return mIconThemesCache;
 	}

@@ -69,7 +69,6 @@ public class Configuration extends ConfigurationPreferenceFragment implements Pr
     public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.apply) {
 			ConfigurationActivity act = (ConfigurationActivity)getActivity();
-			act.beforeFinish();
 			act.finish();
 			return true;
 		}

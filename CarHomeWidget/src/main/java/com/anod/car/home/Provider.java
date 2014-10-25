@@ -31,7 +31,13 @@ public class Provider extends AppWidgetProvider {
     		return sInstance;
 		}
     }
-    
+
+    public void requestUpdate(Context context, int appWidgetId){
+        int[] appWidgetIds = new int[1];
+        appWidgetIds[0] = appWidgetId;
+        performUpdate(context, appWidgetIds);
+    }
+
     public void performUpdate(Context context, int[] appWidgetIds) {
     	if (appWidgetIds == null) {
     		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);

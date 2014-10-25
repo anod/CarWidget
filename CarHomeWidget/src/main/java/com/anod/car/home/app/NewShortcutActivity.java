@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Window;
 
+import com.anod.car.home.Provider;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.utils.AppLog;
@@ -21,6 +23,7 @@ public class NewShortcutActivity extends CarWidgetActivity implements ShortcutPi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
 
         mAppWidgetId = Utils.readAppWidgetId(savedInstanceState, getIntent());
@@ -41,6 +44,7 @@ public class NewShortcutActivity extends CarWidgetActivity implements ShortcutPi
         setResult(Activity.RESULT_OK, defaultResultValue);
 
         WidgetShortcutsModel model = new WidgetShortcutsModel(this, mAppWidgetId);
+        model.init();
         mShortcutPicker = new ShortcutPicker(model, this, this);
         mShortcutPicker.onRestoreInstanceState(savedInstanceState);
 
@@ -67,6 +71,7 @@ public class NewShortcutActivity extends CarWidgetActivity implements ShortcutPi
 
     @Override
     public void onAddShortcut(int cellId, ShortcutInfo info) {
+        Provider.getInstance().requestUpdate(this,mAppWidgetId);
         finish();
     }
 
@@ -74,4 +79,5 @@ public class NewShortcutActivity extends CarWidgetActivity implements ShortcutPi
     public void onEditComplete(int cellId) {
         finish();
     }
+
 }

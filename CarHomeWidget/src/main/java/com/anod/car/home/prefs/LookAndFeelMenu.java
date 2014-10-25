@@ -57,6 +57,7 @@ public class LookAndFeelMenu {
             Main prefs = PreferencesStorage.loadMain(mActivity,mAppWidgetId);
             prefs.setSkin(mActivity.getCurrentSkinItem().value);
             PreferencesStorage.saveMain(mActivity, prefs, mAppWidgetId);
+            mActivity.beforeFinish();
             mActivity.finish();
             return true;
         }

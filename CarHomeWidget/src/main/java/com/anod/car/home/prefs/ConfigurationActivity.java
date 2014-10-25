@@ -78,33 +78,6 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 		return conf;
 	}
 
-	public void beforeFinish() {
-		requestWidgetUpdate();
-		cleanAppsCache();
-	}
-
-	@Override
-	public void onBackPressed() {
-		beforeFinish();
-		super.onBackPressed();
-	}
-	
-	private void requestWidgetUpdate() {
-		if (AppWidgetManager.ACTION_APPWIDGET_CONFIGURE.equals(getIntent().getAction()) && mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-			int[] appWidgetIds = new int[1];
-			appWidgetIds[0] = mAppWidgetId;
-			Provider appWidgetProvider = Provider.getInstance();
-			appWidgetProvider.performUpdate(this, appWidgetIds);
-		}
-	}
-
-
-	private void cleanAppsCache() {
-		AppsList allAppsList = getApp().getAppListCache();
-		if (allAppsList!=null) {
-			allAppsList.flush();
-		}
-	}
 
 	@Override
 	public boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref) {

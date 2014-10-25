@@ -21,9 +21,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
+import com.anod.car.home.model.AppsList;
 import com.anod.car.home.prefs.model.SkinList;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -325,6 +327,19 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
             mLoaderView.setVisibility(View.GONE);
         }
         mPreviewInitialized[position] = true;
+    }
+
+    public void beforeFinish() {
+        if (AppWidgetManager.ACTION_APPWIDGET_CONFIGURE.equals(getIntent().getAction()) && mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+            Provider.getInstance().requestUpdate(this,mAppWidgetId);
+        }
+        getApp().flushAppListCache();
+    }
+
+    @Override
+    public void onBackPressed() {
+        beforeFinish();
+        super.onBackPressed();
     }
 
 }
