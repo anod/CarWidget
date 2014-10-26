@@ -27,13 +27,6 @@
                 android:paddingLeft="4dp"
                 android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Title"
-                android:padding="2dp"
-                android:textSize="14sp"/>
-
             <EditText
                 android:id="@+id/label_edit"
                 android:layout_width="match_parent"

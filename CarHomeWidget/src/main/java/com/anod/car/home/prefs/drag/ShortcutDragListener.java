@@ -3,12 +3,14 @@ package com.anod.car.home.prefs.drag;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
-import android.content.res.Resources;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.anod.car.home.R;
@@ -24,6 +26,8 @@ public class ShortcutDragListener implements View.OnDragListener {
     private final DropCallback mDropCallback;
     private final PorterDuffColorFilter mColorFilter;
     private final PorterDuffColorFilter mDeleteFilter;
+    private final View mDeleteBackground;
+
 
     public interface DropCallback {
         public boolean onDelete(int srcCellId);
@@ -32,11 +36,11 @@ public class ShortcutDragListener implements View.OnDragListener {
     }
 
     public ShortcutDragListener(Activity activity,DropCallback dropCallback) {
-        Resources r = activity.getResources();
         mDropCallback = dropCallback;
         mColorFilter = new PorterDuffColorFilter(Color.argb(255, 100, 100, 100), PorterDuff.Mode.MULTIPLY);
-        mDeleteFilter = new PorterDuffColorFilter(Color.argb(255,255,0,0), PorterDuff.Mode.MULTIPLY);
+        mDeleteFilter = new PorterDuffColorFilter(Color.argb(255,100,0,0), PorterDuff.Mode.MULTIPLY);
 
+        mDeleteBackground = activity.findViewById(R.id.drag_delete_bg);
     }
 
     @Override
@@ -74,12 +78,18 @@ public class ShortcutDragListener implements View.OnDragListener {
                 }
                 return false;
             case DragEvent.ACTION_DRAG_ENTERED:
+                mDeleteBackground.setVisibility(View.VISIBLE);
+                mDeleteBackground.invalidate();
+
                 v.setColorFilter(mDeleteFilter);
                 v.invalidate();
                 return true;
             case DragEvent.ACTION_DRAG_LOCATION:
                 return true;
             case DragEvent.ACTION_DRAG_EXITED:
+                mDeleteBackground.setVisibility(View.GONE);
+                mDeleteBackground.invalidate();
+
                 v.clearColorFilter();
                 v.invalidate();
                 return true;
@@ -91,6 +101,8 @@ public class ShortcutDragListener implements View.OnDragListener {
                 // Displays a message containing the dragged data.
                 AppLog.d("Delete drop data is " + dragData);
 
+                mDeleteBackground.setVisibility(View.GONE);
+                mDeleteBackground.invalidate();
                 v.clearColorFilter();
                 v.invalidate();
 
@@ -101,7 +113,8 @@ public class ShortcutDragListener implements View.OnDragListener {
             // Returns true. DragEvent.getResult() will return true.
             //return true;
             case DragEvent.ACTION_DRAG_ENDED:
-
+                mDeleteBackground.setVisibility(View.GONE);
+                mDeleteBackground.invalidate();
                 v.clearColorFilter();
                 v.invalidate();
                 // Does a getResult(), and displays what happened.

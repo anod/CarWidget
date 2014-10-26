@@ -206,6 +206,7 @@ public class LookAndFeelMenu {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         int value = numberPicker.getValue();
                         mModel.updateCount(Integer.valueOf(nums[value]));
+                        mActivity.refreshSkinPreview();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

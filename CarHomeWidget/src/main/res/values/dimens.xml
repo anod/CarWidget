@@ -39,4 +39,6 @@
 	<dimen name="notification_padding">8.0dip</dimen>
 
     <dimen name="settings_icon_margin">2.0dip</dimen>
+
+    <dimen name="delete_bg_size">100dp</dimen>
 </resources>

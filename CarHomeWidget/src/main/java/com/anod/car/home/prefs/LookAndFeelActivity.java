@@ -138,7 +138,6 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
 			return;
 		}
 		setContentView(R.layout.activity_lookandfeel);
-		setTitle(R.string.pref_look_and_feel_title);
 
         ButterKnife.inject(this);
 

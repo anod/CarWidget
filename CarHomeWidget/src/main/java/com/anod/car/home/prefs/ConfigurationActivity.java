@@ -72,11 +72,6 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 
 	@Override
 	public boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref) {
-		//if (pref.getFragment() == null) {
-		//	return false;
-		//}
-		//startPreferencePanel(pref.getFragment(), pref.getExtras(), pref.getTitleRes(), pref.getTitle(), null, 0);
-		//return true;
 		return false;
 	}
 
@@ -107,13 +102,5 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 			mActivityResultListener.onActivityResult(requestCode, resultCode, data);
 		}
 	}
-
-    public void showProgress() {
-        setSupportProgressBarIndeterminateVisibility(true);
-    }
-
-    public void hideProgress() {
-        setSupportProgressBarIndeterminateVisibility(false);
-    }
 
 }

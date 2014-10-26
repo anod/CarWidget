@@ -77,7 +77,7 @@ public class ShortcutEditActivity extends ActionBarActivity {
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.shortcut_edit);
+		setContentView(R.layout.activity_shortcutedit);
 		setTitle(R.string.shortcut_edit_title);
 
         ButterKnife.inject(this);

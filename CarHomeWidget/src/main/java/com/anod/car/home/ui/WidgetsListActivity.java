@@ -34,7 +34,6 @@ public class WidgetsListActivity extends CarWidgetActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        setTitle(R.string.widgets);
 
         mContext = this;
 
