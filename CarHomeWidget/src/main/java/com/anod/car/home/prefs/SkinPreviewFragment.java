@@ -17,6 +17,7 @@ import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.drag.ShortcutShadowBuilder;
+import com.anod.car.home.utils.AppLog;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -130,9 +131,14 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 
 
     private void setupDragNDrop(View inflatedView,final WidgetShortcutsModel model) {
-        for (int pos=0; pos< model.getCount(); pos++) {
+        int count = model.getCount();
+        for (int pos=0; pos<count; pos++) {
             int btnResId = WidgetViewBuilder.getBtnRes(pos);
             final ImageView btn = (ImageView) inflatedView.findViewById(btnResId);
+            if (btn == null) {
+                AppLog.e("Count: "+count+", pos: "+pos);
+                continue;
+            }
             initDragButton(pos, btn, model);
         }
     }
