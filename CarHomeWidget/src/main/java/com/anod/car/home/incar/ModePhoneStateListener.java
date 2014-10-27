@@ -8,15 +8,12 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import com.android.internal.telephony.ITelephony;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.utils.AppLog;
 
-import java.lang.reflect.Method;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.inject.Inject;
 
 public class ModePhoneStateListener extends PhoneStateListener {
 	private static final int ANSWER_DALAY_MS = 5000;
@@ -28,7 +25,6 @@ public class ModePhoneStateListener extends PhoneStateListener {
 	private String mAutoAnswerMode;
 	private int mState = -1;
 
-    @Inject
 	public ModePhoneStateListener(Context context, AudioManager audioManager) {
 		mContext = context;
 		mAudioManager = audioManager;

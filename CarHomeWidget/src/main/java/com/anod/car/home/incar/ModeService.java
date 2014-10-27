@@ -9,20 +9,13 @@ import android.os.PowerManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
-import com.anod.car.home.AndroidModule;
 import com.anod.car.home.CarWidgetApplication;
+import com.anod.car.home.ObjectGraph;
 import com.anod.car.home.Provider;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Version;
-
-import java.util.Arrays;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import dagger.ObjectGraph;
 
 public class ModeService extends Service {
     private static final String TAG = "CarHomeWidget.WakeLock";
@@ -38,13 +31,11 @@ public class ModeService extends Service {
 
     private ModePhoneStateListener mPhoneListener;
 
-    @Inject Handler mHandler;
-    //@Inject @AndroidModule.Application Context mAppContext;
+    Handler mHandler;
 
 	private boolean mForceState;
 
     private static volatile PowerManager.WakeLock sLockStatic=null;
-    private ObjectGraph mObjectGraph;
 
     synchronized private static PowerManager.WakeLock getLock(Context context) {
         if (sLockStatic == null) {
@@ -85,13 +76,8 @@ public class ModeService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        // extend the application-scope object graph with the modules for this service
-        mObjectGraph = CarWidgetApplication.get(this).getObjectGraph().plus(getModules().toArray());
-        mObjectGraph.inject(this);
-    }
+        mHandler = CarWidgetApplication.provide(this).getHandler();
 
-    protected List<Object> getModules() {
-        return Arrays.<Object>asList(new IncarModule());
     }
 
     @Override
@@ -106,9 +92,6 @@ public class ModeService extends Service {
 		if (mPhoneListener != null) {
 			detachPhoneListener();
 		}
-        // Eagerly clear the reference to the activity graph to allow it to be garbage collected as
-        // soon as possible.
-        mObjectGraph = null;
 
 		sInCarMode = false;
 		requestWidgetsUpdate();
@@ -185,14 +168,15 @@ public class ModeService extends Service {
 
 	private void attachPhoneListener() {
 		AppLog.d("Attach phone listener");
-		mPhoneListener = mObjectGraph.get(ModePhoneStateListener.class);
-        TelephonyManager tm = mObjectGraph.get(TelephonyManager.class);
+        ObjectGraph og = CarWidgetApplication.provide(this);
+		mPhoneListener = og.provideModePhoneStateListener();
+        TelephonyManager tm = og.getTelephonyManager();
         tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
 	}
 
 	private void detachPhoneListener() {
 		AppLog.d("Detach phone listener");
-		TelephonyManager tm = mObjectGraph.get(TelephonyManager.class);
+		TelephonyManager tm = CarWidgetApplication.provide(this).getTelephonyManager();
 		tm.listen(mPhoneListener, PhoneStateListener.LISTEN_NONE);
 		mPhoneListener.cancelActions();
 		mPhoneListener = null;

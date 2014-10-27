@@ -23,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
@@ -373,7 +374,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
         if (AppWidgetManager.ACTION_APPWIDGET_CONFIGURE.equals(getIntent().getAction()) && mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
             Provider.getInstance().requestUpdate(this,mAppWidgetId);
         }
-        getApp().flushAppListCache();
+        CarWidgetApplication.provide(this).cleanAppListCache();
     }
 
     @Override
