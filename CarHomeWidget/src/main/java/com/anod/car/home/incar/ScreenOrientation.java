@@ -5,10 +5,6 @@ import android.content.pm.ActivityInfo;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.anod.car.home.AndroidModule;
-
-import javax.inject.Inject;
-
 /**
  * @author alex
  * @date 2014-10-11
@@ -25,8 +21,7 @@ public class ScreenOrientation {
     private final WindowManager mWindowManager;
     private final Context mContext;
 
-    @Inject
-    public ScreenOrientation(@AndroidModule.Application Context context, WindowManager wm) {
+    public ScreenOrientation(Context context, WindowManager wm) {
         mContext = context;
         mWindowManager = wm;
     }

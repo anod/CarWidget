@@ -14,10 +14,6 @@ import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.PowerUtil;
 import com.anod.car.home.utils.Utils;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@Singleton
 public class Handler {
 	private static final int VOLUME_NOT_SET = -1;
 
@@ -36,7 +32,6 @@ public class Handler {
     private final Context mContext;
     private final ScreenOrientation mScreenOrientation;
 
-    @Inject
     public Handler(Context context, ScreenOrientation orientation) {
         mContext = context;
         mScreenOrientation = orientation;
