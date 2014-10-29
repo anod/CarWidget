@@ -169,7 +169,7 @@ public class ModeService extends Service {
 	private void attachPhoneListener() {
 		AppLog.d("Attach phone listener");
         ObjectGraph og = CarWidgetApplication.provide(this);
-		mPhoneListener = og.provideModePhoneStateListener();
+		mPhoneListener = og.getModePhoneStateListener();
         TelephonyManager tm = og.getTelephonyManager();
         tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
 	}

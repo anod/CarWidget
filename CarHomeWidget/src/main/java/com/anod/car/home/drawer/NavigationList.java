@@ -115,7 +115,6 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
         addTitle("Home");
         addButton(ID_MAIN,R.string.widgets,0,R.drawable.ic_action_list);
 
-
         addTitle(mContext.getString(R.string.pref_incar_mode_title) + " - " + active);
         addButton(ID_CAR_SETTINGS,R.string.settings,0,R.drawable.ic_holo_settings);
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+>
+
+    <ListView android:id="@android:id/list"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:drawSelectorOnTop="false"/>
+
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@android:id/empty"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        card_view:cardBackgroundColor="#f4511e"
+        card_view:cardCornerRadius="4dp">
+
+        <com.anod.car.home.ui.views.TwoLineButton
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?attr/panelItem"
+            android:background="#f4511e"
+            android:layout_marginTop="1dp"
+            android:id="@+id/action"
+            app:title_text="No active widgets were found. Make sure you add a widget on your home screen."
+            app:icon_src="@drawable/ic_alert"
+            app:single_line="false"
+            />
+    </android.support.v7.widget.CardView>
+</FrameLayout>

@@ -50,7 +50,7 @@ public class ObjectGraph {
         return new ScreenOrientation(this.app, getWindowManager());
     }
 
-    public ModePhoneStateListener provideModePhoneStateListener() {
+    public ModePhoneStateListener getModePhoneStateListener() {
         return new ModePhoneStateListener(this.app, getAudioManager());
     }
 

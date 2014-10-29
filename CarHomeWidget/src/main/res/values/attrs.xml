@@ -33,5 +33,6 @@
         <attr name="icon_src" format="reference|color" />
         <attr name="title_text" format="reference|string" />
         <attr name="summary_text" format="reference|string" />
+        <attr name="single_line" format="boolean" />
     </declare-styleable>
 </resources>

@@ -3,6 +3,7 @@ package com.anod.car.home.ui.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,17 +50,27 @@ public class TwoLineButton extends LinearLayout {
             int attr = ta.getIndex(i);
             switch (attr) {
                 case R.styleable.TwoLineButtonAttrs_icon_src:
-                    Drawable d = ta.getDrawable(i);
+                    Drawable d = ta.getDrawable(attr);
                     if (d != null) {
                         setIcon(d);
                     }
                     break;
                 case R.styleable.TwoLineButtonAttrs_title_text:
-                    setTitle(ta.getText(i));
+                    setTitle(ta.getText(attr));
                     break;
                 case R.styleable.TwoLineButtonAttrs_summary_text:
-                    summary = ta.getText(i);
+                    summary = ta.getText(attr);
                     break;
+                case R.styleable.TwoLineButtonAttrs_single_line:
+                    boolean value = ta.getBoolean(attr, true);
+                    mTitleView.setSingleLine(value);
+                    if (value) {
+                        mTitleView.setEllipsize(TextUtils.TruncateAt.END);
+                    } else {
+                        mTitleView.setEllipsize(null);
+                    }
+                    break;
+
             }
         }
         ta.recycle();

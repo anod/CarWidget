@@ -7,6 +7,7 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -43,19 +44,25 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 		setListAdapter(mAdapter);
 
 		// Start out with a progress indicator.
-		setListShown(false);
+        //setListShown(true);
         getListView().setDivider(new ColorDrawable(Color.TRANSPARENT));
         getListView().setDividerHeight(getResources().getDimensionPixelOffset(R.dimen.preference_item_margin));
 		int padding = (int)getResources().getDimension(R.dimen.panel_header_margin);
 		ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) getListView().getLayoutParams();
 		mlp.setMargins(padding,padding,padding,0);
+
 		// Prepare the loader.  Either re-connect with an existing one,
 		// or start a new one.
 		getLoaderManager().initLoader(0, null, this);
 
 	}
 
-	@Override
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.widgets_list, container, false);
+    }
+
+    @Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		Integer appWidgetId = (Integer)mAdapter.getItem(position);
@@ -71,11 +78,11 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 	public void onLoadFinished(Loader<SparseArray<SparseArray<ShortcutInfo>>> loader, SparseArray<SparseArray<ShortcutInfo>> widgetShortcuts) {
 		mAdapter.setWidgetShortcuts(widgetShortcuts);
 
-		if (isResumed()) {
-			setListShown(true);
-		} else {
-			setListShownNoAnimation(true);
-		}
+//		if (isResumed()) {
+//			setListShown(true);
+//		} else {
+//			setListShownNoAnimation(true);
+//		}
 	}
 
 	@Override

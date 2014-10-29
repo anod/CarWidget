@@ -32,7 +32,7 @@ public class WidgetsListAdapter extends ArrayAdapter<Integer> {
 	};
 
 	public WidgetsListAdapter(Context context) {
-		super(context, R.layout.settings_item);
+		super(context, R.layout.widgets_item);
 		mWidgetShortcuts = new SparseArray<SparseArray<ShortcutInfo>>();
 	}
 
@@ -41,7 +41,7 @@ public class WidgetsListAdapter extends ArrayAdapter<Integer> {
 		View row = null;
 		if (convertView == null) {
 			LayoutInflater li = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			row = li.inflate(R.layout.settings_item, parent, false);
+			row = li.inflate(R.layout.widgets_item, parent, false);
 		} else {
 			row = convertView;
 		}
