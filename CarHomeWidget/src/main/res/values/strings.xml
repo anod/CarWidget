@@ -83,7 +83,7 @@
 	<string name="pref_activate_car_mode">Built-in Car Mode</string>
 	<string name="pref_activate_car_mode_summary">Android built-in car mode will be activated, additional notification icon will be shown.</string>
 	<string name="pref_backup_title">Backup / Restore</string>
-	<string name="pref_backup_summary">Backup settings of the widget to sd-card.</string>
+	<string name="pref_backup_summary">Backup settings of the widget</string>
 	<string name="last_backup">Last backup: %1$s</string>
 	<string name="backup_current_widget">Current widget</string>
 	<string name="backup_incar_settings">InCar settings</string>
@@ -244,6 +244,7 @@
     <string name="theme_dark">Dark</string>
     <string name="app_theme">App Theme</string>
     <string name="list">List</string>
+    <string name="widgets_hint">Select an item to configure the widget</string>
     <string-array name="disable_screen_timeout">
         <item>Disable (while charging)</item>
         <item>Disable</item>

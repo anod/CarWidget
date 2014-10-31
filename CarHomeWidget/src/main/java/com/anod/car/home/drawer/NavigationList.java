@@ -2,6 +2,7 @@ package com.anod.car.home.drawer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,10 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.anod.car.home.CarWidgetApplication;
+import com.anod.car.home.MainActivity;
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.ConfigurationInCar;
+import com.anod.car.home.prefs.ConfigurationRestore;
 import com.anod.car.home.prefs.MusicAppSettingsActivity;
 import com.anod.car.home.prefs.preferences.AppTheme;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -49,16 +52,18 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
     private static final int ID_VERSION = 5;
     private static final int ID_FEEDBACK = 6;
     private static final int ID_MAIN = 7;
+    private static final int ID_BACKUP = 8;
 
     private final PackageManager mPackageManager;
     private final Activity mActivity;
     private final Context mContext;
+    private final int mAppWidgetId;
 
-    public NavigationList(Activity activity) {
+    public NavigationList(Activity activity, int appWidgetId) {
         mActivity = activity;
         mContext = activity;
         mPackageManager = activity.getPackageManager();
-
+        mAppWidgetId = appWidgetId;
     }
 
     public static class Item {
@@ -119,6 +124,10 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
         addButton(ID_CAR_SETTINGS,R.string.settings,0,R.drawable.ic_holo_settings);
 
         addTitle(R.string.system);
+
+        if (mAppWidgetId > 0) {
+            addButton(ID_BACKUP, R.string.pref_backup_title, R.string.pref_backup_summary, R.drawable.ic_action_export);
+        }
 
         String carDockApp=renderCarDockApp();
         addButton(ID_CAR_DOCK_APP,R.string.default_car_dock_app,carDockApp,R.drawable.ic_settings_applications);
@@ -200,6 +209,12 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
     public boolean onClick(int id) {
         Intent intent;
         switch (id) {
+            case ID_MAIN:
+                if (mActivity instanceof MainActivity) {
+                    return true;
+                }
+                mContext.startActivity(new Intent(mContext, MainActivity.class));
+                return true;
             case ID_CAR_SETTINGS:
                 intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationInCar.class);
                 mContext.startActivity(intent);
@@ -225,6 +240,11 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
             case ID_THEME:
                 createThemesDialog().show();
                 return false;
+            case ID_BACKUP:
+                intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationRestore.class);
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+                mContext.startActivity(intent);
+                return true;
         }
         return true;
     }

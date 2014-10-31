@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetHelper;
@@ -50,6 +51,9 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 		int padding = (int)getResources().getDimension(R.dimen.panel_header_margin);
 		ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) getListView().getLayoutParams();
 		mlp.setMargins(padding,padding,padding,0);
+
+        View view = getActivity().getLayoutInflater().inflate(R.layout.widgets_hint, null);
+        getListView().addFooterView(view);
 
 		// Prepare the loader.  Either re-connect with an existing one,
 		// or start a new one.

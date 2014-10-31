@@ -156,7 +156,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
         mSkinList = SkinList.newInstance(mPrefs.getSkin(),keyguard, mContext);
         mCurrentPage = mSkinList.getSelectedSkinPosition();
 
-        mDrawer = new NavigationDrawer(this);
+        mDrawer = new NavigationDrawer(this, mAppWidgetId);
         mMenu = new LookAndFeelMenu(this,mModel);
 
         mTextView.setMovementMethod(LinkMovementMethod.getInstance());

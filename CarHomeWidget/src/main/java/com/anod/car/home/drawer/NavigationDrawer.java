@@ -25,12 +25,12 @@ public class NavigationDrawer {
     @InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @InjectView(R.id.left_drawer) ListView mDrawerList;
 
-    public NavigationDrawer(final ActionBarActivity activity) {
+    public NavigationDrawer(final ActionBarActivity activity, int appWidgetId) {
         ButterKnife.inject(this,activity);
 
         mTitle = mDrawerTitle = activity.getTitle();
 
-        NavigationList items = new NavigationList(activity);
+        NavigationList items = new NavigationList(activity, appWidgetId);
         items.addDefaults();
 
         mAdapter = new NavigationAdapter(activity,items);

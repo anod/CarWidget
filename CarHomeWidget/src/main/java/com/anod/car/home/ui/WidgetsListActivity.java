@@ -39,7 +39,7 @@ public class WidgetsListActivity extends CarWidgetActivity {
 
         int[] appWidgetIds = WidgetHelper.getAllWidgetIds(this);
 
-        mDrawer = new NavigationDrawer(this);
+        mDrawer = new NavigationDrawer(this, 0);
 
         if (savedInstanceState == null) {
             // to give support on lower android version, we are not calling getFragmentManager()

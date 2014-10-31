@@ -4,6 +4,7 @@
 	<style name="AppThemeHolo" parent="Theme.AppCompat">
 		<item name="panelItem">@style/panelItemBasic</item>
 		<item name="panelHeader">@style/panelHeaderBasic</item>
+        <item name="panelHeaderBackground">@drawable/panel_header_bg_dark</item>
 		<item name="PreferencesItem">@style/PreferencesItem</item>
 		<item name="buttonStyle">@style/buttonStyleDefault</item>
 		<item name="activityBgColor">@color/background_material_dark</item>
