@@ -2,26 +2,28 @@ package com.anod.car.home.prefs;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.view.MenuItem;
 import android.view.Window;
 
-import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
-import com.anod.car.home.model.AppsList;
+import com.anod.car.home.drawer.NavigationDrawer;
+import com.anod.car.home.utils.Utils;
 
 
 public class ConfigurationActivity extends CarWidgetActivity implements PreferenceFragment.OnPreferenceStartFragmentCallback {
 	private static final String BACK_STACK_PREFS = ":carwidget:prefs";
 
 	private onActivityResultListener mActivityResultListener;
+    private NavigationDrawer mDrawer;
+    private int mAppWidgetId;
 
-	public void setActivityResultListener(onActivityResultListener activityResultListener) {
+    public void setActivityResultListener(onActivityResultListener activityResultListener) {
 		mActivityResultListener = activityResultListener;
 	}
 
@@ -36,28 +38,48 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 	}
 
 	public static final String EXTRA_FRAGMENT = "fragment";
-	private int mAppWidgetId;
 
-	public void setAppWidgetId(int appWidgetId) {
-		mAppWidgetId = appWidgetId;
-	}
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawer.syncState();
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (mDrawer.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.pref_layout);
+		setContentView(R.layout.activity_preferences);
 
-		if (savedInstanceState == null) {
+        mAppWidgetId = Utils.readAppWidgetId(savedInstanceState, getIntent());
+        mDrawer = new NavigationDrawer(this, mAppWidgetId);
+
+        if (savedInstanceState == null) {
 
 			Fragment conf = createFragmentInstance();
 
 			conf.setArguments(getIntent().getExtras());
-			getFragmentManager().beginTransaction().add(R.id.main_fragment, conf).commit();
+			getFragmentManager().beginTransaction().add(R.id.content_frame, conf).commit();
 		}
 	}
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Utils.saveAppWidgetId(outState, mAppWidgetId);
+    }
 
 	private Fragment createFragmentInstance() {
 		Intent intent = getIntent();
@@ -86,7 +108,7 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 			f.setTargetFragment(resultTo, resultRequestCode);
 		}
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-		transaction.replace(R.id.main_fragment, f);
+		transaction.replace(R.id.content_frame, f);
 		if (titleText != null) {
 			transaction.setBreadCrumbTitle(titleText);
 		}

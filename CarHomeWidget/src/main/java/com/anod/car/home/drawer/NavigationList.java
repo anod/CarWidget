@@ -213,9 +213,11 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
                 if (mActivity instanceof MainActivity) {
                     return true;
                 }
+                mActivity.finish();
                 mContext.startActivity(new Intent(mContext, MainActivity.class));
                 return true;
             case ID_CAR_SETTINGS:
+                mActivity.finish();
                 intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationInCar.class);
                 mContext.startActivity(intent);
                 return true;

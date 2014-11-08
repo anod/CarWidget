@@ -107,7 +107,6 @@ public class ConfigurationRestore extends Fragment implements
 		if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
 			Intent defaultResultValue = new Intent();
 			defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-			((ConfigurationActivity)getActivity()).setAppWidgetId(mAppWidgetId);
 			getActivity().setResult(Activity.RESULT_OK, defaultResultValue);
 		} else {
 			AppLog.w("AppWidgetId required");
