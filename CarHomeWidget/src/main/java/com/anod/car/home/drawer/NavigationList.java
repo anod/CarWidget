@@ -35,6 +35,8 @@ import com.anod.car.home.utils.Version;
 
 import java.util.ArrayList;
 
+import info.anodsplace.materialdialogcompat.MaterialDialog;
+
 
 /**
  * @author alex
@@ -117,30 +119,28 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
 
         String active = renderActiveString(widgetsCount, version);
 
-        addTitle("Home");
-        addButton(ID_MAIN,R.string.widgets,0,R.drawable.ic_action_list);
+        addButton(ID_MAIN,R.string.widgets,0,R.drawable.ic_now_widgets_white_24dp);
 
         addTitle(mContext.getString(R.string.pref_incar_mode_title) + " - " + active);
-        addButton(ID_CAR_SETTINGS,R.string.settings,0,R.drawable.ic_holo_settings);
+        addButton(ID_CAR_SETTINGS,R.string.settings,0,R.drawable.ic_settings_white_24dp);
 
         addTitle(R.string.system);
-
         if (mAppWidgetId > 0) {
-            addButton(ID_BACKUP, R.string.pref_backup_title, R.string.pref_backup_summary, R.drawable.ic_action_export);
+            addButton(ID_BACKUP, R.string.pref_backup_title, R.string.pref_backup_summary, R.drawable.ic_backup_white_24dp);
         }
 
         String carDockApp=renderCarDockApp();
-        addButton(ID_CAR_DOCK_APP,R.string.default_car_dock_app,carDockApp,R.drawable.ic_settings_applications);
+        addButton(ID_CAR_DOCK_APP,R.string.default_car_dock_app,carDockApp,R.drawable.ic_android_white_24dp);
 
         int themeNameRes = AppTheme.getNameResource(CarWidgetApplication.get(mContext).getThemeIdx());
-        addButton(ID_THEME,R.string.app_theme,themeNameRes,R.drawable.ic_action_contrast);
+        addButton(ID_THEME,R.string.app_theme,themeNameRes,R.drawable.ic_invert_colors_on_white_24dp);
 
         String musicApp = renderMusicApp();
-        addButton(ID_MUSIC_APP,R.string.music_app,musicApp,R.drawable.ic_action_headphones);
+        addButton(ID_MUSIC_APP,R.string.music_app,musicApp,R.drawable.ic_headset_white_24dp);
 
         addTitle(R.string.information_title);
         String versionTitle = renderVersion();
-        addButton(ID_VERSION,versionTitle,R.string.version_summary,R.drawable.ic_action_star_10);
+        addButton(ID_VERSION,versionTitle,R.string.version_summary,R.drawable.ic_stars_white_24dp);
         addButton(ID_FEEDBACK,R.string.issue_title,0,R.drawable.ic_action_gplus);
 
     }
@@ -251,22 +251,24 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
 
 
     protected AlertDialog createThemesDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(mContext);
         builder
-                .setTitle(mContext.getString(R.string.choose_a_theme))
-                .setItems(R.array.app_themes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        AppTheme.saveAppTheme(mContext, which);
-                        CarWidgetApplication.get(mContext).setThemeIdx(which);
-                        mContext.setTheme(AppTheme.getMainResource(which));
-                        mActivity.recreate();
-                    }
-                });
+            .setTitle(mContext.getString(R.string.choose_a_theme))
+            .setItems(R.array.app_themes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                AppTheme.saveAppTheme(mContext, which);
+                CarWidgetApplication.get(mContext).setThemeIdx(which);
+                mContext.setTheme(AppTheme.getMainResource(which));
+                mActivity.recreate();
+                }
+            });
         return builder.create();
     }
 
     private void onCarDockAppClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(mContext);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = inflater.inflate(R.layout.default_car_dock_app, null);

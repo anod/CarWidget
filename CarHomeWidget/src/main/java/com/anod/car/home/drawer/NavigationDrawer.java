@@ -34,6 +34,7 @@ public class NavigationDrawer {
         items.addDefaults();
 
         mAdapter = new NavigationAdapter(activity,items);
+        mDrawerList.addHeaderView(activity.getLayoutInflater().inflate(R.layout.navigation_header, mDrawerList, false));
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -74,7 +75,7 @@ public class NavigationDrawer {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
+            selectItem(position-1);
         }
     }
 

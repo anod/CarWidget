@@ -82,32 +82,41 @@ public class ShortcutEditActivity extends ActionBarActivity {
 
         ButterKnife.inject(this);
 
-		mIntent = getIntent();
-        mCellId = mIntent.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID);
-		final long shortcutId = mIntent.getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);
+        init(getIntent());
+	}
+
+    private void init(Intent intent) {
+        mIntent = intent;
+        mCellId = intent.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID);
+        final long shortcutId = mIntent.getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);
         final int appWidgetId = mIntent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-		if (mCellId == ShortcutPicker.INVALID_CELL_ID || shortcutId == ShortcutInfo.NO_ID) {
+        if (mCellId == ShortcutPicker.INVALID_CELL_ID || shortcutId == ShortcutInfo.NO_ID) {
             AppLog.e("Missing parameter");
-			setResult(RESULT_CANCELED);
-			finish();
-			return;
-		}
+            setResult(RESULT_CANCELED);
+            finish();
+            return;
+        }
 
         if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-            mContainerModel = new WidgetShortcutsModel(this, appWidgetId);
-        } else {
             mContainerModel = new NotificationShortcutsModel(this);
+        } else {
+            mContainerModel = new WidgetShortcutsModel(this, appWidgetId);
         }
         mContainerModel.init();
         mModel = mContainerModel.getShortcutModel();
 
         mShortcutInfo = mModel.loadShortcut(shortcutId);
-		mLabelEdit.setText(mShortcutInfo.title);
-		mIconView.setImageBitmap(mShortcutInfo.getIcon());
+        mLabelEdit.setText(mShortcutInfo.title);
+        mIconView.setImageBitmap(mShortcutInfo.getIcon());
+    }
 
-	}
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        init(intent);
+    }
 
-	protected Dialog createIconMenu() {
+    protected Dialog createIconMenu() {
         final CharSequence[] items;
         if (mShortcutInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
             items = new CharSequence[3];
@@ -358,6 +367,8 @@ public class ShortcutEditActivity extends ActionBarActivity {
     @OnClick(R.id.btn_delete)
     public void onDeleteClick(View view) {
         mContainerModel.dropShortcut(mCellId);
+        setResult(RESULT_OK, mIntent);
+        finish();
     }
 
 	@Override

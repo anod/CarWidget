@@ -66,9 +66,13 @@ public class WidgetsListAdapter extends ArrayAdapter<Integer> {
         int appWidgetId = getItem(position);
         SparseArray<ShortcutInfo> shortcuts = mWidgetShortcuts.get(appWidgetId);
 
-        for( int i = 0; i < shortcuts.size(); i++) {
-            ShortcutInfo info = shortcuts.get(i);
+        int size = shortcuts.size();
+        for( int i = 0; i < sIds.length; i++) {
             ImageView icon = (ImageView)view.findViewById(sIds[i]);
+            ShortcutInfo info = null;
+            if (i < size) {
+                info = shortcuts.get(i);
+            }
             if (info != null) {
                 icon.setImageBitmap(info.getIcon());
             } else {

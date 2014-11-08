@@ -66,6 +66,7 @@ public class IntentUtils {
 		editIntent.putExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, shortcutId);
 		editIntent.putExtra(ShortcutEditActivity.EXTRA_CELL_ID, cellId);
         editIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        editIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		return editIntent;
 	}
 

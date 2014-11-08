@@ -16,7 +16,7 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="4dp">
+            android:paddingLeft="8dp">
 
             <TextView
                 style="@style/textAlignStyle"

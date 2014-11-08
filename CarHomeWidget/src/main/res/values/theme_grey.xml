@@ -25,6 +25,7 @@
         <item name="colorPrimaryDark">@color/material_bluegray_800</item>
         <item name="colorAccent">@color/material_bluegray_300</item>
 
+        <item name="mdcAlertDialogTheme">@style/MaterialDialog.AlertDialog.Light</item>
 	</style>
 
 	<style name="AppThemeGray.Transparent" parent="AppThemeGray">
@@ -54,4 +55,5 @@
 	<style name="panelHeaderGray" parent="panelItemGray">
 		<item name="android:textAppearance">@style/panelHeaderText</item>
 	</style>
+    
 </resources>

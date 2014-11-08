@@ -15,8 +15,6 @@
   -->
 
 <resources>
-
-
 	<attr name="panelItem" format="reference" />
 	<attr name="panelHeader" format="reference" />
     <attr name="panelHeaderBackground" format="reference" />

@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:text="@string/cardock_text1"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        style="@style/textAlignStyle" />
+        style="@style/textAlignStyle"
+        android:textColor="?attr/textColorOpposite"/>
 
     <Button
         android:id="@+id/button1"
@@ -26,6 +27,7 @@
         android:layout_height="wrap_content"
         android:text="@string/cardock_text2"
         android:textAppearance="?android:attr/textAppearanceMedium" 
-        style="@style/textAlignStyle"/>
+        style="@style/textAlignStyle"
+        android:textColor="?attr/textColorOpposite"/>
 
 </LinearLayout>
