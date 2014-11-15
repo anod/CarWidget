@@ -25,8 +25,6 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.1.11'
     compile 'com.jakewharton:butterknife:5.1.2'
     compile files('libs/commons-codec-1.5.jar')
-    compile project(path: ':MaterialDialogCompat:library')
-    compile project(':MaterialDialogCompat:library')
 }
 
 android {

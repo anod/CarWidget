@@ -36,8 +36,12 @@ public class NavigationAdapter extends BaseAdapter {
         public void setTitle(NavigationList.Item item) {
             if (item.titleRes > 0) {
                 title.setText(item.titleRes);
+                title.setVisibility(View.VISIBLE);
             } else if (item.titleText!= null) {
                 title.setText(item.titleText);
+                title.setVisibility(View.VISIBLE);
+            } else {
+                title.setVisibility(View.GONE);
             }
         }
     }

@@ -93,7 +93,6 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 		mContext = (Context) getActivity();
 
 
-
 		onCreateImpl(savedInstanceState);
 	}
 

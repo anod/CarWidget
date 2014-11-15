@@ -15,7 +15,6 @@
 		<item name="textColorSecondary">?android:attr/textColorSecondary</item>
 		<item name="textColorOpposite">?android:attr/textColorPrimary</item>
 
-        <item name="mdcAlertDialogTheme">@style/MaterialDialog.AlertDialog</item>
     </style>
 
 	<style name="ActionBarCompatHolo.Transparent" parent="Widget.AppCompat.ActionBar.Solid">
@@ -35,5 +34,4 @@
 
 	</style>
 
-    <style name="AlertDialog" parent="MaterialDialog.AlertDialog"/>
 </resources>

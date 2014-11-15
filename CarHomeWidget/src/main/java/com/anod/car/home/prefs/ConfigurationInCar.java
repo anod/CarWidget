@@ -78,6 +78,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 	@Override
 	protected void onCreateImpl(Bundle savedInstanceState) {
 		getActivity().setResult(Activity.RESULT_OK);
+        getActivity().setTitle(R.string.incar_mode);
 
 		final Version version = new Version(mContext);
 

@@ -13,6 +13,7 @@ import android.view.Window;
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.drawer.NavigationDrawer;
+import com.anod.car.home.drawer.NavigationList;
 import com.anod.car.home.utils.Utils;
 
 
