@@ -66,7 +66,7 @@ public class Handler {
 //				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //		Utils.startActivitySafely(intent, context);
 
-        orientation.set(ScreenOrientation.LANDSCAPE);
+       // orientation.set(ScreenOrientation.LANDSCAPE);
 
 		ComponentName autorunApp = prefs.getAutorunApp();
 		if (autorunApp != null) {
@@ -106,12 +106,7 @@ public class Handler {
 			SamsungDrivingMode.disable(context);
 		}
 
-        orientation.set(ScreenOrientation.DISABLED);
-
-
-        ContentResolver cr = context.getContentResolver();
-        Settings.System.putInt(cr, Settings.System.ACCELEROMETER_ROTATION, 1);
-        Settings.System.putInt(cr, Settings.System.USER_ROTATION, Surface.ROTATION_90);
+       //orientation.set(ScreenOrientation.DISABLED);
 
         String brightSetting = prefs.getBrightness();
 		if (!brightSetting.equals(InCar.BRIGHTNESS_DISABLED)) {
