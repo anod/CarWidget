@@ -1,2 +1,0 @@
-include 'MaterialDialogCompat:library'
-project(':MaterialDialogCompat:library').projectDir = new File('/Users/alex/dev/MaterialDialogCompat/library')

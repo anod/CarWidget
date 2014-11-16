@@ -10,6 +10,7 @@ import android.preference.PreferenceFragment;
 import android.view.MenuItem;
 import android.view.Window;
 
+import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.drawer.NavigationDrawer;

@@ -3,26 +3,25 @@ package com.anod.car.home;
 import android.app.Application;
 import android.content.Context;
 
-import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.model.AppsList;
 import com.anod.car.home.prefs.preferences.AppTheme;
 
 public class CarWidgetApplication extends Application {
-	private int mThemeIdx;
+    private int mThemeIdx;
     private ObjectGraph mObjectGraph;
 
     public static CarWidgetApplication get(Context context) {
-		return (CarWidgetApplication) context.getApplicationContext();
-	}
+        return (CarWidgetApplication) context.getApplicationContext();
+    }
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
-		// The following line triggers the initialization of ACRA
-		//ACRA.init(this);
+        // The following line triggers the initialization of ACRA
+        //ACRA.init(this);
 
-		mThemeIdx = AppTheme.getTheme(this);
+        mThemeIdx = AppTheme.getTheme(this);
         mObjectGraph = new ObjectGraph(this);
     }
 
@@ -32,13 +31,13 @@ public class CarWidgetApplication extends Application {
 
 
 
-	public int getThemeIdx() {
-		return mThemeIdx;
-	}
+    public int getThemeIdx() {
+        return mThemeIdx;
+    }
 
-	public int setThemeIdx(int theme) {
-		return mThemeIdx = theme;
-	}
+    public int setThemeIdx(int theme) {
+        return mThemeIdx = theme;
+    }
 
     public static ObjectGraph provide(Context context) {
         return ((CarWidgetApplication) context.getApplicationContext()).getObjectGraph();
