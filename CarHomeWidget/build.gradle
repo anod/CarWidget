@@ -38,8 +38,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 48
-        versionName '1.7.2'
+        versionCode 49
+        versionName '1.7.3'
         testInstrumentationRunner 'android.test.InstrumentationTestRunner'
     }
     sourceSets {
@@ -60,12 +60,14 @@ android {
 
     buildTypes {
         debug {
-            runProguard false
+            minifyEnabled false
+            shrinkResources false
             proguardFile 'proguard-project.txt'
             proguardFile getDefaultProguardFile('proguard-android.txt')
         }
         release {
-            runProguard true
+            minifyEnabled true
+            shrinkResources true
             proguardFile 'proguard-project.txt'
             proguardFile getDefaultProguardFile('proguard-android.txt')
             signingConfig signingConfigs.release

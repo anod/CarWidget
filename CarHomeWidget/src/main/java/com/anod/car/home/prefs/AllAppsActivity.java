@@ -42,12 +42,10 @@ public class AllAppsActivity extends AppsCacheActivity {
         finish();
 	}
 
-	@Override
-	protected AppsList getAppList(Context context) {
-        CarWidgetApplication app = CarWidgetApplication.get(context);
-		app.initAppListCache();
-		return app.getAppListCache();
-	}
+    @Override
+    protected AppsList getAppList(Context context) {
+        return CarWidgetApplication.provide(context).getAppListCache();
+    }
 
 
 }

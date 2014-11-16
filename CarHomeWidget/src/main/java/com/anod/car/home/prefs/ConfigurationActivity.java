@@ -10,6 +10,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.view.Window;
 
+import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
@@ -99,10 +100,7 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 
 
 	private void cleanAppsCache() {
-		AppsList allAppsList = getApp().getAppListCache();
-		if (allAppsList!=null) {
-			allAppsList.flush();
-		}
+		CarWidgetApplication.provide(this).cleanAppListCache();
 	}
 
 	@Override

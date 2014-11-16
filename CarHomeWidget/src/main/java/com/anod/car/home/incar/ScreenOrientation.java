@@ -5,16 +5,13 @@ import android.content.pm.ActivityInfo;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.anod.car.home.AndroidModule;
-
-import javax.inject.Inject;
-
 /**
  * @author alex
  * @date 2014-10-11
  */
 public class ScreenOrientation {
     public final static int DISABLED = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+    public final static int PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
     public final static int LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
     public final static int LANDSCAPE_REVERSE = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
 
@@ -24,8 +21,7 @@ public class ScreenOrientation {
     private final WindowManager mWindowManager;
     private final Context mContext;
 
-    @Inject
-    public ScreenOrientation(@AndroidModule.Application Context context, WindowManager wm) {
+    public ScreenOrientation(Context context, WindowManager wm) {
         mContext = context;
         mWindowManager = wm;
     }
@@ -34,9 +30,11 @@ public class ScreenOrientation {
     {
         if (orientation == ScreenOrientation.DISABLED)
         {
-            mWindowManager.removeView(mOverlayView);
-            mViewAdded = false;
+            if (mViewAdded) {
+                mWindowManager.removeView(mOverlayView);
+            }
             mOverlayView = null;
+            mViewAdded = false;
             mLayoutParams = null;
             return;
         }

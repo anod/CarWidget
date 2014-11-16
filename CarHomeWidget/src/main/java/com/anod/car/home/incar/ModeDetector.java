@@ -1,23 +1,18 @@
 package com.anod.car.home.incar;
 
-import android.app.Application;
 import android.app.UiModeManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 
-import com.anod.car.home.AndroidModule;
 import com.anod.car.home.BuildConfig;
-import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.PowerUtil;
 
 import java.util.HashMap;
-
-import dagger.ObjectGraph;
 
 /**
  * @author alex
@@ -110,8 +105,6 @@ public class ModeDetector {
 			}
 		}
 	}
-
-
 
 
 	private static void updateEventState(InCar prefs, Intent intent) {
@@ -237,15 +230,15 @@ public class ModeDetector {
 		ActivityRecognitionService.resetLastResult();
 	}
 
-	public static void switchOn(InCar prefs, Context context, ScreenOrientation orientation) {
+	public static void switchOn(InCar prefs, Handler handler) {
 		sMode = true;
-		Handler.enable(prefs, context, orientation);
+        handler.enable(prefs);
 	}
 
-	public static void switchOff(InCar prefs, Context context, ScreenOrientation orientation) {
+	public static void switchOff(InCar prefs, Handler handler) {
 		sMode = false;
 		resetActivityState();
 
-		Handler.disable(prefs, context, orientation);
+        handler.disable(prefs);
 	}
 }
