@@ -52,6 +52,7 @@ public class ShortcutPendingIntent implements WidgetViewBuilder.PendingIntentHel
     	}
     	
     	Intent launchIntent = new Intent(mContext, ShortcutActivity.class);
+        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
     	launchIntent.setData(data);
     	launchIntent.setAction(Intent.ACTION_MAIN);
     	launchIntent.putExtra(ShortcutActivity.EXTRA_INTENT, intent);

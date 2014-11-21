@@ -24,19 +24,27 @@ public class ShortcutActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        execute(getIntent());
+	}
 
-		Intent intent = getIntent().getParcelableExtra(EXTRA_INTENT);
-		if (intent instanceof Intent) {
-			runFromIntent(intent);
-			finish();
-			return;
-		}
-		Integer keyCode = getIntent().getIntExtra(EXTRA_MEDIA_BUTTON, 0);
-		if (keyCode > 0) {
+    @Override
+    protected void onNewIntent(Intent intent) {
+        execute(intent);
+    }
+
+    private void execute(Intent intent) {
+        Intent appIntent = intent.getParcelableExtra(EXTRA_INTENT);
+        if (appIntent instanceof Intent) {
+            runFromIntent(appIntent);
+            finish();
+            return;
+        }
+        Integer keyCode = intent.getIntExtra(EXTRA_MEDIA_BUTTON, 0);
+        if (keyCode > 0) {
             handleKeyCode(keyCode);
         }
-		finish();
-	}
+        finish();
+    }
 
     private void handleKeyCode(Integer keyCode) {
         if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {

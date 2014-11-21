@@ -32,7 +32,7 @@ public class IntentUtils {
         Intent intent = new Intent(context, NewShortcutActivity.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.putExtra(ShortcutPicker.EXTRA_CELL_ID, cellId);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK);
         String path = appWidgetId + "/" + cellId;
         Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
         intent.setData(data);
@@ -45,6 +45,7 @@ public class IntentUtils {
 		Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),String.valueOf(appWidgetId));
 		intent.setData(data);
 		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		return intent;
 	}
 
@@ -105,7 +106,9 @@ public class IntentUtils {
 
 	public static Intent createPickShortcutLocalIntent(int i, String title, int icnResId, Context ctx) {
 		Intent shortcutIntent = IntentUtils.createShortcutIntent(ctx, i);
-		Intent intent = commonPickShortcutIntent(title, shortcutIntent);
+        shortcutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+        Intent intent = commonPickShortcutIntent(title, shortcutIntent);
 		Parcelable iconResource = Intent.ShortcutIconResource.fromContext(ctx,  icnResId);
 		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource);
 		return intent;
