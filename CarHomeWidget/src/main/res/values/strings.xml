@@ -245,6 +245,13 @@
     <string name="app_theme">App Theme</string>
     <string name="list">List</string>
     <string name="widgets_hint">Select an item to configure the widget</string>
+    <string name="lock_screen">Lock screen</string>
+    <string name="home_screen">Home screen</string>
+    <string name="list_of_active_widgets">List of active widgets</string>
+    <string name="shortcuts_and_look"><![CDATA[Shortcuts & Look]]></string>
+    <string name="shortcuts_and_look_summary">Customize shortcuts, skin and font size</string>
+    <string name="current_widget">Current widget</string>
+
     <string-array name="disable_screen_timeout">
         <item>Disable (while charging)</item>
         <item>Disable</item>

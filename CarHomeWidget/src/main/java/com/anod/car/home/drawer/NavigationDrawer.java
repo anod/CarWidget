@@ -70,6 +70,10 @@ public class NavigationDrawer {
         return mDrawerToggle.onOptionsItemSelected(item);
     }
 
+    public void setSelected(int navigationItem) {
+        mAdapter.setSelected(navigationItem);
+    }
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         @Override

@@ -27,6 +27,7 @@ import android.preference.SwitchPreference;
 
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetHelper;
+import com.anod.car.home.drawer.NavigationList;
 import com.anod.car.home.incar.ActivityRecognitionClientService;
 import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
@@ -89,7 +90,12 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 		}
 	}
 
-	@Override
+    @Override
+    protected int getNavigationItem() {
+        return NavigationList.ID_CAR_SETTINGS;
+    }
+
+    @Override
 	public void onPause() {
 		super.onPause();
 		if (mBluetoothReceiver != null) {

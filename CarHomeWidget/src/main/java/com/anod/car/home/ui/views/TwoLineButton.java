@@ -2,6 +2,7 @@ package com.anod.car.home.ui.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -86,6 +87,10 @@ public class TwoLineButton extends LinearLayout {
 
     private void setIcon(Drawable drawable) {
         mIconView.setImageDrawable(drawable);
+    }
+
+    public void setSelected(boolean selected) {
+        super.setSelected(selected);
     }
 
     public void setIcon(int resId) {

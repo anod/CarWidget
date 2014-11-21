@@ -29,7 +29,11 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 		mActivityResultListener = activityResultListener;
 	}
 
-	public interface onActivityResultListener {
+    public void setNavigationItem(int navigationItem) {
+        mDrawer.setSelected(navigationItem);
+    }
+
+    public interface onActivityResultListener {
 		public void onActivityResult(int requestCode, int resultCode, Intent data);
 	}
 
@@ -93,8 +97,12 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 		return conf;
 	}
 
+    public void onApplyClick() {
+        getFragmentManager().popBackStack();
+    }
 
-	@Override
+
+    @Override
 	public boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref) {
 		return false;
 	}

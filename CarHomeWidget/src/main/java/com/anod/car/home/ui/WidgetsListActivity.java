@@ -1,5 +1,6 @@
 package com.anod.car.home.ui;
 
+import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +15,9 @@ import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.drawer.NavigationDrawer;
+import com.anod.car.home.drawer.NavigationList;
 import com.anod.car.home.prefs.PickShortcutUtils;
+import com.anod.car.home.prefs.TrialDialogs;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
@@ -40,6 +43,7 @@ public class WidgetsListActivity extends CarWidgetActivity {
         int[] appWidgetIds = WidgetHelper.getAllWidgetIds(this);
 
         mDrawer = new NavigationDrawer(this, 0);
+        mDrawer.setSelected(NavigationList.ID_WIDGETS);
 
         if (savedInstanceState == null) {
             // to give support on lower android version, we are not calling getFragmentManager()
@@ -54,8 +58,12 @@ public class WidgetsListActivity extends CarWidgetActivity {
             mWizardShown = savedInstanceState.getBoolean("wizard-shown");
         }
 
-        if (!mWizardShown) {
-            Version version = new Version(this);
+        Version version = new Version(this);
+        if (mWizardShown) {
+            if (version.isFree() && Utils.isProInstalled(mContext)) {
+                TrialDialogs.buildProInstalledDialog(mContext).show();
+            }
+        } else {
             boolean isFreeInstalled = !version.isFree() && Utils.isFreeInstalled(this);
             if (appWidgetIds.length == 0 && !isFreeInstalled) {
                 mWizardShown = true;
@@ -102,7 +110,6 @@ public class WidgetsListActivity extends CarWidgetActivity {
 	public void startConfigActivity(int appWidgetId) {
 		Intent configIntent = IntentUtils.createSettingsIntent(this, appWidgetId);
 		startActivity(configIntent);
-		finish();
 	}
 
 }

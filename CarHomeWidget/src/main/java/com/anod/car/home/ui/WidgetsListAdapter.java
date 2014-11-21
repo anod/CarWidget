@@ -1,6 +1,11 @@
 package com.anod.car.home.ui;
 
+import android.annotation.TargetApi;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
+import android.os.Build;
+import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +16,10 @@ import android.widget.TextView;
 
 import com.anod.car.home.R;
 import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.Utils;
+
+import butterknife.ButterKnife;
 
 /**
  * @author alex
@@ -20,6 +29,7 @@ import com.anod.car.home.model.ShortcutInfo;
 public class WidgetsListAdapter extends ArrayAdapter<Integer> {
 
     private final LayoutInflater mLayoutInflater;
+    private final AppWidgetManager mAppWidgetManager;
     private SparseArray<SparseArray<ShortcutInfo>> mWidgetShortcuts;
     private int mCount;
 
@@ -36,6 +46,7 @@ public class WidgetsListAdapter extends ArrayAdapter<Integer> {
 
 	public WidgetsListAdapter(Context context) {
 		super(context, R.layout.widgets_item);
+        mAppWidgetManager = AppWidgetManager.getInstance(context);
         mLayoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -74,9 +85,10 @@ public class WidgetsListAdapter extends ArrayAdapter<Integer> {
                 info = shortcuts.get(i);
             }
             if (info != null) {
+                icon.setVisibility(View.VISIBLE);
                 icon.setImageBitmap(info.getIcon());
             } else {
-                icon.setVisibility(View.GONE);
+                icon.setVisibility(View.INVISIBLE);
             }
         }
 

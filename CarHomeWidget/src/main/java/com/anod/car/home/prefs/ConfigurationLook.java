@@ -10,6 +10,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 
 import com.anod.car.home.R;
+import com.anod.car.home.drawer.NavigationList;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
@@ -59,7 +60,12 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
 
 	}
 
-	private void updateRotateSummary(ListPreference rotatePref, String value) {
+    @Override
+    protected int getNavigationItem() {
+        return NavigationList.ID_CURRENT_WIDGET;
+    }
+
+    private void updateRotateSummary(ListPreference rotatePref, String value) {
 		for(int i = 0; i<mIconRotateValues.length; i++) {
 			if (value.equals(mIconRotateValues[i])) {
 				rotatePref.setSummary(mIconRotateTitles[i]);

@@ -20,12 +20,94 @@ import butterknife.InjectView;
 public class NavigationAdapter extends BaseAdapter {
     private final LayoutInflater mInflater;
     private final NavigationList mItems;
+    private int mSelected;
+
+    public NavigationAdapter(Context context, NavigationList items) {
+        mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mItems = items;
+    }
 
     public boolean onClick(int position) {
         return mItems.onClick(mItems.get(position).id);
     }
 
-    public static class ViewHolder {}
+    public void setSelected(int selected) {
+        mSelected = selected;
+    }
+
+    @Override
+    public int getCount() {
+        return mItems.size();
+    }
+
+    @Override
+    public NavigationList.Item getItem(int position) {
+        return mItems.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View view, ViewGroup parent) {
+        ViewHolder holder;
+        NavigationList.Item item = getItem(position);
+        if (view == null) {
+            int type = getItemViewType(item);
+            view = mInflater.inflate(getItemViewResource(type), parent, false);
+            holder = createViewHolder(type, view);
+            view.setTag(holder);
+        } else {
+            holder = (ViewHolder)view.getTag();
+        }
+
+        if (item instanceof NavigationList.ActionItem) {
+            ((ActionViewHolder) holder).setAction((NavigationList.ActionItem) item);
+            if (item.id == mSelected) {
+                ((ActionViewHolder) holder).setSelected(true);
+            } else {
+                ((ActionViewHolder) holder).setSelected(false);
+            }
+        } else {
+            ((TitleViewHolder) holder).setTitle(item);
+        }
+
+        return view;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    private int getItemViewResource(int type) {
+        if (type == 0) {
+            return R.layout.navigation_title;
+        }
+        return R.layout.navigation_action;
+    }
+
+    private ViewHolder createViewHolder(int type, View view) {
+        if (type == 0) {
+            return new TitleViewHolder(view);
+        }
+        return new ActionViewHolder(view);
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        return getItemViewType(mItems.get(position));
+    }
+
+    private int getItemViewType(NavigationList.Item item) {
+        return item instanceof NavigationList.TitleItem ? 0 : 1;
+    }
+
+    public static class ViewHolder {
+    }
 
     public static class TitleViewHolder extends ViewHolder{
         @InjectView(android.R.id.title) TextView title;
@@ -67,76 +149,10 @@ public class NavigationAdapter extends BaseAdapter {
             }
             button.setIcon(action.iconRes);
         }
-    }
 
-    public NavigationAdapter(Context context, NavigationList items) {
-        mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mItems = items;
-    }
-
-    @Override
-    public int getCount() {
-        return mItems.size();
-    }
-
-    @Override
-    public NavigationList.Item getItem(int position) {
-        return mItems.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View view, ViewGroup parent) {
-        ViewHolder holder;
-        NavigationList.Item item = getItem(position);
-        if (view == null) {
-            int type = getItemViewType(item);
-            view = mInflater.inflate(getItemViewResource(type), parent, false);
-            holder = createViewHolder(type, view);
-            view.setTag(holder);
-        } else {
-            holder = (ViewHolder)view.getTag();
+        public void setSelected(boolean selected) {
+            button.setSelected(selected);
         }
-
-        if (item instanceof NavigationList.ActionItem) {
-            ((ActionViewHolder) holder).setAction((NavigationList.ActionItem) item);
-        } else {
-            ((TitleViewHolder) holder).setTitle(item);
-        }
-
-        return view;
     }
 
-    @Override
-    public int getViewTypeCount() {
-        return 2;
-    }
-
-    private int getItemViewResource(int type) {
-        if (type == 0) {
-            return R.layout.navigation_title;
-        }
-        return R.layout.navigation_action;
-    }
-
-    private ViewHolder createViewHolder(int type, View view) {
-        if (type == 0) {
-            return new TitleViewHolder(view);
-        }
-        return new ActionViewHolder(view);
-    }
-
-
-    @Override
-    public int getItemViewType(int position) {
-        return getItemViewType(mItems.get(position));
-    }
-
-    private int getItemViewType(NavigationList.Item item) {
-        return item instanceof NavigationList.TitleItem ? 0 : 1;
-    }
 }

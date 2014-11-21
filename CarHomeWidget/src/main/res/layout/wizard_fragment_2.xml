@@ -24,12 +24,5 @@
 			android:adjustViewBounds="true"
 			android:paddingTop="12dp"/>
 
-	<TextView
-			style="?attr/wizardTextItem"
-			android:text="@string/install_widget_old"
-			android:id="@+id/desc2"
-			android:layout_marginTop="2dp"
-			android:textSize="18sp"
-	/>
 </LinearLayout>
 </ScrollView>
