@@ -129,9 +129,10 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
                 Intent intent = ConfigurationActivity.createFragmentIntent(getActivity(), ConfigurationInCar.class);
                 startActivity(intent);
             }
+            return;
         }
-        if (position < mAdapter.getCount()) {
-            Integer appWidgetId = (Integer) mAdapter.getItem(position);
+        if (position-1 < mAppWidgetIds.length) {
+            Integer appWidgetId = (Integer) mAdapter.getItem(position-1);
             ((WidgetsListActivity) getActivity()).startConfigActivity(appWidgetId);
         }
 	}
