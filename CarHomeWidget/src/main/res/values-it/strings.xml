@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<resources>
+<?xml version="1.0" encoding="UTF-8"?><resources>
 	<string name="permlab_read_settings">Leggi impostazioni widget auto e scorciatoie</string>
 	<string name="permdesc_read_settings">Consente a un\'applicazione di leggere le impostazioni e le scorciatoie su Car Widget.</string>
 	<string name="permlab_write_settings">scrivi le impostazioni e le scorciatoie di Car Widget</string>
@@ -34,7 +33,7 @@
 	<string name="pref_power_plugged_bt_on_summary">Attiva Bluetooth quando il cavo di alimentazione è collegato</string>
 	<string name="pref_power_unplugged_bt_off_title">Spento quando scollegato</string>
 	<string name="pref_power_unplugged_bt_off_summary">Disattiva Bluetooth quando il cavo di alimentazione è scollegato</string>
-	<string name="pref_detection">Rilevamento</string>
+	<string name="pref_detection">Attivazione</string>
 	<string name="pref_blutooth_device_title">Dispositivo Bluetooth</string>
 	<string name="pref_blutooth_device_summary">Scegli un dispositivo bluetooth che abiliti la modalità \"alla guida\"</string>
 	<string name="load_paired_device">Caricamento dei dispositivi associati</string>
@@ -63,15 +62,11 @@
 	<string name="click_to_disable">Clicca per disattivare</string>
 	<string name="click_to_disable_trial">Clicca per disattivare, Prova: %d volte rimaste</string>
 	<plurals name="notif_activations_left">
-    <item quantity="zero">%1$d attivazioni rimaste</item>
     <item quantity="one">%1$d attivazione rimasta</item>
-    <item quantity="two">%1$d attivazioni rimaste</item>
-    <item quantity="few">%1$d attivazioni rimaste</item>
-    <item quantity="many">%1$d attivazioni rimaste</item>
     <item quantity="other">%1$d attivazioni rimaste</item>
   </plurals>
 	<string name="version_title">%1$s ver. %2$s</string>
-	<string name="version_summary">Vota questo widget nel market</string>
+	<string name="version_summary">Vota questo widget nel Play Store</string>
 	<string name="shortcut_edit_title">Modifica scorciatoia</string>
 	<string name="shortcut_edit_hint">Tocca l\'icona per cambiare</string>
 	<string name="photo_picker_not_found">Non ci sono foto disponibili sul telefono.</string>
@@ -87,7 +82,7 @@
 	<string name="pref_activate_car_mode">Modalità \"alla guida\" incorporata</string>
 	<string name="pref_activate_car_mode_summary">Sarà attivata la modalità \"alla guida\" di Android e verrà visualizzata un\'icona di notifica supplementare.</string>
 	<string name="pref_backup_title">Copia / Ripristina</string>
-	<string name="pref_backup_summary">Impostazioni di copia del widget su carta sd.</string>
+	<string name="pref_backup_summary">Impostazioni di backup del widget</string>
 	<string name="last_backup">Ultima copia: %1$s</string>
 	<string name="backup_current_widget">Widget attuale</string>
 	<string name="backup_incar_settings">Impostazioni \"alla guida\"</string>
@@ -142,11 +137,7 @@
 	<string name="trial_description">Versione di prova gratuita per %d attivazioni.</string>
 	<string name="swipe_continue">Scorri per continuare →</string>
 	<plurals name="active_widgets">
-    <item quantity="zero">Non sono stati trovati widget attivi</item>
     <item quantity="one">Un widget attivo</item>
-    <item quantity="two">%d widget attivi</item>
-    <item quantity="few">%d widget attivi</item>
-    <item quantity="many">%d widget attivi</item>
     <item quantity="other">%d widget attivi</item>
   </plurals>
 	<string name="gms_success">Utilizza i servizi di Google Play per rilevare l\'attività</string>
@@ -156,7 +147,7 @@
 	<string name="gms_service_invalid">La versione dei servizi di Google Play installata su questo dispositivo non è autentica.</string>
 	<string name="activity_recognition">Riconoscimento di attività</string>
 	<string name="please_wait">Attendere!</string>
-	<string name="shortcuts">Scorciatoie</string>
+	<string name="shortcuts">Collegamenti alle notifiche</string>
 	<string name="advanced">Avanzate</string>
 	<string name="pref_actions">Azioni</string>
 	<string name="bluetooth_device_laptop">Computer</string>
@@ -170,7 +161,7 @@
 	<string name="transparent">Trasparente</string>
 	<string name="dialog_title_select">Seleziona</string>
 	<string name="icon_custom">Personalizza</string>
-	<string name="icon_adw_icon_pack">Pacchetto di icone </string>
+	<string name="icon_adw_icon_pack">Pacchetto icone</string>
 	<string name="never">Mai</string>
 	<string name="backup">Copia</string>
 	<string name="restore">Ripristina</string>
@@ -188,6 +179,14 @@
 	<string name="finish">Finito</string>
 	<string name="skip">Ignora</string>
 	<string name="next">Avanti</string>
+	<string name="choose_a_theme">Scegli un tema</string>
+	<string name="theme_gray">Chiaro</string>
+	<string name="theme_holo">Scuro</string>
+	<string name="icon_default">Predefinito</string>
+	<string name="failed_fetch_icon">Impossibile recuperare l\'icona predefinita.</string>
+	<string name="please_add_widget">Aggiungi il widget alla schermata iniziale</string>
+	<string name="samsung_driving_summary">Attiva la modalità auto Samsung integrata</string>
+	<string name="samsung_driving_title">Modalità auto Samsung</string>
 	<string-array name="brightness_mode_titles">
     <item>Sistema</item>
     <item>Automatico</item>
@@ -223,5 +222,44 @@
     <item>Nessuno</item>
     <item>90º a sinistra</item>
     <item>90º a destra</item>
+  </string-array>
+
+	<string name="export_backup">Esporta file di backup</string>
+	<string name="import_backup">Importa file di backup</string>
+	<string name="export_backup_finish">Esportazione terminata</string>
+	<string name="delete">Elimina</string>
+	<string name="number">Numero di collegamenti</string>
+	<string name="number_shortcuts_title">Numero di collegamenti</string>
+	<string name="car_dock">Car Dock</string>
+	<string name="car_dock_summary">Attiva la modalità Alla guida quando il telefono è inserito in una Car Dock</string>
+    <string name="widgets">Widget</string>
+    <string name="show_choice">Mostra scelta</string>
+    <string name="music_app">App musica</string>
+    <string name="use_as_default_music_app">Utilizza l\'app musica come impostazione predefinita</string>
+    <string name="choose_music_app_explanation">Scegli l\'app musica utilizzata per il collegamento Riproduci/Pausa</string>
+    <string name="drawer_open">Apri</string>
+    <string name="drawer_close">Chiudi</string>
+    <string name="theme_dark">Scuro</string>
+    <string name="app_theme">Tema App</string>
+    <string name="list">Elenco</string>
+    <string name="widgets_hint">Seleziona un elemento per configurare il widget</string>
+    <string name="lock_screen">Schermata di blocco</string>
+    <string name="home_screen">Schermata home</string>
+    <string name="list_of_active_widgets">Elenco dei widget attivi</string>
+    <string name="shortcuts_and_look">Collegamenti e aspetto</string>
+    <string name="shortcuts_and_look_summary">Personalizza collegamenti, skin e dimensioni del carattere</string>
+    <string name="current_widget">Widget attuale</string>
+
+    <string-array name="disable_screen_timeout">
+    <item>Disattiva (durante la carica)</item>
+    <item>Disattiva</item>
+    <item>Attiva</item>
+  </string-array>
+
+    <string-array name="orientation_titles">
+    <item>Sistema</item>
+    <item>Ritratto</item>
+    <item>Panorama</item>
+    <item>Panorama (inverso)</item>
   </string-array>
 </resources>

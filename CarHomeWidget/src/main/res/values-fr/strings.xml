@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<resources>
+<?xml version="1.0" encoding="UTF-8"?><resources>
 	<string name="permlab_read_settings">Lire les paramètres et les raccourcis du widget Voiture</string>
 	<string name="permdesc_read_settings">Permet à une application de lire les paramètres et les raccourcis dans widget Voiture.</string>
 	<string name="permlab_write_settings">Sauvegarder les paramètres et les raccourcis du widget Voiture</string>
@@ -34,7 +33,7 @@
 	<string name="pref_power_plugged_bt_on_summary">Allumer le Bluetooth lorsque le câble d\'alimentation est branché</string>
 	<string name="pref_power_unplugged_bt_off_title">Off lorsque débranché</string>
 	<string name="pref_power_unplugged_bt_off_summary">Éteindre le Bluetooth lorsque le câble d\'alimentation est débranché</string>
-	<string name="pref_detection">Détection</string>
+	<string name="pref_detection">Gâchette</string>
 	<string name="pref_blutooth_device_title">Périphérique Bluetooth</string>
 	<string name="pref_blutooth_device_summary">Choisir un périphérique Bluetooth qui permette le mode voiture</string>
 	<string name="load_paired_device">Chargement des appareils couplés</string>
@@ -63,15 +62,11 @@
 	<string name="click_to_disable">Cliquer pour désactiver</string>
 	<string name="click_to_disable_trial">Cliquer pour désactiver, essai : %d fois à gauche</string>
 	<plurals name="notif_activations_left">
-    <item quantity="zero">%1$d activation à gauche</item>
     <item quantity="one">%1$d activation à gauche</item>
-    <item quantity="two">%1$d activations à gauche</item>
-    <item quantity="few">%1$d activations à gauche</item>
-    <item quantity="many">%1$d activations à gauche</item>
     <item quantity="other">%1$d activations à gauche</item>
   </plurals>
 	<string name="version_title">%1$s vers. %2$s</string>
-	<string name="version_summary">Veuillez noter ce widget sur le marché</string>
+	<string name="version_summary">Évaluer ce widget dans le Play Store</string>
 	<string name="shortcut_edit_title">Modifier raccourci</string>
 	<string name="shortcut_edit_hint">Toucher l\'icône pour la modifier</string>
 	<string name="photo_picker_not_found">Aucune image disponible sur le téléphone.</string>
@@ -87,7 +82,7 @@
 	<string name="pref_activate_car_mode">Mode voiture intégré</string>
 	<string name="pref_activate_car_mode_summary">Android en mode Voiture intégré sera activé et une icône de notification supplémentaire s\'affichera.</string>
 	<string name="pref_backup_title">Sauvegarde/Restauration</string>
-	<string name="pref_backup_summary">Sauvegarder les paramètres du widget sur une carte SD.</string>
+	<string name="pref_backup_summary">Paramètres de sauvegarde du widget</string>
 	<string name="last_backup">Dernière sauvegarde : %1$s</string>
 	<string name="backup_current_widget">Widget actuel</string>
 	<string name="backup_incar_settings">Paramètres Voiture</string>
@@ -142,11 +137,7 @@
 	<string name="trial_description">Version d\'essai gratuite pour %d activations.</string>
 	<string name="swipe_continue">Faîtes glisser pour continuer →</string>
 	<plurals name="active_widgets">
-    <item quantity="zero">Aucun widget actif n\'a été détecté</item>
     <item quantity="one">Un widget actif</item>
-    <item quantity="two">%d widgets actifs</item>
-    <item quantity="few">%d widgets actifs</item>
-    <item quantity="many">%d widgets actifs</item>
     <item quantity="other">%d widgets actifs</item>
   </plurals>
 	<string name="gms_success">Utiliser les services Google Play pour détecter l\'activité</string>
@@ -156,7 +147,7 @@
 	<string name="gms_service_invalid">La version des services de Google Play installée sur cet appareil n\'est pas authentique.</string>
 	<string name="activity_recognition">Reconnaissance de l\'activité</string>
 	<string name="please_wait">Veuillez patienter...</string>
-	<string name="shortcuts">Raccourcis</string>
+	<string name="shortcuts">Raccourcis de notification</string>
 	<string name="advanced">Avancé</string>
 	<string name="pref_actions">Actions</string>
 	<string name="bluetooth_device_laptop">Ordinateur</string>
@@ -170,7 +161,7 @@
 	<string name="transparent">Transparent</string>
 	<string name="dialog_title_select">Sélectionner</string>
 	<string name="icon_custom">Personnaliser</string>
-	<string name="icon_adw_icon_pack">Pack d\'icônes </string>
+	<string name="icon_adw_icon_pack">Ensemble d\'icônes</string>
 	<string name="never">Jamais</string>
 	<string name="backup">Sauvegarde</string>
 	<string name="restore">Restaurer</string>
@@ -188,6 +179,14 @@
 	<string name="finish">Terminer</string>
 	<string name="skip">Ignorer</string>
 	<string name="next">Suivant</string>
+	<string name="choose_a_theme">Choisissez un thème</string>
+	<string name="theme_gray">Clair</string>
+	<string name="theme_holo">Sombre</string>
+	<string name="icon_default">Par défaut</string>
+	<string name="failed_fetch_icon">Impossible de récupérer l\'icône par défaut.</string>
+	<string name="please_add_widget">Veuillez ajouter un widget à l\'écran d\'accueil</string>
+	<string name="samsung_driving_summary">Activer le mode voiture intégré de Samsung</string>
+	<string name="samsung_driving_title">Mode voiture de Samsung</string>
 	<string-array name="brightness_mode_titles">
     <item>Système</item>
     <item>Automatique</item>
@@ -223,5 +222,44 @@
     <item>Aucun</item>
     <item>90° vers la gauche</item>
     <item>90º vers la droite</item>
+  </string-array>
+
+	<string name="export_backup">Exporter fichier de sauvegarde</string>
+	<string name="import_backup">Importer fichier de sauvegarde</string>
+	<string name="export_backup_finish">Export terminé</string>
+	<string name="delete">Supprimer</string>
+	<string name="number">Nombre de raccourcis</string>
+	<string name="number_shortcuts_title">Nombre de raccourcis</string>
+	<string name="car_dock">Station d\'accueil pour voiture</string>
+	<string name="car_dock_summary">Activer le mode voiture lorsque le téléphone est placé dans la station d\'accueil de la voiture</string>
+    <string name="widgets">Widgets</string>
+    <string name="show_choice">Afficher le choix</string>
+    <string name="music_app">Application musicale</string>
+    <string name="use_as_default_music_app">Utiliser comme application musicale par défaut</string>
+    <string name="choose_music_app_explanation">Choisissez l\'application musicale qui sera utilisée pour le raccourci de lecture / pause</string>
+    <string name="drawer_open">Ouvrir</string>
+    <string name="drawer_close">Fermer</string>
+    <string name="theme_dark">Sombre</string>
+    <string name="app_theme">Thème de l\'application</string>
+    <string name="list">Liste</string>
+    <string name="widgets_hint">Sélectionnez un élément pour configurer le widget</string>
+    <string name="lock_screen">Verrouiller l\'écran</string>
+    <string name="home_screen">Écran d\'accueil</string>
+    <string name="list_of_active_widgets">Liste des widgets actifs</string>
+    <string name="shortcuts_and_look">Raccourcis et recherche</string>
+    <string name="shortcuts_and_look_summary">Personnaliser les raccourcis, le type et la taille de la police</string>
+    <string name="current_widget">Widget actuel</string>
+
+    <string-array name="disable_screen_timeout">
+    <item>Désactiver (pendant la charge)</item>
+    <item>Désactiver</item>
+    <item>Activer</item>
+  </string-array>
+
+    <string-array name="orientation_titles">
+    <item>Système</item>
+    <item>Portrait</item>
+    <item>Paysage</item>
+    <item>Paysage (inverse)</item>
   </string-array>
 </resources>
