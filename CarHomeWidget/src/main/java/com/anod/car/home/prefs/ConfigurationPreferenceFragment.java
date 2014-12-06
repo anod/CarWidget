@@ -1,8 +1,6 @@
 package com.anod.car.home.prefs;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +36,7 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 
 	abstract protected int getXmlResource();
 	abstract protected void onCreateImpl(Bundle savedInstanceState);
+    abstract protected int getNavigationItem();
 
 	protected boolean isAppWidgetIdRequired() {
 		return true;
@@ -84,7 +83,6 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 			if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
 				Intent defaultResultValue = new Intent();
 				defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-				((ConfigurationActivity)getActivity()).setAppWidgetId(mAppWidgetId);
 				getActivity().setResult(Activity.RESULT_OK, defaultResultValue);
 			} else {
 				AppLog.w("AppWidgetId required");
@@ -93,12 +91,13 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 			}
 		}
 
+        ((ConfigurationActivity)getActivity()).setNavigationItem(getNavigationItem());
 		mContext = (Context) getActivity();
-
-
 
 		onCreateImpl(savedInstanceState);
 	}
+
+
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -152,7 +151,7 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.apply) {
-			getActivity().finish();
+            ((ConfigurationActivity)getActivity()).onApplyClick();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

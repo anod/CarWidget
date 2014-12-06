@@ -164,7 +164,6 @@ public class WizardActivity extends CarWidgetActivity {
 				desc1.setText(Html.fromHtml(getString(R.string.welcome_text)));
 			} else if (layoutId == R.layout.wizard_fragment_2) {
 				desc1.setText(Html.fromHtml(getString(R.string.install_widget)));
-				desc2.setText(Html.fromHtml(getString(R.string.install_widget_old)));
 			} else if (layoutId == R.layout.wizard_fragment_3) {
 				desc1.setText(Html.fromHtml(getString(R.string.configure_text)));
 				desc2.setText(Html.fromHtml(getString(R.string.open_settings_description)));

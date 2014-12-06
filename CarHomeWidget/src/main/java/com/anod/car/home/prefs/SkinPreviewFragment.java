@@ -1,31 +1,35 @@
 package com.anod.car.home.prefs;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
-import android.content.Loader;
+import android.content.ClipData;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
 
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
-import com.anod.car.home.prefs.LookAndFeelActivity.SkinRefreshListener;
+import com.anod.car.home.model.WidgetShortcutsModel;
+import com.anod.car.home.prefs.drag.ShortcutShadowBuilder;
+import com.anod.car.home.utils.AppLog;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SkinPreviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<View>, SkinRefreshListener {
+public class SkinPreviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<View>, LookAndFeelActivity.SkinRefreshListener {
 	
 	private static final String ARG_POSITION = "position";
 	private int mPosition;
 	private LookAndFeelActivity mActivity;
 	@InjectView(R.id.container_preview) ViewGroup mContainer;
 
-	public static SkinPreviewFragment newInstance(int position) {
+    public static SkinPreviewFragment newInstance(int position) {
 		SkinPreviewFragment f = new SkinPreviewFragment();
 		
 		Bundle args = new Bundle();
@@ -47,7 +51,7 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		mActivity.onPreviewStart(mPosition);	
+		mActivity.onPreviewStart(mPosition);
 		getLoaderManager().initLoader(0, null, this);
 	}
 
@@ -61,7 +65,7 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 
 	@Override
 	public void onDetach() {
-		mActivity.onFragmentDetach(mPosition);
+        mActivity.onFragmentDetach(mPosition);
 		super.onDetach();
 	}
 	
@@ -77,8 +81,7 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
 		getLoaderManager().initLoader(0, null, this).forceLoad();
 	}
 
-
-	public static class ViewLoader extends AsyncTaskLoader<View> {
+    public static class ViewLoader extends AsyncTaskLoader<View> {
 		private final LookAndFeelActivity mActivity;
 		private final int mPosition;
 		
@@ -116,10 +119,46 @@ public class SkinPreviewFragment extends Fragment implements LoaderManager.Loade
         if (inflatedView.getParent() != null) {
         	((ViewGroup)inflatedView.getParent()).removeView(inflatedView);
         }
+        final WidgetShortcutsModel model = new WidgetShortcutsModel(getActivity(), mActivity.getAppWidgetId());
+        model.init();
+
+        setupDragNDrop(inflatedView, model);
+
         mContainer.addView( inflatedView );
 		mContainer.invalidate();
         //mContainer.requestLayout();
 	}
+
+
+    private void setupDragNDrop(View inflatedView,final WidgetShortcutsModel model) {
+        int count = model.getCount();
+        for (int pos=0; pos<count; pos++) {
+            int btnResId = WidgetViewBuilder.getBtnRes(pos);
+            final ImageView btn = (ImageView) inflatedView.findViewById(btnResId);
+            if (btn == null) {
+                AppLog.e("Count: "+count+", pos: "+pos);
+                continue;
+            }
+            initDragButton(pos, btn, model);
+        }
+    }
+
+    private void initDragButton(final int cellId, ImageView dragButton,final WidgetShortcutsModel model) {
+        dragButton.setTag(String.valueOf(cellId));
+        dragButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (model.getShortcut(cellId) != null) {
+                    String dragData = "" + cellId;
+                    ClipData data = ClipData.newPlainText(dragData, dragData);
+                    mActivity.onBeforeDragStart();
+                    view.startDrag(data, new ShortcutShadowBuilder(view), null, 0);
+                }
+                return true;
+            }
+        });
+        dragButton.setOnDragListener(mActivity.getDragListener());
+    }
 
 	@Override
 	public void onLoaderReset(Loader<View> loader) {

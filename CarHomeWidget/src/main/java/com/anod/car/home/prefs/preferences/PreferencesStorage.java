@@ -10,7 +10,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.anod.car.home.R;
-import com.anod.car.home.model.LauncherModel;
+import com.anod.car.home.incar.ScreenOrientation;
+import com.anod.car.home.model.ShortcutModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
 import com.anod.car.home.utils.BitmapTransform.RotateDirection;
@@ -23,7 +24,7 @@ import java.util.Locale;
 
 public class PreferencesStorage {
 	public static final String CMP_NUMBER = "cmp-number-%d";
-	private static final String MODE_FORCE_STATE = "mode-force-state";
+    private static final String MODE_FORCE_STATE = "mode-force-state";
 
 	public static final int NOTIFICATION_COMPONENT_NUMBER = 3;
 	public static final int LAUNCH_COMPONENT_NUMBER_MAX = 10;
@@ -100,6 +101,7 @@ public class PreferencesStorage {
 
 	public static final String SAMSUNG_DRIVING_MODE = "sam_driving_mode";
 	private static final String CAR_DOCK = "car-dock";
+    public static final String SCREEN_ORIENTATION = "screen-orientation";
 
 
     public static Main loadMain(Context context, int appWidgetId) {
@@ -208,6 +210,9 @@ public class PreferencesStorage {
 
 		p.setSamsungDrivingMode(prefs.getBoolean(SAMSUNG_DRIVING_MODE, false));
 
+        String orientation = prefs.getString(SCREEN_ORIENTATION, String.valueOf(ScreenOrientation.DISABLED));
+        p.setScreenOrientation(Integer.parseInt(orientation));
+
 		return p;
 	}
 
@@ -250,8 +255,9 @@ public class PreferencesStorage {
 
 		editor.putBoolean(SAMSUNG_DRIVING_MODE, prefs.isSamsungDrivingMode());
 
-		editor.commit();
+        editor.putString(SCREEN_ORIENTATION, String.valueOf(prefs.getScreenOrientation()));
 
+		editor.commit();
 		saveBtDevices(context, prefs.getBtDevices());
 	}
 
@@ -369,7 +375,7 @@ public class PreferencesStorage {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		long curShortcutId = preferences.getLong(key, ShortcutInfo.NO_ID);
 		if (curShortcutId != ShortcutInfo.NO_ID) {
-			LauncherModel model = new LauncherModel(context);
+			ShortcutModel model = new ShortcutModel(context);
 			model.deleteItemFromDatabase(curShortcutId);
 		}
 		Editor editor = preferences.edit();
@@ -386,7 +392,7 @@ public class PreferencesStorage {
 	}
 
 	public static void dropWidgetSettings(Context context, int[] appWidgetIds) {
-		LauncherModel model = new LauncherModel(context);
+		ShortcutModel model = new ShortcutModel(context);
 		WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
 		for (int appWidgetId : appWidgetIds) {
 			prefs.setAppWidgetId(appWidgetId);

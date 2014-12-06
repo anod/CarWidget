@@ -3,7 +3,6 @@ package com.anod.car.home;
 import android.app.Application;
 import android.content.Context;
 
-import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.model.AppsList;
 import com.anod.car.home.prefs.preferences.AppTheme;
 

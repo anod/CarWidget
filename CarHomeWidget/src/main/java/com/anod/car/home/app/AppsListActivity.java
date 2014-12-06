@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * @author alex
  * @date 2014-09-02
  */
-abstract public class AppsListActivity extends ListActivity implements AdapterView.OnItemClickListener, LoaderManager.LoaderCallbacks<ArrayList<AppsList.Entry>> {
+abstract public class AppsListActivity extends ActionBarListActivity implements AdapterView.OnItemClickListener, LoaderManager.LoaderCallbacks<ArrayList<AppsList.Entry>> {
     private AppsListAdapter mAdapter;
     protected AppsList mAppsList;
 
@@ -43,7 +43,7 @@ abstract public class AppsListActivity extends ListActivity implements AdapterVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!isShowTitle()) {
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.apps_list);

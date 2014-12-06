@@ -93,7 +93,7 @@ public class IconThemesActivity extends AppsCacheActivity {
 
 	@Override
 	protected AppsList getAppList(Context context) {
-        return CarWidgetApplication.provide(context).getIconThemesCache();
+		return CarWidgetApplication.provide(context).getIconThemesCache();
 	}
 
 	@Override

@@ -1,29 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppListTheme" parent="android:style/Theme.Holo.Dialog" />
+    <style name="AppListTheme" parent="Theme.AppCompat.Dialog">
+        <item name="windowActionBar">false</item>
+    </style>
 
-    <style name="AppListTheme.Light" parent="android:style/Theme.Holo.Light.Dialog" />
+    <style name="AppListTheme.Light" parent="Theme.AppCompat.Light.Dialog" >
+        <item name="windowActionBar">false</item>
+    </style>
 
-    <style name="DialogTheme" parent="android:style/Theme.Holo.Dialog">
-		<item name="panelItem">@style/panelItemBasic</item>
-		<item name="panelHeader">@style/panelHeaderBasic</item>
-		<item name="PreferencesItem">@style/PreferencesItem</item>
-		<item name="buttonStyle">@style/buttonStyleDefault</item>
-		<item name="activityBgColor">@android:color/transparent</item>
-		<item name="wizardTextItem">@style/wizardTextItemHolo</item>
-		<item name="textColor">@android:color/white</item>
+    <style name="DialogTheme" parent="Theme.AppCompat.Dialog">
+        <item name="panelItem">@style/panelItemBasic</item>
+        <item name="panelHeader">@style/panelHeaderBasic</item>
+        <item name="PreferencesItem">@style/PreferencesItem</item>
+        <item name="buttonStyle">@style/buttonStyleDefault</item>
+        <item name="activityBgColor">@android:color/transparent</item>
+        <item name="wizardTextItem">@style/wizardTextItemHolo</item>
+        <item name="textColor">@android:color/white</item>
 
-		<item name="textColorPrimary">?android:attr/textColorPrimary</item>
-		<item name="textColorSecondary">?android:attr/textColorSecondary</item>
-	</style>
+        <item name="textColorPrimary">?android:attr/textColorPrimary</item>
+        <item name="textColorSecondary">?android:attr/textColorSecondary</item>
+<!-- TODO: move to theme? -->
+        <item name="colorPrimary">@color/material_bluegray_600</item>
+        <item name="colorPrimaryDark">@color/material_bluegray_800</item>
+        <item name="colorAccent">@color/material_bluegray_300</item>
+    </style>
 
-	<style name="AppListView" parent="android:style/Widget.ListView">
-		<item name="android:paddingRight">12dp</item>
-		<item name="android:paddingLeft">12dp</item>
-		<item name="android:background">@color/activity_bg</item>
-		<item name="android:cacheColorHint">@color/activity_bg</item>
-	</style>
+    <!-- Borderless ink button -->
+    <style name="BorderlessButton.Light" parent="android:Widget.Button">
+        <item name="android:background">@drawable/btn_default_mtrl_shape</item>
+    </style>
+
+
+    <!-- Colored borderless ink button -->
+    <style name="BorderlessButton.Light.Colored" parent="BorderlessButton.Light">
+        <item name="android:textColor">?attr/colorAccent</item>
+    </style>
+
+    <!-- Alert dialog button bar button -->
+    <style name="ButtonBarStyle.Light" parent="BorderlessButton.Light.Colored">
+        <item name="android:minWidth">64dp</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:minHeight">48dip</item>
+    </style>
+
+    <style name="DialogTheme.Light" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">?attr/colorPrimary</item>
+    </style>
+
+
 
 	<style name="AppPreference">
 		<item name="android:background">@drawable/panel_item_bg_grey</item>
@@ -123,13 +148,14 @@
         <item name="android:layout_width">140dp</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-    
-	<style name="BrightnessTheme" parent="android:Theme.Translucent"> 
+
+	<style name="BrightnessTheme" parent="android:Theme.Translucent">
 		<item name="android:windowIsTranslucent">true</item> 
 		<item name="android:windowContentOverlay">@null</item> 
 		<item name="android:windowNoTitle">true</item> 
 		<item name="android:windowIsFloating">true</item> 
-		<item name="android:backgroundDimEnabled">false</item> 
+		<item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowAnimationStyle">@null</item>
 	</style>
 
 	<style name="panelItemBasic" parent="textAlignStyle">

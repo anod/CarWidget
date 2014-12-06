@@ -6,13 +6,13 @@
     <color name="default_font_color">#ffffffff</color>
     <color name="holo_text_bg">#33000000</color>
 
-	<color name="drag_item_bg">#88d0d0d0</color>
+	<color name="drag_item_bg">#90a4ae</color>
 
 	<color name="actionbar_bg_color">#5b5b5b</color>
 
-	<color name="panel_bg_normal">#616161</color>
-	<color name="panel_bg_focused">#424242</color>
-	<color name="panel_bg_pressed">#bdbdbd</color>
+	<color name="panel_bg_normal">#546e7a</color>
+	<color name="panel_bg_focused">#90a4ae</color>
+	<color name="panel_bg_pressed">#37474f</color>
 
 	<color name="panel_bg_dark_normal">#212121</color>
 	<color name="panel_bg_dark_focused">#616161</color>
@@ -26,8 +26,8 @@
 	<color name="font_green">#ff669900</color>
 
 <!-- Wizard -->
-	<color name="step_pager_previous_tab_color">#4433b5e5</color>
-	<color name="step_pager_selected_tab_color">#ff0099cc</color>
+	<color name="step_pager_previous_tab_color">#4490a4ae</color>
+	<color name="step_pager_selected_tab_color">#ff37474f</color>
 	<color name="step_pager_selected_last_tab_color">#5b5b5b</color>
 	<color name="step_pager_next_tab_color">#10000000</color>
 
@@ -37,5 +37,12 @@
 	<color name="dim_foreground_holo_dark">#bebebe</color>
 
 	<color name="bright_foreground_disabled_grey">#bdbdbd</color>
+
+    <!-- colorPrimary -->
+    <color name="material_bluegray_600">#546e7a</color>
+    <!-- colorPrimaryDark -->
+    <color name="material_bluegray_800">#37474f</color>
+    <!-- colorAccent -->
+    <color name="material_bluegray_300">#90a4ae</color>
 
 </resources>

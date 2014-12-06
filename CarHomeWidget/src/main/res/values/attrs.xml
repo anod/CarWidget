@@ -15,11 +15,10 @@
   -->
 
 <resources>
-
-
 	<attr name="panelItem" format="reference" />
 	<attr name="panelHeader" format="reference" />
-	<attr name="PreferencesItem" format="reference"/>
+    <attr name="panelHeaderBackground" format="reference" />
+    <attr name="PreferencesItem" format="reference"/>
 	<attr name="buttonStyle" format="reference"/>
 	<attr name="activityBgColor" format="reference" />
 	<attr name="wizardTextItem" format="reference" />
@@ -29,4 +28,10 @@
 	<attr name="textColorSecondary" format="reference" />
 	<attr name="textColorOpposite" format="reference" />
 
+    <declare-styleable name="TwoLineButtonAttrs">
+        <attr name="icon_src" format="reference|color" />
+        <attr name="title_text" format="reference|string" />
+        <attr name="summary_text" format="reference|string" />
+        <attr name="single_line" format="boolean" />
+    </declare-styleable>
 </resources>

@@ -37,7 +37,7 @@ public class WidgetViewBuilder {
 	private boolean mIsKeyguard = false;
 	private int mWidgetHeightDp = -1;
 
-	private int[] mBtnIds = new int[] {
+	private static int[] sBtnIds = new int[] {
 		R.id.btn0,
 		R.id.btn1,//2
 		R.id.btn2,
@@ -59,6 +59,10 @@ public class WidgetViewBuilder {
 		R.id.btn_text7//8
 	};
 
+    public static int getBtnRes(int pos) {
+        return sBtnIds[pos];
+    }
+
 	private ShortcutViewBuilder mShortcutViewBuilder;
 	private BitmapTransform mBitmapTransform;
 
@@ -68,7 +72,8 @@ public class WidgetViewBuilder {
 	}
 
 	public interface PendingIntentHelper {
-		PendingIntent createSettings(int appWidgetId, int cellId);
+        PendingIntent createNew(int appWidgetId, int cellId);
+    	PendingIntent createSettings(int appWidgetId);
 		PendingIntent createShortcut(Intent intent, int appWidgetId, int position, long shortcutId);
 		PendingIntent createInCar(boolean on);
 	}
@@ -187,12 +192,12 @@ public class WidgetViewBuilder {
 			int firstBtn = rowNum * 2;
 			int secondBtn = firstBtn+1;
 
-			mShortcutViewBuilder.fill(views, firstBtn ,mBtnIds[firstBtn], mTextIds[firstBtn]);
-			mShortcutViewBuilder.fill(views, secondBtn, mBtnIds[secondBtn], mTextIds[secondBtn]);
+			mShortcutViewBuilder.fill(views, firstBtn ,sBtnIds[firstBtn], mTextIds[firstBtn]);
+			mShortcutViewBuilder.fill(views, secondBtn, sBtnIds[secondBtn], mTextIds[secondBtn]);
 		}
 
 
-		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId, PickShortcutUtils.INVALID_CELL_ID);
+		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId);
 		views.setOnClickPendingIntent(R.id.btn_settings, configIntent);
 		return views;
 	}

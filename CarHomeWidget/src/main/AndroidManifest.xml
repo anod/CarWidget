@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.anod.car.home"
-    android:installLocation="internalOnly" xmlns:tools="http://schemas.android.com/tools">
+    android:installLocation="internalOnly">
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -30,12 +31,14 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" tools:ignore="ProtectedPermissions"/>
+    <uses-permission
+        android:name="android.permission.MODIFY_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
-	<uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION"/>
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
@@ -43,60 +46,86 @@
     <uses-permission android:name="android.permission.INTERNET" />
     //-->
 
-	<uses-feature android:name="android.hardware.microphone" android:required="false" />
-    <uses-feature android:name="android.hardware.telephony" android:required="false" />
-	<uses-feature android:name="android.hardware.bluetooth" android:required="false" />
-	<uses-feature android:name="android.hardware.wifi" android:required="false" />
-	<uses-feature android:name="android.software.app_widgets" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+    <uses-feature
+        android:name="android.software.app_widgets"
+        android:required="false" />
 
     <application
-			android:name="com.anod.car.home.CarWidgetApplication"
-			android:backupAgent="com.anod.car.home.prefs.backup.BackupFileHelperAgent"
-			android:icon="@drawable/ic_launcher"
-			android:label="@string/app_name"
-	>
+        android:name="com.anod.car.home.CarWidgetApplication"
+        android:backupAgent="com.anod.car.home.prefs.backup.BackupFileHelperAgent"
+        android:icon="@mipmap/ic_launcher_carwidget"
+        android:label="@string/app_name">
         <service android:name="com.anod.car.home.UpdateService" />
 
         <activity
             android:name="com.anod.car.home.prefs.ShortcutEditActivity"
-            android:theme="@style/DialogTheme" />
+            android:theme="@style/DialogTheme.Light" />
         <activity
             android:name="com.anod.car.home.prefs.AllAppsActivity"
             android:theme="@style/AppListTheme" />
         <activity
             android:name="com.anod.car.home.prefs.IconThemesActivity"
-            android:theme="@style/AppListTheme"
-            android:label="@string/icons_theme" />
-		<activity
+            android:label="@string/icons_theme"
+            android:theme="@style/AppListTheme" />
+        <activity
             android:name="com.anod.car.home.prefs.ConfigurationActivity"
+            android:clearTaskOnLaunch="true"
+            android:fragment="com.anod.car.home.prefs."
+            android:label="@string/settings"/>
+
+        <activity
+            android:name="com.anod.car.home.ShortcutActivity"
+            android:clearTaskOnLaunch="true"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:taskAffinity="com.anod.car.home.shortcut"
+            android:theme="@style/BrightnessTheme" />
+
+        <activity
+            android:name="com.anod.car.home.app.NewShortcutActivity"
+            android:clearTaskOnLaunch="true"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.anod.car.home.newshortcut"
+            android:theme="@style/BrightnessTheme" />
+
+        <activity
+            android:name="com.anod.car.home.prefs.LookAndFeelActivity"
+            android:clearTaskOnLaunch="true"
             android:label="@string/settings"
-            android:launchMode="singleTop"
-			android:clearTaskOnLaunch="true"
-			android:fragment="com.anod.car.home.prefs."
-        >
+            android:taskAffinity="com.anod.car.home.settings">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name="com.anod.car.home.ShortcutActivity"
-            android:theme="@style/BrightnessTheme"
-            android:exported="true" />
-        <activity
-            android:name="com.anod.car.home.prefs.LookAndFeelActivity"
-            android:theme="@style/AppThemeGray.Transparent"
-        />
-        <activity
             android:name="com.anod.car.home.prefs.ActivityPicker"
-            android:theme="@style/AppListTheme"
-            android:finishOnCloseSystemDialogs="true" />
-        
+            android:finishOnCloseSystemDialogs="true"
+            android:theme="@style/AppListTheme" />
+
         <activity
             android:name="com.anod.car.home.CarHomeActivity"
+            android:clearTaskOnLaunch="true"
             android:excludeFromRecents="true"
-            android:launchMode="singleTask"
-            android:theme="@style/BrightnessTheme" >
+            android:launchMode="singleInstance"
+            android:taskAffinity="com.anod.car.home.carhome"
+            android:theme="@style/BrightnessTheme">
             <meta-data
                 android:name="android.dock_home"
                 android:value="true" />
@@ -116,35 +145,44 @@
         <activity
             android:name="com.anod.car.home.incar.SwitchInCarActivity"
             android:clearTaskOnLaunch="true"
-            android:icon="@drawable/ic_launcher"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_carwidget"
             android:label="@string/switch_in_car_activity"
+            android:launchMode="singleInstance"
             android:noHistory="true"
-			android:exported="true"
-            android:theme="@style/BrightnessTheme" >
-        </activity>
+            android:taskAffinity="com.anod.car.home.switchincar"
+            android:theme="@style/BrightnessTheme"/>
 
-		<activity android:name=".MainActivity">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN"/>
-				<category android:name="android.intent.category.LAUNCHER"/>
-			</intent-filter>
-		</activity>
-		<activity android:name=".ui.WidgetsListActivity"/>
-		<activity android:name=".ui.WizardActivity"/>
-		<activity android:name=".prefs.BluetoothDeviceActivity" android:theme="@style/DialogTheme" android:label="@string/pref_blutooth_device_title"/>
-		<activity
-				android:name="com.anod.car.home.prefs.CarWidgetShortcutsPicker"
-				android:theme="@style/AppListTheme"
-				android:label="@string/car_widget_shortcuts"
-				android:finishOnCloseSystemDialogs="true">
-			<!--  This intent-filter allows your shortcuts to be created in the launcher. -->
-			<intent-filter>
-				<!--
-				<action android:name="android.intent.action.CREATE_SHORTCUT" />
-				//-->
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-		</activity>
+        <activity
+            android:name=".MainActivity"
+            android:taskAffinity="com.anod.car.home.main"
+            android:launchMode="singleTask"
+        >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.WidgetsListActivity" />
+        <activity android:name=".ui.WizardActivity" />
+        <activity
+            android:name=".prefs.BluetoothDeviceActivity"
+            android:label="@string/pref_blutooth_device_title"
+            android:theme="@style/DialogTheme" />
+        <activity
+            android:name="com.anod.car.home.prefs.CarWidgetShortcutsPicker"
+            android:finishOnCloseSystemDialogs="true"
+            android:label="@string/car_widget_shortcuts"
+            android:theme="@style/AppListTheme">
+            <!--  This intent-filter allows your shortcuts to be created in the launcher. -->
+            <intent-filter>
+                <!--
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                //-->
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".prefs.MusicAppSettingsActivity"
             android:label="@string/music_app"
@@ -155,34 +193,43 @@
             android:excludeFromRecents="true"
             android:theme="@style/AppListTheme.Light" />
 
-		<service android:name="com.anod.car.home.incar.ModeService" />
+        <service android:name="com.anod.car.home.incar.ModeService" />
         <service android:name="com.anod.car.home.incar.BroadcastService" />
-		<receiver android:name="com.anod.car.home.incar.ModeBroadcastReceiver" android:enabled="true" android:exported="true">
-			<intent-filter>
-				<action android:name="android.intent.action.HEADSET_PLUG" />
-				<action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-				<action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-				<action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
-				<action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
-				<action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
-				<action android:name="com.anod.car.home.incar.ACTION_ACTIVITY_RECOGNITION" />
 
-				<action android:name="android.intent.action.ACTION_DOCK_EVENT" />
-				<action android:name="android.app.action.ENTER_CAR_MODE" />
-				<action android:name="android.app.action.EXIT_CAR_MODE" />
-			</intent-filter>
-		</receiver>
+        <receiver
+            android:name="com.anod.car.home.incar.ModeBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.HEADSET_PLUG" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+                <action android:name="com.anod.car.home.incar.ACTION_ACTIVITY_RECOGNITION" />
 
-		<service android:name="com.anod.car.home.incar.ActivityRecognitionClientService" android:exported="false" />
-		<service android:name="com.anod.car.home.incar.ActivityRecognitionService" android:exported="false" />
+                <action android:name="android.intent.action.ACTION_DOCK_EVENT" />
+                <action android:name="android.app.action.ENTER_CAR_MODE" />
+                <action android:name="android.app.action.EXIT_CAR_MODE" />
+            </intent-filter>
+        </receiver>
 
-		<meta-data
-				android:name="com.google.android.backup.api_key"
-				android:value="AEdPqrEAAAAIwrTs2H7J2Rs0kglDTHtziqQ8_7YbAZGeS7bDUA" />
+        <service
+            android:name="com.anod.car.home.incar.ActivityRecognitionClientService"
+            android:exported="false" />
+        <service
+            android:name="com.anod.car.home.incar.ActivityRecognitionService"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.backup.api_key"
+            android:value="AEdPqrEAAAAIwrTs2H7J2Rs0kglDTHtziqQ8_7YbAZGeS7bDUA" />
 
 
-		<meta-data android:name="com.google.android.gms.version"
-				   android:value="@integer/google_play_services_version" />
-	</application>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+    </application>
 
 </manifest>

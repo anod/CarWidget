@@ -17,14 +17,18 @@ public class ShortcutPendingIntent implements WidgetViewBuilder.PendingIntentHel
 		mContext = context;
 	}
 
-	/**
+    @Override
+    public PendingIntent createNew(int appWidgetId, int cellId) {
+        Intent intent = IntentUtils.createNewShortcutIntent(mContext, appWidgetId, cellId);
+        return PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    /**
      * Create an Intent to launch Configuration
-     * @param appWidgetId
-     * @return
      */
     @Override
-    public PendingIntent createSettings(int appWidgetId, int cellId) {
-		Intent intent = IntentUtils.createSettingsIntent(mContext, appWidgetId, cellId);
+    public PendingIntent createSettings(int appWidgetId) {
+		Intent intent = IntentUtils.createSettingsIntent(mContext, appWidgetId);
     	return PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -48,6 +52,7 @@ public class ShortcutPendingIntent implements WidgetViewBuilder.PendingIntentHel
     	}
     	
     	Intent launchIntent = new Intent(mContext, ShortcutActivity.class);
+        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
     	launchIntent.setData(data);
     	launchIntent.setAction(Intent.ACTION_MAIN);
     	launchIntent.putExtra(ShortcutActivity.EXTRA_INTENT, intent);

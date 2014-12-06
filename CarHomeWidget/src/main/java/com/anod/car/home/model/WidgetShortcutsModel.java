@@ -10,7 +10,7 @@ import com.anod.car.home.utils.IntentUtils;
 
 import java.util.ArrayList;
 
-public class WidgetShortcutsModel extends AbstractShortcutsModel {
+public class WidgetShortcutsModel extends AbstractShortcutsContainerModel {
 	private final Context mContext;
 	private final int mAppWidgetId;
 	private int mCount;
@@ -21,7 +21,7 @@ public class WidgetShortcutsModel extends AbstractShortcutsModel {
 		mAppWidgetId = appWidgetId;
 	}
 
-	public void loadCount() {
+    public void loadCount() {
 		mCount = PreferencesStorage.getLaunchComponentNumber(mContext, mAppWidgetId);
 	}
 

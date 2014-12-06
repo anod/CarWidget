@@ -1,34 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<style name="AppThemeHolo" parent="android:style/Theme.Holo">
+	<style name="AppThemeHolo" parent="Theme.AppCompat">
 		<item name="panelItem">@style/panelItemBasic</item>
 		<item name="panelHeader">@style/panelHeaderBasic</item>
+        <item name="panelHeaderBackground">@drawable/panel_header_bg_dark</item>
 		<item name="PreferencesItem">@style/PreferencesItem</item>
 		<item name="buttonStyle">@style/buttonStyleDefault</item>
-		<item name="activityBgColor">@android:color/transparent</item>
+		<item name="activityBgColor">@color/background_material_dark</item>
 		<item name="wizardTextItem">@style/wizardTextItemHolo</item>
 		<item name="textColor">@android:color/white</item>
-
-		<item name="android:actionBarStyle">@style/ActionBarCompatHolo</item>
 
 		<item name="textColorPrimary">?android:attr/textColorPrimary</item>
 		<item name="textColorSecondary">?android:attr/textColorSecondary</item>
 		<item name="textColorOpposite">?android:attr/textColorPrimary</item>
 
-	</style>
+    </style>
 
-
-	<style name="ActionBarCompatHolo" parent="android:style/Widget.Holo.ActionBar">
-
-	</style>
-
-	<style name="ActionBarCompatHolo.Transparent" parent="@style/ActionBarCompatHolo">
+	<style name="ActionBarCompatHolo.Transparent" parent="Widget.AppCompat.ActionBar.Solid">
 		<item name="android:background">@null</item>
 		<item name="android:actionBarDivider">@null</item>
 		<item name="android:backgroundStacked">@null</item>
 		<item name="android:backgroundSplit">@null</item>
-
 	</style>
 
 	<!-- Skin Chooser -->

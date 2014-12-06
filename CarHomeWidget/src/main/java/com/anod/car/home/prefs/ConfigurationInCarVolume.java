@@ -5,6 +5,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.anod.car.home.R;
+import com.anod.car.home.drawer.NavigationList;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 public class ConfigurationInCarVolume extends ConfigurationPreferenceFragment implements OnCheckedChangeListener {
@@ -29,4 +30,8 @@ public class ConfigurationInCarVolume extends ConfigurationPreferenceFragment im
 		PreferencesStorage.setAdjustVolumeLevel(mContext, isChecked);
 	}
 
+    @Override
+    protected int getNavigationItem() {
+        return NavigationList.ID_CAR_SETTINGS;
+    }
 }

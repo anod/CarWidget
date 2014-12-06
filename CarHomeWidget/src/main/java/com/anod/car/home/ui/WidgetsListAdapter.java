@@ -1,24 +1,37 @@
 package com.anod.car.home.ui;
 
+import android.annotation.TargetApi;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
+import android.os.Build;
+import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.anod.car.home.R;
 import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.utils.ArrayAdapterCompat;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.Utils;
+
+import butterknife.ButterKnife;
 
 /**
  * @author alex
  * @date 5/27/13
  */
 
-public class WidgetsListAdapter extends ArrayAdapterCompat<Integer> {
+public class WidgetsListAdapter extends ArrayAdapter<Integer> {
 
-	private SparseArray<SparseArray<ShortcutInfo>> mWidgetShortcuts;
+    private final LayoutInflater mLayoutInflater;
+    private final AppWidgetManager mAppWidgetManager;
+    private SparseArray<SparseArray<ShortcutInfo>> mWidgetShortcuts;
+    private int mCount;
 
 	private static int[] sIds = {
 		R.id.imageView0,
@@ -32,42 +45,80 @@ public class WidgetsListAdapter extends ArrayAdapterCompat<Integer> {
 	};
 
 	public WidgetsListAdapter(Context context) {
-		super(context, R.layout.settings_item);
-		mWidgetShortcuts = new SparseArray<SparseArray<ShortcutInfo>>();
-	}
+		super(context, R.layout.widgets_item);
+        mAppWidgetManager = AppWidgetManager.getInstance(context);
+        mLayoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View row = null;
-		if (convertView == null) {
-			LayoutInflater li = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			row = li.inflate(R.layout.settings_item, null);
-		} else {
-			row = convertView;
-		}
+	public View getView(int position, View view, ViewGroup parent) {
 
-		int appWidgetId = getItem(position);
-		SparseArray<ShortcutInfo> shortcuts = mWidgetShortcuts.get(appWidgetId);
+        if (mCount == position) {
+            return getHintView(view, parent);
+        }
 
-		for( int i = 0; i < shortcuts.size(); i++) {
-			ShortcutInfo info = shortcuts.get(i);
-			ImageView view = (ImageView)row.findViewById(sIds[i]);
-			if (info != null) {
-				view.setImageBitmap(info.getIcon());
-			} else {
-				view.setVisibility(View.GONE);
-			}
-		}
-
-		return row;
+        return getWidgetView(position, view, parent);
 	}
 
+    private View getHintView(View view, ViewGroup parent) {
+        if (view == null) {
+            TextView textView = new TextView(getContext());
+            textView.setText("Select an item to configure the widget");
+            view = textView;
+        }
+        return view;
+    }
 
-	public void setWidgetShortcuts(SparseArray<SparseArray<ShortcutInfo>> widgetShortcuts) {
-		mWidgetShortcuts = widgetShortcuts;
+    private View getWidgetView(int position, View view, ViewGroup parent) {
+        if (view == null) {
+            view = mLayoutInflater.inflate(R.layout.widgets_item, parent, false);
+        }
+
+        int appWidgetId = getItem(position);
+        SparseArray<ShortcutInfo> shortcuts = mWidgetShortcuts.get(appWidgetId);
+
+        int size = shortcuts.size();
+        for( int i = 0; i < sIds.length; i++) {
+            ImageView icon = (ImageView)view.findViewById(sIds[i]);
+            ShortcutInfo info = null;
+            if (i < size) {
+                info = shortcuts.get(i);
+            }
+            if (info != null) {
+                icon.setVisibility(View.VISIBLE);
+                icon.setImageBitmap(info.getIcon());
+            } else {
+                icon.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        return view;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mCount == 0) {
+            return 0;
+        }
+        return (1 == position) ? 1 : 0;
+    }
+
+    @Override
+    public int getCount() {
+        return super.getCount();// + 1;
+    }
+
+    public void setWidgetShortcuts(SparseArray<SparseArray<ShortcutInfo>> widgetShortcuts) {
+        mWidgetShortcuts = widgetShortcuts;
+        mCount = (widgetShortcuts == null) ? 0 : widgetShortcuts.size();
 		clear();
 		if (widgetShortcuts != null) {
-			for(int i =0; i<widgetShortcuts.size(); i++) {
+			for(int i =0; i<mCount; i++) {
 				add(widgetShortcuts.keyAt(i));
 			}
 		}

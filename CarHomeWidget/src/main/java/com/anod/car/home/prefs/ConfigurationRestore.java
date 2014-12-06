@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anod.car.home.R;
+import com.anod.car.home.drawer.NavigationList;
 import com.anod.car.home.prefs.backup.BackupCodeRender;
 import com.anod.car.home.prefs.backup.BackupTask;
 import com.anod.car.home.prefs.backup.GDriveBackup;
@@ -107,7 +108,6 @@ public class ConfigurationRestore extends Fragment implements
 		if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
 			Intent defaultResultValue = new Intent();
 			defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-			((ConfigurationActivity)getActivity()).setAppWidgetId(mAppWidgetId);
 			getActivity().setResult(Activity.RESULT_OK, defaultResultValue);
 		} else {
 			AppLog.w("AppWidgetId required");
@@ -116,6 +116,8 @@ public class ConfigurationRestore extends Fragment implements
 		}
 
 		mContext = (Context) getActivity();
+        ((ConfigurationActivity)getActivity()).setNavigationItem(NavigationList.ID_CURRENT_WIDGET);
+
 		mBackupManager = new PreferencesBackupManager(mContext);
 
 		mGDriveBackup = new GDriveBackup(getActivity(), this);
