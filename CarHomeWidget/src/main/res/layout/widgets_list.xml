@@ -32,7 +32,7 @@
             android:layout_marginTop="1dp"
             android:textSize="16sp"
             android:paddingRight="42dp"
-            android:text="No active widgets were found. Make sure you add a widget on your home screen."
+            android:text="@string/no_active_widget"
             />
         <ImageView
             android:layout_width="wrap_content"
