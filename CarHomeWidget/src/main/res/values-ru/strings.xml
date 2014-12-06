@@ -249,4 +249,16 @@
         <item>Отменить</item>
         <item>Разрешить</item>
     </string-array>
+    <string name="current_widget">Выбранный виджет</string>
+    <string name="drawer_close">Закрыть</string>
+    <string name="drawer_open">Открыть</string>
+    <string name="home_screen">Домашний экран</string>
+    <string name="list">Список</string>
+    <string name="list_of_active_widgets">Список активных виджетов</string>
+    <string name="lock_screen">Экран блокировки</string>
+    <string name="theme_dark">Темная</string>
+    <string name="widgets_hint">Выберите виджет из списка для настойки</string>
+    <string name="shortcuts_and_look">Ярлыки и Внешний вид</string>
+    <string name="shortcuts_and_look_summary">Настройки ярлыков, скина и шрифта</string>
+    <string name="app_theme">Тема приложения</string>
 </resources>

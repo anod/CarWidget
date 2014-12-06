@@ -240,5 +240,17 @@
         <item>לבטל</item>
         <item>לאפשר</item>
     </string-array>
+    <string name="current_widget">הוידג׳ט הנבחר</string>
+    <string name="drawer_close">לסגור</string>
+    <string name="drawer_open">לפתוח</string>
+    <string name="home_screen">מסך הבית</string>
+    <string name="list">רשימה</string>
+    <string name="list_of_active_widgets">רשימת וידג׳טים פועלים</string>
+    <string name="lock_screen">מסך הנעילה</string>
+    <string name="shortcuts_and_look">קיצורי דרך ומראה</string>
+    <string name="shortcuts_and_look_summary">התאמה אישית של קיצורי דרך ,הסקין וגודל הגופן</string>
+    <string name="theme_dark">חשוך</string>
+    <string name="widgets_hint">בחר וידג׳ט מהרשימה להגדרה</string>
+    <string name="app_theme"></string>
 
 </resources>
