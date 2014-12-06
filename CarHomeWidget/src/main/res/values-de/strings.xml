@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<resources>
+<?xml version="1.0" encoding="UTF-8"?><resources>
 	<string name="permlab_read_settings">Car Widget Einstellungen und Verknüpfungen lesen</string>
 	<string name="permdesc_read_settings">Ermöglicht einer Anwendung, die Einstellungen und Verknüpfungen im Car Widget zu lesen.</string>
 	<string name="permlab_write_settings">Car Widget-Einstellungen und Verknüpfungen festlegen</string>
@@ -34,7 +33,7 @@
 	<string name="pref_power_plugged_bt_on_summary">Schalten Sie Bluetooth an, wenn der Netzstecker eingesteckt ist</string>
 	<string name="pref_power_unplugged_bt_off_title">Aus wenn ausgesteckt</string>
 	<string name="pref_power_unplugged_bt_off_summary">Schalten Sie Bluetooth aus, wenn der Netzstecker gezogen ist</string>
-	<string name="pref_detection">Erkennung</string>
+	<string name="pref_detection">Auslöser</string>
 	<string name="pref_blutooth_device_title">Bluetooth-Gerät</string>
 	<string name="pref_blutooth_device_summary">Wählen Sie das Bluetooth-Gerät, das den InCar-Modus aktiviert</string>
 	<string name="load_paired_device">Verknüpfte Geräte werden geladen</string>
@@ -59,19 +58,15 @@
 	<string name="pref_phone_volume_level">Ruflautstärke</string>
 	<string name="notif_expired">Testversion abgelaufen</string>
 	<string name="notif_consider">Sie sollten die Pro-Version installieren</string>
-	<string name="incar_mode_enabled"/>
+	<string name="incar_mode_enabled">InCar-Modus aktiviert.</string>
 	<string name="click_to_disable">Klicken Sie zum Deaktivieren</string>
 	<string name="click_to_disable_trial">Klicken Sie zum deaktivieren, Probeversion: noch %d mal</string>
 	<plurals name="notif_activations_left">
-    <item quantity="zero">%1$d Aktivierungen übrig</item>
     <item quantity="one">%1$d Aktivierung übrig</item>
-    <item quantity="two">%1$d Aktivierungen übrig</item>
-    <item quantity="few">%1$d Aktivierungen übrig</item>
-    <item quantity="many">%1$d Aktivierungen übrig</item>
     <item quantity="other">%1$d Aktivierungen übrig</item>
   </plurals>
 	<string name="version_title">%1$s ver. %2$s</string>
-	<string name="version_summary">Bitte bewerten Sie dieses Widget auf dem Markt</string>
+	<string name="version_summary">Bewerten Sie das Widget im Play Store</string>
 	<string name="shortcut_edit_title">Verknüpfung bearbeiten</string>
 	<string name="shortcut_edit_hint">Tippen Sie auf das Symbol, um es zu ändern</string>
 	<string name="photo_picker_not_found">Auf dem Telefon sind keine Bilder vorhanden.</string>
@@ -87,7 +82,7 @@
 	<string name="pref_activate_car_mode">Eingebauter Auto-Modus</string>
 	<string name="pref_activate_car_mode_summary">Eingebauter Android Auto-Modus wird aktiviert, zusätzliches Symbol für Benachrichtigungen wird angezeigt.</string>
 	<string name="pref_backup_title">Bachup/Wiederherstellen</string>
-	<string name="pref_backup_summary">Backup der Widget-Einstellungen auf SD-Karte erstellen.</string>
+	<string name="pref_backup_summary">Backup-Einstellungen dieses Widgets</string>
 	<string name="last_backup">Letztes Backup: %1$s</string>
 	<string name="backup_current_widget">Aktuelles Widget</string>
 	<string name="backup_incar_settings">InCar-Einstellungen</string>
@@ -142,11 +137,7 @@
 	<string name="trial_description">Kostenlose Testversion für %d Aktivierungen.</string>
 	<string name="swipe_continue">Streichen um weiterzumachen→</string>
 	<plurals name="active_widgets">
-    <item quantity="zero">Keine aktiven Widgets gefunden</item>
     <item quantity="one">Ein aktives Widget</item>
-    <item quantity="two">%d aktive Widgets</item>
-    <item quantity="few">%d aktive Widgets</item>
-    <item quantity="many">%d aktive Widgets</item>
     <item quantity="other">%d aktive Widgets</item>
   </plurals>
 	<string name="gms_success">Verwenden Sie Google Play, um die Aktivität zu erkennen</string>
@@ -155,73 +146,120 @@
 	<string name="gms_service_disabled">Die installierte Version von Google Play wurde auf diesem Gerät deaktiviert.</string>
 	<string name="gms_service_invalid">Die installierte Version von Google-Play auf diesem Gerät ist nicht authentisch.</string>
 	<string name="activity_recognition">Aktivitätserkennung</string>
-	<string name="please_wait">Bitte warten&#8230;</string>
-	<string name="shortcuts">Shortcuts</string>
-	<string name="advanced">Advanced</string>
+	<string name="please_wait">Bitte warten...</string>
+	<string name="shortcuts">Benachrichtigungs-Verknüpfungen</string>
+	<string name="advanced">Erweitert</string>
 	<string name="pref_actions">Aktionen</string>
 	<string name="bluetooth_device_laptop">Computer</string>
 	<string name="bluetooth_device_cellphone">Telefon</string>
 	<string name="bluetooth_device_headphones">Kopfhörer</string>
 	<string name="bluetooth_device_headset">Headset</string>
-	<string name="information_title">Informationen</string>
-	<string name="issue_title">Rückkopplung</string>
-	<string name="applications">Applications</string>
+	<string name="information_title">Information</string>
+	<string name="issue_title">Feedback</string>
+	<string name="applications">Anwendungen</string>
 	<string name="pref_wifi">Wi-Fi</string>
 	<string name="transparent">Transparent</string>
-	<string name="dialog_title_select">Select</string>
-	<string name="icon_custom">Custom</string>
-	<string name="icon_adw_icon_pack">Icon Pack</string>
-	<string name="never">nie</string>
-	<string name="backup">Sichern</string>
+	<string name="dialog_title_select">Wählen</string>
+	<string name="icon_custom">Benutzerdefiniert</string>
+	<string name="icon_adw_icon_pack">Icon-Pack</string>
+	<string name="never">Niemals</string>
+	<string name="backup">Backup</string>
 	<string name="restore">Wiederherstellen</string>
 	<string name="backup_save">Speichern</string>
 	<string name="settings">Einstellungen</string>
-	<string name="more">Mehr...</string>
+	<string name="more">Mehr ...</string>
 	<string name="none">Keine</string>
-	<string name="download">Herunterladen...</string>
+	<string name="download">Herunterladen ...</string>
 	<string name="system">System</string>
 	<string name="backup_path">Pfad</string>
 	<string name="menu">Menü</string>
 	<string name="enabled">Aktiviert</string>
 	<string name="disabled">Deaktiviert</string>
-	<string name="configure">Кonfigurieren</string>
-	<string name="finish">Schluss</string>
-	<string name="skip">überspringen</string>
+	<string name="configure">Konfigurieren</string>
+	<string name="finish">Beenden</string>
+	<string name="skip">Überspringen</string>
 	<string name="next">Nächste</string>
+	<string name="choose_a_theme">Wählen Sie ein Thema</string>
+	<string name="theme_gray">Hell</string>
+	<string name="theme_holo">Dunkel</string>
+	<string name="icon_default">Standard</string>
+	<string name="failed_fetch_icon">Fehler beim Laden des Standardsymbols.</string>
+	<string name="please_add_widget">Bitte fügen Sie das Widget auf dem Start-Bildschirm hinzu</string>
+	<string name="samsung_driving_summary">Aktivieren Sie den eingebauten Samsung Auto-Modus</string>
+	<string name="samsung_driving_title">Samsung Auto-Modus</string>
 	<string-array name="brightness_mode_titles">
-		<item>System</item>
-		<item>Automatisch</item>
-		<item>Tag</item>
-		<item>Nacht</item>
-	</string-array>
+    <item>System</item>
+    <item>Auto</item>
+    <item>Tag</item>
+    <item>Nacht</item>
+  </string-array>
 
 	<string-array name="wifi_action_titles">
-		<item>Keine Aktion</item>
-		<item>Temporäre</item>
-		<item>Dauerhaft</item>
-	</string-array>
+    <item>Keine Aktion</item>
+    <item>Vorübergehend</item>
+    <item>Dauerhaft</item>
+  </string-array>
 
 	<string-array name="autoanswer_titles">
-		<item>Deaktiviert</item>
-		<item>Umgehend</item>
-		<item>5 Sekunden verzögert</item>
-	</string-array>
+    <item>Deaktiviert</item>
+    <item>Sofort</item>
+    <item>5 Sek. Verzögerung</item>
+  </string-array>
 
 	<string-array name="autorun_app_titles">
-		<item>Deaktiviert</item>
-		<item>Auswählen&#8230;</item>
-	</string-array>
+    <item>Deaktiviert</item>
+    <item>Wählen Sie ...</item>
+  </string-array>
 
 	<string-array name="carwidget_shortcuts">
-		<item>Switch InCar</item>
-		<item>Wiedergabe/Pause</item>
-		<item>Nächster Titel</item>
-		<item>Vorheriger Titel</item>
-	</string-array>
+    <item>InCar Umschalten</item>
+    <item>Wiedergabe/Pause</item>
+    <item>Nächste</item>
+    <item>Vorherige</item>
+  </string-array>
 
 	<string-array name="icon_rotate_titles">
-		<item>Deaktiviert</item>
-		<item>90&#186; Links</item>
-		<item>90&#186; Richtig</item>
-	</string-array>
+    <item>Keine</item>
+    <item>90º links</item>
+    <item>90 ° rechts</item>
+  </string-array>
+
+	<string name="export_backup">Backup-Datei exportieren</string>
+	<string name="import_backup">Backup-Datei importieren</string>
+	<string name="export_backup_finish">Export beendet</string>
+	<string name="delete">Löschen</string>
+	<string name="number">Anzahl der Verknüpfungen</string>
+	<string name="number_shortcuts_title">Anzahl der Verknüpfungen</string>
+	<string name="car_dock">Auto-Dockingstation</string>
+	<string name="car_dock_summary">InCar-Modus aktivieren, wenn das Telefon an die Auto-Dockingstation angedockt wird</string>
+    <string name="widgets">Widgets</string>
+    <string name="show_choice">Auswahl anzeigen</string>
+    <string name="music_app">Musik-Anwendung</string>
+    <string name="use_as_default_music_app">Als Standard-Musik-Anwendung verwenden</string>
+    <string name="choose_music_app_explanation">Wählen Sie Musik-Anwendung, die für die Wiedergabe/Pause-Verknüpfung verwendet werden soll</string>
+    <string name="drawer_open">Öffnen</string>
+    <string name="drawer_close">Schließen</string>
+    <string name="theme_dark">Dunkel</string>
+    <string name="app_theme">Anwendungs-Thema</string>
+    <string name="list">Liste</string>
+    <string name="widgets_hint">Wählen Sie ein Element, um das Widget zu konfigurieren</string>
+    <string name="lock_screen">Bildschirm sperren</string>
+    <string name="home_screen">Start-Bildschirm</string>
+    <string name="list_of_active_widgets">Liste der aktiven Widgets</string>
+    <string name="shortcuts_and_look">Verknüpfungen und Ansicht</string>
+    <string name="shortcuts_and_look_summary">Anpassen von Verknüpfungen, Benutzeroberfläche und Schriftgröße</string>
+    <string name="current_widget">Aktuelles Widget</string>
+
+    <string-array name="disable_screen_timeout">
+    <item>Deaktivieren (während des Ladevorgangs)</item>
+    <item>Deaktivieren</item>
+    <item>Aktivieren</item>
+  </string-array>
+
+    <string-array name="orientation_titles">
+    <item>System</item>
+    <item>Hochformat</item>
+    <item>Querformat</item>
+    <item>Querformat (invers)</item>
+  </string-array>
 </resources>
