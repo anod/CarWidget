@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+    android:visibility="gone">
+
+	<ImageButton
+		android:id="@+id/btn_incar_switch"
+		style="@style/incarButton"
+		android:layout_alignParentLeft="true"
+		android:background="@drawable/btn_transparent"
+	 />
+
+	<ImageButton
+		android:id="@+id/btn_settings"
+		style="@style/settingsButton"
+		android:layout_alignParentRight="true"
+		android:src="@drawable/ic_holo_settings"
+		android:background="@drawable/btn_transparent"
+	/>
+</RelativeLayout>

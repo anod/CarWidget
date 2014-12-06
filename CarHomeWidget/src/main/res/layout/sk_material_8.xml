@@ -71,6 +71,6 @@
     </FrameLayout>
 </LinearLayout></LinearLayout>
 
-    <include layout="@layout/sk_holo_buttons"/>
+    <include layout="@layout/sk_material_buttons"/>
 
 </LinearLayout>
