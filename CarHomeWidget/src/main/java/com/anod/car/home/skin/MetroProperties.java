@@ -1,6 +1,8 @@
 package com.anod.car.home.skin;
 
 import com.anod.car.home.R;
+import com.anod.car.home.skin.icon.BackgroundProcessor;
+import com.anod.car.home.skin.icon.MetroBackgroundProcessor;
 
 public class MetroProperties extends BaseProperties {
 
@@ -36,4 +38,9 @@ public class MetroProperties extends BaseProperties {
 	public int getRowLayout() {
 		return R.layout.sk_windows7_row;
 	}
+
+    @Override
+    public BackgroundProcessor getBackgroundProcessor() {
+        return new MetroBackgroundProcessor();
+    }
 }

@@ -14,6 +14,7 @@ import com.anod.car.home.model.LauncherSettings;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.skin.icon.BackgroundProcessor;
 import com.anod.car.home.skin.SkinProperties;
 import com.anod.car.home.utils.BitmapTransform;
 import com.anod.car.home.utils.IconTheme;
@@ -35,8 +36,9 @@ public class ShortcutViewBuilder {
 	private WidgetShortcutsModel mSmodel;
 	private LruCache<String, Bitmap> mBitmapMemoryCache;
 	private BitmapTransform mBitmapTransform;
+    private BackgroundProcessor mBackgroundProcessor;
 
-	public ShortcutViewBuilder(Context context,int appWidgetId, WidgetViewBuilder.PendingIntentHelper pendingIntentHelper) {
+    public ShortcutViewBuilder(Context context,int appWidgetId, WidgetViewBuilder.PendingIntentHelper pendingIntentHelper) {
 		mContext = context;
 		mPendingIntentHelper = pendingIntentHelper;
 		mAppWidgetId = appWidgetId;
@@ -50,34 +52,37 @@ public class ShortcutViewBuilder {
 		mPrefs = prefs;
 		mSmodel = smodel;
 		mBitmapTransform = bitmapTransform;
+        mBackgroundProcessor = mSkinProperties.getBackgroundProcessor();
 	}
 
 	public void fill(RemoteViews views, int position, int resBtn, int resText) {
 
 		ShortcutInfo info = mSmodel.getShortcut(position);
 
+        Bitmap icon = null;
 		if (info == null) {
 			setNoShortcut(resBtn, resText, views, position, mSkinProperties);
 		} else {
-			setShortcut(resBtn, resText, info, views, position, mIconTheme);
+            icon = setShortcut(resBtn, resText, info, views, position, mIconTheme);
 		}
 		if (mPrefs.isTitlesHide()) {
 			views.setViewVisibility(resText, View.GONE);
 		} else {
 			setFont(resText, mScaledDensity, views);
 		}
-		if (mSkinName.equals(Main.SKIN_WINDOWS7)) {
-			setTile(mPrefs.getTileColor(), resBtn, views);
+		if (mBackgroundProcessor != null) {
+			setIconBackground(icon, resBtn, views);
 		}
 
 	}
 
-	private void setTile(int tileColor, int res, RemoteViews views) {
-		if (Color.alpha(tileColor) == 0) {
+	private void setIconBackground(Bitmap icon, int res, RemoteViews views) {
+        int color = mBackgroundProcessor.getColor(mPrefs, icon);
+		if (Color.alpha(color) == 0) {
 			views.setViewVisibility(res, View.GONE);
 		} else {
 			views.setViewVisibility(res, View.VISIBLE);
-			views.setInt(res, "setBackgroundColor", tileColor);
+			views.setInt(res, "setBackgroundColor", color);
 		}
 	}
 
@@ -118,7 +123,7 @@ public class ShortcutViewBuilder {
 
 
 
-	private void setShortcut(int res, int resText, ShortcutInfo info, RemoteViews views, int cellId, IconTheme themeIcons) {
+	private Bitmap setShortcut(int res, int resText, ShortcutInfo info, RemoteViews views, int cellId, IconTheme themeIcons) {
 
 		String themePackage = (themeIcons == null) ? "null" : themeIcons.getPackageName();
 		String transformKey = mBitmapTransform.getCacheKey();
@@ -139,6 +144,8 @@ public class ShortcutViewBuilder {
 		PendingIntent shortcutIntent = mPendingIntentHelper.createShortcut(info.intent, mAppWidgetId, cellId, info.id);
 		views.setOnClickPendingIntent(res, shortcutIntent);
 		views.setOnClickPendingIntent(resText, shortcutIntent);
+
+        return icon;
 	}
 
 	public void addBitmapToMemCache(String key, Bitmap bitmap) {

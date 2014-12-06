@@ -13,14 +13,15 @@ public class Main implements Serializable {
 	public static final String SKIN_WINDOWS7 = "windows7";
 	public static final String SKIN_HOLO = "holo";
 	public static final String SKIN_BBB = "blackbearblanc";
-	
+    public static final String SKIN_CARDS = "cards";
+
 	public static final int FONT_SIZE_UNDEFINED = -1;
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String skin;		
+    private String skin;
 	private Integer tileColor;
 	private boolean iconsMono;
 	private Integer iconsColor;

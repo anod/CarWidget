@@ -10,7 +10,7 @@ import com.anod.car.home.R;
  * @date 2014-10-20
  */
 public class SkinList {
-    private static int[] sTextRes = { 0, 0, 0, 0, R.string.skin_info_bbb };
+    private static int[] sTextRes = { 0, 0, 0, 0, 0, R.string.skin_info_bbb };
 
     private Item[] mSkinItems;
     private boolean mIsKeyguard;

@@ -1,4 +1,4 @@
-package com.anod.car.home.skin;
+package com.anod.car.home.skin.icon;
 
 import android.graphics.Bitmap;
 

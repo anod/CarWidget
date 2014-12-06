@@ -236,4 +236,18 @@
 		<item name="android:background">@drawable/panel_item_bg_grey</item>
 	</style>
 
+    <style name="cardsBtnText" parent="textAlignStyle">
+        <item name="android:lines">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">#22000000</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_gravity">center|bottom</item>
+        <item name="android:paddingTop">5.0dp</item>
+        <item name="android:paddingBottom">5.0dp</item>
+        <item name="android:paddingRight">5.0dp</item>
+        <item name="android:paddingLeft">5.0dp</item>
+    </style>
 </resources>

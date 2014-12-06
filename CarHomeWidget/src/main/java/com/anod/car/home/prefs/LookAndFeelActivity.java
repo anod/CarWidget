@@ -43,13 +43,13 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentHelper, ShortcutDragListener.DropCallback {
-    private static final int SKINS_COUNT = 5;
+    private static final int SKINS_COUNT = 6;
 
     private Context mContext;
     private int mCurrentPage;
     private int mAppWidgetId;
 
-    private boolean[] mPreviewInitialized = { false, false, false, false, false };
+    private boolean[] mPreviewInitialized = { false, false, false, false, false, false };
     private WidgetViewBuilder mBuilder;
     private Main mPrefs;
     private final SparseArray<SkinRefreshListener> mSkinRefreshListeners = new SparseArray<SkinRefreshListener>(SKINS_COUNT);

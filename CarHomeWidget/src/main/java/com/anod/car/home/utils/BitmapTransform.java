@@ -10,7 +10,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 
-import com.anod.car.home.skin.IconProcessor;
+import com.anod.car.home.skin.icon.IconProcessor;
 
 public class BitmapTransform {
 	private int mIconSize = -1;

@@ -16,7 +16,9 @@ public class PropertiesFactory {
 			return new GlossyProperties();
 		} else if (skinName.equals(Main.SKIN_BBB)) {
 			return new BBBProperties();
-		}
+		} else if (skinName.equals(Main.SKIN_CARDS)) {
+            return new CardsProperties();
+        }
 		return new CarHomeProperties();
 	}
 

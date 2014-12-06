@@ -1,6 +1,8 @@
 package com.anod.car.home.skin;
 
 import com.anod.car.home.R;
+import com.anod.car.home.skin.icon.BackgroundProcessor;
+import com.anod.car.home.skin.icon.IconProcessor;
 
 public abstract class BaseProperties implements SkinProperties {
 
@@ -31,4 +33,9 @@ public abstract class BaseProperties implements SkinProperties {
 
 	@Override
 	public int getIconPaddingRes() { return R.dimen.icon_padding_bottom; }
+
+    @Override
+    public BackgroundProcessor getBackgroundProcessor() {
+        return null;
+    }
 }
