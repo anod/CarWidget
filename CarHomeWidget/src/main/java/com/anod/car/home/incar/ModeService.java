@@ -111,17 +111,25 @@ public class ModeService extends Service {
         AppLog.d("ModeService onStartCommand, sInCarMode = " + sInCarMode + ", redelivered = " + redelivered);
 
 
-		// If service killed
-		if (intent == null) {
-			mForceState = PreferencesStorage.restoreForceState(this);
-			AppLog.d("Intent is null... sInCarMode = " + sInCarMode + ", mForceState = " + mForceState);
-		} else {
-			if (intent.getIntExtra(EXTRA_MODE, MODE_SWITCH_ON) == MODE_SWITCH_OFF) {
-				stopSelf();
-				return START_NOT_STICKY;
-			}
-			mForceState = intent.getBooleanExtra(EXTRA_FORCE_STATE, false);
-		}
+        if (intent == null) {
+            AppLog.e("ModeService started without intent");
+            stopSelf();
+            return START_NOT_STICKY;
+        }
+
+        int mode = intent.getIntExtra(EXTRA_MODE, -1);
+        if (mode == -1) {
+            AppLog.e("ModeService, start mode is not correct");
+            stopSelf();
+            return START_NOT_STICKY;
+        }
+        if (mode == MODE_SWITCH_OFF) {
+            stopSelf();
+            return START_NOT_STICKY;
+        }
+        // mode == MODE_SWITCH_ON
+        mForceState = intent.getBooleanExtra(EXTRA_FORCE_STATE, false);
+
 
 		Version version = new Version(this);
 		if (version.isFreeAndTrialExpired()) {
@@ -187,4 +195,9 @@ public class ModeService extends Service {
 		return null;
 	}
 
+    public static Intent createStartIntent(Context context, int mode) {
+        Intent service = new Intent(context, ModeService.class);
+        service.putExtra(ModeService.EXTRA_MODE, mode);
+        return service;
+    }
 }

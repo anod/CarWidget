@@ -81,7 +81,7 @@ public class Provider extends AppWidgetProvider {
         context.stopService(receiverIntent);
 
     	if (ModeService.sInCarMode) {
-            final Intent modeIntent = new Intent(context, ModeService.class);
+            final Intent modeIntent = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_OFF);
             context.stopService(modeIntent);
     	}
     }

@@ -45,8 +45,7 @@ public class ModeNotification {
     }
 
     public static Notification createNotification(Version version, Context context) {
-        Intent notificationIntent = new Intent(context, ModeService.class);
-        notificationIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_OFF);
+        Intent notificationIntent = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_OFF);
         Uri data = Uri.parse("com.anod.car.home.pro://mode/0/");
         notificationIntent.setData(data);
 

@@ -90,10 +90,10 @@ public class ModeDetector {
 		boolean newMode = detectNewMode();
 		AppLog.d("New mode : " + newMode + " Car Mode:" + ModeService.sInCarMode);
 		if (!ModeService.sInCarMode && newMode) {
-			Intent service = new Intent(context, ModeService.class);
+            Intent service = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_ON);
 			context.startService(service);
 		} else if (ModeService.sInCarMode && !newMode) {
-			Intent service = new Intent(context, ModeService.class);
+            Intent service = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_OFF);
 			context.stopService(service);
 		}
 
