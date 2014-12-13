@@ -28,7 +28,7 @@
 
 
         <ImageButton
-            android:id="@+id/btn0"
+            android:id="@+id/btn1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray"
@@ -37,7 +37,7 @@
             />
 
         <TextView
-            android:id="@+id/btn_text0"
+            android:id="@+id/btn_text1"
             style="@style/cardsBtnText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         >
 
         <ImageButton
-            android:id="@+id/btn1"
+            android:id="@+id/btn0"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray"
@@ -70,7 +70,7 @@
             />
 
         <TextView
-            android:id="@+id/btn_text1"
+            android:id="@+id/btn_text0"
             style="@style/cardsBtnText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

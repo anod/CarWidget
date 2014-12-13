@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-    android:visibility="gone">
+    android:layout_gravity="bottom"
+>
 
 	<ImageButton
 		android:id="@+id/btn_incar_switch"
-		style="@style/incarButton"
-		android:layout_alignParentLeft="true"
-		android:background="@drawable/btn_transparent"
-	 />
+		android:layout_gravity="left"
+        android:src="@drawable/ic_incar_enter_gray"
+        android:background="@drawable/fab_background"
+        android:layout_width="40dp"
+        android:layout_height="40dp"/>
 
 	<ImageButton
 		android:id="@+id/btn_settings"
-		style="@style/settingsButton"
-		android:layout_alignParentRight="true"
-		android:src="@drawable/ic_holo_settings"
-		android:background="@drawable/btn_transparent"
-	/>
-</RelativeLayout>
+        android:layout_gravity="right"
+		android:src="@drawable/ic_settings_grey600_36dp"
+        android:background="@drawable/fab_background"
+        android:layout_width="40dp"
+        android:layout_height="40dp"/>
+</FrameLayout>

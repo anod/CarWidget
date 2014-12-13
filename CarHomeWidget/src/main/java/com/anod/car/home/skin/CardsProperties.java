@@ -7,12 +7,12 @@ import com.anod.car.home.skin.icon.CardsBackgroundProcessor;
 public class CardsProperties extends BaseProperties {
 	@Override
 	public int getInCarButtonExitRes() {
-		return R.drawable.ic_incar_exit_holo;
+		return R.drawable.ic_incar_exit_gray;
 	}
 
 	@Override
 	public int getInCarButtonEnterRes() {
-		return R.drawable.ic_incar_enter_holo;
+		return R.drawable.ic_incar_enter_gray;
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class CardsProperties extends BaseProperties {
 	}
 	@Override
 	public int getSettingsButtonRes() {
-		return R.drawable.ic_holo_settings;
+		return R.drawable.ic_settings_grey600_36dp;
 	}
 
 	@Override
