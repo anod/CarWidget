@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
+	android:layout_width="wrap_content"
+	android:layout_height="match_parent"
+    android:layout_gravity="right"
+    android:layout_margin="4dp"
 >
 
 	<ImageButton
 		android:id="@+id/btn_incar_switch"
-		android:layout_gravity="left"
+		android:layout_gravity="bottom"
         android:src="@drawable/ic_incar_enter_gray"
         android:background="@drawable/fab_background"
         android:layout_width="40dp"
         android:layout_height="40dp"/>
 
 	<ImageButton
-		android:id="@+id/btn_settings"
-        android:layout_gravity="right"
+        android:visibility="gone"
+        android:id="@+id/btn_settings"
+        android:layout_gravity="bottom"
 		android:src="@drawable/ic_settings_grey600_36dp"
         android:background="@drawable/fab_background"
         android:layout_width="40dp"
