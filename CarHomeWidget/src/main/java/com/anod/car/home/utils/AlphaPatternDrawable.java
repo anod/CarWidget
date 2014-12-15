@@ -1,23 +1,6 @@
-/*
- * Copyright (C) 2010 Daniel Nilsson
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package afzkl.development.colorpickerview.drawable;
+package com.anod.car.home.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
@@ -31,8 +14,8 @@ import android.graphics.drawable.Drawable;
  * @author Daniel Nilsson
  */
 public class AlphaPatternDrawable extends Drawable {
-	
-	private int mRectangleSize = 10;
+
+    private int mRectangleSize = 10;
 
 	private Paint mPaint = new Paint();
 	private Paint mPaintWhite = new Paint();
@@ -47,7 +30,7 @@ public class AlphaPatternDrawable extends Drawable {
 	 * Because recreating the pattern i rather expensive. I will only be recreated if the
 	 * size changes.
 	 */
-	private Bitmap		mBitmap;
+	private Bitmap mBitmap;
 	
 	public AlphaPatternDrawable(int rectangleSize) {
 		mRectangleSize = rectangleSize;
@@ -102,7 +85,7 @@ public class AlphaPatternDrawable extends Drawable {
 			return;
 		}
 		
-		mBitmap = Bitmap.createBitmap(getBounds().width(), getBounds().height(), Config.ARGB_8888);			
+		mBitmap = Bitmap.createBitmap(getBounds().width(), getBounds().height(), Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(mBitmap);
 		
 		Rect r = new Rect();

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.NumberPicker;
 
+import com.android.colorpicker.ColorPickerSwatch;
 import com.anod.car.home.R;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.preferences.Main;
@@ -75,21 +76,18 @@ public class LookAndFeelMenu {
         if (itemId == R.id.tile_color) {
             Main prefs = PreferencesStorage.loadMain(mActivity, mAppWidgetId);
             Integer value = prefs.getTileColor();
-            DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            final CarHomeColorPickerDialog d = CarHomeColorPickerDialog.newInstance(value,true,mActivity);
+            d.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    int color = ((CarHomeColorPickerDialog) dialog).getColor();
+                public void onColorSelected(int color) {
                     final WidgetSharedPreferences.WidgetEditor edit = mSharedPrefs.edit();
                     edit.putInt(PreferencesStorage.BUTTON_COLOR, color);
                     edit.commit();
                     showTileColorButton();
                     mActivity.refreshSkinPreview();
                 }
-
-            };
-            final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mActivity, value, listener);
-            d.setAlphaSliderVisible(true);
-            d.show();
+            });
+            d.show(mActivity.getFragmentManager(),"tileColor");
             return true;
         }
         if (itemId == R.id.more) {
@@ -100,19 +98,17 @@ public class LookAndFeelMenu {
         }
         if (itemId == R.id.bg_color) {
             int value = mActivity.getPrefs().getBackgroundColor();
-            DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            final CarHomeColorPickerDialog d = CarHomeColorPickerDialog.newInstance(value,true,mActivity);
+            d.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    int color = ((CarHomeColorPickerDialog) dialog).getColor();
+                public void onColorSelected(int color) {
                     final WidgetSharedPreferences.WidgetEditor edit = mSharedPrefs.edit();
                     edit.putInt(PreferencesStorage.BG_COLOR, color);
                     edit.commit();
                     mActivity.refreshSkinPreview();
                 }
-            };
-            final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mActivity, value, listener);
-            d.setAlphaSliderVisible(true);
-            d.show();
+            });
+            d.show(mActivity.getFragmentManager(),"bgColor");
             return true;
         }
         if (itemId == R.id.icons_theme) {

@@ -9,6 +9,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 
+import com.android.colorpicker.ColorPickerSwatch;
 import com.anod.car.home.R;
 import com.anod.car.home.drawer.NavigationList;
 import com.anod.car.home.prefs.preferences.Main;
@@ -81,17 +82,16 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
 			public boolean onPreferenceClick(Preference preference) {
 				Integer icnTintColor = prefs.getIconsColor();
 				int value = (icnTintColor != null) ? icnTintColor : Color.WHITE;
-				OnClickListener listener = new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						int color = ((CarHomeColorPickerDialog) dialog).getColor();
-						final WidgetEditor edit = sharedPrefs.edit();
-						edit.putInt(PreferencesStorage.ICONS_COLOR, color);
-						edit.commit();
-					}
-				};
-				final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
-				d.show();
+                final CarHomeColorPickerDialog d = CarHomeColorPickerDialog.newInstance(value,false,mContext);
+                d.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+                    @Override
+                    public void onColorSelected(int color) {
+                        final WidgetEditor edit = sharedPrefs.edit();
+                        edit.putInt(PreferencesStorage.ICONS_COLOR, color);
+                        edit.commit();
+                    }
+                });
+                d.show(getFragmentManager(),"icnColor");
 				return false;
 
 			}
@@ -115,18 +115,16 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				int value = prefs.getFontColor();
-				OnClickListener listener = new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						int color = ((CarHomeColorPickerDialog) dialog).getColor();
-						final WidgetEditor edit = sharedPrefs.edit();
-						edit.putInt(PreferencesStorage.FONT_COLOR, color);
-						edit.commit();
-					}
-				};
-				final CarHomeColorPickerDialog d = new CarHomeColorPickerDialog(mContext, value, listener);
-				d.setAlphaSliderVisible(true);
-				d.show();
+                final CarHomeColorPickerDialog d = CarHomeColorPickerDialog.newInstance(value,true,mContext);
+                d.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+                    @Override
+                    public void onColorSelected(int color) {
+                        final WidgetEditor edit = sharedPrefs.edit();
+                        edit.putInt(PreferencesStorage.FONT_COLOR, color);
+                        edit.commit();
+                    }
+                });
+                d.show(getFragmentManager(),"fontColor");
 				return false;
 
 			}
