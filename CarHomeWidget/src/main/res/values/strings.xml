@@ -252,6 +252,7 @@
     <string name="shortcuts_and_look_summary">Customize shortcuts, skin and font size</string>
     <string name="current_widget">Current widget</string>
     <string name="no_active_widget">No active widgets were found. Make sure you add a widget on your home screen.</string>
+    <string name="hex_code">Hex code</string>
 
     <string-array name="disable_screen_timeout">
         <item>Disable (while charging)</item>

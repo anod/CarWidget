@@ -4,6 +4,28 @@ import android.content.Context;
 import android.graphics.Color;
 
 public class ColorUtils {
+
+    public static String toHex(int color, boolean addAlpha) {
+        String hexStr = String.format("%08X", color);
+        if (!addAlpha) {
+            hexStr = hexStr.substring(2);
+        }
+        return hexStr;
+    }
+
+    public static int fromHex(String hexStr, boolean addAlpha, int defColor) {
+        int intValue = defColor;
+        try {
+            intValue = Color.parseColor("#" + hexStr);
+        } catch (IllegalArgumentException e) {
+            AppLog.d(e.getMessage());
+        }
+        if (!addAlpha) {
+            intValue = (intValue & 0x00FFFFFF) + 0xFF000000;
+        }
+        return intValue;
+    }
+
     /**
      * Create an array of int with colors
      *

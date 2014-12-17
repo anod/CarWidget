@@ -3,10 +3,12 @@ package com.anod.car.home.prefs.views;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.LayoutInflater;
@@ -19,12 +21,12 @@ import com.android.colorpicker.ColorPickerPalette;
 import com.android.colorpicker.ColorPickerSwatch;
 import com.anod.car.home.R;
 import com.anod.car.home.utils.AlphaPatternDrawable;
-import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.ColorUtils;
 
 public class CarHomeColorPickerDialog extends ColorPickerDialog {
     protected static final String KEY_ALPHA = "alpha";
     public static final int ALPHA_LEVELS = 5;
+    public static final int ALPHA_OPAQUE = 255;
 
     private boolean mAlphaSliderVisible;
     private ColorPickerPalette mPalette;
@@ -32,6 +34,9 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
     private ColorPickerPalette mAlpha;
 
     private int mSelectedAlpha;
+    private EditText mHexEdit;
+    private View mColorsPanel;
+    private boolean mHexVisible;
 
     public static CarHomeColorPickerDialog newInstance(int selectedColor, boolean alphaSliderVisible, Context context) {
         CarHomeColorPickerDialog ret = new CarHomeColorPickerDialog();
@@ -47,7 +52,6 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             mAlphaSliderVisible = getArguments().getBoolean(KEY_ALPHA);
         }
@@ -57,32 +61,41 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         }
 
         mSelectedAlpha = Color.alpha(mSelectedColor);
+        mSelectedColor = alphaColor(ALPHA_OPAQUE, mSelectedColor);
+        setStyle(DialogFragment.STYLE_NO_FRAME, 0);
     }
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Activity activity = getActivity();
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.color_picker_dialog, null);
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.color_dialog_toolbar);
+        toolbar.setTitle(R.string.color_dialog_title);
+
         mProgress = (ProgressBar) view.findViewById(android.R.id.progress);
         mPalette = (ColorPickerPalette) view.findViewById(R.id.color_picker);
         mPalette.init(mSize, mColumns, mColorSelectListener);
+        mColorsPanel = view.findViewById(R.id.colors_panel);
+        mHexEdit = (EditText) view.findViewById(R.id.hex_edit);
+        mHexEdit.setVisibility(View.GONE);
 
         if (mAlphaSliderVisible) {
             float density = getResources().getDisplayMetrics().density;
             mAlpha = (ColorPickerPalette) view.findViewById(R.id.alpha_picker);
             mAlpha.setBackground(new AlphaPatternDrawable((int)(5 * density)));
+            mAlpha.setVisibility(View.VISIBLE);
             mAlpha.init(mSize, ALPHA_LEVELS, mAlphaSelectListener);
         }
 
         showPaletteView();
 
-        mAlertDialog = new AlertDialog.Builder(activity)
-                .setTitle(mTitleResId)
+        mAlertDialog = new AlertDialog.Builder(activity, R.style.Theme_AppCompat_Dialog)
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, mPositiveListener)
                 .setNegativeButton(android.R.string.cancel, mNegativeListener)
-                .setNeutralButton("#" + getHexText(mSelectedColor), mNeutralListener)
                 .create();
 
         return mAlertDialog;
@@ -120,21 +133,25 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         int g = Color.green(color);
         int b = Color.blue(color);
 
-        int inc = 255/ALPHA_LEVELS;
+        int inc = ALPHA_OPAQUE /ALPHA_LEVELS;
         int alpha = 0;
         for(int i=0; i<ALPHA_LEVELS-1; i++) {
             colors[i] = Color.argb(alpha, r ,g ,b);
             alpha+=inc;
         }
-        colors[ALPHA_LEVELS-1] = Color.argb(255, r ,g ,b);
+        colors[ALPHA_LEVELS-1] = Color.argb(ALPHA_OPAQUE, r ,g ,b);
         return colors;
     }
 
     private DialogInterface.OnClickListener mPositiveListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
+            int color = alphaColor(mSelectedAlpha,mSelectedColor);
+            if (mHexVisible) {
+                color = ColorUtils.fromHex(mHexEdit.getText().toString(), mAlphaSliderVisible, color);
+            }
             if (mListener != null) {
-                mListener.onColorSelected(alphaColor(mSelectedAlpha,mSelectedColor));
+                mListener.onColorSelected(color);
             }
             dismiss();
         }
@@ -144,13 +161,6 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             dismiss();
-        }
-    };
-
-    private DialogInterface.OnClickListener mNeutralListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            showHexDialog();
         }
     };
 
@@ -180,39 +190,15 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         }
     };
 
-	private String getHexText(int color) {
-		String hexStr = String.format("%08X", color);
-		if (!mAlphaSliderVisible) {
-			hexStr = hexStr.substring(2);
-		}
-		return hexStr;
-	}
 
-	private int parseColorStr(String hexStr, int defColor) {
-		int intValue = defColor;
-		try {
-			intValue = Color.parseColor("#" + hexStr);
-		} catch (IllegalArgumentException e) {
-			AppLog.d(e.getMessage());
-		}
-		if (!mAlphaSliderVisible) {
-			intValue = (intValue & 0x00FFFFFF) + 0xFF000000;
-		}
-		return intValue;
-	}
-
-
-    private void onHexColor(int intValue) {
-        refreshPalette();
-    }
-
-	private void showHexDialog() {
-        final Context context = getActivity();
-		AlertDialog.Builder alert = new AlertDialog.Builder(context);
-		alert.setTitle(R.string.color_dialog_title);
-		final int lastColor = mSelectedColor;
-		// Set an EditText view to get user input
-		final EditText input = new EditText(context);
+	private void toggleHexDialog() {
+        if (mHexVisible) {
+            mHexVisible = false;
+            mColorsPanel.setVisibility(View.VISIBLE);
+            mHexEdit.setVisibility(View.GONE);
+            return;
+        }
+        mHexVisible = true;
 		InputFilter filter0 = new InputFilter.LengthFilter((mAlphaSliderVisible) ? 8 : 6);
 		InputFilter filter1 = new InputFilter() {
 			public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -228,25 +214,11 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
 			}
 		};
 
-		input.setFilters(new InputFilter[] { filter0, filter1 });
-		input.setText(getHexText(lastColor));
-		alert.setView(input);
+        mHexEdit.setFilters(new InputFilter[] { filter0, filter1 });
+        mHexEdit.setText(ColorUtils.toHex(alphaColor(mSelectedAlpha, mSelectedColor), mAlphaSliderVisible));
 
-		alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				int intValue = parseColorStr(input.getText().toString(), lastColor);
-				onHexColor(intValue);
-			}
-
-        });
-
-		alert.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				// Canceled.
-			}
-		});
-
-		alert.show();
+        mColorsPanel.setVisibility(View.INVISIBLE);
+        mHexEdit.setVisibility(View.VISIBLE);
 	}
 
     @Override
