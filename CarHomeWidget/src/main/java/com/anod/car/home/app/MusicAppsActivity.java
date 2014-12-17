@@ -16,6 +16,7 @@ import com.anod.car.home.model.AppsList;
 import com.anod.car.home.utils.AppLog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public abstract class MusicAppsActivity extends AppsListActivity {
         sExcludePackages = new HashSet<String>(2);
         sExcludePackages.add("com.amazon.kindle");
         sExcludePackages.add("com.google.android.apps.magazines");
+        sExcludePackages.add("flipboard.app");
         // Samsung crap
         sExcludePackages.add("com.sec.android.app.storycam");
         sExcludePackages.add("com.sec.android.app.mediasync");
@@ -76,15 +78,21 @@ public abstract class MusicAppsActivity extends AppsListActivity {
             final PackageManager packageManager = getContext().getPackageManager();
             List<ResolveInfo> apps = packageManager.queryBroadcastReceivers(new Intent(Intent.ACTION_MEDIA_BUTTON), 96);
 
+            // filter duplicate receivers
+            HashMap<String, Boolean> receivers = new HashMap<String, Boolean>();
+
             for (ResolveInfo appInfo : apps) {
+                String pkg = appInfo.activityInfo.packageName;
                 // App title
-                if (!sExcludePackages.contains(appInfo.activityInfo.packageName)) {
-                    String title = appInfo.activityInfo.applicationInfo.loadLabel(packageManager).toString();
-                    if (BuildConfig.DEBUG) {
-                        AppLog.d(appInfo.activityInfo.packageName+"/"+appInfo.activityInfo.applicationInfo.className);
-                    }
-                    mAppsList.put(appInfo, title);
+                if (sExcludePackages.contains(pkg) || receivers.containsKey(pkg)) {
+                    continue;
                 }
+                String title = appInfo.activityInfo.applicationInfo.loadLabel(packageManager).toString();
+                if (BuildConfig.DEBUG) {
+                    AppLog.d(appInfo.activityInfo.packageName + "/" + appInfo.activityInfo.applicationInfo.className);
+                }
+                receivers.put(pkg, true);
+                mAppsList.put(appInfo, title);
             }
             mAppsList.sort();
             return mAppsList.getEntries();
