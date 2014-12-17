@@ -19,6 +19,7 @@ public class ColorUtils {
             intValue = Color.parseColor("#" + hexStr);
         } catch (IllegalArgumentException e) {
             AppLog.d(e.getMessage());
+            return defColor;
         }
         if (!addAlpha) {
             intValue = (intValue & 0x00FFFFFF) + 0xFF000000;

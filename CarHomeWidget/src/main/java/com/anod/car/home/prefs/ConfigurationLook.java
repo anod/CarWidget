@@ -1,7 +1,5 @@
 package com.anod.car.home.prefs;
 
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,7 +14,7 @@ import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
-import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
+import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog;
 import com.anod.car.home.prefs.views.SeekBarPreference;
 
 public class ConfigurationLook extends ConfigurationPreferenceFragment {

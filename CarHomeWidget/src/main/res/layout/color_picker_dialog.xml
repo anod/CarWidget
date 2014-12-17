@@ -9,7 +9,16 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:minHeight="?attr/actionBarSize"
-/>
+>
+    <Button
+        android:id="@+id/hex_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="#000000"
+        style="?attr/actionButtonStyle"
+        android:layout_gravity="right"
+        />
+    </android.support.v7.widget.Toolbar>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -58,14 +67,10 @@
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/hex_edit"
+        <com.anod.car.home.prefs.colorpicker.HexPanel
+            android:id="@+id/hex_panel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-
-        />
+            android:layout_height="wrap_content" />
      </FrameLayout>
 </ScrollView>
 </LinearLayout>

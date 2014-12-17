@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.views;
+package com.anod.car.home.prefs.colorpicker;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,6 +13,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
@@ -34,9 +35,10 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
     private ColorPickerPalette mAlpha;
 
     private int mSelectedAlpha;
-    private EditText mHexEdit;
     private View mColorsPanel;
-    private boolean mHexVisible;
+    private HexPanel mHexPanel;
+    private Button mHexButton;
+
 
     public static CarHomeColorPickerDialog newInstance(int selectedColor, boolean alphaSliderVisible, Context context) {
         CarHomeColorPickerDialog ret = new CarHomeColorPickerDialog();
@@ -75,12 +77,23 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.color_dialog_toolbar);
         toolbar.setTitle(R.string.color_dialog_title);
 
+        mHexButton = (Button)toolbar.findViewById(R.id.hex_switch);
+        mHexButton.setText(ColorUtils.toHex(alphaColor(mSelectedAlpha, mSelectedColor), mAlphaSliderVisible));
+        mHexButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleHexDialog();
+            }
+        });
+
         mProgress = (ProgressBar) view.findViewById(android.R.id.progress);
         mPalette = (ColorPickerPalette) view.findViewById(R.id.color_picker);
         mPalette.init(mSize, mColumns, mColorSelectListener);
         mColorsPanel = view.findViewById(R.id.colors_panel);
-        mHexEdit = (EditText) view.findViewById(R.id.hex_edit);
-        mHexEdit.setVisibility(View.GONE);
+
+        mHexPanel = (HexPanel) view.findViewById(R.id.hex_panel);
+        mHexPanel.init(alphaColor(mSelectedAlpha,mSelectedColor), mAlphaSliderVisible);
+        mHexPanel.hide();
 
         if (mAlphaSliderVisible) {
             float density = getResources().getDisplayMetrics().density;
@@ -147,8 +160,8 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             int color = alphaColor(mSelectedAlpha,mSelectedColor);
-            if (mHexVisible) {
-                color = ColorUtils.fromHex(mHexEdit.getText().toString(), mAlphaSliderVisible, color);
+            if (mHexPanel.isVisible()) {
+                color = mHexPanel.getColor(color);
             }
             if (mListener != null) {
                 mListener.onColorSelected(color);
@@ -174,6 +187,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
                 if (mAlpha!=null) {
                     mAlpha.drawPalette(generateAlphaColors(mSelectedColor), alphaColor(mSelectedAlpha,mSelectedColor));
                 }
+                mHexButton.setText(ColorUtils.toHex(alphaColor(mSelectedAlpha, mSelectedColor), mAlphaSliderVisible));
             }
         }
     };
@@ -186,39 +200,20 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
                 mSelectedAlpha = alpha;
                 // Redraw palette to show checkmark on newly selected color before dismissing.
                 mAlpha.drawPalette(generateAlphaColors(mSelectedColor), alphaColor(mSelectedAlpha,mSelectedColor));
+                mHexButton.setText(ColorUtils.toHex(alphaColor(mSelectedAlpha, mSelectedColor), mAlphaSliderVisible));
             }
         }
     };
 
 
 	private void toggleHexDialog() {
-        if (mHexVisible) {
-            mHexVisible = false;
+        if (mHexPanel.isVisible()) {
+            mHexPanel.hide();
             mColorsPanel.setVisibility(View.VISIBLE);
-            mHexEdit.setVisibility(View.GONE);
             return;
         }
-        mHexVisible = true;
-		InputFilter filter0 = new InputFilter.LengthFilter((mAlphaSliderVisible) ? 8 : 6);
-		InputFilter filter1 = new InputFilter() {
-			public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-				for (int i = start; i < end; i++) {
-					char ch = source.charAt(i);
-					if (Character.isDigit(ch) || (ch >= 'A' && ch <= 'F') || (ch >= 'a' && ch <= 'f')) {
-						return null;
-					} else {
-						return "";
-					}
-				}
-				return null;
-			}
-		};
-
-        mHexEdit.setFilters(new InputFilter[] { filter0, filter1 });
-        mHexEdit.setText(ColorUtils.toHex(alphaColor(mSelectedAlpha, mSelectedColor), mAlphaSliderVisible));
-
+        mHexPanel.show();
         mColorsPanel.setVisibility(View.INVISIBLE);
-        mHexEdit.setVisibility(View.VISIBLE);
 	}
 
     @Override

@@ -21,7 +21,7 @@ import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
-import com.anod.car.home.prefs.views.CarHomeColorPickerDialog;
+import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.Utils;
 

@@ -15,6 +15,11 @@
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/color_picker_swatch_bg"
+    />
+    <ImageView
         android:id="@+id/color_picker_swatch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
