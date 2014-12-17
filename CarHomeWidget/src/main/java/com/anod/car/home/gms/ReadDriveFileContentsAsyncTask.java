@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveId;
 
@@ -21,18 +22,19 @@ public abstract class ReadDriveFileContentsAsyncTask extends ApiClientAsyncTask<
 
 	@Override
 	protected Boolean doInBackgroundConnected(DriveId... params) {
-		String contents = null;
+
 		DriveFile file = Drive.DriveApi.getFile(getGoogleApiClient(), params[0]);
-		DriveApi.ContentsResult contentsResult =
-				file.openContents(getGoogleApiClient(), DriveFile.MODE_READ_ONLY, null).await();
+        DriveApi.DriveContentsResult contentsResult = file.open(getGoogleApiClient(), DriveFile.MODE_READ_ONLY, null).await();
 		if (!contentsResult.getStatus().isSuccess()) {
 			return null;
 		}
 
-		InputStream inputStream = contentsResult.getContents().getInputStream();
+        DriveContents contents = contentsResult.getDriveContents();
+
+		InputStream inputStream =contents.getInputStream();
 		boolean result = readDriveFileBackground(inputStream);
 
-		file.discardContents(getGoogleApiClient(), contentsResult.getContents()).await();
+        contents.discard(getGoogleApiClient());
 		return result;
 	}
 

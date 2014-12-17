@@ -28,7 +28,7 @@ import java.io.InputStream;
  * @author alex
  * @date 1/19/14
  */
-public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ConfigurationActivity.onActivityResultListener, ResultCallback<DriveApi.ContentsResult> {
+public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ConfigurationActivity.onActivityResultListener, ResultCallback<DriveApi.DriveContentsResult> {
 	public static final int REQUEST_CODE_RESOLUTION = 123;
 	public static final int REQUEST_CODE_OPENER = 122;
 	public static final int REQUEST_CODE_CREATOR = 124;
@@ -152,7 +152,7 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
 	}
 
 	private void requestNewContents() {
-		Drive.DriveApi.newContents(mGoogleApiClient).setResultCallback(this);
+		Drive.DriveApi.newDriveContents(mGoogleApiClient).setResultCallback(this);
 	}
 
 
@@ -192,8 +192,8 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
 	}
 
 	@Override
-	public void onResult(DriveApi.ContentsResult contentsResult) {
-		if (!contentsResult.getStatus().isSuccess()) {
+	public void onResult(DriveApi.DriveContentsResult result) {
+		if (!result.getStatus().isSuccess()) {
 			Toast.makeText(mContext,"Error while trying to create new file contents",Toast.LENGTH_SHORT).show();
 			return;
 		}
@@ -205,7 +205,7 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
 		IntentSender intentSender = Drive.DriveApi
 				.newCreateFileActivityBuilder()
 				.setInitialMetadata(metadataChangeSet)
-				.setInitialContents(contentsResult.getContents())
+                .setInitialDriveContents(result.getDriveContents())
 				.build(mGoogleApiClient);
 		try {
 			mActivity.startIntentSenderForResult(intentSender, REQUEST_CODE_CREATOR, null, 0, 0, 0);

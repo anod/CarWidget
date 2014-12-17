@@ -5,6 +5,7 @@ import android.content.Context;
 import com.anod.car.home.utils.AppLog;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveId;
 
@@ -49,17 +50,19 @@ public class WriteDriveFileContentsAsyncTask extends ApiClientAsyncTask<WriteDri
 		try {
 			DriveFile target = Drive.DriveApi.getFile(getGoogleApiClient(), files.getDriveId());
 
-			DriveApi.ContentsResult contentsResult = target.openContents(
-					getGoogleApiClient(), DriveFile.MODE_WRITE_ONLY, null).await();
+            DriveApi.DriveContentsResult contentsResult = target.open(
+                    getGoogleApiClient(), DriveFile.MODE_WRITE_ONLY, null).await();
 			if (!contentsResult.getStatus().isSuccess()) {
 				return false;
 			}
 			FileInputStream fileInputStream = new FileInputStream(files.getSource());
 			InputStream inputStream = new BufferedInputStream(fileInputStream);
-			OutputStream outputStream = contentsResult.getContents().getOutputStream();
+
+            DriveContents contents = contentsResult.getDriveContents();
+			OutputStream outputStream = contents.getOutputStream();
 			copyStream(inputStream, outputStream);
-			com.google.android.gms.common.api.Status status = target.commitAndCloseContents(
-					getGoogleApiClient(), contentsResult.getContents()).await();
+
+            com.google.android.gms.common.api.Status status = contents.commit(getGoogleApiClient(), null).await();
 			return status.getStatus().isSuccess();
 		} catch (IOException e) {
 			AppLog.ex(e);
