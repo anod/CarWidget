@@ -1,22 +1,16 @@
 package com.anod.car.home.ui;
 
-import android.app.Dialog;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.drawer.NavigationDrawer;
 import com.anod.car.home.drawer.NavigationList;
-import com.anod.car.home.prefs.PickShortcutUtils;
 import com.anod.car.home.prefs.TrialDialogs;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
@@ -99,6 +93,7 @@ public class WidgetsListActivity extends CarWidgetActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mDrawer.refresh();
     }
 
     private void startWizard() {

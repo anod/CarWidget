@@ -29,6 +29,7 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 
 	private int[] mAppWidgetIds;
     private Version mVersion;
+    private View mHeaderView;
 
     public static WidgetsListFragment newInstance() {
 		WidgetsListFragment f = new WidgetsListFragment();
@@ -42,6 +43,7 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 	public void onResume() {
 		super.onResume();
 		getLoaderManager().initLoader(0, null, this).forceLoad();
+        updateInCarHeader(mHeaderView);
 	}
 
 	@Override
@@ -64,9 +66,9 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 		ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) lv.getLayoutParams();
 		mlp.setMargins(padding,padding,padding,0);
 
-        View header = getActivity().getLayoutInflater().inflate(R.layout.widgets_incar, null);
-        addInCar(header);
-        lv.addHeaderView(header);
+        mHeaderView = getActivity().getLayoutInflater().inflate(R.layout.widgets_incar, null);
+        updateInCarHeader(mHeaderView);
+        lv.addHeaderView(mHeaderView);
         View footer = getActivity().getLayoutInflater().inflate(R.layout.widgets_hint, null);
         lv.addFooterView(footer);
 
@@ -87,7 +89,7 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
         startActivity(intent);
     }
 
-    private void addInCar(final View view) {
+    private void updateInCarHeader(final View view) {
 
         int status = InCarStatus.get(mAppWidgetIds.length, mVersion, getActivity());
         String active = getActivity().getString(InCarStatus.render(status));

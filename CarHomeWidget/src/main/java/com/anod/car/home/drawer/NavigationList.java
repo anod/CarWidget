@@ -144,6 +144,11 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
 
     }
 
+    public void refresh() {
+        clear();
+        addDefaults();
+    }
+
     private String renderCarDockApp() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_CAR_DOCK);

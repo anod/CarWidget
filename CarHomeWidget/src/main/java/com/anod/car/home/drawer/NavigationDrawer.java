@@ -31,7 +31,7 @@ public class NavigationDrawer {
         mTitle = mDrawerTitle = activity.getTitle();
 
         NavigationList items = new NavigationList(activity, appWidgetId);
-        items.addDefaults();
+        //items.addDefaults();
 
         mAdapter = new NavigationAdapter(activity,items);
         mDrawerList.setAdapter(mAdapter);
@@ -72,6 +72,10 @@ public class NavigationDrawer {
 
     public void setSelected(int navigationItem) {
         mAdapter.setSelected(navigationItem);
+    }
+
+    public void refresh() {
+        mAdapter.refresh();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {

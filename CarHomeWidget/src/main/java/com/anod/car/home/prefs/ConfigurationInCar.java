@@ -239,6 +239,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 		}
 	}
 
+
 	/**
 	 * @param errorCode
 	 * @return

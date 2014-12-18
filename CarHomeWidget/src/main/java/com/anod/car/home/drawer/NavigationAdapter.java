@@ -106,6 +106,11 @@ public class NavigationAdapter extends BaseAdapter {
         return item instanceof NavigationList.TitleItem ? 0 : 1;
     }
 
+    public void refresh() {
+        mItems.refresh();
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder {
     }
 

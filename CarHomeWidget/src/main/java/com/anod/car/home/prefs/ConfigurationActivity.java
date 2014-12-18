@@ -82,6 +82,12 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 	}
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mDrawer.refresh();
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Utils.saveAppWidgetId(outState, mAppWidgetId);
@@ -134,5 +140,11 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 			mActivityResultListener.onActivityResult(requestCode, resultCode, data);
 		}
 	}
+
+    @Override
+    public void onBackPressed() {
+        Provider.getInstance().performUpdate(this, null);
+        super.onBackPressed();
+    }
 
 }

@@ -216,6 +216,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
     public void onResume() {
         super.onResume();
         refreshSkinPreview();
+        mDrawer.refresh();
     }
 
     public WidgetViewBuilder createBuilder() {
