@@ -47,6 +47,9 @@ public class HexPanel extends LinearLayout {
 
         mHexEdit = (EditText) findViewById(R.id.hex_edit);
         mPreview = (ImageView) findViewById(R.id.hex_preview);
+        if (isInEditMode()) {
+            setPreviewColor(Color.RED);
+        }
     }
 
     public void init(int color, boolean alphaSupport) {
@@ -66,9 +69,9 @@ public class HexPanel extends LinearLayout {
             }
         };
 
-        setPreviewColor(color);
+        setColor(color);
+
         mHexEdit.setFilters(new InputFilter[] { filter0, filter1 });
-        mHexEdit.setText(ColorUtils.toHex(color, alphaSupport));
         mHexEdit.setVisibility(View.VISIBLE);
         mHexEdit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -93,6 +96,11 @@ public class HexPanel extends LinearLayout {
             }
         });
 
+    }
+
+    public void setColor(int color) {
+        mHexEdit.setText(ColorUtils.toHex(color, mAlphaSupport));
+        setPreviewColor(color);
     }
 
     protected void setPreviewColor(int color) {
