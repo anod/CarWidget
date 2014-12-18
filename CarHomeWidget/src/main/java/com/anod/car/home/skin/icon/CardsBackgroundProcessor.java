@@ -4,7 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v7.graphics.Palette;
 
+import com.anod.car.home.BuildConfig;
 import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.utils.AppLog;
 
 /**
  * @author alex
@@ -18,21 +20,31 @@ public class CardsBackgroundProcessor implements BackgroundProcessor {
             return Color.DKGRAY;
         }
         Palette palette = Palette.generate(icon);
-        Palette.Swatch swatch;
 
+
+        Palette.Swatch swatch = palette.getMutedSwatch();
+//        AppLog.d("MutedSwatch: "+(swatch == null?"null":"#"+Integer.toHexString(swatch.getRgb())));
+//        swatch = palette.getVibrantSwatch();
+//        AppLog.d("VibrantSwatch: "+(swatch == null?"null":"#"+Integer.toHexString(swatch.getRgb())));
+//        swatch = palette.getDarkMutedSwatch();
+//        AppLog.d("DarkMutedSwatch: "+(swatch == null?"null":"#"+Integer.toHexString(swatch.getRgb())));
+//        swatch = palette.getDarkVibrantSwatch();
+//        AppLog.d("DarkVibrantSwatch: "+(swatch == null?"null":"#"+Integer.toHexString(swatch.getRgb())));
+
+        if (swatch != null) {
+            AppLog.d("MutedSwatch: #"+Integer.toHexString(swatch.getRgb()));
+            return swatch.getRgb();
+        }
         swatch = palette.getDarkVibrantSwatch();
-        if (swatch == null) {
-            swatch = palette.getDarkVibrantSwatch();
+        if (swatch != null) {
+            AppLog.d("DarkVibrantSwatch: #"+Integer.toHexString(swatch.getRgb()));
+            return swatch.getRgb();
         }
-        if (swatch == null) {
-            swatch = palette.getVibrantSwatch();
+        swatch = palette.getVibrantSwatch();
+        if (swatch != null) {
+            AppLog.d("VibrantSwatch: #"+Integer.toHexString(swatch.getRgb()));
+            return swatch.getRgb();
         }
-        if (swatch == null) {
-            swatch = palette.getMutedSwatch();
-        }
-        if (swatch == null) {
-            return Color.DKGRAY;
-        }
-        return swatch.getRgb();
+        return Color.DKGRAY;
     }
 }

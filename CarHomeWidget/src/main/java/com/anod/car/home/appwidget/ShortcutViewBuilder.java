@@ -16,6 +16,7 @@ import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.skin.icon.BackgroundProcessor;
 import com.anod.car.home.skin.SkinProperties;
+import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.BitmapTransform;
 import com.anod.car.home.utils.IconTheme;
 import com.anod.car.home.utils.UtilitiesBitmap;
@@ -56,13 +57,13 @@ public class ShortcutViewBuilder {
 	}
 
 	public void fill(RemoteViews views, int position, int resBtn, int resText) {
-
 		ShortcutInfo info = mSmodel.getShortcut(position);
 
         Bitmap icon = null;
 		if (info == null) {
 			setNoShortcut(resBtn, resText, views, position, mSkinProperties);
 		} else {
+            AppLog.d("Shortcut:" + info.intent.toString());
             icon = setShortcut(resBtn, resText, info, views, position, mIconTheme);
 		}
 		if (mPrefs.isTitlesHide()) {
