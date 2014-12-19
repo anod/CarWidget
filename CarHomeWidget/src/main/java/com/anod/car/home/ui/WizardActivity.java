@@ -27,7 +27,7 @@ import butterknife.OnClick;
  * @date 5/24/13
  */
 public class WizardActivity extends CarWidgetActivity {
-	/**
+    /**
 	 * The number of pages (wizard steps) to show in this demo.
 	 */
 	private static final Integer TYPE_NEXT = 1;
@@ -37,8 +37,9 @@ public class WizardActivity extends CarWidgetActivity {
 	 * The number of pages (wizard steps) to show in this demo.
 	 */
 	private static final int NUM_PAGES = 4;
+    public static final String EXTRA_PAGE = "page";
 
-	/**
+    /**
 	 * The pager widget, which handles animation and allows swiping horizontally to access previous
 	 * and next wizard steps.
 	 */
@@ -61,6 +62,8 @@ public class WizardActivity extends CarWidgetActivity {
 		mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
 
+        int current = (getIntent() == null)?0:getIntent().getIntExtra(EXTRA_PAGE,0);
+        mPager.setCurrentItem(current);
         mNextButton.setTag(TYPE_NEXT);
 
 

@@ -153,7 +153,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
         mBuilder = createBuilder();
         mPrefs = mBuilder.getPrefs();
         mModel = new WidgetShortcutsModel(mContext, mAppWidgetId);
-        mModel.init();
+
         mSkinList = SkinList.newInstance(mPrefs.getSkin(),keyguard, mContext);
         mCurrentPage = mSkinList.getSelectedSkinPosition();
 
@@ -215,6 +215,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
     @Override
     public void onResume() {
         super.onResume();
+        mModel.init();
         refreshSkinPreview();
         mDrawer.refresh();
     }

@@ -110,7 +110,7 @@ public class PreferencesStorage {
 		Resources res = context.getResources();
 
 		Main p = new Main();
-		String skinName = prefs.getString(SKIN, Main.SKIN_HOLO);
+		String skinName = prefs.getString(SKIN, Main.SKIN_CARDS);
 		p.setSkin(skinName);
 
 		int defTileColor = res.getColor(R.color.w7_tale_default_background);

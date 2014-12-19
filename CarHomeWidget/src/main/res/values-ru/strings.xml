@@ -261,4 +261,9 @@
     <string name="shortcuts_and_look">Ярлыки и Внешний вид</string>
     <string name="shortcuts_and_look_summary">Настройки ярлыков, скина и шрифта</string>
     <string name="app_theme">Тема приложения</string>
+    <string name="no_active_widget">Активные виджеты не найдены. Убедитесь что виджет добавлент на домашний экран.</string>
+    <string name="hex_code">Hex код</string>
+    <string name="color_picker_default_title">Выберите цвет</string>
+    <string name="color_swatch_description">Цвет %1$d</string>
+    <string name="color_swatch_description_selected">Цвет %1$d выбран</string>
 </resources>

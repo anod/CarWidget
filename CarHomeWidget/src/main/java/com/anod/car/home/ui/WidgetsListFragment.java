@@ -54,8 +54,6 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 		mAdapter = new WidgetsListAdapter(getActivity());
         mVersion = new Version(getActivity());
 
-		setListAdapter(mAdapter);
-
         ListView lv = getListView();
 
         // Start out with a progress indicator.
@@ -75,17 +73,20 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
         lv.getEmptyView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startWizard();
+                startWizard(1);
             }
         });
-		// Prepare the loader.  Either re-connect with an existing one,
+
+        setListAdapter(mAdapter);
+        // Prepare the loader.  Either re-connect with an existing one,
 		// or start a new one.
 		getLoaderManager().initLoader(0, null, this);
 
 	}
 
-    private void startWizard() {
+    private void startWizard(int page) {
         Intent intent = new Intent(getActivity(), WizardActivity.class);
+        intent.putExtra(WizardActivity.EXTRA_PAGE, page);
         startActivity(intent);
     }
 

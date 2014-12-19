@@ -251,6 +251,13 @@
     <string name="shortcuts_and_look_summary">התאמה אישית של קיצורי דרך ,הסקין וגודל הגופן</string>
     <string name="theme_dark">חשוך</string>
     <string name="widgets_hint">בחר וידג׳ט מהרשימה להגדרה</string>
-    <string name="app_theme"></string>
+    <string name="app_theme">ערכת נושא</string>
+    <string name="no_active_widget">לא נמצאן ווידג׳טים פעילים. נא לוודא שהוספת ווידג׳ט למסך הבית.</string>
+    <string name="hex_code">קוד hex</string>
+    <string name="color_picker_default_title">בחר צבע</string>
+    <string name="color_swatch_description">צבע %1$d </string>
+    <string name="color_swatch_description_selected">צבע %1$d נבחר</string>
+    <string name="car_dock">מתקן לרכב</string>
+    <string name="car_dock_summary">להפעיל מצב ברכב כאשר טלפון מתחבר למתקן אקטיבי </string>
 
 </resources>

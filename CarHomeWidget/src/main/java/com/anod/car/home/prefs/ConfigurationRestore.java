@@ -116,7 +116,7 @@ public class ConfigurationRestore extends Fragment implements
 		}
 
 		mContext = (Context) getActivity();
-        ((ConfigurationActivity)getActivity()).setNavigationItem(NavigationList.ID_CURRENT_WIDGET);
+        ((ConfigurationActivity)getActivity()).setNavigationItem(NavigationList.ID_BACKUP);
 
 		mBackupManager = new PreferencesBackupManager(mContext);
 
