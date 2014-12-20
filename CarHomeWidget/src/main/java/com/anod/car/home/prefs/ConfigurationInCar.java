@@ -16,6 +16,8 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Debug;
+import android.os.Handler;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -212,32 +214,49 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 
 	private void initActivityRecognition() {
 		final Preference pref = (Preference) findPreference(PreferencesStorage.ACTIVITY_RECOGNITION);
-		final int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext);
-		pref.setSummary(renderPlayServiceStatus(status));
-		if (status != ConnectionResult.SUCCESS) {
-			pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-				@Override
-				public boolean onPreferenceChange(Preference preference, Object o) {
-					Dialog d = GooglePlayServicesUtil.getErrorDialog(status, getActivity(), PS_DIALOG_REQUEST_CODE);
-					d.show();
-					return false;
-				}
-			});
-		} else {
-			pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-				@Override
-				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					Boolean val = (Boolean)newValue;
-					if (val) {
-						mContext.startService(ActivityRecognitionClientService.makeStartIntent(mContext));
-					} else {
-						mContext.stopService(ActivityRecognitionClientService.makeStartIntent(mContext));
-					}
-					return true;
-				}
-			});
-		}
+        final Handler handler = new Handler();
+
+        new Thread(new Runnable() {
+            public void run() {
+                final int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext);
+                final String summary = renderPlayServiceStatus(status);
+                handler.post(new Runnable() {
+                    public void run() {
+                        updateActivityRecognition(status, summary, pref);
+                    }
+                });
+            }
+        }).start();
+
 	}
+
+    private void updateActivityRecognition(final int status, final String summary, final Preference pref) {
+        pref.setSummary(summary);
+        if (status != ConnectionResult.SUCCESS) {
+            pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    Dialog d = GooglePlayServicesUtil.getErrorDialog(status, getActivity(), PS_DIALOG_REQUEST_CODE);
+                    d.show();
+                    return false;
+                }
+            });
+        } else {
+            pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Boolean val = (Boolean)newValue;
+                    if (val) {
+                        mContext.startService(ActivityRecognitionClientService.makeStartIntent(mContext));
+                    } else {
+                        mContext.stopService(ActivityRecognitionClientService.makeStartIntent(mContext));
+                    }
+                    return true;
+                }
+            });
+        }
+
+    }
 
 
 	/**
@@ -330,7 +349,6 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 
 	}
 
-	@SuppressLint("NewApi")
 	private void initBluetooth() {
 		Preference btSwitch = (Preference) findPreference(PREF_BT_SWITCH);
 		((SwitchPreference) btSwitch).setChecked(Bluetooth.getState() == BluetoothAdapter.STATE_ON);

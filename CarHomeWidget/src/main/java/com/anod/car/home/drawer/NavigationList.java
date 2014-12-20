@@ -188,7 +188,7 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
             case ID_CAR_SETTINGS:
                 intent = ConfigurationActivity.createFragmentIntent(mContext, ConfigurationInCar.class);
                 mContext.startActivity(intent);
-                return true;
+                return false;
             case ID_CAR_DOCK_APP:
                 onCarDockAppClick();
                 return false;
