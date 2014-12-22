@@ -25,6 +25,8 @@ public class WidgetsListActivity extends CarWidgetActivity {
     private Context mContext;
     private boolean mWizardShown;
     private NavigationDrawer mDrawer;
+    private Version mVersion;
+    private boolean mProDialogShown;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,15 +52,18 @@ public class WidgetsListActivity extends CarWidgetActivity {
             }
         } else {
             mWizardShown = savedInstanceState.getBoolean("wizard-shown");
+            mProDialogShown = savedInstanceState.getBoolean("dialog-shown");
         }
 
-        Version version = new Version(this);
-        if (mWizardShown) {
-            if (version.isFree() && Utils.isProInstalled(mContext)) {
-                TrialDialogs.buildProInstalledDialog(mContext).show();
+        mVersion = new Version(this);
+        if (!mWizardShown) {
+            if (mVersion.isFree() && Utils.isProInstalled(mContext)) {
+                if (!mProDialogShown) {
+                    mProDialogShown = true;
+                    TrialDialogs.buildProInstalledDialog(mContext).show();
+                }
             }
-        } else {
-            boolean isFreeInstalled = !version.isFree() && Utils.isFreeInstalled(this);
+            boolean isFreeInstalled = !mVersion.isFree() && Utils.isFreeInstalled(this);
             if (appWidgetIds.length == 0 && !isFreeInstalled) {
                 mWizardShown = true;
                 startWizard();
@@ -66,7 +71,6 @@ public class WidgetsListActivity extends CarWidgetActivity {
         }
 
     }
-
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -87,6 +91,7 @@ public class WidgetsListActivity extends CarWidgetActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean("wizard-shown", mWizardShown);
+        outState.putBoolean("dialog-shown", mProDialogShown);
         super.onSaveInstanceState(outState);
     }
 
@@ -94,6 +99,7 @@ public class WidgetsListActivity extends CarWidgetActivity {
     protected void onResume() {
         super.onResume();
         mDrawer.refresh();
+
     }
 
     private void startWizard() {

@@ -42,6 +42,7 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 	@Override
 	public void onResume() {
 		super.onResume();
+        mAppWidgetIds = WidgetHelper.getAllWidgetIds(getActivity());
 		getLoaderManager().initLoader(0, null, this).forceLoad();
         updateInCarHeader(mHeaderView);
 	}
@@ -50,7 +51,6 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		mAppWidgetIds = WidgetHelper.getAllWidgetIds(getActivity());
 		mAdapter = new WidgetsListAdapter(getActivity());
         mVersion = new Version(getActivity());
 
@@ -65,7 +65,6 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 		mlp.setMargins(padding,padding,padding,0);
 
         mHeaderView = getActivity().getLayoutInflater().inflate(R.layout.widgets_incar, null);
-        updateInCarHeader(mHeaderView);
         lv.addHeaderView(mHeaderView);
         View footer = getActivity().getLayoutInflater().inflate(R.layout.widgets_hint, null);
         lv.addFooterView(footer);
@@ -80,7 +79,7 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
         setListAdapter(mAdapter);
         // Prepare the loader.  Either re-connect with an existing one,
 		// or start a new one.
-		getLoaderManager().initLoader(0, null, this);
+		//getLoaderManager().initLoader(0, null, this);
 
 	}
 
@@ -142,7 +141,7 @@ public class WidgetsListFragment extends ListFragment implements LoaderManager.L
 
 	@Override
 	public Loader<SparseArray<SparseArray<ShortcutInfo>>> onCreateLoader(int i, Bundle bundle) {
-		return new WidgetsListLoader(getActivity(), mAppWidgetIds);
+		return new WidgetsListLoader(getActivity());
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.SparseArray;
 
+import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.WidgetShortcutsModel;
 
@@ -13,24 +14,23 @@ import com.anod.car.home.model.WidgetShortcutsModel;
  */
 public class WidgetsListLoader extends AsyncTaskLoader< SparseArray<SparseArray<ShortcutInfo>> > {
 	private final Context mContext;
-	private final int[] mAppWidgetIds;
 
-	public WidgetsListLoader(Context context, int[] appWidgetIds) {
+	public WidgetsListLoader(Context context) {
 		super(context);
 		mContext = context;
-		mAppWidgetIds = appWidgetIds;
 	}
 
 	@Override
 	public SparseArray<SparseArray<ShortcutInfo>> loadInBackground() {
 
+        int[] appWidgetIds = WidgetHelper.getAllWidgetIds(mContext);
 		SparseArray<SparseArray<ShortcutInfo>> result = new SparseArray<SparseArray<ShortcutInfo>>();
 
-		for (int i = 0; i < mAppWidgetIds.length; i++) {
-			WidgetShortcutsModel model = new WidgetShortcutsModel(mContext,mAppWidgetIds[i]);
+		for (int i = 0; i < appWidgetIds.length; i++) {
+			WidgetShortcutsModel model = new WidgetShortcutsModel(mContext,appWidgetIds[i]);
 			model.init();
 
-			result.put(mAppWidgetIds[i], model.getShortcuts());
+			result.put(appWidgetIds[i], model.getShortcuts());
 		}
 
 		return result;
