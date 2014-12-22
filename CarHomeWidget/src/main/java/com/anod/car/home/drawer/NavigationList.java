@@ -25,6 +25,7 @@ import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.ConfigurationInCar;
 import com.anod.car.home.prefs.ConfigurationRestore;
+import com.anod.car.home.prefs.LookAndFeelActivity;
 import com.anod.car.home.prefs.MusicAppSettingsActivity;
 import com.anod.car.home.prefs.preferences.AppTheme;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -179,6 +180,12 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
     public boolean onClick(int id) {
         Intent intent;
         switch (id) {
+            case ID_CURRENT_WIDGET:
+                if (mActivity instanceof LookAndFeelActivity) {
+                    return true;
+                }
+                mActivity.finish();
+                return true;
             case ID_WIDGETS:
                 if (mActivity instanceof MainActivity) {
                     return true;
