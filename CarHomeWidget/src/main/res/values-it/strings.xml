@@ -249,6 +249,8 @@
     <string name="shortcuts_and_look">Collegamenti e aspetto</string>
     <string name="shortcuts_and_look_summary">Personalizza collegamenti, skin e dimensioni del carattere</string>
     <string name="current_widget">Widget attuale</string>
+    <string name="no_active_widget">Non sono stati trovati widget attivi. Assicurati di aggiungere un widget nella schermata iniziale.</string>
+    <string name="hex_code">Codice esadecimale</string>
 
     <string-array name="disable_screen_timeout">
     <item>Disattiva (durante la carica)</item>

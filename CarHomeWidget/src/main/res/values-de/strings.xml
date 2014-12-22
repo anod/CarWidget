@@ -249,6 +249,8 @@
     <string name="shortcuts_and_look">Verknüpfungen und Ansicht</string>
     <string name="shortcuts_and_look_summary">Anpassen von Verknüpfungen, Benutzeroberfläche und Schriftgröße</string>
     <string name="current_widget">Aktuelles Widget</string>
+    <string name="no_active_widget">Es wurden keine aktiven Widgets gefunden. Bitte überprüfen Sie, ob Sie Ihrem Startbildschirm ein Widget hinzugefügt haben.</string>
+    <string name="hex_code">Hex-Code</string>
 
     <string-array name="disable_screen_timeout">
     <item>Deaktivieren (während des Ladevorgangs)</item>

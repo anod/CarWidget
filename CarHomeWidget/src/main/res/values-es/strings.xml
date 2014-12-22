@@ -249,6 +249,8 @@
     <string name="shortcuts_and_look">Accesos directos y bloqueo</string>
     <string name="shortcuts_and_look_summary">Personalice los accesos directos, las texturas y el tamaño de fuente</string>
     <string name="current_widget">Reproductor actual</string>
+    <string name="no_active_widget">No se han encontrado reproductores activos. Asegúrese de añadir un reproductor a su pantalla de inicio.</string>
+    <string name="hex_code">Código hex.</string>
 
     <string-array name="disable_screen_timeout">
     <item>Desactivar (durante la carga)</item>

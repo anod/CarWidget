@@ -249,6 +249,8 @@
     <string name="shortcuts_and_look">Raccourcis et recherche</string>
     <string name="shortcuts_and_look_summary">Personnaliser les raccourcis, le type et la taille de la police</string>
     <string name="current_widget">Widget actuel</string>
+    <string name="no_active_widget">Aucun widget actif n\'a été trouvé. Assurez-vous d\'en ajouter un sur votre écran d\'accueil.</string>
+    <string name="hex_code">Code hexadécimal</string>
 
     <string-array name="disable_screen_timeout">
     <item>Désactiver (pendant la charge)</item>
