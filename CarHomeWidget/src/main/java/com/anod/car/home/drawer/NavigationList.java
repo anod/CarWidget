@@ -185,7 +185,7 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
                     return true;
                 }
                 mActivity.finish();
-                return true;
+                return false;
             case ID_WIDGETS:
                 if (mActivity instanceof MainActivity) {
                     return true;
