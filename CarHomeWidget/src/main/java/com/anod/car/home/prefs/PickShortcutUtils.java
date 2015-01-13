@@ -23,7 +23,7 @@ public class PickShortcutUtils implements ShortcutPicker.Handler {
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
-
+        mConfigurationFragment.startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -33,7 +33,6 @@ public class PickShortcutUtils implements ShortcutPicker.Handler {
             ShortcutPreference p = (ShortcutPreference) mConfigurationFragment.findPreference(key);
             refreshPreference(p);
         }
-
     }
 
     @Override
@@ -113,7 +112,7 @@ public class PickShortcutUtils implements ShortcutPicker.Handler {
 	}
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mPicker.onActivityResult(requestCode, requestCode, data);
+        mPicker.onActivityResult(requestCode, resultCode, data);
     }
 
 	public void onSaveInstanceState(Bundle outState) {

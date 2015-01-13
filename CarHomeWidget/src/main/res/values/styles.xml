@@ -2,7 +2,10 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppListTheme" parent="Theme.AppCompat.Dialog">
+        <!--
         <item name="windowActionBar">false</item>
+        //-->
+        <item name="colorPrimary">@android:color/transparent</item>
     </style>
 
     <style name="AppListTheme.Light" parent="Theme.AppCompat.Light.Dialog" >
@@ -45,7 +48,10 @@
     </style>
 
     <style name="DialogTheme.Light" parent="Theme.AppCompat.Light.Dialog">
+        <!--
         <item name="android:windowBackground">?attr/colorPrimary</item>
+        -->
+        <item name="colorPrimary">@android:color/transparent</item>
     </style>
 
 

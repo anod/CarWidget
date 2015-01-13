@@ -58,6 +58,9 @@ abstract public class AppsListActivity extends ActionBarListActivity implements 
         }
         setResult(Activity.RESULT_OK);
 
+        if (!isShowTitle() && getSupportActionBar()!=null) {
+            getSupportActionBar().hide();
+        }
         mAppsList = getAppList(this);
 
         mAdapter = new AppsListAdapter(this, getRowLayoutId(),mAppsList.getAppIconLoader());
