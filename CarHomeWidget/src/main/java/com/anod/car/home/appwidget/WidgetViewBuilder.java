@@ -160,9 +160,9 @@ public class WidgetViewBuilder {
 		setInCarButton(mPrefs.isIncarTransparent(), skinProperties, views);
 
 		if (mPrefs.isSettingsTransparent()) {
-			views.setImageViewResource(R.id.btn_settings, R.drawable.btn_transparent);
+			views.setImageViewResource(R.id.widget_btn2, R.drawable.btn_transparent);
 		} else {
-			views.setImageViewResource(R.id.btn_settings, skinProperties.getSettingsButtonRes());
+			views.setImageViewResource(R.id.widget_btn2, skinProperties.getSettingsButtonRes());
 		}
 
 
@@ -198,7 +198,7 @@ public class WidgetViewBuilder {
 
 
 		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId);
-		views.setOnClickPendingIntent(R.id.btn_settings, configIntent);
+		views.setOnClickPendingIntent(R.id.widget_btn2, configIntent);
 		return views;
 	}
 
@@ -255,29 +255,29 @@ public class WidgetViewBuilder {
 	private void setInCarButton(boolean isInCarTrans, SkinProperties skinProp, RemoteViews views) {
 		
 		if (PreferencesStorage.isInCarModeEnabled(mContext)) {
-			views.setViewVisibility(R.id.btn_incar_switch, View.VISIBLE);
+			views.setViewVisibility(R.id.widget_btn1, View.VISIBLE);
 			if (ModeService.sInCarMode) {
 				if (isInCarTrans) {
-					views.setImageViewResource(R.id.btn_incar_switch, R.drawable.btn_transparent);
+					views.setImageViewResource(R.id.widget_btn1, R.drawable.btn_transparent);
 				} else {
 					int rImg = skinProp.getInCarButtonExitRes();
-					views.setImageViewResource(R.id.btn_incar_switch, rImg);
+					views.setImageViewResource(R.id.widget_btn1, rImg);
 				}
 			} else {
 				if (isInCarTrans) {
-					views.setImageViewResource(R.id.btn_incar_switch, R.drawable.btn_transparent);
+					views.setImageViewResource(R.id.widget_btn1, R.drawable.btn_transparent);
 				} else {
 					int rImg = skinProp.getInCarButtonEnterRes();
-					views.setImageViewResource(R.id.btn_incar_switch, rImg);
+					views.setImageViewResource(R.id.widget_btn1, rImg);
 				}
 			}
 			boolean switchOn = !ModeService.sInCarMode;
 			PendingIntent contentIntent = mPendingIntentHelper.createInCar(switchOn);
 			if (contentIntent != null) {
-				views.setOnClickPendingIntent(R.id.btn_incar_switch, contentIntent);
+				views.setOnClickPendingIntent(R.id.widget_btn1, contentIntent);
 			}
 		} else {
-			views.setViewVisibility(R.id.btn_incar_switch, View.GONE);
+			views.setViewVisibility(R.id.widget_btn1, View.GONE);
 		}
 
 	}

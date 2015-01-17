@@ -4,14 +4,14 @@ android:layout_width="match_parent"
 android:layout_height="wrap_content" >
 
 <ImageButton
-		android:id="@+id/btn_incar_switch"
+		android:id="@+id/widget_btn1"
 		style="@style/incarButton"
 		android:layout_alignParentLeft="true"
 		android:background="@drawable/btn_transparent"
 		android:src="@drawable/ic_incar_exit_bbb" />
 
 <ImageButton
-		android:id="@+id/btn_settings"
+		android:id="@+id/widget_btn2"
 		style="@style/settingsButton"
 		android:layout_alignParentRight="true"
 		android:background="@drawable/btn_transparent"

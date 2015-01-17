@@ -9,7 +9,7 @@
 	android:paddingRight="5.0dp"
 >
 	<ImageButton
-		android:id="@+id/btn_settings"
+		android:id="@+id/widget_btn2"
 		android:layout_width="wrap_content"
 		android:layout_height="140dp"
 		android:layout_alignParentTop="true"
@@ -19,7 +19,7 @@
 	 />
 
 	<ImageButton
-		android:id="@+id/btn_incar_switch"
+		android:id="@+id/widget_btn1"
 		android:layout_width="wrap_content"
 		android:layout_height="140dp"
 		android:layout_alignParentBottom="true"

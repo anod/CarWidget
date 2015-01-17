@@ -6,7 +6,7 @@
     android:layout_margin="4dp"
 >
     <ImageButton
-        android:id="@+id/btn_settings"
+        android:id="@+id/widget_btn2"
         android:layout_gravity="bottom"
         android:src="@drawable/ic_settings_grey600_36dp"
         android:background="@drawable/fab_background"
@@ -14,7 +14,7 @@
         android:layout_height="40dp"/>
 
 	<ImageButton
-		android:id="@+id/btn_incar_switch"
+		android:id="@+id/widget_btn1"
 		android:layout_gravity="bottom"
         android:src="@drawable/ic_incar_enter_gray"
         android:background="@drawable/fab_background"
