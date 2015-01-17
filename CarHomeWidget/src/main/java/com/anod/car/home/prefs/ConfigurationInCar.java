@@ -26,6 +26,8 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
+import android.support.annotation.IdRes;
+import android.support.annotation.StringRes;
 
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetHelper;
@@ -427,30 +429,41 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 				HashMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
 				mPairedList = new ArrayList<CheckBoxPreference>(pairedDevices.size());
 				for (BluetoothDevice device : pairedDevices) {
-					boolean checked = (devices == null) ? false : devices.containsKey(device.getAddress());
-					CheckBoxPreference pref = createPref(device, checked);
+                    String addr = device.getAddress();
+					boolean checked = (devices == null) ? false : devices.containsKey(addr);
+                    if (checked) {
+                        devices.remove(addr);
+                    }
+                    BluetoothClass btClass = device.getBluetoothClass();
+                    int res = 0;
+                    if (btClass != null) {
+                        res = BluetoothClassHelper.getBtClassString(btClass);
+                    }
+					CheckBoxPreference pref = createPref(device.getAddress(),device.getName(), res, checked);
 					mPairedList.add(pref);
 				}
+                if (devices != null && !devices.isEmpty()) {
+                    for(String addr: devices.keySet()) {
+                        CheckBoxPreference pref = createPref(addr, addr, R.string.unavailable_bt_device, true);
+                        mPairedList.add(pref);
+                    }
+                }
 				return true;
 			}
 			return false;
 		}
 
-		private CheckBoxPreference createPref(BluetoothDevice device, boolean checked) {
+		private CheckBoxPreference createPref(String addr,String name,@StringRes int summaryResId, boolean checked) {
 			CheckBoxPreference pref = new CheckBoxPreference(mContext);
 			pref.setPersistent(false);
 			pref.setChecked(checked);
 			pref.setDefaultValue(checked);
-			pref.setKey(device.getAddress());
-			pref.setTitle(device.getName());
+			pref.setKey(addr);
+			pref.setTitle(name);
 			pref.setLayoutResource(R.layout.pref);
-			BluetoothClass btClass = device.getBluetoothClass();
-			int res = 0;
-			if (btClass != null) {
-				res = BluetoothClassHelper.getBtClassString(btClass);
-			}
-			if (res > 0) {
-				String title = mContext.getResources().getString(res);
+
+			if (summaryResId > 0) {
+				String title = mContext.getResources().getString(summaryResId);
 				pref.setSummary(title);
 			}
 			pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {

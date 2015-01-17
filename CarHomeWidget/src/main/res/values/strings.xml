@@ -266,4 +266,6 @@
         <item>Landscape</item>
         <item>Landscape (reverse)</item>
     </string-array>
+
+    <string name="unavailable_bt_device">Not available</string>
 </resources>
