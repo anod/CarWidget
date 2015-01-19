@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs;
+package com.anod.car.home.utils;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

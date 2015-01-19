@@ -1,6 +1,5 @@
 package com.anod.car.home.prefs;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
@@ -8,6 +7,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.anod.car.home.R;
+import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -36,7 +39,7 @@ import butterknife.InjectView;
  * @author alex
  * @date 6/6/14
  */
-public class BluetoothDeviceActivity extends Activity implements AdapterView.OnItemClickListener {
+public class BluetoothDeviceActivity extends CarWidgetActivity implements AdapterView.OnItemClickListener {
 	private BroadcastReceiver mBluetoothReceiver;
 	private static final IntentFilter INTENT_FILTER = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
 	@InjectView(android.R.id.list) ListView mDevicesList;
@@ -46,24 +49,19 @@ public class BluetoothDeviceActivity extends Activity implements AdapterView.OnI
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.bluetooth_device_activity);
+		setContentView(R.layout.activity_bluetooth_device);
 
         ButterKnife.inject(this);
 		mDevicesList.setOnItemClickListener(this);
 		mListAdapter = new DeviceAdapter(this);
 
+        mDevicesList.setDivider(new ColorDrawable(Color.TRANSPARENT));
+        mDevicesList.setDividerHeight(getResources().getDimensionPixelOffset(R.dimen.preference_item_margin));
+
 		mDevicesList.setEmptyView(ButterKnife.findById(this,android.R.id.empty));
 		mDevicesList.setAdapter(mListAdapter);
 
 		mContext = this;
-
-		Button okButton = (Button)findViewById(android.R.id.button1);
-		okButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
 
 		initSwitch();
 
@@ -116,10 +114,17 @@ public class BluetoothDeviceActivity extends Activity implements AdapterView.OnI
 
 
 	static class Device {
-		public String address;
+        public String address;
 		public String name;
 		public String btClassName;
 		public boolean selected;
+
+        Device(String address, String name, String btClassName, boolean selected) {
+            this.address = address;
+            this.name = name;
+            this.btClassName = btClassName;
+            this.selected = selected;
+        }
 
 		@Override
 		public String toString() {
@@ -190,30 +195,41 @@ public class BluetoothDeviceActivity extends Activity implements AdapterView.OnI
 
 			// Get a set of currently paired devices
 			Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
+            HashMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
+            mPairedList = new ArrayList<Device>();
+
+            Resources r = mContext.getResources();
 
 			// If there are paired devices, add each one to the ArrayAdapter
 			if (!pairedDevices.isEmpty()) {
-				HashMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
-				mPairedList = new ArrayList<Device>(pairedDevices.size());
 				for (BluetoothDevice device : pairedDevices) {
-					Device d = new Device();
-					d.selected = (devices == null) ? false : devices.containsKey(device.getAddress());
-					d.address = device.getAddress();
-					d.name = device.getName();
+                    String addr = device.getAddress();
+                    boolean selected = (devices == null) ? false : devices.containsKey(addr);
+                    if (selected) {
+                        devices.remove(addr);
+                    }
 					BluetoothClass btClass = device.getBluetoothClass();
 					int res = 0;
 					if (btClass != null) {
 						res = BluetoothClassHelper.getBtClassString(btClass);
 					}
-					if (res > 0) {
-						d.btClassName = mContext.getResources().getString(res);
+                    String btClassName = null;
+                    if (res > 0) {
+                        btClassName = r.getString(res);
 					}
+                    Device d = new Device(device.getAddress(), device.getName(), btClassName, selected);
 
 					mPairedList.add(d);
 				}
-				return true;
+
 			}
-			return false;
+            if (devices != null && !devices.isEmpty()) {
+                for(String addr: devices.keySet()) {
+                    Device d = new Device(addr, addr, r.getString(R.string.unavailable_bt_device), true);
+                    mPairedList.add(d);
+                }
+            }
+            return !mPairedList.isEmpty();
 		}
 	}
 

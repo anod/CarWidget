@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs;
+package com.anod.car.home.prefs.lookandfeel;
 
 import android.app.Activity;
 import android.content.ClipData;
@@ -16,6 +16,7 @@ import android.widget.RemoteViews;
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.model.WidgetShortcutsModel;
+import com.anod.car.home.prefs.LookAndFeelActivity;
 import com.anod.car.home.prefs.drag.ShortcutShadowBuilder;
 import com.anod.car.home.utils.AppLog;
 

@@ -1,8 +1,10 @@
-package com.anod.car.home.prefs;
+package com.anod.car.home.prefs.lookandfeel;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.anod.car.home.prefs.LookAndFeelActivity;
 
 /**
  * @author alex

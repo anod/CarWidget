@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs;
+package com.anod.car.home.prefs.lookandfeel;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -39,6 +39,7 @@ public class IconThemesActivity extends AppsCacheActivity {
 		if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
 			AppLog.d("Invalid AppWidgetId");
 			finish();
+            return;
 		}
 		mRefresh = false;
 

@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs;
+package com.anod.car.home.prefs.detection;
 
 /**
  * @author alex

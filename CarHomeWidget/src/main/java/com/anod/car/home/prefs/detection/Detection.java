@@ -2,7 +2,6 @@ package com.anod.car.home.prefs.detection;
 
 import android.content.Context;
 
-import com.anod.car.home.prefs.InCarItem;
 import com.anod.car.home.prefs.preferences.InCar;
 
 /**

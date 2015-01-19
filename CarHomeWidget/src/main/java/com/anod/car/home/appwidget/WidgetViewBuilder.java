@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.support.annotation.IdRes;
 import android.util.LruCache;
 import android.util.SparseArray;
 import android.view.View;
@@ -157,13 +158,15 @@ public class WidgetViewBuilder {
 
 		RemoteViews views = new RemoteViews(mContext.getPackageName(), skinProperties.getLayout(shortcuts.size()));
 
-		setInCarButton(mPrefs.isIncarTransparent(), skinProperties, views);
+		setInCarButton(R.id.widget_btn1,mPrefs.isIncarTransparent(), skinProperties, views);
 
 		if (mPrefs.isSettingsTransparent()) {
 			views.setImageViewResource(R.id.widget_btn2, R.drawable.btn_transparent);
 		} else {
 			views.setImageViewResource(R.id.widget_btn2, skinProperties.getSettingsButtonRes());
 		}
+        PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId);
+        views.setOnClickPendingIntent(R.id.widget_btn2, configIntent);
 
 
 		setBackground(mPrefs, views);
@@ -196,9 +199,6 @@ public class WidgetViewBuilder {
 			mShortcutViewBuilder.fill(views, secondBtn, sBtnIds[secondBtn], mTextIds[secondBtn]);
 		}
 
-
-		PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId);
-		views.setOnClickPendingIntent(R.id.widget_btn2, configIntent);
 		return views;
 	}
 
@@ -252,32 +252,32 @@ public class WidgetViewBuilder {
 		bt.setRotateDirection(prefs.getIconsRotate());
 	}
 
-	private void setInCarButton(boolean isInCarTrans, SkinProperties skinProp, RemoteViews views) {
+	private void setInCarButton(@IdRes int btnId, boolean isInCarTrans, SkinProperties skinProp, RemoteViews views) {
 		
 		if (PreferencesStorage.isInCarModeEnabled(mContext)) {
-			views.setViewVisibility(R.id.widget_btn1, View.VISIBLE);
+			views.setViewVisibility(btnId, View.VISIBLE);
 			if (ModeService.sInCarMode) {
 				if (isInCarTrans) {
-					views.setImageViewResource(R.id.widget_btn1, R.drawable.btn_transparent);
+					views.setImageViewResource(btnId, R.drawable.btn_transparent);
 				} else {
 					int rImg = skinProp.getInCarButtonExitRes();
-					views.setImageViewResource(R.id.widget_btn1, rImg);
+					views.setImageViewResource(btnId, rImg);
 				}
 			} else {
 				if (isInCarTrans) {
-					views.setImageViewResource(R.id.widget_btn1, R.drawable.btn_transparent);
+					views.setImageViewResource(btnId, R.drawable.btn_transparent);
 				} else {
 					int rImg = skinProp.getInCarButtonEnterRes();
-					views.setImageViewResource(R.id.widget_btn1, rImg);
+					views.setImageViewResource(btnId, rImg);
 				}
 			}
 			boolean switchOn = !ModeService.sInCarMode;
 			PendingIntent contentIntent = mPendingIntentHelper.createInCar(switchOn);
 			if (contentIntent != null) {
-				views.setOnClickPendingIntent(R.id.widget_btn1, contentIntent);
+				views.setOnClickPendingIntent(btnId, contentIntent);
 			}
 		} else {
-			views.setViewVisibility(R.id.widget_btn1, View.GONE);
+			views.setViewVisibility(btnId, View.GONE);
 		}
 
 	}

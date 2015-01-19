@@ -31,6 +31,8 @@ import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.drawer.NavigationList;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.drag.ShortcutDragListener;
+import com.anod.car.home.prefs.lookandfeel.LookAndFeelMenu;
+import com.anod.car.home.prefs.lookandfeel.SkinPagerAdapter;
 import com.anod.car.home.prefs.model.SkinList;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -295,7 +297,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
 
     }
 
-    protected void refreshSkinPreview() {
+    public void refreshSkinPreview() {
         AppLog.d("Refresh Skin Requested");
 
         mPrefs = mBuilder

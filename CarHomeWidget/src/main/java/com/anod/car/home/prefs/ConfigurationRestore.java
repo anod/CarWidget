@@ -39,6 +39,7 @@ import com.anod.car.home.prefs.backup.RestoreTask;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.CheatSheet;
 import com.anod.car.home.utils.DeleteFileTask;
+import com.anod.car.home.utils.TrialDialogs;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
@@ -47,7 +48,6 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.Optional;
 
 public class ConfigurationRestore extends Fragment implements
 		RestoreTask.RestoreTaskListner, DeleteFileTask.DeleteFileTaskListener, BackupTask.BackupTaskListner, GDriveBackup.Listener {

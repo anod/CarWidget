@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs;
+package com.anod.car.home.prefs.lookandfeel;
 
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
@@ -18,6 +18,9 @@ import android.widget.NumberPicker;
 import com.android.colorpicker.ColorPickerSwatch;
 import com.anod.car.home.R;
 import com.anod.car.home.model.WidgetShortcutsModel;
+import com.anod.car.home.prefs.ConfigurationActivity;
+import com.anod.car.home.prefs.ConfigurationLook;
+import com.anod.car.home.prefs.LookAndFeelActivity;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;

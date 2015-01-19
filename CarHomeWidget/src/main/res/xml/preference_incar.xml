@@ -11,29 +11,11 @@
 	<PreferenceCategory
 			android:title="@string/pref_detection"
 			android:layout="@layout/pref_category">
-		<PreferenceScreen
+		<Preference
 				android:key="bt-device-screen"
 				android:summary="@string/pref_blutooth_device_summary"
 				android:title="@string/pref_blutooth_device_title"
-				android:layout="@layout/pref">
-			<SwitchPreference
-					android:key="bt-switch"
-					android:summaryOff="@string/turn_on_bluetooth_summary"
-					android:summaryOn="@string/turn_off_bluetooth_summary"
-					android:title="@string/bluetooth"
-					android:layout="@layout/pref" />
-
-			<PreferenceCategory
-					android:key="bt-device-category"
-					android:title="@string/bluetooth_device_category_title"
-					android:layout="@layout/pref_category">
-				<CheckBoxPreference
-					android:key="bt-device-address"
-					android:title="Device 1"
-					android:layout="@layout/pref"
-				/>
-			</PreferenceCategory>
-		</PreferenceScreen>
+				android:layout="@layout/pref" />
 
 		<CheckBoxPreference
 				android:key="headset-required"

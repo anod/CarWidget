@@ -1,6 +1,5 @@
 package com.anod.car.home.prefs;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
@@ -16,7 +15,6 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Handler;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -26,7 +24,6 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
-import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
 
 import com.anod.car.home.R;
@@ -39,6 +36,7 @@ import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.incar.SamsungDrivingMode;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.utils.TrialDialogs;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 import com.google.android.gms.common.ConnectionResult;
@@ -52,8 +50,6 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 
     private static final String MEDIA_SCREEN = "media-screen";
 	private static final String SCREEN_BT_DEVICE = "bt-device-screen";
-	private static final String CATEGORY_BT_DEVICE = "bt-device-category";
-	private static final String PREF_BT_SWITCH = "bt-switch";
 	private static final String PREF_NOTIF_SHORTCUTS = "notif-shortcuts";
 
 	private static final String AUTORUN_APP_PREF = "autorun-app-choose";
@@ -160,12 +156,13 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 			}
 		});
 
-		initBluetooth();
+
 		initAutorunApp(incar);
 		initActivityRecognition();
         initScreenTimeout(incar);
 
 
+        setIntent(SCREEN_BT_DEVICE, BluetoothDeviceActivity.class, 0);
 		showFragmentOnClick(MEDIA_SCREEN, ConfigurationInCarVolume.class);
 
 		showFragmentOnClick(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class);
@@ -348,162 +345,6 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 		// update preference
 		pref.setSummary(title);
 		pref.setValue(value);
-
-	}
-
-	private void initBluetooth() {
-		Preference btSwitch = (Preference) findPreference(PREF_BT_SWITCH);
-		((SwitchPreference) btSwitch).setChecked(Bluetooth.getState() == BluetoothAdapter.STATE_ON);
-		btSwitch.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-			@Override
-			public boolean onPreferenceChange(Preference preference, Object newValue) {
-				Boolean switchOn = (Boolean) newValue;
-				mBluetoothReceiver = new BluetoothStateReceiver();
-				getActivity().registerReceiver(mBluetoothReceiver, INTENT_FILTER);
-				if (Bluetooth.getState() == BluetoothAdapter.STATE_ON) {
-					Bluetooth.switchOff();
-					return (!switchOn);
-				} else {
-					Bluetooth.switchOn();
-					return switchOn;
-				}
-			}
-		});
-		mBluetoothDevicesCategory = (PreferenceCategory) findPreference(CATEGORY_BT_DEVICE);
-		PreferenceScreen bluetoothDevicesScreen = (PreferenceScreen) findPreference(SCREEN_BT_DEVICE);
-		bluetoothDevicesScreen.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				new InitBluetoothDevicesTask().execute(0);
-				return true;
-			}
-
-		});
-
-	}
-
-	private class InitBluetoothDevicesTask extends AsyncTask<Integer, Integer, Boolean> {
-		private ArrayList<CheckBoxPreference> mPairedList;
-		private BluetoothAdapter mBtAdapter;
-
-		protected void onPreExecute() {
-			mBluetoothDevicesCategory.removeAll();
-			// Get the local Bluetooth adapter
-			mBtAdapter = BluetoothAdapter.getDefaultAdapter();
-
-		}
-
-		protected void onPostExecute(Boolean result) {
-			mBluetoothDevicesCategory.removeAll();
-			if (result) {
-				for (int i = 0; i < mPairedList.size(); i++) {
-					mBluetoothDevicesCategory.addPreference(mPairedList.get(i));
-				}
-			} else {
-				Preference emptyPref = new Preference(mContext);
-				Resources r = mContext.getResources();
-				emptyPref.setTitle(r.getString(R.string.no_paired_devices_found_title));
-				emptyPref.setSummary(r.getString(R.string.no_paired_devices_found_summary));
-				emptyPref.setLayoutResource(R.layout.pref);
-				mBluetoothDevicesCategory.addPreference(emptyPref);
-			}
-			mPairedList = null;
-		}
-
-		public void onProgressUpdate(Integer... values) {
-			//Nothing
-		}
-
-		@Override
-		protected Boolean doInBackground(Integer... arg0) {
-			return loadPairedDevices();
-		}
-
-		private Boolean loadPairedDevices() {
-
-			// Get a set of currently paired devices
-			Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
-
-			// If there are paired devices, add each one to the ArrayAdapter
-			if (!pairedDevices.isEmpty()) {
-				HashMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
-				mPairedList = new ArrayList<CheckBoxPreference>(pairedDevices.size());
-				for (BluetoothDevice device : pairedDevices) {
-                    String addr = device.getAddress();
-					boolean checked = (devices == null) ? false : devices.containsKey(addr);
-                    if (checked) {
-                        devices.remove(addr);
-                    }
-                    BluetoothClass btClass = device.getBluetoothClass();
-                    int res = 0;
-                    if (btClass != null) {
-                        res = BluetoothClassHelper.getBtClassString(btClass);
-                    }
-					CheckBoxPreference pref = createPref(device.getAddress(),device.getName(), res, checked);
-					mPairedList.add(pref);
-				}
-                if (devices != null && !devices.isEmpty()) {
-                    for(String addr: devices.keySet()) {
-                        CheckBoxPreference pref = createPref(addr, addr, R.string.unavailable_bt_device, true);
-                        mPairedList.add(pref);
-                    }
-                }
-				return true;
-			}
-			return false;
-		}
-
-		private CheckBoxPreference createPref(String addr,String name,@StringRes int summaryResId, boolean checked) {
-			CheckBoxPreference pref = new CheckBoxPreference(mContext);
-			pref.setPersistent(false);
-			pref.setChecked(checked);
-			pref.setDefaultValue(checked);
-			pref.setKey(addr);
-			pref.setTitle(name);
-			pref.setLayoutResource(R.layout.pref);
-
-			if (summaryResId > 0) {
-				String title = mContext.getResources().getString(summaryResId);
-				pref.setSummary(title);
-			}
-			pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-				@Override
-				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					HashMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
-					String address = preference.getKey();
-					Boolean checked = (Boolean) newValue;
-
-					if (checked) {
-						if (devices == null) {
-							devices = new HashMap<String, String>();
-						}
-						devices.put(address, address);
-						PreferencesStorage.saveBtDevices(mContext, devices);
-						((CheckBoxPreference) preference).setChecked(true);
-					} else {
-						if (devices == null) {
-							return true;
-						}
-						devices.remove(address);
-						PreferencesStorage.saveBtDevices(mContext, devices);
-						((CheckBoxPreference) preference).setChecked(false);
-					}
-					return true;
-				}
-			});
-			return pref;
-
-		}
-	}
-
-	class BluetoothStateReceiver extends BroadcastReceiver {
-		public void onReceive(Context paramContext, Intent paramIntent) {
-			int state = paramIntent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
-			if (state == BluetoothAdapter.STATE_ON) {
-				new InitBluetoothDevicesTask().execute(0);
-			} else if (state == BluetoothAdapter.STATE_OFF || state == BluetoothAdapter.ERROR) {
-			}
-		}
 
 	}
 

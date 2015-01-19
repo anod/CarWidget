@@ -11,7 +11,7 @@ import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.drawer.NavigationDrawer;
 import com.anod.car.home.drawer.NavigationList;
-import com.anod.car.home.prefs.TrialDialogs;
+import com.anod.car.home.utils.TrialDialogs;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;

@@ -76,7 +76,7 @@
             android:name="com.anod.car.home.prefs.AllAppsActivity"
             android:theme="@style/AppListTheme" />
         <activity
-            android:name="com.anod.car.home.prefs.IconThemesActivity"
+            android:name=".prefs.lookandfeel.IconThemesActivity"
             android:label="@string/icons_theme"
             android:theme="@style/AppListTheme" />
         <activity
