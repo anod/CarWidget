@@ -27,7 +27,7 @@ public class ShortcutPendingIntent implements WidgetViewBuilder.PendingIntentHel
      * Create an Intent to launch Configuration
      */
     @Override
-    public PendingIntent createSettings(int appWidgetId) {
+    public PendingIntent createSettings(int appWidgetId, int buttonId) {
 		Intent intent = IntentUtils.createSettingsIntent(mContext, appWidgetId);
     	return PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
@@ -60,7 +60,7 @@ public class ShortcutPendingIntent implements WidgetViewBuilder.PendingIntentHel
     }
 
 	@Override
-	public PendingIntent createInCar(boolean on) {
+	public PendingIntent createInCar(boolean on, int buttonId) {
 		if (on) {
 			return getInCarOnIntent();
 		}

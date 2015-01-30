@@ -268,4 +268,7 @@
     </string-array>
 
     <string name="unavailable_bt_device">Not available</string>
+    <string name="hidden">Hidden</string>
+    <string name="choose">Choose</string>
+
 </resources>

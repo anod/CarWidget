@@ -49,7 +49,10 @@ public class PreferencesStorage {
 
 	public static final String ICONS_ROTATE = "icons-rotate-%d";
 	public static final String TITLES_HIDE = "titles-hide-%d";
-	
+
+    public static final String WIDGET_BUTTON_1 = "widget-button-1-%d";
+    public static final String WIDGET_BUTTON_2 = "widget-button-2-%d";
+
 	private static final String[] sAppWidgetPrefs = {
 		SKIN,
 		BG_COLOR,
@@ -66,6 +69,8 @@ public class PreferencesStorage {
 		ICONS_THEME,
 		ICONS_ROTATE,
 		TITLES_HIDE,
+        WIDGET_BUTTON_1,
+        WIDGET_BUTTON_2
 	};
 
 	public static final String INCAR_MODE_ENABLED = "incar-mode-enabled";
@@ -94,14 +99,13 @@ public class PreferencesStorage {
 
 	public static final String CALL_VOLUME_LEVEL = "call-volume-level";
 
-	
-	private static final String DELIMETER_PACKAGES = "\n";
-	private static final String ICONS_DEF_VALUE = (UtilitiesBitmap.HAS_HIRES_SUPPORT) ? "5" : "2";
-	public static final String ACTIVITY_RECOGNITION = "activity-recognition";
-
-	public static final String SAMSUNG_DRIVING_MODE = "sam_driving_mode";
-	private static final String CAR_DOCK = "car-dock";
+    public static final String ACTIVITY_RECOGNITION = "activity-recognition";
+    public static final String SAMSUNG_DRIVING_MODE = "sam_driving_mode";
     public static final String SCREEN_ORIENTATION = "screen-orientation";
+
+	private static final String ICONS_DEF_VALUE = (UtilitiesBitmap.HAS_HIRES_SUPPORT) ? "5" : "2";
+	private static final String CAR_DOCK = "car-dock";
+
 
 
     public static Main loadMain(Context context, int appWidgetId) {
@@ -129,6 +133,9 @@ public class PreferencesStorage {
 		
 		p.setIconsRotate(RotateDirection.valueOf(prefs.getString(ICONS_ROTATE, RotateDirection.NONE.name())));
 		p.setTitlesHide(prefs.getBoolean(TITLES_HIDE, false));
+
+        p.setWidgetButton1(prefs.getInt(WIDGET_BUTTON_1, Main.WIDGET_BUTTON_INCAR));
+        p.setWidgetButton2(prefs.getInt(WIDGET_BUTTON_2, Main.WIDGET_BUTTON_SETTINGS));
 
 		return p;
 	}
@@ -164,7 +171,10 @@ public class PreferencesStorage {
         editor.putString(ICONS_ROTATE, prefs.getIconsRotate().name());
         editor.putBoolean(TITLES_HIDE, prefs.isTitlesHide());
 
-		editor.commit();
+        editor.putInt(WIDGET_BUTTON_1, prefs.getWidgetButton1());
+        editor.putInt(WIDGET_BUTTON_2, prefs.getWidgetButton2());
+
+        editor.commit();
 
 	}
 

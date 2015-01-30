@@ -83,7 +83,7 @@ public class IconThemesActivity extends AppsCacheActivity {
 
 	@Override
 	protected int getRowLayoutId() {
-        return R.layout.icon_theme_row;
+        return R.layout.simple_list_item_checkbox;
 	}
 
 	@Override

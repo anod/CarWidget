@@ -15,4 +15,5 @@ public interface SkinProperties {
 	int getIconPaddingRes();
 	int getSettingsButtonRes();
 	int getRowLayout();
+
 }

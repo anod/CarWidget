@@ -1,6 +1,7 @@
 package com.anod.car.home.skin;
 
 import com.anod.car.home.R;
+import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.skin.icon.BackgroundProcessor;
 import com.anod.car.home.skin.icon.IconProcessor;
 
@@ -38,4 +39,5 @@ public abstract class BaseProperties implements SkinProperties {
     public BackgroundProcessor getBackgroundProcessor() {
         return null;
     }
+
 }

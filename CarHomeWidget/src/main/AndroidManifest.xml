@@ -193,6 +193,13 @@
             android:excludeFromRecents="true"
             android:theme="@style/AppListTheme.Light" />
 
+        <activity
+            android:name=".prefs.lookandfeel.WidgetButtonChoiceActivity"
+            android:label="@string/choose"
+            android:excludeFromRecents="true"
+            android:theme="@style/AppListTheme" />
+
+
         <service android:name="com.anod.car.home.incar.ModeService" />
         <service android:name="com.anod.car.home.incar.BroadcastService" />
 

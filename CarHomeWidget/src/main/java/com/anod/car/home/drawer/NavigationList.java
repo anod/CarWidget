@@ -122,10 +122,9 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
         }
 
         addTitle(0);
-        addButton(ID_WIDGETS, R.string.widgets, R.string.list_of_active_widgets, R.drawable.ic_now_widgets_white_24dp);
-
         String incarSummary =mContext.getString(R.string.settings) + ". " + active;
         addButton(ID_CAR_SETTINGS, R.string.pref_incar_mode_title, incarSummary, R.drawable.ic_settings_white_24dp);
+        addButton(ID_WIDGETS, R.string.widgets, R.string.list_of_active_widgets, R.drawable.ic_now_widgets_white_24dp);
 
         addTitle(0);
         int themeNameRes = AppTheme.getNameResource(CarWidgetApplication.get(mContext).getThemeIdx());

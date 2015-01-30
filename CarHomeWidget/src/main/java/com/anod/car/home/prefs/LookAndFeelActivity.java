@@ -33,6 +33,7 @@ import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.drag.ShortcutDragListener;
 import com.anod.car.home.prefs.lookandfeel.LookAndFeelMenu;
 import com.anod.car.home.prefs.lookandfeel.SkinPagerAdapter;
+import com.anod.car.home.prefs.lookandfeel.WidgetButtonChoiceActivity;
 import com.anod.car.home.prefs.model.SkinList;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -332,8 +333,16 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
     }
 
     @Override
-    public PendingIntent createSettings(int appWidgetId) {
-        return null;
+    public PendingIntent createSettings(int appWidgetId, int buttonId) {
+
+        Intent intent = WidgetButtonChoiceActivity.createIntent(mAppWidgetId, getSkinItem(mCurrentPage).value, buttonId, this);
+        return PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    @Override
+    public PendingIntent createInCar(boolean on, int buttonId) {
+        Intent intent = WidgetButtonChoiceActivity.createIntent(mAppWidgetId, getSkinItem(mCurrentPage).value, buttonId, this);
+        return PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
@@ -344,12 +353,6 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
         editIntent.setData(data);
         return PendingIntent.getActivity(mContext, 0, editIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
-
-    @Override
-    public PendingIntent createInCar(boolean on) {
-        return null;
-    }
-
 
     public void onFragmentAttach(SkinRefreshListener listener, int position) {
         AppLog.d("Register listener for page: " + position);

@@ -29,6 +29,9 @@ import java.util.HashMap;
 
 public class WidgetViewBuilder {
 
+    public static final int BUTTON_1 = 1;
+    public static final int BUTTON_2 = 2;
+
 	final private Context mContext;
 	private int mAppWidgetId;
 	private Main mPrefs;
@@ -74,9 +77,9 @@ public class WidgetViewBuilder {
 
 	public interface PendingIntentHelper {
         PendingIntent createNew(int appWidgetId, int cellId);
-    	PendingIntent createSettings(int appWidgetId);
+    	PendingIntent createSettings(int appWidgetId, int buttonId);
 		PendingIntent createShortcut(Intent intent, int appWidgetId, int position, long shortcutId);
-		PendingIntent createInCar(boolean on);
+		PendingIntent createInCar(boolean on, int buttonId);
 	}
 
 	public WidgetViewBuilder(Context context) {
@@ -145,7 +148,7 @@ public class WidgetViewBuilder {
 
 		Resources r = mContext.getResources();
 		String skinName = (mOverrideSkin == null) ? mPrefs.getSkin() : mOverrideSkin;
-		//boolean isLandscape = r.getBoolean(R.bool.is_landscape);
+
 		float scaledDensity = r.getDisplayMetrics().scaledDensity;
 
 		SkinProperties skinProperties = PropertiesFactory.create(skinName, mIsKeyguard);
@@ -158,16 +161,8 @@ public class WidgetViewBuilder {
 
 		RemoteViews views = new RemoteViews(mContext.getPackageName(), skinProperties.getLayout(shortcuts.size()));
 
-		setInCarButton(R.id.widget_btn1,mPrefs.isIncarTransparent(), skinProperties, views);
-
-		if (mPrefs.isSettingsTransparent()) {
-			views.setImageViewResource(R.id.widget_btn2, R.drawable.btn_transparent);
-		} else {
-			views.setImageViewResource(R.id.widget_btn2, skinProperties.getSettingsButtonRes());
-		}
-        PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId);
-        views.setOnClickPendingIntent(R.id.widget_btn2, configIntent);
-
+        initWidgetButton(R.id.widget_btn1, mPrefs.getWidgetButton1(), skinProperties, views, BUTTON_1);
+        initWidgetButton(R.id.widget_btn2, mPrefs.getWidgetButton2(), skinProperties, views, BUTTON_2);
 
 		setBackground(mPrefs, views);
 
@@ -203,7 +198,56 @@ public class WidgetViewBuilder {
 	}
 
 
-	private void hideKeyguardRows(RemoteViews views, boolean smallKeyguard) {
+    private void initWidgetButton(@IdRes int btnResId, int widgetButtonPref, SkinProperties skinProperties, RemoteViews views, int buttonId) {
+        if (widgetButtonPref == Main.WIDGET_BUTTON_HIDDEN) {
+            views.setViewVisibility(btnResId, View.GONE);
+        } else if (widgetButtonPref == Main.WIDGET_BUTTON_INCAR) {
+            if (PreferencesStorage.isInCarModeEnabled(mContext)) {
+                setInCarButton(btnResId, mPrefs.isIncarTransparent(), skinProperties, views, buttonId);
+            } else {
+                views.setViewVisibility(btnResId, View.GONE);
+            }
+        } else if (widgetButtonPref == Main.WIDGET_BUTTON_SETTINGS) {
+            setSettingsButton(btnResId, skinProperties, views, buttonId);
+        }
+    }
+
+    private void setSettingsButton(@IdRes int resId, SkinProperties skinProperties, RemoteViews views, int buttonId) {
+        if (mPrefs.isSettingsTransparent()) {
+            views.setImageViewResource(resId, R.drawable.btn_transparent);
+        } else {
+            views.setImageViewResource(resId, skinProperties.getSettingsButtonRes());
+        }
+        PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId, buttonId);
+        views.setOnClickPendingIntent(resId, configIntent);
+    }
+
+
+    private void setInCarButton(@IdRes int btnId, boolean isInCarTrans, SkinProperties skinProp, RemoteViews views, int buttonId) {
+        views.setViewVisibility(btnId, View.VISIBLE);
+        if (ModeService.sInCarMode) {
+            if (isInCarTrans) {
+                views.setImageViewResource(btnId, R.drawable.btn_transparent);
+            } else {
+                int rImg = skinProp.getInCarButtonExitRes();
+                views.setImageViewResource(btnId, rImg);
+            }
+        } else {
+            if (isInCarTrans) {
+                views.setImageViewResource(btnId, R.drawable.btn_transparent);
+            } else {
+                int rImg = skinProp.getInCarButtonEnterRes();
+                views.setImageViewResource(btnId, rImg);
+            }
+        }
+        boolean switchOn = !ModeService.sInCarMode;
+        PendingIntent contentIntent = mPendingIntentHelper.createInCar(switchOn, buttonId);
+        if (contentIntent != null) {
+            views.setOnClickPendingIntent(btnId, contentIntent);
+        }
+    }
+
+    private void hideKeyguardRows(RemoteViews views, boolean smallKeyguard) {
 		if (smallKeyguard) {
 			views.setViewVisibility(R.id.row1, View.GONE);
 			//if (!landscape) {
@@ -252,35 +296,6 @@ public class WidgetViewBuilder {
 		bt.setRotateDirection(prefs.getIconsRotate());
 	}
 
-	private void setInCarButton(@IdRes int btnId, boolean isInCarTrans, SkinProperties skinProp, RemoteViews views) {
-		
-		if (PreferencesStorage.isInCarModeEnabled(mContext)) {
-			views.setViewVisibility(btnId, View.VISIBLE);
-			if (ModeService.sInCarMode) {
-				if (isInCarTrans) {
-					views.setImageViewResource(btnId, R.drawable.btn_transparent);
-				} else {
-					int rImg = skinProp.getInCarButtonExitRes();
-					views.setImageViewResource(btnId, rImg);
-				}
-			} else {
-				if (isInCarTrans) {
-					views.setImageViewResource(btnId, R.drawable.btn_transparent);
-				} else {
-					int rImg = skinProp.getInCarButtonEnterRes();
-					views.setImageViewResource(btnId, rImg);
-				}
-			}
-			boolean switchOn = !ModeService.sInCarMode;
-			PendingIntent contentIntent = mPendingIntentHelper.createInCar(switchOn);
-			if (contentIntent != null) {
-				views.setOnClickPendingIntent(btnId, contentIntent);
-			}
-		} else {
-			views.setViewVisibility(btnId, View.GONE);
-		}
-
-	}
 
 	private void setBackground(Main prefs, RemoteViews views) {
 		int bgColor = prefs.getBackgroundColor();

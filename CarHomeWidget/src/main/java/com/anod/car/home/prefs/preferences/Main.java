@@ -16,7 +16,11 @@ public class Main implements Serializable {
     public static final String SKIN_CARDS = "cards";
 
 	public static final int FONT_SIZE_UNDEFINED = -1;
-	
+
+    public static final int WIDGET_BUTTON_INCAR = 1;
+    public static final int WIDGET_BUTTON_SETTINGS = 2;
+    public static final int WIDGET_BUTTON_HIDDEN = 3;
+
 	/**
 	 * 
 	 */
@@ -34,7 +38,10 @@ public class Main implements Serializable {
 	private String iconsTheme;
 	private RotateDirection iconsRotate = RotateDirection.NONE;
 	private boolean titlesHide;
-	
+	private int widgetButton1;
+    private int widgetButton2;
+
+
 	public String getIconsTheme() {
 		return iconsTheme;
 	}
@@ -115,12 +122,33 @@ public class Main implements Serializable {
 		this.titlesHide = titlesHide;
 	}
 
+    public int getWidgetButton1() {
+        return widgetButton1;
+    }
+
+    public void setWidgetButton1(int widgetButton1) {
+        this.widgetButton1 = widgetButton1;
+    }
+
+    public int getWidgetButton2() {
+        return widgetButton2;
+    }
+
+    public void setWidgetButton2(int widgetButton2) {
+        this.widgetButton2 = widgetButton2;
+    }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
 
         if (iconsRotate == null) {
             iconsRotate = RotateDirection.NONE;
+        }
+        if (widgetButton1 == 0) {
+            widgetButton1 = Main.WIDGET_BUTTON_INCAR;
+        }
+        if (widgetButton2 == 0) {
+            widgetButton2 = Main.WIDGET_BUTTON_SETTINGS;
         }
     }
 }

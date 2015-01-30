@@ -49,6 +49,18 @@ public class Utils {
 		}
 	}
 
+    public static Object readActivityState(Bundle savedInstanceState, Intent launchIntent, String param, Object defaultValue) {
+        if (savedInstanceState != null) {
+            return savedInstanceState.get(param);
+        } else {
+            Bundle extras = launchIntent.getExtras();
+            if (extras != null) {
+                return extras.get(param);
+            }
+        }
+        return null;
+    }
+
 	public static int readAppWidgetId(Bundle savedInstanceState, Intent launchIntent) {
 		if (savedInstanceState != null) {
 			return savedInstanceState.getInt("appWidgetId");
