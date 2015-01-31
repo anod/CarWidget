@@ -16,4 +16,5 @@ public interface SkinProperties {
 	int getSettingsButtonRes();
 	int getRowLayout();
 
+    boolean hasWidgetButton1();
 }

@@ -44,6 +44,11 @@ public class CardsProperties extends BaseProperties {
     public int getIconPaddingRes() { return 0; }
 
     @Override
+    public boolean hasWidgetButton1() {
+        return false;
+    }
+
+    @Override
     public BackgroundProcessor getBackgroundProcessor() {
         return new CardsBackgroundProcessor();
     }

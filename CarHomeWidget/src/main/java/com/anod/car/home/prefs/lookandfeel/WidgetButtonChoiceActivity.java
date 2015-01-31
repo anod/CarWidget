@@ -17,6 +17,7 @@ import android.widget.ListView;
 
 import com.anod.car.home.R;
 import com.anod.car.home.app.ActionBarListActivity;
+import com.anod.car.home.appwidget.WidgetButtonViewBuilder;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -96,7 +97,7 @@ public class WidgetButtonChoiceActivity extends ActionBarListActivity {
 
     private void initCheckedItem(List<ChoiceAdapter.Item> items, Main prefs,SkinProperties skinProperties) {
         int value =0;
-        if (mButton == WidgetViewBuilder.BUTTON_1) {
+        if (mButton == WidgetButtonViewBuilder.BUTTON_1) {
             value = prefs.getWidgetButton1();
         } else {
             value = prefs.getWidgetButton2();
@@ -119,7 +120,7 @@ public class WidgetButtonChoiceActivity extends ActionBarListActivity {
 
         Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
         ChoiceAdapter.Item item = (ChoiceAdapter.Item) getListAdapter().getItem(position);
-        if (mButton == WidgetViewBuilder.BUTTON_1) {
+        if (mButton == WidgetButtonViewBuilder.BUTTON_1) {
             prefs.setWidgetButton1(item.value);
         } else {
             prefs.setWidgetButton2(item.value);

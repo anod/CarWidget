@@ -36,6 +36,11 @@ public abstract class BaseProperties implements SkinProperties {
 	public int getIconPaddingRes() { return R.dimen.icon_padding_bottom; }
 
     @Override
+    public boolean hasWidgetButton1() {
+        return true;
+    }
+
+    @Override
     public BackgroundProcessor getBackgroundProcessor() {
         return null;
     }

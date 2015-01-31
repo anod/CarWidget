@@ -28,10 +28,6 @@ import com.anod.car.home.utils.Utils;
 import java.util.HashMap;
 
 public class WidgetViewBuilder {
-
-    public static final int BUTTON_1 = 1;
-    public static final int BUTTON_2 = 2;
-
 	final private Context mContext;
 	private int mAppWidgetId;
 	private Main mPrefs;
@@ -40,6 +36,7 @@ public class WidgetViewBuilder {
 	private PendingIntentHelper mPendingIntentHelper;
 	private boolean mIsKeyguard = false;
 	private int mWidgetHeightDp = -1;
+    private WidgetButtonViewBuilder mWidgetButtonViewBuilder;
 
 	private static int[] sBtnIds = new int[] {
 		R.id.btn0,
@@ -62,6 +59,10 @@ public class WidgetViewBuilder {
 		R.id.btn_text6,
 		R.id.btn_text7//8
 	};
+
+    public WidgetButtonViewBuilder getWidgetButtonViewBuilder() {
+        return mWidgetButtonViewBuilder;
+    }
 
     public static int getBtnRes(int pos) {
         return sBtnIds[pos];
@@ -124,6 +125,7 @@ public class WidgetViewBuilder {
 		mSmodel.init();
 
 		mShortcutViewBuilder = new ShortcutViewBuilder(mContext, mAppWidgetId, mPendingIntentHelper);
+        mWidgetButtonViewBuilder = new WidgetButtonViewBuilder(mContext, mPrefs, mPendingIntentHelper, mAppWidgetId);
 		mBitmapTransform = new BitmapTransform(mContext);
 		refreshIconTransform();
 		return this;
@@ -161,8 +163,7 @@ public class WidgetViewBuilder {
 
 		RemoteViews views = new RemoteViews(mContext.getPackageName(), skinProperties.getLayout(shortcuts.size()));
 
-        initWidgetButton(R.id.widget_btn1, mPrefs.getWidgetButton1(), skinProperties, views, BUTTON_1);
-        initWidgetButton(R.id.widget_btn2, mPrefs.getWidgetButton2(), skinProperties, views, BUTTON_2);
+        mWidgetButtonViewBuilder.setup(skinProperties, views);
 
 		setBackground(mPrefs, views);
 
@@ -197,55 +198,6 @@ public class WidgetViewBuilder {
 		return views;
 	}
 
-
-    private void initWidgetButton(@IdRes int btnResId, int widgetButtonPref, SkinProperties skinProperties, RemoteViews views, int buttonId) {
-        if (widgetButtonPref == Main.WIDGET_BUTTON_HIDDEN) {
-            views.setViewVisibility(btnResId, View.GONE);
-        } else if (widgetButtonPref == Main.WIDGET_BUTTON_INCAR) {
-            if (PreferencesStorage.isInCarModeEnabled(mContext)) {
-                setInCarButton(btnResId, mPrefs.isIncarTransparent(), skinProperties, views, buttonId);
-            } else {
-                views.setViewVisibility(btnResId, View.GONE);
-            }
-        } else if (widgetButtonPref == Main.WIDGET_BUTTON_SETTINGS) {
-            setSettingsButton(btnResId, skinProperties, views, buttonId);
-        }
-    }
-
-    private void setSettingsButton(@IdRes int resId, SkinProperties skinProperties, RemoteViews views, int buttonId) {
-        if (mPrefs.isSettingsTransparent()) {
-            views.setImageViewResource(resId, R.drawable.btn_transparent);
-        } else {
-            views.setImageViewResource(resId, skinProperties.getSettingsButtonRes());
-        }
-        PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId, buttonId);
-        views.setOnClickPendingIntent(resId, configIntent);
-    }
-
-
-    private void setInCarButton(@IdRes int btnId, boolean isInCarTrans, SkinProperties skinProp, RemoteViews views, int buttonId) {
-        views.setViewVisibility(btnId, View.VISIBLE);
-        if (ModeService.sInCarMode) {
-            if (isInCarTrans) {
-                views.setImageViewResource(btnId, R.drawable.btn_transparent);
-            } else {
-                int rImg = skinProp.getInCarButtonExitRes();
-                views.setImageViewResource(btnId, rImg);
-            }
-        } else {
-            if (isInCarTrans) {
-                views.setImageViewResource(btnId, R.drawable.btn_transparent);
-            } else {
-                int rImg = skinProp.getInCarButtonEnterRes();
-                views.setImageViewResource(btnId, rImg);
-            }
-        }
-        boolean switchOn = !ModeService.sInCarMode;
-        PendingIntent contentIntent = mPendingIntentHelper.createInCar(switchOn, buttonId);
-        if (contentIntent != null) {
-            views.setOnClickPendingIntent(btnId, contentIntent);
-        }
-    }
 
     private void hideKeyguardRows(RemoteViews views, boolean smallKeyguard) {
 		if (smallKeyguard) {

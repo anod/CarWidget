@@ -231,6 +231,7 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
             .init()
             .setBitmapMemoryCache(mBitmapMemoryCache)
         ;
+        builder.getWidgetButtonViewBuilder().setAlternativeHidden(true);
         return builder;
     }
 
