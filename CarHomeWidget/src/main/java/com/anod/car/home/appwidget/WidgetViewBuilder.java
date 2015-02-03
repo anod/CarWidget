@@ -36,7 +36,12 @@ public class WidgetViewBuilder {
 	private PendingIntentHelper mPendingIntentHelper;
 	private boolean mIsKeyguard = false;
 	private int mWidgetHeightDp = -1;
+
+    private LruCache<String, Bitmap> mBitmapMemoryCache;
+    private ShortcutViewBuilder mShortcutViewBuilder;
+    private BitmapTransform mBitmapTransform;
     private WidgetButtonViewBuilder mWidgetButtonViewBuilder;
+    private boolean mWidgetButtonAlternativeHidden;
 
 	private static int[] sBtnIds = new int[] {
 		R.id.btn0,
@@ -60,23 +65,16 @@ public class WidgetViewBuilder {
 		R.id.btn_text7//8
 	};
 
-    public WidgetButtonViewBuilder getWidgetButtonViewBuilder() {
-        return mWidgetButtonViewBuilder;
-    }
-
     public static int getBtnRes(int pos) {
         return sBtnIds[pos];
     }
 
-	private ShortcutViewBuilder mShortcutViewBuilder;
-	private BitmapTransform mBitmapTransform;
-
 	public WidgetViewBuilder setBitmapMemoryCache(LruCache<String, Bitmap> bitmapMemoryCache) {
-		mShortcutViewBuilder.setBitmapMemoryCache(bitmapMemoryCache);
+		mBitmapMemoryCache = bitmapMemoryCache;
 		return this;
 	}
 
-	public interface PendingIntentHelper {
+    public interface PendingIntentHelper {
         PendingIntent createNew(int appWidgetId, int cellId);
     	PendingIntent createSettings(int appWidgetId, int buttonId);
 		PendingIntent createShortcut(Intent intent, int appWidgetId, int position, long shortcutId);
@@ -125,13 +123,22 @@ public class WidgetViewBuilder {
 		mSmodel.init();
 
 		mShortcutViewBuilder = new ShortcutViewBuilder(mContext, mAppWidgetId, mPendingIntentHelper);
+        if (mBitmapMemoryCache != null) {
+            mShortcutViewBuilder.setBitmapMemoryCache(mBitmapMemoryCache);;
+        }
         mWidgetButtonViewBuilder = new WidgetButtonViewBuilder(mContext, mPrefs, mPendingIntentHelper, mAppWidgetId);
+        mWidgetButtonViewBuilder.setAlternativeHidden(mWidgetButtonAlternativeHidden);
 		mBitmapTransform = new BitmapTransform(mContext);
 		refreshIconTransform();
 		return this;
 	}
 
-	public void refreshIconTransform() {
+    public WidgetViewBuilder setWidgetButtonAlternativeHidden(boolean widgetButtonAlternativeHidden) {
+        mWidgetButtonAlternativeHidden = widgetButtonAlternativeHidden;
+        return this;
+    }
+
+    public void refreshIconTransform() {
 		applyIconTransform(mBitmapTransform, mPrefs);
 	}
 

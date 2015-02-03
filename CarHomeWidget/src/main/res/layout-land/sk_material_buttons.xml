@@ -15,13 +15,4 @@
         android:background="@drawable/fab_background"
         android:src="@drawable/ic_settings_grey600_36dp"/>
 
-    <ImageButton
-        android:id="@+id/widget_btn1"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="bottom"
-        android:background="@drawable/fab_background"
-        android:src="@drawable/ic_incar_enter_gray"/>
-
-
 </FrameLayout>

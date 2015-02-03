@@ -24,7 +24,7 @@ public class WidgetButtonViewBuilder {
     private Main mPrefs;
     private WidgetViewBuilder.PendingIntentHelper mPendingIntentHelper;
     private int mAppWidgetId;
-    private boolean mAlternativeHidden = true;
+    private boolean mAlternativeHidden = false;
 
     public WidgetButtonViewBuilder(Context context, Main prefs, WidgetViewBuilder.PendingIntentHelper pendingIntentHelper, int appWidgetId) {
         mContext = context;

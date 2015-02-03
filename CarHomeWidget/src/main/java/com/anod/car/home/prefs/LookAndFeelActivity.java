@@ -154,6 +154,8 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
         }
 
         mBuilder = createBuilder();
+        mBuilder.init();
+
         mPrefs = mBuilder.getPrefs();
         mModel = new WidgetShortcutsModel(mContext, mAppWidgetId);
 
@@ -228,10 +230,9 @@ public class LookAndFeelActivity extends CarWidgetActivity implements ViewPager.
         builder
             .setPendingIntentHelper(this)
             .setAppWidgetId(mAppWidgetId)
-            .init()
             .setBitmapMemoryCache(mBitmapMemoryCache)
         ;
-        builder.getWidgetButtonViewBuilder().setAlternativeHidden(true);
+        builder.setWidgetButtonAlternativeHidden(true);
         return builder;
     }
 
