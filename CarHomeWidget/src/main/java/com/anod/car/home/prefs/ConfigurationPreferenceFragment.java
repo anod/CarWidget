@@ -79,25 +79,29 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 		}
 		addPreferencesFromResource(getXmlResource());
 
-		if (isAppWidgetIdRequired()) {
-			if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-				Intent defaultResultValue = new Intent();
-				defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-				getActivity().setResult(Activity.RESULT_OK, defaultResultValue);
-			} else {
-				AppLog.w("AppWidgetId required");
-				getActivity().finish();
-				return;
-			}
-		}
-
-        ((ConfigurationActivity)getActivity()).setNavigationItem(getNavigationItem());
 		mContext = (Context) getActivity();
 
 		onCreateImpl(savedInstanceState);
 	}
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
+        if (isAppWidgetIdRequired()) {
+            if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                Intent defaultResultValue = new Intent();
+                defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+                getActivity().setResult(Activity.RESULT_OK, defaultResultValue);
+            } else {
+                AppLog.w("AppWidgetId required");
+                getActivity().finish();
+                return;
+            }
+        }
+
+        ((ConfigurationActivity)getActivity()).setNavigationItem(getNavigationItem());
+    }
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {

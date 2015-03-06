@@ -171,13 +171,7 @@ public class IconTheme
 		return 0;
 	}
 
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 	public Drawable getDrawable(int resId) {
-
-		if (UtilitiesBitmap.HAS_HIRES_SUPPORT) {
-			return mThemeResources.getDrawableForDensity(resId, UtilitiesBitmap.getTargetDensity(mContext));
-		}
-
-		return mThemeResources.getDrawable(resId);
+		return mThemeResources.getDrawableForDensity(resId, UtilitiesBitmap.getTargetDensity(mContext));
 	}
 }

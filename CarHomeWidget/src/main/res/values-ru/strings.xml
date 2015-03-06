@@ -68,7 +68,7 @@
 		<item quantity="few">%1$d активаций осталось</item>
 		<item quantity="many">%1$d активаций осталось</item>
 	</plurals>
-	<string name="version_title">%1$s вер. %2$s</string>
+	<string name="version_title">%1$s %2$s</string>
 	<string name="version_summary">Пожалуйста, оцените этот виджет на маркете</string>
 	<string name="shortcut_edit_title">Изменить ярлык</string>
 	<string name="shortcut_edit_hint">Нажмите на икону, чтобы изменить его</string>

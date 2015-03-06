@@ -34,7 +34,6 @@
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray"
             android:src="@drawable/ic_add_shortcut_holo"
-            android:paddingBottom="8dp"
             />
 
         <TextView

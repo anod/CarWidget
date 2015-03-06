@@ -20,7 +20,6 @@ import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
 public class ShortcutInfoUtils {
-    static final String TAG = "CarHomeWidget.ShortcutInfoUtils";
     public static ShortcutInfo createShortcut(Context context, Intent data, int cellId, boolean isAppShortcut) {
     	ShortcutInfo info = null;
     	if (isAppShortcut) {
@@ -54,9 +53,7 @@ public class ShortcutInfoUtils {
                 	ShortcutIconResource iconResource = (ShortcutIconResource) extra;
 					icon = getPackageIcon(context, icon, iconResource);
                     info.setIconResource(icon, iconResource);
-                } catch (Resources.NotFoundException  e) {
-                    AppLog.ex(e);
-                } catch (PackageManager.NameNotFoundException e) {
+                } catch (Resources.NotFoundException | PackageManager.NameNotFoundException e) {
                     AppLog.ex(e);
                 }
             }
@@ -71,33 +68,19 @@ public class ShortcutInfoUtils {
         return info;
     }
 
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 	private static Bitmap getPackageIcon(Context context, Bitmap icon, ShortcutIconResource iconResource) throws PackageManager.NameNotFoundException {
 		final PackageManager packageManager = context.getPackageManager();
 		Resources resources = packageManager.getResourcesForApplication(iconResource.packageName);
 		final int id = resources.getIdentifier(iconResource.resourceName, null, null);
 
 		Drawable drawableIcon = null;
-		if (UtilitiesBitmap.HAS_HIRES_SUPPORT) {
-            try {
+        drawableIcon = loadDrawableForTargetDensity(id, resources, context);
 
-                drawableIcon = resources.getDrawableForDensity(id, UtilitiesBitmap.getTargetDensity(context));
-            } catch (Resources.NotFoundException e) {
-                AppLog.ex(e);
-            }
-
-			if (drawableIcon instanceof BitmapDrawable) {
-				icon = ((BitmapDrawable) drawableIcon).getBitmap();
-			} else if(drawableIcon != null) {
-				icon = UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context);
-			} else {
-                drawableIcon = resources.getDrawable(id);
-                icon = UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context);
-            }
-		} else {
-			drawableIcon = resources.getDrawable(id);
-			icon = UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context);
-		}
+        if (drawableIcon instanceof BitmapDrawable) {
+            icon = ((BitmapDrawable) drawableIcon).getBitmap();
+        } else if(drawableIcon != null) {
+            icon = UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context);
+        }
 		return icon;
 	}
 
@@ -157,10 +140,7 @@ public class ShortcutInfoUtils {
             return null;
         }
 
-		Drawable drawable = null;
-		if (UtilitiesBitmap.HAS_HIRES_SUPPORT) {
-			drawable = loadHighResIcon(manager, resolveInfo, context);
-		}
+		Drawable drawable = loadHighResIcon(resolveInfo, context);
 		if (drawable == null) {
 			drawable = resolveInfo.activityInfo.loadIcon(manager);
 		}
@@ -172,20 +152,41 @@ public class ShortcutInfoUtils {
         return UtilitiesBitmap.createHiResIconBitmap(drawable, context);
     }
 
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-	private static Drawable loadHighResIcon(PackageManager manager, ResolveInfo resolveInfo, Context context) {
+	private static Drawable loadHighResIcon(ResolveInfo resolveInfo, Context context) {
 		try {
 			Context otherAppCtxt = context.createPackageContext(resolveInfo.activityInfo.packageName, Context.CONTEXT_IGNORE_SECURITY);
 			int icon = (resolveInfo.activityInfo.icon > 0) ? resolveInfo.activityInfo.icon : resolveInfo.activityInfo.applicationInfo.icon;
 			if (icon == 0) {
 				return null;
 			}
-			Drawable drawableAppIcon = otherAppCtxt.getResources().getDrawableForDensity(icon, UtilitiesBitmap.getTargetDensity(context));
+
+            Drawable drawableAppIcon = loadDrawableForTargetDensity(icon, otherAppCtxt.getResources(), context);
+
 			return drawableAppIcon;
 		} catch (PackageManager.NameNotFoundException e) {
 			AppLog.d("NameNotFoundException: " + e.getMessage());
 		}
 		return null;
 	}
+
+    private static Drawable loadDrawableForTargetDensity(int id, Resources resources, Context context) {
+        Drawable drawableAppIcon = null;
+        try {
+            drawableAppIcon = resources.getDrawableForDensity(id, UtilitiesBitmap.getTargetDensity(context));
+        } catch (Resources.NotFoundException e) {
+            AppLog.ex(e);
+        }
+
+        if (drawableAppIcon == null) {
+            //fallback to the default density
+            try {
+                drawableAppIcon = resources.getDrawable(id);
+            } catch (Resources.NotFoundException e) {
+                AppLog.ex(e);
+                return null;
+            }
+        }
+        return drawableAppIcon;
+    }
 
 }

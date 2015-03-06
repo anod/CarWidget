@@ -103,7 +103,7 @@ public class PreferencesStorage {
     public static final String SAMSUNG_DRIVING_MODE = "sam_driving_mode";
     public static final String SCREEN_ORIENTATION = "screen-orientation";
 
-	private static final String ICONS_DEF_VALUE = (UtilitiesBitmap.HAS_HIRES_SUPPORT) ? "5" : "2";
+	private static final String ICONS_DEF_VALUE = "5";
 	private static final String CAR_DOCK = "car-dock";
 
 

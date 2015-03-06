@@ -24,8 +24,6 @@ public class UtilitiesBitmap {
 	private static final int SIZE_SYSTEM = 1; // default system icon size
 	private static final int SIZE_MAX = 2; // max scale size
 
-	public static final boolean HAS_HIRES_SUPPORT = Utils.IS_ISC_MR1_OR_GREATER;
-
 	public static final int MAX_SCALE = 3;
 	private static int sIconSize = -1;
 	private static int sIconSystem = -1;
@@ -107,10 +105,6 @@ public class UtilitiesBitmap {
 	}
 
 	public static int getHigherDensity(int deviceDensity) {
-
-		if (!HAS_HIRES_SUPPORT) {
-			return deviceDensity;
-		}
 
 		if (deviceDensity <= DisplayMetrics.DENSITY_TV) {
 			return DisplayMetrics.DENSITY_XXHIGH;

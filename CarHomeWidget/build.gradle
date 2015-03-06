@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.android.tools.build:gradle:1.0.1'
 
     }
 }
@@ -35,8 +35,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 54
-        versionName '1.8.1'
+        versionCode 55
+        versionName '1.8.2'
         testInstrumentationRunner 'android.test.InstrumentationTestRunner'
     }
     sourceSets {

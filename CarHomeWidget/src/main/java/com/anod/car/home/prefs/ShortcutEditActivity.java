@@ -271,11 +271,7 @@ public class ShortcutEditActivity extends ActionBarActivity {
 		try {
 			// Load drawable through Resources, to get the source density information
 			OpenResourceIdResult r = getResourceId(uri);
-			if (UtilitiesBitmap.HAS_HIRES_SUPPORT) {
-				d = r.r.getDrawableForDensity(r.id, UtilitiesBitmap.getTargetDensity(this));
-			} else {
-				d = r.r.getDrawable(r.id);
-			}
+			d = r.r.getDrawableForDensity(r.id, UtilitiesBitmap.getTargetDensity(this));
 		} catch (Exception e) {
 			Log.w("ShortcutEditActivity", "Unable to open content: " + uri, e);
 		}

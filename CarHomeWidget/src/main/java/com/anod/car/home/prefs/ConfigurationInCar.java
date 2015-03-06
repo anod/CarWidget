@@ -56,12 +56,9 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 	private static final String AUTORUN_APP_DISABLED = "disabled";
 	private static final String AUTORUN_APP_CUSTOM = "custom";
 
-	private static final IntentFilter INTENT_FILTER = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
 	protected static final int REQUEST_PICK_APPLICATION = 0;
 	public static final int PS_DIALOG_REQUEST_CODE = 4;
     public static final String SCREEN_TIMEOUT_LIST = "screen-timeout-list";
-    private PreferenceCategory mBluetoothDevicesCategory;
-	private BroadcastReceiver mBluetoothReceiver;
 
 	private int mTrialsLeft;
 	private boolean mTrialMessageShown;
@@ -98,17 +95,11 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
     @Override
 	public void onPause() {
 		super.onPause();
-		if (mBluetoothReceiver != null) {
-			getActivity().unregisterReceiver(mBluetoothReceiver);
-		}
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (mBluetoothReceiver != null) {
-			getActivity().registerReceiver(mBluetoothReceiver, INTENT_FILTER);
-		}
 	}
 
 	public Dialog createTrialDialog() {
