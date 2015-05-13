@@ -3,6 +3,7 @@ package com.anod.car.home.model;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import com.anod.car.home.BuildConfig;
 import com.anod.car.home.utils.Version;
 
 /**

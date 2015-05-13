@@ -1,5 +1,7 @@
 package com.anod.car.home.model;
 
+import com.anod.car.home.BuildConfig;
+
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -21,8 +23,8 @@ public class LauncherProvider extends ContentProvider {
 
     private static final int DATABASE_VERSION = 2;
 
-    public static final String AUTHORITY_FREE = "com.anod.car.home.settings";
-    public static final String AUTHORITY_PRO = "com.anod.car.home.settings.pro";
+    public static final String AUTHORITY_FREE = (BuildConfig.DEBUG) ? "com.anod.car.home.debug.settings" : "com.anod.car.home.settings";
+    public static final String AUTHORITY_PRO  = (BuildConfig.DEBUG) ? "com.anod.car.home.debug.settings.pro" : "com.anod.car.home.settings.pro";
     
     static final String TABLE_FAVORITES = "favorites";
 

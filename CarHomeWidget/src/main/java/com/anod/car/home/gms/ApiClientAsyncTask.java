@@ -18,11 +18,12 @@ import java.util.concurrent.CountDownLatch;
 /**
  * An AsyncTask that maintains a connected client.
  */
-public abstract class ApiClientAsyncTask<Params, Progress, Result>
-        extends AsyncTask<Params, Progress, Result> {
+public abstract class ApiClientAsyncTask<P, I, R>
+        extends AsyncTask<P, I, R> {
 
     private GoogleApiClient mClient;
-	protected Context mContext;
+    protected Context mContext;
+
     public ApiClientAsyncTask(Context context) {
         GoogleApiClient.Builder builder = new GoogleApiClient.Builder(context)
                 .addApi(Drive.API)
@@ -32,7 +33,7 @@ public abstract class ApiClientAsyncTask<Params, Progress, Result>
     }
 
     @Override
-    protected final Result doInBackground(Params... params) {
+    protected final R doInBackground(P... params) {
         Log.d("TAG", "in background");
         final CountDownLatch latch = new CountDownLatch(1);
         mClient.registerConnectionCallbacks(new ConnectionCallbacks() {
@@ -71,7 +72,7 @@ public abstract class ApiClientAsyncTask<Params, Progress, Result>
      * Override this method to perform a computation on a background thread, while the client is
      * connected.
      */
-    protected abstract Result doInBackgroundConnected(Params... params);
+    protected abstract R doInBackgroundConnected(P... params);
 
     /**
      * Gets the GoogleApliClient owned by this async task.
