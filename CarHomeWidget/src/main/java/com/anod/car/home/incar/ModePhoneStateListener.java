@@ -116,6 +116,13 @@ public class ModePhoneStateListener extends PhoneStateListener {
 	}
 	private void answerPhoneHeadsethook(Context context) {
 
+	    Intent intent = new Intent(context, AcceptCallActivity.class);
+	    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
+		    | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            intent.putExtra(AcceptCallActivity.EXTRA_ENABLE_SPEAKER,mUseAutoSpeaker);
+	    context.startActivity(intent);
+	    /*
+
 		boolean headsetImmitation = false;
 		if (!mAudioManager.isWiredHeadsetOn()) {
 			sendHeadsetPlug(1, context);
@@ -134,6 +141,7 @@ public class ModePhoneStateListener extends PhoneStateListener {
 		if (headsetImmitation) {
 			sendHeadsetPlug(0, context);
 		}
+		*/
 	}
 
 	private void sendHeadsetPlug(int state, Context context) {

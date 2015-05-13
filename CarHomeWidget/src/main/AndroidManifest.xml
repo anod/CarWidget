@@ -266,6 +266,14 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".incar.AcceptCallActivity"
+            android:launchMode="singleTop"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/BrightnessTheme">
+        </activity>
     </application>
 
 </manifest>
