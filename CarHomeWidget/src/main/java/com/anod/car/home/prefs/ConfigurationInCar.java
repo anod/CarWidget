@@ -134,6 +134,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
             }
         });
 
+        initTriggers(incar);
         initAutorunApp(incar);
         initActivityRecognition();
         initScreenTimeout(incar);
@@ -144,6 +145,21 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
         showFragmentOnClick(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class);
 
         initSamsungHandsfree();
+    }
+
+    private void initTriggers(InCar incar) {
+        Preference headsetSwitch = findPreference(PreferencesStorage.HEADSET_REQUIRED);
+        headsetSwitch.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if ((Boolean) newValue) {
+                    BroadcastService.startService(mContext);
+                } else {
+                    BroadcastService.stopService(mContext);
+                }
+                return true;
+            }
+        });
     }
 
     private void initScreenTimeout(InCar incar) {
@@ -225,11 +241,9 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     Boolean val = (Boolean) newValue;
                     if (val) {
-                        mContext.startService(
-                                ActivityRecognitionClientService.makeStartIntent(mContext));
+                        ActivityRecognitionClientService.startService(mContext);
                     } else {
-                        mContext.stopService(
-                                ActivityRecognitionClientService.makeStartIntent(mContext));
+                        ActivityRecognitionClientService.stopService(mContext);
                     }
                     return true;
                 }
@@ -238,11 +252,6 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 
     }
 
-
-    /**
-     * @param errorCode
-     * @return
-     */
     private String renderPlayServiceStatus(int errorCode) {
         if (errorCode == ConnectionResult.SUCCESS) {
             return getString(R.string.gms_success);

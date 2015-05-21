@@ -44,7 +44,6 @@ public class ModeDetector {
 
     public static void onRegister(Context context) {
         sEventState[FLAG_POWER] = PowerUtil.isConnected(context);
-
     }
 
     private static void updatePrefState(InCar prefs) {

@@ -35,17 +35,15 @@ public class ActivityRecognitionClientService extends StoppableService
             MILLISECONDS_PER_SECOND * DETECTION_INTERVAL_SECONDS;
 
 
-    public static Intent makeStartIntent(Context context) {
-        Intent i = new Intent(context.getApplicationContext(),
-                ActivityRecognitionClientService.class);
-        return i;
+    public static void startService(Context context) {
+        final Intent serviceIntent = new Intent(context.getApplicationContext(), ActivityRecognitionClientService.class);
+        context.startService(serviceIntent);
     }
 
-    public static Intent makeStopIntent(Context context) {
-        Intent i = new Intent(context.getApplicationContext(),
-                ActivityRecognitionClientService.class);
-        fillStopIntent(i);
-        return i;
+    public static void stopService(Context context) {
+        final Intent serviceIntent = new Intent(context.getApplicationContext(), ActivityRecognitionClientService.class);
+        fillStopIntent(serviceIntent);
+        context.stopService(serviceIntent);
     }
 
     @Override
