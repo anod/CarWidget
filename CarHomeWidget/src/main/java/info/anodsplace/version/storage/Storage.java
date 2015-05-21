@@ -6,7 +6,7 @@ package info.anodsplace.version.storage;
  */
 public interface Storage {
 
-	int getVersion();
+    int getVersion();
 
-	void persistVersion(int versionCode);
+    void persistVersion(int versionCode);
 }

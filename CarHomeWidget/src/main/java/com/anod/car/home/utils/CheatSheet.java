@@ -24,7 +24,8 @@ import android.view.View;
 import android.widget.Toast;
 
 /**
- * Helper class for showing cheat sheets (tooltips) for icon-only UI elements on long-press. This is
+ * Helper class for showing cheat sheets (tooltips) for icon-only UI elements on long-press. This
+ * is
  * already default platform behavior for icon-only {@link android.app.ActionBar} items and tabs.
  * This class provides this behavior for any other such UI element.
  *
@@ -32,6 +33,7 @@ import android.widget.Toast;
  * ActionMenuItemView.java</a>.
  */
 public class CheatSheet {
+
     /**
      * The estimated height of a toast, in dips (density-independent pixels). This is used to
      * determine whether or not the toast should appear above or below the UI element.

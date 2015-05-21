@@ -1,8 +1,9 @@
 package com.anod.car.home.ui.views;
 
+import com.anod.car.home.R;
+
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -12,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.anod.car.home.R;
-
 /**
  * @author alex
  * @date 2014-10-20
@@ -21,7 +20,9 @@ import com.anod.car.home.R;
 public class TwoLineButton extends LinearLayout {
 
     private ImageView mIconView;
+
     private TextView mTitleView;
+
     private TextView mSummaryView;
 
     public TwoLineButton(Context context) {
@@ -39,13 +40,13 @@ public class TwoLineButton extends LinearLayout {
 
         LayoutInflater.from(context).inflate(R.layout.two_line_button, this);
 
-        mIconView = (ImageView)findViewById(android.R.id.icon);
-        mTitleView = (TextView)findViewById(android.R.id.title);
-        mSummaryView = (TextView)findViewById(android.R.id.summary);
+        mIconView = (ImageView) findViewById(android.R.id.icon);
+        mTitleView = (TextView) findViewById(android.R.id.title);
+        mSummaryView = (TextView) findViewById(android.R.id.summary);
 
-
-        CharSequence summary=null;
-        TypedArray ta = context.obtainStyledAttributes(attrs,R.styleable.TwoLineButtonAttrs, defStyle, 0);
+        CharSequence summary = null;
+        TypedArray ta = context
+                .obtainStyledAttributes(attrs, R.styleable.TwoLineButtonAttrs, defStyle, 0);
         int n = ta.getIndexCount();
         for (int i = 0; i < n; i++) {
             int attr = ta.getIndex(i);

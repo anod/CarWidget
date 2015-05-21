@@ -1,5 +1,11 @@
 package com.anod.car.home.app;
 
+import com.anod.car.home.BuildConfig;
+import com.anod.car.home.CarWidgetApplication;
+import com.anod.car.home.R;
+import com.anod.car.home.model.AppsList;
+import com.anod.car.home.utils.AppLog;
+
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
@@ -7,13 +13,6 @@ import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-
-
-import com.anod.car.home.BuildConfig;
-import com.anod.car.home.CarWidgetApplication;
-import com.anod.car.home.R;
-import com.anod.car.home.model.AppsList;
-import com.anod.car.home.utils.AppLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +24,7 @@ import java.util.List;
  * @date 2014-09-01
  */
 public abstract class MusicAppsActivity extends AppsListActivity {
+
     private static HashSet<String> sExcludePackages;
 
     static {
@@ -76,7 +76,8 @@ public abstract class MusicAppsActivity extends AppsListActivity {
         @Override
         public ArrayList<AppsList.Entry> loadInBackground() {
             final PackageManager packageManager = getContext().getPackageManager();
-            List<ResolveInfo> apps = packageManager.queryBroadcastReceivers(new Intent(Intent.ACTION_MEDIA_BUTTON), 96);
+            List<ResolveInfo> apps = packageManager
+                    .queryBroadcastReceivers(new Intent(Intent.ACTION_MEDIA_BUTTON), 96);
 
             // filter duplicate receivers
             HashMap<String, Boolean> receivers = new HashMap<String, Boolean>();
@@ -87,9 +88,11 @@ public abstract class MusicAppsActivity extends AppsListActivity {
                 if (sExcludePackages.contains(pkg) || receivers.containsKey(pkg)) {
                     continue;
                 }
-                String title = appInfo.activityInfo.applicationInfo.loadLabel(packageManager).toString();
+                String title = appInfo.activityInfo.applicationInfo.loadLabel(packageManager)
+                        .toString();
                 if (BuildConfig.DEBUG) {
-                    AppLog.d(appInfo.activityInfo.packageName + "/" + appInfo.activityInfo.applicationInfo.className);
+                    AppLog.d(appInfo.activityInfo.packageName + "/"
+                            + appInfo.activityInfo.applicationInfo.className);
                 }
                 receivers.put(pkg, true);
                 mAppsList.put(appInfo, title);

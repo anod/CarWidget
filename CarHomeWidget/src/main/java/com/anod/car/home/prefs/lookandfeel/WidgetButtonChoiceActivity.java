@@ -1,5 +1,15 @@
 package com.anod.car.home.prefs.lookandfeel;
 
+import com.anod.car.home.R;
+import com.anod.car.home.app.ActionBarListActivity;
+import com.anod.car.home.appwidget.WidgetButtonViewBuilder;
+import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.skin.PropertiesFactory;
+import com.anod.car.home.skin.SkinProperties;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.Utils;
+
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -10,21 +20,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.Checkable;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.ListView;
-
-import com.anod.car.home.R;
-import com.anod.car.home.app.ActionBarListActivity;
-import com.anod.car.home.appwidget.WidgetButtonViewBuilder;
-import com.anod.car.home.appwidget.WidgetViewBuilder;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.skin.PropertiesFactory;
-import com.anod.car.home.skin.SkinProperties;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +34,15 @@ import butterknife.ButterKnife;
  * @date 2015-01-18
  */
 public class WidgetButtonChoiceActivity extends ActionBarListActivity {
+
     public static final String EXTRA_SKIN = "skin";
+
     public static final String EXTRA_BTN = "btn";
 
     private int mAppWidgetId;
+
     private String mSkin;
+
     private int mButton;
 
     public static Intent createIntent(int appWidgetId, String skin, int buttonId, Context context) {
@@ -49,15 +51,16 @@ public class WidgetButtonChoiceActivity extends ActionBarListActivity {
         intent.putExtra(WidgetButtonChoiceActivity.EXTRA_SKIN, skin);
         intent.putExtra(WidgetButtonChoiceActivity.EXTRA_BTN, buttonId);
         String path = appWidgetId + "/widgetButton" + buttonId;
-        Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),path);
+        Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"), path);
         intent.setData(data);
         return intent;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        if (getSupportActionBar()!=null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
 
@@ -95,15 +98,16 @@ public class WidgetButtonChoiceActivity extends ActionBarListActivity {
         setListAdapter(new ChoiceAdapter(this, items));
     }
 
-    private void initCheckedItem(List<ChoiceAdapter.Item> items, Main prefs,SkinProperties skinProperties) {
-        int value =0;
+    private void initCheckedItem(List<ChoiceAdapter.Item> items, Main prefs,
+            SkinProperties skinProperties) {
+        int value = 0;
         if (mButton == WidgetButtonViewBuilder.BUTTON_1) {
             value = prefs.getWidgetButton1();
         } else {
             value = prefs.getWidgetButton2();
         }
 
-        for(int i = 0; i < items.size(); i++) {
+        for (int i = 0; i < items.size(); i++) {
             ChoiceAdapter.Item item = items.get(i);
             if (item.value == value) {
                 item.setChecked(true);
@@ -133,18 +137,25 @@ public class WidgetButtonChoiceActivity extends ActionBarListActivity {
     private List<ChoiceAdapter.Item> createItems(SkinProperties skinProperties) {
         Resources r = getResources();
         ArrayList<ChoiceAdapter.Item> items = new ArrayList<ChoiceAdapter.Item>(3);
-        items.add(new ChoiceAdapter.Item(r.getString(R.string.pref_settings_transparent),skinProperties.getSettingsButtonRes(), Main.WIDGET_BUTTON_SETTINGS));
-        items.add(new ChoiceAdapter.Item(r.getString(R.string.pref_incar_transparent),skinProperties.getInCarButtonEnterRes(), Main.WIDGET_BUTTON_INCAR));
-        items.add(new ChoiceAdapter.Item(r.getString(R.string.hidden),R.drawable.ic_action_cancel, Main.WIDGET_BUTTON_HIDDEN));
+        items.add(new ChoiceAdapter.Item(r.getString(R.string.pref_settings_transparent),
+                skinProperties.getSettingsButtonRes(), Main.WIDGET_BUTTON_SETTINGS));
+        items.add(new ChoiceAdapter.Item(r.getString(R.string.pref_incar_transparent),
+                skinProperties.getInCarButtonEnterRes(), Main.WIDGET_BUTTON_INCAR));
+        items.add(new ChoiceAdapter.Item(r.getString(R.string.hidden), R.drawable.ic_action_cancel,
+                Main.WIDGET_BUTTON_HIDDEN));
         return items;
     }
 
     private static class ChoiceAdapter extends ArrayAdapter<ChoiceAdapter.Item> {
 
         public static class Item {
+
             int value;
+
             String title;
+
             int icon;
+
             boolean checked;
 
             private Item(String title, int icon, int value) {

@@ -6,44 +6,44 @@ import android.widget.Checkable;
 import android.widget.RelativeLayout;
 
 public class RelativeLayoutCheckable extends RelativeLayout implements Checkable {
-	
-	private Checkable mCheckableView;
 
-	public RelativeLayoutCheckable(Context context) {
-		super(context);
-	}
+    private Checkable mCheckableView;
 
-	public RelativeLayoutCheckable(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
+    public RelativeLayoutCheckable(Context context) {
+        super(context);
+    }
 
-	public RelativeLayoutCheckable(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-	}
+    public RelativeLayoutCheckable(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-	@Override
-	protected void onFinishInflate() {
-		super.onFinishInflate();
-		initCheckableView();
-	}
+    public RelativeLayoutCheckable(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
 
-	private void initCheckableView() {
-		mCheckableView = (Checkable)findViewById(android.R.id.text1);
-	}
-	
-	@Override
-	public boolean isChecked() {
-		return mCheckableView.isChecked();
-	}
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        initCheckableView();
+    }
 
-	@Override
-	public void setChecked(boolean checked) {
-		mCheckableView.setChecked(checked);
-	}
+    private void initCheckableView() {
+        mCheckableView = (Checkable) findViewById(android.R.id.text1);
+    }
 
-	@Override
-	public void toggle() {
-		mCheckableView.toggle();
-	}
+    @Override
+    public boolean isChecked() {
+        return mCheckableView.isChecked();
+    }
+
+    @Override
+    public void setChecked(boolean checked) {
+        mCheckableView.setChecked(checked);
+    }
+
+    @Override
+    public void toggle() {
+        mCheckableView.toggle();
+    }
 
 }

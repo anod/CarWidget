@@ -2,16 +2,16 @@
 
 package com.anod.car.home.gms;
 
-import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.drive.Drive;
+
+import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -22,6 +22,7 @@ public abstract class ApiClientAsyncTask<P, I, R>
         extends AsyncTask<P, I, R> {
 
     private GoogleApiClient mClient;
+
     protected Context mContext;
 
     public ApiClientAsyncTask(Context context) {
@@ -29,7 +30,7 @@ public abstract class ApiClientAsyncTask<P, I, R>
                 .addApi(Drive.API)
                 .addScope(Drive.SCOPE_FILE);
         mClient = builder.build();
-		mContext = context;
+        mContext = context;
     }
 
     @Override

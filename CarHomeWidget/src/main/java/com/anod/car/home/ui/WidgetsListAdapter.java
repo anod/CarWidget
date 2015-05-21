@@ -1,11 +1,10 @@
 package com.anod.car.home.ui;
 
-import android.annotation.TargetApi;
+import com.anod.car.home.R;
+import com.anod.car.home.model.ShortcutInfo;
+
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
-import android.os.Build;
-import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.anod.car.home.R;
-import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Utils;
-
-import butterknife.ButterKnife;
 
 /**
  * @author alex
@@ -29,36 +21,40 @@ import butterknife.ButterKnife;
 public class WidgetsListAdapter extends ArrayAdapter<Integer> {
 
     private final LayoutInflater mLayoutInflater;
+
     private final AppWidgetManager mAppWidgetManager;
+
     private SparseArray<SparseArray<ShortcutInfo>> mWidgetShortcuts;
+
     private int mCount;
 
-	private static int[] sIds = {
-		R.id.imageView0,
-		R.id.imageView1,
-		R.id.imageView2,
-		R.id.imageView3,
-		R.id.imageView4,
-		R.id.imageView5,
-        R.id.imageView6,
-        R.id.imageView7,
-	};
+    private static int[] sIds = {
+            R.id.imageView0,
+            R.id.imageView1,
+            R.id.imageView2,
+            R.id.imageView3,
+            R.id.imageView4,
+            R.id.imageView5,
+            R.id.imageView6,
+            R.id.imageView7,
+    };
 
-	public WidgetsListAdapter(Context context) {
-		super(context, R.layout.widgets_item);
+    public WidgetsListAdapter(Context context) {
+        super(context, R.layout.widgets_item);
         mAppWidgetManager = AppWidgetManager.getInstance(context);
-        mLayoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mLayoutInflater = (LayoutInflater) getContext()
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-	@Override
-	public View getView(int position, View view, ViewGroup parent) {
+    @Override
+    public View getView(int position, View view, ViewGroup parent) {
 
         if (mCount == position) {
             return getHintView(view, parent);
         }
 
         return getWidgetView(position, view, parent);
-	}
+    }
 
     private View getHintView(View view, ViewGroup parent) {
         if (view == null) {
@@ -78,8 +74,8 @@ public class WidgetsListAdapter extends ArrayAdapter<Integer> {
         SparseArray<ShortcutInfo> shortcuts = mWidgetShortcuts.get(appWidgetId);
 
         int size = shortcuts.size();
-        for( int i = 0; i < sIds.length; i++) {
-            ImageView icon = (ImageView)view.findViewById(sIds[i]);
+        for (int i = 0; i < sIds.length; i++) {
+            ImageView icon = (ImageView) view.findViewById(sIds[i]);
             ShortcutInfo info = null;
             if (i < size) {
                 info = shortcuts.get(i);
@@ -116,12 +112,12 @@ public class WidgetsListAdapter extends ArrayAdapter<Integer> {
     public void setWidgetShortcuts(SparseArray<SparseArray<ShortcutInfo>> widgetShortcuts) {
         mWidgetShortcuts = widgetShortcuts;
         mCount = (widgetShortcuts == null) ? 0 : widgetShortcuts.size();
-		clear();
-		if (widgetShortcuts != null) {
-			for(int i =0; i<mCount; i++) {
-				add(widgetShortcuts.keyAt(i));
-			}
-		}
-	}
+        clear();
+        if (widgetShortcuts != null) {
+            for (int i = 0; i < mCount; i++) {
+                add(widgetShortcuts.keyAt(i));
+            }
+        }
+    }
 
 }

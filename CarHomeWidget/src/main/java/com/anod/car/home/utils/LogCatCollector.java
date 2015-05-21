@@ -15,7 +15,6 @@
  */
 package com.anod.car.home.utils;
 
-import android.util.Log;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,12 +27,13 @@ import java.util.List;
 
 /**
  * Executes logcat commands and collects it's output.
- * 
+ *
  * @author Kevin Gaudin
- * 
  */
 public class LogCatCollector {
+
     public static final int DEFAULT_BUFFER_SIZE_IN_BYTES = 8192;
+
     /**
      * Default number of latest lines kept from the logcat output.
      */
@@ -42,21 +42,20 @@ public class LogCatCollector {
     /**
      * Executes the logcat command with arguments taken from
      *
-     * @param bufferName
-     *            The name of the buffer to be read: "main" (default), "radio"
-     *            or "events".
+     * @param bufferName The name of the buffer to be read: "main" (default), "radio"
+     *                   or "events".
      * @return A {@link String} containing the latest lines of the output.
-     *         Default is 100 lines, use "-t", "300" in
-     *         if you want 300 lines.
-     *         You should be aware that increasing this value causes a longer
-     *         report generation time and a bigger footprint on the device data
-     *         plan consumption.
+     * Default is 100 lines, use "-t", "300" in
+     * if you want 300 lines.
+     * You should be aware that increasing this value causes a longer
+     * report generation time and a bigger footprint on the device data
+     * plan consumption.
      */
     public static LinkedList<String> collectLogCat(String bufferName) {
         final int myPid = android.os.Process.myPid();
         String myPidStr = null;
         if (myPid > 0) {
-            myPidStr = Integer.toString(myPid) +"):";
+            myPidStr = Integer.toString(myPid) + "):";
         }
 
         final List<String> commandLine = new ArrayList<String>();
@@ -69,7 +68,7 @@ public class LogCatCollector {
         // "-t n" argument has been introduced in FroYo (API level 8). For
         // devices with lower API level, we will have to emulate its job.
         final int tailCount;
-        String[] logcatArguments = new String[]{"-t", "300", "tag", "CarHomeWidget:V", "*:S" };
+        String[] logcatArguments = new String[]{"-t", "300", "tag", "CarHomeWidget:V", "*:S"};
         final List<String> logcatArgumentsList = new ArrayList<String>(
                 Arrays.asList(logcatArguments)
         );
@@ -86,8 +85,10 @@ public class LogCatCollector {
         commandLine.addAll(logcatArgumentsList);
 
         try {
-            final Process process = Runtime.getRuntime().exec(commandLine.toArray(new String[commandLine.size()]));
-            final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()), DEFAULT_BUFFER_SIZE_IN_BYTES);
+            final Process process = Runtime.getRuntime()
+                    .exec(commandLine.toArray(new String[commandLine.size()]));
+            final BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()), DEFAULT_BUFFER_SIZE_IN_BYTES);
 
             //AppLog.d("Retrieving logcat output...");
 
@@ -97,8 +98,9 @@ public class LogCatCollector {
                     try {
                         InputStream stderr = process.getErrorStream();
                         byte[] dummy = new byte[DEFAULT_BUFFER_SIZE_IN_BYTES];
-                        while (stderr.read(dummy) >= 0)
+                        while (stderr.read(dummy) >= 0) {
                             ;
+                        }
                     } catch (IOException e) {
                     }
                 }
@@ -110,7 +112,7 @@ public class LogCatCollector {
                     break;
                 }
                 if (myPidStr == null || line.contains(myPidStr)) {
-                    logcatBuf.add(line );
+                    logcatBuf.add(line);
                 }
             }
 

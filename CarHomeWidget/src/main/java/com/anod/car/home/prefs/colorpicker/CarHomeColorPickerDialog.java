@@ -1,5 +1,12 @@
 package com.anod.car.home.prefs.colorpicker;
 
+import com.android.colorpicker.ColorPickerDialog;
+import com.android.colorpicker.ColorPickerPalette;
+import com.android.colorpicker.ColorPickerSwatch;
+import com.anod.car.home.R;
+import com.anod.car.home.utils.AlphaPatternDrawable;
+import com.anod.car.home.utils.ColorUtils;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,45 +16,47 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.android.colorpicker.ColorPickerDialog;
-import com.android.colorpicker.ColorPickerPalette;
-import com.android.colorpicker.ColorPickerSwatch;
-import com.anod.car.home.R;
-import com.anod.car.home.utils.AlphaPatternDrawable;
-import com.anod.car.home.utils.ColorUtils;
-
 public class CarHomeColorPickerDialog extends ColorPickerDialog {
+
     protected static final String KEY_ALPHA = "alpha";
+
     public static final int ALPHA_LEVELS = 5;
+
     public static final int ALPHA_OPAQUE = 255;
 
     private boolean mAlphaSliderVisible;
+
     private ColorPickerPalette mPalette;
+
     private ProgressBar mProgress;
+
     private ColorPickerPalette mAlpha;
 
     private int mSelectedAlpha;
+
     private View mColorsPanel;
+
     private HexPanel mHexPanel;
+
     private Button mHexButton;
 
 
-    public static CarHomeColorPickerDialog newInstance(int selectedColor, boolean alphaSliderVisible, Context context) {
+    public static CarHomeColorPickerDialog newInstance(int selectedColor,
+            boolean alphaSliderVisible, Context context) {
         CarHomeColorPickerDialog ret = new CarHomeColorPickerDialog();
-        ret.initialize(ColorUtils.colorChoice(context, R.array.color_picker_values), selectedColor, alphaSliderVisible);
+        ret.initialize(ColorUtils.colorChoice(context, R.array.color_picker_values), selectedColor,
+                alphaSliderVisible);
         return ret;
     }
 
     public void initialize(int[] colors, int selectedColor, boolean alphaSliderVisible) {
-        super.initialize(R.string.color_dialog_title, colors, selectedColor, 5, ColorPickerDialog.SIZE_SMALL);
+        super.initialize(R.string.color_dialog_title, colors, selectedColor, 5,
+                ColorPickerDialog.SIZE_SMALL);
         getArguments().putBoolean(KEY_ALPHA, alphaSliderVisible);
     }
 
@@ -77,7 +86,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.color_dialog_toolbar);
         toolbar.setTitle(R.string.color_dialog_title);
 
-        mHexButton = (Button)toolbar.findViewById(R.id.hex_switch);
+        mHexButton = (Button) toolbar.findViewById(R.id.hex_switch);
         updateHexButton();
         mHexButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +107,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         if (mAlphaSliderVisible) {
             float density = getResources().getDisplayMetrics().density;
             mAlpha = (ColorPickerPalette) view.findViewById(R.id.alpha_picker);
-            mAlpha.setBackground(new AlphaPatternDrawable((int)(5 * density)));
+            mAlpha.setBackground(new AlphaPatternDrawable((int) (5 * density)));
             mAlpha.setVisibility(View.VISIBLE);
             mAlpha.init(mSize, ALPHA_LEVELS, mAlphaSelectListener);
         }
@@ -115,7 +124,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
     }
 
     private void updateHexButton() {
-        mHexButton.setText("#"+ColorUtils.toHex(getSelectedColor(), mAlphaSliderVisible));
+        mHexButton.setText("#" + ColorUtils.toHex(getSelectedColor(), mAlphaSliderVisible));
     }
 
     @Override
@@ -128,9 +137,9 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
     }
 
     private void refreshPalette() {
-        if (mPalette!= null) {
+        if (mPalette != null) {
             mPalette.drawPalette(mColors, mSelectedColor);
-            if (mAlpha!=null) {
+            if (mAlpha != null) {
                 mAlpha.drawPalette(generateAlphaColors(mSelectedColor), getSelectedColor());
             }
         }
@@ -141,7 +150,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         int g = Color.green(color);
         int b = Color.blue(color);
 
-        return Color.argb(alpha, r ,g ,b);
+        return Color.argb(alpha, r, g, b);
     }
 
     private int[] generateAlphaColors(int color) {
@@ -150,17 +159,18 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         int g = Color.green(color);
         int b = Color.blue(color);
 
-        int inc = ALPHA_OPAQUE /ALPHA_LEVELS;
+        int inc = ALPHA_OPAQUE / ALPHA_LEVELS;
         int alpha = 0;
-        for(int i=0; i<ALPHA_LEVELS-1; i++) {
-            colors[i] = Color.argb(alpha, r ,g ,b);
-            alpha+=inc;
+        for (int i = 0; i < ALPHA_LEVELS - 1; i++) {
+            colors[i] = Color.argb(alpha, r, g, b);
+            alpha += inc;
         }
-        colors[ALPHA_LEVELS-1] = Color.argb(ALPHA_OPAQUE, r ,g ,b);
+        colors[ALPHA_LEVELS - 1] = Color.argb(ALPHA_OPAQUE, r, g, b);
         return colors;
     }
 
-    private DialogInterface.OnClickListener mPositiveListener = new DialogInterface.OnClickListener() {
+    private DialogInterface.OnClickListener mPositiveListener
+            = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             int color = getSelectedColor();
@@ -174,21 +184,23 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         }
     };
 
-    private DialogInterface.OnClickListener mNegativeListener = new DialogInterface.OnClickListener() {
+    private DialogInterface.OnClickListener mNegativeListener
+            = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             dismiss();
         }
     };
 
-    private ColorPickerSwatch.OnColorSelectedListener mColorSelectListener = new ColorPickerSwatch.OnColorSelectedListener() {
+    private ColorPickerSwatch.OnColorSelectedListener mColorSelectListener
+            = new ColorPickerSwatch.OnColorSelectedListener() {
         @Override
         public void onColorSelected(int color) {
             if (color != mSelectedColor) {
                 mSelectedColor = color;
                 // Redraw palette to show checkmark on newly selected color before dismissing.
                 mPalette.drawPalette(mColors, mSelectedColor);
-                if (mAlpha!=null) {
+                if (mAlpha != null) {
                     mAlpha.drawPalette(generateAlphaColors(mSelectedColor), getSelectedColor());
                 }
                 updateHexButton();
@@ -196,7 +208,8 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         }
     };
 
-    private ColorPickerSwatch.OnColorSelectedListener mAlphaSelectListener = new ColorPickerSwatch.OnColorSelectedListener() {
+    private ColorPickerSwatch.OnColorSelectedListener mAlphaSelectListener
+            = new ColorPickerSwatch.OnColorSelectedListener() {
         @Override
         public void onColorSelected(int color) {
             int alpha = Color.alpha(color);
@@ -213,7 +226,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         return alphaColor(mSelectedAlpha, mSelectedColor);
     }
 
-	private void toggleHexDialog() {
+    private void toggleHexDialog() {
         if (mHexPanel.isVisible()) {
             mHexPanel.hide();
             mColorsPanel.setVisibility(View.VISIBLE);
@@ -222,7 +235,7 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         mHexPanel.setColor(getSelectedColor());
         mHexPanel.show();
         mColorsPanel.setVisibility(View.INVISIBLE);
-	}
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

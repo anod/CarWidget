@@ -17,6 +17,8 @@
 package com.example.android.wizardpager.wizard.ui;
 
 
+import com.anod.car.home.R;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -28,23 +30,30 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.anod.car.home.R;
-
 public class StepPagerStrip extends View {
+
     private static final int[] ATTRS = new int[]{
             android.R.attr.gravity
     };
+
     private int mPageCount;
+
     private int mCurrentPage;
 
     private int mGravity = Gravity.LEFT | Gravity.TOP;
+
     private float mTabWidth;
+
     private float mTabHeight;
+
     private float mTabSpacing;
 
     private Paint mPrevTabPaint;
+
     private Paint mSelectedTabPaint;
+
     private Paint mSelectedLastTabPaint;
+
     private Paint mNextTabPaint;
 
     private RectF mTempRectF = new RectF();
@@ -257,6 +266,7 @@ public class StepPagerStrip extends View {
     }
 
     public static interface OnPageSelectedListener {
+
         void onPageStripSelected(int position);
     }
 

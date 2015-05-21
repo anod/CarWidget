@@ -5,33 +5,36 @@ import com.anod.car.home.model.ShortcutInfo;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class ShortcutsMain implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private HashMap<Integer,ShortcutInfo> shortcuts;
-	private Main main;
-	
-	public ShortcutsMain(HashMap<Integer, ShortcutInfo> shortcuts, Main main) {
-		this.shortcuts = shortcuts;
-		this.main = main;
-	}
+public class ShortcutsMain implements Serializable {
 
-	public HashMap<Integer, ShortcutInfo> getShortcuts() {
-		return shortcuts;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public void setShortcuts(HashMap<Integer, ShortcutInfo> shortcuts) {
-		this.shortcuts = shortcuts;
-	}
+    private HashMap<Integer, ShortcutInfo> shortcuts;
 
-	public Main getMain() {
-		return main;
-	}
+    private Main main;
 
-	public void setMain(Main main) {
-		this.main = main;
-	}
-	
+    public ShortcutsMain(HashMap<Integer, ShortcutInfo> shortcuts, Main main) {
+        this.shortcuts = shortcuts;
+        this.main = main;
+    }
+
+    public HashMap<Integer, ShortcutInfo> getShortcuts() {
+        return shortcuts;
+    }
+
+    public void setShortcuts(HashMap<Integer, ShortcutInfo> shortcuts) {
+        this.shortcuts = shortcuts;
+    }
+
+    public Main getMain() {
+        return main;
+    }
+
+    public void setMain(Main main) {
+        this.main = main;
+    }
+
 }

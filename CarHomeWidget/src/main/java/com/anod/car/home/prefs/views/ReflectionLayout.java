@@ -35,6 +35,7 @@ import android.widget.FrameLayout;
  * flexible enough to display any other type of view.
  */
 public class ReflectionLayout extends FrameLayout {
+
     private static final String TAG = "ReflectionLayout";
 
     private static final boolean DEBUG_DRAWING_TIME = false;
@@ -48,8 +49,11 @@ public class ReflectionLayout extends FrameLayout {
 
     /* Drawing tools used to create the reflection pool effect. */
     private final Paint mDarkPaint = new Paint();
+
     private final Paint mReflectionPaint = new Paint();
+
     private final Matrix mMatrix = new Matrix();
+
     private final Shader mShader;
 
     public ReflectionLayout(Context context) {
@@ -83,7 +87,7 @@ public class ReflectionLayout extends FrameLayout {
 
             /* Enlarge the child's height by 33% for the reflection. */
             setMeasuredDimension(resolveSize(childw, wspec),
-                    resolveSize((int)(childh * REFLECTION_SIZE), hspec));
+                    resolveSize((int) (childh * REFLECTION_SIZE), hspec));
         }
     }
 
@@ -137,7 +141,7 @@ public class ReflectionLayout extends FrameLayout {
         mMatrix.setScale(1, poolh);
         mMatrix.postTranslate(0, childh);
         mShader.setLocalMatrix(mMatrix);
-        canvas.drawRect(childl, childh, childl+childw, selfh, mReflectionPaint);
+        canvas.drawRect(childl, childh, childl + childw, selfh, mReflectionPaint);
 
         /* Apply the canvas layer. */
         canvas.restore();

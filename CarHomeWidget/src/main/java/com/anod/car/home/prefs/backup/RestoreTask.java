@@ -8,51 +8,58 @@ import android.os.AsyncTask;
  * @date 12/30/13
  */
 public class RestoreTask extends AsyncTask<Uri, Void, Integer> {
+
     public static final String SCHEME_FILE = "file";
+
     private int mType;
-	private PreferencesBackupManager mBackupManager;
-	private int mAppWidgetId;
-	private RestoreTaskListner mListener;
 
-	public interface RestoreTaskListner {
-		void onRestorePreExecute(int type);
-		void onRestoreFinish(int type,int code);
-	}
+    private PreferencesBackupManager mBackupManager;
 
-	public RestoreTask(int type, PreferencesBackupManager backupManager, int appWidgetId, RestoreTaskListner listener) {
-		mType = type;
-		mBackupManager = backupManager;
-		mAppWidgetId = appWidgetId;
-		mListener = listener;
-	}
+    private int mAppWidgetId;
 
-	@Override
-	protected void onPreExecute() {
-		mListener.onRestorePreExecute(mType);
-	}
+    private RestoreTaskListner mListener;
 
-	protected Integer doInBackground(Uri... uris) {
-		Uri uri = uris[0];
-		if (mType == PreferencesBackupManager.TYPE_INCAR) {
+    public interface RestoreTaskListner {
 
-			if (uri == null) {
-				return mBackupManager.doRestoreInCarLocal();
-		 	}
+        void onRestorePreExecute(int type);
 
-			return mBackupManager.doRestoreInCarUri(uri);
-		}
+        void onRestoreFinish(int type, int code);
+    }
 
-		if (SCHEME_FILE.equals(uri.getScheme())) {
-			return mBackupManager.doRestoreMainLocal(uri.getPath(), mAppWidgetId);
-		}
-		return mBackupManager.doRestoreMainUri(uri, mAppWidgetId);
-	}
+    public RestoreTask(int type, PreferencesBackupManager backupManager, int appWidgetId,
+            RestoreTaskListner listener) {
+        mType = type;
+        mBackupManager = backupManager;
+        mAppWidgetId = appWidgetId;
+        mListener = listener;
+    }
 
-	@Override
-	protected void onPostExecute(Integer result) {
-		mListener.onRestoreFinish(mType, result);
-	}
+    @Override
+    protected void onPreExecute() {
+        mListener.onRestorePreExecute(mType);
+    }
 
+    protected Integer doInBackground(Uri... uris) {
+        Uri uri = uris[0];
+        if (mType == PreferencesBackupManager.TYPE_INCAR) {
+
+            if (uri == null) {
+                return mBackupManager.doRestoreInCarLocal();
+            }
+
+            return mBackupManager.doRestoreInCarUri(uri);
+        }
+
+        if (SCHEME_FILE.equals(uri.getScheme())) {
+            return mBackupManager.doRestoreMainLocal(uri.getPath(), mAppWidgetId);
+        }
+        return mBackupManager.doRestoreMainUri(uri, mAppWidgetId);
+    }
+
+    @Override
+    protected void onPostExecute(Integer result) {
+        mListener.onRestoreFinish(mType, result);
+    }
 
 
 }

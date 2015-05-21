@@ -1,5 +1,11 @@
 package com.anod.car.home.prefs;
 
+import com.anod.car.home.Provider;
+import com.anod.car.home.R;
+import com.anod.car.home.app.CarWidgetActivity;
+import com.anod.car.home.drawer.NavigationDrawer;
+import com.anod.car.home.utils.Utils;
+
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -10,40 +16,38 @@ import android.preference.PreferenceFragment;
 import android.view.MenuItem;
 import android.view.Window;
 
-import com.anod.car.home.Provider;
-import com.anod.car.home.R;
-import com.anod.car.home.app.CarWidgetActivity;
-import com.anod.car.home.drawer.NavigationDrawer;
-import com.anod.car.home.drawer.NavigationList;
-import com.anod.car.home.utils.Utils;
 
+public class ConfigurationActivity extends CarWidgetActivity
+        implements PreferenceFragment.OnPreferenceStartFragmentCallback {
 
-public class ConfigurationActivity extends CarWidgetActivity implements PreferenceFragment.OnPreferenceStartFragmentCallback {
-	private static final String BACK_STACK_PREFS = ":carwidget:prefs";
+    private static final String BACK_STACK_PREFS = ":carwidget:prefs";
 
-	private onActivityResultListener mActivityResultListener;
+    private onActivityResultListener mActivityResultListener;
+
     private NavigationDrawer mDrawer;
+
     private int mAppWidgetId;
 
     public void setActivityResultListener(onActivityResultListener activityResultListener) {
-		mActivityResultListener = activityResultListener;
-	}
+        mActivityResultListener = activityResultListener;
+    }
 
     public void setNavigationItem(int navigationItem) {
         mDrawer.setSelected(navigationItem);
     }
 
     public interface onActivityResultListener {
-		public void onActivityResult(int requestCode, int resultCode, Intent data);
-	}
 
-	public static Intent createFragmentIntent(Context context, Class<?> fragment) {
-		Intent intent = new Intent(context, ConfigurationActivity.class);
-		intent.putExtra(EXTRA_FRAGMENT, fragment);
-		return intent;
-	}
+        public void onActivityResult(int requestCode, int resultCode, Intent data);
+    }
 
-	public static final String EXTRA_FRAGMENT = "fragment";
+    public static Intent createFragmentIntent(Context context, Class<?> fragment) {
+        Intent intent = new Intent(context, ConfigurationActivity.class);
+        intent.putExtra(EXTRA_FRAGMENT, fragment);
+        return intent;
+    }
+
+    public static final String EXTRA_FRAGMENT = "fragment";
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -62,24 +66,24 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
         return super.onOptionsItemSelected(item);
     }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_preferences);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_preferences);
 
         mAppWidgetId = Utils.readAppWidgetId(savedInstanceState, getIntent());
         mDrawer = new NavigationDrawer(this, mAppWidgetId);
 
         if (savedInstanceState == null) {
 
-			Fragment conf = createFragmentInstance();
+            Fragment conf = createFragmentInstance();
 
-			conf.setArguments(getIntent().getExtras());
-			getFragmentManager().beginTransaction().add(R.id.content_frame, conf).commit();
-		}
-	}
+            conf.setArguments(getIntent().getExtras());
+            getFragmentManager().beginTransaction().add(R.id.content_frame, conf).commit();
+        }
+    }
 
     @Override
     public void onResume() {
@@ -93,15 +97,15 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
         Utils.saveAppWidgetId(outState, mAppWidgetId);
     }
 
-	private Fragment createFragmentInstance() {
-		Intent intent = getIntent();
-		Bundle extras = intent.getExtras();
-		Class fragmentClass = (Class)extras.get(EXTRA_FRAGMENT);
-		String fragmentClassName = fragmentClass.getName();
-		Bundle args = new Bundle();
-		Fragment conf = Fragment.instantiate(this, fragmentClassName , args);
-		return conf;
-	}
+    private Fragment createFragmentInstance() {
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        Class fragmentClass = (Class) extras.get(EXTRA_FRAGMENT);
+        String fragmentClassName = fragmentClass.getName();
+        Bundle args = new Bundle();
+        Fragment conf = Fragment.instantiate(this, fragmentClassName, args);
+        return conf;
+    }
 
     public void onApplyClick() {
         getFragmentManager().popBackStack();
@@ -109,37 +113,38 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 
 
     @Override
-	public boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref) {
-		return false;
-	}
+    public boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref) {
+        return false;
+    }
 
-	public void startPreferencePanel(String fragmentClass, Preference pref) {
-		startPreferencePanel(fragmentClass, pref.getTitle(), null, 0);
-	}
+    public void startPreferencePanel(String fragmentClass, Preference pref) {
+        startPreferencePanel(fragmentClass, pref.getTitle(), null, 0);
+    }
 
-	public void startPreferencePanel(String fragmentClass, CharSequence titleText, Fragment resultTo, int resultRequestCode) {
-		Bundle args = new Bundle();
-		Fragment f = Fragment.instantiate(this, fragmentClass, args);
-		if (resultTo != null) {
-			f.setTargetFragment(resultTo, resultRequestCode);
-		}
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-		transaction.replace(R.id.content_frame, f);
-		if (titleText != null) {
-			transaction.setBreadCrumbTitle(titleText);
-		}
-		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-		transaction.addToBackStack(BACK_STACK_PREFS);
-		transaction.commitAllowingStateLoss();
-	}
+    public void startPreferencePanel(String fragmentClass, CharSequence titleText,
+            Fragment resultTo, int resultRequestCode) {
+        Bundle args = new Bundle();
+        Fragment f = Fragment.instantiate(this, fragmentClass, args);
+        if (resultTo != null) {
+            f.setTargetFragment(resultTo, resultRequestCode);
+        }
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, f);
+        if (titleText != null) {
+            transaction.setBreadCrumbTitle(titleText);
+        }
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.addToBackStack(BACK_STACK_PREFS);
+        transaction.commitAllowingStateLoss();
+    }
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (mActivityResultListener != null) {
-			mActivityResultListener.onActivityResult(requestCode, resultCode, data);
-		}
-	}
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (mActivityResultListener != null) {
+            mActivityResultListener.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     @Override
     public void onBackPressed() {

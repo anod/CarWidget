@@ -1,8 +1,8 @@
 package com.anod.car.home.prefs.detection;
 
-import android.content.Context;
-
 import com.anod.car.home.prefs.preferences.InCar;
+
+import android.content.Context;
 
 /**
  * @author alex
@@ -10,19 +10,24 @@ import com.anod.car.home.prefs.preferences.InCar;
  */
 public abstract class Detection implements InCarItem {
 
-	protected Context mContext;
-	protected InCar mPrefs;
+    protected Context mContext;
 
-	public void setPrefs(InCar prefs) {
-		mPrefs = prefs;
-	}
-	public void setContext(Context context) {
-		mContext = context;
-	}
+    protected InCar mPrefs;
 
-	public abstract boolean isActive();
-	public abstract int getIconRes();
-	public abstract int getShortTitleRes();
-	public abstract int getSummaryRes();
+    public void setPrefs(InCar prefs) {
+        mPrefs = prefs;
+    }
+
+    public void setContext(Context context) {
+        mContext = context;
+    }
+
+    public abstract boolean isActive();
+
+    public abstract int getIconRes();
+
+    public abstract int getShortTitleRes();
+
+    public abstract int getSummaryRes();
 
 }

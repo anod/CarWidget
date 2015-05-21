@@ -1,18 +1,20 @@
 package com.anod.car.home.prefs.model;
 
+import com.anod.car.home.R;
+
 import android.content.Context;
 import android.content.res.Resources;
-
-import com.anod.car.home.R;
 
 /**
  * @author alex
  * @date 2014-10-20
  */
 public class SkinList {
-    private static int[] sTextRes = { 0, 0, 0, 0, 0, R.string.skin_info_bbb };
+
+    private static int[] sTextRes = {0, 0, 0, 0, 0, R.string.skin_info_bbb};
 
     private Item[] mSkinItems;
+
     private boolean mIsKeyguard;
 
     public SkinList(boolean isKeyguard, Context context) {
@@ -21,6 +23,7 @@ public class SkinList {
     }
 
     private int mSelectedSkinPosition;
+
     private Context mContext;
 
     public static SkinList newInstance(String skin, boolean isKeyguard, Context context) {
@@ -42,8 +45,11 @@ public class SkinList {
     }
 
     public static class Item {
+
         public String value;
+
         public String title;
+
         public int textRes;
     }
 

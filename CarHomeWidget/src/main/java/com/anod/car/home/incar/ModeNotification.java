@@ -1,5 +1,12 @@
 package com.anod.car.home.incar;
 
+import com.anod.car.home.R;
+import com.anod.car.home.appwidget.ShortcutPendingIntent;
+import com.anod.car.home.model.NotificationShortcutsModel;
+import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.utils.Utils;
+import com.anod.car.home.utils.Version;
+
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -11,23 +18,19 @@ import android.os.Build;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import com.anod.car.home.R;
-import com.anod.car.home.appwidget.ShortcutPendingIntent;
-import com.anod.car.home.model.NotificationShortcutsModel;
-import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.utils.Utils;
-import com.anod.car.home.utils.Version;
-
 /**
  * @author alex
  * @date 2014-08-25
  */
 public class ModeNotification {
+
     private static final int DEBUG_ID = 3;
+
     private static final int EXPIRED_ID = 2;
 
     private static final String PREFIX_NOTIF = "notif";
-    private static final int[] NOTIF_BTN_IDS = { R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3 };
+
+    private static final int[] NOTIF_BTN_IDS = {R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3};
 
     public static void showExpiredNotification(Context context) {
         Notification notification = new Notification();
@@ -36,16 +39,19 @@ public class ModeNotification {
         String notifTitle = context.getResources().getString(R.string.notif_expired);
         String notifText = context.getResources().getString(R.string.notif_consider);
         notification.tickerText = notifTitle;
-        notification.setLatestEventInfo(context, notifTitle, notifText, PendingIntent.getActivity(context, 0, new Intent(), 0));
+        notification.setLatestEventInfo(context, notifTitle, notifText,
+                PendingIntent.getActivity(context, 0, new Intent(), 0));
 
         String ns = Context.NOTIFICATION_SERVICE;
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(ns);
+        NotificationManager notificationManager = (NotificationManager) context
+                .getSystemService(ns);
         notificationManager.notify(EXPIRED_ID, notification);
         notificationManager.cancel(EXPIRED_ID);
     }
 
     public static Notification createNotification(Version version, Context context) {
-        Intent notificationIntent = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_OFF);
+        Intent notificationIntent = ModeService
+                .createStartIntent(context, ModeService.MODE_SWITCH_OFF);
         Uri data = Uri.parse("com.anod.car.home.pro://mode/0/");
         notificationIntent.setData(data);
 
@@ -57,7 +63,9 @@ public class ModeNotification {
 
         RemoteViews contentView = createShortcuts(context);
         if (version.isFree()) {
-            contentView.setTextViewText(R.id.text, context.getString(R.string.click_to_disable_trial, version.getTrialTimesLeft()));
+            contentView.setTextViewText(R.id.text,
+                    context.getString(R.string.click_to_disable_trial,
+                            version.getTrialTimesLeft()));
         }
         notification.contentIntent = contentIntent;
         notification.contentView = contentView;

@@ -1,11 +1,5 @@
 package com.anod.car.home.app;
 
-import android.app.Activity;
-import android.appwidget.AppWidgetManager;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Window;
-
 import com.anod.car.home.Provider;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.WidgetShortcutsModel;
@@ -13,12 +7,20 @@ import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.ShortcutPicker;
 import com.anod.car.home.utils.Utils;
 
+import android.app.Activity;
+import android.appwidget.AppWidgetManager;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Window;
+
 /**
  * @author alex
  * @date 2014-10-24
  */
 public class NewShortcutActivity extends Activity implements ShortcutPicker.Handler {
+
     private int mAppWidgetId;
+
     private ShortcutPicker mShortcutPicker;
 
     @Override
@@ -33,7 +35,8 @@ public class NewShortcutActivity extends Activity implements ShortcutPicker.Hand
             finish();
             return;
         }
-        int cellId = getIntent().getExtras().getInt(ShortcutPicker.EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID);
+        int cellId = getIntent().getExtras()
+                .getInt(ShortcutPicker.EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID);
         if (cellId == ShortcutPicker.INVALID_CELL_ID) {
             AppLog.e("cellId required");
             finish();
@@ -66,7 +69,7 @@ public class NewShortcutActivity extends Activity implements ShortcutPicker.Hand
 
     @Override
     public void onAddShortcut(int cellId, ShortcutInfo info) {
-        Provider.getInstance().requestUpdate(this,mAppWidgetId);
+        Provider.getInstance().requestUpdate(this, mAppWidgetId);
         finish();
     }
 

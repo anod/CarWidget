@@ -16,6 +16,9 @@
 
 package com.android.colorpicker;
 
+import com.android.colorpicker.ColorPickerSwatch.OnColorSelectedListener;
+import com.anod.car.home.R;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -25,9 +28,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.android.colorpicker.ColorPickerSwatch.OnColorSelectedListener;
-import com.anod.car.home.R;
-
 /**
  * A dialog which takes in as input an array of colors and creates a palette allowing the user to
  * select a specific color swatch, which invokes a listener.
@@ -35,23 +35,33 @@ import com.anod.car.home.R;
 public class ColorPickerDialog extends DialogFragment implements OnColorSelectedListener {
 
     public static final int SIZE_LARGE = 1;
+
     public static final int SIZE_SMALL = 2;
 
     protected AlertDialog mAlertDialog;
 
     protected static final String KEY_TITLE_ID = "title_id";
+
     protected static final String KEY_COLORS = "colors";
+
     protected static final String KEY_SELECTED_COLOR = "selected_color";
+
     protected static final String KEY_COLUMNS = "columns";
+
     protected static final String KEY_SIZE = "size";
 
     protected int mTitleResId = R.string.color_picker_default_title;
+
     protected int[] mColors = null;
+
     protected int mSelectedColor;
+
     protected int mColumns;
+
     protected int mSize;
 
     private ColorPickerPalette mPalette;
+
     private ProgressBar mProgress;
 
     protected OnColorSelectedListener mListener;
@@ -114,9 +124,9 @@ public class ColorPickerDialog extends DialogFragment implements OnColorSelected
         }
 
         mAlertDialog = new AlertDialog.Builder(activity)
-            .setTitle(mTitleResId)
-            .setView(view)
-            .create();
+                .setTitle(mTitleResId)
+                .setView(view)
+                .create();
 
         return mAlertDialog;
     }

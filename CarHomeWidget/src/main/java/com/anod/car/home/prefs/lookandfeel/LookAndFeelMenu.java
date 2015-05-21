@@ -1,5 +1,18 @@
 package com.anod.car.home.prefs.lookandfeel;
 
+import com.android.colorpicker.ColorPickerSwatch;
+import com.anod.car.home.R;
+import com.anod.car.home.model.WidgetShortcutsModel;
+import com.anod.car.home.prefs.ConfigurationActivity;
+import com.anod.car.home.prefs.ConfigurationLook;
+import com.anod.car.home.prefs.LookAndFeelActivity;
+import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog;
+import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
+import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
+import com.anod.car.home.utils.FastBitmapDrawable;
+import com.anod.car.home.utils.Utils;
+
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -15,32 +28,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.NumberPicker;
 
-import com.android.colorpicker.ColorPickerSwatch;
-import com.anod.car.home.R;
-import com.anod.car.home.model.WidgetShortcutsModel;
-import com.anod.car.home.prefs.ConfigurationActivity;
-import com.anod.car.home.prefs.ConfigurationLook;
-import com.anod.car.home.prefs.LookAndFeelActivity;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
-import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog;
-import com.anod.car.home.utils.FastBitmapDrawable;
-import com.anod.car.home.utils.Utils;
-
 /**
  * @author alex
  * @date 2014-10-20
  */
 public class LookAndFeelMenu {
+
     public static final int REQUEST_LOOK_ACTIVITY = 1;
+
     public static final int REQUEST_PICK_ICON_THEME = 2;
+
     private final int mAppWidgetId;
+
     private final WidgetShortcutsModel mModel;
+
     private MenuItem mMenuTileColor;
 
     private LookAndFeelActivity mActivity;
+
     private WidgetSharedPreferences mSharedPrefs;
+
     private boolean mInitialized;
 
     public LookAndFeelMenu(LookAndFeelActivity activity, WidgetShortcutsModel model) {
@@ -65,7 +72,7 @@ public class LookAndFeelMenu {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.apply) {
-            Main prefs = PreferencesStorage.loadMain(mActivity,mAppWidgetId);
+            Main prefs = PreferencesStorage.loadMain(mActivity, mAppWidgetId);
             prefs.setSkin(mActivity.getCurrentSkinItem().value);
             PreferencesStorage.saveMain(mActivity, prefs, mAppWidgetId);
             mActivity.beforeFinish();
@@ -79,7 +86,8 @@ public class LookAndFeelMenu {
         if (itemId == R.id.tile_color) {
             Main prefs = PreferencesStorage.loadMain(mActivity, mAppWidgetId);
             Integer value = prefs.getTileColor();
-            final CarHomeColorPickerDialog d = CarHomeColorPickerDialog.newInstance(value,true,mActivity);
+            final CarHomeColorPickerDialog d = CarHomeColorPickerDialog
+                    .newInstance(value, true, mActivity);
             d.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                 @Override
                 public void onColorSelected(int color) {
@@ -90,18 +98,20 @@ public class LookAndFeelMenu {
                     mActivity.refreshSkinPreview();
                 }
             });
-            d.show(mActivity.getFragmentManager(),"tileColor");
+            d.show(mActivity.getFragmentManager(), "tileColor");
             return true;
         }
         if (itemId == R.id.more) {
-            Intent intent = ConfigurationActivity.createFragmentIntent(mActivity, ConfigurationLook.class);
+            Intent intent = ConfigurationActivity
+                    .createFragmentIntent(mActivity, ConfigurationLook.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
             mActivity.startActivityForResult(intent, REQUEST_LOOK_ACTIVITY);
             return true;
         }
         if (itemId == R.id.bg_color) {
             int value = mActivity.getPrefs().getBackgroundColor();
-            final CarHomeColorPickerDialog d = CarHomeColorPickerDialog.newInstance(value,true,mActivity);
+            final CarHomeColorPickerDialog d = CarHomeColorPickerDialog
+                    .newInstance(value, true, mActivity);
             d.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                 @Override
                 public void onColorSelected(int color) {
@@ -111,7 +121,7 @@ public class LookAndFeelMenu {
                     mActivity.refreshSkinPreview();
                 }
             });
-            d.show(mActivity.getFragmentManager(),"bgColor");
+            d.show(mActivity.getFragmentManager(), "bgColor");
             return true;
         }
         if (itemId == R.id.icons_theme) {
@@ -130,8 +140,10 @@ public class LookAndFeelMenu {
         }
         if (itemId == R.id.icons_scale) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-            final String[] titles = mActivity.getResources().getStringArray(R.array.icon_scale_titles);
-            final String[] values = mActivity.getResources().getStringArray(R.array.icon_scale_values);
+            final String[] titles = mActivity.getResources()
+                    .getStringArray(R.array.icon_scale_titles);
+            final String[] values = mActivity.getResources()
+                    .getStringArray(R.array.icon_scale_values);
             int idx = -1;
             for (int i = 0; i < values.length; i++) {
                 if (mActivity.getPrefs().getIconsScale().equals(values[i])) {
@@ -181,7 +193,8 @@ public class LookAndFeelMenu {
     private AlertDialog createNumberPickerDialog() {
         final String[] nums = mActivity.getResources().getStringArray(R.array.shortcut_numbers);
 
-        LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) mActivity
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View npView = inflater.inflate(R.layout.numberpicker, null);
 
         final NumberPicker numberPicker = (NumberPicker) npView.findViewById(R.id.numberPicker);
@@ -190,8 +203,7 @@ public class LookAndFeelMenu {
         numberPicker.setDisplayedValues(nums);
 
         String countStr = String.valueOf(mModel.getCount());
-        for(int i = 0; i < nums.length; i++)
-        {
+        for (int i = 0; i < nums.length; i++) {
             if (countStr.equals(nums[i])) {
                 numberPicker.setValue(i);
                 break;

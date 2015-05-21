@@ -1,15 +1,17 @@
 package com.anod.car.home.utils;
 
-import android.content.Context;
-
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
+import android.content.Context;
+
 public class InCarStatus {
 
     public static final int NOT_ACTIVE = 0;
+
     public static final int ENABLED = 1;
+
     public static final int DISABLED = 2;
 
     public static int get(Context context) {
@@ -17,15 +19,15 @@ public class InCarStatus {
         final int widgetsCount = appWidgetIds.length;
 
         Version version = new Version(context);
-        return get(widgetsCount,version,context);
+        return get(widgetsCount, version, context);
     }
 
-    public static int get(int widgetsCount,Version version, Context context) {
+    public static int get(int widgetsCount, Version version, Context context) {
         if (widgetsCount == 0) {
             return NOT_ACTIVE;
         }
         if (version.isProOrTrial()) {
-            if (PreferencesStorage.isInCarModeEnabled(context)){
+            if (PreferencesStorage.isInCarModeEnabled(context)) {
                 return ENABLED;
             } else {
                 return DISABLED;
@@ -42,7 +44,8 @@ public class InCarStatus {
     public static int render(int status) {
         if (status == InCarStatus.NOT_ACTIVE) {
             return R.string.not_active;
-        } if (status == InCarStatus.ENABLED) {
+        }
+        if (status == InCarStatus.ENABLED) {
             return R.string.enabled;
         } else {
             return R.string.disabled;

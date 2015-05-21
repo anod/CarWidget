@@ -16,16 +16,21 @@ import android.util.Log;
 
 
 public class LauncherProvider extends ContentProvider {
+
     private static final String TAG = "CarHomeWidget.LauncherProvider";
+
     private static final boolean LOGD = false;
 
     private static final String DATABASE_NAME = "carhomewidget.db";
 
     private static final int DATABASE_VERSION = 2;
 
-    public static final String AUTHORITY_FREE = (BuildConfig.DEBUG) ? "com.anod.car.home.debug.settings" : "com.anod.car.home.settings";
-    public static final String AUTHORITY_PRO  = (BuildConfig.DEBUG) ? "com.anod.car.home.debug.settings.pro" : "com.anod.car.home.settings.pro";
-    
+    public static final String AUTHORITY_FREE = (BuildConfig.DEBUG)
+            ? "com.anod.car.home.debug.settings" : "com.anod.car.home.settings";
+
+    public static final String AUTHORITY_PRO = (BuildConfig.DEBUG)
+            ? "com.anod.car.home.debug.settings.pro" : "com.anod.car.home.settings.pro";
+
     static final String TABLE_FAVORITES = "favorites";
 
     private SQLiteOpenHelper mOpenHelper;
@@ -68,7 +73,7 @@ public class LauncherProvider extends ContentProvider {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final long rowId = db.insert(args.table, null, initialValues);
         if (rowId <= 0) {
-        	return null;
+            return null;
         }
 
         Uri uriId = ContentUris.withAppendedId(uri, rowId);
@@ -86,7 +91,7 @@ public class LauncherProvider extends ContentProvider {
             int numValues = values.length;
             for (int i = 0; i < numValues; i++) {
                 if (db.insert(args.table, null, values[i]) < 0) {
-                	return 0;
+                    return 0;
                 }
             }
             db.setTransactionSuccessful();
@@ -118,6 +123,7 @@ public class LauncherProvider extends ContentProvider {
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
+
         DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
@@ -125,7 +131,7 @@ public class LauncherProvider extends ContentProvider {
         @Override
         public void onCreate(SQLiteDatabase db) {
             if (LOGD) {
-            	Log.d(TAG, "creating new launcher database");
+                Log.d(TAG, "creating new launcher database");
             }
 
             db.execSQL("CREATE TABLE favorites (" +
@@ -138,18 +144,18 @@ public class LauncherProvider extends ContentProvider {
                     "iconResource TEXT," +
                     "icon BLOB," +
                     "isCustomIcon INTEGER" +
-            ");");
+                    ");");
         }
 
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        	if (LOGD) {
-        		Log.d(TAG, "onUpgrade triggered");
-        	}
-        	if (oldVersion == 1 && newVersion == 2) {
-        		db.execSQL("ALTER TABLE favorites ADD COLUMN isCustomIcon INTEGER DEFAULT 0");
-        	}
+            if (LOGD) {
+                Log.d(TAG, "onUpgrade triggered");
+            }
+            if (oldVersion == 1 && newVersion == 2) {
+                db.execSQL("ALTER TABLE favorites ADD COLUMN isCustomIcon INTEGER DEFAULT 0");
+            }
         }
 
     }
@@ -170,8 +176,11 @@ public class LauncherProvider extends ContentProvider {
     }
 
     static class SqlArguments {
+
         public final String table;
+
         public final String where;
+
         public final String[] args;
 
         SqlArguments(Uri url, String where, String[] args) {

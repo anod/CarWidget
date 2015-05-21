@@ -22,6 +22,7 @@ public class MusicAppSettingsActivity extends MusicAppsActivity {
         head.add(none);
         return head;
     }
+
     @Override
     protected boolean isShowTitle() {
         return true;

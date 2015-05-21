@@ -1,14 +1,14 @@
 package com.anod.car.home.drawer;
 
+import com.anod.car.home.R;
+import com.anod.car.home.ui.views.TwoLineButton;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import com.anod.car.home.R;
-import com.anod.car.home.ui.views.TwoLineButton;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -18,12 +18,15 @@ import butterknife.InjectView;
  * @date 2014-10-21
  */
 public class NavigationAdapter extends BaseAdapter {
+
     private final LayoutInflater mInflater;
+
     private final NavigationList mItems;
+
     private int mSelected;
 
     public NavigationAdapter(Context context, NavigationList items) {
-        mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mItems = items;
     }
 
@@ -60,7 +63,7 @@ public class NavigationAdapter extends BaseAdapter {
             holder = createViewHolder(type, view);
             view.setTag(holder);
         } else {
-            holder = (ViewHolder)view.getTag();
+            holder = (ViewHolder) view.getTag();
         }
 
         if (item instanceof NavigationList.ActionItem) {
@@ -112,10 +115,14 @@ public class NavigationAdapter extends BaseAdapter {
     }
 
     public static class ViewHolder {
+
     }
 
-    public static class TitleViewHolder extends ViewHolder{
-        @InjectView(android.R.id.title) TextView title;
+    public static class TitleViewHolder extends ViewHolder {
+
+        @InjectView(android.R.id.title)
+        TextView title;
+
         public TitleViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
@@ -124,7 +131,7 @@ public class NavigationAdapter extends BaseAdapter {
             if (item.titleRes > 0) {
                 title.setText(item.titleRes);
                 title.setVisibility(View.VISIBLE);
-            } else if (item.titleText!= null) {
+            } else if (item.titleText != null) {
                 title.setText(item.titleText);
                 title.setVisibility(View.VISIBLE);
             } else {
@@ -132,8 +139,12 @@ public class NavigationAdapter extends BaseAdapter {
             }
         }
     }
-    public static class ActionViewHolder extends ViewHolder{
-        @InjectView(R.id.action) TwoLineButton button;
+
+    public static class ActionViewHolder extends ViewHolder {
+
+        @InjectView(R.id.action)
+        TwoLineButton button;
+
         public ActionViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
@@ -147,7 +158,7 @@ public class NavigationAdapter extends BaseAdapter {
 
             if (action.summaryRes > 0) {
                 button.setSummary(action.summaryRes);
-            } else if (action.summaryText != null)  {
+            } else if (action.summaryText != null) {
                 button.setSummary(action.summaryText);
             } else {
                 button.setSummaryVisibility(View.GONE);

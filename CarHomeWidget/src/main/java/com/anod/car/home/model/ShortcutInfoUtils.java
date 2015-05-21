@@ -1,6 +1,9 @@
 package com.anod.car.home.model;
 
-import android.annotation.TargetApi;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.FastBitmapDrawable;
+import com.anod.car.home.utils.UtilitiesBitmap;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -11,25 +14,22 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.FastBitmapDrawable;
-import com.anod.car.home.utils.UtilitiesBitmap;
-
 public class ShortcutInfoUtils {
-    public static ShortcutInfo createShortcut(Context context, Intent data, int cellId, boolean isAppShortcut) {
-    	ShortcutInfo info = null;
-    	if (isAppShortcut) {
-    		info = infoFromApplicationIntent(context, data);
-    	} else {
-    		info = infoFromShortcutIntent(context, data);
-    	}
+
+    public static ShortcutInfo createShortcut(Context context, Intent data, int cellId,
+            boolean isAppShortcut) {
+        ShortcutInfo info = null;
+        if (isAppShortcut) {
+            info = infoFromApplicationIntent(context, data);
+        } else {
+            info = infoFromShortcutIntent(context, data);
+        }
         return info;
     }
-    
+
     public static ShortcutInfo infoFromShortcutIntent(Context context, Intent data) {
         Intent intent = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
         String name = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
@@ -40,18 +40,19 @@ public class ShortcutInfoUtils {
         final ShortcutInfo info = new ShortcutInfo();
         info.title = name;
         info.intent = intent;
-        
+
         if (bitmap instanceof Bitmap) {
             AppLog.d("Custom shortcut with Bitmap");
-			icon = UtilitiesBitmap.createMaxSizeIcon(new FastBitmapDrawable((Bitmap) bitmap), context);
+            icon = UtilitiesBitmap
+                    .createMaxSizeIcon(new FastBitmapDrawable((Bitmap) bitmap), context);
             info.setCustomIcon(icon);
         } else {
             Parcelable extra = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
             if (extra instanceof ShortcutIconResource) {
                 AppLog.d("Custom shortcut with Icon Resource");
                 try {
-                	ShortcutIconResource iconResource = (ShortcutIconResource) extra;
-					icon = getPackageIcon(context, icon, iconResource);
+                    ShortcutIconResource iconResource = (ShortcutIconResource) extra;
+                    icon = getPackageIcon(context, icon, iconResource);
                     info.setIconResource(icon, iconResource);
                 } catch (Resources.NotFoundException | PackageManager.NameNotFoundException e) {
                     AppLog.ex(e);
@@ -60,7 +61,7 @@ public class ShortcutInfoUtils {
         }
 
         if (icon == null) {
-        	final PackageManager packageManager = context.getPackageManager();
+            final PackageManager packageManager = context.getPackageManager();
             icon = UtilitiesBitmap.makeDefaultIcon(packageManager);
             info.setFallbackIcon(icon);
         }
@@ -68,23 +69,24 @@ public class ShortcutInfoUtils {
         return info;
     }
 
-	private static Bitmap getPackageIcon(Context context, Bitmap icon, ShortcutIconResource iconResource) throws PackageManager.NameNotFoundException {
-		final PackageManager packageManager = context.getPackageManager();
-		Resources resources = packageManager.getResourcesForApplication(iconResource.packageName);
-		final int id = resources.getIdentifier(iconResource.resourceName, null, null);
+    private static Bitmap getPackageIcon(Context context, Bitmap icon,
+            ShortcutIconResource iconResource) throws PackageManager.NameNotFoundException {
+        final PackageManager packageManager = context.getPackageManager();
+        Resources resources = packageManager.getResourcesForApplication(iconResource.packageName);
+        final int id = resources.getIdentifier(iconResource.resourceName, null, null);
 
-		Drawable drawableIcon = null;
+        Drawable drawableIcon = null;
         drawableIcon = loadDrawableForTargetDensity(id, resources, context);
 
         if (drawableIcon instanceof BitmapDrawable) {
             icon = ((BitmapDrawable) drawableIcon).getBitmap();
-        } else if(drawableIcon != null) {
+        } else if (drawableIcon != null) {
             icon = UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context);
         }
-		return icon;
-	}
+        return icon;
+    }
 
-    
+
     /**
      * Make an ShortcutInfo object for a shortcut that is an application.
      *
@@ -101,7 +103,8 @@ public class ShortcutInfoUtils {
         final ShortcutInfo info = new ShortcutInfo();
         Bitmap icon = null;
 
-        info.setActivity(componentName, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        info.setActivity(componentName,
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
         // TODO: See if the PackageManager knows about this case.  If it doesn't
         // then return null & delete this.
@@ -133,46 +136,53 @@ public class ShortcutInfoUtils {
         info.itemType = LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
         return info;
     }
-    
-    public static Bitmap getIcon(ComponentName component, ResolveInfo resolveInfo, PackageManager manager, Context context) {
+
+    public static Bitmap getIcon(ComponentName component, ResolveInfo resolveInfo,
+            PackageManager manager, Context context) {
 
         if (resolveInfo == null || component == null) {
             return null;
         }
 
-		Drawable drawable = loadHighResIcon(resolveInfo, context);
-		if (drawable == null) {
-			drawable = resolveInfo.activityInfo.loadIcon(manager);
-		}
+        Drawable drawable = loadHighResIcon(resolveInfo, context);
+        if (drawable == null) {
+            drawable = resolveInfo.activityInfo.loadIcon(manager);
+        }
 
-		if (drawable == null) {
-			return null;
-		}
+        if (drawable == null) {
+            return null;
+        }
 
         return UtilitiesBitmap.createHiResIconBitmap(drawable, context);
     }
 
-	private static Drawable loadHighResIcon(ResolveInfo resolveInfo, Context context) {
-		try {
-			Context otherAppCtxt = context.createPackageContext(resolveInfo.activityInfo.packageName, Context.CONTEXT_IGNORE_SECURITY);
-			int icon = (resolveInfo.activityInfo.icon > 0) ? resolveInfo.activityInfo.icon : resolveInfo.activityInfo.applicationInfo.icon;
-			if (icon == 0) {
-				return null;
-			}
+    private static Drawable loadHighResIcon(ResolveInfo resolveInfo, Context context) {
+        try {
+            Context otherAppCtxt = context
+                    .createPackageContext(resolveInfo.activityInfo.packageName,
+                            Context.CONTEXT_IGNORE_SECURITY);
+            int icon = (resolveInfo.activityInfo.icon > 0) ? resolveInfo.activityInfo.icon
+                    : resolveInfo.activityInfo.applicationInfo.icon;
+            if (icon == 0) {
+                return null;
+            }
 
-            Drawable drawableAppIcon = loadDrawableForTargetDensity(icon, otherAppCtxt.getResources(), context);
+            Drawable drawableAppIcon = loadDrawableForTargetDensity(icon,
+                    otherAppCtxt.getResources(), context);
 
-			return drawableAppIcon;
-		} catch (PackageManager.NameNotFoundException e) {
-			AppLog.d("NameNotFoundException: " + e.getMessage());
-		}
-		return null;
-	}
+            return drawableAppIcon;
+        } catch (PackageManager.NameNotFoundException e) {
+            AppLog.d("NameNotFoundException: " + e.getMessage());
+        }
+        return null;
+    }
 
-    private static Drawable loadDrawableForTargetDensity(int id, Resources resources, Context context) {
+    private static Drawable loadDrawableForTargetDensity(int id, Resources resources,
+            Context context) {
         Drawable drawableAppIcon = null;
         try {
-            drawableAppIcon = resources.getDrawableForDensity(id, UtilitiesBitmap.getTargetDensity(context));
+            drawableAppIcon = resources
+                    .getDrawableForDensity(id, UtilitiesBitmap.getTargetDensity(context));
         } catch (Resources.NotFoundException e) {
             AppLog.ex(e);
         }

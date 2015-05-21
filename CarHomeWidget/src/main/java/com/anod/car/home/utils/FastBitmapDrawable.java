@@ -7,8 +7,11 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
 public class FastBitmapDrawable extends Drawable {
+
     private Bitmap mBitmap;
+
     private int mWidth;
+
     private int mHeight;
 
     public FastBitmapDrawable(Bitmap b) {
@@ -33,12 +36,12 @@ public class FastBitmapDrawable extends Drawable {
 
     @Override
     public void setAlpha(int alpha) {
-    	//Not supported
+        //Not supported
     }
 
     @Override
     public void setColorFilter(ColorFilter cf) {
-    	//Not Supported
+        //Not Supported
     }
 
     @Override

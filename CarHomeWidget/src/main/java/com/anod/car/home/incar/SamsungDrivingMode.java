@@ -10,26 +10,27 @@ import android.provider.Settings;
  */
 public class SamsungDrivingMode {
 
-	public static final String DRIVING_MODE_ON = "driving_mode_on";
-	public static final String DEVICE_SAMSUNG = "samsung";
+    public static final String DRIVING_MODE_ON = "driving_mode_on";
 
-	final public static boolean IS_SAMSUNG = (Build.MANUFACTURER.equals(DEVICE_SAMSUNG));
+    public static final String DEVICE_SAMSUNG = "samsung";
 
-	public static boolean hasMode() {
-		return IS_SAMSUNG;
-	}
+    final public static boolean IS_SAMSUNG = (Build.MANUFACTURER.equals(DEVICE_SAMSUNG));
 
-	public static boolean enabled(Context context) {
-		int v = Settings.System.getInt(context.getContentResolver(), DRIVING_MODE_ON, 0);
-		return v == 1;
-	}
+    public static boolean hasMode() {
+        return IS_SAMSUNG;
+    }
 
-	public static void enable(Context context) {
-		Settings.System.putInt(context.getContentResolver(), DRIVING_MODE_ON, 1);
-	}
+    public static boolean enabled(Context context) {
+        int v = Settings.System.getInt(context.getContentResolver(), DRIVING_MODE_ON, 0);
+        return v == 1;
+    }
 
-	public static void disable(Context context) {
-		Settings.System.putInt(context.getContentResolver(), DRIVING_MODE_ON, 0);
-	}
+    public static void enable(Context context) {
+        Settings.System.putInt(context.getContentResolver(), DRIVING_MODE_ON, 1);
+    }
+
+    public static void disable(Context context) {
+        Settings.System.putInt(context.getContentResolver(), DRIVING_MODE_ON, 0);
+    }
 
 }

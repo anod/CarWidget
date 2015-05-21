@@ -1,8 +1,5 @@
 package com.anod.car.home.prefs;
 
-import android.content.Intent;
-import android.os.Bundle;
-
 import com.anod.car.home.R;
 import com.anod.car.home.drawer.NavigationList;
 import com.anod.car.home.model.NotificationShortcutsModel;
@@ -10,35 +7,40 @@ import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.ShortcutPreference;
 
-public class ConfigurationNotifShortcuts extends ConfigurationPreferenceFragment implements PreferenceKey, ShortcutPreference.DropCallback {
+import android.content.Intent;
+import android.os.Bundle;
 
-	private PickShortcutUtils mPickShortcutUtils;
-	private NotificationShortcutsModel mModel;
+public class ConfigurationNotifShortcuts extends ConfigurationPreferenceFragment
+        implements PreferenceKey, ShortcutPreference.DropCallback {
 
-	@Override
-	protected boolean isAppWidgetIdRequired() {
-		return false;
-	}
+    private PickShortcutUtils mPickShortcutUtils;
 
-	@Override
-	protected int getXmlResource() {
-		return R.xml.preference_notif_shortcuts;
-	}
+    private NotificationShortcutsModel mModel;
 
-	@Override
-	protected void onCreateImpl(Bundle savedInstanceState) {
+    @Override
+    protected boolean isAppWidgetIdRequired() {
+        return false;
+    }
 
-		mModel = new NotificationShortcutsModel(mContext);
-		mModel.init();
-		mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
-		mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
+    @Override
+    protected int getXmlResource() {
+        return R.xml.preference_notif_shortcuts;
+    }
 
-		for (int i = 0; i < PreferencesStorage.NOTIFICATION_COMPONENT_NUMBER; i++) {
-			ShortcutPreference p = (ShortcutPreference) findPreference(getInitialKey(i));
-			mPickShortcutUtils.initLauncherPreference(i,p);
-			p.setDropCallback(this);
-		}
-	}
+    @Override
+    protected void onCreateImpl(Bundle savedInstanceState) {
+
+        mModel = new NotificationShortcutsModel(mContext);
+        mModel.init();
+        mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
+        mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
+
+        for (int i = 0; i < PreferencesStorage.NOTIFICATION_COMPONENT_NUMBER; i++) {
+            ShortcutPreference p = (ShortcutPreference) findPreference(getInitialKey(i));
+            mPickShortcutUtils.initLauncherPreference(i, p);
+            p.setDropCallback(this);
+        }
+    }
 
     @Override
     protected int getNavigationItem() {
@@ -46,48 +48,48 @@ public class ConfigurationNotifShortcuts extends ConfigurationPreferenceFragment
     }
 
     @Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		mPickShortcutUtils.onSaveInstanceState(outState);
-	}
-	
-	@Override
-	public String getInitialKey(int position) {
-		return PreferencesStorage.getNotifComponentName(position);
-	}
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mPickShortcutUtils.onSaveInstanceState(outState);
+    }
 
-	@Override
-	public String getCompiledKey(int position) {
-		return PreferencesStorage.getNotifComponentName(position);
-	}
+    @Override
+    public String getInitialKey(int position) {
+        return PreferencesStorage.getNotifComponentName(position);
+    }
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		mPickShortcutUtils.onActivityResult(requestCode, resultCode, data);
-		super.onActivityResult(requestCode, resultCode, data);
-	}
+    @Override
+    public String getCompiledKey(int position) {
+        return PreferencesStorage.getNotifComponentName(position);
+    }
 
-	@Override
-	public int onScrollRequest(int top) {
-		return 0;
-	}
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mPickShortcutUtils.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
-	@Override
-	public boolean onDrop(int oldCellId, int newCellId) {
-		if  (oldCellId == newCellId) {
-			return false;
-		}
-		mModel.move(oldCellId,newCellId);
-		refreshShortcuts();
-		return true;
-	}
+    @Override
+    public int onScrollRequest(int top) {
+        return 0;
+    }
 
-	private void refreshShortcuts() {
-		mModel.init();
-		for (int i = 0; i < PreferencesStorage.NOTIFICATION_COMPONENT_NUMBER; i++) {
-			String key = getCompiledKey(i);
-			ShortcutPreference p = (ShortcutPreference) findPreference(key);
-			mPickShortcutUtils.refreshPreference(p);
-		}
-	}
+    @Override
+    public boolean onDrop(int oldCellId, int newCellId) {
+        if (oldCellId == newCellId) {
+            return false;
+        }
+        mModel.move(oldCellId, newCellId);
+        refreshShortcuts();
+        return true;
+    }
+
+    private void refreshShortcuts() {
+        mModel.init();
+        for (int i = 0; i < PreferencesStorage.NOTIFICATION_COMPONENT_NUMBER; i++) {
+            String key = getCompiledKey(i);
+            ShortcutPreference p = (ShortcutPreference) findPreference(key);
+            mPickShortcutUtils.refreshPreference(p);
+        }
+    }
 }

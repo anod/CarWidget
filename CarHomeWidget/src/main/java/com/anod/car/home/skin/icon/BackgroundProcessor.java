@@ -1,8 +1,8 @@
 package com.anod.car.home.skin.icon;
 
-import android.graphics.Bitmap;
-
 import com.anod.car.home.prefs.preferences.Main;
+
+import android.graphics.Bitmap;
 
 /**
  * @author alex

@@ -16,6 +16,8 @@
 
 package com.android.colorpicker;
 
+import com.anod.car.home.R;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -23,15 +25,17 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.anod.car.home.R;
-
 /**
  * Creates a circular swatch of a specified color.  Adds a checkmark if marked as checked.
  */
 public class ColorPickerSwatch extends FrameLayout implements View.OnClickListener {
+
     private int mColor;
+
     private ImageView mSwatchImage;
+
     private ImageView mCheckmarkImage;
+
     private OnColorSelectedListener mOnColorSelectedListener;
 
     /**

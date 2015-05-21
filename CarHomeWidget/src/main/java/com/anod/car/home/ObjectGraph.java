@@ -1,14 +1,14 @@
 package com.anod.car.home;
 
-import android.content.Context;
-import android.media.AudioManager;
-import android.telephony.TelephonyManager;
-import android.view.WindowManager;
-
 import com.anod.car.home.incar.Handler;
 import com.anod.car.home.incar.ModePhoneStateListener;
 import com.anod.car.home.incar.ScreenOrientation;
 import com.anod.car.home.model.AppsList;
+
+import android.content.Context;
+import android.media.AudioManager;
+import android.telephony.TelephonyManager;
+import android.view.WindowManager;
 
 import static android.content.Context.TELEPHONY_SERVICE;
 import static android.content.Context.WINDOW_SERVICE;
@@ -18,8 +18,11 @@ import static android.content.Context.WINDOW_SERVICE;
  * @date 2014-10-27
  */
 public class ObjectGraph {
+
     private final CarWidgetApplication app;
+
     private AppsList mAppListCache;
+
     private AppsList mIconThemesCache;
 
     public ObjectGraph(CarWidgetApplication application) {
@@ -39,7 +42,7 @@ public class ObjectGraph {
     }
 
     public TelephonyManager getTelephonyManager() {
-        return  (TelephonyManager) app.getSystemService(TELEPHONY_SERVICE);
+        return (TelephonyManager) app.getSystemService(TELEPHONY_SERVICE);
     }
 
     public AudioManager getAudioManager() {

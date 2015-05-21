@@ -5,16 +5,17 @@ package com.anod.car.home.prefs.drag;
  * @date 2014-10-25
  */
 
+import com.anod.car.home.R;
+
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.view.View;
-
-import com.anod.car.home.R;
 
 /**
  * @author alex
  */
 public class ShortcutShadowBuilder extends View.DragShadowBuilder {
+
     private final int mColorDragBg;
     // Defines the constructor for myDragShadowBuilder
 

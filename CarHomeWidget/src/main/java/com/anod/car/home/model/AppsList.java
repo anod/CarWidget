@@ -1,12 +1,11 @@
 package com.anod.car.home.model;
 
+import com.anod.car.home.CarWidgetApplication;
+import com.anod.car.home.app.AppIconLoader;
+
 import android.content.ComponentName;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-
-import com.anod.car.home.CarWidgetApplication;
-import com.anod.car.home.app.AppIconLoader;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -17,11 +16,15 @@ import java.util.Comparator;
  * Cache of application icons. Icons can be made from any thread.
  */
 public class AppsList {
+
     private static final int INITIAL_ICON_CACHE_CAPACITY = 50;
+
     private final ArrayList<Entry> mCache = new ArrayList<Entry>(INITIAL_ICON_CACHE_CAPACITY);
 
     private final CarWidgetApplication mContext;
+
     private final PackageManager mPackageManager;
+
     private AppIconLoader mAppIconLoader;
 
     public AppIconLoader getAppIconLoader() {
@@ -32,8 +35,11 @@ public class AppsList {
     }
 
     public static class Entry {
+
         public ComponentName componentName;
+
         public int iconRes;
+
         public String title;
     }
 
@@ -88,6 +94,7 @@ public class AppsList {
     }
 
     public static class DisplayNameComparator implements Comparator<Entry> {
+
         private final Collator sCollator = Collator.getInstance();
 
         public final int compare(Entry a, Entry b) {

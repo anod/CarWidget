@@ -1,5 +1,7 @@
 package com.anod.car.home.prefs.backup;
 
+import com.anod.car.home.utils.AppLog;
+
 import android.app.backup.BackupAgentHelper;
 import android.app.backup.BackupDataInput;
 import android.app.backup.BackupDataOutput;
@@ -8,13 +10,12 @@ import android.content.Context;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
-import com.anod.car.home.utils.AppLog;
-
 import java.io.File;
 import java.io.IOException;
 
 
 public class BackupFileHelperAgent extends BackupAgentHelper {
+
     /**
      * The "key" string passed when adding a helper is a token used to
      * disambiguate between entities supplied by multiple different helper
@@ -24,6 +25,7 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
     static final String FILE_HELPER_KEY = "backup_incar";
 
     private PreferencesBackupManager mManager;
+
     /**
      * The {@link android.app.backup.FileBackupHelper FileBackupHelper} class
      * does nearly all of the work for our use case:  backup and restore of a
@@ -34,12 +36,13 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
      */
     @Override
     public void onCreate() {
-    	AppLog.d("onCreate called");
+        AppLog.d("onCreate called");
         // All we need to do when working within the BackupAgentHelper mechanism
         // is to install the helper that will process and back up the files we
         // care about.  In this case, it's just one file.
-    	mManager = new PreferencesBackupManager(this);
-        FileBackupHelper helper = createFileBackupHelper(this, mManager.getBackupDir(), PreferencesBackupManager.FILE_INCAR_JSON); 
+        mManager = new PreferencesBackupManager(this);
+        FileBackupHelper helper = createFileBackupHelper(this, mManager.getBackupDir(),
+                PreferencesBackupManager.FILE_INCAR_JSON);
         addHelper(FILE_HELPER_KEY, helper);
     }
 
@@ -50,7 +53,7 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
      */
     @Override
     public void onBackup(ParcelFileDescriptor oldState, BackupDataOutput data,
-             ParcelFileDescriptor newState) throws IOException {
+            ParcelFileDescriptor newState) throws IOException {
         // Hold the lock while the FileBackupHelper performs the backup operation
         synchronized (PreferencesBackupManager.DATA_LOCK) {
             super.onBackup(oldState, data, newState);
@@ -64,39 +67,40 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
     @Override
     public void onRestore(BackupDataInput data, int appVersionCode,
             ParcelFileDescriptor newState) throws IOException {
-    	AppLog.d("onRestore called");
+        AppLog.d("onRestore called");
         // Hold the lock while the FileBackupHelper restores the file from
         // the data provided here.
         synchronized (PreferencesBackupManager.DATA_LOCK) {
-        	AppLog.d("onRestore in-lock");
+            AppLog.d("onRestore in-lock");
             super.onRestore(data, appVersionCode, newState);
             mManager.doRestoreInCarLocal();
         }
     }
-    
-    private static FileBackupHelper createFileBackupHelper(Context context, File path, String file) {
-		String filesDir = context.getFilesDir().getAbsolutePath();
-		String absPath = path.getAbsolutePath();
-		
-		String relPath = createRelativePath(filesDir);
-		
-		StringBuilder filePathBuilder = new StringBuilder(relPath);
-		filePathBuilder.append(absPath);
-		filePathBuilder.append(File.separatorChar);
-		filePathBuilder.append(file);
 
-		String fileRelPath = filePathBuilder.toString();
-		Log.d("CarHomeWidget.BackupAgent"," file: " + fileRelPath);		
-		return 	new FileBackupHelper(context, filePathBuilder.toString());
-	}
-	
-	private static String createRelativePath(String path) {
-		String[] parts = path.split(File.separator);
-		StringBuilder relative = new StringBuilder("..");
-		for(int i=0; i<parts.length - 2; i++) {
-			relative.append(File.separatorChar);
-			relative.append("..");
-		}
-		return relative.toString();
-	}    
+    private static FileBackupHelper createFileBackupHelper(Context context, File path,
+            String file) {
+        String filesDir = context.getFilesDir().getAbsolutePath();
+        String absPath = path.getAbsolutePath();
+
+        String relPath = createRelativePath(filesDir);
+
+        StringBuilder filePathBuilder = new StringBuilder(relPath);
+        filePathBuilder.append(absPath);
+        filePathBuilder.append(File.separatorChar);
+        filePathBuilder.append(file);
+
+        String fileRelPath = filePathBuilder.toString();
+        Log.d("CarHomeWidget.BackupAgent", " file: " + fileRelPath);
+        return new FileBackupHelper(context, filePathBuilder.toString());
+    }
+
+    private static String createRelativePath(String path) {
+        String[] parts = path.split(File.separator);
+        StringBuilder relative = new StringBuilder("..");
+        for (int i = 0; i < parts.length - 2; i++) {
+            relative.append(File.separatorChar);
+            relative.append("..");
+        }
+        return relative.toString();
+    }
 }

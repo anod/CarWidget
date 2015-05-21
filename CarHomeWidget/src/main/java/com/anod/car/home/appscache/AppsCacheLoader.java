@@ -1,12 +1,12 @@
 package com.anod.car.home.appscache;
 
+import com.anod.car.home.model.AppsList;
+
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-
-import com.anod.car.home.model.AppsList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +16,11 @@ import java.util.List;
  * @date 2014-09-02
  */
 public class AppsCacheLoader extends AsyncTaskLoader<ArrayList<AppsList.Entry>> {
+
     final private Callback mCallback;
+
     final private AppsList mAppsList;
+
     final private Context mContext;
 
     public AppsCacheLoader(Context context, Callback callback, AppsList appsList) {
@@ -28,6 +31,7 @@ public class AppsCacheLoader extends AsyncTaskLoader<ArrayList<AppsList.Entry>> 
     }
 
     public interface Callback {
+
         void onIntentFilterInit(Intent intent);
     }
 

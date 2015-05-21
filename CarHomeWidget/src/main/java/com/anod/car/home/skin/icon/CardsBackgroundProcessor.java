@@ -1,12 +1,11 @@
 package com.anod.car.home.skin.icon;
 
+import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.utils.AppLog;
+
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v7.graphics.Palette;
-
-import com.anod.car.home.BuildConfig;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.utils.AppLog;
 
 /**
  * @author alex
@@ -21,7 +20,6 @@ public class CardsBackgroundProcessor implements BackgroundProcessor {
         }
         Palette palette = Palette.generate(icon);
 
-
         Palette.Swatch swatch = palette.getMutedSwatch();
 //        AppLog.d("MutedSwatch: "+(swatch == null?"null":"#"+Integer.toHexString(swatch.getRgb())));
 //        swatch = palette.getVibrantSwatch();
@@ -32,17 +30,17 @@ public class CardsBackgroundProcessor implements BackgroundProcessor {
 //        AppLog.d("DarkVibrantSwatch: "+(swatch == null?"null":"#"+Integer.toHexString(swatch.getRgb())));
 
         if (swatch != null) {
-            AppLog.d("MutedSwatch: #"+Integer.toHexString(swatch.getRgb()));
+            AppLog.d("MutedSwatch: #" + Integer.toHexString(swatch.getRgb()));
             return swatch.getRgb();
         }
         swatch = palette.getDarkVibrantSwatch();
         if (swatch != null) {
-            AppLog.d("DarkVibrantSwatch: #"+Integer.toHexString(swatch.getRgb()));
+            AppLog.d("DarkVibrantSwatch: #" + Integer.toHexString(swatch.getRgb()));
             return swatch.getRgb();
         }
         swatch = palette.getVibrantSwatch();
         if (swatch != null) {
-            AppLog.d("VibrantSwatch: #"+Integer.toHexString(swatch.getRgb()));
+            AppLog.d("VibrantSwatch: #" + Integer.toHexString(swatch.getRgb()));
             return swatch.getRgb();
         }
         return Color.DKGRAY;

@@ -1,8 +1,8 @@
 package com.anod.car.home.prefs.detection;
 
-import android.content.Context;
-
 import com.anod.car.home.prefs.preferences.InCar;
+
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,41 +13,41 @@ import java.util.List;
  */
 public class Collection {
 
-	private Detection[] mList = {
-		new BluetoothDevice(),
-		new Headset(),
-		new Power(),
-		new ActivityRecognition(),
-		new CarDock()
-	};
+    private Detection[] mList = {
+            new BluetoothDevice(),
+            new Headset(),
+            new Power(),
+            new ActivityRecognition(),
+            new CarDock()
+    };
 
-	public Collection(Context context, InCar prefs) {
-		init(context, prefs);
-	}
+    public Collection(Context context, InCar prefs) {
+        init(context, prefs);
+    }
 
-	private void init(Context context, InCar prefs) {
-		for(int i=0; i < mList.length; i++) {
-			mList[i].setPrefs(prefs);
-			mList[i].setContext(context);
-		}
-	}
+    private void init(Context context, InCar prefs) {
+        for (int i = 0; i < mList.length; i++) {
+            mList[i].setPrefs(prefs);
+            mList[i].setContext(context);
+        }
+    }
 
-	public int getTotalCount() {
-		return mList.length;
-	}
+    public int getTotalCount() {
+        return mList.length;
+    }
 
-	public Detection[] getAll() {
-		return mList;
-	}
+    public Detection[] getAll() {
+        return mList;
+    }
 
-	public List<Detection> getActive() {
-		List<Detection> list = new ArrayList<Detection>(mList.length);
-		for(int i=0; i < mList.length; i++) {
-			if (mList[i].isActive()) {
-				list.add(mList[i]);
-			}
-		}
-		return list;
-	}
+    public List<Detection> getActive() {
+        List<Detection> list = new ArrayList<Detection>(mList.length);
+        for (int i = 0; i < mList.length; i++) {
+            if (mList[i].isActive()) {
+                list.add(mList[i]);
+            }
+        }
+        return list;
+    }
 
 }

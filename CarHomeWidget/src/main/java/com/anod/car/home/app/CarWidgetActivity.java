@@ -1,11 +1,10 @@
 package com.anod.car.home.app;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-
 import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.prefs.preferences.AppTheme;
+
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 
 /**
  * @author alex
@@ -13,23 +12,24 @@ import com.anod.car.home.prefs.preferences.AppTheme;
  */
 abstract public class CarWidgetActivity extends ActionBarActivity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		int theme = getApp().getThemeIdx();
-		int themeRes = (isTransparentAppTheme()) ? AppTheme.getTransparentResource(theme) : AppTheme.getMainResource(theme);
-		setTheme(themeRes);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        int theme = getApp().getThemeIdx();
+        int themeRes = (isTransparentAppTheme()) ? AppTheme.getTransparentResource(theme)
+                : AppTheme.getMainResource(theme);
+        setTheme(themeRes);
 
-		super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
 
-		//
-	}
+        //
+    }
 
-	protected boolean isTransparentAppTheme() {
-		return false;
-	}
+    protected boolean isTransparentAppTheme() {
+        return false;
+    }
 
-	public CarWidgetApplication getApp() {
-		return CarWidgetApplication.get(this);
-	}
+    public CarWidgetApplication getApp() {
+        return CarWidgetApplication.get(this);
+    }
 
 }

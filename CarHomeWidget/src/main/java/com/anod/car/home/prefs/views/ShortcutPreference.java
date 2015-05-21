@@ -1,5 +1,9 @@
 package com.anod.car.home.prefs.views;
 
+import com.anod.car.home.R;
+import com.anod.car.home.prefs.views.drag.ShortcutDragListener;
+import com.anod.car.home.prefs.views.drag.ShortcutShadowBuilder;
+
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Context;
@@ -10,131 +14,137 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-import com.anod.car.home.R;
-import com.anod.car.home.prefs.views.drag.ShortcutDragListener;
-import com.anod.car.home.prefs.views.drag.ShortcutShadowBuilder;
-
 public class ShortcutPreference extends Preference implements OnClickListener {
-	private static final int INVALID_RESOURCE = 0;
-	private int mAppTheme;
 
-	public interface DropCallback {
-		public int onScrollRequest(int top);
-		public boolean onDrop(int oldCellId, int newCellId);
-	}
-	private Bitmap mIconBitmap;
+    private static final int INVALID_RESOURCE = 0;
 
-	private int mIconResource = INVALID_RESOURCE;
-	private OnPreferenceClickListener mDeleteClickListener;
-	private Boolean mShowEditButton = false;
-	private int mCellId;
-	private DropCallback mDropCallback;
+    private int mAppTheme;
 
-	public ShortcutPreference(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		setLayoutResource(R.layout.pref_shortcut);
-	}
+    public interface DropCallback {
 
-	public ShortcutPreference(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		setLayoutResource(R.layout.pref_shortcut);
-	}
+        public int onScrollRequest(int top);
 
-	public ShortcutPreference(Context context) {
-		super(context);
-		setLayoutResource(R.layout.pref_shortcut);
-	}
+        public boolean onDrop(int oldCellId, int newCellId);
+    }
 
-	public void setDropCallback(DropCallback dropCallback) {
-		mDropCallback = dropCallback;
-	}
+    private Bitmap mIconBitmap;
 
-	public void setShortcutPosition(int cellId) {
-		mCellId = cellId;
-	}
+    private int mIconResource = INVALID_RESOURCE;
 
-	public int getShortcutPosition() {
-		return mCellId;
-	}
+    private OnPreferenceClickListener mDeleteClickListener;
 
-	public void showButtons(boolean show) {
-		mShowEditButton = show;
-		notifyChanged();
-	}
+    private Boolean mShowEditButton = false;
 
-	public void setAppTheme(int theme) {
-		mAppTheme = theme;
-	}
+    private int mCellId;
 
-	public void setIconResource(int resId) {
-		mIconBitmap = null;
-		mIconResource = resId;
-		notifyChanged();
-	}
+    private DropCallback mDropCallback;
 
-	public void setIconBitmap(Bitmap iconBitmap) {
-		mIconBitmap = iconBitmap;
-		mIconResource = INVALID_RESOURCE;
-		notifyChanged();
-	}
+    public ShortcutPreference(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        setLayoutResource(R.layout.pref_shortcut);
+    }
 
-	@Override
-	protected void onBindView(View view) {
-		super.onBindView(view);
+    public ShortcutPreference(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        setLayoutResource(R.layout.pref_shortcut);
+    }
 
-		view.setTag(mCellId);
+    public ShortcutPreference(Context context) {
+        super(context);
+        setLayoutResource(R.layout.pref_shortcut);
+    }
 
-		ImageView dragButton = (ImageView) view.findViewById(R.id.drag_button);
-		initDragButton(dragButton, view);
+    public void setDropCallback(DropCallback dropCallback) {
+        mDropCallback = dropCallback;
+    }
 
-		ImageView imageView = (ImageView) view.findViewById(android.R.id.icon);
-		if (mIconBitmap != null) {
-			imageView.setImageBitmap(mIconBitmap);
-			imageView.setVisibility(View.VISIBLE);
-		}
-		if (mIconResource > 0) {
-			imageView.setImageResource(mIconResource);
-			imageView.setVisibility(View.VISIBLE);
-		}
+    public void setShortcutPosition(int cellId) {
+        mCellId = cellId;
+    }
 
-		ImageView editButton = (ImageView) view.findViewById(R.id.delete_button);
-		ImageView replaceImage = (ImageView) view.findViewById(R.id.edit_button);
-		View divider = view.findViewById(R.id.divider);
-		if (mShowEditButton) {
-			editButton.setOnClickListener(this);
-			editButton.setVisibility(View.VISIBLE);
-			divider.setVisibility(View.VISIBLE);
-			replaceImage.setVisibility(View.VISIBLE);
-		} else {
-			editButton.setVisibility(View.GONE);
-			divider.setVisibility(View.GONE);
-			replaceImage.setVisibility(View.GONE);
-		}
-	}
+    public int getShortcutPosition() {
+        return mCellId;
+    }
 
-	@SuppressLint("NewApi")
-	private void initDragButton(ImageView dragButton, final View mainView) {
-		dragButton.setOnLongClickListener(new View.OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View view) {
-				ClipData data = ClipData.newPlainText(mCellId + "", mCellId + "");
-				mainView.startDrag(data, new ShortcutShadowBuilder(mainView), null, 0);
-				return true;
-			}
-		});
-		dragButton.setOnDragListener(new ShortcutDragListener(getContext(), mAppTheme, mDropCallback));
-	}
+    public void showButtons(boolean show) {
+        mShowEditButton = show;
+        notifyChanged();
+    }
 
-	@Override
-	public void onClick(View v) {
-		if (mDeleteClickListener != null) {
-			mDeleteClickListener.onPreferenceClick(this);
-		}
-	}
+    public void setAppTheme(int theme) {
+        mAppTheme = theme;
+    }
 
-	public void setOnDeleteClickListener(OnPreferenceClickListener listener) {
-		mDeleteClickListener = listener;
-	}
+    public void setIconResource(int resId) {
+        mIconBitmap = null;
+        mIconResource = resId;
+        notifyChanged();
+    }
+
+    public void setIconBitmap(Bitmap iconBitmap) {
+        mIconBitmap = iconBitmap;
+        mIconResource = INVALID_RESOURCE;
+        notifyChanged();
+    }
+
+    @Override
+    protected void onBindView(View view) {
+        super.onBindView(view);
+
+        view.setTag(mCellId);
+
+        ImageView dragButton = (ImageView) view.findViewById(R.id.drag_button);
+        initDragButton(dragButton, view);
+
+        ImageView imageView = (ImageView) view.findViewById(android.R.id.icon);
+        if (mIconBitmap != null) {
+            imageView.setImageBitmap(mIconBitmap);
+            imageView.setVisibility(View.VISIBLE);
+        }
+        if (mIconResource > 0) {
+            imageView.setImageResource(mIconResource);
+            imageView.setVisibility(View.VISIBLE);
+        }
+
+        ImageView editButton = (ImageView) view.findViewById(R.id.delete_button);
+        ImageView replaceImage = (ImageView) view.findViewById(R.id.edit_button);
+        View divider = view.findViewById(R.id.divider);
+        if (mShowEditButton) {
+            editButton.setOnClickListener(this);
+            editButton.setVisibility(View.VISIBLE);
+            divider.setVisibility(View.VISIBLE);
+            replaceImage.setVisibility(View.VISIBLE);
+        } else {
+            editButton.setVisibility(View.GONE);
+            divider.setVisibility(View.GONE);
+            replaceImage.setVisibility(View.GONE);
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private void initDragButton(ImageView dragButton, final View mainView) {
+        dragButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                ClipData data = ClipData.newPlainText(mCellId + "", mCellId + "");
+                mainView.startDrag(data, new ShortcutShadowBuilder(mainView), null, 0);
+                return true;
+            }
+        });
+        dragButton.setOnDragListener(
+                new ShortcutDragListener(getContext(), mAppTheme, mDropCallback));
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mDeleteClickListener != null) {
+            mDeleteClickListener.onPreferenceClick(this);
+        }
+    }
+
+    public void setOnDeleteClickListener(OnPreferenceClickListener listener) {
+        mDeleteClickListener = listener;
+    }
 
 
 }

@@ -10,15 +10,23 @@ import android.view.WindowManager;
  * @date 2014-10-11
  */
 public class ScreenOrientation {
+
     public final static int DISABLED = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+
     public final static int PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+
     public final static int LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+
     public final static int LANDSCAPE_REVERSE = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
 
     private WindowManager.LayoutParams mLayoutParams;
+
     private View mOverlayView;
+
     private boolean mViewAdded;
+
     private final WindowManager mWindowManager;
+
     private final Context mContext;
 
     public ScreenOrientation(Context context, WindowManager wm) {
@@ -26,10 +34,8 @@ public class ScreenOrientation {
         mWindowManager = wm;
     }
 
-    public void set(int orientation)
-    {
-        if (orientation == ScreenOrientation.DISABLED)
-        {
+    public void set(int orientation) {
+        if (orientation == ScreenOrientation.DISABLED) {
             if (mViewAdded) {
                 mWindowManager.removeView(mOverlayView);
             }
@@ -42,8 +48,7 @@ public class ScreenOrientation {
         mLayoutParams = createLayoutParams();
 
         mLayoutParams.screenOrientation = orientation;
-        if (mViewAdded)
-        {
+        if (mViewAdded) {
             mWindowManager.updateViewLayout(this.mOverlayView, this.mLayoutParams);
             return;
         }

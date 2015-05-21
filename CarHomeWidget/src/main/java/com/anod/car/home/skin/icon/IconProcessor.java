@@ -4,9 +4,9 @@ import android.graphics.Bitmap;
 
 public interface IconProcessor {
 
-	Bitmap process(Bitmap icon);
+    Bitmap process(Bitmap icon);
 
-	float getSizeDiff();
+    float getSizeDiff();
 
-	String id();
+    String id();
 }

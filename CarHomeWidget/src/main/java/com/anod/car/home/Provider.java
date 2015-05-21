@@ -1,5 +1,9 @@
 package com.anod.car.home;
 
+import com.anod.car.home.incar.BroadcastService;
+import com.anod.car.home.incar.ModeService;
+import com.anod.car.home.prefs.preferences.PreferencesStorage;
+
 import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -11,99 +15,98 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.anod.car.home.incar.BroadcastService;
-import com.anod.car.home.incar.ModeService;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-
 
 public class Provider extends AppWidgetProvider {
+
     /**
      * Lock used when maintaining queue of requested updates.
      */
-	private final static Object sLock = new Object();
+    private final static Object sLock = new Object();
+
     private static Provider sInstance;
-    
+
     public static Provider getInstance() {
-    	synchronized (sLock) {
-    		if (sInstance == null) {
-    			sInstance = new Provider();
-    		}
-    		return sInstance;
-		}
+        synchronized (sLock) {
+            if (sInstance == null) {
+                sInstance = new Provider();
+            }
+            return sInstance;
+        }
     }
 
-    public void requestUpdate(Context context, int appWidgetId){
+    public void requestUpdate(Context context, int appWidgetId) {
         int[] appWidgetIds = new int[1];
         appWidgetIds[0] = appWidgetId;
         performUpdate(context, appWidgetIds);
     }
 
     public void performUpdate(Context context, int[] appWidgetIds) {
-    	if (appWidgetIds == null) {
-    		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-    		ComponentName thisAppWidget = getComponentName(context); //TODO
-    		int[] allAppWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
-    		WidgetState.requestUpdate(allAppWidgetIds);
-    	} else {
-    		WidgetState.requestUpdate(appWidgetIds);
-    	}
+        if (appWidgetIds == null) {
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            ComponentName thisAppWidget = getComponentName(context); //TODO
+            int[] allAppWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
+            WidgetState.requestUpdate(allAppWidgetIds);
+        } else {
+            WidgetState.requestUpdate(appWidgetIds);
+        }
         // Launch over to service so it can perform update
         final Intent updateIntent = new Intent(context, UpdateService.class);
         context.startService(updateIntent);
     }
-    
+
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-    	performUpdate(context, appWidgetIds);
+        performUpdate(context, appWidgetIds);
     }
-    
+
     /**
      * Will be executed when the widget is removed from the homescreen
      */
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-            super.onDeleted(context, appWidgetIds);
-            // Drop the settings if the widget is deleted
-            PreferencesStorage.dropWidgetSettings(context, appWidgetIds);
+        super.onDeleted(context, appWidgetIds);
+        // Drop the settings if the widget is deleted
+        PreferencesStorage.dropWidgetSettings(context, appWidgetIds);
     }
 
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override
     public void onDisabled(Context context) {
-    	// Launch over to service so it can perform update
-    	final Intent updateIntent = new Intent(context, UpdateService.class);
-    	context.stopService(updateIntent);
-    	
-		final Intent receiverIntent = new Intent(context, BroadcastService.class);
-        context.stopService(receiverIntent);
+        // Launch over to service so it can perform update
+        final Intent updateIntent = new Intent(context, UpdateService.class);
+        context.stopService(updateIntent);
 
-    	if (ModeService.sInCarMode) {
-            final Intent modeIntent = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_OFF);
+        BroadcastService.stopService(context);
+
+        if (ModeService.sInCarMode) {
+            final Intent modeIntent = ModeService
+                    .createStartIntent(context, ModeService.MODE_SWITCH_OFF);
             context.stopService(modeIntent);
-    	}
+        }
     }
 
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	@Override
-	public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-		super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
+            int appWidgetId, Bundle newOptions) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 
-		int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, -1);
+        int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, -1);
 
-		Bundle myOptions = appWidgetManager.getAppWidgetOptions (appWidgetId);
-		int category = myOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1);
-		boolean isKeyguard = category == AppWidgetProviderInfo.WIDGET_CATEGORY_KEYGUARD;
+        Bundle myOptions = appWidgetManager.getAppWidgetOptions(appWidgetId);
+        int category = myOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1);
+        boolean isKeyguard = category == AppWidgetProviderInfo.WIDGET_CATEGORY_KEYGUARD;
 
-		if (isKeyguard && maxHeight != -1) {
-			Log.d("CarWidgetOptions", "isKeyguard: " + isKeyguard + ", maxHeight: " + maxHeight);
-			performUpdate(context,new int[] { appWidgetId });
-		}
-	}
+        if (isKeyguard && maxHeight != -1) {
+            Log.d("CarWidgetOptions", "isKeyguard: " + isKeyguard + ", maxHeight: " + maxHeight);
+            performUpdate(context, new int[]{appWidgetId});
+        }
+    }
 
-	/**
+    /**
      * Build {@link ComponentName} describing this specific
      * {@link AppWidgetProvider}
      */

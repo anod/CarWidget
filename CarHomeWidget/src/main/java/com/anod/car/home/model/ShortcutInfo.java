@@ -1,12 +1,12 @@
 package com.anod.car.home.model;
 
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.UtilitiesBitmap;
+
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.UtilitiesBitmap;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -21,11 +21,11 @@ import java.net.URISyntaxException;
 public class ShortcutInfo implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public static final int NO_ID = -1;
+    public static final int NO_ID = -1;
 
     /**
      * The id in the settings database for this item
@@ -54,7 +54,7 @@ public class ShortcutInfo implements Serializable {
      */
     private boolean customIcon;
 
-	/**
+    /**
      * Indicates whether we're using the default fallback icon instead of something from the
      * app.
      */
@@ -70,7 +70,7 @@ public class ShortcutInfo implements Serializable {
      * The application icon.
      */
     transient private Bitmap mIcon;
-    
+
     ShortcutInfo() {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT;
     }
@@ -91,12 +91,12 @@ public class ShortcutInfo implements Serializable {
     }
 
     public void setActivityIcon(Bitmap icon) {
-    	customIcon = false;
-    	iconResource = null;
-    	usingFallbackIcon = false;
+        customIcon = false;
+        iconResource = null;
+        usingFallbackIcon = false;
         mIcon = icon;
     }
-    
+
     public void setFallbackIcon(Bitmap icon) {
         mIcon = icon;
         iconResource = null;
@@ -105,19 +105,19 @@ public class ShortcutInfo implements Serializable {
     }
 
     public void setCustomIcon(Bitmap icon) {
-    	customIcon = true;
-    	iconResource = null;
-    	usingFallbackIcon = false;
+        customIcon = true;
+        iconResource = null;
+        usingFallbackIcon = false;
         mIcon = icon;
     }
-    
-    public void setIconResource(Bitmap icon,Intent.ShortcutIconResource res) {
-    	mIcon = icon;
-    	iconResource = res;
-    	usingFallbackIcon = false;
-    	customIcon = false;
+
+    public void setIconResource(Bitmap icon, Intent.ShortcutIconResource res) {
+        mIcon = icon;
+        iconResource = res;
+        usingFallbackIcon = false;
+        customIcon = false;
     }
-    
+
     public Bitmap getIcon() {
         return mIcon;
     }
@@ -126,7 +126,7 @@ public class ShortcutInfo implements Serializable {
      * Creates the application intent based on a component name and various launch flags.
      * Sets {@link #itemType} to {@link LauncherSettings.BaseLauncherColumns#ITEM_TYPE_APPLICATION}.
      *
-     * @param className the class name of the component representing the intent
+     * @param className   the class name of the component representing the intent
      * @param launchFlags the launch flags
      */
     public final void setActivity(ComponentName className, int launchFlags) {
@@ -138,93 +138,93 @@ public class ShortcutInfo implements Serializable {
     }
 
     public void setCustomIcon(boolean customIcon) {
-    	this.customIcon = customIcon;
+        this.customIcon = customIcon;
     }
-    
+
     public boolean isCustomIcon() {
-		return customIcon;
-	}    
+        return customIcon;
+    }
 
     public boolean isUsingFallbackIcon() {
-		return usingFallbackIcon;
-	}
+        return usingFallbackIcon;
+    }
 
-	public Intent.ShortcutIconResource getIconResource() {
-		return iconResource;
-	}
+    public Intent.ShortcutIconResource getIconResource() {
+        return iconResource;
+    }
 
-	@Override
+    @Override
     public String toString() {
         return "ShortcutInfo(title=" + title.toString() + ")";
     }
 
-	private void writeObject(ObjectOutputStream out) throws IOException {
-		out.defaultWriteObject();
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
 
-		byte[] data = null;
-		if (mIcon != null) {
-			data = UtilitiesBitmap.flattenBitmap(mIcon);
-		}
-		if (data != null) {
-			out.writeInt(data.length);
-			out.write(data, 0, data.length);
-		} else {
-			out.writeInt(0);
-		}
-		
-		if (intent != null) {
-        	out.writeBoolean(true);
-			out.writeUTF(intent.toUri(0));
-		} else {
-        	out.writeBoolean(false);
-		}
-		
-        if (iconResource != null) {
-        	out.writeBoolean(true);
-        	out.writeUTF(iconResource.packageName);
-        	out.writeUTF(iconResource.resourceName);
-        } else {
-        	out.writeBoolean(false);
+        byte[] data = null;
+        if (mIcon != null) {
+            data = UtilitiesBitmap.flattenBitmap(mIcon);
         }
-        
-    }    
+        if (data != null) {
+            out.writeInt(data.length);
+            out.write(data, 0, data.length);
+        } else {
+            out.writeInt(0);
+        }
 
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-		in.defaultReadObject();
-		int length = in.readInt();
-		if (length > 0) {
-			byte[] dst = new byte[length];
-			in.readFully(dst, 0, length);
-			mIcon = getIconByteArray(dst);
-		}
-		
-		boolean hasIntent = in.readBoolean();
-		if (hasIntent) {
-			String intentDescription = in.readUTF();
-			if (intentDescription != null) {
-		        try {
-		        	intent = Intent.parseUri(intentDescription, 0);
-		        } catch (URISyntaxException e) {
-		        	AppLog.d(e.getMessage());
-		        }
-	        }
-		}
-		
-		boolean hasIconResource = in.readBoolean();
-		if (hasIconResource) {
-			String packageName = in.readUTF();
-			String resourceName = in.readUTF();
-			iconResource = new Intent.ShortcutIconResource();
-			iconResource.packageName = packageName;
-			iconResource.resourceName = resourceName;
-		}
-  	}
-	
+        if (intent != null) {
+            out.writeBoolean(true);
+            out.writeUTF(intent.toUri(0));
+        } else {
+            out.writeBoolean(false);
+        }
+
+        if (iconResource != null) {
+            out.writeBoolean(true);
+            out.writeUTF(iconResource.packageName);
+            out.writeUTF(iconResource.resourceName);
+        } else {
+            out.writeBoolean(false);
+        }
+
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        int length = in.readInt();
+        if (length > 0) {
+            byte[] dst = new byte[length];
+            in.readFully(dst, 0, length);
+            mIcon = getIconByteArray(dst);
+        }
+
+        boolean hasIntent = in.readBoolean();
+        if (hasIntent) {
+            String intentDescription = in.readUTF();
+            if (intentDescription != null) {
+                try {
+                    intent = Intent.parseUri(intentDescription, 0);
+                } catch (URISyntaxException e) {
+                    AppLog.d(e.getMessage());
+                }
+            }
+        }
+
+        boolean hasIconResource = in.readBoolean();
+        if (hasIconResource) {
+            String packageName = in.readUTF();
+            String resourceName = in.readUTF();
+            iconResource = new Intent.ShortcutIconResource();
+            iconResource.packageName = packageName;
+            iconResource.resourceName = resourceName;
+        }
+    }
+
     private Bitmap getIconByteArray(byte[] data) {
         try {
             return BitmapFactory.decodeByteArray(data, 0, data.length);
         } catch (Exception e) {
             return null;
         }
-    }	
+    }
 }

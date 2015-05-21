@@ -1,5 +1,9 @@
 package com.anod.car.home.prefs.colorpicker;
 
+import com.android.colorpicker.ColorStateDrawable;
+import com.anod.car.home.R;
+import com.anod.car.home.utils.ColorUtils;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -15,18 +19,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.android.colorpicker.ColorStateDrawable;
-import com.anod.car.home.R;
-import com.anod.car.home.utils.ColorUtils;
-
 /**
  * @author alex
  * @date 2014-12-17
  */
 public class HexPanel extends LinearLayout {
+
     private final ImageView mPreview;
+
     private boolean mHexVisible;
+
     private EditText mHexEdit;
+
     private boolean mAlphaSupport;
 
 
@@ -56,10 +60,12 @@ public class HexPanel extends LinearLayout {
         mAlphaSupport = alphaSupport;
         InputFilter filter0 = new InputFilter.LengthFilter((alphaSupport) ? 8 : 6);
         InputFilter filter1 = new InputFilter() {
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest,
+                    int dstart, int dend) {
                 for (int i = start; i < end; i++) {
                     char ch = source.charAt(i);
-                    if (Character.isDigit(ch) || (ch >= 'A' && ch <= 'F') || (ch >= 'a' && ch <= 'f')) {
+                    if (Character.isDigit(ch) || (ch >= 'A' && ch <= 'F') || (ch >= 'a'
+                            && ch <= 'f')) {
                         return null;
                     } else {
                         return "";
@@ -71,7 +77,7 @@ public class HexPanel extends LinearLayout {
 
         setColor(color);
 
-        mHexEdit.setFilters(new InputFilter[] { filter0, filter1 });
+        mHexEdit.setFilters(new InputFilter[]{filter0, filter1});
         mHexEdit.setVisibility(View.VISIBLE);
         mHexEdit.addTextChangedListener(new TextWatcher() {
             @Override

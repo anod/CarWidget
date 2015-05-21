@@ -5,6 +5,7 @@ package info.anodsplace.version;
  * @date 11/26/13
  */
 public interface Action {
-	void onUpgrade(int oldVersion, int newVersion);
+
+    void onUpgrade(int oldVersion, int newVersion);
 
 }

@@ -1,10 +1,10 @@
 package com.anod.car.home.prefs.lookandfeel;
 
+import com.anod.car.home.prefs.LookAndFeelActivity;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-
-import com.anod.car.home.prefs.LookAndFeelActivity;
 
 /**
  * @author alex
@@ -13,6 +13,7 @@ import com.anod.car.home.prefs.LookAndFeelActivity;
 public class SkinPagerAdapter extends FragmentPagerAdapter {
 
     private final int mCount;
+
     private final LookAndFeelActivity mActivity;
 
     public SkinPagerAdapter(LookAndFeelActivity fragment, int count, FragmentManager fm) {

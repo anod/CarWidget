@@ -11,8 +11,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 abstract public class ImageLoader {
+
     private MemoryCache mMemoryCache = new MemoryCache();
-    private Map<ImageView, String> mImageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
+
+    private Map<ImageView, String> mImageViews = Collections
+            .synchronizedMap(new WeakHashMap<ImageView, String>());
+
     private ExecutorService mExecutorService;
 
     public ImageLoader() {
@@ -50,7 +54,9 @@ abstract public class ImageLoader {
 
     //Task for the queue
     private class PhotoToLoad {
+
         public String imgUID;
+
         public ImageView imageView;
 
         public PhotoToLoad(String u, ImageView i) {
@@ -60,6 +66,7 @@ abstract public class ImageLoader {
     }
 
     class PhotosLoader implements Runnable {
+
         PhotoToLoad mPhotoToLoad;
 
         PhotosLoader(PhotoToLoad photoToLoad) {
@@ -96,7 +103,9 @@ abstract public class ImageLoader {
 
     //Used to display mBitmap in the UI thread
     class BitmapDisplayer implements Runnable {
+
         Bitmap mBitmap;
+
         PhotoToLoad mPhotoToLoad;
 
         public BitmapDisplayer(Bitmap b, PhotoToLoad p) {
@@ -105,8 +114,9 @@ abstract public class ImageLoader {
         }
 
         public void run() {
-            if (imageViewReused(mPhotoToLoad))
+            if (imageViewReused(mPhotoToLoad)) {
                 return;
+            }
             if (mBitmap != null) {
                 mPhotoToLoad.imageView.setImageBitmap(mBitmap);
             }

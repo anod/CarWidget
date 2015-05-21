@@ -1,13 +1,14 @@
 package com.anod.car.home;
 
+import com.anod.car.home.prefs.preferences.AppTheme;
+
 import android.app.Application;
 import android.content.Context;
 
-import com.anod.car.home.model.AppsList;
-import com.anod.car.home.prefs.preferences.AppTheme;
-
 public class CarWidgetApplication extends Application {
+
     private int mThemeIdx;
+
     private ObjectGraph mObjectGraph;
 
     public static CarWidgetApplication get(Context context) {
@@ -28,7 +29,6 @@ public class CarWidgetApplication extends Application {
     public ObjectGraph getObjectGraph() {
         return mObjectGraph;
     }
-
 
 
     public int getThemeIdx() {

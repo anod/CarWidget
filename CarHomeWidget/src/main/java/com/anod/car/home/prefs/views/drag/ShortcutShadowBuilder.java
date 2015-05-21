@@ -1,11 +1,11 @@
 package com.anod.car.home.prefs.views.drag;
 
+import com.anod.car.home.R;
+
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.view.View;
-
-import com.anod.car.home.R;
 
 /**
  * @author alex
@@ -13,6 +13,7 @@ import com.anod.car.home.R;
  */
 @SuppressLint("NewApi")
 public class ShortcutShadowBuilder extends View.DragShadowBuilder {
+
     private final int mColorDragBg;
     // Defines the constructor for myDragShadowBuilder
 

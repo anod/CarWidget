@@ -6,33 +6,35 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public class InCarBackup implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-	private HashMap<Integer,ShortcutInfo> notificationShortcuts;
-	private InCar inCar;
-	
-	public InCarBackup(HashMap<Integer, ShortcutInfo> shortcuts, InCar inCar) {
-		this.notificationShortcuts = shortcuts;
-		this.inCar = inCar;
-	}
-	
-	public HashMap<Integer, ShortcutInfo> getNotificationShortcuts() {
-		return notificationShortcuts;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public void setNotificationShortcuts(HashMap<Integer, ShortcutInfo> shortcuts) {
-		this.notificationShortcuts = shortcuts;
-	}
+    private HashMap<Integer, ShortcutInfo> notificationShortcuts;
 
-	public InCar getInCar() {
-		return inCar;
-	}
+    private InCar inCar;
 
-	public void setInCar(InCar inCar) {
-		this.inCar = inCar;
-	}
+    public InCarBackup(HashMap<Integer, ShortcutInfo> shortcuts, InCar inCar) {
+        this.notificationShortcuts = shortcuts;
+        this.inCar = inCar;
+    }
+
+    public HashMap<Integer, ShortcutInfo> getNotificationShortcuts() {
+        return notificationShortcuts;
+    }
+
+    public void setNotificationShortcuts(HashMap<Integer, ShortcutInfo> shortcuts) {
+        this.notificationShortcuts = shortcuts;
+    }
+
+    public InCar getInCar() {
+        return inCar;
+    }
+
+    public void setInCar(InCar inCar) {
+        this.inCar = inCar;
+    }
 
 }

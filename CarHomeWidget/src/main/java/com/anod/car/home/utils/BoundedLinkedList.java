@@ -22,10 +22,8 @@ import java.util.LinkedList;
  * A {@link LinkedList} version with a maximum number of elements. When adding
  * elements to the end of the list, first elements in the list are discarded if
  * the maximum size is reached.
- * 
+ *
  * @author Kevin Gaudin
- * 
- * @param <E>
  */
 @SuppressWarnings("serial")
 public class BoundedLinkedList<E> extends LinkedList<E> {

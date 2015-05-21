@@ -1,20 +1,17 @@
 package com.anod.car.home.prefs.drag;
 
+import com.anod.car.home.R;
+import com.anod.car.home.utils.AppLog;
+
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.view.DragEvent;
-import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
-
-import com.anod.car.home.R;
-import com.anod.car.home.utils.AppLog;
 
 /**
  * @author alex
@@ -23,22 +20,31 @@ import com.anod.car.home.utils.AppLog;
 public class ShortcutDragListener implements View.OnDragListener {
 
     public static final String TAG_DELETE_SHORTCUT = "delete_shortcut";
+
     private final DropCallback mDropCallback;
+
     private final PorterDuffColorFilter mColorFilter;
+
     private final PorterDuffColorFilter mDeleteFilter;
+
     private final View mDeleteBackground;
 
 
     public interface DropCallback {
+
         public boolean onDelete(int srcCellId);
+
         public boolean onDrop(int srcCellId, int dstCellId);
+
         public void onDragFinish();
     }
 
-    public ShortcutDragListener(Activity activity,DropCallback dropCallback) {
+    public ShortcutDragListener(Activity activity, DropCallback dropCallback) {
         mDropCallback = dropCallback;
-        mColorFilter = new PorterDuffColorFilter(Color.argb(255, 100, 100, 100), PorterDuff.Mode.MULTIPLY);
-        mDeleteFilter = new PorterDuffColorFilter(Color.argb(255,100,0,0), PorterDuff.Mode.MULTIPLY);
+        mColorFilter = new PorterDuffColorFilter(Color.argb(255, 100, 100, 100),
+                PorterDuff.Mode.MULTIPLY);
+        mDeleteFilter = new PorterDuffColorFilter(Color.argb(255, 100, 0, 0),
+                PorterDuff.Mode.MULTIPLY);
 
         mDeleteBackground = activity.findViewById(R.id.drag_delete_bg);
     }
@@ -52,7 +58,7 @@ public class ShortcutDragListener implements View.OnDragListener {
         if (tag.equals(TAG_DELETE_SHORTCUT)) {
             result = handleDeleteShortcutEvent(view, dragEvent);
         } else {
-            result = handleShortcutEvent(view,dragEvent);
+            result = handleShortcutEvent(view, dragEvent);
         }
 
         if (dragEvent.getAction() == DragEvent.ACTION_DROP) {
@@ -73,7 +79,8 @@ public class ShortcutDragListener implements View.OnDragListener {
         switch (action) {
 
             case DragEvent.ACTION_DRAG_STARTED:
-                if (dragEvent.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+                if (dragEvent.getClipDescription()
+                        .hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
                     return true;
                 }
                 return false;
@@ -125,7 +132,9 @@ public class ShortcutDragListener implements View.OnDragListener {
                 return true;
 
             default:
-                AppLog.e("handleDeleteShortcutEvent: Unknown action type received by OnDragListener: "+action);
+                AppLog.e(
+                        "handleDeleteShortcutEvent: Unknown action type received by OnDragListener: "
+                                + action);
                 break;
         }
         return true;
@@ -142,7 +151,8 @@ public class ShortcutDragListener implements View.OnDragListener {
 
             case DragEvent.ACTION_DRAG_STARTED:
                 // Determines if this View can accept the dragged data
-                if (dragEvent.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+                if (dragEvent.getClipDescription()
+                        .hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
                     v.setColorFilter(mColorFilter);
                     v.invalidate();
                     // returns true to indicate that the View can accept the dragged data.
@@ -193,7 +203,8 @@ public class ShortcutDragListener implements View.OnDragListener {
 
             // An unknown action type was received.
             default:
-                AppLog.e("handleShortcutEvent: Unknown action type received by OnDragListener: " + action);
+                AppLog.e("handleShortcutEvent: Unknown action type received by OnDragListener: "
+                        + action);
                 break;
         }
         return true;

@@ -8,8 +8,8 @@ import com.anod.car.home.R;
  */
 public class HoloKeyguardProperties extends HoloProperties {
 
-	@Override
-	public int getLayout(int number) {
-		return R.layout.sk_holo_keyguard;
-	}
+    @Override
+    public int getLayout(int number) {
+        return R.layout.sk_holo_keyguard;
+    }
 }

@@ -19,29 +19,31 @@ import java.io.IOException;
 
 public class AcceptCallActivity extends Activity {
 
-     private static final String MANUFACTURER_HTC = "HTC";
+    private static final String MANUFACTURER_HTC = "HTC";
 
     public static final String EXTRA_ENABLE_SPEAKER = "extra_enable_speaker";
 
     private KeyguardManager keyguardManager;
-     private AudioManager mAudioManager;
-     private CallStateReceiver callStateReceiver;
+
+    private AudioManager mAudioManager;
+
+    private CallStateReceiver callStateReceiver;
 
     private boolean mEnableSpeaker;
 
     @Override
-     protected void onCreate(Bundle savedInstanceState) {
-         super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-         keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
-         if (savedInstanceState == null) {
-             mEnableSpeaker = getIntent().getBooleanExtra(EXTRA_ENABLE_SPEAKER, false);
-         } else {
-             mEnableSpeaker = savedInstanceState.getBoolean(EXTRA_ENABLE_SPEAKER);
-         }
-     }
+        if (savedInstanceState == null) {
+            mEnableSpeaker = getIntent().getBooleanExtra(EXTRA_ENABLE_SPEAKER, false);
+        } else {
+            mEnableSpeaker = savedInstanceState.getBoolean(EXTRA_ENABLE_SPEAKER);
+        }
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -50,102 +52,103 @@ public class AcceptCallActivity extends Activity {
     }
 
     @Override
-     protected void onResume() {
-         super.onResume();
+    protected void onResume() {
+        super.onResume();
 
-         registerCallStateReceiver();
-         updateWindowFlags();
-         acceptCall();
+        registerCallStateReceiver();
+        updateWindowFlags();
+        acceptCall();
 
         if (mEnableSpeaker && !mAudioManager.isSpeakerphoneOn()) {
             AppLog.d("Enable speakerphone in AcceptCallActivity");
             mAudioManager.setSpeakerphoneOn(true);
         }
-     }
+    }
 
-     @Override
-     protected void onPause() {
-         super.onPause();
+    @Override
+    protected void onPause() {
+        super.onPause();
 
-         if (callStateReceiver != null) {
-              unregisterReceiver(callStateReceiver);
-              callStateReceiver = null;
-         }
-     }
+        if (callStateReceiver != null) {
+            unregisterReceiver(callStateReceiver);
+            callStateReceiver = null;
+        }
+    }
 
-     private void registerCallStateReceiver() {
-         callStateReceiver = new CallStateReceiver();
-         IntentFilter intentFilter = new IntentFilter();
-         intentFilter.addAction(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
-         registerReceiver(callStateReceiver, intentFilter);
-     }
+    private void registerCallStateReceiver() {
+        callStateReceiver = new CallStateReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
+        registerReceiver(callStateReceiver, intentFilter);
+    }
 
-     private void updateWindowFlags() {
-         if (keyguardManager.inKeyguardRestrictedInputMode()) {
-              getWindow().addFlags(
-                       WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
-                                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-         } else {
-              getWindow().clearFlags(
-                       WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
-                                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-         }
-     }
+    private void updateWindowFlags() {
+        if (keyguardManager.inKeyguardRestrictedInputMode()) {
+            getWindow().addFlags(
+                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        } else {
+            getWindow().clearFlags(
+                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
+                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        }
+    }
 
-     private void acceptCall() {
+    private void acceptCall() {
 
-         // for HTC devices we need to broadcast a connected headset
-         boolean broadcastConnected = MANUFACTURER_HTC.equalsIgnoreCase(Build.MANUFACTURER)
-                  && !mAudioManager.isWiredHeadsetOn();
+        // for HTC devices we need to broadcast a connected headset
+        boolean broadcastConnected = MANUFACTURER_HTC.equalsIgnoreCase(Build.MANUFACTURER)
+                && !mAudioManager.isWiredHeadsetOn();
 
-         if (broadcastConnected) {
-              broadcastHeadsetConnected(false);
-         }
+        if (broadcastConnected) {
+            broadcastHeadsetConnected(false);
+        }
 
-         try {
-              try {
-                  AppLog.d("execute input keycode headset hook");
-                  Runtime.getRuntime().exec("input keyevent " +
-                           Integer.toString(KeyEvent.KEYCODE_HEADSETHOOK));
+        try {
+            try {
+                AppLog.d("execute input keycode headset hook");
+                Runtime.getRuntime().exec("input keyevent " +
+                        Integer.toString(KeyEvent.KEYCODE_HEADSETHOOK));
 
-              } catch (IOException e) {
-                  // Runtime.exec(String) had an I/O problem, try to fall back
-                  AppLog.d("send keycode headset hook intents");
-                  String enforcedPerm = "android.permission.CALL_PRIVILEGED";
-                  Intent btnDown = new Intent(Intent.ACTION_MEDIA_BUTTON).putExtra(
-                           Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN,
-                                    KeyEvent.KEYCODE_HEADSETHOOK));
-                  Intent btnUp = new Intent(Intent.ACTION_MEDIA_BUTTON).putExtra(
-                           Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP,
-                                    KeyEvent.KEYCODE_HEADSETHOOK));
+            } catch (IOException e) {
+                // Runtime.exec(String) had an I/O problem, try to fall back
+                AppLog.d("send keycode headset hook intents");
+                String enforcedPerm = "android.permission.CALL_PRIVILEGED";
+                Intent btnDown = new Intent(Intent.ACTION_MEDIA_BUTTON).putExtra(
+                        Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN,
+                                KeyEvent.KEYCODE_HEADSETHOOK));
+                Intent btnUp = new Intent(Intent.ACTION_MEDIA_BUTTON).putExtra(
+                        Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP,
+                                KeyEvent.KEYCODE_HEADSETHOOK));
 
-                  sendOrderedBroadcast(btnDown, enforcedPerm);
-                  sendOrderedBroadcast(btnUp, enforcedPerm);
-              }
-         } finally {
-              if (broadcastConnected) {
-                  broadcastHeadsetConnected(false);
-              }
-         }
-     }
+                sendOrderedBroadcast(btnDown, enforcedPerm);
+                sendOrderedBroadcast(btnUp, enforcedPerm);
+            }
+        } finally {
+            if (broadcastConnected) {
+                broadcastHeadsetConnected(false);
+            }
+        }
+    }
 
-     private void broadcastHeadsetConnected(boolean connected) {
-         Intent i = new Intent(Intent.ACTION_HEADSET_PLUG);
-         i.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY);
-         i.putExtra("state", connected ? 1 : 0);
-         i.putExtra("name", "mysms");
-         try {
-              sendOrderedBroadcast(i, null);
-         } catch (Exception e) {
-         }
-     }
+    private void broadcastHeadsetConnected(boolean connected) {
+        Intent i = new Intent(Intent.ACTION_HEADSET_PLUG);
+        i.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY);
+        i.putExtra("state", connected ? 1 : 0);
+        i.putExtra("name", "mysms");
+        try {
+            sendOrderedBroadcast(i, null);
+        } catch (Exception e) {
+        }
+    }
 
-     private class CallStateReceiver extends BroadcastReceiver {
-         @Override
-         public void onReceive(Context context, Intent intent) {
-              finish();
-         }
-     }
+    private class CallStateReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
+        }
+    }
 }
