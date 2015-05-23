@@ -54,6 +54,9 @@
         <item name="colorPrimary">@android:color/transparent</item>
     </style>
 
+    <style name="CrashReportDialog" parent="DialogTheme.Light">
+        <item name="android:background">@drawable/crash_dialog_bg</item>
+    </style>
 
 
 	<style name="AppPreference">

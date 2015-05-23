@@ -270,5 +270,9 @@
     <string name="unavailable_bt_device">Not available</string>
     <string name="hidden">Hidden</string>
     <string name="choose">Choose</string>
+	<string name="crash_dialog_text"> \n<b>Unfortunately, Car Widget has stopped.</b></string>
+	<string name="crash_dialog_report_button">Report</string>
+	<string name="crash_dialog_toast">Browser will be opened</string>
+	<string name="crash_dialog_comment">Provide a comment</string>
 
 </resources>

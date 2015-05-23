@@ -274,6 +274,12 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/BrightnessTheme">
         </activity>
+
+        <activity android:name="org.acra.CrashReportDialog"
+            android:theme="@style/CrashReportDialog"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
+            android:finishOnTaskLaunch="true" />
     </application>
 
 </manifest>

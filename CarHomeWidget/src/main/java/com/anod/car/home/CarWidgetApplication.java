@@ -1,10 +1,22 @@
 package com.anod.car.home;
 
+import com.anod.car.home.acra.BrowserUrlSender;
 import com.anod.car.home.prefs.preferences.AppTheme;
+
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
 
 import android.app.Application;
 import android.content.Context;
 
+@ReportsCrashes(
+    mode = ReportingInteractionMode.DIALOG,
+    resDialogText = R.string.crash_dialog_text,
+    resDialogPositiveButtonText = R.string.crash_dialog_report_button,
+    resDialogOkToast = R.string.crash_dialog_toast,
+    resDialogCommentPrompt = R.string.crash_dialog_comment
+)
 public class CarWidgetApplication extends Application {
 
     private int mThemeIdx;
@@ -17,10 +29,10 @@ public class CarWidgetApplication extends Application {
 
     @Override
     public void onCreate() {
+        ACRA.init(this);
+        BrowserUrlSender yourSender = new BrowserUrlSender();
+        ACRA.getErrorReporter().setReportSender(yourSender);
         super.onCreate();
-
-        // The following line triggers the initialization of ACRA
-        //ACRA.init(this);
 
         mThemeIdx = AppTheme.getTheme(this);
         mObjectGraph = new ObjectGraph(this);
