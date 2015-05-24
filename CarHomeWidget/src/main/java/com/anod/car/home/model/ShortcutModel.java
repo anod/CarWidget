@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import java.net.URISyntaxException;
 
@@ -52,7 +53,9 @@ public class ShortcutModel {
             c.moveToFirst();
             Intent intent;
             String intentDescription = c.getString(intentIndex);
-            try {
+            if (TextUtils.isEmpty(intentDescription)) {
+                return null;
+            }            try {
                 intent = Intent.parseUri(intentDescription, 0);
             } catch (URISyntaxException e) {
                 c.close();

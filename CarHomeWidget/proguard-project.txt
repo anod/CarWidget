@@ -1,4 +1,7 @@
 
+# Keep line numbers for stack trace
+-keepattributes SourceFile,LineNumberTable
+
 -keep class * implements java.io.Serializable { *; }
 
 -keepnames class * implements java.io.Serializable

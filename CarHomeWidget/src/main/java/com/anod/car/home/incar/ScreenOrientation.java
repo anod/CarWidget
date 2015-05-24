@@ -48,6 +48,7 @@ public class ScreenOrientation {
         mLayoutParams = createLayoutParams();
 
         mLayoutParams.screenOrientation = orientation;
+
         if (mViewAdded) {
             mWindowManager.updateViewLayout(this.mOverlayView, this.mLayoutParams);
             return;
