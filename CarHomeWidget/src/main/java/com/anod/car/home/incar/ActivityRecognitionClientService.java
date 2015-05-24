@@ -81,9 +81,12 @@ public class ActivityRecognitionClientService extends StoppableService
 
     private void detachActivityRecognitionClient() {
         if (mGoogleApiClient != null) {
-            ActivityRecognition.ActivityRecognitionApi
-                    .removeActivityUpdates(mGoogleApiClient, getActivityRecognitionPendingIntent());
-            mGoogleApiClient.disconnect();
+            if (mGoogleApiClient.isConnected()) {
+                ActivityRecognition.ActivityRecognitionApi
+                        .removeActivityUpdates(mGoogleApiClient,
+                                getActivityRecognitionPendingIntent());
+                mGoogleApiClient.disconnect();
+            }
             mGoogleApiClient = null;
         }
     }
@@ -93,6 +96,11 @@ public class ActivityRecognitionClientService extends StoppableService
         if (BuildConfig.DEBUG) {
             Toast.makeText(this, "GoogleApiClient Connected", Toast.LENGTH_SHORT).show();
             AppLog.d("GoogleApiClient: Connected");
+        }
+
+        if (mGoogleApiClient == null) {
+            AppLog.d("GoogleApiClient: is null");
+            return;
         }
 
         ActivityRecognition.ActivityRecognitionApi

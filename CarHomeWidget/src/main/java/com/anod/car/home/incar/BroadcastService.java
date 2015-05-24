@@ -1,5 +1,6 @@
 package com.anod.car.home.incar;
 
+import com.anod.car.home.app.StoppableService;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
@@ -10,7 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 
-public class BroadcastService extends Service {
+public class BroadcastService extends StoppableService {
 
     private static boolean sRegistered;
 
@@ -21,12 +22,13 @@ public class BroadcastService extends Service {
 
     public static void stopService(Context context) {
         final Intent receiverIntent = new Intent(context.getApplicationContext(), BroadcastService.class);
-        context.stopService(receiverIntent);
+        fillStopIntent(receiverIntent);
+        context.startService(receiverIntent);
     }
 
     @Override
+
     public void onDestroy() {
-        unregister(this);
         super.onDestroy();
     }
 
@@ -35,11 +37,14 @@ public class BroadcastService extends Service {
         return null;
     }
 
+    @Override
+    protected void onAfterStart(Intent intent) {
+        register(this);
+    }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        register(this);
-        return super.onStartCommand(intent, flags, startId);
+    protected void onBeforeStop(Intent intent) {
+        unregister(this);
     }
 
     private void register(Context context) {
@@ -49,6 +54,7 @@ public class BroadcastService extends Service {
             InCar prefs = PreferencesStorage.loadInCar(context);
 
             if (prefs.isActivityRequired()) {
+                AppLog.d("ActivityRecognitionClientService started");
                 ActivityRecognitionClientService.startService(context);
             }
 
@@ -76,7 +82,11 @@ public class BroadcastService extends Service {
             context.unregisterReceiver(receiver);
         }
         sRegistered = false;
-        ActivityRecognitionClientService.stopService(context);
+        InCar prefs = PreferencesStorage.loadInCar(context);
+
+        if (!prefs.isActivityRequired()) {
+            ActivityRecognitionClientService.stopService(context);
+        }
     }
 
 
