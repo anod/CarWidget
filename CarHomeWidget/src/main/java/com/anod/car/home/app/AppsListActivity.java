@@ -10,7 +10,6 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 
@@ -20,7 +19,7 @@ import java.util.ArrayList;
  * @author alex
  * @date 2014-09-02
  */
-abstract public class AppsListActivity extends ActionBarListActivity
+abstract public class AppsListActivity extends AppCompatListActivity
         implements AdapterView.OnItemClickListener,
         LoaderManager.LoaderCallbacks<ArrayList<AppsList.Entry>> {
 
@@ -50,9 +49,6 @@ abstract public class AppsListActivity extends ActionBarListActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!isShowTitle()) {
-            supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.apps_list);
         getListView().setOnItemClickListener(this);
@@ -122,5 +118,11 @@ abstract public class AppsListActivity extends ActionBarListActivity
     @Override
     public void onLoaderReset(Loader<ArrayList<AppsList.Entry>> loader) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(Activity.RESULT_CANCELED);
+        finish();
     }
 }

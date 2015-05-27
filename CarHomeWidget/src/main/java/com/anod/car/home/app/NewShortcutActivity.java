@@ -23,6 +23,7 @@ public class NewShortcutActivity extends Activity implements ShortcutPicker.Hand
 
     private ShortcutPicker mShortcutPicker;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -52,6 +53,11 @@ public class NewShortcutActivity extends Activity implements ShortcutPicker.Hand
         mShortcutPicker.onRestoreInstanceState(savedInstanceState);
 
         mShortcutPicker.showActivityPicker(cellId);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override

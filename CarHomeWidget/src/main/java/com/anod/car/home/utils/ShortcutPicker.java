@@ -60,8 +60,8 @@ public class ShortcutPicker {
     }
 
     public void showEditActivity(int cellId, long shortcutId, int appWidgetId) {
-        Intent editIntent = IntentUtils
-                .createShortcutEditIntent(mContext, cellId, shortcutId, appWidgetId);
+        Intent editIntent = IntentUtils.createShortcutEditIntent(mContext, cellId, shortcutId,
+                appWidgetId);
         startActivityForResultSafely(editIntent, REQUEST_EDIT_SHORTCUT);
     }
 
@@ -74,20 +74,20 @@ public class ShortcutPicker {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_PICK_APPLICATION:
-                    completeAddShortcut(data, true);
-                    return true;
+                    return completeAddShortcut(data, true);
                 case REQUEST_CREATE_SHORTCUT:
-                    completeAddShortcut(data, false);
-                    return true;
+                    return completeAddShortcut(data, false);
                 case REQUEST_EDIT_SHORTCUT:
-                    completeEditShortcut(data);
-                    return true;
+                    return completeEditShortcut(data);
                 case REQUEST_PICK_SHORTCUT:
-                    pickShortcut(data);
-                    return true;
+                    return pickShortcut(data);
                 default:
             }
         }
+        return false;
+    }
+
+    public boolean isResultPending() {
         return false;
     }
 
@@ -119,7 +119,7 @@ public class ShortcutPicker {
         return pickIntent;
     }
 
-    private void pickShortcut(Intent intent) {
+    private boolean pickShortcut(Intent intent) {
         // Handle case where user selected "Applications"
         String applicationName = mContext.getString(R.string.applications);
         String shortcutsName = mContext.getString(R.string.car_widget_shortcuts);
@@ -135,6 +135,7 @@ public class ShortcutPicker {
         } else {
             startActivityForResultSafely(intent, REQUEST_CREATE_SHORTCUT);
         }
+        return true;
     }
 
     private void startActivityForResultSafely(Intent intent, int requestCode) {
@@ -162,18 +163,19 @@ public class ShortcutPicker {
         }
     }
 
-    private void completeAddShortcut(Intent data, boolean isApplicationShortcut) {
+    private boolean completeAddShortcut(Intent data, boolean isApplicationShortcut) {
         if (mCurrentCellId == INVALID_CELL_ID || data == null) {
-            return;
+            return false;
         }
 
         final ShortcutInfo info = mModel
                 .saveShortcutIntent(mCurrentCellId, data, isApplicationShortcut);
         mHandler.onAddShortcut(mCurrentCellId, info);
         mCurrentCellId = INVALID_CELL_ID;
+        return true;
     }
 
-    private void completeEditShortcut(Intent data) {
+    private boolean completeEditShortcut(Intent data) {
         int cellId = data.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, INVALID_CELL_ID);
         long shortcutId = data
                 .getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);
@@ -181,5 +183,6 @@ public class ShortcutPicker {
             mModel.reloadShortcut(cellId, shortcutId);
             mHandler.onEditComplete(cellId);
         }
+        return false;
     }
 }

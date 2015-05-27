@@ -1,7 +1,7 @@
 package com.anod.car.home.prefs.lookandfeel;
 
 import com.anod.car.home.R;
-import com.anod.car.home.app.ActionBarListActivity;
+import com.anod.car.home.app.AppCompatListActivity;
 import com.anod.car.home.appwidget.WidgetButtonViewBuilder;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
  * @author alex
  * @date 2015-01-18
  */
-public class WidgetButtonChoiceActivity extends ActionBarListActivity {
+public class WidgetButtonChoiceActivity extends AppCompatListActivity {
 
     public static final String EXTRA_SKIN = "skin";
 

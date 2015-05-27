@@ -2,9 +2,12 @@ package com.anod.car.home.app;
 
 import com.anod.car.home.R;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -14,7 +17,7 @@ import android.widget.ListView;
  * @author alex
  * @date 11/19/13
  */
-public abstract class ActionBarListActivity extends ActionBarActivity {
+public abstract class AppCompatListActivity extends AppCompatActivity {
 
     /**
      * This field should be made private, so it is hidden from the SDK.
@@ -38,6 +41,13 @@ public abstract class ActionBarListActivity extends ActionBarActivity {
         }
     };
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.list_content);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+    }
     /**
      * This method will be called when an item in the list is selected.
      * Subclasses should override. Subclasses can call
@@ -75,7 +85,7 @@ public abstract class ActionBarListActivity extends ActionBarActivity {
      * content changes.
      */
     @Override
-    public void onSupportContentChanged() {
+    public void onContentChanged() {
         View emptyView = findViewById(android.R.id.empty);
         mList = (ListView) findViewById(android.R.id.list);
         if (mList == null) {
@@ -148,8 +158,6 @@ public abstract class ActionBarListActivity extends ActionBarActivity {
         if (mList != null) {
             return;
         }
-        setContentView(R.layout.list_content);
-
     }
 
     private AdapterView.OnItemClickListener mOnClickListener
