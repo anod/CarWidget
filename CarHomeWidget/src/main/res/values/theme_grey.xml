@@ -27,6 +27,11 @@
 
 	</style>
 
+	<style name="AppThemeGray.NoActionBar" parent="AppThemeGray" >
+		<item name="windowActionBar">false</item>
+		<item name="windowNoTitle">true</item>
+	</style>
+
 	<style name="AppThemeGray.Transparent" parent="AppThemeGray">
 		<item name="android:windowBackground">@android:color/transparent</item>
 		<item name="android:windowShowWallpaper">true</item>

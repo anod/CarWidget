@@ -15,13 +15,15 @@ abstract public class CarWidgetActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         int theme = getApp().getThemeIdx();
-        int themeRes = (isTransparentAppTheme()) ? AppTheme.getTransparentResource(theme)
-                : AppTheme.getMainResource(theme);
-        setTheme(themeRes);
+        setTheme(getAppThemeRes(theme));
 
         super.onCreate(savedInstanceState);
 
-        //
+    }
+
+    protected int getAppThemeRes(int theme) {
+        return (isTransparentAppTheme()) ? AppTheme.getTransparentResource(theme)
+                : AppTheme.getMainResource(theme);
     }
 
     protected boolean isTransparentAppTheme() {
