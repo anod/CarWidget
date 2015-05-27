@@ -214,7 +214,7 @@ public class UtilitiesBitmap {
             int bitmapSize;
             if (size == SIZE_MAX && (width >= sIconMaxScale || height >= sIconMaxScale)) {
                 bitmapSize = sIconMaxScale;
-            } else if (size == SIZE_ICON && (width >= sIconSize && height >= sIconSize)) {
+            } else if (size == SIZE_ICON && (width >= sIconSize || height >= sIconSize)) {
                 bitmapSize = sIconSize;
             } else {
                 bitmapSize = sIconSystem;
