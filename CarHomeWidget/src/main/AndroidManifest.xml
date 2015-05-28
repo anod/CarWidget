@@ -275,7 +275,7 @@
             android:theme="@style/BrightnessTheme">
         </activity>
 
-        <activity android:name="org.acra.CrashReportDialog"
+        <activity android:name=".acra.CrashDialog"
             android:theme="@style/CrashReportDialog"
             android:launchMode="singleInstance"
             android:excludeFromRecents="true"

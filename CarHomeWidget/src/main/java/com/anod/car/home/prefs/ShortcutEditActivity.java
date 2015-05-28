@@ -20,6 +20,7 @@ import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -34,7 +35,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -53,7 +54,17 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class ShortcutEditActivity extends ActionBarActivity {
+public class ShortcutEditActivity extends AppCompatActivity {
+
+    public static Intent createIntent(Context context, int cellId, long shortcutId,
+            int appWidgetId) {
+        Intent editIntent = new Intent(context, ShortcutEditActivity.class);
+        editIntent.putExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, shortcutId);
+        editIntent.putExtra(ShortcutEditActivity.EXTRA_CELL_ID, cellId);
+        editIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        editIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return editIntent;
+    }
 
     private static final String MIME_IMAGE = "image/*";
 

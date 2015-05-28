@@ -67,12 +67,10 @@ public class SkinPreviewFragment extends Fragment
         super.onAttach(activity);
         mPosition = getArguments().getInt(ARG_POSITION);
         mActivity = (LookAndFeelActivity) activity;
-        mActivity.onFragmentAttach(this, mPosition);
     }
 
     @Override
     public void onDetach() {
-        mActivity.onFragmentDetach(mPosition);
         super.onDetach();
     }
 
@@ -137,7 +135,6 @@ public class SkinPreviewFragment extends Fragment
 
         mContainer.addView(inflatedView);
         mContainer.invalidate();
-        //mContainer.requestLayout();
     }
 
 

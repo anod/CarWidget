@@ -1,6 +1,7 @@
 package com.anod.car.home;
 
 import com.anod.car.home.acra.BrowserUrlSender;
+import com.anod.car.home.acra.CrashDialog;
 import com.anod.car.home.prefs.preferences.AppTheme;
 
 import org.acra.ACRA;
@@ -11,11 +12,13 @@ import android.app.Application;
 import android.content.Context;
 
 @ReportsCrashes(
+    mailTo="alex.gavrishev@gmail.com",
     mode = ReportingInteractionMode.DIALOG,
     resDialogText = R.string.crash_dialog_text,
     resDialogPositiveButtonText = R.string.crash_dialog_report_button,
     resDialogOkToast = R.string.crash_dialog_toast,
-    resDialogCommentPrompt = R.string.crash_dialog_comment
+    resDialogCommentPrompt = R.string.crash_dialog_comment,
+    reportDialogClass = CrashDialog.class
 )
 public class CarWidgetApplication extends Application {
 

@@ -60,7 +60,7 @@ public class ShortcutPicker {
     }
 
     public void showEditActivity(int cellId, long shortcutId, int appWidgetId) {
-        Intent editIntent = IntentUtils.createShortcutEditIntent(mContext, cellId, shortcutId,
+        Intent editIntent = ShortcutEditActivity.createIntent(mContext, cellId, shortcutId,
                 appWidgetId);
         startActivityForResultSafely(editIntent, REQUEST_EDIT_SHORTCUT);
     }

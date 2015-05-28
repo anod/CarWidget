@@ -63,11 +63,6 @@ public class LookAndFeelActivity extends CarWidgetActivity
 
     private Main mPrefs;
 
-    private final SparseArray<SkinRefreshListener> mSkinRefreshListeners
-            = new SparseArray<SkinRefreshListener>(SKINS_COUNT);
-
-    private boolean mPendingRefresh;
-
     private SkinList mSkinList;
 
     private LruCache<String, Bitmap> mBitmapMemoryCache;
@@ -88,6 +83,8 @@ public class LookAndFeelActivity extends CarWidgetActivity
     private WidgetShortcutsModel mModel;
 
     private ShortcutDragListener mDragListener;
+
+    private SkinPagerAdapter mAdapter;
 
     public SkinList.Item getCurrentSkinItem() {
         return getSkinItem(mCurrentPage);
@@ -194,8 +191,8 @@ public class LookAndFeelActivity extends CarWidgetActivity
 
         mDragListener = new ShortcutDragListener(this, this);
 
-        SkinPagerAdapter adapter = new SkinPagerAdapter(this, count, getSupportFragmentManager());
-        mGallery.setAdapter(adapter);
+        mAdapter = new SkinPagerAdapter(this, count, getSupportFragmentManager());
+        mGallery.setAdapter(mAdapter);
         mGallery.setCurrentItem(mCurrentPage);
 
         mBitmapMemoryCache = createBitmapMemoryCache();
@@ -241,7 +238,9 @@ public class LookAndFeelActivity extends CarWidgetActivity
     @Override
     public void onResume() {
         super.onResume();
+        AppLog.d("LookAndFeel::onResume");
         mModel.init();
+        mBitmapMemoryCache.evictAll();
         refreshSkinPreview();
         mDrawer.refresh();
     }
@@ -328,21 +327,8 @@ public class LookAndFeelActivity extends CarWidgetActivity
                 .reloadShortcuts()
                 .reloadPrefs()
                 .getPrefs();
-        if (mPreviewInitialized[mCurrentPage]) {
-            mPendingRefresh = false;
-            for (int i = 0; i < mSkinRefreshListeners.size(); i++) {
-                SkinRefreshListener listener = mSkinRefreshListeners.valueAt(i);
-                if (listener != null) {
-                    listener.refresh();
-                    AppLog.d("Call refresh on listener for page: " + i);
-                } else {
-                    if (i == mCurrentPage) {
-                        mPendingRefresh = true;
-                        AppLog.d("No listener for current page, set pending flag");
-                    }
-                }
-            }
-        }
+
+        mAdapter.notifyDataSetChanged();
     }
 
     public int getAppWidgetId() {
@@ -373,27 +359,13 @@ public class LookAndFeelActivity extends CarWidgetActivity
     @Override
     public PendingIntent createShortcut(Intent intent, int appWidgetId, int position,
             long shortcutId) {
-        Intent editIntent = IntentUtils
-                .createShortcutEditIntent(mContext, position, shortcutId, appWidgetId);
+        Intent editIntent = ShortcutEditActivity
+                .createIntent(mContext, position, shortcutId, appWidgetId);
         String path = appWidgetId + "/" + position;
         Uri data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"), path);
         editIntent.setData(data);
         return PendingIntent
                 .getActivity(mContext, 0, editIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    public void onFragmentAttach(SkinRefreshListener listener, int position) {
-        AppLog.d("Register listener for page: " + position);
-        mSkinRefreshListeners.put(position, listener);
-        if (mPendingRefresh && mCurrentPage == position) {
-            AppLog.d("Pending refresh");
-            listener.refresh();
-        }
-    }
-
-    public void onFragmentDetach(int position) {
-        AppLog.d("UnRegister listener for page: " + position);
-        mSkinRefreshListeners.delete(position);
     }
 
     public void onPreviewStart(int position) {

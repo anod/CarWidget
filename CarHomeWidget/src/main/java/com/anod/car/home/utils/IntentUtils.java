@@ -62,16 +62,6 @@ public class IntentUtils {
         return !list.isEmpty();
     }
 
-    public static Intent createShortcutEditIntent(Context context, int cellId, long shortcutId,
-            int appWidgetId) {
-        Intent editIntent = new Intent(context, ShortcutEditActivity.class);
-        editIntent.putExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, shortcutId);
-        editIntent.putExtra(ShortcutEditActivity.EXTRA_CELL_ID, cellId);
-        editIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        editIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        return editIntent;
-    }
-
 
     public static Intent createProVersionIntent() {
         String url = DETAIL_MARKET_URL;

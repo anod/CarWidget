@@ -22,6 +22,10 @@ public class SkinPagerAdapter extends FragmentPagerAdapter {
         mActivity = fragment;
     }
 
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
     @Override
     public int getCount() {
         return mCount;
