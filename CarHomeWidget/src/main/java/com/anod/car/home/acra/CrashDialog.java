@@ -1,19 +1,20 @@
 package com.anod.car.home.acra;
 
+import com.anod.car.home.R;
+
 import org.acra.ACRA;
 import org.acra.BaseCrashReportDialog;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputType;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * @author alex
@@ -22,10 +23,9 @@ import android.widget.TextView;
 public class CrashDialog extends BaseCrashReportDialog implements DialogInterface.OnClickListener,
         DialogInterface.OnDismissListener {
 
-    private static final String STATE_EMAIL = "email";
     private static final String STATE_COMMENT = "comment";
-    private EditText userCommentView;
-    private EditText userEmailView;
+    @InjectView(android.R.id.edit)
+    EditText mUserCommentView;
 
     AlertDialog mDialog;
 
@@ -34,17 +34,10 @@ public class CrashDialog extends BaseCrashReportDialog implements DialogInterfac
         super.onCreate(savedInstanceState);
 
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        final int titleResourceId = ACRA.getConfig().resDialogTitle();
-        if (titleResourceId != 0) {
-            dialogBuilder.setTitle(titleResourceId);
-        }
-        final int iconResourceId = ACRA.getConfig().resDialogIcon();
-        if (iconResourceId != 0) {
-            dialogBuilder.setIcon(iconResourceId);
-        }
+
         dialogBuilder.setView(buildCustomView(savedInstanceState));
-        dialogBuilder.setPositiveButton(getText(ACRA.getConfig().resDialogPositiveButtonText()), CrashDialog.this);
-        dialogBuilder.setNegativeButton(getText(ACRA.getConfig().resDialogNegativeButtonText()), CrashDialog.this);
+        dialogBuilder.setPositiveButton(R.string.crash_dialog_report_button, this);
+        dialogBuilder.setNegativeButton(android.R.string.cancel, this);
 
         mDialog = dialogBuilder.create();
         mDialog.setCanceledOnTouchOutside(false);
@@ -53,71 +46,15 @@ public class CrashDialog extends BaseCrashReportDialog implements DialogInterfac
     }
 
     protected View buildCustomView(Bundle savedInstanceState) {
-        final LinearLayout root = new LinearLayout(this);
-        root.setOrientation(LinearLayout.VERTICAL);
-        root.setPadding(10, 10, 10, 10);
-        root.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        root.setFocusable(true);
-        root.setFocusableInTouchMode(true);
 
-        final ScrollView scroll = new ScrollView(this);
-        root.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f));
-        final LinearLayout scrollable = new LinearLayout(this);
-        scrollable.setOrientation(LinearLayout.VERTICAL);
-        scroll.addView(scrollable);
+        View root = LayoutInflater.from(this).inflate(R.layout.dialog_crash_report, null, false);
+        ButterKnife.inject(this, root);
 
-        final TextView text = new TextView(this);
-        final int dialogTextId = ACRA.getConfig().resDialogText();
-        if (dialogTextId != 0) {
-            text.setText(getText(dialogTextId));
-        }
-        scrollable.addView(text);
-
-        // Add an optional prompt for user comments
-        final int commentPromptId = ACRA.getConfig().resDialogCommentPrompt();
-        if (commentPromptId != 0) {
-            final TextView label = new TextView(this);
-            label.setText(getText(commentPromptId));
-
-            label.setPadding(label.getPaddingLeft(), 10, label.getPaddingRight(), label.getPaddingBottom());
-            scrollable.addView(label, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
-
-            userCommentView = new EditText(this);
-            userCommentView.setLines(2);
-            if (savedInstanceState != null) {
-                String savedValue = savedInstanceState.getString(STATE_COMMENT);
-                if (savedValue != null) {
-                    userCommentView.setText(savedValue);
-                }
-            }
-            scrollable.addView(userCommentView);
-        }
-
-        // Add an optional user email field
-        final int emailPromptId = ACRA.getConfig().resDialogEmailPrompt();
-        if (emailPromptId != 0) {
-            final TextView label = new TextView(this);
-            label.setText(getText(emailPromptId));
-
-            label.setPadding(label.getPaddingLeft(), 10, label.getPaddingRight(), label.getPaddingBottom());
-            scrollable.addView(label);
-
-            userEmailView = new EditText(this);
-            userEmailView.setSingleLine();
-            userEmailView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-
-            String savedValue = null;
-            if (savedInstanceState != null) {
-                savedValue = savedInstanceState.getString(STATE_EMAIL);
-            }
+        if (savedInstanceState != null) {
+            String savedValue = savedInstanceState.getString(STATE_COMMENT);
             if (savedValue != null) {
-                userEmailView.setText(savedValue);
-            } else {
-                final SharedPreferences prefs = ACRA.getACRASharedPreferences();
-                userEmailView.setText(prefs.getString(ACRA.PREF_USER_EMAIL_ADDRESS, ""));
+                mUserCommentView.setText(savedValue);
             }
-            scrollable.addView(userEmailView);
         }
 
         return root;
@@ -127,19 +64,12 @@ public class CrashDialog extends BaseCrashReportDialog implements DialogInterfac
     public void onClick(DialogInterface dialog, int which) {
         if (which == DialogInterface.BUTTON_POSITIVE) {
             // Retrieve user comment
-            final String comment = userCommentView != null ? userCommentView.getText().toString() : "";
+            final String comment = mUserCommentView != null ? mUserCommentView.getText().toString() : "";
 
             // Store the user email
             final String userEmail;
             final SharedPreferences prefs = ACRA.getACRASharedPreferences();
-            if (userEmailView != null) {
-                userEmail = userEmailView.getText().toString();
-                final SharedPreferences.Editor prefEditor = prefs.edit();
-                prefEditor.putString(ACRA.PREF_USER_EMAIL_ADDRESS, userEmail);
-                prefEditor.commit();
-            } else {
-                userEmail = prefs.getString(ACRA.PREF_USER_EMAIL_ADDRESS, "");
-            }
+            userEmail = prefs.getString(ACRA.PREF_USER_EMAIL_ADDRESS, "");
             sendCrash(comment, userEmail);
         } else {
             cancelReports();
@@ -162,11 +92,8 @@ public class CrashDialog extends BaseCrashReportDialog implements DialogInterfac
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (userCommentView != null && userCommentView.getText() != null) {
-            outState.putString(STATE_COMMENT, userCommentView.getText().toString());
-        }
-        if (userEmailView != null && userEmailView.getText() != null) {
-            outState.putString(STATE_EMAIL, userEmailView.getText().toString());
+        if (mUserCommentView != null && mUserCommentView.getText() != null) {
+            outState.putString(STATE_COMMENT, mUserCommentView.getText().toString());
         }
     }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@android:id/text1"
+            style="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/crash_dialog_text" />
+
+        <EditText
+            android:id="@android:id/edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/crash_dialog_comment"
+            android:lines="2" />
+    </LinearLayout>
+</ScrollView>

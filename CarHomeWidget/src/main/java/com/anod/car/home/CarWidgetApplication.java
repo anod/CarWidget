@@ -15,9 +15,7 @@ import android.content.Context;
     mailTo="alex.gavrishev@gmail.com",
     mode = ReportingInteractionMode.DIALOG,
     resDialogText = R.string.crash_dialog_text,
-    resDialogPositiveButtonText = R.string.crash_dialog_report_button,
     resDialogOkToast = R.string.crash_dialog_toast,
-    resDialogCommentPrompt = R.string.crash_dialog_comment,
     reportDialogClass = CrashDialog.class
 )
 public class CarWidgetApplication extends Application {
@@ -39,6 +37,7 @@ public class CarWidgetApplication extends Application {
 
         mThemeIdx = AppTheme.getTheme(this);
         mObjectGraph = new ObjectGraph(this);
+
     }
 
     public ObjectGraph getObjectGraph() {
