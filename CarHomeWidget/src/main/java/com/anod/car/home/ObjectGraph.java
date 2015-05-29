@@ -1,6 +1,6 @@
 package com.anod.car.home;
 
-import com.anod.car.home.incar.Handler;
+import com.anod.car.home.incar.ModeHandler;
 import com.anod.car.home.incar.ModePhoneStateListener;
 import com.anod.car.home.incar.ScreenOrientation;
 import com.anod.car.home.model.AppsList;
@@ -57,8 +57,8 @@ public class ObjectGraph {
         return new ModePhoneStateListener(this.app, getAudioManager());
     }
 
-    public Handler getHandler() {
-        return new Handler(this.app, getScreenOrientation());
+    public ModeHandler getHandler() {
+        return new ModeHandler(this.app, getScreenOrientation());
     }
 
     public AppsList getAppListCache() {

@@ -35,7 +35,7 @@ public class ModeService extends Service {
 
     private ModePhoneStateListener mPhoneListener;
 
-    Handler mHandler;
+    ModeHandler mModeHandler;
 
     private boolean mForceState;
 
@@ -81,7 +81,7 @@ public class ModeService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        mHandler = CarWidgetApplication.provide(this).getHandler();
+        mModeHandler = CarWidgetApplication.provide(this).getHandler();
 
     }
 
@@ -93,7 +93,7 @@ public class ModeService extends Service {
         if (mForceState) {
             ModeDetector.forceState(prefs, false);
         }
-        ModeDetector.switchOff(prefs, mHandler);
+        ModeDetector.switchOff(prefs, mModeHandler);
         if (mPhoneListener != null) {
             detachPhoneListener();
         }
@@ -148,7 +148,7 @@ public class ModeService extends Service {
             ModeDetector.forceState(prefs, true);
         }
 
-        ModeDetector.switchOn(prefs, mHandler);
+        ModeDetector.switchOn(prefs, mModeHandler);
         initPhoneListener(prefs);
         requestWidgetsUpdate();
 

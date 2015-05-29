@@ -52,6 +52,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 
     private boolean mTrialMessageShown;
 
+
     @Override
     protected boolean isAppWidgetIdRequired() {
         return false;
@@ -134,7 +135,10 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
             }
         });
 
-        initTriggers(incar);
+        registerBroadcastServiceSwitchListener(PreferencesStorage.HEADSET_REQUIRED);
+        registerBroadcastServiceSwitchListener(PreferencesStorage.POWER_REQUIRED);
+        registerBroadcastServiceSwitchListener(PreferencesStorage.CAR_DOCK_REQUIRED);
+
         initAutorunApp(incar);
         initActivityRecognition();
         initScreenTimeout(incar);
@@ -147,19 +151,9 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
         initSamsungHandsfree();
     }
 
-    private void initTriggers(InCar incar) {
-        Preference headsetSwitch = findPreference(PreferencesStorage.HEADSET_REQUIRED);
-        headsetSwitch.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if ((Boolean) newValue) {
-                    BroadcastService.startService(mContext);
-                } else {
-                    BroadcastService.stopService(mContext);
-                }
-                return true;
-            }
-        });
+    private void registerBroadcastServiceSwitchListener(String key) {
+        Preference pref = findPreference(key);
+        pref.setOnPreferenceChangeListener(mBroadcastServiceSwitchListener);
     }
 
     private void initScreenTimeout(InCar incar) {
@@ -338,4 +332,20 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 
     }
 
+    private OnPreferenceChangeListener mBroadcastServiceSwitchListener = new OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            if ((Boolean) newValue || isBroadcastServiceRequired()) {
+                BroadcastService.startService(mContext);
+            } else {
+                BroadcastService.stopService(mContext);
+            }
+            return true;
+        }
+    };
+
+    private boolean isBroadcastServiceRequired() {
+        InCar incar = PreferencesStorage.loadInCar(mContext);
+        return BroadcastService.isServiceRequired(incar);
+    }
 }

@@ -5,18 +5,18 @@ import com.anod.car.home.prefs.preferences.AppTheme;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * @author alex
  * @date 11/20/13
  */
-abstract public class CarWidgetActivity extends ActionBarActivity {
+abstract public class CarWidgetActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         int theme = getApp().getThemeIdx();
         setTheme(getAppThemeRes(theme));
-
         super.onCreate(savedInstanceState);
 
     }

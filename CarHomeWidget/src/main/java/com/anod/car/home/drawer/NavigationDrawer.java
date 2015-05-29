@@ -5,6 +5,7 @@ import com.anod.car.home.R;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,7 +34,7 @@ public class NavigationDrawer {
     @InjectView(R.id.left_drawer)
     ListView mDrawerList;
 
-    public NavigationDrawer(final ActionBarActivity activity, int appWidgetId) {
+    public NavigationDrawer(final AppCompatActivity activity, int appWidgetId) {
         ButterKnife.inject(this, activity);
 
         mTitle = mDrawerTitle = activity.getTitle();

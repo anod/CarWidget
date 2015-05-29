@@ -38,6 +38,8 @@ public class ModeDetector {
 
     private static boolean sMode;
 
+    private static final Object sLock = new Object();
+
     public static boolean getEventState(int flag) {
         return sEventState[flag];
     }
@@ -46,12 +48,20 @@ public class ModeDetector {
         sEventState[FLAG_POWER] = PowerUtil.isConnected(context);
     }
 
-    private static void updatePrefState(InCar prefs) {
-        sPrefState[FLAG_POWER] = prefs.isPowerRequired();
-        sPrefState[FLAG_BLUETOOTH] = prefs.isBluetoothRequired();
-        sPrefState[FLAG_HEADSET] = prefs.isHeadsetRequired();
-        sPrefState[FLAG_ACTIVITY] = prefs.isActivityRequired();
-        sPrefState[FLAG_CAR_DOCK] = prefs.isCarDockRequired();
+    public static boolean[] getPrefState() {
+        synchronized (sLock) {
+            return sPrefState;
+        }
+    }
+
+    public static void updatePrefState(InCar prefs) {
+        synchronized (sLock) {
+            sPrefState[FLAG_POWER] = prefs.isPowerRequired();
+            sPrefState[FLAG_BLUETOOTH] = prefs.isBluetoothRequired();
+            sPrefState[FLAG_HEADSET] = prefs.isHeadsetRequired();
+            sPrefState[FLAG_ACTIVITY] = prefs.isActivityRequired();
+            sPrefState[FLAG_CAR_DOCK] = prefs.isCarDockRequired();
+        }
     }
 
     public static void forceState(InCar prefs, boolean forceMode) {
@@ -107,7 +117,7 @@ public class ModeDetector {
         boolean inCarEnabled = ModeService.sInCarMode && newMode;
         if (inCarEnabled && BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
             if (prefs.isAdjustVolumeLevel()) {
-                Handler.adjustVolume(prefs, context);
+                ModeHandler.adjustVolume(prefs, context);
             }
         }
     }
@@ -239,15 +249,15 @@ public class ModeDetector {
         ActivityRecognitionService.resetLastResult();
     }
 
-    public static void switchOn(InCar prefs, Handler handler) {
+    public static void switchOn(InCar prefs, ModeHandler modeHandler) {
         sMode = true;
-        handler.enable(prefs);
+        modeHandler.enable(prefs);
     }
 
-    public static void switchOff(InCar prefs, Handler handler) {
+    public static void switchOff(InCar prefs, ModeHandler modeHandler) {
         sMode = false;
         resetActivityState();
 
-        handler.disable(prefs);
+        modeHandler.disable(prefs);
     }
 }

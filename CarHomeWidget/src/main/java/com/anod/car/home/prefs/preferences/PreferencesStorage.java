@@ -137,7 +137,7 @@ public class PreferencesStorage {
 
     private static final String ICONS_DEF_VALUE = "5";
 
-    private static final String CAR_DOCK = "car-dock";
+    public static final String CAR_DOCK_REQUIRED = "car-dock";
 
 
     public static Main loadMain(Context context, int appWidgetId) {
@@ -242,7 +242,7 @@ public class PreferencesStorage {
         p.setAutoAnswer(prefs.getString(AUTO_ANSWER, InCar.AUTOANSWER_DISABLED));
 
         p.setActivityRequired(prefs.getBoolean(ACTIVITY_RECOGNITION, false));
-        p.setCarDockRequired(prefs.getBoolean(CAR_DOCK, false));
+        p.setCarDockRequired(prefs.getBoolean(CAR_DOCK_REQUIRED, false));
         String autorunAppString = prefs.getString(AUTORUN_APP, null);
 
         ComponentName autorunApp = null;

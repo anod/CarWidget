@@ -37,8 +37,7 @@ public class ConfigurationActivity extends CarWidgetActivity
     }
 
     public interface onActivityResultListener {
-
-        public void onActivityResult(int requestCode, int resultCode, Intent data);
+        void onActivityResult(int requestCode, int resultCode, Intent data);
     }
 
     public static Intent createFragmentIntent(Context context, Class<?> fragment) {

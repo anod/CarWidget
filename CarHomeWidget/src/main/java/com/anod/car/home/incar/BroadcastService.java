@@ -51,16 +51,14 @@ public class BroadcastService extends StoppableService {
         AppLog.d("BroadcastService::register");
         if (!sRegistered) {
 
+            ModeDetector.onRegister(context);
             InCar prefs = PreferencesStorage.loadInCar(context);
-
             if (prefs.isActivityRequired()) {
                 AppLog.d("ActivityRecognitionClientService started");
                 ActivityRecognitionClientService.startService(context);
             }
 
-            ModeDetector.onRegister(context);
-
-            if (!prefs.isHeadsetRequired()) {
+            if (!isServiceRequired(prefs)) {
                 AppLog.d("Broadcast service is not required");
                 stopSelf();
                 return;
@@ -73,6 +71,21 @@ public class BroadcastService extends StoppableService {
             ModeBroadcastReceiver receiver = ModeBroadcastReceiver.getInstance();
             context.registerReceiver(receiver, filter);
         }
+    }
+
+    public static boolean isServiceRequired(InCar prefs) {
+        ModeDetector.updatePrefState(prefs);
+        boolean[] states = ModeDetector.getPrefState();
+
+        for(int i=0;i<states.length;i++) {
+            if (i == ModeDetector.FLAG_ACTIVITY) {
+                continue;
+            }
+            if (states[i]) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void unregister(Context context) {

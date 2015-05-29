@@ -110,7 +110,6 @@ public class UpdateService extends Service implements Runnable {
 
     @Override
     public IBinder onBind(Intent arg0) {
-        // TODO Auto-generated method stub
         return null;
     }
 

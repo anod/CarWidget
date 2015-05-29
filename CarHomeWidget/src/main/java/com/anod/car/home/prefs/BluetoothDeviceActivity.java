@@ -4,6 +4,8 @@ import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
+import com.anod.car.home.incar.BroadcastService;
+import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 import android.bluetooth.BluetoothAdapter;
@@ -63,8 +65,7 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
         mListAdapter = new DeviceAdapter(this);
 
         mDevicesList.setDivider(new ColorDrawable(Color.TRANSPARENT));
-        mDevicesList.setDividerHeight(
-                getResources().getDimensionPixelOffset(R.dimen.preference_item_margin));
+        mDevicesList.setDividerHeight(getResources().getDimensionPixelOffset(R.dimen.preference_item_margin));
 
         mDevicesList.setEmptyView(ButterKnife.findById(this, android.R.id.empty));
         mDevicesList.setAdapter(mListAdapter);
@@ -100,26 +101,43 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
 
         CheckBox checkbox = (CheckBox) view.findViewById(android.R.id.checkbox);
 
-        HashMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
         Boolean wasChecked = checkbox.isChecked();
 
         if (wasChecked) {
-            if (devices == null) {
-                return;
-            }
-            devices.remove(device.address);
-            PreferencesStorage.saveBtDevices(mContext, devices);
+            onDeviceStateChange(device, false);
             checkbox.setChecked(false);
         } else {
-            if (devices == null) {
-                devices = new HashMap<String, String>();
-            }
-            devices.put(device.address, device.address);
-            PreferencesStorage.saveBtDevices(mContext, devices);
+            onDeviceStateChange(device, true);
             checkbox.setChecked(true);
         }
     }
 
+    private void onDeviceStateChange(Device device, boolean newState) {
+        HashMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
+        if (newState) {
+            if (devices == null) {
+                devices = new HashMap<String, String>();
+            }
+            devices.put(device.address, device.address);
+        } else {
+            if (devices == null) {
+                return;
+            }
+            devices.remove(device.address);
+        }
+        PreferencesStorage.saveBtDevices(mContext, devices);
+
+        if (newState || isBroadcastServiceRequired()) {
+            BroadcastService.startService(mContext);
+        } else {
+            BroadcastService.stopService(mContext);
+        }
+    }
+
+    private boolean isBroadcastServiceRequired() {
+        InCar incar = PreferencesStorage.loadInCar(mContext);
+        return BroadcastService.isServiceRequired(incar);
+    }
 
     static class Device {
 

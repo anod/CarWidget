@@ -14,7 +14,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 
-public class Handler {
+public class ModeHandler {
 
     private static final int VOLUME_NOT_SET = -1;
 
@@ -40,7 +40,7 @@ public class Handler {
 
     private final ScreenOrientation mScreenOrientation;
 
-    public Handler(Context context, ScreenOrientation orientation) {
+    public ModeHandler(Context context, ScreenOrientation orientation) {
         mContext = context;
         mScreenOrientation = orientation;
     }
