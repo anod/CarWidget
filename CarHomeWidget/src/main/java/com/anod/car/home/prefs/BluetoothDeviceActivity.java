@@ -20,6 +20,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -30,7 +31,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Set;
 
 import butterknife.ButterKnife;
@@ -113,10 +113,10 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
     }
 
     private void onDeviceStateChange(Device device, boolean newState) {
-        HashMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
+        ArrayMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
         if (newState) {
             if (devices == null) {
-                devices = new HashMap<String, String>();
+                devices = new ArrayMap<String, String>();
             }
             devices.put(device.address, device.address);
         } else {
@@ -229,7 +229,7 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
 
             // Get a set of currently paired devices
             Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
-            HashMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
+            ArrayMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
             mPairedList = new ArrayList<Device>();
 
             Resources r = mContext.getResources();

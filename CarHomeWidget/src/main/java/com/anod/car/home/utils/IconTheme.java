@@ -14,10 +14,10 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.support.v4.util.SimpleArrayMap;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Locale;
 
 public class IconTheme {
@@ -38,7 +38,7 @@ public class IconTheme {
 
     Resources mThemeResources;
 
-    HashMap<String, Integer> mIconMap;
+    SimpleArrayMap<String, Integer> mIconMap;
 
     public final static Object sLock = new Object();
 
@@ -60,7 +60,7 @@ public class IconTheme {
         return mThemeResources != null;
     }
 
-    public void loadFromXml(HashMap<String, Integer> cmpMap) {
+    public void loadFromXml(SimpleArrayMap<String, Integer> cmpMap) {
         XmlPullParser xml = loadXmlResource();
         if (xml == null) {
             mIconMap = fallback(cmpMap);
@@ -70,20 +70,19 @@ public class IconTheme {
             synchronized (sLock) {
                 mIconMap = parseXml(xml, cmpMap);
             }
-        } catch (XmlPullParserException e) {
-            AppLog.d(e.getMessage());
-        } catch (IOException e) {
-            AppLog.d(e.getMessage());
+        } catch (XmlPullParserException | IOException e) {
+            AppLog.ex(e);
         }
     }
 
-    private HashMap<String, Integer> fallback(HashMap<String, Integer> cmpMap) {
+    private SimpleArrayMap<String, Integer> fallback(SimpleArrayMap<String, Integer> cmpMap) {
         int found = 0;
         int required = cmpMap.size();
-        HashMap<String, Integer> iconMap = new HashMap<String, Integer>(required);
+        SimpleArrayMap<String, Integer> iconMap = new SimpleArrayMap<String, Integer>(required);
 
         //Fallback
-        for (String className : cmpMap.keySet()) {
+        for(int i=0; i< cmpMap.size(); i++) {
+            String className = cmpMap.keyAt(i);
             if (!iconMap.containsKey(className)) {
                 String resName = className.toLowerCase(Locale.US).replace(".", "_");
                 AppLog.d("Look for icon for resource: R.drawable." + resName);
@@ -116,19 +115,17 @@ public class IconTheme {
                 xml = localXmlPullParserFactory.newPullParser();
                 xml.setInput(localInputStream, "UTF-8");
             }
-        } catch (IOException localIOException2) {
-            AppLog.d(localIOException2.getMessage());
-        } catch (XmlPullParserException localXmlPullParserException1) {
-            AppLog.d(localXmlPullParserException1.getMessage());
+        } catch (IOException | XmlPullParserException e) {
+            AppLog.ex(e);
         }
         return xml;
     }
 
-    private HashMap<String, Integer> parseXml(XmlPullParser xml, HashMap<String, Integer> cmpMap)
+    private SimpleArrayMap<String, Integer> parseXml(XmlPullParser xml, SimpleArrayMap<String, Integer> cmpMap)
             throws XmlPullParserException, IOException {
 
         int required = cmpMap.size();
-        HashMap<String, Integer> iconMap = new HashMap<String, Integer>(required);
+        SimpleArrayMap<String, Integer> iconMap = new SimpleArrayMap<String, Integer>(required);
 
         int eventType = xml.getEventType();
         while (eventType != XmlPullParser.END_DOCUMENT) {

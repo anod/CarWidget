@@ -1,13 +1,13 @@
 package com.anod.car.home.prefs.preferences;
 
 import android.content.ComponentName;
+import android.support.v4.util.ArrayMap;
 
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.HashMap;
 
 public class InCar implements Serializable {
 
@@ -46,7 +46,7 @@ public class InCar implements Serializable {
 
     private boolean bluetoothRequired;
 
-    private HashMap<String, String> btDevices;
+    private ArrayMap<String, String> btDevices;
 
     private boolean disableBluetoothOnPower;
 
@@ -115,11 +115,11 @@ public class InCar implements Serializable {
      *
      * @return HashMap<Address,Address>
      */
-    public HashMap<String, String> getBtDevices() {
+    public ArrayMap<String, String> getBtDevices() {
         return btDevices;
     }
 
-    public void setBtDevices(HashMap<String, String> btDevices) {
+    public void setBtDevices(ArrayMap<String, String> btDevices) {
         this.btDevices = btDevices;
         this.bluetoothRequired = (btDevices != null && !btDevices.isEmpty());
     }

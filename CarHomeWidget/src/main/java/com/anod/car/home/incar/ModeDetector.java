@@ -11,6 +11,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.util.ArrayMap;
 
 import java.util.HashMap;
 
@@ -174,7 +175,7 @@ public class ModeDetector {
         }
 
         if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-            HashMap<String, String> devices = prefs.getBtDevices();
+            ArrayMap<String, String> devices = prefs.getBtDevices();
             if (devices != null) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (devices.containsKey(device.getAddress())) {
@@ -192,7 +193,7 @@ public class ModeDetector {
             return;
         }
         if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-            HashMap<String, String> devices = prefs.getBtDevices();
+            ArrayMap<String, String> devices = prefs.getBtDevices();
             if (devices != null) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (devices.containsKey(device.getAddress())) {

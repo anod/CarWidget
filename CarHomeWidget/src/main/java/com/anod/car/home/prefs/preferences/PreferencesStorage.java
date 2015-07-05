@@ -14,11 +14,11 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
 
 public class PreferencesStorage {
@@ -318,14 +318,14 @@ public class PreferencesStorage {
         editor.commit();
     }
 
-    public static HashMap<String, String> getBtDevices(Context context) {
+    public static ArrayMap<String, String> getBtDevices(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String addrStr = prefs.getString(BLUETOOTH_DEVICE_ADDRESSES, null);
         if (addrStr == null) {
             return null;
         }
         String[] addrs = addrStr.split(",");
-        HashMap<String, String> devices = new HashMap<String, String>(addrs.length);
+        ArrayMap<String, String> devices = new ArrayMap<String, String>(addrs.length);
         for (int i = 0; i < addrs.length; i++) {
             String addr = addrs[i];
             devices.put(addr, addr);
@@ -333,7 +333,7 @@ public class PreferencesStorage {
         return devices;
     }
 
-    public static void saveBtDevices(Context context, HashMap<String, String> devices) {
+    public static void saveBtDevices(Context context, ArrayMap<String, String> devices) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Editor editor = prefs.edit();
         if (devices == null || devices.isEmpty()) {

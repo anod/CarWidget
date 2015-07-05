@@ -17,6 +17,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.support.v4.util.ArrayMap;
+import android.support.v4.util.SimpleArrayMap;
 import android.util.LruCache;
 import android.util.SparseArray;
 import android.view.View;
@@ -247,7 +249,7 @@ public class WidgetViewBuilder {
             return null;
         }
 
-        HashMap<String, Integer> cmpMap = new HashMap<String, Integer>(shortcuts.size());
+        SimpleArrayMap<String, Integer> cmpMap = new SimpleArrayMap<String, Integer>(shortcuts.size());
         for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
             ShortcutInfo info = mSmodel.getShortcut(cellId);
             if (info == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION

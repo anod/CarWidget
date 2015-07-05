@@ -1,7 +1,6 @@
 package com.anod.car.home.app;
 
 import com.anod.car.home.BuildConfig;
-import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.R;
 import com.anod.car.home.model.AppsList;
 import com.anod.car.home.utils.AppLog;
@@ -13,9 +12,9 @@ import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.support.v4.util.SimpleArrayMap;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -80,7 +79,7 @@ public abstract class MusicAppsActivity extends AppsListActivity {
                     .queryBroadcastReceivers(new Intent(Intent.ACTION_MEDIA_BUTTON), 96);
 
             // filter duplicate receivers
-            HashMap<String, Boolean> receivers = new HashMap<String, Boolean>();
+            SimpleArrayMap<String, Boolean> receivers = new SimpleArrayMap<String, Boolean>(apps.size());
 
             for (ResolveInfo appInfo : apps) {
                 String pkg = appInfo.activityInfo.packageName;
