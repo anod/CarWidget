@@ -32,11 +32,11 @@ public class ShortcutDragListener implements View.OnDragListener {
 
     public interface DropCallback {
 
-        public boolean onDelete(int srcCellId);
+        boolean onDelete(int srcCellId);
 
-        public boolean onDrop(int srcCellId, int dstCellId);
+        boolean onDrop(int srcCellId, int dstCellId);
 
-        public void onDragFinish();
+        void onDragFinish();
     }
 
     public ShortcutDragListener(Activity activity, DropCallback dropCallback) {

@@ -55,7 +55,7 @@ public abstract class MusicAppsActivity extends AppsListActivity {
 
     @Override
     protected AppsList getAppList(Context context) {
-        return new AppsList(CarWidgetApplication.get(context));
+        return new AppsList(App.get(context));
     }
 
 

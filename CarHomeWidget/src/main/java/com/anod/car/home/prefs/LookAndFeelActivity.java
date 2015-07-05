@@ -1,8 +1,8 @@
 package com.anod.car.home.prefs;
 
-import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.Provider;
 import com.anod.car.home.R;
+import com.anod.car.home.app.App;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.drawer.NavigationDrawer;
@@ -16,6 +16,7 @@ import com.anod.car.home.prefs.model.SkinList;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.BitmapLruCache;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 
@@ -25,7 +26,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,8 +33,6 @@ import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.util.LruCache;
-import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,23 +47,18 @@ public class LookAndFeelActivity extends CarWidgetActivity
         implements ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentHelper,
         ShortcutDragListener.DropCallback {
 
-    private static final int SKINS_COUNT = 6;
-
     private Context mContext;
-
     private int mCurrentPage;
 
     private int mAppWidgetId;
 
     private boolean[] mPreviewInitialized = {false, false, false, false, false, false};
 
-    private WidgetViewBuilder mBuilder;
-
     private Main mPrefs;
 
     private SkinList mSkinList;
 
-    private LruCache<String, Bitmap> mBitmapMemoryCache;
+    private BitmapLruCache mBitmapMemoryCache;
 
     @InjectView(R.id.skin_info)
     TextView mTextView;
@@ -131,11 +124,6 @@ public class LookAndFeelActivity extends CarWidgetActivity
         return mDragListener;
     }
 
-    public interface SkinRefreshListener {
-
-        void refresh();
-    }
-
     @Override
     protected boolean isTransparentAppTheme() {
         return true;
@@ -170,11 +158,8 @@ public class LookAndFeelActivity extends CarWidgetActivity
             keyguard = isKeyguard();
         }
 
-        mBuilder = createBuilder();
-        mBuilder.init();
-
-        mPrefs = mBuilder.getPrefs();
-        mModel = new WidgetShortcutsModel(mContext, mAppWidgetId);
+        mPrefs = loadPrefs();
+        mModel = new WidgetShortcutsModel(App.get(this), mAppWidgetId);
 
         mSkinList = SkinList.newInstance(mPrefs.getSkin(), keyguard, mContext);
         mCurrentPage = mSkinList.getSelectedSkinPosition();
@@ -195,7 +180,7 @@ public class LookAndFeelActivity extends CarWidgetActivity
         mGallery.setAdapter(mAdapter);
         mGallery.setCurrentItem(mCurrentPage);
 
-        mBitmapMemoryCache = createBitmapMemoryCache();
+        mBitmapMemoryCache = new BitmapLruCache(this);
         showText(mCurrentPage);
     }
 
@@ -206,27 +191,9 @@ public class LookAndFeelActivity extends CarWidgetActivity
         mDrawer.syncState();
     }
 
-    private LruCache<String, Bitmap> createBitmapMemoryCache() {
-        // Get max available VM memory, exceeding this amount will throw an
-        // OutOfMemory exception. Stored in kilobytes as LruCache takes an
-        // int in its constructor.
-        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
 
-        // Use 1/8th of the available memory for this memory cache.
-        final int cacheSize = maxMemory / 8;
 
-        return new LruCache<String, Bitmap>(cacheSize) {
-            @Override
-            protected int sizeOf(String key, Bitmap bitmap) {
-                // The cache size will be measured in kilobytes rather than
-                // number of items.
-
-                return bitmap.getByteCount() / 1024;
-            }
-        };
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private boolean isKeyguard() {
         Bundle widgetOptions = AppWidgetManager.getInstance(mContext)
                 .getAppWidgetOptions(mAppWidgetId);
@@ -246,7 +213,7 @@ public class LookAndFeelActivity extends CarWidgetActivity
     }
 
     public WidgetViewBuilder createBuilder() {
-        WidgetViewBuilder builder = new WidgetViewBuilder(mContext);
+        WidgetViewBuilder builder = new WidgetViewBuilder(App.get(this));
         builder
                 .setPendingIntentHelper(this)
                 .setAppWidgetId(mAppWidgetId)
@@ -323,12 +290,13 @@ public class LookAndFeelActivity extends CarWidgetActivity
     public void refreshSkinPreview() {
         AppLog.d("Refresh Skin Requested");
 
-        mPrefs = mBuilder
-                .reloadShortcuts()
-                .reloadPrefs()
-                .getPrefs();
+        mPrefs = loadPrefs();
 
         mAdapter.notifyDataSetChanged();
+    }
+
+    private Main loadPrefs() {
+        return PreferencesStorage.loadMain(mContext, mAppWidgetId);
     }
 
     public int getAppWidgetId() {
@@ -384,7 +352,7 @@ public class LookAndFeelActivity extends CarWidgetActivity
                 && mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
             Provider.getInstance().requestUpdate(this, mAppWidgetId);
         }
-        CarWidgetApplication.provide(this).cleanAppListCache();
+        App.provide(this).cleanAppListCache();
     }
 
     @Override

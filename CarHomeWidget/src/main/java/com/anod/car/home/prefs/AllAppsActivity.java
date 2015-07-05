@@ -1,7 +1,7 @@
 package com.anod.car.home.prefs;
 
-import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.R;
+import com.anod.car.home.app.App;
 import com.anod.car.home.appscache.AppsCacheActivity;
 import com.anod.car.home.model.AppsList;
 
@@ -44,7 +44,7 @@ public class AllAppsActivity extends AppsCacheActivity {
 
     @Override
     protected AppsList getAppList(Context context) {
-        return CarWidgetApplication.provide(context).getAppListCache();
+        return App.provide(context).getAppListCache();
     }
 
 

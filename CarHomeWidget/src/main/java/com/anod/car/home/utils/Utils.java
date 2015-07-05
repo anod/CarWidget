@@ -3,18 +3,23 @@ package com.anod.car.home.utils;
 import com.anod.car.home.R;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import static android.content.Context.ACTIVITY_SERVICE;
+import static android.content.pm.ApplicationInfo.FLAG_LARGE_HEAP;
 
 public class Utils {
+    static final char CACHE_KEY_SEPARATOR = '\n';
 
     final public static boolean IS_ISC_MR1_OR_GREATER = (Build.VERSION.SDK_INT >= 15);
 
@@ -126,4 +131,27 @@ public class Utils {
         outState.putInt("appWidgetId", mAppWidgetId);
     }
 
+    static int calculateMemoryCacheSize(Context context) {
+        ActivityManager am = getService(context, ACTIVITY_SERVICE);
+        boolean largeHeap = (context.getApplicationInfo().flags & FLAG_LARGE_HEAP) != 0;
+        int memoryClass = am.getMemoryClass();
+        if (largeHeap) {
+            memoryClass = am.getLargeMemoryClass();
+        }
+        // Target ~15% of the available heap.
+        return 1024 * 1024 * memoryClass / 7;
+    }
+
+    static int getBitmapBytes(Bitmap bitmap) {
+        int result = bitmap.getByteCount();;
+        if (result < 0) {
+            throw new IllegalStateException("Negative size: " + bitmap);
+        }
+        return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    static <T> T getService(Context context, String service) {
+        return (T) context.getSystemService(service);
+    }
 }

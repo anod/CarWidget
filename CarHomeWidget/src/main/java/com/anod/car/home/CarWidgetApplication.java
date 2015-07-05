@@ -9,7 +9,6 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
 import android.app.Application;
-import android.content.Context;
 
 @ReportsCrashes(
     mailTo="alex.gavrishev@gmail.com",
@@ -23,10 +22,6 @@ public class CarWidgetApplication extends Application {
     private int mThemeIdx;
 
     private ObjectGraph mObjectGraph;
-
-    public static CarWidgetApplication get(Context context) {
-        return (CarWidgetApplication) context.getApplicationContext();
-    }
 
     @Override
     public void onCreate() {
@@ -53,7 +48,4 @@ public class CarWidgetApplication extends Application {
         return mThemeIdx = theme;
     }
 
-    public static ObjectGraph provide(Context context) {
-        return ((CarWidgetApplication) context.getApplicationContext()).getObjectGraph();
-    }
 }

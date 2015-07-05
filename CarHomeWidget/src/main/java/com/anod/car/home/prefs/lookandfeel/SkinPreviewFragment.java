@@ -2,6 +2,7 @@ package com.anod.car.home.prefs.lookandfeel;
 
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
+import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.LookAndFeelActivity;
 import com.anod.car.home.prefs.drag.ShortcutShadowBuilder;
@@ -24,7 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class SkinPreviewFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<View>, LookAndFeelActivity.SkinRefreshListener {
+        implements LoaderManager.LoaderCallbacks<View>, View.OnLongClickListener {
 
     private static final String ARG_POSITION = "position";
 
@@ -34,6 +35,8 @@ public class SkinPreviewFragment extends Fragment
 
     @InjectView(R.id.container_preview)
     ViewGroup mContainer;
+
+    private int mShotcutsCount;
 
     public static SkinPreviewFragment newInstance(int position) {
         SkinPreviewFragment f = new SkinPreviewFragment();
@@ -46,9 +49,7 @@ public class SkinPreviewFragment extends Fragment
         return f;
     }
 
-    /* (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onResume()
-     */
+
     @Override
     public void onResume() {
         super.onResume();
@@ -80,11 +81,6 @@ public class SkinPreviewFragment extends Fragment
         View view = inflater.inflate(R.layout.skin_item, container, false);
         ButterKnife.inject(this, view);
         return view;
-    }
-
-    @Override
-    public void refresh() {
-        getLoaderManager().initLoader(0, null, this).forceLoad();
     }
 
     public static class ViewLoader extends AsyncTaskLoader<View> {
@@ -120,58 +116,82 @@ public class SkinPreviewFragment extends Fragment
     @Override
     public void onLoadFinished(Loader<View> loader, View inflatedView) {
         mActivity.onPreviewCreated(mPosition);
+
+        if (inflatedView.getParent() != null) {
+//            View parent = (View) inflatedView.getParent();
+//            mContainer.addView(parent);
+            return;
+        }
+
         if (mContainer.getChildCount() > 0) {
             mContainer.removeAllViews();
         }
-        // TODO
-        if (inflatedView.getParent() != null) {
-            ((ViewGroup) inflatedView.getParent()).removeView(inflatedView);
-        }
+
         final WidgetShortcutsModel model = new WidgetShortcutsModel(getActivity(),
                 mActivity.getAppWidgetId());
         model.init();
+        mShotcutsCount = model.getCount();
 
         setupDragNDrop(inflatedView, model);
 
         mContainer.addView(inflatedView);
-        mContainer.invalidate();
+//        mContainer.invalidate();
     }
 
+    @Override
+    public void onDestroyView() {
+        if (mContainer != null && mContainer.getChildCount() > 0) {
+            for (int pos = 0; pos < mShotcutsCount; pos++) {
+                int btnResId = WidgetViewBuilder.getBtnRes(pos);
+                final ImageView dragButton = (ImageView) mContainer.findViewById(btnResId);
+                if (dragButton == null) {
+                    AppLog.e("Count: " + mShotcutsCount + ", pos: " + pos);
+                    continue;
+                }
+                dragButton.setOnLongClickListener(null);
+                dragButton.setOnDragListener(null);
+            }
+        }
+
+        super.onDestroyView();
+    }
 
     private void setupDragNDrop(View inflatedView, final WidgetShortcutsModel model) {
-        int count = model.getCount();
-        for (int pos = 0; pos < count; pos++) {
+
+        for (int pos = 0; pos < mShotcutsCount; pos++) {
             int btnResId = WidgetViewBuilder.getBtnRes(pos);
             final ImageView btn = (ImageView) inflatedView.findViewById(btnResId);
             if (btn == null) {
-                AppLog.e("Count: " + count + ", pos: " + pos);
+                AppLog.e("Count: " + mShotcutsCount + ", pos: " + pos);
                 continue;
             }
-            initDragButton(pos, btn, model);
+            ShortcutInfo shortcut = model.getShortcut(pos);
+
+            initDragButton(pos, btn, shortcut != null);
         }
     }
 
+    @Override
+    public boolean onLongClick(View dragButton) {
+        String dragData = "" + dragButton.getTag();
+        ClipData data = ClipData.newPlainText(dragData, dragData);
+        mActivity.onBeforeDragStart();
+        dragButton.startDrag(data, new ShortcutShadowBuilder(dragButton), null, 0);
+        return true;
+    }
+
+
     private void initDragButton(final int cellId, ImageView dragButton,
-            final WidgetShortcutsModel model) {
+            final boolean hasShortcut) {
         dragButton.setTag(String.valueOf(cellId));
-        dragButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if (model.getShortcut(cellId) != null) {
-                    String dragData = "" + cellId;
-                    ClipData data = ClipData.newPlainText(dragData, dragData);
-                    mActivity.onBeforeDragStart();
-                    view.startDrag(data, new ShortcutShadowBuilder(view), null, 0);
-                }
-                return true;
-            }
-        });
+        if (hasShortcut) {
+            dragButton.setOnLongClickListener(this);
+        }
         dragButton.setOnDragListener(mActivity.getDragListener());
     }
 
     @Override
     public void onLoaderReset(Loader<View> loader) {
-        // TODO Auto-generated method stub
 
     }
 

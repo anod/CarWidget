@@ -123,12 +123,12 @@ public class ShortcutViewBuilder {
             if (mPrefs.getFontSize() == 0) {
                 views.setViewVisibility(resText, View.GONE);
             } else {
-                                /*
-				 * Limitation of RemoteViews to use setTextSize with only one
-				 * argument (without providing scale unit) size already in
-				 * scaled pixel format so we revert it to pixels to get properly
-				 * converted after re-applying setTextSize function
-				 */
+                /*
+                 * Limitation of RemoteViews to use setTextSize with only one
+                 * argument (without providing scale unit) size already in
+                 * scaled pixel format so we revert it to pixels to get properly
+                 * converted after re-applying setTextSize function
+                 */
                 float cSize = (float) mPrefs.getFontSize() / scaledDensity;
 
                 views.setFloat(resText, "setTextSize", cSize);

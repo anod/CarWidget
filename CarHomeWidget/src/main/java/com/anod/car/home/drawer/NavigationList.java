@@ -1,8 +1,8 @@
 package com.anod.car.home.drawer;
 
-import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.MainActivity;
 import com.anod.car.home.R;
+import com.anod.car.home.app.App;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.ConfigurationInCar;
 import com.anod.car.home.prefs.ConfigurationRestore;
@@ -156,7 +156,7 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
 
         addTitle(0);
         int themeNameRes = AppTheme
-                .getNameResource(CarWidgetApplication.get(mContext).getThemeIdx());
+                .getNameResource(App.get(mContext).getThemeIdx());
         addButton(ID_THEME, R.string.app_theme, themeNameRes,
                 R.drawable.ic_invert_colors_on_white_24dp);
 
@@ -267,7 +267,7 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
                 .setItems(R.array.app_themes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         AppTheme.saveAppTheme(mContext, which);
-                        CarWidgetApplication.get(mContext).setThemeIdx(which);
+                        App.get(mContext).setThemeIdx(which);
                         mContext.setTheme(AppTheme.getMainResource(which));
                         mActivity.recreate();
                     }

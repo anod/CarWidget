@@ -16,10 +16,10 @@ public class SkinPagerAdapter extends FragmentPagerAdapter {
 
     private final LookAndFeelActivity mActivity;
 
-    public SkinPagerAdapter(LookAndFeelActivity fragment, int count, FragmentManager fm) {
+    public SkinPagerAdapter(LookAndFeelActivity activity, int count, FragmentManager fm) {
         super(fm);
         mCount = count;
-        mActivity = fragment;
+        mActivity = activity;
     }
 
     public int getItemPosition(Object object) {
@@ -40,4 +40,5 @@ public class SkinPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return mActivity.getSkinItem(position).title;
     }
+
 }

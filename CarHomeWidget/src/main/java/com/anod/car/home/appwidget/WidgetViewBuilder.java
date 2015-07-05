@@ -188,10 +188,10 @@ public class WidgetViewBuilder {
         RemoteViews views = new RemoteViews(mContext.getPackageName(),
                 skinProperties.getLayout(shortcuts.size()));
 
+
         mWidgetButtonViewBuilder.setup(skinProperties, views);
 
         setBackground(mPrefs, views);
-
         mBitmapTransform.setIconProcessor(skinProperties.getIconProcessor());
 
         String themePackage = mPrefs.getIconsTheme();

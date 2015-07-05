@@ -1,7 +1,7 @@
 package com.anod.car.home.prefs.lookandfeel;
 
-import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.R;
+import com.anod.car.home.app.App;
 import com.anod.car.home.appscache.AppsCacheActivity;
 import com.anod.car.home.model.AppsList;
 import com.anod.car.home.prefs.preferences.Main;
@@ -102,7 +102,7 @@ public class IconThemesActivity extends AppsCacheActivity {
 
     @Override
     protected AppsList getAppList(Context context) {
-        return CarWidgetApplication.provide(context).getIconThemesCache();
+        return App.provide(context).getIconThemesCache();
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.anod.car.home.ShortcutActivity;
 import com.anod.car.home.app.NewShortcutActivity;
 import com.anod.car.home.incar.SwitchInCarActivity;
 import com.anod.car.home.prefs.LookAndFeelActivity;
-import com.anod.car.home.prefs.ShortcutEditActivity;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;

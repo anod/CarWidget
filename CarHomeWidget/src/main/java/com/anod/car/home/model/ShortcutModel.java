@@ -14,10 +14,14 @@ import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import java.lang.ref.SoftReference;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 public class ShortcutModel {
 
@@ -29,10 +33,30 @@ public class ShortcutModel {
 
     private final Context mContext;
 
+    private final int mIconBitmapSize;
+
+    private ArrayList<SoftReference<Bitmap>> mUnusedBitmaps;
+
+    private SoftReferenceThreadLocal<Canvas> mCachedIconCanvas = new SoftReferenceThreadLocal<Canvas>() {
+        @Override
+        protected Canvas initialValue() {
+            return new Canvas();
+        }
+    };
+
+    private SoftReferenceThreadLocal<BitmapFactory.Options> mCachedBitmapFactoryOptions = new SoftReferenceThreadLocal<BitmapFactory.Options>() {
+        @Override
+        protected BitmapFactory.Options initialValue() {
+            return new BitmapFactory.Options();
+        }
+    };
+
     public ShortcutModel(Context context) {
         mContentResolver = context.getContentResolver();
         mPackageManager = context.getPackageManager();
         mContext = context;
+        mIconBitmapSize = UtilitiesBitmap.getIconMaxSize(context);
+        mUnusedBitmaps = new ArrayList<SoftReference<Bitmap>>();
     }
 
     public ShortcutInfo loadShortcut(long shortcutId) {
@@ -46,6 +70,28 @@ public class ShortcutModel {
         if (c == null) {
             return null;
         }
+
+        Bitmap unusedBitmap = null;
+        synchronized(mUnusedBitmaps) {
+            // not in cache; we need to load it from the db
+            while ((unusedBitmap == null || !unusedBitmap.isMutable() ||
+                    unusedBitmap.getWidth() != mIconBitmapSize ||
+                    unusedBitmap.getHeight() != mIconBitmapSize)
+                    && mUnusedBitmaps.size() > 0) {
+                unusedBitmap = mUnusedBitmaps.remove(0).get();
+            }
+            if (unusedBitmap != null) {
+                final Canvas canvas = mCachedIconCanvas.get();
+                canvas.setBitmap(unusedBitmap);
+                canvas.drawColor(0, PorterDuff.Mode.CLEAR);
+                canvas.setBitmap(null);
+            }
+        }
+
+        if (unusedBitmap == null) {
+            unusedBitmap = Bitmap.createBitmap(mIconBitmapSize, mIconBitmapSize, Bitmap.Config.ARGB_8888);
+        }
+
 
         ShortcutInfo info;
         try {
@@ -82,7 +128,11 @@ public class ShortcutModel {
 
             Bitmap icon = null;
             if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
-                icon = getIconFromCursor(c, iconIndex);
+                icon = getIconFromCursor(c, iconIndex, unusedBitmap);
+                if (icon != unusedBitmap) {
+                    throw new RuntimeException("generatePreview is not recycling the bitmap " + info.title);
+                }
+
                 info.setActivityIcon(icon);
                 info.setCustomIcon(c.getInt(isCustomIconIndex) == 1);
             } else {
@@ -112,11 +162,11 @@ public class ShortcutModel {
                     }
                     // the db
                     if (icon == null) {
-                        icon = getIconFromCursor(c, iconIndex);
+                        icon = getIconFromCursor(c, iconIndex, unusedBitmap);
                     }
                     info.setIconResource(icon, iconResource);
                 } else if (iconType == LauncherSettings.Favorites.ICON_TYPE_BITMAP) {
-                    icon = getIconFromCursor(c, iconIndex);
+                    icon = getIconFromCursor(c, iconIndex, unusedBitmap);
                     if (icon != null) {
                         info.setCustomIcon(icon);
                     }
@@ -134,10 +184,13 @@ public class ShortcutModel {
         return info;
     }
 
-    Bitmap getIconFromCursor(Cursor c, int iconIndex) {
+    Bitmap getIconFromCursor(Cursor c, int iconIndex, Bitmap unusedBitmap) {
         byte[] data = c.getBlob(iconIndex);
+        final BitmapFactory.Options opts = mCachedBitmapFactoryOptions.get();
+        opts.inBitmap = unusedBitmap;
+        opts.inSampleSize = 1;
         try {
-            return BitmapFactory.decodeByteArray(data, 0, data.length);
+            return BitmapFactory.decodeByteArray(data, 0, data.length, opts);
         } catch (Exception e) {
             return null;
         }
@@ -242,4 +295,33 @@ public class ShortcutModel {
         };
     }
 
+    abstract class SoftReferenceThreadLocal<T> {
+        private ThreadLocal<SoftReference<T>> mThreadLocal;
+        public SoftReferenceThreadLocal() {
+            mThreadLocal = new ThreadLocal<SoftReference<T>>();
+        }
+
+        abstract T initialValue();
+
+        public void set(T t) {
+            mThreadLocal.set(new SoftReference<T>(t));
+        }
+
+        public T get() {
+            SoftReference<T> reference = mThreadLocal.get();
+            T obj;
+            if (reference == null) {
+                obj = initialValue();
+                mThreadLocal.set(new SoftReference<T>(obj));
+                return obj;
+            } else {
+                obj = reference.get();
+                if (obj == null) {
+                    obj = initialValue();
+                    mThreadLocal.set(new SoftReference<T>(obj));
+                }
+                return obj;
+            }
+        }
+    }
 }

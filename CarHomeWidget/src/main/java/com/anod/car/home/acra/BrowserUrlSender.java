@@ -7,7 +7,6 @@ import org.acra.ReportField;
 import org.acra.collector.CrashReportData;
 import org.acra.sender.ReportSender;
 import org.acra.sender.ReportSenderException;
-import org.acra.util.JSONReportBuilder;
 
 import android.content.Context;
 import android.content.Intent;

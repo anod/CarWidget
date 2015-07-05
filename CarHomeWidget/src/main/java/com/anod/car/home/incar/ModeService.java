@@ -1,8 +1,8 @@
 package com.anod.car.home.incar;
 
-import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.ObjectGraph;
 import com.anod.car.home.Provider;
+import com.anod.car.home.app.App;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
@@ -81,7 +81,7 @@ public class ModeService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        mModeHandler = CarWidgetApplication.provide(this).getHandler();
+        mModeHandler = App.provide(this).getHandler();
 
     }
 
@@ -180,7 +180,7 @@ public class ModeService extends Service {
 
     private void attachPhoneListener() {
         AppLog.d("Attach phone listener");
-        ObjectGraph og = CarWidgetApplication.provide(this);
+        ObjectGraph og = App.provide(this);
         mPhoneListener = og.getModePhoneStateListener();
         TelephonyManager tm = og.getTelephonyManager();
         tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
@@ -188,7 +188,7 @@ public class ModeService extends Service {
 
     private void detachPhoneListener() {
         AppLog.d("Detach phone listener");
-        TelephonyManager tm = CarWidgetApplication.provide(this).getTelephonyManager();
+        TelephonyManager tm = App.provide(this).getTelephonyManager();
         tm.listen(mPhoneListener, PhoneStateListener.LISTEN_NONE);
         mPhoneListener.cancelActions();
         mPhoneListener = null;

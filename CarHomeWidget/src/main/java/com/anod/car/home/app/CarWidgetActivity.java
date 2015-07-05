@@ -4,7 +4,6 @@ import com.anod.car.home.CarWidgetApplication;
 import com.anod.car.home.prefs.preferences.AppTheme;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 
 /**
@@ -31,7 +30,7 @@ abstract public class CarWidgetActivity extends AppCompatActivity {
     }
 
     public CarWidgetApplication getApp() {
-        return CarWidgetApplication.get(this);
+        return App.get(this);
     }
 
 }
