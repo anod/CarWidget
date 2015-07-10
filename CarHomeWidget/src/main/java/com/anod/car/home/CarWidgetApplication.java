@@ -3,6 +3,7 @@ package com.anod.car.home;
 import com.anod.car.home.acra.BrowserUrlSender;
 import com.anod.car.home.acra.CrashDialog;
 import com.anod.car.home.prefs.preferences.AppTheme;
+import com.squareup.leakcanary.LeakCanary;
 
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
@@ -29,6 +30,7 @@ public class CarWidgetApplication extends Application {
         BrowserUrlSender yourSender = new BrowserUrlSender();
         ACRA.getErrorReporter().setReportSender(yourSender);
         super.onCreate();
+        LeakCanary.install(this);
 
         mThemeIdx = AppTheme.getTheme(this);
         mObjectGraph = new ObjectGraph(this);
