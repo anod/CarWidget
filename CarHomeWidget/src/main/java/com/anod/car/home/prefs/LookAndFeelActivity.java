@@ -206,9 +206,9 @@ public class LookAndFeelActivity extends CarWidgetActivity
     public void onResume() {
         super.onResume();
         AppLog.d("LookAndFeel::onResume");
+        mPrefs = loadPrefs();
         mModel.init();
         mBitmapMemoryCache.evictAll();
-        refreshSkinPreview();
         mDrawer.refresh();
     }
 
@@ -292,7 +292,7 @@ public class LookAndFeelActivity extends CarWidgetActivity
 
         mPrefs = loadPrefs();
 
-        mAdapter.notifyDataSetChanged();
+        mAdapter.refresh();
     }
 
     private Main loadPrefs() {

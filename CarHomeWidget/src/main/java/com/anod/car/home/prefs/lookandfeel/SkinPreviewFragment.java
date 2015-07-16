@@ -73,6 +73,7 @@ public class SkinPreviewFragment extends Fragment
     @Override
     public void onDetach() {
         super.onDetach();
+        mActivity = null;
     }
 
     @Override
@@ -81,6 +82,10 @@ public class SkinPreviewFragment extends Fragment
         View view = inflater.inflate(R.layout.skin_item, container, false);
         ButterKnife.inject(this, view);
         return view;
+    }
+
+    public void refresh() {
+        getLoaderManager().initLoader(0, null, this).forceLoad();
     }
 
     public static class ViewLoader extends AsyncTaskLoader<View> {
