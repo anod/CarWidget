@@ -36,13 +36,7 @@ public class NewShortcutActivity extends Activity implements ShortcutPicker.Hand
             finish();
             return;
         }
-        int cellId = getIntent().getExtras()
-                .getInt(ShortcutPicker.EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID);
-        if (cellId == ShortcutPicker.INVALID_CELL_ID) {
-            AppLog.e("cellId required");
-            finish();
-            return;
-        }
+
         Intent defaultResultValue = new Intent();
         defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
         setResult(Activity.RESULT_OK, defaultResultValue);
@@ -50,7 +44,12 @@ public class NewShortcutActivity extends Activity implements ShortcutPicker.Hand
         WidgetShortcutsModel model = new WidgetShortcutsModel(this, mAppWidgetId);
         model.init();
         mShortcutPicker = new ShortcutPicker(model, this, this);
-        mShortcutPicker.onRestoreInstanceState(savedInstanceState);
+        int cellId = mShortcutPicker.onRestoreInstanceState(savedInstanceState, getIntent());
+        if (cellId == ShortcutPicker.INVALID_CELL_ID) {
+            AppLog.e("cellId required");
+            finish();
+            return;
+        }
 
         mShortcutPicker.showActivityPicker(cellId);
     }
@@ -63,6 +62,7 @@ public class NewShortcutActivity extends Activity implements ShortcutPicker.Hand
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Utils.saveAppWidgetId(outState, mAppWidgetId);
         mShortcutPicker.onSaveInstanceState(outState);
     }
 

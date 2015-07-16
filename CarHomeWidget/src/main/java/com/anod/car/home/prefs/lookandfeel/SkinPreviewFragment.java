@@ -103,7 +103,7 @@ public class SkinPreviewFragment extends Fragment
             builder.setOverrideSkin(mActivity.getSkinItem(mPosition).value);
             RemoteViews rv = builder.build();
 
-            return rv.apply(mActivity, null);
+            return rv.apply(mActivity.getApplicationContext(), null);
         }
 
     }

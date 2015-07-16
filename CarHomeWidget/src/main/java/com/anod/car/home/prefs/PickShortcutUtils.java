@@ -127,6 +127,6 @@ public class PickShortcutUtils implements ShortcutPicker.Handler {
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        mPicker.onRestoreInstanceState(savedInstanceState);
+        mPicker.onRestoreInstanceState(savedInstanceState, null);
     }
 }

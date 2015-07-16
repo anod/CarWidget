@@ -9,6 +9,7 @@ import com.anod.car.home.prefs.CarWidgetShortcutsPicker;
 import com.anod.car.home.prefs.ShortcutEditActivity;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -157,10 +158,18 @@ public class ShortcutPicker {
         outState.putInt("currentCellId", mCurrentCellId);
     }
 
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    public int onRestoreInstanceState(Bundle savedInstanceState, Intent intent) {
         if (savedInstanceState != null) {
             mCurrentCellId = savedInstanceState.getInt("currentCellId", INVALID_CELL_ID);
+            return mCurrentCellId;
+        } else if (intent != null){
+            Bundle extras = intent.getExtras();
+            if (extras != null) {
+                mCurrentCellId = extras.getInt(EXTRA_CELL_ID, INVALID_CELL_ID);
+                return mCurrentCellId;
+            }
         }
+        return INVALID_CELL_ID;
     }
 
     private boolean completeAddShortcut(Intent data, boolean isApplicationShortcut) {
