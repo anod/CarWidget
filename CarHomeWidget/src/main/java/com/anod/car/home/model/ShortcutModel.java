@@ -2,6 +2,7 @@ package com.anod.car.home.model;
 
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.UtilitiesBitmap;
+import com.anod.car.home.utils.Utils;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -17,6 +18,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
 
 import java.lang.ref.SoftReference;
@@ -129,10 +131,6 @@ public class ShortcutModel {
             Bitmap icon = null;
             if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
                 icon = getIconFromCursor(c, iconIndex, unusedBitmap);
-                if (icon != unusedBitmap) {
-                    throw new RuntimeException("generatePreview is not recycling the bitmap " + info.title);
-                }
-
                 info.setActivityIcon(icon);
                 info.setCustomIcon(c.getInt(isCustomIconIndex) == 1);
             } else {
@@ -186,15 +184,26 @@ public class ShortcutModel {
 
     Bitmap getIconFromCursor(Cursor c, int iconIndex, Bitmap unusedBitmap) {
         byte[] data = c.getBlob(iconIndex);
-        final BitmapFactory.Options opts = mCachedBitmapFactoryOptions.get();
-        opts.inBitmap = unusedBitmap;
+        BitmapFactory.Options opts;
+
+        opts = mCachedBitmapFactoryOptions.get();
+        opts.outWidth = mIconBitmapSize;
+        opts.outHeight = mIconBitmapSize;
         opts.inSampleSize = 1;
+//        opts.inMutable = true;
+        if (UtilitiesBitmap.canUseForInBitmap(unusedBitmap, opts)) {
+            opts.inBitmap = unusedBitmap;
+        }
         try {
             return BitmapFactory.decodeByteArray(data, 0, data.length, opts);
         } catch (Exception e) {
+            AppLog.ex(e);
+           // throw new RuntimeException(e.getMessage(), e);
             return null;
         }
     }
+
+
 
     /**
      * Returns true if the shortcuts already exists in the database. we identify
