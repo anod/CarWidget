@@ -13,8 +13,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -33,18 +35,19 @@ public class ModeNotification {
     private static final int[] NOTIF_BTN_IDS = {R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3};
 
     public static void showExpiredNotification(Context context) {
-        Notification notification = new Notification();
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notification.icon = R.drawable.ic_stat_incar;
-        String notifTitle = context.getResources().getString(R.string.notif_expired);
-        String notifText = context.getResources().getString(R.string.notif_consider);
-        notification.tickerText = notifTitle;
-        notification.setLatestEventInfo(context, notifTitle, notifText,
-                PendingIntent.getActivity(context, 0, new Intent(), 0));
+        Resources r = context.getResources();
+        String notifText = r.getString(R.string.notif_consider);
+        Notification notification = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.ic_stat_incar)
+                .setAutoCancel(true)
+                .setContentTitle(r.getString(R.string.notif_expired))
+                .setTicker(notifText)
+                .setContentTitle(notifText)
+                .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(), 0))
+                .build();
 
-        String ns = Context.NOTIFICATION_SERVICE;
         NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(ns);
+                .getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(EXPIRED_ID, notification);
         notificationManager.cancel(EXPIRED_ID);
     }
@@ -55,20 +58,25 @@ public class ModeNotification {
         Uri data = Uri.parse("com.anod.car.home.pro://mode/0/");
         notificationIntent.setData(data);
 
-        PendingIntent contentIntent = PendingIntent.getService(context, 0, notificationIntent, 0);
+        Resources r = context.getResources();
 
-        Notification notification = new Notification();
-        notification.flags |= Notification.FLAG_ONGOING_EVENT;
-        notification.icon = R.drawable.ic_stat_incar;
+        PendingIntent contentIntent = PendingIntent.getService(context, 0, notificationIntent, 0);
 
         RemoteViews contentView = createShortcuts(context);
         if (version.isFree()) {
-            contentView.setTextViewText(R.id.text,
+            contentView.setTextViewText(android.R.id.text1,
                     context.getString(R.string.click_to_disable_trial,
                             version.getTrialTimesLeft()));
         }
-        notification.contentIntent = contentIntent;
-        notification.contentView = contentView;
+
+        Notification notification = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.ic_stat_incar)
+                .setOngoing(true)
+                .setContentIntent(contentIntent)
+                .setContent(contentView)
+                .build();
+
+
         setNotificationPriority(notification);
 
         return notification;
