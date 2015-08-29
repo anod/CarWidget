@@ -161,15 +161,6 @@ public class WidgetViewBuilder {
         applyIconTransform(mBitmapTransform, mPrefs);
     }
 
-    public WidgetViewBuilder reloadShortcuts() {
-        mSmodel.init();
-        return this;
-    }
-
-    public WidgetViewBuilder reloadPrefs() {
-        mPrefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
-        return this;
-    }
 
     public RemoteViews build() {
         SparseArray<ShortcutInfo> shortcuts = mSmodel.getShortcuts();
