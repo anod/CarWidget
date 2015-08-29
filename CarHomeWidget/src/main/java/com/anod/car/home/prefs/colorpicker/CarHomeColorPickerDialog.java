@@ -6,6 +6,7 @@ import com.android.colorpicker.ColorPickerSwatch;
 import com.anod.car.home.R;
 import com.anod.car.home.utils.AlphaPatternDrawable;
 import com.anod.car.home.utils.ColorUtils;
+import com.anod.car.home.utils.Utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -107,7 +108,11 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         if (mAlphaSliderVisible) {
             float density = getResources().getDisplayMetrics().density;
             mAlpha = (ColorPickerPalette) view.findViewById(R.id.alpha_picker);
-            mAlpha.setBackground(new AlphaPatternDrawable((int) (5 * density)));
+            if (Utils.IS_JELLYBEAN_OR_GREATER) {
+                mAlpha.setBackground(new AlphaPatternDrawable((int) (5 * density)));
+            } else {
+                mAlpha.setBackgroundDrawable(new AlphaPatternDrawable((int) (5 * density)));
+            }
             mAlpha.setVisibility(View.VISIBLE);
             mAlpha.init(mSize, ALPHA_LEVELS, mAlphaSelectListener);
         }
