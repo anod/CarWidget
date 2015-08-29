@@ -12,7 +12,7 @@ import android.os.IBinder;
 
 public class BroadcastService extends StoppableService {
 
-    private static boolean sRegistered;
+    private ModeBroadcastReceiver mReceiver;
 
     public static void startService(Context context) {
         final Intent updateIntent = new Intent(context.getApplicationContext(), BroadcastService.class);
@@ -48,7 +48,7 @@ public class BroadcastService extends StoppableService {
 
     private void register(Context context) {
         AppLog.d("BroadcastService::register");
-        if (!sRegistered) {
+        if (mReceiver == null) {
 
             ModeDetector.onRegister(context);
             InCar prefs = PreferencesStorage.loadInCar(context);
@@ -63,12 +63,10 @@ public class BroadcastService extends StoppableService {
                 return;
             }
 
-            sRegistered = true;
-
             IntentFilter filter = new IntentFilter();
             filter.addAction(Intent.ACTION_HEADSET_PLUG);
-            ModeBroadcastReceiver receiver = ModeBroadcastReceiver.getInstance();
-            context.registerReceiver(receiver, filter);
+            mReceiver = ModeBroadcastReceiver.create();
+            context.registerReceiver(mReceiver, filter);
         }
     }
 
@@ -89,11 +87,10 @@ public class BroadcastService extends StoppableService {
 
     private void unregister(Context context) {
         AppLog.d("BroadcastService::unregister");
-        if (sRegistered) {
-            ModeBroadcastReceiver receiver = ModeBroadcastReceiver.getInstance();
-            context.unregisterReceiver(receiver);
+        if (mReceiver != null) {
+            context.unregisterReceiver(mReceiver);
+            mReceiver = null;
         }
-        sRegistered = false;
         InCar prefs = PreferencesStorage.loadInCar(context);
 
         if (!prefs.isActivityRequired()) {

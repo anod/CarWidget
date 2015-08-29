@@ -16,14 +16,9 @@ public class ModeBroadcastReceiver extends BroadcastReceiver {
      */
     private final static Object sLock = new Object();
 
-    private static ModeBroadcastReceiver sInstance;
-
-    public static ModeBroadcastReceiver getInstance() {
+    public static ModeBroadcastReceiver create() {
         synchronized (sLock) {
-            if (sInstance == null) {
-                sInstance = new ModeBroadcastReceiver();
-            }
-            return sInstance;
+            return new ModeBroadcastReceiver();
         }
     }
 
