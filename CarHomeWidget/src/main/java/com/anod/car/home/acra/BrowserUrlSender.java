@@ -64,13 +64,18 @@ public class BrowserUrlSender implements ReportSender {
                 StringBuilder sb = new StringBuilder();
                 sb.append(lines[0]);
                 int findLines = 3;
+                int causedLines = 2;
                 for (int i=1; i<lines.length; i++) {
-                    if (lines[i].contains("at com.anod.car.home")) {
+                    if (findLines > 0 && lines[i].contains("at com.anod.car.home")) {
                         findLines--;
                         sb.append("\n").append(lines[i]);
-                        if (findLines == 0) {
-                            break;
-                        }
+                    } else if (causedLines > 0 && lines[i].contains("Caused by:")) {
+                        causedLines--;
+                        sb.append("\n").append(lines[i]);
+                    }
+
+                    if (findLines == 0 && causedLines == 0) {
+                        break;
                     }
                 }
                 return sb.toString();

@@ -227,6 +227,10 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
         @Override
         protected Boolean doInBackground(Integer... arg0) {
 
+            if (mBtAdapter == null) {
+                return false;
+            }
+
             // Get a set of currently paired devices
             Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
             ArrayMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
@@ -258,6 +262,7 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
                 }
 
             }
+
             if (devices != null && !devices.isEmpty()) {
                 for (String addr : devices.keySet()) {
                     Device d = new Device(addr, addr, r.getString(R.string.unavailable_bt_device),
@@ -265,6 +270,9 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
                     mPairedList.add(d);
                 }
             }
+
+
+
             return !mPairedList.isEmpty();
         }
     }
