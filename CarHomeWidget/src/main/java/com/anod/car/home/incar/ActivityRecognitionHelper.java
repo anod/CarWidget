@@ -13,16 +13,20 @@ public class ActivityRecognitionHelper {
 
     public static boolean checkCarState(Intent intent, boolean defaultState) {
         ActivityRecognitionResult result = (ActivityRecognitionResult) intent.getExtras()
-                .get(ActivityRecognitionResult.EXTRA_ACTIVITY_RESULT);
+                .get(ModeBroadcastReceiver.EXTRA_ACTIVITY_RESULT);
         DetectedActivity probActivity = result.getMostProbableActivity();
         int type = probActivity.getType();
         if (type == DetectedActivity.IN_VEHICLE) {
             return true;
         }
-        if (type == DetectedActivity.ON_FOOT) {
+        if (type == DetectedActivity.ON_FOOT || type == DetectedActivity.WALKING) {
             return false;
         }
         return defaultState;
     }
 
+    public static boolean typeSupported(int type) {
+        return type == DetectedActivity.ON_FOOT || type == DetectedActivity.IN_VEHICLE
+                || type == DetectedActivity.WALKING;
+    }
 }

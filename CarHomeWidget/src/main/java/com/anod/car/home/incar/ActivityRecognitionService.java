@@ -1,5 +1,6 @@
 package com.anod.car.home.incar;
 
+import com.anod.car.home.R;
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
 
@@ -7,8 +8,12 @@ import com.anod.car.home.BuildConfig;
 import com.anod.car.home.utils.AppLog;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 
 /**
  * @author alex
@@ -54,14 +59,14 @@ public class ActivityRecognitionService extends IntentService {
                 AppLog.d("Activity: [" + String.format("%03d", probActivity.getConfidence()) + "] "
                         + renderActivityType(probActivity.getType()));
 
-//                Notification noti = new NotificationCompat.Builder(this)
-//                       .setContentTitle("Activity")
-//                        .setContentText("[" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()))
-//                        .setSmallIcon(R.drawable.ic_launcher_application)
-//                        .setTicker("[" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()))
-//                        .build();
-//                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//                mNotificationManager.notify(122, noti);
+                Notification noti = new NotificationCompat.Builder(this)
+                       .setContentTitle("Activity")
+                        .setContentText("[" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()))
+                        .setSmallIcon(R.drawable.ic_launcher_application)
+                        .setTicker("[" + String.format("%03d", probActivity.getConfidence()) + "] " + renderActivityType(probActivity.getType()))
+                        .build();
+                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                mNotificationManager.notify(122, noti);
             }
 
             DetectedActivity probActivity = result.getMostProbableActivity();
@@ -73,13 +78,14 @@ public class ActivityRecognitionService extends IntentService {
             if (type == DetectedActivity.IN_VEHICLE && conf < MIN_VEHICLE_CONFIDENCE) {
                 return;
             }
-            if (type == DetectedActivity.ON_FOOT || type == DetectedActivity.IN_VEHICLE) {
+            if (ActivityRecognitionHelper.typeSupported(type)) {
                 synchronized (sLock) {
                     if (sLastResult != type) {
                         sLastResult = type;
                         Intent broadcast = new Intent(
                                 ModeBroadcastReceiver.ACTION_ACTIVITY_RECOGNITION);
-                        broadcast.putExtra(ActivityRecognitionResult.EXTRA_ACTIVITY_RESULT, result);
+
+                        broadcast.putExtra(ModeBroadcastReceiver.EXTRA_ACTIVITY_RESULT, result);
                         sendBroadcast(broadcast);
                     }
                 }
