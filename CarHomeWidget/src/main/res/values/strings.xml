@@ -48,7 +48,7 @@
 	<string name="pref_headset_connected_summary">Enable InCar mode when audio jack connected</string>
 	<string name="pref_power_connected_title">Power connected</string>
 	<string name="pref_power_connected_summary">Enable InCar mode when power cable connected</string>
-	<string name="pref_screen_timeout">Disable screen timeout</string>
+	<string name="pref_screen_timeout">Keep screen On</string>
 	<string name="pref_screen_timeout_summary">When checked, prevents screen from automatically turning off</string>
 	<string name="pref_brightness_mode">Brightness mode</string>
 	<string name="pref_brightness_mode_summary">Select how to adjust brightness setting</string>
@@ -255,8 +255,8 @@
     <string name="hex_code">Hex code</string>
 
     <string-array name="disable_screen_timeout">
-        <item>Disable (while charging)</item>
-        <item>Disable</item>
+        <item>Keep On (while charging)</item>
+        <item>Keep On</item>
         <item>Enable</item>
     </string-array>
 

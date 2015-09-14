@@ -2,6 +2,7 @@
 
 package com.anod.car.home.gms;
 
+import com.anod.car.home.utils.AppLog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -11,15 +12,14 @@ import com.google.android.gms.drive.Drive;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.util.concurrent.CountDownLatch;
 
 /**
  * An AsyncTask that maintains a connected client.
  */
-public abstract class ApiClientAsyncTask<P, I, R>
-        extends AsyncTask<P, I, R> {
+public abstract class ApiClientAsyncTask<Params>
+        extends AsyncTask<Params, Void, Boolean> {
 
     private GoogleApiClient mClient;
 
@@ -34,8 +34,8 @@ public abstract class ApiClientAsyncTask<P, I, R>
     }
 
     @Override
-    protected final R doInBackground(P... params) {
-        Log.d("TAG", "in background");
+    protected final Boolean doInBackground(Params... params) {
+        AppLog.d("Google API connect in background");
         final CountDownLatch latch = new CountDownLatch(1);
         mClient.registerConnectionCallbacks(new ConnectionCallbacks() {
             @Override
@@ -73,10 +73,10 @@ public abstract class ApiClientAsyncTask<P, I, R>
      * Override this method to perform a computation on a background thread, while the client is
      * connected.
      */
-    protected abstract R doInBackgroundConnected(P... params);
+    protected abstract Boolean doInBackgroundConnected(Params... params);
 
     /**
-     * Gets the GoogleApliClient owned by this async task.
+     * Gets the GoogleApiClient owned by this async task.
      */
     protected GoogleApiClient getGoogleApiClient() {
         return mClient;

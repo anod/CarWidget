@@ -22,7 +22,7 @@ import java.io.OutputStream;
  * @date 2/28/14
  */
 public class WriteDriveFileContentsAsyncTask
-        extends ApiClientAsyncTask<WriteDriveFileContentsAsyncTask.FilesParam, Void, Boolean> {
+        extends ApiClientAsyncTask<WriteDriveFileContentsAsyncTask.FilesParam> {
 
     public static class FilesParam {
 

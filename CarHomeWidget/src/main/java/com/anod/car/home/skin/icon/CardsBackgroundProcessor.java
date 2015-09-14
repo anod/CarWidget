@@ -18,7 +18,7 @@ public class CardsBackgroundProcessor implements BackgroundProcessor {
         if (icon == null) {
             return Color.DKGRAY;
         }
-        Palette palette = Palette.generate(icon);
+        Palette palette = new Palette.Builder(icon).generate();
 
         Palette.Swatch swatch = palette.getMutedSwatch();
 //        AppLog.d("MutedSwatch: "+(swatch == null?"null":"#"+Integer.toHexString(swatch.getRgb())));

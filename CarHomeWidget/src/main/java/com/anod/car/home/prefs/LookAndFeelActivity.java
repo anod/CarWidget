@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.Spanned;
@@ -172,13 +173,15 @@ public class LookAndFeelActivity extends CarWidgetActivity
 
         int count = mSkinList.getCount();
 
-        mGallery.setOnPageChangeListener(this);
-
         mDragListener = new ShortcutDragListener(this, this);
 
         mAdapter = new SkinPagerAdapter(this, count, getSupportFragmentManager());
         mGallery.setAdapter(mAdapter);
         mGallery.setCurrentItem(mCurrentPage);
+        mGallery.addOnPageChangeListener(this);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mGallery);
 
         mBitmapMemoryCache = new BitmapLruCache(this);
         showText(mCurrentPage);

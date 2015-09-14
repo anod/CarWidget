@@ -2,7 +2,6 @@ package com.anod.car.home.utils;
 
 import com.anod.car.home.BuildConfig;
 
-import android.text.format.Time;
 import android.util.Log;
 
 import java.util.IllegalFormatException;

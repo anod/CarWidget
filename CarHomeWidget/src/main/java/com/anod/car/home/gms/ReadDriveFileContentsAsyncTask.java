@@ -15,7 +15,7 @@ import java.io.InputStream;
  * @date 2/28/14
  */
 public abstract class ReadDriveFileContentsAsyncTask
-        extends ApiClientAsyncTask<DriveId, Boolean, Boolean> {
+        extends ApiClientAsyncTask<DriveId> {
 
     public ReadDriveFileContentsAsyncTask(Context context) {
         super(context);

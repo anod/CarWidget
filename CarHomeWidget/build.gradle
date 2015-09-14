@@ -13,21 +13,20 @@ repositories {
 }
 
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.2'
-}
-
 dependencies {
     compile 'com.android.support:support-v4:23.0.0'
     compile 'com.android.support:support-v13:23.0.0'
     compile 'com.android.support:cardview-v7:23.0.0'
     compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:design:23.0.0'
+
     compile 'com.google.android.gms:play-services-drive:7.8.0'
     compile 'com.google.android.gms:play-services-location:7.8.0'
     compile 'com.jakewharton:butterknife:5.1.2'
     compile 'com.android.support:palette-v7:23.0.0'
-    compile files('libs/commons-codec-1.5.jar')
     compile 'ch.acra:acra:4.6.2'
+
+    compile files('libs/org.apache.http.legacy.jar')
 
     // Find memory leaks tool
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
@@ -66,14 +65,11 @@ android {
             minifyEnabled false
             shrinkResources false
             applicationIdSuffix ".debug"
-            proguardFile 'proguard-project.txt'
-            proguardFile getDefaultProguardFile('proguard-android.txt')
         }
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFile 'proguard-project.txt'
-            proguardFile getDefaultProguardFile('proguard-android.txt')
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
     }
@@ -96,3 +92,12 @@ android {
         disable 'InvalidPackage'
     }
 }
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+}
+
