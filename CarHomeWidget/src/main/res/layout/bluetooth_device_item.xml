@@ -25,17 +25,17 @@
 				  android:textAppearance="?android:attr/textAppearanceMedium"
 				  android:ellipsize="marquee"
 				  android:text="@string/bluetooth"
-				  android:textColor="?attr/textColorPrimary"
+				  android:textColor="?android:attr/textColorPrimary"
 				  android:fadingEdge="horizontal" />
 
 		<TextView android:id="@android:id/summary"
 				  android:layout_width="wrap_content"
 				  android:layout_height="wrap_content"
 				  android:layout_below="@android:id/title"
-				  android:layout_alignStart="@android:id/title"
+				  android:layout_alignLeft="@android:id/title"
 				  android:textAppearance="?android:attr/textAppearanceSmall"
 				  android:text="@string/bluetooth_device_cellphone"
-				  android:textColor="?attr/textColorSecondary"
+				  android:textColor="?android:attr/textColorSecondary"
 				  android:maxLines="10" />
 
 	</RelativeLayout>

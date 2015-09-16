@@ -16,7 +16,6 @@ import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -28,6 +27,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;

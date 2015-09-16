@@ -1,47 +1,38 @@
 package com.anod.car.home.prefs;
 
-import com.anod.car.home.R;
-import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Utils;
-
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.preference.CheckBoxPreference;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+import com.anod.car.home.R;
+import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
+import com.anod.car.home.prefs.views.SeekBarDialogPreference;
+import com.anod.car.home.prefs.views.SeekBarPreferenceDialogFragment;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.Utils;
 
 /**
  * @author alex
  * @date 11/19/13
  */
-abstract public class ConfigurationPreferenceFragment extends PreferenceFragment {
+abstract public class ConfigurationPreferenceFragment extends PreferenceFragmentCompat {
 
     protected int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     protected Context mContext;
 
-    @InjectView(android.R.id.list)
-    ListView mListView;
-
     abstract protected int getXmlResource();
 
     abstract protected void onCreateImpl(Bundle savedInstanceState);
-
-    abstract protected int getNavigationItem();
 
     protected boolean isAppWidgetIdRequired() {
         return true;
@@ -65,9 +56,8 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
         return pref;
     }
 
-    @SuppressWarnings("deprecation")
     protected Preference initWidgetPref(String name) {
-        Preference pref = (Preference) findPreference(name);
+        Preference pref =  findPreference(name);
         String key = WidgetSharedPreferences.getName(name, mAppWidgetId);
         pref.setKey(key);
         return pref;
@@ -82,11 +72,15 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
         if (getOptionsMenuResource() > 0) {
             setHasOptionsMenu(true);
         }
-        addPreferencesFromResource(getXmlResource());
 
-        mContext = (Context) getActivity();
+        mContext = getActivity();
 
         onCreateImpl(savedInstanceState);
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        addPreferencesFromResource(getXmlResource());
     }
 
     @Override
@@ -105,23 +99,6 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
             }
         }
 
-        ((ConfigurationActivity) getActivity()).setNavigationItem(getNavigationItem());
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        ButterKnife.inject(this, view);
-
-        Resources r = getResources();
-        ColorDrawable d = new ColorDrawable(r.getColor(android.R.color.transparent));
-        mListView.setDivider(d);
-        mListView.setDividerHeight(r.getDimensionPixelSize(R.dimen.preference_item_margin));
-    }
-
-    public ListView getListView() {
-        return mListView;
     }
 
     @Override
@@ -137,7 +114,7 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
     }
 
     protected void setIntent(String key, Class<?> cls, int appWidgetId) {
-        Preference pref = (Preference) findPreference(key);
+        Preference pref = findPreference(key);
         Intent intent = new Intent(mContext, cls);
         if (appWidgetId > 0) {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -165,6 +142,21 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDisplayPreferenceDialog(Preference preference)
+    {
+        if(preference instanceof SeekBarDialogPreference) {
+            if (getFragmentManager().findFragmentByTag("android.support.v7.preference.PreferenceFragment.DIALOG") == null) {
+
+                DialogFragment f = SeekBarPreferenceDialogFragment.newInstance(preference.getKey());
+                f.setTargetFragment(this, 0);
+                f.show(this.getFragmentManager(), "android.support.v7.preference.PreferenceFragment.DIALOG");
+            }
+        } else {
+            super.onDisplayPreferenceDialog(preference);
+        }
     }
 
 }

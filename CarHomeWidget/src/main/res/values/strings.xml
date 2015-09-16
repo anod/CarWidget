@@ -257,7 +257,7 @@
     <string-array name="disable_screen_timeout">
         <item>Keep On (while charging)</item>
         <item>Keep On</item>
-        <item>Enable</item>
+        <item>Don\'t keep</item>
     </string-array>
 
     <string-array name="orientation_titles">

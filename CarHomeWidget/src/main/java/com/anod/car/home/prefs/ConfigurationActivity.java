@@ -1,39 +1,32 @@
 package com.anod.car.home.prefs;
 
-import com.anod.car.home.Provider;
-import com.anod.car.home.R;
-import com.anod.car.home.app.CarWidgetActivity;
-import com.anod.car.home.drawer.NavigationDrawer;
-import com.anod.car.home.utils.Utils;
-
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceScreen;
 import android.view.MenuItem;
-import android.view.Window;
+
+import com.anod.car.home.Provider;
+import com.anod.car.home.R;
+import com.anod.car.home.app.CarWidgetActivity;
+import com.anod.car.home.utils.Utils;
 
 
-public class ConfigurationActivity extends CarWidgetActivity
-        implements PreferenceFragment.OnPreferenceStartFragmentCallback {
+public class ConfigurationActivity extends CarWidgetActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, PreferenceFragmentCompat.OnPreferenceStartScreenCallback {
 
     private static final String BACK_STACK_PREFS = ":carwidget:prefs";
+    public static final String EXTRA_FRAGMENT = "fragment";
 
     private onActivityResultListener mActivityResultListener;
-
-    private NavigationDrawer mDrawer;
 
     private int mAppWidgetId;
 
     public void setActivityResultListener(onActivityResultListener activityResultListener) {
         mActivityResultListener = activityResultListener;
-    }
-
-    public void setNavigationItem(int navigationItem) {
-        mDrawer.setSelected(navigationItem);
     }
 
     public interface onActivityResultListener {
@@ -46,48 +39,36 @@ public class ConfigurationActivity extends CarWidgetActivity
         return intent;
     }
 
-    public static final String EXTRA_FRAGMENT = "fragment";
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawer.syncState();
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        if (mDrawer.onOptionsItemSelected(item)) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mAppWidgetId = Utils.readAppWidgetId(savedInstanceState, getIntent());
-        mDrawer = new NavigationDrawer(this, mAppWidgetId);
 
         if (savedInstanceState == null) {
 
             Fragment conf = createFragmentInstance();
-
             conf.setArguments(getIntent().getExtras());
-            getFragmentManager().beginTransaction().add(R.id.content_frame, conf).commit();
+            getSupportFragmentManager().beginTransaction().add(android.R.id.content, conf).commit();
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mDrawer.refresh();
     }
 
     @Override
@@ -101,8 +82,7 @@ public class ConfigurationActivity extends CarWidgetActivity
         Bundle extras = intent.getExtras();
         Class fragmentClass = (Class) extras.get(EXTRA_FRAGMENT);
         String fragmentClassName = fragmentClass.getName();
-        Bundle args = new Bundle();
-        Fragment conf = Fragment.instantiate(this, fragmentClassName, args);
+        Fragment conf = Fragment.instantiate(this, fragmentClassName, new Bundle());
         return conf;
     }
 
@@ -110,9 +90,9 @@ public class ConfigurationActivity extends CarWidgetActivity
         getFragmentManager().popBackStack();
     }
 
-
     @Override
-    public boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref) {
+    public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference preference) {
+
         return false;
     }
 
@@ -127,14 +107,20 @@ public class ConfigurationActivity extends CarWidgetActivity
         if (resultTo != null) {
             f.setTargetFragment(resultTo, resultRequestCode);
         }
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, f);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(android.R.id.content, f);
         if (titleText != null) {
             transaction.setBreadCrumbTitle(titleText);
         }
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(BACK_STACK_PREFS);
         transaction.commitAllowingStateLoss();
+    }
+
+    @Override
+    public boolean onPreferenceStartScreen(PreferenceFragmentCompat preferenceFragmentCompat, PreferenceScreen preferenceScreen) {
+        preferenceFragmentCompat.setPreferenceScreen(preferenceScreen);
+        return true;
     }
 
     @Override

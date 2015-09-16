@@ -36,7 +36,7 @@
 			android:orientation="horizontal">
 
 		<Button
-				android:textColor="?attr/textColor"
+				android:textColor="?android:attr/textColorPrimaryInverse"
 				android:background="@drawable/selectable_item_background"
 				android:id="@+id/buttonSkip"
 				android:layout_width="0dp"
@@ -47,7 +47,7 @@
 				android:minHeight="50dp"/>
 
 		<Button
-				android:textColor="?attr/textColor"
+				android:textColor="?android:attr/textColorPrimaryInverse"
 				android:background="@drawable/selectable_item_background"
 				android:id="@+id/buttonNext"
 				android:layout_width="0dp"

@@ -1,11 +1,15 @@
 package com.anod.car.home.prefs;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import android.app.Activity;
+import android.app.Dialog;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceCategory;
 
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetHelper;
-import com.anod.car.home.drawer.NavigationList;
 import com.anod.car.home.incar.ActivityRecognitionClientService;
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.incar.SamsungDrivingMode;
@@ -14,35 +18,18 @@ import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.TrialDialogs;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
-
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.os.Bundle;
-import android.os.Handler;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceCategory;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 
     private static final String MEDIA_SCREEN = "media-screen";
 
+    private static final String MORE_SCREEN = "more-screen";
+
     private static final String SCREEN_BT_DEVICE = "bt-device-screen";
 
     private static final String PREF_NOTIF_SHORTCUTS = "notif-shortcuts";
-
-    private static final String AUTORUN_APP_PREF = "autorun-app-choose";
-
-    private static final String AUTORUN_APP_DISABLED = "disabled";
-
-    private static final String AUTORUN_APP_CUSTOM = "custom";
-
-    protected static final int REQUEST_PICK_APPLICATION = 0;
 
     public static final int PS_DIALOG_REQUEST_CODE = 4;
 
@@ -77,21 +64,6 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
         }
     }
 
-    @Override
-    protected int getNavigationItem() {
-        return NavigationList.ID_CAR_SETTINGS;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     public Dialog createTrialDialog() {
         if (Utils.isProInstalled(mContext)) {
             return TrialDialogs.buildProInstalledDialog(mContext);
@@ -123,7 +95,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
             incarSwitch.setSummary("");
         }
 
-        incarSwitch.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+        incarSwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if ((Boolean) newValue) {
@@ -139,16 +111,14 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
         registerBroadcastServiceSwitchListener(PreferencesStorage.POWER_REQUIRED);
         registerBroadcastServiceSwitchListener(PreferencesStorage.CAR_DOCK_REQUIRED);
 
-        initAutorunApp(incar);
         initActivityRecognition();
         initScreenTimeout(incar);
 
         setIntent(SCREEN_BT_DEVICE, BluetoothDeviceActivity.class, 0);
         showFragmentOnClick(MEDIA_SCREEN, ConfigurationInCarVolume.class);
-
+        showFragmentOnClick(MORE_SCREEN, ConfigurationInCarMore.class);
         showFragmentOnClick(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts.class);
 
-        initSamsungHandsfree();
     }
 
     private void registerBroadcastServiceSwitchListener(String key) {
@@ -169,7 +139,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
             pref.setValue("enabled");
         }
 
-        pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+        pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 String value = (String) newValue;
@@ -188,18 +158,8 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
         });
     }
 
-    private void initSamsungHandsfree() {
-        if (!SamsungDrivingMode.hasMode()) {
-            final Preference samDrivingPref = findPreference(
-                    PreferencesStorage.SAMSUNG_DRIVING_MODE);
-            ((PreferenceCategory) findPreference("incar-more-category"))
-                    .removePreference(samDrivingPref);
-        }
-    }
-
     private void initActivityRecognition() {
-        final Preference pref = (Preference) findPreference(
-                PreferencesStorage.ACTIVITY_RECOGNITION);
+        final Preference pref = findPreference(PreferencesStorage.ACTIVITY_RECOGNITION);
         final Handler handler = new Handler();
 
         new Thread(new Runnable() {
@@ -220,7 +180,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
             final Preference pref) {
         pref.setSummary(summary);
         if (status != ConnectionResult.SUCCESS) {
-            pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object o) {
                     Dialog d = GooglePlayServicesUtil
@@ -230,7 +190,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
                 }
             });
         } else {
-            pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     Boolean val = (Boolean) newValue;
@@ -265,74 +225,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
         return GooglePlayServicesUtil.getErrorString(errorCode);
     }
 
-    private void initAutorunApp(InCar incar) {
-        final ListPreference pref = (ListPreference) findPreference(AUTORUN_APP_PREF);
-        ComponentName autorunApp = incar.getAutorunApp();
-        if (autorunApp == null) {
-            updateAutorunAppPref(null);
-        } else {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.setComponent(autorunApp);
-            updateAutorunAppPref(intent);
-        }
-        pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                String selection = (String) newValue;
-                if (selection.equals(AUTORUN_APP_DISABLED)) {
-                    saveAutorunApp(null);
-                } else {
-                    Intent mainIntent = new Intent(mContext, AllAppsActivity.class);
-                    startActivityForResult(mainIntent, REQUEST_PICK_APPLICATION);
-                }
-                return false;
-            }
-        });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_PICK_APPLICATION) {
-            saveAutorunApp(data);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void saveAutorunApp(Intent data) {
-        ComponentName component = null;
-        if (data != null) {
-            component = data.getComponent();
-        }
-        // update storage
-        PreferencesStorage.saveAutorunApp(component, mContext);
-        updateAutorunAppPref(data);
-    }
-
-    private void updateAutorunAppPref(Intent data) {
-        final ListPreference pref = (ListPreference) findPreference(AUTORUN_APP_PREF);
-        String title = null;
-        String value = null;
-        if (data == null) {
-            title = getString(R.string.disabled);
-            value = AUTORUN_APP_DISABLED;
-        } else {
-            // get name
-            PackageManager pm = mContext.getPackageManager();
-            final ResolveInfo resolveInfo = pm.resolveActivity(data, 0);
-            if (resolveInfo != null) {
-                title = (String) resolveInfo.activityInfo.loadLabel(pm);
-            } else {
-                title = data.getComponent().getPackageName();
-            }
-            value = AUTORUN_APP_CUSTOM;
-        }
-        // update preference
-        pref.setSummary(title);
-        pref.setValue(value);
-
-    }
-
-    private OnPreferenceChangeListener mBroadcastServiceSwitchListener = new OnPreferenceChangeListener() {
+    private Preference.OnPreferenceChangeListener mBroadcastServiceSwitchListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             if ((Boolean) newValue || isBroadcastServiceRequired()) {

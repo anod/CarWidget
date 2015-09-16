@@ -1,14 +1,13 @@
 package com.anod.car.home.prefs;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import com.anod.car.home.R;
-import com.anod.car.home.drawer.NavigationList;
 import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.ShortcutPreference;
-
-import android.content.Intent;
-import android.os.Bundle;
 
 public class ConfigurationNotifShortcuts extends ConfigurationPreferenceFragment
         implements PreferenceKey, ShortcutPreference.DropCallback {
@@ -40,11 +39,6 @@ public class ConfigurationNotifShortcuts extends ConfigurationPreferenceFragment
             mPickShortcutUtils.initLauncherPreference(i, p);
             p.setDropCallback(this);
         }
-    }
-
-    @Override
-    protected int getNavigationItem() {
-        return NavigationList.ID_CAR_SETTINGS;
     }
 
     @Override

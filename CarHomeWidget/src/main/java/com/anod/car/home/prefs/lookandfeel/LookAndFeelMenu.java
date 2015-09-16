@@ -13,7 +13,7 @@ import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.Utils;
 
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -98,7 +98,7 @@ public class LookAndFeelMenu {
                     mActivity.refreshSkinPreview();
                 }
             });
-            d.show(mActivity.getFragmentManager(), "tileColor");
+            d.show(mActivity.getSupportFragmentManager(), "tileColor");
             return true;
         }
         if (itemId == R.id.more) {
@@ -121,7 +121,7 @@ public class LookAndFeelMenu {
                     mActivity.refreshSkinPreview();
                 }
             });
-            d.show(mActivity.getFragmentManager(), "bgColor");
+            d.show(mActivity.getSupportFragmentManager(), "bgColor");
             return true;
         }
         if (itemId == R.id.icons_theme) {

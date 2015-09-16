@@ -9,8 +9,7 @@ import com.anod.car.home.utils.ShortcutPicker;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
+import android.support.v7.preference.Preference;
 
 public class PickShortcutUtils implements ShortcutPicker.Handler {
 
@@ -66,7 +65,7 @@ public class PickShortcutUtils implements ShortcutPicker.Handler {
     public ShortcutPreference initLauncherPreference(int position, ShortcutPreference p) {
         p.setKey(mPreferenceKey.getCompiledKey(position));
         p.setShortcutPosition(position);
-        p.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        p.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 ShortcutPreference pref = (ShortcutPreference) preference;
@@ -80,7 +79,7 @@ public class PickShortcutUtils implements ShortcutPicker.Handler {
                 return true;
             }
         });
-        p.setOnDeleteClickListener(new OnPreferenceClickListener() {
+        p.setOnDeleteClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 ShortcutPreference pref = (ShortcutPreference) preference;

@@ -18,17 +18,9 @@
 	<attr name="panelItem" format="reference" />
 	<attr name="panelHeader" format="reference" />
     <attr name="panelHeaderBackground" format="reference" />
-    <attr name="PreferencesItem" format="reference"/>
-    <!--
-	<attr name="buttonStyle" format="reference"/>
-	-->
+
 	<attr name="activityBgColor" format="reference" />
 	<attr name="wizardTextItem" format="reference" />
-	<attr name="textColor" format="reference" />
-
-	<attr name="textColorPrimary" format="reference" />
-	<attr name="textColorSecondary" format="reference" />
-	<attr name="textColorOpposite" format="reference" />
 
     <declare-styleable name="TwoLineButtonAttrs">
         <attr name="icon_src" format="reference|color" />

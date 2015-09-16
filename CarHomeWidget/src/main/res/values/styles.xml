@@ -13,15 +13,16 @@
     <style name="DialogTheme" parent="Theme.AppCompat.Dialog">
         <item name="panelItem">@style/panelItemBasic</item>
         <item name="panelHeader">@style/panelHeaderBasic</item>
-        <item name="PreferencesItem">@style/PreferencesItem</item>
         <item name="buttonStyle">@style/buttonStyleDefault</item>
         <item name="activityBgColor">@android:color/transparent</item>
         <item name="wizardTextItem">@style/wizardTextItemHolo</item>
-        <item name="textColor">@android:color/white</item>
 
-        <item name="textColorPrimary">?android:attr/textColorPrimary</item>
-        <item name="textColorSecondary">?android:attr/textColorSecondary</item>
-<!-- TODO: move to theme? -->
+        <!-- Action Bar Styles -->
+        <item name="selectableItemBackground">@drawable/abc_item_background_holo_dark</item>
+        <item name="selectableItemBackgroundBorderless">?attr/selectableItemBackground</item>
+        <item name="actionButtonStyle">@style/Widget.AppCompat.ActionButton</item>
+        <item name="actionBarItemBackground">?attr/selectableItemBackgroundBorderless</item>
+
         <item name="colorPrimary">@color/material_bluegray_600</item>
         <item name="colorPrimaryDark">@color/material_bluegray_800</item>
         <item name="colorAccent">@color/material_bluegray_300</item>

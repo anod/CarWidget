@@ -31,8 +31,4 @@ public class ConfigurationInCarVolume extends ConfigurationPreferenceFragment
         PreferencesStorage.setAdjustVolumeLevel(mContext, isChecked);
     }
 
-    @Override
-    protected int getNavigationItem() {
-        return NavigationList.ID_CAR_SETTINGS;
-    }
 }

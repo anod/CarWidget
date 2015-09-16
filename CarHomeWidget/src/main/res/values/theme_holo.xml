@@ -5,17 +5,13 @@
 		<item name="panelItem">@style/panelItemBasic</item>
 		<item name="panelHeader">@style/panelHeaderBasic</item>
         <item name="panelHeaderBackground">@drawable/panel_header_bg_dark</item>
-		<item name="PreferencesItem">@style/PreferencesItem</item>
 		<item name="buttonStyle">@style/buttonStyleDefault</item>
 		<item name="activityBgColor">@color/background_material_dark</item>
 		<item name="wizardTextItem">@style/wizardTextItemHolo</item>
-		<item name="textColor">@android:color/white</item>
 
-		<item name="textColorPrimary">?android:attr/textColorPrimary</item>
-		<item name="textColorSecondary">?android:attr/textColorSecondary</item>
-		<item name="textColorOpposite">?android:attr/textColorPrimary</item>
+		<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
 
-    </style>
+	</style>
 
 	<style name="AppThemeHolo.NoActionBar" parent="AppThemeHolo" >
 		<item name="windowActionBar">false</item>

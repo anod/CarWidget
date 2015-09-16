@@ -45,4 +45,6 @@
     <!-- colorAccent -->
     <color name="material_bluegray_300">#90a4ae</color>
 
+	<!-- this is needed as preference_category_material layout is using this color as the text color -->
+	<color name="preference_fallback_accent_color">@color/material_bluegray_300</color>
 </resources>

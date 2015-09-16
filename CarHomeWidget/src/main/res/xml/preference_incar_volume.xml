@@ -2,24 +2,25 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
             android:title="@string/pref_change_media_volume"
             android:summary="@string/pref_change_media_volume_summary"
+    android:layout="@layout/preference_list_fragment"
      >
             <CheckBoxPreference
                 android:key="adjust-volume-level"
                 android:summary="@string/pref_change_media_volume_summary"
-                android:title="@string/pref_change_media_volume" android:layout="@layout/pref"/>
+                android:title="@string/pref_change_media_volume" />
 
-            <com.anod.car.home.prefs.views.SeekBarPreference
+            <com.anod.car.home.prefs.views.SeekBarDialogPreference
                 android:defaultValue="80"
                 android:key="volume-level"
                 android:max="100"
                 android:summary="@string/pref_volume_level_summary"
                 android:text=""
-                android:title="@string/pref_media_volume_level" android:layout="@layout/pref"/>
-            <com.anod.car.home.prefs.views.SeekBarPreference
+                android:title="@string/pref_media_volume_level" />
+            <com.anod.car.home.prefs.views.SeekBarDialogPreference
                 android:defaultValue="80"
                 android:key="call-volume-level"
                 android:max="100"
                 android:summary="@string/pref_volume_level_summary"
                 android:text=""
-                android:title="@string/pref_phone_volume_level" android:layout="@layout/pref"/>
+                android:title="@string/pref_phone_volume_level"/>
 </PreferenceScreen>

@@ -1,21 +1,19 @@
 package com.anod.car.home.prefs;
 
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+
 import com.android.colorpicker.ColorPickerSwatch;
 import com.anod.car.home.R;
-import com.anod.car.home.drawer.NavigationList;
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
 import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
-import com.anod.car.home.prefs.views.SeekBarPreference;
-
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
+import com.anod.car.home.prefs.views.SeekBarDialogPreference;
 
 public class ConfigurationLook extends ConfigurationPreferenceFragment {
 
@@ -64,11 +62,6 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
 
     }
 
-    @Override
-    protected int getNavigationItem() {
-        return NavigationList.ID_CURRENT_WIDGET;
-    }
-
     private void updateRotateSummary(ListPreference rotatePref, String value) {
         for (int i = 0; i < mIconRotateValues.length; i++) {
             if (value.equals(mIconRotateValues[i])) {
@@ -80,7 +73,7 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
 
     private void initIcon(final Main prefs, final WidgetSharedPreferences sharedPrefs) {
         Preference icnColor = (Preference) initWidgetPref(PreferencesStorage.ICONS_COLOR);
-        icnColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        icnColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Integer icnTintColor = prefs.getIconsColor();
@@ -104,7 +97,7 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
     }
 
     private void initFont(final Main prefs, final WidgetSharedPreferences sharedPrefs) {
-        SeekBarPreference sbPref = (SeekBarPreference) initWidgetPref(PreferencesStorage.FONT_SIZE);
+        SeekBarDialogPreference sbPref = (SeekBarDialogPreference) initWidgetPref(PreferencesStorage.FONT_SIZE);
         int fontSize = prefs.getFontSize();
         if (fontSize != Main.FONT_SIZE_UNDEFINED) {
             sbPref.setValue(fontSize);
@@ -114,8 +107,8 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
             sbPref.setValue((int) size);
         }
 
-        Preference fontColor = (Preference) initWidgetPref(PreferencesStorage.FONT_COLOR);
-        fontColor.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        Preference fontColor = initWidgetPref(PreferencesStorage.FONT_COLOR);
+        fontColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 int value = prefs.getFontColor();
@@ -135,5 +128,6 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
             }
         });
     }
+
 
 }

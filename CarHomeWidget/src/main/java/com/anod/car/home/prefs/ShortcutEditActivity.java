@@ -15,7 +15,7 @@ import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;

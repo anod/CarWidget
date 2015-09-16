@@ -1,5 +1,20 @@
 package com.anod.car.home.prefs.colorpicker;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatDialog;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ProgressBar;
+
 import com.android.colorpicker.ColorPickerDialog;
 import com.android.colorpicker.ColorPickerPalette;
 import com.android.colorpicker.ColorPickerSwatch;
@@ -7,20 +22,6 @@ import com.anod.car.home.R;
 import com.anod.car.home.utils.AlphaPatternDrawable;
 import com.anod.car.home.utils.ColorUtils;
 import com.anod.car.home.utils.Utils;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
 
 public class CarHomeColorPickerDialog extends ColorPickerDialog {
 
@@ -80,9 +81,20 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Activity activity = getActivity();
+        // Do not use AlertBuilder, itcause requestFeature exception
+//        mAlertDialog = new AlertDialog.Builder(activity)
+//                .setView(view)
+//                .setPositiveButton(android.R.string.ok, mPositiveListener)
+//                .setNegativeButton(android.R.string.cancel, mNegativeListener)
+//                .create();
 
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.color_picker_dialog, null);
+        return new Dialog(getActivity(), R.style.DialogTheme);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.color_picker_dialog, container, false);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.color_dialog_toolbar);
         toolbar.setTitle(R.string.color_dialog_title);
@@ -117,15 +129,17 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
             mAlpha.init(mSize, ALPHA_LEVELS, mAlphaSelectListener);
         }
 
+        Button positiveButton = (Button) view.findViewById(android.R.id.button1);
+        positiveButton.setText(android.R.string.ok);
+        positiveButton.setOnClickListener(mPositiveListener);
+
+        Button negativeButton = (Button) view.findViewById(android.R.id.button2);
+        negativeButton.setText(android.R.string.cancel);
+        negativeButton.setOnClickListener(mNegativeListener);
+
         showPaletteView();
 
-        mAlertDialog = new AlertDialog.Builder(activity)
-                .setView(view)
-                .setPositiveButton(android.R.string.ok, mPositiveListener)
-                .setNegativeButton(android.R.string.cancel, mNegativeListener)
-                .create();
-
-        return mAlertDialog;
+        return view;
     }
 
     private void updateHexButton() {
@@ -174,10 +188,10 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         return colors;
     }
 
-    private DialogInterface.OnClickListener mPositiveListener
-            = new DialogInterface.OnClickListener() {
+    private View.OnClickListener mPositiveListener
+            = new View.OnClickListener() {
         @Override
-        public void onClick(DialogInterface dialog, int which) {
+        public void onClick(View v) {
             int color = getSelectedColor();
             if (mHexPanel.isVisible()) {
                 color = mHexPanel.getColor(color);
@@ -189,10 +203,11 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
         }
     };
 
-    private DialogInterface.OnClickListener mNegativeListener
-            = new DialogInterface.OnClickListener() {
+    private View.OnClickListener mNegativeListener
+            = new View.OnClickListener() {
+
         @Override
-        public void onClick(DialogInterface dialog, int which) {
+        public void onClick(View v) {
             dismiss();
         }
     };

@@ -16,7 +16,6 @@ import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -26,6 +25,7 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -143,8 +143,7 @@ public class ConfigurationRestore extends Fragment implements
             return;
         }
 
-        mContext = (Context) getActivity();
-        ((ConfigurationActivity) getActivity()).setNavigationItem(NavigationList.ID_BACKUP);
+        mContext = getActivity();
 
         mBackupManager = new PreferencesBackupManager(mContext);
 
