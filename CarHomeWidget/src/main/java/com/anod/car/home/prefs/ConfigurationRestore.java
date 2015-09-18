@@ -16,7 +16,6 @@ import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,6 +24,7 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;

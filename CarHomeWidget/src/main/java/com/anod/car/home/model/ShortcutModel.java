@@ -1,9 +1,5 @@
 package com.anod.car.home.model;
 
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.UtilitiesBitmap;
-import com.anod.car.home.utils.Utils;
-
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,16 +14,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.net.Uri;
-import android.os.Build;
 import android.text.TextUtils;
+
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.UtilitiesBitmap;
 
 import java.lang.ref.SoftReference;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 public class ShortcutModel {
-
-    static final String TAG = "CarHomeWidget.Model";
 
     private final ContentResolver mContentResolver;
 
@@ -38,6 +34,8 @@ public class ShortcutModel {
     private final int mIconBitmapSize;
 
     private ArrayList<SoftReference<Bitmap>> mUnusedBitmaps;
+
+    private final static Object sLock = new Object();
 
     private SoftReferenceThreadLocal<Canvas> mCachedIconCanvas = new SoftReferenceThreadLocal<Canvas>() {
         @Override
@@ -74,7 +72,7 @@ public class ShortcutModel {
         }
 
         Bitmap unusedBitmap = null;
-        synchronized(mUnusedBitmaps) {
+        synchronized(sLock) {
             // not in cache; we need to load it from the db
             while ((unusedBitmap == null || !unusedBitmap.isMutable() ||
                     unusedBitmap.getWidth() != mIconBitmapSize ||

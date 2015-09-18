@@ -63,3 +63,7 @@
 -keep class android.net.compatibility.** { *; }
 -keep class android.net.http.** { *; }
 -dontwarn org.apache.http.**
+
+#Proguard
+-keep class android.support.v7.preference.** { *; }
+-keep interface android.support.v7.preference.** { *; }
