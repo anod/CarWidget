@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * @author alex
@@ -27,14 +27,14 @@ public class NavigationDrawer {
 
     private final NavigationAdapter mAdapter;
 
-    @InjectView(R.id.drawer_layout)
+    @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    @InjectView(R.id.left_drawer)
+    @Bind(R.id.left_drawer)
     ListView mDrawerList;
 
     public NavigationDrawer(final AppCompatActivity activity, int appWidgetId) {
-        ButterKnife.inject(this, activity);
+        ButterKnife.bind(this, activity);
 
         mTitle = mDrawerTitle = activity.getTitle();
 

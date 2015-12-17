@@ -16,7 +16,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * @author alex
@@ -24,13 +24,13 @@ import butterknife.InjectView;
  */
 public class MusicAppChoiceActivity extends MusicAppsActivity {
 
-    @InjectView(R.id.defaultApp)
+    @Bind(R.id.defaultApp)
     CheckBox mDefaultApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class MusicAppChoiceActivity extends MusicAppsActivity {
         boolean isRunning = isMusicCmpRunning(musicCmp);
 
         MusicUtils.sendKeyEventComponent(
-                KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, this, musicCmp, isRunning == false
+                KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, this, musicCmp, !isRunning
         );
 
         if (mDefaultApp.isChecked()) {

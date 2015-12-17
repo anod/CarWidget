@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public class AppsListAdapter extends ArrayAdapter<AppsList.Entry> {
 
@@ -75,14 +75,14 @@ public class AppsListAdapter extends ArrayAdapter<AppsList.Entry> {
 
         int position;
 
-        @InjectView(android.R.id.text1)
+        @Bind(android.R.id.text1)
         TextView title;
 
-        @InjectView(android.R.id.icon)
+        @Bind(android.R.id.icon)
         ImageView icon;
 
         public ViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 }

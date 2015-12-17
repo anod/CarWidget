@@ -86,12 +86,11 @@ public class ShortcutModel {
                 canvas.drawColor(0, PorterDuff.Mode.CLEAR);
                 canvas.setBitmap(null);
             }
-        }
 
-        if (unusedBitmap == null) {
-            unusedBitmap = Bitmap.createBitmap(mIconBitmapSize, mIconBitmapSize, Bitmap.Config.ARGB_8888);
+            if (unusedBitmap == null) {
+                unusedBitmap = Bitmap.createBitmap(mIconBitmapSize, mIconBitmapSize, Bitmap.Config.ARGB_8888);
+            }
         }
-
 
         ShortcutInfo info;
         try {

@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * @author alex
@@ -24,7 +24,7 @@ public class CrashDialog extends BaseCrashReportDialog implements DialogInterfac
         DialogInterface.OnDismissListener {
 
     private static final String STATE_COMMENT = "comment";
-    @InjectView(android.R.id.edit)
+    @Bind(android.R.id.edit)
     EditText mUserCommentView;
 
     AlertDialog mDialog;
@@ -48,7 +48,7 @@ public class CrashDialog extends BaseCrashReportDialog implements DialogInterfac
     protected View buildCustomView(Bundle savedInstanceState) {
 
         View root = LayoutInflater.from(this).inflate(R.layout.dialog_crash_report, null, false);
-        ButterKnife.inject(this, root);
+        ButterKnife.bind(this, root);
 
         if (savedInstanceState != null) {
             String savedValue = savedInstanceState.getString(STATE_COMMENT);

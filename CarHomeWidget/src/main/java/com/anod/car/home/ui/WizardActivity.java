@@ -20,7 +20,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
@@ -47,13 +47,13 @@ public class WizardActivity extends CarWidgetActivity {
      * The pager widget, which handles animation and allows swiping horizontally to access previous
      * and next wizard steps.
      */
-    @InjectView(R.id.pager)
+    @Bind(R.id.pager)
     ViewPager mPager;
 
-    @InjectView(R.id.buttonNext)
+    @Bind(R.id.buttonNext)
     Button mNextButton;
 
-    @InjectView(R.id.buttonSkip)
+    @Bind(R.id.buttonSkip)
     Button mSkipButton;
 
     /**
@@ -68,7 +68,7 @@ public class WizardActivity extends CarWidgetActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wizard_activity);
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         // Instantiate a ViewPager and a PagerAdapter.
         mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
         mPager.setAdapter(mPagerAdapter);

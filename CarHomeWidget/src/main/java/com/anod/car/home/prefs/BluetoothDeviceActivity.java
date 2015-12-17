@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * @author alex
@@ -48,7 +48,7 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
     private static final IntentFilter INTENT_FILTER = new IntentFilter(
             BluetoothAdapter.ACTION_STATE_CHANGED);
 
-    @InjectView(android.R.id.list)
+    @Bind(android.R.id.list)
     ListView mDevicesList;
 
     private DeviceAdapter mListAdapter;
@@ -60,7 +60,7 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_device);
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         mDevicesList.setOnItemClickListener(this);
         mListAdapter = new DeviceAdapter(this);
 

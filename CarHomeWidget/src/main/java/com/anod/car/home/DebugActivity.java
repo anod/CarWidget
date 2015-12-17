@@ -26,15 +26,14 @@ import java.util.LinkedList;
 import java.util.Timer;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.InjectViews;
+import butterknife.Bind;
 
 public class DebugActivity extends Activity {
 
-    @InjectView(R.id.log)
+    @Bind(R.id.log)
     ListView mListView;
 
-    @InjectViews({
+    @Bind({
             R.id.broadcast,
             R.id.incar,
             R.id.power,
@@ -62,7 +61,7 @@ public class DebugActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         mAdapter = new LogAdapter(this);
         mListView.setAdapter(mAdapter);
 

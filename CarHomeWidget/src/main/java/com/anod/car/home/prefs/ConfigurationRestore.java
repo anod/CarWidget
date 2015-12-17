@@ -47,7 +47,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public class ConfigurationRestore extends Fragment implements
         RestoreTask.RestoreTaskListner, DeleteFileTask.DeleteFileTaskListener,
@@ -74,28 +74,28 @@ public class ConfigurationRestore extends Fragment implements
 
     public static final String EXTRA_TYPE = "type";
 
-    @InjectView(R.id.backupMain)
+    @Bind(R.id.backupMain)
     ImageButton mBackupMain;
 
-    @InjectView(R.id.backupIncar)
+    @Bind(R.id.backupIncar)
     ImageButton mBackupIncar;
 
-    @InjectView(android.R.id.list)
+    @Bind(android.R.id.list)
     ListView mListView;
 
-    @InjectView(R.id.downloadMain)
+    @Bind(R.id.downloadMain)
     ImageButton mDownloadMain;
 
-    @InjectView(R.id.downloadIncar)
+    @Bind(R.id.downloadIncar)
     ImageButton mDownloadIncar;
 
-    @InjectView(R.id.uploadIncar)
+    @Bind(R.id.uploadIncar)
     ImageButton mUploadIncar;
 
-    @InjectView(R.id.restoreIncar)
+    @Bind(R.id.restoreIncar)
     ImageButton mRestoreIncar;
 
-    @InjectView(R.id.lastBackupIncar)
+    @Bind(R.id.lastBackupIncar)
     TextView mLastBackupIncar;
 
     private String mLastBackupStr;
@@ -115,7 +115,7 @@ public class ConfigurationRestore extends Fragment implements
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.restore_list, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         CheatSheet.setup(mBackupMain);
         CheatSheet.setup(mDownloadMain);
@@ -435,23 +435,23 @@ public class ConfigurationRestore extends Fragment implements
 
     static class ViewHolder {
 
-        @InjectView(android.R.id.title)
+        @Bind(android.R.id.title)
         TextView title;
 
-        @InjectView(android.R.id.text2)
+        @Bind(android.R.id.text2)
         TextView text2;
 
-        @InjectView(R.id.apply_icon)
+        @Bind(R.id.apply_icon)
         ImageView apply;
 
-        @InjectView(R.id.delete_button)
+        @Bind(R.id.delete_button)
         ImageView delete;
 
-        @InjectView(R.id.uploadMain)
+        @Bind(R.id.uploadMain)
         ImageView export;
 
         public ViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 

@@ -318,7 +318,7 @@ public class InCar implements Serializable {
             ClassNotFoundException {
         in.defaultReadObject();
 
-        boolean hasComponent = false;
+        boolean hasComponent;
         try {
             hasComponent = in.readBoolean();
         } catch (EOFException e) { // old version compatibility

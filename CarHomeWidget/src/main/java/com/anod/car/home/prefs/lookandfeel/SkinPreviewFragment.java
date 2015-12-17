@@ -10,6 +10,7 @@ import com.anod.car.home.utils.AppLog;
 
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -22,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.RemoteViews;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public class SkinPreviewFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<View>, View.OnLongClickListener {
@@ -33,7 +34,7 @@ public class SkinPreviewFragment extends Fragment
 
     private LookAndFeelActivity mActivity;
 
-    @InjectView(R.id.container_preview)
+    @Bind(R.id.container_preview)
     ViewGroup mContainer;
 
     private int mShotcutsCount;
@@ -64,10 +65,10 @@ public class SkinPreviewFragment extends Fragment
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         mPosition = getArguments().getInt(ARG_POSITION);
-        mActivity = (LookAndFeelActivity) activity;
+        mActivity = (LookAndFeelActivity) context;
     }
 
     @Override
@@ -80,7 +81,7 @@ public class SkinPreviewFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.skin_item, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         return view;
     }
 

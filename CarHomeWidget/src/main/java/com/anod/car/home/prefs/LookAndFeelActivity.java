@@ -42,7 +42,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public class LookAndFeelActivity extends CarWidgetActivity
         implements ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentHelper,
@@ -61,13 +61,13 @@ public class LookAndFeelActivity extends CarWidgetActivity
 
     private BitmapLruCache mBitmapMemoryCache;
 
-    @InjectView(R.id.skin_info)
+    @Bind(R.id.skin_info)
     TextView mTextView;
 
-    @InjectView(R.id.gallery)
+    @Bind(R.id.gallery)
     ViewPager mGallery;
 
-    @InjectView(R.id.loading)
+    @Bind(R.id.loading)
     View mLoaderView;
 
     private LookAndFeelMenu mMenu;
@@ -150,7 +150,7 @@ public class LookAndFeelActivity extends CarWidgetActivity
         }
         setContentView(R.layout.activity_lookandfeel);
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         mContext = this;
 

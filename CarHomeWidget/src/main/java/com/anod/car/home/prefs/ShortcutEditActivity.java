@@ -51,7 +51,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnClick;
 
 public class ShortcutEditActivity extends AppCompatActivity {
@@ -80,10 +80,10 @@ public class ShortcutEditActivity extends AppCompatActivity {
 
     private Bitmap mCustomIcon;
 
-    @InjectView(R.id.icon_edit)
+    @Bind(R.id.icon_edit)
     ImageView mIconView;
 
-    @InjectView(R.id.label_edit)
+    @Bind(R.id.label_edit)
     EditText mLabelEdit;
 
     private ShortcutModel mModel;
@@ -104,7 +104,7 @@ public class ShortcutEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shortcutedit);
         setTitle(R.string.shortcut_edit_title);
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         init(getIntent());
     }

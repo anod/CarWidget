@@ -49,7 +49,7 @@ public class IconThemesActivity extends AppsCacheActivity {
         }
         mRefresh = false;
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override
