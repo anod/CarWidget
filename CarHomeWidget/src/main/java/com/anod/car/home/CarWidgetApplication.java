@@ -13,7 +13,6 @@ import org.acra.annotation.ReportsCrashes;
 import android.app.Application;
 
 @ReportsCrashes(
-    mailTo="alex.gavrishev@gmail.com",
     mode = ReportingInteractionMode.DIALOG,
     resDialogText = R.string.crash_dialog_text,
     resDialogOkToast = R.string.crash_dialog_toast,
@@ -27,7 +26,8 @@ import android.app.Application;
             ReportField.BRAND,
             ReportField.STACK_TRACE,
             ReportField.USER_COMMENT
-        }
+        },
+        reportSenderFactoryClasses = { BrowserUrlSender.Factory.class }
 )
 public class CarWidgetApplication extends Application {
 
@@ -38,8 +38,6 @@ public class CarWidgetApplication extends Application {
     @Override
     public void onCreate() {
         ACRA.init(this);
-        BrowserUrlSender yourSender = new BrowserUrlSender();
-        ACRA.getErrorReporter().setReportSender(yourSender);
         super.onCreate();
         LeakCanary.install(this);
 

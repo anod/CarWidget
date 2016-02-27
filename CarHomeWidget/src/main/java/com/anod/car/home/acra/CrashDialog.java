@@ -3,7 +3,7 @@ package com.anod.car.home.acra;
 import com.anod.car.home.R;
 
 import org.acra.ACRA;
-import org.acra.BaseCrashReportDialog;
+import org.acra.dialog.BaseCrashReportDialog;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;

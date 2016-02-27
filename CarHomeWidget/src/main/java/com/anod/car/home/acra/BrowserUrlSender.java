@@ -5,17 +5,26 @@ import com.anod.car.home.utils.AppLog;
 
 import org.acra.ReportField;
 import org.acra.collector.CrashReportData;
+import org.acra.config.ACRAConfiguration;
 import org.acra.sender.ReportSender;
 import org.acra.sender.ReportSenderException;
+import org.acra.sender.ReportSenderFactory;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 public class BrowserUrlSender implements ReportSender {
     private final Uri mBaseUri = Uri.parse("https://anodsplace.info/acra/report/adapter.php");
 
-    public BrowserUrlSender(){
+    public static class Factory implements ReportSenderFactory {
+
+        @NonNull
+        @Override
+        public ReportSender create(Context context, ACRAConfiguration config) {
+            return new BrowserUrlSender();
+        }
     }
 
     @Override

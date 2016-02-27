@@ -42,7 +42,7 @@ public class AppIconLoader extends ImageLoader {
         ComponentName cmp = ComponentName.unflattenFromString(imgUID);
         try {
             d = mPackageManager.getActivityIcon(cmp);
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException ignored) {
         }
 
         if (d == null) {
