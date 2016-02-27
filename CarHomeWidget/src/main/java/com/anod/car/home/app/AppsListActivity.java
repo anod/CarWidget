@@ -51,7 +51,7 @@ abstract public class AppsListActivity extends AppCompatListActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.apps_list);
-        getListView().setOnItemClickListener(this);
+        getGridView().setOnItemClickListener(this);
         int footerViewId = getFooterViewId();
         if (footerViewId > 0) {
             FrameLayout panel = (FrameLayout) findViewById(R.id.panel);

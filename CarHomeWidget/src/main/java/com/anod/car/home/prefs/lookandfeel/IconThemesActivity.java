@@ -40,7 +40,7 @@ public class IconThemesActivity extends AppsCacheActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        getGridView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         mAppWidgetId = Utils.readAppWidgetId(savedInstanceState, getIntent());
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             AppLog.d("Invalid AppWidgetId");
@@ -75,7 +75,7 @@ public class IconThemesActivity extends AppsCacheActivity {
                 }
             }
         }
-        getListView().setItemChecked(mCurrentSelected, true);
+        getGridView().setItemChecked(mCurrentSelected, true);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class IconThemesActivity extends AppsCacheActivity {
     protected void onEntryClick(int position, AppsList.Entry entry) {
         mThemePackageName = (entry.componentName == null) ? null
                 : entry.componentName.getPackageName();
-        getListView().setItemChecked(position, true);
+        getGridView().setItemChecked(position, true);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class IconThemesActivity extends AppsCacheActivity {
             update = true;
         } else if (mThemePackageName != null && prevTheme == null) {
             update = true;
-        } else if (mThemePackageName != null && prevTheme != null && !mThemePackageName
+        } else if (mThemePackageName != null && !mThemePackageName
                 .equals(prevTheme)) {
             update = true;
         }

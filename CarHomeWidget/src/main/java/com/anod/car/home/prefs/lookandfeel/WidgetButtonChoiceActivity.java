@@ -19,10 +19,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,8 +93,7 @@ public class WidgetButtonChoiceActivity extends AppCompatListActivity {
         Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
         initCheckedItem(items, prefs, skinProperties);
 
-        final ListView listView = getListView();
-        listView.setItemsCanFocus(false);
+        final GridView gridView = getGridView();
 
         setListAdapter(new ChoiceAdapter(this, items));
     }
@@ -119,9 +119,7 @@ public class WidgetButtonChoiceActivity extends AppCompatListActivity {
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
         ChoiceAdapter.Item item = (ChoiceAdapter.Item) getListAdapter().getItem(position);
         if (mButton == WidgetButtonViewBuilder.BUTTON_1) {
@@ -149,13 +147,9 @@ public class WidgetButtonChoiceActivity extends AppCompatListActivity {
     private static class ChoiceAdapter extends ArrayAdapter<ChoiceAdapter.Item> {
 
         public static class Item {
-
             int value;
-
             String title;
-
             int icon;
-
             boolean checked;
 
             private Item(String title, int icon, int value) {

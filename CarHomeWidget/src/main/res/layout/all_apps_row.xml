@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingLeft="6dp"
-    android:paddingRight="6dp"
-    android:paddingTop="3dp"
-    android:paddingBottom="3dp" >
+    android:orientation="vertical"
+    android:padding="3dp"
+	xmlns:tools="http://schemas.android.com/tools"
+ >
 
-     <ImageView 
+     <ImageView
      	android:id="@android:id/icon"
      	android:layout_width="@dimen/icon_size"
      	android:layout_height="@dimen/icon_size"
-     	android:layout_alignParentLeft="true"
-     	android:layout_centerVertical="true"
      	android:src="@drawable/ic_launcher_application"
+         android:layout_gravity="center"
 		android:padding="4dp"/>
-     
+
      <TextView android:id="@android:id/text1"
-         android:textSize="18sp"
-         android:textStyle="bold"
-         android:paddingLeft="3dp"
+		 android:textAppearance="?android:attr/textAppearanceMedium"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
-         android:layout_toRightOf="@android:id/icon"
-         android:layout_alignParentRight="true"
-     	 android:layout_centerVertical="true"
-         android:text="@string/textview"
-         android:gravity="center_vertical"
+         tools:text="@string/skin_info_bbb"
+         android:gravity="center_horizontal"
+		 android:lines="2"
+		 android:ellipsize="end"
+		 android:layout_gravity="bottom"
       />
-</RelativeLayout>
+</LinearLayout>

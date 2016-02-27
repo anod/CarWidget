@@ -1,11 +1,5 @@
 package com.anod.car.home.prefs;
 
-import com.anod.car.home.R;
-import com.anod.car.home.app.AppCompatListActivity;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.FastBitmapDrawable;
-import com.anod.car.home.utils.UtilitiesBitmap;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,9 +15,15 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
+
+import com.anod.car.home.R;
+import com.anod.car.home.app.AppCompatListActivity;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.FastBitmapDrawable;
+import com.anod.car.home.utils.UtilitiesBitmap;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,7 +69,7 @@ public class ActivityPicker extends AppCompatListActivity {
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = getIntentForPosition(position);
         setResult(Activity.RESULT_OK, intent);
         finish();
@@ -305,7 +305,7 @@ public class ActivityPicker extends AppCompatListActivity {
 
             Item item = (Item) getItem(position);
             textView.setText(item.label);
-            textView.setCompoundDrawablesWithIntrinsicBounds(item.icon, null, null, null);
+            textView.setCompoundDrawablesWithIntrinsicBounds(null, item.icon, null, null);
 
             return textView;
         }

@@ -8,13 +8,18 @@
               android:dividerPadding="0dip">
 
     <FrameLayout android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
+                 android:layout_height="0dp"
                  android:layout_weight="1">
 
-        <ListView
+        <GridView
             android:id="@android:id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:columnWidth="90dp"
+            android:numColumns="auto_fit"
+            android:verticalSpacing="4dp"
+            android:horizontalSpacing="4dp"
+            android:stretchMode="columnWidth"
             />
 
 
