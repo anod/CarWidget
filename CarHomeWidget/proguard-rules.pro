@@ -39,9 +39,17 @@
 
 # Butter Knife
 
+-keep class butterknife.** { *; }
 -dontwarn butterknife.internal.**
--keep class **$$ViewInjector { *; }
--keepnames class * { @butterknife.InjectView *;}
+-keep class **$$ViewBinder { *; }
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
 
 # Dagger
 -dontwarn dagger.internal.codegen.**
@@ -67,3 +75,6 @@
 #Proguard
 -keep class android.support.v7.preference.** { *; }
 -keep interface android.support.v7.preference.** { *; }
+
+#Acra
+-keep class * extends org.acra.sender.ReportSenderFactory
