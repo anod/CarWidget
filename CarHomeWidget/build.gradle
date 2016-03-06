@@ -27,6 +27,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:8.4.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'ch.acra:acra:4.8.2'
+    compile 'com.jakewharton:disklrucache:2.0.2'
 
     compile files('libs/org.apache.http.legacy.jar')
 
