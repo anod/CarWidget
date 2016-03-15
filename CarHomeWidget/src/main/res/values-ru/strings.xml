@@ -266,4 +266,6 @@
     <string name="color_picker_default_title">Выберите цвет</string>
     <string name="color_swatch_description">Цвет %1$d</string>
     <string name="color_swatch_description_selected">Цвет %1$d выбран</string>
+	<string name="pref_hotspot_title">Включить WiFi Hotspot</string>
+	<string name="pref_hotspot_summary">Автоматически включать режим модема на устройстве</string>
 </resources>

@@ -72,6 +72,13 @@ public class ModeHandler {
             SamsungDrivingMode.enable(mContext);
         }
 
+        if(prefs.isHotspotOn()){
+            if (prefs.getDisableWifi().equals(InCar.WIFI_NOACTION)) {
+                disableWifi(mContext);
+            }
+            switchHotspot(mContext, true);
+        }
+
 //		Intent intent = new Intent()
 //				.setComponent(new ComponentName("com.RSen.OpenMic.Pheonix", "com.RSen.OpenMic.Pheonix.StartListeningActivity"))
 //				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -272,4 +279,17 @@ public class ModeHandler {
         context.startActivity(intent);
     }
 
+    /**
+     * Turn on or off Hotspot.
+     *
+     */
+    private static void switchHotspot(Context context, boolean isTurnToOn) {
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiApControl apControl = WifiApControl.getApControl(wifiManager);
+        if (apControl != null) {
+            AppLog.d("is WiFi AP enabled:"+apControl.isWifiApEnabled());
+            apControl.setWifiApEnabled(apControl.getWifiApConfiguration(), isTurnToOn);
+
+        }
+    }
 }

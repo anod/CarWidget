@@ -139,6 +139,7 @@ public class PreferencesStorage {
 
     public static final String CAR_DOCK_REQUIRED = "car-dock";
 
+    public static final String HOTSPOT = "hotspot";
 
     public static Main loadMain(Context context, int appWidgetId) {
         final WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
@@ -257,6 +258,8 @@ public class PreferencesStorage {
                 .getString(SCREEN_ORIENTATION, String.valueOf(ScreenOrientation.DISABLED));
         p.setScreenOrientation(Integer.parseInt(orientation));
 
+        p.setHotspotOn(prefs.getBoolean(HOTSPOT, false));
+
         return p;
     }
 
@@ -301,6 +304,7 @@ public class PreferencesStorage {
 
         editor.putString(SCREEN_ORIENTATION, String.valueOf(prefs.getScreenOrientation()));
 
+        editor.putBoolean(HOTSPOT, prefs.isHotspotOn());
         editor.commit();
         saveBtDevices(context, prefs.getBtDevices());
     }

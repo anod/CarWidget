@@ -275,4 +275,6 @@
 	<string name="crash_dialog_toast">Browser will be opened</string>
 	<string name="crash_dialog_comment">Provide a comment</string>
 
+	<string name="pref_hotspot_title">Enable WiFi Hotspot</string>
+	<string name="pref_hotspot_summary">Automatically enables hotspot on the device</string>
 </resources>

@@ -84,27 +84,20 @@ public class InCar implements Serializable {
 
     private int screenOrientation = -1;
 
+    private boolean hotspotOn;
+
     public InCar() {
         super();
     }
 
-    /**
-     * @return the inCarEnabled
-     */
     public boolean isInCarEnabled() {
         return inCarEnabled;
     }
 
-    /**
-     * @param enabled the inCarEnabled to set
-     */
     public void setInCarEnabled(boolean enabled) {
         this.inCarEnabled = enabled;
     }
 
-    /**
-     * Enable auto-speaker when receiving a call
-     */
     public boolean isAutoSpeaker() {
         return autoSpeaker;
     }
@@ -112,8 +105,6 @@ public class InCar implements Serializable {
     /**
      * Map of addresses of bluetooth device on connect with one of them enable
      * in car mode
-     *
-     * @return HashMap<Address,Address>
      */
     public ArrayMap<String, String> getBtDevices() {
         return btDevices;
@@ -346,5 +337,13 @@ public class InCar implements Serializable {
 
     public void setScreenOrientation(int screenOrientation) {
         this.screenOrientation = screenOrientation;
+    }
+
+    public boolean isHotspotOn() {
+        return hotspotOn;
+    }
+
+    public void setHotspotOn(boolean on) {
+        hotspotOn = on;
     }
 }
