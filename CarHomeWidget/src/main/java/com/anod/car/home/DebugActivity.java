@@ -4,6 +4,7 @@ import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.incar.ModeDetector;
 import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.InCarStorage;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.LogCatCollector;
@@ -75,7 +76,7 @@ public class DebugActivity extends Activity {
                 (isBroadcastServiceRunning) ? "Broadcast Service: On" : "Broadcast Service: Off",
                 Color.WHITE);
 
-        boolean isInCarEnabled = PreferencesStorage.isInCarModeEnabled(this);
+        boolean isInCarEnabled = InCarStorage.isInCarModeEnabled(this);
         setStatusText(mTextViews[1], (isInCarEnabled) ? "InCar: Enabled" : "InCar: Disabled",
                 Color.WHITE);
 
@@ -139,7 +140,7 @@ public class DebugActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        mInCarPrefs = PreferencesStorage.loadInCar(this);
+        mInCarPrefs = InCarStorage.loadInCar(this);
         registerLogListener();
         updateStatus();
         AppLog.d("Debug activity resumed");

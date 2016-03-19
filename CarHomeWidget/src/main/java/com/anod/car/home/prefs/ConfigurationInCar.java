@@ -14,11 +14,13 @@ import com.anod.car.home.incar.ActivityRecognitionClientService;
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.incar.SamsungDrivingMode;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.InCarStorage;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.TrialDialogs;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 public class ConfigurationInCar extends ConfigurationPreferenceFragment {
@@ -80,12 +82,12 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
     }
 
     private void initInCar() {
-        InCar incar = PreferencesStorage.loadInCar(mContext);
+        InCar incar = InCarStorage.loadInCar(mContext);
 
         int[] appWidgetIds = WidgetHelper.getAllWidgetIds(mContext);
         final int widgetsCount = appWidgetIds.length;
 
-        Preference incarSwitch = findPreference(PreferencesStorage.INCAR_MODE_ENABLED);
+        Preference incarSwitch = findPreference(InCarStorage.INCAR_MODE_ENABLED);
 
         if (widgetsCount == 0) {
             incarSwitch.setEnabled(false);
@@ -107,9 +109,9 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
             }
         });
 
-        registerBroadcastServiceSwitchListener(PreferencesStorage.HEADSET_REQUIRED);
-        registerBroadcastServiceSwitchListener(PreferencesStorage.POWER_REQUIRED);
-        registerBroadcastServiceSwitchListener(PreferencesStorage.CAR_DOCK_REQUIRED);
+        registerBroadcastServiceSwitchListener(InCarStorage.HEADSET_REQUIRED);
+        registerBroadcastServiceSwitchListener(InCarStorage.POWER_REQUIRED);
+        registerBroadcastServiceSwitchListener(InCarStorage.CAR_DOCK_REQUIRED);
 
         initActivityRecognition();
         initScreenTimeout(incar);
@@ -144,13 +146,13 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 String value = (String) newValue;
                 if ("disabled-charging".equals(value)) {
-                    PreferencesStorage.saveScreenTimeout(true, true, mContext);
+                    InCarStorage.saveScreenTimeout(true, true, mContext);
                     pref.setValue("disabled-charging");
                 } else if ("disabled".equals(value)) {
-                    PreferencesStorage.saveScreenTimeout(true, false, mContext);
+                    InCarStorage.saveScreenTimeout(true, false, mContext);
                     pref.setValue("disabled");
                 } else {
-                    PreferencesStorage.saveScreenTimeout(false, false, mContext);
+                    InCarStorage.saveScreenTimeout(false, false, mContext);
                     pref.setValue("enabled");
                 }
                 return false;
@@ -159,12 +161,12 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
     }
 
     private void initActivityRecognition() {
-        final Preference pref = findPreference(PreferencesStorage.ACTIVITY_RECOGNITION);
+        final Preference pref = findPreference(InCarStorage.ACTIVITY_RECOGNITION);
         final Handler handler = new Handler();
 
         new Thread(new Runnable() {
             public void run() {
-                final int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext);
+                final int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(mContext);
                 final String summary = renderPlayServiceStatus(status);
                 handler.post(new Runnable() {
                     public void run() {
@@ -183,8 +185,8 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
             pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object o) {
-                    Dialog d = GooglePlayServicesUtil
-                            .getErrorDialog(status, getActivity(), PS_DIALOG_REQUEST_CODE);
+                    Dialog d = GoogleApiAvailability.getInstance()
+                            .getErrorDialog(getActivity(), status, PS_DIALOG_REQUEST_CODE);
                     d.show();
                     return false;
                 }
@@ -222,7 +224,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
         if (errorCode == ConnectionResult.SERVICE_INVALID) {
             return getString(R.string.gms_service_invalid);
         }
-        return GooglePlayServicesUtil.getErrorString(errorCode);
+        return GoogleApiAvailability.getInstance().getErrorString(errorCode);
     }
 
     private Preference.OnPreferenceChangeListener mBroadcastServiceSwitchListener = new Preference.OnPreferenceChangeListener() {
@@ -238,7 +240,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
     };
 
     private boolean isBroadcastServiceRequired() {
-        InCar incar = PreferencesStorage.loadInCar(mContext);
+        InCar incar = InCarStorage.loadInCar(mContext);
         return BroadcastService.isServiceRequired(incar);
     }
 }

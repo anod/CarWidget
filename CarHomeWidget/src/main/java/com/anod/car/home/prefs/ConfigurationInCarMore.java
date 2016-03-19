@@ -15,6 +15,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.anod.car.home.R;
 import com.anod.car.home.incar.SamsungDrivingMode;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.InCarStorage;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
@@ -40,14 +41,14 @@ public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
 
     @Override
     protected void onCreateImpl(Bundle savedInstanceState) {
-        InCar incar = PreferencesStorage.loadInCar(mContext);
+        InCar incar = InCarStorage.loadInCar(mContext);
         initAutorunApp(incar);
         initSamsungHandsfree();
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        PreferencesStorage.setAdjustVolumeLevel(mContext, isChecked);
+        InCarStorage.setAdjustVolumeLevel(mContext, isChecked);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
     private void initSamsungHandsfree() {
         if (!SamsungDrivingMode.hasMode()) {
             final Preference samDrivingPref = findPreference(
-                    PreferencesStorage.SAMSUNG_DRIVING_MODE);
+                    InCarStorage.SAMSUNG_DRIVING_MODE);
             ((PreferenceCategory) findPreference("incar-more-category"))
                     .removePreference(samDrivingPref);
         }
@@ -74,7 +75,7 @@ public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
             component = data.getComponent();
         }
         // update storage
-        PreferencesStorage.saveAutorunApp(component, mContext);
+        InCarStorage.saveAutorunApp(component, mContext);
         updateAutorunAppPref(data);
     }
 

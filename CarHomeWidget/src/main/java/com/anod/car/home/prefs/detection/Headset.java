@@ -1,6 +1,7 @@
 package com.anod.car.home.prefs.detection;
 
 import com.anod.car.home.R;
+import com.anod.car.home.prefs.preferences.InCarStorage;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 /**
@@ -32,6 +33,6 @@ public class Headset extends Detection {
     @Override
     public void onClick() {
         mPrefs.setHeadsetRequired(!mPrefs.isHeadsetRequired());
-        PreferencesStorage.saveInCar(mContext, mPrefs);
+        InCarStorage.saveInCar(mContext, mPrefs);
     }
 }

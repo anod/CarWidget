@@ -4,6 +4,7 @@ import com.anod.car.home.ObjectGraph;
 import com.anod.car.home.Provider;
 import com.anod.car.home.app.App;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.InCarStorage;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Version;
@@ -89,7 +90,7 @@ public class ModeService extends Service {
     public void onDestroy() {
         stopForeground(true);
 
-        InCar prefs = PreferencesStorage.loadInCar(this);
+        InCar prefs = InCarStorage.loadInCar(this);
         if (mForceState) {
             ModeDetector.forceState(prefs, false);
         }
@@ -142,7 +143,7 @@ public class ModeService extends Service {
             return START_NOT_STICKY;
         }
 
-        InCar prefs = PreferencesStorage.loadInCar(this);
+        InCar prefs = InCarStorage.loadInCar(this);
         sInCarMode = true;
         if (mForceState) {
             ModeDetector.forceState(prefs, true);

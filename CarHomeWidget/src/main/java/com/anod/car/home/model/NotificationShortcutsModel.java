@@ -1,5 +1,6 @@
 package com.anod.car.home.model;
 
+import com.anod.car.home.prefs.preferences.InCarStorage;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 import android.content.Context;
@@ -27,7 +28,7 @@ public class NotificationShortcutsModel extends AbstractShortcutsContainerModel 
 
     @Override
     public int getCount() {
-        return PreferencesStorage.NOTIFICATION_COMPONENT_NUMBER;
+        return InCarStorage.NOTIFICATION_COMPONENT_NUMBER;
     }
 
     @Override
@@ -37,18 +38,18 @@ public class NotificationShortcutsModel extends AbstractShortcutsContainerModel 
 
     @Override
     protected void saveShortcutId(int position, long shortcutId) {
-        PreferencesStorage.saveNotifShortcut(mContext, shortcutId, position);
+        InCarStorage.saveNotifShortcut(mContext, shortcutId, position);
 
     }
 
     @Override
     protected void dropShortcutId(int position) {
-        PreferencesStorage.dropNotifShortcut(position, mContext);
+        InCarStorage.dropNotifShortcut(position, mContext);
     }
 
     @Override
     protected ArrayList<Long> loadShortcutIds() {
-        return PreferencesStorage.getNotifComponents(mContext);
+        return InCarStorage.getNotifComponents(mContext);
     }
 
 

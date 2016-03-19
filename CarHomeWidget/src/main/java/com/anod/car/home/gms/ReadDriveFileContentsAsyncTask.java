@@ -1,12 +1,11 @@
 package com.anod.car.home.gms;
 
-import com.google.android.gms.drive.Drive;
+import android.content.Context;
+
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveId;
-
-import android.content.Context;
 
 import java.io.InputStream;
 
@@ -24,7 +23,8 @@ public abstract class ReadDriveFileContentsAsyncTask
     @Override
     protected Boolean doInBackgroundConnected(DriveId... params) {
 
-        DriveFile file = Drive.DriveApi.getFile(getGoogleApiClient(), params[0]);
+        DriveId driveId = params[0];
+        DriveFile file = driveId.asDriveFile();
         DriveApi.DriveContentsResult contentsResult = file
                 .open(getGoogleApiClient(), DriveFile.MODE_READ_ONLY, null).await();
         if (!contentsResult.getStatus().isSuccess()) {

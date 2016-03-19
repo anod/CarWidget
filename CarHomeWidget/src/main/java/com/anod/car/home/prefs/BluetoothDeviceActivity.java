@@ -6,6 +6,7 @@ import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.InCarStorage;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 import android.bluetooth.BluetoothAdapter;
@@ -113,7 +114,7 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
     }
 
     private void onDeviceStateChange(Device device, boolean newState) {
-        ArrayMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
+        ArrayMap<String, String> devices = InCarStorage.getBtDevices(mContext);
         if (newState) {
             if (devices == null) {
                 devices = new ArrayMap<String, String>();
@@ -125,7 +126,7 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
             }
             devices.remove(device.address);
         }
-        PreferencesStorage.saveBtDevices(mContext, devices);
+        InCarStorage.saveBtDevices(mContext, devices);
 
         if (newState || isBroadcastServiceRequired()) {
             BroadcastService.startService(mContext);
@@ -135,7 +136,7 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
     }
 
     private boolean isBroadcastServiceRequired() {
-        InCar incar = PreferencesStorage.loadInCar(mContext);
+        InCar incar = InCarStorage.loadInCar(mContext);
         return BroadcastService.isServiceRequired(incar);
     }
 
@@ -233,7 +234,7 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
 
             // Get a set of currently paired devices
             Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
-            ArrayMap<String, String> devices = PreferencesStorage.getBtDevices(mContext);
+            ArrayMap<String, String> devices = InCarStorage.getBtDevices(mContext);
             mPairedList = new ArrayList<Device>();
 
             Resources r = mContext.getResources();

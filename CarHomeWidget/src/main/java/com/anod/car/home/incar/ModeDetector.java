@@ -2,6 +2,7 @@ package com.anod.car.home.incar;
 
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.InCarStorage;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.PowerUtil;
@@ -85,10 +86,10 @@ public class ModeDetector {
     }
 
     public static void onBroadcastReceive(Context context, Intent intent) {
-        if (!PreferencesStorage.isInCarModeEnabled(context)) { // TODO remove it
+        if (!InCarStorage.isInCarModeEnabled(context)) { // TODO remove it
             return;
         }
-        InCar prefs = PreferencesStorage.loadInCar(context);
+        InCar prefs = InCarStorage.loadInCar(context);
         if (Intent.ACTION_POWER_DISCONNECTED.equals(intent.getAction())
                 ) {
             onPowerDisconnected(prefs, context);

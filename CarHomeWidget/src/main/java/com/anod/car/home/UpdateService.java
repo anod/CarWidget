@@ -3,6 +3,7 @@ package com.anod.car.home;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.incar.BroadcastService;
+import com.anod.car.home.prefs.preferences.InCarStorage;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
@@ -69,7 +70,7 @@ public class UpdateService extends Service implements Runnable {
     }
 
     private void registerBroadcastService(Context context, boolean isProOrTrial) {
-        boolean inCarEnabled = (isProOrTrial) ? PreferencesStorage.isInCarModeEnabled(context)
+        boolean inCarEnabled = (isProOrTrial) ? InCarStorage.isInCarModeEnabled(context)
                 : false;
         if (inCarEnabled) {
             BroadcastService.startService(context);

@@ -2,6 +2,7 @@ package com.anod.car.home.incar;
 
 import com.anod.car.home.app.StoppableService;
 import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.InCarStorage;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
 
@@ -51,7 +52,7 @@ public class BroadcastService extends StoppableService {
         if (mReceiver == null) {
 
             ModeDetector.onRegister(context);
-            InCar prefs = PreferencesStorage.loadInCar(context);
+            InCar prefs = InCarStorage.loadInCar(context);
             if (prefs.isActivityRequired()) {
                 AppLog.d("ActivityRecognitionClientService started");
                 ActivityRecognitionClientService.startService(context);
@@ -91,7 +92,7 @@ public class BroadcastService extends StoppableService {
             context.unregisterReceiver(mReceiver);
             mReceiver = null;
         }
-        InCar prefs = PreferencesStorage.loadInCar(context);
+        InCar prefs = InCarStorage.loadInCar(context);
 
         if (!prefs.isActivityRequired()) {
             ActivityRecognitionClientService.stopService(context);

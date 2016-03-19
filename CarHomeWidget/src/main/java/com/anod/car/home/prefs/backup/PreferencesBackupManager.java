@@ -7,6 +7,7 @@ import com.anod.car.home.model.ShortcutsContainerModel;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.InCarBackup;
+import com.anod.car.home.prefs.preferences.InCarStorage;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.ShortcutsMain;
@@ -171,7 +172,7 @@ public class PreferencesBackupManager {
         NotificationShortcutsModel model = new NotificationShortcutsModel(mContext);
         model.init();
 
-        InCar prefs = PreferencesStorage.loadInCar(mContext);
+        InCar prefs = InCarStorage.loadInCar(mContext);
         InCarBackup inCarBackup = new InCarBackup(convertToHashMap(model.getShortcuts()), prefs);
         try {
             synchronized (PreferencesBackupManager.DATA_LOCK) {
@@ -359,7 +360,7 @@ public class PreferencesBackupManager {
         HashMap<Integer, ShortcutInfo> shortcuts = inCarBackup.getNotificationShortcuts();
         restoreShortcuts((AbstractShortcutsContainerModel) model, shortcuts);
 
-        PreferencesStorage.saveInCar(mContext, inCarBackup.getInCar());
+        InCarStorage.saveInCar(mContext, inCarBackup.getInCar());
         return RESULT_DONE;
     }
 

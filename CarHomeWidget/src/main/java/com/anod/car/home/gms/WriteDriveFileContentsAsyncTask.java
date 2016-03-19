@@ -52,7 +52,7 @@ public class WriteDriveFileContentsAsyncTask
     protected Boolean doInBackgroundConnected(FilesParam... args) {
         FilesParam files = args[0];
         try {
-            DriveFile target = Drive.DriveApi.getFile(getGoogleApiClient(), files.getDriveId());
+            DriveFile target = files.getDriveId().asDriveFile();
 
             DriveApi.DriveContentsResult contentsResult = target.open(
                     getGoogleApiClient(), DriveFile.MODE_WRITE_ONLY, null).await();

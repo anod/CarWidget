@@ -1,6 +1,7 @@
 package com.anod.car.home.prefs.backup;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -123,7 +124,7 @@ public class GDriveBackup
         if (!result.hasResolution()) {
             // show the localized error dialog.
             mListener.onGDriveError();
-            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), mActivity, 0).show();
+            GoogleApiAvailability.getInstance().getErrorDialog(mActivity, result.getErrorCode(), 0).show();
             return;
         }
         try {
@@ -240,7 +241,7 @@ public class GDriveBackup
     }
 
     public boolean isSupported() {
-        return GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext)
+        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(mContext)
                 == ConnectionResult.SUCCESS;
     }
 

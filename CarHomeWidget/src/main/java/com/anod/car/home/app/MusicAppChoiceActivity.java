@@ -3,6 +3,7 @@ package com.anod.car.home.app;
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.R;
 import com.anod.car.home.model.AppsList;
+import com.anod.car.home.prefs.preferences.AppStorage;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.MusicUtils;
 
@@ -54,7 +55,7 @@ public class MusicAppChoiceActivity extends MusicAppsActivity {
         );
 
         if (mDefaultApp.isChecked()) {
-            PreferencesStorage.saveMusicApp(this, musicCmp, true);
+            AppStorage.saveMusicApp(this, musicCmp, true);
         }
 
         finish();

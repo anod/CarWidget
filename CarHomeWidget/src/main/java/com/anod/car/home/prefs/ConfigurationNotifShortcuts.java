@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.anod.car.home.R;
 import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
+import com.anod.car.home.prefs.preferences.InCarStorage;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.ShortcutPreference;
 
@@ -34,7 +35,7 @@ public class ConfigurationNotifShortcuts extends ConfigurationPreferenceFragment
         mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
         mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
 
-        for (int i = 0; i < PreferencesStorage.NOTIFICATION_COMPONENT_NUMBER; i++) {
+        for (int i = 0; i < InCarStorage.NOTIFICATION_COMPONENT_NUMBER; i++) {
             ShortcutPreference p = (ShortcutPreference) findPreference(getInitialKey(i));
             mPickShortcutUtils.initLauncherPreference(i, p);
             p.setDropCallback(this);
@@ -49,12 +50,12 @@ public class ConfigurationNotifShortcuts extends ConfigurationPreferenceFragment
 
     @Override
     public String getInitialKey(int position) {
-        return PreferencesStorage.getNotifComponentName(position);
+        return InCarStorage.getNotifComponentName(position);
     }
 
     @Override
     public String getCompiledKey(int position) {
-        return PreferencesStorage.getNotifComponentName(position);
+        return InCarStorage.getNotifComponentName(position);
     }
 
     @Override
@@ -80,7 +81,7 @@ public class ConfigurationNotifShortcuts extends ConfigurationPreferenceFragment
 
     private void refreshShortcuts() {
         mModel.init();
-        for (int i = 0; i < PreferencesStorage.NOTIFICATION_COMPONENT_NUMBER; i++) {
+        for (int i = 0; i < InCarStorage.NOTIFICATION_COMPONENT_NUMBER; i++) {
             String key = getCompiledKey(i);
             ShortcutPreference p = (ShortcutPreference) findPreference(key);
             mPickShortcutUtils.refreshPreference(p);

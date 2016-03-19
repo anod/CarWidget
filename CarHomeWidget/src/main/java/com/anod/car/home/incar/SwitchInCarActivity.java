@@ -1,6 +1,7 @@
 package com.anod.car.home.incar;
 
 import com.anod.car.home.R;
+import com.anod.car.home.prefs.preferences.InCarStorage;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 import android.app.Activity;
@@ -14,7 +15,7 @@ public class SwitchInCarActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (PreferencesStorage.isInCarModeEnabled(this)) {
+        if (InCarStorage.isInCarModeEnabled(this)) {
             Uri data;
             Intent service = new Intent(this, ModeService.class);
             if (ModeService.sInCarMode) {

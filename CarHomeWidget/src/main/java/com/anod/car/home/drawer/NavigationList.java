@@ -8,6 +8,7 @@ import com.anod.car.home.prefs.ConfigurationInCar;
 import com.anod.car.home.prefs.ConfigurationRestore;
 import com.anod.car.home.prefs.LookAndFeelActivity;
 import com.anod.car.home.prefs.MusicAppSettingsActivity;
+import com.anod.car.home.prefs.preferences.AppStorage;
 import com.anod.car.home.prefs.preferences.AppTheme;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.AppLog;
@@ -311,7 +312,7 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
     }
 
     private String renderMusicApp() {
-        ComponentName musicAppCmp = PreferencesStorage.getMusicApp(mContext);
+        ComponentName musicAppCmp = AppStorage.getMusicApp(mContext);
         if (musicAppCmp == null) {
             return mContext.getString(R.string.show_choice);
         } else {

@@ -2,6 +2,7 @@ package com.anod.car.home;
 
 import com.anod.car.home.app.MusicAppChoiceActivity;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
+import com.anod.car.home.prefs.preferences.AppStorage;
 import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.MusicUtils;
 
@@ -55,7 +56,7 @@ public class ShortcutActivity extends Activity {
             if (audio.isMusicActive()) {
                 MusicUtils.sendKeyEvent(keyCode, this);
             } else {
-                ComponentName musicCmp = PreferencesStorage.getMusicApp(this);
+                ComponentName musicCmp = AppStorage.getMusicApp(this);
                 if (musicCmp == null) {
                     startActivity(new Intent(this, MusicAppChoiceActivity.class));
                 } else {
