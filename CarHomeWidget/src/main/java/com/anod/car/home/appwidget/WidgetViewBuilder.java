@@ -1,30 +1,27 @@
 package com.anod.car.home.appwidget;
 
-import com.anod.car.home.R;
-import com.anod.car.home.model.LauncherSettings;
-import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.model.WidgetShortcutsModel;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.skin.PropertiesFactory;
-import com.anod.car.home.skin.SkinProperties;
-import com.anod.car.home.utils.BitmapTransform;
-import com.anod.car.home.utils.IconTheme;
-import com.anod.car.home.utils.Utils;
-
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.support.v4.util.ArrayMap;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.LruCache;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import java.util.HashMap;
+import com.anod.car.home.R;
+import com.anod.car.home.model.LauncherSettings;
+import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.WidgetShortcutsModel;
+import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.prefs.preferences.WidgetStorage;
+import com.anod.car.home.skin.PropertiesFactory;
+import com.anod.car.home.skin.SkinProperties;
+import com.anod.car.home.utils.BitmapTransform;
+import com.anod.car.home.utils.IconTheme;
+import com.anod.car.home.utils.Utils;
 
 public class WidgetViewBuilder {
 
@@ -128,12 +125,12 @@ public class WidgetViewBuilder {
     }
 
     public WidgetViewBuilder init() {
-        mPrefs = PreferencesStorage.loadMain(mContext, mAppWidgetId);
+        mPrefs = WidgetStorage.load(mContext, mAppWidgetId);
 
         mSmodel = new WidgetShortcutsModel(mContext, mAppWidgetId);
-        if (PreferencesStorage.isFirstTime(mContext, mAppWidgetId)) {
+        if (WidgetStorage.isFirstTime(mContext, mAppWidgetId)) {
             mSmodel.createDefaultShortcuts();
-            PreferencesStorage.setFirstTime(false, mContext, mAppWidgetId);
+            WidgetStorage.setFirstTime(false, mContext, mAppWidgetId);
         }
         mSmodel.init();
 

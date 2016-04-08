@@ -14,9 +14,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.SoftReferenceThreadLocal;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
 import java.lang.ref.SoftReference;
@@ -149,10 +151,8 @@ public class ShortcutModel {
                                         .createHiResIconBitmap(resources.getDrawable(id), mContext);
                             }
                         }
-                    } catch (NameNotFoundException e) {
+                    } catch (NameNotFoundException | NotFoundException e) {
                         // drop this. we have other places to look for icons
-                        AppLog.d(e.getMessage());
-                    } catch (NotFoundException e) {
                         AppLog.d(e.getMessage());
                     }
                     // the db
@@ -250,7 +250,7 @@ public class ShortcutModel {
                 values, null, null);
     }
 
-    private ContentValues createShortcutContentValues(ShortcutInfo item) {
+    public static ContentValues createShortcutContentValues(@NonNull ShortcutInfo item) {
         final ContentValues values = new ContentValues();
         values.put(LauncherSettings.Favorites.ITEM_TYPE, item.itemType);
 
@@ -301,33 +301,4 @@ public class ShortcutModel {
         };
     }
 
-    abstract class SoftReferenceThreadLocal<T> {
-        private ThreadLocal<SoftReference<T>> mThreadLocal;
-        public SoftReferenceThreadLocal() {
-            mThreadLocal = new ThreadLocal<SoftReference<T>>();
-        }
-
-        abstract T initialValue();
-
-        public void set(T t) {
-            mThreadLocal.set(new SoftReference<T>(t));
-        }
-
-        public T get() {
-            SoftReference<T> reference = mThreadLocal.get();
-            T obj;
-            if (reference == null) {
-                obj = initialValue();
-                mThreadLocal.set(new SoftReference<T>(obj));
-                return obj;
-            } else {
-                obj = reference.get();
-                if (obj == null) {
-                    obj = initialValue();
-                    mThreadLocal.set(new SoftReference<T>(obj));
-                }
-                return obj;
-            }
-        }
-    }
 }

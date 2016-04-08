@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0-beta6'
+        classpath 'com.android.tools.build:gradle:2.0.0'
 
     }
 }
@@ -14,26 +14,26 @@ repositories {
 
 
 dependencies {
-//    compile 'com.android.support:support-v4:23.0.0'
-    compile 'com.android.support:support-v13:23.2.0'
-    compile 'com.android.support:cardview-v7:23.2.0'
+    compile 'com.android.support:support-v13:23.3.0'
+    compile 'com.android.support:cardview-v7:23.3.0'
 
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'com.android.support:design:23.2.0'
-    compile 'com.android.support:preference-v7:23.2.0'
-    compile 'com.android.support:palette-v7:23.2.0'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:preference-v7:23.3.0'
+    compile 'com.android.support:palette-v7:23.3.0'
 
     compile 'com.google.android.gms:play-services-drive:8.4.0'
     compile 'com.google.android.gms:play-services-location:8.4.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'ch.acra:acra:4.8.2'
     compile 'com.jakewharton:disklrucache:2.0.2'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     compile files('libs/org.apache.http.legacy.jar')
 
     // Find memory leaks tool
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 }
 
 android {

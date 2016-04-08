@@ -1,14 +1,5 @@
 package com.anod.car.home.incar;
 
-import com.anod.car.home.ObjectGraph;
-import com.anod.car.home.Provider;
-import com.anod.car.home.app.App;
-import com.anod.car.home.prefs.preferences.InCar;
-import com.anod.car.home.prefs.preferences.InCarStorage;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Version;
-
 import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
@@ -17,6 +8,15 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+
+import com.anod.car.home.ObjectGraph;
+import com.anod.car.home.Provider;
+import com.anod.car.home.app.App;
+import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.InCarInterface;
+import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.Version;
 
 public class ModeService extends Service {
 
@@ -90,7 +90,7 @@ public class ModeService extends Service {
     public void onDestroy() {
         stopForeground(true);
 
-        InCar prefs = InCarStorage.loadInCar(this);
+        InCarInterface prefs = InCarStorage.load(this);
         if (mForceState) {
             ModeDetector.forceState(prefs, false);
         }
@@ -143,7 +143,7 @@ public class ModeService extends Service {
             return START_NOT_STICKY;
         }
 
-        InCar prefs = InCarStorage.loadInCar(this);
+        InCarInterface prefs = InCarStorage.load(this);
         sInCarMode = true;
         if (mForceState) {
             ModeDetector.forceState(prefs, true);
@@ -165,7 +165,7 @@ public class ModeService extends Service {
         return START_REDELIVER_INTENT;
     }
 
-    private void initPhoneListener(InCar prefs) {
+    private void initPhoneListener(InCarInterface prefs) {
         if (prefs.isAutoSpeaker() || !prefs.getAutoAnswer().equals(InCar.AUTOANSWER_DISABLED)) {
             if (mPhoneListener == null) {
                 attachPhoneListener();

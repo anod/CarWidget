@@ -5,16 +5,16 @@ package com.anod.car.home.utils;
  * @date 5/25/13
  */
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.v4.util.SimpleArrayMap;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -170,7 +170,6 @@ public class IconTheme {
     }
 
     public Drawable getDrawable(int resId) {
-        return mThemeResources
-                .getDrawableForDensity(resId, UtilitiesBitmap.getTargetDensity(mContext));
+        return mThemeResources.getDrawableForDensity(resId, UtilitiesBitmap.getTargetDensity(mContext));
     }
 }

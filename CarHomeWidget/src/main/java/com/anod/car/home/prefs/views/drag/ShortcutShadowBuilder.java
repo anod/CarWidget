@@ -1,11 +1,12 @@
 package com.anod.car.home.prefs.views.drag;
 
-import com.anod.car.home.R;
-
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.view.View;
+
+import com.anod.car.home.R;
+import com.anod.car.home.utils.ApiCompat;
 
 /**
  * @author alex
@@ -19,7 +20,7 @@ public class ShortcutShadowBuilder extends View.DragShadowBuilder {
 
     public ShortcutShadowBuilder(View v) {
         super(v);
-        mColorDragBg = v.getResources().getColor(R.color.drag_item_bg);
+        mColorDragBg = ApiCompat.getColor(v.getResources(), R.color.drag_item_bg);
     }
 
     @Override

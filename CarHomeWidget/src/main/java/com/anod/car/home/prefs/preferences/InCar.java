@@ -9,29 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-public class InCar implements Serializable {
-
-    public static final String BRIGHTNESS_DISABLED = "disabled";
-
-    public static final String BRIGHTNESS_AUTO = "auto";
-
-    public static final String BRIGHTNESS_DAY = "day";
-
-    public static final String BRIGHTNESS_NIGHT = "night";
-
-    public static final String AUTOANSWER_DISABLED = "disabled";
-
-    public static final String AUTOANSWER_IMMEDIATLY = "immediately";
-
-    public static final String AUTOANSWER_DELAY_5 = "delay-5";
-
-    public static final String WIFI_NOACTION = "no_action";
-
-    public static final String WIFI_TURNOFF = "turn_off_wifi";
-
-    public static final String WIFI_DISABLE = "disable_wifi";
-
-    public static final int DEFAULT_VOLUME_LEVEL = 80;
+public class InCar implements Serializable, InCarInterface {
 
     /**
      *
@@ -90,14 +68,17 @@ public class InCar implements Serializable {
         super();
     }
 
+    @Override
     public boolean isInCarEnabled() {
         return inCarEnabled;
     }
 
+    @Override
     public void setInCarEnabled(boolean enabled) {
         this.inCarEnabled = enabled;
     }
 
+    @Override
     public boolean isAutoSpeaker() {
         return autoSpeaker;
     }
@@ -106,43 +87,53 @@ public class InCar implements Serializable {
      * Map of addresses of bluetooth device on connect with one of them enable
      * in car mode
      */
+    @Override
     public ArrayMap<String, String> getBtDevices() {
         return btDevices;
     }
 
+    @Override
     public void setBtDevices(ArrayMap<String, String> btDevices) {
         this.btDevices = btDevices;
         this.bluetoothRequired = (btDevices != null && !btDevices.isEmpty());
     }
 
+    @Override
     public boolean isPowerRequired() {
         return powerRequired;
     }
 
+    @Override
     public boolean isHeadsetRequired() {
         return headsetRequired;
     }
 
+    @Override
     public boolean isBluetoothRequired() {
         return bluetoothRequired;
     }
 
+    @Override
     public boolean isDisableBluetoothOnPower() {
         return disableBluetoothOnPower;
     }
 
+    @Override
     public boolean isEnableBluetoothOnPower() {
         return enableBluetoothOnPower;
     }
 
+    @Override
     public boolean isDisableScreenTimeout() {
         return disableScreenTimeout;
     }
 
+    @Override
     public boolean isAdjustVolumeLevel() {
         return adjustVolumeLevel;
     }
 
+    @Override
     public boolean isActivityRequired() {
         return activityRequired;
     }
@@ -150,6 +141,7 @@ public class InCar implements Serializable {
     /**
      * Level 0-100 of media volume
      */
+    @Override
     public int getMediaVolumeLevel() {
         return mediaVolumeLevel;
     }
@@ -157,10 +149,12 @@ public class InCar implements Serializable {
     /**
      * Level 0-100 of media volume
      */
+    @Override
     public int getCallVolumeLevel() {
         return callVolumeLevel;
     }
 
+    @Override
     public boolean isEnableBluetooth() {
         return enableBluetooth;
     }
@@ -173,62 +167,77 @@ public class InCar implements Serializable {
      * @see this.BRIGHTNESS_DAY
      * @see this.BRIGHTNESS_NIGHT
      */
+    @Override
     public String getBrightness() {
         return brightness;
     }
 
+    @Override
     public void setPowerRequired(boolean powerRequired) {
         this.powerRequired = powerRequired;
     }
 
+    @Override
     public void setHeadsetRequired(boolean headsetRequired) {
         this.headsetRequired = headsetRequired;
     }
 
+    @Override
     public void setActivityRequired(boolean activityRequired) {
         this.activityRequired = activityRequired;
     }
 
+    @Override
     public boolean isCarDockRequired() {
         return mCarDockRequired;
     }
 
+    @Override
     public void setCarDockRequired(boolean carDockRequired) {
         mCarDockRequired = carDockRequired;
     }
 
+    @Override
     public void setDisableBluetoothOnPower(boolean disableBluetoothOnPower) {
         this.disableBluetoothOnPower = disableBluetoothOnPower;
     }
 
+    @Override
     public void setEnableBluetoothOnPower(boolean enableBluetoothOnPower) {
         this.enableBluetoothOnPower = enableBluetoothOnPower;
     }
 
+    @Override
     public void setDisableScreenTimeout(boolean screenTimeout) {
         this.disableScreenTimeout = screenTimeout;
     }
 
+    @Override
     public void setAdjustVolumeLevel(boolean adjustVolumeLevel) {
         this.adjustVolumeLevel = adjustVolumeLevel;
     }
 
+    @Override
     public void setMediaVolumeLevel(int mediaVolumeLevel) {
         this.mediaVolumeLevel = mediaVolumeLevel;
     }
 
+    @Override
     public void setCallVolumeLevel(int level) {
         callVolumeLevel = level;
     }
 
+    @Override
     public void setEnableBluetooth(boolean bluetooth) {
         this.enableBluetooth = bluetooth;
     }
 
+    @Override
     public void setBrightness(String brightness) {
         this.brightness = brightness;
     }
 
+    @Override
     public void setAutoSpeaker(boolean autoSpeaker) {
         this.autoSpeaker = autoSpeaker;
     }
@@ -240,10 +249,12 @@ public class InCar implements Serializable {
      * @see this.WIFI_TURNOFF
      * @see this.WIFI_DISABLE
      */
+    @Override
     public String getDisableWifi() {
         return disableWifi;
     }
 
+    @Override
     public void setDisableWifi(String disableWifi) {
         this.disableWifi = disableWifi;
     }
@@ -251,10 +262,12 @@ public class InCar implements Serializable {
     /**
      * Activate or not built-in android Car Mode
      */
+    @Override
     public boolean isActivateCarMode() {
         return this.activateCarMode;
     }
 
+    @Override
     public void setActivateCarMode(boolean activate) {
         this.activateCarMode = activate;
     }
@@ -262,10 +275,12 @@ public class InCar implements Serializable {
     /**
      * Get auto answer mode
      */
+    @Override
     public String getAutoAnswer() {
         return autoAnswer;
     }
 
+    @Override
     public void setAutoAnswer(String autoAnswer) {
         this.autoAnswer = autoAnswer;
     }
@@ -273,6 +288,7 @@ public class InCar implements Serializable {
     /**
      * @return the autorunApp
      */
+    @Override
     public ComponentName getAutorunApp() {
         return autorunApp;
     }
@@ -280,14 +296,17 @@ public class InCar implements Serializable {
     /**
      * @param autorunApp the autorunApp to set
      */
+    @Override
     public void setAutorunApp(ComponentName autorunApp) {
         this.autorunApp = autorunApp;
     }
 
+    @Override
     public boolean isSamsungDrivingMode() {
         return samsungDrivingMode;
     }
 
+    @Override
     public void setSamsungDrivingMode(boolean samsungDrivingMode) {
         this.samsungDrivingMode = samsungDrivingMode;
     }
@@ -323,26 +342,32 @@ public class InCar implements Serializable {
 
     }
 
+    @Override
     public boolean isDisableScreenTimeoutCharging() {
         return disableScreenTimeoutCharging;
     }
 
+    @Override
     public void setDisableScreenTimeoutCharging(boolean disableScreenTimeoutCharging) {
         this.disableScreenTimeoutCharging = disableScreenTimeoutCharging;
     }
 
+    @Override
     public int getScreenOrientation() {
         return screenOrientation;
     }
 
+    @Override
     public void setScreenOrientation(int screenOrientation) {
         this.screenOrientation = screenOrientation;
     }
 
+    @Override
     public boolean isHotspotOn() {
         return hotspotOn;
     }
 
+    @Override
     public void setHotspotOn(boolean on) {
         hotspotOn = on;
     }

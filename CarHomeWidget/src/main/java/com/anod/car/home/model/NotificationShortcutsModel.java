@@ -1,9 +1,8 @@
 package com.anod.car.home.model;
 
-import com.anod.car.home.prefs.preferences.InCarStorage;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-
 import android.content.Context;
+
+import com.anod.car.home.prefs.preferences.InCarStorage;
 
 import java.util.ArrayList;
 

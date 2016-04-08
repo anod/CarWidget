@@ -4,7 +4,6 @@ import com.anod.car.home.R;
 import com.anod.car.home.app.MusicAppsActivity;
 import com.anod.car.home.model.AppsList;
 import com.anod.car.home.prefs.preferences.AppStorage;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,18 @@
 package com.anod.car.home.prefs.backup;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentSender;
+import android.os.Bundle;
+import android.widget.Toast;
+
+import com.anod.car.home.gms.ReadDriveFileContentsAsyncTask;
+import com.anod.car.home.gms.WriteDriveFileContentsAsyncTask;
+import com.anod.car.home.prefs.ConfigurationActivity;
+import com.anod.car.home.utils.AppLog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
@@ -10,18 +20,6 @@ import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.drive.OpenFileActivityBuilder;
-
-import com.anod.car.home.gms.ReadDriveFileContentsAsyncTask;
-import com.anod.car.home.gms.WriteDriveFileContentsAsyncTask;
-import com.anod.car.home.prefs.ConfigurationActivity;
-import com.anod.car.home.utils.AppLog;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentSender;
-import android.os.Bundle;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.InputStream;
@@ -292,11 +290,11 @@ public class GDriveBackup
         protected boolean readDriveFileBackground(InputStream inputStream) {
             PreferencesBackupManager backup = new PreferencesBackupManager(mContext);
 
-            int result = -1;
+            int result;
             if (mAppWidgetId == 0) {
                 result = backup.doRestoreInCar(inputStream);
             } else {
-                result = backup.doRestoreMain(inputStream, mAppWidgetId);
+                result = backup.doRestoreWidget(inputStream, mAppWidgetId);
             }
 
             return result == PreferencesBackupManager.RESULT_DONE;

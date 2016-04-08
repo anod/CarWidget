@@ -1,20 +1,5 @@
 package com.anod.car.home.prefs;
 
-import com.anod.car.home.R;
-import com.anod.car.home.drawer.NavigationList;
-import com.anod.car.home.prefs.backup.BackupCodeRender;
-import com.anod.car.home.prefs.backup.BackupTask;
-import com.anod.car.home.prefs.backup.GDriveBackup;
-import com.anod.car.home.prefs.backup.PreferencesBackupManager;
-import com.anod.car.home.prefs.backup.RestoreCodeRender;
-import com.anod.car.home.prefs.backup.RestoreTask;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.CheatSheet;
-import com.anod.car.home.utils.DeleteFileTask;
-import com.anod.car.home.utils.TrialDialogs;
-import com.anod.car.home.utils.Utils;
-import com.anod.car.home.utils.Version;
-
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -43,11 +28,25 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anod.car.home.R;
+import com.anod.car.home.prefs.backup.BackupCodeRender;
+import com.anod.car.home.prefs.backup.BackupTask;
+import com.anod.car.home.prefs.backup.GDriveBackup;
+import com.anod.car.home.prefs.backup.PreferencesBackupManager;
+import com.anod.car.home.prefs.backup.RestoreCodeRender;
+import com.anod.car.home.prefs.backup.RestoreTask;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.CheatSheet;
+import com.anod.car.home.utils.DeleteFileTask;
+import com.anod.car.home.utils.TrialDialogs;
+import com.anod.car.home.utils.Utils;
+import com.anod.car.home.utils.Version;
+
 import java.io.File;
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class ConfigurationRestore extends Fragment implements
         RestoreTask.RestoreTaskListner, DeleteFileTask.DeleteFileTaskListener,
@@ -287,7 +286,7 @@ public class ConfigurationRestore extends Fragment implements
                 public void onClick(View view) {
                     File incar = mBackupManager.getBackupIncarFile();
                     mGDriveBackup
-                            .upload("incar-backup" + PreferencesBackupManager.FILE_EXT_DAT, incar);
+                            .upload("incar-backup" + PreferencesBackupManager.FILE_EXT_JSON, incar);
                 }
             });
 
@@ -480,7 +479,7 @@ public class ConfigurationRestore extends Fragment implements
             File entry = getItem(position);
 
             String name = entry.getName();
-            name = name.substring(0, name.lastIndexOf(PreferencesBackupManager.FILE_EXT_DAT));
+            name = name.substring(0, name.lastIndexOf(PreferencesBackupManager.FILE_EXT_JSON));
             holder.title.setTag(name);
             holder.title.setText(name);
             holder.title.setOnClickListener(mRestoreListener);
@@ -516,7 +515,7 @@ public class ConfigurationRestore extends Fragment implements
         @Override
         public void onClick(View v) {
 
-            Uri uri = Uri.fromFile(mBackupManager.getBackupMainFile((String) v.getTag()));
+            Uri uri = Uri.fromFile(mBackupManager.getBackupWidgetFile((String) v.getTag()));
             new RestoreTask(PreferencesBackupManager.TYPE_MAIN, mBackupManager, mAppWidgetId,
                     ConfigurationRestore.this)
                     .execute(uri)
@@ -575,8 +574,8 @@ public class ConfigurationRestore extends Fragment implements
         @Override
         public void onClick(View v) {
             String name = (String) v.getTag();
-            File file = mBackupManager.getBackupMainFile(name);
-            mGDriveBackup.upload("car" + name + PreferencesBackupManager.FILE_EXT_DAT, file);
+            File file = mBackupManager.getBackupWidgetFile(name);
+            mGDriveBackup.upload("car" + name + PreferencesBackupManager.FILE_EXT_JSON, file);
         }
     }
 }

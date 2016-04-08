@@ -1,12 +1,12 @@
 package com.anod.car.home.model;
 
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.UtilitiesBitmap;
-
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.UtilitiesBitmap;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -71,7 +71,7 @@ public class ShortcutInfo implements Serializable {
      */
     transient private Bitmap mIcon;
 
-    ShortcutInfo() {
+    public ShortcutInfo() {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT;
     }
 

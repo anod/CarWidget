@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.anod.car.home.R;
 import com.anod.car.home.app.AppCompatListActivity;
+import com.anod.car.home.utils.ApiCompat;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.UtilitiesBitmap;
@@ -117,8 +118,7 @@ public class ActivityPicker extends AppCompatListActivity {
                     ShortcutIconResource iconResource = icons.get(i);
                     Resources res = packageManager
                             .getResourcesForApplication(iconResource.packageName);
-                    icon = res
-                            .getDrawable(res.getIdentifier(iconResource.resourceName, null, null));
+                    icon = ApiCompat.getDrawable(res, res.getIdentifier(iconResource.resourceName, null, null));
                 } catch (NameNotFoundException e) {
                     AppLog.w(e.getMessage());
                 }

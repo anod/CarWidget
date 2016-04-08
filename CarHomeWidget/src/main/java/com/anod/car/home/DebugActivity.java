@@ -1,14 +1,5 @@
 package com.anod.car.home;
 
-import com.anod.car.home.incar.BroadcastService;
-import com.anod.car.home.incar.ModeDetector;
-import com.anod.car.home.incar.ModeService;
-import com.anod.car.home.prefs.preferences.InCar;
-import com.anod.car.home.prefs.preferences.InCarStorage;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.LogCatCollector;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -23,11 +14,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.anod.car.home.incar.BroadcastService;
+import com.anod.car.home.incar.ModeDetector;
+import com.anod.car.home.incar.ModeService;
+import com.anod.car.home.prefs.preferences.InCarInterface;
+import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.LogCatCollector;
+
 import java.util.LinkedList;
 import java.util.Timer;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class DebugActivity extends Activity {
 
@@ -54,7 +53,7 @@ public class DebugActivity extends Activity {
 
     private Runnable mRunnable;
 
-    private InCar mInCarPrefs;
+    private InCarInterface mInCarPrefs;
 
 
     @Override
@@ -76,7 +75,7 @@ public class DebugActivity extends Activity {
                 (isBroadcastServiceRunning) ? "Broadcast Service: On" : "Broadcast Service: Off",
                 Color.WHITE);
 
-        boolean isInCarEnabled = InCarStorage.isInCarModeEnabled(this);
+        boolean isInCarEnabled = InCarStorage.load(this).isInCarEnabled();
         setStatusText(mTextViews[1], (isInCarEnabled) ? "InCar: Enabled" : "InCar: Disabled",
                 Color.WHITE);
 
@@ -140,7 +139,7 @@ public class DebugActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        mInCarPrefs = InCarStorage.loadInCar(this);
+        mInCarPrefs = InCarStorage.load(this);
         registerLogListener();
         updateStatus();
         AppLog.d("Debug activity resumed");

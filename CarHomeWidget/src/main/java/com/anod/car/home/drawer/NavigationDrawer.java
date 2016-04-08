@@ -1,7 +1,5 @@
 package com.anod.car.home.drawer;
 
-import com.anod.car.home.R;
-
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +8,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import butterknife.ButterKnife;
+import com.anod.car.home.R;
+
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * @author alex
@@ -64,7 +64,7 @@ public class NavigationDrawer {
         };
 
         // Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
 
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setHomeButtonEnabled(true);

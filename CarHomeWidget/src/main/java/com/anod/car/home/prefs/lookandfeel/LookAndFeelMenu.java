@@ -1,5 +1,21 @@
 package com.anod.car.home.prefs.lookandfeel;
 
+import android.appwidget.AppWidgetManager;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.NumberPicker;
+
 import com.android.colorpicker.ColorPickerSwatch;
 import com.anod.car.home.R;
 import com.anod.car.home.model.WidgetShortcutsModel;
@@ -8,25 +24,9 @@ import com.anod.car.home.prefs.ConfigurationLook;
 import com.anod.car.home.prefs.LookAndFeelActivity;
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog;
 import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
+import com.anod.car.home.prefs.preferences.WidgetStorage;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.Utils;
-
-import android.support.v7.app.AlertDialog;
-import android.appwidget.AppWidgetManager;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.NumberPicker;
 
 /**
  * @author alex
@@ -46,7 +46,7 @@ public class LookAndFeelMenu {
 
     private LookAndFeelActivity mActivity;
 
-    private WidgetSharedPreferences mSharedPrefs;
+    private SharedPreferences mSharedPrefs;
 
     private boolean mInitialized;
 
@@ -55,8 +55,7 @@ public class LookAndFeelMenu {
         mAppWidgetId = mActivity.getAppWidgetId();
         mModel = model;
 
-        mSharedPrefs = new WidgetSharedPreferences(mActivity);
-        mSharedPrefs.setAppWidgetId(mAppWidgetId);
+        mSharedPrefs = WidgetStorage.getSharedPreferences(activity, mAppWidgetId);
     }
 
     public void onCreateOptionsMenu(Menu menu) {
@@ -72,9 +71,9 @@ public class LookAndFeelMenu {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.apply) {
-            Main prefs = PreferencesStorage.loadMain(mActivity, mAppWidgetId);
+            Main prefs = WidgetStorage.load(mActivity, mAppWidgetId);
             prefs.setSkin(mActivity.getCurrentSkinItem().value);
-            PreferencesStorage.saveMain(mActivity, prefs, mAppWidgetId);
+            WidgetStorage.save(mActivity, prefs, mAppWidgetId);
             mActivity.beforeFinish();
             mActivity.finish();
             return true;
@@ -84,15 +83,15 @@ public class LookAndFeelMenu {
             return true;
         }
         if (itemId == R.id.tile_color) {
-            Main prefs = PreferencesStorage.loadMain(mActivity, mAppWidgetId);
+            Main prefs = WidgetStorage.load(mActivity, mAppWidgetId);
             Integer value = prefs.getTileColor();
             final CarHomeColorPickerDialog d = CarHomeColorPickerDialog
                     .newInstance(value, true, mActivity);
             d.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                 @Override
                 public void onColorSelected(int color) {
-                    final WidgetSharedPreferences.WidgetEditor edit = mSharedPrefs.edit();
-                    edit.putInt(PreferencesStorage.BUTTON_COLOR, color);
+                    final SharedPreferences.Editor edit = mSharedPrefs.edit();
+                    edit.putInt(WidgetStorage.BUTTON_COLOR, color);
                     edit.commit();
                     showTileColorButton();
                     mActivity.refreshSkinPreview();
@@ -115,8 +114,8 @@ public class LookAndFeelMenu {
             d.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                 @Override
                 public void onColorSelected(int color) {
-                    final WidgetSharedPreferences.WidgetEditor edit = mSharedPrefs.edit();
-                    edit.putInt(PreferencesStorage.BG_COLOR, color);
+                    final SharedPreferences.Editor edit = mSharedPrefs.edit();
+                    edit.putInt(WidgetStorage.BG_COLOR, color);
                     edit.commit();
                     mActivity.refreshSkinPreview();
                 }
@@ -174,7 +173,7 @@ public class LookAndFeelMenu {
 
     public void showTileColorButton() {
         if (mActivity.getCurrentSkinItem().value.equals(Main.SKIN_WINDOWS7)) {
-            Main prefs = PreferencesStorage.loadMain(mActivity, mAppWidgetId);
+            Main prefs = WidgetStorage.load(mActivity, mAppWidgetId);
             int size = (int) mActivity.getResources().getDimension(R.dimen.color_preview_size);
 
             Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);

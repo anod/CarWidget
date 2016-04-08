@@ -1,14 +1,5 @@
 package com.anod.car.home.prefs;
 
-import com.anod.car.home.R;
-import com.anod.car.home.app.CarWidgetActivity;
-import com.anod.car.home.incar.Bluetooth;
-import com.anod.car.home.incar.BluetoothClassHelper;
-import com.anod.car.home.incar.BroadcastService;
-import com.anod.car.home.prefs.preferences.InCar;
-import com.anod.car.home.prefs.preferences.InCarStorage;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
@@ -31,11 +22,20 @@ import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.anod.car.home.R;
+import com.anod.car.home.app.CarWidgetActivity;
+import com.anod.car.home.incar.Bluetooth;
+import com.anod.car.home.incar.BluetoothClassHelper;
+import com.anod.car.home.incar.BroadcastService;
+import com.anod.car.home.prefs.preferences.InCarInterface;
+import com.anod.car.home.prefs.preferences.InCarSharedPreferences;
+import com.anod.car.home.prefs.preferences.InCarStorage;
+
 import java.util.ArrayList;
 import java.util.Set;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * @author alex
@@ -114,10 +114,11 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
     }
 
     private void onDeviceStateChange(Device device, boolean newState) {
-        ArrayMap<String, String> devices = InCarStorage.getBtDevices(mContext);
+        InCarSharedPreferences prefs = InCarStorage.load(mContext);
+        ArrayMap<String, String> devices = prefs.getBtDevices();
         if (newState) {
             if (devices == null) {
-                devices = new ArrayMap<String, String>();
+                devices = new ArrayMap<>();
             }
             devices.put(device.address, device.address);
         } else {
@@ -126,7 +127,8 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
             }
             devices.remove(device.address);
         }
-        InCarStorage.saveBtDevices(mContext, devices);
+        prefs.setBtDevices(devices);
+        prefs.apply();
 
         if (newState || isBroadcastServiceRequired()) {
             BroadcastService.startService(mContext);
@@ -136,7 +138,7 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
     }
 
     private boolean isBroadcastServiceRequired() {
-        InCar incar = InCarStorage.loadInCar(mContext);
+        InCarInterface incar = InCarStorage.load(mContext);
         return BroadcastService.isServiceRequired(incar);
     }
 
@@ -234,7 +236,7 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
 
             // Get a set of currently paired devices
             Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
-            ArrayMap<String, String> devices = InCarStorage.getBtDevices(mContext);
+            ArrayMap<String, String> devices = InCarStorage.load(mContext).getBtDevices();
             mPairedList = new ArrayList<Device>();
 
             Resources r = mContext.getResources();

@@ -1,10 +1,5 @@
 package com.anod.car.home.incar;
 
-import com.anod.car.home.prefs.preferences.InCar;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.PowerUtil;
-import com.anod.car.home.utils.Utils;
-
 import android.app.UiModeManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
@@ -13,6 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
+
+import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.InCarInterface;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.PowerUtil;
+import com.anod.car.home.utils.Utils;
 
 public class ModeHandler {
 
@@ -45,7 +46,7 @@ public class ModeHandler {
         mScreenOrientation = orientation;
     }
 
-    public void enable(InCar prefs) {
+    public void enable(InCarInterface prefs) {
         if (prefs.isDisableScreenTimeout()) {
             if (prefs.isDisableScreenTimeoutCharging()) {
                 if (PowerUtil.isConnected(mContext)) {
@@ -105,7 +106,7 @@ public class ModeHandler {
         Utils.startActivitySafely(intent, context);
     }
 
-    public void disable(InCar prefs) {
+    public void disable(InCarInterface prefs) {
         if (prefs.isDisableScreenTimeout()) {
             ModeService.releaseWakeLock(mContext);
         }
@@ -231,7 +232,7 @@ public class ModeHandler {
     }
 
 
-    protected static void adjustVolume(InCar prefs, Context context) {
+    protected static void adjustVolume(InCarInterface prefs, Context context) {
         AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
         int adjVolume = prefs.getMediaVolumeLevel();

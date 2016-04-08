@@ -1,21 +1,5 @@
 package com.anod.car.home.drawer;
 
-import com.anod.car.home.MainActivity;
-import com.anod.car.home.R;
-import com.anod.car.home.app.App;
-import com.anod.car.home.prefs.ConfigurationActivity;
-import com.anod.car.home.prefs.ConfigurationInCar;
-import com.anod.car.home.prefs.ConfigurationRestore;
-import com.anod.car.home.prefs.LookAndFeelActivity;
-import com.anod.car.home.prefs.MusicAppSettingsActivity;
-import com.anod.car.home.prefs.preferences.AppStorage;
-import com.anod.car.home.prefs.preferences.AppTheme;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.InCarStatus;
-import com.anod.car.home.utils.IntentUtils;
-import com.anod.car.home.utils.Utils;
-
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -32,6 +16,21 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+
+import com.anod.car.home.MainActivity;
+import com.anod.car.home.R;
+import com.anod.car.home.app.App;
+import com.anod.car.home.prefs.ConfigurationActivity;
+import com.anod.car.home.prefs.ConfigurationInCar;
+import com.anod.car.home.prefs.ConfigurationRestore;
+import com.anod.car.home.prefs.LookAndFeelActivity;
+import com.anod.car.home.prefs.MusicAppSettingsActivity;
+import com.anod.car.home.prefs.preferences.AppStorage;
+import com.anod.car.home.prefs.preferences.AppTheme;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.InCarStatus;
+import com.anod.car.home.utils.IntentUtils;
+import com.anod.car.home.utils.Utils;
 
 import java.util.ArrayList;
 

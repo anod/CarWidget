@@ -1,12 +1,13 @@
 package com.anod.car.home.prefs;
 
-import com.anod.car.home.R;
-import com.anod.car.home.prefs.ActivityPicker.PickAdapter.Item;
-import com.anod.car.home.utils.IntentUtils;
-
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+
+import com.anod.car.home.R;
+import com.anod.car.home.prefs.ActivityPicker.PickAdapter.Item;
+import com.anod.car.home.utils.ApiCompat;
+import com.anod.car.home.utils.IntentUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class CarWidgetShortcutsPicker extends ActivityPicker {
         String[] titles = r.getStringArray(R.array.carwidget_shortcuts);
         for (int i = 0; i < ITEMS_NUM; i++) {
             Intent intent = IntentUtils.createPickShortcutLocalIntent(i, titles[i], ICONS[i], this);
-            PickAdapter.Item item = new PickAdapter.Item(this, titles[i], r.getDrawable(ICONS[i]),
+            PickAdapter.Item item = new PickAdapter.Item(this, titles[i], ApiCompat.getDrawable(r, ICONS[i]),
                     intent);
             items.add(item);
         }

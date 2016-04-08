@@ -1,16 +1,15 @@
 package com.anod.car.home;
 
+import android.app.Application;
+
 import com.anod.car.home.acra.BrowserUrlSender;
 import com.anod.car.home.acra.CrashDialog;
 import com.anod.car.home.prefs.preferences.AppTheme;
-import com.squareup.leakcanary.LeakCanary;
 
 import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
-
-import android.app.Application;
 
 @ReportsCrashes(
     mode = ReportingInteractionMode.DIALOG,
@@ -39,7 +38,7 @@ public class CarWidgetApplication extends Application {
     public void onCreate() {
         ACRA.init(this);
         super.onCreate();
-        LeakCanary.install(this);
+        //LeakCanary.install(this);
 
         mThemeIdx = AppTheme.getTheme(this);
         mObjectGraph = new ObjectGraph(this);

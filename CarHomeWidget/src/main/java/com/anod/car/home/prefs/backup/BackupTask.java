@@ -42,7 +42,7 @@ public class BackupTask extends AsyncTask<String, Void, Integer> {
         if (filename == null) {
             return mBackupManager.doBackupInCar();
         }
-        return mBackupManager.doBackupMain(filename, mAppWidgetId);
+        return mBackupManager.doBackupWidget(filename, mAppWidgetId);
     }
 
     protected void onPostExecute(Integer result) {

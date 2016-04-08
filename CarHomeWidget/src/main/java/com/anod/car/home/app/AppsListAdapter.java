@@ -5,6 +5,8 @@ import com.anod.car.home.utils.UtilitiesBitmap;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,20 +20,17 @@ import butterknife.ButterKnife;
 import butterknife.Bind;
 
 public class AppsListAdapter extends ArrayAdapter<AppsList.Entry> {
-
-    final private Bitmap mDefaultIcon;
-
     final private int mResource;
-
     final private Context mContext;
-
     private final AppIconLoader mIconLoader;
+    private final BitmapDrawable mDefaultIconDrawable;
 
     public AppsListAdapter(Context context, int resource, AppIconLoader iconLoader) {
         super(context, resource, new ArrayList<AppsList.Entry>());
         mResource = resource;
         mContext = context;
-        mDefaultIcon = UtilitiesBitmap.makeDefaultIcon(context.getPackageManager());
+        Bitmap defaultIcon = UtilitiesBitmap.makeDefaultIcon(context.getPackageManager());
+        mDefaultIconDrawable = new BitmapDrawable(context.getResources(), defaultIcon);
         mIconLoader = iconLoader;
     }
 
@@ -55,16 +54,19 @@ public class AppsListAdapter extends ArrayAdapter<AppsList.Entry> {
         if (entry.componentName == null) {
             if (entry.iconRes > 0) {
                 holder.icon.setVisibility(View.VISIBLE);
-                holder.icon.setImageResource(entry.iconRes);
-                mIconLoader.releaseImageView(holder.icon);
+                mIconLoader.picasso()
+                        .load(entry.iconRes)
+                        .placeholder(mDefaultIconDrawable)
+                        .into(holder.icon);
             } else {
                 holder.icon.setVisibility(View.INVISIBLE);
             }
         } else {
             holder.icon.setVisibility(View.VISIBLE);
-            holder.icon.setImageBitmap(mDefaultIcon);
-            mIconLoader.loadImage(entry.componentName.flattenToShortString(), holder.icon);
-
+            mIconLoader.picasso()
+                    .load(Uri.fromParts(AppIconLoader.SCHEME,entry.componentName.flattenToShortString(),null))
+                    .placeholder(mDefaultIconDrawable)
+                    .into(holder.icon);
         }
         view.setId(position);
         return view;

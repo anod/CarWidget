@@ -1,21 +1,6 @@
 package com.anod.car.home.prefs;
 
-import com.anod.car.home.R;
-import com.anod.car.home.model.AbstractShortcutsContainerModel;
-import com.anod.car.home.model.LauncherSettings;
-import com.anod.car.home.model.NotificationShortcutsModel;
-import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.model.ShortcutInfoUtils;
-import com.anod.car.home.model.ShortcutModel;
-import com.anod.car.home.model.WidgetShortcutsModel;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.IconPackUtils;
-import com.anod.car.home.utils.ShortcutPicker;
-import com.anod.car.home.utils.UtilitiesBitmap;
-import com.anod.car.home.utils.Utils;
-
 import android.annotation.TargetApi;
-import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -35,6 +20,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -44,14 +30,29 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.anod.car.home.R;
+import com.anod.car.home.model.AbstractShortcutsContainerModel;
+import com.anod.car.home.model.LauncherSettings;
+import com.anod.car.home.model.NotificationShortcutsModel;
+import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.ShortcutInfoUtils;
+import com.anod.car.home.model.ShortcutModel;
+import com.anod.car.home.model.WidgetShortcutsModel;
+import com.anod.car.home.utils.ApiCompat;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.IconPackUtils;
+import com.anod.car.home.utils.ShortcutPicker;
+import com.anod.car.home.utils.UtilitiesBitmap;
+import com.anod.car.home.utils.Utils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ShortcutEditActivity extends AppCompatActivity {
@@ -304,7 +305,7 @@ public class ShortcutEditActivity extends AppCompatActivity {
         try {
             // Load drawable through Resources, to get the source density information
             OpenResourceIdResult r = getResourceId(uri);
-            d = r.r.getDrawableForDensity(r.id, UtilitiesBitmap.getTargetDensity(this));
+            d = ApiCompat.getDrawableForDensity(r.r, r.id, UtilitiesBitmap.getTargetDensity(this));
         } catch (Exception e) {
             Log.w("ShortcutEditActivity", "Unable to open content: " + uri, e);
         }

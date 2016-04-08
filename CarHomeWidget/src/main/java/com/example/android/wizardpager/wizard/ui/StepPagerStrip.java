@@ -18,6 +18,7 @@ package com.example.android.wizardpager.wizard.ui;
 
 
 import com.anod.car.home.R;
+import com.anod.car.home.utils.ApiCompat;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -83,16 +84,16 @@ public class StepPagerStrip extends View {
         mTabSpacing = res.getDimensionPixelSize(R.dimen.step_pager_tab_spacing);
 
         mPrevTabPaint = new Paint();
-        mPrevTabPaint.setColor(res.getColor(R.color.step_pager_previous_tab_color));
+        mPrevTabPaint.setColor(ApiCompat.getColor(res, R.color.step_pager_previous_tab_color));
 
         mSelectedTabPaint = new Paint();
-        mSelectedTabPaint.setColor(res.getColor(R.color.step_pager_selected_tab_color));
+        mSelectedTabPaint.setColor(ApiCompat.getColor(res, R.color.step_pager_selected_tab_color));
 
         mSelectedLastTabPaint = new Paint();
-        mSelectedLastTabPaint.setColor(res.getColor(R.color.step_pager_selected_last_tab_color));
+        mSelectedLastTabPaint.setColor(ApiCompat.getColor(res, R.color.step_pager_selected_last_tab_color));
 
         mNextTabPaint = new Paint();
-        mNextTabPaint.setColor(res.getColor(R.color.step_pager_next_tab_color));
+        mNextTabPaint.setColor(ApiCompat.getColor(res, R.color.step_pager_next_tab_color));
     }
 
     public void setOnPageSelectedListener(OnPageSelectedListener onPageSelectedListener) {

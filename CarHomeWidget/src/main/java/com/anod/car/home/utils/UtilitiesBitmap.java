@@ -1,7 +1,5 @@
 package com.anod.car.home.utils;
 
-import com.anod.car.home.R;
-
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -17,6 +15,8 @@ import android.graphics.drawable.PaintDrawable;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
+import com.anod.car.home.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -288,6 +288,14 @@ public class UtilitiesBitmap {
             Log.w("Favorite", "Could not write icon");
             return null;
         }
+    }
+
+    public static Bitmap unflattenBitmap(byte[] bitmapData) {
+        Bitmap bitmap = null;
+        if (bitmapData != null && bitmapData.length > 0) {
+            bitmap = BitmapFactory.decodeByteArray(bitmapData, 0, bitmapData.length);
+        }
+        return bitmap;
     }
 
     /**

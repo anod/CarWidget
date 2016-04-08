@@ -6,22 +6,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceCategory;
 
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.incar.ActivityRecognitionClientService;
 import com.anod.car.home.incar.BroadcastService;
-import com.anod.car.home.incar.SamsungDrivingMode;
-import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.InCarInterface;
+import com.anod.car.home.prefs.preferences.InCarSharedPreferences;
 import com.anod.car.home.prefs.preferences.InCarStorage;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.utils.TrialDialogs;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 
 public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 
@@ -41,7 +38,6 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
 
     private boolean mTrialMessageShown;
 
-
     @Override
     protected boolean isAppWidgetIdRequired() {
         return false;
@@ -57,7 +53,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
         getActivity().setResult(Activity.RESULT_OK);
         getActivity().setTitle(R.string.incar_mode);
 
-        final Version version = new Version(mContext);
+        final Version version = new Version(getActivity());
 
         initInCar();
         if (version.isFree()) {
@@ -66,12 +62,17 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
         }
     }
 
+    @Override
+    protected String getSharedPreferencesName() {
+        return InCarStorage.PREF_NAME;
+    }
+
     public Dialog createTrialDialog() {
-        if (Utils.isProInstalled(mContext)) {
-            return TrialDialogs.buildProInstalledDialog(mContext);
+        if (Utils.isProInstalled(getActivity())) {
+            return TrialDialogs.buildProInstalledDialog(getActivity());
         } else {
             mTrialMessageShown = true;
-            return TrialDialogs.buildTrialDialog(mTrialsLeft, mContext);
+            return TrialDialogs.buildTrialDialog(mTrialsLeft, getActivity());
         }
     }
 
@@ -82,12 +83,12 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
     }
 
     private void initInCar() {
-        InCar incar = InCarStorage.loadInCar(mContext);
+        InCarSharedPreferences incar = InCarStorage.load(getActivity());
 
-        int[] appWidgetIds = WidgetHelper.getAllWidgetIds(mContext);
+        int[] appWidgetIds = WidgetHelper.getAllWidgetIds(getActivity());
         final int widgetsCount = appWidgetIds.length;
 
-        Preference incarSwitch = findPreference(InCarStorage.INCAR_MODE_ENABLED);
+        Preference incarSwitch = findPreference(InCarSharedPreferences.INCAR_MODE_ENABLED);
 
         if (widgetsCount == 0) {
             incarSwitch.setEnabled(false);
@@ -101,17 +102,17 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if ((Boolean) newValue) {
-                    BroadcastService.startService(mContext);
+                    BroadcastService.startService(getActivity());
                 } else {
-                    BroadcastService.stopService(mContext);
+                    BroadcastService.stopService(getActivity());
                 }
                 return true;
             }
         });
 
-        registerBroadcastServiceSwitchListener(InCarStorage.HEADSET_REQUIRED);
-        registerBroadcastServiceSwitchListener(InCarStorage.POWER_REQUIRED);
-        registerBroadcastServiceSwitchListener(InCarStorage.CAR_DOCK_REQUIRED);
+        registerBroadcastServiceSwitchListener(InCarSharedPreferences.HEADSET_REQUIRED);
+        registerBroadcastServiceSwitchListener(InCarSharedPreferences.POWER_REQUIRED);
+        registerBroadcastServiceSwitchListener(InCarSharedPreferences.CAR_DOCK_REQUIRED);
 
         initActivityRecognition();
         initScreenTimeout(incar);
@@ -128,7 +129,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
         pref.setOnPreferenceChangeListener(mBroadcastServiceSwitchListener);
     }
 
-    private void initScreenTimeout(InCar incar) {
+    private void initScreenTimeout(final InCarSharedPreferences incar) {
         final ListPreference pref = (ListPreference) findPreference(SCREEN_TIMEOUT_LIST);
 
         if (incar.isDisableScreenTimeout()) {
@@ -146,13 +147,13 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 String value = (String) newValue;
                 if ("disabled-charging".equals(value)) {
-                    InCarStorage.saveScreenTimeout(true, true, mContext);
+                    InCarStorage.saveScreenTimeout(true, true, incar);
                     pref.setValue("disabled-charging");
                 } else if ("disabled".equals(value)) {
-                    InCarStorage.saveScreenTimeout(true, false, mContext);
+                    InCarStorage.saveScreenTimeout(true, false, incar);
                     pref.setValue("disabled");
                 } else {
-                    InCarStorage.saveScreenTimeout(false, false, mContext);
+                    InCarStorage.saveScreenTimeout(false, false, incar);
                     pref.setValue("enabled");
                 }
                 return false;
@@ -161,12 +162,12 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
     }
 
     private void initActivityRecognition() {
-        final Preference pref = findPreference(InCarStorage.ACTIVITY_RECOGNITION);
+        final Preference pref = findPreference(InCarSharedPreferences.ACTIVITY_RECOGNITION);
         final Handler handler = new Handler();
 
         new Thread(new Runnable() {
             public void run() {
-                final int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(mContext);
+                final int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getActivity());
                 final String summary = renderPlayServiceStatus(status);
                 handler.post(new Runnable() {
                     public void run() {
@@ -197,9 +198,9 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     Boolean val = (Boolean) newValue;
                     if (val) {
-                        ActivityRecognitionClientService.startService(mContext);
+                        ActivityRecognitionClientService.startService(getActivity());
                     } else {
-                        ActivityRecognitionClientService.stopService(mContext);
+                        ActivityRecognitionClientService.stopService(getActivity());
                     }
                     return true;
                 }
@@ -231,16 +232,16 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             if ((Boolean) newValue || isBroadcastServiceRequired()) {
-                BroadcastService.startService(mContext);
+                BroadcastService.startService(getActivity());
             } else {
-                BroadcastService.stopService(mContext);
+                BroadcastService.stopService(getActivity());
             }
             return true;
         }
     };
 
     private boolean isBroadcastServiceRequired() {
-        InCar incar = InCarStorage.loadInCar(mContext);
+        InCarInterface incar = InCarStorage.load(getActivity());
         return BroadcastService.isServiceRequired(incar);
     }
 }

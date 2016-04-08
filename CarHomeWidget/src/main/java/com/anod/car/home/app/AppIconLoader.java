@@ -1,60 +1,91 @@
 package com.anod.car.home.app;
 
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.ImageLoader;
-import com.anod.car.home.utils.UtilitiesBitmap;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.UtilitiesBitmap;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Request;
+import com.squareup.picasso.RequestHandler;
 
-public class AppIconLoader extends ImageLoader {
+import java.io.IOException;
+
+import static com.squareup.picasso.Picasso.LoadedFrom.DISK;
 
 
+public class AppIconLoader {
     private final Context mContext;
-
-    private final PackageManager mPackageManager;
+    private Picasso mPicasso;
+    public static final String SCHEME = "application.icon";
 
     public AppIconLoader(Context context) {
-        super();
         mContext = context.getApplicationContext();
-        mPackageManager = context.getPackageManager();
     }
 
-    public void precacheIcon(String appId) {
-        Bitmap bmp = loadBitmap(appId);
-        if (bmp != null) {
-            cacheImage(appId, bmp);
-        }
-    }
 
-    public Bitmap loadImageUncached(String imgUID) {
-        return loadBitmap(imgUID);
-    }
+    static class PackageIconRequestHandler extends RequestHandler {
+        private final PackageManager mPackageManager;
+        private final Context mContext;
 
-    @Override
-    protected Bitmap loadBitmap(String imgUID) {
-        Drawable d = null;
-        Bitmap icon;
-        ComponentName cmp = ComponentName.unflattenFromString(imgUID);
-        try {
-            d = mPackageManager.getActivityIcon(cmp);
-        } catch (PackageManager.NameNotFoundException ignored) {
+        public PackageIconRequestHandler(Context context) {
+            mContext = context;
+            mPackageManager = context.getPackageManager();
         }
 
-        if (d == null) {
+        @Override
+        public boolean canHandleRequest(Request data) {
+            return SCHEME.equals(data.uri.getScheme());
+        }
+
+        @Override
+        public Result load(Request request, int networkPolicy) throws IOException {
+            Drawable d = null;
+            Bitmap icon;
+
+            AppLog.d("load: "+request.uri);
+
+            String part = request.uri.getSchemeSpecificPart();
+            AppLog.d("cmp: "+part);
+            ComponentName cmp = ComponentName.unflattenFromString(part);
             try {
-                d = mPackageManager.getApplicationIcon(cmp.getPackageName());
-            } catch (PackageManager.NameNotFoundException e1) {
-                AppLog.ex(e1);
-                return null;
+                AppLog.d("getActivityIcon: "+cmp);
+                d = mPackageManager.getActivityIcon(cmp);
+            } catch (PackageManager.NameNotFoundException ignored) {
             }
-        }
-        icon = UtilitiesBitmap.createSystemIconBitmap(d, mContext);
 
-        return icon;
+            if (d == null) {
+                try {
+                    d = mPackageManager.getApplicationIcon(cmp.getPackageName());
+                    AppLog.d("getApplicationIcon: "+cmp.getPackageName());
+                } catch (PackageManager.NameNotFoundException e1) {
+                    AppLog.ex(e1);
+                    return null;
+                }
+            }
+            icon = UtilitiesBitmap.createSystemIconBitmap(d, mContext);
+            return new Result(icon, DISK);
+        }
+
+    }
+
+    public Picasso picasso() {
+        if (mPicasso == null)
+        {
+            mPicasso = new Picasso.Builder(mContext)
+                    .addRequestHandler(new PackageIconRequestHandler(mContext))
+                    .build();
+        }
+        return mPicasso;
+    }
+
+    public void shutdown() {
+        if (mPicasso != null) {
+            mPicasso.shutdown();
+            mPicasso = null;
+        }
     }
 }

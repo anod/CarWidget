@@ -7,7 +7,6 @@ import com.anod.car.home.R;
 import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey;
 import com.anod.car.home.prefs.preferences.InCarStorage;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.views.ShortcutPreference;
 
 public class ConfigurationNotifShortcuts extends ConfigurationPreferenceFragment
@@ -30,7 +29,7 @@ public class ConfigurationNotifShortcuts extends ConfigurationPreferenceFragment
     @Override
     protected void onCreateImpl(Bundle savedInstanceState) {
 
-        mModel = new NotificationShortcutsModel(mContext);
+        mModel = new NotificationShortcutsModel(getActivity());
         mModel.init();
         mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
         mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
@@ -40,6 +39,11 @@ public class ConfigurationNotifShortcuts extends ConfigurationPreferenceFragment
             mPickShortcutUtils.initLauncherPreference(i, p);
             p.setDropCallback(this);
         }
+    }
+
+    @Override
+    protected String getSharedPreferencesName() {
+        return InCarStorage.PREF_NAME;
     }
 
     @Override

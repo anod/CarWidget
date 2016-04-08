@@ -1,27 +1,25 @@
 package com.anod.car.home.prefs.preferences;
 
-import com.anod.car.home.R;
-import com.anod.car.home.incar.ScreenOrientation;
-import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.model.ShortcutModel;
-import com.anod.car.home.prefs.preferences.WidgetSharedPreferences.WidgetEditor;
-import com.anod.car.home.utils.BitmapTransform.RotateDirection;
-import com.anod.car.home.utils.Utils;
-
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
-import android.support.v4.util.ArrayMap;
-import android.text.TextUtils;
-import android.util.Log;
+
+import com.anod.car.home.R;
+import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.ShortcutModel;
+import com.anod.car.home.utils.ApiCompat;
+import com.anod.car.home.utils.BitmapTransform.RotateDirection;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Set;
 
-public class PreferencesStorage {
+public class WidgetMigrateStorage {
 
     public static final String CMP_NUMBER = "cmp-number-%d";
 
@@ -96,15 +94,15 @@ public class PreferencesStorage {
         String skinName = prefs.getString(SKIN, Main.SKIN_CARDS);
         p.setSkin(skinName);
 
-        int defTileColor = res.getColor(R.color.w7_tale_default_background);
+        int defTileColor = ApiCompat.getColor(res, R.color.w7_tale_default_background);
         int tileColor = prefs.getInt(BUTTON_COLOR, defTileColor);
         p.setTileColor(tileColor);
 
         p.setIconsScaleString(prefs.getString(ICONS_SCALE, ICONS_DEF_VALUE));
         p.setIconsMono(prefs.getBoolean(ICONS_MONO, false));
-        p.setBackgroundColor(prefs.getInt(BG_COLOR, res.getColor(R.color.default_background)));
+        p.setBackgroundColor(prefs.getInt(BG_COLOR, ApiCompat.getColor(res, R.color.default_background)));
         p.setIconsColor(prefs.getColor(ICONS_COLOR));
-        p.setFontColor(prefs.getInt(FONT_COLOR, res.getColor(R.color.default_font_color)));
+        p.setFontColor(prefs.getInt(FONT_COLOR, ApiCompat.getColor(res, R.color.default_font_color)));
         p.setFontSize(prefs.getInt(FONT_SIZE, Main.FONT_SIZE_UNDEFINED));
         p.setSettingsTransparent(prefs.getBoolean(TRANSPARENT_BTN_SETTINGS, false));
         p.setIncarTransparent(prefs.getBoolean(TRANSPARENT_BTN_INCAR, false));
@@ -124,7 +122,7 @@ public class PreferencesStorage {
         final WidgetSharedPreferences p = new WidgetSharedPreferences(context);
         p.setAppWidgetId(appWidgetId);
 
-        WidgetEditor editor = p.edit();
+        WidgetSharedPreferences.WidgetEditor editor = p.edit();
 
         editor.putString(SKIN, prefs.getSkin());
 
@@ -171,7 +169,7 @@ public class PreferencesStorage {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         ArrayList<Long> ids = new ArrayList<Long>(count);
         for (int i = 0; i < count; i++) {
-            String key = PreferencesStorage.getLaunchComponentName(i, appWidgetId);
+            String key = WidgetMigrateStorage.getLaunchComponentName(i, appWidgetId);
             long id = prefs.getLong(key, ShortcutInfo.NO_ID);
             ids.add(i, id);
         }
@@ -203,7 +201,7 @@ public class PreferencesStorage {
     public static void setFirstTime(boolean value, Context context, int appWidgetId) {
         WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
         prefs.setAppWidgetId(appWidgetId);
-        WidgetEditor editor = prefs.edit();
+        WidgetSharedPreferences.WidgetEditor editor = prefs.edit();
         editor.putBoolean(FIRST_TIME, value);
         editor.commit();
     }
@@ -230,7 +228,7 @@ public class PreferencesStorage {
         WidgetSharedPreferences prefs = new WidgetSharedPreferences(context);
         for (int appWidgetId : appWidgetIds) {
             prefs.setAppWidgetId(appWidgetId);
-            WidgetEditor edit = prefs.edit();
+            WidgetSharedPreferences.WidgetEditor edit = prefs.edit();
             for (int i = 0; i < sAppWidgetPrefs.length; i++) {
                 edit.remove(sAppWidgetPrefs[i]);
             }
@@ -259,4 +257,218 @@ public class PreferencesStorage {
         edit.commit();
     }
 
+
+
+    static class WidgetSharedPreferences /* implements SharedPreferences */ {
+
+        private final SharedPreferences mPrefs;
+
+        private int mAppWidgetId;
+
+        private WidgetEditor mWidgetEdit;
+
+        public WidgetSharedPreferences(Context context) {
+            mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        }
+
+        public void setAppWidgetId(int appWidgetId) {
+            mAppWidgetId = appWidgetId;
+        }
+
+        public static String getName(String prefName, int aAppWidgetId) {
+            return String.format(prefName, aAppWidgetId);
+        }
+
+        public static String getListName(String prefName, int listId, int aAppWidgetId) {
+            return String.format(prefName, aAppWidgetId, listId);
+        }
+
+        @SuppressLint("CommitPrefEdits")
+        public WidgetEditor edit() {
+            if (mWidgetEdit == null) {
+                Editor edit = mPrefs.edit();
+                mWidgetEdit = new WidgetEditor(mAppWidgetId, edit);
+            }
+            return mWidgetEdit;
+        }
+
+        public boolean getBoolean(String key, boolean defValue) {
+            String keyId = getName(key, mAppWidgetId);
+            return mPrefs.getBoolean(keyId, defValue);
+        }
+
+        public boolean getBoolean(String key, int listId, boolean defValue) {
+            String keyId = getListName(key, listId, mAppWidgetId);
+            return mPrefs.getBoolean(keyId, defValue);
+        }
+
+        public float getFloat(String key, float defValue) {
+            String keyId = getName(key, mAppWidgetId);
+            return mPrefs.getFloat(keyId, defValue);
+        }
+
+        public int getInt(String key, int defValue) {
+            String keyId = getName(key, mAppWidgetId);
+            return mPrefs.getInt(keyId, defValue);
+        }
+
+        public long getLong(String key, long defValue) {
+            String keyId = getName(key, mAppWidgetId);
+            return mPrefs.getLong(keyId, defValue);
+        }
+
+        public String getString(String key, String defValue) {
+            String keyId = getName(key, mAppWidgetId);
+            return mPrefs.getString(keyId, defValue);
+        }
+
+        public Integer getColor(String key) {
+            String prefName = getName(key, mAppWidgetId);
+            if (!mPrefs.contains(prefName)) {
+                return null;
+            }
+            return mPrefs.getInt(prefName, Color.WHITE);
+        }
+
+        public ComponentName getComponentName(String key) {
+            String compString = getString(key, null);
+            if (compString == null) {
+                return null;
+            }
+            String[] compParts = compString.split("/");
+            return new ComponentName(compParts[0], compParts[1]);
+        }
+
+        public final class WidgetEditor implements Editor {
+
+            private final Editor mEdit;
+
+            private int mEditAppWidgetId;
+
+            public WidgetEditor(int appWidgetId, Editor edit) {
+                mEdit = edit;
+                mEditAppWidgetId = appWidgetId;
+            }
+
+            public void setAppWidgetId(int appWidgetId) {
+                mEditAppWidgetId = appWidgetId;
+            }
+
+            @Override
+            public void apply() {
+                mEdit.commit();
+            }
+
+            @Override
+            public Editor clear() {
+                mEdit.clear();
+                return this;
+            }
+
+            @Override
+            public boolean commit() {
+                return mEdit.commit();
+            }
+
+            @Override
+            public Editor putBoolean(String key, boolean value) {
+                String keyId = getName(key, mEditAppWidgetId);
+                mEdit.putBoolean(keyId, value);
+                return this;
+            }
+
+            public Editor putBoolean(String key, int listId, boolean value) {
+                String keyId = getListName(key, listId, mEditAppWidgetId);
+                mEdit.putBoolean(keyId, value);
+                return this;
+            }
+
+            @Override
+            public Editor putFloat(String key, float value) {
+                String keyId = getName(key, mEditAppWidgetId);
+                mEdit.putFloat(keyId, value);
+                return this;
+            }
+
+            @Override
+            public Editor putInt(String key, int value) {
+                String keyId = getName(key, mEditAppWidgetId);
+                mEdit.putInt(keyId, value);
+                return this;
+            }
+
+            /**
+             *
+             * @param key
+             * @param value
+             * @return
+             */
+            public WidgetEditor putIntOrRemove(String key, int value) {
+                String keyId = getName(key, mEditAppWidgetId);
+                if (value > 0) {
+                    mEdit.putInt(keyId, value);
+                } else {
+                    mEdit.remove(keyId);
+                }
+                return this;
+            }
+
+            @Override
+            public Editor putLong(String key, long value) {
+                String keyId = getName(key, mEditAppWidgetId);
+                mEdit.putLong(keyId, value);
+                return this;
+            }
+
+            @Override
+            public Editor putString(String key, String value) {
+                String keyId = getName(key, mEditAppWidgetId);
+                mEdit.putString(keyId, value);
+                return this;
+            }
+
+            public WidgetEditor putStringOrRemove(String key, String value) {
+                String keyId = getName(key, mEditAppWidgetId);
+                if (value != null) {
+                    mEdit.putString(keyId, value);
+                } else {
+                    mEdit.remove(keyId);
+                }
+                return this;
+            }
+
+            public WidgetEditor putComponentOrRemove(String key, ComponentName component) {
+                String keyId = getName(key, mEditAppWidgetId);
+                if (component != null) {
+                    String value = component.getPackageName() + "/" + component.getClassName();
+                    mEdit.putString(keyId, value);
+                } else {
+                    mEdit.remove(keyId);
+                }
+                return this;
+            }
+
+            @Override
+            public Editor putStringSet(String key, Set<String> value) {
+                //String keyId = getName(key, mEditAppWidgetId);
+                //mEdit.putStringSet(keyId, value);
+                throw new IllegalAccessError("Not implemented");
+                //return this;
+            }
+
+            @Override
+            public Editor remove(String key) {
+                String keyId = getName(key, mEditAppWidgetId);
+                mEdit.remove(keyId);
+                return this;
+            }
+
+            public Editor remove(String key, int listId) {
+                String keyId = getListName(key, listId, mEditAppWidgetId);
+                mEdit.remove(keyId);
+                return this;
+            }
+        }
+
+    }
 }

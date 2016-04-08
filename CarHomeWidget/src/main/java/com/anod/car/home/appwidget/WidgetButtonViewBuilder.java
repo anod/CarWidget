@@ -1,17 +1,16 @@
 package com.anod.car.home.appwidget;
 
-import com.anod.car.home.R;
-import com.anod.car.home.incar.ModeService;
-import com.anod.car.home.prefs.preferences.InCarStorage;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.skin.SkinProperties;
-
 import android.app.PendingIntent;
 import android.content.Context;
 import android.support.annotation.IdRes;
 import android.view.View;
 import android.widget.RemoteViews;
+
+import com.anod.car.home.R;
+import com.anod.car.home.incar.ModeService;
+import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.skin.SkinProperties;
 
 /**
  * @author alex
@@ -64,7 +63,7 @@ public class WidgetButtonViewBuilder {
                 views.setViewVisibility(btnResId, View.GONE);
             }
         } else if (widgetButtonPref == Main.WIDGET_BUTTON_INCAR) {
-            if (InCarStorage.isInCarModeEnabled(mContext)) {
+            if (InCarStorage.load(mContext).isInCarEnabled()) {
                 setInCarButton(btnResId, mPrefs.isIncarTransparent(), skinProperties, views,
                         buttonId);
             } else {

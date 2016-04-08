@@ -1,9 +1,5 @@
 package com.anod.car.home.prefs.views.drag;
 
-import com.anod.car.home.R;
-import com.anod.car.home.prefs.preferences.AppTheme;
-import com.anod.car.home.prefs.views.ShortcutPreference;
-
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipDescription;
@@ -14,6 +10,11 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
+
+import com.anod.car.home.R;
+import com.anod.car.home.prefs.preferences.AppTheme;
+import com.anod.car.home.prefs.views.ShortcutPreference;
+import com.anod.car.home.utils.ApiCompat;
 
 /**
  * @author alex
@@ -31,10 +32,10 @@ public class ShortcutDragListener implements View.OnDragListener {
     public ShortcutDragListener(Context context, int appThemeIdx,
             ShortcutPreference.DropCallback dropCallback) {
         Resources r = context.getResources();
-        mTopShadow = r.getDrawable(R.drawable.drop_shadow_top);
+        mTopShadow = ApiCompat.getDrawable(r, R.drawable.drop_shadow_top);
 
         int bgRes = AppTheme.getBackgroundResource(appThemeIdx);
-        mBackground = r.getDrawable(bgRes);
+        mBackground = ApiCompat.getDrawable(r, bgRes);
         mDropCallback = dropCallback;
     }
 

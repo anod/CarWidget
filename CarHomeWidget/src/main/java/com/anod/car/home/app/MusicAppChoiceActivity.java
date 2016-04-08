@@ -1,12 +1,5 @@
 package com.anod.car.home.app;
 
-import com.anod.car.home.BuildConfig;
-import com.anod.car.home.R;
-import com.anod.car.home.model.AppsList;
-import com.anod.car.home.prefs.preferences.AppStorage;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.utils.MusicUtils;
-
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.os.Bundle;
@@ -14,10 +7,16 @@ import android.view.KeyEvent;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import com.anod.car.home.BuildConfig;
+import com.anod.car.home.R;
+import com.anod.car.home.model.AppsList;
+import com.anod.car.home.prefs.preferences.AppStorage;
+import com.anod.car.home.utils.MusicUtils;
+
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * @author alex

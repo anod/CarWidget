@@ -1,9 +1,5 @@
 package com.anod.car.home.model;
 
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.FastBitmapDrawable;
-import com.anod.car.home.utils.UtilitiesBitmap;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +12,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.util.Log;
+
+import com.anod.car.home.utils.ApiCompat;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.FastBitmapDrawable;
+import com.anod.car.home.utils.UtilitiesBitmap;
 
 public class ShortcutInfoUtils {
 
@@ -181,8 +182,7 @@ public class ShortcutInfoUtils {
             Context context) {
         Drawable drawableAppIcon = null;
         try {
-            drawableAppIcon = resources
-                    .getDrawableForDensity(id, UtilitiesBitmap.getTargetDensity(context));
+            drawableAppIcon = ApiCompat.getDrawableForDensity(resources, id, UtilitiesBitmap.getTargetDensity(context));
         } catch (Resources.NotFoundException e) {
             AppLog.ex(e);
         }
@@ -190,7 +190,7 @@ public class ShortcutInfoUtils {
         if (drawableAppIcon == null) {
             //fallback to the default density
             try {
-                drawableAppIcon = resources.getDrawable(id);
+                drawableAppIcon = ApiCompat.getDrawable(resources, id);
             } catch (Resources.NotFoundException e) {
                 AppLog.ex(e);
                 return null;

@@ -1,12 +1,5 @@
 package com.anod.car.home.incar;
 
-import com.anod.car.home.BuildConfig;
-import com.anod.car.home.prefs.preferences.InCar;
-import com.anod.car.home.prefs.preferences.InCarStorage;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.PowerUtil;
-
 import android.app.UiModeManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -14,7 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.util.ArrayMap;
 
-import java.util.HashMap;
+import com.anod.car.home.BuildConfig;
+import com.anod.car.home.prefs.preferences.InCarInterface;
+import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.PowerUtil;
 
 /**
  * @author alex
@@ -56,7 +53,7 @@ public class ModeDetector {
         }
     }
 
-    public static void updatePrefState(InCar prefs) {
+    public static void updatePrefState(InCarInterface prefs) {
         synchronized (sLock) {
             sPrefState[FLAG_POWER] = prefs.isPowerRequired();
             sPrefState[FLAG_BLUETOOTH] = prefs.isBluetoothRequired();
@@ -66,7 +63,7 @@ public class ModeDetector {
         }
     }
 
-    public static void forceState(InCar prefs, boolean forceMode) {
+    public static void forceState(InCarInterface prefs, boolean forceMode) {
         updatePrefState(prefs);
         if (sPrefState[FLAG_POWER]) {
             sEventState[FLAG_POWER] = forceMode;
@@ -86,10 +83,11 @@ public class ModeDetector {
     }
 
     public static void onBroadcastReceive(Context context, Intent intent) {
-        if (!InCarStorage.isInCarModeEnabled(context)) { // TODO remove it
+        InCarInterface prefs = InCarStorage.load(context);
+        if (!prefs.isInCarEnabled())
+        {
             return;
         }
-        InCar prefs = InCarStorage.loadInCar(context);
         if (Intent.ACTION_POWER_DISCONNECTED.equals(intent.getAction())
                 ) {
             onPowerDisconnected(prefs, context);
@@ -125,7 +123,7 @@ public class ModeDetector {
     }
 
 
-    private static void updateEventState(InCar prefs, Intent intent) {
+    private static void updateEventState(InCarInterface prefs, Intent intent) {
         String action = intent.getAction();
 
         if (ModeBroadcastReceiver.ACTION_ACTIVITY_RECOGNITION.equals(action)) {
@@ -220,7 +218,7 @@ public class ModeDetector {
         return newMode;
     }
 
-    private static void onPowerConnected(InCar prefs, Context context) {
+    private static void onPowerConnected(InCarInterface prefs, Context context) {
         if (prefs.isEnableBluetoothOnPower() && Bluetooth.getState() != BluetoothAdapter.STATE_ON) {
             Bluetooth.switchOn();
         }
@@ -231,7 +229,7 @@ public class ModeDetector {
         }
     }
 
-    private static void onPowerDisconnected(InCar prefs, Context context) {
+    private static void onPowerDisconnected(InCarInterface prefs, Context context) {
         if (prefs.isDisableBluetoothOnPower()
                 && Bluetooth.getState() != BluetoothAdapter.STATE_OFF) {
             Bluetooth.switchOff();
@@ -251,12 +249,12 @@ public class ModeDetector {
         ActivityRecognitionService.resetLastResult();
     }
 
-    public static void switchOn(InCar prefs, ModeHandler modeHandler) {
+    public static void switchOn(InCarInterface prefs, ModeHandler modeHandler) {
         sMode = true;
         modeHandler.enable(prefs);
     }
 
-    public static void switchOff(InCar prefs, ModeHandler modeHandler) {
+    public static void switchOff(InCarInterface prefs, ModeHandler modeHandler) {
         sMode = false;
         resetActivityState();
 

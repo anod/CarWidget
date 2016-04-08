@@ -1,9 +1,9 @@
 package com.anod.car.home.model;
 
-import com.anod.car.home.utils.Version;
-
 import android.net.Uri;
 import android.provider.BaseColumns;
+
+import com.anod.car.home.utils.Version;
 
 /**
  * Settings related utilities.
@@ -20,7 +20,7 @@ public class LauncherSettings {
          * Type: TEXT
          * </P>
          */
-        static final String TITLE = "title";
+        public static final String TITLE = "title";
 
         /**
          * The Intent URL of the gesture, describing what it points to. This
@@ -31,7 +31,7 @@ public class LauncherSettings {
          * Type: TEXT
          * </P>
          */
-        static final String INTENT = "intent";
+        public static final String INTENT = "intent";
 
         /**
          * The type of the gesture
@@ -40,7 +40,7 @@ public class LauncherSettings {
          * Type: INTEGER
          * </P>
          */
-        static final String ITEM_TYPE = "itemType";
+        public static final String ITEM_TYPE = "itemType";
 
         /**
          * The gesture is an application
@@ -58,18 +58,18 @@ public class LauncherSettings {
          * Type: INTEGER
          * </P>
          */
-        static final String ICON_TYPE = "iconType";
+        public static final String ICON_TYPE = "iconType";
 
         /**
          * The icon is a resource identified by a package name and an integer
          * id.
          */
-        static final int ICON_TYPE_RESOURCE = 0;
+        public static final int ICON_TYPE_RESOURCE = 0;
 
         /**
          * The icon is a bitmap.
          */
-        static final int ICON_TYPE_BITMAP = 1;
+        public static final int ICON_TYPE_BITMAP = 1;
 
         /**
          * The icon package name, if icon type is ICON_TYPE_RESOURCE.
@@ -77,7 +77,7 @@ public class LauncherSettings {
          * Type: TEXT
          * </P>
          */
-        static final String ICON_PACKAGE = "iconPackage";
+        public static final String ICON_PACKAGE = "iconPackage";
 
         /**
          * The icon resource id, if icon type is ICON_TYPE_RESOURCE.
@@ -85,7 +85,7 @@ public class LauncherSettings {
          * Type: TEXT
          * </P>
          */
-        static final String ICON_RESOURCE = "iconResource";
+        public static final String ICON_RESOURCE = "iconResource";
 
         /**
          * The custom icon bitmap, if icon type is ICON_TYPE_BITMAP.
@@ -93,12 +93,12 @@ public class LauncherSettings {
          * Type: BLOB
          * </P>
          */
-        static final String ICON = "icon";
+        public static final String ICON = "icon";
 
         /**
          * Type: BOOLEAN
          */
-        static final String IS_CUSTOM_ICON = "isCustomIcon";
+        public static final String IS_CUSTOM_ICON = "isCustomIcon";
 
         /**
          * The content:// style URL for this table

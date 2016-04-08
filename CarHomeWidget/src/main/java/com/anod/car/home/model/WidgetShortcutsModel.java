@@ -1,12 +1,12 @@
 package com.anod.car.home.model;
 
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.IntentUtils;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+
+import com.anod.car.home.prefs.preferences.WidgetStorage;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.IntentUtils;
 
 import java.util.ArrayList;
 
@@ -25,29 +25,29 @@ public class WidgetShortcutsModel extends AbstractShortcutsContainerModel {
     }
 
     public void loadCount() {
-        mCount = PreferencesStorage.getLaunchComponentNumber(mContext, mAppWidgetId);
+        mCount = WidgetStorage.getLaunchComponentNumber(mContext, mAppWidgetId);
     }
 
     @Override
     public void updateCount(Integer count) {
         mCount = count;
-        PreferencesStorage.saveLaunchComponentNumber(count, mContext, mAppWidgetId);
+        WidgetStorage.saveLaunchComponentNumber(count, mContext, mAppWidgetId);
     }
 
     @Override
     protected ArrayList<Long> loadShortcutIds() {
         loadCount();
-        return PreferencesStorage.getLauncherComponents(mContext, mAppWidgetId, mCount);
+        return WidgetStorage.getLauncherComponents(mContext, mAppWidgetId, mCount);
     }
 
     @Override
     protected void saveShortcutId(int position, long shortcutId) {
-        PreferencesStorage.saveShortcut(mContext, shortcutId, position, mAppWidgetId);
+        WidgetStorage.saveShortcut(mContext, shortcutId, position, mAppWidgetId);
     }
 
     @Override
     protected void dropShortcutId(int position) {
-        PreferencesStorage.dropShortcutPreference(position, mAppWidgetId, mContext);
+        WidgetStorage.dropShortcutPreference(position, mAppWidgetId, mContext);
     }
 
     @Override

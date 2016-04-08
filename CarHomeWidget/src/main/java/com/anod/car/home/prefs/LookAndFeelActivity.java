@@ -1,25 +1,5 @@
 package com.anod.car.home.prefs;
 
-import com.anod.car.home.Provider;
-import com.anod.car.home.R;
-import com.anod.car.home.app.App;
-import com.anod.car.home.app.CarWidgetActivity;
-import com.anod.car.home.appwidget.WidgetViewBuilder;
-import com.anod.car.home.drawer.NavigationDrawer;
-import com.anod.car.home.drawer.NavigationList;
-import com.anod.car.home.model.WidgetShortcutsModel;
-import com.anod.car.home.prefs.drag.ShortcutDragListener;
-import com.anod.car.home.prefs.lookandfeel.LookAndFeelMenu;
-import com.anod.car.home.prefs.lookandfeel.SkinPagerAdapter;
-import com.anod.car.home.prefs.lookandfeel.WidgetButtonChoiceActivity;
-import com.anod.car.home.prefs.model.SkinList;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.BitmapLruCache;
-import com.anod.car.home.utils.IntentUtils;
-import com.anod.car.home.utils.Utils;
-
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -41,8 +21,28 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import butterknife.ButterKnife;
+import com.anod.car.home.Provider;
+import com.anod.car.home.R;
+import com.anod.car.home.app.App;
+import com.anod.car.home.app.CarWidgetActivity;
+import com.anod.car.home.appwidget.WidgetViewBuilder;
+import com.anod.car.home.drawer.NavigationDrawer;
+import com.anod.car.home.drawer.NavigationList;
+import com.anod.car.home.model.WidgetShortcutsModel;
+import com.anod.car.home.prefs.drag.ShortcutDragListener;
+import com.anod.car.home.prefs.lookandfeel.LookAndFeelMenu;
+import com.anod.car.home.prefs.lookandfeel.SkinPagerAdapter;
+import com.anod.car.home.prefs.lookandfeel.WidgetButtonChoiceActivity;
+import com.anod.car.home.prefs.model.SkinList;
+import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.prefs.preferences.WidgetStorage;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.BitmapLruCache;
+import com.anod.car.home.utils.IntentUtils;
+import com.anod.car.home.utils.Utils;
+
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class LookAndFeelActivity extends CarWidgetActivity
         implements ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentHelper,
@@ -247,7 +247,7 @@ public class LookAndFeelActivity extends CarWidgetActivity
     }
 
     public void persistPrefs() {
-        PreferencesStorage.saveMain(mContext, mPrefs, mAppWidgetId);
+        WidgetStorage.save(mContext, mPrefs, mAppWidgetId);
     }
 
     public SkinList.Item getSkinItem(int position) {
@@ -299,7 +299,7 @@ public class LookAndFeelActivity extends CarWidgetActivity
     }
 
     private Main loadPrefs() {
-        return PreferencesStorage.loadMain(mContext, mAppWidgetId);
+        return WidgetStorage.load(mContext, mAppWidgetId);
     }
 
     public int getAppWidgetId() {

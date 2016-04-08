@@ -51,9 +51,9 @@ public class RestoreTask extends AsyncTask<Uri, Void, Integer> {
         }
 
         if (SCHEME_FILE.equals(uri.getScheme())) {
-            return mBackupManager.doRestoreMainLocal(uri.getPath(), mAppWidgetId);
+            return mBackupManager.doRestoreWidgetLocal(uri.getPath(), mAppWidgetId);
         }
-        return mBackupManager.doRestoreMainUri(uri, mAppWidgetId);
+        return mBackupManager.doRestoreWidgetUri(uri, mAppWidgetId);
     }
 
     @Override

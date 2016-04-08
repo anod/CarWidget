@@ -1,15 +1,5 @@
 package com.anod.car.home.prefs.lookandfeel;
 
-import com.anod.car.home.R;
-import com.anod.car.home.app.App;
-import com.anod.car.home.appscache.AppsCacheActivity;
-import com.anod.car.home.model.AppsList;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.IconPackUtils;
-import com.anod.car.home.utils.Utils;
-
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +7,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+
+import com.anod.car.home.R;
+import com.anod.car.home.app.App;
+import com.anod.car.home.appscache.AppsCacheActivity;
+import com.anod.car.home.model.AppsList;
+import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.prefs.preferences.WidgetStorage;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.IconPackUtils;
+import com.anod.car.home.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -54,7 +54,7 @@ public class IconThemesActivity extends AppsCacheActivity {
 
     @Override
     protected void onResumeImpl() {
-        mPrefs = PreferencesStorage.loadMain(this, mAppWidgetId);
+        mPrefs = WidgetStorage.load(this, mAppWidgetId);
         mThemePackageName = mPrefs.getIconsTheme();
     }
 
@@ -139,7 +139,7 @@ public class IconThemesActivity extends AppsCacheActivity {
         }
         if (update) {
             mPrefs.setIconsTheme(mThemePackageName);
-            PreferencesStorage.saveMain(this, mPrefs, mAppWidgetId);
+            WidgetStorage.save(this, mPrefs, mAppWidgetId);
         }
         finish();
     }

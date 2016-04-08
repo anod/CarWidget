@@ -14,9 +14,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.anod.car.home.R;
 import com.anod.car.home.incar.SamsungDrivingMode;
-import com.anod.car.home.prefs.preferences.InCar;
+import com.anod.car.home.prefs.preferences.InCarSharedPreferences;
 import com.anod.car.home.prefs.preferences.InCarStorage;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
 
 public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
         implements OnCheckedChangeListener {
@@ -28,6 +27,7 @@ public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
     private static final String AUTORUN_APP_CUSTOM = "custom";
 
     protected static final int REQUEST_PICK_APPLICATION = 0;
+    private InCarSharedPreferences mPrefs;
 
     @Override
     protected boolean isAppWidgetIdRequired() {
@@ -41,14 +41,20 @@ public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
 
     @Override
     protected void onCreateImpl(Bundle savedInstanceState) {
-        InCar incar = InCarStorage.loadInCar(mContext);
-        initAutorunApp(incar);
+        mPrefs = InCarStorage.load(getActivity());
+        initAutorunApp();
         initSamsungHandsfree();
     }
 
     @Override
+    protected String getSharedPreferencesName() {
+        return InCarStorage.PREF_NAME;
+    }
+
+    @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        InCarStorage.setAdjustVolumeLevel(mContext, isChecked);
+        mPrefs.setAdjustVolumeLevel(isChecked);
+        mPrefs.apply();
     }
 
     @Override
@@ -63,7 +69,7 @@ public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
     private void initSamsungHandsfree() {
         if (!SamsungDrivingMode.hasMode()) {
             final Preference samDrivingPref = findPreference(
-                    InCarStorage.SAMSUNG_DRIVING_MODE);
+                    InCarSharedPreferences.SAMSUNG_DRIVING_MODE);
             ((PreferenceCategory) findPreference("incar-more-category"))
                     .removePreference(samDrivingPref);
         }
@@ -75,13 +81,14 @@ public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
             component = data.getComponent();
         }
         // update storage
-        InCarStorage.saveAutorunApp(component, mContext);
+        mPrefs.setAutorunApp(component);
+        mPrefs.apply();
         updateAutorunAppPref(data);
     }
 
-    private void initAutorunApp(InCar incar) {
+    private void initAutorunApp() {
         final ListPreference pref = (ListPreference) findPreference(AUTORUN_APP_PREF);
-        ComponentName autorunApp = incar.getAutorunApp();
+        ComponentName autorunApp = mPrefs.getAutorunApp();
         if (autorunApp == null) {
             updateAutorunAppPref(null);
         } else {
@@ -96,7 +103,7 @@ public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
                 if (selection.equals(AUTORUN_APP_DISABLED)) {
                     saveAutorunApp(null);
                 } else {
-                    Intent mainIntent = new Intent(mContext, AllAppsActivity.class);
+                    Intent mainIntent = new Intent(getActivity(), AllAppsActivity.class);
                     startActivityForResult(mainIntent, REQUEST_PICK_APPLICATION);
                 }
                 return false;
@@ -113,7 +120,7 @@ public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
             value = AUTORUN_APP_DISABLED;
         } else {
             // get name
-            PackageManager pm = mContext.getPackageManager();
+            PackageManager pm = getActivity().getPackageManager();
             final ResolveInfo resolveInfo = pm.resolveActivity(data, 0);
             if (resolveInfo != null) {
                 title = (String) resolveInfo.activityInfo.loadLabel(pm);
@@ -125,6 +132,5 @@ public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
         // update preference
         pref.setSummary(title);
         pref.setValue(value);
-
     }
 }

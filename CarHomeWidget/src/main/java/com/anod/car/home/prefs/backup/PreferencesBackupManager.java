@@ -1,26 +1,26 @@
 package com.anod.car.home.prefs.backup;
 
+import android.app.backup.BackupManager;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Environment;
+import android.text.format.DateUtils;
+import android.util.JsonReader;
+import android.util.JsonWriter;
+import android.util.SparseArray;
+
 import com.anod.car.home.model.AbstractShortcutsContainerModel;
 import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutsContainerModel;
 import com.anod.car.home.model.WidgetShortcutsModel;
-import com.anod.car.home.prefs.preferences.InCar;
-import com.anod.car.home.prefs.preferences.InCarBackup;
+import com.anod.car.home.prefs.preferences.InCarSharedPreferences;
 import com.anod.car.home.prefs.preferences.InCarStorage;
 import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
 import com.anod.car.home.prefs.preferences.ShortcutsMain;
+import com.anod.car.home.prefs.preferences.WidgetStorage;
 import com.anod.car.home.utils.AppLog;
-
-import android.annotation.SuppressLint;
-import android.app.backup.BackupManager;
-import android.content.Context;
-import android.net.Uri;
-import android.os.Environment;
-import android.text.format.DateUtils;
-import android.util.Log;
-import android.util.SparseArray;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -30,9 +30,8 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.HashMap;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 public class PreferencesBackupManager {
 
@@ -42,9 +41,9 @@ public class PreferencesBackupManager {
 
     private static final String BACKUP_PACKAGE = "com.anod.car.home.pro";
 
-    private static final String DIR_BACKUP = "/data/com.anod.car.home/backup";
+    static final String DIR_BACKUP = "/data/com.anod.car.home/backup";
 
-    public static final String FILE_EXT_DAT = ".dat";
+    public static final String FILE_EXT_JSON = ".json";
 
     public static final int RESULT_DONE = 0;
 
@@ -62,7 +61,7 @@ public class PreferencesBackupManager {
 
     private static final String BACKUP_MAIN_DIRNAME = "backup_main";
 
-    public static final String FILE_INCAR_JSON = "backup_incar.dat";
+    public static final String FILE_INCAR_JSON = "backup_incar.json";
 
     public static final int DATE_FORMAT = DateUtils.FORMAT_SHOW_DATE
             | DateUtils.FORMAT_SHOW_WEEKDAY
@@ -70,33 +69,12 @@ public class PreferencesBackupManager {
             | DateUtils.FORMAT_SHOW_YEAR
             | DateUtils.FORMAT_ABBREV_ALL;
 
-    /**
-     * We serialize access to our persistent data through a global static
-     * object.  This ensures that in the unlikely event of the our backup/restore
-     * agent running to perform a backup while our UI is updating the file, the
-     * agent will not accidentally read partially-written data.
-     *
-     * <p>Curious but true: a zero-length array is slightly lighter-weight than
-     * merely allocating an Object, and can still be synchronized on.
-     */
-    static final Object[] DATA_LOCK = new Object[0];
+    static final Object[] sLock = new Object[0];
 
     private final Context mContext;
 
     public PreferencesBackupManager(Context context) {
         mContext = context;
-    }
-
-    public long getMainTime() {
-        File saveDir = getMainBackupDir();
-        if (!saveDir.isDirectory()) {
-            return 0;
-        }
-        String[] files = saveDir.list();
-        if (files.length == 0) {
-            return 0;
-        }
-        return saveDir.lastModified();
     }
 
     public File[] getMainBackups() {
@@ -107,7 +85,7 @@ public class PreferencesBackupManager {
         FilenameFilter filter = new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
-                return filename.endsWith(FILE_EXT_DAT);
+                return filename.endsWith(FILE_EXT_JSON);
             }
         };
         return saveDir.listFiles(filter);
@@ -121,7 +99,7 @@ public class PreferencesBackupManager {
         return dataFile.lastModified();
     }
 
-    public int doBackupMain(String filename, int appWidgetId) {
+    public int doBackupWidget(String filename, int appWidgetId) {
         if (!checkMediaWritable()) {
             return ERROR_STORAGE_NOT_AVAILABLE;
         }
@@ -131,20 +109,23 @@ public class PreferencesBackupManager {
             saveDir.mkdirs();
         }
 
-        File dataFile = new File(saveDir, filename + FILE_EXT_DAT);
+        File dataFile = new File(saveDir, filename + FILE_EXT_JSON);
 
         ShortcutsContainerModel smodel = new WidgetShortcutsModel(mContext, appWidgetId);
         smodel.init();
-        Main main = PreferencesStorage.loadMain(mContext, appWidgetId);
-        ShortcutsMain prefs = new ShortcutsMain(convertToHashMap(smodel.getShortcuts()), main);
-
+        Main main = WidgetStorage.load(mContext, appWidgetId);
         try {
-            synchronized (PreferencesBackupManager.DATA_LOCK) {
+            synchronized (sLock)
+            {
                 FileOutputStream fos = new FileOutputStream(dataFile);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                oos.writeObject(prefs);
-                oos.close();
-                Log.d("CarHomeWidget", oos.toString());
+                JsonWriter writer = new JsonWriter(new OutputStreamWriter(fos));
+
+                //prefs.writeJson(writer);
+                JsonWriter arrayWriter = writer.name("shortcuts").beginArray();
+                ShortcutsJsonWriter shortcutsJsonWriter = new ShortcutsJsonWriter();
+                shortcutsJsonWriter.writeList(arrayWriter, smodel.getShortcuts());
+                arrayWriter.endArray();
+                writer.close();
             }
         } catch (IOException e) {
             AppLog.d(e.getMessage());
@@ -172,52 +153,37 @@ public class PreferencesBackupManager {
         NotificationShortcutsModel model = new NotificationShortcutsModel(mContext);
         model.init();
 
-        InCar prefs = InCarStorage.loadInCar(mContext);
-        InCarBackup inCarBackup = new InCarBackup(convertToHashMap(model.getShortcuts()), prefs);
+        InCarSharedPreferences prefs = InCarStorage.load(mContext);
+
         try {
-            synchronized (PreferencesBackupManager.DATA_LOCK) {
+            synchronized (sLock) {
                 FileOutputStream fos = new FileOutputStream(dataFile);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                oos.writeObject(inCarBackup);
-                oos.close();
+                JsonWriter writer = new JsonWriter(new OutputStreamWriter(fos));
+                writer.beginObject();
+                JsonWriter settingsWriter = writer.name("settings");
+                prefs.writeJson(settingsWriter);
+                JsonWriter arrayWriter = writer.name("shortcuts").beginArray();
+                ShortcutsJsonWriter shortcutsJsonWriter = new ShortcutsJsonWriter();
+                shortcutsJsonWriter.writeList(arrayWriter, model.getShortcuts());
+                arrayWriter.endArray();
+                writer.endObject();
+                writer.close();
             }
         } catch (IOException e) {
-            AppLog.d(e.getMessage());
+            AppLog.ex(e);
             return ERROR_FILE_WRITE;
         }
         BackupManager.dataChanged(BACKUP_PACKAGE);
         return RESULT_DONE;
     }
 
-    @SuppressLint("UseSparseArrays")
-    private HashMap<Integer, ShortcutInfo> convertToHashMap(SparseArray<ShortcutInfo> sparseArray) {
-        HashMap<Integer, ShortcutInfo> map = new HashMap<Integer, ShortcutInfo>(sparseArray.size());
-        int key = 0;
-        for (int i = 0; i < sparseArray.size(); i++) {
-            key = sparseArray.keyAt(i);
-            ShortcutInfo value = sparseArray.valueAt(i);
-            map.put(key, value);
-        }
-        return map;
-    }
-
-
-    @SuppressLint("UseSparseArrays")
-    private InCarBackup readInCarCompat(Object readObject) {
-        if (readObject instanceof InCarBackup) {
-            return (InCarBackup) readObject;
-        }
-        // InCar
-        return new InCarBackup(new HashMap<Integer, ShortcutInfo>(), (InCar) readObject);
-    }
-
-    public File getBackupMainFile(String filename) {
+    public File getBackupWidgetFile(String filename) {
         File saveDir = getMainBackupDir();
-        File dataFile = new File(saveDir, filename + FILE_EXT_DAT);
+        File dataFile = new File(saveDir, filename + FILE_EXT_JSON);
         return dataFile;
     }
 
-    public int doRestoreMainLocal(String filepath, int appWidgetId) {
+    public int doRestoreWidgetLocal(String filepath, int appWidgetId) {
         if (!checkMediaReadable()) {
             return ERROR_STORAGE_NOT_AVAILABLE;
         }
@@ -230,7 +196,7 @@ public class PreferencesBackupManager {
             return ERROR_FILE_READ;
         }
 
-        FileInputStream inputStream = null;
+        FileInputStream inputStream;
         try {
             inputStream = new FileInputStream(dataFile);
         } catch (FileNotFoundException e) {
@@ -238,10 +204,10 @@ public class PreferencesBackupManager {
             return ERROR_FILE_READ;
         }
 
-        return doRestoreMain(inputStream, appWidgetId);
+        return doRestoreWidget(inputStream, appWidgetId);
     }
 
-    public Integer doRestoreMainUri(Uri uri, int appWidgetId) {
+    public Integer doRestoreWidgetUri(Uri uri, int appWidgetId) {
         InputStream inputStream = null;
         try {
             inputStream = mContext.getContentResolver().openInputStream(uri);
@@ -249,32 +215,43 @@ public class PreferencesBackupManager {
             AppLog.d(e.getMessage());
             return ERROR_FILE_READ;
         }
-        return doRestoreMain(inputStream, appWidgetId);
+        return doRestoreWidget(inputStream, appWidgetId);
     }
 
-    public int doRestoreMain(final InputStream inputStream, int appWidgetId) {
+    public int doRestoreWidget(final InputStream inputStream, int appWidgetId) {
         ShortcutsMain prefs = null;
+
+        ShortcutsJsonReader shortcutsJsonReader = new ShortcutsJsonReader(mContext);
+        SparseArray<ShortcutInfo> shortcuts = new SparseArray<>();
+
         try {
-            synchronized (PreferencesBackupManager.DATA_LOCK) {
-                ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(inputStream));
-                prefs = (ShortcutsMain) is.readObject();
-                is.close();
+            synchronized (sLock) {
+                JsonReader reader = new JsonReader(new InputStreamReader(new BufferedInputStream(inputStream)));
+                reader.beginObject();
+                while (reader.hasNext()) {
+                    String name = reader.nextName();
+                    if (name.equals("settings")) {
+                        // TODO: widget.readJson(reader);
+                    } else if (name.equals("shortcuts")) {
+                        shortcuts = shortcutsJsonReader.readList(reader);
+                    } else {
+                        reader.skipValue();
+                    }
+                }
+                reader.endObject();
+                reader.close();
             }
         } catch (IOException e) {
             AppLog.ex(e);
             return ERROR_FILE_READ;
-        } catch (ClassNotFoundException e) {
-            AppLog.ex(e);
-            return ERROR_DESERIALIZE;
         } catch (ClassCastException e) {
             AppLog.ex(e);
             return ERROR_DESERIALIZE;
         }
-        PreferencesStorage.saveMain(mContext, prefs.getMain(), appWidgetId);
-        HashMap<Integer, ShortcutInfo> shortcuts = prefs.getShortcuts();
+        WidgetStorage.save(mContext, prefs.getMain(), appWidgetId);
         // small check
         if (shortcuts.size() % 2 == 0) {
-            PreferencesStorage.saveLaunchComponentNumber(shortcuts.size(), mContext, appWidgetId);
+            WidgetStorage.saveLaunchComponentNumber(shortcuts.size(), mContext, appWidgetId);
         }
         ShortcutsContainerModel smodel = new WidgetShortcutsModel(mContext, appWidgetId);
         smodel.init();
@@ -285,7 +262,7 @@ public class PreferencesBackupManager {
     }
 
     private void restoreShortcuts(AbstractShortcutsContainerModel model,
-            HashMap<Integer, ShortcutInfo> shortcuts) {
+            SparseArray<ShortcutInfo> shortcuts) {
         for (int pos = 0; pos < model.getCount(); pos++) {
             model.dropShortcut(pos);
             final ShortcutInfo info = shortcuts.get(pos);
@@ -309,7 +286,7 @@ public class PreferencesBackupManager {
             return ERROR_FILE_READ;
         }
 
-        FileInputStream fis = null;
+        FileInputStream fis;
         try {
             fis = new FileInputStream(dataFile);
         } catch (FileNotFoundException e) {
@@ -320,7 +297,7 @@ public class PreferencesBackupManager {
     }
 
     public int doRestoreInCarUri(Uri uri) {
-        InputStream inputStream = null;
+        InputStream inputStream;
         try {
             inputStream = mContext.getContentResolver().openInputStream(uri);
         } catch (FileNotFoundException e) {
@@ -331,36 +308,46 @@ public class PreferencesBackupManager {
     }
 
     public int doRestoreInCar(final InputStream inputStream) {
-        InCarBackup inCarBackup = null;
+        SharedPreferences sharedPrefs = InCarStorage.getSharedPreferences(mContext);
+        sharedPrefs.edit().clear().apply();
+        InCarSharedPreferences incar = new InCarSharedPreferences(sharedPrefs);
+
+        ShortcutsJsonReader shortcutsJsonReader = new ShortcutsJsonReader(mContext);
+        SparseArray<ShortcutInfo> shortcuts = new SparseArray<>();
+
         try {
-            synchronized (PreferencesBackupManager.DATA_LOCK) {
-                ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(inputStream));
-                inCarBackup = readInCarCompat(is.readObject());
-                is.close();
+            synchronized (sLock) {
+                JsonReader reader = new JsonReader(new InputStreamReader(new BufferedInputStream(inputStream)));
+                reader.beginObject();
+                while (reader.hasNext()) {
+                    String name = reader.nextName();
+                    if (name.equals("settings")) {
+                        incar.readJson(reader);
+                    } else if (name.equals("shortcuts")) {
+                        shortcuts = shortcutsJsonReader.readList(reader);
+                    } else {
+                        reader.skipValue();
+                    }
+                }
+                reader.endObject();
+                reader.close();
             }
         } catch (IOException e) {
             AppLog.ex(e);
             return ERROR_FILE_READ;
-        } catch (ClassNotFoundException e) {
-            AppLog.ex(e);
-            return ERROR_DESERIALIZE;
         } catch (ClassCastException e) {
             AppLog.ex(e);
             return ERROR_DESERIALIZE;
-        }
-        //version 1.42
-        if (inCarBackup.getInCar().getAutoAnswer() == null || inCarBackup.getInCar().getAutoAnswer()
-                .equals("")) {
-            inCarBackup.getInCar().setAutoAnswer(InCar.AUTOANSWER_DISABLED);
         }
 
         NotificationShortcutsModel model = new NotificationShortcutsModel(mContext);
         model.init();
 
-        HashMap<Integer, ShortcutInfo> shortcuts = inCarBackup.getNotificationShortcuts();
-        restoreShortcuts((AbstractShortcutsContainerModel) model, shortcuts);
+        incar.apply();
+        restoreShortcuts(model, shortcuts);
 
-        InCarStorage.saveInCar(mContext, inCarBackup.getInCar());
+        // TODO: restore
+        // InCarStorage.saveInCar(mContext, inCarBackup.getInCar());
         return RESULT_DONE;
     }
 
@@ -376,20 +363,13 @@ public class PreferencesBackupManager {
 
     private boolean checkMediaWritable() {
         String state = Environment.getExternalStorageState();
-        if (!Environment.MEDIA_MOUNTED.equals(state)) {
-            // We can read and write the media
-            return false;
-        }
-        return true;
+        return Environment.MEDIA_MOUNTED.equals(state) && !Environment.MEDIA_MOUNTED_READ_ONLY
+                .equals(state);
     }
 
     private boolean checkMediaReadable() {
         String state = Environment.getExternalStorageState();
-        if (!Environment.MEDIA_MOUNTED.equals(state) && !Environment.MEDIA_MOUNTED_READ_ONLY
-                .equals(state)) {
-            return false;
-        }
-        return true;
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
 

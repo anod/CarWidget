@@ -1,11 +1,10 @@
 package com.anod.car.home.utils;
 
+import android.content.Context;
+
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.prefs.preferences.InCarStorage;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-
-import android.content.Context;
 
 public class InCarStatus {
 
@@ -28,7 +27,7 @@ public class InCarStatus {
             return NOT_ACTIVE;
         }
         if (version.isProOrTrial()) {
-            if (InCarStorage.isInCarModeEnabled(context)) {
+            if (InCarStorage.load(context).isInCarEnabled()) {
                 return ENABLED;
             } else {
                 return DISABLED;

@@ -1,13 +1,12 @@
 package com.anod.car.home.prefs;
 
-import com.anod.car.home.R;
-import com.anod.car.home.drawer.NavigationList;
-import com.anod.car.home.prefs.preferences.InCarStorage;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import com.anod.car.home.R;
+import com.anod.car.home.prefs.preferences.InCarSharedPreferences;
+import com.anod.car.home.prefs.preferences.InCarStorage;
 
 public class ConfigurationInCarVolume extends ConfigurationPreferenceFragment
         implements OnCheckedChangeListener {
@@ -28,8 +27,15 @@ public class ConfigurationInCarVolume extends ConfigurationPreferenceFragment
     }
 
     @Override
+    protected String getSharedPreferencesName() {
+        return InCarStorage.PREF_NAME;
+    }
+
+    @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        InCarStorage.setAdjustVolumeLevel(mContext, isChecked);
+        InCarSharedPreferences prefs = InCarStorage.load(getActivity());
+        prefs.setAdjustVolumeLevel(isChecked);
+        prefs.apply();
     }
 
 }

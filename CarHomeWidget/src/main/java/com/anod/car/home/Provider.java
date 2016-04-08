@@ -1,9 +1,5 @@
 package com.anod.car.home;
 
-import com.anod.car.home.incar.BroadcastService;
-import com.anod.car.home.incar.ModeService;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-
 import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -14,6 +10,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.anod.car.home.incar.BroadcastService;
+import com.anod.car.home.incar.ModeService;
+import com.anod.car.home.prefs.preferences.WidgetStorage;
 
 
 public class Provider extends AppWidgetProvider {
@@ -66,7 +66,7 @@ public class Provider extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
         // Drop the settings if the widget is deleted
-        PreferencesStorage.dropWidgetSettings(context, appWidgetIds);
+        WidgetStorage.dropWidgetSettings(context, appWidgetIds);
     }
 
 

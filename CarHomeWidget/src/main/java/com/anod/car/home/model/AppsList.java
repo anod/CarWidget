@@ -63,7 +63,7 @@ public class AppsList {
      */
     public void flush() {
         if (mAppIconLoader != null) {
-            mAppIconLoader.clearCache();
+            mAppIconLoader.shutdown();
         }
         synchronized (mCache) {
             mCache.clear();

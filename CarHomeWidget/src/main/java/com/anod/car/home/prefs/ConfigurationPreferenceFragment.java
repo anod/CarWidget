@@ -2,11 +2,9 @@ package com.anod.car.home.prefs;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.Menu;
@@ -14,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.anod.car.home.R;
-import com.anod.car.home.prefs.preferences.WidgetSharedPreferences;
 import com.anod.car.home.prefs.views.SeekBarDialogPreference;
 import com.anod.car.home.prefs.views.SeekBarPreferenceDialogFragment;
 import com.anod.car.home.utils.AppLog;
@@ -28,11 +25,11 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 
     protected int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-    protected Context mContext;
-
     abstract protected int getXmlResource();
 
     abstract protected void onCreateImpl(Bundle savedInstanceState);
+
+    abstract protected String getSharedPreferencesName();
 
     protected boolean isAppWidgetIdRequired() {
         return true;
@@ -50,19 +47,6 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 
     }
 
-    protected Preference initWidgetPrefCheckBox(String name, boolean checked) {
-        CheckBoxPreference pref = (CheckBoxPreference) initWidgetPref(name);
-        pref.setChecked(checked);
-        return pref;
-    }
-
-    protected Preference initWidgetPref(String name) {
-        Preference pref =  findPreference(name);
-        String key = WidgetSharedPreferences.getName(name, mAppWidgetId);
-        pref.setKey(key);
-        return pref;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (isAppWidgetIdRequired()) {
@@ -73,13 +57,12 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
             setHasOptionsMenu(true);
         }
 
-        mContext = getActivity();
-
         onCreateImpl(savedInstanceState);
     }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        getPreferenceManager().setSharedPreferencesName(getSharedPreferencesName());
         addPreferencesFromResource(getXmlResource());
     }
 
@@ -95,7 +78,6 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
             } else {
                 AppLog.w("AppWidgetId required");
                 getActivity().finish();
-                return;
             }
         }
 
@@ -115,7 +97,7 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
 
     protected void setIntent(String key, Class<?> cls, int appWidgetId) {
         Preference pref = findPreference(key);
-        Intent intent = new Intent(mContext, cls);
+        Intent intent = new Intent(getActivity(), cls);
         if (appWidgetId > 0) {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         }
@@ -145,9 +127,8 @@ abstract public class ConfigurationPreferenceFragment extends PreferenceFragment
     }
 
     @Override
-    public void onDisplayPreferenceDialog(Preference preference)
-    {
-        if(preference instanceof SeekBarDialogPreference) {
+    public void onDisplayPreferenceDialog(Preference preference) {
+        if (preference instanceof SeekBarDialogPreference) {
             if (getFragmentManager().findFragmentByTag("android.support.v7.preference.PreferenceFragment.DIALOG") == null) {
 
                 DialogFragment f = SeekBarPreferenceDialogFragment.newInstance(preference.getKey());

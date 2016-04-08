@@ -1,14 +1,13 @@
 package com.anod.car.home.prefs.backup;
 
-import com.anod.car.home.utils.AppLog;
-
 import android.app.backup.BackupAgentHelper;
 import android.app.backup.BackupDataInput;
 import android.app.backup.BackupDataOutput;
 import android.app.backup.FileBackupHelper;
 import android.content.Context;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
+
+import com.anod.car.home.utils.AppLog;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +54,7 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
     public void onBackup(ParcelFileDescriptor oldState, BackupDataOutput data,
             ParcelFileDescriptor newState) throws IOException {
         // Hold the lock while the FileBackupHelper performs the backup operation
-        synchronized (PreferencesBackupManager.DATA_LOCK) {
+        synchronized (PreferencesBackupManager.sLock) {
             super.onBackup(oldState, data, newState);
         }
     }
@@ -70,7 +69,7 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
         AppLog.d("onRestore called");
         // Hold the lock while the FileBackupHelper restores the file from
         // the data provided here.
-        synchronized (PreferencesBackupManager.DATA_LOCK) {
+        synchronized (PreferencesBackupManager.sLock) {
             AppLog.d("onRestore in-lock");
             super.onRestore(data, appVersionCode, newState);
             mManager.doRestoreInCarLocal();
@@ -90,7 +89,6 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
         filePathBuilder.append(file);
 
         String fileRelPath = filePathBuilder.toString();
-        Log.d("CarHomeWidget.BackupAgent", " file: " + fileRelPath);
         return new FileBackupHelper(context, filePathBuilder.toString());
     }
 

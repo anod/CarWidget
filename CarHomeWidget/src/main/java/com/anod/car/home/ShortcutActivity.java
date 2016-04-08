@@ -1,11 +1,5 @@
 package com.anod.car.home;
 
-import com.anod.car.home.app.MusicAppChoiceActivity;
-import com.anod.car.home.appwidget.ShortcutPendingIntent;
-import com.anod.car.home.prefs.preferences.AppStorage;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.utils.MusicUtils;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -15,6 +9,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
+
+import com.anod.car.home.app.MusicAppChoiceActivity;
+import com.anod.car.home.appwidget.ShortcutPendingIntent;
+import com.anod.car.home.prefs.preferences.AppStorage;
+import com.anod.car.home.utils.MusicUtils;
 
 public class ShortcutActivity extends Activity {
 

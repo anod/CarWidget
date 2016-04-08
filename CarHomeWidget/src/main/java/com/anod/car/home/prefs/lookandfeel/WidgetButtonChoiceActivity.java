@@ -1,15 +1,5 @@
 package com.anod.car.home.prefs.lookandfeel;
 
-import com.anod.car.home.R;
-import com.anod.car.home.app.AppCompatListActivity;
-import com.anod.car.home.appwidget.WidgetButtonViewBuilder;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.PreferencesStorage;
-import com.anod.car.home.skin.PropertiesFactory;
-import com.anod.car.home.skin.SkinProperties;
-import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Utils;
-
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -22,8 +12,17 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
-import android.widget.GridView;
 import android.widget.ImageView;
+
+import com.anod.car.home.R;
+import com.anod.car.home.app.AppCompatListActivity;
+import com.anod.car.home.appwidget.WidgetButtonViewBuilder;
+import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.prefs.preferences.WidgetStorage;
+import com.anod.car.home.skin.PropertiesFactory;
+import com.anod.car.home.skin.SkinProperties;
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,15 +34,10 @@ import butterknife.ButterKnife;
  * @date 2015-01-18
  */
 public class WidgetButtonChoiceActivity extends AppCompatListActivity {
-
     public static final String EXTRA_SKIN = "skin";
-
     public static final String EXTRA_BTN = "btn";
-
     private int mAppWidgetId;
-
     private String mSkin;
-
     private int mButton;
 
     public static Intent createIntent(int appWidgetId, String skin, int buttonId, Context context) {
@@ -90,10 +84,8 @@ public class WidgetButtonChoiceActivity extends AppCompatListActivity {
         SkinProperties skinProperties = PropertiesFactory.create(mSkin, false);
         List<ChoiceAdapter.Item> items = createItems(skinProperties);
 
-        Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
+        Main prefs = WidgetStorage.load(this, mAppWidgetId);
         initCheckedItem(items, prefs, skinProperties);
-
-        final GridView gridView = getGridView();
 
         setListAdapter(new ChoiceAdapter(this, items));
     }
@@ -120,15 +112,14 @@ public class WidgetButtonChoiceActivity extends AppCompatListActivity {
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Main prefs = PreferencesStorage.loadMain(this, mAppWidgetId);
+        Main prefs = WidgetStorage.load(this, mAppWidgetId);
         ChoiceAdapter.Item item = (ChoiceAdapter.Item) getListAdapter().getItem(position);
         if (mButton == WidgetButtonViewBuilder.BUTTON_1) {
             prefs.setWidgetButton1(item.value);
         } else {
             prefs.setWidgetButton2(item.value);
         }
-        PreferencesStorage.saveMain(this, prefs, mAppWidgetId);
-
+        WidgetStorage.save(this, prefs, mAppWidgetId);
         finish();
     }
 
