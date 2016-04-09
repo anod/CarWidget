@@ -1,6 +1,5 @@
 package com.anod.car.home.prefs.model;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -20,14 +19,15 @@ import java.util.Locale;
 public class PrefsMigrate {
 
     private static final Object sLock = new Object();
-    private static boolean sMigrated;
 
-    public static InCarSettings migrate(Context context) {
+    public static void migrate(Context context,SharedPreferences destPrefs) {
         synchronized (sLock) {
+            if (destPrefs.getBoolean("migrated", false)) {
+                return;
+            }
+
             SharedPreferences defaultPrefs = PreferenceManager.getDefaultSharedPreferences(context);
             InCarSettings source = new InCarSettings(defaultPrefs);
-
-            SharedPreferences destPrefs = InCarStorage.getSharedPreferences(context);
             InCarSettings dest = new InCarSettings(destPrefs);
 
             dest.setAutorunApp(source.getAutorunApp());
@@ -60,31 +60,21 @@ public class PrefsMigrate {
                 dest.putChange(key, ids.get(position));
             }
 
+            dest.putChange("migrated", true);
             dest.apply();
-            sMigrated = true;
 
-            return dest;
         }
     }
 
-    public static boolean required(Context context) {
-        synchronized (sLock) {
-            if (sMigrated) {
-                return false;
-            }
-
-            String filePath = context.getFilesDir().getParent() +
-                    String.format(Locale.US, WidgetStorage.SHARED_PREFS_PATH, InCarStorage.PREF_NAME);
-            AppLog.d(filePath);
-            File file = new File(filePath);
-            return !file.exists();
-        }
-    }
-
-    public static WidgetSettings migrate(Context context, int appWidgetId) {
+    public static void migrate(Context context, int appWidgetId) {
         synchronized (sLock) {
             Main prefs = WidgetMigrateStorage.loadMain(context, appWidgetId);
-            WidgetSettings widget = new WidgetSettings(WidgetStorage.getSharedPreferences(context, appWidgetId), context.getResources());
+            SharedPreferences widgetPrefs = WidgetStorage.getSharedPreferences(context, appWidgetId);
+            WidgetSettings widget = new WidgetSettings(widgetPrefs, context.getResources());
+
+            if (widgetPrefs.getBoolean("migrated", false)) {
+                return;
+            }
 
             widget.setFirstTime(WidgetMigrateStorage.isFirstTime(context, appWidgetId));
             migrateMain(widget, prefs);
@@ -96,9 +86,8 @@ public class PrefsMigrate {
                 widget.putChange(key, ids.get(position));
             }
 
+            widget.putChange("migrated", true);
             widget.apply();
-
-            return widget;
         }
     }
 

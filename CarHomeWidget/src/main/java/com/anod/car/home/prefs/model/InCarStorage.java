@@ -13,7 +13,6 @@ import java.util.Locale;
  * @author algavris
  * @date 19/03/2016.
  */
-@SuppressLint("CommitPrefEdits")
 public class InCarStorage {
     public static final int NOTIFICATION_COMPONENT_NUMBER = 3;
     private static final String MODE_FORCE_STATE = "mode-force-state";
@@ -26,7 +25,9 @@ public class InCarStorage {
     }
 
     public static InCarSettings load(Context context) {
-        return new InCarSettings(getSharedPreferences(context));
+        SharedPreferences prefs = getSharedPreferences(context);
+        PrefsMigrate.migrate(context,prefs);
+        return new InCarSettings(prefs);
     }
 
     public static void saveScreenTimeout(boolean disabled, boolean disableCharging, InCarSettings prefs) {
@@ -44,7 +45,7 @@ public class InCarStorage {
         SharedPreferences prefs = getSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(key);
-        editor.commit();
+        editor.apply();
     }
 
     public static ArrayList<Long> getNotifComponents(Context context) {

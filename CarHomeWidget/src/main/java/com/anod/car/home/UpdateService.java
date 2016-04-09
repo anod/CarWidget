@@ -16,6 +16,7 @@ import com.anod.car.home.appwidget.ShortcutPendingIntent;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.prefs.model.InCarStorage;
+import com.anod.car.home.prefs.model.PrefsMigrate;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
@@ -43,6 +44,8 @@ public class UpdateService extends Service implements Runnable {
         builder.setPendingIntentHelper(new ShortcutPendingIntent(context));
         for (int i = 0; i < N; i++) {
             int appWidgetId = updateIds[i];
+
+            PrefsMigrate.migrate(context, appWidgetId);
 
             if (Utils.IS_JELLYBEAN_OR_GREATER) {
                 setKeyguardSettings(appWidgetManager, builder, appWidgetId);
