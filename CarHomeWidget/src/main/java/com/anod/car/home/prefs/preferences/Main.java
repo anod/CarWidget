@@ -7,27 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 
-public class Main implements Serializable {
-
-    public static final String SKIN_GLOSSY = "glossy";
-
-    public static final String SKIN_CARHOME = "carhome";
-
-    public static final String SKIN_WINDOWS7 = "windows7";
-
-    public static final String SKIN_HOLO = "holo";
-
-    public static final String SKIN_BBB = "blackbearblanc";
-
-    public static final String SKIN_CARDS = "cards";
-
-    public static final int FONT_SIZE_UNDEFINED = -1;
-
-    public static final int WIDGET_BUTTON_INCAR = 1;
-
-    public static final int WIDGET_BUTTON_SETTINGS = 2;
-
-    public static final int WIDGET_BUTTON_HIDDEN = 3;
+public class Main implements Serializable, com.anod.car.home.prefs.model.WidgetInterface {
 
     /**
      *
@@ -65,122 +45,152 @@ public class Main implements Serializable {
     private int widgetButton2;
 
 
+    @Override
     public String getIconsTheme() {
         return iconsTheme;
     }
 
+    @Override
     public boolean isSettingsTransparent() {
         return settingsTransparent;
     }
 
+    @Override
     public boolean isIncarTransparent() {
         return incarTransparent;
     }
 
+    @Override
     public void setSettingsTransparent(boolean settingsTransparent) {
         this.settingsTransparent = settingsTransparent;
     }
 
+    @Override
     public void setIncarTransparent(boolean incarTransparent) {
         this.incarTransparent = incarTransparent;
     }
 
+    @Override
     public String getSkin() {
         return skin;
     }
 
+    @Override
     public Integer getTileColor() {
         return tileColor;
     }
 
+    @Override
     public boolean isIconsMono() {
         return iconsMono;
     }
 
+    @Override
     public Integer getIconsColor() {
         return iconsColor;
     }
 
+    @Override
     public String getIconsScale() {
         return iconsScale;
     }
 
+    @Override
     public int getFontColor() {
         return fontColor;
     }
 
+    @Override
     public int getFontSize() {
         return fontSize;
     }
 
+    @Override
     public int getBackgroundColor() {
         return backgroundColor;
     }
 
+    @Override
     public void setSkin(String skin) {
         this.skin = skin;
     }
 
+    @Override
     public void setTileColor(Integer tileColor) {
         this.tileColor = tileColor;
     }
 
+    @Override
     public void setIconsMono(boolean iconsMono) {
         this.iconsMono = iconsMono;
     }
 
+    @Override
     public void setIconsColor(Integer iconsColor) {
         this.iconsColor = iconsColor;
     }
 
+    @Override
     public void setIconsScaleString(String iconsScale) {
         this.iconsScale = iconsScale;
     }
 
+    @Override
     public void setFontColor(int fontColor) {
         this.fontColor = fontColor;
     }
 
+    @Override
     public void setFontSize(int fontSize) {
         this.fontSize = fontSize;
     }
 
+    @Override
     public void setBackgroundColor(int backgroundColor) {
         this.backgroundColor = backgroundColor;
     }
 
+    @Override
     public void setIconsTheme(String iconsTheme) {
         this.iconsTheme = iconsTheme;
     }
 
+    @Override
     public final RotateDirection getIconsRotate() {
         return iconsRotate;
     }
 
+    @Override
     public final void setIconsRotate(RotateDirection iconsRotate) {
         this.iconsRotate = iconsRotate;
     }
 
+    @Override
     public final boolean isTitlesHide() {
         return titlesHide;
     }
 
+    @Override
     public final void setTitlesHide(boolean titlesHide) {
         this.titlesHide = titlesHide;
     }
 
+    @Override
     public int getWidgetButton1() {
         return widgetButton1;
     }
 
+    @Override
     public void setWidgetButton1(int widgetButton1) {
         this.widgetButton1 = widgetButton1;
     }
 
+    @Override
     public int getWidgetButton2() {
         return widgetButton2;
     }
 
+    @Override
     public void setWidgetButton2(int widgetButton2) {
         this.widgetButton2 = widgetButton2;
     }

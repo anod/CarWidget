@@ -1,7 +1,7 @@
 package com.anod.car.home.app;
 
 import com.anod.car.home.CarWidgetApplication;
-import com.anod.car.home.prefs.preferences.AppTheme;
+import com.anod.car.home.prefs.model.AppTheme;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

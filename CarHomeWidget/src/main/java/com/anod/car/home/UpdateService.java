@@ -15,7 +15,7 @@ import android.widget.RemoteViews;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.incar.BroadcastService;
-import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.prefs.model.InCarStorage;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 

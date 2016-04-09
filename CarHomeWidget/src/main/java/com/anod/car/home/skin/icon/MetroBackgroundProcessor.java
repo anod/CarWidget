@@ -1,5 +1,6 @@
 package com.anod.car.home.skin.icon;
 
+import com.anod.car.home.prefs.model.WidgetSettings;
 import com.anod.car.home.prefs.preferences.Main;
 
 import android.graphics.Bitmap;
@@ -11,7 +12,7 @@ import android.graphics.Bitmap;
 public class MetroBackgroundProcessor implements BackgroundProcessor {
 
     @Override
-    public int getColor(Main prefs, Bitmap icon) {
+    public int getColor(WidgetSettings prefs, Bitmap icon) {
         return prefs.getTileColor();
     }
 }

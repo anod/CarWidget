@@ -10,10 +10,10 @@ import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutsContainerModel;
 import com.anod.car.home.model.WidgetShortcutsModel;
+import com.anod.car.home.prefs.model.WidgetStorage;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.InCarBackup;
 import com.anod.car.home.prefs.preferences.ShortcutsMain;
-import com.anod.car.home.prefs.preferences.WidgetStorage;
 import com.anod.car.home.utils.AppLog;
 
 import java.io.BufferedInputStream;
@@ -103,7 +103,7 @@ public class ObjectBackupManager {
             AppLog.ex(e);
             return PreferencesBackupManager.ERROR_DESERIALIZE;
         }
-        WidgetStorage.save(mContext, prefs.getMain(), appWidgetId);
+      //  WidgetStorage.save(mContext, prefs.getMain(), appWidgetId);
         HashMap<Integer, ShortcutInfo> shortcuts = prefs.getShortcuts();
         // small check
         if (shortcuts.size() % 2 == 0) {

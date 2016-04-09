@@ -34,8 +34,8 @@ import com.anod.car.home.prefs.lookandfeel.LookAndFeelMenu;
 import com.anod.car.home.prefs.lookandfeel.SkinPagerAdapter;
 import com.anod.car.home.prefs.lookandfeel.WidgetButtonChoiceActivity;
 import com.anod.car.home.prefs.model.SkinList;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.WidgetStorage;
+import com.anod.car.home.prefs.model.WidgetSettings;
+import com.anod.car.home.prefs.model.WidgetStorage;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.BitmapLruCache;
 import com.anod.car.home.utils.IntentUtils;
@@ -55,7 +55,7 @@ public class LookAndFeelActivity extends CarWidgetActivity
 
     private boolean[] mPreviewInitialized = {false, false, false, false, false, false};
 
-    private Main mPrefs;
+    private WidgetSettings mPrefs;
 
     private SkinList mSkinList;
 
@@ -84,7 +84,7 @@ public class LookAndFeelActivity extends CarWidgetActivity
         return getSkinItem(mCurrentPage);
     }
 
-    public Main getPrefs() {
+    public WidgetSettings getPrefs() {
         return mPrefs;
     }
 
@@ -159,7 +159,7 @@ public class LookAndFeelActivity extends CarWidgetActivity
             keyguard = isKeyguard();
         }
 
-        mPrefs = loadPrefs();
+        mPrefs = WidgetStorage.load(mContext, mAppWidgetId);
         mModel = new WidgetShortcutsModel(App.get(this), mAppWidgetId);
 
         mSkinList = SkinList.newInstance(mPrefs.getSkin(), keyguard, mContext);
@@ -208,8 +208,6 @@ public class LookAndFeelActivity extends CarWidgetActivity
     @Override
     public void onResume() {
         super.onResume();
-        AppLog.d("LookAndFeel::onResume");
-        mPrefs = loadPrefs();
         mModel.init();
         mBitmapMemoryCache.evictAll();
         mDrawer.refresh();
@@ -247,7 +245,7 @@ public class LookAndFeelActivity extends CarWidgetActivity
     }
 
     public void persistPrefs() {
-        WidgetStorage.save(mContext, mPrefs, mAppWidgetId);
+        mPrefs.apply();
     }
 
     public SkinList.Item getSkinItem(int position) {
@@ -292,14 +290,7 @@ public class LookAndFeelActivity extends CarWidgetActivity
 
     public void refreshSkinPreview() {
         AppLog.d("Refresh Skin Requested");
-
-        mPrefs = loadPrefs();
-
         mAdapter.refresh();
-    }
-
-    private Main loadPrefs() {
-        return WidgetStorage.load(mContext, mAppWidgetId);
     }
 
     public int getAppWidgetId() {

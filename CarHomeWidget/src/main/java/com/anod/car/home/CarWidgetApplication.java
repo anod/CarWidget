@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.anod.car.home.acra.BrowserUrlSender;
 import com.anod.car.home.acra.CrashDialog;
-import com.anod.car.home.prefs.preferences.AppTheme;
+import com.anod.car.home.prefs.model.AppTheme;
 
 import org.acra.ACRA;
 import org.acra.ReportField;

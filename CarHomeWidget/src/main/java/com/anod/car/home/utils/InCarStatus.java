@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetHelper;
-import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.prefs.model.InCarStorage;
 
 public class InCarStatus {
 

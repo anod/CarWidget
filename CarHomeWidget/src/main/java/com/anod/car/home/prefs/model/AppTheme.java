@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.preferences;
+package com.anod.car.home.prefs.model;
 
 import com.anod.car.home.R;
 

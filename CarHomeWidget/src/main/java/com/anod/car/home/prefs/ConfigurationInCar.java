@@ -11,9 +11,9 @@ import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.incar.ActivityRecognitionClientService;
 import com.anod.car.home.incar.BroadcastService;
-import com.anod.car.home.prefs.preferences.InCarInterface;
-import com.anod.car.home.prefs.preferences.InCarSharedPreferences;
-import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.prefs.model.InCarInterface;
+import com.anod.car.home.prefs.model.InCarSettings;
+import com.anod.car.home.prefs.model.InCarStorage;
 import com.anod.car.home.utils.TrialDialogs;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
@@ -83,12 +83,12 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
     }
 
     private void initInCar() {
-        InCarSharedPreferences incar = InCarStorage.load(getActivity());
+        InCarSettings incar = InCarStorage.load(getActivity());
 
         int[] appWidgetIds = WidgetHelper.getAllWidgetIds(getActivity());
         final int widgetsCount = appWidgetIds.length;
 
-        Preference incarSwitch = findPreference(InCarSharedPreferences.INCAR_MODE_ENABLED);
+        Preference incarSwitch = findPreference(InCarSettings.INCAR_MODE_ENABLED);
 
         if (widgetsCount == 0) {
             incarSwitch.setEnabled(false);
@@ -110,9 +110,9 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
             }
         });
 
-        registerBroadcastServiceSwitchListener(InCarSharedPreferences.HEADSET_REQUIRED);
-        registerBroadcastServiceSwitchListener(InCarSharedPreferences.POWER_REQUIRED);
-        registerBroadcastServiceSwitchListener(InCarSharedPreferences.CAR_DOCK_REQUIRED);
+        registerBroadcastServiceSwitchListener(InCarSettings.HEADSET_REQUIRED);
+        registerBroadcastServiceSwitchListener(InCarSettings.POWER_REQUIRED);
+        registerBroadcastServiceSwitchListener(InCarSettings.CAR_DOCK_REQUIRED);
 
         initActivityRecognition();
         initScreenTimeout(incar);
@@ -129,7 +129,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
         pref.setOnPreferenceChangeListener(mBroadcastServiceSwitchListener);
     }
 
-    private void initScreenTimeout(final InCarSharedPreferences incar) {
+    private void initScreenTimeout(final InCarSettings incar) {
         final ListPreference pref = (ListPreference) findPreference(SCREEN_TIMEOUT_LIST);
 
         if (incar.isDisableScreenTimeout()) {
@@ -162,7 +162,7 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
     }
 
     private void initActivityRecognition() {
-        final Preference pref = findPreference(InCarSharedPreferences.ACTIVITY_RECOGNITION);
+        final Preference pref = findPreference(InCarSettings.ACTIVITY_RECOGNITION);
         final Handler handler = new Handler();
 
         new Thread(new Runnable() {

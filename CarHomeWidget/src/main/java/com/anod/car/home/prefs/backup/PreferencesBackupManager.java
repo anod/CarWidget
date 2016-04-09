@@ -15,11 +15,10 @@ import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutsContainerModel;
 import com.anod.car.home.model.WidgetShortcutsModel;
-import com.anod.car.home.prefs.preferences.InCarSharedPreferences;
-import com.anod.car.home.prefs.preferences.InCarStorage;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.ShortcutsMain;
-import com.anod.car.home.prefs.preferences.WidgetStorage;
+import com.anod.car.home.prefs.model.InCarSettings;
+import com.anod.car.home.prefs.model.InCarStorage;
+import com.anod.car.home.prefs.model.WidgetSettings;
+import com.anod.car.home.prefs.model.WidgetStorage;
 import com.anod.car.home.utils.AppLog;
 
 import java.io.BufferedInputStream;
@@ -113,18 +112,24 @@ public class PreferencesBackupManager {
 
         ShortcutsContainerModel smodel = new WidgetShortcutsModel(mContext, appWidgetId);
         smodel.init();
-        Main main = WidgetStorage.load(mContext, appWidgetId);
+        WidgetSettings widget = WidgetStorage.load(mContext, appWidgetId);
         try {
             synchronized (sLock)
             {
                 FileOutputStream fos = new FileOutputStream(dataFile);
                 JsonWriter writer = new JsonWriter(new OutputStreamWriter(fos));
 
-                //prefs.writeJson(writer);
+                writer.beginObject();
+
+                JsonWriter settingsWriter = writer.name("settings");
+                widget.writeJson(settingsWriter);
+
                 JsonWriter arrayWriter = writer.name("shortcuts").beginArray();
                 ShortcutsJsonWriter shortcutsJsonWriter = new ShortcutsJsonWriter();
                 shortcutsJsonWriter.writeList(arrayWriter, smodel.getShortcuts());
                 arrayWriter.endArray();
+
+                writer.endObject();
                 writer.close();
             }
         } catch (IOException e) {
@@ -153,19 +158,22 @@ public class PreferencesBackupManager {
         NotificationShortcutsModel model = new NotificationShortcutsModel(mContext);
         model.init();
 
-        InCarSharedPreferences prefs = InCarStorage.load(mContext);
+        InCarSettings prefs = InCarStorage.load(mContext);
 
         try {
             synchronized (sLock) {
                 FileOutputStream fos = new FileOutputStream(dataFile);
                 JsonWriter writer = new JsonWriter(new OutputStreamWriter(fos));
                 writer.beginObject();
+
                 JsonWriter settingsWriter = writer.name("settings");
                 prefs.writeJson(settingsWriter);
+
                 JsonWriter arrayWriter = writer.name("shortcuts").beginArray();
                 ShortcutsJsonWriter shortcutsJsonWriter = new ShortcutsJsonWriter();
                 shortcutsJsonWriter.writeList(arrayWriter, model.getShortcuts());
                 arrayWriter.endArray();
+
                 writer.endObject();
                 writer.close();
             }
@@ -219,7 +227,9 @@ public class PreferencesBackupManager {
     }
 
     public int doRestoreWidget(final InputStream inputStream, int appWidgetId) {
-        ShortcutsMain prefs = null;
+        SharedPreferences sharedPrefs = WidgetStorage.getSharedPreferences(mContext, appWidgetId);
+        sharedPrefs.edit().clear().apply();
+        WidgetSettings widget = new WidgetSettings(sharedPrefs, mContext.getResources());
 
         ShortcutsJsonReader shortcutsJsonReader = new ShortcutsJsonReader(mContext);
         SparseArray<ShortcutInfo> shortcuts = new SparseArray<>();
@@ -231,7 +241,7 @@ public class PreferencesBackupManager {
                 while (reader.hasNext()) {
                     String name = reader.nextName();
                     if (name.equals("settings")) {
-                        // TODO: widget.readJson(reader);
+                        widget.readJson(reader);
                     } else if (name.equals("shortcuts")) {
                         shortcuts = shortcutsJsonReader.readList(reader);
                     } else {
@@ -248,7 +258,7 @@ public class PreferencesBackupManager {
             AppLog.ex(e);
             return ERROR_DESERIALIZE;
         }
-        WidgetStorage.save(mContext, prefs.getMain(), appWidgetId);
+        widget.apply();
         // small check
         if (shortcuts.size() % 2 == 0) {
             WidgetStorage.saveLaunchComponentNumber(shortcuts.size(), mContext, appWidgetId);
@@ -310,7 +320,7 @@ public class PreferencesBackupManager {
     public int doRestoreInCar(final InputStream inputStream) {
         SharedPreferences sharedPrefs = InCarStorage.getSharedPreferences(mContext);
         sharedPrefs.edit().clear().apply();
-        InCarSharedPreferences incar = new InCarSharedPreferences(sharedPrefs);
+        InCarSettings incar = new InCarSettings(sharedPrefs);
 
         ShortcutsJsonReader shortcutsJsonReader = new ShortcutsJsonReader(mContext);
         SparseArray<ShortcutInfo> shortcuts = new SparseArray<>();
@@ -346,8 +356,6 @@ public class PreferencesBackupManager {
         incar.apply();
         restoreShortcuts(model, shortcuts);
 
-        // TODO: restore
-        // InCarStorage.saveInCar(mContext, inCarBackup.getInCar());
         return RESULT_DONE;
     }
 

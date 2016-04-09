@@ -14,8 +14,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.anod.car.home.R;
 import com.anod.car.home.incar.SamsungDrivingMode;
-import com.anod.car.home.prefs.preferences.InCarSharedPreferences;
-import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.prefs.model.InCarSettings;
+import com.anod.car.home.prefs.model.InCarStorage;
 
 public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
         implements OnCheckedChangeListener {
@@ -27,7 +27,7 @@ public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
     private static final String AUTORUN_APP_CUSTOM = "custom";
 
     protected static final int REQUEST_PICK_APPLICATION = 0;
-    private InCarSharedPreferences mPrefs;
+    private InCarSettings mPrefs;
 
     @Override
     protected boolean isAppWidgetIdRequired() {
@@ -69,7 +69,7 @@ public class ConfigurationInCarMore extends ConfigurationPreferenceFragment
     private void initSamsungHandsfree() {
         if (!SamsungDrivingMode.hasMode()) {
             final Preference samDrivingPref = findPreference(
-                    InCarSharedPreferences.SAMSUNG_DRIVING_MODE);
+                    InCarSettings.SAMSUNG_DRIVING_MODE);
             ((PreferenceCategory) findPreference("incar-more-category"))
                     .removePreference(samDrivingPref);
         }

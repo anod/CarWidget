@@ -1,6 +1,5 @@
 package com.anod.car.home.prefs;
 
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,15 +10,13 @@ import android.support.v7.preference.Preference;
 import com.android.colorpicker.ColorPickerSwatch;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.WidgetStorage;
+import com.anod.car.home.prefs.model.WidgetSettings;
+import com.anod.car.home.prefs.model.WidgetStorage;
 import com.anod.car.home.prefs.views.SeekBarDialogPreference;
 
 import java.util.Locale;
 
 public class ConfigurationLook extends ConfigurationPreferenceFragment {
-
-    public static final String CATEGORY_TRANSPARENT = "transparent-category";
 
     private String[] mIconRotateValues;
 
@@ -32,14 +29,12 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
 
     @Override
     protected void onCreateImpl(Bundle savedInstanceState) {
-        Main prefs = WidgetStorage.load(getActivity(), mAppWidgetId);
+        WidgetSettings prefs = WidgetStorage.load(getActivity(), mAppWidgetId);
 
-        final SharedPreferences sharedPrefs = WidgetStorage.getSharedPreferences(getActivity(), mAppWidgetId);
+        initIcon(prefs);
+        initFont(prefs);
 
-        initIcon(prefs, sharedPrefs);
-        initFont(prefs, sharedPrefs);
-
-        ListPreference rotatePref = (ListPreference) findPreference(WidgetStorage.ICONS_ROTATE);
+        ListPreference rotatePref = (ListPreference) findPreference(WidgetSettings.ICONS_ROTATE);
         rotatePref.setValue(prefs.getIconsRotate().name());
 
         Resources r = getResources();
@@ -54,10 +49,10 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
             }
         });
 
-        initWidgetPrefCheckBox(WidgetStorage.TITLES_HIDE, prefs.isTitlesHide());
-        initWidgetPrefCheckBox(WidgetStorage.TRANSPARENT_BTN_SETTINGS,
+        initWidgetPrefCheckBox(WidgetSettings.TITLES_HIDE, prefs.isTitlesHide());
+        initWidgetPrefCheckBox(WidgetSettings.TRANSPARENT_BTN_SETTINGS,
                 prefs.isSettingsTransparent());
-        initWidgetPrefCheckBox(WidgetStorage.TRANSPARENT_BTN_INCAR,
+        initWidgetPrefCheckBox(WidgetSettings.TRANSPARENT_BTN_INCAR,
                 prefs.isIncarTransparent());
 
     }
@@ -81,8 +76,8 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
         }
     }
 
-    private void initIcon(final Main prefs, final SharedPreferences sharedPrefs) {
-        Preference icnColor = findPreference(WidgetStorage.ICONS_COLOR);
+    private void initIcon(final WidgetSettings prefs) {
+        Preference icnColor = findPreference(WidgetSettings.ICONS_COLOR);
         icnColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -93,9 +88,8 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
                 d.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                     @Override
                     public void onColorSelected(int color) {
-                        final SharedPreferences.Editor edit = sharedPrefs.edit();
-                        edit.putInt(WidgetStorage.ICONS_COLOR, color);
-                        edit.commit();
+                        prefs.setIconsColor(color);
+                        prefs.apply();
                     }
                 });
                 d.show(getFragmentManager(), "icnColor");
@@ -105,10 +99,10 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
 
     }
 
-    private void initFont(final Main prefs, final SharedPreferences sharedPrefs) {
-        SeekBarDialogPreference sbPref = (SeekBarDialogPreference) findPreference(WidgetStorage.FONT_SIZE);
+    private void initFont(final WidgetSettings prefs) {
+        SeekBarDialogPreference sbPref = (SeekBarDialogPreference) findPreference(WidgetSettings.FONT_SIZE);
         int fontSize = prefs.getFontSize();
-        if (fontSize != Main.FONT_SIZE_UNDEFINED) {
+        if (fontSize != WidgetSettings.FONT_SIZE_UNDEFINED) {
             sbPref.setValue(fontSize);
         } else {
             float scaledDensity = getResources().getDisplayMetrics().scaledDensity;
@@ -116,7 +110,7 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
             sbPref.setValue((int) size);
         }
 
-        Preference fontColor = findPreference(WidgetStorage.FONT_COLOR);
+        Preference fontColor = findPreference(WidgetSettings.FONT_COLOR);
         fontColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -126,9 +120,8 @@ public class ConfigurationLook extends ConfigurationPreferenceFragment {
                 d.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                     @Override
                     public void onColorSelected(int color) {
-                        final SharedPreferences.Editor edit = sharedPrefs.edit();
-                        edit.putInt(WidgetStorage.FONT_COLOR, color);
-                        edit.commit();
+                        prefs.setFontColor(color);
+                        prefs.apply();
                     }
                 });
                 d.show(getFragmentManager(), "fontColor");

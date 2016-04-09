@@ -13,7 +13,7 @@ import android.util.Log;
 
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.incar.ModeService;
-import com.anod.car.home.prefs.preferences.WidgetStorage;
+import com.anod.car.home.prefs.model.WidgetStorage;
 
 
 public class Provider extends AppWidgetProvider {

@@ -6,8 +6,8 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 
 import com.anod.car.home.app.StoppableService;
-import com.anod.car.home.prefs.preferences.InCarInterface;
-import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.prefs.model.InCarInterface;
+import com.anod.car.home.prefs.model.InCarStorage;
 import com.anod.car.home.utils.AppLog;
 
 public class BroadcastService extends StoppableService {

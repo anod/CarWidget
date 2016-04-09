@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.R;
 import com.anod.car.home.model.AppsList;
-import com.anod.car.home.prefs.preferences.AppStorage;
+import com.anod.car.home.prefs.model.AppStorage;
 import com.anod.car.home.utils.MusicUtils;
 
 import java.util.List;

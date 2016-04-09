@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.incar.ModeDetector;
 import com.anod.car.home.incar.ModeService;
-import com.anod.car.home.prefs.preferences.InCarInterface;
-import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.prefs.model.InCarInterface;
+import com.anod.car.home.prefs.model.InCarStorage;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.LogCatCollector;
 

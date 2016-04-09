@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.preferences;
+package com.anod.car.home.prefs.model;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -25,15 +25,11 @@ public class InCarStorage {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
-    public static InCarSharedPreferences load(Context context) {
-        if (PrefsMigrate.required(context)) {
-            return PrefsMigrate.migrate(context);
-        }
-
-        return new InCarSharedPreferences(getSharedPreferences(context));
+    public static InCarSettings load(Context context) {
+        return new InCarSettings(getSharedPreferences(context));
     }
 
-    public static void saveScreenTimeout(boolean disabled, boolean disableCharging, InCarSharedPreferences prefs) {
+    public static void saveScreenTimeout(boolean disabled, boolean disableCharging, InCarSettings prefs) {
         prefs.setDisableScreenTimeout(disabled);
         prefs.setDisableScreenTimeoutCharging(disableCharging);
         prefs.apply();

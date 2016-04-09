@@ -1,6 +1,6 @@
 package com.anod.car.home.skin.icon;
 
-import com.anod.car.home.prefs.preferences.Main;
+import com.anod.car.home.prefs.model.WidgetSettings;
 
 import android.graphics.Bitmap;
 
@@ -10,5 +10,5 @@ import android.graphics.Bitmap;
  */
 public interface BackgroundProcessor {
 
-    public int getColor(Main prefs, Bitmap icon);
+    int getColor(WidgetSettings prefs, Bitmap icon);
 }

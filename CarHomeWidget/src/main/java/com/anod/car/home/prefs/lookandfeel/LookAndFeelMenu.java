@@ -23,8 +23,8 @@ import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.ConfigurationLook;
 import com.anod.car.home.prefs.LookAndFeelActivity;
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.WidgetStorage;
+import com.anod.car.home.prefs.model.WidgetSettings;
+import com.anod.car.home.prefs.model.WidgetStorage;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.Utils;
 
@@ -69,11 +69,11 @@ public class LookAndFeelMenu {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+        final WidgetSettings prefs = WidgetStorage.load(mActivity, mAppWidgetId);
         int itemId = item.getItemId();
         if (itemId == R.id.apply) {
-            Main prefs = WidgetStorage.load(mActivity, mAppWidgetId);
             prefs.setSkin(mActivity.getCurrentSkinItem().value);
-            WidgetStorage.save(mActivity, prefs, mAppWidgetId);
+            prefs.apply();
             mActivity.beforeFinish();
             mActivity.finish();
             return true;
@@ -83,16 +83,14 @@ public class LookAndFeelMenu {
             return true;
         }
         if (itemId == R.id.tile_color) {
-            Main prefs = WidgetStorage.load(mActivity, mAppWidgetId);
             Integer value = prefs.getTileColor();
             final CarHomeColorPickerDialog d = CarHomeColorPickerDialog
                     .newInstance(value, true, mActivity);
             d.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                 @Override
                 public void onColorSelected(int color) {
-                    final SharedPreferences.Editor edit = mSharedPrefs.edit();
-                    edit.putInt(WidgetStorage.BUTTON_COLOR, color);
-                    edit.commit();
+                    prefs.setTileColor(color);
+                    prefs.apply();
                     showTileColorButton();
                     mActivity.refreshSkinPreview();
                 }
@@ -114,9 +112,8 @@ public class LookAndFeelMenu {
             d.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                 @Override
                 public void onColorSelected(int color) {
-                    final SharedPreferences.Editor edit = mSharedPrefs.edit();
-                    edit.putInt(WidgetStorage.BG_COLOR, color);
-                    edit.commit();
+                    prefs.setBackgroundColor(color);
+                    prefs.apply();
                     mActivity.refreshSkinPreview();
                 }
             });
@@ -172,8 +169,8 @@ public class LookAndFeelMenu {
     }
 
     public void showTileColorButton() {
-        if (mActivity.getCurrentSkinItem().value.equals(Main.SKIN_WINDOWS7)) {
-            Main prefs = WidgetStorage.load(mActivity, mAppWidgetId);
+        if (mActivity.getCurrentSkinItem().value.equals(WidgetSettings.SKIN_WINDOWS7)) {
+            WidgetSettings prefs = WidgetStorage.load(mActivity, mAppWidgetId);
             int size = (int) mActivity.getResources().getDimension(R.dimen.color_preview_size);
 
             Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);

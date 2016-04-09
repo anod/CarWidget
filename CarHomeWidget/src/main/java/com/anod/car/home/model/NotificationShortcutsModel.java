@@ -2,7 +2,7 @@ package com.anod.car.home.model;
 
 import android.content.Context;
 
-import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.prefs.model.InCarStorage;
 
 import java.util.ArrayList;
 

@@ -2,7 +2,7 @@ package com.anod.car.home.ui;
 
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
-import com.anod.car.home.prefs.preferences.AppTheme;
+import com.anod.car.home.prefs.model.AppTheme;
 import com.anod.car.home.utils.Version;
 import com.example.android.wizardpager.wizard.ui.StepPagerStrip;
 

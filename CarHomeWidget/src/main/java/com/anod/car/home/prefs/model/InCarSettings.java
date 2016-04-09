@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.preferences;
+package com.anod.car.home.prefs.model;
 
 import android.content.ComponentName;
 import android.content.SharedPreferences;
@@ -20,7 +20,7 @@ import java.io.IOException;
  * @author algavris
  * @date 08/04/2016.
  */
-public class InCarSharedPreferences implements InCarInterface {
+public class InCarSettings extends ChangeableSharedPreferences implements InCarInterface {
     public static final String INCAR_MODE_ENABLED = "incar-mode-enabled";
     public static final String POWER_BT_ENABLE = "power-bt-enable";
     public static final String POWER_BT_DISABLE = "power-bt-disable";
@@ -45,12 +45,8 @@ public class InCarSharedPreferences implements InCarInterface {
     public static final String CAR_DOCK_REQUIRED = "car-dock";
     public static final String HOTSPOT = "hotspot";
 
-    private SimpleArrayMap<String,Object> mChanges;
-
-    private SharedPreferences mPrefs;
-
-    public InCarSharedPreferences(SharedPreferences mPrefs) {
-        this.mPrefs = mPrefs;
+    public InCarSettings(SharedPreferences mPrefs) {
+        super(mPrefs);
     }
 
     @Override
@@ -245,7 +241,7 @@ public class InCarSharedPreferences implements InCarInterface {
 
     @Override
     public String getAutoAnswer() {
-        return mPrefs.getString(AUTO_ANSWER, InCar.AUTOANSWER_DISABLED);
+        return mPrefs.getString(AUTO_ANSWER, InCarInterface.AUTOANSWER_DISABLED);
     }
 
     @Override
@@ -315,38 +311,6 @@ public class InCarSharedPreferences implements InCarInterface {
         putChange(HOTSPOT, on);
     }
 
-    private void putChange(String key, Object value) {
-        if (mChanges == null)
-        {
-            mChanges = new SimpleArrayMap<>();
-        }
-        mChanges.put(key, value);
-    }
-
-    public void apply()
-    {
-        if (mChanges == null || mChanges.isEmpty())
-        {
-            return;
-        }
-        SharedPreferences.Editor edit = mPrefs.edit();
-        for (int i = 0; i < mChanges.size(); i++)
-        {
-            String key = mChanges.keyAt(i);
-            Object value = mChanges.get(key);
-            if (value == null) {
-                edit.remove(key);
-            } else if (value instanceof Boolean) {
-                edit.putBoolean(key, (Boolean) value);
-            } else if (value instanceof String) {
-                edit.putString(key, (String) value);
-            } else if (value instanceof Integer) {
-                edit.putInt(key, (Integer) value);
-            }
-        }
-        edit.apply();
-        mChanges = null;
-    }
     
     public void writeJson(JsonWriter writer) throws IOException {
         writer.beginObject();
@@ -421,25 +385,8 @@ public class InCarSharedPreferences implements InCarInterface {
         types.put(SCREEN_ORIENTATION, JsonToken.STRING);
         types.put(HOTSPOT, JsonToken.BOOLEAN);
 
-        while (reader.hasNext()) {
-            String name = reader.nextName();
-            if (!types.containsKey(name)) {
-                AppLog.e("No type for name: "+name);
-                reader.skipValue();
-                continue;
-            }
-            JsonToken type = types.get(name);
-            if (type == JsonToken.BOOLEAN) {
-                putChange(name, reader.nextBoolean());
-            } else if (type == JsonToken.STRING) {
-                putChange(name, reader.nextString());
-            } else if (type == JsonToken.NUMBER) {
-                putChange(name, reader.nextInt());
-            } else {
-                AppLog.e("Unknown type: "+type+" for name: "+name);
-                reader.skipValue();
-            }
-        }
+        JsonReaderHelper.readValues(reader, types, this);
+
         reader.endObject();
     }
 }

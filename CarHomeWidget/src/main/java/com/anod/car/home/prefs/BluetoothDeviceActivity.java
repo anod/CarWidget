@@ -27,9 +27,9 @@ import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.incar.Bluetooth;
 import com.anod.car.home.incar.BluetoothClassHelper;
 import com.anod.car.home.incar.BroadcastService;
-import com.anod.car.home.prefs.preferences.InCarInterface;
-import com.anod.car.home.prefs.preferences.InCarSharedPreferences;
-import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.prefs.model.InCarInterface;
+import com.anod.car.home.prefs.model.InCarSettings;
+import com.anod.car.home.prefs.model.InCarStorage;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -114,7 +114,7 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
     }
 
     private void onDeviceStateChange(Device device, boolean newState) {
-        InCarSharedPreferences prefs = InCarStorage.load(mContext);
+        InCarSettings prefs = InCarStorage.load(mContext);
         ArrayMap<String, String> devices = prefs.getBtDevices();
         if (newState) {
             if (devices == null) {

@@ -15,8 +15,8 @@ import com.anod.car.home.R;
 import com.anod.car.home.model.LauncherSettings;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.WidgetShortcutsModel;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.WidgetStorage;
+import com.anod.car.home.prefs.model.WidgetSettings;
+import com.anod.car.home.prefs.model.WidgetStorage;
 import com.anod.car.home.skin.PropertiesFactory;
 import com.anod.car.home.skin.SkinProperties;
 import com.anod.car.home.utils.BitmapTransform;
@@ -29,7 +29,7 @@ public class WidgetViewBuilder {
 
     private int mAppWidgetId;
 
-    private Main mPrefs;
+    private WidgetSettings mPrefs;
 
     private WidgetShortcutsModel mSmodel;
 
@@ -115,7 +115,7 @@ public class WidgetViewBuilder {
         return this;
     }
 
-    public Main getPrefs() {
+    public WidgetSettings getPrefs() {
         return mPrefs;
     }
 
@@ -128,9 +128,10 @@ public class WidgetViewBuilder {
         mPrefs = WidgetStorage.load(mContext, mAppWidgetId);
 
         mSmodel = new WidgetShortcutsModel(mContext, mAppWidgetId);
-        if (WidgetStorage.isFirstTime(mContext, mAppWidgetId)) {
+        if (mPrefs.isFirstTime()) {
             mSmodel.createDefaultShortcuts();
-            WidgetStorage.setFirstTime(false, mContext, mAppWidgetId);
+            mPrefs.setFirstTime(false);
+            mPrefs.apply();
         }
         mSmodel.init();
 
@@ -140,8 +141,7 @@ public class WidgetViewBuilder {
             mShortcutViewBuilder.setBitmapMemoryCache(mBitmapMemoryCache);
             ;
         }
-        mWidgetButtonViewBuilder = new WidgetButtonViewBuilder(mContext, mPrefs,
-                mPendingIntentHelper, mAppWidgetId);
+        mWidgetButtonViewBuilder = new WidgetButtonViewBuilder(mContext, mPrefs, mPendingIntentHelper, mAppWidgetId);
         mWidgetButtonViewBuilder.setAlternativeHidden(mWidgetButtonAlternativeHidden);
         mBitmapTransform = new BitmapTransform(mContext);
         refreshIconTransform();
@@ -250,7 +250,7 @@ public class WidgetViewBuilder {
         return theme;
     }
 
-    private static void applyIconTransform(BitmapTransform bt, Main prefs) {
+    private static void applyIconTransform(BitmapTransform bt, WidgetSettings prefs) {
         if (prefs.isIconsMono()) {
             bt.setApplyGrayFilter(true);
             if (prefs.getIconsColor() != null) {
@@ -266,7 +266,7 @@ public class WidgetViewBuilder {
     }
 
 
-    private void setBackground(Main prefs, RemoteViews views) {
+    private void setBackground(WidgetSettings prefs, RemoteViews views) {
         int bgColor = prefs.getBackgroundColor();
         views.setInt(R.id.container, "setBackgroundColor", bgColor);
     }

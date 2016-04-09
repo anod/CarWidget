@@ -17,8 +17,8 @@ import android.widget.ImageView;
 import com.anod.car.home.R;
 import com.anod.car.home.app.AppCompatListActivity;
 import com.anod.car.home.appwidget.WidgetButtonViewBuilder;
-import com.anod.car.home.prefs.preferences.Main;
-import com.anod.car.home.prefs.preferences.WidgetStorage;
+import com.anod.car.home.prefs.model.WidgetSettings;
+import com.anod.car.home.prefs.model.WidgetStorage;
 import com.anod.car.home.skin.PropertiesFactory;
 import com.anod.car.home.skin.SkinProperties;
 import com.anod.car.home.utils.AppLog;
@@ -84,15 +84,14 @@ public class WidgetButtonChoiceActivity extends AppCompatListActivity {
         SkinProperties skinProperties = PropertiesFactory.create(mSkin, false);
         List<ChoiceAdapter.Item> items = createItems(skinProperties);
 
-        Main prefs = WidgetStorage.load(this, mAppWidgetId);
-        initCheckedItem(items, prefs, skinProperties);
+        WidgetSettings prefs = WidgetStorage.load(this, mAppWidgetId);
+        initCheckedItem(items, prefs);
 
         setListAdapter(new ChoiceAdapter(this, items));
     }
 
-    private void initCheckedItem(List<ChoiceAdapter.Item> items, Main prefs,
-            SkinProperties skinProperties) {
-        int value = 0;
+    private void initCheckedItem(List<ChoiceAdapter.Item> items, WidgetSettings prefs) {
+        int value;
         if (mButton == WidgetButtonViewBuilder.BUTTON_1) {
             value = prefs.getWidgetButton1();
         } else {
@@ -112,14 +111,14 @@ public class WidgetButtonChoiceActivity extends AppCompatListActivity {
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Main prefs = WidgetStorage.load(this, mAppWidgetId);
+        WidgetSettings prefs = WidgetStorage.load(this, mAppWidgetId);
         ChoiceAdapter.Item item = (ChoiceAdapter.Item) getListAdapter().getItem(position);
         if (mButton == WidgetButtonViewBuilder.BUTTON_1) {
             prefs.setWidgetButton1(item.value);
         } else {
             prefs.setWidgetButton2(item.value);
         }
-        WidgetStorage.save(this, prefs, mAppWidgetId);
+        prefs.apply();
         finish();
     }
 
@@ -127,11 +126,11 @@ public class WidgetButtonChoiceActivity extends AppCompatListActivity {
         Resources r = getResources();
         ArrayList<ChoiceAdapter.Item> items = new ArrayList<ChoiceAdapter.Item>(3);
         items.add(new ChoiceAdapter.Item(r.getString(R.string.pref_settings_transparent),
-                skinProperties.getSettingsButtonRes(), Main.WIDGET_BUTTON_SETTINGS));
+                skinProperties.getSettingsButtonRes(), WidgetSettings.WIDGET_BUTTON_SETTINGS));
         items.add(new ChoiceAdapter.Item(r.getString(R.string.pref_incar_transparent),
-                skinProperties.getInCarButtonEnterRes(), Main.WIDGET_BUTTON_INCAR));
+                skinProperties.getInCarButtonEnterRes(), WidgetSettings.WIDGET_BUTTON_INCAR));
         items.add(new ChoiceAdapter.Item(r.getString(R.string.hidden), R.drawable.ic_action_cancel,
-                Main.WIDGET_BUTTON_HIDDEN));
+                WidgetSettings.WIDGET_BUTTON_HIDDEN));
         return items;
     }
 

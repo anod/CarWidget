@@ -5,9 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.anod.car.home.incar.ScreenOrientation;
+import com.anod.car.home.prefs.model.AppStorage;
+import com.anod.car.home.prefs.model.InCarSettings;
+import com.anod.car.home.prefs.model.InCarStorage;
 import com.anod.car.home.utils.AppLog;
-import com.anod.car.home.utils.Utils;
 
 import java.io.File;
 import java.util.Locale;
@@ -22,10 +23,10 @@ public class PrefsMigrate {
     private static boolean sMigrated;
     private static final String INCAR_SHARED_PREFS_TPL = "/shared_prefs/%s.xml";
 
-    public static InCarSharedPreferences migrate(Context context) {
+    public static InCarSettings migrate(Context context) {
         synchronized (sLock) {
             SharedPreferences defaultPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-            InCarSharedPreferences prefs = loadInCar(defaultPrefs, context);
+            InCarSettings prefs = loadInCar(defaultPrefs, context);
             prefs.apply();
 
             ComponentName musicApp = AppStorage.getMusicApp(defaultPrefs);
@@ -53,15 +54,15 @@ public class PrefsMigrate {
     public static Main migrate(Context context, int appWidgetId) {
         synchronized (sLock) {
             Main prefs = WidgetMigrateStorage.loadMain(context, appWidgetId);
-            WidgetStorage.save(context, prefs, appWidgetId);
+            //WidgetStorage.save(context, prefs, appWidgetId);
             return prefs;
         }
     }
 
-    static InCarSharedPreferences loadInCar(SharedPreferences defaultPrefs, Context context) {
+    static InCarSettings loadInCar(SharedPreferences defaultPrefs, Context context) {
 
         SharedPreferences destPrefs = InCarStorage.getSharedPreferences(context);
-        InCarSharedPreferences prefs = new InCarSharedPreferences(destPrefs);
+        InCarSettings prefs = new InCarSettings(destPrefs);
 
         // TODO:
         return prefs;

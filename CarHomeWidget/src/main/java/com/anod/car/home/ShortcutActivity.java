@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.anod.car.home.app.MusicAppChoiceActivity;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
-import com.anod.car.home.prefs.preferences.AppStorage;
+import com.anod.car.home.prefs.model.AppStorage;
 import com.anod.car.home.utils.MusicUtils;
 
 public class ShortcutActivity extends Activity {

@@ -8,7 +8,8 @@ import android.widget.RemoteViews;
 
 import com.anod.car.home.R;
 import com.anod.car.home.incar.ModeService;
-import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.prefs.model.WidgetSettings;
+import com.anod.car.home.prefs.model.InCarStorage;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.skin.SkinProperties;
 
@@ -24,7 +25,7 @@ public class WidgetButtonViewBuilder {
 
     private Context mContext;
 
-    private Main mPrefs;
+    private WidgetSettings mPrefs;
 
     private WidgetViewBuilder.PendingIntentHelper mPendingIntentHelper;
 
@@ -32,7 +33,7 @@ public class WidgetButtonViewBuilder {
 
     private boolean mAlternativeHidden = false;
 
-    public WidgetButtonViewBuilder(Context context, Main prefs,
+    public WidgetButtonViewBuilder(Context context, WidgetSettings prefs,
             WidgetViewBuilder.PendingIntentHelper pendingIntentHelper, int appWidgetId) {
         mContext = context;
         mPrefs = prefs;

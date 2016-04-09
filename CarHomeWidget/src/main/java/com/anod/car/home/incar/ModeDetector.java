@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.support.v4.util.ArrayMap;
 
 import com.anod.car.home.BuildConfig;
-import com.anod.car.home.prefs.preferences.InCarInterface;
-import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.prefs.model.InCarInterface;
+import com.anod.car.home.prefs.model.InCarStorage;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.PowerUtil;
 

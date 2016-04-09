@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.preferences;
+package com.anod.car.home.prefs.model;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -24,7 +24,7 @@ public class AppStorage {
         return getMusicApp(getSharedPreferences(context));
     }
 
-    static void saveMusicApp(SharedPreferences prefs, ComponentName musicApp, boolean delayed) {
+    public static void saveMusicApp(SharedPreferences prefs, ComponentName musicApp, boolean delayed) {
         SharedPreferences.Editor edit = prefs.edit();
         if (musicApp == null) {
             edit.remove(MUSIC_APP);
@@ -38,7 +38,7 @@ public class AppStorage {
         }
     }
 
-    static ComponentName getMusicApp(SharedPreferences prefs) {
+    public static ComponentName getMusicApp(SharedPreferences prefs) {
         String musicAppString = prefs.getString(MUSIC_APP, null);
 
         if (musicAppString != null) {

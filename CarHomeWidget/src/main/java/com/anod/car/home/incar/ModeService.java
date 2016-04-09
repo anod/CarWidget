@@ -12,9 +12,8 @@ import android.telephony.TelephonyManager;
 import com.anod.car.home.ObjectGraph;
 import com.anod.car.home.Provider;
 import com.anod.car.home.app.App;
-import com.anod.car.home.prefs.preferences.InCar;
-import com.anod.car.home.prefs.preferences.InCarInterface;
-import com.anod.car.home.prefs.preferences.InCarStorage;
+import com.anod.car.home.prefs.model.InCarInterface;
+import com.anod.car.home.prefs.model.InCarStorage;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.Version;
 
@@ -166,7 +165,7 @@ public class ModeService extends Service {
     }
 
     private void initPhoneListener(InCarInterface prefs) {
-        if (prefs.isAutoSpeaker() || !prefs.getAutoAnswer().equals(InCar.AUTOANSWER_DISABLED)) {
+        if (prefs.isAutoSpeaker() || !prefs.getAutoAnswer().equals(InCarInterface.AUTOANSWER_DISABLED)) {
             if (mPhoneListener == null) {
                 attachPhoneListener();
             }

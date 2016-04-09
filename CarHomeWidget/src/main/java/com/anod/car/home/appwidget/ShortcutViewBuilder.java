@@ -3,6 +3,7 @@ package com.anod.car.home.appwidget;
 import com.anod.car.home.model.LauncherSettings;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.WidgetShortcutsModel;
+import com.anod.car.home.prefs.model.WidgetSettings;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.skin.SkinProperties;
 import com.anod.car.home.skin.icon.BackgroundProcessor;
@@ -35,7 +36,7 @@ public class ShortcutViewBuilder {
 
     private IconTheme mIconTheme;
 
-    private Main mPrefs;
+    private WidgetSettings mPrefs;
 
     private Context mContext;
 
@@ -59,8 +60,8 @@ public class ShortcutViewBuilder {
     }
 
     public void init(String skinName, float scaledDensity, SkinProperties skinProperties,
-            IconTheme iconTheme, Main prefs, WidgetShortcutsModel smodel,
-            BitmapTransform bitmapTransform) {
+                     IconTheme iconTheme, WidgetSettings prefs, WidgetShortcutsModel smodel,
+                     BitmapTransform bitmapTransform) {
         mSkinName = skinName;
         mScaledDensity = scaledDensity;
         mSkinProperties = skinProperties;
