@@ -59,6 +59,7 @@ public class ChangeableSharedPreferences {
                 AppLog.e("Unknown value "+value.toString()+" for key "+key);
             }
         }
+        edit.putBoolean("migrated", true);
         edit.apply();
         mChanges = null;
     }
