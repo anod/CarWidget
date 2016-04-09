@@ -46,13 +46,10 @@ public class AppIconLoader {
             Drawable d = null;
             Bitmap icon;
 
-            AppLog.d("load: "+request.uri);
-
             String part = request.uri.getSchemeSpecificPart();
-            AppLog.d("cmp: "+part);
+            AppLog.d("Get Activity Info: "+part);
             ComponentName cmp = ComponentName.unflattenFromString(part);
             try {
-                AppLog.d("getActivityIcon: "+cmp);
                 d = mPackageManager.getActivityIcon(cmp);
             } catch (PackageManager.NameNotFoundException ignored) {
             }
@@ -60,7 +57,6 @@ public class AppIconLoader {
             if (d == null) {
                 try {
                     d = mPackageManager.getApplicationIcon(cmp.getPackageName());
-                    AppLog.d("getApplicationIcon: "+cmp.getPackageName());
                 } catch (PackageManager.NameNotFoundException e1) {
                     AppLog.ex(e1);
                     return null;
