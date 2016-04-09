@@ -21,7 +21,7 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
      * objects.  They only need to be unique among the helpers within this
      * one agent class, not globally unique.
      */
-    static final String FILE_HELPER_KEY = "backup_incar";
+    static final String FILE_HELPER_KEY = "backup_incar.json";
 
     private PreferencesBackupManager mManager;
 
@@ -35,10 +35,6 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
      */
     @Override
     public void onCreate() {
-        AppLog.d("onCreate called");
-        // All we need to do when working within the BackupAgentHelper mechanism
-        // is to install the helper that will process and back up the files we
-        // care about.  In this case, it's just one file.
         mManager = new PreferencesBackupManager(this);
         FileBackupHelper helper = createFileBackupHelper(this, mManager.getBackupDir(),
                 PreferencesBackupManager.FILE_INCAR_JSON);
@@ -66,13 +62,11 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
     @Override
     public void onRestore(BackupDataInput data, int appVersionCode,
             ParcelFileDescriptor newState) throws IOException {
-        AppLog.d("onRestore called");
         // Hold the lock while the FileBackupHelper restores the file from
         // the data provided here.
         synchronized (PreferencesBackupManager.sLock) {
-            AppLog.d("onRestore in-lock");
             super.onRestore(data, appVersionCode, newState);
-            mManager.doRestoreInCarLocal();
+            mManager.doRestoreInCarLocal(mManager.getBackupIncarFile().getPath());
         }
     }
 
@@ -88,7 +82,6 @@ public class BackupFileHelperAgent extends BackupAgentHelper {
         filePathBuilder.append(File.separatorChar);
         filePathBuilder.append(file);
 
-        String fileRelPath = filePathBuilder.toString();
         return new FileBackupHelper(context, filePathBuilder.toString());
     }
 

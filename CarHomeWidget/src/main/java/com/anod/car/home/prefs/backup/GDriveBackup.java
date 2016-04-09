@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.anod.car.home.gms.ReadDriveFileContentsAsyncTask;
 import com.anod.car.home.gms.WriteDriveFileContentsAsyncTask;
 import com.anod.car.home.prefs.ConfigurationActivity;
+import com.anod.car.home.prefs.preferences.ObjectRestoreManager;
 import com.anod.car.home.utils.AppLog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -18,6 +19,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.drive.OpenFileActivityBuilder;
 
@@ -39,7 +41,8 @@ public class GDriveBackup
 
     public static final int REQUEST_CODE_CREATOR = 124;
 
-    public static final String MIME_TYPE = "application/octet-stream";
+    public static final String MIME_TYPE_OBJECT = "application/octet-stream";
+    public static final String MIME_TYPE_JSON = "application/json";
 
 
     private static final int ACTION_DOWNLOAD = 1;
@@ -148,7 +151,7 @@ public class GDriveBackup
     private void downloadConnected() {
         IntentSender intentSender = Drive.DriveApi
                 .newOpenFileActivityBuilder()
-                .setMimeType(new String[]{MIME_TYPE})
+                .setMimeType(new String[]{MIME_TYPE_OBJECT, MIME_TYPE_JSON})
                 .build(mGoogleApiClient);
         try {
             mActivity.startIntentSenderForResult(intentSender, REQUEST_CODE_OPENER, null, 0, 0, 0);
@@ -196,18 +199,25 @@ public class GDriveBackup
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        if (requestCode == REQUEST_CODE_RESOLUTION && resultCode == Activity.RESULT_OK) {
-            connect();
+        if (requestCode == REQUEST_CODE_RESOLUTION) {
+            if (resultCode == Activity.RESULT_OK) {
+                connect();
+            } else {
+                Toast.makeText(mContext, "Error while trying to connect",
+                        Toast.LENGTH_SHORT).show();
+            }
         } else if (requestCode == REQUEST_CODE_OPENER) {
             if (resultCode == Activity.RESULT_OK) {
-                DriveId driveId = (DriveId) resultData
+                DriveId driveId = resultData
                         .getParcelableExtra(OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
-                new ReadTask(mContext, mAppWidgetId, mListener).execute(driveId);
+                new ReadTask(mContext, mAppWidgetId, mListener)
+                        .execute(new ReadDriveFileContentsAsyncTask.DriveIdParams(driveId));
             }
         } else if (requestCode == REQUEST_CODE_CREATOR) {
             if (resultCode == Activity.RESULT_OK) {
-                DriveId driveId = (DriveId) resultData
+                DriveId driveId = resultData
                         .getParcelableExtra(OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
+
                 new WriteTask(mActivity, mListener)
                         .execute(new WriteDriveFileContentsAsyncTask.FilesParam(mFile, driveId));
             }
@@ -224,7 +234,7 @@ public class GDriveBackup
 
         MetadataChangeSet metadataChangeSet = new MetadataChangeSet.Builder()
                 .setTitle(mTargetFileName)
-                .setMimeType(MIME_TYPE)
+                .setMimeType(MIME_TYPE_JSON)
                 .build();
         IntentSender intentSender = Drive.DriveApi
                 .newCreateFileActivityBuilder()
@@ -287,14 +297,24 @@ public class GDriveBackup
         }
 
         @Override
-        protected boolean readDriveFileBackground(InputStream inputStream) {
+        protected boolean readDriveFileBackground(InputStream inputStream, Metadata metadata) {
             PreferencesBackupManager backup = new PreferencesBackupManager(mContext);
 
             int result;
             if (mAppWidgetId == 0) {
-                result = backup.doRestoreInCar(inputStream);
+                if (metadata.getMimeType().equals(MIME_TYPE_OBJECT)) {
+                    ObjectRestoreManager objectRestore = new ObjectRestoreManager(mContext);
+                    result = objectRestore.doRestoreInCar(inputStream);
+                } else {
+                    result = backup.doRestoreInCar(inputStream);
+                }
             } else {
-                result = backup.doRestoreWidget(inputStream, mAppWidgetId);
+                if (metadata.getMimeType().equals(MIME_TYPE_OBJECT)) {
+                    ObjectRestoreManager objectRestore = new ObjectRestoreManager(mContext);
+                    result = objectRestore.doRestoreMain(inputStream, mAppWidgetId);
+                } else {
+                    result = backup.doRestoreWidget(inputStream, mAppWidgetId);
+                }
             }
 
             return result == PreferencesBackupManager.RESULT_DONE;

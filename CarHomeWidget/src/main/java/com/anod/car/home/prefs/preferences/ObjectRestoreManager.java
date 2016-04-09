@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.backup;
+package com.anod.car.home.prefs.preferences;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,6 +10,11 @@ import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutsContainerModel;
 import com.anod.car.home.model.WidgetShortcutsModel;
+import com.anod.car.home.prefs.backup.PreferencesBackupManager;
+import com.anod.car.home.prefs.model.InCarSettings;
+import com.anod.car.home.prefs.model.InCarStorage;
+import com.anod.car.home.prefs.model.PrefsMigrate;
+import com.anod.car.home.prefs.model.WidgetSettings;
 import com.anod.car.home.prefs.model.WidgetStorage;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.InCarBackup;
@@ -25,20 +30,17 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
 
-public class ObjectBackupManager {
+public class ObjectRestoreManager {
 
     public static final String FILE_EXT_DAT = ".dat";
-    public static final String FILE_INCAR_DAT = "backup_incar.date";
+    public static final String FILE_INCAR_DAT = "backup_incar.dat";
 
     private final Context mContext;
 
-    public ObjectBackupManager(Context context) {
-        mContext = context;
-    }
+    static final Object[] sLock = new Object[0];
 
-    public File getBackupIncarFile() {
-        File saveDir = getBackupDir();
-        return new File(saveDir, FILE_INCAR_DAT);
+    public ObjectRestoreManager(Context context) {
+        mContext = context;
     }
 
     @SuppressLint("UseSparseArrays")
@@ -50,45 +52,10 @@ public class ObjectBackupManager {
         return new InCarBackup(new HashMap<Integer, ShortcutInfo>(), (InCar) readObject);
     }
 
-    public int doRestoreMainLocal(String filepath, int appWidgetId) {
-        if (!checkMediaReadable()) {
-            return PreferencesBackupManager.ERROR_STORAGE_NOT_AVAILABLE;
-        }
-
-        File dataFile = new File(filepath);
-        if (!dataFile.exists()) {
-            return PreferencesBackupManager.ERROR_FILE_NOT_EXIST;
-        }
-        if (!dataFile.canRead()) {
-            return PreferencesBackupManager.ERROR_FILE_READ;
-        }
-
-        FileInputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(dataFile);
-        } catch (FileNotFoundException e) {
-            AppLog.d(e.getMessage());
-            return PreferencesBackupManager.ERROR_FILE_READ;
-        }
-
-        return doRestoreMain(inputStream, appWidgetId);
-    }
-
-    public Integer doRestoreMainUri(Uri uri, int appWidgetId) {
-        InputStream inputStream = null;
-        try {
-            inputStream = mContext.getContentResolver().openInputStream(uri);
-        } catch (FileNotFoundException e) {
-            AppLog.d(e.getMessage());
-            return PreferencesBackupManager.ERROR_FILE_READ;
-        }
-        return doRestoreMain(inputStream, appWidgetId);
-    }
-
     public int doRestoreMain(final InputStream inputStream, int appWidgetId) {
-        ShortcutsMain prefs = null;
+        ShortcutsMain prefs;
         try {
-            synchronized (PreferencesBackupManager.sLock) {
+            synchronized (sLock) {
                 ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(inputStream));
                 prefs = (ShortcutsMain) is.readObject();
                 is.close();
@@ -103,16 +70,20 @@ public class ObjectBackupManager {
             AppLog.ex(e);
             return PreferencesBackupManager.ERROR_DESERIALIZE;
         }
-      //  WidgetStorage.save(mContext, prefs.getMain(), appWidgetId);
+
+        Main main = prefs.getMain();
+        WidgetSettings widget = WidgetStorage.load(mContext, appWidgetId);
+        PrefsMigrate.migrateMain(widget, main);
+        widget.apply();
+
         HashMap<Integer, ShortcutInfo> shortcuts = prefs.getShortcuts();
         // small check
         if (shortcuts.size() % 2 == 0) {
             WidgetStorage.saveLaunchComponentNumber(shortcuts.size(), mContext, appWidgetId);
         }
-        ShortcutsContainerModel smodel = new WidgetShortcutsModel(mContext, appWidgetId);
-        smodel.init();
-
-        restoreShortcuts((AbstractShortcutsContainerModel) smodel, shortcuts);
+        WidgetShortcutsModel model = new WidgetShortcutsModel(mContext, appWidgetId);
+        model.init();
+        restoreShortcuts(model, shortcuts);
 
         return PreferencesBackupManager.RESULT_DONE;
     }
@@ -129,44 +100,10 @@ public class ObjectBackupManager {
         }
     }
 
-    public int doRestoreInCarLocal() {
-        if (!checkMediaReadable()) {
-            return PreferencesBackupManager.ERROR_STORAGE_NOT_AVAILABLE;
-        }
-
-        File dataFile = new File(getBackupDir(), FILE_INCAR_DAT);
-        if (!dataFile.exists()) {
-            return PreferencesBackupManager.ERROR_FILE_NOT_EXIST;
-        }
-        if (!dataFile.canRead()) {
-            return PreferencesBackupManager.ERROR_FILE_READ;
-        }
-
-        FileInputStream fis;
-        try {
-            fis = new FileInputStream(dataFile);
-        } catch (FileNotFoundException e) {
-            AppLog.d(e.getMessage());
-            return PreferencesBackupManager.ERROR_FILE_READ;
-        }
-        return doRestoreInCar(fis);
-    }
-
-    public int doRestoreInCarUri(Uri uri) {
-        InputStream inputStream;
-        try {
-            inputStream = mContext.getContentResolver().openInputStream(uri);
-        } catch (FileNotFoundException e) {
-            AppLog.d(e.getMessage());
-            return PreferencesBackupManager.ERROR_FILE_READ;
-        }
-        return doRestoreInCar(inputStream);
-    }
-
     public int doRestoreInCar(final InputStream inputStream) {
         InCarBackup inCarBackup;
         try {
-            synchronized (PreferencesBackupManager.sLock) {
+            synchronized (sLock) {
                 ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(inputStream));
                 inCarBackup = readInCarCompat(is.readObject());
                 is.close();
@@ -187,31 +124,43 @@ public class ObjectBackupManager {
             inCarBackup.getInCar().setAutoAnswer(InCar.AUTOANSWER_DISABLED);
         }
 
+        InCarSettings dest = InCarStorage.load(mContext);
+        migrateIncar(dest, inCarBackup.getInCar());
+        dest.apply();
+
         NotificationShortcutsModel model = new NotificationShortcutsModel(mContext);
         model.init();
 
         HashMap<Integer, ShortcutInfo> shortcuts = inCarBackup.getNotificationShortcuts();
         restoreShortcuts(model, shortcuts);
 
-        // TODO: Migrate
-        //InCarStorage.saveInCar(mContext, inCarBackup.getInCar());
         return PreferencesBackupManager.RESULT_DONE;
     }
 
-
-    public File getBackupDir() {
-        File externalPath = Environment.getExternalStorageDirectory();
-        return new File(externalPath.getAbsolutePath() + PreferencesBackupManager.DIR_BACKUP);
+    public static void migrateIncar(InCarSettings dest, InCar source)
+    {
+        dest.setAutorunApp(source.getAutorunApp());
+        dest.setAdjustVolumeLevel(source.isAdjustVolumeLevel());
+        dest.setActivateCarMode(source.isActivateCarMode());
+        dest.setActivityRequired(source.isActivityRequired());
+        dest.setAutoAnswer(source.getAutoAnswer());
+        dest.setAutoSpeaker(source.isAutoSpeaker());
+        dest.setBrightness(source.getBrightness());
+        dest.setBtDevices(source.getBtDevices());
+        dest.setCallVolumeLevel(source.getCallVolumeLevel());
+        dest.setCarDockRequired(source.isCarDockRequired());
+        dest.setDisableScreenTimeoutCharging(source.isDisableScreenTimeoutCharging());
+        dest.setDisableScreenTimeout(source.isDisableScreenTimeout());
+        dest.setDisableBluetoothOnPower(source.isDisableBluetoothOnPower());
+        dest.setDisableWifi(source.getDisableWifi());
+        dest.setEnableBluetooth(source.isEnableBluetooth());
+        dest.setEnableBluetoothOnPower(source.isEnableBluetoothOnPower());
+        dest.setHeadsetRequired(source.isHeadsetRequired());
+        dest.setHotspotOn(source.isHotspotOn());
+        dest.setInCarEnabled(source.isInCarEnabled());
+        dest.setMediaVolumeLevel(source.getMediaVolumeLevel());
+        dest.setPowerRequired(source.isPowerRequired());
+        dest.setSamsungDrivingMode(source.isSamsungDrivingMode());
+        dest.setScreenOrientation(source.getScreenOrientation());
     }
-
-    private boolean checkMediaReadable() {
-        String state = Environment.getExternalStorageState();
-        if (!Environment.MEDIA_MOUNTED.equals(state) && !Environment.MEDIA_MOUNTED_READ_ONLY
-                .equals(state)) {
-            return false;
-        }
-        return true;
-    }
-
-
 }

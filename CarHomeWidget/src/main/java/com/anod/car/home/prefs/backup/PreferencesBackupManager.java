@@ -19,6 +19,7 @@ import com.anod.car.home.prefs.model.InCarSettings;
 import com.anod.car.home.prefs.model.InCarStorage;
 import com.anod.car.home.prefs.model.WidgetSettings;
 import com.anod.car.home.prefs.model.WidgetStorage;
+import com.anod.car.home.prefs.preferences.ObjectRestoreManager;
 import com.anod.car.home.utils.AppLog;
 
 import java.io.BufferedInputStream;
@@ -62,12 +63,6 @@ public class PreferencesBackupManager {
 
     public static final String FILE_INCAR_JSON = "backup_incar.json";
 
-    public static final int DATE_FORMAT = DateUtils.FORMAT_SHOW_DATE
-            | DateUtils.FORMAT_SHOW_WEEKDAY
-            | DateUtils.FORMAT_SHOW_TIME
-            | DateUtils.FORMAT_SHOW_YEAR
-            | DateUtils.FORMAT_ABBREV_ALL;
-
     static final Object[] sLock = new Object[0];
 
     private final Context mContext;
@@ -84,7 +79,7 @@ public class PreferencesBackupManager {
         FilenameFilter filter = new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
-                return filename.endsWith(FILE_EXT_JSON);
+                return filename.endsWith(FILE_EXT_JSON) || filename.endsWith(ObjectRestoreManager.FILE_EXT_DAT);
             }
         };
         return saveDir.listFiles(filter);
@@ -93,7 +88,10 @@ public class PreferencesBackupManager {
     public long getIncarTime() {
         File dataFile = new File(getBackupDir(), FILE_INCAR_JSON);
         if (!dataFile.exists()) {
-            return 0;
+            dataFile = new File(getBackupDir(), ObjectRestoreManager.FILE_INCAR_DAT);
+            if (!dataFile.exists()) {
+                return 0;
+            }
         }
         return dataFile.lastModified();
     }
@@ -110,8 +108,8 @@ public class PreferencesBackupManager {
 
         File dataFile = new File(saveDir, filename + FILE_EXT_JSON);
 
-        ShortcutsContainerModel smodel = new WidgetShortcutsModel(mContext, appWidgetId);
-        smodel.init();
+        ShortcutsContainerModel model = new WidgetShortcutsModel(mContext, appWidgetId);
+        model.init();
         WidgetSettings widget = WidgetStorage.load(mContext, appWidgetId);
         try {
             synchronized (sLock)
@@ -126,7 +124,7 @@ public class PreferencesBackupManager {
 
                 JsonWriter arrayWriter = writer.name("shortcuts").beginArray();
                 ShortcutsJsonWriter shortcutsJsonWriter = new ShortcutsJsonWriter();
-                shortcutsJsonWriter.writeList(arrayWriter, smodel.getShortcuts());
+                shortcutsJsonWriter.writeList(arrayWriter, model.getShortcuts());
                 arrayWriter.endArray();
 
                 writer.endObject();
@@ -212,6 +210,16 @@ public class PreferencesBackupManager {
             return ERROR_FILE_READ;
         }
 
+        int pos = dataFile.getName().lastIndexOf('.');
+        if (pos > 0) {
+            String extension = dataFile.getName().substring(pos);
+            if (extension.equals(ObjectRestoreManager.FILE_EXT_DAT))
+            {
+                ObjectRestoreManager objectRestore = new ObjectRestoreManager(mContext);
+                return objectRestore.doRestoreMain(inputStream, appWidgetId);
+            }
+        }
+
         return doRestoreWidget(inputStream, appWidgetId);
     }
 
@@ -263,10 +271,10 @@ public class PreferencesBackupManager {
         if (shortcuts.size() % 2 == 0) {
             WidgetStorage.saveLaunchComponentNumber(shortcuts.size(), mContext, appWidgetId);
         }
-        ShortcutsContainerModel smodel = new WidgetShortcutsModel(mContext, appWidgetId);
-        smodel.init();
+        WidgetShortcutsModel model = new WidgetShortcutsModel(mContext, appWidgetId);
+        model.init();
 
-        restoreShortcuts((AbstractShortcutsContainerModel) smodel, shortcuts);
+        restoreShortcuts(model, shortcuts);
 
         return RESULT_DONE;
     }
@@ -283,12 +291,12 @@ public class PreferencesBackupManager {
         }
     }
 
-    public int doRestoreInCarLocal() {
+    public int doRestoreInCarLocal(String filepath) {
         if (!checkMediaReadable()) {
             return ERROR_STORAGE_NOT_AVAILABLE;
         }
 
-        File dataFile = new File(getBackupDir(), FILE_INCAR_JSON);
+        File dataFile = new File(filepath);
         if (!dataFile.exists()) {
             return ERROR_FILE_NOT_EXIST;
         }
@@ -303,6 +311,16 @@ public class PreferencesBackupManager {
             AppLog.d(e.getMessage());
             return ERROR_FILE_READ;
         }
+
+        int pos = dataFile.getName().lastIndexOf('.');
+        if (pos > 0) {
+            String extension = dataFile.getName().substring(pos);
+            if (extension.equals(ObjectRestoreManager.FILE_EXT_DAT)) {
+                ObjectRestoreManager objectRestore = new ObjectRestoreManager(mContext);
+                return objectRestore.doRestoreInCar(fis);
+            }
+        }
+
         return doRestoreInCar(fis);
     }
 

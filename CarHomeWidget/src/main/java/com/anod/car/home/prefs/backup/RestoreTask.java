@@ -8,26 +8,19 @@ import android.os.AsyncTask;
  * @date 12/30/13
  */
 public class RestoreTask extends AsyncTask<Uri, Void, Integer> {
-
     public static final String SCHEME_FILE = "file";
-
     private int mType;
-
     private PreferencesBackupManager mBackupManager;
-
     private int mAppWidgetId;
+    private RestoreTaskListener mListener;
 
-    private RestoreTaskListner mListener;
-
-    public interface RestoreTaskListner {
-
+    public interface RestoreTaskListener {
         void onRestorePreExecute(int type);
-
         void onRestoreFinish(int type, int code);
     }
 
     public RestoreTask(int type, PreferencesBackupManager backupManager, int appWidgetId,
-            RestoreTaskListner listener) {
+            RestoreTaskListener listener) {
         mType = type;
         mBackupManager = backupManager;
         mAppWidgetId = appWidgetId;
@@ -43,8 +36,8 @@ public class RestoreTask extends AsyncTask<Uri, Void, Integer> {
         Uri uri = uris[0];
         if (mType == PreferencesBackupManager.TYPE_INCAR) {
 
-            if (uri == null) {
-                return mBackupManager.doRestoreInCarLocal();
+            if (SCHEME_FILE.equals(uri.getScheme())) {
+                return mBackupManager.doRestoreInCarLocal(uri.getPath());
             }
 
             return mBackupManager.doRestoreInCarUri(uri);

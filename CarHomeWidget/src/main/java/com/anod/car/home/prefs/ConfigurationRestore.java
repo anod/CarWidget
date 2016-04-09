@@ -35,6 +35,7 @@ import com.anod.car.home.prefs.backup.GDriveBackup;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 import com.anod.car.home.prefs.backup.RestoreCodeRender;
 import com.anod.car.home.prefs.backup.RestoreTask;
+import com.anod.car.home.prefs.preferences.ObjectRestoreManager;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.CheatSheet;
 import com.anod.car.home.utils.DeleteFileTask;
@@ -43,35 +44,30 @@ import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ConfigurationRestore extends Fragment implements
-        RestoreTask.RestoreTaskListner, DeleteFileTask.DeleteFileTaskListener,
+        RestoreTask.RestoreTaskListener, DeleteFileTask.DeleteFileTaskListener,
         BackupTask.BackupTaskListner, GDriveBackup.Listener {
 
     private static final int DOWNLOAD_MAIN_REQUEST_CODE = 1;
-
     private static final int DOWNLOAD_INCAR_REQUEST_CODE = 2;
-
-
     private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-
     private PreferencesBackupManager mBackupManager;
-
     private Context mContext;
-
     private RestoreAdapter mAdapter;
-
     private RestoreClickListener mRestoreListener;
-
     private DeleteClickListener mDeleteListener;
-
     private ExportClickListener mExportListener;
-
-    public static final String EXTRA_TYPE = "type";
+    public static final int DATE_FORMAT = DateUtils.FORMAT_SHOW_DATE
+            | DateUtils.FORMAT_SHOW_WEEKDAY
+            | DateUtils.FORMAT_SHOW_TIME
+            | DateUtils.FORMAT_SHOW_YEAR
+            | DateUtils.FORMAT_ABBREV_ALL;
 
     @Bind(R.id.backupMain)
     ImageButton mBackupMain;
@@ -182,7 +178,12 @@ public class ConfigurationRestore extends Fragment implements
             mRestoreIncar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Uri uri = null;
+                    Uri uri;
+                    if (mBackupManager.getBackupIncarFile().exists()){
+                        uri = Uri.fromFile(mBackupManager.getBackupIncarFile());
+                    } else {
+                        uri = Uri.fromFile(new File(mBackupManager.getBackupDir(), ObjectRestoreManager.FILE_INCAR_DAT));
+                    }
                     new RestoreTask(PreferencesBackupManager.TYPE_INCAR, mBackupManager, 0,
                             ConfigurationRestore.this)
                             .execute(uri);
@@ -285,8 +286,7 @@ public class ConfigurationRestore extends Fragment implements
                 @Override
                 public void onClick(View view) {
                     File incar = mBackupManager.getBackupIncarFile();
-                    mGDriveBackup
-                            .upload("incar-backup" + PreferencesBackupManager.FILE_EXT_JSON, incar);
+                    mGDriveBackup.upload("incar-backup" + PreferencesBackupManager.FILE_EXT_JSON, incar);
                 }
             });
 
@@ -484,8 +484,7 @@ public class ConfigurationRestore extends Fragment implements
             holder.title.setText(name);
             holder.title.setOnClickListener(mRestoreListener);
 
-            String timestamp = DateUtils.formatDateTime(mContext, entry.lastModified(),
-                    PreferencesBackupManager.DATE_FORMAT);
+            String timestamp = DateUtils.formatDateTime(mContext, entry.lastModified(), DATE_FORMAT);
             holder.text2.setText(timestamp);
 
             holder.apply.setTag(name);
@@ -541,7 +540,6 @@ public class ConfigurationRestore extends Fragment implements
     @Override
     public void onBackupFinish(int type, int code) {
 
-        Resources r = getResources();
         if (code == PreferencesBackupManager.RESULT_DONE) {
             if (type == PreferencesBackupManager.TYPE_MAIN) {
                 //
@@ -561,7 +559,7 @@ public class ConfigurationRestore extends Fragment implements
         long timeIncar = mBackupManager.getIncarTime();
         if (timeIncar > 0) {
             summary = DateUtils
-                    .formatDateTime(mContext, timeIncar, PreferencesBackupManager.DATE_FORMAT);
+                    .formatDateTime(mContext, timeIncar, DATE_FORMAT);
         } else {
             summary = getString(R.string.never);
         }

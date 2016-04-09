@@ -226,9 +226,9 @@
 		<item>90&#186; Right</item>
 	</string-array>
 
-	<string name="export_backup">Export backup file</string>
-	<string name="import_backup">Import backup file</string>
-	<string name="export_backup_finish">Export finished</string>
+	<string name="export_backup">Upload backup file</string>
+	<string name="import_backup">Download backup file</string>
+	<string name="export_backup_finish">Upload finished</string>
 	<string name="delete">Delete</string>
 	<string name="number">Number of shortcuts</string>
 	<string name="number_shortcuts_title">Number of shortcuts</string>

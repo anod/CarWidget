@@ -87,26 +87,7 @@ public class PrefsMigrate {
             WidgetSettings widget = new WidgetSettings(WidgetStorage.getSharedPreferences(context, appWidgetId), context.getResources());
 
             widget.setFirstTime(WidgetMigrateStorage.isFirstTime(context, appWidgetId));
-            widget.setSkin(prefs.getSkin());
-            widget.setTitlesHide(prefs.isTitlesHide());
-
-            widget.setFontColor(prefs.getFontColor());
-            widget.setFontSize(prefs.getFontSize());
-
-            widget.setBackgroundColor(prefs.getBackgroundColor());
-            widget.setTileColor(prefs.getTileColor());
-
-            widget.setIconsColor(prefs.getIconsColor());
-            widget.setIconsMono(prefs.isIconsMono());
-            widget.setIconsRotate(prefs.getIconsRotate());
-            widget.setIconsScaleString(prefs.getIconsScale());
-            widget.setIconsTheme(prefs.getIconsTheme());
-
-            widget.setIncarTransparent(prefs.isIncarTransparent());
-            widget.setSettingsTransparent(prefs.isSettingsTransparent());
-
-            widget.setWidgetButton1(prefs.getWidgetButton1());
-            widget.setWidgetButton2(prefs.getWidgetButton2());
+            migrateMain(widget, prefs);
 
             int count = WidgetMigrateStorage.getLaunchComponentNumber(context, appWidgetId);
             ArrayList<Long> ids = WidgetMigrateStorage.getLauncherComponents(context, appWidgetId, count);
@@ -121,4 +102,27 @@ public class PrefsMigrate {
         }
     }
 
+    public static void migrateMain(WidgetSettings widget, Main prefs)
+    {
+        widget.setSkin(prefs.getSkin());
+        widget.setTitlesHide(prefs.isTitlesHide());
+
+        widget.setFontColor(prefs.getFontColor());
+        widget.setFontSize(prefs.getFontSize());
+
+        widget.setBackgroundColor(prefs.getBackgroundColor());
+        widget.setTileColor(prefs.getTileColor());
+
+        widget.setIconsColor(prefs.getIconsColor());
+        widget.setIconsMono(prefs.isIconsMono());
+        widget.setIconsRotate(prefs.getIconsRotate());
+        widget.setIconsScaleString(prefs.getIconsScale());
+        widget.setIconsTheme(prefs.getIconsTheme());
+
+        widget.setIncarTransparent(prefs.isIncarTransparent());
+        widget.setSettingsTransparent(prefs.isSettingsTransparent());
+
+        widget.setWidgetButton1(prefs.getWidgetButton1());
+        widget.setWidgetButton2(prefs.getWidgetButton2());
+    }
 }

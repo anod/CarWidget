@@ -18,8 +18,12 @@ import java.util.concurrent.CountDownLatch;
 /**
  * An AsyncTask that maintains a connected client.
  */
-public abstract class ApiClientAsyncTask<Params>
-        extends AsyncTask<Params, Void, Boolean> {
+public abstract class ApiClientAsyncTask
+        extends AsyncTask<ApiClientAsyncTask.Params, Void, Boolean> {
+
+    public static class Params {
+
+    }
 
     private GoogleApiClient mClient;
 
@@ -63,7 +67,7 @@ public abstract class ApiClientAsyncTask<Params>
             return null;
         }
         try {
-            return doInBackgroundConnected(params);
+            return doInBackgroundConnected(params[0]);
         } finally {
             mClient.disconnect();
         }
@@ -73,7 +77,7 @@ public abstract class ApiClientAsyncTask<Params>
      * Override this method to perform a computation on a background thread, while the client is
      * connected.
      */
-    protected abstract Boolean doInBackgroundConnected(Params... params);
+    protected abstract Boolean doInBackgroundConnected(Params params);
 
     /**
      * Gets the GoogleApiClient owned by this async task.

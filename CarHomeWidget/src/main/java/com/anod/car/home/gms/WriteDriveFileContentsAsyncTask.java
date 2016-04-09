@@ -22,12 +22,10 @@ import java.io.OutputStream;
  * @date 2/28/14
  */
 public class WriteDriveFileContentsAsyncTask
-        extends ApiClientAsyncTask<WriteDriveFileContentsAsyncTask.FilesParam> {
+        extends ApiClientAsyncTask {
 
-    public static class FilesParam {
-
+    public static class FilesParam extends Params {
         private final File mSourceFile;
-
         private final DriveId mDriveId;
 
         public FilesParam(File sourceFile, DriveId driveId) {
@@ -49,8 +47,8 @@ public class WriteDriveFileContentsAsyncTask
     }
 
     @Override
-    protected Boolean doInBackgroundConnected(FilesParam... args) {
-        FilesParam files = args[0];
+    protected Boolean doInBackgroundConnected(Params params) {
+        FilesParam files = (FilesParam) params;
         try {
             DriveFile target = files.getDriveId().asDriveFile();
 
@@ -85,10 +83,6 @@ public class WriteDriveFileContentsAsyncTask
 
     @Override
     protected void onPostExecute(Boolean result) {
-        if (!result) {
-            //showMessage("Error while editing contents");
-            return;
-        }
-        //showMessage("Successfully edited contents");
+
     }
 }
