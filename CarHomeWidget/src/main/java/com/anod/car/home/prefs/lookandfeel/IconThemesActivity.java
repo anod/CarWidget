@@ -35,7 +35,7 @@ public class IconThemesActivity extends AppsCacheActivity {
 
     private boolean mRefresh;
 
-    private static final String ADW_ICON_THEME_MARKET_URL = "market://search?q=ADW Theme";
+    private static final String ADW_ICON_THEME_MARKET_URL = "market://search?q=Icons Pack";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +90,7 @@ public class IconThemesActivity extends AppsCacheActivity {
 
     @Override
     protected int getRowLayoutId() {
-        return R.layout.simple_list_item_checkbox;
+        return R.layout.all_apps_row;
     }
 
     @Override
@@ -98,6 +98,7 @@ public class IconThemesActivity extends AppsCacheActivity {
         mThemePackageName = (entry.componentName == null) ? null
                 : entry.componentName.getPackageName();
         getGridView().setItemChecked(position, true);
+        saveAndClose();
     }
 
     @Override
@@ -125,8 +126,7 @@ public class IconThemesActivity extends AppsCacheActivity {
         Utils.saveAppWidgetId(outState, mAppWidgetId);
     }
 
-    @OnClick(R.id.btn_ok)
-    public void onSave() {
+    private void saveAndClose() {
         String prevTheme = mPrefs.getIconsTheme();
         boolean update = false;
         if (mThemePackageName == null && prevTheme != null) {
