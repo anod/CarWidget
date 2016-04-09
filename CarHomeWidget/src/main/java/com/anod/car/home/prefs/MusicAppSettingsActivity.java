@@ -3,7 +3,7 @@ package com.anod.car.home.prefs;
 import com.anod.car.home.R;
 import com.anod.car.home.app.MusicAppsActivity;
 import com.anod.car.home.model.AppsList;
-import com.anod.car.home.prefs.model.AppStorage;
+import com.anod.car.home.prefs.model.AppSettings;
 
 import java.util.ArrayList;
 
@@ -35,11 +35,13 @@ public class MusicAppSettingsActivity extends MusicAppsActivity {
 
     @Override
     protected void onEntryClick(int position, AppsList.Entry entry) {
+        AppSettings appSettings = AppSettings.create(this);
         if (position == 0) {
-            AppStorage.saveMusicApp(this, null, true);
+            appSettings.setMusicApp(null);
         } else {
-            AppStorage.saveMusicApp(this, entry.componentName, false);
+            appSettings.setMusicApp(entry.componentName);
         }
+        appSettings.apply();
         finish();
     }
 }

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.anod.car.home.acra.BrowserUrlSender;
 import com.anod.car.home.acra.CrashDialog;
+import com.anod.car.home.prefs.model.AppSettings;
 import com.anod.car.home.prefs.model.AppTheme;
 
 import org.acra.ACRA;
@@ -40,9 +41,8 @@ public class CarWidgetApplication extends Application {
         super.onCreate();
         //LeakCanary.install(this);
 
-        mThemeIdx = AppTheme.getTheme(this);
+        mThemeIdx = AppSettings.create(this).getTheme();
         mObjectGraph = new ObjectGraph(this);
-
     }
 
     public ObjectGraph getObjectGraph() {

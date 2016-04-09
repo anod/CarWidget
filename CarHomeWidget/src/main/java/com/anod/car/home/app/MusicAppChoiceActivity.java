@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.R;
 import com.anod.car.home.model.AppsList;
-import com.anod.car.home.prefs.model.AppStorage;
+import com.anod.car.home.prefs.model.AppSettings;
 import com.anod.car.home.utils.MusicUtils;
 
 import java.util.List;
@@ -54,7 +54,9 @@ public class MusicAppChoiceActivity extends MusicAppsActivity {
         );
 
         if (mDefaultApp.isChecked()) {
-            AppStorage.saveMusicApp(this, musicCmp, true);
+            AppSettings appSettings = AppSettings.create(this);
+            appSettings.setMusicApp(musicCmp);
+            appSettings.apply();
         }
 
         finish();

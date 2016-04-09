@@ -25,7 +25,7 @@ import com.anod.car.home.prefs.ConfigurationInCar;
 import com.anod.car.home.prefs.ConfigurationRestore;
 import com.anod.car.home.prefs.LookAndFeelActivity;
 import com.anod.car.home.prefs.MusicAppSettingsActivity;
-import com.anod.car.home.prefs.model.AppStorage;
+import com.anod.car.home.prefs.model.AppSettings;
 import com.anod.car.home.prefs.model.AppTheme;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.InCarStatus;
@@ -266,7 +266,9 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
                 .setTitle(mContext.getString(R.string.choose_a_theme))
                 .setItems(R.array.app_themes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        AppTheme.saveAppTheme(mContext, which);
+                        AppSettings appSettings = AppSettings.create(mContext);
+                        appSettings.setAppTheme(which);
+                        appSettings.apply();
                         App.get(mContext).setThemeIdx(which);
                         mContext.setTheme(AppTheme.getMainResource(which));
                         mActivity.recreate();
@@ -311,7 +313,7 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
     }
 
     private String renderMusicApp() {
-        ComponentName musicAppCmp = AppStorage.getMusicApp(mContext);
+        ComponentName musicAppCmp = AppSettings.create(mContext).getMusicApp();
         if (musicAppCmp == null) {
             return mContext.getString(R.string.show_choice);
         } else {

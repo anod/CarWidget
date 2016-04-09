@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.anod.car.home.app.MusicAppChoiceActivity;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
-import com.anod.car.home.prefs.model.AppStorage;
+import com.anod.car.home.prefs.model.AppSettings;
 import com.anod.car.home.utils.MusicUtils;
 
 public class ShortcutActivity extends Activity {
@@ -55,7 +55,7 @@ public class ShortcutActivity extends Activity {
             if (audio.isMusicActive()) {
                 MusicUtils.sendKeyEvent(keyCode, this);
             } else {
-                ComponentName musicCmp = AppStorage.getMusicApp(this);
+                ComponentName musicCmp = AppSettings.create(this).getMusicApp();
                 if (musicCmp == null) {
                     startActivity(new Intent(this, MusicAppChoiceActivity.class));
                 } else {

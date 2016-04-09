@@ -1,7 +1,12 @@
 package com.anod.car.home.prefs.model;
 
+import android.content.ComponentName;
 import android.content.SharedPreferences;
+import android.content.pm.ComponentInfo;
 import android.support.v4.util.SimpleArrayMap;
+
+import com.anod.car.home.utils.AppLog;
+import com.anod.car.home.utils.Utils;
 
 /**
  * @author algavris
@@ -48,6 +53,10 @@ public class ChangeableSharedPreferences {
                 edit.putString(key, (String) value);
             } else if (value instanceof Integer) {
                 edit.putInt(key, (Integer) value);
+            } else if (value instanceof ComponentName) {
+                edit.putString(key, Utils.componentToString((ComponentName) value));
+            } else {
+                AppLog.e("Unknown value "+value.toString()+" for key "+key);
             }
         }
         edit.apply();

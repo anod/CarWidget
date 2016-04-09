@@ -261,12 +261,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
 
     @Override
     public void setAutorunApp(ComponentName autorunApp) {
-        if (autorunApp == null) {
-            putChange(AUTORUN_APP, null);
-        } else {
-            String autorunAppString = Utils.componentToString(autorunApp);
-            putChange(AUTORUN_APP, autorunAppString);
-        }
+        putChange(AUTORUN_APP, autorunApp);
     }
 
     @Override

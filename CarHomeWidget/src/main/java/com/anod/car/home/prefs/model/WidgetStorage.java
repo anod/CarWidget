@@ -1,17 +1,17 @@
 package com.anod.car.home.prefs.model;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutModel;
+import com.anod.car.home.utils.AppLog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
-@SuppressLint("CommitPrefEdits")
 public class WidgetStorage {
 
     public static final int LAUNCH_COMPONENT_NUMBER_MAX = 10;
@@ -21,6 +21,7 @@ public class WidgetStorage {
     private static final String LAUNCH_COMPONENT = "launch-component-%d";
 
     public static final String PREF_NAME = "widget-%d";
+    public static final String SHARED_PREFS_PATH = "/shared_prefs/%s.xml";
 
     public static SharedPreferences getSharedPreferences(Context context, int appWidgetId) {
         String prefName = String.format(Locale.US, PREF_NAME, appWidgetId);
@@ -32,12 +33,12 @@ public class WidgetStorage {
         return new WidgetSettings(prefs, context.getResources());
     }
 
-    public static String getLaunchComponentKey(int id) {
-        return String.format(Locale.US, LAUNCH_COMPONENT, id);
+    public static String getLaunchComponentKey(int position) {
+        return String.format(Locale.US, LAUNCH_COMPONENT, position);
     }
 
     public static ArrayList<Long> getLauncherComponents(Context context, int appWidgetId,
-            int count) {
+                                                        int count) {
         SharedPreferences prefs = getSharedPreferences(context, appWidgetId);
         ArrayList<Long> ids = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
@@ -59,7 +60,7 @@ public class WidgetStorage {
         final SharedPreferences prefs = getSharedPreferences(context, appWidgetId);
         Editor edit = prefs.edit();
         edit.putInt(CMP_NUMBER, count);
-        edit.commit();
+        edit.apply();
     }
 
     public static void saveShortcut(Context context, long shortcutId, int cellId, int appWidgetId) {
@@ -76,7 +77,7 @@ public class WidgetStorage {
         }
         Editor editor = preferences.edit();
         editor.putLong(key, shortcutId);
-        editor.commit();
+        editor.apply();
     }
 
     public static void dropWidgetSettings(Context context, int[] appWidgetIds) {
@@ -91,15 +92,21 @@ public class WidgetStorage {
                     model.deleteItemFromDatabase(curShortcutId);
                 }
             }
-            // TODO: Remove file
+
+            String prefName = String.format(Locale.US, PREF_NAME, appWidgetId);
+            String filePath = context.getFilesDir().getParent() +
+                    String.format(Locale.US, WidgetStorage.SHARED_PREFS_PATH, prefName);
+            AppLog.d("Drop widget file: " + filePath);
+            File file = new File(filePath);
+            file.delete();
         }
     }
 
     public static void dropShortcutPreference(int cellId, int appWidgetId, Context context) {
-        String key = getLaunchComponentKey(cellId);
         final SharedPreferences prefs = getSharedPreferences(context, appWidgetId);
         Editor edit = prefs.edit();
+        String key = getLaunchComponentKey(cellId);
         edit.remove(key);
-        edit.commit();
+        edit.apply();
     }
 }
