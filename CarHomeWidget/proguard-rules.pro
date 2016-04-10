@@ -78,3 +78,6 @@
 
 #Acra
 -keep class * extends org.acra.sender.ReportSenderFactory
+
+#Picasso
+-dontwarn com.squareup.okhttp.**
