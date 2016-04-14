@@ -88,6 +88,8 @@ public class PrefsMigrate {
             migrateMain(widget, prefs);
 
             int count = WidgetMigrateStorage.getLaunchComponentNumber(context, appWidgetId);
+            widget.putChange(WidgetStorage.CMP_NUMBER, count);
+
             ArrayList<Long> ids = WidgetMigrateStorage.getLauncherComponents(context, appWidgetId, count);
             for (int position = 0; position < ids.size(); position++) {
                 String key = WidgetStorage.getLaunchComponentKey(position);
