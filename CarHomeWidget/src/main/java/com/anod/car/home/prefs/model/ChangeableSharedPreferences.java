@@ -53,6 +53,8 @@ public class ChangeableSharedPreferences {
                 edit.putString(key, (String) value);
             } else if (value instanceof Integer) {
                 edit.putInt(key, (Integer) value);
+            } else if (value instanceof Long) {
+                 edit.putLong(key, (Long) value);
             } else if (value instanceof ComponentName) {
                 edit.putString(key, Utils.componentToString((ComponentName) value));
             } else {

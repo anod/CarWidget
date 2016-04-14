@@ -94,7 +94,6 @@ public class PrefsMigrate {
                 widget.putChange(key, ids.get(position));
             }
 
-            widget.putChange("migrated", true);
             widget.apply();
         }
     }

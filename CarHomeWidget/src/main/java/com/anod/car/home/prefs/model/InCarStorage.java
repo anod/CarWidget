@@ -26,7 +26,6 @@ public class InCarStorage {
 
     public static InCarSettings load(Context context) {
         SharedPreferences prefs = getSharedPreferences(context);
-        PrefsMigrate.migrate(context,prefs);
         return new InCarSettings(prefs);
     }
 
