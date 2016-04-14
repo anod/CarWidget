@@ -5,6 +5,7 @@ import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.drawer.NavigationDrawer;
 import com.anod.car.home.drawer.NavigationList;
+import com.anod.car.home.prefs.model.PrefsMigrate;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.TrialDialogs;
 import com.anod.car.home.utils.Utils;
@@ -12,6 +13,7 @@ import com.anod.car.home.utils.Version;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
@@ -41,6 +43,8 @@ public class WidgetsListActivity extends CarWidgetActivity {
         mContext = this;
 
         int[] appWidgetIds = WidgetHelper.getAllWidgetIds(this);
+
+        PrefsMigrate.migrate(this, appWidgetIds);
 
         mDrawer = new NavigationDrawer(this, 0);
         mDrawer.setSelected(NavigationList.ID_WIDGETS);

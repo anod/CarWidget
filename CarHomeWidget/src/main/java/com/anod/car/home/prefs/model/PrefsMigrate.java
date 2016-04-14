@@ -20,6 +20,14 @@ public class PrefsMigrate {
 
     private static final Object sLock = new Object();
 
+    public static void migrate(Context context, int[] appWidgetIds) {
+        migrate(context, InCarStorage.getSharedPreferences(context));
+        for(int appWidgetId: appWidgetIds)
+        {
+            migrate(context, appWidgetId);
+        }
+    }
+
     public static void migrate(Context context,SharedPreferences destPrefs) {
         synchronized (sLock) {
             if (destPrefs.getBoolean("migrated", false)) {

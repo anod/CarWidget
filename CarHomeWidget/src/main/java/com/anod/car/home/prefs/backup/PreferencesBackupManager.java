@@ -185,7 +185,7 @@ public class PreferencesBackupManager {
 
     public File getBackupWidgetFile(String filename) {
         File saveDir = getMainBackupDir();
-        File dataFile = new File(saveDir, filename + FILE_EXT_JSON);
+        File dataFile = new File(saveDir, filename);
         return dataFile;
     }
 

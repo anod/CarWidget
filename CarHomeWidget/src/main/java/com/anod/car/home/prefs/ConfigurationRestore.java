@@ -479,9 +479,9 @@ public class ConfigurationRestore extends Fragment implements
             File entry = getItem(position);
 
             String name = entry.getName();
-            name = name.substring(0, name.lastIndexOf(PreferencesBackupManager.FILE_EXT_JSON));
-            holder.title.setTag(name);
-            holder.title.setText(name);
+            String title = name.substring(0, name.lastIndexOf("."));
+            holder.title.setTag(entry.getName());
+            holder.title.setText(title);
             holder.title.setOnClickListener(mRestoreListener);
 
             String timestamp = DateUtils.formatDateTime(mContext, entry.lastModified(), DATE_FORMAT);
