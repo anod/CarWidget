@@ -36,12 +36,9 @@
 	<string name="pref_detection">Avtryckare</string>
 	<string name="pref_blutooth_device_title">Bluetooth-enhet</string>
 	<string name="pref_blutooth_device_summary">Välj Bluetooth-enhet som möjliggör InCar läge</string>
-	<string name="load_paired_device">Laddar ihopkopplade enheter</string>
 	<string name="bluetooth">Bluetooth</string>
 	<string name="turn_on_bluetooth_summary">Slå på Bluetooth</string>
-	<string name="turn_off_bluetooth_summary">Stäng av Bluetooth</string>
 	<string name="bluetooth_device_category_title">Aktivera InCar läge vid anslutning till:</string>
-	<string name="no_paired_devices_found_title">Inga ihopkopplade enheter hittades.</string>
 	<string name="no_paired_devices_found_summary">Innan en enhet kan väljas måste den kopplas ihop och Bluetooth måste aktiveras</string>
 	<string name="pref_headset_connected_title">Headset anslutet</string>
 	<string name="pref_headset_connected_summary">Aktivera InCar läge när ljudutgång ansluten</string>
@@ -97,7 +94,6 @@
 	<string name="backup_not_exist">Säkerhetskopieringsfilen existerar inte.</string>
 	<string name="unable_delete_file">Kan inte radera fil.</string>
 	<string name="no_backup_files_found">Inga säkerhetskopior hittades.</string>
-	<string name="choose_backup">Välj en säkerhetskopia för återställning</string>
 	<string name="pref_auto_answer">Autosvar</string>
 	<string name="pref_auto_answer_summary">Autosvar på inkommande samtal omedelbart eller med 5 sekunders fördröjning. (Experimentell)</string>
 	<string name="pref_autorun_app_title">App Autorun</string>
@@ -118,16 +114,11 @@
 	<string name="pref_rotate_icon_title">Rotera ikoner</string>
 	<string name="pref_titles_hide_title">Göm titlar</string>
 	<string name="pref_titles_hide_summary">Visa inte titlar för genvägar</string>
-	<string name="home_screen_widgets">Widgetar för startskärmen</string>
-	<string name="no_active_widgets_were_found">Inga aktiva widgets hittades</string>
 	<string name="not_active">Ej aktiv</string>
-	<string name="disabled_trial_expired">Har inaktiverats - testperioden har gått ut</string>
-	<string name="no_items">Inga varor</string>
 	<string name="welcome">Välkommen</string>
 	<string name="welcome_text">&lt;b&gt; Bil Widget &lt;/ b&gt; gör tillgången lättare och snabbare till telefonens funktioner när du är i bilen.</string>
 	<string name="install_a_widget">Installera en widget</string>
 	<string name="install_widget">Gå till &lt;b&gt; startskärmen &lt;/ b&gt; och öppna din &lt;b&gt; app låda &lt;/ b&gt;. Välj &lt;b&gt; widget fliken &lt;/ b&gt; och välj sedan &lt;b&gt; Bil Widget &lt;/ b&gt; och lägg det på tillgängliga skärmen.</string>
-	<string name="install_widget_old">Observera att på Android 2.3 listan med widgetar öppnas med &lt;b&gt; långt tryck &lt;/ b&gt; på startskärmen</string>
 	<string name="configure_text">Inne i dialogrutan med inställningar för widgeten kan du definiera &lt;b&gt; genvägar &lt;/ b&gt;, konfigurera dess utseende genom att ändra &lt;b&gt; skin &lt;/ b&gt; eller tillämpa &lt;b&gt; effekter &lt;/ b&gt;</string>
 	<string name="open_settings_description">Tryck &lt;b&gt; Inställningar &lt;/ b&gt;-knappen för att öppna konfigurationsskärmen</string>
 	<string name="incar_mode">InCar läge</string>
@@ -136,19 +127,13 @@
 	<string name="enable_incar_description">&lt;b&gt; Aktivera &lt;/ b&gt; InCar läget i inställningsdialogrutan.</string>
 	<string name="trial_description">Gratis testversion för %d aktiveringar.</string>
 	<string name="swipe_continue">Svep för att fortsätta →</string>
-	<plurals name="active_widgets">
-    <item quantity="one">En aktiv widget</item>
-    <item quantity="other">%d andra aktiva widgets</item>
-  </plurals>
 	<string name="gms_success">Använd Google Play tjänster för att upptäcka aktivitet</string>
 	<string name="gms_service_missing">Google Play tjänster saknas på den här enheten.</string>
 	<string name="gms_service_update_required">Den installerade versionen av Google Play tjänster är inaktuell.</string>
 	<string name="gms_service_disabled">Den installerade versionen av Google Play tjänster har inaktiverats på den här enheten.</string>
 	<string name="gms_service_invalid">Den installerade versionen av Google Play tjänster på den här enheten är inte autentisk.</string>
 	<string name="activity_recognition">Aktivitet erkännande</string>
-	<string name="please_wait">Var god vänta...</string>
 	<string name="shortcuts">Genvägar anmälan</string>
-	<string name="advanced">Avancerad</string>
 	<string name="pref_actions">Handlingar</string>
 	<string name="bluetooth_device_laptop">Dator</string>
 	<string name="bluetooth_device_cellphone">Telefon</string>
@@ -170,9 +155,6 @@
 	<string name="more">Mer(...)</string>
 	<string name="none">Ingen</string>
 	<string name="download">Ladda ner</string>
-	<string name="system">System</string>
-	<string name="backup_path">Sökväg</string>
-	<string name="menu">Meny</string>
 	<string name="enabled">Aktiverad</string>
 	<string name="disabled">Har inaktiverats</string>
 	<string name="configure">Konfigurera</string>
@@ -226,7 +208,6 @@
 
 	<string name="export_backup">Exportera säkerhetskopia</string>
 	<string name="import_backup">Importera säkerhetskopia</string>
-	<string name="export_backup_finish">Export klar</string>
 	<string name="delete">Radera</string>
 	<string name="number">Antal genvägar</string>
 	<string name="number_shortcuts_title">Antal genvägar</string>
@@ -239,20 +220,15 @@
     <string name="choose_music_app_explanation">Välj musik app som kommer att användas för uppspelning/paus genväg</string>
     <string name="drawer_open">Öppna</string>
     <string name="drawer_close">Stäng</string>
-    <string name="theme_dark">Mörkt</string>
-    <string name="app_theme">App Tema</string>
-    <string name="list">Lista</string>
-    <string name="widgets_hint">Välj ett objekt att konfigurera widgeten</string>
-    <string name="lock_screen">Lås skärmen</string>
-    <string name="home_screen">Startskärmen</string>
-    <string name="list_of_active_widgets">Lista över aktiva widgets</string>
+	<string name="app_theme">App Tema</string>
+	<string name="widgets_hint">Välj ett objekt att konfigurera widgeten</string>
+	<string name="list_of_active_widgets">Lista över aktiva widgets</string>
     <string name="shortcuts_and_look">Genvägar och utseende</string>
     <string name="shortcuts_and_look_summary">Anpassa genvägar, hud och teckenstorlek</string>
     <string name="current_widget">Nuvarande widget</string>
     <string name="no_active_widget">Inga aktiva widgets hittades. Se till att lägga till en widget på startskärmen.</string>
-    <string name="hex_code">Hex-kod</string>
 
-    <string-array name="disable_screen_timeout">
+	<string-array name="disable_screen_timeout">
     <item>Inaktivera (under laddning)</item>
     <item>Inaktivera</item>
     <item>Aktivera</item>

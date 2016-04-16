@@ -36,12 +36,9 @@
 	<string name="pref_detection">Attivazione</string>
 	<string name="pref_blutooth_device_title">Dispositivo Bluetooth</string>
 	<string name="pref_blutooth_device_summary">Scegli un dispositivo bluetooth che abiliti la modalità \"alla guida\"</string>
-	<string name="load_paired_device">Caricamento dei dispositivi associati</string>
 	<string name="bluetooth">Bluetooth</string>
 	<string name="turn_on_bluetooth_summary">Attiva Bluetooth</string>
-	<string name="turn_off_bluetooth_summary">Disattiva Bluetooth</string>
 	<string name="bluetooth_device_category_title">Attiva modalità \"alla guida\" durante la connessione a:</string>
-	<string name="no_paired_devices_found_title">Non sono stati trovati dispositivi associati.</string>
 	<string name="no_paired_devices_found_summary">Prima che un dispositivo possa essere selezionato deve essere associato e il Bluetooth deve essere attivato</string>
 	<string name="pref_headset_connected_title">Auricolare collegato</string>
 	<string name="pref_headset_connected_summary">Attiva modalità \"alla guida\" quando il jack audio è collegato</string>
@@ -97,7 +94,6 @@
 	<string name="backup_not_exist">Il file della copia non esiste.</string>
 	<string name="unable_delete_file">Impossibile eliminare il file.</string>
 	<string name="no_backup_files_found">Non sono stati trovati i file di copia.</string>
-	<string name="choose_backup">Scegli una copia per il ripristino</string>
 	<string name="pref_auto_answer">Risposta automatica</string>
 	<string name="pref_auto_answer_summary">Risposta automatica alle chiamate in arrivo immediatamente o con 5 secondi di ritardo. (Sperimentale)</string>
 	<string name="pref_autorun_app_title">Esecuzione automatica applicazione</string>
@@ -118,16 +114,11 @@
 	<string name="pref_rotate_icon_title">Ruota le icone</string>
 	<string name="pref_titles_hide_title">Nascondi i titoli</string>
 	<string name="pref_titles_hide_summary">Non visualizzare i titoli per le scorciatoie</string>
-	<string name="home_screen_widgets">Schermata Home Widget</string>
-	<string name="no_active_widgets_were_found">Non sono stati trovati widget attivi</string>
 	<string name="not_active">Non attivo</string>
-	<string name="disabled_trial_expired">Disabilitato - Periodo di prova terminato</string>
-	<string name="no_items">Nessun oggetto</string>
 	<string name="welcome">Benvenuti</string>
 	<string name="welcome_text">&lt;b&gt;Car Widget&lt;/b&gt; rende più facile e veloce l\'accesso alle funzioni del telefono quando si è in macchina.</string>
 	<string name="install_a_widget">Installa un widget</string>
 	<string name="install_widget">Vai alla &lt;b&gt;schermata iniziale&lt;/b&gt; e apri la &lt;b&gt;lista delle applicazioni&lt;/b&gt;. Scegliere la &lt;b&gt;scheda widget&lt;/b&gt;, quindi scegliere &lt;b&gt;Car Widget&lt;/b&gt; e inserirlo in una schermata disponibile.</string>
-	<string name="install_widget_old">Nota che su Android 2.3 l\'elenco dei widget si apre con la &lt;b&gt;pressione prolungata&lt; b&gt; sulla schermata iniziale</string>
 	<string name="configure_text">All\'interno della finestra di dialogo delle impostazioni del widget puoi definire le &lt;b&gt;scorciatoie&lt;/b&gt;, configurare il suo aspetto cambiando lo &lt;b&gt;skin&lt;/b&gt; o applicando gli &lt;b&gt;effetti&lt;/b&gt;</string>
 	<string name="open_settings_description">Premi il pulsante &lt;b&gt;Impostazioni&lt;/b&gt; per aprire la schermata di configurazione</string>
 	<string name="incar_mode">Modalità \"alla guida\"</string>
@@ -136,19 +127,13 @@
 	<string name="enable_incar_description">&lt;b&gt;Abilita&lt;/​​b&gt; la modalità \"alla guida\" nella finestra di dialogo delle impostazioni.</string>
 	<string name="trial_description">Versione di prova gratuita per %d attivazioni.</string>
 	<string name="swipe_continue">Scorri per continuare →</string>
-	<plurals name="active_widgets">
-    <item quantity="one">Un widget attivo</item>
-    <item quantity="other">%d widget attivi</item>
-  </plurals>
 	<string name="gms_success">Utilizza i servizi di Google Play per rilevare l\'attività</string>
 	<string name="gms_service_missing">I servizi di Google Play sono assenti su questo dispositivo.</string>
 	<string name="gms_service_update_required">La versione installata dei servizi di Google Play non è aggiornata.</string>
 	<string name="gms_service_disabled">La versione installata dei servizi di Google Play è stata disabilitata su questo dispositivo.</string>
 	<string name="gms_service_invalid">La versione dei servizi di Google Play installata su questo dispositivo non è autentica.</string>
 	<string name="activity_recognition">Riconoscimento di attività</string>
-	<string name="please_wait">Attendere!</string>
 	<string name="shortcuts">Collegamenti alle notifiche</string>
-	<string name="advanced">Avanzate</string>
 	<string name="pref_actions">Azioni</string>
 	<string name="bluetooth_device_laptop">Computer</string>
 	<string name="bluetooth_device_cellphone">Telefono</string>
@@ -170,9 +155,6 @@
 	<string name="more">Di più...</string>
 	<string name="none">Nessuno</string>
 	<string name="download">Scarica...</string>
-	<string name="system">Sistema</string>
-	<string name="backup_path">Percorso</string>
-	<string name="menu">Menù</string>
 	<string name="enabled">Attivato</string>
 	<string name="disabled">Disattivato</string>
 	<string name="configure">Configura</string>
@@ -226,7 +208,6 @@
 
 	<string name="export_backup">Esporta file di backup</string>
 	<string name="import_backup">Importa file di backup</string>
-	<string name="export_backup_finish">Esportazione terminata</string>
 	<string name="delete">Elimina</string>
 	<string name="number">Numero di collegamenti</string>
 	<string name="number_shortcuts_title">Numero di collegamenti</string>
@@ -239,20 +220,15 @@
     <string name="choose_music_app_explanation">Scegli l\'app musica utilizzata per il collegamento Riproduci/Pausa</string>
     <string name="drawer_open">Apri</string>
     <string name="drawer_close">Chiudi</string>
-    <string name="theme_dark">Scuro</string>
-    <string name="app_theme">Tema App</string>
-    <string name="list">Elenco</string>
-    <string name="widgets_hint">Seleziona un elemento per configurare il widget</string>
-    <string name="lock_screen">Schermata di blocco</string>
-    <string name="home_screen">Schermata home</string>
-    <string name="list_of_active_widgets">Elenco dei widget attivi</string>
+	<string name="app_theme">Tema App</string>
+	<string name="widgets_hint">Seleziona un elemento per configurare il widget</string>
+	<string name="list_of_active_widgets">Elenco dei widget attivi</string>
     <string name="shortcuts_and_look">Collegamenti e aspetto</string>
     <string name="shortcuts_and_look_summary">Personalizza collegamenti, skin e dimensioni del carattere</string>
     <string name="current_widget">Widget attuale</string>
     <string name="no_active_widget">Non sono stati trovati widget attivi. Assicurati di aggiungere un widget nella schermata iniziale.</string>
-    <string name="hex_code">Codice esadecimale</string>
 
-    <string-array name="disable_screen_timeout">
+	<string-array name="disable_screen_timeout">
     <item>Disattiva (durante la carica)</item>
     <item>Disattiva</item>
     <item>Attiva</item>

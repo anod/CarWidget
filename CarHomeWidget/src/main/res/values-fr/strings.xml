@@ -36,12 +36,9 @@
 	<string name="pref_detection">Gâchette</string>
 	<string name="pref_blutooth_device_title">Périphérique Bluetooth</string>
 	<string name="pref_blutooth_device_summary">Choisir un périphérique Bluetooth qui permette le mode voiture</string>
-	<string name="load_paired_device">Chargement des appareils couplés</string>
 	<string name="bluetooth">Bluetooth</string>
 	<string name="turn_on_bluetooth_summary">Activer le Bluetooth</string>
-	<string name="turn_off_bluetooth_summary">Désactiver le Bluetooth</string>
 	<string name="bluetooth_device_category_title">Activer le mode Voiture lors de la connexion à :</string>
-	<string name="no_paired_devices_found_title">Aucun appareil couplé n\'a été trouvé.</string>
 	<string name="no_paired_devices_found_summary">Avant de pouvoir sélectionner un périphérique, il doit être couplé et le Bluetooth doit être activé</string>
 	<string name="pref_headset_connected_title">Oreillette sans fil connectée</string>
 	<string name="pref_headset_connected_summary">Activer le mode Voiture lorsqu\'une prise audio est connectée</string>
@@ -97,7 +94,6 @@
 	<string name="backup_not_exist">Aucun fichier de sauvegarde n\'est disponible.</string>
 	<string name="unable_delete_file">Impossible de supprimer le fichier.</string>
 	<string name="no_backup_files_found">Aucun fichier de sauvegarde n\'a été trouvé.</string>
-	<string name="choose_backup">Choisir une sauvegarde pour la restauration</string>
 	<string name="pref_auto_answer">Réponse automatique</string>
 	<string name="pref_auto_answer_summary">Réponse automatique aux appels entrants immédiatement ou avec un délai de 5 secondes. (Expérimental)</string>
 	<string name="pref_autorun_app_title">App. Démarrage automatique</string>
@@ -118,16 +114,11 @@
 	<string name="pref_rotate_icon_title">Rotation des icônes</string>
 	<string name="pref_titles_hide_title">Masquer les titres</string>
 	<string name="pref_titles_hide_summary">Ne pas afficher de titres pour les raccourcis</string>
-	<string name="home_screen_widgets">Widgets sur l\'écran d\'accueil</string>
-	<string name="no_active_widgets_were_found">Aucun widget actif n\'a été détecté</string>
 	<string name="not_active">Inactif</string>
-	<string name="disabled_trial_expired">Désactivé - Période d\'essai expirée</string>
-	<string name="no_items">Aucun élément</string>
 	<string name="welcome">Bienvenue</string>
 	<string name="welcome_text">&lt;b&gt; Le widget Voiture &lt;/ b&gt; facilite et accélère l\'accès aux fonctions du téléphone lorsque vous êtes en voiture.</string>
 	<string name="install_a_widget">Installer un widget</string>
 	<string name="install_widget">Allez à &lt;b&gt;l\'écran d\'accueil&lt;/ b&gt; et ouvrez votre &lt;b&gt;tiroir d\'application&lt;/ b&gt;. Sélectionnez &lt;b&gt;l\'onglet du widget&lt;/ b&gt;, puis choisissez &lt;b&gt;widget Voiture&lt;/ b&gt; et affichez-le sur l\'écran disponible.</string>
-	<string name="install_widget_old">Veuillez noter que sur l\'Android 2.3 la liste des widgets s\'ouvre avec &lt;b&gt;une pression prolongée&lt;/ b&gt; sur votre écran d\'accueil</string>
 	<string name="configure_text">Dans la boîte de dialogue Paramètres du widget, vous pouvez définir des &lt;b&gt;raccourcis&lt;/ b&gt;, configurer leur apparence en changeant &lt;b&gt;l\'habillage&lt;/ b&gt; ou appliquer des &lt;b&gt;effets&lt;/ b&gt;</string>
 	<string name="open_settings_description">Appuyez sur la touche &lt;b&gt;Paramètres&lt;/ b&gt; pour ouvrir l\'écran de configuration</string>
 	<string name="incar_mode">Mode  Voiture</string>
@@ -136,19 +127,13 @@
 	<string name="enable_incar_description">&lt;b&gt; Activer &lt;/ b&gt; le mode Voiture dans la boîte de dialogue des paramètres.</string>
 	<string name="trial_description">Version d\'essai gratuite pour %d activations.</string>
 	<string name="swipe_continue">Faîtes glisser pour continuer →</string>
-	<plurals name="active_widgets">
-    <item quantity="one">Un widget actif</item>
-    <item quantity="other">%d widgets actifs</item>
-  </plurals>
 	<string name="gms_success">Utiliser les services Google Play pour détecter l\'activité</string>
 	<string name="gms_service_missing">Les services Google Play ne sont pas disponibles sur cet appareil.</string>
 	<string name="gms_service_update_required">La version installée des services Google Play n\'est pas à jour.</string>
 	<string name="gms_service_disabled">La version installée des services Google Play a été désactivée sur cet appareil.</string>
 	<string name="gms_service_invalid">La version des services de Google Play installée sur cet appareil n\'est pas authentique.</string>
 	<string name="activity_recognition">Reconnaissance de l\'activité</string>
-	<string name="please_wait">Veuillez patienter...</string>
 	<string name="shortcuts">Raccourcis de notification</string>
-	<string name="advanced">Avancé</string>
 	<string name="pref_actions">Actions</string>
 	<string name="bluetooth_device_laptop">Ordinateur</string>
 	<string name="bluetooth_device_cellphone">Téléphone</string>
@@ -170,9 +155,6 @@
 	<string name="more">Plus...</string>
 	<string name="none">Aucun</string>
 	<string name="download">Téléchargement...</string>
-	<string name="system">Système</string>
-	<string name="backup_path">Chemin d\'accès</string>
-	<string name="menu">Menu</string>
 	<string name="enabled">Activé</string>
 	<string name="disabled">Désactivé</string>
 	<string name="configure">Enregister</string>
@@ -226,7 +208,6 @@
 
 	<string name="export_backup">Exporter fichier de sauvegarde</string>
 	<string name="import_backup">Importer fichier de sauvegarde</string>
-	<string name="export_backup_finish">Export terminé</string>
 	<string name="delete">Supprimer</string>
 	<string name="number">Nombre de raccourcis</string>
 	<string name="number_shortcuts_title">Nombre de raccourcis</string>
@@ -239,20 +220,15 @@
     <string name="choose_music_app_explanation">Choisissez l\'application musicale qui sera utilisée pour le raccourci de lecture / pause</string>
     <string name="drawer_open">Ouvrir</string>
     <string name="drawer_close">Fermer</string>
-    <string name="theme_dark">Sombre</string>
-    <string name="app_theme">Thème de l\'application</string>
-    <string name="list">Liste</string>
-    <string name="widgets_hint">Sélectionnez un élément pour configurer le widget</string>
-    <string name="lock_screen">Verrouiller l\'écran</string>
-    <string name="home_screen">Écran d\'accueil</string>
-    <string name="list_of_active_widgets">Liste des widgets actifs</string>
+	<string name="app_theme">Thème de l\'application</string>
+	<string name="widgets_hint">Sélectionnez un élément pour configurer le widget</string>
+	<string name="list_of_active_widgets">Liste des widgets actifs</string>
     <string name="shortcuts_and_look">Raccourcis et recherche</string>
     <string name="shortcuts_and_look_summary">Personnaliser les raccourcis, le type et la taille de la police</string>
     <string name="current_widget">Widget actuel</string>
     <string name="no_active_widget">Aucun widget actif n\'a été trouvé. Assurez-vous d\'en ajouter un sur votre écran d\'accueil.</string>
-    <string name="hex_code">Code hexadécimal</string>
 
-    <string-array name="disable_screen_timeout">
+	<string-array name="disable_screen_timeout">
     <item>Désactiver (pendant la charge)</item>
     <item>Désactiver</item>
     <item>Activer</item>

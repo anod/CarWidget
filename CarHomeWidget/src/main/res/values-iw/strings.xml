@@ -37,12 +37,9 @@
 	<string name="pref_detection">זיהוי</string>
 	<string name="pref_blutooth_device_title">מכשיר Bluetooth</string>
 	<string name="pref_blutooth_device_summary"> בחרו מכשיר Bluetooth המאפשר מצב ברכב</string>
-	<string name="load_paired_device">טוען מכשירים מחוברים</string>
 	<string name="bluetooth">Bluetooth</string>
 	<string name="turn_on_bluetooth_summary">הפעל את Bluetooth</string>
-	<string name="turn_off_bluetooth_summary">כבה את Bluetooth</string>
 	<string name="bluetooth_device_category_title">אפשר מצב \"ברכב\" על קישור עם:</string>
-	<string name="no_paired_devices_found_title">לא נמצאו מכשרים מכוברים.</string>
 	<string name="no_paired_devices_found_summary">לפני שיהיה ניתן לבחור המכשיר, הוא צריך להיות מחובר ו-Bluetooth צריך להיות מופעל</string>
 	<string name="pref_headset_connected_title">האוזניה מחוברת</string>
 	<string name="pref_headset_connected_summary">להפעיל מצב ברכב כאשר כבל אודיו מחובר</string>
@@ -96,7 +93,6 @@
 	<string name="backup_not_exist">קובץ גיבוי לא נמצא.</string>
 	<string name="unable_delete_file">לא ניתן למחוק קובץ.</string>
 	<string name="no_backup_files_found">קבצי גיבוי לא נמצאו.</string>
-	<string name="choose_backup">בחר קובץ לשחזור</string>
 	<string name="pref_auto_answer">מענה אוטומטי</string>
 	<string name="pref_auto_answer_summary">מענה מיידי או בהשהייה של 5 שניות לשיחות נכנסות (נסיוני)</string>
 	<string name="pref_autorun_app_title">הפעלת היישום</string>
@@ -121,16 +117,11 @@
 	<string name="pref_rotate_icon_title">לסובב איקונים</string>
 	<string name="pref_titles_hide_title">להסתיר כותרות</string>
 	<string name="pref_titles_hide_summary">לא להציג כותרות לקיצורי דרך</string>
-	<string name="home_screen_widgets">ווידג\'ט במסך הראשי</string>
-	<string name="no_active_widgets_were_found">לא נמצאו ווידג\'טים פעילים</string>
 	<string name="not_active">לא פעיל</string>
-	<string name="disabled_trial_expired">מופסק - תקופת נסיון הסתיימה</string>
-	<string name="no_items">אין פריטים</string>
 	<string name="welcome">ברוך הבא</string>
 	<string name="welcome_text"><![CDATA[<b>ווידג\'ט לרכב</b> מהקל ומיעיל גישה לתכונות של טלפונ במכונית]]></string>
 	<string name="install_a_widget">התקנה של הווידג\'ט</string>
 	<string name="install_widget"><![CDATA[תעברו <b>למסך הבית</b> ותפתחו את <b>רשימת האפליקציות</b>. תבחרו <b>ברשימת ווידג\'טים</b> לאחר מכן תבחרו את <b>וודג\'ט לרכב</b> מרשימה תגררו  אותו על המסך הבית.]]></string>
-	<string name="install_widget_old"><![CDATA[אנא שימו לב כי בגירסה 2.3 של אנדרואיד רשימת הווידג\'טים נפתחת עם <b>לחיצה ארוכה</b> על מסך הבית.]]></string>
 	<string name="configure_text"><![CDATA[בתוך הגדרות של ווידג\'ט ניתן להגדיר <b>קיצורי דרך</b> ומראה שלו על ידי שינוי <b>סקין</b> והחלת <b>אפקטים</b>]]></string>
 	<string name="open_settings_description"><![CDATA[לחצו על כפתור <b>הגדרות</b> על מנת לפתוח את מסך קונפיגורציה]]></string>
 	<string name="incar_mode">מצב \"ברכב\"</string>
@@ -145,9 +136,7 @@
 	<string name="gms_service_disabled">הגרסה המותקנת שירותים של Google Play services הושבת במכשיר זה.</string>
 	<string name="gms_service_invalid">הגרסה של Google Play services המותקת במכשיר זה לא אותנטית.</string>
 	<string name="activity_recognition">זיהוי פעילות</string>
-	<string name="please_wait">אנא המתן...</string>
 	<string name="shortcuts">קיצורי דרך </string>
-	<string name="advanced">הגדרות מתקדמות</string>
 	<string name="pref_actions">פעולות</string>
 	<string name="bluetooth_device_laptop">מחשב</string>
 	<string name="bluetooth_device_cellphone">טלפון</string>
@@ -170,9 +159,6 @@
 	<string name="more">עוד...</string>
 	<string name="none">אין</string>
 	<string name="download">הורד...</string>
-	<string name="system">מערכת</string>
-	<string name="backup_path">נתיב</string>
-	<string name="menu">תפריט</string>
 	<string name="enabled">מופעל</string>
 	<string name="disabled">מופסק</string>
 	<string name="configure">הגדרות</string>
@@ -214,16 +200,10 @@
 		<item>90&#186; ימינה</item>
 	</string-array>
 
-	<plurals name="active_widgets">
-		<item quantity="zero">לא נמצאו ווידג׳טים פעילים</item>
-		<item quantity="one">ווידג׳ט אחד פעיל</item>
-		<item quantity="other">%d ווידג׳טים פעילים</item>
-	</plurals>
-    <string name="choose_a_theme">בחר צבעים</string>
+	<string name="choose_a_theme">בחר צבעים</string>
     <string name="delete">מחק</string>
     <string name="export_backup">שמירה</string>
-    <string name="export_backup_finish">שמירה הסתיימה</string>
-    <string name="failed_fetch_icon">בעית קבלת איקוון</string>
+	<string name="failed_fetch_icon">בעית קבלת איקוון</string>
     <string name="import_backup">משיכה</string>
     <string name="number">מספר</string>
     <string name="number_shortcuts_title">מספר קיצורי דרך</string>
@@ -243,18 +223,13 @@
     <string name="current_widget">הוידג׳ט הנבחר</string>
     <string name="drawer_close">לסגור</string>
     <string name="drawer_open">לפתוח</string>
-    <string name="home_screen">מסך הבית</string>
-    <string name="list">רשימה</string>
-    <string name="list_of_active_widgets">רשימת וידג׳טים פועלים</string>
-    <string name="lock_screen">מסך הנעילה</string>
-    <string name="shortcuts_and_look">קיצורי דרך ומראה</string>
+	<string name="list_of_active_widgets">רשימת וידג׳טים פועלים</string>
+	<string name="shortcuts_and_look">קיצורי דרך ומראה</string>
     <string name="shortcuts_and_look_summary">התאמה אישית של קיצורי דרך ,הסקין וגודל הגופן</string>
-    <string name="theme_dark">חשוך</string>
-    <string name="widgets_hint">בחר וידג׳ט מהרשימה להגדרה</string>
+	<string name="widgets_hint">בחר וידג׳ט מהרשימה להגדרה</string>
     <string name="app_theme">ערכת נושא</string>
     <string name="no_active_widget">לא נמצאן ווידג׳טים פעילים. נא לוודא שהוספת ווידג׳ט למסך הבית.</string>
-    <string name="hex_code">קוד hex</string>
-    <string name="color_picker_default_title">בחר צבע</string>
+	<string name="color_picker_default_title">בחר צבע</string>
     <string name="color_swatch_description">צבע %1$d </string>
     <string name="color_swatch_description_selected">צבע %1$d נבחר</string>
     <string name="car_dock">מתקן לרכב</string>

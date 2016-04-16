@@ -37,12 +37,9 @@
 	<string name="pref_detection">Trigger</string>
 	<string name="pref_blutooth_device_title">Bluetooth device</string>
 	<string name="pref_blutooth_device_summary">Choose bluetooth device which enable InCar mode</string>
-	<string name="load_paired_device">Loading paired devices</string>
 	<string name="bluetooth">Bluetooth</string>
 	<string name="turn_on_bluetooth_summary">Turn on Bluetooth</string>
-	<string name="turn_off_bluetooth_summary">Turn off Bluetooth</string>
 	<string name="bluetooth_device_category_title">Enable InCar mode when connecting to:</string>
-	<string name="no_paired_devices_found_title">No paired devices found.</string>
 	<string name="no_paired_devices_found_summary">Before a device can be selected, it needs to be paired and Bluetooth has to be enabled</string>
 	<string name="pref_headset_connected_title">Headset connected</string>
 	<string name="pref_headset_connected_summary">Enable InCar mode when audio jack connected</string>
@@ -98,7 +95,6 @@
 	<string name="backup_not_exist">Backup file is not exists.</string>
 	<string name="unable_delete_file">Unable to delete file.</string>
 	<string name="no_backup_files_found">No backup files were found.</string>
-	<string name="choose_backup">Choose a backup for restore</string>
 	<string name="pref_auto_answer">Auto Answer</string>
 	<string name="pref_auto_answer_summary">Auto answer to incoming calls immediately or with 5 seconds delay. (Experimental)</string>
 	<string name="pref_autorun_app_title">App Autorun</string>
@@ -119,16 +115,11 @@
 	<string name="pref_rotate_icon_title">Rotate icons</string>
 	<string name="pref_titles_hide_title">Hide titles</string>
 	<string name="pref_titles_hide_summary">Do not display titles for the shortcuts</string>
-	<string name="home_screen_widgets">Home Screen Widgets</string>
-	<string name="no_active_widgets_were_found">No active widgets were found</string>
 	<string name="not_active">Not active</string>
-	<string name="disabled_trial_expired">Disabled - Trial expired</string>
-	<string name="no_items">No items</string>
 	<string name="welcome">Welcome</string>
 	<string name="welcome_text"><![CDATA[<b>Car Widget</b> makes easier and quicker access to phone features when you\'re in the car.]]></string>
 	<string name="install_a_widget">Install a widget</string>
 	<string name="install_widget"><![CDATA[Go to <b>home screen</b> and open your <b>app drawer</b>. Choose the <b>widget tab</b> then choose <b>Car Widget</b> and put it on available screen.]]></string>
-	<string name="install_widget_old"><![CDATA[Please note that on Android 2.3 the list of widgets opens with <b>long press</b> on your home screen]]></string>
 	<string name="configure_text"><![CDATA[Inside the settings dialog of the widget you can define <b>shortcuts</b>, configure its look by changing <b>skin</b> or applying <b>effects</b>]]></string>
 	<string name="open_settings_description"><![CDATA[Press <b>Settings</b> button in order to open configuration screen]]></string>
 	<string name="incar_mode">InCar mode</string>
@@ -137,20 +128,13 @@
 	<string name="enable_incar_description"><![CDATA[<b>Enable</b> InCar mode in the settings dialog.]]></string>
 	<string name="trial_description">Free version trial for %d activations.</string>
 	<string name="swipe_continue">Swipe to continue →</string>
-	<plurals name="active_widgets">
-		<item quantity="zero">No active widgets were found</item>
-		<item quantity="one">One active widget</item>
-		<item quantity="other">%d active widgets</item>
-	</plurals>
 	<string name="gms_success">Use Google Play services to detect activity</string>
 	<string name="gms_service_missing">Google Play services is missing on this device.</string>
 	<string name="gms_service_update_required">The installed version of Google Play services is out of date.</string>
 	<string name="gms_service_disabled">The installed version of Google Play services has been disabled on this device.</string>
 	<string name="gms_service_invalid">The version of the Google Play services installed on this device is not authentic.</string>
 	<string name="activity_recognition">Activity recognition</string>
-	<string name="please_wait">Please, wait...</string>
 	<string name="shortcuts">Notification shortcuts</string>
-	<string name="advanced">Advanced</string>
 	<string name="pref_actions">Actions</string>
 	<string name="bluetooth_device_laptop">Computer</string>
 	<string name="bluetooth_device_cellphone">Phone</string>
@@ -172,9 +156,6 @@
 	<string name="more">More...</string>
 	<string name="none">None</string>
 	<string name="download">Download...</string>
-	<string name="system">System</string>
-	<string name="backup_path">Path</string>
-	<string name="menu">Menu</string>
 	<string name="enabled">Enabled</string>
 	<string name="disabled">Disabled</string>
 	<string name="configure">Configure</string>
@@ -228,7 +209,6 @@
 
 	<string name="export_backup">Upload backup file</string>
 	<string name="import_backup">Download backup file</string>
-	<string name="export_backup_finish">Upload finished</string>
 	<string name="delete">Delete</string>
 	<string name="number">Number of shortcuts</string>
 	<string name="number_shortcuts_title">Number of shortcuts</string>
@@ -241,20 +221,15 @@
     <string name="choose_music_app_explanation">Choose music app that will be used for Play/Pause shortcut</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
-    <string name="theme_dark">Dark</string>
-    <string name="app_theme">App Theme</string>
-    <string name="list">List</string>
-    <string name="widgets_hint">Select an item to configure the widget</string>
-    <string name="lock_screen">Lock screen</string>
-    <string name="home_screen">Home screen</string>
-    <string name="list_of_active_widgets">List of active widgets</string>
+	<string name="app_theme">App Theme</string>
+	<string name="widgets_hint">Select an item to configure the widget</string>
+	<string name="list_of_active_widgets">List of active widgets</string>
     <string name="shortcuts_and_look"><![CDATA[Shortcuts & Look]]></string>
     <string name="shortcuts_and_look_summary">Customize shortcuts, skin and font size</string>
     <string name="current_widget">Current widget</string>
     <string name="no_active_widget">No active widgets were found. Make sure you add a widget on your home screen.</string>
-    <string name="hex_code">Hex code</string>
 
-    <string-array name="disable_screen_timeout">
+	<string-array name="disable_screen_timeout">
         <item>Keep On (while charging)</item>
         <item>Keep On</item>
         <item>Don\'t keep</item>

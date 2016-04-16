@@ -8,8 +8,6 @@
 
 	<color name="drag_item_bg">#90a4ae</color>
 
-	<color name="actionbar_bg_color">#5b5b5b</color>
-
 	<color name="panel_bg_normal">#546e7a</color>
 	<color name="panel_bg_focused">#90a4ae</color>
 	<color name="panel_bg_pressed">#37474f</color>
@@ -46,5 +44,4 @@
     <color name="material_bluegray_300">#90a4ae</color>
 
 	<!-- this is needed as preference_category_material layout is using this color as the text color -->
-	<color name="preference_fallback_accent_color">@color/material_bluegray_300</color>
 </resources>
