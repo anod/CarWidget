@@ -68,7 +68,12 @@ public class WidgetButtonViewBuilder {
                 setInCarButton(btnResId, mPrefs.isIncarTransparent(), skinProperties, views,
                         buttonId);
             } else {
-                views.setViewVisibility(btnResId, View.GONE);
+                if (mAlternativeHidden) {
+                    setInCarButton(btnResId, mPrefs.isIncarTransparent(), skinProperties, views,
+                            buttonId);
+                } else {
+                    views.setViewVisibility(btnResId, View.GONE);
+                }
             }
         } else if (widgetButtonPref == Main.WIDGET_BUTTON_SETTINGS) {
             setSettingsButton(btnResId, skinProperties, views, buttonId);

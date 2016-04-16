@@ -20,7 +20,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.anod.car.home.R;
-import com.anod.car.home.app.AppCompatListActivity;
+import com.anod.car.home.app.AppCompatGridActivity;
 import com.anod.car.home.utils.ApiCompat;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.FastBitmapDrawable;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ActivityPicker extends AppCompatListActivity {
+public class ActivityPicker extends AppCompatGridActivity {
 
     /**
      * Adapter of items that are displayed in this dialog.

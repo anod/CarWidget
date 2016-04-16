@@ -16,7 +16,7 @@ import android.widget.ListView;
  * @author alex
  * @date 11/19/13
  */
-public abstract class AppCompatListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public abstract class AppCompatGridActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     protected ListAdapter mAdapter;
 

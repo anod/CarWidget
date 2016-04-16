@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * @author alex
  * @date 2014-09-02
  */
-abstract public class AppsListActivity extends AppCompatListActivity
+abstract public class AppsListActivity extends AppCompatGridActivity
         implements AdapterView.OnItemClickListener,
         LoaderManager.LoaderCallbacks<ArrayList<AppsList.Entry>> {
 

@@ -15,7 +15,7 @@ import android.widget.CheckedTextView;
 import android.widget.ImageView;
 
 import com.anod.car.home.R;
-import com.anod.car.home.app.AppCompatListActivity;
+import com.anod.car.home.app.AppCompatGridActivity;
 import com.anod.car.home.appwidget.WidgetButtonViewBuilder;
 import com.anod.car.home.prefs.model.WidgetSettings;
 import com.anod.car.home.prefs.model.WidgetStorage;
@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
  * @author alex
  * @date 2015-01-18
  */
-public class WidgetButtonChoiceActivity extends AppCompatListActivity {
+public class WidgetButtonChoiceActivity extends AppCompatGridActivity {
     public static final String EXTRA_SKIN = "skin";
     public static final String EXTRA_BTN = "btn";
     private int mAppWidgetId;
@@ -160,7 +160,7 @@ public class WidgetButtonChoiceActivity extends AppCompatListActivity {
         }
 
         public ChoiceAdapter(Context context, List<ChoiceAdapter.Item> items) {
-            super(context, R.layout.simple_list_item_checkbox, android.R.id.text1);
+            super(context, R.layout.all_apps_row, android.R.id.text1);
             addAll(items);
         }
 
@@ -172,8 +172,8 @@ public class WidgetButtonChoiceActivity extends AppCompatListActivity {
             ImageView icon = ButterKnife.findById(view, android.R.id.icon);
             icon.setImageResource(item.icon);
 
-            CheckedTextView textView = ButterKnife.findById(view, android.R.id.text1);
-            textView.setChecked(item.checked);
+//            CheckedTextView textView = ButterKnife.findById(view, android.R.id.text1);
+//            textView.setChecked(item.checked);
 
             return view;
         }
