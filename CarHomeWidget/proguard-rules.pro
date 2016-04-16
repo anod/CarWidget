@@ -33,6 +33,8 @@
     @com.google.android.gms.common.annotation.KeepName *;
 }
 
+-keep class com.google.android.gms.drive.** {*;}
+
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
@@ -81,3 +83,4 @@
 
 #Picasso
 -dontwarn com.squareup.okhttp.**
+
