@@ -17,7 +17,7 @@ import android.util.Log;
 
 public class LauncherProvider extends ContentProvider {
 
-    private static final String TAG = "CarHomeWidget.LauncherProvider";
+    private static final String TAG = "LauncherProvider";
 
     private static final boolean LOGD = false;
 

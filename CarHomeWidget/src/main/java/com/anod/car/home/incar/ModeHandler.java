@@ -116,13 +116,15 @@ public class ModeHandler {
         if (prefs.isEnableBluetooth()) {
             restoreBluetooth();
         }
-        if (prefs.getDisableWifi().equals(InCar.WIFI_TURNOFF)) {
-            restoreWiFi(mContext);
-        }
         if (prefs.isActivateCarMode()) {
             deactivateCarMode(mContext);
         }
-
+        if(prefs.isHotspotOn()) {
+            switchHotspot(mContext, false);
+        }
+        if (prefs.getDisableWifi().equals(InCar.WIFI_TURNOFF)) {
+            restoreWiFi(mContext);
+        }
         if (SamsungDrivingMode.hasMode() && prefs.isSamsungDrivingMode()) {
             SamsungDrivingMode.disable(mContext);
         }
@@ -290,7 +292,6 @@ public class ModeHandler {
         if (apControl != null) {
             AppLog.d("is WiFi AP enabled:"+apControl.isWifiApEnabled());
             apControl.setWifiApEnabled(apControl.getWifiApConfiguration(), isTurnToOn);
-
         }
     }
 }

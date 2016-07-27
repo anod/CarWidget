@@ -126,7 +126,7 @@ public class ConfigurationRestore extends Fragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         mAppWidgetId = Utils.readAppWidgetId(savedInstanceState, getActivity().getIntent());
-        super.onCreate(savedInstanceState);
+        super.onActivityCreated(savedInstanceState);
 
         if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
             Intent defaultResultValue = new Intent();

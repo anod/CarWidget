@@ -77,7 +77,6 @@ public abstract class MusicAppsActivity extends AppsListActivity {
             final PackageManager packageManager = getContext().getPackageManager();
             List<ResolveInfo> apps = packageManager
                     .queryBroadcastReceivers(new Intent(Intent.ACTION_MEDIA_BUTTON), 96);
-
             // filter duplicate receivers
             SimpleArrayMap<String, Boolean> receivers = new SimpleArrayMap<String, Boolean>(apps.size());
 

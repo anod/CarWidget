@@ -2,11 +2,11 @@ package com.anod.car.home.incar;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.WindowManager;
 
 public class ChangeBrightnessActivity extends Activity {
-
-    public final static String EXTRA_BRIGHT_LEVEL = "bright_level";
+    final static String EXTRA_BRIGHT_LEVEL = "bright_level";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,18 +16,17 @@ public class ChangeBrightnessActivity extends Activity {
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.screenBrightness = bt;
         getWindow().setAttributes(lp);
-
-        final Activity activity = this;
-        Thread t = new Thread() {
-            public void run() {
-                try {
-                    sleep(500);
-                } catch (InterruptedException e) {
-                }
-                activity.finish();
-            }
-        };
-        t.start();
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ChangeBrightnessActivity.this.finish();
+            }
+        }, 500);
+    }
 }

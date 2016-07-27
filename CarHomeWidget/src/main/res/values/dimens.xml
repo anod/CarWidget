@@ -34,8 +34,9 @@
 	<dimen name="preference_item_margin">1dp</dimen>
 
 	<dimen name="notification_button">48.0dip</dimen>
-	<dimen name="notification_padding">8.0dip</dimen>
+	<dimen name="notification_text_padding">8.0dip</dimen>
 
     <dimen name="settings_icon_margin">2.0dip</dimen>
+	<dimen name="notification_icon_size">64dp</dimen>
 
 </resources>
