@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/notificationbg"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_vertical"
+    style="@style/Notification"
     android:orientation="horizontal" >
 
     <ImageView
@@ -12,7 +12,7 @@
         android:layout_weight="0.0"
         android:gravity="center"
         android:scaleType="centerInside"
-        style="@android:style/TextAppearance.StatusBar.Icon"
+        style="@style/Notification.Icon"
         android:src="@drawable/ic_stat_incar" />
 
     <LinearLayout
@@ -27,7 +27,7 @@
 
         <TextView
             android:id="@android:id/title"
-            style="@style/TextAppearance.StatusBar.EventContent.Title"
+            style="@style/Notification.Title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-2.0dip"
@@ -39,13 +39,10 @@
 
         <TextView
             android:id="@android:id/text1"
-            style="@style/TextAppearance.StatusBar.EventContent"
+            style="@style/Notification.Line2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
             android:layout_marginTop="-1.0dip"
-            android:textColor="#FFEEEEEE"
-            android:alpha="0.7"
             android:ellipsize="end"
             android:fadingEdge="horizontal"
             android:maxLines="1"

@@ -3,4 +3,14 @@
     <style name="CrashReportDialog" parent="DialogTheme.Light">
         <item name="android:background">@drawable/crash_dialog_bg</item>
     </style>
+
+    <style name="Notification" parent="android:TextAppearance.Material.Notification">
+        <item name="android:background">@color/material_grey_50</item>
+    </style>
+    <style name="Notification.Title" parent="android:TextAppearance.Material.Notification.Title"/>
+    <style name="Notification.Line2" parent="android:TextAppearance.Material.Notification.Line2"/>
+    <style name="Notification.Icon" parent="android:TextAppearance.StatusBar.Icon">
+        <item name="android:background">@drawable/notification_icon_background</item>
+    </style>
+
 </resources>

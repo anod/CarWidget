@@ -74,6 +74,7 @@ public class ModeNotification {
                 .setOngoing(true)
                 .setContentIntent(contentIntent)
                 .setContent(contentView)
+                .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .build();
 
 
