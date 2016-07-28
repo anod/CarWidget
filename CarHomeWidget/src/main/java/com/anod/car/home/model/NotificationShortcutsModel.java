@@ -58,5 +58,12 @@ public class NotificationShortcutsModel extends AbstractShortcutsContainerModel 
         return InCarStorage.getNotifComponents(mContext);
     }
 
-
+    public int getFilledCount() {
+        ArrayList<Long> ids = this.loadShortcutIds();
+        int count = 0;
+        for (int i = 0; i < InCarStorage.NOTIFICATION_COMPONENT_NUMBER; i++) {
+            count += (ids.get(i) == ShortcutInfo.NO_ID) ? 0 : 1;
+        }
+        return count;
+    }
 }

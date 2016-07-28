@@ -77,7 +77,7 @@ public class ModeNotification {
                 .setCategory(NotificationCompat.CATEGORY_SERVICE);
 
         NotificationShortcutsModel model = NotificationShortcutsModel.init(context);
-        if (model.getCount() > 0) {
+        if (model.getFilledCount() > 0) {
             RemoteViews contentView = createShortcuts(context, model);
             contentView.setTextViewText(android.R.id.text1, text);
             notification.setContent(contentView);
