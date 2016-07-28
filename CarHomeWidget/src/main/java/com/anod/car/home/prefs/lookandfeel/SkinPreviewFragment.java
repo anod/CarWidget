@@ -133,9 +133,8 @@ public class SkinPreviewFragment extends Fragment
             mContainer.removeAllViews();
         }
 
-        final WidgetShortcutsModel model = new WidgetShortcutsModel(getActivity(),
+        final WidgetShortcutsModel model = WidgetShortcutsModel.init(getActivity(),
                 mActivity.getAppWidgetId());
-        model.init();
         mShotcutsCount = model.getCount();
 
         setupDragNDrop(inflatedView, model);

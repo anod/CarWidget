@@ -81,8 +81,7 @@ public class ObjectRestoreManager {
         if (shortcuts.size() % 2 == 0) {
             WidgetStorage.saveLaunchComponentNumber(shortcuts.size(), mContext, appWidgetId);
         }
-        WidgetShortcutsModel model = new WidgetShortcutsModel(mContext, appWidgetId);
-        model.init();
+        WidgetShortcutsModel model = WidgetShortcutsModel.init(mContext, appWidgetId);
         restoreShortcuts(model, shortcuts);
 
         return PreferencesBackupManager.RESULT_DONE;
@@ -128,8 +127,7 @@ public class ObjectRestoreManager {
         migrateIncar(dest, inCarBackup.getInCar());
         dest.apply();
 
-        NotificationShortcutsModel model = new NotificationShortcutsModel(mContext);
-        model.init();
+        NotificationShortcutsModel model = NotificationShortcutsModel.init(mContext);
 
         HashMap<Integer, ShortcutInfo> shortcuts = inCarBackup.getNotificationShortcuts();
         restoreShortcuts(model, shortcuts);

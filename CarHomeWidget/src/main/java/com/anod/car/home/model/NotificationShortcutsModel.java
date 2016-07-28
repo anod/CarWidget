@@ -10,7 +10,14 @@ public class NotificationShortcutsModel extends AbstractShortcutsContainerModel 
 
     private final Context mContext;
 
-    public NotificationShortcutsModel(Context context) {
+    public static NotificationShortcutsModel init(Context context)
+    {
+        NotificationShortcutsModel model = new NotificationShortcutsModel(context);
+        model.init();
+        return model;
+    }
+
+    private NotificationShortcutsModel(Context context) {
         super(context);
         mContext = context;
     }

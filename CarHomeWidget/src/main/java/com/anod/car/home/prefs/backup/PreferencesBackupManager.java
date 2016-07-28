@@ -108,8 +108,7 @@ public class PreferencesBackupManager {
 
         File dataFile = new File(saveDir, filename + FILE_EXT_JSON);
 
-        ShortcutsContainerModel model = new WidgetShortcutsModel(mContext, appWidgetId);
-        model.init();
+        ShortcutsContainerModel model = WidgetShortcutsModel.init(mContext, appWidgetId);
         WidgetSettings widget = WidgetStorage.load(mContext, appWidgetId);
         try {
             synchronized (sLock)
@@ -153,8 +152,7 @@ public class PreferencesBackupManager {
         }
         File dataFile = getBackupIncarFile();
 
-        NotificationShortcutsModel model = new NotificationShortcutsModel(mContext);
-        model.init();
+        NotificationShortcutsModel model = NotificationShortcutsModel.init(mContext);
 
         InCarSettings prefs = InCarStorage.load(mContext);
 
@@ -271,8 +269,7 @@ public class PreferencesBackupManager {
         if (shortcuts.size() % 2 == 0) {
             WidgetStorage.saveLaunchComponentNumber(shortcuts.size(), mContext, appWidgetId);
         }
-        WidgetShortcutsModel model = new WidgetShortcutsModel(mContext, appWidgetId);
-        model.init();
+        WidgetShortcutsModel model = WidgetShortcutsModel.init(mContext, appWidgetId);
 
         restoreShortcuts(model, shortcuts);
 
@@ -368,8 +365,7 @@ public class PreferencesBackupManager {
             return ERROR_DESERIALIZE;
         }
 
-        NotificationShortcutsModel model = new NotificationShortcutsModel(mContext);
-        model.init();
+        NotificationShortcutsModel model = NotificationShortcutsModel.init(mContext);
 
         incar.apply();
         restoreShortcuts(model, shortcuts);

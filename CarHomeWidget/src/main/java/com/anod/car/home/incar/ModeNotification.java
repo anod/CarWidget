@@ -62,38 +62,36 @@ public class ModeNotification {
 
         PendingIntent contentIntent = PendingIntent.getService(context, 0, notificationIntent, 0);
 
-        RemoteViews contentView = createShortcuts(context);
+        String text;
         if (version.isFree()) {
-            contentView.setTextViewText(android.R.id.text1,
-                    context.getString(R.string.click_to_disable_trial,
-                            version.getTrialTimesLeft()));
+            text = context.getString(R.string.click_to_disable_trial, version.getTrialTimesLeft());
+        } else {
+            text = r.getString(R.string.click_to_disable);
         }
 
-        Notification notification = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_stat_incar)
                 .setOngoing(true)
                 .setContentIntent(contentIntent)
-                .setContent(contentView)
-                .setCategory(NotificationCompat.CATEGORY_SERVICE)
-                .build();
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setCategory(NotificationCompat.CATEGORY_SERVICE);
 
-
-        setNotificationPriority(notification);
-
-        return notification;
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private static void setNotificationPriority(Notification notification) {
-        if (Utils.IS_JELLYBEAN_OR_GREATER) {
-            notification.priority = Notification.PRIORITY_MAX;
+        NotificationShortcutsModel model = NotificationShortcutsModel.init(context);
+        if (model.getCount() > 0) {
+            RemoteViews contentView = createShortcuts(context, model);
+            contentView.setTextViewText(android.R.id.text1, text);
+            notification.setContent(contentView);
+        } else {
+            notification.setContentTitle(r.getString(R.string.incar_mode_enabled));
+            notification.setContentText(text);
         }
+
+        return notification.build();
     }
 
-    private static RemoteViews createShortcuts(Context context) {
+    private static RemoteViews createShortcuts(Context context, NotificationShortcutsModel model) {
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification);
-        NotificationShortcutsModel model = new NotificationShortcutsModel(context);
-        model.init();
+
         boolean viewGone = true;
         ShortcutPendingIntent spi = new ShortcutPendingIntent(context);
         for (int i = 0; i < model.getCount(); i++) {

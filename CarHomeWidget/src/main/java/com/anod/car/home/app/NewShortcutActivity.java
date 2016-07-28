@@ -41,8 +41,7 @@ public class NewShortcutActivity extends Activity implements ShortcutPicker.Hand
         defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
         setResult(Activity.RESULT_OK, defaultResultValue);
 
-        WidgetShortcutsModel model = new WidgetShortcutsModel(this, mAppWidgetId);
-        model.init();
+        WidgetShortcutsModel model = WidgetShortcutsModel.init(this, mAppWidgetId);
         mShortcutPicker = new ShortcutPicker(model, this, this);
         int cellId = mShortcutPicker.onRestoreInstanceState(savedInstanceState, getIntent());
         if (cellId == ShortcutPicker.INVALID_CELL_ID) {

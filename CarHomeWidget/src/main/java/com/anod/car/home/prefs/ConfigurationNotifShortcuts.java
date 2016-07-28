@@ -29,8 +29,7 @@ public class ConfigurationNotifShortcuts extends ConfigurationPreferenceFragment
     @Override
     protected void onCreateImpl(Bundle savedInstanceState) {
 
-        mModel = new NotificationShortcutsModel(getActivity());
-        mModel.init();
+        mModel = NotificationShortcutsModel.init(getActivity());
         mPickShortcutUtils = new PickShortcutUtils(this, mModel, this);
         mPickShortcutUtils.onRestoreInstanceState(savedInstanceState);
 

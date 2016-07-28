@@ -126,11 +126,10 @@ public class ShortcutEditActivity extends AppCompatActivity {
         }
 
         if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-            mContainerModel = new NotificationShortcutsModel(this);
+            mContainerModel = NotificationShortcutsModel.init(this);
         } else {
-            mContainerModel = new WidgetShortcutsModel(this, appWidgetId);
+            mContainerModel = WidgetShortcutsModel.init(this, appWidgetId);
         }
-        mContainerModel.init();
         mModel = mContainerModel.getShortcutModel();
 
         mShortcutInfo = mModel.loadShortcut(shortcutId);

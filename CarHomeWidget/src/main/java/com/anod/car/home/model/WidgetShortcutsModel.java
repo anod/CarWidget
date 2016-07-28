@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
+import com.anod.car.home.prefs.ShortcutEditActivity;
 import com.anod.car.home.prefs.model.WidgetStorage;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.IntentUtils;
@@ -11,6 +12,12 @@ import com.anod.car.home.utils.IntentUtils;
 import java.util.ArrayList;
 
 public class WidgetShortcutsModel extends AbstractShortcutsContainerModel {
+
+    public static WidgetShortcutsModel init(Context context, int appWidgetId) {
+        WidgetShortcutsModel model = new WidgetShortcutsModel(context, appWidgetId);
+        model.init();
+        return model;
+    }
 
     private final Context mContext;
 
