@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.anod.car.home.R;
+import com.anod.car.home.prefs.ConfigurationActivity;
+import com.anod.car.home.prefs.ConfigurationInCar;
 import com.anod.car.home.prefs.model.InCarStorage;
 
 public class SwitchInCarActivity extends Activity {
@@ -30,6 +32,9 @@ public class SwitchInCarActivity extends Activity {
             startService(service);
         } else {
             Toast.makeText(this, R.string.incar_mode_disabled, Toast.LENGTH_LONG).show();
+
+            Intent intent = ConfigurationActivity.createFragmentIntent(this, ConfigurationInCar.class);
+            startActivity(intent);
         }
         finish();
     }

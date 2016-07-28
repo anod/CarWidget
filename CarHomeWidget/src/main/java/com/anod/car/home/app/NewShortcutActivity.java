@@ -1,6 +1,6 @@
 package com.anod.car.home.app;
 
-import com.anod.car.home.Provider;
+import com.anod.car.home.appwidget.Provider;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.utils.AppLog;

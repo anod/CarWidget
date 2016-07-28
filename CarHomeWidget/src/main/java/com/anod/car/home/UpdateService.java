@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
+import com.anod.car.home.appwidget.Provider;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
 import com.anod.car.home.incar.BroadcastService;

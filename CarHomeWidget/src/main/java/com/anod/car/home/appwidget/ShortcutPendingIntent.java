@@ -9,7 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-public class ShortcutPendingIntent implements WidgetViewBuilder.PendingIntentHelper {
+public class ShortcutPendingIntent implements WidgetViewBuilder.PendingIntentFactory {
 
     public static final String INTENT_ACTION_CALL_PRIVILEGED
             = "android.intent.action.CALL_PRIVILEGED";

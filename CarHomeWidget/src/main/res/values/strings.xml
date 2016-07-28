@@ -252,4 +252,6 @@
 
 	<string name="pref_hotspot_title">Enable WiFi Hotspot</string>
 	<string name="pref_hotspot_summary">Automatically enables hotspot on the device</string>
+	<string name="in_car_mode_switch">InCar mode switch</string>
+	<string name="configure_select_item_hint">Select an item to configure the widget</string>
 </resources>

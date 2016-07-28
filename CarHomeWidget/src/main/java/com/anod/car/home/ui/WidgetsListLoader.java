@@ -12,29 +12,38 @@ import android.util.SparseArray;
  * @author alex
  * @date 5/27/13
  */
-public class WidgetsListLoader extends AsyncTaskLoader<SparseArray<SparseArray<ShortcutInfo>>> {
+class WidgetsListLoader extends AsyncTaskLoader<WidgetsListLoader.Result> {
 
     private final Context mContext;
 
-    public WidgetsListLoader(Context context) {
+    static class Result
+    {
+        SparseArray<SparseArray<ShortcutInfo>> large;
+        int[] shortcuts;
+    }
+
+    WidgetsListLoader(Context context) {
         super(context);
         mContext = context;
     }
 
     @Override
-    public SparseArray<SparseArray<ShortcutInfo>> loadInBackground() {
+    public Result loadInBackground() {
 
-        int[] appWidgetIds = WidgetHelper.getAllWidgetIds(mContext);
-        SparseArray<SparseArray<ShortcutInfo>> result
+        int[] appWidgetIds = WidgetHelper.getLargeWidgetIds(mContext);
+        SparseArray<SparseArray<ShortcutInfo>> large
                 = new SparseArray<SparseArray<ShortcutInfo>>();
 
         for (int i = 0; i < appWidgetIds.length; i++) {
             WidgetShortcutsModel model = new WidgetShortcutsModel(mContext, appWidgetIds[i]);
             model.init();
 
-            result.put(appWidgetIds[i], model.getShortcuts());
+            large.put(appWidgetIds[i], model.getShortcuts());
         }
 
+        Result result = new Result();
+        result.large = large;
+        result.shortcuts = WidgetHelper.getShortcutWidgetIds(mContext);
         return result;
     }
 

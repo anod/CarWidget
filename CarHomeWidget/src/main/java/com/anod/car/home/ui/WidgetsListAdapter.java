@@ -13,18 +13,35 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import static com.anod.car.home.R.string.shortcuts;
+
 /**
  * @author alex
  * @date 5/27/13
  */
 
-public class WidgetsListAdapter extends ArrayAdapter<Integer> {
+class WidgetsListAdapter extends ArrayAdapter<WidgetsListAdapter.Item> {
+
+
+    interface Item { }
+
+    static class LargeItem implements Item
+    {
+        SparseArray<ShortcutInfo> shortcuts;
+        public int appWidgetId;
+
+        LargeItem(int appWidgetId, SparseArray<ShortcutInfo> shortcuts)
+        {
+            this.appWidgetId = appWidgetId;
+            this.shortcuts = shortcuts;
+        }
+    }
+
+    static class ShortcutItem implements Item { }
+
+    static class HintItem implements Item { }
 
     private final LayoutInflater mLayoutInflater;
-
-    private final AppWidgetManager mAppWidgetManager;
-
-    private SparseArray<SparseArray<ShortcutInfo>> mWidgetShortcuts;
 
     private int mCount;
 
@@ -39,9 +56,8 @@ public class WidgetsListAdapter extends ArrayAdapter<Integer> {
             R.id.imageView7,
     };
 
-    public WidgetsListAdapter(Context context) {
+    WidgetsListAdapter(Context context) {
         super(context, R.layout.widgets_item);
-        mAppWidgetManager = AppWidgetManager.getInstance(context);
         mLayoutInflater = (LayoutInflater) getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -59,32 +75,41 @@ public class WidgetsListAdapter extends ArrayAdapter<Integer> {
     private View getHintView(View view, ViewGroup parent) {
         if (view == null) {
             TextView textView = new TextView(getContext());
-            textView.setText("Select an item to configure the widget");
+            textView.setText(R.string.configure_select_item_hint);
             view = textView;
         }
         return view;
     }
 
     private View getWidgetView(int position, View view, ViewGroup parent) {
+        Item item = getItem(position);
+
         if (view == null) {
-            view = mLayoutInflater.inflate(R.layout.widgets_item, parent, false);
+            if (item instanceof ShortcutItem) {
+                view = new View(parent.getContext());
+            } else if (item instanceof HintItem) {
+                view = mLayoutInflater.inflate(R.layout.widgets_hint, parent, false);
+            }
+            else {
+                view = mLayoutInflater.inflate(R.layout.widgets_item, parent, false);
+            }
         }
 
-        int appWidgetId = getItem(position);
-        SparseArray<ShortcutInfo> shortcuts = mWidgetShortcuts.get(appWidgetId);
-
-        int size = shortcuts.size();
-        for (int i = 0; i < sIds.length; i++) {
-            ImageView icon = (ImageView) view.findViewById(sIds[i]);
-            ShortcutInfo info = null;
-            if (i < size) {
-                info = shortcuts.get(i);
-            }
-            if (info != null) {
-                icon.setVisibility(View.VISIBLE);
-                icon.setImageBitmap(info.getIcon());
-            } else {
-                icon.setVisibility(View.INVISIBLE);
+        if (item instanceof LargeItem) {
+            SparseArray<ShortcutInfo> shortcuts = ((LargeItem) item).shortcuts;
+            int size = shortcuts.size();
+            for (int i = 0; i < sIds.length; i++) {
+                ImageView icon = (ImageView) view.findViewById(sIds[i]);
+                ShortcutInfo info = null;
+                if (i < size) {
+                    info = shortcuts.get(i);
+                }
+                if (info != null) {
+                    icon.setVisibility(View.VISIBLE);
+                    icon.setImageBitmap(info.getIcon());
+                } else {
+                    icon.setVisibility(View.INVISIBLE);
+                }
             }
         }
 
@@ -93,7 +118,7 @@ public class WidgetsListAdapter extends ArrayAdapter<Integer> {
 
     @Override
     public int getViewTypeCount() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -109,14 +134,22 @@ public class WidgetsListAdapter extends ArrayAdapter<Integer> {
         return super.getCount();// + 1;
     }
 
-    public void setWidgetShortcuts(SparseArray<SparseArray<ShortcutInfo>> widgetShortcuts) {
-        mWidgetShortcuts = widgetShortcuts;
-        mCount = (widgetShortcuts == null) ? 0 : widgetShortcuts.size();
+    void setResult(WidgetsListLoader.Result result) {
         clear();
-        if (widgetShortcuts != null) {
-            for (int i = 0; i < mCount; i++) {
-                add(widgetShortcuts.keyAt(i));
-            }
+        if (result == null) {
+            mCount = 0;
+            return;
+        }
+        mCount = result.large.size();
+        if (result.shortcuts.length > 0) {
+            add(new ShortcutItem());
+            mCount++;
+        }
+        for (int i = 0; i < result.large.size(); i++) {
+            add(new LargeItem(result.large.keyAt(i), result.large.valueAt(i)));
+        }
+        if (result.large.size() > 0) {
+            add(new HintItem());
         }
     }
 

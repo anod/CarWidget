@@ -2,7 +2,6 @@ package com.anod.car.home.ui;
 
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetHelper;
-import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.ConfigurationInCar;
 import com.anod.car.home.utils.InCarStatus;
@@ -16,7 +15,6 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class WidgetsListFragment extends ListFragment
-        implements LoaderManager.LoaderCallbacks<SparseArray<SparseArray<ShortcutInfo>>> {
+        implements LoaderManager.LoaderCallbacks<WidgetsListLoader.Result> {
 
     private static final int INCAR_HEADER = 0;
 
@@ -70,10 +68,8 @@ public class WidgetsListFragment extends ListFragment
         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) lv.getLayoutParams();
         mlp.setMargins(padding, padding, padding, 0);
 
-        mHeaderView = getActivity().getLayoutInflater().inflate(R.layout.widgets_incar, null);
+        mHeaderView = getActivity().getLayoutInflater().inflate(R.layout.widgets_incar, lv ,false);
         lv.addHeaderView(mHeaderView);
-        View footer = getActivity().getLayoutInflater().inflate(R.layout.widgets_hint, null);
-        lv.addFooterView(footer);
 
         lv.getEmptyView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,8 +107,7 @@ public class WidgetsListFragment extends ListFragment
             String activationsLeft = getResources()
                     .getQuantityString(R.plurals.notif_activations_left,
                             mVersion.getTrialTimesLeft(), mVersion.getTrialTimesLeft());
-            trialText
-                    .setText(getString(R.string.dialog_donate_title_trial) + " " + activationsLeft);
+            trialText.setText(getString(R.string.dialog_donate_title_trial) + " " + activationsLeft);
         } else {
             trialText.setVisibility(View.GONE);
         }
@@ -148,32 +143,27 @@ public class WidgetsListFragment extends ListFragment
             return;
         }
         if (position - 1 < mAppWidgetIds.length) {
-            Integer appWidgetId = (Integer) mAdapter.getItem(position - 1);
-            ((WidgetsListActivity) getActivity()).startConfigActivity(appWidgetId);
+            WidgetsListAdapter.Item item = mAdapter.getItem(position - 1);
+            if (item instanceof WidgetsListAdapter.LargeItem) {
+                ((WidgetsListActivity) getActivity()).startConfigActivity(((WidgetsListAdapter.LargeItem)item).appWidgetId);
+            }
         }
     }
 
     @Override
-    public Loader<SparseArray<SparseArray<ShortcutInfo>>> onCreateLoader(int i, Bundle bundle) {
+    public Loader<WidgetsListLoader.Result> onCreateLoader(int i, Bundle bundle) {
         return new WidgetsListLoader(getActivity());
     }
 
     @Override
-    public void onLoadFinished(Loader<SparseArray<SparseArray<ShortcutInfo>>> loader,
-            SparseArray<SparseArray<ShortcutInfo>> widgetShortcuts) {
-        mAdapter.setWidgetShortcuts(widgetShortcuts);
-/*
-                if (isResumed()) {
-			setListShown(true);
-		} else {
-			setListShownNoAnimation(true);
-		}
-*/
+    public void onLoadFinished(Loader<WidgetsListLoader.Result> loader,
+                               WidgetsListLoader.Result result) {
+        mAdapter.setResult(result);
     }
 
     @Override
-    public void onLoaderReset(Loader<SparseArray<SparseArray<ShortcutInfo>>> loader) {
-        mAdapter.setWidgetShortcuts(null);
+    public void onLoaderReset(Loader<WidgetsListLoader.Result> loader) {
+        mAdapter.setResult(null);
     }
 
 }

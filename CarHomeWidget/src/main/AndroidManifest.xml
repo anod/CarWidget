@@ -253,6 +253,18 @@
                 android:resource="@xml/carhome_appwidget_info_4x4" />
         </receiver>
 
+        <receiver
+            android:name="com.anod.car.home.appwidget.ShortcutProvider"
+            android:label="@string/in_car_mode_switch" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/carhome_appwidget_info_1x1" />
+        </receiver>
+
         <service
             android:name="com.anod.car.home.incar.ActivityRecognitionClientService"
             android:exported="false" />

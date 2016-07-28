@@ -1,4 +1,4 @@
-package com.anod.car.home;
+package com.anod.car.home.appwidget;
 
 import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
@@ -11,6 +11,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.anod.car.home.LargeProvider;
+import com.anod.car.home.UpdateService;
+import com.anod.car.home.WidgetState;
 import com.anod.car.home.incar.BroadcastService;
 import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.prefs.model.WidgetStorage;

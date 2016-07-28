@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentCallbacks2;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import static android.content.Context.ACTIVITY_SERVICE;
@@ -29,6 +31,19 @@ public class Utils {
             // 4.3 JELLY_BEAN_MR2
 
     public static final boolean IS_KITKAT_OR_GREATER = (Build.VERSION.SDK_INT >= 19);
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public static boolean isLowMemoryDevice()
+    {
+        if (IS_KITKAT_OR_GREATER) {
+            ActivityManager.RunningAppProcessInfo memory = new ActivityManager.RunningAppProcessInfo();
+            ActivityManager.getMyMemoryState(memory);
+
+            return memory.lastTrimLevel >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW;
+        }
+        return true;
+    }
 
     /**
      *

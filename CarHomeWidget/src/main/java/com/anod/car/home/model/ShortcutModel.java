@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import com.anod.car.home.utils.AppLog;
 import com.anod.car.home.utils.SoftReferenceThreadLocal;
 import com.anod.car.home.utils.UtilitiesBitmap;
+import com.anod.car.home.utils.Utils;
 
 import java.lang.ref.SoftReference;
 import java.net.URISyntaxException;
@@ -58,7 +59,7 @@ public class ShortcutModel {
         mPackageManager = context.getPackageManager();
         mContext = context;
         mIconBitmapSize = UtilitiesBitmap.getIconMaxSize(context);
-        mUnusedBitmaps = new ArrayList<SoftReference<Bitmap>>();
+        mUnusedBitmaps = new ArrayList<>();
     }
 
     public ShortcutInfo loadShortcut(long shortcutId) {
@@ -71,6 +72,10 @@ public class ShortcutModel {
 
         if (c == null) {
             return null;
+        }
+
+        if (Utils.isLowMemoryDevice()) {
+            mUnusedBitmaps.clear();
         }
 
         Bitmap unusedBitmap = null;
@@ -90,7 +95,8 @@ public class ShortcutModel {
             }
 
             if (unusedBitmap == null) {
-                unusedBitmap = Bitmap.createBitmap(mIconBitmapSize, mIconBitmapSize, Bitmap.Config.ARGB_8888);
+                Bitmap.Config config = Utils.isLowMemoryDevice() ? Bitmap.Config.RGB_565 : Bitmap.Config.ARGB_8888;
+                unusedBitmap = Bitmap.createBitmap(mIconBitmapSize, mIconBitmapSize, config);
             }
         }
 

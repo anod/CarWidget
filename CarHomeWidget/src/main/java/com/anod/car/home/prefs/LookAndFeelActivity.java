@@ -21,7 +21,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.anod.car.home.Provider;
+import com.anod.car.home.appwidget.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.app.App;
 import com.anod.car.home.app.CarWidgetActivity;
@@ -45,7 +45,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class LookAndFeelActivity extends CarWidgetActivity
-        implements ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentHelper,
+        implements ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory,
         ShortcutDragListener.DropCallback {
 
     private Context mContext;

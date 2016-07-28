@@ -22,6 +22,7 @@ public class IntentUtils {
     private static final String SCHEME = "package";
 
     private static final String DETAIL_MARKET_URL = "market://details?id=%s";
+    public static final int IDX_SWITCH_CAR_MODE = 0;
 
 
     public static Intent createNewShortcutIntent(Context context, int appWidgetId, int cellId) {
@@ -73,7 +74,7 @@ public class IntentUtils {
     private static Intent createShortcutIntent(Context context, int i) {
 
         switch (i) {
-            case 0:
+            case IDX_SWITCH_CAR_MODE:
                 return new Intent(context, SwitchInCarActivity.class);
             case 1:
                 return createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);

@@ -35,7 +35,7 @@ public class WidgetViewBuilder {
 
     private String mOverrideSkin;
 
-    private PendingIntentHelper mPendingIntentHelper;
+    private PendingIntentFactory mPendingIntentFactory;
 
     private boolean mIsKeyguard = false;
 
@@ -82,7 +82,7 @@ public class WidgetViewBuilder {
         return this;
     }
 
-    public interface PendingIntentHelper {
+    public interface PendingIntentFactory {
 
         PendingIntent createNew(int appWidgetId, int cellId);
 
@@ -105,8 +105,8 @@ public class WidgetViewBuilder {
         mWidgetHeightDp = widgetHeightDp;
     }
 
-    public WidgetViewBuilder setPendingIntentHelper(PendingIntentHelper helper) {
-        mPendingIntentHelper = helper;
+    public WidgetViewBuilder setPendingIntentHelper(PendingIntentFactory helper) {
+        mPendingIntentFactory = helper;
         return this;
     }
 
@@ -136,12 +136,12 @@ public class WidgetViewBuilder {
         mSmodel.init();
 
         mShortcutViewBuilder = new ShortcutViewBuilder(mContext, mAppWidgetId,
-                mPendingIntentHelper);
+                mPendingIntentFactory);
         if (mBitmapMemoryCache != null) {
             mShortcutViewBuilder.setBitmapMemoryCache(mBitmapMemoryCache);
             ;
         }
-        mWidgetButtonViewBuilder = new WidgetButtonViewBuilder(mContext, mPrefs, mPendingIntentHelper, mAppWidgetId);
+        mWidgetButtonViewBuilder = new WidgetButtonViewBuilder(mContext, mPrefs, mPendingIntentFactory, mAppWidgetId);
         mWidgetButtonViewBuilder.setAlternativeHidden(mWidgetButtonAlternativeHidden);
         mBitmapTransform = new BitmapTransform(mContext);
         refreshIconTransform();

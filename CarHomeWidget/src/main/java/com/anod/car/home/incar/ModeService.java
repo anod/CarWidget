@@ -10,7 +10,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
 import com.anod.car.home.ObjectGraph;
-import com.anod.car.home.Provider;
+import com.anod.car.home.appwidget.Provider;
 import com.anod.car.home.app.App;
 import com.anod.car.home.prefs.model.InCarInterface;
 import com.anod.car.home.prefs.model.InCarStorage;

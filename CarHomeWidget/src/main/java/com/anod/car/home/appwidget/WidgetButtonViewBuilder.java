@@ -27,17 +27,17 @@ public class WidgetButtonViewBuilder {
 
     private WidgetSettings mPrefs;
 
-    private WidgetViewBuilder.PendingIntentHelper mPendingIntentHelper;
+    private WidgetViewBuilder.PendingIntentFactory mPendingIntentFactory;
 
     private int mAppWidgetId;
 
     private boolean mAlternativeHidden = false;
 
     public WidgetButtonViewBuilder(Context context, WidgetSettings prefs,
-            WidgetViewBuilder.PendingIntentHelper pendingIntentHelper, int appWidgetId) {
+                                   WidgetViewBuilder.PendingIntentFactory pendingIntentFactory, int appWidgetId) {
         mContext = context;
         mPrefs = prefs;
-        mPendingIntentHelper = pendingIntentHelper;
+        mPendingIntentFactory = pendingIntentFactory;
         mAppWidgetId = appWidgetId;
     }
 
@@ -57,7 +57,7 @@ public class WidgetButtonViewBuilder {
         if (widgetButtonPref == Main.WIDGET_BUTTON_HIDDEN) {
             if (mAlternativeHidden) {
                 views.setImageViewResource(btnResId, R.drawable.ic_action_cancel);
-                PendingIntent configIntent = mPendingIntentHelper
+                PendingIntent configIntent = mPendingIntentFactory
                         .createSettings(mAppWidgetId, buttonId);
                 views.setOnClickPendingIntent(btnResId, configIntent);
             } else {
@@ -87,7 +87,7 @@ public class WidgetButtonViewBuilder {
         } else {
             views.setImageViewResource(resId, skinProperties.getSettingsButtonRes());
         }
-        PendingIntent configIntent = mPendingIntentHelper.createSettings(mAppWidgetId, buttonId);
+        PendingIntent configIntent = mPendingIntentFactory.createSettings(mAppWidgetId, buttonId);
         views.setOnClickPendingIntent(resId, configIntent);
     }
 
@@ -110,7 +110,7 @@ public class WidgetButtonViewBuilder {
             }
         }
         boolean switchOn = !ModeService.sInCarMode;
-        PendingIntent contentIntent = mPendingIntentHelper.createInCar(switchOn, buttonId);
+        PendingIntent contentIntent = mPendingIntentFactory.createInCar(switchOn, buttonId);
         if (contentIntent != null) {
             views.setOnClickPendingIntent(btnId, contentIntent);
         }

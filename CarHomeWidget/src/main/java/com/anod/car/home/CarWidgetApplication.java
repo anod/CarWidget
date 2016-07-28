@@ -6,6 +6,7 @@ import com.anod.car.home.acra.BrowserUrlSender;
 import com.anod.car.home.acra.CrashDialog;
 import com.anod.car.home.prefs.model.AppSettings;
 import com.anod.car.home.prefs.model.AppTheme;
+import com.anod.car.home.utils.AppLog;
 
 import org.acra.ACRA;
 import org.acra.ReportField;
@@ -58,4 +59,9 @@ public class CarWidgetApplication extends Application {
         return mThemeIdx = theme;
     }
 
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        AppLog.w("Level: " + level);
+    }
 }

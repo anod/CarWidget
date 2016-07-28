@@ -85,12 +85,11 @@ public class ConfigurationInCar extends ConfigurationPreferenceFragment {
     private void initInCar() {
         InCarSettings incar = InCarStorage.load(getActivity());
 
-        int[] appWidgetIds = WidgetHelper.getAllWidgetIds(getActivity());
-        final int widgetsCount = appWidgetIds.length;
 
         Preference incarSwitch = findPreference(InCarSettings.INCAR_MODE_ENABLED);
 
-        if (widgetsCount == 0) {
+        int[] allWidgetIds = WidgetHelper.getAllWidgetIds(getActivity());
+        if (allWidgetIds.length == 0) {
             incarSwitch.setEnabled(false);
             incarSwitch.setSummary(R.string.please_add_widget);
         } else {

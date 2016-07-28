@@ -13,7 +13,6 @@ import com.anod.car.home.utils.Version;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
@@ -42,9 +41,9 @@ public class WidgetsListActivity extends CarWidgetActivity {
 
         mContext = this;
 
-        int[] appWidgetIds = WidgetHelper.getAllWidgetIds(this);
+        int[] largeWidgetIds = WidgetHelper.getLargeWidgetIds(this);
 
-        PrefsMigrate.migrate(this, appWidgetIds);
+        PrefsMigrate.migrate(this, largeWidgetIds);
 
         mDrawer = new NavigationDrawer(this, 0);
         mDrawer.setSelected(NavigationList.ID_WIDGETS);
@@ -72,7 +71,8 @@ public class WidgetsListActivity extends CarWidgetActivity {
                 }
             }
             boolean isFreeInstalled = !mVersion.isFree() && Utils.isFreeInstalled(this);
-            if (appWidgetIds.length == 0 && !isFreeInstalled) {
+            int[] allWidgtIds = WidgetHelper.getAllWidgetIds(this);
+            if (allWidgtIds.length == 0 && !isFreeInstalled) {
                 mWizardShown = true;
                 startWizard();
             }

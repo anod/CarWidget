@@ -40,7 +40,7 @@ public class ShortcutViewBuilder {
 
     private Context mContext;
 
-    private WidgetViewBuilder.PendingIntentHelper mPendingIntentHelper;
+    private WidgetViewBuilder.PendingIntentFactory mPendingIntentFactory;
 
     private int mAppWidgetId;
 
@@ -53,9 +53,9 @@ public class ShortcutViewBuilder {
     private BackgroundProcessor mBackgroundProcessor;
 
     public ShortcutViewBuilder(Context context, int appWidgetId,
-            WidgetViewBuilder.PendingIntentHelper pendingIntentHelper) {
+            WidgetViewBuilder.PendingIntentFactory pendingIntentFactory) {
         mContext = context;
-        mPendingIntentHelper = pendingIntentHelper;
+        mPendingIntentFactory = pendingIntentFactory;
         mAppWidgetId = appWidgetId;
     }
 
@@ -111,7 +111,7 @@ public class ShortcutViewBuilder {
             String title = mContext.getResources().getString(skinProp.getSetShortcutText());
             views.setTextViewText(resText, title);
         }
-        PendingIntent configIntent = mPendingIntentHelper.createNew(mAppWidgetId, cellId);
+        PendingIntent configIntent = mPendingIntentFactory.createNew(mAppWidgetId, cellId);
         if (configIntent != null) {
             views.setOnClickPendingIntent(res, configIntent);
             views.setOnClickPendingIntent(resText, configIntent);
@@ -159,7 +159,7 @@ public class ShortcutViewBuilder {
             String title = String.valueOf(info.title);
             views.setTextViewText(resText, title);
         }
-        PendingIntent shortcutIntent = mPendingIntentHelper
+        PendingIntent shortcutIntent = mPendingIntentFactory
                 .createShortcut(info.intent, mAppWidgetId, cellId, info.id);
         views.setOnClickPendingIntent(res, shortcutIntent);
         views.setOnClickPendingIntent(resText, shortcutIntent);

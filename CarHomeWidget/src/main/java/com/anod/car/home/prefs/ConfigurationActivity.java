@@ -10,7 +10,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 import android.view.MenuItem;
 
-import com.anod.car.home.Provider;
+import com.anod.car.home.appwidget.Provider;
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.utils.Utils;
