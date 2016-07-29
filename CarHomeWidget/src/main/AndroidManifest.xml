@@ -294,6 +294,10 @@
             android:launchMode="singleInstance"
             android:excludeFromRecents="true"
             android:finishOnTaskLaunch="true" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="37454d25f5bb26cdb68b79a6ca77eef421fa17c1" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
