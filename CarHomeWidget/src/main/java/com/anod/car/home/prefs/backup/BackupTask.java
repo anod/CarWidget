@@ -9,22 +9,17 @@ import android.os.AsyncTask;
 public class BackupTask extends AsyncTask<String, Void, Integer> {
 
     private int mType;
-
     private PreferencesBackupManager mBackupManager;
-
     private int mAppWidgetId;
+    private BackupTaskListener mListener;
 
-    private BackupTaskListner mListener;
-
-    public interface BackupTaskListner {
-
+    public interface BackupTaskListener {
         void onBackupPreExecute(int type);
-
         void onBackupFinish(int type, int code);
     }
 
     public BackupTask(int type, PreferencesBackupManager backupManager, int appWidgetId,
-            BackupTaskListner listener) {
+            BackupTaskListener listener) {
         mType = type;
         mBackupManager = backupManager;
         mAppWidgetId = appWidgetId;
@@ -34,14 +29,13 @@ public class BackupTask extends AsyncTask<String, Void, Integer> {
     @Override
     protected void onPreExecute() {
         mListener.onBackupPreExecute(mType);
-
     }
 
     protected Integer doInBackground(String... filenames) {
-        String filename = filenames[0];
-        if (filename == null) {
+        if (mType == PreferencesBackupManager.TYPE_INCAR) {
             return mBackupManager.doBackupInCar();
         }
+        String filename = filenames[0];
         return mBackupManager.doBackupWidget(filename, mAppWidgetId);
     }
 

@@ -6,7 +6,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppListTheme.Light" parent="Theme.AppCompat.Light.Dialog" >
+    <style name="AppListTheme.Light" parent="Theme.AppCompat.Light.Dialog">
         <item name="windowActionBar">false</item>
     </style>
 
@@ -33,7 +33,6 @@
         <item name="android:background">@drawable/btn_default_mtrl_shape</item>
     </style>
 
-
     <!-- Colored borderless ink button -->
     <style name="BorderlessButton.Light.Colored" parent="BorderlessButton.Light">
         <item name="android:textColor">?attr/colorAccent</item>
@@ -53,18 +52,15 @@
         <item name="colorPrimary">@android:color/transparent</item>
     </style>
 
-    <style name="CrashReportDialog" parent="DialogTheme.Light"/>
+    <style name="CrashReportDialog" parent="DialogTheme.Light" />
 
+    <style name="AppPreference">
+        <item name="android:background">@drawable/panel_item_bg_grey</item>
+    </style>
 
-	<style name="AppPreference">
-		<item name="android:background">@drawable/panel_item_bg_grey</item>
-	</style>
-
-
-	<style name="textAlignStyle">
-		<item name="android:gravity">left</item>
-	</style>
-
+    <style name="textAlignStyle">
+        <item name="android:gravity">left</item>
+    </style>
 
     <!-- Skins -->
 
@@ -86,17 +82,17 @@
         <item name="android:paddingLeft">5.0dp</item>
     </style>
 
-	<style name="bbb_btn">
-		<item name="android:clipChildren">false</item>
-		<item name="android:paddingLeft">3dp</item>
-		<item name="android:paddingRight">3dp</item>
-		<item name="android:paddingTop">5dp</item>
-		<item name="android:paddingBottom">5dp</item>
-		<item name="android:layout_width">0dip</item>
-		<item name="android:layout_height">70dip</item>
-		<item name="android:layout_weight">1</item> 
-	</style>
-	
+    <style name="bbb_btn">
+        <item name="android:clipChildren">false</item>
+        <item name="android:paddingLeft">3dp</item>
+        <item name="android:paddingRight">3dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">70dip</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
     <style name="bbb_btn_text">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -113,7 +109,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">left|bottom</item>
-		<item name="android:scaleType">fitStart</item>
+        <item name="android:scaleType">fitStart</item>
     </style>
 
     <style name="incarButton" parent="android:Widget.Holo.Light.ImageButton">
@@ -138,83 +134,82 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-	<style name="BrightnessTheme" parent="android:Theme.Translucent">
-		<item name="android:windowIsTranslucent">true</item> 
-		<item name="android:windowContentOverlay">@null</item> 
-		<item name="android:windowNoTitle">true</item> 
-		<item name="android:windowIsFloating">true</item> 
-		<item name="android:backgroundDimEnabled">false</item>
+    <style name="BrightnessTheme" parent="android:Theme.Translucent">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowAnimationStyle">@null</item>
-	</style>
+    </style>
 
-	<style name="panelItemBasic" parent="textAlignStyle">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:layout_gravity">center_horizontal</item>
-		<item name="android:paddingLeft">10dp</item>
-		<item name="android:paddingRight">10dp</item>
-		<item name="android:paddingTop">6dp</item>
-		<item name="android:paddingBottom">6dp</item>
-		<item name="android:background">@drawable/panel_item_bg_dark</item>
-	</style>
+    <style name="panelItemBasic" parent="textAlignStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:background">@drawable/panel_item_bg_dark</item>
+    </style>
 
+    <style name="panelHeaderText">
+        <item name="android:textColor">@color/font_color</item>
+        <!--		<item name="android:textAllCaps">true</item> //-->
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 
-	<style name="panelHeaderText">
-		<item name="android:textColor">@color/font_color</item>
-		<!--		<item name="android:textAllCaps">true</item> //-->
-		<item name="android:textStyle">bold</item>
-		<item name="android:textSize">14sp</item>
-	</style>
+    <style name="panelHeaderBasic" parent="panelItemBasic">
+        <item name="android:textAppearance">@style/panelHeaderText</item>
+        <item name="android:background">@drawable/panel_header_bg_dark</item>
+    </style>
 
-	<style name="panelHeaderBasic" parent="panelItemBasic">
-		<item name="android:textAppearance">@style/panelHeaderText</item>
-		<item name="android:background">@drawable/panel_header_bg_dark</item>
-	</style>
+    <style name="WizardPageTitle" parent="textAlignStyle">
+        <item name="android:id">@android:id/title</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:paddingLeft">6dip</item>
+        <item name="android:textSize">36sp</item>
+        <item name="android:textColor">#ff0099cc</item>
+        <!--
+        <item name="android:fontFamily">sans-serif-thin</item>
+        -->
+    </style>
 
-	<style name="WizardPageTitle" parent="textAlignStyle">
-		<item name="android:id">@android:id/title</item>
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:layout_marginBottom">8dp</item>
-		<item name="android:paddingLeft">6dip</item>
-		<item name="android:textSize">36sp</item>
-		<item name="android:textColor">#ff0099cc</item>
-		<!--
-		<item name="android:fontFamily">sans-serif-thin</item>
-		-->
-	</style>
+    <style name="WizardPageContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">@dimen/wizard_page_margin</item>
+        <item name="android:paddingRight">@dimen/wizard_page_margin</item>
+    </style>
 
-	<style name="WizardPageContainer">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">match_parent</item>
-		<item name="android:orientation">vertical</item>
-		<item name="android:paddingLeft">@dimen/wizard_page_margin</item>
-		<item name="android:paddingRight">@dimen/wizard_page_margin</item>
-	</style>
+    <style name="wizardTextItemBase">
+        <item name="android:textSize">24sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
 
-	<style name="wizardTextItemBase">
-		<item name="android:textSize">24sp</item>
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-		<item name="android:gravity">center_horizontal</item>
-	</style>
+    <style name="wizardTextItemGray" parent="wizardTextItemBase">
+        <item name="android:textColor">@color/font_color_dark</item>
+    </style>
 
-	<style name="wizardTextItemGray" parent="wizardTextItemBase">
-		<item name="android:textColor">@color/font_color_dark</item>
-	</style>
-
-	<style name="wizardTextItemHolo" parent="wizardTextItemBase">
-		<item name="android:textColor">@android:color/white</item>
-	</style>
+    <style name="wizardTextItemHolo" parent="wizardTextItemBase">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 
     <style name="buttonStyleDefault" parent="textAlignStyle">
-		<item name="android:background">@drawable/panel_item_bg_dark</item>
-	</style>
+        <item name="android:background">@drawable/panel_item_bg_dark</item>
+    </style>
 
-	<style name="buttonStyleGray" parent="buttonStyleDefault">
-		<item name="android:background">@drawable/panel_item_bg_grey</item>
-	</style>
+    <style name="buttonStyleGray" parent="buttonStyleDefault">
+        <item name="android:background">@drawable/panel_item_bg_grey</item>
+    </style>
 
     <style name="cardsBtnText" parent="textAlignStyle">
         <item name="android:lines">1</item>
@@ -231,9 +226,10 @@
         <item name="android:paddingLeft">5.0dp</item>
     </style>
 
-    <style name="Notification" parent="TextAppearance.StatusBar.EventContent"/>
-    <style name="Notification.Title" parent="TextAppearance.StatusBar.EventContent.Title"/>
-    <style name="Notification.Line2" parent="TextAppearance.StatusBar.EventContent.Line2"/>
-    <style name="Notification.Icon" parent="android:TextAppearance.StatusBar.Icon"/>
+    <style name="Notification" parent="TextAppearance.StatusBar.EventContent" />
+    <style name="Notification.Title" parent="TextAppearance.StatusBar.EventContent.Title" />
+    <style name="Notification.Line2" parent="TextAppearance.StatusBar.EventContent.Line2" />
+    <style name="Notification.Icon" parent="android:TextAppearance.StatusBar.Icon" />
+
 
 </resources>

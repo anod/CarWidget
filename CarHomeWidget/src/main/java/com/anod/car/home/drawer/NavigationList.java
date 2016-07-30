@@ -22,7 +22,7 @@ import com.anod.car.home.R;
 import com.anod.car.home.app.App;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.ConfigurationInCar;
-import com.anod.car.home.prefs.ConfigurationRestore;
+import com.anod.car.home.prefs.backup.ui.ConfigurationRestore;
 import com.anod.car.home.prefs.LookAndFeelActivity;
 import com.anod.car.home.prefs.MusicAppSettingsActivity;
 import com.anod.car.home.prefs.model.AppSettings;

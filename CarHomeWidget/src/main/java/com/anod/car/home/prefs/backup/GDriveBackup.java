@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.anod.car.home.gms.ReadDriveFileContentsAsyncTask;
@@ -30,53 +31,32 @@ import java.io.InputStream;
  * @author alex
  * @date 1/19/14
  */
-public class GDriveBackup
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        ConfigurationActivity.onActivityResultListener,
-        ResultCallback<DriveApi.DriveContentsResult> {
+public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        ConfigurationActivity.onActivityResultListener, ResultCallback<DriveApi.DriveContentsResult> {
 
-    public static final int REQUEST_CODE_RESOLUTION = 123;
+    static final int REQUEST_CODE_RESOLUTION = 123;
+    static final int REQUEST_CODE_OPENER = 122;
+    static final int REQUEST_CODE_CREATOR = 124;
 
-    public static final int REQUEST_CODE_OPENER = 122;
-
-    public static final int REQUEST_CODE_CREATOR = 124;
-
-    public static final String MIME_TYPE_OBJECT = "application/octet-stream";
-    public static final String MIME_TYPE_JSON = "application/json";
-
+    static final String MIME_TYPE_OBJECT = "application/octet-stream";
+    static final String MIME_TYPE_JSON = "application/json";
 
     private static final int ACTION_DOWNLOAD = 1;
-
     private static final int ACTION_UPLOAD = 2;
 
     private final Listener mListener;
-
     private GoogleApiClient mGoogleApiClient;
-
     private Context mContext;
-
     private Activity mActivity;
-
-    private boolean mConnected;
-
     private int mOnConnectAction;
-
     private String mTargetFileName;
-
     private File mFile;
-
-    private boolean mSupported;
-
     private int mAppWidgetId;
 
     public interface Listener {
-
         void onGDriveActionStart();
-
         void onGDriveDownloadFinish();
-
         void onGDriveUploadFinish();
-
         void onGDriveError();
     }
 
@@ -119,7 +99,7 @@ public class GDriveBackup
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
         AppLog.e("GoogleApiClient connection failed: " + result.toString());
 
         if (!result.hasResolution()) {
@@ -179,7 +159,7 @@ public class GDriveBackup
     }
 
 
-    public boolean isConnected() {
+    boolean isConnected() {
         return mGoogleApiClient != null && mGoogleApiClient.isConnected();
     }
 
@@ -225,7 +205,7 @@ public class GDriveBackup
     }
 
     @Override
-    public void onResult(DriveApi.DriveContentsResult result) {
+    public void onResult(@NonNull DriveApi.DriveContentsResult result) {
         if (!result.getStatus().isSuccess()) {
             Toast.makeText(mContext, "Error while trying to create new file contents",
                     Toast.LENGTH_SHORT).show();
@@ -258,7 +238,7 @@ public class GDriveBackup
 
         private final Listener mListener;
 
-        public WriteTask(Context context, Listener listener) {
+        WriteTask(Context context, Listener listener) {
             super(context);
             mListener = listener;
         }
@@ -290,7 +270,7 @@ public class GDriveBackup
 
         private final int mAppWidgetId;
 
-        public ReadTask(Context context, int appWidgetId, Listener listener) {
+        ReadTask(Context context, int appWidgetId, Listener listener) {
             super(context);
             mAppWidgetId = appWidgetId;
             mListener = listener;

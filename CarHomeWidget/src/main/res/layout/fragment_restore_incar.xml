@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/panel_header_margin"
+    tools:context="com.anod.car.home.prefs.backup.ui.FragmentRestoreInCar">
+
+
+    <LinearLayout
+        android:id="@+id/header2"
+        style="?attr/panelHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="0dp"
+        android:paddingTop="0dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/new_backup"
+            android:textAppearance="@style/panelHeaderText" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/downloadIncar"
+                style="@android:style/Widget.ActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/import_backup"
+                android:src="@drawable/ic_action_xhdpi_dl_from_cloud" />
+
+            <ImageButton
+                android:id="@+id/backupIncar"
+                style="@android:style/Widget.ActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/backup"
+                android:src="@drawable/ic_action_add" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lastBackupIncarLine"
+        style="?attr/panelItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:layout_marginTop="1dp"
+        android:orientation="horizontal"
+        android:gravity="left|center_vertical"
+        android:paddingBottom="0dp"
+        android:paddingTop="0dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/restore"
+                android:textAppearance="@style/panelHeaderText" />
+
+            <TextView
+                android:id="@+id/lastBackupIncar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Fri, Jul 29, 2016, 14:59"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/font_color_sec" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/restoreIncar"
+            style="@android:style/Widget.ActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/restore"
+            android:src="@drawable/ic_action_tick" />
+
+        <ImageButton
+            android:id="@+id/uploadIncar"
+            style="@android:style/Widget.ActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/export_backup"
+            android:src="@drawable/ic_action_xhdpi_ul_to_cloud" />
+    </LinearLayout>
+
+
+</LinearLayout>
+ 
