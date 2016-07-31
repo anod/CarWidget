@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.anod.car.home.R;
 import com.anod.car.home.app.AppCompatGridActivity;
 import com.anod.car.home.utils.ApiCompat;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.UtilitiesBitmap;
 

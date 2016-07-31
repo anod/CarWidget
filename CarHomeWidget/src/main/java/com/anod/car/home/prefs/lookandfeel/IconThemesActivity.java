@@ -14,7 +14,7 @@ import com.anod.car.home.appscache.AppsCacheActivity;
 import com.anod.car.home.model.AppsList;
 import com.anod.car.home.prefs.model.WidgetSettings;
 import com.anod.car.home.prefs.model.WidgetStorage;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.IconPackUtils;
 import com.anod.car.home.utils.Utils;
 

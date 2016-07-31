@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ComponentInfo;
 import android.support.v4.util.SimpleArrayMap;
 
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.Utils;
 
 /**

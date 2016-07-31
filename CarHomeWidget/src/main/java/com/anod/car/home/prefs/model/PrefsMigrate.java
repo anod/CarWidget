@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.WidgetMigrateStorage;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 
 import java.io.File;
 import java.util.ArrayList;

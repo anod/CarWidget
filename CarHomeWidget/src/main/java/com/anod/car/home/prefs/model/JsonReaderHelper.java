@@ -4,7 +4,7 @@ import android.support.v4.util.SimpleArrayMap;
 import android.util.JsonReader;
 import android.util.JsonToken;
 
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 
 import java.io.IOException;
 

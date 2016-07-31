@@ -14,7 +14,7 @@ import com.anod.car.home.appwidget.Provider;
 import com.anod.car.home.app.App;
 import com.anod.car.home.prefs.model.InCarInterface;
 import com.anod.car.home.prefs.model.InCarStorage;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.Version;
 
 public class ModeService extends Service {

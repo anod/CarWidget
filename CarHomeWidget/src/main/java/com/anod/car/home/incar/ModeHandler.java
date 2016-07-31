@@ -11,7 +11,7 @@ import android.net.wifi.WifiManager;
 
 import com.anod.car.home.prefs.model.InCarInterface;
 import com.anod.car.home.prefs.preferences.InCar;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.PowerUtil;
 import com.anod.car.home.utils.Utils;
 

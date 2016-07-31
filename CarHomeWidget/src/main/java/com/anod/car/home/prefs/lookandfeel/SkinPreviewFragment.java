@@ -6,7 +6,7 @@ import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.LookAndFeelActivity;
 import com.anod.car.home.prefs.drag.ShortcutShadowBuilder;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 
 import android.app.Activity;
 import android.content.ClipData;

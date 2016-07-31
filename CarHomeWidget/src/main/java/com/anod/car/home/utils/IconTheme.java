@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
 
+import info.anodsplace.android.log.AppLog;
+
 public class IconTheme {
 
     private static final String ATTR_COMPONENT = "component";
@@ -71,7 +73,7 @@ public class IconTheme {
                 mIconMap = parseXml(xml, cmpMap);
             }
         } catch (XmlPullParserException | IOException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
         }
     }
 
@@ -116,7 +118,7 @@ public class IconTheme {
                 xml.setInput(localInputStream, "UTF-8");
             }
         } catch (IOException | XmlPullParserException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
         }
         return xml;
     }

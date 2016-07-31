@@ -6,7 +6,7 @@ import android.content.SharedPreferences.Editor;
 
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutModel;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 
 import java.io.File;
 import java.util.ArrayList;

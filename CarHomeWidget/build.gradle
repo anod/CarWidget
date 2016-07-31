@@ -15,6 +15,7 @@ repositories {
     mavenCentral()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'https://maven.fabric.io/public' }
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -31,6 +32,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton:disklrucache:2.0.2'
     compile 'com.squareup.picasso:picasso:2.6.0-SNAPSHOT'
+    compile 'com.github.anod:android-utils-lib:1.0.1'
 
     // Find memory leaks tool
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'

@@ -7,6 +7,8 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 
+import info.anodsplace.android.log.AppLog;
+
 /**
  * @author alex
  * @date 1/25/14
@@ -37,7 +39,7 @@ public class MusicUtils {
                     .invoke(audioService, keyEvent);
             hasDispatchSucceeded = true;
         } catch (Exception e) {
-            AppLog.ex(e);
+            AppLog.e(e);
         }
 
         // If dispatchMediaKeyEvent failed then try using broadcast

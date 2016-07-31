@@ -15,7 +15,7 @@ import android.util.SparseArray;
 import com.anod.car.home.model.LauncherSettings;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.utils.ApiCompat;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.SoftReferenceThreadLocal;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
@@ -117,7 +117,7 @@ public class ShortcutsJsonReader {
                     try {
                         info.intent = Intent.parseUri(intentDescription, 0);
                     } catch (URISyntaxException e) {
-                        AppLog.ex(e);
+                        AppLog.e(e);
                     }
                 }
             } else if (name.equals(LauncherSettings.Favorites.ICON_TYPE)) {
@@ -215,7 +215,7 @@ public class ShortcutsJsonReader {
         try {
             return BitmapFactory.decodeByteArray(data, 0, data.length, opts);
         } catch (Exception e) {
-            AppLog.ex(e);
+            AppLog.e(e);
             // throw new RuntimeException(e.getMessage(), e);
             return null;
         }

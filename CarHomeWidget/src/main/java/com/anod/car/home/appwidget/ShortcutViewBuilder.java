@@ -7,7 +7,7 @@ import com.anod.car.home.prefs.model.WidgetSettings;
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.skin.SkinProperties;
 import com.anod.car.home.skin.icon.BackgroundProcessor;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.BitmapTransform;
 import com.anod.car.home.utils.IconTheme;
 import com.anod.car.home.utils.UtilitiesBitmap;

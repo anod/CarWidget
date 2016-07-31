@@ -6,7 +6,7 @@ import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveId;
 
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 
 import android.content.Context;
 
@@ -68,7 +68,7 @@ public class WriteDriveFileContentsAsyncTask
                     .commit(getGoogleApiClient(), null).await();
             return status.getStatus().isSuccess();
         } catch (IOException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
         }
         return false;
     }

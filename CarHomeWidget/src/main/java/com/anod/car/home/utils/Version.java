@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 
+import info.anodsplace.android.log.AppLog;
 import info.anodsplace.version.Action;
 import info.anodsplace.version.Manager;
 import info.anodsplace.version.storage.SharedPrefsStorage;
@@ -36,16 +37,6 @@ public class Version implements Action {
     public Version(Context context) {
         mIsFree = isFreeVersion(context.getPackageName());
         mContext = context;
-    }
-
-    public void upgradeCheck() {
-        Manager manager = new Manager(new SharedPrefsStorage(mContext));
-        manager.addAction(this);
-        try {
-            manager.check(Manager.getVersionCode(mContext));
-        } catch (PackageManager.NameNotFoundException e) {
-            AppLog.ex(e);
-        }
     }
 
     public int getMaxTrialTimes() {

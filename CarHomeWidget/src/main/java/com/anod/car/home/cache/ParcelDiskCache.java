@@ -8,7 +8,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.jakewharton.disklrucache.DiskLruCache;
 
 import java.io.ByteArrayOutputStream;
@@ -93,7 +93,7 @@ final public class ParcelDiskCache<T extends Parcelable> implements DiskCache<Pa
                 }
                 return parcel.readParcelable(mClassLoader);
             } catch (Exception e) {
-                AppLog.ex(e);
+                AppLog.e(e);
             } finally {
                 parcel.recycle();
             }
@@ -111,7 +111,7 @@ final public class ParcelDiskCache<T extends Parcelable> implements DiskCache<Pa
             }
             value = getBytesFromStream(snapshot.getInputStream(0));
         } catch (IOException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
         } finally {
             if (snapshot != null) {
                 snapshot.close();
@@ -127,7 +127,7 @@ final public class ParcelDiskCache<T extends Parcelable> implements DiskCache<Pa
         try {
             return mCache.remove(key);
         } catch (IOException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
         }
         return false;
     }
@@ -172,7 +172,7 @@ final public class ParcelDiskCache<T extends Parcelable> implements DiskCache<Pa
             }
             return snapshot.getLength(0) > 0;
         } catch (IOException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
         } finally {
             if (snapshot != null) {
                 snapshot.close();
@@ -186,7 +186,7 @@ final public class ParcelDiskCache<T extends Parcelable> implements DiskCache<Pa
         try {
             mCache.close();
         } catch (IOException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
         }
     }
 
@@ -222,7 +222,7 @@ final public class ParcelDiskCache<T extends Parcelable> implements DiskCache<Pa
                 editor.commit();
             }
         } catch (IOException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
         } finally {
             value.recycle();
         }

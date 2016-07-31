@@ -17,7 +17,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.SoftReferenceThreadLocal;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
@@ -200,30 +200,10 @@ public class ShortcutModel {
         try {
             return BitmapFactory.decodeByteArray(data, 0, data.length, opts);
         } catch (Exception e) {
-            AppLog.ex(e);
+            AppLog.e(e);
            // throw new RuntimeException(e.getMessage(), e);
             return null;
         }
-    }
-
-
-
-    /**
-     * Returns true if the shortcuts already exists in the database. we identify
-     * a shortcut by its title and intent.
-     */
-    static boolean shortcutExists(Context context, String title, Intent intent) {
-        final ContentResolver cr = context.getContentResolver();
-        Cursor c = cr.query(LauncherSettings.Favorites.getContentUri(context.getPackageName()),
-                new String[]{"title", "intent"}, "title=? and intent=?",
-                new String[]{title, intent.toUri(0)}, null);
-        boolean result = false;
-        try {
-            result = c.moveToFirst();
-        } finally {
-            c.close();
-        }
-        return result;
     }
 
     /**

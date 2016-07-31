@@ -8,7 +8,7 @@ import com.google.android.gms.location.ActivityRecognition;
 
 import com.anod.car.home.BuildConfig;
 import com.anod.car.home.app.StoppableService;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 
 import android.app.PendingIntent;
 import android.content.Context;

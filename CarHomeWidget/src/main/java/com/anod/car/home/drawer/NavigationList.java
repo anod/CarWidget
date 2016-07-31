@@ -27,7 +27,7 @@ import com.anod.car.home.prefs.LookAndFeelActivity;
 import com.anod.car.home.prefs.MusicAppSettingsActivity;
 import com.anod.car.home.prefs.model.AppSettings;
 import com.anod.car.home.prefs.model.AppTheme;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.InCarStatus;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
@@ -322,7 +322,7 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
                         .getApplicationInfo(musicAppCmp.getPackageName(), 0);
                 return info.loadLabel(mPackageManager).toString();
             } catch (PackageManager.NameNotFoundException e) {
-                AppLog.ex(e);
+                AppLog.e(e);
                 return musicAppCmp.flattenToShortString();
             }
         }

@@ -22,9 +22,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.anod.car.home.R;
-import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.Utils;
 
 import butterknife.Bind;
@@ -34,7 +33,7 @@ public class ConfigurationRestore extends Fragment {
 
     static final int DOWNLOAD_MAIN_REQUEST_CODE = 1;
     static final int DOWNLOAD_INCAR_REQUEST_CODE = 2;
-    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     private Context mContext;
 
     static final int DATE_FORMAT = DateUtils.FORMAT_SHOW_DATE

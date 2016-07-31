@@ -5,7 +5,7 @@ import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
 
 import com.anod.car.home.BuildConfig;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 
 import android.app.IntentService;
 import android.app.Notification;

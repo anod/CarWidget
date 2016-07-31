@@ -14,7 +14,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.anod.car.home.utils.ApiCompat;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
@@ -56,7 +56,7 @@ public class ShortcutInfoUtils {
                     icon = getPackageIcon(context, icon, iconResource);
                     info.setIconResource(icon, iconResource);
                 } catch (Resources.NotFoundException | PackageManager.NameNotFoundException e) {
-                    AppLog.ex(e);
+                    AppLog.e(e);
                 }
             }
         }
@@ -184,7 +184,7 @@ public class ShortcutInfoUtils {
         try {
             drawableAppIcon = ApiCompat.getDrawableForDensity(resources, id, UtilitiesBitmap.getTargetDensity(context));
         } catch (Resources.NotFoundException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
         }
 
         if (drawableAppIcon == null) {
@@ -192,7 +192,7 @@ public class ShortcutInfoUtils {
             try {
                 drawableAppIcon = ApiCompat.getDrawable(resources, id);
             } catch (Resources.NotFoundException e) {
-                AppLog.ex(e);
+                AppLog.e(e);
                 return null;
             }
         }

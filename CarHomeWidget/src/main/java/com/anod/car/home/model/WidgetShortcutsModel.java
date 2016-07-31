@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import com.anod.car.home.prefs.ShortcutEditActivity;
 import com.anod.car.home.prefs.model.WidgetStorage;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.IntentUtils;
 
 import java.util.ArrayList;

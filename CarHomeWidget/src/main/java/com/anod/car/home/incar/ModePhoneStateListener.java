@@ -1,7 +1,7 @@
 package com.anod.car.home.incar;
 
 import com.anod.car.home.prefs.preferences.InCar;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 
 import android.content.Context;
 import android.content.Intent;

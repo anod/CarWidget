@@ -31,7 +31,7 @@ import com.anod.car.home.prefs.backup.GDriveBackup;
 import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 import com.anod.car.home.prefs.backup.RestoreCodeRender;
 import com.anod.car.home.prefs.backup.RestoreTask;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.CheatSheet;
 import com.anod.car.home.utils.DeleteFileTask;
 
@@ -65,14 +65,14 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
     @Bind(R.id.downloadMain)
     ImageButton mDownloadMain;
 
-    private RestoreClickListener mRestoreListener;
-    private DeleteClickListener mDeleteListener;
-    private ExportClickListener mExportListener;
+    RestoreClickListener mRestoreListener;
+    DeleteClickListener mDeleteListener;
+    ExportClickListener mExportListener;
 
-    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-    private PreferencesBackupManager mBackupManager;
-    private RestoreAdapter mAdapter;
-    private GDriveBackup mGDriveBackup;
+    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    PreferencesBackupManager mBackupManager;
+    RestoreAdapter mAdapter;
+    GDriveBackup mGDriveBackup;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -262,7 +262,7 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
         }
     }
 
-    private class FileListTask extends AsyncTask<Integer, Void, File[]> {
+    class FileListTask extends AsyncTask<Integer, Void, File[]> {
 
         @Override
         protected void onPreExecute() {
@@ -297,7 +297,7 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
         Toast.makeText(getContext(), res, Toast.LENGTH_SHORT).show();
     }
 
-    private class RestoreClickListener implements View.OnClickListener {
+    class RestoreClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
@@ -310,7 +310,7 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
         }
     }
 
-    private class DeleteClickListener implements View.OnClickListener {
+    class DeleteClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
@@ -319,8 +319,7 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
         }
     }
 
-
-    private AlertDialog createBackupNameDialog() {
+    AlertDialog createBackupNameDialog() {
         String defaultFilename = "widget-" + mAppWidgetId;
         // This example shows how to add a custom layout to an AlertDialog
         LayoutInflater factory = LayoutInflater.from(getContext());
@@ -348,7 +347,7 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
                 ;
     }
 
-    private class ExportClickListener implements View.OnClickListener {
+    class ExportClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {

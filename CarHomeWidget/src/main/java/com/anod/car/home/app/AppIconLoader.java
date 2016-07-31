@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
@@ -58,7 +58,7 @@ public class AppIconLoader {
                 try {
                     d = mPackageManager.getApplicationIcon(cmp.getPackageName());
                 } catch (PackageManager.NameNotFoundException e1) {
-                    AppLog.ex(e1);
+                    AppLog.e(e1);
                     return null;
                 }
             }

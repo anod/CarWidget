@@ -11,7 +11,7 @@ import android.util.JsonWriter;
 
 import com.anod.car.home.incar.SamsungDrivingMode;
 import com.anod.car.home.incar.ScreenOrientation;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.Utils;
 
 import java.io.IOException;

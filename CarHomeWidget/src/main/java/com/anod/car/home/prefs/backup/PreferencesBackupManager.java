@@ -20,7 +20,7 @@ import com.anod.car.home.prefs.model.InCarStorage;
 import com.anod.car.home.prefs.model.WidgetSettings;
 import com.anod.car.home.prefs.model.WidgetStorage;
 import com.anod.car.home.prefs.preferences.ObjectRestoreManager;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -174,7 +174,7 @@ public class PreferencesBackupManager {
                 writer.close();
             }
         } catch (IOException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
             return ERROR_FILE_WRITE;
         }
         BackupManager.dataChanged(BACKUP_PACKAGE);
@@ -258,10 +258,10 @@ public class PreferencesBackupManager {
                 reader.close();
             }
         } catch (IOException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
             return ERROR_FILE_READ;
         } catch (ClassCastException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
             return ERROR_DESERIALIZE;
         }
         widget.apply();
@@ -358,10 +358,10 @@ public class PreferencesBackupManager {
                 reader.close();
             }
         } catch (IOException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
             return ERROR_FILE_READ;
         } catch (ClassCastException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
             return ERROR_DESERIALIZE;
         }
 

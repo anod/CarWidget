@@ -19,7 +19,7 @@ import com.anod.car.home.prefs.model.WidgetStorage;
 import com.anod.car.home.prefs.preferences.InCar;
 import com.anod.car.home.prefs.preferences.InCarBackup;
 import com.anod.car.home.prefs.preferences.ShortcutsMain;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -61,13 +61,13 @@ public class ObjectRestoreManager {
                 is.close();
             }
         } catch (IOException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
             return PreferencesBackupManager.ERROR_FILE_READ;
         } catch (ClassNotFoundException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
             return PreferencesBackupManager.ERROR_DESERIALIZE;
         } catch (ClassCastException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
             return PreferencesBackupManager.ERROR_DESERIALIZE;
         }
 
@@ -108,13 +108,13 @@ public class ObjectRestoreManager {
                 is.close();
             }
         } catch (IOException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
             return PreferencesBackupManager.ERROR_FILE_READ;
         } catch (ClassNotFoundException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
             return PreferencesBackupManager.ERROR_DESERIALIZE;
         } catch (ClassCastException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
             return PreferencesBackupManager.ERROR_DESERIALIZE;
         }
         //version 1.42

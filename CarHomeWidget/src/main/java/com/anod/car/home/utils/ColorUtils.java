@@ -3,6 +3,8 @@ package com.anod.car.home.utils;
 import android.content.Context;
 import android.graphics.Color;
 
+import info.anodsplace.android.log.AppLog;
+
 public class ColorUtils {
 
     public static String toHex(int color, boolean addAlpha) {

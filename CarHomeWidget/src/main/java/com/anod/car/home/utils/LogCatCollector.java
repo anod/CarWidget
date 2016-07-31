@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import info.anodsplace.android.log.AppLog;
+
 
 /**
  * Executes logcat commands and collects it's output.
@@ -99,9 +101,9 @@ public class LogCatCollector {
                         InputStream stderr = process.getErrorStream();
                         byte[] dummy = new byte[DEFAULT_BUFFER_SIZE_IN_BYTES];
                         while (stderr.read(dummy) >= 0) {
-                            ;
+
                         }
-                    } catch (IOException e) {
+                    } catch (IOException ignored) {
                     }
                 }
             }).start();
@@ -118,7 +120,7 @@ public class LogCatCollector {
 
         } catch (IOException e) {
             //"LogCatCollector.collectLogCat could not retrieve data.",
-            AppLog.ex(e);
+            AppLog.e(e);
         }
 
         return logcatBuf;

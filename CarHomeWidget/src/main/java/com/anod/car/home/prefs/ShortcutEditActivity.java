@@ -39,7 +39,7 @@ import com.anod.car.home.model.ShortcutInfoUtils;
 import com.anod.car.home.model.ShortcutModel;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.utils.ApiCompat;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.IconPackUtils;
 import com.anod.car.home.utils.ShortcutPicker;
 import com.anod.car.home.utils.UtilitiesBitmap;

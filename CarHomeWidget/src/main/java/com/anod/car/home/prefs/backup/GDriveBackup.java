@@ -12,7 +12,7 @@ import com.anod.car.home.gms.ReadDriveFileContentsAsyncTask;
 import com.anod.car.home.gms.WriteDriveFileContentsAsyncTask;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.preferences.ObjectRestoreManager;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -111,7 +111,7 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
         try {
             result.startResolutionForResult(mActivity, REQUEST_CODE_RESOLUTION);
         } catch (IntentSender.SendIntentException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
             mListener.onGDriveError();
         }
     }
@@ -136,7 +136,7 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
         try {
             mActivity.startIntentSenderForResult(intentSender, REQUEST_CODE_OPENER, null, 0, 0, 0);
         } catch (IntentSender.SendIntentException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
             mListener.onGDriveError();
         }
     }
@@ -224,7 +224,7 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
         try {
             mActivity.startIntentSenderForResult(intentSender, REQUEST_CODE_CREATOR, null, 0, 0, 0);
         } catch (IntentSender.SendIntentException e) {
-            AppLog.ex(e);
+            AppLog.e(e);
         }
     }
 

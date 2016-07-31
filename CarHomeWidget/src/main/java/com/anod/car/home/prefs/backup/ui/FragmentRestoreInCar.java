@@ -23,7 +23,7 @@ import com.anod.car.home.prefs.backup.PreferencesBackupManager;
 import com.anod.car.home.prefs.backup.RestoreCodeRender;
 import com.anod.car.home.prefs.backup.RestoreTask;
 import com.anod.car.home.prefs.preferences.ObjectRestoreManager;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.CheatSheet;
 import com.anod.car.home.utils.TrialDialogs;
 import com.anod.car.home.utils.Version;
@@ -55,9 +55,9 @@ public class FragmentRestoreInCar extends Fragment implements RestoreTask.Restor
     @Bind(R.id.uploadIncar)
     ImageButton mUploadIncar;
 
-    private Version mVersion;
-    private PreferencesBackupManager mBackupManager;
-    private GDriveBackup mGDriveBackup;
+    Version mVersion;
+    PreferencesBackupManager mBackupManager;
+    GDriveBackup mGDriveBackup;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

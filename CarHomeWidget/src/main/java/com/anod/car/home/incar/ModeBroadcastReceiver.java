@@ -1,6 +1,6 @@
 package com.anod.car.home.incar;
 
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -4,7 +4,7 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 
 import java.lang.reflect.Method;
 
@@ -20,16 +20,16 @@ public class WifiApControl {
     private static Method setWifiApEnabled;
     private static Method getWifiApConfiguration;
  
-    public static final String WIFI_AP_STATE_CHANGED_ACTION = "android.net.wifi.WIFI_AP_STATE_CHANGED";
+    static final String WIFI_AP_STATE_CHANGED_ACTION = "android.net.wifi.WIFI_AP_STATE_CHANGED";
  
-    public static final int WIFI_AP_STATE_DISABLED = WifiManager.WIFI_STATE_DISABLED;
-    public static final int WIFI_AP_STATE_DISABLING = WifiManager.WIFI_STATE_DISABLING;
-    public static final int WIFI_AP_STATE_ENABLED = WifiManager.WIFI_STATE_ENABLED;
-    public static final int WIFI_AP_STATE_ENABLING = WifiManager.WIFI_STATE_ENABLING;
-    public static final int WIFI_AP_STATE_FAILED = WifiManager.WIFI_STATE_UNKNOWN;
+    static final int WIFI_AP_STATE_DISABLED = WifiManager.WIFI_STATE_DISABLED;
+    static final int WIFI_AP_STATE_DISABLING = WifiManager.WIFI_STATE_DISABLING;
+    static final int WIFI_AP_STATE_ENABLED = WifiManager.WIFI_STATE_ENABLED;
+    static final int WIFI_AP_STATE_ENABLING = WifiManager.WIFI_STATE_ENABLING;
+    static final int WIFI_AP_STATE_FAILED = WifiManager.WIFI_STATE_UNKNOWN;
  
-    public static final String EXTRA_PREVIOUS_WIFI_AP_STATE = WifiManager.EXTRA_PREVIOUS_WIFI_STATE;
-    public static final String EXTRA_WIFI_AP_STATE = WifiManager.EXTRA_WIFI_STATE;
+    static final String EXTRA_PREVIOUS_WIFI_AP_STATE = WifiManager.EXTRA_PREVIOUS_WIFI_STATE;
+    static final String EXTRA_WIFI_AP_STATE = WifiManager.EXTRA_WIFI_STATE;
  
     static {
         // lookup methods and fields not defined publicly in the SDK.
@@ -69,7 +69,7 @@ public class WifiApControl {
         try {
             return (Boolean) isWifiApEnabled.invoke(mgr);
         } catch (Exception e) {
-            AppLog.ex(e); // shouldn't happen
+            AppLog.e(e); // shouldn't happen
             return false;
         }
     }
@@ -78,7 +78,7 @@ public class WifiApControl {
         try {
             return (Integer) getWifiApState.invoke(mgr);
         } catch (Exception e) {
-            AppLog.ex(e); // shouldn't happen
+            AppLog.e(e); // shouldn't happen
             return -1;
         }
     }
@@ -87,7 +87,7 @@ public class WifiApControl {
         try {
             return (WifiConfiguration) getWifiApConfiguration.invoke(mgr);
         } catch (Exception e) {
-            AppLog.ex(e); // shouldn't happen
+            AppLog.e(e); // shouldn't happen
             return null;
         }
     }
@@ -96,7 +96,7 @@ public class WifiApControl {
         try {
             return (Boolean) setWifiApEnabled.invoke(mgr, config, enabled);
         } catch (Exception e) {
-            AppLog.ex(e); // shouldn't happen
+            AppLog.e(e); // shouldn't happen
             return false;
         }
     }

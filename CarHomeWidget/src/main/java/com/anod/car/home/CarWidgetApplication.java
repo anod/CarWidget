@@ -1,14 +1,16 @@
 package com.anod.car.home;
 
 import android.app.Application;
+import android.os.Build;
 
 import com.anod.car.home.prefs.model.AppSettings;
-import com.anod.car.home.utils.AppLog;
 
 import com.crashlytics.android.Crashlytics;
+
+import info.anodsplace.android.log.AppLog;
 import io.fabric.sdk.android.Fabric;
 
-public class CarWidgetApplication extends Application {
+public class CarWidgetApplication extends Application implements AppLog.Listener {
 
     private int mThemeIdx;
 
@@ -18,8 +20,10 @@ public class CarWidgetApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
-        //LeakCanary.install(this);
+        AppLog.setDebug(BuildConfig.DEBUG, "CarWidget");
+        AppLog.instance().setListener(this);
 
+        //LeakCanary.install(this);
         mThemeIdx = AppSettings.create(this).getTheme();
         mObjectGraph = new ObjectGraph(this);
     }
@@ -41,5 +45,10 @@ public class CarWidgetApplication extends Application {
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
         AppLog.w("Level: " + level);
+    }
+
+    @Override
+    public void onLogException(Throwable tr) {
+        Crashlytics.logException(tr);
     }
 }

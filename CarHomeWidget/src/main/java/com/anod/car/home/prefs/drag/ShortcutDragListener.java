@@ -1,7 +1,7 @@
 package com.anod.car.home.prefs.drag;
 
 import com.anod.car.home.R;
-import com.anod.car.home.utils.AppLog;
+import info.anodsplace.android.log.AppLog;
 
 import android.app.Activity;
 import android.content.ClipData;

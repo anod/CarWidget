@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
+import info.anodsplace.android.log.AppLog;
+
 import static android.content.Context.ACTIVITY_SERVICE;
 import static android.content.pm.ApplicationInfo.FLAG_LARGE_HEAP;
 
@@ -45,11 +47,6 @@ public class Utils {
         return true;
     }
 
-    /**
-     *
-     * @param context
-     * @return
-     */
     public static boolean isProInstalled(Context context) {
         try {
             context.getPackageManager().getApplicationInfo("com.anod.car.home.pro", 0);
@@ -59,11 +56,6 @@ public class Utils {
         }
     }
 
-    /**
-     *
-     * @param context
-     * @return
-     */
     public static boolean isFreeInstalled(Context context) {
         try {
             context.getPackageManager().getApplicationInfo("com.anod.car.home.free", 0);
@@ -73,22 +65,9 @@ public class Utils {
         }
     }
 
-    public static Object readActivityState(Bundle savedInstanceState, Intent launchIntent,
-            String param, Object defaultValue) {
-        if (savedInstanceState != null) {
-            return savedInstanceState.get(param);
-        } else {
-            Bundle extras = launchIntent.getExtras();
-            if (extras != null) {
-                return extras.get(param);
-            }
-        }
-        return null;
-    }
-
     public static int readAppWidgetId(Bundle savedInstanceState, Intent launchIntent) {
         if (savedInstanceState != null) {
-            return savedInstanceState.getInt("appWidgetId");
+            return savedInstanceState.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
         } else {
             Bundle extras = launchIntent.getExtras();
             if (extras != null) {
@@ -97,6 +76,10 @@ public class Utils {
             }
         }
         return AppWidgetManager.INVALID_APPWIDGET_ID;
+    }
+
+    public static void saveAppWidgetId(Bundle outState, int mAppWidgetId) {
+        outState.putInt(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
     }
 
     public static float calcIconsScale(String scaleString) {
@@ -137,13 +120,8 @@ public class Utils {
             AppLog.e("Widget does not have the permission to launch " + intent +
                     ". Make sure to create a MAIN intent-filter for the corresponding activity " +
                     "or use the exported attribute for this activity.");
-            AppLog.ex(e);
+            AppLog.e(e);
         }
-    }
-
-
-    public static void saveAppWidgetId(Bundle outState, int mAppWidgetId) {
-        outState.putInt("appWidgetId", mAppWidgetId);
     }
 
     static int calculateMemoryCacheSize(Context context) {
@@ -155,14 +133,6 @@ public class Utils {
         }
         // Target ~15% of the available heap.
         return 1024 * 1024 * memoryClass / 7;
-    }
-
-    static int getBitmapBytes(Bitmap bitmap) {
-        int result = bitmap.getByteCount();;
-        if (result < 0) {
-            throw new IllegalStateException("Negative size: " + bitmap);
-        }
-        return result;
     }
 
     @SuppressWarnings("unchecked")
