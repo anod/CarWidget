@@ -10,6 +10,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.util.SimpleArrayMap;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -171,7 +173,7 @@ public class IconTheme {
         return 0;
     }
 
-    public Drawable getDrawable(int resId) {
-        return mThemeResources.getDrawableForDensity(resId, UtilitiesBitmap.getTargetDensity(mContext));
+    public Drawable getDrawable(@DrawableRes int resId) {
+        return ResourcesCompat.getDrawableForDensity(mThemeResources, resId, UtilitiesBitmap.getTargetDensity(mContext), null);
     }
 }

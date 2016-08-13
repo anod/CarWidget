@@ -3,10 +3,10 @@ package com.anod.car.home.prefs;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.ActivityPicker.PickAdapter.Item;
-import com.anod.car.home.utils.ApiCompat;
 import com.anod.car.home.utils.IntentUtils;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class CarWidgetShortcutsPicker extends ActivityPicker {
         String[] titles = r.getStringArray(R.array.carwidget_shortcuts);
         for (int i = 0; i < ITEMS_NUM; i++) {
             Intent intent = IntentUtils.createPickShortcutLocalIntent(i, titles[i], ICONS[i], this);
-            PickAdapter.Item item = new PickAdapter.Item(this, titles[i], ApiCompat.getDrawable(r, ICONS[i]),
+            PickAdapter.Item item = new PickAdapter.Item(this, titles[i], ResourcesCompat.getDrawable(r, ICONS[i], null),
                     intent);
             items.add(item);
         }

@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -38,7 +39,6 @@ import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.ShortcutInfoUtils;
 import com.anod.car.home.model.ShortcutModel;
 import com.anod.car.home.model.WidgetShortcutsModel;
-import com.anod.car.home.utils.ApiCompat;
 import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.IconPackUtils;
 import com.anod.car.home.utils.ShortcutPicker;
@@ -304,7 +304,7 @@ public class ShortcutEditActivity extends AppCompatActivity {
         try {
             // Load drawable through Resources, to get the source density information
             OpenResourceIdResult r = getResourceId(uri);
-            d = ApiCompat.getDrawableForDensity(r.r, r.id, UtilitiesBitmap.getTargetDensity(this));
+            d = ResourcesCompat.getDrawableForDensity(r.r, r.id, UtilitiesBitmap.getTargetDensity(this), null);
         } catch (Exception e) {
             Log.w("ShortcutEditActivity", "Unable to open content: " + uri, e);
         }

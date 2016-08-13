@@ -2,29 +2,21 @@ package com.anod.car.home.prefs.preferences;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.Uri;
-import android.os.Environment;
 
 import com.anod.car.home.model.AbstractShortcutsContainerModel;
 import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.model.ShortcutsContainerModel;
 import com.anod.car.home.model.WidgetShortcutsModel;
-import com.anod.car.home.prefs.backup.PreferencesBackupManager;
+import com.anod.car.home.backup.PreferencesBackupManager;
 import com.anod.car.home.prefs.model.InCarSettings;
 import com.anod.car.home.prefs.model.InCarStorage;
 import com.anod.car.home.prefs.model.PrefsMigrate;
 import com.anod.car.home.prefs.model.WidgetSettings;
 import com.anod.car.home.prefs.model.WidgetStorage;
-import com.anod.car.home.prefs.preferences.InCar;
-import com.anod.car.home.prefs.preferences.InCarBackup;
-import com.anod.car.home.prefs.preferences.ShortcutsMain;
+
 import info.anodsplace.android.log.AppLog;
 
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;

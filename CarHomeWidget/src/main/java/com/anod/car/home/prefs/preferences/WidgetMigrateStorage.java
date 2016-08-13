@@ -8,11 +8,10 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.support.v4.content.res.ResourcesCompat;
 
 import com.anod.car.home.R;
 import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.model.ShortcutModel;
-import com.anod.car.home.utils.ApiCompat;
 import com.anod.car.home.utils.BitmapTransform.RotateDirection;
 
 import java.util.ArrayList;
@@ -51,15 +50,15 @@ public class WidgetMigrateStorage {
         String skinName = prefs.getString(SKIN, Main.SKIN_CARDS);
         p.setSkin(skinName);
 
-        int defTileColor = ApiCompat.getColor(res, R.color.w7_tale_default_background);
+        int defTileColor = ResourcesCompat.getColor(res, R.color.w7_tale_default_background, null);
         int tileColor = prefs.getInt(BUTTON_COLOR, defTileColor);
         p.setTileColor(tileColor);
 
         p.setIconsScaleString(prefs.getString(ICONS_SCALE, ICONS_DEF_VALUE));
         p.setIconsMono(prefs.getBoolean(ICONS_MONO, false));
-        p.setBackgroundColor(prefs.getInt(BG_COLOR, ApiCompat.getColor(res, R.color.default_background)));
+        p.setBackgroundColor(prefs.getInt(BG_COLOR, ResourcesCompat.getColor(res, R.color.default_background, null)));
         p.setIconsColor(prefs.getColor(ICONS_COLOR));
-        p.setFontColor(prefs.getInt(FONT_COLOR, ApiCompat.getColor(res, R.color.default_font_color)));
+        p.setFontColor(prefs.getInt(FONT_COLOR, ResourcesCompat.getColor(res, R.color.default_font_color, null)));
         p.setFontSize(prefs.getInt(FONT_SIZE, Main.FONT_SIZE_UNDEFINED));
         p.setSettingsTransparent(prefs.getBoolean(TRANSPARENT_BTN_SETTINGS, false));
         p.setIncarTransparent(prefs.getBoolean(TRANSPARENT_BTN_INCAR, false));

@@ -20,6 +20,7 @@ import com.anod.car.home.R;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -64,8 +65,9 @@ public class ColorPickerSwatch extends FrameLayout implements View.OnClickListen
     }
 
     protected void setColor(int color) {
-        Drawable[] colorDrawable = new Drawable[]
-                {getContext().getResources().getDrawable(R.drawable.color_picker_swatch)};
+        Drawable[] colorDrawable = new Drawable[] {
+            ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.color_picker_swatch, null)
+        };
         mSwatchImage.setImageDrawable(new ColorStateDrawable(colorDrawable, color));
     }
 

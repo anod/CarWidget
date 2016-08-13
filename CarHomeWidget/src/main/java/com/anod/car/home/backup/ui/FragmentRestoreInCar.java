@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.backup.ui;
+package com.anod.car.home.backup.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -16,12 +19,12 @@ import android.widget.Toast;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.ConfigurationActivity;
-import com.anod.car.home.prefs.backup.BackupCodeRender;
-import com.anod.car.home.prefs.backup.BackupTask;
-import com.anod.car.home.prefs.backup.GDriveBackup;
-import com.anod.car.home.prefs.backup.PreferencesBackupManager;
-import com.anod.car.home.prefs.backup.RestoreCodeRender;
-import com.anod.car.home.prefs.backup.RestoreTask;
+import com.anod.car.home.backup.BackupCodeRender;
+import com.anod.car.home.backup.BackupTask;
+import com.anod.car.home.backup.GDriveBackup;
+import com.anod.car.home.backup.PreferencesBackupManager;
+import com.anod.car.home.backup.RestoreCodeRender;
+import com.anod.car.home.backup.RestoreTask;
 import com.anod.car.home.prefs.preferences.ObjectRestoreManager;
 import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.CheatSheet;
@@ -39,12 +42,6 @@ import butterknife.ButterKnife;
  */
 public class FragmentRestoreInCar extends Fragment implements RestoreTask.RestoreTaskListener,
         BackupTask.BackupTaskListener, GDriveBackup.Listener {
-
-    @Bind(R.id.backupIncar)
-    ImageButton mBackupIncar;
-
-    @Bind(R.id.downloadIncar)
-    ImageButton mDownloadIncar;
 
     @Bind(R.id.restoreIncar)
     ImageButton mRestoreIncar;
@@ -67,11 +64,8 @@ public class FragmentRestoreInCar extends Fragment implements RestoreTask.Restor
 
         ButterKnife.bind(this, view);
 
-        CheatSheet.setup(mBackupIncar);
-        CheatSheet.setup(mDownloadIncar);
         CheatSheet.setup(mRestoreIncar);
         CheatSheet.setup(mUploadIncar);
-
         return view;
     }
 
@@ -82,15 +76,6 @@ public class FragmentRestoreInCar extends Fragment implements RestoreTask.Restor
         mBackupManager = getRestoreFragment().getBackupManager();
         mGDriveBackup = new GDriveBackup(getActivity(), this);
         ((ConfigurationActivity) getActivity()).setActivityResultListener(mGDriveBackup);
-
-        mBackupIncar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new BackupTask(PreferencesBackupManager.TYPE_INCAR, mBackupManager, 0,
-                        FragmentRestoreInCar.this)
-                        .execute((String[]) null);
-            }
-        });
 
         mVersion = new Version(getContext());
         if (mVersion.isFree()) {
@@ -119,12 +104,41 @@ public class FragmentRestoreInCar extends Fragment implements RestoreTask.Restor
 
         setupDownloadUpload();
         updateInCarTime();
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!mGDriveBackup.isSupported())
+        {
+            menu.findItem(R.id.menu_download_from_cloud).setVisible(false);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_new_backup:
+                new BackupTask(PreferencesBackupManager.TYPE_INCAR, mBackupManager, 0,
+                        FragmentRestoreInCar.this)
+                        .execute((String[]) null);
+                return true;
+            case R.id.menu_download_from_cloud:
+                if (mVersion.isFree()) {
+                    TrialDialogs.buildProOnlyDialog(getContext()).show();
+                } else {
+                    mGDriveBackup.download(0);
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
 
-        if (requestCode == ConfigurationRestore.DOWNLOAD_INCAR_REQUEST_CODE
+        if (requestCode == FragmentBackup.DOWNLOAD_INCAR_REQUEST_CODE
                 && resultCode == Activity.RESULT_OK) {
 
             // The document selected by the user won't be returned in the intent.
@@ -149,29 +163,12 @@ public class FragmentRestoreInCar extends Fragment implements RestoreTask.Restor
         super.onPause();
     }
 
-    private ConfigurationRestore getRestoreFragment() {
-        return ((ConfigurationRestore) getParentFragment());
+    private FragmentBackup getRestoreFragment() {
+        return ((FragmentBackup) getParentFragment());
     }
 
     private void setupDownloadUpload() {
         if (mGDriveBackup.isSupported()) {
-
-            if (mVersion.isFree()) {
-                mDownloadIncar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        TrialDialogs.buildProOnlyDialog(getContext()).show();
-                    }
-                });
-            } else {
-                mDownloadIncar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mGDriveBackup.download(0);
-                    }
-                });
-            }
-
             mUploadIncar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -181,18 +178,15 @@ public class FragmentRestoreInCar extends Fragment implements RestoreTask.Restor
             });
 
         } else {
-            mDownloadIncar.setVisibility(View.GONE);
             mUploadIncar.setVisibility(View.GONE);
         }
     }
-
 
     private void updateInCarTime() {
         String summary;
         long timeIncar = mBackupManager.getIncarTime();
         if (timeIncar > 0) {
-            summary = DateUtils
-                    .formatDateTime(getContext(), timeIncar, ConfigurationRestore.DATE_FORMAT);
+            summary = DateUtils.formatDateTime(getContext(), timeIncar, FragmentBackup.DATE_FORMAT);
         } else {
             summary = getString(R.string.never);
         }

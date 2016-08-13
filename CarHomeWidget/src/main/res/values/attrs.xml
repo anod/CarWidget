@@ -9,6 +9,8 @@
     <attr name="activityBgColor" format="reference" />
     <attr name="wizardTextItem" format="reference" />
 
+    <attr name="textAppearanceMediumBackgroundInverse" format="reference" />
+
     <declare-styleable name="TwoLineButtonAttrs">
         <attr name="icon_src" format="reference|color" />
         <attr name="title_text" format="reference|string" />

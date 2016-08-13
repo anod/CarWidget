@@ -231,5 +231,4 @@
     <style name="Notification.Line2" parent="TextAppearance.StatusBar.EventContent.Line2" />
     <style name="Notification.Icon" parent="android:TextAppearance.StatusBar.Icon" />
 
-
 </resources>

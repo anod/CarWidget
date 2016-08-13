@@ -38,6 +38,7 @@ import com.anod.car.home.prefs.model.WidgetSettings;
 import com.anod.car.home.prefs.model.WidgetStorage;
 import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.BitmapLruCache;
+import com.anod.car.home.utils.HtmlCompat;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 
@@ -268,7 +269,7 @@ public class LookAndFeelActivity extends CarWidgetActivity
     private void showText(int position) {
         int textRes = getSkinItem(position).textRes;
         if (textRes > 0) {
-            Spanned text = Html.fromHtml(getString(textRes));
+            Spanned text = HtmlCompat.fromHtml(getString(textRes));
             mTextView.setText(text);
             mTextView.setVisibility(View.VISIBLE);
         } else {

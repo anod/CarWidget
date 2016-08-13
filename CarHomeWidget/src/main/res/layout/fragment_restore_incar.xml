@@ -5,48 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="@dimen/panel_header_margin"
-    tools:context="com.anod.car.home.prefs.backup.ui.FragmentRestoreInCar">
+    tools:context=".backup.ui.FragmentRestoreInCar">
 
-
-    <LinearLayout
-        android:id="@+id/header2"
-        style="?attr/panelHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingBottom="0dp"
-        android:paddingTop="0dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/new_backup"
-            android:textAppearance="@style/panelHeaderText" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/downloadIncar"
-                style="@android:style/Widget.ActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/import_backup"
-                android:src="@drawable/ic_action_xhdpi_dl_from_cloud" />
-
-            <ImageButton
-                android:id="@+id/backupIncar"
-                style="@android:style/Widget.ActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/backup"
-                android:src="@drawable/ic_action_add" />
-        </LinearLayout>
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/lastBackupIncarLine"

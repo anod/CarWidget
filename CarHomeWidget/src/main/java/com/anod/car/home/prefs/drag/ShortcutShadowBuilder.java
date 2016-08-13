@@ -9,6 +9,7 @@ import com.anod.car.home.R;
 
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 
 /**
@@ -21,7 +22,7 @@ public class ShortcutShadowBuilder extends View.DragShadowBuilder {
 
     public ShortcutShadowBuilder(View v) {
         super(v);
-        mColorDragBg = v.getResources().getColor(R.color.drag_item_bg);
+        mColorDragBg = ResourcesCompat.getColor(v.getResources(), R.color.drag_item_bg, null);
     }
 
     @Override

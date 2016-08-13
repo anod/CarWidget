@@ -21,6 +21,8 @@
         <item name="android:textColorSecondary">@color/secondary_text_grey</item>
         <item name="android:textColorPrimaryInverse">@color/panel_bg_normal</item>
 
+        <item name="textAppearanceMediumBackgroundInverse">@style/TextAppearance.AppCompat.Medium.Inverse</item>
+
         <item name="colorPrimary">@color/material_bluegray_600</item>
         <item name="colorPrimaryDark">@color/material_bluegray_800</item>
         <item name="colorAccent">@color/material_bluegray_300</item>

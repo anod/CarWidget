@@ -7,6 +7,7 @@ import com.anod.car.home.utils.ColorUtils;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -110,8 +111,9 @@ public class HexPanel extends LinearLayout {
     }
 
     protected void setPreviewColor(int color) {
-        Drawable[] colorDrawable = new Drawable[]
-                {getContext().getResources().getDrawable(R.drawable.color_picker_swatch)};
+        Drawable[] colorDrawable = new Drawable[] {
+            ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.color_picker_swatch, null)
+        };
         mPreview.setImageDrawable(new ColorStateDrawable(colorDrawable, color));
     }
 

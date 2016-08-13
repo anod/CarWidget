@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.backup;
+package com.anod.car.home.backup;
 
 import com.anod.car.home.R;
 

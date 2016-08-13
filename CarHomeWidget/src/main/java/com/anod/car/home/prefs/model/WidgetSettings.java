@@ -3,13 +3,13 @@ package com.anod.car.home.prefs.model;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.JsonReader;
 import android.util.JsonToken;
 import android.util.JsonWriter;
 
 import com.anod.car.home.R;
-import com.anod.car.home.utils.ApiCompat;
 import com.anod.car.home.utils.BitmapTransform;
 
 import java.io.IOException;
@@ -85,7 +85,7 @@ public class WidgetSettings extends ChangeableSharedPreferences implements Widge
 
     @Override
     public Integer getTileColor() {
-        int defTileColor = ApiCompat.getColor(mResources, R.color.w7_tale_default_background);
+        int defTileColor = ResourcesCompat.getColor(mResources, R.color.w7_tale_default_background, null);
         return mPrefs.getInt(BUTTON_COLOR, defTileColor);
     }
 
@@ -106,7 +106,7 @@ public class WidgetSettings extends ChangeableSharedPreferences implements Widge
 
     @Override
     public int getFontColor() {
-        return mPrefs.getInt(FONT_COLOR, ApiCompat.getColor(mResources, R.color.default_font_color));
+        return mPrefs.getInt(FONT_COLOR, ResourcesCompat.getColor(mResources, R.color.default_font_color, null));
     }
 
     @Override
@@ -116,7 +116,7 @@ public class WidgetSettings extends ChangeableSharedPreferences implements Widge
 
     @Override
     public int getBackgroundColor() {
-        return mPrefs.getInt(BG_COLOR, ApiCompat.getColor(mResources, R.color.default_background));
+        return mPrefs.getInt(BG_COLOR, ResourcesCompat.getColor(mResources, R.color.default_background, null));
     }
 
     @Override

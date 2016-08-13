@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.backup;
+package com.anod.car.home.backup;
 
 import android.app.backup.BackupAgentHelper;
 import android.app.backup.BackupDataInput;
@@ -6,8 +6,6 @@ import android.app.backup.BackupDataOutput;
 import android.app.backup.FileBackupHelper;
 import android.content.Context;
 import android.os.ParcelFileDescriptor;
-
-import info.anodsplace.android.log.AppLog;
 
 import java.io.File;
 import java.io.IOException;

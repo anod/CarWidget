@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;

@@ -11,9 +11,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 
-import com.anod.car.home.utils.ApiCompat;
 import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.UtilitiesBitmap;
@@ -182,7 +182,7 @@ public class ShortcutInfoUtils {
             Context context) {
         Drawable drawableAppIcon = null;
         try {
-            drawableAppIcon = ApiCompat.getDrawableForDensity(resources, id, UtilitiesBitmap.getTargetDensity(context));
+            drawableAppIcon = ResourcesCompat.getDrawableForDensity(resources, id, UtilitiesBitmap.getTargetDensity(context), null);
         } catch (Resources.NotFoundException e) {
             AppLog.e(e);
         }
@@ -190,7 +190,7 @@ public class ShortcutInfoUtils {
         if (drawableAppIcon == null) {
             //fallback to the default density
             try {
-                drawableAppIcon = ApiCompat.getDrawable(resources, id);
+                drawableAppIcon = ResourcesCompat.getDrawable(resources, id, null);
             } catch (Resources.NotFoundException e) {
                 AppLog.e(e);
                 return null;

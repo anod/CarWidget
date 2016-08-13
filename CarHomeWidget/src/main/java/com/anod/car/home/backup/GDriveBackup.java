@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.backup;
+package com.anod.car.home.backup;
 
 import android.app.Activity;
 import android.content.Context;

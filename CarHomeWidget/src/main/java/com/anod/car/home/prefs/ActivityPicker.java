@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,6 @@ import android.widget.TextView;
 
 import com.anod.car.home.R;
 import com.anod.car.home.app.AppCompatGridActivity;
-import com.anod.car.home.utils.ApiCompat;
 import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.FastBitmapDrawable;
 import com.anod.car.home.utils.UtilitiesBitmap;
@@ -118,7 +118,7 @@ public class ActivityPicker extends AppCompatGridActivity {
                     ShortcutIconResource iconResource = icons.get(i);
                     Resources res = packageManager
                             .getResourcesForApplication(iconResource.packageName);
-                    icon = ApiCompat.getDrawable(res, res.getIdentifier(iconResource.resourceName, null, null));
+                    icon = ResourcesCompat.getDrawable(res, res.getIdentifier(iconResource.resourceName, null, null), null);
                 } catch (NameNotFoundException e) {
                     AppLog.w(e.getMessage());
                 }

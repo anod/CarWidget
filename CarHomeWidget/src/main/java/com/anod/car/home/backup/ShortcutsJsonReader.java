@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.backup;
+package com.anod.car.home.backup;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,13 +8,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
 import android.util.JsonReader;
 import android.util.SparseArray;
 
 import com.anod.car.home.model.LauncherSettings;
 import com.anod.car.home.model.ShortcutInfo;
-import com.anod.car.home.utils.ApiCompat;
 import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.SoftReferenceThreadLocal;
 import com.anod.car.home.utils.UtilitiesBitmap;
@@ -158,7 +158,7 @@ public class ShortcutsJsonReader {
                         final int id = resources.getIdentifier(iconResourceName, null, null);
                         if (id > 0) {
                             icon = UtilitiesBitmap
-                                    .createHiResIconBitmap(ApiCompat.getDrawable(resources, id), mContext);
+                                    .createHiResIconBitmap(ResourcesCompat.getDrawable(resources, id, null), mContext);
                         }
                     }
                 } catch (PackageManager.NameNotFoundException | Resources.NotFoundException e) {

@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.anod.car.home.prefs.backup.ui.ConfigurationRestore">
+    android:padding="@dimen/panel_header_margin"
+    tools:context=".backup.ui.FragmentBackup">
 
     <TextView
         android:id="@android:id/empty"
@@ -11,74 +12,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
+        style="?attr/textAppearanceMediumBackgroundInverse"
         android:text="@string/no_backup_files_found" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ListView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.anod.car.home.prefs.backup.ui.ConfigurationRestore">
-
-        <LinearLayout
-            android:id="@+id/header1"
-            style="?attr/panelHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/preference_item_margin"
-
-            android:layout_marginLeft="@dimen/panel_header_margin"
-            android:layout_marginRight="@dimen/panel_header_margin"
-            android:layout_marginTop="@dimen/panel_header_margin"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingBottom="0dp"
-            android:paddingRight="0dp"
-            android:paddingTop="0dp"
-
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/new_backup"
-                android:textAppearance="@style/panelHeaderText" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/downloadMain"
-                    style="@android:style/Widget.ActionButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/import_backup"
-                    android:src="@drawable/ic_action_xhdpi_dl_from_cloud" />
-
-                <ImageButton
-                    android:id="@+id/backupMain"
-                    style="@android:style/Widget.ActionButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/backup"
-                    android:src="@drawable/ic_action_add" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <ListView
-            android:id="@android:id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/panel_header_margin"
-            android:layout_marginRight="@dimen/panel_header_margin"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="@dimen/preference_item_margin"
-            android:drawSelectorOnTop="false"
-            tools:listitem="@layout/fragment_restore_item" />
-
-    </LinearLayout>
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/preference_item_margin"
+        android:drawSelectorOnTop="false"
+        tools:listitem="@layout/fragment_restore_item" />
 
 </FrameLayout>

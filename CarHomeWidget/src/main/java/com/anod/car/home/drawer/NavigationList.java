@@ -22,7 +22,7 @@ import com.anod.car.home.R;
 import com.anod.car.home.app.App;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.prefs.ConfigurationInCar;
-import com.anod.car.home.prefs.backup.ui.ConfigurationRestore;
+import com.anod.car.home.backup.ui.FragmentBackup;
 import com.anod.car.home.prefs.LookAndFeelActivity;
 import com.anod.car.home.prefs.MusicAppSettingsActivity;
 import com.anod.car.home.prefs.model.AppSettings;
@@ -251,7 +251,7 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
                 return false;
             case ID_BACKUP:
                 intent = ConfigurationActivity
-                        .createFragmentIntent(mContext, ConfigurationRestore.class);
+                        .createFragmentIntent(mContext, FragmentBackup.class);
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
                 mContext.startActivity(intent);
                 return true;

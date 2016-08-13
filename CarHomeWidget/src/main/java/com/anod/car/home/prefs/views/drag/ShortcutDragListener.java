@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
@@ -14,7 +15,6 @@ import android.view.View;
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.model.AppTheme;
 import com.anod.car.home.prefs.views.ShortcutPreference;
-import com.anod.car.home.utils.ApiCompat;
 
 /**
  * @author alex
@@ -32,10 +32,10 @@ public class ShortcutDragListener implements View.OnDragListener {
     public ShortcutDragListener(Context context, int appThemeIdx,
             ShortcutPreference.DropCallback dropCallback) {
         Resources r = context.getResources();
-        mTopShadow = ApiCompat.getDrawable(r, R.drawable.drop_shadow_top);
+        mTopShadow = ResourcesCompat.getDrawable(r, R.drawable.drop_shadow_top, null);
 
         int bgRes = AppTheme.getBackgroundResource(appThemeIdx);
-        mBackground = ApiCompat.getDrawable(r, bgRes);
+        mBackground = ResourcesCompat.getDrawable(r, bgRes, null);
         mDropCallback = dropCallback;
     }
 

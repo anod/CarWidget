@@ -18,7 +18,6 @@ package com.example.android.wizardpager.wizard.ui;
 
 
 import com.anod.car.home.R;
-import com.anod.car.home.utils.ApiCompat;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -26,6 +25,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -84,16 +84,16 @@ public class StepPagerStrip extends View {
         mTabSpacing = res.getDimensionPixelSize(R.dimen.step_pager_tab_spacing);
 
         mPrevTabPaint = new Paint();
-        mPrevTabPaint.setColor(ApiCompat.getColor(res, R.color.step_pager_previous_tab_color));
+        mPrevTabPaint.setColor(ResourcesCompat.getColor(res, R.color.step_pager_previous_tab_color, null));
 
         mSelectedTabPaint = new Paint();
-        mSelectedTabPaint.setColor(ApiCompat.getColor(res, R.color.step_pager_selected_tab_color));
+        mSelectedTabPaint.setColor(ResourcesCompat.getColor(res, R.color.step_pager_selected_tab_color, null));
 
         mSelectedLastTabPaint = new Paint();
-        mSelectedLastTabPaint.setColor(ApiCompat.getColor(res, R.color.step_pager_selected_last_tab_color));
+        mSelectedLastTabPaint.setColor(ResourcesCompat.getColor(res, R.color.step_pager_selected_last_tab_color, null));
 
         mNextTabPaint = new Paint();
-        mNextTabPaint.setColor(ApiCompat.getColor(res, R.color.step_pager_next_tab_color));
+        mNextTabPaint.setColor(ResourcesCompat.getColor(res, R.color.step_pager_next_tab_color, null));
     }
 
     public void setOnPageSelectedListener(OnPageSelectedListener onPageSelectedListener) {

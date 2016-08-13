@@ -2,6 +2,7 @@ package com.anod.car.home.utils;
 
 import com.anod.car.home.R;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.appwidget.AppWidgetManager;
@@ -35,7 +36,7 @@ public class Utils {
     public static final boolean IS_KITKAT_OR_GREATER = (Build.VERSION.SDK_INT >= 19);
 
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public static boolean isLowMemoryDevice()
     {
         if (IS_KITKAT_OR_GREATER) {

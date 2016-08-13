@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.backup.ui;
+package com.anod.car.home.backup.ui;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -13,6 +13,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -25,12 +28,12 @@ import android.widget.Toast;
 
 import com.anod.car.home.R;
 import com.anod.car.home.prefs.ConfigurationActivity;
-import com.anod.car.home.prefs.backup.BackupCodeRender;
-import com.anod.car.home.prefs.backup.BackupTask;
-import com.anod.car.home.prefs.backup.GDriveBackup;
-import com.anod.car.home.prefs.backup.PreferencesBackupManager;
-import com.anod.car.home.prefs.backup.RestoreCodeRender;
-import com.anod.car.home.prefs.backup.RestoreTask;
+import com.anod.car.home.backup.BackupCodeRender;
+import com.anod.car.home.backup.BackupTask;
+import com.anod.car.home.backup.GDriveBackup;
+import com.anod.car.home.backup.PreferencesBackupManager;
+import com.anod.car.home.backup.RestoreCodeRender;
+import com.anod.car.home.backup.RestoreTask;
 import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.CheatSheet;
 import com.anod.car.home.utils.DeleteFileTask;
@@ -56,14 +59,8 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
         return fragment;
     }
 
-    @Bind(R.id.backupMain)
-    ImageButton mBackupMain;
-
     @Bind(android.R.id.list)
     ListView mListView;
-
-    @Bind(R.id.downloadMain)
-    ImageButton mDownloadMain;
 
     RestoreClickListener mRestoreListener;
     DeleteClickListener mDeleteListener;
@@ -79,11 +76,7 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_restore_widget, container, false);
-
         ButterKnife.bind(this, view);
-
-        CheatSheet.setup(mBackupMain);
-        CheatSheet.setup(mDownloadMain);
 
         mListView.setEmptyView(ButterKnife.findById(view, android.R.id.empty));
         return view;
@@ -102,23 +95,38 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
         mDeleteListener = new DeleteClickListener();
         mExportListener = new ExportClickListener();
 
-        mBackupMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createBackupNameDialog().show();
-            }
-        });
         mAdapter = new RestoreAdapter(getContext(), R.layout.fragment_restore_item, new ArrayList<File>());
         mListView.setAdapter(mAdapter);
         new FileListTask().execute(0);
+        setHasOptionsMenu(true);
+    }
 
-        setupDownloadUpload();
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!mGDriveBackup.isSupported())
+        {
+            menu.findItem(R.id.menu_download_from_cloud).setVisible(false);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_new_backup:
+                createBackupNameDialog().show();
+                return true;
+            case R.id.menu_download_from_cloud:
+                mGDriveBackup.download(mAppWidgetId);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
 
-        if (requestCode == ConfigurationRestore.DOWNLOAD_MAIN_REQUEST_CODE
+        if (requestCode == FragmentBackup.DOWNLOAD_MAIN_REQUEST_CODE
                 && resultCode == Activity.RESULT_OK) {
 
             // The document selected by the user won't be returned in the intent.
@@ -143,22 +151,8 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
         super.onPause();
     }
 
-    private ConfigurationRestore getRestoreFragment() {
-        return ((ConfigurationRestore) getParentFragment());
-    }
-
-    private void setupDownloadUpload() {
-        if (mGDriveBackup.isSupported()) {
-            mDownloadMain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mGDriveBackup.download(mAppWidgetId);
-                }
-            });
-
-        } else {
-            mDownloadMain.setVisibility(View.GONE);
-        }
+    private FragmentBackup getRestoreFragment() {
+        return ((FragmentBackup) getParentFragment());
     }
 
     @Override
@@ -238,7 +232,7 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
             holder.title.setText(title);
             holder.title.setOnClickListener(mRestoreListener);
 
-            String timestamp = DateUtils.formatDateTime(getContext(), entry.lastModified(), ConfigurationRestore.DATE_FORMAT);
+            String timestamp = DateUtils.formatDateTime(getContext(), entry.lastModified(), FragmentBackup.DATE_FORMAT);
             holder.text2.setText(timestamp);
 
             holder.apply.setTag(name);

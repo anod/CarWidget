@@ -27,8 +27,8 @@ dependencies {
     compile 'com.android.support:preference-v7:24.1.1'
     compile 'com.android.support:palette-v7:24.1.1'
 
-    compile 'com.google.android.gms:play-services-drive:9.2.1'
-    compile 'com.google.android.gms:play-services-location:9.2.1'
+    compile 'com.google.android.gms:play-services-drive:9.4.0'
+    compile 'com.google.android.gms:play-services-location:9.4.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton:disklrucache:2.0.2'
     compile 'com.squareup.picasso:picasso:2.6.0-SNAPSHOT'

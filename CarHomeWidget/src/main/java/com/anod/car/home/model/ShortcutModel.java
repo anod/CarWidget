@@ -13,8 +13,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
 
 import info.anodsplace.android.log.AppLog;
@@ -153,8 +155,8 @@ public class ShortcutModel {
                         if (resources != null) {
                             final int id = resources.getIdentifier(resourceName, null, null);
                             if (id > 0) {
-                                icon = UtilitiesBitmap
-                                        .createHiResIconBitmap(resources.getDrawable(id), mContext);
+                                Drawable iconDrawable = ResourcesCompat.getDrawable(resources, id, null);
+                                icon = UtilitiesBitmap.createHiResIconBitmap(iconDrawable, mContext);
                             }
                         }
                     } catch (NameNotFoundException | NotFoundException e) {

@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.backup.ui;
+package com.anod.car.home.backup.ui;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -22,14 +22,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.anod.car.home.R;
-import com.anod.car.home.prefs.backup.PreferencesBackupManager;
+import com.anod.car.home.backup.PreferencesBackupManager;
 import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.Utils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ConfigurationRestore extends Fragment {
+public class FragmentBackup extends Fragment {
 
     static final int DOWNLOAD_MAIN_REQUEST_CODE = 1;
     static final int DOWNLOAD_INCAR_REQUEST_CODE = 2;
@@ -170,7 +170,10 @@ public class ConfigurationRestore extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return (position == 0) ? FragmentRestoreWidget.create(mAppWidgetId) : new FragmentRestoreInCar();
+            if (position == 0) {
+                return FragmentRestoreWidget.create(mAppWidgetId);
+            }
+            return new FragmentRestoreInCar();
         }
 
         @Override

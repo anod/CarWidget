@@ -3,6 +3,7 @@ package com.anod.car.home.ui;
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.prefs.model.AppTheme;
+import com.anod.car.home.utils.HtmlCompat;
 import com.anod.car.home.utils.Version;
 import com.example.android.wizardpager.wizard.ui.StepPagerStrip;
 
@@ -183,22 +184,22 @@ public class WizardActivity extends CarWidgetActivity {
             TextView desc1 = (TextView) rootView.findViewById(R.id.desc1);
             TextView desc2 = (TextView) rootView.findViewById(R.id.desc2);
             if (layoutId == R.layout.wizard_fragment_1) {
-                desc1.setText(Html.fromHtml(getString(R.string.welcome_text)));
+                desc1.setText(HtmlCompat.fromHtml(getString(R.string.welcome_text)));
             } else if (layoutId == R.layout.wizard_fragment_2) {
-                desc1.setText(Html.fromHtml(getString(R.string.install_widget)));
+                desc1.setText(HtmlCompat.fromHtml(getString(R.string.install_widget)));
             } else if (layoutId == R.layout.wizard_fragment_3) {
-                desc1.setText(Html.fromHtml(getString(R.string.configure_text)));
-                desc2.setText(Html.fromHtml(getString(R.string.open_settings_description)));
+                desc1.setText(HtmlCompat.fromHtml(getString(R.string.configure_text)));
+                desc2.setText(HtmlCompat.fromHtml(getString(R.string.open_settings_description)));
             } else if (layoutId == R.layout.wizard_fragment_4) {
-                desc1.setText(Html.fromHtml(getString(R.string.detect_incar_description)));
-                desc2.setText(Html.fromHtml(getString(R.string.adjust_incar_description)));
+                desc1.setText(HtmlCompat.fromHtml(getString(R.string.detect_incar_description)));
+                desc2.setText(HtmlCompat.fromHtml(getString(R.string.adjust_incar_description)));
                 TextView desc3 = (TextView) rootView.findViewById(R.id.desc3);
-                desc3.setText(Html.fromHtml(getString(R.string.enable_incar_description)));
+                desc3.setText(HtmlCompat.fromHtml(getString(R.string.enable_incar_description)));
 
                 Version v = new Version(getActivity());
                 TextView desc4 = (TextView) rootView.findViewById(R.id.desc4);
                 if (v.isFree()) {
-                    desc4.setText(Html.fromHtml(
+                    desc4.setText(HtmlCompat.fromHtml(
                             getString(R.string.trial_description, v.getMaxTrialTimes())));
                 } else {
                     desc4.setVisibility(View.GONE);
