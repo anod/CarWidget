@@ -255,4 +255,5 @@
 	<string name="configure_select_item_hint">Select an item to configure the widget</string>
 	<string name="new_backup">BACKUP</string>
 	<string name="save_widget">Save widget settings</string>
+	<string name="last_backup">Last backup: %1$s</string>
 </resources>
