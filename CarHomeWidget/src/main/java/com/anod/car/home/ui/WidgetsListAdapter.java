@@ -3,8 +3,8 @@ package com.anod.car.home.ui;
 import com.anod.car.home.R;
 import com.anod.car.home.model.ShortcutInfo;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import static com.anod.car.home.R.string.shortcuts;
 
 /**
  * @author alex
@@ -62,17 +60,18 @@ class WidgetsListAdapter extends ArrayAdapter<WidgetsListAdapter.Item> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(int position, View view, @NonNull ViewGroup parent) {
 
         if (mCount == position) {
-            return getHintView(view, parent);
+            return getHintView(view);
         }
 
         return getWidgetView(position, view, parent);
     }
 
-    private View getHintView(View view, ViewGroup parent) {
+    private View getHintView(View view) {
         if (view == null) {
             TextView textView = new TextView(getContext());
             textView.setText(R.string.configure_select_item_hint);

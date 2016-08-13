@@ -25,24 +25,15 @@ public class WidgetsListFragment extends ListFragment
         implements LoaderManager.LoaderCallbacks<WidgetsListLoader.Result> {
 
     private static final int INCAR_HEADER = 0;
-
     private WidgetsListAdapter mAdapter;
-
     private int[] mAppWidgetIds;
-
     private Version mVersion;
-
     private View mHeaderView;
 
     public static WidgetsListFragment newInstance() {
-        WidgetsListFragment f = new WidgetsListFragment();
-
-        return f;
+        return new WidgetsListFragment();
     }
 
-    /* (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onResume()
-     */
     @Override
     public void onResume() {
         super.onResume();

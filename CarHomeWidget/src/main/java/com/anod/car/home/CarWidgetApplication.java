@@ -1,27 +1,51 @@
 package com.anod.car.home;
 
 import android.app.Application;
-import android.os.Build;
+import android.content.Context;
 
+import com.anod.car.home.acra.BrowserUrlSender;
+import com.anod.car.home.acra.CrashDialog;
 import com.anod.car.home.prefs.model.AppSettings;
 
-import com.crashlytics.android.Crashlytics;
+import org.acra.ACRA;
+import org.acra.ReportField;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
 
 import info.anodsplace.android.log.AppLog;
-import io.fabric.sdk.android.Fabric;
 
-public class CarWidgetApplication extends Application implements AppLog.Listener {
+@ReportsCrashes(
+        mode = ReportingInteractionMode.DIALOG,
+        resDialogText = R.string.crash_dialog_text,
+        resDialogOkToast = R.string.crash_dialog_toast,
+        reportDialogClass = CrashDialog.class,
+        customReportContent = {
+                ReportField.APP_VERSION_NAME, ReportField.APP_VERSION_CODE,
+                ReportField.ANDROID_VERSION,
+                ReportField.USER_APP_START_DATE, ReportField.USER_CRASH_DATE,
+                ReportField.REPORT_ID,
+                ReportField.PHONE_MODEL,
+                ReportField.BRAND,
+                ReportField.STACK_TRACE,
+                ReportField.USER_COMMENT
+        },
+        reportSenderFactoryClasses = { BrowserUrlSender.Factory.class }
+)
+public class CarWidgetApplication extends Application {
 
     private int mThemeIdx;
 
     private ObjectGraph mObjectGraph;
 
     @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        ACRA.init(this);
+    }
+    @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
         AppLog.setDebug(BuildConfig.DEBUG, "CarWidget");
-        AppLog.instance().setListener(this);
 
         //LeakCanary.install(this);
         mThemeIdx = AppSettings.create(this).getTheme();
@@ -31,7 +55,6 @@ public class CarWidgetApplication extends Application implements AppLog.Listener
     public ObjectGraph getObjectGraph() {
         return mObjectGraph;
     }
-
 
     public int getThemeIdx() {
         return mThemeIdx;
@@ -47,8 +70,4 @@ public class CarWidgetApplication extends Application implements AppLog.Listener
         AppLog.w("Level: " + level);
     }
 
-    @Override
-    public void onLogException(Throwable tr) {
-        Crashlytics.logException(tr);
-    }
 }

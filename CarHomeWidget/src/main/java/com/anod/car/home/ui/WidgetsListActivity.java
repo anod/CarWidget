@@ -5,12 +5,14 @@ import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.appwidget.WidgetHelper;
 import com.anod.car.home.drawer.NavigationDrawer;
 import com.anod.car.home.drawer.NavigationList;
+import com.anod.car.home.prefs.LookAndFeelActivity;
 import com.anod.car.home.prefs.model.PrefsMigrate;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.TrialDialogs;
 import com.anod.car.home.utils.Utils;
 import com.anod.car.home.utils.Version;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -118,7 +120,8 @@ public class WidgetsListActivity extends CarWidgetActivity {
 
 
     public void startConfigActivity(int appWidgetId) {
-        Intent configIntent = IntentUtils.createSettingsIntent(this, appWidgetId);
+        Intent configIntent = new Intent(this, LookAndFeelActivity.class);
+        configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         startActivity(configIntent);
     }
 
