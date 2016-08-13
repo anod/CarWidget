@@ -228,7 +228,10 @@ public class FragmentRestoreInCar extends Fragment implements RestoreTask.Restor
 
     @Override
     public void onGDriveDownloadFinish(String filename) {
-        onRestoreFinish(PreferencesBackupManager.TYPE_INCAR, PreferencesBackupManager.RESULT_DONE);
+        new BackupTask(PreferencesBackupManager.TYPE_INCAR, mBackupManager, 0,
+                FragmentRestoreInCar.this)
+                .execute((String[]) null);
+        //onRestoreFinish(PreferencesBackupManager.TYPE_INCAR, PreferencesBackupManager.RESULT_DONE);
     }
 
     @Override
