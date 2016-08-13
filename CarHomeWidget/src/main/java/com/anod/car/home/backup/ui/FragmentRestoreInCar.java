@@ -18,10 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anod.car.home.R;
+import com.anod.car.home.backup.gdrive.InCarGDriveBackup;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.backup.BackupCodeRender;
 import com.anod.car.home.backup.BackupTask;
-import com.anod.car.home.backup.GDriveBackup;
+import com.anod.car.home.backup.gdrive.GDriveBackup;
 import com.anod.car.home.backup.PreferencesBackupManager;
 import com.anod.car.home.backup.RestoreCodeRender;
 import com.anod.car.home.backup.RestoreTask;
@@ -74,8 +75,7 @@ public class FragmentRestoreInCar extends Fragment implements RestoreTask.Restor
         super.onViewCreated(view, savedInstanceState);
 
         mBackupManager = getRestoreFragment().getBackupManager();
-        mGDriveBackup = new GDriveBackup(getActivity(), this);
-        ((ConfigurationActivity) getActivity()).setActivityResultListener(mGDriveBackup);
+        mGDriveBackup = new InCarGDriveBackup(this, this);
 
         mVersion = new Version(getContext());
         if (mVersion.isFree()) {
@@ -128,7 +128,7 @@ public class FragmentRestoreInCar extends Fragment implements RestoreTask.Restor
                 if (mVersion.isFree()) {
                     TrialDialogs.buildProOnlyDialog(getContext()).show();
                 } else {
-                    mGDriveBackup.download(0);
+                    mGDriveBackup.download();
                 }
                 return true;
         }
@@ -227,7 +227,7 @@ public class FragmentRestoreInCar extends Fragment implements RestoreTask.Restor
     }
 
     @Override
-    public void onGDriveDownloadFinish() {
+    public void onGDriveDownloadFinish(String filename) {
         onRestoreFinish(PreferencesBackupManager.TYPE_INCAR, PreferencesBackupManager.RESULT_DONE);
     }
 

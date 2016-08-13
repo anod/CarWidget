@@ -49,28 +49,18 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
     private static final String RESOLVER_ACTIVITY = "com.android.internal.app.ResolverActivity";
 
     public static final int ID_CAR_SETTINGS = 1;
-
     public static final int ID_WIDGETS = 7;
-
-    private static final int ID_CAR_DOCK_APP = 2;
-
-    private static final int ID_THEME = 3;
-
-    private static final int ID_MUSIC_APP = 4;
-
-    private static final int ID_VERSION = 5;
-
-    private static final int ID_FEEDBACK = 6;
-
+    static final int ID_CAR_DOCK_APP = 2;
+    static final int ID_THEME = 3;
+    static final int ID_MUSIC_APP = 4;
+    static final int ID_VERSION = 5;
+    static final int ID_FEEDBACK = 6;
     public static final int ID_BACKUP = 8;
-
     public static final int ID_CURRENT_WIDGET = 9;
 
-    private final PackageManager mPackageManager;
-
-    private final Activity mActivity;
-
-    private final Context mContext;
+    final PackageManager mPackageManager;
+    final Activity mActivity;
+    final Context mContext;
 
     private final int mAppWidgetId;
 
@@ -250,8 +240,7 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
                 createThemesDialog().show();
                 return false;
             case ID_BACKUP:
-                intent = ConfigurationActivity
-                        .createFragmentIntent(mContext, FragmentBackup.class);
+                intent = ConfigurationActivity.createFragmentIntent(mContext, FragmentBackup.class);
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
                 mContext.startActivity(intent);
                 return true;

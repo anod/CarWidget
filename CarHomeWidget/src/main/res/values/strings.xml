@@ -84,7 +84,7 @@
 	<string name="backup_current_widget">Current widget</string>
 	<string name="backup_incar_settings">InCar settings</string>
 	<string name="backup_name_title">Backup name:</string>
-	<string name="backup_name_summary">Please define name to identify backup of current widget</string>
+	<string name="backup_name_summary">Please define name to identify backup of current the widget</string>
 	<string name="backup_done">Backup is done.</string>
 	<string name="external_storage_not_available">External storage is not available.</string>
 	<string name="failed_to_write_file">Failed to write the file.</string>
@@ -254,4 +254,5 @@
 	<string name="in_car_mode_switch">InCar mode switch</string>
 	<string name="configure_select_item_hint">Select an item to configure the widget</string>
 	<string name="new_backup">BACKUP</string>
+	<string name="save_widget">Save widget settings</string>
 </resources>

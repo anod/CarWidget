@@ -62,6 +62,7 @@ public class FragmentBackup extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        getActivity().setTitle(R.string.pref_backup_title);
         mAppWidgetId = Utils.readAppWidgetId(savedInstanceState, getActivity().getIntent());
         super.onActivityCreated(savedInstanceState);
 

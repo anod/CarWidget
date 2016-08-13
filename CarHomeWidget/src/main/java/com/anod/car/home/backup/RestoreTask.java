@@ -54,5 +54,4 @@ public class RestoreTask extends AsyncTask<Uri, Void, Integer> {
         mListener.onRestoreFinish(mType, result);
     }
 
-
 }

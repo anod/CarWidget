@@ -15,40 +15,49 @@ import java.io.InputStream;
  * @author alex
  * @date 2/28/14
  */
-public abstract class ReadDriveFileContentsAsyncTask
-        extends ApiClientAsyncTask {
+public abstract class ReadDriveFileContentsAsyncTask extends ApiClientAsyncTask {
+
+    public static class DriveIdParams extends Params {
+        final DriveId driveId;
+
+        public DriveIdParams(DriveId driveId) {
+            this.driveId = driveId;
+        }
+    }
+
+    public static class DriveResult extends Result
+    {
+        public final Metadata metadata;
+
+        public DriveResult(boolean success, Metadata metadata) {
+            super(success);
+            this.metadata = metadata;
+        }
+    }
 
     public ReadDriveFileContentsAsyncTask(Context context) {
         super(context);
     }
 
     @Override
-    protected Boolean doInBackgroundConnected(Params params) {
+    protected Result doInBackgroundConnected(Params params) {
         DriveId driveId = ((DriveIdParams) params).driveId;
         DriveFile file = driveId.asDriveFile();
         DriveApi.DriveContentsResult contentsResult = file
                 .open(getGoogleApiClient(), DriveFile.MODE_READ_ONLY, null).await();
         if (!contentsResult.getStatus().isSuccess()) {
-            return null;
+            return Result.FALSE;
         }
         DriveResource.MetadataResult metadataResult = file.getMetadata(getGoogleApiClient()).await();
-
         DriveContents contents = contentsResult.getDriveContents();
 
         InputStream inputStream = contents.getInputStream();
-        boolean result = readDriveFileBackground(inputStream, metadataResult.getMetadata());
+        DriveResult result = readDriveFileBackground(inputStream, metadataResult.getMetadata());
 
         contents.discard(getGoogleApiClient());
         return result;
     }
 
-    protected abstract boolean readDriveFileBackground(InputStream inputStream, Metadata metadata);
+    protected abstract DriveResult readDriveFileBackground(InputStream inputStream, Metadata metadata);
 
-    public static class DriveIdParams extends Params {
-        private final DriveId driveId;
-
-        public DriveIdParams(DriveId driveId) {
-            this.driveId = driveId;
-        }
-    }
 }

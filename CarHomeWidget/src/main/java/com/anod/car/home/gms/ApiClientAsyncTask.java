@@ -8,6 +8,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.Metadata;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -18,11 +19,21 @@ import java.util.concurrent.CountDownLatch;
 /**
  * An AsyncTask that maintains a connected client.
  */
-public abstract class ApiClientAsyncTask
-        extends AsyncTask<ApiClientAsyncTask.Params, Void, Boolean> {
+public abstract class ApiClientAsyncTask extends AsyncTask<ApiClientAsyncTask.Params, Void, ApiClientAsyncTask.Result> {
 
     public static class Params {
 
+    }
+
+    public static class Result {
+        public static Result FALSE = new Result(false);
+
+        public final boolean success;
+
+        Result(boolean success)
+        {
+            this.success = success;
+        }
     }
 
     private GoogleApiClient mClient;
@@ -38,7 +49,7 @@ public abstract class ApiClientAsyncTask
     }
 
     @Override
-    protected final Boolean doInBackground(Params... params) {
+    protected final Result doInBackground(Params... params) {
         AppLog.d("Google API connect in background");
         final CountDownLatch latch = new CountDownLatch(1);
         mClient.registerConnectionCallbacks(new ConnectionCallbacks() {
@@ -77,7 +88,7 @@ public abstract class ApiClientAsyncTask
      * Override this method to perform a computation on a background thread, while the client is
      * connected.
      */
-    protected abstract Boolean doInBackgroundConnected(Params params);
+    protected abstract Result doInBackgroundConnected(Params params);
 
     /**
      * Gets the GoogleApiClient owned by this async task.

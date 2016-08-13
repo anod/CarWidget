@@ -20,17 +20,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anod.car.home.R;
+import com.anod.car.home.backup.gdrive.AppWidgetGDriveBackup;
 import com.anod.car.home.prefs.ConfigurationActivity;
 import com.anod.car.home.backup.BackupCodeRender;
 import com.anod.car.home.backup.BackupTask;
-import com.anod.car.home.backup.GDriveBackup;
+import com.anod.car.home.backup.gdrive.GDriveBackup;
 import com.anod.car.home.backup.PreferencesBackupManager;
 import com.anod.car.home.backup.RestoreCodeRender;
 import com.anod.car.home.backup.RestoreTask;
@@ -88,8 +88,7 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
 
         mAppWidgetId = getArguments().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
         mBackupManager = getRestoreFragment().getBackupManager();
-        mGDriveBackup = new GDriveBackup(getActivity(), this);
-        ((ConfigurationActivity) getActivity()).setActivityResultListener(mGDriveBackup);
+        mGDriveBackup = new AppWidgetGDriveBackup(this, mAppWidgetId, this);
 
         mRestoreListener = new RestoreClickListener();
         mDeleteListener = new DeleteClickListener();
@@ -114,10 +113,11 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_new_backup:
-                createBackupNameDialog().show();
+                String defaultFilename = "widget-" + mAppWidgetId;
+                createBackupNameDialog(defaultFilename).show();
                 return true;
             case R.id.menu_download_from_cloud:
-                mGDriveBackup.download(mAppWidgetId);
+                mGDriveBackup.download();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -299,8 +299,7 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
             Uri uri = Uri.fromFile(mBackupManager.getBackupWidgetFile((String) v.getTag()));
             new RestoreTask(PreferencesBackupManager.TYPE_MAIN, mBackupManager, mAppWidgetId,
                     FragmentRestoreWidget.this)
-                    .execute(uri)
-            ;
+                    .execute(uri);
         }
     }
 
@@ -313,16 +312,15 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
         }
     }
 
-    AlertDialog createBackupNameDialog() {
-        String defaultFilename = "widget-" + mAppWidgetId;
+    AlertDialog createBackupNameDialog(String filename) {
         // This example shows how to add a custom layout to an AlertDialog
         LayoutInflater factory = LayoutInflater.from(getContext());
         final View textEntryView = factory.inflate(R.layout.backup_dialog_enter_name, null);
         final EditText backupName = (EditText) textEntryView.findViewById(R.id.backup_name);
-        backupName.setText(defaultFilename);
+        backupName.setText(filename);
 
         return new AlertDialog.Builder(getContext())
-                .setTitle(R.string.backup_current_widget)
+                .setTitle(R.string.save_widget)
                 .setView(textEntryView)
                 .setPositiveButton(R.string.backup_save, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -337,8 +335,7 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
                     public void onClick(DialogInterface dialog, int whichButton) {
                         //Nothing
                     }
-                }).create()
-                ;
+                }).create();
     }
 
     class ExportClickListener implements View.OnClickListener {
@@ -347,8 +344,7 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
         public void onClick(View v) {
             String name = (String) v.getTag();
             File file = mBackupManager.getBackupWidgetFile(name);
-            mGDriveBackup
-                    .upload("car-" + name, file);
+            mGDriveBackup.upload("car-" + name, file);
         }
     }
 
@@ -358,8 +354,14 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
     }
 
     @Override
-    public void onGDriveDownloadFinish() {
+    public void onGDriveDownloadFinish(String filename) {
         onRestoreFinish(PreferencesBackupManager.TYPE_MAIN, PreferencesBackupManager.RESULT_DONE);
+
+        int pos = filename.lastIndexOf('.');
+        if (pos > 0) {
+            filename = filename.substring(0, pos);
+        }
+        createBackupNameDialog(filename).show();
     }
 
     @Override

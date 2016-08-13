@@ -1,6 +1,5 @@
 package com.anod.car.home.gms;
 
-import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
@@ -21,8 +20,7 @@ import java.io.OutputStream;
  * @author alex
  * @date 2/28/14
  */
-public class WriteDriveFileContentsAsyncTask
-        extends ApiClientAsyncTask {
+public class WriteDriveFileContentsAsyncTask extends ApiClientAsyncTask {
 
     public static class FilesParam extends Params {
         private final File mSourceFile;
@@ -47,7 +45,7 @@ public class WriteDriveFileContentsAsyncTask
     }
 
     @Override
-    protected Boolean doInBackgroundConnected(Params params) {
+    protected Result doInBackgroundConnected(Params params) {
         FilesParam files = (FilesParam) params;
         try {
             DriveFile target = files.getDriveId().asDriveFile();
@@ -55,7 +53,7 @@ public class WriteDriveFileContentsAsyncTask
             DriveApi.DriveContentsResult contentsResult = target.open(
                     getGoogleApiClient(), DriveFile.MODE_WRITE_ONLY, null).await();
             if (!contentsResult.getStatus().isSuccess()) {
-                return false;
+                return Result.FALSE;
             }
             FileInputStream fileInputStream = new FileInputStream(files.getSource());
             InputStream inputStream = new BufferedInputStream(fileInputStream);
@@ -66,11 +64,12 @@ public class WriteDriveFileContentsAsyncTask
 
             com.google.android.gms.common.api.Status status = contents
                     .commit(getGoogleApiClient(), null).await();
-            return status.getStatus().isSuccess();
+
+            return new Result(status.getStatus().isSuccess());
         } catch (IOException e) {
             AppLog.e(e);
         }
-        return false;
+        return Result.FALSE;
     }
 
     private void copyStream(InputStream in, OutputStream out) throws IOException {
@@ -81,8 +80,4 @@ public class WriteDriveFileContentsAsyncTask
         }
     }
 
-    @Override
-    protected void onPostExecute(Boolean result) {
-
-    }
 }

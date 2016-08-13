@@ -1,4 +1,4 @@
-package com.anod.car.home.backup;
+package com.anod.car.home.backup.gdrive;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,13 +6,11 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.anod.car.home.gms.ReadDriveFileContentsAsyncTask;
 import com.anod.car.home.gms.WriteDriveFileContentsAsyncTask;
-import com.anod.car.home.prefs.ConfigurationActivity;
-import com.anod.car.home.prefs.preferences.ObjectRestoreManager;
-import info.anodsplace.android.log.AppLog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -20,19 +18,18 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveId;
-import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.drive.OpenFileActivityBuilder;
 
 import java.io.File;
-import java.io.InputStream;
+
+import info.anodsplace.android.log.AppLog;
 
 /**
  * @author alex
  * @date 1/19/14
  */
-public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        ConfigurationActivity.onActivityResultListener, ResultCallback<DriveApi.DriveContentsResult> {
+public abstract class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<DriveApi.DriveContentsResult> {
 
     static final int REQUEST_CODE_RESOLUTION = 123;
     static final int REQUEST_CODE_OPENER = 122;
@@ -44,25 +41,25 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
     private static final int ACTION_DOWNLOAD = 1;
     private static final int ACTION_UPLOAD = 2;
 
-    private final Listener mListener;
+    final Listener mListener;
+    final Context mContext;
+    private final Fragment mFragment;
+
     private GoogleApiClient mGoogleApiClient;
-    private Context mContext;
-    private Activity mActivity;
     private int mOnConnectAction;
     private String mTargetFileName;
     private File mFile;
-    private int mAppWidgetId;
 
     public interface Listener {
         void onGDriveActionStart();
-        void onGDriveDownloadFinish();
+        void onGDriveDownloadFinish(String filename);
         void onGDriveUploadFinish();
         void onGDriveError();
     }
 
-    public GDriveBackup(Activity activity, Listener listener) {
-        mContext = activity.getApplicationContext();
-        mActivity = activity;
+    GDriveBackup(Fragment fragment, Listener listener) {
+        mContext = fragment.getContext().getApplicationContext();
+        mFragment = fragment;
         mListener = listener;
     }
 
@@ -105,11 +102,15 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
         if (!result.hasResolution()) {
             // show the localized error dialog.
             mListener.onGDriveError();
-            GoogleApiAvailability.getInstance().getErrorDialog(mActivity, result.getErrorCode(), 0).show();
+            if (mFragment.getActivity() != null) {
+                GoogleApiAvailability.getInstance().showErrorDialogFragment(mFragment.getActivity(), result.getErrorCode(), 0);
+            }
             return;
         }
         try {
-            result.startResolutionForResult(mActivity, REQUEST_CODE_RESOLUTION);
+            if (mFragment.getActivity() != null) {
+                result.startResolutionForResult(mFragment.getActivity(), REQUEST_CODE_RESOLUTION);
+            }
         } catch (IntentSender.SendIntentException e) {
             AppLog.e(e);
             mListener.onGDriveError();
@@ -117,9 +118,8 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
     }
 
 
-    public void download(int appWidgetId) {
+    public void download() {
         mListener.onGDriveActionStart();
-        mAppWidgetId = appWidgetId;
         if (!isConnected()) {
             mOnConnectAction = ACTION_DOWNLOAD;
             connect();
@@ -134,7 +134,7 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
                 .setMimeType(new String[]{MIME_TYPE_OBJECT, MIME_TYPE_JSON})
                 .build(mGoogleApiClient);
         try {
-            mActivity.startIntentSenderForResult(intentSender, REQUEST_CODE_OPENER, null, 0, 0, 0);
+            mFragment.startIntentSenderForResult(intentSender, REQUEST_CODE_OPENER, null, 0, 0, 0, null);
         } catch (IntentSender.SendIntentException e) {
             AppLog.e(e);
             mListener.onGDriveError();
@@ -177,7 +177,6 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
         return false;
     }
 
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (requestCode == REQUEST_CODE_RESOLUTION) {
             if (resultCode == Activity.RESULT_OK) {
@@ -188,21 +187,20 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
             }
         } else if (requestCode == REQUEST_CODE_OPENER) {
             if (resultCode == Activity.RESULT_OK) {
-                DriveId driveId = resultData
-                        .getParcelableExtra(OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
-                new ReadTask(mContext, mAppWidgetId, mListener)
-                        .execute(new ReadDriveFileContentsAsyncTask.DriveIdParams(driveId));
+                mListener.onGDriveActionStart();
+                DriveId driveId = resultData.getParcelableExtra(OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
+                createReadTask().execute(new ReadDriveFileContentsAsyncTask.DriveIdParams(driveId));
             }
         } else if (requestCode == REQUEST_CODE_CREATOR) {
             if (resultCode == Activity.RESULT_OK) {
-                DriveId driveId = resultData
-                        .getParcelableExtra(OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
-
-                new WriteTask(mActivity, mListener)
-                        .execute(new WriteDriveFileContentsAsyncTask.FilesParam(mFile, driveId));
+                mListener.onGDriveActionStart();
+                DriveId driveId = resultData.getParcelableExtra(OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
+                new WriteTask(mContext, mListener).execute(new WriteDriveFileContentsAsyncTask.FilesParam(mFile, driveId));
             }
         }
     }
+
+    protected abstract ReadDriveFileContentsAsyncTask createReadTask();
 
     @Override
     public void onResult(@NonNull DriveApi.DriveContentsResult result) {
@@ -222,7 +220,7 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
                 .setInitialDriveContents(result.getDriveContents())
                 .build(mGoogleApiClient);
         try {
-            mActivity.startIntentSenderForResult(intentSender, REQUEST_CODE_CREATOR, null, 0, 0, 0);
+            mFragment.startIntentSenderForResult(intentSender, REQUEST_CODE_CREATOR, null, 0, 0, 0, null);
         } catch (IntentSender.SendIntentException e) {
             AppLog.e(e);
         }
@@ -244,60 +242,13 @@ public class GDriveBackup implements GoogleApiClient.ConnectionCallbacks, Google
         }
 
         @Override
-        protected void onPostExecute(Boolean result) {
+        protected void onPostExecute(Result result) {
             super.onPostExecute(result);
-            if (result) {
+            if (result.success) {
                 mListener.onGDriveUploadFinish();
             } else {
                 mListener.onGDriveError();
             }
-        }
-    }
-
-    private static class ReadTask extends ReadDriveFileContentsAsyncTask {
-
-        private final Listener mListener;
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-            if (result) {
-                mListener.onGDriveDownloadFinish();
-            } else {
-                mListener.onGDriveError();
-            }
-        }
-
-        private final int mAppWidgetId;
-
-        ReadTask(Context context, int appWidgetId, Listener listener) {
-            super(context);
-            mAppWidgetId = appWidgetId;
-            mListener = listener;
-        }
-
-        @Override
-        protected boolean readDriveFileBackground(InputStream inputStream, Metadata metadata) {
-            PreferencesBackupManager backup = new PreferencesBackupManager(mContext);
-
-            int result;
-            if (mAppWidgetId == 0) {
-                if (metadata.getMimeType().equals(MIME_TYPE_OBJECT)) {
-                    ObjectRestoreManager objectRestore = new ObjectRestoreManager(mContext);
-                    result = objectRestore.doRestoreInCar(inputStream);
-                } else {
-                    result = backup.doRestoreInCar(inputStream);
-                }
-            } else {
-                if (metadata.getMimeType().equals(MIME_TYPE_OBJECT)) {
-                    ObjectRestoreManager objectRestore = new ObjectRestoreManager(mContext);
-                    result = objectRestore.doRestoreMain(inputStream, mAppWidgetId);
-                } else {
-                    result = backup.doRestoreWidget(inputStream, mAppWidgetId);
-                }
-            }
-
-            return result == PreferencesBackupManager.RESULT_DONE;
         }
     }
 

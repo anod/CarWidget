@@ -20,18 +20,7 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
 
     private static final String BACK_STACK_PREFS = ":carwidget:prefs";
     public static final String EXTRA_FRAGMENT = "fragment";
-
-    private onActivityResultListener mActivityResultListener;
-
     private int mAppWidgetId;
-
-    public void setActivityResultListener(onActivityResultListener activityResultListener) {
-        mActivityResultListener = activityResultListener;
-    }
-
-    public interface onActivityResultListener {
-        void onActivityResult(int requestCode, int resultCode, Intent data);
-    }
 
     public static Intent createFragmentIntent(Context context, Class<?> fragment) {
         Intent intent = new Intent(context, ConfigurationActivity.class);
@@ -121,14 +110,6 @@ public class ConfigurationActivity extends CarWidgetActivity implements Preferen
     public boolean onPreferenceStartScreen(PreferenceFragmentCompat preferenceFragmentCompat, PreferenceScreen preferenceScreen) {
         preferenceFragmentCompat.setPreferenceScreen(preferenceScreen);
         return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (mActivityResultListener != null) {
-            mActivityResultListener.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
     @Override
