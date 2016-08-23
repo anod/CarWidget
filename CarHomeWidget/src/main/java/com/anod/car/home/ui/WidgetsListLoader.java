@@ -1,7 +1,7 @@
 package com.anod.car.home.ui;
 
 import com.anod.car.home.appwidget.WidgetHelper;
-import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.Shortcut;
 import com.anod.car.home.model.WidgetShortcutsModel;
 
 import android.content.Context;
@@ -18,7 +18,7 @@ class WidgetsListLoader extends AsyncTaskLoader<WidgetsListLoader.Result> {
 
     static class Result
     {
-        SparseArray<SparseArray<ShortcutInfo>> large;
+        SparseArray<SparseArray<Shortcut>> large;
         int[] shortcuts;
     }
 
@@ -31,8 +31,7 @@ class WidgetsListLoader extends AsyncTaskLoader<WidgetsListLoader.Result> {
     public Result loadInBackground() {
 
         int[] appWidgetIds = WidgetHelper.getLargeWidgetIds(mContext);
-        SparseArray<SparseArray<ShortcutInfo>> large
-                = new SparseArray<SparseArray<ShortcutInfo>>();
+        SparseArray<SparseArray<Shortcut>> large = new SparseArray<>();
 
         for (int i = 0; i < appWidgetIds.length; i++) {
             WidgetShortcutsModel model = new WidgetShortcutsModel(mContext, appWidgetIds[i]);

@@ -14,8 +14,10 @@ import android.util.JsonReader;
 import android.util.SparseArray;
 
 import com.anod.car.home.model.LauncherSettings;
-import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.Shortcut;
+import com.anod.car.home.model.ShortcutIcon;
 import info.anodsplace.android.log.AppLog;
+
 import com.anod.car.home.utils.SoftReferenceThreadLocal;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
@@ -57,8 +59,8 @@ public class ShortcutsJsonReader {
 
     }
 
-    public SparseArray<ShortcutInfo> readList(JsonReader reader) throws IOException {
-        SparseArray<ShortcutInfo> shortcuts = new SparseArray<>();
+    public SparseArray<ShortcutWithIconAndPosition> readList(JsonReader reader) throws IOException {
+        SparseArray<ShortcutWithIconAndPosition> shortcuts = new SparseArray<>();
         reader.beginArray();
 
         while (reader.hasNext())
@@ -84,38 +86,40 @@ public class ShortcutsJsonReader {
                 }
             }
 
-            Shortcut shortcut = readShortcut(reader, unusedBitmap);
-            shortcuts.put(shortcut.pos, shortcut.info);
+            ShortcutWithIconAndPosition shortcut = readShortcut(reader, unusedBitmap);
+            shortcuts.put(shortcut.pos, shortcut);
         }
 
         reader.endArray();
         return shortcuts;
     }
 
-    private Shortcut readShortcut(JsonReader reader, Bitmap unusedBitmap) throws IOException {
+    private ShortcutWithIconAndPosition readShortcut(JsonReader reader, Bitmap unusedBitmap) throws IOException {
         reader.beginObject();
-        ShortcutInfo info = new ShortcutInfo();
 
         int pos = -1;
         int iconType = 0;
+        int itemType = 0;
         byte[] iconData = null;
         String iconPackageName = "";
         String iconResourceName = "";
+        CharSequence title = "";
         boolean isCustomIcon = false;
+        Intent intent = null;
 
         while (reader.hasNext()) {
             String name = reader.nextName();
             if (name.equals("pos")) {
                 pos = reader.nextInt();
             } else if (name.equals(LauncherSettings.Favorites.ITEM_TYPE)) {
-                info.itemType = reader.nextInt();
+                itemType = reader.nextInt();
             } else if (name.equals(LauncherSettings.Favorites.TITLE)) {
-                info.title = reader.nextString();
+                title = reader.nextString();
             } else if (name.equals(LauncherSettings.Favorites.INTENT)) {
                 String intentDescription = reader.nextString();
                 if (!TextUtils.isEmpty(intentDescription)) {
                     try {
-                        info.intent = Intent.parseUri(intentDescription, 0);
+                        intent = Intent.parseUri(intentDescription, 0);
                     } catch (URISyntaxException e) {
                         AppLog.e(e);
                     }
@@ -140,11 +144,17 @@ public class ShortcutsJsonReader {
             }
         }
 
-        Bitmap icon = null;
-        if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
-            icon = decodeIcon(iconData, unusedBitmap);
-            info.setActivityIcon(icon);
-            info.setCustomIcon(isCustomIcon);
+        Shortcut info = new Shortcut(Shortcut.NO_ID, itemType, title, isCustomIcon, intent);
+
+        Bitmap bitmap = null;
+        ShortcutIcon icon = null;
+        if (itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
+            bitmap = decodeIcon(iconData, unusedBitmap);
+            if (isCustomIcon) {
+                icon = ShortcutIcon.forCustomIcon(Shortcut.NO_ID, bitmap);
+            } else {
+                icon = ShortcutIcon.forActivity(Shortcut.NO_ID, bitmap);
+            }
         } else {
             if (iconType == LauncherSettings.Favorites.ICON_TYPE_RESOURCE) {
                 Intent.ShortcutIconResource iconResource = new Intent.ShortcutIconResource();
@@ -155,10 +165,9 @@ public class ShortcutsJsonReader {
                     Resources resources = mContext.getPackageManager()
                             .getResourcesForApplication(iconPackageName);
                     if (resources != null) {
-                        final int id = resources.getIdentifier(iconResourceName, null, null);
-                        if (id > 0) {
-                            icon = UtilitiesBitmap
-                                    .createHiResIconBitmap(ResourcesCompat.getDrawable(resources, id, null), mContext);
+                        final int resId = resources.getIdentifier(iconResourceName, null, null);
+                        if (resId > 0) {
+                            bitmap = UtilitiesBitmap.createHiResIconBitmap(ResourcesCompat.getDrawable(resources, resId, null), mContext);
                         }
                     }
                 } catch (PackageManager.NameNotFoundException | Resources.NotFoundException e) {
@@ -166,38 +175,41 @@ public class ShortcutsJsonReader {
                     AppLog.d(e.getMessage());
                 }
                 // the db
-                if (icon == null) {
-                    icon = decodeIcon(iconData, unusedBitmap);
+                if (bitmap == null) {
+                    bitmap = decodeIcon(iconData, unusedBitmap);
                 }
-                info.setIconResource(icon, iconResource);
+                if (bitmap != null) {
+                    icon = ShortcutIcon.forIconResource(Shortcut.NO_ID, bitmap, iconResource);
+                }
             } else if (iconType == LauncherSettings.Favorites.ICON_TYPE_BITMAP) {
-                icon = decodeIcon(iconData, unusedBitmap);
-                if (icon != null) {
-                    info.setCustomIcon(icon);
+                bitmap = decodeIcon(iconData, unusedBitmap);
+                if (bitmap != null) {
+                    icon = ShortcutIcon.forCustomIcon(Shortcut.NO_ID, bitmap);
                 }
             }
         }
 
-        if (icon == null) {
-            icon = UtilitiesBitmap.makeDefaultIcon(mContext.getPackageManager());
-            info.setFallbackIcon(icon);
+        if (bitmap == null) {
+            bitmap = UtilitiesBitmap.makeDefaultIcon(mContext.getPackageManager());
+            icon = ShortcutIcon.forFallbackIcon(Shortcut.NO_ID, bitmap);
         }
 
         reader.endObject();
-        return new Shortcut(info, pos);
+        return new ShortcutWithIconAndPosition(info, icon, pos);
     }
 
-    private static class Shortcut
+    static class ShortcutWithIconAndPosition
     {
-        public Shortcut(ShortcutInfo info, int pos) {
+        public ShortcutWithIconAndPosition(Shortcut info, ShortcutIcon icon, int pos) {
             this.info = info;
+            this.icon = icon;
             this.pos = pos;
         }
 
-        ShortcutInfo info;
+        Shortcut info;
+        ShortcutIcon icon;
         int pos;
     }
-
 
     private Bitmap decodeIcon(byte[] data, Bitmap unusedBitmap) {
         if (data == null || data.length == 0)

@@ -30,12 +30,9 @@ import java.util.ArrayList;
 
 public class ShortcutModel {
 
-    private final ContentResolver mContentResolver;
-
+    final ContentResolver mContentResolver;
     private final PackageManager mPackageManager;
-
     private final Context mContext;
-
     private final int mIconBitmapSize;
 
     private ArrayList<SoftReference<Bitmap>> mUnusedBitmaps;
@@ -64,14 +61,9 @@ public class ShortcutModel {
         mUnusedBitmaps = new ArrayList<>();
     }
 
-    public ShortcutInfo loadShortcut(long shortcutId) {
-        String selection = LauncherSettings.Favorites._ID + "=?";
-        String[] selectionArgs = {String.valueOf(shortcutId)};
-
-        final Cursor c = mContentResolver
-                .query(LauncherSettings.Favorites.getContentUri(mContext.getPackageName()), null,
-                        selection, selectionArgs, null);
-
+    public ShortcutIcon loadShortcutIcon(Uri shortcutUri)
+    {
+        final Cursor c = mContentResolver.query(shortcutUri, null, null, null, null);
         if (c == null) {
             return null;
         }
@@ -102,23 +94,11 @@ public class ShortcutModel {
             }
         }
 
-        ShortcutInfo info;
+        ShortcutIcon shortcutIcon = null;
         try {
-            final int intentIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.INTENT);
             c.moveToFirst();
-            Intent intent;
-            String intentDescription = c.getString(intentIndex);
-            if (TextUtils.isEmpty(intentDescription)) {
-                return null;
-            }            try {
-                intent = Intent.parseUri(intentDescription, 0);
-            } catch (URISyntaxException e) {
-                c.close();
-                return null;
-            }
 
             final int idIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites._ID);
-            final int titleIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.TITLE);
             final int iconTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_TYPE);
             final int iconIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON);
             final int iconPackageIndex = c
@@ -129,17 +109,17 @@ public class ShortcutModel {
             final int isCustomIconIndex = c
                     .getColumnIndexOrThrow(LauncherSettings.Favorites.IS_CUSTOM_ICON);
 
-            info = new ShortcutInfo();
-            info.id = c.getLong(idIndex);
-            info.title = c.getString(titleIndex);
-            info.itemType = c.getInt(itemTypeIndex);
-            info.intent = intent;
+            final long id = c.getLong(idIndex);
+            final int itemType = c.getInt(itemTypeIndex);
 
             Bitmap icon = null;
-            if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
+            if (itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
                 icon = getIconFromCursor(c, iconIndex, unusedBitmap);
-                info.setActivityIcon(icon);
-                info.setCustomIcon(c.getInt(isCustomIconIndex) == 1);
+                if (c.getInt(isCustomIconIndex) == 1) {
+                    shortcutIcon = ShortcutIcon.forCustomIcon(id, icon);
+                } else {
+                    shortcutIcon = ShortcutIcon.forActivity(id, icon);
+                }
             } else {
                 int iconType = c.getInt(iconTypeIndex);
                 if (iconType == LauncherSettings.Favorites.ICON_TYPE_RESOURCE) {
@@ -153,9 +133,9 @@ public class ShortcutModel {
                         Resources resources = mPackageManager
                                 .getResourcesForApplication(packageName);
                         if (resources != null) {
-                            final int id = resources.getIdentifier(resourceName, null, null);
-                            if (id > 0) {
-                                Drawable iconDrawable = ResourcesCompat.getDrawable(resources, id, null);
+                            final int resId = resources.getIdentifier(resourceName, null, null);
+                            if (resId > 0) {
+                                Drawable iconDrawable = ResourcesCompat.getDrawable(resources, resId, null);
                                 icon = UtilitiesBitmap.createHiResIconBitmap(iconDrawable, mContext);
                             }
                         }
@@ -167,19 +147,73 @@ public class ShortcutModel {
                     if (icon == null) {
                         icon = getIconFromCursor(c, iconIndex, unusedBitmap);
                     }
-                    info.setIconResource(icon, iconResource);
+                    shortcutIcon = ShortcutIcon.forIconResource(id, icon, iconResource);
                 } else if (iconType == LauncherSettings.Favorites.ICON_TYPE_BITMAP) {
                     icon = getIconFromCursor(c, iconIndex, unusedBitmap);
                     if (icon != null) {
-                        info.setCustomIcon(icon);
+                        shortcutIcon = ShortcutIcon.forCustomIcon(id, icon);
                     }
                 }
             }
 
             if (icon == null) {
                 icon = UtilitiesBitmap.makeDefaultIcon(mPackageManager);
-                info.setFallbackIcon(icon);
+                shortcutIcon = ShortcutIcon.forFallbackIcon(id, icon);
             }
+        } catch (Exception e) {
+            AppLog.e(e);
+        } finally {
+            c.close();
+        }
+
+        return shortcutIcon;
+    }
+
+    public ShortcutIcon loadShortcutIcon(long shortcutId)
+    {
+        Uri shortcutUri = LauncherSettings.Favorites.getContentUri(mContext.getPackageName(), shortcutId);
+        return loadShortcutIcon(shortcutUri);
+    }
+
+    public Shortcut loadShortcut(long shortcutId) {
+        String selection = LauncherSettings.Favorites._ID + "=?";
+        String[] selectionArgs = { String.valueOf(shortcutId) };
+
+        final Cursor c = mContentResolver
+                .query(LauncherSettings.Favorites.getContentUri(mContext.getPackageName()), null,
+                        selection, selectionArgs, null);
+
+        if (c == null) {
+            return null;
+        }
+
+        Shortcut info;
+        try {
+            final int intentIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.INTENT);
+            c.moveToFirst();
+            Intent intent;
+            String intentDescription = c.getString(intentIndex);
+            if (TextUtils.isEmpty(intentDescription)) {
+                return null;
+            }
+            try {
+                intent = Intent.parseUri(intentDescription, 0);
+            } catch (URISyntaxException e) {
+                c.close();
+                return null;
+            }
+
+            final int idIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites._ID);
+            final int titleIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.TITLE);
+            final int itemTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ITEM_TYPE);
+            final int isCustomIconIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.IS_CUSTOM_ICON);
+
+            final long id = c.getLong(idIndex);
+            final String title = c.getString(titleIndex);
+            final int itemType = c.getInt(itemTypeIndex);
+            final boolean isCustomIcon = c.getInt(isCustomIconIndex) == 1;
+
+            info = new Shortcut(id, itemType, title, isCustomIcon, intent);
         } finally {
             c.close();
         }
@@ -213,32 +247,33 @@ public class ShortcutModel {
      * screen, cellX and cellY fields of the item. Also assigns an ID to the
      * item.
      */
-    public void addItemToDatabase(Context context, ShortcutInfo item, int cellId) {
+    public long addItemToDatabase(Context context,@NonNull  Shortcut item, @NonNull ShortcutIcon icon) {
 
         final ContentResolver cr = context.getContentResolver();
-        final ContentValues values = createShortcutContentValues(item);
+        final ContentValues values = createShortcutContentValues(item, icon);
 
         Uri result = cr
                 .insert(LauncherSettings.Favorites.getContentUri(context.getPackageName()), values);
 
         if (result != null) {
-            item.id = Integer.parseInt(result.getPathSegments().get(1));
+            return Integer.parseInt(result.getPathSegments().get(1));
         }
+        return Shortcut.NO_ID;
     }
 
     /**
      * Update an item to the database in a specified container.
      */
-    public void updateItemInDatabase(Context context, ShortcutInfo item) {
+    public void updateItemInDatabase(Context context, @NonNull Shortcut item, @NonNull ShortcutIcon icon) {
         final ContentResolver cr = context.getContentResolver();
 
-        final ContentValues values = createShortcutContentValues(item);
+        final ContentValues values = createShortcutContentValues(item, icon);
 
         cr.update(LauncherSettings.Favorites.getContentUri(context.getPackageName(), item.id),
                 values, null, null);
     }
 
-    public static ContentValues createShortcutContentValues(@NonNull ShortcutInfo item) {
+    public static ContentValues createShortcutContentValues(@NonNull Shortcut item, @NonNull ShortcutIcon icon) {
         final ContentValues values = new ContentValues();
         values.put(LauncherSettings.Favorites.ITEM_TYPE, item.itemType);
 
@@ -248,24 +283,24 @@ public class ShortcutModel {
         String uri = item.intent == null ? null : item.intent.toUri(0);
         values.put(LauncherSettings.Favorites.INTENT, uri);
 
-        if (item.isCustomIcon()) {
+        if (icon.isCustom) {
             values.put(LauncherSettings.Favorites.ICON_TYPE,
                     LauncherSettings.Favorites.ICON_TYPE_BITMAP);
-            writeBitmap(values, item.getIcon());
+            writeBitmap(values, icon.bitmap);
         } else {
-            if (!item.isUsingFallbackIcon()) {
-                writeBitmap(values, item.getIcon());
+            if (!icon.isFallback) {
+                writeBitmap(values, icon.bitmap);
             }
             values.put(LauncherSettings.Favorites.ICON_TYPE,
                     LauncherSettings.Favorites.ICON_TYPE_RESOURCE);
-            if (item.getIconResource() != null) {
+            if (icon.resource != null) {
                 values.put(LauncherSettings.Favorites.ICON_PACKAGE,
-                        item.getIconResource().packageName);
+                        icon.resource.packageName);
                 values.put(LauncherSettings.Favorites.ICON_RESOURCE,
-                        item.getIconResource().resourceName);
+                        icon.resource.resourceName);
             }
         }
-        values.put(LauncherSettings.Favorites.IS_CUSTOM_ICON, item.isCustomIcon() ? 1 : 0);
+        values.put(LauncherSettings.Favorites.IS_CUSTOM_ICON, icon.isCustom ? 1 : 0);
         return values;
     }
 

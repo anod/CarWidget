@@ -1,7 +1,10 @@
 package com.anod.car.home.ui;
 
 import com.anod.car.home.R;
-import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.LauncherSettings;
+import com.anod.car.home.model.Shortcut;
+import com.anod.car.home.model.ShortcutIconRequestHandler;
+import com.squareup.picasso.Picasso;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -20,15 +23,16 @@ import android.widget.TextView;
 
 class WidgetsListAdapter extends ArrayAdapter<WidgetsListAdapter.Item> {
 
+    private final Picasso mPicasso;
 
     interface Item { }
 
     static class LargeItem implements Item
     {
-        SparseArray<ShortcutInfo> shortcuts;
+        SparseArray<Shortcut> shortcuts;
         public int appWidgetId;
 
-        LargeItem(int appWidgetId, SparseArray<ShortcutInfo> shortcuts)
+        LargeItem(int appWidgetId, SparseArray<Shortcut> shortcuts)
         {
             this.appWidgetId = appWidgetId;
             this.shortcuts = shortcuts;
@@ -58,6 +62,10 @@ class WidgetsListAdapter extends ArrayAdapter<WidgetsListAdapter.Item> {
         super(context, R.layout.widgets_item);
         mLayoutInflater = (LayoutInflater) getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        mPicasso = new Picasso.Builder(context)
+                .addRequestHandler(new ShortcutIconRequestHandler(context))
+                .build();
     }
 
     @NonNull
@@ -95,17 +103,20 @@ class WidgetsListAdapter extends ArrayAdapter<WidgetsListAdapter.Item> {
         }
 
         if (item instanceof LargeItem) {
-            SparseArray<ShortcutInfo> shortcuts = ((LargeItem) item).shortcuts;
+            SparseArray<Shortcut> shortcuts = ((LargeItem) item).shortcuts;
             int size = shortcuts.size();
             for (int i = 0; i < sIds.length; i++) {
                 ImageView icon = (ImageView) view.findViewById(sIds[i]);
-                ShortcutInfo info = null;
+                Shortcut info = null;
                 if (i < size) {
                     info = shortcuts.get(i);
                 }
+
                 if (info != null) {
                     icon.setVisibility(View.VISIBLE);
-                    icon.setImageBitmap(info.getIcon());
+                    mPicasso
+                            .load(LauncherSettings.Favorites.getContentUri(getContext().getPackageName(), info.id))
+                            .into(icon);
                 } else {
                     icon.setVisibility(View.INVISIBLE);
                 }

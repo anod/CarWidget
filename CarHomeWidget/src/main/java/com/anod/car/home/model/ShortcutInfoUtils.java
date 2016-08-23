@@ -20,9 +20,13 @@ import com.anod.car.home.utils.UtilitiesBitmap;
 
 public class ShortcutInfoUtils {
 
-    public static ShortcutInfo createShortcut(Context context, Intent data, int cellId,
-            boolean isAppShortcut) {
-        ShortcutInfo info = null;
+    static class ShortcutWithIcon {
+        Shortcut info;
+        ShortcutIcon icon;
+    }
+
+    static ShortcutWithIcon createShortcut(Context context, Intent data, boolean isAppShortcut) {
+        ShortcutWithIcon info;
         if (isAppShortcut) {
             info = infoFromApplicationIntent(context, data);
         } else {
@@ -31,30 +35,27 @@ public class ShortcutInfoUtils {
         return info;
     }
 
-    public static ShortcutInfo infoFromShortcutIntent(Context context, Intent data) {
+    static ShortcutWithIcon infoFromShortcutIntent(Context context, Intent data) {
         Intent intent = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
         String name = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
         Parcelable bitmap = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
 
         Bitmap icon = null;
 
-        final ShortcutInfo info = new ShortcutInfo();
-        info.title = name;
-        info.intent = intent;
+        ShortcutWithIcon result = new ShortcutWithIcon();
 
         if (bitmap instanceof Bitmap) {
             AppLog.d("Custom shortcut with Bitmap");
-            icon = UtilitiesBitmap
-                    .createMaxSizeIcon(new FastBitmapDrawable((Bitmap) bitmap), context);
-            info.setCustomIcon(icon);
+            icon = UtilitiesBitmap.createMaxSizeIcon(new FastBitmapDrawable((Bitmap) bitmap), context);
+            result.icon = ShortcutIcon.forCustomIcon(0, icon);
         } else {
             Parcelable extra = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
             if (extra instanceof ShortcutIconResource) {
                 AppLog.d("Custom shortcut with Icon Resource");
                 try {
                     ShortcutIconResource iconResource = (ShortcutIconResource) extra;
-                    icon = getPackageIcon(context, icon, iconResource);
-                    info.setIconResource(icon, iconResource);
+                    icon = getPackageIcon(context, iconResource);
+                    result.icon = ShortcutIcon.forIconResource(Shortcut.NO_ID, icon, iconResource);
                 } catch (Resources.NotFoundException | PackageManager.NameNotFoundException e) {
                     AppLog.e(e);
                 }
@@ -64,25 +65,28 @@ public class ShortcutInfoUtils {
         if (icon == null) {
             final PackageManager packageManager = context.getPackageManager();
             icon = UtilitiesBitmap.makeDefaultIcon(packageManager);
-            info.setFallbackIcon(icon);
+            result.icon = ShortcutIcon.forFallbackIcon(Shortcut.NO_ID, icon);
         }
 
-        return info;
+        result.info = new Shortcut(0, LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT, name, result.icon.isCustom, intent);
+
+        return result;
     }
 
-    private static Bitmap getPackageIcon(Context context, Bitmap icon,
-            ShortcutIconResource iconResource) throws PackageManager.NameNotFoundException {
+    private static Bitmap getPackageIcon(Context context, ShortcutIconResource iconResource) throws PackageManager.NameNotFoundException {
         final PackageManager packageManager = context.getPackageManager();
         Resources resources = packageManager.getResourcesForApplication(iconResource.packageName);
         final int id = resources.getIdentifier(iconResource.resourceName, null, null);
 
-        Drawable drawableIcon = null;
-        drawableIcon = loadDrawableForTargetDensity(id, resources, context);
+        Drawable drawableIcon = loadDrawableForTargetDensity(id, resources, context);
 
+        Bitmap icon;
         if (drawableIcon instanceof BitmapDrawable) {
             icon = ((BitmapDrawable) drawableIcon).getBitmap();
         } else if (drawableIcon != null) {
             icon = UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context);
+        } else {
+            icon = null;
         }
         return icon;
     }
@@ -93,7 +97,7 @@ public class ShortcutInfoUtils {
      *
      * If c is not null, then it will be used to fill in missing data like the title and icon.
      */
-    public static ShortcutInfo infoFromApplicationIntent(Context context, Intent intent) {
+    public static ShortcutWithIcon infoFromApplicationIntent(Context context, Intent intent) {
         ComponentName componentName = intent.getComponent();
         if (componentName == null) {
             return null;
@@ -101,11 +105,8 @@ public class ShortcutInfoUtils {
         Log.d("CarHomeWidget", "Component Name - " + componentName);
 
         final PackageManager manager = context.getPackageManager();
-        final ShortcutInfo info = new ShortcutInfo();
         Bitmap icon = null;
 
-        info.setActivity(componentName,
-                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
         // TODO: See if the PackageManager knows about this case.  If it doesn't
         // then return null & delete this.
@@ -115,27 +116,32 @@ public class ShortcutInfoUtils {
         // to avoid saving lots of copies of that in the database, and most apps
         // have icons anyway.
         final ResolveInfo resolveInfo = manager.resolveActivity(intent, 0);
+        // from the resource
+        CharSequence title = null;
+        if (resolveInfo != null) {
+            title = resolveInfo.activityInfo.loadLabel(manager);
+        }
+
+        // fall back to the class name of the activity
+        if (title == null) {
+            title = componentName.getClassName();
+        }
+
+        ShortcutWithIcon result = new ShortcutWithIcon();
+
         if (resolveInfo != null) {
             icon = getIcon(componentName, resolveInfo, manager, context);
-            info.setActivityIcon(icon);
+            result.icon = ShortcutIcon.forActivity(Shortcut.NO_ID, icon);
         }
         // the fallback icon
         if (icon == null) {
             icon = UtilitiesBitmap.makeDefaultIcon(manager);
-            info.setFallbackIcon(icon);
+            result.icon = ShortcutIcon.forFallbackIcon(Shortcut.NO_ID, icon);
         }
 
-        // from the resource
-        if (resolveInfo != null) {
-            info.title = resolveInfo.activityInfo.loadLabel(manager);
-        }
+        result.info = Shortcut.forActivity(Shortcut.NO_ID, title, result.icon.isCustom, componentName, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
-        // fall back to the class name of the activity
-        if (info.title == null) {
-            info.title = componentName.getClassName();
-        }
-        info.itemType = LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
-        return info;
+        return result;
     }
 
     public static Bitmap getIcon(ComponentName component, ResolveInfo resolveInfo,
@@ -168,10 +174,8 @@ public class ShortcutInfoUtils {
                 return null;
             }
 
-            Drawable drawableAppIcon = loadDrawableForTargetDensity(icon,
-                    otherAppCtxt.getResources(), context);
+            return loadDrawableForTargetDensity(icon, otherAppCtxt.getResources(), context);
 
-            return drawableAppIcon;
         } catch (PackageManager.NameNotFoundException e) {
             AppLog.d("NameNotFoundException: " + e.getMessage());
         }

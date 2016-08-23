@@ -16,7 +16,6 @@ public class BitmapTransform {
 
     private int mIconSize = -1;
 
-
     public enum RotateDirection {NONE, RIGHT, LEFT}
 
     private boolean mApplyGrayFilter = false;

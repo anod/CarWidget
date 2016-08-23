@@ -11,7 +11,7 @@ import android.util.SparseArray;
 
 import com.anod.car.home.model.AbstractShortcutsContainerModel;
 import com.anod.car.home.model.NotificationShortcutsModel;
-import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.Shortcut;
 import com.anod.car.home.model.ShortcutsContainerModel;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.model.InCarSettings;
@@ -122,7 +122,7 @@ public class PreferencesBackupManager {
 
                 JsonWriter arrayWriter = writer.name("shortcuts").beginArray();
                 ShortcutsJsonWriter shortcutsJsonWriter = new ShortcutsJsonWriter();
-                shortcutsJsonWriter.writeList(arrayWriter, model.getShortcuts());
+                shortcutsJsonWriter.writeList(arrayWriter, model.getShortcuts(), model);
                 arrayWriter.endArray();
 
                 writer.endObject();
@@ -166,7 +166,7 @@ public class PreferencesBackupManager {
 
                 JsonWriter arrayWriter = writer.name("shortcuts").beginArray();
                 ShortcutsJsonWriter shortcutsJsonWriter = new ShortcutsJsonWriter();
-                shortcutsJsonWriter.writeList(arrayWriter, model.getShortcuts());
+                shortcutsJsonWriter.writeList(arrayWriter, model.getShortcuts(), model);
                 arrayWriter.endArray();
 
                 writer.endObject();
@@ -237,7 +237,7 @@ public class PreferencesBackupManager {
         WidgetSettings widget = new WidgetSettings(sharedPrefs, mContext.getResources());
 
         ShortcutsJsonReader shortcutsJsonReader = new ShortcutsJsonReader(mContext);
-        SparseArray<ShortcutInfo> shortcuts = new SparseArray<>();
+        SparseArray<ShortcutsJsonReader.ShortcutWithIconAndPosition> shortcuts = new SparseArray<>();
 
         try {
             synchronized (sLock) {
@@ -275,14 +275,13 @@ public class PreferencesBackupManager {
         return RESULT_DONE;
     }
 
-    private void restoreShortcuts(AbstractShortcutsContainerModel model,
-            SparseArray<ShortcutInfo> shortcuts) {
+    private void restoreShortcuts(AbstractShortcutsContainerModel model, SparseArray<ShortcutsJsonReader.ShortcutWithIconAndPosition> shortcuts) {
         for (int pos = 0; pos < model.getCount(); pos++) {
             model.dropShortcut(pos);
-            final ShortcutInfo info = shortcuts.get(pos);
-            if (info != null) {
-                info.id = ShortcutInfo.NO_ID;
-                model.saveShortcut(pos, info);
+            final ShortcutsJsonReader.ShortcutWithIconAndPosition shortcut = shortcuts.get(pos);
+            if (shortcut.icon != null && shortcut.info != null) {
+                Shortcut info = new Shortcut(Shortcut.NO_ID, shortcut.info);
+                model.saveShortcut(pos, info, shortcut.icon);
             }
         }
     }
@@ -337,7 +336,7 @@ public class PreferencesBackupManager {
         InCarSettings incar = new InCarSettings(sharedPrefs);
 
         ShortcutsJsonReader shortcutsJsonReader = new ShortcutsJsonReader(mContext);
-        SparseArray<ShortcutInfo> shortcuts = new SparseArray<>();
+        SparseArray<ShortcutsJsonReader.ShortcutWithIconAndPosition> shortcuts = new SparseArray<>();
 
         try {
             synchronized (sLock) {

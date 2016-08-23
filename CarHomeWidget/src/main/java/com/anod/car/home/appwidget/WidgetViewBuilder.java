@@ -13,7 +13,7 @@ import android.widget.RemoteViews;
 
 import com.anod.car.home.R;
 import com.anod.car.home.model.LauncherSettings;
-import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.Shortcut;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.model.WidgetSettings;
 import com.anod.car.home.prefs.model.WidgetStorage;
@@ -31,7 +31,7 @@ public class WidgetViewBuilder {
 
     private WidgetSettings mPrefs;
 
-    private WidgetShortcutsModel mSmodel;
+    private WidgetShortcutsModel mShortcuts;
 
     private String mOverrideSkin;
 
@@ -127,19 +127,18 @@ public class WidgetViewBuilder {
     public WidgetViewBuilder init() {
         mPrefs = WidgetStorage.load(mContext, mAppWidgetId);
 
-        mSmodel = new WidgetShortcutsModel(mContext, mAppWidgetId);
+        mShortcuts = new WidgetShortcutsModel(mContext, mAppWidgetId);
         if (mPrefs.isFirstTime()) {
-            mSmodel.createDefaultShortcuts();
+            mShortcuts.createDefaultShortcuts();
             mPrefs.setFirstTime(false);
             mPrefs.apply();
         }
-        mSmodel.init();
+        mShortcuts.init();
 
         mShortcutViewBuilder = new ShortcutViewBuilder(mContext, mAppWidgetId,
                 mPendingIntentFactory);
         if (mBitmapMemoryCache != null) {
             mShortcutViewBuilder.setBitmapMemoryCache(mBitmapMemoryCache);
-            ;
         }
         mWidgetButtonViewBuilder = new WidgetButtonViewBuilder(mContext, mPrefs, mPendingIntentFactory, mAppWidgetId);
         mWidgetButtonViewBuilder.setAlternativeHidden(mWidgetButtonAlternativeHidden);
@@ -160,7 +159,7 @@ public class WidgetViewBuilder {
 
 
     public RemoteViews build() {
-        SparseArray<ShortcutInfo> shortcuts = mSmodel.getShortcuts();
+        SparseArray<Shortcut> shortcuts = mShortcuts.getShortcuts();
 
         Resources r = mContext.getResources();
         String skinName = (mOverrideSkin == null) ? mPrefs.getSkin() : mOverrideSkin;
@@ -193,8 +192,7 @@ public class WidgetViewBuilder {
         if (mIsKeyguard) {
             hideKeyguardRows(views, isSmallKeyguard);
         }
-        mShortcutViewBuilder
-                .init(skinName, scaledDensity, skinProperties, themeIcons, mPrefs, mSmodel,
+        mShortcutViewBuilder.init(scaledDensity, skinProperties, themeIcons, mPrefs, mShortcuts,
                         mBitmapTransform);
 
         int totalRows = shortcuts.size() / 2;
@@ -230,18 +228,17 @@ public class WidgetViewBuilder {
     }
 
     private IconTheme loadThemeIcons(String themePackage) {
-        SparseArray<ShortcutInfo> shortcuts = mSmodel.getShortcuts();
+        SparseArray<Shortcut> shortcuts = mShortcuts.getShortcuts();
 
         IconTheme theme = new IconTheme(mContext, themePackage);
         if (!theme.loadThemeResources()) {
             return null;
         }
 
-        SimpleArrayMap<String, Integer> cmpMap = new SimpleArrayMap<String, Integer>(shortcuts.size());
+        SimpleArrayMap<String, Integer> cmpMap = new SimpleArrayMap<>(shortcuts.size());
         for (int cellId = 0; cellId < shortcuts.size(); cellId++) {
-            ShortcutInfo info = mSmodel.getShortcut(cellId);
-            if (info == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
-                    || info.isCustomIcon()) {
+            Shortcut info = mShortcuts.getShortcut(cellId);
+            if (info == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon) {
                 continue;
             }
             cmpMap.put(info.intent.getComponent().getClassName(), cellId);

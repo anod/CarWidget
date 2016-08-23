@@ -35,7 +35,8 @@ import com.anod.car.home.R;
 import com.anod.car.home.model.AbstractShortcutsContainerModel;
 import com.anod.car.home.model.LauncherSettings;
 import com.anod.car.home.model.NotificationShortcutsModel;
-import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.Shortcut;
+import com.anod.car.home.model.ShortcutIcon;
 import com.anod.car.home.model.ShortcutInfoUtils;
 import com.anod.car.home.model.ShortcutModel;
 import com.anod.car.home.model.WidgetShortcutsModel;
@@ -58,7 +59,7 @@ import butterknife.OnClick;
 public class ShortcutEditActivity extends AppCompatActivity {
 
     public static Intent createIntent(Context context, int cellId, long shortcutId,
-            int appWidgetId) {
+                                      int appWidgetId) {
         Intent editIntent = new Intent(context, ShortcutEditActivity.class);
         editIntent.putExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, shortcutId);
         editIntent.putExtra(ShortcutEditActivity.EXTRA_CELL_ID, cellId);
@@ -89,7 +90,9 @@ public class ShortcutEditActivity extends AppCompatActivity {
 
     private ShortcutModel mModel;
 
-    private ShortcutInfo mShortcutInfo;
+    private Shortcut mShortcut;
+
+    private ShortcutIcon mShortcutIcon;
 
     private Intent mIntent;
 
@@ -115,10 +118,10 @@ public class ShortcutEditActivity extends AppCompatActivity {
         mCellId = intent
                 .getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID);
         final long shortcutId = mIntent
-                .getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, ShortcutInfo.NO_ID);
+                .getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, Shortcut.NO_ID);
         final int appWidgetId = mIntent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
-        if (mCellId == ShortcutPicker.INVALID_CELL_ID || shortcutId == ShortcutInfo.NO_ID) {
+        if (mCellId == ShortcutPicker.INVALID_CELL_ID || shortcutId == Shortcut.NO_ID) {
             AppLog.e("Missing parameter");
             setResult(RESULT_CANCELED);
             finish();
@@ -132,9 +135,10 @@ public class ShortcutEditActivity extends AppCompatActivity {
         }
         mModel = mContainerModel.getShortcutModel();
 
-        mShortcutInfo = mModel.loadShortcut(shortcutId);
-        mLabelEdit.setText(mShortcutInfo.title);
-        mIconView.setImageBitmap(mShortcutInfo.getIcon());
+        mShortcut = mModel.loadShortcut(shortcutId);
+        mShortcutIcon = mModel.loadShortcutIcon(shortcutId);
+        mLabelEdit.setText(mShortcut.title);
+        mIconView.setImageBitmap(mShortcutIcon.bitmap);
     }
 
     @Override
@@ -145,7 +149,7 @@ public class ShortcutEditActivity extends AppCompatActivity {
 
     protected Dialog createIconMenu() {
         final CharSequence[] items;
-        if (mShortcutInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
+        if (mShortcut.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
             items = new CharSequence[3];
             items[PICK_CUSTOM_ICON] = getString(R.string.icon_custom);
             items[PICK_ADW_ICON_PACK] = getString(R.string.icon_adw_icon_pack);
@@ -166,7 +170,7 @@ public class ShortcutEditActivity extends AppCompatActivity {
         return builder.create();
     }
 
-    private void iconDialogClick(final int item) {
+    void iconDialogClick(final int item) {
         Intent chooseIntent;
         if (item == PICK_CUSTOM_ICON) {
             File tempFile = getFileStreamPath("tempImage");
@@ -183,13 +187,13 @@ public class ShortcutEditActivity extends AppCompatActivity {
                     PICK_ADW_ICON_PACK, this);
         } else if (item == PICK_DEFAULT_ICON) {
 
-            ComponentName componentName = mShortcutInfo.intent.getComponent();
+            ComponentName componentName = mShortcut.intent.getComponent();
             if (componentName == null) {
                 Toast.makeText(this, R.string.failed_fetch_icon, Toast.LENGTH_LONG).show();
                 return;
             }
             final PackageManager manager = getPackageManager();
-            final ResolveInfo resolveInfo = manager.resolveActivity(mShortcutInfo.intent, 0);
+            final ResolveInfo resolveInfo = manager.resolveActivity(mShortcut.intent, 0);
             Bitmap icon = ShortcutInfoUtils.getIcon(componentName, resolveInfo, manager, this);
             if (icon != null) {
                 mIconDefault = icon;
@@ -270,7 +274,7 @@ public class ShortcutEditActivity extends AppCompatActivity {
         if (is != null) {
             try {
                 is.close();
-            } catch (IOException e) {
+            } catch (IOException ignored) {
             }
         }
     }
@@ -375,19 +379,19 @@ public class ShortcutEditActivity extends AppCompatActivity {
     public void clickedOk(View view) {
         boolean needUpdate = false;
         if (mCustomIcon != null) {
-            mShortcutInfo.setCustomIcon(mCustomIcon);
+            mShortcutIcon = ShortcutIcon.forCustomIcon(mShortcutIcon.id, mCustomIcon);
             needUpdate = true;
         } else if (mIconDefault != null) {
-            mShortcutInfo.setActivityIcon(mIconDefault);
+            mShortcutIcon = ShortcutIcon.forActivity(mShortcutIcon.id, mIconDefault);
             needUpdate = true;
         }
-        String title = mLabelEdit.getText().toString();
-        if (!title.equals(mShortcutInfo.title)) {
-            mShortcutInfo.title = title;
+        CharSequence title = mLabelEdit.getText();
+        if (!title.equals(mShortcut.title)) {
+            mShortcut = new Shortcut(mShortcut.id, mShortcut.itemType, title, mShortcutIcon.isCustom, mShortcut.intent);
             needUpdate = true;
         }
         if (needUpdate) {
-            mModel.updateItemInDatabase(this, mShortcutInfo);
+            mModel.updateItemInDatabase(this, mShortcut, mShortcutIcon);
         }
 
         setResult(RESULT_OK, mIntent);
@@ -429,7 +433,7 @@ public class ShortcutEditActivity extends AppCompatActivity {
                 }
             }
         } else {
-            bitmap = (Bitmap) data.getParcelableExtra("icon");
+            bitmap = data.getParcelableExtra("icon");
         }
         return bitmap;
     }

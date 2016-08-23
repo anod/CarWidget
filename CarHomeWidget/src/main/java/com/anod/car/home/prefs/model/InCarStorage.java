@@ -1,10 +1,9 @@
 package com.anod.car.home.prefs.model;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.Shortcut;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -61,10 +60,10 @@ public class InCarStorage {
     }
 
     static ArrayList<Long> getNotifComponents(SharedPreferences prefs) {
-        ArrayList<Long> ids = new ArrayList<Long>(NOTIFICATION_COMPONENT_NUMBER);
+        ArrayList<Long> ids = new ArrayList<>(NOTIFICATION_COMPONENT_NUMBER);
         for (int i = 0; i < NOTIFICATION_COMPONENT_NUMBER; i++) {
             String key = getNotifComponentName(i);
-            long id = prefs.getLong(key, ShortcutInfo.NO_ID);
+            long id = prefs.getLong(key, Shortcut.NO_ID);
             ids.add(i, id);
         }
         return ids;

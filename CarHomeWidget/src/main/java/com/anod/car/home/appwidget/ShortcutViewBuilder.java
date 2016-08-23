@@ -1,7 +1,8 @@
 package com.anod.car.home.appwidget;
 
 import com.anod.car.home.model.LauncherSettings;
-import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.Shortcut;
+import com.anod.car.home.model.ShortcutIcon;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.model.WidgetSettings;
 import com.anod.car.home.prefs.preferences.Main;
@@ -28,8 +29,6 @@ import android.widget.RemoteViews;
  */
 public class ShortcutViewBuilder {
 
-    private String mSkinName;
-
     private float mScaledDensity;
 
     private SkinProperties mSkinProperties;
@@ -44,7 +43,9 @@ public class ShortcutViewBuilder {
 
     private int mAppWidgetId;
 
-    private WidgetShortcutsModel mSmodel;
+    private WidgetShortcutsModel mShortcuts;
+
+    private final static Object sBitmapCacheLock = new Object();
 
     private LruCache<String, Bitmap> mBitmapMemoryCache;
 
@@ -59,21 +60,20 @@ public class ShortcutViewBuilder {
         mAppWidgetId = appWidgetId;
     }
 
-    public void init(String skinName, float scaledDensity, SkinProperties skinProperties,
+    public void init(float scaledDensity, SkinProperties skinProperties,
                      IconTheme iconTheme, WidgetSettings prefs, WidgetShortcutsModel smodel,
                      BitmapTransform bitmapTransform) {
-        mSkinName = skinName;
         mScaledDensity = scaledDensity;
         mSkinProperties = skinProperties;
         mIconTheme = iconTheme;
         mPrefs = prefs;
-        mSmodel = smodel;
+        mShortcuts = smodel;
         mBitmapTransform = bitmapTransform;
         mBackgroundProcessor = mSkinProperties.getBackgroundProcessor();
     }
 
     public void fill(RemoteViews views, int position, int resBtn, int resText) {
-        ShortcutInfo info = mSmodel.getShortcut(position);
+        Shortcut info = mShortcuts.getShortcut(position);
 
         Bitmap icon = null;
         if (info == null) {
@@ -140,8 +140,7 @@ public class ShortcutViewBuilder {
     }
 
 
-    private Bitmap setShortcut(int res, int resText, ShortcutInfo info, RemoteViews views,
-            int cellId, IconTheme themeIcons) {
+    private Bitmap setShortcut(int res, int resText, Shortcut info, RemoteViews views, int cellId, IconTheme themeIcons) {
 
         String themePackage = (themeIcons == null) ? "null" : themeIcons.getPackageName();
         String transformKey = mBitmapTransform.getCacheKey();
@@ -171,7 +170,7 @@ public class ShortcutViewBuilder {
         if (mBitmapMemoryCache == null) {
             return;
         }
-        synchronized (mBitmapMemoryCache) {
+        synchronized (sBitmapCacheLock) {
             if (getBitmapFromMemCache(key) == null) {
                 mBitmapMemoryCache.put(key, bitmap);
             }
@@ -182,15 +181,15 @@ public class ShortcutViewBuilder {
         if (mBitmapMemoryCache == null) {
             return null;
         }
-        synchronized (mBitmapMemoryCache) {
+        synchronized (sBitmapCacheLock) {
             return mBitmapMemoryCache.get(key);
         }
     }
 
-    private Bitmap getShortcutIcon(ShortcutInfo info, IconTheme themeIcons) {
-        if (themeIcons == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
-                || info.isCustomIcon()) {
-            return info.getIcon();
+    private Bitmap getShortcutIcon(Shortcut info, IconTheme themeIcons) {
+        if (themeIcons == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon) {
+            ShortcutIcon icon = mShortcuts.loadIcon(info.id);
+            return icon.bitmap;
         }
 
         int resourceId = themeIcons.getIcon(info.intent.getComponent().getClassName());
@@ -204,7 +203,8 @@ public class ShortcutViewBuilder {
         if (iconDrawable != null) {
             return UtilitiesBitmap.createHiResIconBitmap(iconDrawable, mContext);
         }
-        return info.getIcon();
+        ShortcutIcon icon = mShortcuts.loadIcon(info.id);
+        return icon.bitmap;
     }
 
     public void setBitmapMemoryCache(LruCache<String, Bitmap> bitmapMemoryCache) {

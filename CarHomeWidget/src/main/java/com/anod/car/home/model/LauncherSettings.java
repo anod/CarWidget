@@ -118,7 +118,7 @@ public class LauncherSettings {
          * @param id The row id.
          * @return The unique content URL for the specified row.
          */
-        static Uri getContentUri(String packageName, long id) {
+        public static Uri getContentUri(String packageName, long id) {
             if (Version.isFreeVersion(packageName)) {
                 return Uri.parse(CONTENT_PREFIX + LauncherProvider.AUTHORITY_FREE + "/"
                         + LauncherProvider.TABLE_FAVORITES + "/" + id);

@@ -11,13 +11,13 @@ public interface ShortcutsContainerModel {
 
     void reloadShortcut(int cellId, long shortcutId);
 
-    SparseArray<ShortcutInfo> getShortcuts();
+    SparseArray<Shortcut> getShortcuts();
 
-    ShortcutInfo getShortcut(int cellId);
+    Shortcut getShortcut(int cellId);
 
-    ShortcutInfo saveShortcutIntent(int cellId, Intent data, boolean isApplicationShortcut);
+    Shortcut saveShortcutIntent(int cellId, Intent data, boolean isApplicationShortcut);
 
-    void saveShortcut(int cellId, ShortcutInfo info);
+    void saveShortcut(int cellId, Shortcut info, ShortcutIcon icon);
 
     void dropShortcut(int cellId);
 
@@ -26,4 +26,6 @@ public interface ShortcutsContainerModel {
     int getCount();
 
     void updateCount(Integer count);
+
+    ShortcutIcon loadIcon(long id);
 }

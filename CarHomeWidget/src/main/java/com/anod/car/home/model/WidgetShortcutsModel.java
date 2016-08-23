@@ -91,16 +91,17 @@ public class WidgetShortcutsModel extends AbstractShortcutsContainerModel {
 
         int cellId = 0;
         Intent data = new Intent();
-        ShortcutInfo info = null;
         for (int i = 0; i < list.length; i++) {
             data.setComponent(list[i]);
             if (!IntentUtils.isIntentAvailable(mContext, data)) {
                 continue;
             }
-            AppLog.d("Init shortcut - " + info + " Widget - " + appWidgetId);
-            info = ShortcutInfoUtils.infoFromApplicationIntent(mContext, data);
-            saveShortcut(cellId, info);
-            cellId++;
+            ShortcutInfoUtils.ShortcutWithIcon shortcut = ShortcutInfoUtils.infoFromApplicationIntent(mContext, data);
+            if (shortcut != null) {
+                AppLog.d("Init shortcut - " + shortcut.info + " Widget - " + appWidgetId);
+                saveShortcut(cellId, shortcut.info, shortcut.icon);
+                cellId++;
+            }
             if (cellId == 5) {
                 break;
             }

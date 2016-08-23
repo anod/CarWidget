@@ -11,7 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.res.ResourcesCompat;
 
 import com.anod.car.home.R;
-import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.Shortcut;
 import com.anod.car.home.utils.BitmapTransform.RotateDirection;
 
 import java.util.ArrayList;
@@ -88,7 +88,7 @@ public class WidgetMigrateStorage {
         ArrayList<Long> ids = new ArrayList<Long>(count);
         for (int i = 0; i < count; i++) {
             String key = WidgetMigrateStorage.getLaunchComponentName(i, appWidgetId);
-            long id = prefs.getLong(key, ShortcutInfo.NO_ID);
+            long id = prefs.getLong(key, Shortcut.NO_ID);
             ids.add(i, id);
         }
         return ids;

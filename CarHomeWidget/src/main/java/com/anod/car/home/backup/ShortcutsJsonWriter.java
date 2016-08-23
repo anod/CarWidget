@@ -4,8 +4,10 @@ import android.content.ContentValues;
 import android.util.JsonWriter;
 import android.util.SparseArray;
 
-import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.Shortcut;
+import com.anod.car.home.model.ShortcutIcon;
 import com.anod.car.home.model.ShortcutModel;
+import com.anod.car.home.model.ShortcutsContainerModel;
 
 import java.io.IOException;
 
@@ -15,15 +17,16 @@ import java.io.IOException;
  */
 public class ShortcutsJsonWriter {
 
-    public void writeList(JsonWriter shortcutsWriter, SparseArray<ShortcutInfo> shortcuts) throws IOException {
+    public void writeList(JsonWriter shortcutsWriter, SparseArray<Shortcut> shortcuts, ShortcutsContainerModel model) throws IOException {
         for (int idx = 0; idx < shortcuts.size(); idx++) {
             int pos = shortcuts.keyAt(idx);
-            ShortcutInfo info = shortcuts.get(pos);
+            Shortcut info = shortcuts.get(pos);
             if (info == null) {
                 continue;
             }
             shortcutsWriter.beginObject();
-            ContentValues values = ShortcutModel.createShortcutContentValues(info);
+            ShortcutIcon icon = model.loadIcon(info.id);
+            ContentValues values = ShortcutModel.createShortcutContentValues(info, icon);
             shortcutsWriter.name("pos").value(pos);
 
             for (String key: values.keySet()) {

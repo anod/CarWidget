@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public abstract class AbstractShortcutsContainerModel implements ShortcutsContainerModel {
 
-    private SparseArray<ShortcutInfo> mShortcuts;
+    private SparseArray<Shortcut> mShortcuts;
 
     private final Context mContext;
 
@@ -32,12 +32,12 @@ public abstract class AbstractShortcutsContainerModel implements ShortcutsContai
     @Override
     public void init() {
         loadCount();
-        mShortcuts = new SparseArray<ShortcutInfo>(getCount());
+        mShortcuts = new SparseArray<>(getCount());
         ArrayList<Long> currentShortcutIds = loadShortcutIds();
         for (int cellId = 0; cellId < getCount(); cellId++) {
             long shortcutId = currentShortcutIds.get(cellId);
-            ShortcutInfo info = null;
-            if (shortcutId != ShortcutInfo.NO_ID) {
+            Shortcut info = null;
+            if (shortcutId != Shortcut.NO_ID) {
                 info = mModel.loadShortcut(shortcutId);
             }
             mShortcuts.put(cellId, info);
@@ -46,21 +46,21 @@ public abstract class AbstractShortcutsContainerModel implements ShortcutsContai
 
 
     @Override
-    public SparseArray<ShortcutInfo> getShortcuts() {
+    public SparseArray<Shortcut> getShortcuts() {
         return mShortcuts;
     }
 
     @Override
-    public ShortcutInfo getShortcut(int position) {
+    public Shortcut getShortcut(int position) {
         return mShortcuts.get(position);
     }
 
     @Override
     public void reloadShortcut(int position, long shortcutId) {
-        if (shortcutId == ShortcutInfo.NO_ID) {
+        if (shortcutId == Shortcut.NO_ID) {
             mShortcuts.put(position, null);
         } else {
-            final ShortcutInfo info = mModel.loadShortcut(shortcutId);
+            final Shortcut info = mModel.loadShortcut(shortcutId);
             mShortcuts.put(position, info);
         }
     }
@@ -79,26 +79,32 @@ public abstract class AbstractShortcutsContainerModel implements ShortcutsContai
     }
 
     @Override
-    public ShortcutInfo saveShortcutIntent(int position, Intent data,
+    public Shortcut saveShortcutIntent(int position, Intent data,
             boolean isApplicationShortcut) {
-        final ShortcutInfo info = ShortcutInfoUtils
-                .createShortcut(mContext, data, position, isApplicationShortcut);
-        saveShortcut(position, info);
+        final ShortcutInfoUtils.ShortcutWithIcon shortcut = ShortcutInfoUtils.createShortcut(mContext, data, isApplicationShortcut);
+        saveShortcut(position, shortcut.info, shortcut.icon);
         return mShortcuts.get(position);
     }
 
     @Override
-    public void saveShortcut(int position, ShortcutInfo info) {
-        mShortcuts.put(position, info);
-        if (info != null) {
-            mModel.addItemToDatabase(mContext, info, position);
-            saveShortcutId(position, info.id);
+    public void saveShortcut(int position, Shortcut info, ShortcutIcon icon) {
+        if (info == null) {
+            mShortcuts.put(position, null);
+        } else {
+            long id = mModel.addItemToDatabase(mContext, info, icon);
+            if (id == Shortcut.NO_ID) {
+                mShortcuts.put(position, null);
+            } else {
+                Shortcut newInfo = new Shortcut(id, info);
+                mShortcuts.put(position, newInfo);
+                saveShortcutId(position, id);
+            }
         }
     }
 
     @Override
     public void dropShortcut(int position) {
-        ShortcutInfo info = mShortcuts.get(position);
+        Shortcut info = mShortcuts.get(position);
         if (info != null) {
             mModel.deleteItemFromDatabase(info.id);
             mShortcuts.put(position, null);
@@ -108,5 +114,10 @@ public abstract class AbstractShortcutsContainerModel implements ShortcutsContai
 
     public ShortcutModel getShortcutModel() {
         return mModel;
+    }
+
+    public ShortcutIcon loadIcon(long id)
+    {
+        return mModel.loadShortcutIcon(id);
     }
 }

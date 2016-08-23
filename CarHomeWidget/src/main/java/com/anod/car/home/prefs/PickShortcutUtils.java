@@ -1,7 +1,8 @@
 package com.anod.car.home.prefs;
 
 import com.anod.car.home.R;
-import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.Shortcut;
+import com.anod.car.home.model.ShortcutIcon;
 import com.anod.car.home.model.ShortcutsContainerModel;
 import com.anod.car.home.prefs.views.ShortcutPreference;
 import com.anod.car.home.utils.ShortcutPicker;
@@ -18,7 +19,7 @@ public class PickShortcutUtils implements ShortcutPicker.Handler {
 
     private final ConfigurationActivity mActivity;
 
-    private final ShortcutsContainerModel mModel;
+    final ShortcutsContainerModel mModel;
 
     private final PreferenceKey mPreferenceKey;
 
@@ -30,8 +31,8 @@ public class PickShortcutUtils implements ShortcutPicker.Handler {
     }
 
     @Override
-    public void onAddShortcut(int cellId, final ShortcutInfo info) {
-        if (info != null && info.id != ShortcutInfo.NO_ID) {
+    public void onAddShortcut(int cellId, final Shortcut info) {
+        if (info != null && info.id != Shortcut.NO_ID) {
             String key = mPreferenceKey.getCompiledKey(cellId);
             ShortcutPreference p = (ShortcutPreference) mConfigurationFragment.findPreference(key);
             refreshPreference(p);
@@ -70,7 +71,7 @@ public class PickShortcutUtils implements ShortcutPicker.Handler {
             public boolean onPreferenceClick(Preference preference) {
                 ShortcutPreference pref = (ShortcutPreference) preference;
                 int position = pref.getShortcutPosition();
-                ShortcutInfo info = mModel.getShortcut(position);
+                Shortcut info = mModel.getShortcut(position);
                 if (info == null) {
                     showActivityPicker(position);
                 } else {
@@ -98,20 +99,21 @@ public class PickShortcutUtils implements ShortcutPicker.Handler {
     }
 
 
-    private void startEditActivity(int cellId, long shortcutId) {
+    void startEditActivity(int cellId, long shortcutId) {
         mPicker.showEditActivity(cellId, shortcutId, AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
     public void refreshPreference(ShortcutPreference pref) {
         int cellId = pref.getShortcutPosition();
-        ShortcutInfo info = mModel.getShortcut(cellId);
+        Shortcut info = mModel.getShortcut(cellId);
         pref.setAppTheme(mActivity.getApp().getThemeIdx());
         if (info == null) {
             pref.setTitle(R.string.set_shortcut);
             pref.setIconResource(R.drawable.ic_add_shortcut_holo);
             pref.showButtons(false);
         } else {
-            pref.setIconBitmap(info.getIcon());
+            ShortcutIcon icon = mModel.loadIcon(info.id);
+            pref.setIconBitmap(icon.bitmap);
             pref.setTitle(info.title);
             pref.showButtons(true);
         }

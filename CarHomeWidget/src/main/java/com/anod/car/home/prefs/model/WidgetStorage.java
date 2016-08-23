@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.Shortcut;
 import com.anod.car.home.model.ShortcutModel;
 import info.anodsplace.android.log.AppLog;
 
@@ -43,7 +43,7 @@ public class WidgetStorage {
         ArrayList<Long> ids = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             String key = getLaunchComponentKey(i);
-            long id = prefs.getLong(key, ShortcutInfo.NO_ID);
+            long id = prefs.getLong(key, Shortcut.NO_ID);
             ids.add(i, id);
         }
         return ids;
@@ -70,8 +70,8 @@ public class WidgetStorage {
     }
 
     static void saveShortcutId(Context context, SharedPreferences preferences, long shortcutId, String key) {
-        long curShortcutId = preferences.getLong(key, ShortcutInfo.NO_ID);
-        if (curShortcutId != ShortcutInfo.NO_ID) {
+        long curShortcutId = preferences.getLong(key, Shortcut.NO_ID);
+        if (curShortcutId != Shortcut.NO_ID) {
             ShortcutModel model = new ShortcutModel(context);
             model.deleteItemFromDatabase(curShortcutId);
         }
@@ -87,8 +87,8 @@ public class WidgetStorage {
 
             for (int i = 0; i < LAUNCH_COMPONENT_NUMBER_MAX; i++) {
                 String key = getLaunchComponentKey(i);
-                long curShortcutId = prefs.getLong(key, ShortcutInfo.NO_ID);
-                if (curShortcutId != ShortcutInfo.NO_ID) {
+                long curShortcutId = prefs.getLong(key, Shortcut.NO_ID);
+                if (curShortcutId != Shortcut.NO_ID) {
                     model.deleteItemFromDatabase(curShortcutId);
                 }
             }

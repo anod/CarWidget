@@ -1,7 +1,7 @@
 package com.anod.car.home.app;
 
 import com.anod.car.home.appwidget.Provider;
-import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.Shortcut;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.ShortcutPicker;
@@ -73,7 +73,7 @@ public class NewShortcutActivity extends Activity implements ShortcutPicker.Hand
     }
 
     @Override
-    public void onAddShortcut(int cellId, ShortcutInfo info) {
+    public void onAddShortcut(int cellId, Shortcut info) {
         Provider.getInstance().requestUpdate(this, mAppWidgetId);
         finish();
     }

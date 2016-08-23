@@ -2,13 +2,12 @@ package com.anod.car.home.prefs.lookandfeel;
 
 import com.anod.car.home.R;
 import com.anod.car.home.appwidget.WidgetViewBuilder;
-import com.anod.car.home.model.ShortcutInfo;
+import com.anod.car.home.model.Shortcut;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.prefs.LookAndFeelActivity;
 import com.anod.car.home.prefs.drag.ShortcutShadowBuilder;
 import info.anodsplace.android.log.AppLog;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.os.Bundle;
@@ -170,7 +169,7 @@ public class SkinPreviewFragment extends Fragment
                 AppLog.e("Count: " + mShotcutsCount + ", pos: " + pos);
                 continue;
             }
-            ShortcutInfo shortcut = model.getShortcut(pos);
+            Shortcut shortcut = model.getShortcut(pos);
 
             initDragButton(pos, btn, shortcut != null);
         }

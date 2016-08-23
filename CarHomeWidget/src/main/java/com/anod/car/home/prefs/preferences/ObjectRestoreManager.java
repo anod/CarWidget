@@ -5,6 +5,8 @@ import android.content.Context;
 
 import com.anod.car.home.model.AbstractShortcutsContainerModel;
 import com.anod.car.home.model.NotificationShortcutsModel;
+import com.anod.car.home.model.Shortcut;
+import com.anod.car.home.model.ShortcutIcon;
 import com.anod.car.home.model.ShortcutInfo;
 import com.anod.car.home.model.WidgetShortcutsModel;
 import com.anod.car.home.backup.PreferencesBackupManager;
@@ -79,14 +81,15 @@ public class ObjectRestoreManager {
         return PreferencesBackupManager.RESULT_DONE;
     }
 
-    private void restoreShortcuts(AbstractShortcutsContainerModel model,
-            HashMap<Integer, ShortcutInfo> shortcuts) {
+    private void restoreShortcuts(AbstractShortcutsContainerModel model, HashMap<Integer, ShortcutInfo> shortcuts) {
         for (int pos = 0; pos < model.getCount(); pos++) {
             model.dropShortcut(pos);
             final ShortcutInfo info = shortcuts.get(pos);
             if (info != null) {
-                info.id = ShortcutInfo.NO_ID;
-                model.saveShortcut(pos, info);
+                Shortcut newInfo = new Shortcut(ShortcutInfo.NO_ID, info.itemType, info.title, info.isCustomIcon(), info.intent);
+                ShortcutIcon newIcon = new ShortcutIcon(ShortcutInfo.NO_ID, info.isCustomIcon(), info.isUsingFallbackIcon(), info.getIconResource(), info.getIcon());
+
+                model.saveShortcut(pos, newInfo, newIcon);
             }
         }
     }
