@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * @author alex
@@ -120,7 +120,7 @@ public class NavigationAdapter extends BaseAdapter {
 
     public static class TitleViewHolder extends ViewHolder {
 
-        @Bind(android.R.id.title)
+        @BindView(android.R.id.title)
         TextView title;
 
         public TitleViewHolder(View view) {
@@ -142,7 +142,7 @@ public class NavigationAdapter extends BaseAdapter {
 
     public static class ActionViewHolder extends ViewHolder {
 
-        @Bind(R.id.action)
+        @BindView(R.id.action)
         TwoLineButton button;
 
         public ActionViewHolder(View view) {

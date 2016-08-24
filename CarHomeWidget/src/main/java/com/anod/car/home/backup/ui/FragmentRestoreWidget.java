@@ -41,7 +41,7 @@ import com.anod.car.home.utils.DeleteFileTask;
 import java.io.File;
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -59,7 +59,7 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
         return fragment;
     }
 
-    @Bind(android.R.id.list)
+    @BindView(android.R.id.list)
     ListView mListView;
 
     RestoreClickListener mRestoreListener;
@@ -182,19 +182,19 @@ public class FragmentRestoreWidget extends Fragment implements RestoreTask.Resto
 
     static class ViewHolder {
 
-        @Bind(android.R.id.title)
+        @BindView(android.R.id.title)
         TextView title;
 
-        @Bind(android.R.id.text2)
+        @BindView(android.R.id.text2)
         TextView text2;
 
-        @Bind(R.id.apply_icon)
+        @BindView(R.id.apply_icon)
         ImageView apply;
 
-        @Bind(R.id.delete_button)
+        @BindView(R.id.delete_button)
         ImageView delete;
 
-        @Bind(R.id.uploadMain)
+        @BindView(R.id.uploadMain)
         ImageView export;
 
         ViewHolder(View view) {

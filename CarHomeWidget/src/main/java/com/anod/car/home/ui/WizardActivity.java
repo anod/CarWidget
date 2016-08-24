@@ -1,5 +1,17 @@
 package com.anod.car.home.ui;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.os.Bundle;
+import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
 import com.anod.car.home.R;
 import com.anod.car.home.app.CarWidgetActivity;
 import com.anod.car.home.prefs.model.AppTheme;
@@ -7,22 +19,8 @@ import com.anod.car.home.utils.HtmlCompat;
 import com.anod.car.home.utils.Version;
 import com.example.android.wizardpager.wizard.ui.StepPagerStrip;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.os.Bundle;
-import android.support.v13.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.TextViewCompat;
-import android.text.Html;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
@@ -49,13 +47,13 @@ public class WizardActivity extends CarWidgetActivity {
      * The pager widget, which handles animation and allows swiping horizontally to access previous
      * and next wizard steps.
      */
-    @Bind(R.id.pager)
+    @BindView(R.id.pager)
     ViewPager mPager;
 
-    @Bind(R.id.buttonNext)
+    @BindView(R.id.buttonNext)
     Button mNextButton;
 
-    @Bind(R.id.buttonSkip)
+    @BindView(R.id.buttonSkip)
     Button mSkipButton;
 
     /**

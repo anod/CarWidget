@@ -34,7 +34,7 @@ import com.anod.car.home.prefs.model.InCarStorage;
 import java.util.ArrayList;
 import java.util.Set;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -49,7 +49,7 @@ public class BluetoothDeviceActivity extends CarWidgetActivity
     private static final IntentFilter INTENT_FILTER = new IntentFilter(
             BluetoothAdapter.ACTION_STATE_CHANGED);
 
-    @Bind(android.R.id.list)
+    @BindView(android.R.id.list)
     ListView mDevicesList;
 
     private DeviceAdapter mListAdapter;

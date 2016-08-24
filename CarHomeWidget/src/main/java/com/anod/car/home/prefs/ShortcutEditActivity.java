@@ -52,7 +52,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -82,10 +82,10 @@ public class ShortcutEditActivity extends AppCompatActivity {
 
     private Bitmap mCustomIcon;
 
-    @Bind(R.id.icon_edit)
+    @BindView(R.id.icon_edit)
     ImageView mIconView;
 
-    @Bind(R.id.label_edit)
+    @BindView(R.id.label_edit)
     EditText mLabelEdit;
 
     private ShortcutModel mModel;

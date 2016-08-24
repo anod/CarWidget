@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class AppsListAdapter extends ArrayAdapter<AppsList.Entry> {
     final private int mResource;
@@ -77,10 +77,10 @@ public class AppsListAdapter extends ArrayAdapter<AppsList.Entry> {
 
         int position;
 
-        @Bind(android.R.id.text1)
+        @BindView(android.R.id.text1)
         TextView title;
 
-        @Bind(android.R.id.icon)
+        @BindView(android.R.id.icon)
         ImageView icon;
 
         public ViewHolder(View view) {

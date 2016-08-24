@@ -26,7 +26,7 @@ import com.anod.car.home.backup.PreferencesBackupManager;
 import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.Utils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FragmentBackup extends Fragment {
@@ -42,10 +42,10 @@ public class FragmentBackup extends Fragment {
             | DateUtils.FORMAT_SHOW_YEAR
             | DateUtils.FORMAT_ABBREV_ALL;
 
-    @Bind(R.id.pager)
+    @BindView(R.id.pager)
     ViewPager mViewPager;
 
-    @Bind(R.id.tabs)
+    @BindView(R.id.tabs)
     TabLayout mTabs;
 
     private MenuItem mRefreshMenuItem;

@@ -15,7 +15,7 @@ import com.anod.car.home.utils.MusicUtils;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
  */
 public class MusicAppChoiceActivity extends MusicAppsActivity {
 
-    @Bind(R.id.defaultApp)
+    @BindView(R.id.defaultApp)
     CheckBox mDefaultApp;
 
     @Override

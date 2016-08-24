@@ -14,8 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Bind;
 
 /**
  * @author alex
@@ -25,7 +25,7 @@ public class CrashDialog extends BaseCrashReportDialog implements DialogInterfac
         DialogInterface.OnDismissListener {
 
     private static final String STATE_COMMENT = "comment";
-    @Bind(android.R.id.edit)
+    @BindView(android.R.id.edit)
     EditText mUserCommentView;
 
     AlertDialog mDialog;

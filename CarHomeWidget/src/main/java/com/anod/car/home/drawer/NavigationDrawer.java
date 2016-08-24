@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 import com.anod.car.home.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -27,10 +27,10 @@ public class NavigationDrawer {
 
     private final NavigationAdapter mAdapter;
 
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    @Bind(R.id.left_drawer)
+    @BindView(R.id.left_drawer)
     ListView mDrawerList;
 
     public NavigationDrawer(final AppCompatActivity activity, int appWidgetId) {

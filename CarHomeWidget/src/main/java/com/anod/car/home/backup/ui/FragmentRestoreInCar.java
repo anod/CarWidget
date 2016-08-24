@@ -34,7 +34,7 @@ import com.anod.car.home.utils.Version;
 
 import java.io.File;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -44,13 +44,13 @@ import butterknife.ButterKnife;
 public class FragmentRestoreInCar extends Fragment implements RestoreTask.RestoreTaskListener,
         BackupTask.BackupTaskListener, GDriveBackup.Listener {
 
-    @Bind(R.id.restoreIncar)
+    @BindView(R.id.restoreIncar)
     ImageButton mRestoreIncar;
 
-    @Bind(R.id.lastBackupIncar)
+    @BindView(R.id.lastBackupIncar)
     TextView mLastBackupIncar;
 
-    @Bind(R.id.uploadIncar)
+    @BindView(R.id.uploadIncar)
     ImageButton mUploadIncar;
 
     Version mVersion;

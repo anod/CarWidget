@@ -22,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.RemoteViews;
 
 import butterknife.ButterKnife;
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class SkinPreviewFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<View>, View.OnLongClickListener {
@@ -33,7 +33,7 @@ public class SkinPreviewFragment extends Fragment
 
     private LookAndFeelActivity mActivity;
 
-    @Bind(R.id.container_preview)
+    @BindView(R.id.container_preview)
     ViewGroup mContainer;
 
     private int mShotcutsCount;

@@ -42,7 +42,7 @@ import com.anod.car.home.utils.HtmlCompat;
 import com.anod.car.home.utils.IntentUtils;
 import com.anod.car.home.utils.Utils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LookAndFeelActivity extends CarWidgetActivity
@@ -62,13 +62,13 @@ public class LookAndFeelActivity extends CarWidgetActivity
 
     private BitmapLruCache mBitmapMemoryCache;
 
-    @Bind(R.id.skin_info)
+    @BindView(R.id.skin_info)
     TextView mTextView;
 
-    @Bind(R.id.gallery)
+    @BindView(R.id.gallery)
     ViewPager mGallery;
 
-    @Bind(R.id.loading)
+    @BindView(R.id.loading)
     View mLoaderView;
 
     private LookAndFeelMenu mMenu;

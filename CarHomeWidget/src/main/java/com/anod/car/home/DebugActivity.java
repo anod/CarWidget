@@ -19,21 +19,23 @@ import com.anod.car.home.incar.ModeDetector;
 import com.anod.car.home.incar.ModeService;
 import com.anod.car.home.prefs.model.InCarInterface;
 import com.anod.car.home.prefs.model.InCarStorage;
+
+import butterknife.BindViews;
 import info.anodsplace.android.log.AppLog;
 import com.anod.car.home.utils.LogCatCollector;
 
 import java.util.LinkedList;
 import java.util.Timer;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DebugActivity extends Activity {
 
-    @Bind(R.id.log)
+    @BindView(R.id.log)
     ListView mListView;
 
-    @Bind({
+    @BindViews({
             R.id.broadcast,
             R.id.incar,
             R.id.power,
