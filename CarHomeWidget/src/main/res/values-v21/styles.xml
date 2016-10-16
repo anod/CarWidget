@@ -12,5 +12,7 @@
     <style name="Notification.Icon" parent="android:TextAppearance.StatusBar.Icon">
         <item name="android:background">@drawable/notification_icon_background</item>
     </style>
-
+    <style name="Notification.Button">
+        <item name="android:background">@drawable/notification_button_background</item>
+    </style>
 </resources>
