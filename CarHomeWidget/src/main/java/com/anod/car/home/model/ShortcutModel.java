@@ -33,32 +33,23 @@ public class ShortcutModel {
     final ContentResolver mContentResolver;
     private final PackageManager mPackageManager;
     private final Context mContext;
-    private final int mIconBitmapSize;
-
-    private ArrayList<SoftReference<Bitmap>> mUnusedBitmaps;
-
-    private final static Object sLock = new Object();
-
-    private SoftReferenceThreadLocal<Canvas> mCachedIconCanvas = new SoftReferenceThreadLocal<Canvas>() {
-        @Override
-        protected Canvas initialValue() {
-            return new Canvas();
-        }
-    };
-
-    private SoftReferenceThreadLocal<BitmapFactory.Options> mCachedBitmapFactoryOptions = new SoftReferenceThreadLocal<BitmapFactory.Options>() {
-        @Override
-        protected BitmapFactory.Options initialValue() {
-            return new BitmapFactory.Options();
-        }
-    };
+    private final BitmapFactory.Options mLowResOptions;
 
     public ShortcutModel(Context context) {
         mContentResolver = context.getContentResolver();
         mPackageManager = context.getPackageManager();
         mContext = context;
-        mIconBitmapSize = UtilitiesBitmap.getIconMaxSize(context);
-        mUnusedBitmaps = new ArrayList<>();
+        int iconMaxSize = UtilitiesBitmap.getIconMaxSize(context);
+
+        mLowResOptions = new BitmapFactory.Options();
+        mLowResOptions.outWidth = iconMaxSize;
+        mLowResOptions.outHeight = iconMaxSize;
+        mLowResOptions.inSampleSize = 1;
+        if (Utils.isLowMemoryDevice()) {
+            // Always prefer RGB_565 config for low res. If the bitmap has transparency, it will
+            // automatically be loaded as ALPHA_8888.
+            mLowResOptions.inPreferredConfig = Bitmap.Config.RGB_565;
+        }
     }
 
     public ShortcutIcon loadShortcutIcon(Uri shortcutUri)
@@ -68,32 +59,6 @@ public class ShortcutModel {
             return null;
         }
 
-        if (Utils.isLowMemoryDevice()) {
-            mUnusedBitmaps.clear();
-        }
-
-        Bitmap unusedBitmap = null;
-        synchronized(sLock) {
-            // not in cache; we need to load it from the db
-            while ((unusedBitmap == null || !unusedBitmap.isMutable() ||
-                    unusedBitmap.getWidth() != mIconBitmapSize ||
-                    unusedBitmap.getHeight() != mIconBitmapSize)
-                    && mUnusedBitmaps.size() > 0) {
-                unusedBitmap = mUnusedBitmaps.remove(0).get();
-            }
-            if (unusedBitmap != null) {
-                final Canvas canvas = mCachedIconCanvas.get();
-                canvas.setBitmap(unusedBitmap);
-                canvas.drawColor(0, PorterDuff.Mode.CLEAR);
-                canvas.setBitmap(null);
-            }
-
-            if (unusedBitmap == null) {
-                Bitmap.Config config = Utils.isLowMemoryDevice() ? Bitmap.Config.RGB_565 : Bitmap.Config.ARGB_8888;
-                unusedBitmap = Bitmap.createBitmap(mIconBitmapSize, mIconBitmapSize, config);
-            }
-        }
-
         ShortcutIcon shortcutIcon = null;
         try {
             c.moveToFirst();
@@ -101,20 +66,17 @@ public class ShortcutModel {
             final int idIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites._ID);
             final int iconTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_TYPE);
             final int iconIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON);
-            final int iconPackageIndex = c
-                    .getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_PACKAGE);
-            final int iconResourceIndex = c
-                    .getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_RESOURCE);
+            final int iconPackageIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_PACKAGE);
+            final int iconResourceIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_RESOURCE);
             final int itemTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ITEM_TYPE);
-            final int isCustomIconIndex = c
-                    .getColumnIndexOrThrow(LauncherSettings.Favorites.IS_CUSTOM_ICON);
+            final int isCustomIconIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.IS_CUSTOM_ICON);
 
             final long id = c.getLong(idIndex);
             final int itemType = c.getInt(itemTypeIndex);
 
             Bitmap icon = null;
             if (itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
-                icon = getIconFromCursor(c, iconIndex, unusedBitmap);
+                icon = getIconFromCursor(c, iconIndex, mLowResOptions);
                 if (c.getInt(isCustomIconIndex) == 1) {
                     shortcutIcon = ShortcutIcon.forCustomIcon(id, icon);
                 } else {
@@ -130,8 +92,7 @@ public class ShortcutModel {
                     iconResource.resourceName = resourceName;
                     // the resource
                     try {
-                        Resources resources = mPackageManager
-                                .getResourcesForApplication(packageName);
+                        Resources resources = mPackageManager.getResourcesForApplication(packageName);
                         if (resources != null) {
                             final int resId = resources.getIdentifier(resourceName, null, null);
                             if (resId > 0) {
@@ -145,11 +106,11 @@ public class ShortcutModel {
                     }
                     // the db
                     if (icon == null) {
-                        icon = getIconFromCursor(c, iconIndex, unusedBitmap);
+                        icon = getIconFromCursor(c, iconIndex, mLowResOptions);
                     }
                     shortcutIcon = ShortcutIcon.forIconResource(id, icon, iconResource);
                 } else if (iconType == LauncherSettings.Favorites.ICON_TYPE_BITMAP) {
-                    icon = getIconFromCursor(c, iconIndex, unusedBitmap);
+                    icon = getIconFromCursor(c, iconIndex, mLowResOptions);
                     if (icon != null) {
                         shortcutIcon = ShortcutIcon.forCustomIcon(id, icon);
                     }
@@ -221,23 +182,12 @@ public class ShortcutModel {
         return info;
     }
 
-    Bitmap getIconFromCursor(Cursor c, int iconIndex, Bitmap unusedBitmap) {
+    private static Bitmap getIconFromCursor(Cursor c, int iconIndex, BitmapFactory.Options opts) {
         byte[] data = c.getBlob(iconIndex);
-        BitmapFactory.Options opts;
-
-        opts = mCachedBitmapFactoryOptions.get();
-        opts.outWidth = mIconBitmapSize;
-        opts.outHeight = mIconBitmapSize;
-        opts.inSampleSize = 1;
-//        opts.inMutable = true;
-        if (UtilitiesBitmap.canUseForInBitmap(unusedBitmap, opts)) {
-            opts.inBitmap = unusedBitmap;
-        }
         try {
             return BitmapFactory.decodeByteArray(data, 0, data.length, opts);
         } catch (Exception e) {
             AppLog.e(e);
-           // throw new RuntimeException(e.getMessage(), e);
             return null;
         }
     }

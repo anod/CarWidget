@@ -46,7 +46,7 @@ public class ShortcutInfoUtils {
 
         if (bitmap instanceof Bitmap) {
             AppLog.d("Custom shortcut with Bitmap");
-            icon = UtilitiesBitmap.createMaxSizeIcon(new FastBitmapDrawable((Bitmap) bitmap), context);
+            icon = UtilitiesBitmap.createMaxSizeIcon(new BitmapDrawable(context.getResources(), (Bitmap) bitmap), context);
             result.icon = ShortcutIcon.forCustomIcon(0, icon);
         } else {
             Parcelable extra = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);

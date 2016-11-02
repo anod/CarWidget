@@ -151,7 +151,6 @@ public class UtilitiesBitmap {
         return createIconBitmapSize(icon, SIZE_MAX, context);
     }
 
-
     /**
      * Returns a bitmap suitable for the all apps view. The bitmap will be a
      * power of two sized ARGB_8888 bitmap that can be used as a gl texture.
@@ -224,8 +223,7 @@ public class UtilitiesBitmap {
                 bitmapSize = sIconSystem;
             }
 
-            final Bitmap bitmap = Bitmap
-                    .createBitmap(bitmapSize, bitmapSize, Bitmap.Config.ARGB_8888);
+            final Bitmap bitmap = Bitmap.createBitmap(bitmapSize, bitmapSize, Bitmap.Config.ARGB_8888);
             final Canvas canvas = sCanvas;
             canvas.setBitmap(bitmap);
 
@@ -277,10 +275,6 @@ public class UtilitiesBitmap {
         }
 
         return false;
-//        // On earlier versions, the dimensions must match exactly and the inSampleSize must be 1
-//        return candidate.getWidth() == targetOptions.outWidth
-//                && candidate.getHeight() == targetOptions.outHeight
-//                && targetOptions.inSampleSize == 1;
     }
 
     static int getBytesPerPixel(Bitmap.Config config) {

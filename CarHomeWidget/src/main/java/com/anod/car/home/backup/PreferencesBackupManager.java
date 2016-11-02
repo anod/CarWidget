@@ -279,7 +279,7 @@ public class PreferencesBackupManager {
         for (int pos = 0; pos < model.getCount(); pos++) {
             model.dropShortcut(pos);
             final ShortcutsJsonReader.ShortcutWithIconAndPosition shortcut = shortcuts.get(pos);
-            if (shortcut.icon != null && shortcut.info != null) {
+            if (shortcut != null && shortcut.icon != null && shortcut.info != null) {
                 Shortcut info = new Shortcut(Shortcut.NO_ID, shortcut.info);
                 model.saveShortcut(pos, info, shortcut.icon);
             }
