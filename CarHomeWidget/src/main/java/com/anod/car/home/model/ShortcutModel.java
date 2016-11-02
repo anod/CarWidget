@@ -11,8 +11,6 @@ import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -20,20 +18,18 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
 
 import info.anodsplace.android.log.AppLog;
-import com.anod.car.home.utils.SoftReferenceThreadLocal;
+
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
 
-import java.lang.ref.SoftReference;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 
 public class ShortcutModel {
 
     final ContentResolver mContentResolver;
     private final PackageManager mPackageManager;
     private final Context mContext;
-    private final BitmapFactory.Options mLowResOptions;
+    private final BitmapFactory.Options mBitmapOptions;
 
     public ShortcutModel(Context context) {
         mContentResolver = context.getContentResolver();
@@ -41,14 +37,16 @@ public class ShortcutModel {
         mContext = context;
         int iconMaxSize = UtilitiesBitmap.getIconMaxSize(context);
 
-        mLowResOptions = new BitmapFactory.Options();
-        mLowResOptions.outWidth = iconMaxSize;
-        mLowResOptions.outHeight = iconMaxSize;
-        mLowResOptions.inSampleSize = 1;
+        mBitmapOptions = new BitmapFactory.Options();
+        mBitmapOptions.outWidth = iconMaxSize;
+        mBitmapOptions.outHeight = iconMaxSize;
+        mBitmapOptions.inSampleSize = 1;
         if (Utils.isLowMemoryDevice()) {
             // Always prefer RGB_565 config for low res. If the bitmap has transparency, it will
             // automatically be loaded as ALPHA_8888.
-            mLowResOptions.inPreferredConfig = Bitmap.Config.RGB_565;
+            mBitmapOptions.inPreferredConfig = Bitmap.Config.RGB_565;
+        } else {
+            mBitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
         }
     }
 
@@ -76,7 +74,7 @@ public class ShortcutModel {
 
             Bitmap icon = null;
             if (itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
-                icon = getIconFromCursor(c, iconIndex, mLowResOptions);
+                icon = getIconFromCursor(c, iconIndex, mBitmapOptions);
                 if (c.getInt(isCustomIconIndex) == 1) {
                     shortcutIcon = ShortcutIcon.forCustomIcon(id, icon);
                 } else {
@@ -106,11 +104,11 @@ public class ShortcutModel {
                     }
                     // the db
                     if (icon == null) {
-                        icon = getIconFromCursor(c, iconIndex, mLowResOptions);
+                        icon = getIconFromCursor(c, iconIndex, mBitmapOptions);
                     }
                     shortcutIcon = ShortcutIcon.forIconResource(id, icon, iconResource);
                 } else if (iconType == LauncherSettings.Favorites.ICON_TYPE_BITMAP) {
-                    icon = getIconFromCursor(c, iconIndex, mLowResOptions);
+                    icon = getIconFromCursor(c, iconIndex, mBitmapOptions);
                     if (icon != null) {
                         shortcutIcon = ShortcutIcon.forCustomIcon(id, icon);
                     }
