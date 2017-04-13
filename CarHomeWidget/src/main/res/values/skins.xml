@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="WidgetSkin" />
+
+    <style name="WidgetSkin.W7" />
+    <style name="WidgetSkin.W7.Button" />
+
+    <style name="WidgetSkin.Material" />
+    <style name="WidgetSkin.Material.Button" />
+
+</resources>

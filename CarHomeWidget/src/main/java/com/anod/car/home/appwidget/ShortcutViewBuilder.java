@@ -139,7 +139,6 @@ public class ShortcutViewBuilder {
 
     }
 
-
     private Bitmap setShortcut(int res, int resText, Shortcut info, RemoteViews views, int cellId, IconTheme themeIcons) {
 
         String themePackage = (themeIcons == null) ? "null" : themeIcons.getPackageName();
@@ -152,7 +151,8 @@ public class ShortcutViewBuilder {
             icon = mBitmapTransform.transform(icon);
             addBitmapToMemCache(imageKey, icon);
         }
-        views.setBitmap(res, "setImageBitmap", icon);
+
+        views.setImageViewBitmap(res, icon);
 
         if (!mPrefs.isTitlesHide()) {
             String title = String.valueOf(info.title);

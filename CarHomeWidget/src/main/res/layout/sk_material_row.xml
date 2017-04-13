@@ -12,21 +12,18 @@
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
-        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="2dp"
-        android:layout_marginBottom="2dp"
-        android:clickable="true"
-
+        android:layout_marginTop="2dp"
         android:layout_weight="1"
         android:background="@drawable/card_background"
-        android:paddingTop="4dp"
+        android:clickable="true"
+        android:paddingBottom="8dp"
         android:paddingLeft="4dp"
         android:paddingRight="6dp"
-        android:paddingBottom="8dp"
-
+        android:paddingTop="4dp"
         >
-
 
         <ImageButton
             android:id="@+id/btn0"
@@ -34,6 +31,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray"
             android:src="@drawable/ic_add_shortcut_holo"
+            style="@style/WidgetSkin.Material.Button"
             />
 
         <TextView
@@ -41,25 +39,26 @@
             style="@style/cardsBtnText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/set_shortcut"/>
+            android:text="@string/set_shortcut"
+        />
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
-        android:layout_weight="1"
-        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="2dp"
-        android:clickable="true"
-
+        android:layout_marginTop="2dp"
+        android:layout_weight="1"
         android:background="@drawable/card_background"
-        android:paddingTop="4dp"
+
+        android:clickable="true"
+        android:paddingBottom="8dp"
         android:paddingLeft="4dp"
         android:paddingRight="6dp"
-        android:paddingBottom="8dp"
+        android:paddingTop="4dp"
         >
 
         <ImageButton
@@ -68,13 +67,14 @@
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray"
             android:src="@drawable/ic_add_shortcut_holo"
-            />
+            style="@style/WidgetSkin.Material.Button" />
 
         <TextView
             android:id="@+id/btn_text1"
             style="@style/cardsBtnText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/set_shortcut"/>
+            android:text="@string/set_shortcut"
+        />
     </FrameLayout>
 </LinearLayout>

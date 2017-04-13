@@ -1,6 +1,8 @@
 #!/usr/bin/php
 <?php
 
+declare(strict_types=1);
+
 $opts = getopt("an:");
 
 $files = [];
@@ -19,8 +21,6 @@ if (isset($opts['a'])) {
     ";
 	exit(1);
 }
-
-
 
 foreach($files AS $path) {
 	echo "Processing $path ...\n";
@@ -75,10 +75,7 @@ class SkinInfo {
 	public $title;
 	public $num;
 	
-	/**
-	 * @return SkinInfo
-	 */
-	public static function fromPath($path) {
+	public static function fromPath(string $path): SkinInfo {
 		$path_parts = pathinfo($path);
 		$file_parts = explode('_',$path_parts['filename']);
 		if (count($file_parts) !== 3) {
@@ -101,5 +98,4 @@ class SkinInfo {
 	public function getRowPath() {
 		return $this->dir.DIRECTORY_SEPARATOR.'sk_'.$this->title.'_row.xml';
 	}
-	
 }
