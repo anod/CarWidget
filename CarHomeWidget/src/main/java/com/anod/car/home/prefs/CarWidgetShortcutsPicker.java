@@ -58,14 +58,15 @@ public class CarWidgetShortcutsPicker extends ActivityPicker {
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position == IntentUtils.IDX_DIRECT_CALL)
         {
-            if (!AppPermissions.isGranted(this, Manifest.permission.READ_CONTACTS)) {
+            if (AppPermissions.isGranted(this, Manifest.permission.READ_CONTACTS)) {
+                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+                startActivityForResult(intent, REQUEST_PICK_CONTACT);
+            } else {
                 AppPermissions.request(this, new String[] { Manifest.permission.READ_CONTACTS }, AppPermissions.REQUEST_READ_CONTACTS);
                 setResult(RESULT_CANCELED);
                 finish();
             }
-            Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-            intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-            startActivityForResult(intent, REQUEST_PICK_CONTACT);
             return;
         }
         super.onItemClick(parent, view, position, id);
