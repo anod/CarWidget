@@ -12,7 +12,6 @@
         <item name="wizardTextItem">@style/wizardTextItemGray</item>
 
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
         <item name="android:windowBackground">@color/activity_bg</item>
 
         <item name="android:preferenceStyle">@style/AppPreference</item>
@@ -48,7 +47,6 @@
     <style name="AppThemeGray.Transparent" parent="AppThemeGray">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowShowWallpaper">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
         <item name="android:windowContentOverlay">@null</item>
 
         <item name="android:windowActionBarOverlay">true</item>
