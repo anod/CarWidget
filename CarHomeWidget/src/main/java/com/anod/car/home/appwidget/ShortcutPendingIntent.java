@@ -43,8 +43,8 @@ public class ShortcutPendingIntent implements WidgetViewBuilder.PendingIntentFac
 
     public PendingIntent createShortcut(Intent intent, String prefix, int position) {
         String action = intent.getAction();
-        boolean isCallPrivileged = (action != null && action.equals(INTENT_ACTION_CALL_PRIVILEGED));
-        if (intent.getExtras() == null && !isCallPrivileged) { // Samsung s3 bug
+        boolean isCall = INTENT_ACTION_CALL_PRIVILEGED.equals(action) || Intent.ACTION_CALL.equals(action);
+        if (intent.getExtras() == null && !isCall) { // Samsung s3 bug
             return PendingIntent.getActivity(mContext, 0 /* no requestCode */, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
         }

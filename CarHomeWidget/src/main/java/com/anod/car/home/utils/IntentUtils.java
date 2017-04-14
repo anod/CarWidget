@@ -3,6 +3,7 @@ package com.anod.car.home.utils;
 import com.anod.car.home.ShortcutActivity;
 import com.anod.car.home.app.NewShortcutActivity;
 import com.anod.car.home.incar.SwitchInCarActivity;
+import com.anod.car.home.prefs.CarWidgetShortcutsPicker;
 import com.anod.car.home.prefs.LookAndFeelActivity;
 
 import android.appwidget.AppWidgetManager;
@@ -10,10 +11,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -23,6 +30,7 @@ public class IntentUtils {
 
     private static final String DETAIL_MARKET_URL = "market://details?id=%s";
     public static final int IDX_SWITCH_CAR_MODE = 0;
+    public static final int IDX_DIRECT_CALL = 1;
 
 
     public static Intent createNewShortcutIntent(Context context, int appWidgetId, int cellId) {
@@ -76,11 +84,13 @@ public class IntentUtils {
         switch (i) {
             case IDX_SWITCH_CAR_MODE:
                 return new Intent(context, SwitchInCarActivity.class);
-            case 1:
-                return createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
+            case IDX_DIRECT_CALL:
+                return new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
             case 2:
-                return createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT);
+                return createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
             case 3:
+                return createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT);
+            case 4:
                 return createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_PREVIOUS);
             default:
         }
@@ -111,5 +121,45 @@ public class IntentUtils {
         intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
         intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, title);
         return intent;
+    }
+
+    public static Intent createDirectCallIntent(Uri contactUri, Context context) {
+        String[] projection = new String[]{
+                ContactsContract.CommonDataKinds.Phone.NUMBER,
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.PHOTO_URI
+        };
+        Cursor cursor = context.getContentResolver().query(contactUri, projection,
+                null, null, null);
+
+        // If the cursor returned is valid, get the phone number
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                int nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+                int photoIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI);
+
+                String number = cursor.getString(numberIndex);
+                String name = cursor.getString(nameIndex);
+                String photoUri = cursor.getString(photoIndex);
+
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:"+number));
+
+                Intent intent = commonPickShortcutIntent(name, callIntent);
+                if (!TextUtils.isEmpty(photoUri))
+                {
+                    Drawable d = new DrawableUri(context).resolve(Uri.parse(photoUri));
+                    if (d != null)
+                    {
+                        Bitmap bitmap = UtilitiesBitmap.createHiResIconBitmap(d, context);
+                        intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);
+                    }
+                }
+                return intent;
+            }
+            cursor.close();
+        }
+        return null;
     }
 }

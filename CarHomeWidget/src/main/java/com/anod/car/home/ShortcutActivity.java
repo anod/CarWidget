@@ -6,14 +6,16 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.anod.car.home.app.MusicAppChoiceActivity;
 import com.anod.car.home.appwidget.ShortcutPendingIntent;
 import com.anod.car.home.prefs.model.AppSettings;
+import com.anod.car.home.utils.AppPermissions;
 import com.anod.car.home.utils.MusicUtils;
+
+import info.anodsplace.android.log.AppLog;
 
 public class ShortcutActivity extends Activity {
 
@@ -36,7 +38,7 @@ public class ShortcutActivity extends Activity {
 
     private void execute(Intent intent) {
         Intent appIntent = intent.getParcelableExtra(EXTRA_INTENT);
-        if (appIntent instanceof Intent) {
+        if (appIntent != null) {
             runFromIntent(appIntent);
             finish();
             return;
@@ -70,9 +72,17 @@ public class ShortcutActivity extends Activity {
     private void runFromIntent(Intent intent) {
         //fix for Galaxy s3
         String action = intent.getAction();
-        if (action != null && action.equals(ShortcutPendingIntent.INTENT_ACTION_CALL_PRIVILEGED)) {
+        if (action != null && (action.equals(ShortcutPendingIntent.INTENT_ACTION_CALL_PRIVILEGED))) {
             intent.setAction(Intent.ACTION_CALL);
         }
+        if (Intent.ACTION_CALL.equals(action)) {
+            if (!AppPermissions.isGranted(this, android.Manifest.permission.CALL_PHONE)) {
+                AppPermissions.request(this, new String[]{
+                        android.Manifest.permission.CALL_PHONE
+                }, AppPermissions.REQUEST_PHONE);
+            }
+        }
+
         if (intent.getSourceBounds() == null) {
             intent.setSourceBounds(getIntent().getSourceBounds());
         }
@@ -86,10 +96,8 @@ public class ShortcutActivity extends Activity {
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, getString(R.string.activity_not_found), Toast.LENGTH_SHORT).show();
         } catch (SecurityException e) {
-            Toast.makeText(this, getString(R.string.activity_not_found), Toast.LENGTH_SHORT).show();
-            Log.e("CarHomeWidget", "Widget does not have the permission to launch " + intent +
-                    ". Make sure to create a MAIN intent-filter for the corresponding activity " +
-                    "or use the exported attribute for this activity.", e);
+                Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
+                AppLog.e(e);
         }
     }
 }

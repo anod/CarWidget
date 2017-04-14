@@ -12,6 +12,8 @@ import android.support.v4.content.ContextCompat;
 public class AppPermissions {
     public static final int REQUEST_STORAGE_WRITE = 300;
     public static final int REQUEST_STORAGE_READ = 301;
+    public static final int REQUEST_PHONE = 302;
+    public static final int REQUEST_READ_CONTACTS = 303;
 
     public static boolean isGranted(Activity activity, String permissionName) {
         return ContextCompat.checkSelfPermission(activity, permissionName) == PackageManager.PERMISSION_GRANTED;

@@ -195,6 +195,7 @@
 
 	<string-array name="carwidget_shortcuts">
 		<item>Switch InCar</item>
+		<item>Direct call</item>
 		<item>Play/Pause</item>
 		<item>Next</item>
 		<item>Previous</item>
@@ -256,4 +257,5 @@
 	<string name="new_backup">BACKUP</string>
 	<string name="save_widget">Save widget settings</string>
 	<string name="last_backup">Last backup: %1$s</string>
+    <string name="permission_denied">Permission denied</string>
 </resources>
