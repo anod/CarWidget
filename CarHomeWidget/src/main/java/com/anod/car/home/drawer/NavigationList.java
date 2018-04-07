@@ -214,7 +214,7 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
                 mContext.startActivity(new Intent(mContext, MainActivity.class));
                 return true;
             case ID_CAR_SETTINGS:
-                intent = ConfigurationActivity
+                intent = ConfigurationActivity.Companion
                         .createFragmentIntent(mContext, ConfigurationInCar.class);
                 mContext.startActivity(intent);
                 return false;
@@ -240,7 +240,7 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
                 createThemesDialog().show();
                 return false;
             case ID_BACKUP:
-                intent = ConfigurationActivity.createFragmentIntent(mContext, FragmentBackup.class);
+                intent = ConfigurationActivity.Companion.createFragmentIntent(mContext, FragmentBackup.class);
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
                 mContext.startActivity(intent);
                 return true;

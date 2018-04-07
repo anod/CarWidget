@@ -104,9 +104,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         deleteView.startAnimation(animation)
     }
 
-    override fun isTransparentAppTheme(): Boolean {
-        return true
-    }
+    override val isTransparentAppTheme = true
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

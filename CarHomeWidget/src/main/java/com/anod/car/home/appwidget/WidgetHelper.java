@@ -4,14 +4,13 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 
+import com.anod.car.home.LargeProvider;
+
 /**
  * @author alex
  * @date 5/24/13
  */
 public class WidgetHelper {
-
-    static final String PROVIDER_DEFAULT = "com.anod.car.home.LargeProvider";
-    private static final String PROVIDER_SHORTCUT = "com.anod.car.home.appwidget.ShortcutProvider";
 
     /**
      * Build {@link ComponentName} describing this specific
@@ -19,7 +18,7 @@ public class WidgetHelper {
      */
     public static int[] getLargeWidgetIds(Context context) {
         AppWidgetManager wm = AppWidgetManager.getInstance(context);
-        ComponentName provider = new ComponentName(context.getPackageName(), PROVIDER_DEFAULT);
+        ComponentName provider = new ComponentName(context, LargeProvider.class);
 
         int[] appWidgetIds = wm.getAppWidgetIds(provider);
         return appWidgetIds;
@@ -27,7 +26,7 @@ public class WidgetHelper {
 
     public static int[] getShortcutWidgetIds(Context context) {
         AppWidgetManager wm = AppWidgetManager.getInstance(context);
-        ComponentName provider = new ComponentName(context.getPackageName(), PROVIDER_SHORTCUT);
+        ComponentName provider = new ComponentName(context, ShortcutProvider.class);
 
         int[] appWidgetIds = wm.getAppWidgetIds(provider);
         return appWidgetIds;

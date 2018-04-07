@@ -33,7 +33,7 @@ public class SwitchInCarActivity extends Activity {
         } else {
             Toast.makeText(this, R.string.incar_mode_disabled, Toast.LENGTH_LONG).show();
 
-            Intent intent = ConfigurationActivity.createFragmentIntent(this, ConfigurationInCar.class);
+            Intent intent = ConfigurationActivity.Companion.createFragmentIntent(this, ConfigurationInCar.class);
             startActivity(intent);
         }
         finish();

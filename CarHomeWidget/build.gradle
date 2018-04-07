@@ -84,16 +84,16 @@ android {
         }
     }
 
-    flavorDimensions "free", "pro"
+    flavorDimensions "tier"
 
     productFlavors {
         pro {
             applicationId 'com.anod.car.home.pro'
-            dimension "pro"
+            dimension "tier"
         }
         free {
             applicationId 'com.anod.car.home.free'
-            dimension "free"
+            dimension "tier"
         }
     }
 

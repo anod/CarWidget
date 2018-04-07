@@ -88,7 +88,7 @@ class WidgetButtonChoiceActivity : AppCompatGridActivity() {
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         val prefs = WidgetStorage.load(this, appWidgetId)
-        val item = listAdapter.getItem(position) as ChoiceAdapter.Item
+        val item = listAdapter!!.getItem(position) as ChoiceAdapter.Item
         if (button == WidgetButtonViewBuilder.BUTTON_1) {
             prefs.widgetButton1 = item.value
         } else {
