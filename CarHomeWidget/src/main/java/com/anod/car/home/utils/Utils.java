@@ -24,14 +24,6 @@ import static android.content.Context.ACTIVITY_SERVICE;
 import static android.content.pm.ApplicationInfo.FLAG_LARGE_HEAP;
 
 public class Utils {
-    static final char CACHE_KEY_SEPARATOR = '\n';
-
-    final public static boolean IS_ISC_MR1_OR_GREATER = (Build.VERSION.SDK_INT >= 15);
-
-    final public static boolean IS_JELLYBEAN_OR_GREATER = (Build.VERSION.SDK_INT >= 16);
-
-    final public static boolean IS_JELLYBEAN_MR2_OR_GREATER = (Build.VERSION.SDK_INT >= 18);
-            // 4.3 JELLY_BEAN_MR2
 
     public static final boolean IS_KITKAT_OR_GREATER = (Build.VERSION.SDK_INT >= 19);
 

@@ -33,7 +33,7 @@ public class SkinPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return SkinPreviewFragment.newInstance(position);
+        return SkinPreviewFragment.Companion.newInstance(position);
     }
 
     @Override

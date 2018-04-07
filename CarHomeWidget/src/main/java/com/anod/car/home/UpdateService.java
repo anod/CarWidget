@@ -48,7 +48,7 @@ public class UpdateService extends Service implements Runnable {
 
             PrefsMigrate.migrate(context, appWidgetId);
 
-            if (Utils.IS_JELLYBEAN_OR_GREATER) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 setKeyguardSettings(appWidgetManager, builder, appWidgetId);
             }
 

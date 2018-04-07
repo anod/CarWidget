@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -82,13 +83,6 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Do not use AlertBuilder, itcause requestFeature exception
-//        mAlertDialog = new AlertDialog.Builder(activity)
-//                .setView(view)
-//                .setPositiveButton(android.R.string.ok, mPositiveListener)
-//                .setNegativeButton(android.R.string.cancel, mNegativeListener)
-//                .create();
-
         return new Dialog(getActivity(), R.style.DialogTheme);
     }
 
@@ -97,10 +91,10 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.color_picker_dialog, container, false);
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.color_dialog_toolbar);
+        Toolbar toolbar = view.findViewById(R.id.color_dialog_toolbar);
         toolbar.setTitle(R.string.color_dialog_title);
 
-        mHexButton = (Button) toolbar.findViewById(R.id.hex_switch);
+        mHexButton = toolbar.findViewById(R.id.hex_switch);
         updateHexButton();
         mHexButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,19 +103,19 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
             }
         });
 
-        mProgress = (ProgressBar) view.findViewById(android.R.id.progress);
-        mPalette = (ColorPickerPalette) view.findViewById(R.id.color_picker);
+        mProgress = view.findViewById(android.R.id.progress);
+        mPalette = view.findViewById(R.id.color_picker);
         mPalette.init(mSize, mColumns, mColorSelectListener);
         mColorsPanel = view.findViewById(R.id.colors_panel);
 
-        mHexPanel = (HexPanel) view.findViewById(R.id.hex_panel);
+        mHexPanel = view.findViewById(R.id.hex_panel);
         mHexPanel.init(getSelectedColor(), mAlphaSliderVisible);
         mHexPanel.hide();
 
         if (mAlphaSliderVisible) {
             float density = getResources().getDisplayMetrics().density;
-            mAlpha = (ColorPickerPalette) view.findViewById(R.id.alpha_picker);
-            if (Utils.IS_JELLYBEAN_OR_GREATER) {
+            mAlpha = view.findViewById(R.id.alpha_picker);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 mAlpha.setBackground(new AlphaPatternDrawable((int) (5 * density)));
             } else {
                 mAlpha.setBackgroundDrawable(new AlphaPatternDrawable((int) (5 * density)));
@@ -130,11 +124,11 @@ public class CarHomeColorPickerDialog extends ColorPickerDialog {
             mAlpha.init(mSize, ALPHA_LEVELS, mAlphaSelectListener);
         }
 
-        Button positiveButton = (Button) view.findViewById(android.R.id.button1);
+        Button positiveButton = view.findViewById(android.R.id.button1);
         positiveButton.setText(android.R.string.ok);
         positiveButton.setOnClickListener(mPositiveListener);
 
-        Button negativeButton = (Button) view.findViewById(android.R.id.button2);
+        Button negativeButton = view.findViewById(android.R.id.button2);
         negativeButton.setText(android.R.string.cancel);
         negativeButton.setOnClickListener(mNegativeListener);
 

@@ -226,9 +226,8 @@
         <item name="android:paddingLeft">5.0dp</item>
     </style>
 
-    <style name="Notification" parent="TextAppearance.StatusBar.EventContent" />
-    <style name="Notification.Title" parent="TextAppearance.StatusBar.EventContent.Title" />
-    <style name="Notification.Line2" parent="TextAppearance.StatusBar.EventContent.Line2" />
+    <style name="Notification" parent="@android:style/TextAppearance.StatusBar.EventContent" />
+    <style name="Notification.Title" parent="@android:style/TextAppearance.StatusBar.EventContent.Title" />
     <style name="Notification.Icon" parent="android:TextAppearance.StatusBar.Icon" />
     <style name="Notification.Button"/>
 
