@@ -64,7 +64,7 @@ public class ColorPickerDialog extends DialogFragment implements OnColorSelected
 
     private ProgressBar mProgress;
 
-    protected OnColorSelectedListener mListener;
+    protected OnColorSelectedListener listener;
 
     public ColorPickerDialog() {
         // Empty constructor required for dialog fragments.
@@ -91,7 +91,7 @@ public class ColorPickerDialog extends DialogFragment implements OnColorSelected
     }
 
     public void setOnColorSelectedListener(OnColorSelectedListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     @Override
@@ -133,8 +133,8 @@ public class ColorPickerDialog extends DialogFragment implements OnColorSelected
 
     @Override
     public void onColorSelected(int color) {
-        if (mListener != null) {
-            mListener.onColorSelected(color);
+        if (listener != null) {
+            listener.onColorSelected(color);
         }
 
         if (getTargetFragment() instanceof OnColorSelectedListener) {

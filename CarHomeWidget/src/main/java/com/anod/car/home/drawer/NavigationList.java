@@ -229,7 +229,7 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
                 String url = DETAIL_MARKET_URL;
                 Uri uri = Uri.parse(String.format(url, mContext.getPackageName()));
                 intent = new Intent(Intent.ACTION_VIEW, uri);
-                Utils.startActivitySafely(intent, mContext);
+                Utils.INSTANCE.startActivitySafely(intent, mContext);
                 return true;
             case ID_FEEDBACK:
                 Uri feedbackUri = Uri.parse(URL_GOOGLE_PLUS);
@@ -280,7 +280,7 @@ public class NavigationList extends ArrayList<NavigationList.Item> {
                 intent.addCategory(Intent.CATEGORY_CAR_DOCK);
                 final ResolveInfo info = mPackageManager
                         .resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                Utils.startActivitySafely(
+                Utils.INSTANCE.startActivitySafely(
                         IntentUtils.createApplicationDetailsIntent(
                                 info.activityInfo.applicationInfo.packageName), mContext
                 );

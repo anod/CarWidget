@@ -254,7 +254,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
         String autorunAppString = mPrefs.getString(AUTORUN_APP, null);
 
         if (autorunAppString != null) {
-            return Utils.stringToComponent(autorunAppString);
+            return Utils.INSTANCE.stringToComponent(autorunAppString);
         }
         return null;
     }

@@ -12,6 +12,12 @@ import android.content.Intent
 
 class AllAppsActivity : AppsCacheActivity() {
 
+    override fun onEntryClick(position: Int, entry: AppsList.Entry) {
+        val intent = createActivityIntent(entry.componentName)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
+
     private fun createActivityIntent(className: ComponentName): Intent {
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
@@ -25,23 +31,9 @@ class AllAppsActivity : AppsCacheActivity() {
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
     }
 
-    override fun isShowTitle(): Boolean {
-        return false
-    }
 
-    override fun getRowLayoutId(): Int {
-        return R.layout.all_apps_row
-    }
-
-    override fun onEntryClick(position: Int, entry: AppsList.Entry) {
-        val intent = createActivityIntent(entry.componentName)
-        setResult(Activity.RESULT_OK, intent)
-        finish()
-    }
-
-    override fun getAppList(context: Context): AppsList {
+    override fun createAppList(context: Context): AppsList {
         return App.provide(context).appListCache
     }
-
 
 }

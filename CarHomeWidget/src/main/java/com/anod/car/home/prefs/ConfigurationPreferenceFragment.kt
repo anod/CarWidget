@@ -58,7 +58,7 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
         onCreateImpl(savedInstanceState)
     }
 
-    override fun onCreatePreferences(savedInstanceState: Bundle, rootKey: String) {
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.sharedPreferencesName = sharedPreferencesName
         addPreferencesFromResource(xmlResource)
     }

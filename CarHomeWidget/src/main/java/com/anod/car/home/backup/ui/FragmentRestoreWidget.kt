@@ -24,6 +24,7 @@ import android.widget.TextView
 import android.widget.Toast
 
 import com.anod.car.home.R
+import com.anod.car.home.R.string.backup
 import com.anod.car.home.backup.gdrive.AppWidgetGDriveBackup
 import com.anod.car.home.backup.BackupCodeRender
 import com.anod.car.home.backup.BackupTask
@@ -31,9 +32,10 @@ import com.anod.car.home.backup.gdrive.GDriveBackup
 import com.anod.car.home.backup.PreferencesBackupManager
 import com.anod.car.home.backup.RestoreCodeRender
 import com.anod.car.home.backup.RestoreTask
+import com.anod.car.home.utils.*
 import info.anodsplace.android.log.AppLog
-import com.anod.car.home.utils.CheatSheet
-import com.anod.car.home.utils.DeleteFileTask
+import info.anodsplace.framework.app.DialogCustom
+import info.anodsplace.framework.app.DialogMessage
 
 import java.io.File
 
@@ -87,8 +89,7 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             R.id.menu_new_backup -> {
-                val defaultFilename = "widget-$appWidgetId"
-                createBackupNameDialog(defaultFilename).show()
+                backup()
                 return true
             }
             R.id.menu_download_from_cloud -> {
@@ -97,6 +98,24 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun backup() {
+        if (AppPermissions.isGranted(context!!, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            createBackupNameDialog("widget-$appWidgetId").show()
+        } else {
+            AppPermissions.request(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), AppPermissions.REQUEST_STORAGE_WRITE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        AppPermissions.onRequestPermissionsResult(requestCode, grantResults, AppPermissions.REQUEST_STORAGE_WRITE, {
+            when (it) {
+                is Granted -> backup()
+                is Denied -> Toast.makeText(context, "Permissions are required", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
@@ -160,7 +179,7 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
             private val deleteListener: DeleteClickListener,
             private val exportListener: ExportClickListener,
             private val gDriveBackup: GDriveBackup)
-        : ArrayAdapter<File>(context, R.layout.fragment_restore_item, emptyArray()) {
+        : ArrayAdapter<File>(context, R.layout.fragment_restore_item) {
 
 
         override fun getView(position: Int, view: View?, parent: ViewGroup): View {
@@ -212,22 +231,14 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
             private val backupManager: PreferencesBackupManager,
             private val adapter: RestoreAdapter) : AsyncTask<Int, Void, Array<File>>() {
 
-        override fun onPreExecute() {
-            adapter.clear()
-            adapter.notifyDataSetChanged()
-        }
-
         override fun doInBackground(vararg params: Int?): Array<File> {
             return backupManager.mainBackups
         }
 
-        override fun onPostExecute(result: Array<File>?) {
-            if (result != null) {
-                for (i in result.indices) {
-                    adapter.add(result[i])
-                    adapter.notifyDataSetChanged()
-                }
-            }
+        override fun onPostExecute(result: Array<File>) {
+            adapter.clear()
+            adapter.addAll(result.toList())
+            adapter.notifyDataSetChanged()
         }
     }
 
@@ -266,25 +277,26 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
 
     private fun createBackupNameDialog(currentName: String): AlertDialog {
         // This example shows how to add a custom layout to an AlertDialog
-        val factory = LayoutInflater.from(context)
-        val textEntryView = factory.inflate(R.layout.backup_dialog_enter_name, null)
-        val backupName = textEntryView.findViewById<View>(R.id.backup_name) as EditText
-        backupName.setText(currentName)
+        return DialogCustom(context!!, 0, R.string.save_widget, R.layout.backup_dialog_enter_name, {
+            view, builder ->
 
-        return AlertDialog.Builder(context!!)
-                .setTitle(R.string.save_widget)
-                .setView(textEntryView)
-                .setPositiveButton(R.string.backup_save) { _, _ ->
-                    val filename = backupName.text.toString()
-                    if (filename.isNotBlank()) {
-                        BackupTask(PreferencesBackupManager.TYPE_MAIN, backupManager,
-                                appWidgetId, this@FragmentRestoreWidget).execute(filename)
-                    }
+            val backupName = view.findViewById<EditText>(R.id.backup_name)
+            backupName.setText(currentName)
+
+            builder.setPositiveButton(R.string.backup_save) { _, _ ->
+                val filename = backupName.text.toString()
+                if (filename.isNotBlank()) {
+                    BackupTask(PreferencesBackupManager.TYPE_MAIN, backupManager,
+                            appWidgetId, this@FragmentRestoreWidget).execute(filename)
                 }
-                .setNegativeButton(android.R.string.cancel) { _, _ ->
-                    //Nothing
-                }.create()
+            }
+
+            builder.setNegativeButton(android.R.string.cancel, { _, _ -> })
+
+        }).create()
     }
+
+
 
     private class ExportClickListener(
             private val backupManager: PreferencesBackupManager,
@@ -309,7 +321,10 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
         if (pos > 0) {
             onlyName = onlyName.substring(0, pos)
         }
-        createBackupNameDialog(onlyName).show()
+
+        if (AppPermissions.isGranted(context!!, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            createBackupNameDialog(onlyName).show()
+        }
     }
 
     override fun onGDriveUploadFinish() {

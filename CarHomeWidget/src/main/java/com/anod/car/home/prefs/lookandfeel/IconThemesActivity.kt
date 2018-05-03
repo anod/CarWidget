@@ -22,6 +22,24 @@ import java.util.ArrayList
 
 class IconThemesActivity : AppsCacheActivity() {
 
+    override val footerViewId: Int
+        get() = R.layout.list_footer_icon_themes
+
+    override val isShowTitle: Boolean
+        get() = true
+
+    override val isRefreshCache: Boolean
+        get() = refresh
+
+    override val headEntries: List<AppsList.Entry>
+        get() {
+            val head = ArrayList<AppsList.Entry>(1)
+            val none = AppsList.Entry()
+            none.title = getString(R.string.none)
+            head.add(none)
+            return head
+        }
+
     private var currentSelected = 0
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
     private val prefs: WidgetSettings by lazy { WidgetStorage.load(this, appWidgetId) }
@@ -55,11 +73,7 @@ class IconThemesActivity : AppsCacheActivity() {
         themePackageName = prefs.iconsTheme ?: ""
     }
 
-    override fun isRefreshCache(): Boolean {
-        return refresh
-    }
-
-    public override fun onItemsSet(items: ArrayList<AppsList.Entry>) {
+    public override fun onItemsSet(items: List<AppsList.Entry>) {
         if (themePackageName.isNotEmpty()) {
             for (i in 1 until items.size) {
                 val entry = items[i]
@@ -76,14 +90,6 @@ class IconThemesActivity : AppsCacheActivity() {
         IconPackUtils.fillAdwThemeIntent(intent)
     }
 
-    override fun isShowTitle(): Boolean {
-        return true
-    }
-
-    override fun getRowLayoutId(): Int {
-        return R.layout.all_apps_row
-    }
-
     override fun onEntryClick(position: Int, entry: AppsList.Entry) {
         themePackageName = if (entry.componentName == null)
             ""
@@ -93,20 +99,8 @@ class IconThemesActivity : AppsCacheActivity() {
         saveAndClose()
     }
 
-    override fun getAppList(context: Context): AppsList {
+    override fun createAppList(context: Context): AppsList {
         return App.provide(context).iconThemesCache
-    }
-
-    override fun getHeadEntries(): ArrayList<AppsList.Entry>? {
-        val head = ArrayList<AppsList.Entry>(1)
-        val none = AppsList.Entry()
-        none.title = getString(R.string.none)
-        head.add(none)
-        return head
-    }
-
-    override fun getFooterViewId(): Int {
-        return R.layout.icon_theme_buttons
     }
 
     public override fun onSaveInstanceState(outState: Bundle) {

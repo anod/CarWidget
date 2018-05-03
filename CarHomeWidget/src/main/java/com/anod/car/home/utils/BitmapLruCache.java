@@ -12,7 +12,7 @@ public class BitmapLruCache extends LruCache<String, Bitmap> {
 
 
     public BitmapLruCache(Context context) {
-        super(Utils.calculateMemoryCacheSize(context));
+        super(Utils.INSTANCE.calculateMemoryCacheSize(context));
     }
 
     @Override

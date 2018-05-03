@@ -19,15 +19,10 @@ import com.anod.car.home.utils.MusicUtils
  */
 class MusicAppChoiceActivity : MusicAppsActivity() {
 
+    override val footerViewId: Int
+        get() = R.layout.list_footer_music_app_choice
+
     internal val defaultApp: CheckBox by lazy { findViewById<CheckBox>(R.id.defaultApp) }
-
-    override fun isShowTitle(): Boolean {
-        return false
-    }
-
-    override fun getFooterViewId(): Int {
-        return R.layout.music_app_choice_footer
-    }
 
     override fun onEntryClick(position: Int, entry: AppsList.Entry) {
         val musicCmp = entry.componentName

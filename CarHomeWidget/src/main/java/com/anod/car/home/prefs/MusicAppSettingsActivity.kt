@@ -13,22 +13,21 @@ import java.util.ArrayList
  */
 class MusicAppSettingsActivity : MusicAppsActivity() {
 
-    override fun getHeadEntries(): ArrayList<AppsList.Entry>? {
-        val head = ArrayList<AppsList.Entry>(1)
-        val none = AppsList.Entry()
-        none.iconRes = R.drawable.ic_action_list
-        none.title = getString(R.string.show_choice)
-        head.add(none)
-        return head
-    }
+    override val headEntries: List<AppsList.Entry>
+        get() {
+            val head = ArrayList<AppsList.Entry>(1)
+            val none = AppsList.Entry()
+            none.iconRes = R.drawable.ic_action_list
+            none.title = getString(R.string.show_choice)
+            head.add(none)
+            return head
+        }
 
-    override fun isShowTitle(): Boolean {
-        return true
-    }
+    override val isShowTitle: Boolean
+        get() = true
 
-    override fun getFooterViewId(): Int {
-        return R.layout.music_app_settings_footer
-    }
+    override val footerViewId: Int
+        get() = R.layout.list_footer_music_app_settings
 
     override fun onEntryClick(position: Int, entry: AppsList.Entry) {
         val appSettings = AppSettings.create(this)

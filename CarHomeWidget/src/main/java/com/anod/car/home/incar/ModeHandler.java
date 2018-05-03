@@ -103,7 +103,7 @@ public class ModeHandler {
         Intent intent = new Intent(Intent.ACTION_MAIN)
                 .setComponent(autorunApp)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Utils.startActivitySafely(intent, context);
+        Utils.INSTANCE.startActivitySafely(intent, context);
     }
 
     public void disable(InCarInterface prefs) {

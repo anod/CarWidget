@@ -56,7 +56,7 @@ public class ChangeableSharedPreferences {
             } else if (value instanceof Long) {
                  edit.putLong(key, (Long) value);
             } else if (value instanceof ComponentName) {
-                edit.putString(key, Utils.componentToString((ComponentName) value));
+                edit.putString(key, ((ComponentName) value).flattenToString());
             } else {
                 AppLog.e("Unknown value "+value.toString()+" for key "+key);
             }

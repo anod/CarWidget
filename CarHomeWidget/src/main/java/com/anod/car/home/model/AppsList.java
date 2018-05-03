@@ -35,11 +35,8 @@ public class AppsList {
     }
 
     public static class Entry {
-
         public ComponentName componentName;
-
         public int iconRes;
-
         public String title;
     }
 

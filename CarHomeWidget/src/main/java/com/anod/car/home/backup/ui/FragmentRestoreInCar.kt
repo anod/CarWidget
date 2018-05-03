@@ -25,10 +25,8 @@ import com.anod.car.home.backup.PreferencesBackupManager
 import com.anod.car.home.backup.RestoreCodeRender
 import com.anod.car.home.backup.RestoreTask
 import com.anod.car.home.prefs.preferences.ObjectRestoreManager
+import com.anod.car.home.utils.*
 import info.anodsplace.android.log.AppLog
-import com.anod.car.home.utils.CheatSheet
-import com.anod.car.home.utils.TrialDialogs
-import com.anod.car.home.utils.Version
 
 import java.io.File
 
@@ -190,9 +188,7 @@ class FragmentRestoreInCar : Fragment(), RestoreTask.RestoreTaskListener, Backup
     }
 
     override fun onGDriveDownloadFinish(filename: String) {
-        BackupTask(PreferencesBackupManager.TYPE_INCAR, backupManager, 0,
-                this@FragmentRestoreInCar)
-                .execute()
+        backup()
     }
 
     override fun onGDriveUploadFinish() {
@@ -201,5 +197,25 @@ class FragmentRestoreInCar : Fragment(), RestoreTask.RestoreTaskListener, Backup
 
     override fun onGDriveError() {
         onRestoreFinish(PreferencesBackupManager.TYPE_INCAR, PreferencesBackupManager.ERROR_UNEXPECTED)
+    }
+
+    fun backup() {
+        if (AppPermissions.isGranted(context!!, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            BackupTask(PreferencesBackupManager.TYPE_INCAR, backupManager, 0,
+                    this@FragmentRestoreInCar)
+                    .execute()
+        } else {
+            AppPermissions.request(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), AppPermissions.REQUEST_STORAGE_WRITE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        AppPermissions.onRequestPermissionsResult(requestCode, grantResults, AppPermissions.REQUEST_STORAGE_WRITE, {
+            when (it) {
+                is Granted -> backup()
+                is Denied -> Toast.makeText(context, "Permissions are required", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

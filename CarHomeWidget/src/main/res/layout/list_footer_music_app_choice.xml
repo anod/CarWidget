@@ -11,5 +11,4 @@
         android:text="@string/use_as_default_music_app"
         android:id="@+id/defaultApp"/>
 
-
 </LinearLayout>

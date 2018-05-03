@@ -60,7 +60,7 @@ public class TrialDialogs {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = IntentUtils.createProVersionIntent();
-                Utils.startActivitySafely(intent, context);
+                Utils.INSTANCE.startActivitySafely(intent, context);
                 dialog.dismiss();
             }
 

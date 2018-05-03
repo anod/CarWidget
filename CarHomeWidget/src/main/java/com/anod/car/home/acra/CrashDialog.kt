@@ -26,15 +26,15 @@ class CrashDialog : BaseCrashReportDialog(), DialogInterface.OnClickListener, Di
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
 
-        val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setView(buildCustomView(savedInstanceState))
-        dialogBuilder.setPositiveButton(R.string.crash_dialog_report_button, this)
-        dialogBuilder.setNegativeButton(android.R.string.cancel, this)
+        val dialog = AlertDialog.Builder(this)
+            .setView(buildCustomView(savedInstanceState))
+            .setPositiveButton(R.string.crash_dialog_report_button, this)
+            .setNegativeButton(android.R.string.cancel, this)
+                .create()
 
-        dialog = dialogBuilder.create()
-        dialog?.setCanceledOnTouchOutside(false)
-        dialog?.setOnDismissListener(this)
-        dialog?.show()
+        dialog!!.setCanceledOnTouchOutside(false)
+        dialog.setOnDismissListener(this)
+        dialog.show()
     }
 
     private fun buildCustomView(savedInstanceState: Bundle?): View {

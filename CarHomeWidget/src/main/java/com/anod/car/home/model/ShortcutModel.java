@@ -41,7 +41,7 @@ public class ShortcutModel {
         mBitmapOptions.outWidth = iconMaxSize;
         mBitmapOptions.outHeight = iconMaxSize;
         mBitmapOptions.inSampleSize = 1;
-        if (Utils.isLowMemoryDevice()) {
+        if (Utils.INSTANCE.isLowMemoryDevice()) {
             // Always prefer RGB_565 config for low res. If the bitmap has transparency, it will
             // automatically be loaded as ALPHA_8888.
             mBitmapOptions.inPreferredConfig = Bitmap.Config.RGB_565;

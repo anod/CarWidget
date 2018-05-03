@@ -29,10 +29,6 @@ public class ObjectGraph {
         this.app = application;
     }
 
-    public Context getApplicationContext() {
-        return app.getApplicationContext();
-    }
-
     public CarWidgetApplication getApplication() {
         return app;
     }

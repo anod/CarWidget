@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -85,17 +86,17 @@ class ShortcutEditActivity : AppCompatActivity() {
         labelEdit.setText(shortcut!!.title)
         iconView.setImageBitmap(shortcutIcon!!.bitmap)
 
-        findViewById<Button>(R.id.btn_delete).setOnClickListener {
+        findViewById<View>(R.id.btn_delete).setOnClickListener {
             containerModel!!.dropShortcut(cellId)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
 
-        findViewById<Button>(R.id.icon_edit).setOnClickListener {
+        findViewById<View>(R.id.icon_edit).setOnClickListener {
             createIconMenu().show()
         }
 
-        findViewById<Button>(R.id.btn_ok).setOnClickListener {
+        findViewById<View>(R.id.btn_ok).setOnClickListener {
             var needUpdate = false
             if (customIcon != null) {
                 shortcutIcon = ShortcutIcon.forCustomIcon(shortcutIcon!!.id, customIcon)
@@ -217,16 +218,13 @@ class ShortcutEditActivity : AppCompatActivity() {
     private fun getBitmapIconPackIntent(data: Intent): Bitmap? {
         var bitmap: Bitmap? = null
         val imageUri = data.data
-        if (imageUri != null) {
-            val scheme = imageUri.scheme
-            if (ContentResolver.SCHEME_ANDROID_RESOURCE == scheme) {
-                val icon = DrawableUri(this).resolve(imageUri)
-                if (icon != null) {
-                    bitmap = UtilitiesBitmap.createHiResIconBitmap(icon, this)
-                }
-            }
-        } else {
+        if (data.hasExtra("icon")) {
             bitmap = data.getParcelableExtra("icon")
+        } else {
+            val icon = DrawableUri(this).resolve(imageUri)
+            if (icon != null) {
+                bitmap = UtilitiesBitmap.createHiResIconBitmap(icon, this)
+            }
         }
         return bitmap
     }

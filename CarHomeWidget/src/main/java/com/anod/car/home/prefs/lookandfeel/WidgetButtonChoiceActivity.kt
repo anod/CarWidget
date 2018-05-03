@@ -110,7 +110,7 @@ class WidgetButtonChoiceActivity : AppCompatGridActivity() {
         return items
     }
 
-    private class ChoiceAdapter(context: Context, items: List<ChoiceAdapter.Item>) : ArrayAdapter<ChoiceAdapter.Item>(context, R.layout.all_apps_row, android.R.id.text1) {
+    private class ChoiceAdapter(context: Context, items: List<ChoiceAdapter.Item>) : ArrayAdapter<ChoiceAdapter.Item>(context, R.layout.list_item_app, android.R.id.text1) {
 
         class Item constructor(val title: String, val icon: Int, val value: Int) {
             var checked: Boolean = false

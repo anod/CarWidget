@@ -33,7 +33,7 @@ class FragmentBackup : Fragment() {
     private var tabs: TabLayout? = null
 
     private var refreshMenuItem: MenuItem? = null
-    internal val backupManager: PreferencesBackupManager by lazy { PreferencesBackupManager(context) }
+    internal val backupManager: PreferencesBackupManager by lazy { PreferencesBackupManager(context!!) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment

@@ -68,7 +68,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
             val icnTintColor = prefs.iconsColor
             val value = icnTintColor ?: Color.WHITE
             val d = CarHomeColorPickerDialog
-                    .newInstance(value, false, activity)
+                    .newInstance(value, false, activity!!)
             d.setOnColorSelectedListener { color ->
                 prefs.iconsColor = color
                 prefs.apply()
@@ -94,7 +94,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
         fontColor.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val value = prefs.fontColor
             val d = CarHomeColorPickerDialog
-                    .newInstance(value, true, activity)
+                    .newInstance(value, true, activity!!)
             d.setOnColorSelectedListener { color ->
                 prefs.fontColor = color
                 prefs.apply()

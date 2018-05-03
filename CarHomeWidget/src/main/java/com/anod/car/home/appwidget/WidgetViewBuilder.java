@@ -255,7 +255,7 @@ public class WidgetViewBuilder {
             }
         }
 
-        float iconScale = Utils.calcIconsScale(prefs.getIconsScale());
+        float iconScale = Utils.INSTANCE.calcIconsScale(prefs.getIconsScale());
         if (iconScale > 1.0f) {
             bt.setScaleSize(iconScale);
         }
