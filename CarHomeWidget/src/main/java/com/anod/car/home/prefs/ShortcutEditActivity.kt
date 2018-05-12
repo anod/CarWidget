@@ -27,7 +27,7 @@ import com.anod.car.home.model.ShortcutIcon
 import com.anod.car.home.model.ShortcutInfoUtils
 import com.anod.car.home.model.ShortcutModel
 import com.anod.car.home.model.WidgetShortcutsModel
-import info.anodsplace.android.log.AppLog
+import info.anodsplace.framework.AppLog
 
 import com.anod.car.home.utils.DrawableUri
 import com.anod.car.home.utils.IconPackUtils

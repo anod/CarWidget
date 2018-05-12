@@ -268,7 +268,7 @@ public class WidgetSettings extends ChangeableSharedPreferences implements Widge
         types.put(WIDGET_BUTTON_1, JsonToken.NUMBER);
         types.put(WIDGET_BUTTON_2, JsonToken.NUMBER);
 
-        JsonReaderHelper.readValues(reader, types, this);
+        JsonReaderHelper.INSTANCE.readValues(reader, types, this);
 
         reader.endObject();
     }

@@ -105,7 +105,7 @@ class NavigationAdapter(context: Context, private val items: NavigationList) : B
                     title.setText(item.titleRes)
                     title.visibility = View.VISIBLE
                 }
-                item.titleText != null -> {
+                item.titleText.isNotEmpty() -> {
                     title.text = item.titleText
                     title.visibility = View.VISIBLE
                 }
@@ -121,13 +121,13 @@ class NavigationAdapter(context: Context, private val items: NavigationList) : B
         fun setAction(action: NavigationList.ActionItem) {
             if (action.titleRes > 0) {
                 button.setTitle(action.titleRes)
-            } else if (action.titleText != null) {
+            } else if (action.titleText.isNotEmpty()) {
                 button.setTitle(action.titleText)
             }
 
             when {
                 action.summaryRes > 0 -> button.setSummary(action.summaryRes)
-                action.summaryText != null -> button.setSummary(action.summaryText)
+                action.summaryText.isNotEmpty() -> button.setSummary(action.summaryText)
                 else -> button.setSummaryVisibility(View.GONE)
             }
             button.setIcon(action.iconRes)

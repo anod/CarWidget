@@ -21,6 +21,7 @@
     <uses-permission android:name="${applicationId}.permission.READ_SETTINGS" />
     <uses-permission android:name="${applicationId}.permission.WRITE_SETTINGS" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -274,11 +275,6 @@
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIwrTs2H7J2Rs0kglDTHtziqQ8_7YbAZGeS7bDUA" />
 
-
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
         <activity android:name=".incar.AcceptCallActivity"
             android:launchMode="singleTop"
             android:excludeFromRecents="true"
@@ -292,9 +288,16 @@
             android:launchMode="singleInstance"
             android:excludeFromRecents="true"
             android:finishOnTaskLaunch="true" />
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="37454d25f5bb26cdb68b79a6ca77eef421fa17c1" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/backup_paths"/>
+        </provider>
     </application>
 
 </manifest>

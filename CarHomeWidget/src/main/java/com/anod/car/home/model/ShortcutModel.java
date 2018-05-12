@@ -17,7 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
 
-import info.anodsplace.android.log.AppLog;
+import info.anodsplace.framework.AppLog;
 
 import com.anod.car.home.utils.UtilitiesBitmap;
 import com.anod.car.home.utils.Utils;
@@ -100,7 +100,7 @@ public class ShortcutModel {
                         }
                     } catch (NameNotFoundException | NotFoundException e) {
                         // drop this. we have other places to look for icons
-                        AppLog.d(e.getMessage());
+                        AppLog.Companion.e(e);
                     }
                     // the db
                     if (icon == null) {
@@ -120,7 +120,7 @@ public class ShortcutModel {
                 shortcutIcon = ShortcutIcon.forFallbackIcon(id, icon);
             }
         } catch (Exception e) {
-            AppLog.e(e);
+            AppLog.Companion.e(e);
         } finally {
             c.close();
         }
@@ -185,7 +185,7 @@ public class ShortcutModel {
         try {
             return BitmapFactory.decodeByteArray(data, 0, data.length, opts);
         } catch (Exception e) {
-            AppLog.e(e);
+            AppLog.Companion.e(e);
             return null;
         }
     }

@@ -19,7 +19,7 @@ import com.anod.car.home.incar.ModeService
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarStorage
 
-import info.anodsplace.android.log.AppLog
+import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.LogCatCollector
 
 class DebugActivity : Activity() {

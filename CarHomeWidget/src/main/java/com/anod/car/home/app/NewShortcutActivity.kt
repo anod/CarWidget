@@ -3,7 +3,7 @@ package com.anod.car.home.app
 import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.model.Shortcut
 import com.anod.car.home.model.WidgetShortcutsModel
-import info.anodsplace.android.log.AppLog
+import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.ShortcutPicker
 import com.anod.car.home.utils.Utils
 

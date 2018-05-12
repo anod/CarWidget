@@ -34,17 +34,17 @@ dependencies {
     implementation 'com.android.support:preference-v7:27.1.1'
     implementation 'com.android.support:palette-v7:27.1.1'
 
-    implementation 'com.google.android.gms:play-services-drive:15.0.0'
-    implementation 'com.google.android.gms:play-services-location:15.0.0'
-
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.github.anod:android-utils-lib:v1.0.2'
+    implementation 'com.android.support:exifinterface:27.1.1'
+
+    // Activity recognition
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
 
     implementation 'androidx.core:core-ktx:0.3'
 
     implementation "ch.acra:acra-core:$acraVersion"
     implementation "ch.acra:acra-dialog:$acraVersion"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 android {
@@ -52,7 +52,7 @@ android {
     buildToolsVersion '27.0.3'
 
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 68
         versionName '1.9.4'

@@ -3,6 +3,7 @@ package com.anod.car.home.prefs.views
 import android.content.ClipData
 import android.content.Context
 import android.graphics.Bitmap
+import android.os.Build
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceViewHolder
 import android.util.AttributeSet
@@ -108,7 +109,13 @@ class ShortcutPreference : Preference, OnClickListener {
     private fun initDragButton(dragButton: ImageView, mainView: View) {
         dragButton.setOnLongClickListener {
             val data = ClipData.newPlainText(shortcutPosition.toString() + "", shortcutPosition.toString() + "")
-            mainView.startDrag(data, ShortcutShadowBuilder(mainView), null, 0)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                mainView.startDragAndDrop(data, ShortcutShadowBuilder(mainView), null, 0)
+            } else {
+                mainView.startDrag(data, ShortcutShadowBuilder(mainView), null, 0)
+            }
+
             true
         }
         dragButton.setOnDragListener(
@@ -122,6 +129,4 @@ class ShortcutPreference : Preference, OnClickListener {
     companion object {
         private const val INVALID_RESOURCE = 0
     }
-
-
 }

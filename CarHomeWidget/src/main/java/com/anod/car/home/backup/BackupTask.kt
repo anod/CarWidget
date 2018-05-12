@@ -1,8 +1,8 @@
 package com.anod.car.home.backup
 
-import android.app.Activity
+import android.content.ContentResolver
+import android.net.Uri
 import android.os.AsyncTask
-import com.anod.car.home.utils.AppPermissions
 
 /**
  * @author alex
@@ -10,7 +10,7 @@ import com.anod.car.home.utils.AppPermissions
  */
 
 class BackupTask(private val type: Int, private val backupManager: PreferencesBackupManager, private val appWidgetId: Int,
-                 private val listener: BackupTaskListener) : AsyncTask<String, Void, Int>() {
+                 private val listener: BackupTaskListener) : AsyncTask<Uri, Void, Int>() {
 
     interface BackupTaskListener {
         fun onBackupPreExecute(type: Int)
@@ -21,12 +21,19 @@ class BackupTask(private val type: Int, private val backupManager: PreferencesBa
         listener.onBackupPreExecute(type)
     }
 
-    override fun doInBackground(vararg filenames: String): Int? {
+    override fun doInBackground(vararg uris: Uri): Int? {
+        val uri = uris[0]
+
         if (type == PreferencesBackupManager.TYPE_INCAR) {
-            return backupManager.doBackupInCar()
+            if (ContentResolver.SCHEME_FILE == uri.scheme) {
+                return backupManager.doBackupInCarLocal()
+            }
+            return backupManager.doBackupInCarUri(uri)
         }
-        val filename = filenames[0]
-        return backupManager.doBackupWidget(filename, appWidgetId)
+
+        return if (ContentResolver.SCHEME_FILE == uri.scheme) {
+            backupManager.doBackupWidgetLocal(uri.path, appWidgetId)
+        } else backupManager.doBackupWidgetUri(uri, appWidgetId)
     }
 
     override fun onPostExecute(result: Int?) {

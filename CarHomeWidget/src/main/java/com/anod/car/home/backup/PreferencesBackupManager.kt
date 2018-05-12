@@ -17,18 +17,8 @@ import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.prefs.preferences.ObjectRestoreManager
-import info.anodsplace.android.log.AppLog
-
-import java.io.BufferedInputStream
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.FilenameFilter
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
+import info.anodsplace.framework.AppLog
+import java.io.*
 
 class PreferencesBackupManager(private val context: Context) {
 
@@ -70,7 +60,7 @@ class PreferencesBackupManager(private val context: Context) {
     private val mainBackupDir: File
         get() = File(backupDir.path + File.separator + BACKUP_MAIN_DIRNAME)
 
-    fun doBackupWidget(filename: String, appWidgetId: Int): Int {
+    fun doBackupWidgetLocal(filename: String, appWidgetId: Int): Int {
         if (!checkMediaWritable()) {
             return ERROR_STORAGE_NOT_AVAILABLE
         }
@@ -81,13 +71,31 @@ class PreferencesBackupManager(private val context: Context) {
         }
 
         val dataFile = File(saveDir, filename + FILE_EXT_JSON)
+        val fos = FileOutputStream(dataFile)
 
+        val result = doBackupWidget(fos, appWidgetId)
+
+        saveDir.setLastModified(System.currentTimeMillis())
+        return result
+    }
+
+    fun doBackupWidgetUri(uri: Uri, appWidgetId: Int): Int? {
+        val outputStream: OutputStream?
+        try {
+            outputStream = context.contentResolver.openOutputStream(uri)
+            return doBackupWidget(outputStream, appWidgetId)
+        } catch (e: FileNotFoundException) {
+            AppLog.e(e)
+            return ERROR_FILE_READ
+        }
+    }
+
+    private fun doBackupWidget(outputStream: OutputStream, appWidgetId: Int): Int {
         val model = WidgetShortcutsModel.init(context, appWidgetId)
         val widget = WidgetStorage.load(context, appWidgetId)
         try {
             synchronized(sLock) {
-                val fos = FileOutputStream(dataFile)
-                val writer = JsonWriter(OutputStreamWriter(fos))
+                val writer = JsonWriter(OutputStreamWriter(outputStream))
 
                 writer.beginObject()
 
@@ -103,15 +111,13 @@ class PreferencesBackupManager(private val context: Context) {
                 writer.close()
             }
         } catch (e: IOException) {
-            AppLog.d(e.message)
+            AppLog.e(e)
             return ERROR_FILE_WRITE
         }
-
-        saveDir.setLastModified(System.currentTimeMillis())
         return RESULT_DONE
     }
 
-    fun doBackupInCar(): Int {
+    fun doBackupInCarLocal(): Int {
         if (!checkMediaWritable()) {
             return ERROR_STORAGE_NOT_AVAILABLE
         }
@@ -120,15 +126,33 @@ class PreferencesBackupManager(private val context: Context) {
             saveDir.mkdirs()
         }
         val dataFile = backupIncarFile
+        val fos = FileOutputStream(dataFile)
 
+        val result = doBackupInCar(fos)
+
+        BackupManager.dataChanged(BACKUP_PACKAGE)
+        return result
+    }
+
+    fun doBackupInCarUri(uri: Uri): Int {
+        val outputStream: OutputStream?
+        try {
+            outputStream = context.contentResolver.openOutputStream(uri)
+            return doBackupInCar(outputStream)
+        } catch (e: FileNotFoundException) {
+            AppLog.e(e)
+            return ERROR_FILE_READ
+        }
+    }
+
+    private fun doBackupInCar(outputStream: OutputStream): Int {
         val model = NotificationShortcutsModel.init(context)
 
         val prefs = InCarStorage.load(context)
 
         try {
             synchronized(sLock) {
-                val fos = FileOutputStream(dataFile)
-                val writer = JsonWriter(OutputStreamWriter(fos))
+                val writer = JsonWriter(OutputStreamWriter(outputStream))
                 writer.beginObject()
 
                 val settingsWriter = writer.name("settings")
@@ -147,7 +171,6 @@ class PreferencesBackupManager(private val context: Context) {
             return ERROR_FILE_WRITE
         }
 
-        BackupManager.dataChanged(BACKUP_PACKAGE)
         return RESULT_DONE
     }
 
@@ -173,7 +196,7 @@ class PreferencesBackupManager(private val context: Context) {
         try {
             inputStream = FileInputStream(dataFile)
         } catch (e: FileNotFoundException) {
-            AppLog.d(e.message)
+            AppLog.e(e)
             return ERROR_FILE_READ
         }
 
@@ -190,18 +213,18 @@ class PreferencesBackupManager(private val context: Context) {
     }
 
     fun doRestoreWidgetUri(uri: Uri, appWidgetId: Int): Int? {
-        var inputStream: InputStream?
+        val inputStream: InputStream?
         try {
             inputStream = context.contentResolver.openInputStream(uri)
         } catch (e: FileNotFoundException) {
-            AppLog.d(e.message)
+            AppLog.e(e)
             return ERROR_FILE_READ
         }
 
         return doRestoreWidget(inputStream, appWidgetId)
     }
 
-    fun doRestoreWidget(inputStream: InputStream?, appWidgetId: Int): Int {
+    private fun doRestoreWidget(inputStream: InputStream?, appWidgetId: Int): Int {
         val sharedPrefs = WidgetStorage.getSharedPreferences(context, appWidgetId)
         sharedPrefs.edit().clear().apply()
         val widget = WidgetSettings(sharedPrefs, context.resources)
@@ -250,7 +273,7 @@ class PreferencesBackupManager(private val context: Context) {
         for (pos in 0 until model.count) {
             model.dropShortcut(pos)
             val shortcut = shortcuts.get(pos)
-            if (shortcut != null && shortcut.icon != null && shortcut.info != null) {
+            if (shortcut?.icon != null && shortcut.info != null) {
                 val info = Shortcut(Shortcut.NO_ID.toLong(), shortcut.info)
                 model.saveShortcut(pos, info, shortcut.icon)
             }
@@ -274,7 +297,7 @@ class PreferencesBackupManager(private val context: Context) {
         try {
             fis = FileInputStream(dataFile)
         } catch (e: FileNotFoundException) {
-            AppLog.d(e.message)
+            AppLog.e(e)
             return ERROR_FILE_READ
         }
 
@@ -295,14 +318,14 @@ class PreferencesBackupManager(private val context: Context) {
         try {
             inputStream = context.contentResolver.openInputStream(uri)
         } catch (e: FileNotFoundException) {
-            AppLog.d(e.message)
+            AppLog.e(e)
             return ERROR_FILE_READ
         }
 
         return doRestoreInCar(inputStream)
     }
 
-    fun doRestoreInCar(inputStream: InputStream?): Int {
+    private fun doRestoreInCar(inputStream: InputStream?): Int {
         val sharedPrefs = InCarStorage.getSharedPreferences(context)
         sharedPrefs.edit().clear().apply()
         val incar = InCarSettings(sharedPrefs)
@@ -352,6 +375,7 @@ class PreferencesBackupManager(private val context: Context) {
         val state = Environment.getExternalStorageState()
         return Environment.MEDIA_MOUNTED == state
     }
+
 
     companion object {
         const val TYPE_MAIN = 1

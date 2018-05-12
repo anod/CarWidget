@@ -16,7 +16,7 @@ import com.anod.car.home.prefs.model.PrefsMigrate;
 import com.anod.car.home.prefs.model.WidgetSettings;
 import com.anod.car.home.prefs.model.WidgetStorage;
 
-import info.anodsplace.android.log.AppLog;
+import info.anodsplace.framework.AppLog;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class ObjectRestoreManager {
             return (InCarBackup) readObject;
         }
         // InCar
-        return new InCarBackup(new HashMap<Integer, ShortcutInfo>(), (InCar) readObject);
+        return new InCarBackup(new HashMap<>(), (InCar) readObject);
     }
 
     public int doRestoreMain(final InputStream inputStream, int appWidgetId) {
@@ -55,27 +55,24 @@ public class ObjectRestoreManager {
                 is.close();
             }
         } catch (IOException e) {
-            AppLog.e(e);
+            AppLog.Companion.e(e);
             return PreferencesBackupManager.ERROR_FILE_READ;
-        } catch (ClassNotFoundException e) {
-            AppLog.e(e);
-            return PreferencesBackupManager.ERROR_DESERIALIZE;
-        } catch (ClassCastException e) {
-            AppLog.e(e);
+        } catch (ClassNotFoundException | ClassCastException e) {
+            AppLog.Companion.e(e);
             return PreferencesBackupManager.ERROR_DESERIALIZE;
         }
 
         Main main = prefs.getMain();
-        WidgetSettings widget = WidgetStorage.load(mContext, appWidgetId);
+        WidgetSettings widget = WidgetStorage.INSTANCE.load(mContext, appWidgetId);
         PrefsMigrate.migrateMain(widget, main);
         widget.apply();
 
         HashMap<Integer, ShortcutInfo> shortcuts = prefs.getShortcuts();
         // small check
         if (shortcuts.size() % 2 == 0) {
-            WidgetStorage.saveLaunchComponentNumber(shortcuts.size(), mContext, appWidgetId);
+            WidgetStorage.INSTANCE.saveLaunchComponentNumber(shortcuts.size(), mContext, appWidgetId);
         }
-        WidgetShortcutsModel model = WidgetShortcutsModel.init(mContext, appWidgetId);
+        WidgetShortcutsModel model = WidgetShortcutsModel.Companion.init(mContext, appWidgetId);
         restoreShortcuts(model, shortcuts);
 
         return PreferencesBackupManager.RESULT_DONE;
@@ -103,13 +100,10 @@ public class ObjectRestoreManager {
                 is.close();
             }
         } catch (IOException e) {
-            AppLog.e(e);
+            AppLog.Companion.e(e);
             return PreferencesBackupManager.ERROR_FILE_READ;
-        } catch (ClassNotFoundException e) {
-            AppLog.e(e);
-            return PreferencesBackupManager.ERROR_DESERIALIZE;
-        } catch (ClassCastException e) {
-            AppLog.e(e);
+        } catch (ClassNotFoundException | ClassCastException e) {
+            AppLog.Companion.e(e);
             return PreferencesBackupManager.ERROR_DESERIALIZE;
         }
         //version 1.42
@@ -130,8 +124,7 @@ public class ObjectRestoreManager {
         return PreferencesBackupManager.RESULT_DONE;
     }
 
-    public static void migrateIncar(InCarSettings dest, InCar source)
-    {
+    static void migrateIncar(InCarSettings dest, InCar source) {
         dest.setAutorunApp(source.getAutorunApp());
         dest.setAdjustVolumeLevel(source.isAdjustVolumeLevel());
         dest.setActivateCarMode(source.isActivateCarMode());

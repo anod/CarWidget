@@ -94,7 +94,7 @@ public class WidgetButtonViewBuilder {
     private void setInCarButton(@IdRes int btnId, boolean isInCarTrans, SkinProperties skinProp,
             RemoteViews views, int buttonId) {
         views.setViewVisibility(btnId, View.VISIBLE);
-        if (ModeService.sInCarMode) {
+        if (ModeService.Companion.getSInCarMode()) {
             if (isInCarTrans) {
                 views.setImageViewResource(btnId, R.drawable.btn_transparent);
             } else {
@@ -109,7 +109,7 @@ public class WidgetButtonViewBuilder {
                 views.setImageViewResource(btnId, rImg);
             }
         }
-        boolean switchOn = !ModeService.sInCarMode;
+        boolean switchOn = !ModeService.Companion.getSInCarMode();
         PendingIntent contentIntent = mPendingIntentFactory.createInCar(switchOn, buttonId);
         if (contentIntent != null) {
             views.setOnClickPendingIntent(btnId, contentIntent);

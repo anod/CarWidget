@@ -49,7 +49,7 @@ public class ModeNotification {
     }
 
     public static Notification createNotification(Version version, Context context) {
-        Intent notificationIntent = ModeService
+        Intent notificationIntent = ModeService.Companion
                 .createStartIntent(context, ModeService.MODE_SWITCH_OFF);
         Uri data = Uri.parse("com.anod.car.home.pro://mode/0/");
         notificationIntent.setData(data);

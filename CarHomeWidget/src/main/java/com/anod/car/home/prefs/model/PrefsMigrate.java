@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 
 import com.anod.car.home.prefs.preferences.Main;
 import com.anod.car.home.prefs.preferences.WidgetMigrateStorage;
-import info.anodsplace.android.log.AppLog;
+import info.anodsplace.framework.AppLog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -77,7 +77,7 @@ public class PrefsMigrate {
     public static void migrate(Context context, int appWidgetId) {
         synchronized (sLock) {
             Main prefs = WidgetMigrateStorage.loadMain(context, appWidgetId);
-            SharedPreferences widgetPrefs = WidgetStorage.getSharedPreferences(context, appWidgetId);
+            SharedPreferences widgetPrefs = WidgetStorage.INSTANCE.getSharedPreferences(context, appWidgetId);
             WidgetSettings widget = new WidgetSettings(widgetPrefs, context.getResources());
 
             if (widgetPrefs.getBoolean("migrated", false)) {
@@ -92,7 +92,7 @@ public class PrefsMigrate {
 
             ArrayList<Long> ids = WidgetMigrateStorage.getLauncherComponents(context, appWidgetId, count);
             for (int position = 0; position < ids.size(); position++) {
-                String key = WidgetStorage.getLaunchComponentKey(position);
+                String key = WidgetStorage.INSTANCE.getLaunchComponentKey(position);
                 widget.putChange(key, ids.get(position));
             }
 

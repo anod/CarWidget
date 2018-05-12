@@ -48,7 +48,7 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
                 intent.type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
                 startActivityForResult(intent, REQUEST_PICK_CONTACT)
             } else {
-                AppPermissions.request(this, arrayOf(Manifest.permission.READ_CONTACTS), AppPermissions.REQUEST_READ_CONTACTS)
+                AppPermissions.request(this, arrayOf(Manifest.permission.READ_CONTACTS), requestReadContacts)
                 setResult(Activity.RESULT_CANCELED)
                 finish()
             }
@@ -90,5 +90,7 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
                 R.drawable.ic_media_play_pause,
                 R.drawable.ic_media_next,
                 R.drawable.ic_media_prev)
+
+        const val requestReadContacts = 304
     }
 }

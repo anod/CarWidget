@@ -13,7 +13,7 @@ import android.view.MenuItem
 import com.anod.car.home.R
 import com.anod.car.home.prefs.views.SeekBarDialogPreference
 import com.anod.car.home.prefs.views.SeekBarPreferenceDialogFragment
-import info.anodsplace.android.log.AppLog
+import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.Utils
 
 /**

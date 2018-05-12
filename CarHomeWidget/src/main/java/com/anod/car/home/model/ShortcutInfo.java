@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import info.anodsplace.android.log.AppLog;
+import info.anodsplace.framework.AppLog;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
 import java.io.IOException;
@@ -201,12 +201,10 @@ public class ShortcutInfo implements Serializable {
         boolean hasIntent = in.readBoolean();
         if (hasIntent) {
             String intentDescription = in.readUTF();
-            if (intentDescription != null) {
-                try {
-                    intent = Intent.parseUri(intentDescription, 0);
-                } catch (URISyntaxException e) {
-                    AppLog.d(e.getMessage());
-                }
+            try {
+                intent = Intent.parseUri(intentDescription, 0);
+            } catch (URISyntaxException e) {
+                AppLog.Companion.e(e);
             }
         }
 

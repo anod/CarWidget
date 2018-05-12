@@ -5,7 +5,7 @@ import com.anod.car.home.appwidget.WidgetViewBuilder
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.LookAndFeelActivity
 import com.anod.car.home.prefs.drag.ShortcutShadowBuilder
-import info.anodsplace.android.log.AppLog
+import info.anodsplace.framework.AppLog
 
 import android.content.ClipData
 import android.content.Context
@@ -69,7 +69,7 @@ class SkinPreviewFragment : Fragment(), LoaderManager.LoaderCallbacks<View>, Vie
             val builder = activity.createBuilder()
             builder.init()
 
-            builder.setOverrideSkin(activity.getSkinItem(position).value)
+            builder.overrideSkin = activity.getSkinItem(position).value
             val rv = builder.build()
 
             return rv.apply(activity.applicationContext, null)
@@ -94,7 +94,7 @@ class SkinPreviewFragment : Fragment(), LoaderManager.LoaderCallbacks<View>, Vie
             viewGroup!!.removeAllViews()
         }
 
-        val model = WidgetShortcutsModel.init(activity,
+        val model = WidgetShortcutsModel.init(activity!!,
                 lookAndFeelActivity!!.appWidgetId)
         shortcutsCount = model.count
 
@@ -107,7 +107,7 @@ class SkinPreviewFragment : Fragment(), LoaderManager.LoaderCallbacks<View>, Vie
     override fun onDestroyView() {
         if (viewGroup != null && viewGroup!!.childCount > 0) {
             for (pos in 0 until shortcutsCount) {
-                val btnResId = WidgetViewBuilder.getBtnRes(pos)
+                val btnResId = WidgetViewBuilder.btnIds[pos]
                 val dragButton = viewGroup!!.findViewById<View>(btnResId) as? ImageView
                 if (dragButton == null) {
                     AppLog.e("Count: $shortcutsCount, pos: $pos")
@@ -124,7 +124,7 @@ class SkinPreviewFragment : Fragment(), LoaderManager.LoaderCallbacks<View>, Vie
     private fun setupDragNDrop(inflatedView: View, model: WidgetShortcutsModel) {
 
         for (pos in 0 until shortcutsCount) {
-            val btnResId = WidgetViewBuilder.getBtnRes(pos)
+            val btnResId = WidgetViewBuilder.btnIds[pos]
             val btn = inflatedView.findViewById<View>(btnResId) as? ImageView
             if (btn == null) {
                 AppLog.e("Count: $shortcutsCount, pos: $pos")

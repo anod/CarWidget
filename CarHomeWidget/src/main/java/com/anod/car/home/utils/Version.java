@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 
-import info.anodsplace.android.log.AppLog;
+import info.anodsplace.framework.AppLog;
 import info.anodsplace.version.Action;
 import info.anodsplace.version.Manager;
 import info.anodsplace.version.storage.SharedPrefsStorage;

@@ -26,7 +26,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
         get() = String.format(Locale.US, WidgetStorage.PREF_NAME, appWidgetId)
 
     override fun onCreateImpl(savedInstanceState: Bundle?) {
-        val prefs = WidgetStorage.load(activity, appWidgetId)
+        val prefs = WidgetStorage.load(context!!, appWidgetId)
 
         initIcon(prefs)
         initFont(prefs)

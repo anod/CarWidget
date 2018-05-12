@@ -52,8 +52,6 @@
         <item name="colorPrimary">@android:color/transparent</item>
     </style>
 
-    <style name="CrashReportDialog" parent="DialogTheme.Light" />
-
     <style name="AppPreference">
         <item name="android:background">@drawable/panel_item_bg_grey</item>
     </style>
@@ -226,9 +224,19 @@
         <item name="android:paddingLeft">5.0dp</item>
     </style>
 
-    <style name="Notification" parent="@android:style/TextAppearance.StatusBar.EventContent" />
-    <style name="Notification.Title" parent="@android:style/TextAppearance.StatusBar.EventContent.Title" />
-    <style name="Notification.Icon" parent="android:TextAppearance.StatusBar.Icon" />
-    <style name="Notification.Button"/>
+    <style name="CrashReportDialog" parent="DialogTheme.Light">
+        <item name="android:background">@drawable/crash_dialog_bg</item>
+    </style>
 
+    <style name="Notification" parent="android:TextAppearance.Material.Notification">
+        <item name="android:background">@color/material_grey_50</item>
+    </style>
+    <style name="Notification.Title" parent="android:TextAppearance.Material.Notification.Title"/>
+    <style name="Notification.Line2" parent="android:TextAppearance.Material.Notification.Line2"/>
+    <style name="Notification.Icon" parent="android:TextAppearance.StatusBar.Icon">
+        <item name="android:background">@drawable/notification_icon_background</item>
+    </style>
+    <style name="Notification.Button">
+        <item name="android:background">@drawable/notification_button_background</item>
+    </style>
 </resources>

@@ -50,10 +50,10 @@ class HexPanel @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     fun init(color: Int, alphaSupport: Boolean) {
         this.alphaSupport = alphaSupport
         val filter0 = InputFilter.LengthFilter(if (alphaSupport) 8 else 6)
-        val filter1 = InputFilter { source, start, end, dest, dstart, dend ->
+        val filter1 = InputFilter { source, start, end, _, _, _ ->
             for (i in start until end) {
                 val ch = source[i]
-                return@InputFilter if (Character.isDigit(ch) || ch >= 'A' && ch <= 'F' || ch >= 'a' && ch <= 'f') {
+                return@InputFilter if (Character.isDigit(ch) || ch in 'A'..'F' || ch in 'a'..'f') {
                     null
                 } else {
                     ""

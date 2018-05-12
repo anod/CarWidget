@@ -56,7 +56,7 @@ public class InCarStorage {
 
     static void saveNotifShortcut(Context context, SharedPreferences prefs, long shortcutId, int position) {
         String key = getNotifComponentName(position);
-        WidgetStorage.saveShortcutId(context, prefs, shortcutId, key);
+        WidgetStorage.INSTANCE.saveShortcutId(context, prefs, shortcutId, key);
     }
 
     static ArrayList<Long> getNotifComponents(SharedPreferences prefs) {

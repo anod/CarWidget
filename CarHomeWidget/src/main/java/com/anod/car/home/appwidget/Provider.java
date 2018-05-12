@@ -69,7 +69,7 @@ public class Provider extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
         // Drop the settings if the widget is deleted
-        WidgetStorage.dropWidgetSettings(context, appWidgetIds);
+        WidgetStorage.INSTANCE.dropWidgetSettings(context, appWidgetIds);
     }
 
 
@@ -82,10 +82,10 @@ public class Provider extends AppWidgetProvider {
         final Intent updateIntent = new Intent(context, UpdateService.class);
         context.stopService(updateIntent);
 
-        BroadcastService.stopService(context);
+        BroadcastService.Companion.stopService(context);
 
-        if (ModeService.sInCarMode) {
-            final Intent modeIntent = ModeService
+        if (ModeService.Companion.getSInCarMode()) {
+            final Intent modeIntent = ModeService.Companion
                     .createStartIntent(context, ModeService.MODE_SWITCH_OFF);
             context.stopService(modeIntent);
         }

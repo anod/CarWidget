@@ -11,7 +11,7 @@ import android.util.JsonWriter;
 
 import com.anod.car.home.incar.SamsungDrivingMode;
 import com.anod.car.home.incar.ScreenOrientation;
-import info.anodsplace.android.log.AppLog;
+import info.anodsplace.framework.AppLog;
 import com.anod.car.home.utils.Utils;
 
 import java.io.IOException;
@@ -380,7 +380,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
         types.put(SCREEN_ORIENTATION, JsonToken.STRING);
         types.put(HOTSPOT, JsonToken.BOOLEAN);
 
-        JsonReaderHelper.readValues(reader, types, this);
+        JsonReaderHelper.INSTANCE.readValues(reader, types, this);
 
         reader.endObject();
     }

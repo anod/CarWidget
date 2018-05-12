@@ -15,6 +15,7 @@ import android.os.Bundle
 import android.support.v4.app.ListFragment
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.Loader
+import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,10 +51,6 @@ class WidgetsListFragment : ListFragment(), LoaderManager.LoaderCallbacks<Widget
         listView.emptyView.setOnClickListener { startWizard(1) }
 
         listAdapter = adapter
-        // Prepare the loader.  Either re-connect with an existing one,
-        // or start a new one.
-        //getLoaderManager().initLoader(0, null, this);
-
     }
 
     private fun startWizard(page: Int) {
@@ -63,6 +60,8 @@ class WidgetsListFragment : ListFragment(), LoaderManager.LoaderCallbacks<Widget
     }
 
     private fun updateInCarHeader(view: View) {
+
+        //var cardView = view.findViewById<CardView>(R.id.card_view)
 
         val status = InCarStatus.get(appWidgetIds.size, version, activity)
         val active = activity!!.getString(InCarStatus.render(status))

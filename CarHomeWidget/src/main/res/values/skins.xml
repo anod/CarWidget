@@ -4,9 +4,20 @@
     <style name="WidgetSkin" />
 
     <style name="WidgetSkin.W7" />
-    <style name="WidgetSkin.W7.Button" />
 
     <style name="WidgetSkin.Material" />
-    <style name="WidgetSkin.Material.Button" />
 
+    <style name="WidgetSkin.W7.Button">
+        <item name="android:tintMode">src_atop</item>
+        <item name="android:tint">@color/button_tint_default</item>
+        <item name="android:backgroundTintMode">src_atop</item>
+        <item name="android:backgroundTint">@color/button_tint_default</item>
+    </style>
+
+    <style name="WidgetSkin.Material.Button">
+        <item name="android:tintMode">src_atop</item>
+        <item name="android:tint">@color/button_tint_default</item>
+        <item name="android:backgroundTintMode">src_atop</item>
+        <item name="android:backgroundTint">@color/button_tint_default</item>
+    </style>
 </resources>

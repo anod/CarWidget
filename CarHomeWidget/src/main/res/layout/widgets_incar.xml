@@ -1,42 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    android:id="@+id/card_view"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="10dp"
-    card_view:cardBackgroundColor="@android:color/transparent"
+    card_view:cardBackgroundColor="@color/panel_background_grey"
+    card_view:cardCornerRadius="0dp"
     card_view:cardPreventCornerOverlap="true"
-    card_view:contentPadding="2dp"
-    card_view:cardCornerRadius="0dp">
+    card_view:contentPadding="2dp">
 
     <LinearLayout
+        android:id="@+id/incarHeader"
+        style="?attr/panelHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/panelHeader"
-        android:id="@+id/incarHeader"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/incarTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/panelHeaderText"
             android:text="@string/pref_incar_mode_title"
-            />
+            android:textAppearance="@style/panelHeaderText" />
 
         <TextView
-            android:text="@string/dialog_donate_title_trial"
             android:id="@+id/incarTrial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/badge"
+            android:text="@string/dialog_donate_title_trial"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/white"
-            android:background="@drawable/badge"/>
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+</android.support.v7.widget.CardView>

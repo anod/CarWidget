@@ -2,7 +2,6 @@ package com.anod.car.home
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
@@ -16,7 +15,7 @@ import com.anod.car.home.prefs.model.AppSettings
 import com.anod.car.home.utils.AppPermissions
 import com.anod.car.home.utils.MusicUtils
 
-import info.anodsplace.android.log.AppLog
+import info.anodsplace.framework.AppLog
 
 class ShortcutActivity : Activity() {
 
@@ -70,7 +69,7 @@ class ShortcutActivity : Activity() {
         }
         if (Intent.ACTION_CALL == action) {
             if (!AppPermissions.isGranted(this, android.Manifest.permission.CALL_PHONE)) {
-                AppPermissions.request(this, arrayOf(android.Manifest.permission.CALL_PHONE), AppPermissions.REQUEST_PHONE)
+                AppPermissions.request(this, arrayOf(android.Manifest.permission.CALL_PHONE), requestPhone)
             }
         }
 
@@ -97,5 +96,7 @@ class ShortcutActivity : Activity() {
         const val EXTRA_INTENT = "intent"
         const val EXTRA_MEDIA_BUTTON = "media_button"
         const val ACTION_MEDIA_BUTTON = "action_media_button"
+
+        const val requestPhone = 303
     }
 }

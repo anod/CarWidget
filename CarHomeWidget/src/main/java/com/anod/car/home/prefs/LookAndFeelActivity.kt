@@ -32,7 +32,7 @@ import com.anod.car.home.prefs.lookandfeel.WidgetButtonChoiceActivity
 import com.anod.car.home.prefs.model.SkinList
 import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
-import info.anodsplace.android.log.AppLog
+import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.BitmapLruCache
 import com.anod.car.home.utils.HtmlCompat
 import com.anod.car.home.utils.IntentUtils
@@ -157,12 +157,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     }
 
     fun createBuilder(): WidgetViewBuilder {
-        val builder = WidgetViewBuilder(App.get(this))
-        builder.setPendingIntentHelper(this)
-                .setAppWidgetId(appWidgetId)
-                .setBitmapMemoryCache(bitmapMemoryCache)
-        builder.setWidgetButtonAlternativeHidden(true)
-        return builder
+        return WidgetViewBuilder(App.get(this), appWidgetId, bitmapMemoryCache, this, true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ComponentInfo;
 import android.support.v4.util.SimpleArrayMap;
 
-import info.anodsplace.android.log.AppLog;
+import info.anodsplace.framework.AppLog;
 import com.anod.car.home.utils.Utils;
 
 /**
@@ -58,7 +58,7 @@ public class ChangeableSharedPreferences {
             } else if (value instanceof ComponentName) {
                 edit.putString(key, ((ComponentName) value).flattenToString());
             } else {
-                AppLog.e("Unknown value "+value.toString()+" for key "+key);
+                AppLog.Companion.e("Unknown value "+value.toString()+" for key "+key);
             }
         }
         edit.putBoolean("migrated", true);

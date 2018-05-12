@@ -23,7 +23,7 @@ import android.widget.ImageView
 
 import com.anod.car.home.R
 import com.anod.car.home.backup.PreferencesBackupManager
-import info.anodsplace.android.log.AppLog
+import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.Utils
 
 class FragmentBackup : Fragment() {

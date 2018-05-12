@@ -18,9 +18,10 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 
-import info.anodsplace.android.log.AppLog
+import info.anodsplace.framework.AppLog
 
 import android.content.pm.ApplicationInfo.FLAG_LARGE_HEAP
+import android.support.v4.app.Fragment
 import androidx.core.content.systemService
 
 object Utils {
@@ -28,13 +29,10 @@ object Utils {
     val isLowMemoryDevice: Boolean
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
         get() {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                val memory = ActivityManager.RunningAppProcessInfo()
-                ActivityManager.getMyMemoryState(memory)
+            val memory = ActivityManager.RunningAppProcessInfo()
+            ActivityManager.getMyMemoryState(memory)
 
-                return memory.lastTrimLevel >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW
-            }
-            return true
+            return memory.lastTrimLevel >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW
         }
 
     fun isProInstalled(context: Context): Boolean {
@@ -44,7 +42,6 @@ object Utils {
         } catch (e: PackageManager.NameNotFoundException) {
             return false
         }
-
     }
 
     fun isFreeInstalled(context: Context): Boolean {
@@ -96,6 +93,19 @@ object Utils {
             Toast.makeText(activity, errStr, Toast.LENGTH_LONG).show()
         }
 
+    }
+
+    fun startActivityForResultSafetly(intent: Intent, requestCode: Int,
+                                      fragment: Fragment) {
+        try {
+            fragment.startActivityForResult(intent, requestCode)
+        } catch (activityNotFoundException: ActivityNotFoundException) {
+            Toast.makeText(fragment.context, R.string.photo_picker_not_found, Toast.LENGTH_LONG).show()
+        } catch (exception: Exception) {
+            val errStr = String.format(fragment.resources.getString(R.string.error_text),
+                    exception.message)
+            Toast.makeText(fragment.context, errStr, Toast.LENGTH_LONG).show()
+        }
     }
 
     fun startActivitySafely(intent: Intent, context: Context) {

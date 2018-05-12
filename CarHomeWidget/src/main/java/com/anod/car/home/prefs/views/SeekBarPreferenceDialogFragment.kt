@@ -11,7 +11,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 
 import com.anod.car.home.R
-import info.anodsplace.android.log.AppLog
+import info.anodsplace.framework.AppLog
 
 
 class SeekBarPreferenceDialogFragment : PreferenceDialogFragmentCompat(), SeekBar.OnSeekBarChangeListener {
@@ -74,7 +74,7 @@ class SeekBarPreferenceDialogFragment : PreferenceDialogFragmentCompat(), SeekBa
                 try {
                     i = Integer.valueOf(value)
                 } catch (e: Exception) {
-                    AppLog.d(e.message)
+                    AppLog.e(e)
                 }
 
                 if (i > max) {

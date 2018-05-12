@@ -19,7 +19,7 @@ import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.skin.PropertiesFactory
 import com.anod.car.home.skin.SkinProperties
-import info.anodsplace.android.log.AppLog
+import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.Utils
 
 import java.util.ArrayList
@@ -62,7 +62,7 @@ class WidgetButtonChoiceActivity : AppCompatGridActivity() {
             return
         }
 
-        val skinProperties = PropertiesFactory.create(skin, false)
+        val skinProperties = PropertiesFactory.create(skin)
         val items = createItems(skinProperties)
 
         val prefs = WidgetStorage.load(this, appWidgetId)

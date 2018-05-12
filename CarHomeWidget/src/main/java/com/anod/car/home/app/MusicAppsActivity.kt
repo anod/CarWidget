@@ -3,7 +3,7 @@ package com.anod.car.home.app
 import com.anod.car.home.BuildConfig
 import com.anod.car.home.R
 import com.anod.car.home.model.AppsList
-import info.anodsplace.android.log.AppLog
+import info.anodsplace.framework.AppLog
 
 import android.content.AsyncTaskLoader
 import android.content.Context

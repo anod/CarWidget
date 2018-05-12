@@ -1,18 +1,17 @@
 package com.anod.car.home.backup.ui
 
+import android.Manifest
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.text.format.DateUtils
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -22,20 +21,18 @@ import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.net.toUri
+import com.anod.car.home.BuildConfig
 
 import com.anod.car.home.R
-import com.anod.car.home.R.string.backup
-import com.anod.car.home.backup.gdrive.AppWidgetGDriveBackup
 import com.anod.car.home.backup.BackupCodeRender
 import com.anod.car.home.backup.BackupTask
-import com.anod.car.home.backup.gdrive.GDriveBackup
 import com.anod.car.home.backup.PreferencesBackupManager
 import com.anod.car.home.backup.RestoreCodeRender
 import com.anod.car.home.backup.RestoreTask
 import com.anod.car.home.utils.*
-import info.anodsplace.android.log.AppLog
+import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogCustom
-import info.anodsplace.framework.app.DialogMessage
 
 import java.io.File
 
@@ -43,7 +40,7 @@ import java.io.File
  * @author algavris
  * @date 30/07/2016.
  */
-class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, DeleteFileTask.DeleteFileTaskListener, BackupTask.BackupTaskListener, GDriveBackup.Listener {
+class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, DeleteFileTask.DeleteFileTaskListener, BackupTask.BackupTaskListener {
 
     private var listView: ListView? = null
 
@@ -53,9 +50,7 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
         RestoreAdapter(context!!,
                 RestoreClickListener(backupManager, appWidgetId, this),
                 DeleteClickListener(this),
-                ExportClickListener(backupManager, gDriveBackup),
-                gDriveBackup) }
-    private val gDriveBackup: GDriveBackup by lazy { AppWidgetGDriveBackup(this, appWidgetId, this) }
+                ExportClickListener(backupManager, this)) }
 
     private val restoreFragment: FragmentBackup
         get() = parentFragment as FragmentBackup
@@ -75,15 +70,12 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
         appWidgetId = arguments!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID)
 
         listView!!.adapter = adapter
-        FileListTask(backupManager, adapter).execute(0)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        if (!gDriveBackup.isSupported) {
-            menu!!.findItem(R.id.menu_download_from_cloud).isVisible = false
+        if (AppPermissions.isGranted(context!!, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            FileListTask(backupManager, adapter).execute(0)
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), requestList)
         }
-        super.onCreateOptionsMenu(menu, inflater)
+        setHasOptionsMenu(true)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -93,7 +85,7 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
                 return true
             }
             R.id.menu_download_from_cloud -> {
-                gDriveBackup.download()
+                download()
                 return true
             }
         }
@@ -101,46 +93,45 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
     }
 
     fun backup() {
-        if (AppPermissions.isGranted(context!!, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (AppPermissions.isGranted(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             createBackupNameDialog("widget-$appWidgetId").show()
         } else {
-            AppPermissions.request(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), AppPermissions.REQUEST_STORAGE_WRITE)
+            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), requestBackup)
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        AppPermissions.onRequestPermissionsResult(requestCode, grantResults, AppPermissions.REQUEST_STORAGE_WRITE, {
+        AppPermissions.checkResult(requestCode, grantResults, requestBackup, {
             when (it) {
                 is Granted -> backup()
                 is Denied -> Toast.makeText(context, "Permissions are required", Toast.LENGTH_SHORT).show()
             }
         })
+
+        AppPermissions.checkResult(requestCode, grantResults, requestList, {
+            when (it) {
+                is Granted -> FileListTask(backupManager, adapter).execute(0)
+                is Denied -> Toast.makeText(context, "Permissions are required", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-
-        if (requestCode == FragmentBackup.DOWNLOAD_MAIN_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-
-            // The document selected by the user won't be returned in the intent.
-            // Instead, a URI to that document will be contained in the return intent
-            // provided to this method as a parameter.
-            // Pull that URI using resultData.getData().
-            if (resultData != null) {
-                val uri = resultData.data
+    override fun onActivityResult(requestCode: Int, resultCode: Int, result: Intent?) {
+        if (requestCode == requestUpload) {
+            if (resultCode == Activity.RESULT_OK) {
+                val uri = result!!.data
+                AppLog.d("Uri: " + uri!!.toString())
+                BackupTask(PreferencesBackupManager.TYPE_MAIN, backupManager, appWidgetId, this).execute(uri)
+            }
+        } else if (requestCode == requestDownload) {
+            if (resultCode == Activity.RESULT_OK) {
+                val uri = result!!.data
                 AppLog.d("Uri: " + uri!!.toString())
                 RestoreTask(PreferencesBackupManager.TYPE_MAIN, backupManager, appWidgetId, this@FragmentRestoreWidget)
                         .execute(uri)
-
             }
-        } else if (gDriveBackup.checkRequestCode(requestCode)) {
-            gDriveBackup.onActivityResult(requestCode, resultCode, resultData)
         }
-    }
-
-    override fun onPause() {
-        gDriveBackup.disconnect()
-        super.onPause()
     }
 
     override fun onBackupPreExecute(type: Int) {
@@ -177,10 +168,8 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
             context: Context,
             private val restoreListener: RestoreClickListener,
             private val deleteListener: DeleteClickListener,
-            private val exportListener: ExportClickListener,
-            private val gDriveBackup: GDriveBackup)
+            private val exportListener: ExportClickListener)
         : ArrayAdapter<File>(context, R.layout.fragment_restore_item) {
-
 
         override fun getView(position: Int, view: View?, parent: ViewGroup): View {
             var itemView = view
@@ -214,13 +203,9 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
             holder.delete.setOnClickListener(deleteListener)
             CheatSheet.setup(holder.delete)
 
-            if (gDriveBackup.isSupported) {
-                holder.export.tag = name
-                holder.export.setOnClickListener(exportListener)
-                CheatSheet.setup(holder.export)
-            } else {
-                holder.export.visibility = View.GONE
-            }
+            holder.export.tag = name
+            holder.export.setOnClickListener(exportListener)
+            CheatSheet.setup(holder.export)
 
             itemView.id = position
             return itemView
@@ -242,7 +227,6 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
         }
     }
 
-
     override fun onRestorePreExecute(type: Int) {
         restoreFragment.startRefreshAnim()
     }
@@ -260,7 +244,7 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
 
         override fun onClick(v: View) {
 
-            val uri = Uri.fromFile(backupManager.getBackupWidgetFile(v.tag as String))
+            val uri = backupManager.getBackupWidgetFile(v.tag as String).toUri()
             RestoreTask(PreferencesBackupManager.TYPE_MAIN, backupManager, appWidgetId,
                     listener)
                     .execute(uri)
@@ -287,7 +271,7 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
                 val filename = backupName.text.toString()
                 if (filename.isNotBlank()) {
                     BackupTask(PreferencesBackupManager.TYPE_MAIN, backupManager,
-                            appWidgetId, this@FragmentRestoreWidget).execute(filename)
+                            appWidgetId, this@FragmentRestoreWidget).execute(backupManager.getBackupWidgetFile(filename).toUri())
                 }
             }
 
@@ -296,24 +280,39 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
         }).create()
     }
 
-
-
     private class ExportClickListener(
             private val backupManager: PreferencesBackupManager,
-            private val gDriveBackup: GDriveBackup) : View.OnClickListener {
+            private val fragment: FragmentRestoreWidget) : View.OnClickListener {
 
         override fun onClick(v: View) {
             val name = v.tag as String
             val file = backupManager.getBackupWidgetFile(name)
-            gDriveBackup.upload("car-$name", file)
+            fragment.upload("car-$name", file)
         }
     }
 
-    override fun onGDriveActionStart() {
-        restoreFragment.startRefreshAnim()
+    private fun download() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "*/*"
+        val mimeTypes = arrayOf("application/json", "application/octet-stream", "text/plain", "*/*")
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+        Utils.startActivityForResultSafetly(intent, requestDownload, this)
     }
 
-    override fun onGDriveDownloadFinish(filename: String) {
+    private fun upload(filename: String, source: File) {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+        val uri = FileProvider.getUriForFile(context!!.applicationContext, AUTHORITY, source)
+
+        intent.setDataAndType(uri, "application/json")
+        intent.putExtra(Intent.EXTRA_TITLE, filename)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        Utils.startActivityForResultSafetly(intent, requestUpload, this)
+    }
+
+/*
+    override fun onGDriveAppWidgetBackupFinish(filename: String) {
+        // Download
         var onlyName = filename
         onRestoreFinish(PreferencesBackupManager.TYPE_MAIN, PreferencesBackupManager.RESULT_DONE)
 
@@ -325,17 +324,21 @@ class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, Delet
         if (AppPermissions.isGranted(context!!, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)){
             createBackupNameDialog(onlyName).show()
         }
-    }
 
-    override fun onGDriveUploadFinish() {
+        // Upload
         onBackupFinish(PreferencesBackupManager.TYPE_MAIN, PreferencesBackupManager.RESULT_DONE)
-    }
 
-    override fun onGDriveError() {
-        onRestoreFinish(PreferencesBackupManager.TYPE_MAIN, PreferencesBackupManager.ERROR_UNEXPECTED)
-    }
+        //  onRestoreFinish(PreferencesBackupManager.TYPE_MAIN, PreferencesBackupManager.ERROR_UNEXPECTED)
+    }*/
 
     companion object {
+
+        val AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider"
+
+        const val requestUpload = 123
+        const val requestDownload = 124
+        const val requestBackup = 125
+        const val requestList = 126
 
         fun create(appWidgetId: Int): FragmentRestoreWidget {
             val fragment = FragmentRestoreWidget()
