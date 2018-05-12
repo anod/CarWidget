@@ -5,11 +5,11 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="10dp"
+    android:layout_margin="12dp"
     card_view:cardBackgroundColor="@color/panel_background_grey"
-    card_view:cardCornerRadius="0dp"
+    card_view:cardCornerRadius="8dp"
     card_view:cardPreventCornerOverlap="true"
-    card_view:contentPadding="2dp">
+    card_view:contentPadding="4dp">
 
     <LinearLayout
         android:id="@+id/incarHeader"

@@ -39,17 +39,8 @@ class WidgetsListFragment : ListFragment(), LoaderManager.LoaderCallbacks<Widget
         super.onActivityCreated(savedInstanceState)
 
         // Start out with a progress indicator.
-        //setListShown(true);
-        listView.divider = ColorDrawable(Color.TRANSPARENT)
-        listView.dividerHeight = resources.getDimensionPixelOffset(R.dimen.preference_item_margin)
-        val padding = resources.getDimension(R.dimen.panel_header_margin).toInt()
-        val mlp = listView.layoutParams as ViewGroup.MarginLayoutParams
-        mlp.setMargins(padding, padding, padding, 0)
-
         listView.addHeaderView(headerView)
-
         listView.emptyView.setOnClickListener { startWizard(1) }
-
         listAdapter = adapter
     }
 

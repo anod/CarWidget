@@ -4,7 +4,6 @@ import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.drawer.NavigationDrawer
-import com.anod.car.home.drawer.NavigationList
 import com.anod.car.home.prefs.LookAndFeelActivity
 import com.anod.car.home.prefs.model.PrefsMigrate
 import com.anod.car.home.utils.TrialDialogs
@@ -35,7 +34,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
 
         PrefsMigrate.migrate(this, largeWidgetIds)
 
-        drawer.setSelected(NavigationList.ID_WIDGETS)
+        drawer.setSelected(R.id.nav_widgets)
 
         if (savedInstanceState == null) {
             // to give support on lower android version, we are not calling getFragmentManager()
@@ -86,12 +85,6 @@ open class WidgetsListActivity : CarWidgetActivity() {
         outState.putBoolean("wizard-shown", wizardShown)
         outState.putBoolean("dialog-shown", proDialogShown)
         super.onSaveInstanceState(outState)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        drawer.refresh()
-
     }
 
     private fun startWizard() {

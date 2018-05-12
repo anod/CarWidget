@@ -1,11 +1,12 @@
 package com.anod.car.home.drawer
 
+import android.support.design.widget.NavigationView
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
-import android.widget.ListView
+import androidx.core.view.iterator
 
 import com.anod.car.home.R
 
@@ -21,16 +22,27 @@ class NavigationDrawer(activity: AppCompatActivity, appWidgetId: Int) {
 
     private val drawerTitle = activity.title
 
-    private val adapter =  NavigationAdapter(activity, NavigationList(activity, appWidgetId))
-
     private val drawerLayout: DrawerLayout = activity.findViewById(R.id.drawer_layout)
 
-    private val drawerList: ListView? = activity.findViewById(R.id.left_drawer)
+    private val drawerView: NavigationView? = activity.findViewById(R.id.left_drawer)
+
+    private val selection: NavigationDrawerSelection = NavigationDrawerSelection(activity, appWidgetId)
 
     init {
-        drawerList?.adapter = adapter
-        drawerList?.setOnItemClickListener { _, _, position, _ ->
-            selectItem(position)
+        if (appWidgetId == 0) {
+            drawerView?.menu?.findItem(R.id.nav_current_widget_group)?.isVisible = false
+        }
+
+        drawerView?.setNavigationItemSelectedListener { menuItem ->
+            // Add code here to update the UI based on the item selected
+            // For example, swap UI fragments here
+
+            selection.onClick(menuItem.itemId)
+
+            // close drawer when item is tapped
+            drawerLayout.closeDrawers()
+
+            true
         }
 
         drawerToggle = object : ActionBarDrawerToggle(activity, drawerLayout, R.string.drawer_open,
@@ -66,20 +78,8 @@ class NavigationDrawer(activity: AppCompatActivity, appWidgetId: Int) {
         return drawerToggle.onOptionsItemSelected(item)
     }
 
-    fun setSelected(navigationItem: Int) {
-        adapter.selected = navigationItem
+    fun setSelected(itemId: Int) {
+        drawerView?.menu?.findItem(itemId)?.isChecked = true
     }
 
-    fun refresh() {
-        adapter.refresh()
-    }
-
-    /** Swaps fragments in the main content view  */
-    private fun selectItem(position: Int) {
-        if (adapter.onClick(position)) {
-            // Highlight the selected item, update the title, and close the drawer
-            drawerList!!.setItemChecked(position, true)
-            drawerLayout.closeDrawer(drawerList)
-        }
-    }
 }

@@ -23,7 +23,6 @@ import com.anod.car.home.app.App
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.appwidget.WidgetViewBuilder
 import com.anod.car.home.drawer.NavigationDrawer
-import com.anod.car.home.drawer.NavigationList
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.drag.ShortcutDragListener
 import com.anod.car.home.prefs.lookandfeel.LookAndFeelMenu
@@ -126,7 +125,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         setContentView(R.layout.activity_lookandfeel)
 
         currentPage = skinList.selectedSkinPosition
-        drawer.setSelected(NavigationList.ID_CURRENT_WIDGET)
+        drawer.setSelected(R.id.nav_current_widget)
         textView.movementMethod = LinkMovementMethod.getInstance()
         dragListener = ShortcutDragListener(this, this)
 
@@ -153,7 +152,6 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         super.onResume()
         model.init()
         bitmapMemoryCache?.evictAll()
-        drawer.refresh()
     }
 
     fun createBuilder(): WidgetViewBuilder {
