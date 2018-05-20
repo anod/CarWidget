@@ -25,60 +25,60 @@ import android.widget.RemoteViews
  * @author alex
  * @date 1/4/14
  */
-class ShortcutViewBuilder(private val mContext: Context, private val mAppWidgetId: Int,
-                          private val mPendingIntentFactory: WidgetViewBuilder.PendingIntentFactory) {
+class ShortcutViewBuilder(private val context: Context, private val appWidgetId: Int,
+                          private val pendingIntentFactory: WidgetViewBuilder.PendingIntentFactory) {
 
-    private var mScaledDensity: Float = 0.toFloat()
+    private var scaledDensity: Float = 0.toFloat()
 
-    private var mSkinProperties: SkinProperties? = null
+    private var skinProperties: SkinProperties? = null
 
-    private var mIconTheme: IconTheme? = null
+    private var iconTheme: IconTheme? = null
 
-    private var mPrefs: WidgetSettings? = null
+    private var prefs: WidgetSettings? = null
 
-    private var mShortcuts: WidgetShortcutsModel? = null
+    private var shortcuts: WidgetShortcutsModel? = null
 
-    private var mBitmapMemoryCache: LruCache<String, Bitmap>? = null
+    private var bitmapMemoryCache: LruCache<String, Bitmap>? = null
 
-    private var mBitmapTransform: BitmapTransform? = null
+    private var bitmapTransform: BitmapTransform? = null
 
-    private var mBackgroundProcessor: BackgroundProcessor? = null
+    private var backgroundProcessor: BackgroundProcessor? = null
 
     fun init(scaledDensity: Float, skinProperties: SkinProperties,
-             iconTheme: IconTheme?, prefs: WidgetSettings, smodel: WidgetShortcutsModel,
+             iconTheme: IconTheme?, prefs: WidgetSettings, shortcuts: WidgetShortcutsModel,
              bitmapTransform: BitmapTransform) {
-        mScaledDensity = scaledDensity
-        mSkinProperties = skinProperties
-        mIconTheme = iconTheme
-        mPrefs = prefs
-        mShortcuts = smodel
-        mBitmapTransform = bitmapTransform
-        mBackgroundProcessor = mSkinProperties!!.backgroundProcessor
+        this.scaledDensity = scaledDensity
+        this.skinProperties = skinProperties
+        this.iconTheme = iconTheme
+        this.prefs = prefs
+        this.shortcuts = shortcuts
+        this.bitmapTransform = bitmapTransform
+        this.backgroundProcessor = this.skinProperties!!.backgroundProcessor
     }
 
     fun fill(views: RemoteViews, position: Int, resBtn: Int, resText: Int) {
-        val info = mShortcuts!!.getShortcut(position)
+        val info = shortcuts!!.get(position)
 
         var icon: Bitmap? = null
         if (info == null) {
-            setNoShortcut(resBtn, resText, views, position, mSkinProperties!!)
+            setNoShortcut(resBtn, resText, views, position, skinProperties!!)
         } else {
             AppLog.d("Shortcut:" + info.intent.toString())
-            icon = setShortcut(resBtn, resText, info, views, position, mIconTheme)
+            icon = applyShortcut(resBtn, resText, info, views, position, iconTheme)
         }
-        if (mPrefs!!.isTitlesHide) {
+        if (prefs!!.isTitlesHide) {
             views.setViewVisibility(resText, View.GONE)
         } else {
-            setFont(resText, mScaledDensity, views)
+            setFont(resText, scaledDensity, views)
         }
-        if (mBackgroundProcessor != null) {
+        if (backgroundProcessor != null) {
             setIconBackground(icon, resBtn, views)
         }
 
     }
 
     private fun setIconBackground(icon: Bitmap?, res: Int, views: RemoteViews) {
-        val color = mBackgroundProcessor!!.getColor(mPrefs, icon)
+        val color = backgroundProcessor!!.getColor(prefs, icon)
         if (Color.alpha(color) == 0) {
             views.setViewVisibility(res, View.GONE)
         } else {
@@ -91,19 +91,19 @@ class ShortcutViewBuilder(private val mContext: Context, private val mAppWidgetI
                               skinProp: SkinProperties) {
         views.setImageViewResource(res, skinProp.setShortcutRes)
 
-        if (!mPrefs!!.isTitlesHide) {
-            val title = mContext.resources.getString(skinProp.setShortcutText)
+        if (!prefs!!.isTitlesHide) {
+            val title = context.resources.getString(skinProp.setShortcutText)
             views.setTextViewText(resText, title)
         }
-        val configIntent = mPendingIntentFactory.createNew(mAppWidgetId, cellId)
+        val configIntent = pendingIntentFactory.createNew(appWidgetId, cellId)
         views.setOnClickPendingIntent(res, configIntent)
         views.setOnClickPendingIntent(resText, configIntent)
     }
 
     private fun setFont(resText: Int, scaledDensity: Float, views: RemoteViews) {
-        views.setTextColor(resText, mPrefs!!.fontColor)
-        if (mPrefs!!.fontSize != Main.FONT_SIZE_UNDEFINED) {
-            if (mPrefs!!.fontSize == 0) {
+        views.setTextColor(resText, prefs!!.fontColor)
+        if (prefs!!.fontSize != Main.FONT_SIZE_UNDEFINED) {
+            if (prefs!!.fontSize == 0) {
                 views.setViewVisibility(resText, View.GONE)
             } else {
                 /*
@@ -112,7 +112,7 @@ class ShortcutViewBuilder(private val mContext: Context, private val mAppWidgetI
                  * scaled pixel format so we revert it to pixels to get properly
                  * converted after re-applying setTextSize function
                  */
-                val cSize = mPrefs!!.fontSize.toFloat() / scaledDensity
+                val cSize = prefs!!.fontSize.toFloat() / scaledDensity
 
                 views.setFloat(resText, "setTextSize", cSize)
                 views.setViewVisibility(resText, View.VISIBLE)
@@ -121,27 +121,27 @@ class ShortcutViewBuilder(private val mContext: Context, private val mAppWidgetI
 
     }
 
-    private fun setShortcut(res: Int, resText: Int, info: Shortcut, views: RemoteViews, cellId: Int, themeIcons: IconTheme?): Bitmap {
+    private fun applyShortcut(res: Int, resText: Int, info: Shortcut, views: RemoteViews, cellId: Int, themeIcons: IconTheme?): Bitmap {
 
         val themePackage = themeIcons?.packageName ?: "null"
-        val transformKey = mBitmapTransform!!.cacheKey
+        val transformKey = bitmapTransform!!.cacheKey
         val imageKey = info.id.toString() + ":" + themePackage + ":" + transformKey
 
         var icon = getBitmapFromMemCache(imageKey)
         if (icon == null) {
             icon = getShortcutIcon(info, themeIcons)
-            icon = mBitmapTransform!!.transform(icon)
+            icon = bitmapTransform!!.transform(icon)
             addBitmapToMemCache(imageKey, icon)
         }
 
         views.setImageViewBitmap(res, icon)
 
-        if (!mPrefs!!.isTitlesHide) {
+        if (!prefs!!.isTitlesHide) {
             val title = info.title.toString()
             views.setTextViewText(resText, title)
         }
-        val shortcutIntent = mPendingIntentFactory
-                .createShortcut(info.intent, mAppWidgetId, cellId, info.id)
+        val shortcutIntent = pendingIntentFactory
+                .createShortcut(info.intent, appWidgetId, cellId, info.id)
         views.setOnClickPendingIntent(res, shortcutIntent)
         views.setOnClickPendingIntent(resText, shortcutIntent)
 
@@ -149,28 +149,28 @@ class ShortcutViewBuilder(private val mContext: Context, private val mAppWidgetI
     }
 
     private fun addBitmapToMemCache(key: String, bitmap: Bitmap?) {
-        if (mBitmapMemoryCache == null) {
+        if (bitmapMemoryCache == null) {
             return
         }
         synchronized(sBitmapCacheLock) {
             if (getBitmapFromMemCache(key) == null) {
-                mBitmapMemoryCache!!.put(key, bitmap)
+                bitmapMemoryCache!!.put(key, bitmap)
             }
         }
     }
 
     private fun getBitmapFromMemCache(key: String): Bitmap? {
-        if (mBitmapMemoryCache == null) {
+        if (bitmapMemoryCache == null) {
             return null
         }
         synchronized(sBitmapCacheLock) {
-            return mBitmapMemoryCache!!.get(key)
+            return bitmapMemoryCache!!.get(key)
         }
     }
 
     private fun getShortcutIcon(info: Shortcut, themeIcons: IconTheme?): Bitmap {
         if (themeIcons == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon) {
-            val icon = mShortcuts!!.loadIcon(info.id)
+            val icon = shortcuts!!.loadIcon(info.id)
             return icon.bitmap
         }
 
@@ -183,14 +183,14 @@ class ShortcutViewBuilder(private val mContext: Context, private val mAppWidgetI
             return iconDrawable.bitmap
         }
         if (iconDrawable != null) {
-            return UtilitiesBitmap.createHiResIconBitmap(iconDrawable, mContext)
+            return UtilitiesBitmap.createHiResIconBitmap(iconDrawable, context)
         }
-        val icon = mShortcuts!!.loadIcon(info.id)
+        val icon = shortcuts!!.loadIcon(info.id)
         return icon.bitmap
     }
 
     fun setBitmapMemoryCache(bitmapMemoryCache: LruCache<String, Bitmap>) {
-        mBitmapMemoryCache = bitmapMemoryCache
+        this.bitmapMemoryCache = bitmapMemoryCache
     }
 
     companion object {

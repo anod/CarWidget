@@ -20,7 +20,7 @@ public class ShortcutProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_shortcut);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.list_item_widget_shortcut);
 
         Intent activity = new Intent(context, SwitchInCarActivity.class);
         activity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);

@@ -53,7 +53,7 @@ object ShortcutInfoUtils {
                 AppLog.d("Custom shortcut with Icon Resource")
                 try {
                     icon = getPackageIcon(context, extra)
-                    result.icon = ShortcutIcon.forIconResource(Shortcut.NO_ID.toLong(), icon, extra)
+                    result.icon = ShortcutIcon.forIconResource(Shortcut.idUnknown.toLong(), icon, extra)
                 } catch (e: Resources.NotFoundException) {
                     AppLog.e(e)
                 } catch (e: PackageManager.NameNotFoundException) {
@@ -66,7 +66,7 @@ object ShortcutInfoUtils {
         if (icon == null) {
             val packageManager = context.packageManager
             icon = UtilitiesBitmap.makeDefaultIcon(packageManager)
-            result.icon = ShortcutIcon.forFallbackIcon(Shortcut.NO_ID.toLong(), icon)
+            result.icon = ShortcutIcon.forFallbackIcon(Shortcut.idUnknown.toLong(), icon)
         }
 
         result.info = Shortcut(0, LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT, name, result.icon!!.isCustom, intent)
@@ -123,22 +123,22 @@ object ShortcutInfoUtils {
 
         // fall back to the class name of the activity
         if (title == null) {
-            title = componentName.className
+            title = componentName.className ?: ""
         }
 
         val result = ShortcutWithIcon()
 
         if (resolveInfo != null) {
             icon = getIcon(componentName, resolveInfo, manager, context)
-            result.icon = ShortcutIcon.forActivity(Shortcut.NO_ID.toLong(), icon)
+            result.icon = ShortcutIcon.forActivity(Shortcut.idUnknown, icon)
         }
         // the fallback icon
         if (icon == null) {
             icon = UtilitiesBitmap.makeDefaultIcon(manager)
-            result.icon = ShortcutIcon.forFallbackIcon(Shortcut.NO_ID.toLong(), icon)
+            result.icon = ShortcutIcon.forFallbackIcon(Shortcut.idUnknown, icon)
         }
 
-        result.info = Shortcut.forActivity(Shortcut.NO_ID.toLong(), title, result.icon!!.isCustom, componentName, Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
+        result.info = Shortcut.forActivity(Shortcut.idUnknown, title, result.icon!!.isCustom, componentName, Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
 
         return result
     }

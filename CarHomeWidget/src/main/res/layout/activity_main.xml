@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:itemTextColor="?android:attr/colorPrimary"
+        app:itemTextColor="?android:attr/textColorPrimaryInverse"
         android:background="?attr/activityBgColor"
         app:menu="@menu/drawer_main"/>
 

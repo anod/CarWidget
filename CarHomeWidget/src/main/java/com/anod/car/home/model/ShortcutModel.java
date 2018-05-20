@@ -206,7 +206,7 @@ public class ShortcutModel {
         if (result != null) {
             return Integer.parseInt(result.getPathSegments().get(1));
         }
-        return Shortcut.NO_ID;
+        return Shortcut.idUnknown;
     }
 
     /**
@@ -217,18 +217,18 @@ public class ShortcutModel {
 
         final ContentValues values = createShortcutContentValues(item, icon);
 
-        cr.update(LauncherSettings.Favorites.getContentUri(context.getPackageName(), item.id),
+        cr.update(LauncherSettings.Favorites.getContentUri(context.getPackageName(), item.getId()),
                 values, null, null);
     }
 
     public static ContentValues createShortcutContentValues(@NonNull Shortcut item, @NonNull ShortcutIcon icon) {
         final ContentValues values = new ContentValues();
-        values.put(LauncherSettings.Favorites.ITEM_TYPE, item.itemType);
+        values.put(LauncherSettings.Favorites.ITEM_TYPE, item.getItemType());
 
-        String titleStr = item.title == null ? null : item.title.toString();
+        String titleStr = item.getTitle() == null ? null : item.getTitle().toString();
         values.put(LauncherSettings.Favorites.TITLE, titleStr);
 
-        String uri = item.intent == null ? null : item.intent.toUri(0);
+        String uri = item.getIntent() == null ? null : item.getIntent().toUri(0);
         values.put(LauncherSettings.Favorites.INTENT, uri);
 
         if (icon.isCustom) {

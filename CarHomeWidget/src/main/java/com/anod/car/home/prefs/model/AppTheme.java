@@ -36,4 +36,9 @@ public class AppTheme {
         return (theme == THEME_GRAY) ? R.color.panel_background_grey
                 : R.drawable.panel_item_bg_dark;
     }
+
+    public static int getBackgroundColorResource(int theme) {
+        return (theme == THEME_GRAY) ? R.color.panel_background_grey
+                : R.drawable.panel_item_bg_dark;
+    }
 }

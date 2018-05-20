@@ -130,7 +130,7 @@ class SkinPreviewFragment : Fragment(), LoaderManager.LoaderCallbacks<View>, Vie
                 AppLog.e("Count: $shortcutsCount, pos: $pos")
                 continue
             }
-            val shortcut = model.getShortcut(pos)
+            val shortcut = model.get(pos)
 
             initDragButton(pos, btn, shortcut != null)
         }

@@ -29,8 +29,7 @@ import info.anodsplace.framework.app.DialogSingleChoice
 
 import java.util.ArrayList
 import android.support.v4.content.ContextCompat.startActivity
-
-
+import android.support.v7.app.AppCompatDelegate
 
 
 /**
@@ -104,13 +103,14 @@ class NavigationDrawerSelection(private val context: Activity, private val appWi
 
 
     private fun createThemesDialog(): AlertDialog {
-        return DialogSingleChoice(context, 0, R.string.choose_a_theme, R.array.app_themes, App.get(context).themeIdx, {
+        return DialogSingleChoice(context, R.style.DialogTheme, R.string.choose_a_theme, R.array.app_themes, App.get(context).themeIdx, {
             _, which ->
 
             val appSettings = AppSettings.create(context)
             appSettings.setAppTheme(which)
             appSettings.apply()
             App.get(context).themeIdx = which
+            AppCompatDelegate.setDefaultNightMode(App.get(context).nightMode)
             context.setTheme(AppTheme.getMainResource(which))
             context.recreate()
 
@@ -118,7 +118,7 @@ class NavigationDrawerSelection(private val context: Activity, private val appWi
     }
 
     private fun onCarDockAppClick() {
-        DialogCustom(context, 0, R.string.default_car_dock_app, R.layout.default_car_dock_app, {
+        DialogCustom(context, R.style.DialogTheme, R.string.default_car_dock_app, R.layout.default_car_dock_app, {
             view, dialog ->
 
             dialog.setCancelable(true)

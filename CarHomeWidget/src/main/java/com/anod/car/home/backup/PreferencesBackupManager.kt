@@ -8,7 +8,7 @@ import android.util.JsonReader
 import android.util.JsonWriter
 import android.util.SparseArray
 
-import com.anod.car.home.model.AbstractShortcutsContainerModel
+import com.anod.car.home.model.AbstractShortcuts
 import com.anod.car.home.model.NotificationShortcutsModel
 import com.anod.car.home.model.Shortcut
 import com.anod.car.home.model.WidgetShortcutsModel
@@ -269,13 +269,13 @@ class PreferencesBackupManager(private val context: Context) {
         return RESULT_DONE
     }
 
-    private fun restoreShortcuts(model: AbstractShortcutsContainerModel, shortcuts: SparseArray<ShortcutsJsonReader.ShortcutWithIconAndPosition>) {
+    private fun restoreShortcuts(model: AbstractShortcuts, shortcuts: SparseArray<ShortcutsJsonReader.ShortcutWithIconAndPosition>) {
         for (pos in 0 until model.count) {
-            model.dropShortcut(pos)
+            model.drop(pos)
             val shortcut = shortcuts.get(pos)
             if (shortcut?.icon != null && shortcut.info != null) {
-                val info = Shortcut(Shortcut.NO_ID.toLong(), shortcut.info)
-                model.saveShortcut(pos, info, shortcut.icon)
+                val info = Shortcut(Shortcut.idUnknown.toLong(), shortcut.info)
+                model.save(pos, info, shortcut.icon)
             }
         }
     }

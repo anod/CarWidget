@@ -133,16 +133,16 @@ class ShortcutsJsonReader(private val mContext: Context) {
             }
         }
 
-        val info = Shortcut(Shortcut.NO_ID.toLong(), itemType, title, isCustomIcon, intent)
+        val info = Shortcut(Shortcut.idUnknown, itemType, title, isCustomIcon, intent ?: Intent())
 
         var bitmap: Bitmap? = null
         var icon: ShortcutIcon? = null
         if (itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
             bitmap = decodeIcon(iconData, unusedBitmap)
             if (isCustomIcon) {
-                icon = ShortcutIcon.forCustomIcon(Shortcut.NO_ID.toLong(), bitmap)
+                icon = ShortcutIcon.forCustomIcon(Shortcut.idUnknown.toLong(), bitmap)
             } else {
-                icon = ShortcutIcon.forActivity(Shortcut.NO_ID.toLong(), bitmap)
+                icon = ShortcutIcon.forActivity(Shortcut.idUnknown.toLong(), bitmap)
             }
         } else {
             if (iconType == LauncherSettings.Favorites.ICON_TYPE_RESOURCE) {
@@ -171,19 +171,19 @@ class ShortcutsJsonReader(private val mContext: Context) {
                     bitmap = decodeIcon(iconData, unusedBitmap)
                 }
                 if (bitmap != null) {
-                    icon = ShortcutIcon.forIconResource(Shortcut.NO_ID.toLong(), bitmap, iconResource)
+                    icon = ShortcutIcon.forIconResource(Shortcut.idUnknown.toLong(), bitmap, iconResource)
                 }
             } else if (iconType == LauncherSettings.Favorites.ICON_TYPE_BITMAP) {
                 bitmap = decodeIcon(iconData, unusedBitmap)
                 if (bitmap != null) {
-                    icon = ShortcutIcon.forCustomIcon(Shortcut.NO_ID.toLong(), bitmap)
+                    icon = ShortcutIcon.forCustomIcon(Shortcut.idUnknown.toLong(), bitmap)
                 }
             }
         }
 
         if (bitmap == null) {
             bitmap = UtilitiesBitmap.makeDefaultIcon(mContext.packageManager)
-            icon = ShortcutIcon.forFallbackIcon(Shortcut.NO_ID.toLong(), bitmap)
+            icon = ShortcutIcon.forFallbackIcon(Shortcut.idUnknown.toLong(), bitmap)
         }
 
         reader.endObject()

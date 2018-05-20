@@ -3,7 +3,6 @@ package com.anod.car.home.prefs
 import android.app.Activity
 import android.app.Dialog
 import android.appwidget.AppWidgetManager
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -13,13 +12,12 @@ import android.provider.MediaStore
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 
 import com.anod.car.home.R
-import com.anod.car.home.model.AbstractShortcutsContainerModel
+import com.anod.car.home.model.AbstractShortcuts
 import com.anod.car.home.model.LauncherSettings
 import com.anod.car.home.model.NotificationShortcutsModel
 import com.anod.car.home.model.Shortcut
@@ -48,7 +46,7 @@ class ShortcutEditActivity : AppCompatActivity() {
     private var shortcutIcon: ShortcutIcon? = null
     private var iconDefault: Bitmap? = null
 
-    private var containerModel: AbstractShortcutsContainerModel? = null
+    private var containerModel: AbstractShortcuts? = null
 
     private var cellId: Int = 0
 
@@ -64,10 +62,10 @@ class ShortcutEditActivity : AppCompatActivity() {
         cellId = intent
                 .getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID)
         val shortcutId = intent
-                .getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, Shortcut.NO_ID.toLong())
+                .getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, Shortcut.idUnknown.toLong())
         val appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID)
-        if (cellId == ShortcutPicker.INVALID_CELL_ID || shortcutId == Shortcut.NO_ID.toLong()) {
+        if (cellId == ShortcutPicker.INVALID_CELL_ID || shortcutId == Shortcut.idUnknown.toLong()) {
             AppLog.e("Missing parameter")
             setResult(Activity.RESULT_CANCELED)
             finish()
@@ -87,7 +85,7 @@ class ShortcutEditActivity : AppCompatActivity() {
         iconView.setImageBitmap(shortcutIcon!!.bitmap)
 
         findViewById<View>(R.id.btn_delete).setOnClickListener {
-            containerModel!!.dropShortcut(cellId)
+            containerModel!!.drop(cellId)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }

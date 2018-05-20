@@ -9,10 +9,10 @@ import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey
 import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.prefs.views.ShortcutPreference
 
-class ConfigurationNotifShortcuts : ConfigurationPreferenceFragment(), PreferenceKey, ShortcutPreference.DropCallback {
+class ConfigurationNotificationShortcuts : ConfigurationPreferenceFragment(), PreferenceKey, ShortcutPreference.DropCallback {
 
     private val pickShortcutUtils: PickShortcutUtils by lazy { PickShortcutUtils(this, model, this) }
-    private val model: NotificationShortcutsModel by lazy { NotificationShortcutsModel.init(activity) }
+    private val model: NotificationShortcutsModel by lazy { NotificationShortcutsModel.init(context!!) }
 
     override val isAppWidgetIdRequired: Boolean
         get() = false

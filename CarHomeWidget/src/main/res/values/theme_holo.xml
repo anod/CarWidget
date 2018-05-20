@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<style name="AppThemeHolo" parent="Theme.AppCompat">
+	<style name="AppThemeHolo" parent="Theme.AppCompat.DayNight">
 		<item name="panelItem">@style/panelItemBasic</item>
 		<item name="panelHeader">@style/panelHeaderBasic</item>
         <item name="panelHeaderBackground">@drawable/panel_header_bg_dark</item>

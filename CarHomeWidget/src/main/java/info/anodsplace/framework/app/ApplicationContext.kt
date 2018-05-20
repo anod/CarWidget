@@ -20,8 +20,6 @@ import android.util.LruCache
  */
 
 interface ApplicationInstance {
-    val notificationManager: NotificationManager
-    val memoryCache: LruCache<String, Any?>
     val nightMode: Int
 
     fun sendBroadcast(intent: Intent)
@@ -39,9 +37,7 @@ class ApplicationContext(context: Context) {
     val contentResolver: ContentResolver
         get() = actual.contentResolver
     val notificationManager: NotificationManager
-        get() = app.notificationManager
-    val memoryCache: LruCache<String, Any?>
-        get() = app.memoryCache
+        get() = actual.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     val nightMode: Int
         get() = app.nightMode
     val resources: Resources

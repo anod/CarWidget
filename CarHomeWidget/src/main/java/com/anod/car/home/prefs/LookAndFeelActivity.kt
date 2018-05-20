@@ -75,7 +75,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         }
 
     override fun onDelete(srcCellId: Int): Boolean {
-        model.dropShortcut(srcCellId)
+        model.drop(srcCellId)
         refreshSkinPreview()
         return true
     }

@@ -2,7 +2,7 @@ package com.anod.car.home.prefs
 
 import com.anod.car.home.R
 import com.anod.car.home.model.Shortcut
-import com.anod.car.home.model.ShortcutsContainerModel
+import com.anod.car.home.model.Shortcuts
 import com.anod.car.home.prefs.views.ShortcutPreference
 import com.anod.car.home.utils.ShortcutPicker
 
@@ -12,7 +12,7 @@ import android.os.Bundle
 import android.support.v7.preference.Preference
 
 class PickShortcutUtils(private val configurationFragment: ConfigurationPreferenceFragment,
-                        private val model: ShortcutsContainerModel, private val preferenceKey: PreferenceKey) : ShortcutPicker.Handler {
+                        private val model: Shortcuts, private val preferenceKey: PreferenceKey) : ShortcutPicker.Handler {
 
     private val activity: ConfigurationActivity = configurationFragment.activity as ConfigurationActivity
 
@@ -23,7 +23,7 @@ class PickShortcutUtils(private val configurationFragment: ConfigurationPreferen
     }
 
     override fun onAddShortcut(cellId: Int, info: Shortcut?) {
-        if (info != null && info.id != Shortcut.NO_ID.toLong()) {
+        if (info != null && info.id != Shortcut.idUnknown.toLong()) {
             val key = preferenceKey.getCompiledKey(cellId)
             val p = configurationFragment.findPreference(key) as ShortcutPreference
             refreshPreference(p)
@@ -47,7 +47,7 @@ class PickShortcutUtils(private val configurationFragment: ConfigurationPreferen
         p.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
             val pref = preference as ShortcutPreference
             val shortcutPosition = pref.shortcutPosition
-            val info = model.getShortcut(shortcutPosition)
+            val info = model.get(shortcutPosition)
             if (info == null) {
                 showActivityPicker(shortcutPosition)
             } else {
@@ -57,7 +57,7 @@ class PickShortcutUtils(private val configurationFragment: ConfigurationPreferen
         }
         p.deleteClickListener = Preference.OnPreferenceClickListener { preference ->
             val pref = preference as ShortcutPreference
-            model.dropShortcut(pref.shortcutPosition)
+            model.drop(pref.shortcutPosition)
             refreshPreference(pref)
             true
         }
@@ -76,7 +76,7 @@ class PickShortcutUtils(private val configurationFragment: ConfigurationPreferen
 
     fun refreshPreference(pref: ShortcutPreference) {
         val cellId = pref.shortcutPosition
-        val info = model.getShortcut(cellId)
+        val info = model.get(cellId)
         pref.setAppTheme(activity.app.themeIdx)
         if (info == null) {
             pref.setTitle(R.string.set_shortcut)

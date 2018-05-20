@@ -3,7 +3,7 @@ package com.anod.car.home.prefs.preferences;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.anod.car.home.model.AbstractShortcutsContainerModel;
+import com.anod.car.home.model.AbstractShortcuts;
 import com.anod.car.home.model.NotificationShortcutsModel;
 import com.anod.car.home.model.Shortcut;
 import com.anod.car.home.model.ShortcutIcon;
@@ -78,15 +78,15 @@ public class ObjectRestoreManager {
         return PreferencesBackupManager.RESULT_DONE;
     }
 
-    private void restoreShortcuts(AbstractShortcutsContainerModel model, HashMap<Integer, ShortcutInfo> shortcuts) {
+    private void restoreShortcuts(AbstractShortcuts model, HashMap<Integer, ShortcutInfo> shortcuts) {
         for (int pos = 0; pos < model.getCount(); pos++) {
-            model.dropShortcut(pos);
+            model.drop(pos);
             final ShortcutInfo info = shortcuts.get(pos);
             if (info != null) {
                 Shortcut newInfo = new Shortcut(ShortcutInfo.NO_ID, info.itemType, info.title, info.isCustomIcon(), info.intent);
                 ShortcutIcon newIcon = new ShortcutIcon(ShortcutInfo.NO_ID, info.isCustomIcon(), info.isUsingFallbackIcon(), info.getIconResource(), info.getIcon());
 
-                model.saveShortcut(pos, newInfo, newIcon);
+                model.save(pos, newInfo, newIcon);
             }
         }
     }
@@ -116,7 +116,7 @@ public class ObjectRestoreManager {
         migrateIncar(dest, inCarBackup.getInCar());
         dest.apply();
 
-        NotificationShortcutsModel model = NotificationShortcutsModel.init(mContext);
+        NotificationShortcutsModel model = NotificationShortcutsModel.Companion.init(mContext);
 
         HashMap<Integer, ShortcutInfo> shortcuts = inCarBackup.getNotificationShortcuts();
         restoreShortcuts(model, shortcuts);

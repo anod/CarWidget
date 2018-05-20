@@ -104,7 +104,7 @@
 
     <PreferenceCategory android:title="@string/notification">
         <Preference
-            android:fragment="com.anod.car.home.prefs.ConfigurationNotifShortcuts"
+            android:fragment="com.anod.car.home.prefs.ConfigurationNotificationShortcuts"
             android:key="notif-shortcuts"
             android:summary="@string/shortcuts_summary"
             android:title="@string/shortcuts" />

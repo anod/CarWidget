@@ -1,7 +1,7 @@
 package com.anod.car.home.app;
 
 import com.anod.car.home.CarWidgetApplication;
-import com.anod.car.home.ObjectGraph;
+import com.anod.car.home.AppComponent;
 
 import android.content.Context;
 
@@ -15,7 +15,7 @@ public class App {
         return (CarWidgetApplication) context.getApplicationContext();
     }
 
-    public static ObjectGraph provide(Context context) {
-        return ((CarWidgetApplication) context.getApplicationContext()).getObjectGraph();
+    public static AppComponent provide(Context context) {
+        return ((CarWidgetApplication) context.getApplicationContext()).getAppComponent();
     }
 }

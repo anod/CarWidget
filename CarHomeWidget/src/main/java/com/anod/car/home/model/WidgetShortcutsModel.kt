@@ -10,39 +10,35 @@ import com.anod.car.home.utils.IntentUtils
 
 import java.util.ArrayList
 
-class WidgetShortcutsModel(private val mContext: Context, private val mAppWidgetId: Int) : AbstractShortcutsContainerModel(mContext) {
+class WidgetShortcutsModel(context: Context, private val appWidgetId: Int) : AbstractShortcuts(context) {
 
-    private var count: Int = 0
+    override var count: Int = 0
 
     public override fun loadCount() {
-        count = WidgetStorage.getLaunchComponentNumber(mContext, mAppWidgetId)
+        count = WidgetStorage.getLaunchComponentNumber(context, appWidgetId)
     }
 
     override fun updateCount(count: Int) {
         this.count = count
-        WidgetStorage.saveLaunchComponentNumber(count, mContext, mAppWidgetId)
+        WidgetStorage.saveLaunchComponentNumber(count, context, appWidgetId)
     }
 
-    override fun loadShortcutIds(): ArrayList<Long> {
+    override fun loadIds(): ArrayList<Long> {
         loadCount()
-        return WidgetStorage.getLauncherComponents(mContext, mAppWidgetId, count)
+        return WidgetStorage.getLauncherComponents(context, appWidgetId, count)
     }
 
-    override fun saveShortcutId(position: Int, shortcutId: Long) {
-        WidgetStorage.saveShortcut(mContext, shortcutId, position, mAppWidgetId)
+    override fun saveId(position: Int, shortcutId: Long) {
+        WidgetStorage.saveShortcut(context, shortcutId, position, appWidgetId)
     }
 
-    override fun dropShortcutId(position: Int) {
-        WidgetStorage.dropShortcutPreference(position, mAppWidgetId, mContext)
-    }
-
-    override fun getCount(): Int {
-        return count
+    override fun dropId(position: Int) {
+        WidgetStorage.dropShortcutPreference(position, appWidgetId, context)
     }
 
     override fun createDefaultShortcuts() {
         init()
-        initShortcuts(mAppWidgetId)
+        initShortcuts(appWidgetId)
     }
 
     private fun initShortcuts(appWidgetId: Int) {
@@ -61,13 +57,13 @@ class WidgetShortcutsModel(private val mContext: Context, private val mAppWidget
         val data = Intent()
         for (i in list.indices) {
             data.component = list[i]
-            if (!IntentUtils.isIntentAvailable(mContext, data)) {
+            if (!IntentUtils.isIntentAvailable(context, data)) {
                 continue
             }
-            val shortcut = ShortcutInfoUtils.infoFromApplicationIntent(mContext, data)
-            if (shortcut != null) {
+            val shortcut = ShortcutInfoUtils.infoFromApplicationIntent(context, data)
+            if (shortcut.info != null) {
                 AppLog.d("Init shortcut - " + shortcut.info + " Widget - " + appWidgetId)
-                saveShortcut(cellId, shortcut.info, shortcut.icon)
+                save(cellId, shortcut.info, shortcut.icon)
                 cellId++
             }
             if (cellId == 5) {

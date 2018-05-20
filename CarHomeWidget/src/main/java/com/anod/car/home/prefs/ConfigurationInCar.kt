@@ -111,7 +111,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         setIntent(SCREEN_BT_DEVICE, BluetoothDeviceActivity::class.java, 0)
         showFragmentOnClick(MEDIA_SCREEN, ConfigurationInCarVolume::class.java)
         showFragmentOnClick(MORE_SCREEN, ConfigurationInCarMore::class.java)
-        showFragmentOnClick(PREF_NOTIF_SHORTCUTS, ConfigurationNotifShortcuts::class.java)
+        showFragmentOnClick(PREF_NOTIF_SHORTCUTS, ConfigurationNotificationShortcuts::class.java)
 
     }
 

@@ -63,7 +63,7 @@ public class InCarStorage {
         ArrayList<Long> ids = new ArrayList<>(NOTIFICATION_COMPONENT_NUMBER);
         for (int i = 0; i < NOTIFICATION_COMPONENT_NUMBER; i++) {
             String key = getNotifComponentName(i);
-            long id = prefs.getLong(key, Shortcut.NO_ID);
+            long id = prefs.getLong(key, Shortcut.idUnknown);
             ids.add(i, id);
         }
         return ids;

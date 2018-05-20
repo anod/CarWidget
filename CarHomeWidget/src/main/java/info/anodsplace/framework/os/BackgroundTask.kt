@@ -1,5 +1,7 @@
 package info.anodsplace.framework.os
 
+import android.app.Application
+import android.content.Context
 import android.os.AsyncTask
 import android.util.LruCache
 import info.anodsplace.framework.app.ApplicationContext
@@ -12,9 +14,6 @@ import info.anodsplace.framework.app.ApplicationContext
 
 class CachedBackgroundTask<P, R>(private val key: String, private val worker: BackgroundTask.Worker<P, R>, private val storage: LruCache<String, Any?>) {
 
-    constructor(key: String, worker: BackgroundTask.Worker<P, R>, context: ApplicationContext)
-        : this(key, worker, context.memoryCache)
-
     fun execute() {
         val cached = storage.get(key) as? R
         if (cached != null) {
@@ -22,9 +21,9 @@ class CachedBackgroundTask<P, R>(private val key: String, private val worker: Ba
             return
         }
 
-        BackgroundTask(object : BackgroundTask.Worker<P, R>(this.worker.param) {
-            override fun run(param: P): R {
-                return worker.run(param)
+        BackgroundTask(object : BackgroundTask.Worker<P, R>(this.worker.context, this.worker.param) {
+            override fun run(param: P, context: ApplicationContext): R {
+                return worker.run(param, context)
             }
 
             override fun finished(result: R) {
@@ -37,17 +36,20 @@ class CachedBackgroundTask<P, R>(private val key: String, private val worker: Ba
 
 class BackgroundTask<P, R>(private val worker: Worker<P, R>) : AsyncTask<Void, Void, R>() {
 
-    abstract class Worker<Param, Result> protected constructor(internal val param: Param) {
-        abstract fun run(param: Param): Result
+    abstract class Worker<Param, Result> protected constructor(internal val context: ApplicationContext, internal val param: Param) {
+
+        constructor(context: Context, param: Param) : this(ApplicationContext(context), param)
+        constructor(application: Application, param: Param) : this(ApplicationContext(application), param)
+
+        abstract fun run(param: Param, context: ApplicationContext): Result
         abstract fun finished(result: Result)
     }
 
     override fun doInBackground(vararg params: Void): R {
-        return this.worker.run(this.worker.param)
+        return this.worker.run(this.worker.param, this.worker.context)
     }
 
     override fun onPostExecute(result: R) {
         this.worker.finished(result)
     }
-
 }

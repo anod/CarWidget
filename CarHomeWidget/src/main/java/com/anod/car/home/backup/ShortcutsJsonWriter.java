@@ -7,7 +7,7 @@ import android.util.SparseArray;
 import com.anod.car.home.model.Shortcut;
 import com.anod.car.home.model.ShortcutIcon;
 import com.anod.car.home.model.ShortcutModel;
-import com.anod.car.home.model.ShortcutsContainerModel;
+import com.anod.car.home.model.Shortcuts;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 public class ShortcutsJsonWriter {
 
-    public void writeList(JsonWriter shortcutsWriter, SparseArray<Shortcut> shortcuts, ShortcutsContainerModel model) throws IOException {
+    public void writeList(JsonWriter shortcutsWriter, SparseArray<Shortcut> shortcuts, Shortcuts model) throws IOException {
         for (int idx = 0; idx < shortcuts.size(); idx++) {
             int pos = shortcuts.keyAt(idx);
             Shortcut info = shortcuts.get(pos);
@@ -25,7 +25,7 @@ public class ShortcutsJsonWriter {
                 continue;
             }
             shortcutsWriter.beginObject();
-            ShortcutIcon icon = model.loadIcon(info.id);
+            ShortcutIcon icon = model.loadIcon(info.getId());
             ContentValues values = ShortcutModel.createShortcutContentValues(info, icon);
             shortcutsWriter.name("pos").value(pos);
 

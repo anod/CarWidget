@@ -124,7 +124,7 @@ class WidgetViewBuilder(private val context: Context,
 
         val cmpMap = SimpleArrayMap<String, Int>(shortcuts.size())
         for (cellId in 0 until shortcuts.size()) {
-            val info = shortcutsModel.getShortcut(cellId)
+            val info = shortcutsModel.get(cellId)
             if (info == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon) {
                 continue
             }

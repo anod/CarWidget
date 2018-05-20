@@ -2,10 +2,12 @@ package com.anod.car.home
 
 import android.app.Application
 import android.content.Context
+import android.support.v7.app.AppCompatDelegate
 
 import com.anod.car.home.acra.BrowserUrlSender
 import com.anod.car.home.acra.CrashDialog
 import com.anod.car.home.prefs.model.AppSettings
+import com.anod.car.home.prefs.model.AppTheme
 
 import org.acra.ACRA
 import org.acra.ReportField
@@ -13,6 +15,7 @@ import org.acra.annotation.AcraCore
 import org.acra.annotation.AcraDialog
 
 import info.anodsplace.framework.AppLog
+import info.anodsplace.framework.app.ApplicationInstance
 
 @AcraCore(
         resReportSendSuccessToast = R.string.crash_dialog_toast,
@@ -29,12 +32,20 @@ import info.anodsplace.framework.AppLog
             (ReportField.USER_COMMENT)],
         reportSenderFactoryClasses = [(BrowserUrlSender.Factory::class)])
 @AcraDialog(resText = R.string.crash_dialog_text, reportDialogClass = CrashDialog::class)
-class CarWidgetApplication : Application() {
-
+class CarWidgetApplication : Application(), ApplicationInstance {
     var themeIdx: Int = 0
 
-    var objectGraph: ObjectGraph? = null
+    var appComponent: AppComponent? = null
         private set
+
+    override val nightMode: Int
+        get() {
+            return if (themeIdx == AppTheme.THEME_HOLO) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+        }
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
@@ -46,7 +57,8 @@ class CarWidgetApplication : Application() {
         AppLog.setDebug(BuildConfig.DEBUG, "CarWidget")
 
         themeIdx = AppSettings.create(this).theme
-        objectGraph = ObjectGraph(this)
+        AppCompatDelegate.setDefaultNightMode(nightMode)
+        appComponent = AppComponent(this)
     }
 
     override fun onTrimMemory(level: Int) {

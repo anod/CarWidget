@@ -5,6 +5,7 @@ import com.anod.car.home.prefs.model.AppTheme
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.app.AppCompatDelegate
 
 /**
  * @author alex
@@ -21,6 +22,7 @@ abstract class CarWidgetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val theme = app.themeIdx
         setTheme(getAppThemeRes(theme))
+        AppCompatDelegate.setDefaultNightMode(app.nightMode)
         super.onCreate(savedInstanceState)
 
     }

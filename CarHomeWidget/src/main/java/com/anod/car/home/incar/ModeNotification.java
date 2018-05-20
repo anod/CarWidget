@@ -72,7 +72,7 @@ public class ModeNotification {
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE);
 
-        NotificationShortcutsModel model = NotificationShortcutsModel.init(context);
+        NotificationShortcutsModel model = NotificationShortcutsModel.Companion.init(context);
         if (model.getFilledCount() > 0) {
             RemoteViews contentView = createShortcuts(context, model);
             contentView.setTextViewText(android.R.id.text1, text);
@@ -91,16 +91,16 @@ public class ModeNotification {
         boolean viewGone = true;
         ShortcutPendingIntent spi = new ShortcutPendingIntent(context);
         for (int i = 0; i < model.getCount(); i++) {
-            Shortcut info = model.getShortcut(i);
+            Shortcut info = model.get(i);
             int resId = NOTIF_BTN_IDS[i];
             if (info == null) {
                 contentView.setViewVisibility(resId, (viewGone) ? View.GONE : View.INVISIBLE);
             } else {
                 viewGone = false;
-                ShortcutIcon icon = model.loadIcon(info.id);
+                ShortcutIcon icon = model.loadIcon(info.getId());
 
                 contentView.setImageViewBitmap(resId, icon.bitmap);
-                PendingIntent pendingIntent = spi.createShortcut(info.intent, PREFIX_NOTIF, i);
+                PendingIntent pendingIntent = spi.createShortcut(info.getIntent(), PREFIX_NOTIF, i);
                 contentView.setOnClickPendingIntent(resId, pendingIntent);
             }
         }

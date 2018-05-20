@@ -2,7 +2,7 @@ package com.anod.car.home.utils;
 
 import com.anod.car.home.R;
 import com.anod.car.home.model.Shortcut;
-import com.anod.car.home.model.ShortcutsContainerModel;
+import com.anod.car.home.model.Shortcuts;
 import com.anod.car.home.prefs.ActivityPicker;
 import com.anod.car.home.prefs.AllAppsActivity;
 import com.anod.car.home.prefs.CarWidgetShortcutsPicker;
@@ -28,7 +28,7 @@ public class ShortcutPicker {
 
     private final Context mContext;
 
-    private final ShortcutsContainerModel mModel;
+    private final Shortcuts mModel;
 
     private int mCurrentCellId = INVALID_CELL_ID;
 
@@ -53,7 +53,7 @@ public class ShortcutPicker {
         void onEditComplete(int cellId);
     }
 
-    public ShortcutPicker(ShortcutsContainerModel model, Handler handler, Context context) {
+    public ShortcutPicker(Shortcuts model, Handler handler, Context context) {
         mContext = context;
         mHandler = handler;
         mModel = model;
@@ -171,7 +171,7 @@ public class ShortcutPicker {
             return false;
         }
 
-        final Shortcut info = mModel.saveShortcutIntent(mCurrentCellId, data, isApplicationShortcut);
+        final Shortcut info = mModel.saveIntent(mCurrentCellId, data, isApplicationShortcut);
         mHandler.onAddShortcut(mCurrentCellId, info);
         mCurrentCellId = INVALID_CELL_ID;
         return true;
@@ -180,7 +180,7 @@ public class ShortcutPicker {
     private boolean completeEditShortcut(Intent data) {
         int cellId = data.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, INVALID_CELL_ID);
         long shortcutId = data
-                .getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, Shortcut.NO_ID);
+                .getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, Shortcut.idUnknown);
         if (cellId != INVALID_CELL_ID) {
             mModel.reloadShortcut(cellId, shortcutId);
             mHandler.onEditComplete(cellId);

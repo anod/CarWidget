@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppThemeGray" parent="Theme.AppCompat">
+    <style name="AppThemeGray" parent="Theme.AppCompat.DayNight">
         <item name="panelItem">@style/panelItemGray</item>
         <item name="panelHeader">@style/panelHeaderGray</item>
         <item name="panelHeaderBackground">@drawable/panel_item_bg_grey</item>

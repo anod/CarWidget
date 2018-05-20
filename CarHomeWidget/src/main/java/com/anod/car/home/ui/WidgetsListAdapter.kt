@@ -7,78 +7,71 @@ import com.anod.car.home.model.ShortcutIconRequestHandler
 import com.squareup.picasso.Picasso
 
 import android.content.Context
+import android.support.v7.widget.RecyclerView
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.ImageView
-import android.widget.TextView
+import androidx.core.util.forEach
+import androidx.core.util.isNotEmpty
 
 /**
  * @author alex
  * @date 5/27/13
  */
 
-internal class WidgetsListAdapter(context: Context) : ArrayAdapter<WidgetsListAdapter.Item>(context, R.layout.widgets_item) {
+class WidgetsListAdapter(private val context: Context, private val clickHandler: OnItemClickListener) : RecyclerView.Adapter<WidgetsListAdapter.ViewHolder>() {
 
-    private val picasso: Picasso = Picasso.Builder(context)
-            .addRequestHandler(ShortcutIconRequestHandler(context))
-            .build()
-
-    private val layoutInflater: LayoutInflater = getContext()
-            .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-    private var mCount: Int = 0
-
-    internal interface Item
-
-    internal class LargeItem(var appWidgetId: Int, var shortcuts: SparseArray<Shortcut>) : Item
-
-    internal class ShortcutItem : Item
-
-    internal class HintItem : Item
-
-    override fun getView(position: Int, view: View?, parent: ViewGroup): View {
-
-        return if (mCount == position) {
-            getHintView(view)
-        } else getWidgetView(position, view, parent)
-
+    interface OnItemClickListener {
+        fun onItemClick(item: Item)
     }
 
-    private fun getHintView(view: View?): View {
-        var hintView = view
-        if (hintView == null) {
-            val textView = TextView(context)
-            textView.setText(R.string.configure_select_item_hint)
-            hintView = textView
+    internal var items = listOf<Item>()
+
+    fun setResult(list: WidgetList) {
+        val newItems = mutableListOf<Item>()
+        newItems.addAll(list.shortcuts.map { ShortcutItem() })
+        list.large.forEach { key, value -> newItems.add(LargeItem(key, value)) }
+
+        if (list.large.isNotEmpty()) {
+            newItems.add(HintItem())
         }
-        return hintView
+
+        this.items = newItems
+        notifyDataSetChanged()
     }
 
-    private fun getWidgetView(position: Int, view: View?, parent: ViewGroup): View {
-        var itemView = view
-        val item = getItem(position)
-
-        if (itemView == null) {
-            when (item) {
-                is ShortcutItem -> itemView = View(parent.context)
-                is HintItem -> itemView = layoutInflater.inflate(R.layout.widgets_hint, parent, false)
-                else -> itemView = layoutInflater.inflate(R.layout.widgets_item, parent, false)
-            }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val resource = when (viewType) {
+            2 -> R.layout.list_item_widget_hint
+            1 -> R.layout.list_item_widget_shortcut
+            else -> R.layout.list_item_widget_large
         }
+        val itemView = LayoutInflater.from(context).inflate(resource, parent, false)
+        return ViewHolder(itemView)
+    }
+
+    override fun getItemCount(): Int {
+        return items.size
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = items[position]
 
         if (item is LargeItem) {
             val shortcuts = item.shortcuts
             val size = shortcuts.size()
-            for (i in sIds.indices) {
-                val icon = itemView!!.findViewById<View>(sIds[i]) as ImageView
+
+            holder.itemView.setOnClickListener {
+                clickHandler.onItemClick(items[position])
+            }
+
+            sIds.map { holder.itemView.findViewById<ImageView>(it) }.forEachIndexed { i, icon ->
                 var info: Shortcut? = null
                 if (i < size) {
                     info = shortcuts.get(i)
                 }
-
                 if (info != null) {
                     icon.visibility = View.VISIBLE
                     picasso.load(LauncherSettings.Favorites.getContentUri(context.packageName, info.id))
@@ -88,42 +81,43 @@ internal class WidgetsListAdapter(context: Context) : ArrayAdapter<WidgetsListAd
                 }
             }
         }
-
-        return itemView!!
     }
 
-    override fun getViewTypeCount(): Int {
-        return 3
-    }
+    private val picasso: Picasso = Picasso.Builder(context)
+            .addRequestHandler(ShortcutIconRequestHandler(context))
+            .build()
+
+    val isEmpty: Boolean
+        get() = items.isEmpty()
+
+    interface Item
+
+    internal class LargeItem(var appWidgetId: Int, var shortcuts: SparseArray<Shortcut>) : Item
+
+    internal class HintItem : Item
+
+    internal class ShortcutItem : Item
+
+    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
     override fun getItemViewType(position: Int): Int {
-        if (mCount == 0) {
-            return 0
-        }
-        return if (1 == position) 1 else 0
-    }
-
-    fun setResult(result: WidgetsListLoader.Result?) {
-        clear()
-        if (result == null) {
-            mCount = 0
-            return
-        }
-        mCount = result.large.size()
-        if (result.shortcuts.isNotEmpty()) {
-            add(ShortcutItem())
-            mCount++
-        }
-        for (i in 0 until result.large.size()) {
-            add(LargeItem(result.large.keyAt(i), result.large.valueAt(i)))
-        }
-        if (result.large.size() > 0) {
-            add(HintItem())
+        return when (items[position]) {
+            is HintItem -> 2
+            is ShortcutItem -> 1
+            else -> 0
         }
     }
 
     companion object {
-        private val sIds = intArrayOf(R.id.imageView0, R.id.imageView1, R.id.imageView2, R.id.imageView3, R.id.imageView4, R.id.imageView5, R.id.imageView6, R.id.imageView7)
+        private val sIds = intArrayOf(
+                R.id.imageView0,
+                R.id.imageView1,
+                R.id.imageView2,
+                R.id.imageView3,
+                R.id.imageView4,
+                R.id.imageView5,
+                R.id.imageView6,
+                R.id.imageView7)
     }
 
 }

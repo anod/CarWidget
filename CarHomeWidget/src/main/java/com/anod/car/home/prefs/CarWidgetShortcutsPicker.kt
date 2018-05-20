@@ -2,9 +2,7 @@ package com.anod.car.home.prefs
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -15,8 +13,9 @@ import android.widget.AdapterView
 import com.anod.car.home.R
 import com.anod.car.home.prefs.ActivityPicker.PickAdapter.Item
 import com.anod.car.home.utils.AppPermissions
-import com.anod.car.home.utils.BackgroundTask
 import com.anod.car.home.utils.IntentUtils
+import info.anodsplace.framework.app.ApplicationContext
+import info.anodsplace.framework.os.BackgroundTask
 
 import java.util.ArrayList
 
@@ -60,13 +59,13 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         if (requestCode == REQUEST_PICK_CONTACT) {
             if (resultCode == Activity.RESULT_OK) {
-                BackgroundTask.execute(object : BackgroundTask.Worker<Uri, Intent>(data.data, this) {
+                BackgroundTask(object : BackgroundTask.Worker<Uri, Intent?>(this, data.data) {
 
-                    override fun run(uri: Uri, context: Context): Intent? {
-                        return IntentUtils.createDirectCallIntent(uri, context)
+                    override fun run(uri: Uri, context: ApplicationContext): Intent? {
+                        return IntentUtils.createDirectCallIntent(uri, context.actual)
                     }
 
-                    override fun finished(intent: Intent?, context: Context) {
+                    override fun finished(intent: Intent?) {
                         if (intent != null) {
                             setResult(Activity.RESULT_OK, intent)
                         } else {
@@ -74,7 +73,7 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
                         }
                         finish()
                     }
-                })
+                }).execute()
             }
             return
         }
