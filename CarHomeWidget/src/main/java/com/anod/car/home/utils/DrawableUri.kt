@@ -9,9 +9,8 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.support.v4.content.res.ResourcesCompat
+import androidx.core.content.res.ResourcesCompat
 import android.text.TextUtils
-import android.util.DisplayMetrics
 import android.util.Log
 
 import java.io.FileNotFoundException
@@ -73,20 +72,20 @@ class DrawableUri(private val mContext: Context) {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
 
-        var `is` = mContext.contentResolver.openInputStream(uri)
-        BitmapFactory.decodeStream(`is`, null, options)
-        closeStream(`is`)
+        var inputStream = mContext.contentResolver.openInputStream(uri)
+        BitmapFactory.decodeStream(inputStream, null, options)
+        closeStream(inputStream)
         // Calculate inSampleSize
         options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false
 
-        `is` = mContext.contentResolver.openInputStream(uri)
-        val bmp = BitmapFactory.decodeStream(`is`, null, options)
-        closeStream(`is`)
+        inputStream = mContext.contentResolver.openInputStream(uri)
+        val bmp = BitmapFactory.decodeStream(inputStream, null, options)
+        closeStream(inputStream)
 
-        return bmp
+        return bmp!!
     }
 
     /**

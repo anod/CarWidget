@@ -3,11 +3,9 @@ package com.anod.car.home.prefs
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
-import android.support.v7.preference.Preference
-import android.support.v7.preference.PreferenceFragmentCompat
-import android.support.v7.preference.PreferenceScreen
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceScreen
 import android.view.MenuItem
 
 import com.anod.car.home.appwidget.Provider
@@ -53,16 +51,16 @@ class ConfigurationActivity : CarWidgetActivity(), PreferenceFragmentCompat.OnPr
         Utils.saveAppWidgetId(outState, appWidgetId)
     }
 
-    private fun createFragmentInstance(): Fragment {
+    private fun createFragmentInstance(): androidx.fragment.app.Fragment {
         val intent = intent
         val extras = intent.extras
         val fragmentClass = extras!!.get(EXTRA_FRAGMENT) as Class<*>
         val fragmentClassName = fragmentClass.name
-        return Fragment.instantiate(this, fragmentClassName, Bundle())
+        return androidx.fragment.app.Fragment.instantiate(this, fragmentClassName, Bundle())
     }
 
     fun onApplyClick() {
-        fragmentManager.popBackStack()
+        supportFragmentManager.popBackStack()
     }
 
     override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat, preference: Preference): Boolean {
@@ -75,9 +73,9 @@ class ConfigurationActivity : CarWidgetActivity(), PreferenceFragmentCompat.OnPr
     }
 
     private fun startPreferencePanel(fragmentClass: String, titleText: CharSequence?,
-                                     resultTo: Fragment?, resultRequestCode: Int) {
+                                     resultTo: androidx.fragment.app.Fragment?, resultRequestCode: Int) {
         val args = Bundle()
-        val f = Fragment.instantiate(this, fragmentClass, args)
+        val f = androidx.fragment.app.Fragment.instantiate(this, fragmentClass, args)
         if (resultTo != null) {
             f.setTargetFragment(resultTo, resultRequestCode)
         }
@@ -86,7 +84,7 @@ class ConfigurationActivity : CarWidgetActivity(), PreferenceFragmentCompat.OnPr
         if (titleText != null) {
             transaction.setBreadCrumbTitle(titleText)
         }
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        transaction.setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         transaction.addToBackStack(BACK_STACK_PREFS)
         transaction.commitAllowingStateLoss()
     }

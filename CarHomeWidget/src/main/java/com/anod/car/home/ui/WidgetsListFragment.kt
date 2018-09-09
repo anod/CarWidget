@@ -1,7 +1,7 @@
 package com.anod.car.home.ui
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.anod.car.home.R
 import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.prefs.ConfigurationActivity
@@ -9,25 +9,25 @@ import com.anod.car.home.prefs.ConfigurationInCar
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.CardView
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.anod.car.home.utils.*
 
-class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
+class WidgetsListFragment : androidx.fragment.app.Fragment(), WidgetsListAdapter.OnItemClickListener {
 
     private val adapter: WidgetsListAdapter by lazy { WidgetsListAdapter(activity!!, this) }
     private var appWidgetIds: IntArray = intArrayOf()
     private val version: Version by lazy { Version(activity!!) }
 
-    private val inCarView: CardView by lazy { view!!.findViewById<CardView>(R.id.widgets_incar) }
+    private val inCarView: androidx.cardview.widget.CardView by lazy { view!!.findViewById<androidx.cardview.widget.CardView>(R.id.widgets_incar) }
     private val emptyView: View by lazy { view!!.findViewById<View>(android.R.id.empty) }
-    private val listView: RecyclerView by lazy { view!!.findViewById<RecyclerView>(android.R.id.list) }
+    private val listView: androidx.recyclerview.widget.RecyclerView by lazy { view!!.findViewById<androidx.recyclerview.widget.RecyclerView>(android.R.id.list) }
 
     private val viewModel: WidgetsListViewModel by lazy { ViewModelProviders.of(activity!!).get(WidgetsListViewModel::class.java) }
 
@@ -55,7 +55,7 @@ class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
             startActivity(intent)
         }
 
-        listView.layoutManager = LinearLayoutManager(context)
+        listView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         listView.adapter = adapter
 
         inCarView.setOnClickListener {
@@ -96,7 +96,7 @@ class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
         }
     }
 
-    private fun updateInCarHeader(cardView: CardView) {
+    private fun updateInCarHeader(cardView: androidx.cardview.widget.CardView) {
         val status = InCarStatus.get(appWidgetIds.size, version, activity)
         val active = activity!!.getString(InCarStatus.render(status))
 

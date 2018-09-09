@@ -25,12 +25,12 @@ class RestoreTask(private val type: Int, private val backupManager: PreferencesB
         if (type == PreferencesBackupManager.TYPE_INCAR) {
 
             return if (ContentResolver.SCHEME_FILE == uri.scheme) {
-                backupManager.doRestoreInCarLocal(uri.path)
+                backupManager.doRestoreInCarLocal(uri.path!!)
             } else backupManager.doRestoreInCarUri(uri)
         }
 
         return if (ContentResolver.SCHEME_FILE == uri.scheme) {
-            backupManager.doRestoreWidgetLocal(uri.path, appWidgetId)
+            backupManager.doRestoreWidgetLocal(uri.path!!, appWidgetId)
         } else backupManager.doRestoreWidgetUri(uri, appWidgetId)
     }
 

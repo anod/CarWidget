@@ -1,11 +1,10 @@
 package com.anod.car.home.skin.icon;
 
 import com.anod.car.home.prefs.model.WidgetSettings;
-import info.anodsplace.framework.AppLog;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.support.v7.graphics.Palette;
+import androidx.palette.graphics.Palette;
 
 /**
  * @author alex

@@ -2,42 +2,37 @@ package com.anod.car.home.appscache
 
 import com.anod.car.home.model.AppsList
 
-import android.content.AsyncTaskLoader
 import android.content.Context
 import android.content.Intent
-
-import java.util.ArrayList
+import android.os.AsyncTask
+import com.anod.car.home.app.AppsListResultCallback
 
 /**
  * @author alex
  * @date 2014-09-02
  */
-class AppsCacheLoader(context: Context, private val callback: Callback, private val appsList: AppsList) : AsyncTaskLoader<List<AppsList.Entry>>(context) {
+class AppsCacheLoader(context: Context, private val queryIntent: Intent, private val callback: AppsListResultCallback) : AsyncTask<Void, Void, List<AppsList.Entry>>() {
+    private val packageManager = context.packageManager
+    private val selfPackage = context.packageName
 
-    interface Callback {
-        fun onIntentFilterInit(intent: Intent)
-    }
+    override fun doInBackground(vararg params: Void?): List<AppsList.Entry> {
 
-    override fun loadInBackground(): ArrayList<AppsList.Entry> {
-        loadAllAppsToCache()
-        return appsList.entries
-    }
+        val list = mutableListOf<AppsList.Entry>()
 
-    private fun loadAllAppsToCache() {
-        appsList.flush()
-        val mainIntent = Intent()
-        callback.onIntentFilterInit(mainIntent)
-
-        val packageManager = context.packageManager
-        val apps = packageManager.queryIntentActivities(mainIntent, 0)
-        val selfPackage = context.packageName
+        val apps = packageManager.queryIntentActivities(queryIntent, 0)
         for (appInfo in apps) {
-
             if (!appInfo.activityInfo.packageName.startsWith(selfPackage)) {
                 val title = appInfo.activityInfo.loadLabel(packageManager).toString()
-                appsList.put(appInfo, title)
+                list.add(AppsList.Entry(appInfo, title))
             }
         }
-        appsList.sort()
+
+        list.sortBy { it.title }
+        return list
+    }
+
+    override fun onPostExecute(result: List<AppsList.Entry>?) {
+        super.onPostExecute(result)
+        callback.onResult(result ?: emptyList())
     }
 }

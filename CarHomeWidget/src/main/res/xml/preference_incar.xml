@@ -4,7 +4,7 @@
     android:title="@string/pref_incar_mode_title"
     android:layout="@layout/preference_list_fragment">
 
-    <android.support.v7.preference.SwitchPreferenceCompat
+    <androidx.preference.SwitchPreferenceCompat
         android:key="incar-mode-enabled"
         android:title="@string/pref_incar_mode_enabled" />
 

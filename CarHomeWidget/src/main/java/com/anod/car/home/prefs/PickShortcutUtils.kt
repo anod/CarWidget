@@ -9,7 +9,7 @@ import com.anod.car.home.utils.ShortcutPicker
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.preference.Preference
+import androidx.preference.Preference
 
 class PickShortcutUtils(private val configurationFragment: ConfigurationPreferenceFragment,
                         private val model: Shortcuts, private val preferenceKey: PreferenceKey) : ShortcutPicker.Handler {

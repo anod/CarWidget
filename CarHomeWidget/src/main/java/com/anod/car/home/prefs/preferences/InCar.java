@@ -1,7 +1,7 @@
 package com.anod.car.home.prefs.preferences;
 
 import android.content.ComponentName;
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 
 import com.anod.car.home.prefs.model.InCarInterface;
 

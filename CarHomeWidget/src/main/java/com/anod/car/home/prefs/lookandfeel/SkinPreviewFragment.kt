@@ -1,5 +1,6 @@
 package com.anod.car.home.prefs.lookandfeel
 
+import android.app.Application
 import com.anod.car.home.R
 import com.anod.car.home.appwidget.WidgetViewBuilder
 import com.anod.car.home.model.WidgetShortcutsModel
@@ -11,16 +12,44 @@ import android.content.ClipData
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.LoaderManager
-import android.support.v4.content.AsyncTaskLoader
-import android.support.v4.content.Loader
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import info.anodsplace.framework.app.ApplicationContext
+import info.anodsplace.framework.os.BackgroundTask
 
-class SkinPreviewFragment : Fragment(), LoaderManager.LoaderCallbacks<View>, View.OnLongClickListener {
+class SkinPreviewViewModel(application: Application): AndroidViewModel(application) {
+    val view = MutableLiveData<View>()
+    private val applicationContext = ApplicationContext(getApplication())
+    var builder: WidgetViewBuilder? = null
+    var overrideSkin: String? = null
+
+    fun load() {
+        val param = Pair(this.builder!!, this.overrideSkin)
+        BackgroundTask(object : BackgroundTask.Worker<Pair<WidgetViewBuilder, String?>, View>(applicationContext, param) {
+            override fun run(param: Pair<WidgetViewBuilder, String?>, context: ApplicationContext): View {
+                param.first.init()
+                param.first.overrideSkin = param.second
+                val rv = param.first.build()
+                return rv.apply(context.actual, null)
+            }
+
+            override fun finished(result: View) {
+                this@SkinPreviewViewModel.view.value = result
+            }
+        }).execute()
+    }
+
+}
+
+class SkinPreviewFragment : Fragment(), View.OnLongClickListener {
 
     private var position: Int = 0
 
@@ -30,15 +59,16 @@ class SkinPreviewFragment : Fragment(), LoaderManager.LoaderCallbacks<View>, Vie
 
     private var shortcutsCount: Int = 0
 
+    private val viewModel: SkinPreviewViewModel by lazy { ViewModelProviders.of(this).get(SkinPreviewViewModel::class.java) }
+
     override fun onResume() {
         super.onResume()
-        loaderManager.initLoader(0, null, this).forceLoad()
+        viewModel.load()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         lookAndFeelActivity!!.onPreviewStart(position)
-        loaderManager.initLoader(0, null, this)
     }
 
     override fun onAttach(context: Context?) {
@@ -59,49 +89,31 @@ class SkinPreviewFragment : Fragment(), LoaderManager.LoaderCallbacks<View>, Vie
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.overrideSkin = lookAndFeelActivity!!.getSkinItem(position).value
+        viewModel.builder = lookAndFeelActivity!!.createBuilder()
+        viewModel.view.observe(this, Observer { inflatedView ->
+            lookAndFeelActivity!!.onPreviewCreated(position)
+
+            if (inflatedView.parent != null) {
+                return@Observer
+            }
+
+            if (viewGroup!!.childCount > 0) {
+                viewGroup!!.removeAllViews()
+            }
+
+            val model = WidgetShortcutsModel.init(activity!!, lookAndFeelActivity!!.appWidgetId)
+            shortcutsCount = model.count
+
+            setupDragNDrop(inflatedView, model)
+            viewGroup!!.addView(inflatedView)
+        })
+    }
+
     fun refresh() {
-        loaderManager.initLoader(0, null, this).forceLoad()
-    }
-
-    class ViewLoader(private val activity: LookAndFeelActivity, private val position: Int) : AsyncTaskLoader<View>(activity) {
-
-        override fun loadInBackground(): View? {
-            val builder = activity.createBuilder()
-            builder.init()
-
-            builder.overrideSkin = activity.getSkinItem(position).value
-            val rv = builder.build()
-
-            return rv.apply(activity.applicationContext, null)
-        }
-
-    }
-
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<View> {
-        return ViewLoader(lookAndFeelActivity!!, position)
-    }
-
-    override fun onLoadFinished(loader: Loader<View>, inflatedView: View) {
-        lookAndFeelActivity!!.onPreviewCreated(position)
-
-        if (inflatedView.parent != null) {
-            //            View parent = (View) inflatedView.getParent();
-            //            viewGroup.addView(parent);
-            return
-        }
-
-        if (viewGroup!!.childCount > 0) {
-            viewGroup!!.removeAllViews()
-        }
-
-        val model = WidgetShortcutsModel.init(activity!!,
-                lookAndFeelActivity!!.appWidgetId)
-        shortcutsCount = model.count
-
-        setupDragNDrop(inflatedView, model)
-
-        viewGroup!!.addView(inflatedView)
-        //        viewGroup.invalidate();
+        viewModel.load()
     }
 
     override fun onDestroyView() {
@@ -158,23 +170,10 @@ class SkinPreviewFragment : Fragment(), LoaderManager.LoaderCallbacks<View>, Vie
         dragButton.setOnDragListener(lookAndFeelActivity!!.dragListener)
     }
 
-    override fun onLoaderReset(loader: Loader<View>) {
-
-    }
-
     companion object {
-
         private const val ARG_POSITION = "position"
-
-        fun newInstance(position: Int): SkinPreviewFragment {
-            val f = SkinPreviewFragment()
-
-            val args = Bundle()
-            args.putInt(ARG_POSITION, position)
-
-            f.arguments = args
-
-            return f
+        fun newInstance(position: Int) = SkinPreviewFragment().apply {
+            arguments = bundleOf(ARG_POSITION to position)
         }
     }
 

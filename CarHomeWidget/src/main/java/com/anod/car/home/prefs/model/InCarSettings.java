@@ -2,8 +2,8 @@ package com.anod.car.home.prefs.model;
 
 import android.content.ComponentName;
 import android.content.SharedPreferences;
-import android.support.v4.util.ArrayMap;
-import android.support.v4.util.SimpleArrayMap;
+import androidx.collection.ArrayMap;
+import androidx.collection.SimpleArrayMap;
 import android.text.TextUtils;
 import android.util.JsonReader;
 import android.util.JsonToken;
@@ -11,7 +11,6 @@ import android.util.JsonWriter;
 
 import com.anod.car.home.incar.SamsungDrivingMode;
 import com.anod.car.home.incar.ScreenOrientation;
-import info.anodsplace.framework.AppLog;
 import com.anod.car.home.utils.Utils;
 
 import java.io.IOException;

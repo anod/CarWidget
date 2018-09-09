@@ -2,11 +2,10 @@ package com.anod.car.home.prefs.model;
 
 import android.content.ComponentName;
 import android.content.SharedPreferences;
-import android.content.pm.ComponentInfo;
-import android.support.v4.util.SimpleArrayMap;
+
+import androidx.collection.SimpleArrayMap;
 
 import info.anodsplace.framework.AppLog;
-import com.anod.car.home.utils.Utils;
 
 /**
  * @author algavris

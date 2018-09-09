@@ -6,7 +6,7 @@ import com.anod.car.home.utils.UtilitiesBitmap
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,7 +67,7 @@ class AppsListAdapter(
     }
 
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View): androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         var title: TextView = itemView.findViewById(android.R.id.text1)
         var icon: ImageView = itemView.findViewById(android.R.id.icon)
     }

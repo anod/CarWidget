@@ -8,7 +8,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
-import android.support.v4.content.res.ResourcesCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.anod.car.home.R;
 import com.anod.car.home.model.Shortcut;

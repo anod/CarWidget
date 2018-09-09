@@ -1,6 +1,6 @@
 package com.anod.car.home.prefs.model
 
-import android.support.v4.util.SimpleArrayMap
+import androidx.collection.SimpleArrayMap
 import android.util.JsonReader
 import android.util.JsonToken
 
@@ -15,7 +15,7 @@ import java.io.IOException
 object JsonReaderHelper {
 
     @Throws(IOException::class)
-    fun readValues(reader: JsonReader, types: SimpleArrayMap<String, JsonToken>, prefs: ChangeableSharedPreferences) {
+    fun readValues(reader: JsonReader, types: androidx.collection.SimpleArrayMap<String, JsonToken>, prefs: ChangeableSharedPreferences) {
 
         while (reader.hasNext()) {
             val name = reader.nextName()

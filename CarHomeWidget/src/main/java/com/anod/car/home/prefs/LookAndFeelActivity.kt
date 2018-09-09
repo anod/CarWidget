@@ -8,8 +8,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
+import com.google.android.material.tabs.TabLayout
+import androidx.viewpager.widget.ViewPager
 import android.text.method.LinkMovementMethod
 import android.view.Menu
 import android.view.MenuItem
@@ -36,7 +36,7 @@ import com.anod.car.home.utils.BitmapLruCache
 import com.anod.car.home.utils.HtmlCompat
 import com.anod.car.home.utils.IntentUtils
 
-class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory, ShortcutDragListener.DropCallback {
+class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory, ShortcutDragListener.DropCallback {
 
     private var currentPage: Int = 0
 
@@ -48,7 +48,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     private val skinList: SkinList by lazy { SkinList.newInstance(prefs.skin, isKeyguard, this) }
     private var bitmapMemoryCache: BitmapLruCache? = null
     private val textView: TextView by lazy { findViewById<TextView>(R.id.skin_info) }
-    private val gallery: ViewPager by lazy { findViewById<ViewPager>(R.id.gallery) }
+    private val gallery: androidx.viewpager.widget.ViewPager by lazy { findViewById<androidx.viewpager.widget.ViewPager>(R.id.gallery) }
     private val loaderView: View by lazy { findViewById<View>(R.id.loading) }
     private val lookAndFeelMenu: LookAndFeelMenu by lazy { LookAndFeelMenu(this, model) }
     private val drawer: NavigationDrawer by lazy { NavigationDrawer(this, appWidgetId) }

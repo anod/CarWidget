@@ -2,7 +2,7 @@ package com.anod.car.home.prefs.views
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.preference.PreferenceDialogFragmentCompat
+import androidx.preference.PreferenceDialogFragmentCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText

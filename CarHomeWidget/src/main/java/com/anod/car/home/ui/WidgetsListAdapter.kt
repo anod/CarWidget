@@ -7,7 +7,7 @@ import com.anod.car.home.model.ShortcutIconRequestHandler
 import com.squareup.picasso.Picasso
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +21,7 @@ import androidx.core.util.isNotEmpty
  * @date 5/27/13
  */
 
-class WidgetsListAdapter(private val context: Context, private val clickHandler: OnItemClickListener) : RecyclerView.Adapter<WidgetsListAdapter.ViewHolder>() {
+class WidgetsListAdapter(private val context: Context, private val clickHandler: OnItemClickListener) : androidx.recyclerview.widget.RecyclerView.Adapter<WidgetsListAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
         fun onItemClick(item: Item)
@@ -98,7 +98,7 @@ class WidgetsListAdapter(private val context: Context, private val clickHandler:
 
     internal class ShortcutItem : Item
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    class ViewHolder(itemView: View): androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView)
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {

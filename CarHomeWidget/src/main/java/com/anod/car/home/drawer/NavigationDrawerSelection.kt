@@ -5,9 +5,9 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
-import android.support.v7.app.AlertDialog
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import android.widget.Button
 
 import com.anod.car.home.MainActivity
@@ -21,15 +21,13 @@ import com.anod.car.home.prefs.MusicAppSettingsActivity
 import com.anod.car.home.prefs.model.AppSettings
 import com.anod.car.home.prefs.model.AppTheme
 import info.anodsplace.framework.AppLog
-import com.anod.car.home.utils.InCarStatus
 import com.anod.car.home.utils.IntentUtils
 import com.anod.car.home.utils.Utils
 import info.anodsplace.framework.app.DialogCustom
 import info.anodsplace.framework.app.DialogSingleChoice
 
-import java.util.ArrayList
-import android.support.v4.content.ContextCompat.startActivity
-import android.support.v7.app.AppCompatDelegate
+import androidx.core.content.ContextCompat.startActivity
+import androidx.appcompat.app.AppCompatDelegate
 
 
 /**

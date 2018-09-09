@@ -5,11 +5,11 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
+import com.google.android.material.tabs.TabLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.Menu
@@ -26,10 +26,10 @@ import com.anod.car.home.backup.PreferencesBackupManager
 import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.Utils
 
-class FragmentBackup : Fragment() {
+class FragmentBackup : androidx.fragment.app.Fragment() {
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
-    private var viewPager: ViewPager? = null
+    private var viewPager: androidx.viewpager.widget.ViewPager? = null
     private var tabs: TabLayout? = null
 
     private var refreshMenuItem: MenuItem? = null
@@ -120,15 +120,15 @@ class FragmentBackup : Fragment() {
     private class RestorePagerAdapter
         constructor(
                 private val appWidgetId: Int,
-                fm: FragmentManager,
-                private val mContext: Context) : FragmentPagerAdapter(fm) {
+                fm: androidx.fragment.app.FragmentManager,
+                private val mContext: Context) : androidx.fragment.app.FragmentPagerAdapter(fm) {
         internal var titles = intArrayOf(R.string.backup_current_widget, R.string.backup_incar_settings)
 
         override fun getCount(): Int {
             return 2
         }
 
-        override fun getItem(position: Int): Fragment {
+        override fun getItem(position: Int): androidx.fragment.app.Fragment {
             return if (position == 0) {
                 FragmentRestoreWidget.create(appWidgetId)
             } else FragmentRestoreInCar()

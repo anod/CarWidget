@@ -1,15 +1,15 @@
 package com.anod.car.home.appscache
 
+import android.content.Intent
 import com.anod.car.home.app.AppsListActivity
-import com.anod.car.home.model.AppsList
-
-import android.content.Loader
 import android.os.Bundle
 
-abstract class AppsCacheActivity : AppsListActivity(), AppsCacheLoader.Callback {
+abstract class AppsCacheActivity : AppsListActivity() {
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<AppsList.Entry>> {
-        return AppsCacheLoader(this, this, appsList)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.loader = AppsCacheLoader(this, createQueryIntent(), viewModel)
     }
 
+    abstract fun createQueryIntent(): Intent
 }

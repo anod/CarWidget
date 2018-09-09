@@ -4,24 +4,58 @@ import com.anod.car.home.R
 import com.anod.car.home.model.AppsList
 
 import android.app.Activity
-import android.app.LoaderManager
+import android.app.Application
 import android.content.Context
-import android.content.Loader
+import android.os.AsyncTask
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.FrameLayout
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.anod.car.home.CarWidgetApplication
+
+interface AppsListResultCallback {
+    fun onResult(result: List<AppsList.Entry>)
+}
+
+class AppsListViewModel(application: Application) : AndroidViewModel(application), AppsListResultCallback {
+
+    val list = MutableLiveData<List<AppsList.Entry>>()
+    var loader: AsyncTask<Void, Void, List<AppsList.Entry>>? = null
+    var isRefreshCache = false
+    var appsList = getApplication<CarWidgetApplication>().appComponent!!.appListCache
+
+    fun load() {
+        this.loader?.execute()
+    }
+
+    fun loadIfNeeded() {
+        val apps = appsList.entries
+
+        if (apps.isEmpty() || isRefreshCache) {
+            this.load()
+        } else {
+            this.list.value = apps
+        }
+    }
+
+    override fun onResult(result: List<AppsList.Entry>) {
+        this.appsList.replace(result)
+        this.list.value = result
+    }
+}
 
 /**
  * @author alex
  * @date 2014-09-02
  */
-abstract class AppsListActivity : AppCompatGridActivity(), AdapterView.OnItemClickListener, LoaderManager.LoaderCallbacks<List<AppsList.Entry>> {
+abstract class AppsListActivity : AppCompatGridActivity(), AdapterView.OnItemClickListener {
 
-    private val adapter: AppsListAdapter by lazy { AppsListAdapter(this, rowLayoutId, appsList.appIconLoader) }
-
-    protected val appsList: AppsList by lazy { createAppList(this) }
+    private val adapter: AppsListAdapter by lazy { AppsListAdapter(this, rowLayoutId, App.provide(this).appIconLoader) }
 
     protected open val isShowTitle: Boolean
         get() = false
@@ -38,7 +72,7 @@ abstract class AppsListActivity : AppCompatGridActivity(), AdapterView.OnItemCli
 
     protected abstract fun onEntryClick(position: Int, entry: AppsList.Entry)
 
-    protected abstract fun createAppList(context: Context): AppsList
+    val viewModel: AppsListViewModel by lazy { ViewModelProviders.of(this).get(AppsListViewModel::class.java) }
 
     protected open fun onResumeImpl() {
         // Nothing by default
@@ -64,41 +98,32 @@ abstract class AppsListActivity : AppCompatGridActivity(), AdapterView.OnItemCli
         }
 
         listAdapter = adapter
+
+        viewModel.list.observe(this, Observer {
+            adapter.clear()
+
+            val items = headEntries + it
+            adapter.addAll(items)
+            adapter.notifyDataSetChanged()
+            onItemsSet(items)
+        })
+
     }
 
 
     override fun onResume() {
         super.onResume()
         onResumeImpl()
-        val apps = appsList.entries
-
-        if (apps.isEmpty() || isRefreshCache) {
-            loaderManager.initLoader<List<AppsList.Entry>>(0, null, this).forceLoad()
-        } else {
-            onLoadFinished(null, apps)
-        }
+        viewModel.loadIfNeeded()
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-        val entry = adapter.getItem(position)
+        val entry = adapter.getItem(position)!!
         onEntryClick(position, entry)
     }
 
     protected open fun onItemsSet(items: List<AppsList.Entry>) {
         // Nothing by default
-    }
-
-    override fun onLoadFinished(loader: Loader<List<AppsList.Entry>>?, data: List<AppsList.Entry>) {
-        adapter.clear()
-
-        val items = headEntries + data
-        adapter.addAll(items)
-        adapter.notifyDataSetChanged()
-        onItemsSet(items)
-    }
-
-    override fun onLoaderReset(loader: Loader<List<AppsList.Entry>>) {
-
     }
 
     override fun onBackPressed() {

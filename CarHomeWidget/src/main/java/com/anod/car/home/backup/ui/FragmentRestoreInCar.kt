@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.FileProvider
+import androidx.fragment.app.Fragment
+import androidx.core.content.FileProvider
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -15,7 +15,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.net.toUri
-import com.anod.car.home.BuildConfig
 
 import com.anod.car.home.R
 import com.anod.car.home.backup.*
@@ -29,7 +28,7 @@ import java.io.File
  * @author algavris
  * @date 30/07/2016.
  */
-class FragmentRestoreInCar : Fragment(), RestoreTask.RestoreTaskListener, BackupTask.BackupTaskListener {
+class FragmentRestoreInCar : androidx.fragment.app.Fragment(), RestoreTask.RestoreTaskListener, BackupTask.BackupTaskListener {
 
     private var restoreInCar: ImageButton? = null
     private var lastBackupInCar: TextView? = null

@@ -10,9 +10,9 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
-import android.support.annotation.DrawableRes
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.util.SimpleArrayMap
+import androidx.annotation.DrawableRes
+import androidx.core.content.res.ResourcesCompat
+import androidx.collection.SimpleArrayMap
 
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
@@ -30,7 +30,7 @@ class IconTheme(internal var mContext: Context, packageName: String) {
 
     private var themeResources: Resources? = null
 
-    private var iconMap: SimpleArrayMap<String, Int>? = null
+    private var iconMap: androidx.collection.SimpleArrayMap<String, Int>? = null
 
     init {
         this.packageName = packageName
@@ -46,7 +46,7 @@ class IconTheme(internal var mContext: Context, packageName: String) {
         return themeResources != null
     }
 
-    fun loadFromXml(cmpMap: SimpleArrayMap<String, Int>) {
+    fun loadFromXml(cmpMap: androidx.collection.SimpleArrayMap<String, Int>) {
         val xml = loadXmlResource()
         if (xml == null) {
             iconMap = fallback(cmpMap)
@@ -64,10 +64,10 @@ class IconTheme(internal var mContext: Context, packageName: String) {
 
     }
 
-    private fun fallback(cmpMap: SimpleArrayMap<String, Int>): SimpleArrayMap<String, Int>? {
+    private fun fallback(cmpMap: androidx.collection.SimpleArrayMap<String, Int>): androidx.collection.SimpleArrayMap<String, Int>? {
         var found = 0
         val required = cmpMap.size()
-        val iconMap = SimpleArrayMap<String, Int>(required)
+        val iconMap = androidx.collection.SimpleArrayMap<String, Int>(required)
 
         //Fallback
         for (i in 0 until cmpMap.size()) {
@@ -113,10 +113,10 @@ class IconTheme(internal var mContext: Context, packageName: String) {
     }
 
     @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseXml(xml: XmlPullParser, cmpMap: SimpleArrayMap<String, Int>): SimpleArrayMap<String, Int>? {
+    private fun parseXml(xml: XmlPullParser, cmpMap: androidx.collection.SimpleArrayMap<String, Int>): androidx.collection.SimpleArrayMap<String, Int>? {
 
         val required = cmpMap.size()
-        val iconMap = SimpleArrayMap<String, Int>(required)
+        val iconMap = androidx.collection.SimpleArrayMap<String, Int>(required)
 
         var eventType = xml.eventType
         while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -151,12 +151,8 @@ class IconTheme(internal var mContext: Context, packageName: String) {
     }
 
     fun getIcon(className: String): Int {
-        if (iconMap != null) {
-            if (iconMap!!.containsKey(className)) {
-                return iconMap!!.get(className)
-            }
-        }
-        return 0
+        val iconMap = this.iconMap ?: return 0
+        return iconMap.get(className) ?: 0
     }
 
     fun getDrawable(@DrawableRes resId: Int): Drawable? {

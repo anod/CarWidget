@@ -5,8 +5,8 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.widget.Toolbar
+import androidx.fragment.app.DialogFragment
+import androidx.appcompat.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -89,7 +89,7 @@ class CarHomeColorPickerDialog : ColorPickerDialog() {
 
         selectedAlpha = Color.alpha(mSelectedColor)
         mSelectedColor = alphaColor(ALPHA_OPAQUE, mSelectedColor)
-        setStyle(DialogFragment.STYLE_NO_FRAME, 0)
+        setStyle(androidx.fragment.app.DialogFragment.STYLE_NO_FRAME, 0)
     }
 
 

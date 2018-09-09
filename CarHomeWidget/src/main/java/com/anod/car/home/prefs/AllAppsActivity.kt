@@ -1,16 +1,20 @@
 package com.anod.car.home.prefs
 
 import android.app.Activity
-import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.appscache.AppsCacheActivity
 import com.anod.car.home.model.AppsList
 
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 
 class AllAppsActivity : AppsCacheActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.appsList = App.provide(this).appListCache
+    }
 
     override fun onEntryClick(position: Int, entry: AppsList.Entry) {
         val intent = createActivityIntent(entry.componentName)
@@ -18,22 +22,19 @@ class AllAppsActivity : AppsCacheActivity() {
         finish()
     }
 
-    private fun createActivityIntent(className: ComponentName): Intent {
+    private fun createActivityIntent(componentName: ComponentName?): Intent {
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
-        intent.component = className
+        intent.component = componentName
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
         return intent
     }
 
-    override fun onIntentFilterInit(intent: Intent) {
+    override fun createQueryIntent(): Intent {
+        val intent = Intent()
         intent.action = Intent.ACTION_MAIN
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
-    }
-
-
-    override fun createAppList(context: Context): AppsList {
-        return App.provide(context).appListCache
+        return intent
     }
 
 }

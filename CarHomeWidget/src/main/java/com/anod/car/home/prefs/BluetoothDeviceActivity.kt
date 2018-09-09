@@ -9,7 +9,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.AsyncTask
 import android.os.Bundle
-import android.support.v4.util.ArrayMap
+import androidx.collection.ArrayMap
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -98,7 +98,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
         var devices = prefs.btDevices
         if (newState) {
             if (devices == null) {
-                devices = ArrayMap()
+                devices = androidx.collection.ArrayMap()
             }
             devices[device!!.address] = device.address
         } else {

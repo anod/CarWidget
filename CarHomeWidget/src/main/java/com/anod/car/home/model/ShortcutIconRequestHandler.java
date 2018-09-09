@@ -1,10 +1,8 @@
 package com.anod.car.home.model;
 
-import android.content.ContentProvider;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.squareup.picasso.Request;
 import com.squareup.picasso.RequestHandler;

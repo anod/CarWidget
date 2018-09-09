@@ -13,8 +13,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v4.content.res.ResourcesCompat;
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import android.text.TextUtils;
 
 import info.anodsplace.framework.AppLog;

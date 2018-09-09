@@ -5,7 +5,6 @@ import com.anod.car.home.R
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.ActivityManager
-import android.app.PendingIntent.getService
 import android.appwidget.AppWidgetManager
 import android.content.ActivityNotFoundException
 import android.content.ComponentCallbacks2
@@ -13,7 +12,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
@@ -21,8 +19,6 @@ import android.widget.Toast
 import info.anodsplace.framework.AppLog
 
 import android.content.pm.ApplicationInfo.FLAG_LARGE_HEAP
-import android.support.v4.app.Fragment
-import androidx.core.content.systemService
 
 object Utils {
 
@@ -96,7 +92,7 @@ object Utils {
     }
 
     fun startActivityForResultSafetly(intent: Intent, requestCode: Int,
-                                      fragment: Fragment) {
+                                      fragment: androidx.fragment.app.Fragment) {
         try {
             fragment.startActivityForResult(intent, requestCode)
         } catch (activityNotFoundException: ActivityNotFoundException) {
@@ -126,7 +122,7 @@ object Utils {
     }
 
     fun calculateMemoryCacheSize(context: Context): Int {
-        val am: ActivityManager = context.systemService()
+        val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val largeHeap = context.applicationInfo?.flags?.and(FLAG_LARGE_HEAP)
         val memoryClass = if (largeHeap != 0) am.largeMemoryClass else am.memoryClass
         // Target ~15% of the available heap.

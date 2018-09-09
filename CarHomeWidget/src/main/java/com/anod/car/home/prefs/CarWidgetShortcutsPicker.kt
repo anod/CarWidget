@@ -6,7 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.support.v4.content.res.ResourcesCompat
+import androidx.core.content.res.ResourcesCompat
 import android.view.View
 import android.widget.AdapterView
 
@@ -56,18 +56,19 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
         super.onItemClick(parent, view, position, id)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_PICK_CONTACT) {
-            if (resultCode == Activity.RESULT_OK) {
-                BackgroundTask(object : BackgroundTask.Worker<Uri, Intent?>(this, data.data) {
+            val uri = data?.data
+            if (resultCode == Activity.RESULT_OK && uri != null) {
+                BackgroundTask(object : BackgroundTask.Worker<Uri, Intent?>(this, uri) {
 
-                    override fun run(uri: Uri, context: ApplicationContext): Intent? {
-                        return IntentUtils.createDirectCallIntent(uri, context.actual)
+                    override fun run(param: Uri, context: ApplicationContext): Intent? {
+                        return IntentUtils.createDirectCallIntent(param, context.actual)
                     }
 
-                    override fun finished(intent: Intent?) {
-                        if (intent != null) {
-                            setResult(Activity.RESULT_OK, intent)
+                    override fun finished(result: Intent?) {
+                        if (result != null) {
+                            setResult(Activity.RESULT_OK, result)
                         } else {
                             setResult(Activity.RESULT_CANCELED)
                         }

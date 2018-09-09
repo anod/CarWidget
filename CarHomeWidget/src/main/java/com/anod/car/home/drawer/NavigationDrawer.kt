@@ -1,12 +1,11 @@
 package com.anod.car.home.drawer
 
-import android.support.design.widget.NavigationView
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
+import com.google.android.material.navigation.NavigationView
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
-import androidx.core.view.iterator
 
 import com.anod.car.home.R
 
@@ -22,7 +21,7 @@ class NavigationDrawer(activity: AppCompatActivity, appWidgetId: Int) {
 
     private val drawerTitle = activity.title
 
-    private val drawerLayout: DrawerLayout = activity.findViewById(R.id.drawer_layout)
+    private val drawerLayout: androidx.drawerlayout.widget.DrawerLayout = activity.findViewById(R.id.drawer_layout)
 
     private val drawerView: NavigationView? = activity.findViewById(R.id.left_drawer)
 

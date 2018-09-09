@@ -1,7 +1,7 @@
 package com.anod.car.home.ui
 
 import android.app.Application
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.util.SparseArray
 import androidx.core.util.isEmpty
 import com.anod.car.home.appwidget.WidgetHelper

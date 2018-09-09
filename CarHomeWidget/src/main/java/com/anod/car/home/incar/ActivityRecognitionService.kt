@@ -8,12 +8,11 @@ import com.anod.car.home.BuildConfig
 import info.anodsplace.framework.AppLog
 
 import android.app.IntentService
-import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import android.support.v4.app.NotificationCompat
+import androidx.core.app.NotificationCompat
 
 /**
  * @author alex

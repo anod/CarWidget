@@ -32,7 +32,7 @@ class BackupTask(private val type: Int, private val backupManager: PreferencesBa
         }
 
         return if (ContentResolver.SCHEME_FILE == uri.scheme) {
-            backupManager.doBackupWidgetLocal(uri.path, appWidgetId)
+            backupManager.doBackupWidgetLocal(uri.path!!, appWidgetId)
         } else backupManager.doBackupWidgetUri(uri, appWidgetId)
     }
 

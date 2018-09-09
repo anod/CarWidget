@@ -4,8 +4,8 @@ import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.preference.ListPreference
-import android.support.v7.preference.Preference
+import androidx.preference.ListPreference
+import androidx.preference.Preference
 
 import com.anod.car.home.R
 import com.anod.car.home.appwidget.WidgetHelper

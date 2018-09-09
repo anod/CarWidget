@@ -1,7 +1,7 @@
 package com.anod.car.home.utils
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
+import androidx.lifecycle.AndroidViewModel
 import com.anod.car.home.CarWidgetApplication
 
 /**

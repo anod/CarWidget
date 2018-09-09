@@ -28,16 +28,10 @@ class IconThemesActivity : AppsCacheActivity() {
     override val isShowTitle: Boolean
         get() = true
 
-    override val isRefreshCache: Boolean
-        get() = refresh
-
     override val headEntries: List<AppsList.Entry>
         get() {
-            val head = ArrayList<AppsList.Entry>(1)
-            val none = AppsList.Entry()
-            none.title = getString(R.string.none)
-            head.add(none)
-            return head
+            val none = AppsList.Entry(null, 0, getString(R.string.none))
+            return listOf(none)
         }
 
     private var currentSelected = 0
@@ -56,6 +50,8 @@ class IconThemesActivity : AppsCacheActivity() {
             return
         }
         refresh = false
+        viewModel.appsList = App.provide(this).iconThemesCache
+        viewModel.isRefreshCache = false
 
         findViewById<Button>(R.id.btn_download).setOnClickListener {
             val uri = Uri.parse(ADW_ICON_THEME_MARKET_URL)
@@ -86,8 +82,10 @@ class IconThemesActivity : AppsCacheActivity() {
         gridView.setItemChecked(currentSelected, true)
     }
 
-    override fun onIntentFilterInit(intent: Intent) {
+    override fun createQueryIntent(): Intent {
+        val intent = Intent()
         IconPackUtils.fillAdwThemeIntent(intent)
+        return intent
     }
 
     override fun onEntryClick(position: Int, entry: AppsList.Entry) {
@@ -97,10 +95,6 @@ class IconThemesActivity : AppsCacheActivity() {
             entry.componentName.packageName
         gridView.setItemChecked(position, true)
         saveAndClose()
-    }
-
-    override fun createAppList(context: Context): AppsList {
-        return App.provide(context).iconThemesCache
     }
 
     public override fun onSaveInstanceState(outState: Bundle) {

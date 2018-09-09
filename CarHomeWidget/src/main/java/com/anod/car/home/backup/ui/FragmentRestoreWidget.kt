@@ -7,9 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.FileProvider
-import android.support.v7.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.core.content.FileProvider
+import androidx.appcompat.app.AlertDialog
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -40,7 +40,7 @@ import java.io.File
  * @author algavris
  * @date 30/07/2016.
  */
-class FragmentRestoreWidget : Fragment(), RestoreTask.RestoreTaskListener, DeleteFileTask.DeleteFileTaskListener, BackupTask.BackupTaskListener {
+class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.RestoreTaskListener, DeleteFileTask.DeleteFileTaskListener, BackupTask.BackupTaskListener {
 
     private var listView: ListView? = null
 

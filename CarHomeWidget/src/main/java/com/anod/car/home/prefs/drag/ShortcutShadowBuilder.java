@@ -9,7 +9,7 @@ import com.anod.car.home.R;
 
 import android.graphics.Canvas;
 import android.graphics.Point;
-import android.support.v4.content.res.ResourcesCompat;
+import androidx.core.content.res.ResourcesCompat;
 import android.view.View;
 
 /**

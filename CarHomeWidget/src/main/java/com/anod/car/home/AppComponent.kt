@@ -11,6 +11,7 @@ import android.content.Context.*
 import android.media.AudioManager
 import android.telephony.TelephonyManager
 import android.view.WindowManager
+import com.anod.car.home.app.AppIconLoader
 
 /**
  * @author alex
@@ -19,6 +20,8 @@ import android.view.WindowManager
 class AppComponent(val application: CarWidgetApplication) {
     private var _appListCache: AppsList? = null
     private var _iconThemesCache: AppsList? = null
+    private var _appIconLoader: AppIconLoader? = null
+
 
     val windowManager: WindowManager
         get() = application.getSystemService(WINDOW_SERVICE) as WindowManager
@@ -44,15 +47,23 @@ class AppComponent(val application: CarWidgetApplication) {
     val appListCache: AppsList
         get() {
             if (_appListCache == null) {
-                _appListCache = AppsList(this.application)
+                _appListCache = AppsList()
             }
             return _appListCache!!
+        }
+
+    val appIconLoader: AppIconLoader
+        get() {
+            if (_appIconLoader == null) {
+                _appIconLoader = AppIconLoader(this.application)
+            }
+            return _appIconLoader!!
         }
 
     val iconThemesCache: AppsList
         get() {
             if (_iconThemesCache == null) {
-                _iconThemesCache = AppsList(this.application)
+                _iconThemesCache = AppsList()
             }
             return _iconThemesCache!!
         }
@@ -65,6 +76,10 @@ class AppComponent(val application: CarWidgetApplication) {
         if (_iconThemesCache != null) {
             _iconThemesCache!!.flush()
             _iconThemesCache = null
+        }
+        if (_appIconLoader != null) {
+            _appIconLoader!!.shutdown()
+            _appIconLoader = null
         }
     }
 

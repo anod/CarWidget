@@ -16,9 +16,7 @@ class MusicAppSettingsActivity : MusicAppsActivity() {
     override val headEntries: List<AppsList.Entry>
         get() {
             val head = ArrayList<AppsList.Entry>(1)
-            val none = AppsList.Entry()
-            none.iconRes = R.drawable.ic_action_list
-            none.title = getString(R.string.show_choice)
+            val none = AppsList.Entry(null, R.drawable.ic_action_list, getString(R.string.show_choice))
             head.add(none)
             return head
         }

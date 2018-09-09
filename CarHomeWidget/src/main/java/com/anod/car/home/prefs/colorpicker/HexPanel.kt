@@ -7,7 +7,7 @@ import com.anod.car.home.utils.ColorUtils
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.support.v4.content.res.ResourcesCompat
+import androidx.core.content.res.ResourcesCompat
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils

@@ -4,8 +4,8 @@ import com.anod.car.home.CarWidgetApplication
 import com.anod.car.home.prefs.model.AppTheme
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 
 /**
  * @author alex

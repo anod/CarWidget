@@ -72,7 +72,7 @@ class AcceptCallActivity : Activity() {
     }
 
     private fun updateWindowFlags() {
-        if (keyguardManager!!.inKeyguardRestrictedInputMode()) {
+        if (keyguardManager!!.isKeyguardLocked) {
             window.addFlags(
                     WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or
                             WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or

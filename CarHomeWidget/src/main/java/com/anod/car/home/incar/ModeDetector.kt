@@ -5,7 +5,7 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.Intent
-import android.support.v4.util.ArrayMap
+import androidx.collection.ArrayMap
 
 import com.anod.car.home.BuildConfig
 import com.anod.car.home.prefs.model.InCarInterface

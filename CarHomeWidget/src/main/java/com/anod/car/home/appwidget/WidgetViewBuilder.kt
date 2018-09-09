@@ -4,7 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.support.v4.util.SimpleArrayMap
+import androidx.collection.SimpleArrayMap
 import android.util.LruCache
 import android.widget.RemoteViews
 
@@ -122,7 +122,7 @@ class WidgetViewBuilder(private val context: Context,
             return null
         }
 
-        val cmpMap = SimpleArrayMap<String, Int>(shortcuts.size())
+        val cmpMap = androidx.collection.SimpleArrayMap<String, Int>(shortcuts.size())
         for (cellId in 0 until shortcuts.size()) {
             val info = shortcutsModel.get(cellId)
             if (info == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon) {

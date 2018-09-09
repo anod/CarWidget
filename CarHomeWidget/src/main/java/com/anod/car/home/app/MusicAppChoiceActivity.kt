@@ -25,7 +25,7 @@ class MusicAppChoiceActivity : MusicAppsActivity() {
     internal val defaultApp: CheckBox by lazy { findViewById<CheckBox>(R.id.defaultApp) }
 
     override fun onEntryClick(position: Int, entry: AppsList.Entry) {
-        val musicCmp = entry.componentName
+        val musicCmp = entry.componentName!!
 
         val isRunning = isMusicCmpRunning(musicCmp)
 

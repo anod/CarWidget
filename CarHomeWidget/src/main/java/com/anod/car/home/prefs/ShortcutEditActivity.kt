@@ -9,8 +9,8 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -198,8 +198,8 @@ class ShortcutEditActivity : AppCompatActivity() {
         iconView.setImageBitmap(customIcon)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        if (resultCode == Activity.RESULT_OK) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && data != null) {
             if (requestCode == PICK_CUSTOM_ICON) {
                 updateCustomIcon(data)
             } else if (requestCode == PICK_ADW_ICON_PACK) {

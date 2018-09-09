@@ -2,8 +2,8 @@ package com.anod.car.home.prefs.views
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.support.v7.preference.DialogPreference
-import android.support.v7.preference.PreferenceManager
+import androidx.preference.DialogPreference
+import androidx.preference.PreferenceManager
 import android.util.AttributeSet
 
 import com.anod.car.home.R

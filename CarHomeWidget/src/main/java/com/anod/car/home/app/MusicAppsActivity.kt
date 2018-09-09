@@ -1,18 +1,14 @@
 package com.anod.car.home.app
 
 import com.anod.car.home.BuildConfig
-import com.anod.car.home.R
 import com.anod.car.home.model.AppsList
 import info.anodsplace.framework.AppLog
 
-import android.content.AsyncTaskLoader
 import android.content.Context
 import android.content.Intent
-import android.content.Loader
+import android.os.AsyncTask
 import android.os.Bundle
-import android.support.v4.util.SimpleArrayMap
 
-import java.util.ArrayList
 import java.util.HashSet
 
 /**
@@ -21,23 +17,21 @@ import java.util.HashSet
  */
 abstract class MusicAppsActivity : AppsListActivity() {
 
-    override fun createAppList(context: Context): AppsList {
-        return AppsList(App.get(context))
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.appsList = AppsList()
+        viewModel.loader = MediaAppsLoader(this, viewModel)
     }
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<AppsList.Entry>> {
-        return MediaAppsLoader(this, appsList)
-    }
+    internal class MediaAppsLoader(context: Context, private val callback: AppsListResultCallback) : AsyncTask<Void, Void, List<AppsList.Entry>>() {
+        private val packageManager = context.packageManager
 
-    internal class MediaAppsLoader(context: Context, private val mAppsList: AppsList) : AsyncTaskLoader<List<AppsList.Entry>>(context) {
-
-        override fun loadInBackground(): ArrayList<AppsList.Entry> {
-            val packageManager = context.packageManager
+        override fun doInBackground(vararg params: Void?): List<AppsList.Entry> {
             val apps = packageManager
                     .queryBroadcastReceivers(Intent(Intent.ACTION_MEDIA_BUTTON), 96)
             // filter duplicate receivers
-            val receivers = SimpleArrayMap<String, Boolean>(apps.size)
-
+            val receivers = androidx.collection.SimpleArrayMap<String, Boolean>(apps.size)
+            val list = mutableListOf<AppsList.Entry>()
             for (appInfo in apps) {
                 val pkg = appInfo.activityInfo.packageName
                 // App title
@@ -51,10 +45,15 @@ abstract class MusicAppsActivity : AppsListActivity() {
                             + appInfo.activityInfo.applicationInfo.className)
                 }
                 receivers.put(pkg, true)
-                mAppsList.put(appInfo, title)
+                list.add(AppsList.Entry(appInfo, title))
             }
-            mAppsList.sort()
-            return mAppsList.entries
+            list.sortBy { it.title }
+            return list
+        }
+
+        override fun onPostExecute(result: List<AppsList.Entry>?) {
+            super.onPostExecute(result)
+            callback.onResult(result ?: emptyList())
         }
     }
 

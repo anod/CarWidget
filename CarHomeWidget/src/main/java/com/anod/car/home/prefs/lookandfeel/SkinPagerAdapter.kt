@@ -2,9 +2,9 @@ package com.anod.car.home.prefs.lookandfeel
 
 import com.anod.car.home.prefs.LookAndFeelActivity
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import android.util.SparseArray
 import android.view.ViewGroup
 
@@ -12,14 +12,14 @@ import android.view.ViewGroup
  * @author alex
  * @date 2014-10-20
  */
-class SkinPagerAdapter(private val activity: LookAndFeelActivity, private val count: Int, fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class SkinPagerAdapter(private val activity: LookAndFeelActivity, private val count: Int, fm: androidx.fragment.app.FragmentManager) : androidx.fragment.app.FragmentPagerAdapter(fm) {
     private val fragments: SparseArray<SkinPreviewFragment> = SparseArray(count)
 
     override fun getCount(): Int {
         return count
     }
 
-    override fun getItem(position: Int): Fragment {
+    override fun getItem(position: Int): androidx.fragment.app.Fragment {
         return SkinPreviewFragment.newInstance(position)
     }
 

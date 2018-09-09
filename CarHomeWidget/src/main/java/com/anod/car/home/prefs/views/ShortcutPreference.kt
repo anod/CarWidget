@@ -4,8 +4,8 @@ import android.content.ClipData
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
-import android.support.v7.preference.Preference
-import android.support.v7.preference.PreferenceViewHolder
+import androidx.preference.Preference
+import androidx.preference.PreferenceViewHolder
 import android.util.AttributeSet
 import android.view.View
 import android.view.View.OnClickListener
