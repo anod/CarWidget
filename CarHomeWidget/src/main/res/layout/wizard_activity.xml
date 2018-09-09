@@ -23,39 +23,27 @@
 			android:layout_height="0dp"
 			android:layout_weight="1"  />
 
-
-	<View android:id="@+id/divider"
-		  android:background="@color/panel_bg_pressed"
-		  android:layout_height="1dp"
-		  android:layout_width="match_parent" />
-
 	<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="?android:attr/buttonBarStyle"
 			android:orientation="horizontal">
 
-		<Button
-				android:textColor="?android:attr/textColorPrimaryInverse"
-				android:background="@drawable/selectable_item_background"
+		<com.google.android.material.button.MaterialButton
 				android:id="@+id/buttonSkip"
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:layout_height="wrap_content"
 				android:text="@string/skip"
-				style="?android:attr/buttonBarButtonStyle"
-				android:minHeight="50dp"/>
+				style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
-		<Button
-				android:textColor="?android:attr/textColorPrimaryInverse"
-				android:background="@drawable/selectable_item_background"
+		<com.google.android.material.button.MaterialButton
 				android:id="@+id/buttonNext"
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:layout_height="wrap_content"
 				android:text="@string/next"
-				style="?android:attr/buttonBarButtonStyle"
-				android:minHeight="50dp"/>
+				style="@style/Widget.MaterialComponents.Button"/>
 
 	</LinearLayout>
 </LinearLayout>

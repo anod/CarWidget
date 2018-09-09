@@ -9,10 +9,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
 import android.text.method.LinkMovementMethod
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
@@ -22,7 +20,6 @@ import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.appwidget.WidgetViewBuilder
-import com.anod.car.home.drawer.NavigationDrawer
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.drag.ShortcutDragListener
 import com.anod.car.home.prefs.lookandfeel.LookAndFeelMenu
@@ -51,7 +48,7 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
     private val gallery: androidx.viewpager.widget.ViewPager by lazy { findViewById<androidx.viewpager.widget.ViewPager>(R.id.gallery) }
     private val loaderView: View by lazy { findViewById<View>(R.id.loading) }
     private val lookAndFeelMenu: LookAndFeelMenu by lazy { LookAndFeelMenu(this, model) }
-    private val drawer: NavigationDrawer by lazy { NavigationDrawer(this, appWidgetId) }
+//    private val drawer: NavigationDrawer by lazy { NavigationDrawer(this, appWidgetId) }
     private val model: WidgetShortcutsModel by lazy { WidgetShortcutsModel(App.get(this), appWidgetId) }
 
     var dragListener: ShortcutDragListener? = null
@@ -125,7 +122,7 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
         setContentView(R.layout.activity_lookandfeel)
 
         currentPage = skinList.selectedSkinPosition
-        drawer.setSelected(R.id.nav_current_widget)
+//        drawer.setSelected(R.id.nav_current_widget)
         textView.movementMethod = LinkMovementMethod.getInstance()
         dragListener = ShortcutDragListener(this, this)
 
@@ -140,13 +137,6 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
         bitmapMemoryCache = BitmapLruCache(this)
         showText(currentPage)
     }
-
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        drawer.syncState()
-    }
-
 
     public override fun onResume() {
         super.onResume()
@@ -166,13 +156,13 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        return if (drawer.onOptionsItemSelected(item)) {
-            true
-        } else lookAndFeelMenu.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        // Pass the event to ActionBarDrawerToggle, if it returns
+//        // true, then it has handled the app icon touch event
+//        return if (drawer.onOptionsItemSelected(item)) {
+//            true
+//        } else lookAndFeelMenu.onOptionsItemSelected(item)
+//    }
 
     fun persistPrefs() {
         prefs.apply()

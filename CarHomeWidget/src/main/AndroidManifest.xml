@@ -21,10 +21,10 @@
     <uses-permission android:name="${applicationId}.permission.READ_SETTINGS" />
     <uses-permission android:name="${applicationId}.permission.WRITE_SETTINGS" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -62,10 +62,11 @@
 
     <application
         android:name="com.anod.car.home.CarWidgetApplication"
+        android:allowBackup="true"
         android:backupAgent=".backup.BackupFileHelperAgent"
         android:icon="@mipmap/ic_launcher_carwidget"
-        android:allowBackup="true"
-        android:label="@string/app_name">
+        android:label="@string/app_name"
+        tools:ignore="GoogleAppIndexingWarning">
         <service android:name="com.anod.car.home.UpdateService" />
 
         <activity
@@ -82,7 +83,7 @@
             android:name="com.anod.car.home.prefs.ConfigurationActivity"
             android:clearTaskOnLaunch="true"
             android:fragment="com.anod.car.home.prefs."
-            android:label="@string/settings"/>
+            android:label="@string/settings" />
 
         <activity
             android:name="com.anod.car.home.ShortcutActivity"
@@ -151,20 +152,19 @@
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:taskAffinity="com.anod.car.home.switchincar"
-            android:theme="@style/BrightnessTheme"/>
+            android:theme="@style/BrightnessTheme" />
 
         <activity
             android:name=".MainActivity"
-            android:taskAffinity="com.anod.car.home.main"
             android:launchMode="singleTask"
-        >
+            android:taskAffinity="com.anod.car.home.main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.WidgetsListActivity" />
-        <activity android:name=".ui.WizardActivity" />
+        <activity android:name=".ui.WizardActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".prefs.BluetoothDeviceActivity"
             android:label="@string/pref_blutooth_device_title"
@@ -194,8 +194,8 @@
 
         <activity
             android:name=".prefs.lookandfeel.WidgetButtonChoiceActivity"
-            android:label="@string/choose"
             android:excludeFromRecents="true"
+            android:label="@string/choose"
             android:theme="@style/AppListTheme" />
 
         <service android:name="com.anod.car.home.incar.ModeService" />
@@ -229,7 +229,7 @@
 
         <receiver
             android:name="com.anod.car.home.LargeProvider"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -241,7 +241,7 @@
 
         <receiver
             android:name="com.anod.car.home.appwidget.ShortcutProvider"
-            android:label="@string/in_car_mode_switch" >
+            android:label="@string/in_car_mode_switch">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -262,19 +262,20 @@
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIwrTs2H7J2Rs0kglDTHtziqQ8_7YbAZGeS7bDUA" />
 
-        <activity android:name=".incar.AcceptCallActivity"
-            android:launchMode="singleTop"
-            android:excludeFromRecents="true"
-            android:taskAffinity=""
+        <activity
+            android:name=".incar.AcceptCallActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/BrightnessTheme">
-        </activity>
-
-        <activity android:name=".acra.CrashDialog"
-            android:theme="@style/CrashReportDialog"
-            android:launchMode="singleInstance"
             android:excludeFromRecents="true"
-            android:finishOnTaskLaunch="true" />
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/BrightnessTheme"></activity>
+
+        <activity
+            android:name=".acra.CrashDialog"
+            android:excludeFromRecents="true"
+            android:finishOnTaskLaunch="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/CrashReportDialog" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -283,7 +284,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/backup_paths"/>
+                android:resource="@xml/backup_paths" />
         </provider>
     </application>
 

@@ -3,7 +3,6 @@ package com.anod.car.home.ui
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.appwidget.WidgetHelper
-import com.anod.car.home.drawer.NavigationDrawer
 import com.anod.car.home.prefs.LookAndFeelActivity
 import com.anod.car.home.prefs.model.PrefsMigrate
 import com.anod.car.home.utils.TrialDialogs
@@ -13,7 +12,6 @@ import com.anod.car.home.utils.Version
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 
 /**
  * @author alex
@@ -22,7 +20,7 @@ import android.view.MenuItem
 open class WidgetsListActivity : CarWidgetActivity() {
 
     private var wizardShown: Boolean = false
-    private val drawer: NavigationDrawer by lazy { NavigationDrawer(this, 0) }
+    //private val drawer: NavigationDrawer by lazy { NavigationDrawer(this, 0) }
     private val version: Version by lazy { Version(this) }
     private var proDialogShown: Boolean = false
 
@@ -34,7 +32,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
 
         PrefsMigrate.migrate(this, largeWidgetIds)
 
-        drawer.setSelected(R.id.nav_widgets)
+        //drawer.setSelected(R.id.nav_widgets)
 
         if (savedInstanceState == null) {
             // to give support on lower android version, we are not calling getFragmentManager()
@@ -50,6 +48,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
             proDialogShown = savedInstanceState.getBoolean("dialog-shown")
         }
 
+        wizardShown  = false
         if (!wizardShown) {
             if (version.isFree && Utils.isProInstalled(this)) {
                 if (!proDialogShown) {
@@ -67,19 +66,13 @@ open class WidgetsListActivity : CarWidgetActivity() {
 
     }
 
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        drawer.syncState()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        return if (drawer.onOptionsItemSelected(item)) {
-            true
-        } else super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        // Pass the event to ActionBarDrawerToggle, if it returns
+//        // true, then it has handled the app icon touch event
+//        return if (drawer.onOptionsItemSelected(item)) {
+//            true
+//        } else super.onOptionsItemSelected(item)
+//    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean("wizard-shown", wizardShown)

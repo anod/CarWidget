@@ -1,32 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppThemeGray" parent="Theme.AppCompat.DayNight">
-        <item name="panelItem">@style/panelItemGray</item>
-        <item name="panelHeader">@style/panelHeaderGray</item>
-        <item name="panelHeaderBackground">@drawable/panel_item_bg_grey</item>
-        <item name="themeTabBackground">@drawable/tab_bg_grey</item>
-        <item name="themeTabIndicatorColor">@color/panel_bg_focused</item>
-        <item name="buttonStyle">@style/buttonStyleGray</item>
-        <item name="activityBgColor">@color/activity_bg</item>
-        <item name="wizardTextItem">@style/wizardTextItemGray</item>
-
-        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
-        <item name="android:windowBackground">@color/activity_bg</item>
-
-        <item name="android:preferenceStyle">@style/AppPreference</item>
-
-        <item name="android:textColorPrimary">@color/primary_text_grey</item>
-        <item name="android:textColorSecondary">@color/secondary_text_grey</item>
-        <item name="android:textColorPrimaryInverse">@color/panel_bg_normal</item>
-
-        <item name="textAppearanceMediumBackgroundInverse">@style/TextAppearance.AppCompat.Medium.Inverse</item>
-
+    <style name="AppThemeGray" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/material_bluegray_600</item>
         <item name="colorPrimaryDark">@color/material_bluegray_800</item>
         <item name="colorAccent">@color/material_bluegray_300</item>
-
-        <item name="preferenceTheme">@style/AppThemeGray.PreferenceTheme</item>
     </style>
 
     <style name="AppThemeGray.PreferenceTheme" parent="PreferenceThemeOverlay">
