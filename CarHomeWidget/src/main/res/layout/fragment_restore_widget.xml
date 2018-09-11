@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        style="?attr/textAppearanceMediumBackgroundInverse"
         android:text="@string/no_backup_files_found" />
 
     <ListView

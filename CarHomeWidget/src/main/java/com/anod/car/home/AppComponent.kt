@@ -9,6 +9,7 @@ import com.anod.car.home.model.AppsList
 
 import android.content.Context
 import android.content.Context.*
+import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.telephony.TelephonyManager
 import android.view.WindowManager
@@ -47,6 +48,9 @@ class AppComponent(val application: CarWidgetApplication) {
 
     val notificationManager: NotificationManager
         get() = this.application.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+    val packageManager: PackageManager
+        get() = application.packageManager
 
     val appListCache: AppsList
         get() {

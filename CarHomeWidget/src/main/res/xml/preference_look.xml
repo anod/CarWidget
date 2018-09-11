@@ -2,7 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:summary="@string/pref_look_and_feel_summary"
     android:title="@string/pref_look_and_feel_title"
-    android:layout="@layout/preference_list_fragment"
 >
 
     <Preference

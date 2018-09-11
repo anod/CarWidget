@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="16dp"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_preferences"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Chip" />
+
+    <Button
+        android:id="@+id/buttonAppTheme"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_invert_colors_on_white_24dp"
+        android:drawableTint="?attr/colorPrimary"
+        android:text="@string/app_theme" />
+
+    <Button
+        android:id="@+id/buttonMusicApp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_headset_white_24dp"
+        android:text="@string/music_app" />
+
+    <Button
+        android:id="@+id/buttonDefaultCarDockApp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_android_white_24dp"
+        android:drawableTint="?attr/colorPrimary"
+        android:text="@string/default_car_dock_app" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/information_title"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Chip" />
+
+    <Button
+        android:id="@+id/buttonVersion"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_stars_white_24dp"
+        android:drawableTint="?attr/colorPrimary"
+        android:text="@string/version_summary" />
+
+    <Button
+        android:id="@+id/buttonFeedback"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_email_black_24dp"
+        android:drawableTint="?attr/colorPrimary"
+        android:text="@string/issue_title" />
+</LinearLayout>

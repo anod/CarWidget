@@ -13,6 +13,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.transaction
+import com.anod.car.home.prefs.ConfigurationInCar
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -46,10 +47,16 @@ open class WidgetsListActivity : CarWidgetActivity() {
                     }
                     true
                 }
-                R.id.nav_settings -> {
+                R.id.nav_info -> {
+                    supportFragmentManager.transaction {
+                        replace(R.id.content_frame, AboutFragment())
+                    }
                     true
                 }
                 R.id.nav_incar -> {
+                    supportFragmentManager.transaction {
+                        replace(R.id.content_frame, ConfigurationInCar())
+                    }
                     true
                 }
                 else -> false

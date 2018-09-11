@@ -2,7 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
             android:title="@string/pref_change_media_volume"
             android:summary="@string/pref_change_media_volume_summary"
-    android:layout="@layout/preference_list_fragment"
      >
             <CheckBoxPreference
                 android:key="adjust-volume-level"

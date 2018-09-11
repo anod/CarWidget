@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.NumberPicker
 
 import com.anod.car.home.R
+import com.anod.car.home.backup.ui.FragmentBackup
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.ConfigurationActivity
 import com.anod.car.home.prefs.ConfigurationLook
@@ -35,7 +36,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
 
     fun onCreateOptionsMenu(menu: Menu) {
         val menuInflater = activity.menuInflater
-        menuInflater.inflate(R.menu.look_n_feeel, menu)
+        menuInflater.inflate(R.menu.look_n_feel, menu)
 
         menuTileColor = menu.findItem(R.id.tile_color)
         menu.findItem(R.id.icons_mono).isChecked = activity.prefs.isIconsMono
@@ -125,6 +126,11 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
             }
             builder.create().show()
             return true
+        }
+        if (itemId == R.id.backup) {
+            val intent = ConfigurationActivity.createFragmentIntent(activity, FragmentBackup::class.java)
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            activity.startActivity(intent)
         }
         return false
     }

@@ -50,9 +50,6 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         }
 
     override fun onCreateImpl(savedInstanceState: Bundle?) {
-        activity!!.setResult(Activity.RESULT_OK)
-        activity!!.setTitle(R.string.incar_mode)
-
         val version = Version(activity!!)
 
         initInCar()

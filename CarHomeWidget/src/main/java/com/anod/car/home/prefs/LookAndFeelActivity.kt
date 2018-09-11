@@ -9,9 +9,11 @@ import android.os.Bundle
 import com.google.android.material.tabs.TabLayout
 import android.text.method.LinkMovementMethod
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.fragment.app.transaction
 
 import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.R
@@ -26,10 +28,12 @@ import com.anod.car.home.prefs.lookandfeel.WidgetButtonChoiceActivity
 import com.anod.car.home.prefs.model.SkinList
 import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
+import com.anod.car.home.ui.AboutFragment
 import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.BitmapLruCache
 import com.anod.car.home.utils.HtmlCompat
 import com.anod.car.home.utils.IntentUtils
+import kotlinx.android.synthetic.main.activity_main.*
 
 class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory, ShortcutDragListener.DropCallback {
 
@@ -46,7 +50,6 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
     private val gallery: androidx.viewpager.widget.ViewPager by lazy { findViewById<androidx.viewpager.widget.ViewPager>(R.id.gallery) }
     private val loaderView: View by lazy { findViewById<View>(R.id.loading) }
     private val lookAndFeelMenu: LookAndFeelMenu by lazy { LookAndFeelMenu(this, model) }
-//    private val drawer: NavigationDrawer by lazy { NavigationDrawer(this, appWidgetId) }
     private val model: WidgetShortcutsModel by lazy { WidgetShortcutsModel(App.get(this), appWidgetId) }
 
     var dragListener: ShortcutDragListener? = null
@@ -59,8 +62,7 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
 
     private val isKeyguard: Boolean
         get() {
-            val widgetOptions = App.provide(this).appWidgetManager
-                    .getAppWidgetOptions(appWidgetId)
+            val widgetOptions = App.provide(this).appWidgetManager.getAppWidgetOptions(appWidgetId)
             val category = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1)
             return category == AppWidgetProviderInfo.WIDGET_CATEGORY_KEYGUARD
         }
@@ -116,7 +118,6 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
         setContentView(R.layout.activity_lookandfeel)
 
         currentPage = skinList.selectedSkinPosition
-//        drawer.setSelected(R.id.nav_current_widget)
         textView.movementMethod = LinkMovementMethod.getInstance()
         dragListener = ShortcutDragListener(this, this)
 
@@ -130,6 +131,34 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
 
         bitmapMemoryCache = BitmapLruCache(this)
         showText(currentPage)
+
+        content_frame.visibility = View.GONE
+        bottomNavigation.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_widget -> {
+                    content_frame.visibility = View.GONE
+                    for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                        supportFragmentManager.popBackStack()
+                    }
+                    true
+                }
+                R.id.nav_info -> {
+                    content_frame.visibility = View.VISIBLE
+                    supportFragmentManager.transaction {
+                        replace(R.id.content_frame, AboutFragment())
+                    }
+                    true
+                }
+                R.id.nav_incar -> {
+                    content_frame.visibility = View.VISIBLE
+                    supportFragmentManager.transaction {
+                        replace(R.id.content_frame, ConfigurationInCar())
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     public override fun onResume() {
@@ -150,13 +179,9 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
         return super.onCreateOptionsMenu(menu)
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        // Pass the event to ActionBarDrawerToggle, if it returns
-//        // true, then it has handled the app icon touch event
-//        return if (drawer.onOptionsItemSelected(item)) {
-//            true
-//        } else lookAndFeelMenu.onOptionsItemSelected(item)
-//    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return lookAndFeelMenu.onOptionsItemSelected(item)
+    }
 
     fun persistPrefs() {
         prefs.apply()
@@ -189,13 +214,9 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        // Auto-generated method stub
-
     }
 
     override fun onPageScrollStateChanged(state: Int) {
-        // Auto-generated method stub
-
     }
 
     fun refreshSkinPreview() {

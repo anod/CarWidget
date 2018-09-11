@@ -43,6 +43,12 @@
         app:showAsAction="never">
     </item>
     <item
+        android:id="@+id/backup"
+        android:title="@string/pref_backup_title"
+        android:tooltipText="@string/pref_backup_summary"
+        app:showAsAction="never">
+    </item>
+    <item
         android:id="@+id/more"
         android:title="@string/more"
         app:showAsAction="never">
