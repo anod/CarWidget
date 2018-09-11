@@ -32,7 +32,7 @@ object WidgetStorage {
         return WidgetSettings(prefs, context.resources)
     }
 
-    fun getLaunchComponentKey(position: Int): String {
+    private fun getLaunchComponentKey(position: Int): String {
         return String.format(Locale.US, LAUNCH_COMPONENT, position)
     }
 
@@ -42,7 +42,7 @@ object WidgetStorage {
         val ids = ArrayList<Long>(count)
         for (i in 0 until count) {
             val key = getLaunchComponentKey(i)
-            val id = prefs.getLong(key, Shortcut.idUnknown.toLong())
+            val id = prefs.getLong(key, Shortcut.idUnknown)
             ids.add(i, id)
         }
         return ids
@@ -69,8 +69,8 @@ object WidgetStorage {
     }
 
     fun saveShortcutId(context: Context, preferences: SharedPreferences, shortcutId: Long, key: String) {
-        val curShortcutId = preferences.getLong(key, Shortcut.idUnknown.toLong())
-        if (curShortcutId != Shortcut.idUnknown.toLong()) {
+        val curShortcutId = preferences.getLong(key, Shortcut.idUnknown)
+        if (curShortcutId != Shortcut.idUnknown) {
             val model = ShortcutModel(context)
             model.deleteItemFromDatabase(curShortcutId)
         }
@@ -86,8 +86,8 @@ object WidgetStorage {
 
             for (i in 0 until LAUNCH_COMPONENT_NUMBER_MAX) {
                 val key = getLaunchComponentKey(i)
-                val curShortcutId = prefs.getLong(key, Shortcut.idUnknown.toLong())
-                if (curShortcutId != Shortcut.idUnknown.toLong()) {
+                val curShortcutId = prefs.getLong(key, Shortcut.idUnknown)
+                if (curShortcutId != Shortcut.idUnknown) {
                     model.deleteItemFromDatabase(curShortcutId)
                 }
             }
@@ -98,6 +98,13 @@ object WidgetStorage {
             val file = File(filePath)
             file.delete()
         }
+    }
+
+    fun hasSettingsFile(context: Context, appWidgetId: Int): Boolean {
+        val prefName = String.format(Locale.US, PREF_NAME, appWidgetId)
+        val filePath = context.filesDir.parent + String.format(Locale.US, WidgetStorage.SHARED_PREFS_PATH, prefName)
+        val file = File(filePath)
+        return file.isFile
     }
 
     fun dropShortcutPreference(cellId: Int, appWidgetId: Int, context: Context) {

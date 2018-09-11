@@ -18,20 +18,8 @@ class ModeBroadcastReceiver : BroadcastReceiver() {
     }
 
     companion object {
-
         const val ACTION_ACTIVITY_RECOGNITION = "com.anod.car.home.incar.ACTION_ACTIVITY_RECOGNITION"
         const val EXTRA_ACTIVITY_RESULT = "extra_activity"
-
-        /**
-         * Lock used when maintaining queue of requested updates.
-         */
-        private val sLock = Any()
-
-        fun create(): ModeBroadcastReceiver {
-            synchronized(sLock) {
-                return ModeBroadcastReceiver()
-            }
-        }
     }
 
 }

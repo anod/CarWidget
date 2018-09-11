@@ -6,7 +6,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0-rc02'
+        classpath 'com.android.tools.build:gradle:3.2.0-rc03'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -24,12 +24,14 @@ repositories {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     implementation 'androidx.cardview:cardview:1.0.0-rc02'
     implementation 'androidx.appcompat:appcompat:1.0.0-rc02'
     implementation 'com.google.android.material:material:1.0.0-rc01'
     implementation 'androidx.preference:preference:1.0.0-rc02'
+    implementation 'androidx.palette:palette:1.0.0-rc02'
     implementation 'androidx.palette:palette:1.0.0-rc02'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -44,12 +46,14 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0-rc01'
     implementation 'androidx.palette:palette-ktx:1.0.0-rc02'
     implementation 'androidx.sqlite:sqlite-ktx:2.0.0-rc01'
+    implementation "android.arch.work:work-runtime-ktx:1.0.0-alpha08"
+    implementation "android.arch.work:work-firebase:1.0.0-alpha08"
 
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-rc01'
     kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0-rc01'
 
-    implementation "ch.acra:acra-core:5.1.1"
-    implementation "ch.acra:acra-dialog:5.1.1"
+    implementation "ch.acra:acra-core:5.2.0"
+    implementation "ch.acra:acra-dialog:5.2.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 }

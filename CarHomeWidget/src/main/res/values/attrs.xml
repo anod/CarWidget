@@ -7,7 +7,6 @@
     <attr name="themeTabIndicatorColor" format="reference" />
 
     <attr name="activityBgColor" format="reference" />
-    <attr name="wizardTextItem" format="reference" />
 
     <attr name="textAppearanceMediumBackgroundInverse" format="reference" />
 

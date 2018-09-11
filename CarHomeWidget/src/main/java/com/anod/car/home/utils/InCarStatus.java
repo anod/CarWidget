@@ -15,7 +15,7 @@ public class InCarStatus {
     public static final int DISABLED = 2;
 
     public static int get(Context context) {
-        int[] appWidgetIds = WidgetHelper.getLargeWidgetIds(context);
+        int[] appWidgetIds = WidgetHelper.INSTANCE.getLargeWidgetIds(context);
         final int widgetsCount = appWidgetIds.length;
 
         Version version = new Version(context);

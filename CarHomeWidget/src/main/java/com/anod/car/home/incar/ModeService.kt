@@ -37,8 +37,7 @@ class ModeService : Service() {
     }
 
     private fun requestWidgetsUpdate() {
-        val appWidgetProvider = Provider.getInstance()
-        appWidgetProvider.performUpdate(this, null)
+        Provider.requestUpdate(this, intArrayOf())
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -130,7 +129,7 @@ class ModeService : Service() {
 
     companion object {
 
-        private const val TAG = "CarHomeWidget.WakeLock"
+        private const val wakelockTag = "carhomewidget:wakelock"
         const val EXTRA_MODE = "extra_mode"
         const val EXTRA_FORCE_STATE = "extra_force_state"
         private const val NOTIFICATION_ID = 1
@@ -147,10 +146,7 @@ class ModeService : Service() {
         private fun getLock(context: Context): PowerManager.WakeLock? {
             if (sLockStatic == null) {
                 val mgr = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-
-                sLockStatic = mgr.newWakeLock(
-                        PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG)
-                //sLockStatic.setReferenceCounted(false);
+                sLockStatic = mgr.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP, wakelockTag)
             }
 
             return sLockStatic

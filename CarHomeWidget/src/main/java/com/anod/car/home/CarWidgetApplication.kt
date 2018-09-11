@@ -16,6 +16,11 @@ import org.acra.annotation.AcraDialog
 
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.ApplicationInstance
+import android.app.NotificationManager
+import android.app.NotificationChannel
+import android.os.Build
+import com.anod.car.home.incar.BroadcastService
+
 
 @AcraCore(
         resReportSendSuccessToast = R.string.crash_dialog_toast,
@@ -59,6 +64,7 @@ class CarWidgetApplication : Application(), ApplicationInstance {
         themeIdx = AppSettings.create(this).theme
         AppCompatDelegate.setDefaultNightMode(nightMode)
         appComponent = AppComponent(this)
+        createNotificationChannel()
     }
 
     override fun onTrimMemory(level: Int) {
@@ -66,4 +72,12 @@ class CarWidgetApplication : Application(), ApplicationInstance {
         AppLog.w("Level: $level")
     }
 
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel1 = NotificationChannel(BroadcastService.channelModeDetector, getString(R.string.mode_detector_channel), NotificationManager.IMPORTANCE_LOW)
+            val channel2 = NotificationChannel("incar_mode", getString(R.string.incar_mode), NotificationManager.IMPORTANCE_DEFAULT)
+            val notificationManager = getSystemService(NotificationManager::class.java)!!
+            notificationManager.createNotificationChannels(listOf(channel1, channel2))
+        }
+    }
 }

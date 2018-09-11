@@ -1,124 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="wrap_content" android:layout_width="match_parent">
-<LinearLayout
-			  style="@style/WizardPageContainer"
-			  android:orientation="vertical">
 
-	<TextView
-			style="@style/WizardPageTitle"
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
 			android:text="@string/incar_mode"
-			/>
+			android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3" />
 
-	<TextView
-			style="?attr/wizardTextItem"
-			android:text="@string/detect_incar_description"
+		<TextView
 			android:id="@+id/desc1"
-			/>
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/detect_incar_description"
+			android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
-	<LinearLayout
+		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
-			android:background="@color/panel_bg_normal" android:gravity="center_horizontal">
+			android:background="@color/panel_bg_normal"
+			android:gravity="center_horizontal">
 
-		<ImageView
-				android:layout_width="wrap_content"
-				android:layout_height="fill_parent"
+			<ImageView
 				android:id="@+id/imageView"
-				android:src="@drawable/ic_action_bluetooth_connected"
-				android:padding="10dp"/>
-
-		<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
+				android:padding="10dp"
+				android:src="@drawable/ic_action_bluetooth_connected" />
+
+			<ImageView
 				android:id="@+id/imageView2"
-				android:src="@drawable/ic_action_usb"
-				android:padding="10dp"/>
-
-		<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
+				android:padding="10dp"
+				android:src="@drawable/ic_action_usb" />
+
+			<ImageView
 				android:id="@+id/imageView3"
-				android:src="@drawable/ic_action_headphones"
-				android:padding="10dp"/>
-	</LinearLayout>
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:padding="10dp"
+				android:src="@drawable/ic_action_headphones" />
+		</LinearLayout>
 
-	<TextView
-			style="?attr/wizardTextItem"
-			android:text="@string/adjust_incar_description"
+		<TextView
 			android:id="@+id/desc2"
-			/>
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/adjust_incar_description"
+			android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
-	<LinearLayout
+		<LinearLayout
+			android:id="@+id/linearLayout"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
-			android:id="@+id/linearLayout" android:background="@color/panel_bg_normal" android:gravity="center_horizontal">
+			android:background="@color/panel_bg_normal"
+			android:gravity="center_horizontal">
 
-		<ImageView
-				android:layout_width="wrap_content"
-				android:layout_height="fill_parent"
+			<ImageView
 				android:id="@+id/imageView4"
-				android:src="@drawable/ic_action_brightness_medium"
-				android:padding="10dp"/>
-
-		<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
+				android:padding="10dp"
+				android:src="@drawable/ic_action_brightness_medium" />
+
+			<ImageView
 				android:id="@+id/imageView5"
-				android:src="@drawable/ic_action_bulb"
-				android:padding="10dp"/>
-
-		<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
+				android:padding="10dp"
+				android:src="@drawable/ic_action_bulb" />
+
+			<ImageView
 				android:id="@+id/imageView6"
-				android:src="@drawable/ic_action_ring_volume"
-				android:padding="10dp"/>
-
-		<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
+				android:padding="10dp"
+				android:src="@drawable/ic_action_ring_volume" />
+
+			<ImageView
 				android:id="@+id/imageView7"
-				android:src="@drawable/ic_action_volume_up"
-				android:padding="10dp"/>
-
-		<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
+				android:padding="10dp"
+				android:src="@drawable/ic_action_volume_up" />
+
+			<ImageView
 				android:id="@+id/imageView8"
-				android:src="@drawable/ic_action_bluetooth"
-				android:padding="10dp"/>
-
-		<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
+				android:padding="10dp"
+				android:src="@drawable/ic_action_bluetooth" />
+
+			<ImageView
 				android:id="@+id/imageView9"
-				android:src="@drawable/ic_action_wifi"
-				android:padding="10dp"/>
-	</LinearLayout>
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:padding="10dp"
+				android:src="@drawable/ic_action_wifi" />
+		</LinearLayout>
 
-	<FrameLayout
-			android:layout_width="match_parent"
-			android:layout_height="1dp"
-			android:layout_gravity="center"
-			android:background="#339ccc" android:layout_marginTop="1dp">
-	</FrameLayout>
-
-	<TextView
-			style="?attr/wizardTextItem"
-			android:text="@string/enable_incar_description"
+		<TextView
 			android:id="@+id/desc3"
-			/>
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/enable_incar_description"
+			android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
-	<TextView
-			style="?attr/wizardTextItem"
-			android:text="@string/trial_description"
-			android:layout_width="fill_parent"
-			android:padding="12dp"
-			android:textColor="@color/font_green"
+		<TextView
 			android:id="@+id/desc4"
-			/>
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:padding="12dp"
+			android:text="@string/trial_description"
+			android:textAppearance="@style/TextAppearance.MaterialComponents.Chip" />
 
-</LinearLayout>
+	</LinearLayout>
 </ScrollView>

@@ -251,7 +251,7 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
 
     fun beforeFinish() {
         if (AppWidgetManager.ACTION_APPWIDGET_CONFIGURE == intent.action && appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-            Provider.getInstance().requestUpdate(this, appWidgetId)
+            Provider.requestUpdate(this, intArrayOf(appWidgetId))
         }
         App.provide(this).cleanAppListCache()
     }

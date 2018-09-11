@@ -119,11 +119,7 @@ class CarHomeColorPickerDialog : ColorPickerDialog() {
         if (alphaSliderVisible1) {
             val density = resources.displayMetrics.density
             alpha = view.findViewById(R.id.alpha_picker)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                alpha!!.background = AlphaPatternDrawable((5 * density).toInt())
-            } else {
-                alpha!!.setBackgroundDrawable(AlphaPatternDrawable((5 * density).toInt()))
-            }
+            alpha!!.background = AlphaPatternDrawable((5 * density).toInt())
             alpha!!.visibility = View.VISIBLE
             alpha!!.init(mSize, ALPHA_LEVELS, mAlphaSelectListener)
         }

@@ -24,8 +24,8 @@ class WidgetViewBuilder(private val context: Context,
                         private val pendingIntentFactory: PendingIntentFactory,
                         private val widgetButtonAlternativeHidden: Boolean) {
 
-    constructor(context: Context, pendingIntentFactory: PendingIntentFactory)
-            : this(context, 0, null, pendingIntentFactory, false)
+    constructor(context: Context, appWidgetId: Int, pendingIntentFactory: PendingIntentFactory)
+            : this(context, appWidgetId, null, pendingIntentFactory, false)
 
     var overrideSkin: String? = null
 

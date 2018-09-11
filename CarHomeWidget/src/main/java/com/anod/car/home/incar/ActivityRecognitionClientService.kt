@@ -2,15 +2,13 @@ package com.anod.car.home.incar
 
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.ResultCallback
-import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.ActivityRecognition
 
 import com.anod.car.home.BuildConfig
-import com.anod.car.home.app.StoppableService
 import info.anodsplace.framework.AppLog
 
 import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -21,7 +19,7 @@ import android.widget.Toast
  * @author alex
  * @date 12/25/13
  */
-class ActivityRecognitionClientService : StoppableService(), GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+class ActivityRecognitionClientService : Service(), GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private val activityRecognitionPendingIntent: PendingIntent
         get() {
@@ -32,13 +30,6 @@ class ActivityRecognitionClientService : StoppableService(), GoogleApiClient.Con
     override fun onBind(intent: Intent): IBinder? {
         return null
     }
-
-    override fun onBeforeStop(intent: Intent) {
-    }
-
-    override fun onAfterStart(intent: Intent) {
-    }
-
 
     override fun onConnected(bundle: Bundle?) {
         if (BuildConfig.DEBUG) {
@@ -52,7 +43,6 @@ class ActivityRecognitionClientService : StoppableService(), GoogleApiClient.Con
     override fun onConnectionSuspended(i: Int) {
 
     }
-
 
     override fun onConnectionFailed(connectionResult: ConnectionResult) {
         if (BuildConfig.DEBUG) {
@@ -77,7 +67,6 @@ class ActivityRecognitionClientService : StoppableService(), GoogleApiClient.Con
 
         fun stopService(context: Context) {
             val serviceIntent = Intent(context.applicationContext, ActivityRecognitionClientService::class.java)
-            StoppableService.Companion.fillStopIntent(serviceIntent)
             context.stopService(serviceIntent)
         }
     }

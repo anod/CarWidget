@@ -5,9 +5,16 @@
             android:icon="@drawable/ic_now_widgets_white_24dp"
             android:title="@string/widgets"
             android:tooltipText="@string/list_of_active_widgets" />
+
         <item
-            android:id="@+id/nav_car_settings"
-            android:icon="@drawable/ic_settings_white_24dp"
+            android:id="@+id/nav_incar"
+            android:icon="@drawable/ic_directions_car_black_24dp"
             android:title="@string/pref_incar_mode_title"
+            android:tooltipText="@string/incar_mode" />
+
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_white_24dp"
+            android:title="@string/settings"
             android:tooltipText="@string/settings" />
 </menu>

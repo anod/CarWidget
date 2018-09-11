@@ -65,7 +65,7 @@ class NewShortcutActivity : Activity(), ShortcutPicker.Handler {
     }
 
     override fun onAddShortcut(cellId: Int, info: Shortcut) {
-        Provider.getInstance().requestUpdate(this, appWidgetId)
+        Provider.requestUpdate(this, intArrayOf(appWidgetId))
         finish()
     }
 

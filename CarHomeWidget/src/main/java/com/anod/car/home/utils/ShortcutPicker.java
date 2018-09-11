@@ -100,7 +100,7 @@ public class ShortcutPicker {
         shortcutIcons.add(Intent.ShortcutIconResource
                 .fromContext(mContext, R.drawable.ic_launcher_application));
         shortcutIcons.add(Intent.ShortcutIconResource
-                .fromContext(mContext, R.mipmap.ic_launcher_carwidget));
+                .fromContext(mContext, R.drawable.ic_launcher_carwidget));
 
         bundle.putParcelableArrayList(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, shortcutIcons);
 

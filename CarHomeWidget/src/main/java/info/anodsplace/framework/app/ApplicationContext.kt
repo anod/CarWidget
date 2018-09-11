@@ -1,7 +1,6 @@
 package info.anodsplace.framework.app
 
 import android.app.Application
-import android.app.Fragment
 import android.app.NotificationManager
 import android.content.ContentResolver
 import android.content.Context
@@ -12,6 +11,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 
 /**
  * @author Alex Gavrishev

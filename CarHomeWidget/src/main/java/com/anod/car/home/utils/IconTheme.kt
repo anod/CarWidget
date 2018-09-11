@@ -40,7 +40,7 @@ class IconTheme(internal var mContext: Context, packageName: String) {
         try {
             themeResources = mContext.packageManager.getResourcesForApplication(packageName)
         } catch (e: PackageManager.NameNotFoundException) {
-            AppLog.e(e)
+            AppLog.w(e.message ?: "theme package not found")
         }
 
         return themeResources != null

@@ -259,4 +259,5 @@
 	<string name="last_backup">Last backup: %1$s</string>
     <string name="permission_denied">Permission denied</string>
 	<string name="general">General</string>
+    <string name="mode_detector_channel">InCar detector</string>
 </resources>

@@ -1,28 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppListTheme" parent="Theme.AppCompat.Dialog">
+    <style name="AppListTheme" parent="Theme.MaterialComponents.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppListTheme.Light" parent="Theme.AppCompat.Light.Dialog">
+    <style name="AppListTheme.Light" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="windowActionBar">false</item>
     </style>
 
-    <style name="DialogTheme" parent="Theme.AppCompat.Dialog">
-        <item name="panelItem">@style/panelItemBasic</item>
-        <item name="panelHeader">@style/panelHeaderBasic</item>
-        <item name="buttonStyle">@style/buttonStyleDefault</item>
-        <item name="activityBgColor">@android:color/transparent</item>
-        <item name="wizardTextItem">@style/wizardTextItemHolo</item>
-
-        <!-- Action Bar Styles -->
-        <item name="selectableItemBackground">@drawable/abc_item_background_holo_dark</item>
-        <item name="selectableItemBackgroundBorderless">?attr/selectableItemBackground</item>
-        <item name="actionButtonStyle">@style/Widget.AppCompat.ActionButton</item>
-        <item name="actionBarItemBackground">?attr/selectableItemBackgroundBorderless</item>
-
+    <style name="DialogTheme" parent="Theme.MaterialComponents.Dialog">
         <item name="colorPrimary">@color/material_bluegray_600</item>
         <item name="colorPrimaryDark">@color/material_bluegray_800</item>
         <item name="colorAccent">@color/material_bluegray_300</item>
@@ -45,7 +33,7 @@
         <item name="android:minHeight">48dip</item>
     </style>
 
-    <style name="DialogTheme.Light" parent="Theme.AppCompat.Light.Dialog">
+    <style name="DialogTheme.Light" parent="Theme.MaterialComponents.Light.Dialog">
         <!--
         <item name="android:windowBackground">?attr/colorPrimary</item>
         -->
@@ -162,43 +150,6 @@
     <style name="panelHeaderBasic" parent="panelItemBasic">
         <item name="android:textAppearance">@style/panelHeaderText</item>
         <item name="android:background">@drawable/panel_header_bg_dark</item>
-    </style>
-
-    <style name="WizardPageTitle" parent="textAlignStyle">
-        <item name="android:id">@android:id/title</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:paddingLeft">6dip</item>
-        <item name="android:textSize">36sp</item>
-        <item name="android:textColor">#ff0099cc</item>
-        <!--
-        <item name="android:fontFamily">sans-serif-thin</item>
-        -->
-    </style>
-
-    <style name="WizardPageContainer">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:paddingLeft">@dimen/wizard_page_margin</item>
-        <item name="android:paddingRight">@dimen/wizard_page_margin</item>
-    </style>
-
-    <style name="wizardTextItemBase">
-        <item name="android:textSize">24sp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:gravity">center_horizontal</item>
-    </style>
-
-    <style name="wizardTextItemGray" parent="wizardTextItemBase">
-        <item name="android:textColor">@color/font_color_dark</item>
-    </style>
-
-    <style name="wizardTextItemHolo" parent="wizardTextItemBase">
-        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="buttonStyleDefault" parent="textAlignStyle">

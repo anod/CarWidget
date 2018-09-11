@@ -180,7 +180,7 @@ class ShortcutEditActivity : AppCompatActivity() {
     }
 
     private fun updateCustomIcon(data: Intent) {
-        val imageUri = data.data
+        val imageUri = data.data ?: return
         val icon = DrawableUri(this).resolve(imageUri)
         if (icon == null) {
             val errStr = getString(R.string.error_text,
@@ -215,7 +215,7 @@ class ShortcutEditActivity : AppCompatActivity() {
 
     private fun getBitmapIconPackIntent(data: Intent): Bitmap? {
         var bitmap: Bitmap? = null
-        val imageUri = data.data
+        val imageUri = data.data ?: return bitmap
         if (data.hasExtra("icon")) {
             bitmap = data.getParcelableExtra("icon")
         } else {

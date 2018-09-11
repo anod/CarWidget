@@ -83,8 +83,8 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
         val incarSwitch = findPreference(InCarSettings.INCAR_MODE_ENABLED)
 
-        val allWidgetIds = WidgetHelper.getAllWidgetIds(activity)
-        if (allWidgetIds.size == 0) {
+        val allWidgetIds = WidgetHelper.getAllWidgetIds(activity!!)
+        if (allWidgetIds.isEmpty()) {
             incarSwitch.isEnabled = false
             incarSwitch.setSummary(R.string.please_add_widget)
         } else {

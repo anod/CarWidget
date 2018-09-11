@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<style name="AppThemeHolo" parent="Theme.AppCompat.DayNight">
-		<item name="panelItem">@style/panelItemBasic</item>
-		<item name="panelHeader">@style/panelHeaderBasic</item>
-        <item name="panelHeaderBackground">@drawable/panel_header_bg_dark</item>
-		<item name="themeTabBackground">@drawable/tab_bg_dark</item>
-		<item name="themeTabIndicatorColor">@color/panel_bg_dark_pressed</item>
-		<item name="buttonStyle">@style/buttonStyleDefault</item>
-		<item name="activityBgColor">@color/background_material_dark</item>
-		<item name="wizardTextItem">@style/wizardTextItemHolo</item>
-		<item name="textAppearanceMediumBackgroundInverse">@style/TextAppearance.AppCompat.Medium</item>
-		<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+	<style name="AppThemeHolo" parent="Theme.MaterialComponents">
 	</style>
 
 	<style name="AppThemeHolo.NoActionBar" parent="AppThemeHolo" >

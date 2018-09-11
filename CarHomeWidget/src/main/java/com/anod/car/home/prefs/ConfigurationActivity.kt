@@ -95,7 +95,7 @@ class ConfigurationActivity : CarWidgetActivity(), PreferenceFragmentCompat.OnPr
     }
 
     override fun onBackPressed() {
-        Provider.getInstance().performUpdate(this, null)
+        Provider.requestUpdate(this, intArrayOf())
         super.onBackPressed()
     }
 

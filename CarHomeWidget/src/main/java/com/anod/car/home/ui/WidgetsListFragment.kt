@@ -33,7 +33,7 @@ class WidgetsListFragment : androidx.fragment.app.Fragment(), WidgetsListAdapter
 
     override fun onResume() {
         super.onResume()
-        appWidgetIds = WidgetHelper.getAllWidgetIds(activity)
+        appWidgetIds = WidgetHelper.getAllWidgetIds(activity!!)
         viewModel.loadList()
     }
 

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     android:layout_marginTop="8dp"
+    android:layout_marginRight="16dp"
     card_view:cardBackgroundColor="@color/panel_background_grey"
     card_view:cardCornerRadius="8dp"
     card_view:cardPreventCornerOverlap="true"
@@ -34,28 +35,28 @@
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    android:src="@mipmap/ic_launcher_carwidget" />
+                    tools:src="@drawable/ic_android_white_24dp" />
 
                 <ImageView
                     android:id="@+id/imageView3"
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    android:src="@mipmap/ic_launcher_carwidget" />
+                    tools:src="@drawable/ic_android_white_24dp" />
 
                 <ImageView
                     android:id="@+id/imageView5"
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    android:src="@mipmap/ic_launcher_carwidget" />
+                    tools:src="@drawable/ic_android_white_24dp" />
 
                 <ImageView
                     android:id="@+id/imageView7"
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    android:src="@mipmap/ic_launcher_carwidget" />
+                    tools:src="@drawable/ic_android_white_24dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -67,7 +68,7 @@
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    android:src="@mipmap/ic_launcher_carwidget" />
+                    tools:src="@drawable/ic_android_white_24dp" />
 
 
                 <ImageView
@@ -75,7 +76,7 @@
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    android:src="@mipmap/ic_launcher_carwidget" />
+                    tools:src="@drawable/ic_android_white_24dp" />
 
 
                 <ImageView
@@ -83,7 +84,7 @@
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    android:src="@mipmap/ic_launcher_carwidget" />
+                    tools:src="@drawable/ic_android_white_24dp" />
 
 
                 <ImageView
@@ -91,7 +92,7 @@
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    android:src="@mipmap/ic_launcher_carwidget" />
+                    tools:src="@drawable/ic_android_white_24dp" />
             </LinearLayout>
         </LinearLayout>
 

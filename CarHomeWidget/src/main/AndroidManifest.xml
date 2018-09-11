@@ -37,12 +37,10 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
-
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <uses-feature
         android:name="android.hardware.microphone"
@@ -64,10 +62,9 @@
         android:name="com.anod.car.home.CarWidgetApplication"
         android:allowBackup="true"
         android:backupAgent=".backup.BackupFileHelperAgent"
-        android:icon="@mipmap/ic_launcher_carwidget"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         tools:ignore="GoogleAppIndexingWarning">
-        <service android:name="com.anod.car.home.UpdateService" />
 
         <activity
             android:name="com.anod.car.home.prefs.ShortcutEditActivity"
@@ -147,7 +144,6 @@
             android:clearTaskOnLaunch="true"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher_carwidget"
             android:label="@string/switch_in_car_activity"
             android:launchMode="singleInstance"
             android:noHistory="true"
@@ -268,7 +264,7 @@
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
             android:taskAffinity=""
-            android:theme="@style/BrightnessTheme"></activity>
+            android:theme="@style/BrightnessTheme" />
 
         <activity
             android:name=".acra.CrashDialog"

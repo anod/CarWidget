@@ -1,23 +1,18 @@
 package com.anod.car.home.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-
+import androidx.fragment.app.Fragment
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.prefs.model.AppTheme
 import com.anod.car.home.utils.HtmlCompat
 import com.anod.car.home.utils.Version
-import com.example.android.wizardpager.wizard.ui.StepPagerStrip
+import kotlinx.android.synthetic.main.wizard_activity.*
 
 /**
  * @author alex
@@ -26,18 +21,9 @@ import com.example.android.wizardpager.wizard.ui.StepPagerStrip
 class WizardActivity : CarWidgetActivity() {
 
     /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
-     */
-    private val pager: androidx.viewpager.widget.ViewPager by lazy { findViewById<androidx.viewpager.widget.ViewPager>(R.id.pager) }
-    private val nextButton: Button by lazy { findViewById<Button>(R.id.buttonNext) }
-    private val skipButton: Button by lazy { findViewById<Button>(R.id.buttonSkip) }
-
-    /**
      * The pager adapter, which provides the pages to the view pager widget.
      */
     private val pagerAdapter: androidx.viewpager.widget.PagerAdapter by lazy { ScreenSlidePagerAdapter(supportFragmentManager) }
-    private val stepPagerStrip: StepPagerStrip by lazy { findViewById<StepPagerStrip>(R.id.strip) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +34,9 @@ class WizardActivity : CarWidgetActivity() {
 
         val current = intent?.getIntExtra(EXTRA_PAGE, 0) ?: 0
         pager.currentItem = current
-        nextButton.tag = TYPE_NEXT
+        buttonNext.tag = TYPE_NEXT
 
-        stepPagerStrip.setOnPageSelectedListener { position ->
+        strip.setOnPageSelectedListener { position ->
             val newPosition = Math.min(pagerAdapter.count - 1, position)
             if (pager.currentItem != newPosition) {
                 pager.currentItem = newPosition
@@ -59,22 +45,22 @@ class WizardActivity : CarWidgetActivity() {
 
         pager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                stepPagerStrip.setCurrentPage(position)
+                strip.setCurrentPage(position)
                 if (position == NUM_PAGES - 1) {
-                    nextButton.tag = TYPE_FINISH
-                    nextButton.setText(R.string.finish)
-                    skipButton.visibility = View.GONE
+                    buttonNext.tag = TYPE_FINISH
+                    buttonNext.setText(R.string.finish)
+                    buttonSkip.visibility = View.GONE
                 }
             }
         })
-        stepPagerStrip.setPageCount(NUM_PAGES)
+        strip.setPageCount(NUM_PAGES)
 
         findViewById<Button>(R.id.buttonSkip).setOnClickListener {
             finishWizard()
         }
 
         findViewById<Button>(R.id.buttonNext).setOnClickListener {
-            if (nextButton.tag == TYPE_FINISH) {
+            if (buttonNext.tag == TYPE_FINISH) {
                 finishWizard()
             } else {
                 pager.currentItem = pager.currentItem + 1
@@ -117,7 +103,7 @@ class WizardActivity : CarWidgetActivity() {
         }
     }
 
-    class ScreenSlidePageFragment : androidx.fragment.app.Fragment() {
+    class ScreenSlidePageFragment: Fragment() {
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
             val pos = arguments?.getInt("position", 0) ?: 0
