@@ -69,21 +69,21 @@
 
             <Button
                 android:id="@+id/btn_delete"
-                style="@style/BorderlessButton.Light.Colored"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAllCaps="true"
-                android:text="@string/delete" />
+                android:text="@string/delete"
+                android:textAllCaps="true" />
 
             <Button
                 android:id="@+id/btn_ok"
-                style="@style/BorderlessButton.Light.Colored"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="100.0dip"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAllCaps="true"
-                android:text="@android:string/ok" />
+                android:text="@android:string/ok"
+                android:textAllCaps="true" />
 
 
         </LinearLayout>
