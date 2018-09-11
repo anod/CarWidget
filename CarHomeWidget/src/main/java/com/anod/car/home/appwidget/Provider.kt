@@ -8,12 +8,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.work.Data
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 
 import com.anod.car.home.LargeProvider
 import com.anod.car.home.UpdateWidgetJob
+import com.anod.car.home.app.App
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.incar.ModeService
 import com.anod.car.home.prefs.model.WidgetStorage
@@ -23,6 +21,7 @@ import info.anodsplace.framework.AppLog
 open class Provider : AppWidgetProvider() {
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        AppLog.d("onUpdate: $appWidgetIds")
         requestUpdate(context, appWidgetIds)
     }
 
@@ -69,25 +68,21 @@ open class Provider : AppWidgetProvider() {
 
         fun requestUpdate(context: Context, appWidgetIds: IntArray) {
             if (appWidgetIds.isEmpty()) {
-                val applicationContext = context.applicationContext
-                val appWidgetManager = AppWidgetManager.getInstance(applicationContext)
-                val thisAppWidget = getComponentName(applicationContext)
+                val appWidgetManager = App.provide(context).appWidgetManager
+                val thisAppWidget = getComponentName(context)
                 val allAppWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget)
-                enqueue(allAppWidgetIds)
+                enqueue(allAppWidgetIds, context)
             } else {
-                enqueue(appWidgetIds)
+                enqueue(appWidgetIds, context)
             }
         }
 
-        private fun enqueue(appWidgetIds: IntArray) {
+        private fun enqueue(appWidgetIds: IntArray, context: Context) {
             if (appWidgetIds.isEmpty()) {
                 AppLog.w("appWidgetIds is empty, skipp[ing update")
                 return
             }
-            val updateWork = OneTimeWorkRequestBuilder<UpdateWidgetJob>()
-                    .setInputData(Data.Builder().putIntArray(UpdateWidgetJob.inputWidgetIds, appWidgetIds).build())
-                    .build()
-            WorkManager.getInstance().enqueue(updateWork)
+            UpdateWidgetJob.enqueue(context, appWidgetIds)
         }
 
         private fun getComponentName(context: Context): ComponentName {

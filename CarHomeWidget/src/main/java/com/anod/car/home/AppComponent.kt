@@ -1,6 +1,7 @@
 package com.anod.car.home
 
 import android.app.NotificationManager
+import android.appwidget.AppWidgetManager
 import com.anod.car.home.incar.ModeHandler
 import com.anod.car.home.incar.ModePhoneStateListener
 import com.anod.car.home.incar.ScreenOrientation
@@ -11,6 +12,7 @@ import android.content.Context.*
 import android.media.AudioManager
 import android.telephony.TelephonyManager
 import android.view.WindowManager
+import androidx.collection.SimpleArrayMap
 import com.anod.car.home.app.AppIconLoader
 
 /**
@@ -22,6 +24,8 @@ class AppComponent(val application: CarWidgetApplication) {
     private var _iconThemesCache: AppsList? = null
     private var _appIconLoader: AppIconLoader? = null
 
+    val appWidgetManager: AppWidgetManager
+        get() = application.getSystemService(APPWIDGET_SERVICE) as AppWidgetManager
 
     val windowManager: WindowManager
         get() = application.getSystemService(WINDOW_SERVICE) as WindowManager
@@ -67,6 +71,8 @@ class AppComponent(val application: CarWidgetApplication) {
             }
             return _iconThemesCache!!
         }
+
+    val updatesHistory: SimpleArrayMap<Int, Boolean> = SimpleArrayMap()
 
     fun cleanAppListCache() {
         if (_appListCache != null) {

@@ -4,7 +4,7 @@
   android:minWidth="294dp"
   android:minHeight="294dp"
   android:initialLayout="@layout/loader"
-  android:updatePeriodMillis="0"
+  android:updatePeriodMillis="3600000"
   android:minResizeHeight="72dp"
   android:minResizeWidth="72dp"
   android:resizeMode="horizontal|vertical"

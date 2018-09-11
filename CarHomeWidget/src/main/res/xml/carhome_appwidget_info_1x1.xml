@@ -4,7 +4,7 @@
   android:minWidth="56dp"
   android:minHeight="56dp"
   android:initialLayout="@layout/list_item_widget_shortcut"
-  android:updatePeriodMillis="0"
+  android:updatePeriodMillis="3600000"
   android:previewImage="@drawable/ic_launcher_carwidget"
   android:widgetCategory="home_screen"
 />

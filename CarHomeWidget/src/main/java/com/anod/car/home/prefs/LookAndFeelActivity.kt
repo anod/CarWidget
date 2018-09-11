@@ -1,12 +1,10 @@
 package com.anod.car.home.prefs
 
-import android.annotation.TargetApi
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import com.google.android.material.tabs.TabLayout
 import android.text.method.LinkMovementMethod
@@ -60,12 +58,8 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
         get() = getSkinItem(currentPage)
 
     private val isKeyguard: Boolean
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
         get() {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                return false
-            }
-            val widgetOptions = AppWidgetManager.getInstance(this)
+            val widgetOptions = App.provide(this).appWidgetManager
                     .getAppWidgetOptions(appWidgetId)
             val category = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1)
             return category == AppWidgetProviderInfo.WIDGET_CATEGORY_KEYGUARD
