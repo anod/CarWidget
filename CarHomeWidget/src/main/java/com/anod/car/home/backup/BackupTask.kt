@@ -9,8 +9,19 @@ import android.os.AsyncTask
  * @date 12/30/13
  */
 
-class BackupTask(private val type: Int, private val backupManager: PreferencesBackupManager, private val appWidgetId: Int,
-                 private val listener: BackupTaskListener) : AsyncTask<Uri, Void, Int>() {
+class BackupTask(
+        private val type: Int,
+        private val backupManager: PreferencesBackupManager,
+        private val appWidgetId: Int,
+        private val uri: Uri,
+        private val listener: BackupTaskListener) : AsyncTask<Void, Void, Int>() {
+
+    constructor(backupManager: PreferencesBackupManager, appWidgetId: Int, uri: Uri, listener: BackupTaskListener)
+            : this(PreferencesBackupManager.TYPE_MAIN, backupManager, appWidgetId, uri, listener)
+
+    constructor(backupManager: PreferencesBackupManager, uri: Uri, listener: BackupTaskListener)
+            : this(PreferencesBackupManager.TYPE_INCAR, backupManager, 0, uri, listener)
+
 
     interface BackupTaskListener {
         fun onBackupPreExecute(type: Int)
@@ -21,12 +32,11 @@ class BackupTask(private val type: Int, private val backupManager: PreferencesBa
         listener.onBackupPreExecute(type)
     }
 
-    override fun doInBackground(vararg uris: Uri): Int? {
-        val uri = uris[0]
+    override fun doInBackground(vararg params: Void): Int? {
 
         if (type == PreferencesBackupManager.TYPE_INCAR) {
             if (ContentResolver.SCHEME_FILE == uri.scheme) {
-                return backupManager.doBackupInCarLocal()
+                return backupManager.doBackupInCarLocal(uri)
             }
             return backupManager.doBackupInCarUri(uri)
         }

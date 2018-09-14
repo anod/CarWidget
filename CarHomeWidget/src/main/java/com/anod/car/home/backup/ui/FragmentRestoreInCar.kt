@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.core.content.FileProvider
 import android.text.format.DateUtils
 import android.view.LayoutInflater
@@ -66,9 +65,7 @@ class FragmentRestoreInCar : androidx.fragment.app.Fragment(), RestoreTask.Resto
                 } else {
                     uri = File(backupManager.backupDir, ObjectRestoreManager.FILE_INCAR_DAT).toUri()
                 }
-                RestoreTask(PreferencesBackupManager.TYPE_INCAR, backupManager, 0,
-                        this@FragmentRestoreInCar)
-                        .execute(uri)
+                RestoreTask(backupManager, uri, this@FragmentRestoreInCar).execute()
             }
         }
 
@@ -89,9 +86,8 @@ class FragmentRestoreInCar : androidx.fragment.app.Fragment(), RestoreTask.Resto
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             R.id.menu_new_backup -> {
-                BackupTask(PreferencesBackupManager.TYPE_INCAR, backupManager, 0,
-                        this@FragmentRestoreInCar)
-                        .execute()
+                val uri = backupManager.backupIncarFile.toUri()
+                BackupTask(backupManager, uri, this@FragmentRestoreInCar).execute()
                 return true
             }
             R.id.menu_download_from_cloud -> {
@@ -111,16 +107,13 @@ class FragmentRestoreInCar : androidx.fragment.app.Fragment(), RestoreTask.Resto
         if (requestCode == requestDownload && resultCode == Activity.RESULT_OK) {
             resultData?.data?.let {
                 AppLog.d("Uri: " + it.toString())
-                RestoreTask(PreferencesBackupManager.TYPE_INCAR, backupManager, 0, this@FragmentRestoreInCar)
-                        .execute(it)
+                RestoreTask(backupManager, it, this@FragmentRestoreInCar).execute()
 
             }
         } else if (requestCode == requestUpload && resultCode == Activity.RESULT_OK) {
             resultData?.data?.let {
                 AppLog.d("Uri: " + it.toString())
-                BackupTask(PreferencesBackupManager.TYPE_INCAR, backupManager, 0, this@FragmentRestoreInCar)
-                        .execute(it)
-
+                BackupTask(backupManager, it, this@FragmentRestoreInCar).execute()
             }
         }
     }
@@ -152,8 +145,7 @@ class FragmentRestoreInCar : androidx.fragment.app.Fragment(), RestoreTask.Resto
 
     fun backup() {
         if (AppPermissions.isGranted(context!!, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            BackupTask(PreferencesBackupManager.TYPE_INCAR, backupManager, 0,
-                    this@FragmentRestoreInCar)
+            BackupTask(backupManager, backupManager.backupIncarFile.toUri(), this@FragmentRestoreInCar)
                     .execute()
         } else {
             requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE), requestBackup)

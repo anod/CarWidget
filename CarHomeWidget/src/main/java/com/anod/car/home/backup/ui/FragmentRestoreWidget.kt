@@ -5,6 +5,7 @@ import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import androidx.core.content.FileProvider
@@ -20,6 +21,7 @@ import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.net.toFile
 import androidx.core.net.toUri
 import com.anod.car.home.BuildConfig
 
@@ -121,14 +123,13 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
             if (resultCode == Activity.RESULT_OK) {
                 val uri = result!!.data
                 AppLog.d("Uri: " + uri!!.toString())
-                BackupTask(PreferencesBackupManager.TYPE_MAIN, backupManager, appWidgetId, this).execute(uri)
+                BackupTask(backupManager, appWidgetId, uri, this).execute()
             }
         } else if (requestCode == requestDownload) {
             if (resultCode == Activity.RESULT_OK) {
                 val uri = result!!.data
                 AppLog.d("Uri: " + uri!!.toString())
-                RestoreTask(PreferencesBackupManager.TYPE_MAIN, backupManager, appWidgetId, this@FragmentRestoreWidget)
-                        .execute(uri)
+                RestoreTask(backupManager, appWidgetId, uri, this@FragmentRestoreWidget).execute()
             }
         }
     }
@@ -194,7 +195,7 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
             val timestamp = DateUtils.formatDateTime(context, entry.lastModified(), FragmentBackup.DATE_FORMAT)
             holder.text2.text = timestamp
 
-            holder.apply.tag = name
+            holder.apply.tag = entry.toUri()
             holder.apply.setOnClickListener(restoreListener)
             CheatSheet.setup(holder.apply)
 
@@ -242,19 +243,16 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
             private val listener: RestoreTask.RestoreTaskListener) : View.OnClickListener {
 
         override fun onClick(v: View) {
-
-            val uri = backupManager.getBackupWidgetFile(v.tag as String).toUri()
-            RestoreTask(PreferencesBackupManager.TYPE_MAIN, backupManager, appWidgetId,
+            RestoreTask(PreferencesBackupManager.TYPE_MAIN, backupManager, appWidgetId, v.tag as Uri,
                     listener)
-                    .execute(uri)
+                    .execute()
         }
     }
 
     private class DeleteClickListener(private val listener: DeleteFileTask.DeleteFileTaskListener) : View.OnClickListener {
 
         override fun onClick(v: View) {
-            val file = v.tag as File
-            DeleteFileTask(listener).execute(file)
+            DeleteFileTask(listener).execute(v.tag as File)
         }
     }
 
@@ -269,9 +267,8 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
             builder.setPositiveButton(R.string.backup_save) { _, _ ->
                 val filename = backupName.text.toString()
                 if (filename.isNotBlank()) {
-                    BackupTask(PreferencesBackupManager.TYPE_MAIN, backupManager,
-                            appWidgetId, this@FragmentRestoreWidget)
-                            .execute(backupManager.getBackupWidgetFile(filename).toUri())
+                    BackupTask(backupManager, appWidgetId, backupManager.getBackupWidgetFile(filename).toUri(), this@FragmentRestoreWidget)
+                            .execute()
                 }
             }
 

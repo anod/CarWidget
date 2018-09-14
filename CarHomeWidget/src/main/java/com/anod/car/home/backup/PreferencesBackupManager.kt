@@ -71,9 +71,8 @@ class PreferencesBackupManager(private val context: Context) {
         if (!saveDir.exists()) {
             saveDir.mkdirs()
         }
-        val dataFile = File(saveDir, file.name + FILE_EXT_JSON)
-        val fos = FileOutputStream(dataFile)
-        val result = doBackupWidget(fos, appWidgetId)
+
+        val result = doBackupWidget(FileOutputStream(file), appWidgetId)
 
         saveDir.setLastModified(System.currentTimeMillis())
         return result
@@ -117,18 +116,17 @@ class PreferencesBackupManager(private val context: Context) {
         return RESULT_DONE
     }
 
-    fun doBackupInCarLocal(): Int {
+    fun doBackupInCarLocal(uri: Uri): Int {
         if (!checkMediaWritable()) {
             return ERROR_STORAGE_NOT_AVAILABLE
         }
-        val saveDir = backupDir
+        val file = uri.toFile()
+        val saveDir = uri.toFile().parentFile
         if (!saveDir.exists()) {
             saveDir.mkdirs()
         }
-        val dataFile = backupIncarFile
-        val fos = FileOutputStream(dataFile)
 
-        val result = doBackupInCar(fos)
+        val result = doBackupInCar(FileOutputStream(file))
 
         BackupManager.dataChanged(BACKUP_PACKAGE)
         return result
@@ -176,15 +174,15 @@ class PreferencesBackupManager(private val context: Context) {
 
     fun getBackupWidgetFile(filename: String): File {
         val saveDir = mainBackupDir
-        return File(saveDir, filename)
+        return File(saveDir, filename + FILE_EXT_JSON)
     }
 
-    fun doRestoreWidgetLocal(filepath: String, appWidgetId: Int): Int {
+    fun doRestoreWidgetLocal(uri: Uri, appWidgetId: Int): Int {
         if (!checkMediaReadable()) {
             return ERROR_STORAGE_NOT_AVAILABLE
         }
 
-        val dataFile = File(filepath)
+        val dataFile = uri.toFile()
         if (!dataFile.exists()) {
             return ERROR_FILE_NOT_EXIST
         }
@@ -280,12 +278,12 @@ class PreferencesBackupManager(private val context: Context) {
         }
     }
 
-    fun doRestoreInCarLocal(filepath: String): Int {
+    fun doRestoreInCarLocal(uri: Uri): Int {
         if (!checkMediaReadable()) {
             return ERROR_STORAGE_NOT_AVAILABLE
         }
 
-        val dataFile = File(filepath)
+        val dataFile = uri.toFile()
         if (!dataFile.exists()) {
             return ERROR_FILE_NOT_EXIST
         }

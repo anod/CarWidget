@@ -6,6 +6,7 @@ import android.app.backup.BackupDataOutput
 import android.app.backup.FileBackupHelper
 import android.content.Context
 import android.os.ParcelFileDescriptor
+import androidx.core.net.toUri
 
 import java.io.File
 import java.io.IOException
@@ -54,7 +55,7 @@ class BackupFileHelperAgent : BackupAgentHelper() {
         // the data provided here.
         synchronized(PreferencesBackupManager.sLock) {
             super.onRestore(data, appVersionCode, newState)
-            manager.doRestoreInCarLocal(manager.backupIncarFile.path)
+            manager.doRestoreInCarLocal(manager.backupIncarFile.toUri())
         }
     }
 
