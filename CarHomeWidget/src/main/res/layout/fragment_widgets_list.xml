@@ -16,19 +16,18 @@
         card_view:contentPadding="8dp">
 
         <TextView
-            style="?attr/panelItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="#f4511e"
-            android:paddingRight="42dp"
+            android:paddingEnd="42dp"
             android:text="@string/no_active_widget"
             android:textSize="16sp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
+            android:layout_gravity="bottom|end"
             android:layout_margin="4dp"
             android:alpha="0.2"
             android:src="@drawable/ic_now_widgets_white_36dp" />
@@ -59,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pref_incar_mode_title"
-                android:textAppearance="@style/panelHeaderText" />
+                android:textColor="@color/primary_text_grey"/>
 
             <TextView
                 android:id="@+id/incarTrial"

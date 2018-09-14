@@ -23,19 +23,27 @@ class BroadcastService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Start once
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundNotification()
+        }
         if (receiver != null) {
             return Service.START_STICKY
         }
         if (register(this)) {
-            startForeground(25, NotificationCompat.Builder(this, channelModeDetector)
-                    .setContentTitle("CarWidget")
-                    .setContentText("InCar mode detector")
-                    .setSmallIcon(R.drawable.ic_stat_mode_detector)
-                    .setPriority(NotificationCompat.PRIORITY_LOW)
-                    .build())
             return Service.START_STICKY
         }
+        stopForeground(true)
+        stopSelf()
         return Service.START_NOT_STICKY
+    }
+
+    private fun startForegroundNotification() {
+        startForeground(25, NotificationCompat.Builder(this, channelModeDetector)
+                .setContentTitle("CarWidget")
+                .setContentText("InCar mode detector")
+                .setSmallIcon(R.drawable.ic_stat_mode_detector)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .build())
     }
 
     override fun onDestroy() {
@@ -56,7 +64,6 @@ class BroadcastService : Service() {
 
             if (!isServiceRequired(prefs)) {
                 AppLog.d("Broadcast service is not required")
-                stopSelf()
                 return false
             }
 

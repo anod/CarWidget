@@ -218,8 +218,6 @@
     <string name="music_app">Musik App</string>
     <string name="use_as_default_music_app">Använd som standard musik app</string>
     <string name="choose_music_app_explanation">Välj musik app som kommer att användas för uppspelning/paus genväg</string>
-    <string name="drawer_open">Öppna</string>
-    <string name="drawer_close">Stäng</string>
 	<string name="app_theme">App Tema</string>
 	<string name="widgets_hint">Välj ett objekt att konfigurera widgeten</string>
 	<string name="list_of_active_widgets">Lista över aktiva widgets</string>

@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  style="?attr/panelItem"
 			  android:layout_width="match_parent"
 			  android:layout_height="wrap_content"
 			  android:minHeight="?android:attr/listPreferredItemHeight"
 			  android:gravity="center_vertical"
-			  android:paddingLeft="@dimen/preference_item_padding_side"
+			  android:paddingStart="@dimen/preference_item_padding_side"
 			  android:baselineAligned="false"
-			  android:paddingRight="?android:attr/scrollbarSize">
+			  android:paddingEnd="?android:attr/scrollbarSize">
 
 	<RelativeLayout
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:paddingRight="@dimen/preference_item_padding_inner"
+			android:paddingEnd="@dimen/preference_item_padding_inner"
 			android:paddingTop="6dip"
 			android:paddingBottom="6dip">
 
@@ -32,7 +31,7 @@
 				  android:layout_width="wrap_content"
 				  android:layout_height="wrap_content"
 				  android:layout_below="@android:id/title"
-				  android:layout_alignLeft="@android:id/title"
+				  android:layout_alignStart="@android:id/title"
 				  android:textAppearance="?android:attr/textAppearanceSmall"
 				  android:text="@string/bluetooth_device_cellphone"
 				  android:textColor="?android:attr/textColorSecondary"
@@ -45,6 +44,5 @@
 			  android:layout_height="wrap_content"
 			  android:layout_gravity="center"
 			  android:focusable="false"
-			  android:clickable="false"
-			  android:layout_alignParentRight="true"/>
+			  android:clickable="false" />
 </LinearLayout>

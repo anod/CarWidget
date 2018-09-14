@@ -218,8 +218,6 @@
     <string name="music_app">Aplicación de música</string>
     <string name="use_as_default_music_app">Utilice la aplicación de música por defecto</string>
     <string name="choose_music_app_explanation">Elija la aplicación de música que se utilizará para el acceso directo Reproducir / Pausa</string>
-    <string name="drawer_open">Abierto</string>
-    <string name="drawer_close">Cerrado</string>
 	<string name="app_theme">Tema de aplicación</string>
 	<string name="widgets_hint">Seleccione un elemento para configurar el reproductor</string>
 	<string name="list_of_active_widgets">Lista de reproductores activos</string>

@@ -7,9 +7,6 @@ import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.tabs.TabLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.Menu
@@ -26,7 +23,7 @@ import com.anod.car.home.backup.PreferencesBackupManager
 import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.Utils
 
-class FragmentBackup : androidx.fragment.app.Fragment() {
+class FragmentBackup : Fragment() {
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
     private var viewPager: androidx.viewpager.widget.ViewPager? = null

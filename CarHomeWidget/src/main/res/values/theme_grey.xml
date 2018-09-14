@@ -7,16 +7,6 @@
         <item name="colorAccent">@color/material_bluegray_300</item>
     </style>
 
-    <style name="AppThemeGray.PreferenceTheme" parent="PreferenceThemeOverlay">
-        <item name="preferenceFragmentListStyle">@style/AppThemeGray.PreferenceFragmentList</item>
-    </style>
-
-    <style name="AppThemeGray.PreferenceFragmentList">
-        <item name="android:layout_margin">8dp</item>
-        <item name="android:paddingLeft">8dp</item>
-        <item name="android:paddingRight">8dp</item>
-    </style>
-
     <style name="AppThemeGray.NoActionBar" parent="AppThemeGray">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -28,36 +18,6 @@
         <item name="android:windowContentOverlay">@null</item>
 
         <item name="android:windowActionBarOverlay">true</item>
-    </style>
-
-    <!-- Skin Chooser -->
-    <style name="ActionBarCompatGrey.Transparent" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@null</item>
-        <item name="android:actionBarDivider">@null</item>
-        <item name="android:backgroundStacked">@null</item>
-        <item name="android:backgroundSplit">@null</item>
-    </style>
-
-    <style name="panelItemGray" parent="panelItemBasic">
-        <item name="android:background">@drawable/panel_item_bg_grey</item>
-    </style>
-
-    <style name="panelHeaderGray" parent="panelItemGray">
-        <item name="android:textAppearance">@style/panelHeaderText</item>
-    </style>
-
-    <style name="AppTheme" />
-
-    <style name="AppTheme.TabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabBackground">?attr/themeTabBackground</item>
-        <item name="tabIndicatorColor">?attr/themeTabIndicatorColor</item>
-        <item name="tabTextAppearance">@style/AppTheme.TabLayout.TextAppearance</item>
-        <item name="tabSelectedTextColor">@color/tab_text_color</item>
-    </style>
-
-    <style name="AppTheme.TabLayout.TextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">12sp</item>
     </style>
 
 </resources>

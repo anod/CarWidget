@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="widget_provider">com.anod.car.home.debug.settings</string>
-    <bool name="debug_activity_enabled">true</bool>
+    <string name="widget_provider" translatable="false">com.anod.car.home.debug.settings</string>
 </resources>

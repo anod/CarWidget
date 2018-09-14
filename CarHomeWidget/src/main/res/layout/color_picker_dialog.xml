@@ -3,9 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="@color/background_floating_material_dark"
     xmlns:tools="http://schemas.android.com/tools"
-    >
+>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/color_dialog_toolbar"
@@ -15,10 +14,10 @@
 
         <Button
             android:id="@+id/hex_switch"
-            style="?attr/actionButtonStyle"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             tools:text="#000000" />
     </androidx.appcompat.widget.Toolbar>
 
@@ -79,7 +78,6 @@
 
     <LinearLayout
         android:id="@+id/buttonPanel"
-        style="?attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layoutDirection="locale"
@@ -92,11 +90,11 @@
 
         <Button
             android:id="@android:id/button3"
-            style="?attr/buttonBarNeutralButtonStyle"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
-        <androidx.legacy.widget.Space
+        <android.widget.Space
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -104,14 +102,14 @@
 
         <Button
             android:id="@android:id/button2"
-            style="?attr/buttonBarNegativeButtonStyle"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@android:id/button1"
-            style="?attr/buttonBarPositiveButtonStyle"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>

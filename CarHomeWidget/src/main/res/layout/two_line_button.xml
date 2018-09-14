@@ -19,7 +19,6 @@
             android:paddingLeft="8dp">
 
             <TextView
-                style="@style/textAlignStyle"
                 android:id="@android:id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -32,7 +31,6 @@
                 />
 
             <TextView
-                style="@style/textAlignStyle"
                 android:id="@android:id/summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

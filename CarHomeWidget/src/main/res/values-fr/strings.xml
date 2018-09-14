@@ -218,8 +218,6 @@
     <string name="music_app">Application musicale</string>
     <string name="use_as_default_music_app">Utiliser comme application musicale par défaut</string>
     <string name="choose_music_app_explanation">Choisissez l\'application musicale qui sera utilisée pour le raccourci de lecture / pause</string>
-    <string name="drawer_open">Ouvrir</string>
-    <string name="drawer_close">Fermer</string>
 	<string name="app_theme">Thème de l\'application</string>
 	<string name="widgets_hint">Sélectionnez un élément pour configurer le widget</string>
 	<string name="list_of_active_widgets">Liste des widgets actifs</string>

@@ -15,9 +15,10 @@
         <TextView
             android:id="@android:id/text1"
             style="?android:attr/textAppearanceMedium"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/crash_dialog_text" />
+            android:text="@string/crash_dialog_text"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
         <EditText
             android:id="@android:id/edit"

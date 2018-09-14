@@ -1,13 +1,5 @@
 <resources>
-    <attr name="panelItem" format="reference" />
-    <attr name="panelHeader" format="reference" />
-    <attr name="panelHeaderBackground" format="reference" />
-
-    <attr name="themeTabBackground" format="reference" />
-    <attr name="themeTabIndicatorColor" format="reference" />
-
     <attr name="activityBgColor" format="reference" />
-
     <attr name="textAppearanceMediumBackgroundInverse" format="reference" />
 
     <declare-styleable name="TwoLineButton">

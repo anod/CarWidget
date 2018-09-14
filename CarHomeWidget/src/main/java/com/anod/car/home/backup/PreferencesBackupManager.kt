@@ -7,6 +7,7 @@ import android.os.Environment
 import android.util.JsonReader
 import android.util.JsonWriter
 import android.util.SparseArray
+import androidx.core.net.toFile
 
 import com.anod.car.home.model.AbstractShortcuts
 import com.anod.car.home.model.NotificationShortcutsModel
@@ -60,19 +61,18 @@ class PreferencesBackupManager(private val context: Context) {
     private val mainBackupDir: File
         get() = File(backupDir.path + File.separator + BACKUP_MAIN_DIRNAME)
 
-    fun doBackupWidgetLocal(filename: String, appWidgetId: Int): Int {
+    fun doBackupWidgetLocal(uri: Uri, appWidgetId: Int): Int {
         if (!checkMediaWritable()) {
             return ERROR_STORAGE_NOT_AVAILABLE
         }
 
-        val saveDir = mainBackupDir
+        val file = uri.toFile()
+        val saveDir = uri.toFile().parentFile
         if (!saveDir.exists()) {
             saveDir.mkdirs()
         }
-
-        val dataFile = File(saveDir, filename + FILE_EXT_JSON)
+        val dataFile = File(saveDir, file.name + FILE_EXT_JSON)
         val fos = FileOutputStream(dataFile)
-
         val result = doBackupWidget(fos, appWidgetId)
 
         saveDir.setLastModified(System.currentTimeMillis())

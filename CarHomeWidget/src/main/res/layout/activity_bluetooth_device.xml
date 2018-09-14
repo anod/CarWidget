@@ -10,7 +10,6 @@
 
 
     <TextView
-        style="?attr/panelHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/preference_item_margin"
@@ -21,7 +20,6 @@
         android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/panelHeaderBackground"
         android:orientation="vertical"
         android:padding="8dp">
 

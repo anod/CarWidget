@@ -8,7 +8,4 @@
 	<dimen name="skin_padding_horiz">0dp</dimen>
 	<dimen name="skin_padding_vert">0dp</dimen>
 
-	<!-- wizard -->
-	<dimen name="wizard_page_margin">16dp</dimen>
-
 </resources>

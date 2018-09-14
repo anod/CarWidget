@@ -2,6 +2,9 @@
 <resources>
 
 	<style name="AppThemeHolo" parent="Theme.MaterialComponents">
+		<item name="colorPrimary">@color/secondaryColor</item>
+		<item name="colorPrimaryDark">@color/secondaryDarkColor</item>
+		<item name="colorAccent">@color/secondaryLightColor</item>
 	</style>
 
 	<style name="AppThemeHolo.NoActionBar" parent="AppThemeHolo" >

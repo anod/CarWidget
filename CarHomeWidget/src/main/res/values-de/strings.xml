@@ -218,8 +218,6 @@
     <string name="music_app">Musik-Anwendung</string>
     <string name="use_as_default_music_app">Als Standard-Musik-Anwendung verwenden</string>
     <string name="choose_music_app_explanation">Wählen Sie Musik-Anwendung, die für die Wiedergabe/Pause-Verknüpfung verwendet werden soll</string>
-    <string name="drawer_open">Öffnen</string>
-    <string name="drawer_close">Schließen</string>
 	<string name="app_theme">Anwendungs-Thema</string>
 	<string name="widgets_hint">Wählen Sie ein Element, um das Widget zu konfigurieren</string>
 	<string name="list_of_active_widgets">Liste der aktiven Widgets</string>

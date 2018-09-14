@@ -191,19 +191,19 @@ class FragmentRestoreInCar : androidx.fragment.app.Fragment(), RestoreTask.Resto
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        AppPermissions.checkResult(requestCode, grantResults, requestBackup, {
+        AppPermissions.checkResult(requestCode, grantResults, requestBackup) {
             when (it) {
                 is Granted -> backup()
                 is Denied -> Toast.makeText(context, "Permissions are required", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
 
-        AppPermissions.checkResult(requestCode, grantResults, requestList, {
+        AppPermissions.checkResult(requestCode, grantResults, requestList) {
             when (it) {
                 is Granted -> updateInCarTime()
                 is Denied -> Toast.makeText(context, "Permissions are required", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
     }
 
     companion object {

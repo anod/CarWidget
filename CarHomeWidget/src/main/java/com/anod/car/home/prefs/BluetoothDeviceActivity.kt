@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.AsyncTask
@@ -25,6 +26,7 @@ import com.anod.car.home.incar.Bluetooth
 import com.anod.car.home.incar.BluetoothClassHelper
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.prefs.model.InCarStorage
+import info.anodsplace.framework.app.ApplicationContext
 
 /**
  * @author alex
@@ -58,7 +60,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
 
         initSwitch()
 
-        InitBluetoothDevicesTask(listAdapter, this).execute(0)
+        InitBluetoothDevicesTask(listAdapter, ApplicationContext(this)).execute(0)
     }
 
     public override fun onPause() {
@@ -146,7 +148,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
             val state = paramIntent
                     .getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
             if (state == BluetoothAdapter.STATE_ON) {
-                InitBluetoothDevicesTask(activity.listAdapter, activity).execute(0)
+                InitBluetoothDevicesTask(activity.listAdapter, ApplicationContext(activity)).execute(0)
             } else if (state == BluetoothAdapter.STATE_OFF || state == BluetoothAdapter.ERROR) {
 
             }
@@ -156,7 +158,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
 
     private class InitBluetoothDevicesTask(
             private val listAdapter: DeviceAdapter,
-            private val context: Context) : AsyncTask<Int, Int, List<Device>>() {
+            private val context: ApplicationContext) : AsyncTask<Int, Int, List<Device>>() {
 
         private val btAdapter: BluetoothAdapter? by lazy { BluetoothAdapter.getDefaultAdapter() }
 
@@ -177,10 +179,8 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
 
             // Get a set of currently paired devices
             val pairedDevices = btAdapter!!.bondedDevices
-            val devices = InCarStorage.load(context).btDevices
+            val devices = InCarStorage.load(context.actual).btDevices
             val pairedList = mutableListOf<Device>()
-
-            val r = context.resources
 
             // If there are paired devices, add each one to the ArrayAdapter
             if (!pairedDevices.isEmpty()) {
@@ -197,7 +197,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
                     }
                     var btClassName = ""
                     if (res > 0) {
-                        btClassName = r.getString(res)
+                        btClassName = context.getString(res)
                     }
                     val d = Device(device.address, device.name, btClassName, selected)
 
@@ -208,7 +208,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
 
             if (devices != null && !devices.isEmpty) {
                 for (addr in devices.keys) {
-                    val d = Device(addr, addr, r.getString(R.string.unavailable_bt_device), true)
+                    val d = Device(addr, addr, context.getString(R.string.unavailable_bt_device), true)
                     pairedList.add(d)
                 }
             }

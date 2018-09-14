@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.core.content.FileProvider
 import androidx.appcompat.app.AlertDialog
 import android.text.format.DateUtils
@@ -102,19 +101,19 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        AppPermissions.checkResult(requestCode, grantResults, requestBackup, {
+        AppPermissions.checkResult(requestCode, grantResults, requestBackup) {
             when (it) {
                 is Granted -> backup()
                 is Denied -> Toast.makeText(context, "Permissions are required", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
 
-        AppPermissions.checkResult(requestCode, grantResults, requestList, {
+        AppPermissions.checkResult(requestCode, grantResults, requestList) {
             when (it) {
                 is Granted -> FileListTask(backupManager, adapter).execute(0)
                 is Denied -> Toast.makeText(context, "Permissions are required", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, result: Intent?) {
@@ -261,7 +260,7 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
 
     private fun createBackupNameDialog(currentName: String): AlertDialog {
         // This example shows how to add a custom layout to an AlertDialog
-        return DialogCustom(context!!, 0, R.string.save_widget, R.layout.backup_dialog_enter_name, {
+        return DialogCustom(context!!, 0, R.string.save_widget, R.layout.backup_dialog_enter_name) {
             view, builder ->
 
             val backupName = view.findViewById<EditText>(R.id.backup_name)
@@ -271,13 +270,14 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
                 val filename = backupName.text.toString()
                 if (filename.isNotBlank()) {
                     BackupTask(PreferencesBackupManager.TYPE_MAIN, backupManager,
-                            appWidgetId, this@FragmentRestoreWidget).execute(backupManager.getBackupWidgetFile(filename).toUri())
+                            appWidgetId, this@FragmentRestoreWidget)
+                            .execute(backupManager.getBackupWidgetFile(filename).toUri())
                 }
             }
 
-            builder.setNegativeButton(android.R.string.cancel, { _, _ -> })
+            builder.setNegativeButton(android.R.string.cancel) { _, _ -> }
 
-        }).create()
+        }.create()
     }
 
     private class ExportClickListener(
@@ -310,30 +310,9 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
         Utils.startActivityForResultSafetly(intent, requestUpload, this)
     }
 
-/*
-    override fun onGDriveAppWidgetBackupFinish(filename: String) {
-        // Download
-        var onlyName = filename
-        onRestoreFinish(PreferencesBackupManager.TYPE_MAIN, PreferencesBackupManager.RESULT_DONE)
-
-        val pos = onlyName.lastIndexOf('.')
-        if (pos > 0) {
-            onlyName = onlyName.substring(0, pos)
-        }
-
-        if (AppPermissions.isGranted(context!!, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-            createBackupNameDialog(onlyName).show()
-        }
-
-        // Upload
-        onBackupFinish(PreferencesBackupManager.TYPE_MAIN, PreferencesBackupManager.RESULT_DONE)
-
-        //  onRestoreFinish(PreferencesBackupManager.TYPE_MAIN, PreferencesBackupManager.ERROR_UNEXPECTED)
-    }*/
-
     companion object {
 
-        val AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider"
+        const val AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider"
 
         const val requestUpload = 123
         const val requestDownload = 124

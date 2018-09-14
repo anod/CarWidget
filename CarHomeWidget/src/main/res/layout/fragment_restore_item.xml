@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="?attr/panelItem"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
@@ -19,7 +18,6 @@
 
         <TextView
             android:id="@android:id/title"
-            style="@style/textAlignStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
@@ -29,7 +27,6 @@
 
         <TextView
             android:id="@android:id/text2"
-            style="@style/textAlignStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"

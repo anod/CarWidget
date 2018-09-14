@@ -218,8 +218,6 @@
     <string name="music_app">App musica</string>
     <string name="use_as_default_music_app">Utilizza l\'app musica come impostazione predefinita</string>
     <string name="choose_music_app_explanation">Scegli l\'app musica utilizzata per il collegamento Riproduci/Pausa</string>
-    <string name="drawer_open">Apri</string>
-    <string name="drawer_close">Chiudi</string>
 	<string name="app_theme">Tema App</string>
 	<string name="widgets_hint">Seleziona un elemento per configurare il widget</string>
 	<string name="list_of_active_widgets">Elenco dei widget attivi</string>

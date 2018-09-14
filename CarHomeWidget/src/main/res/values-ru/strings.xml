@@ -229,8 +229,6 @@
         <item>Разрешить</item>
     </string-array>
     <string name="current_widget">Выбранный виджет</string>
-    <string name="drawer_close">Закрыть</string>
-    <string name="drawer_open">Открыть</string>
 	<string name="list_of_active_widgets">Список активных виджетов</string>
 	<string name="widgets_hint">Выберите виджет из списка для настойки</string>
     <string name="shortcuts_and_look">Ярлыки и Внешний вид</string>

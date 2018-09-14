@@ -4,4 +4,5 @@
 	<string name="skin_info_bbb" translatable="false">Theme by &lt;a href=&quot;http://blackbearblanc.dk/&quot;&gt;Black Bear Blanc&lt;/a&gt;&lt;br/&gt;Icon pack: &lt;a href=&quot;https://play.google.com/store/apps/details?id=com.jaguirre.elegant&quot;&gt;ADW.Elegant Theme&lt;/a&gt;</string>
 	<string name="activity_not_found" translatable="false">Activity not found</string>
 	<string name="unexpected_error" translatable="false">Unexpected error</string>
+    <string name="channel_crash_reports">crash_reports</string>
 </resources>

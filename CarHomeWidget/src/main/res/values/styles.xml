@@ -16,23 +16,6 @@
         <item name="colorAccent">@color/material_bluegray_300</item>
     </style>
 
-    <!-- Borderless ink button -->
-    <style name="BorderlessButton.Light" parent="android:Widget.Button">
-        <item name="android:background">@drawable/btn_default_mtrl_shape</item>
-    </style>
-
-    <!-- Colored borderless ink button -->
-    <style name="BorderlessButton.Light.Colored" parent="BorderlessButton.Light">
-        <item name="android:textColor">?attr/colorAccent</item>
-    </style>
-
-    <!-- Alert dialog button bar button -->
-    <style name="ButtonBarStyle.Light" parent="BorderlessButton.Light.Colored">
-        <item name="android:minWidth">64dp</item>
-        <item name="android:maxLines">2</item>
-        <item name="android:minHeight">48dip</item>
-    </style>
-
     <style name="DialogTheme.Light" parent="Theme.MaterialComponents.Light.Dialog">
         <!--
         <item name="android:windowBackground">?attr/colorPrimary</item>
@@ -40,17 +23,8 @@
         <item name="colorPrimary">@android:color/transparent</item>
     </style>
 
-    <style name="AppPreference">
-        <item name="android:background">@drawable/panel_item_bg_grey</item>
-    </style>
 
-    <style name="textAlignStyle">
-        <item name="android:gravity">left</item>
-    </style>
-
-    <!-- Skins -->
-
-    <style name="holo_btn_text" parent="textAlignStyle">
+    <style name="holo_btn_text">
         <item name="android:lines">1</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -129,38 +103,7 @@
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 
-    <style name="panelItemBasic" parent="textAlignStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:paddingTop">6dp</item>
-        <item name="android:paddingBottom">6dp</item>
-        <item name="android:background">@drawable/panel_item_bg_dark</item>
-    </style>
-
-    <style name="panelHeaderText">
-        <item name="android:textColor">@color/font_color</item>
-        <!--		<item name="android:textAllCaps">true</item> //-->
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="panelHeaderBasic" parent="panelItemBasic">
-        <item name="android:textAppearance">@style/panelHeaderText</item>
-        <item name="android:background">@drawable/panel_header_bg_dark</item>
-    </style>
-
-    <style name="buttonStyleDefault" parent="textAlignStyle">
-        <item name="android:background">@drawable/panel_item_bg_dark</item>
-    </style>
-
-    <style name="buttonStyleGray" parent="buttonStyleDefault">
-        <item name="android:background">@drawable/panel_item_bg_grey</item>
-    </style>
-
-    <style name="cardsBtnText" parent="textAlignStyle">
+    <style name="cardsBtnText">
         <item name="android:lines">1</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

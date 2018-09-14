@@ -8,7 +8,6 @@
 
     <LinearLayout
         android:id="@+id/lastBackupIncarLine"
-        style="?attr/panelItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
@@ -26,16 +25,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/restore"
-                android:textAppearance="@style/panelHeaderText" />
+                android:text="@string/restore" />
 
             <TextView
                 android:id="@+id/lastBackupIncar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Fri, Jul 29, 2016, 14:59"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/font_color_sec" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
 
         <ImageButton
@@ -44,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/restore"
+            android:tint="?attr/colorPrimary"
             android:src="@drawable/ic_action_tick" />
 
         <ImageButton
@@ -52,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/export_backup"
+            android:tint="?attr/colorPrimary"
             android:src="@drawable/ic_action_xhdpi_ul_to_cloud" />
     </LinearLayout>
 
