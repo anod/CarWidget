@@ -7,12 +7,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import com.google.android.material.tabs.TabLayout
-import android.text.method.LinkMovementMethod
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.TextView
 import androidx.fragment.app.transaction
 
 import com.anod.car.home.appwidget.Provider
@@ -31,7 +29,6 @@ import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.ui.AboutFragment
 import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.BitmapLruCache
-import com.anod.car.home.utils.HtmlCompat
 import com.anod.car.home.utils.IntentUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -44,9 +41,8 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
 
     private val previewInitialized = booleanArrayOf(false, false, false, false, false, false)
     val prefs: WidgetSettings by lazy { WidgetStorage.load(this, appWidgetId) }
-    private val skinList: SkinList by lazy { SkinList.newInstance(prefs.skin, isKeyguard, this) }
+    private val skinList: SkinList by lazy { SkinList(prefs.skin, isKeyguard, this) }
     private var bitmapMemoryCache: BitmapLruCache? = null
-    private val textView: TextView by lazy { findViewById<TextView>(R.id.skin_info) }
     private val gallery: androidx.viewpager.widget.ViewPager by lazy { findViewById<androidx.viewpager.widget.ViewPager>(R.id.gallery) }
     private val loaderView: View by lazy { findViewById<View>(R.id.loading) }
     private val lookAndFeelMenu: LookAndFeelMenu by lazy { LookAndFeelMenu(this, model) }
@@ -118,7 +114,6 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
         setContentView(R.layout.activity_lookandfeel)
 
         currentPage = skinList.selectedSkinPosition
-        textView.movementMethod = LinkMovementMethod.getInstance()
         dragListener = ShortcutDragListener(this, this)
 
         adapter = SkinPagerAdapter(this, skinList.count, supportFragmentManager)
@@ -130,7 +125,6 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
         tabLayout.setupWithViewPager(gallery)
 
         bitmapMemoryCache = BitmapLruCache(this)
-        showText(currentPage)
 
         content_frame.visibility = View.GONE
         bottomNavigation.setOnNavigationItemSelectedListener {
@@ -193,24 +187,12 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
 
     override fun onPageSelected(position: Int) {
         currentPage = position
-        showText(position)
 
         if (!previewInitialized[position]) {
             loaderView.visibility = View.VISIBLE
         }
 
-        lookAndFeelMenu.refreshTileColorButton()
-    }
-
-    private fun showText(position: Int) {
-        val textRes = getSkinItem(position).textRes
-        if (textRes > 0) {
-            val text = HtmlCompat.fromHtml(getString(textRes))
-            textView.text = text
-            textView.visibility = View.VISIBLE
-        } else {
-            textView.visibility = View.GONE
-        }
+        lookAndFeelMenu.refresh()
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {

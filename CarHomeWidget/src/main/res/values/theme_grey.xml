@@ -5,6 +5,19 @@
         <item name="colorPrimary">@color/material_bluegray_600</item>
         <item name="colorPrimaryDark">@color/material_bluegray_800</item>
         <item name="colorAccent">@color/material_bluegray_300</item>
+        <item name="activityBackground">@color/panel_background_grey</item>
+    </style>
+
+    <style name="AlertGray" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/material_bluegray_600</item>
+        <item name="colorPrimaryDark">@color/material_bluegray_800</item>
+        <item name="colorAccent">@color/material_bluegray_300</item>
+    </style>
+
+    <style name="DialogGrey" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">@color/material_bluegray_600</item>
+        <item name="colorPrimaryDark">@color/material_bluegray_800</item>
+        <item name="colorAccent">@color/material_bluegray_300</item>
     </style>
 
     <style name="AppThemeGray.NoActionBar" parent="AppThemeGray">

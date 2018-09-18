@@ -46,7 +46,7 @@ public class WidgetSettings extends ChangeableSharedPreferences implements Widge
     }
 
     public boolean isFirstTime() {
-        return mPrefs.getBoolean(FIRST_TIME, true);
+        return getPrefs().getBoolean(FIRST_TIME, true);
     }
 
     public void setFirstTime(boolean value) {
@@ -55,17 +55,17 @@ public class WidgetSettings extends ChangeableSharedPreferences implements Widge
 
     @Override
     public String getIconsTheme() {
-        return mPrefs.getString(ICONS_THEME, null);
+        return getPrefs().getString(ICONS_THEME, null);
     }
 
     @Override
     public boolean isSettingsTransparent() {
-        return mPrefs.getBoolean(TRANSPARENT_BTN_SETTINGS, false);
+        return getPrefs().getBoolean(TRANSPARENT_BTN_SETTINGS, false);
     }
 
     @Override
     public boolean isIncarTransparent() {
-        return mPrefs.getBoolean(TRANSPARENT_BTN_INCAR, false);
+        return getPrefs().getBoolean(TRANSPARENT_BTN_INCAR, false);
     }
 
     @Override
@@ -80,43 +80,43 @@ public class WidgetSettings extends ChangeableSharedPreferences implements Widge
 
     @Override
     public String getSkin() {
-        return mPrefs.getString(SKIN, WidgetInterface.SKIN_CARDS);
+        return getPrefs().getString(SKIN, WidgetInterface.SKIN_CARDS);
     }
 
     @Override
     public Integer getTileColor() {
         int defTileColor = ResourcesCompat.getColor(mResources, R.color.w7_tale_default_background, null);
-        return mPrefs.getInt(BUTTON_COLOR, defTileColor);
+        return getPrefs().getInt(BUTTON_COLOR, defTileColor);
     }
 
     @Override
     public boolean isIconsMono() {
-        return mPrefs.getBoolean(ICONS_MONO, false);
+        return getPrefs().getBoolean(ICONS_MONO, false);
     }
 
     @Override
     public Integer getIconsColor() {
-        return getColor(ICONS_COLOR, mPrefs);
+        return getColor(ICONS_COLOR, getPrefs());
     }
 
     @Override
     public String getIconsScale() {
-        return mPrefs.getString(ICONS_SCALE, ICONS_DEF_VALUE);
+        return getPrefs().getString(ICONS_SCALE, ICONS_DEF_VALUE);
     }
 
     @Override
     public int getFontColor() {
-        return mPrefs.getInt(FONT_COLOR, ResourcesCompat.getColor(mResources, R.color.default_font_color, null));
+        return getPrefs().getInt(FONT_COLOR, ResourcesCompat.getColor(mResources, R.color.default_font_color, null));
     }
 
     @Override
     public int getFontSize() {
-        return mPrefs.getInt(FONT_SIZE, WidgetInterface.FONT_SIZE_UNDEFINED);
+        return getPrefs().getInt(FONT_SIZE, WidgetInterface.FONT_SIZE_UNDEFINED);
     }
 
     @Override
     public int getBackgroundColor() {
-        return mPrefs.getInt(BG_COLOR, ResourcesCompat.getColor(mResources, R.color.default_background, null));
+        return getPrefs().getInt(BG_COLOR, ResourcesCompat.getColor(mResources, R.color.default_background, null));
     }
 
     @Override
@@ -167,7 +167,7 @@ public class WidgetSettings extends ChangeableSharedPreferences implements Widge
     @Override
     public BitmapTransform.RotateDirection getIconsRotate() {
         return BitmapTransform.RotateDirection
-                .valueOf(mPrefs.getString(ICONS_ROTATE, BitmapTransform.RotateDirection.NONE.name()));
+                .valueOf(getPrefs().getString(ICONS_ROTATE, BitmapTransform.RotateDirection.NONE.name()));
     }
 
     @Override
@@ -177,7 +177,7 @@ public class WidgetSettings extends ChangeableSharedPreferences implements Widge
 
     @Override
     public boolean isTitlesHide() {
-        return mPrefs.getBoolean(TITLES_HIDE, false);
+        return getPrefs().getBoolean(TITLES_HIDE, false);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class WidgetSettings extends ChangeableSharedPreferences implements Widge
 
     @Override
     public int getWidgetButton1() {
-        return mPrefs.getInt(WIDGET_BUTTON_1, WidgetInterface.WIDGET_BUTTON_INCAR);
+        return getPrefs().getInt(WIDGET_BUTTON_1, WidgetInterface.WIDGET_BUTTON_INCAR);
     }
 
     @Override
@@ -197,7 +197,7 @@ public class WidgetSettings extends ChangeableSharedPreferences implements Widge
 
     @Override
     public int getWidgetButton2() {
-        return mPrefs.getInt(WIDGET_BUTTON_2, WidgetInterface.WIDGET_BUTTON_SETTINGS);
+        return getPrefs().getInt(WIDGET_BUTTON_2, WidgetInterface.WIDGET_BUTTON_SETTINGS);
     }
 
     @Override

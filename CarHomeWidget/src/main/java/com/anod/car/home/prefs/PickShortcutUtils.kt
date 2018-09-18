@@ -77,7 +77,7 @@ class PickShortcutUtils(private val configurationFragment: ConfigurationPreferen
     fun refreshPreference(pref: ShortcutPreference) {
         val cellId = pref.shortcutPosition
         val info = model.get(cellId)
-        pref.setAppTheme(activity.app.themeIdx)
+        pref.setAppTheme(activity.theme.themeIdx)
         if (info == null) {
             pref.setTitle(R.string.set_shortcut)
             pref.setIconResource(R.drawable.ic_add_shortcut_holo)

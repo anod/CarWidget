@@ -4,7 +4,20 @@
 	<style name="AppThemeHolo" parent="Theme.MaterialComponents">
 		<item name="colorPrimary">@color/secondaryColor</item>
 		<item name="colorPrimaryDark">@color/secondaryDarkColor</item>
-		<item name="colorAccent">@color/secondaryLightColor</item>
+		<item name="activityBackground">@color/secondaryColor</item>
+		<item name="colorAccent">@color/material_bluegray_300</item>
+	</style>
+
+	<style name="AlertHolo" parent="Theme.MaterialComponents.Dialog.Alert">
+		<item name="colorPrimary">@color/secondaryColor</item>
+		<item name="colorPrimaryDark">@color/secondaryDarkColor</item>
+		<item name="colorAccent">@color/material_bluegray_300</item>
+	</style>
+
+	<style name="DialogHolo" parent="Theme.MaterialComponents.Dialog">
+		<item name="colorPrimary">@color/secondaryColor</item>
+		<item name="colorPrimaryDark">@color/secondaryDarkColor</item>
+		<item name="colorAccent">@color/material_bluegray_300</item>
 	</style>
 
 	<style name="AppThemeHolo.NoActionBar" parent="AppThemeHolo" >

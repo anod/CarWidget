@@ -15,6 +15,8 @@ import android.telephony.TelephonyManager
 import android.view.WindowManager
 import androidx.collection.SimpleArrayMap
 import com.anod.car.home.app.AppIconLoader
+import com.anod.car.home.prefs.model.AppSettings
+import com.anod.car.home.prefs.model.AppTheme
 
 /**
  * @author alex
@@ -24,6 +26,9 @@ class AppComponent(val application: CarWidgetApplication) {
     private var _appListCache: AppsList? = null
     private var _iconThemesCache: AppsList? = null
     private var _appIconLoader: AppIconLoader? = null
+
+    val appSettings = AppSettings(application)
+    var theme = AppTheme(appSettings.theme)
 
     val appWidgetManager: AppWidgetManager
         get() = application.getSystemService(APPWIDGET_SERVICE) as AppWidgetManager

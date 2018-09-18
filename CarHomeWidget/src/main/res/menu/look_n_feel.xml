@@ -49,6 +49,11 @@
         app:showAsAction="never">
     </item>
     <item
+        android:id="@+id/skin_info"
+        android:title="@string/info"
+        app:showAsAction="never"
+    />
+    <item
         android:id="@+id/more"
         android:title="@string/more"
         app:showAsAction="never">

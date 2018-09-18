@@ -67,8 +67,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name="com.anod.car.home.prefs.ShortcutEditActivity"
-            android:theme="@style/DialogTheme.Light" />
+            android:name="com.anod.car.home.prefs.ShortcutEditActivity" />
         <activity
             android:name="com.anod.car.home.prefs.AllAppsActivity"
             android:theme="@style/AppListTheme" />
@@ -165,8 +164,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".prefs.BluetoothDeviceActivity"
-            android:label="@string/pref_blutooth_device_title"
-            android:theme="@style/DialogTheme" />
+            android:label="@string/pref_blutooth_device_title" />
         <activity
             android:name="com.anod.car.home.prefs.CarWidgetShortcutsPicker"
             android:finishOnCloseSystemDialogs="true"
@@ -271,13 +269,6 @@
             android:launchMode="singleTop"
             android:taskAffinity=""
             android:theme="@style/BrightnessTheme" />
-
-        <activity
-            android:name=".acra.CrashDialog"
-            android:excludeFromRecents="true"
-            android:finishOnTaskLaunch="true"
-            android:launchMode="singleInstance"
-            android:theme="@style/CrashReportDialog" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -23,7 +23,6 @@
 
 	<color name="font_green">#ff669900</color>
 
-<!-- Wizard -->
 	<color name="step_pager_previous_tab_color">#4490a4ae</color>
 	<color name="step_pager_selected_tab_color">#ff37474f</color>
 	<color name="step_pager_selected_last_tab_color">#5b5b5b</color>
@@ -36,18 +35,14 @@
 
 	<color name="bright_foreground_disabled_grey">#bdbdbd</color>
 
-    <!-- colorPrimary -->
-    <color name="material_bluegray_600">#546e7a</color>
-    <!-- colorPrimaryDark -->
+	<color name="material_bluegray_600">#546e7a</color>
     <color name="material_bluegray_800">#37474f</color>
-    <!-- colorAccent -->
     <color name="material_bluegray_300">#90a4ae</color>
 	<color name="material_grey_400">#BDBDBD</color>
-	<!-- this is needed as preference_category_material layout is using this color as the text color -->
+	<color name="primaryTextColor">#ffffff</color>
 
 	<color name="secondaryColor">#212121</color>
 	<color name="secondaryLightColor">#484848</color>
 	<color name="secondaryDarkColor">#000000</color>
-	<color name="primaryTextColor">#ffffff</color>
 	<color name="secondaryTextColor">#ffffff</color>
 </resources>

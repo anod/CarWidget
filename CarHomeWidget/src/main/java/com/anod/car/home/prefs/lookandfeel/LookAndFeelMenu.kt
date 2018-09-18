@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.NumberPicker
 
 import com.anod.car.home.R
+import com.anod.car.home.app.App
 import com.anod.car.home.backup.ui.FragmentBackup
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.ConfigurationActivity
@@ -22,7 +23,10 @@ import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog
 import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.utils.FastBitmapDrawable
+import com.anod.car.home.utils.HtmlCompat
 import com.anod.car.home.utils.Utils
+import info.anodsplace.framework.app.DialogMessage
+import info.anodsplace.framework.app.DialogSingleChoice
 
 /**
  * @author alex
@@ -33,111 +37,113 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
     private val appWidgetId: Int = activity.appWidgetId
     private var menuTileColor: MenuItem? = null
     private var initialized: Boolean = false
+    private var menuInfo: MenuItem? = null
 
     fun onCreateOptionsMenu(menu: Menu) {
         val menuInflater = activity.menuInflater
         menuInflater.inflate(R.menu.look_n_feel, menu)
 
         menuTileColor = menu.findItem(R.id.tile_color)
+        menuInfo = menu.findItem(R.id.skin_info)
         menu.findItem(R.id.icons_mono).isChecked = activity.prefs.isIconsMono
         initialized = true
-        refreshTileColorButton()
+        refresh()
     }
 
     fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
         val prefs = WidgetStorage.load(activity, appWidgetId)
-        val itemId = menuItem.itemId
-        if (itemId == R.id.apply) {
-            prefs.skin = activity.currentSkinItem.value
-            prefs.apply()
-            activity.beforeFinish()
-            activity.finish()
-            return true
-        }
-        if (menuItem.itemId == R.id.menu_number) {
-            createNumberPickerDialog().show()
-            return true
-        }
-        if (itemId == R.id.tile_color) {
-            val value = prefs.tileColor
-            val d = CarHomeColorPickerDialog
-                    .newInstance(value!!, true, activity)
-            d.setOnColorSelectedListener { color ->
-                prefs.tileColor = color
+        return when (menuItem.itemId) {
+            R.id.apply -> {
+                prefs.skin = activity.currentSkinItem.value
                 prefs.apply()
-                showTileColorButton()
-                activity.refreshSkinPreview()
+                activity.beforeFinish()
+                activity.finish()
+                return true
             }
-            d.show(activity.supportFragmentManager, "tileColor")
-            return true
-        }
-        if (itemId == R.id.more) {
-            val intent = ConfigurationActivity
-                    .createFragmentIntent(activity, ConfigurationLook::class.java)
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            activity.startActivityForResult(intent, REQUEST_LOOK_ACTIVITY)
-            return true
-        }
-        if (itemId == R.id.bg_color) {
-            val value = activity.prefs.backgroundColor
-            val d = CarHomeColorPickerDialog
-                    .newInstance(value, true, activity)
-            d.setOnColorSelectedListener { color ->
-                prefs.backgroundColor = color
-                prefs.apply()
-                activity.refreshSkinPreview()
+            R.id.menu_number -> {
+                createNumberPickerDialog().show()
+                return true
             }
-            d.show(activity.supportFragmentManager, "bgColor")
-            return true
-        }
-        if (itemId == R.id.icons_theme) {
-            val mainIntent = Intent(activity, IconThemesActivity::class.java)
-            mainIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            Utils.startActivityForResultSafetly(mainIntent, REQUEST_PICK_ICON_THEME, activity)
-
-            return true
-        }
-        if (itemId == R.id.icons_mono) {
-            activity.prefs.isIconsMono = !menuItem.isChecked
-            activity.persistPrefs()
-            menuItem.isChecked = !menuItem.isChecked
-            activity.refreshSkinPreview()
-            return true
-        }
-        if (itemId == R.id.icons_scale) {
-            val builder = AlertDialog.Builder(activity)
-            val titles = activity.resources
-                    .getStringArray(R.array.icon_scale_titles)
-            val values = activity.resources
-                    .getStringArray(R.array.icon_scale_values)
-            var idx = -1
-            for (i in values.indices) {
-                if (activity.prefs.iconsScale == values[i]) {
-                    idx = i
-                    break
+            R.id.tile_color -> {
+                val value = prefs.tileColor
+                val d = CarHomeColorPickerDialog
+                        .newInstance(value!!, true, activity)
+                d.setOnColorSelectedListener { color ->
+                    prefs.tileColor = color
+                    prefs.apply()
+                    showTileColorButton()
+                    activity.refreshSkinPreview()
                 }
+                d.show(activity.supportFragmentManager, "tileColor")
+                return true
             }
-            builder.setTitle(R.string.pref_scale_icon)
-            builder.setSingleChoiceItems(titles, idx) { dialog, item ->
-                activity.prefs.setIconsScaleString(values[item])
+            R.id.more -> {
+                val intent = ConfigurationActivity
+                        .createFragmentIntent(activity, ConfigurationLook::class.java)
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                activity.startActivityForResult(intent, REQUEST_LOOK_ACTIVITY)
+                return true
+            }
+            R.id.bg_color -> {
+                val value = activity.prefs.backgroundColor
+                val d = CarHomeColorPickerDialog.newInstance(value, true, activity)
+                d.setOnColorSelectedListener { color ->
+                    prefs.backgroundColor = color
+                    prefs.apply()
+                    activity.refreshSkinPreview()
+                }
+                d.show(activity.supportFragmentManager, "bgColor")
+                return true
+            }
+            R.id.icons_theme -> {
+                val mainIntent = Intent(activity, IconThemesActivity::class.java)
+                mainIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                Utils.startActivityForResultSafetly(mainIntent, REQUEST_PICK_ICON_THEME, activity)
+                return true
+            }
+            R.id.icons_mono -> {
+                activity.prefs.isIconsMono = !menuItem.isChecked
                 activity.persistPrefs()
-                dialog.dismiss()
+                menuItem.isChecked = !menuItem.isChecked
                 activity.refreshSkinPreview()
+                return true
             }
-            builder.create().show()
-            return true
+            R.id.icons_scale -> {
+                val values = activity.resources.getStringArray(R.array.icon_scale_values)
+                val scale = activity.prefs.iconsScale
+                val idx = values.indexOf(scale)
+                val style = App.theme(activity).alert
+                DialogSingleChoice(activity, style, R.string.pref_scale_icon, R.array.icon_scale_titles, idx) {
+                    dialog, which ->
+                    activity.prefs.setIconsScaleString(values[which])
+                    activity.persistPrefs()
+                    dialog.dismiss()
+                    activity.refreshSkinPreview()
+                }.show()
+                return true
+            }
+            R.id.backup -> {
+                val intent = ConfigurationActivity.createFragmentIntent(activity, FragmentBackup::class.java)
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                activity.startActivity(intent)
+                return true
+            }
+            R.id.skin_info -> {
+                val style = App.theme(activity).alert
+                DialogMessage(activity, style, R.string.info, HtmlCompat.fromHtml(activity.getString(R.string.skin_info_bbb))) {
+                    it.setCancelable(true)
+                    it.setPositiveButton(android.R.string.ok) { _, _ ->  }
+                }.show()
+                return true
+            }
+            else -> false
         }
-        if (itemId == R.id.backup) {
-            val intent = ConfigurationActivity.createFragmentIntent(activity, FragmentBackup::class.java)
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            activity.startActivity(intent)
-        }
-        return false
     }
 
-    fun refreshTileColorButton() {
+    fun refresh() {
         if (initialized) {
             showTileColorButton()
+            menuInfo!!.isVisible = activity.currentSkinItem.value == WidgetSettings.SKIN_BBB
         }
     }
 

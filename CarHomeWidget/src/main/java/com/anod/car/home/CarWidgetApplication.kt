@@ -39,14 +39,12 @@ import org.acra.annotation.AcraNotification
         resSendWithCommentButtonText = R.string.crash_dialog_report_comment_button,
         resCommentPrompt = R.string.crash_dialog_comment)
 class CarWidgetApplication : Application(), ApplicationInstance {
-    var themeIdx: Int = 0
 
-    var appComponent: AppComponent? = null
-        private set
+    val appComponent: AppComponent by lazy { AppComponent(this) }
 
     override val nightMode: Int
         get() {
-            return if (themeIdx == AppTheme.THEME_HOLO) {
+            return if (appComponent.appSettings.theme == AppTheme.dark) {
                 AppCompatDelegate.MODE_NIGHT_YES
             } else {
                 AppCompatDelegate.MODE_NIGHT_NO
@@ -62,9 +60,7 @@ class CarWidgetApplication : Application(), ApplicationInstance {
         super.onCreate()
         AppLog.setDebug(BuildConfig.DEBUG, "CarWidget")
 
-        themeIdx = AppSettings.create(this).theme
         AppCompatDelegate.setDefaultNightMode(nightMode)
-        appComponent = AppComponent(this)
         createNotificationChannels()
     }
 

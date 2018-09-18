@@ -10,7 +10,8 @@
         android:id="@+id/color_dialog_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize">
+        android:minHeight="?attr/actionBarSize"
+        style="@style/Widget.MaterialComponents.Toolbar">
 
         <Button
             android:id="@+id/hex_switch"

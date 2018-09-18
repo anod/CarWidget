@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/app_preferences"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Chip" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
 
     <Button
         android:id="@+id/buttonAppTheme"
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/information_title"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Chip" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
 
     <Button
         android:id="@+id/buttonVersion"

@@ -50,7 +50,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
 
     @Override
     public boolean isInCarEnabled() {
-        return mPrefs.getBoolean(INCAR_MODE_ENABLED, false);
+        return getPrefs().getBoolean(INCAR_MODE_ENABLED, false);
     }
 
     @Override
@@ -60,12 +60,12 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
 
     @Override
     public boolean isAutoSpeaker() {
-        return mPrefs.getBoolean(AUTO_SPEAKER, false);
+        return getPrefs().getBoolean(AUTO_SPEAKER, false);
     }
 
     @Override
     public ArrayMap<String, String> getBtDevices() {
-        String addrStr = mPrefs.getString(BLUETOOTH_DEVICE_ADDRESSES, null);
+        String addrStr = getPrefs().getString(BLUETOOTH_DEVICE_ADDRESSES, null);
         if (addrStr == null) {
             return null;
         }
@@ -90,62 +90,62 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
 
     @Override
     public boolean isPowerRequired() {
-        return mPrefs.getBoolean(POWER_REQUIRED, false);
+        return getPrefs().getBoolean(POWER_REQUIRED, false);
     }
 
     @Override
     public boolean isHeadsetRequired() {
-        return mPrefs.getBoolean(HEADSET_REQUIRED, false);
+        return getPrefs().getBoolean(HEADSET_REQUIRED, false);
     }
 
     @Override
     public boolean isBluetoothRequired() {
-        return mPrefs.getString(BLUETOOTH_DEVICE_ADDRESSES, null) != null;
+        return getPrefs().getString(BLUETOOTH_DEVICE_ADDRESSES, null) != null;
     }
 
     @Override
     public boolean isDisableBluetoothOnPower() {
-        return mPrefs.getBoolean(POWER_BT_DISABLE, false);
+        return getPrefs().getBoolean(POWER_BT_DISABLE, false);
     }
 
     @Override
     public boolean isEnableBluetoothOnPower() {
-        return mPrefs.getBoolean(POWER_BT_ENABLE, false);
+        return getPrefs().getBoolean(POWER_BT_ENABLE, false);
     }
 
     @Override
     public boolean isDisableScreenTimeout() {
-        return mPrefs.getBoolean(SCREEN_TIMEOUT, true);
+        return getPrefs().getBoolean(SCREEN_TIMEOUT, true);
     }
 
     @Override
     public boolean isAdjustVolumeLevel() {
-        return mPrefs.getBoolean(ADJUST_VOLUME_LEVEL, false);
+        return getPrefs().getBoolean(ADJUST_VOLUME_LEVEL, false);
     }
 
     @Override
     public boolean isActivityRequired() {
-        return mPrefs.getBoolean(ACTIVITY_RECOGNITION, false);
+        return getPrefs().getBoolean(ACTIVITY_RECOGNITION, false);
     }
 
     @Override
     public int getMediaVolumeLevel() {
-        return mPrefs.getInt(MEDIA_VOLUME_LEVEL, InCarInterface.DEFAULT_VOLUME_LEVEL);
+        return getPrefs().getInt(MEDIA_VOLUME_LEVEL, InCarInterface.DEFAULT_VOLUME_LEVEL);
     }
 
     @Override
     public int getCallVolumeLevel() {
-        return mPrefs.getInt(CALL_VOLUME_LEVEL, InCarInterface.DEFAULT_VOLUME_LEVEL);
+        return getPrefs().getInt(CALL_VOLUME_LEVEL, InCarInterface.DEFAULT_VOLUME_LEVEL);
     }
 
     @Override
     public boolean isEnableBluetooth() {
-        return mPrefs.getBoolean(BLUETOOTH, false);
+        return getPrefs().getBoolean(BLUETOOTH, false);
     }
 
     @Override
     public String getBrightness() {
-        return mPrefs.getString(BRIGHTNESS, InCarInterface.BRIGHTNESS_DISABLED);
+        return getPrefs().getString(BRIGHTNESS, InCarInterface.BRIGHTNESS_DISABLED);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
 
     @Override
     public boolean isCarDockRequired() {
-        return mPrefs.getBoolean(CAR_DOCK_REQUIRED, false);
+        return getPrefs().getBoolean(CAR_DOCK_REQUIRED, false);
     }
 
     @Override
@@ -220,7 +220,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
 
     @Override
     public String getDisableWifi() {
-        return mPrefs.getString(ADJUST_WIFI, InCarInterface.WIFI_NOACTION);
+        return getPrefs().getString(ADJUST_WIFI, InCarInterface.WIFI_NOACTION);
     }
 
     @Override
@@ -230,7 +230,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
 
     @Override
     public boolean isActivateCarMode() {
-        return mPrefs.getBoolean(ACTIVATE_CAR_MODE, false);
+        return getPrefs().getBoolean(ACTIVATE_CAR_MODE, false);
     }
 
     @Override
@@ -240,7 +240,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
 
     @Override
     public String getAutoAnswer() {
-        return mPrefs.getString(AUTO_ANSWER, InCarInterface.AUTOANSWER_DISABLED);
+        return getPrefs().getString(AUTO_ANSWER, InCarInterface.AUTOANSWER_DISABLED);
     }
 
     @Override
@@ -250,7 +250,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
 
     @Override
     public ComponentName getAutorunApp() {
-        String autorunAppString = mPrefs.getString(AUTORUN_APP, null);
+        String autorunAppString = getPrefs().getString(AUTORUN_APP, null);
 
         if (autorunAppString != null) {
             return Utils.INSTANCE.stringToComponent(autorunAppString);
@@ -265,7 +265,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
 
     @Override
     public boolean isSamsungDrivingMode() {
-        return mPrefs.getBoolean(SAMSUNG_DRIVING_MODE, false);
+        return getPrefs().getBoolean(SAMSUNG_DRIVING_MODE, false);
     }
 
     @Override
@@ -275,7 +275,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
 
     @Override
     public boolean isDisableScreenTimeoutCharging() {
-        return mPrefs.getBoolean(SCREEN_TIMEOUT_CHARGING, false);
+        return getPrefs().getBoolean(SCREEN_TIMEOUT_CHARGING, false);
     }
 
     @Override
@@ -286,7 +286,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
     @Override
     public int getScreenOrientation() {
         // PreferenceList stores values as String
-        String orientation = mPrefs.getString(SCREEN_ORIENTATION, String.valueOf(ScreenOrientation.DISABLED));
+        String orientation = getPrefs().getString(SCREEN_ORIENTATION, String.valueOf(ScreenOrientation.DISABLED));
         return Integer.parseInt(orientation);
     }
 
@@ -297,7 +297,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
 
     @Override
     public boolean isHotspotOn() {
-        return mPrefs.getBoolean(HOTSPOT, false);
+        return getPrefs().getBoolean(HOTSPOT, false);
     }
 
     @Override
@@ -318,7 +318,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
         writer.name(POWER_BT_ENABLE).value(isEnableBluetoothOnPower());
         writer.name(POWER_BT_DISABLE).value(isDisableBluetoothOnPower());
 
-        String addressStr = mPrefs.getString(BLUETOOTH_DEVICE_ADDRESSES, null);
+        String addressStr = getPrefs().getString(BLUETOOTH_DEVICE_ADDRESSES, null);
         if (addressStr != null) {
             writer.name(BLUETOOTH_DEVICE_ADDRESSES).value(addressStr);
         }
@@ -333,14 +333,14 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
         writer.name(AUTO_ANSWER).value(getAutoAnswer());
         writer.name(ADJUST_WIFI).value(getDisableWifi());
         writer.name(ACTIVATE_CAR_MODE).value(isActivateCarMode());
-        String autoRunAppString = mPrefs.getString(AUTORUN_APP, null);
+        String autoRunAppString = getPrefs().getString(AUTORUN_APP, null);
         if (autoRunAppString != null) {
             writer.name(AUTORUN_APP).value(autoRunAppString);
         }
         if (SamsungDrivingMode.hasMode()) {
             writer.name(SAMSUNG_DRIVING_MODE).value(isSamsungDrivingMode());
         }
-        String screenOrientation = mPrefs.getString(SCREEN_ORIENTATION, String.valueOf(ScreenOrientation.DISABLED));
+        String screenOrientation = getPrefs().getString(SCREEN_ORIENTATION, String.valueOf(ScreenOrientation.DISABLED));
         writer.name(SCREEN_ORIENTATION).value(screenOrientation);
         writer.name(HOTSPOT).value(isHotspotOn());
         writer.endObject();

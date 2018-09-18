@@ -5,12 +5,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.AsyncTask
 import android.os.Bundle
-import androidx.collection.ArrayMap
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -33,11 +31,8 @@ import info.anodsplace.framework.app.ApplicationContext
  * @date 6/6/14
  */
 class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickListener {
-
     private var bluetoothReceiver: BroadcastReceiver? = null
-
-    private val devicesList: ListView  by lazy { findViewById<ListView>(android.R.id.list) }
-
+    private val devicesList: ListView  by lazy { findViewById<ListView>(R.id.deviceList) }
     private val listAdapter: DeviceAdapter by lazy { DeviceAdapter(this) }
 
     private val isBroadcastServiceRequired: Boolean
@@ -55,7 +50,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
         devicesList.divider = ColorDrawable(Color.TRANSPARENT)
         devicesList.dividerHeight = resources.getDimensionPixelOffset(R.dimen.preference_item_margin)
 
-        devicesList.emptyView = findViewById(android.R.id.empty)
+        devicesList.emptyView = findViewById(R.id.empty)
         devicesList.adapter = listAdapter
 
         initSwitch()
@@ -81,9 +76,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
 
         val device = listAdapter.getItem(position)
-
-        val checkbox = view.findViewById<View>(android.R.id.checkbox) as CheckBox
-
+        val checkbox = view.findViewById<CheckBox>(R.id.checkBox)
         val wasChecked = checkbox.isChecked
 
         if (wasChecked) {
@@ -126,7 +119,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
     }
 
     private fun initSwitch() {
-        val btSwitch = findViewById<View>(android.R.id.toggle) as Switch
+        val btSwitch = findViewById<Switch>(R.id.switch1)
         btSwitch.isChecked = Bluetooth.getState() == BluetoothAdapter.STATE_ON
         btSwitch.setOnClickListener {
             bluetoothReceiver = BluetoothStateReceiver(this)
@@ -218,15 +211,15 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
     }
 
 
-    private class DeviceAdapter(context: Context) : ArrayAdapter<Device>(context, R.layout.bluetooth_device_item, android.R.id.title) {
+    private class DeviceAdapter(context: Context) : ArrayAdapter<Device>(context, R.layout.list_item_bluetooth_device, R.id.deviceName) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = super.getView(position, convertView, parent)
             val d = getItem(position)
-            val checkbox = view.findViewById<View>(android.R.id.checkbox) as CheckBox
+            val checkbox = view.findViewById<CheckBox>(R.id.checkBox)
             checkbox.isChecked = d!!.selected
 
-            val summary = view.findViewById<View>(android.R.id.summary) as TextView
+            val summary = view.findViewById<View>(R.id.deviceType) as TextView
             summary.text = d.btClassName
             return view
         }

@@ -17,8 +17,6 @@ import androidx.fragment.app.Fragment
 import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.prefs.MusicAppSettingsActivity
-import com.anod.car.home.prefs.model.AppSettings
-import com.anod.car.home.prefs.model.AppTheme
 import com.anod.car.home.utils.IntentUtils
 import com.anod.car.home.utils.Utils
 import info.anodsplace.framework.AppLog
@@ -79,21 +77,22 @@ class AboutFragment : Fragment() {
     }
 
     private fun createThemesDialog(): AlertDialog {
-        return DialogSingleChoice(context!!, R.style.DialogTheme, R.string.choose_a_theme, R.array.app_themes, App.get(context).themeIdx) {
+        val style = App.theme(context!!).dialog
+        return DialogSingleChoice(context!!, style, R.string.choose_a_theme, R.array.app_themes, App.theme(context!!).themeIdx) {
             _, which ->
 
-            val appSettings = AppSettings.create(context!!)
-            appSettings.setAppTheme(which)
+            val appSettings = App.provide(context!!).appSettings
+            appSettings.theme = which
             appSettings.apply()
-            App.get(context).themeIdx = which
-            AppCompatDelegate.setDefaultNightMode(App.get(context).nightMode)
-            activity!!.setTheme(AppTheme.getMainResource(which))
+            AppCompatDelegate.setDefaultNightMode(App.get(context!!).nightMode)
+            activity!!.setTheme(App.theme(context!!).mainResource)
             activity!!.recreate()
         }.create()
     }
 
     private fun onCarDockAppClick() {
-        DialogCustom(context!!, R.style.DialogTheme, R.string.default_car_dock_app, R.layout.default_car_dock_app) { view, dialog ->
+        val style = App.theme(context!!).alert
+        DialogCustom(context!!, style, R.string.default_car_dock_app, R.layout.default_car_dock_app) { view, dialog ->
 
             dialog.setCancelable(true)
 
@@ -110,7 +109,7 @@ class AboutFragment : Fragment() {
     }
 
     private fun renderMusicApp(): String {
-        val musicAppCmp = AppSettings.create(context).musicApp
+        val musicAppCmp = App.provide(context!!).appSettings.musicApp
         return if (musicAppCmp == null) {
             context!!.getString(R.string.show_choice)
         } else {

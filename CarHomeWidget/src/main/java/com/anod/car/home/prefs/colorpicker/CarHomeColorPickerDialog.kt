@@ -3,9 +3,7 @@ package com.anod.car.home.prefs.colorpicker
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import androidx.appcompat.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +15,7 @@ import com.android.colorpicker.ColorPickerDialog
 import com.android.colorpicker.ColorPickerPalette
 import com.android.colorpicker.ColorPickerSwatch
 import com.anod.car.home.R
+import com.anod.car.home.app.App
 import com.anod.car.home.utils.AlphaPatternDrawable
 import com.anod.car.home.utils.ColorUtils
 
@@ -94,7 +93,7 @@ class CarHomeColorPickerDialog : ColorPickerDialog() {
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return Dialog(activity!!, R.style.DialogTheme)
+        return Dialog(activity!!, App.theme(activity!!).alert)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -212,8 +211,7 @@ class CarHomeColorPickerDialog : ColorPickerDialog() {
         fun newInstance(selectedColor: Int,
                         alphaSliderVisible: Boolean, context: Context): CarHomeColorPickerDialog {
             val ret = CarHomeColorPickerDialog()
-            ret.initialize(ColorUtils.colorChoice(context, R.array.color_picker_values), selectedColor,
-                    alphaSliderVisible)
+            ret.initialize(ColorUtils.colorChoice(context, R.array.color_picker_values), selectedColor, alphaSliderVisible)
             return ret
         }
     }

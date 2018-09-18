@@ -1,5 +1,5 @@
 <resources>
-    <attr name="activityBgColor" format="reference" />
+    <attr name="activityBackground" format="reference" />
     <attr name="textAppearanceMediumBackgroundInverse" format="reference" />
 
     <declare-styleable name="TwoLineButton">

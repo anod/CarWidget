@@ -61,10 +61,10 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
     private fun createTrialDialog(): Dialog {
         if (Utils.isProInstalled(activity!!)) {
-            return TrialDialogs.buildProInstalledDialog(activity)
+            return TrialDialogs.buildProInstalledDialog(activity!!)
         } else {
             trialMessageShown = true
-            return TrialDialogs.buildTrialDialog(trialsLeft, activity)
+            return TrialDialogs.buildTrialDialog(trialsLeft, activity!!)
         }
     }
 

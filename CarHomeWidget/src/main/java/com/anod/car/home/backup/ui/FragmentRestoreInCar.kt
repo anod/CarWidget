@@ -56,7 +56,7 @@ class FragmentRestoreInCar : androidx.fragment.app.Fragment(), RestoreTask.Resto
         super.onViewCreated(view, savedInstanceState)
 
         if (version.isFree) {
-            restoreInCar!!.setOnClickListener { TrialDialogs.buildProOnlyDialog(context).show() }
+            restoreInCar!!.setOnClickListener { TrialDialogs.buildProOnlyDialog(context!!).show() }
         } else {
             restoreInCar!!.setOnClickListener {
                 val uri: Uri
@@ -92,7 +92,7 @@ class FragmentRestoreInCar : androidx.fragment.app.Fragment(), RestoreTask.Resto
             }
             R.id.menu_download_from_cloud -> {
                 if (version.isFree) {
-                    TrialDialogs.buildProOnlyDialog(context).show()
+                    TrialDialogs.buildProOnlyDialog(context!!).show()
                 } else {
                     download()
                 }

@@ -1,6 +1,7 @@
 package com.anod.car.home.prefs
 
 import com.anod.car.home.R
+import com.anod.car.home.app.App
 import com.anod.car.home.app.MusicAppsActivity
 import com.anod.car.home.model.AppsList
 import com.anod.car.home.prefs.model.AppSettings
@@ -28,7 +29,7 @@ class MusicAppSettingsActivity : MusicAppsActivity() {
         get() = R.layout.list_footer_music_app_settings
 
     override fun onEntryClick(position: Int, entry: AppsList.Entry) {
-        val appSettings = AppSettings.create(this)
+        val appSettings = App.provide(this).appSettings
         if (position == 0) {
             appSettings.musicApp = null
         } else {

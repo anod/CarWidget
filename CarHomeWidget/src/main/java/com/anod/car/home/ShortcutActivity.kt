@@ -8,6 +8,7 @@ import android.media.AudioManager
 import android.os.Bundle
 import android.view.KeyEvent
 import android.widget.Toast
+import com.anod.car.home.app.App
 
 import com.anod.car.home.app.MusicAppChoiceActivity
 import com.anod.car.home.appwidget.ShortcutPendingIntent
@@ -49,7 +50,7 @@ class ShortcutActivity : Activity() {
             if (audio.isMusicActive) {
                 MusicUtils.sendKeyEvent(keyCode, this)
             } else {
-                val musicCmp = AppSettings.create(this).musicApp
+                val musicCmp = App.provide(this).appSettings.musicApp
                 if (musicCmp == null) {
                     startActivity(Intent(this, MusicAppChoiceActivity::class.java))
                 } else {

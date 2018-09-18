@@ -262,5 +262,6 @@
     <string name="mode_detector_channel">InCar detector</string>
 
     <string name="app_preferences">App Preferences</string>
+    <string name="title">Title</string>
     <string name="info">Info</string>
 </resources>

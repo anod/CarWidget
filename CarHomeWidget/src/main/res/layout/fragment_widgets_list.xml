@@ -42,7 +42,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        card_view:cardBackgroundColor="@color/panel_background_grey"
         card_view:cardCornerRadius="8dp"
         card_view:cardPreventCornerOverlap="true"
         card_view:contentPadding="16dp">

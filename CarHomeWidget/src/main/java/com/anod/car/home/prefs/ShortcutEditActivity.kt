@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.Toast
 
 import com.anod.car.home.R
+import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.model.AbstractShortcuts
 import com.anod.car.home.model.LauncherSettings
 import com.anod.car.home.model.NotificationShortcutsModel
@@ -33,7 +34,7 @@ import com.anod.car.home.utils.ShortcutPicker
 import com.anod.car.home.utils.UtilitiesBitmap
 import com.anod.car.home.utils.Utils
 
-class ShortcutEditActivity : AppCompatActivity() {
+class ShortcutEditActivity : CarWidgetActivity() {
 
     private var customIcon: Bitmap? = null
 

@@ -68,9 +68,8 @@ class WizardActivity : CarWidgetActivity() {
         }
     }
 
-    override fun getAppThemeRes(theme: Int): Int {
-        return AppTheme.getNoActionBarResource(theme)
-    }
+    override val appThemeRes: Int
+        get() = theme.noActionBarResource
 
     private fun finishWizard() {
         this@WizardActivity.finish()

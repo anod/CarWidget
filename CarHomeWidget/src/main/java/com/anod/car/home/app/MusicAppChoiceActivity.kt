@@ -34,7 +34,7 @@ class MusicAppChoiceActivity : MusicAppsActivity() {
         )
 
         if (defaultApp.isChecked) {
-            val appSettings = AppSettings.create(this)
+            val appSettings = App.provide(this).appSettings
             appSettings.musicApp = musicCmp
             appSettings.apply()
         }
