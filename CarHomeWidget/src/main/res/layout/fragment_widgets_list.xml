@@ -21,6 +21,7 @@
             android:layout_marginTop="1dp"
             android:background="#f4511e"
             android:paddingEnd="42dp"
+            android:paddingStart="8dp"
             android:text="@string/no_active_widget"
             android:textSize="16sp" />
 

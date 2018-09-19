@@ -9,33 +9,33 @@ import android.view.WindowManager
  * @author alex
  * @date 2014-10-11
  */
-class ScreenOrientation(private val mContext: Context, private val mWindowManager: WindowManager) {
+class ScreenOrientation(private val mContext: Context, private val windowManager: WindowManager) {
 
-    private var mLayoutParams: WindowManager.LayoutParams? = null
-    private var mOverlayView: View? = null
-    private var mViewAdded: Boolean = false
+    private var layoutParams: WindowManager.LayoutParams? = null
+    private var overlayView: View? = null
+    private var viewAdded: Boolean = false
 
     fun set(orientation: Int) {
         if (orientation == ScreenOrientation.DISABLED) {
-            if (mViewAdded) {
-                mWindowManager.removeView(mOverlayView)
+            if (viewAdded) {
+                windowManager.removeView(overlayView)
             }
-            mOverlayView = null
-            mViewAdded = false
-            mLayoutParams = null
+            overlayView = null
+            viewAdded = false
+            layoutParams = null
             return
         }
-        mOverlayView = View(mContext)
-        mLayoutParams = createLayoutParams()
+        overlayView = View(mContext)
+        layoutParams = createLayoutParams()
 
-        mLayoutParams!!.screenOrientation = orientation
+        layoutParams!!.screenOrientation = orientation
 
-        if (mViewAdded) {
-            mWindowManager.updateViewLayout(this.mOverlayView, this.mLayoutParams)
+        if (viewAdded) {
+            windowManager.updateViewLayout(this.overlayView, this.layoutParams)
             return
         }
-        mWindowManager.addView(mOverlayView, mLayoutParams)
-        mViewAdded = true
+        windowManager.addView(overlayView, layoutParams)
+        viewAdded = true
     }
 
     private fun createLayoutParams(): WindowManager.LayoutParams {

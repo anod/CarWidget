@@ -77,7 +77,6 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     private fun initInCar() {
         val incar = InCarStorage.load(activity)
 
-
         val incarSwitch = findPreference(InCarSettings.INCAR_MODE_ENABLED)
 
         val allWidgetIds = WidgetHelper.getAllWidgetIds(activity!!)
