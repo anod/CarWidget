@@ -1,30 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center_vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Notification"
-    android:orientation="horizontal" >
-
-    <ImageView
-        android:layout_width="@dimen/notification_icon_size"
-        android:layout_height="@dimen/notification_icon_size"
-        android:layout_weight="0.0"
-        android:gravity="center"
-        android:scaleType="centerInside"
-        style="@style/Notification.Icon"
-        android:src="@drawable/ic_stat_incar" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="0.0dip"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1.0"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/notification_text_padding"
-        android:paddingRight="@dimen/notification_text_padding"
-    >
+        android:orientation="vertical">
 
         <TextView
             android:id="@android:id/title"
@@ -36,7 +24,7 @@
             android:fadingEdge="horizontal"
             android:focusable="true"
             android:maxLines="1"
-            android:text="@string/incar_mode_enabled"/>
+            android:text="@string/incar_mode_enabled" />
 
         <TextView
             android:id="@android:id/text1"
@@ -52,30 +40,26 @@
 
     <ImageButton
         android:id="@+id/btn0"
+        style="@style/Notification.Button"
         android:layout_width="@dimen/notification_button"
         android:layout_height="@dimen/notification_button"
         android:scaleType="centerInside"
-        style="@style/Notification.Button"
-        android:src="@drawable/ic_stat_incar"
-        app:srcCompat="@drawable/ic_launcher_application"
-    />
+        app:srcCompat="@drawable/ic_launcher_application" />
 
     <ImageButton
         android:id="@+id/btn1"
+        style="@style/Notification.Button"
         android:layout_width="@dimen/notification_button"
         android:layout_height="@dimen/notification_button"
         android:scaleType="centerInside"
-        style="@style/Notification.Button"
-        android:src="@drawable/ic_stat_incar"
-        app:srcCompat="@drawable/ic_media_play_pause"/>
+        app:srcCompat="@drawable/ic_media_play_pause" />
 
     <ImageButton
         android:id="@+id/btn2"
+        style="@style/Notification.Button"
         android:layout_width="@dimen/notification_button"
         android:layout_height="@dimen/notification_button"
         android:scaleType="centerInside"
-        style="@style/Notification.Button"
-        android:src="@drawable/ic_stat_incar"
-        app:srcCompat="@drawable/ic_launcher_carwidget"/>
+        app:srcCompat="@drawable/ic_launcher_carwidget" />
 
 </LinearLayout>

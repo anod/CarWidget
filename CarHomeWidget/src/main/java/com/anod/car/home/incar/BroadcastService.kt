@@ -6,8 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.IBinder
-import androidx.core.app.NotificationCompat
-import com.anod.car.home.R
+import com.anod.car.home.notifications.ModeDetectorNotification
 
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarStorage
@@ -38,12 +37,7 @@ class BroadcastService : Service() {
     }
 
     private fun startForegroundNotification() {
-        startForeground(25, NotificationCompat.Builder(this, channelModeDetector)
-                .setContentTitle("CarWidget")
-                .setContentText("InCar mode detector")
-                .setSmallIcon(R.drawable.ic_stat_mode_detector)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                .build())
+        startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this) )
     }
 
     override fun onDestroy() {
@@ -90,7 +84,6 @@ class BroadcastService : Service() {
     }
 
     companion object {
-        const val channelModeDetector: String = "mode_detector"
 
         fun startService(context: Context) {
             val service = Intent(context.applicationContext, BroadcastService::class.java)

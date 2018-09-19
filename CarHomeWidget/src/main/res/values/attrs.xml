@@ -1,5 +1,6 @@
 <resources>
     <attr name="activityBackground" format="reference" />
+    <attr name="cardBackground" format="reference" />
     <attr name="textAppearanceMediumBackgroundInverse" format="reference" />
 
     <declare-styleable name="TwoLineButton">

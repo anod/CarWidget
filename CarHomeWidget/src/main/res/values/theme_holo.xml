@@ -6,19 +6,26 @@
 		<item name="colorPrimaryDark">@color/secondaryDarkColor</item>
 		<item name="activityBackground">@color/secondaryColor</item>
 		<item name="colorAccent">@color/material_bluegray_300</item>
-	</style>
+        <item name="android:fontFamily">@font/rubik</item>
+        <item name="fontFamily">@font/rubik</item>
+        <item name="cardBackground">@color/secondaryColor</item>
+    </style>
 
 	<style name="AlertHolo" parent="Theme.MaterialComponents.Dialog.Alert">
 		<item name="colorPrimary">@color/secondaryColor</item>
 		<item name="colorPrimaryDark">@color/secondaryDarkColor</item>
 		<item name="colorAccent">@color/material_bluegray_300</item>
-	</style>
+        <item name="android:fontFamily">@font/rubik</item>
+        <item name="fontFamily">@font/rubik</item>
+    </style>
 
 	<style name="DialogHolo" parent="Theme.MaterialComponents.Dialog">
 		<item name="colorPrimary">@color/secondaryColor</item>
 		<item name="colorPrimaryDark">@color/secondaryDarkColor</item>
 		<item name="colorAccent">@color/material_bluegray_300</item>
-	</style>
+        <item name="android:fontFamily">@font/rubik</item>
+        <item name="fontFamily">@font/rubik</item>
+    </style>
 
 	<style name="AppThemeHolo.NoActionBar" parent="AppThemeHolo" >
 		<item name="windowActionBar">false</item>

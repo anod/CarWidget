@@ -17,19 +17,20 @@ import com.anod.car.home.prefs.views.drag.ShortcutShadowBuilder
 
 class ShortcutPreference : Preference, OnClickListener {
 
-    private var appTheme: Int = 0
-
-    private var mIconBitmap: Bitmap? = null
-
-    private var iconResource = INVALID_RESOURCE
+    var appTheme: Int = 0
+    var iconBitmap: Bitmap? = null
 
     var deleteClickListener: Preference.OnPreferenceClickListener? = null
 
-    private var showEditButton: Boolean = false
-
+    var showEditButton: Boolean = false
     var shortcutPosition: Int = 0
 
-    private var mDropCallback: DropCallback? = null
+    var dropCallback: DropCallback? = null
+    var showAddIcon = false
+        set(value) {
+            field = value
+            if (value) iconBitmap = null
+        }
 
     interface DropCallback {
         fun onScrollRequest(top: Int): Int
@@ -48,29 +49,8 @@ class ShortcutPreference : Preference, OnClickListener {
         layoutResource = R.layout.pref_shortcut
     }
 
-    fun setDropCallback(dropCallback: DropCallback) {
-        mDropCallback = dropCallback
-    }
-
-    fun showButtons(show: Boolean) {
-        showEditButton = show
-        notifyChanged()
-    }
-
-    fun setAppTheme(theme: Int) {
-        appTheme = theme
-    }
-
-    fun setIconResource(resId: Int) {
-        mIconBitmap = null
-        iconResource = resId
-        notifyChanged()
-    }
-
-    fun setIconBitmap(iconBitmap: Bitmap) {
-        mIconBitmap = iconBitmap
-        iconResource = INVALID_RESOURCE
-        notifyChanged()
+    fun requestLayout() {
+        super.notifyChanged()
     }
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
@@ -78,21 +58,22 @@ class ShortcutPreference : Preference, OnClickListener {
 
         holder.itemView.tag = shortcutPosition
 
-        val dragButton = holder.itemView.findViewById<View>(R.id.drag_button) as ImageView
+        val dragButton = holder.itemView.findViewById<ImageView>(R.id.drag_button)
         initDragButton(dragButton, holder.itemView)
 
-        val imageView = holder.itemView.findViewById<View>(android.R.id.icon) as ImageView
-        if (mIconBitmap != null) {
-            imageView.setImageBitmap(mIconBitmap)
+        val imageView = holder.itemView.findViewById<ImageView>(android.R.id.icon)
+        val addIcon = holder.itemView.findViewById<ImageView>(R.id.add_icon)
+        if (iconBitmap != null) {
+            imageView.setImageBitmap(iconBitmap)
             imageView.visibility = View.VISIBLE
-        }
-        if (iconResource > 0) {
-            imageView.setImageResource(iconResource)
-            imageView.visibility = View.VISIBLE
+            addIcon.visibility = View.GONE
+        } else if (showAddIcon) {
+            imageView.visibility = View.GONE
+            addIcon.visibility = View.VISIBLE
         }
 
-        val editButton = holder.itemView.findViewById<View>(R.id.delete_button) as ImageView
-        val replaceImage = holder.itemView.findViewById<View>(R.id.edit_button) as ImageView
+        val editButton = holder.itemView.findViewById<ImageView>(R.id.delete_button)
+        val replaceImage = holder.itemView.findViewById<ImageView>(R.id.edit_button)
         val divider = holder.itemView.findViewById<View>(R.id.divider)
         if (showEditButton) {
             editButton.setOnClickListener(this)
@@ -118,8 +99,7 @@ class ShortcutPreference : Preference, OnClickListener {
 
             true
         }
-        dragButton.setOnDragListener(
-                ShortcutDragListener(context, appTheme, mDropCallback))
+        dragButton.setOnDragListener(ShortcutDragListener(context, dropCallback))
     }
 
     override fun onClick(v: View) {

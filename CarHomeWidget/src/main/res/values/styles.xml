@@ -4,10 +4,14 @@
     <style name="AppListTheme" parent="Theme.MaterialComponents.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:fontFamily">@font/rubik</item>
+        <item name="fontFamily">@font/rubik</item>
     </style>
 
     <style name="AppListTheme.Light" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="windowActionBar">false</item>
+        <item name="android:fontFamily">@font/rubik</item>
+        <item name="fontFamily">@font/rubik</item>
     </style>
 
     <style name="holo_btn_text">
@@ -104,11 +108,9 @@
         <item name="android:paddingLeft">5.0dp</item>
     </style>
 
-    <style name="Notification" parent="android:TextAppearance.Material.Notification">
-        <item name="android:background">@color/material_grey_50</item>
-    </style>
-    <style name="Notification.Title" parent="android:TextAppearance.Material.Notification.Title"/>
-    <style name="Notification.Line2" parent="android:TextAppearance.Material.Notification.Line2"/>
+    <style name="Notification" parent="TextAppearance.Compat.Notification" />
+    <style name="Notification.Title" parent="TextAppearance.Compat.Notification.Title"/>
+    <style name="Notification.Line2" parent="TextAppearance.Compat.Notification.Line2"/>
     <style name="Notification.Icon" parent="android:TextAppearance.StatusBar.Icon">
         <item name="android:background">@drawable/notification_icon_background</item>
     </style>

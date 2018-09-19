@@ -1,101 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  android:layout_width="fill_parent"
-			  android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeight">
 
-	<ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="fill_parent"
-			android:id="@+id/drag_button"
-			android:src="@drawable/ic_drag_normal"
-			android:background="@android:color/transparent"/>
+    <ImageView
+        android:id="@+id/drag_button"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_drag_normal"
+        android:tint="?attr/colorAccent"
+        android:layout_marginEnd="8dp"
+        />
 
-	<LinearLayout
-			android:layout_width="wrap_content"
-			android:layout_height="fill_parent"
-			android:gravity="center_vertical"
-			android:orientation="vertical"
-			android:layout_marginLeft="6dip"
-			>
+    <ImageView
+        android:id="@+id/add_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_add_black_24dp"
+        android:tint="?attr/colorAccent"
+    />
 
-		<ImageView
-				android:id="@android:id/icon"
-				android:layout_width="48dp"
-				android:layout_height="48dp"
-				android:src="@drawable/ic_add_shortcut_holo"
-				android:scaleType="centerInside"/>
-	</LinearLayout>
+    <ImageView
+        android:id="@android:id/icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:adjustViewBounds="false"
+        android:scaleType="centerInside" />
 
-	<RelativeLayout
-			android:layout_width="0dip"
-			android:layout_height="wrap_content"
-			android:layout_margin="6dip"
-			android:layout_weight="1"
-			>
+    <TextView
+        android:id="@android:id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:singleLine="true"
+        android:layout_margin="8dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        tools:text="Set shortcut" />
 
-		<TextView
-				android:id="@android:id/title"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:singleLine="true"
-				android:textAppearance="?android:attr/textAppearanceLarge"
-				android:ellipsize="marquee"
-				android:fadingEdge="horizontal"
-				/>
+    <TextView
+        android:id="@android:id/summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@android:id/title"
+        android:layout_alignStart="@android:id/title"
+        android:maxLines="2"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:visibility="gone" />
 
-		<TextView
-				android:id="@android:id/summary"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_below="@android:id/title"
-				android:layout_alignStart="@android:id/title"
-				android:textAppearance="?android:attr/textAppearanceSmall"
-				android:maxLines="2"
-				/>
+    <ImageView
+        android:id="@+id/edit_button"
+        style="@android:style/Widget.ActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingLeft="14dip"
+        android:paddingRight="14dip"
+        android:scaleType="center"
+        android:src="@drawable/ic_action_edit"
+        android:tint="?attr/colorAccent" />
 
-	</RelativeLayout>
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dip"
+        android:layout_marginBottom="5dip"
+        android:background="@drawable/divider_vertical_light" />
 
-	<ImageView
-			android:id="@+id/edit_button"
-			android:layout_width="wrap_content"
-			android:layout_height="match_parent"
-			android:gravity="center"
-			android:scaleType="center"
-			style="@android:style/Widget.ActionButton"
-			android:src="@drawable/ic_action_edit"
-			android:paddingLeft="14dip"
-			android:paddingRight="14dip"
-			/>
+    <ImageView
+        android:id="@+id/delete_button"
+        style="@android:style/Widget.ActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingLeft="14dip"
+        android:paddingRight="14dip"
+        android:scaleType="center"
+        android:src="@drawable/ic_action_cancel"
+        android:tint="?attr/colorAccent" />
 
-	<View
-			android:id="@+id/divider"
-			android:layout_width="1dp"
-			android:layout_height="match_parent"
-			android:layout_marginTop="5dip"
-			android:layout_marginBottom="5dip"
-			android:background="@drawable/divider_vertical_light"
-			/>
+    <LinearLayout
+        android:id="@android:id/widget_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-	<ImageView
-			android:id="@+id/delete_button"
-			android:layout_width="wrap_content"
-			android:layout_height="match_parent"
-			android:gravity="center"
-			android:scaleType="center"
-			style="@android:style/Widget.ActionButton"
-			android:src="@drawable/ic_action_cancel"
-			android:paddingLeft="14dip"
-			android:paddingRight="14dip"
-			/>
-
-	<LinearLayout
-			android:id="@android:id/widget_frame"
-			android:layout_width="wrap_content"
-			android:layout_height="fill_parent"
-			android:gravity="center_vertical"
-			android:orientation="vertical"
-			android:visibility="gone">
-
-	</LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

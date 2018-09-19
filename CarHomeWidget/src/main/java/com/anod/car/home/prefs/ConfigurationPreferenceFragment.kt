@@ -9,6 +9,9 @@ import androidx.preference.PreferenceFragmentCompat
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.transaction
 
 import com.anod.car.home.R
 import com.anod.car.home.prefs.views.SeekBarDialogPreference
@@ -98,16 +101,35 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
     protected fun showFragmentOnClick(key: String, fragmentCls: Class<*>) {
         val pref = findPreference(key)
         pref.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
-            (activity as ConfigurationActivity)
-                    .startPreferencePanel(fragmentCls.name, preference)
+            this.startPreferencePanel(fragmentCls.name, preference)
             true
         }
+    }
 
+    private fun startPreferencePanel(fragmentClass: String, pref: Preference) {
+        startPreferencePanel(fragmentClass, pref.title, null, 0)
+    }
+
+    private fun startPreferencePanel(fragmentClass: String, titleText: CharSequence?,
+                                     resultTo: androidx.fragment.app.Fragment?, resultRequestCode: Int) {
+        val args = Bundle()
+        val f = Fragment.instantiate(context, fragmentClass, args)
+        if (resultTo != null) {
+            f.setTargetFragment(resultTo, resultRequestCode)
+        }
+        fragmentManager!!.transaction(allowStateLoss = true) {
+            replace(R.id.content_frame, f)
+            if (titleText != null) {
+                setBreadCrumbTitle(titleText)
+            }
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            addToBackStack(":carwidget:prefs")
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item!!.itemId == R.id.apply) {
-            (activity as ConfigurationActivity).onApplyClick()
+            fragmentManager!!.popBackStack()
             return true
         }
         return super.onOptionsItemSelected(item)

@@ -38,7 +38,7 @@ class ConfigurationActivity : CarWidgetActivity(), PreferenceFragmentCompat.OnPr
 
             val conf = createFragmentInstance()
             conf.arguments = intent.extras
-            supportFragmentManager.beginTransaction().add(android.R.id.content, conf).commit()
+            supportFragmentManager.beginTransaction().add(R.id.content_frame, conf).commit()
         }
     }
 
@@ -59,34 +59,8 @@ class ConfigurationActivity : CarWidgetActivity(), PreferenceFragmentCompat.OnPr
         return androidx.fragment.app.Fragment.instantiate(this, fragmentClassName, Bundle())
     }
 
-    fun onApplyClick() {
-        supportFragmentManager.popBackStack()
-    }
-
     override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat, preference: Preference): Boolean {
-
         return false
-    }
-
-    fun startPreferencePanel(fragmentClass: String, pref: Preference) {
-        startPreferencePanel(fragmentClass, pref.title, null, 0)
-    }
-
-    private fun startPreferencePanel(fragmentClass: String, titleText: CharSequence?,
-                                     resultTo: androidx.fragment.app.Fragment?, resultRequestCode: Int) {
-        val args = Bundle()
-        val f = androidx.fragment.app.Fragment.instantiate(this, fragmentClass, args)
-        if (resultTo != null) {
-            f.setTargetFragment(resultTo, resultRequestCode)
-        }
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(android.R.id.content, f)
-        if (titleText != null) {
-            transaction.setBreadCrumbTitle(titleText)
-        }
-        transaction.setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        transaction.addToBackStack(BACK_STACK_PREFS)
-        transaction.commitAllowingStateLoss()
     }
 
     override fun onPreferenceStartScreen(preferenceFragmentCompat: PreferenceFragmentCompat, preferenceScreen: PreferenceScreen): Boolean {
@@ -100,8 +74,6 @@ class ConfigurationActivity : CarWidgetActivity(), PreferenceFragmentCompat.OnPr
     }
 
     companion object {
-
-        private const val BACK_STACK_PREFS = ":carwidget:prefs"
         const val EXTRA_FRAGMENT = "fragment"
 
         fun createFragmentIntent(context: Context, fragment: Class<*>): Intent {

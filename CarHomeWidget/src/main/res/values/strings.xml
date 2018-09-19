@@ -264,4 +264,5 @@
     <string name="app_preferences">App Preferences</string>
     <string name="title">Title</string>
     <string name="info">Info</string>
+    <string name="notifcation_mode_detector">InCar mode detector</string>
 </resources>

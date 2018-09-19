@@ -8,6 +8,8 @@ import android.os.PowerManager
 import android.telephony.PhoneStateListener
 import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.app.App
+import com.anod.car.home.notifications.InCarModeNotification
+import com.anod.car.home.notifications.TrialExpiredNotification
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarStorage
 import info.anodsplace.framework.AppLog
@@ -67,7 +69,7 @@ class ModeService : Service() {
 
         val version = Version(this)
         if (version.isFreeAndTrialExpired) {
-            ModeNotification.showExpiredNotification(this)
+            TrialExpiredNotification.show(this)
             stopSelf()
             return Service.START_NOT_STICKY
         }
@@ -86,8 +88,7 @@ class ModeService : Service() {
             version.increaseTrialCounter()
         }
 
-        val notification = ModeNotification.createNotification(version, this)
-        startForeground(NOTIFICATION_ID, notification)
+        startForeground(InCarModeNotification.id, InCarModeNotification.create(version, this))
 
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.
@@ -132,7 +133,6 @@ class ModeService : Service() {
         private const val wakelockTag = "carhomewidget:wakelock"
         const val EXTRA_MODE = "extra_mode"
         const val EXTRA_FORCE_STATE = "extra_force_state"
-        private const val NOTIFICATION_ID = 1
 
         const val MODE_SWITCH_OFF = 1
         const val MODE_SWITCH_ON = 0

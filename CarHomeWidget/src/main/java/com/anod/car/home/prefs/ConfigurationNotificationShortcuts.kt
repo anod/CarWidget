@@ -30,7 +30,7 @@ class ConfigurationNotificationShortcuts : ConfigurationPreferenceFragment(), Pr
         for (i in 0 until InCarStorage.NOTIFICATION_COMPONENT_NUMBER) {
             val p = findPreference(getInitialKey(i)) as ShortcutPreference
             pickShortcutUtils.initLauncherPreference(i, p)
-            p.setDropCallback(this)
+            p.dropCallback = this
         }
     }
 

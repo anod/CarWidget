@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.prefs.MusicAppSettingsActivity
+import com.anod.car.home.prefs.model.AppTheme
 import com.anod.car.home.utils.IntentUtils
 import com.anod.car.home.utils.Utils
 import info.anodsplace.framework.AppLog
@@ -84,8 +85,10 @@ class AboutFragment : Fragment() {
             val appSettings = App.provide(context!!).appSettings
             appSettings.theme = which
             appSettings.apply()
-            AppCompatDelegate.setDefaultNightMode(App.get(context!!).nightMode)
-            activity!!.setTheme(App.theme(context!!).mainResource)
+            val app = App.get(context!!)
+            app.appComponent.theme = AppTheme(which)
+            AppCompatDelegate.setDefaultNightMode(app.nightMode)
+            activity!!.setTheme(app.appComponent.theme.mainResource)
             activity!!.recreate()
         }.create()
     }

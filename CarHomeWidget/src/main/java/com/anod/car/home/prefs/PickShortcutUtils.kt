@@ -8,15 +8,20 @@ import com.anod.car.home.utils.ShortcutPicker
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.preference.Preference
+import com.anod.car.home.app.App
 
 class PickShortcutUtils(private val configurationFragment: ConfigurationPreferenceFragment,
-                        private val model: Shortcuts, private val preferenceKey: PreferenceKey) : ShortcutPicker.Handler {
+                        private val model: Shortcuts,
+                        private val preferenceKey: PreferenceKey) : ShortcutPicker.Handler {
 
-    private val activity: ConfigurationActivity = configurationFragment.activity as ConfigurationActivity
-
-    private val picker: ShortcutPicker = ShortcutPicker(model, this, activity)
+    private val picker: ShortcutPicker = ShortcutPicker(model, this, configurationFragment.context)
+    private val resources: Resources
+        get() = configurationFragment.context!!.resources
 
     override fun startActivityForResult(intent: Intent, requestCode: Int) {
         configurationFragment.startActivityForResult(intent, requestCode)
@@ -77,17 +82,20 @@ class PickShortcutUtils(private val configurationFragment: ConfigurationPreferen
     fun refreshPreference(pref: ShortcutPreference) {
         val cellId = pref.shortcutPosition
         val info = model.get(cellId)
-        pref.setAppTheme(activity.theme.themeIdx)
+        pref.appTheme = App.theme(configurationFragment.context!!).themeIdx
         if (info == null) {
             pref.setTitle(R.string.set_shortcut)
-            pref.setIconResource(R.drawable.ic_add_shortcut_holo)
-            pref.showButtons(false)
+            pref.showAddIcon = true
+            pref.showEditButton = false
         } else {
             val icon = model.loadIcon(info.id)
-            pref.setIconBitmap(icon.bitmap)
+            pref.iconBitmap = icon.bitmap
+            pref.showAddIcon = false
             pref.title = info.title
-            pref.showButtons(true)
+            pref.showEditButton = true
         }
+
+        pref.requestLayout()
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

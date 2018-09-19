@@ -1,6 +1,5 @@
 package com.anod.car.home.incar
 
-import com.anod.car.home.R
 import com.google.android.gms.location.ActivityRecognitionResult
 import com.google.android.gms.location.DetectedActivity
 
@@ -8,11 +7,9 @@ import com.anod.car.home.BuildConfig
 import info.anodsplace.framework.AppLog
 
 import android.app.IntentService
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import androidx.core.app.NotificationCompat
+import com.anod.car.home.notifications.ActivityRecognitionNotification
 
 /**
  * @author alex
@@ -30,18 +27,7 @@ class ActivityRecognitionService : IntentService("ActivityRecognitionService") {
             val result = ActivityRecognitionResult.extractResult(intent)
 
             if (BuildConfig.DEBUG) {
-                val probActivity = result.mostProbableActivity
-                AppLog.d("Activity: [" + String.format("%03d", probActivity.confidence) + "] "
-                        + renderActivityType(probActivity.type))
-
-                val noti = NotificationCompat.Builder(this)
-                        .setContentTitle("Activity")
-                        .setContentText("[" + String.format("%03d", probActivity.confidence) + "] " + renderActivityType(probActivity.type))
-                        .setSmallIcon(R.drawable.ic_launcher_application)
-                        .setTicker("[" + String.format("%03d", probActivity.confidence) + "] " + renderActivityType(probActivity.type))
-                        .build()
-                val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                mNotificationManager.notify(122, noti)
+                ActivityRecognitionNotification.show(result, applicationContext)
             }
 
             val probActivity = result.mostProbableActivity
@@ -69,25 +55,6 @@ class ActivityRecognitionService : IntentService("ActivityRecognitionService") {
         } else {
             AppLog.d("ActivityRecognitionResult: No Result")
         }
-    }
-
-
-    private fun renderActivityType(type: Int): String {
-        if (type == DetectedActivity.IN_VEHICLE) {
-            return "IN_VEHICLE"
-        }
-        if (type == DetectedActivity.ON_BICYCLE) {
-            return "ON_BICYCLE"
-        }
-        if (type == DetectedActivity.ON_FOOT) {
-            return "ON_FOOT"
-        }
-        if (type == DetectedActivity.STILL) {
-            return "STILL (NOT MOOVING)"
-        }
-        return if (type == DetectedActivity.TILTING) {
-            "TILTING"
-        } else "UNKNOWN ($type)"
     }
 
     companion object {

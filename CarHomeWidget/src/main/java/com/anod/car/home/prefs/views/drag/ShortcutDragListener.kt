@@ -3,6 +3,7 @@ package com.anod.car.home.prefs.views.drag
 import android.content.ClipDescription
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import androidx.core.content.res.ResourcesCompat
 import android.util.Log
@@ -17,17 +18,18 @@ import com.anod.car.home.prefs.views.ShortcutPreference
  * @author alex
  * @date 5/18/13
  */
-class ShortcutDragListener(context: Context, appThemeIdx: Int,
-                           private val mDropCallback: ShortcutPreference.DropCallback?) : View.OnDragListener {
+class ShortcutDragListener(context: Context,
+                           private val dropCallback: ShortcutPreference.DropCallback?) : View.OnDragListener {
 
-    private val backgroundResource = App.theme(context).backgroundResource
-    private val mTopShadow: Drawable?
-    private val mBackground: Drawable?
+    private val topShadow: Drawable?
+    private val background: Drawable?
 
     init {
         val r = context.resources
-        mTopShadow = ResourcesCompat.getDrawable(r, R.drawable.drop_shadow_top, null)
-        mBackground = ResourcesCompat.getDrawable(r, backgroundResource, null)
+        topShadow = ResourcesCompat.getDrawable(r, R.drawable.drop_shadow_top, null)
+        val colorResource = App.theme(context).backgroundResource
+        val color = ResourcesCompat.getColor(r, colorResource, null)
+        background = ColorDrawable(color)
     }
 
     override fun onDrag(view: View, dragEvent: DragEvent): Boolean {
@@ -39,29 +41,28 @@ class ShortcutDragListener(context: Context, appThemeIdx: Int,
 
             DragEvent.ACTION_DRAG_STARTED -> {
                 // Determines if this View can accept the dragged data
-                if (dragEvent.clipDescription
-                                .hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-                    setBackgroundColor(v, dragEvent, Color.DKGRAY, mBackground)
+                if (dragEvent.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+                    setBackgroundColor(v, dragEvent, Color.DKGRAY, background)
                     // returns true to indicate that the View can accept the dragged data.
                     return true
                 }
                 return false
             }
             DragEvent.ACTION_DRAG_ENTERED -> {
-                setBackgroundColor(v, dragEvent, Color.DKGRAY, mTopShadow)
+                setBackgroundColor(v, dragEvent, Color.DKGRAY, topShadow)
 
-                mDropCallback!!.onScrollRequest(v.top)
+                dropCallback!!.onScrollRequest(v.top)
                 // Ignore the event
                 return true
             }
             DragEvent.ACTION_DRAG_LOCATION -> {
                 // Applies a green tint to the View. Return true; the return value is ignored.
-                setBackgroundColor(v, dragEvent, Color.DKGRAY, mTopShadow)
+                setBackgroundColor(v, dragEvent, Color.DKGRAY, topShadow)
                 return true
             }
             DragEvent.ACTION_DRAG_EXITED -> {
                 // Re-sets the color tint to blue. Returns true; the return value is ignored.
-                setBackgroundColor(v, dragEvent, Color.DKGRAY, mBackground)
+                setBackgroundColor(v, dragEvent, Color.DKGRAY, background)
 
                 return true
             }
@@ -73,15 +74,15 @@ class ShortcutDragListener(context: Context, appThemeIdx: Int,
                 // Displays a message containing the dragged data.
                 Log.d("DragDrop", "Dragged data is $dragData")
 
-                setBackground(v, dragEvent, mBackground, mBackground)
+                setBackground(v, dragEvent, background, background)
 
-                return mDropCallback?.onDrop(Integer.valueOf(dragData), v.tag as Int) ?: true
+                return dropCallback?.onDrop(Integer.valueOf(dragData), v.tag as Int) ?: true
             }
             // Returns true. DragEvent.getResult() will return true.
             //return true;
             DragEvent.ACTION_DRAG_ENDED -> {
 
-                v.background = mBackground
+                v.background = background
                 v.invalidate()
                 // Does a getResult(), and displays what happened.
                 if (dragEvent.result) {
@@ -122,7 +123,7 @@ class ShortcutDragListener(context: Context, appThemeIdx: Int,
         if (dragCellId == viewCellId) {
             v.background = dragView
         } else {
-            v.background = mTopShadow
+            v.background = topShadow
         }
         v.invalidate()
     }

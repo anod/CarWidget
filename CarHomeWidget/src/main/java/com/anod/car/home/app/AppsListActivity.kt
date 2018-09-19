@@ -27,7 +27,7 @@ class AppsListViewModel(application: Application) : AndroidViewModel(application
     val list = MutableLiveData<List<AppsList.Entry>>()
     var loader: AsyncTask<Void, Void, List<AppsList.Entry>>? = null
     var isRefreshCache = false
-    var appsList = getApplication<CarWidgetApplication>().appComponent!!.appListCache
+    var appsList = getApplication<CarWidgetApplication>().appComponent.appListCache
 
     fun load() {
         this.loader?.execute()

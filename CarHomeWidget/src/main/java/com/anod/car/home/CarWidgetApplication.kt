@@ -8,6 +8,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import com.anod.car.home.acra.BrowserUrlSender
 import com.anod.car.home.incar.BroadcastService
+import com.anod.car.home.notifications.Channels
 import com.anod.car.home.prefs.model.AppSettings
 import com.anod.car.home.prefs.model.AppTheme
 import info.anodsplace.framework.AppLog
@@ -61,21 +62,11 @@ class CarWidgetApplication : Application(), ApplicationInstance {
         AppLog.setDebug(BuildConfig.DEBUG, "CarWidget")
 
         AppCompatDelegate.setDefaultNightMode(nightMode)
-        createNotificationChannels()
+        Channels.register(this)
     }
 
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
         AppLog.w("Level: $level")
-    }
-
-    private fun createNotificationChannels() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel1 = NotificationChannel(BroadcastService.channelModeDetector, getString(R.string.mode_detector_channel), NotificationManager.IMPORTANCE_LOW)
-            val channel2 = NotificationChannel("incar_mode", getString(R.string.incar_mode), NotificationManager.IMPORTANCE_DEFAULT)
-            val channel3 = NotificationChannel(getString(R.string.channel_crash_reports), "Crash reports", NotificationManager.IMPORTANCE_HIGH)
-            val notificationManager = getSystemService(NotificationManager::class.java)!!
-            notificationManager.createNotificationChannels(listOf(channel1, channel2, channel3))
-        }
     }
 }
