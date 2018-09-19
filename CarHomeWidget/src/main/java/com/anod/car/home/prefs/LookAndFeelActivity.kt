@@ -131,6 +131,7 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
         bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_widget -> {
+                    invalidateOptionsMenu()
                     content_frame.visibility = View.GONE
                     for (i in 0 until supportFragmentManager.backStackEntryCount) {
                         supportFragmentManager.popBackStack()
@@ -138,6 +139,7 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
                     true
                 }
                 R.id.nav_info -> {
+                    invalidateOptionsMenu()
                     content_frame.visibility = View.VISIBLE
                     supportFragmentManager.transaction {
                         replace(R.id.content_frame, AboutFragment())
@@ -145,6 +147,7 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
                     true
                 }
                 R.id.nav_incar -> {
+                    invalidateOptionsMenu()
                     content_frame.visibility = View.VISIBLE
                     supportFragmentManager.transaction {
                         replace(R.id.content_frame, ConfigurationInCar())
@@ -167,10 +170,10 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        lookAndFeelMenu.onCreateOptionsMenu(menu)
-        // Calling super after populating the menu is necessary here to ensure
-        // that the
-        // action bar helpers have a chance to handle this event.
+        when (bottomNavigation.selectedItemId) {
+            R.id.nav_widget -> lookAndFeelMenu.onCreateOptionsMenu(menu)
+            else -> menuInflater.inflate(R.menu.look_n_feel_other, menu)
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
