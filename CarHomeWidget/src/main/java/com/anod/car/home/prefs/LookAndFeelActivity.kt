@@ -36,6 +36,9 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
 
     private var currentPage: Int = 0
 
+    override val appThemeRes: Int
+        get() = theme.transparentResource
+
     var appWidgetId: Int = 0
         private set
 
@@ -91,8 +94,6 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
         val animation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
         deleteView.startAnimation(animation)
     }
-
-    override val isTransparentAppTheme = true
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

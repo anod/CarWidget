@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.NumberPicker
+import com.android.colorpicker.ColorPickerSwatch
 
 import com.anod.car.home.R
 import com.anod.car.home.app.App
@@ -68,7 +69,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
                 val value = prefs.tileColor
                 val d = CarHomeColorPickerDialog
                         .newInstance(value!!, true, activity)
-                d.setOnColorSelectedListener { color ->
+                d.listener = ColorPickerSwatch.OnColorSelectedListener { color ->
                     prefs.tileColor = color
                     prefs.apply()
                     showTileColorButton()
@@ -87,7 +88,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
             R.id.bg_color -> {
                 val value = activity.prefs.backgroundColor
                 val d = CarHomeColorPickerDialog.newInstance(value, true, activity)
-                d.setOnColorSelectedListener { color ->
+                d.listener = ColorPickerSwatch.OnColorSelectedListener { color ->
                     prefs.backgroundColor = color
                     prefs.apply()
                     activity.refreshSkinPreview()
@@ -168,8 +169,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
     private fun createNumberPickerDialog(): AlertDialog {
         val nums = activity.resources.getStringArray(R.array.shortcut_numbers)
 
-        val inflater = activity
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val npView = inflater.inflate(R.layout.numberpicker, null)
 
         val numberPicker = npView.findViewById<View>(R.id.numberPicker) as NumberPicker

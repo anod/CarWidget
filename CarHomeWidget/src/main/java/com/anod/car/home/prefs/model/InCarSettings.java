@@ -286,7 +286,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
     @Override
     public int getScreenOrientation() {
         // PreferenceList stores values as String
-        String orientation = getPrefs().getString(SCREEN_ORIENTATION, String.valueOf(ScreenOrientation.DISABLED));
+        String orientation = getPrefs().getString(SCREEN_ORIENTATION, String.valueOf(ScreenOrientation.Companion.getDISABLED()));
         return Integer.parseInt(orientation);
     }
 
@@ -340,7 +340,7 @@ public class InCarSettings extends ChangeableSharedPreferences implements InCarI
         if (SamsungDrivingMode.hasMode()) {
             writer.name(SAMSUNG_DRIVING_MODE).value(isSamsungDrivingMode());
         }
-        String screenOrientation = getPrefs().getString(SCREEN_ORIENTATION, String.valueOf(ScreenOrientation.DISABLED));
+        String screenOrientation = getPrefs().getString(SCREEN_ORIENTATION, String.valueOf(ScreenOrientation.Companion.getDISABLED()));
         writer.name(SCREEN_ORIENTATION).value(screenOrientation);
         writer.name(HOTSPOT).value(isHotspotOn());
         writer.endObject();

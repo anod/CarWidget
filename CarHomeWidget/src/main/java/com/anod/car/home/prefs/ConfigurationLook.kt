@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
+import com.android.colorpicker.ColorPickerSwatch
 
 import com.anod.car.home.R
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog
@@ -67,9 +68,8 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
         icnColor.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val icnTintColor = prefs.iconsColor
             val value = icnTintColor ?: Color.WHITE
-            val d = CarHomeColorPickerDialog
-                    .newInstance(value, false, activity!!)
-            d.setOnColorSelectedListener { color ->
+            val d = CarHomeColorPickerDialog.newInstance(value, false, activity!!)
+            d.listener = ColorPickerSwatch.OnColorSelectedListener { color ->
                 prefs.iconsColor = color
                 prefs.apply()
             }
@@ -93,9 +93,8 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
         val fontColor = findPreference(WidgetSettings.FONT_COLOR)
         fontColor.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val value = prefs.fontColor
-            val d = CarHomeColorPickerDialog
-                    .newInstance(value, true, activity!!)
-            d.setOnColorSelectedListener { color ->
+            val d = CarHomeColorPickerDialog.newInstance(value, true, activity!!)
+            d.listener = ColorPickerSwatch.OnColorSelectedListener{ color ->
                 prefs.fontColor = color
                 prefs.apply()
             }

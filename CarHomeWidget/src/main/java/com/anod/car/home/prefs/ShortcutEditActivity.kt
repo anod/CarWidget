@@ -51,6 +51,9 @@ class ShortcutEditActivity : CarWidgetActivity() {
 
     private var cellId: Int = 0
 
+    override val appThemeRes: Int
+        get() = theme.dialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shortcutedit)

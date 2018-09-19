@@ -35,7 +35,6 @@ class HexPanel @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private var alphaSupport: Boolean = false
 
     init {
-
         orientation = LinearLayout.HORIZONTAL
 
         LayoutInflater.from(context).inflate(R.layout.color_picker_hex_panel, this)

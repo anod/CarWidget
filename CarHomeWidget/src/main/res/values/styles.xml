@@ -2,6 +2,9 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppListTheme" parent="Theme.MaterialComponents.Dialog">
+        <item name="colorPrimary">@color/material_bluegray_600</item>
+        <item name="colorPrimaryDark">@color/material_bluegray_800</item>
+        <item name="colorAccent">@color/material_bluegray_300</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowNoTitle">true</item>
         <item name="android:fontFamily">@font/rubik</item>
@@ -9,6 +12,9 @@
     </style>
 
     <style name="AppListTheme.Light" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">@color/material_bluegray_600</item>
+        <item name="colorPrimaryDark">@color/material_bluegray_800</item>
+        <item name="colorAccent">@color/material_bluegray_300</item>
         <item name="windowActionBar">false</item>
         <item name="android:fontFamily">@font/rubik</item>
         <item name="fontFamily">@font/rubik</item>

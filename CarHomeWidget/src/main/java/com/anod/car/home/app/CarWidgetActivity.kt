@@ -14,9 +14,6 @@ import androidx.appcompat.app.AppCompatDelegate
  */
 abstract class CarWidgetActivity : AppCompatActivity() {
 
-    protected open val isTransparentAppTheme: Boolean
-        get() = false
-
     val app: CarWidgetApplication
         get() = App.get(this)
 
@@ -31,9 +28,6 @@ abstract class CarWidgetActivity : AppCompatActivity() {
     }
 
     protected open val appThemeRes: Int
-        @StyleRes get() = if (isTransparentAppTheme)
-            theme.transparentResource
-        else
-            theme.mainResource
+        get() = theme.mainResource
 
 }

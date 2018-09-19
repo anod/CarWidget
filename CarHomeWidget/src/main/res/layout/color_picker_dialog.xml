@@ -3,6 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
+    android:background="?attr/activityBackground"
     xmlns:tools="http://schemas.android.com/tools"
 >
 
@@ -32,14 +33,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <ProgressBar
-                android:id="@android:id/progress"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center" />
-
             <LinearLayout
                 android:id="@+id/colors_panel"
                 android:layout_width="wrap_content"
@@ -49,14 +42,12 @@
                 android:orientation="vertical"
                 android:padding="8dp">
 
-
                 <com.android.colorpicker.ColorPickerPalette
                     android:id="@+id/color_picker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:visibility="gone" />
+                    android:gravity="center" />
 
                 <com.android.colorpicker.ColorPickerPalette
                     android:id="@+id/alpha_picker"
@@ -64,8 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="4dp"
-                    android:gravity="center"
-                    android:visibility="gone" />
+                    android:gravity="center" />
 
             </LinearLayout>
 
