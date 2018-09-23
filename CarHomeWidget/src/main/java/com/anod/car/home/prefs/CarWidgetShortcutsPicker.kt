@@ -1,6 +1,5 @@
 package com.anod.car.home.prefs
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -13,7 +12,9 @@ import android.widget.AdapterView
 import com.anod.car.home.R
 import com.anod.car.home.prefs.ActivityPicker.PickAdapter.Item
 import com.anod.car.home.utils.AppPermissions
-import com.anod.car.home.utils.IntentUtils
+import com.anod.car.home.utils.ReadContacts
+import com.anod.car.home.utils.forDirectCall
+import com.anod.car.home.utils.forPickShortcutLocal
 import info.anodsplace.framework.app.ApplicationContext
 import info.anodsplace.framework.os.BackgroundTask
 
@@ -27,7 +28,7 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
             val r = resources
             val titles = r.getStringArray(R.array.carwidget_shortcuts)
             for (i in 0 until ITEMS_NUM) {
-                val intent = IntentUtils.createPickShortcutLocalIntent(i, titles[i], ICONS[i], this)
+                val intent = Intent().forPickShortcutLocal(i, titles[i], ICONS[i], this)
                 val item = PickAdapter.Item(this, titles[i], ResourcesCompat.getDrawable(r, ICONS[i], null),
                         intent)
                 items.add(item)
@@ -41,13 +42,13 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-        if (position == IntentUtils.IDX_DIRECT_CALL) {
-            if (AppPermissions.isGranted(this, Manifest.permission.READ_CONTACTS)) {
+        if (position == IDX_DIRECT_CALL) {
+            if (AppPermissions.isGranted(this, ReadContacts)) {
                 val intent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
                 intent.type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
                 startActivityForResult(intent, REQUEST_PICK_CONTACT)
             } else {
-                AppPermissions.request(this, arrayOf(Manifest.permission.READ_CONTACTS), requestReadContacts)
+                AppPermissions.request(this, ReadContacts, requestReadContacts)
                 setResult(Activity.RESULT_CANCELED)
                 finish()
             }
@@ -63,7 +64,7 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
                 BackgroundTask(object : BackgroundTask.Worker<Uri, Intent?>(this, uri) {
 
                     override fun run(param: Uri, context: ApplicationContext): Intent? {
-                        return IntentUtils.createDirectCallIntent(param, context.actual)
+                        return Intent().forDirectCall(param, context.actual)
                     }
 
                     override fun finished(result: Intent?) {
@@ -82,6 +83,8 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
     }
 
     companion object {
+        const val IDX_SWITCH_CAR_MODE = 0
+        const val IDX_DIRECT_CALL = 1
         private const val REQUEST_PICK_CONTACT = 100
         private const val ITEMS_NUM = 5
         private val ICONS = intArrayOf(
@@ -89,7 +92,8 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
                 R.drawable.ic_call_white_24dp,
                 R.drawable.ic_media_play_pause,
                 R.drawable.ic_media_next,
-                R.drawable.ic_media_prev)
+                R.drawable.ic_media_prev
+        )
 
         const val requestReadContacts = 304
     }

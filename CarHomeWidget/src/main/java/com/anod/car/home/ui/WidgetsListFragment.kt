@@ -62,11 +62,10 @@ class WidgetsListFragment : androidx.fragment.app.Fragment(), WidgetsListAdapter
             val status = InCarStatus.get(appWidgetIds.size, version, activity)
             if (status == InCarStatus.ENABLED) {
                 when {
-                    version.isFreeAndTrialExpired -> startActivity(IntentUtils.createProVersionIntent())
-                    version.isFree -> startActivity(IntentUtils.createProVersionIntent())
+                    version.isFreeAndTrialExpired -> startActivity(Intent().forProVersion())
+                    version.isFree -> startActivity(Intent().forProVersion())
                     else -> {
-                        val intent = ConfigurationActivity
-                                .createFragmentIntent(activity!!, ConfigurationInCar::class.java)
+                        val intent = ConfigurationActivity.createFragmentIntent(activity!!, ConfigurationInCar::class.java)
                         startActivity(intent)
                     }
                 }

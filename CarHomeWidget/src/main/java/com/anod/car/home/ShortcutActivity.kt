@@ -12,9 +12,9 @@ import com.anod.car.home.app.App
 
 import com.anod.car.home.app.MusicAppChoiceActivity
 import com.anod.car.home.appwidget.ShortcutPendingIntent
-import com.anod.car.home.prefs.model.AppSettings
 import com.anod.car.home.utils.AppPermissions
 import com.anod.car.home.utils.MusicUtils
+import com.anod.car.home.utils.CallPhone
 
 import info.anodsplace.framework.AppLog
 
@@ -69,8 +69,8 @@ class ShortcutActivity : Activity() {
             intent.action = Intent.ACTION_CALL
         }
         if (Intent.ACTION_CALL == action) {
-            if (!AppPermissions.isGranted(this, android.Manifest.permission.CALL_PHONE)) {
-                AppPermissions.request(this, arrayOf(android.Manifest.permission.CALL_PHONE), requestPhone)
+            if (!AppPermissions.isGranted(this, CallPhone)) {
+                AppPermissions.request(this, CallPhone, requestPhone)
             }
         }
 

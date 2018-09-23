@@ -18,8 +18,8 @@ import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.prefs.MusicAppSettingsActivity
 import com.anod.car.home.prefs.model.AppTheme
-import com.anod.car.home.utils.IntentUtils
 import com.anod.car.home.utils.Utils
+import com.anod.car.home.utils.forApplicationDetails
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogCustom
 import info.anodsplace.framework.app.DialogSingleChoice
@@ -106,7 +106,7 @@ class AboutFragment : Fragment() {
                 intent.addCategory(Intent.CATEGORY_CAR_DOCK)
                 val info = App.provide(context!!).packageManager
                         .resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
-                Utils.startActivitySafely(IntentUtils.createApplicationDetailsIntent(info.activityInfo.applicationInfo.packageName), context!!)
+                Utils.startActivitySafely(Intent().forApplicationDetails(info.activityInfo.applicationInfo.packageName), context!!)
             }
         }.show()
     }

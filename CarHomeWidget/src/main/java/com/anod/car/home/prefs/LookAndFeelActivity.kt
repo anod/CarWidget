@@ -29,7 +29,7 @@ import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.ui.AboutFragment
 import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.BitmapLruCache
-import com.anod.car.home.utils.IntentUtils
+import com.anod.car.home.utils.forNewShortcut
 import kotlinx.android.synthetic.main.activity_main.*
 
 class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory, ShortcutDragListener.DropCallback {
@@ -211,7 +211,7 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
     }
 
     override fun createNew(appWidgetId: Int, cellId: Int): PendingIntent {
-        val intent = IntentUtils.createNewShortcutIntent(this, appWidgetId, cellId)
+        val intent = Intent().forNewShortcut(this, appWidgetId, cellId)
         return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 

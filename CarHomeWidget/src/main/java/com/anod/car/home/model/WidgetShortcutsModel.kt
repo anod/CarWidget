@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 
 import com.anod.car.home.prefs.model.WidgetStorage
+import com.anod.car.home.utils.isAvailable
 import info.anodsplace.framework.AppLog
-import com.anod.car.home.utils.IntentUtils
 
 import java.util.ArrayList
 
@@ -44,7 +44,7 @@ class WidgetShortcutsModel(context: Context, private val appWidgetId: Int) : Abs
     private fun initShortcuts(appWidgetId: Int) {
         val list = arrayOf(
                 ComponentName("com.android.contacts", "com.android.contacts.DialtactsActivity"),
-                ComponentName("com.android.htccontacts", "com.android.htccontacts.DialerTabActivity"), //HTC Phone
+                ComponentName("com.android.htccontacts", "com.android.htccontacts.DialerTabActivity"), //HTC CallPhone
                 //
                 ComponentName("com.android.music", "com.android.music.MusicBrowserActivity"),
                 ComponentName("com.htc.music", "com.htc.music.HtcMusic"),
@@ -57,7 +57,7 @@ class WidgetShortcutsModel(context: Context, private val appWidgetId: Int) : Abs
         val data = Intent()
         for (i in list.indices) {
             data.component = list[i]
-            if (!IntentUtils.isIntentAvailable(context, data)) {
+            if (!data.isAvailable(context)) {
                 continue
             }
             val shortcut = ShortcutInfoUtils.infoFromApplicationIntent(context, data)

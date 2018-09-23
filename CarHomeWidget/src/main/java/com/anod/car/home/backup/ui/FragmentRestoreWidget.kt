@@ -71,10 +71,10 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
         appWidgetId = arguments!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID)
 
         listView!!.adapter = adapter
-        if (AppPermissions.isGranted(context!!, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (AppPermissions.isGranted(context!!, ReadExternalStorage)) {
             FileListTask(backupManager, adapter).execute(0)
         } else {
-            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), requestList)
+            AppPermissions.request(this, arrayOf(ReadExternalStorage, WriteExternalStorage), requestList)
         }
         setHasOptionsMenu(true)
     }
@@ -94,10 +94,10 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
     }
 
     fun backup() {
-        if (AppPermissions.isGranted(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (AppPermissions.isGranted(context!!, WriteExternalStorage)) {
             createBackupNameDialog("widget-$appWidgetId").show()
         } else {
-            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), requestBackup)
+            AppPermissions.request(this, arrayOf(ReadExternalStorage, WriteExternalStorage), requestBackup)
         }
     }
 

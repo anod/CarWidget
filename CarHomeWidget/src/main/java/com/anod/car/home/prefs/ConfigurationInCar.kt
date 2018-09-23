@@ -1,6 +1,5 @@
 package com.anod.car.home.prefs
 
-import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler

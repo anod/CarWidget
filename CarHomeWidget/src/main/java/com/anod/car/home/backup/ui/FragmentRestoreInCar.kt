@@ -74,10 +74,10 @@ class FragmentRestoreInCar : androidx.fragment.app.Fragment(), RestoreTask.Resto
             upload("incar-backup" + PreferencesBackupManager.FILE_EXT_JSON, incar)
         }
 
-        if (AppPermissions.isGranted(context!!, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (AppPermissions.isGranted(context!!, ReadExternalStorage)) {
             updateInCarTime()
         } else {
-            requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE), requestList)
+            AppPermissions.request(this, arrayOf(ReadExternalStorage, WriteExternalStorage), requestList)
         }
 
         setHasOptionsMenu(true)
@@ -144,11 +144,11 @@ class FragmentRestoreInCar : androidx.fragment.app.Fragment(), RestoreTask.Resto
     }
 
     fun backup() {
-        if (AppPermissions.isGranted(context!!, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (AppPermissions.isGranted(context!!, WriteExternalStorage)) {
             BackupTask(backupManager, backupManager.backupIncarFile.toUri(), this@FragmentRestoreInCar)
                     .execute()
         } else {
-            requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE), requestBackup)
+            AppPermissions.request(this, arrayOf(ReadExternalStorage, WriteExternalStorage), requestBackup)
         }
     }
 
