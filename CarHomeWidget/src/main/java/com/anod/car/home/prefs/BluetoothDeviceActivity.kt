@@ -120,11 +120,11 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
 
     private fun initSwitch() {
         val btSwitch = findViewById<Switch>(R.id.switch1)
-        btSwitch.isChecked = Bluetooth.getState() == BluetoothAdapter.STATE_ON
+        btSwitch.isChecked = Bluetooth.state == BluetoothAdapter.STATE_ON
         btSwitch.setOnClickListener {
             bluetoothReceiver = BluetoothStateReceiver(this)
             registerReceiver(bluetoothReceiver, INTENT_FILTER)
-            if (Bluetooth.getState() == BluetoothAdapter.STATE_ON) {
+            if (Bluetooth.state == BluetoothAdapter.STATE_ON) {
                 Bluetooth.switchOff()
                 btSwitch.isChecked = false
             } else {

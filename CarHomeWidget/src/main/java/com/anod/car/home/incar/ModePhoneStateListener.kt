@@ -116,6 +116,10 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
             val telecomManager = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
             if (AppPermissions.isGranted(context, AnswerPhoneCalls) || AppPermissions.isGranted(context, ModifyPhoneState)) {
                 telecomManager.acceptRingingCall()
+                if (autoSpeaker && !audioManager.isSpeakerphoneOn) {
+                    AppLog.d("Enable speakerphone in AcceptCallActivity")
+                    audioManager.isSpeakerphoneOn = true
+                }
             }
         }
 

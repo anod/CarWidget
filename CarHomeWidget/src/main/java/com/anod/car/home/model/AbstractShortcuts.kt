@@ -72,7 +72,7 @@ abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
             shortcuts.put(position, null)
         } else {
             val id = shortcutModel.addItemToDatabase(context, shortcut, icon!!)
-            if (id == Shortcut.idUnknown.toLong()) {
+            if (id == Shortcut.idUnknown) {
                 shortcuts.put(position, null)
             } else {
                 val newInfo = Shortcut(id, shortcut)
@@ -92,6 +92,6 @@ abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
     }
 
     override fun loadIcon(id: Long): ShortcutIcon {
-        return shortcutModel.loadShortcutIcon(id)
+        return shortcutModel.loadShortcutIcon(id)!!
     }
 }

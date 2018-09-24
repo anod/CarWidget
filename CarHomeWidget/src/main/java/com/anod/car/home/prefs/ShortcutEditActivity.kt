@@ -101,10 +101,10 @@ class ShortcutEditActivity : CarWidgetActivity() {
         findViewById<View>(R.id.btn_ok).setOnClickListener {
             var needUpdate = false
             if (customIcon != null) {
-                shortcutIcon = ShortcutIcon.forCustomIcon(shortcutIcon!!.id, customIcon)
+                shortcutIcon = ShortcutIcon.forCustomIcon(shortcutIcon!!.id, customIcon!!)
                 needUpdate = true
             } else if (iconDefault != null) {
-                shortcutIcon = ShortcutIcon.forActivity(shortcutIcon!!.id, iconDefault)
+                shortcutIcon = ShortcutIcon.forActivity(shortcutIcon!!.id, iconDefault!!)
                 needUpdate = true
             }
             val title = labelEdit.text

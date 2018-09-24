@@ -31,18 +31,18 @@ import java.util.ArrayList
  * @author algavris
  * @date 08/04/2016.
  */
-class ShortcutsJsonReader(private val mContext: Context) {
+class ShortcutsJsonReader(private val context: Context) {
 
-    private val mIconBitmapSize: Int = UtilitiesBitmap.getIconMaxSize(mContext)
-    private val mUnusedBitmaps: ArrayList<SoftReference<Bitmap>> = ArrayList()
+    private val iconBitmapSize: Int = UtilitiesBitmap.getIconMaxSize(context)
+    private val unusedBitmaps: ArrayList<SoftReference<Bitmap>> = ArrayList()
 
-    private val mCachedIconCanvas = object : SoftReferenceThreadLocal<Canvas>() {
+    private val cachedIconCanvas = object : SoftReferenceThreadLocal<Canvas>() {
         override fun initialValue(): Canvas {
             return Canvas()
         }
     }
 
-    private val mCachedBitmapFactoryOptions = object : SoftReferenceThreadLocal<BitmapFactory.Options>() {
+    private val cachedBitmapFactoryOptions = object : SoftReferenceThreadLocal<BitmapFactory.Options>() {
         override fun initialValue(): BitmapFactory.Options {
             return BitmapFactory.Options()
         }
@@ -58,19 +58,19 @@ class ShortcutsJsonReader(private val mContext: Context) {
             synchronized(sLock) {
                 // not in cache; we need to load it from the db
                 while ((unusedBitmap == null || !unusedBitmap!!.isMutable ||
-                                unusedBitmap!!.width != mIconBitmapSize ||
-                                unusedBitmap!!.height != mIconBitmapSize) && mUnusedBitmaps.size > 0) {
-                    unusedBitmap = mUnusedBitmaps.removeAt(0).get()
+                                unusedBitmap!!.width != iconBitmapSize ||
+                                unusedBitmap!!.height != iconBitmapSize) && unusedBitmaps.size > 0) {
+                    unusedBitmap = unusedBitmaps.removeAt(0).get()
                 }
                 if (unusedBitmap != null) {
-                    val canvas = mCachedIconCanvas.get()
+                    val canvas = cachedIconCanvas.get()
                     canvas.setBitmap(unusedBitmap)
                     canvas.drawColor(0, PorterDuff.Mode.CLEAR)
                     canvas.setBitmap(null)
                 }
 
                 if (unusedBitmap == null) {
-                    unusedBitmap = Bitmap.createBitmap(mIconBitmapSize, mIconBitmapSize, Bitmap.Config.ARGB_8888)
+                    unusedBitmap = Bitmap.createBitmap(iconBitmapSize, iconBitmapSize, Bitmap.Config.ARGB_8888)
                 }
             }
 
@@ -139,10 +139,10 @@ class ShortcutsJsonReader(private val mContext: Context) {
         var icon: ShortcutIcon? = null
         if (itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
             bitmap = decodeIcon(iconData, unusedBitmap)
-            if (isCustomIcon) {
-                icon = ShortcutIcon.forCustomIcon(Shortcut.idUnknown.toLong(), bitmap)
+            icon = if (isCustomIcon) {
+                ShortcutIcon.forCustomIcon(Shortcut.idUnknown, bitmap!!)
             } else {
-                icon = ShortcutIcon.forActivity(Shortcut.idUnknown.toLong(), bitmap)
+                ShortcutIcon.forActivity(Shortcut.idUnknown, bitmap!!)
             }
         } else {
             if (iconType == LauncherSettings.Favorites.ICON_TYPE_RESOURCE) {
@@ -151,12 +151,12 @@ class ShortcutsJsonReader(private val mContext: Context) {
                 iconResource.resourceName = iconResourceName
                 // the resource
                 try {
-                    val resources = mContext.packageManager
+                    val resources = context.packageManager
                             .getResourcesForApplication(iconPackageName)
                     if (resources != null) {
                         val resId = resources.getIdentifier(iconResourceName, null, null)
                         if (resId > 0) {
-                            bitmap = UtilitiesBitmap.createHiResIconBitmap(ResourcesCompat.getDrawable(resources, resId, null), mContext)
+                            bitmap = UtilitiesBitmap.createHiResIconBitmap(ResourcesCompat.getDrawable(resources, resId, null), context)
                         }
                     }
                 } catch (e: PackageManager.NameNotFoundException) {
@@ -171,19 +171,19 @@ class ShortcutsJsonReader(private val mContext: Context) {
                     bitmap = decodeIcon(iconData, unusedBitmap)
                 }
                 if (bitmap != null) {
-                    icon = ShortcutIcon.forIconResource(Shortcut.idUnknown.toLong(), bitmap, iconResource)
+                    icon = ShortcutIcon.forIconResource(Shortcut.idUnknown, bitmap, iconResource)
                 }
             } else if (iconType == LauncherSettings.Favorites.ICON_TYPE_BITMAP) {
                 bitmap = decodeIcon(iconData, unusedBitmap)
                 if (bitmap != null) {
-                    icon = ShortcutIcon.forCustomIcon(Shortcut.idUnknown.toLong(), bitmap)
+                    icon = ShortcutIcon.forCustomIcon(Shortcut.idUnknown, bitmap)
                 }
             }
         }
 
         if (bitmap == null) {
-            bitmap = UtilitiesBitmap.makeDefaultIcon(mContext.packageManager)
-            icon = ShortcutIcon.forFallbackIcon(Shortcut.idUnknown.toLong(), bitmap)
+            bitmap = UtilitiesBitmap.makeDefaultIcon(context.packageManager)
+            icon = ShortcutIcon.forFallbackIcon(Shortcut.idUnknown, bitmap)
         }
 
         reader.endObject()
@@ -196,9 +196,9 @@ class ShortcutsJsonReader(private val mContext: Context) {
         if (data == null || data.isEmpty()) {
             return null
         }
-        val opts = mCachedBitmapFactoryOptions.get()
-        opts.outWidth = mIconBitmapSize
-        opts.outHeight = mIconBitmapSize
+        val opts = cachedBitmapFactoryOptions.get()
+        opts.outWidth = iconBitmapSize
+        opts.outHeight = iconBitmapSize
         opts.inSampleSize = 1
         //        opts.inMutable = true;
         if (UtilitiesBitmap.canUseForInBitmap(unusedBitmap, opts)) {

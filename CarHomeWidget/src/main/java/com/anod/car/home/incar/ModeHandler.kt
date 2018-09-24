@@ -142,7 +142,7 @@ class ModeHandler(private val mContext: Context, private val mScreenOrientation:
         }
 
         private fun enableBluetooth() {
-            sCurrentBtState = Bluetooth.getState()
+            sCurrentBtState = Bluetooth.state
             if (sCurrentBtState != BluetoothAdapter.STATE_ON) {
                 Bluetooth.switchOn()
             }

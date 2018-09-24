@@ -65,8 +65,8 @@ class ObjectRestoreManager(private val mContext: Context) {
             model.drop(pos)
             val info = shortcuts[pos]
             if (info != null) {
-                val newInfo = Shortcut(ShortcutInfo.NO_ID.toLong(), info.itemType, info.title, info.isCustomIcon, info.intent)
-                val newIcon = ShortcutIcon(ShortcutInfo.NO_ID.toLong(), info.isCustomIcon, info.isUsingFallbackIcon, info.iconResource, info.icon)
+                val newInfo = Shortcut(Shortcut.idUnknown, info.itemType, info.title, info.isCustomIcon, info.intent)
+                val newIcon = ShortcutIcon(Shortcut.idUnknown, info.isCustomIcon, info.isUsingFallbackIcon, info.iconResource, info.icon)
 
                 model.save(pos, newInfo, newIcon)
             }

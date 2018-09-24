@@ -205,7 +205,7 @@ object ModeDetector {
     }
 
     private fun onPowerConnected(prefs: InCarInterface, context: Context) {
-        if (prefs.isEnableBluetoothOnPower && Bluetooth.getState() != BluetoothAdapter.STATE_ON) {
+        if (prefs.isEnableBluetoothOnPower && Bluetooth.state != BluetoothAdapter.STATE_ON) {
             Bluetooth.switchOn()
         }
         if (ModeService.sInCarMode) {
@@ -216,7 +216,7 @@ object ModeDetector {
     }
 
     private fun onPowerDisconnected(prefs: InCarInterface, context: Context) {
-        if (prefs.isDisableBluetoothOnPower && Bluetooth.getState() != BluetoothAdapter.STATE_OFF) {
+        if (prefs.isDisableBluetoothOnPower && Bluetooth.state != BluetoothAdapter.STATE_OFF) {
             Bluetooth.switchOff()
         }
         if (ModeService.sInCarMode) {

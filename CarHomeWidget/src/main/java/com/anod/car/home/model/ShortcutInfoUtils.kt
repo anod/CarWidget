@@ -53,7 +53,7 @@ object ShortcutInfoUtils {
                 AppLog.d("Custom shortcut with Icon Resource")
                 try {
                     icon = getPackageIcon(context, extra)
-                    result.icon = ShortcutIcon.forIconResource(Shortcut.idUnknown.toLong(), icon, extra)
+                    result.icon = ShortcutIcon.forIconResource(Shortcut.idUnknown, icon!!, extra)
                 } catch (e: Resources.NotFoundException) {
                     AppLog.e(e)
                 } catch (e: PackageManager.NameNotFoundException) {
@@ -95,7 +95,7 @@ object ShortcutInfoUtils {
 
 
     /**
-     * Make an ShortcutInfo object for a shortcut that is an application.
+     * Make an Shortcut object for a shortcut that is an application.
      *
      * If c is not null, then it will be used to fill in missing data like the title and icon.
      */
@@ -130,7 +130,7 @@ object ShortcutInfoUtils {
 
         if (resolveInfo != null) {
             icon = getIcon(componentName, resolveInfo, manager, context)
-            result.icon = ShortcutIcon.forActivity(Shortcut.idUnknown, icon)
+            result.icon = ShortcutIcon.forActivity(Shortcut.idUnknown, icon!!)
         }
         // the fallback icon
         if (icon == null) {
