@@ -4,10 +4,10 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    android:paddingBottom="2dp"
-    android:paddingRight="4dp"
     android:paddingLeft="4dp"
-    android:paddingTop="2dp">
+    android:paddingTop="2dp"
+    android:paddingRight="4dp"
+    android:paddingBottom="2dp">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -22,8 +22,8 @@
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
-            android:text="@string/backup_name_title"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="@string/backup_name_title" />
 
         <TextView
             android:id="@android:id/text2"
@@ -31,8 +31,8 @@
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
-            android:text="@string/backup_name_summary"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="@string/backup_name_summary" />
     </LinearLayout>
 
     <ImageView
@@ -43,8 +43,8 @@
         android:contentDescription="@string/restore"
         android:gravity="center"
         android:scaleType="center"
-        android:tint="?attr/colorPrimary"
-        android:src="@drawable/ic_action_tick" />
+        android:src="@drawable/ic_action_tick"
+        android:tint="?attr/colorAccent" />
 
     <ImageView
         android:id="@+id/uploadMain"
@@ -54,9 +54,8 @@
         android:contentDescription="@string/export_backup"
         android:gravity="center"
         android:scaleType="center"
-        android:tint="?attr/colorPrimary"
-        android:src="@drawable/ic_action_xhdpi_ul_to_cloud" />
-
+        android:src="@drawable/ic_action_xhdpi_ul_to_cloud"
+        android:tint="?attr/colorAccent" />
 
     <ImageView
         android:id="@+id/delete_button"
@@ -66,7 +65,7 @@
         android:contentDescription="@string/delete"
         android:gravity="center"
         android:scaleType="center"
-        android:tint="?attr/colorPrimary"
-        android:src="@drawable/ic_action_cancel" />
+        android:src="@drawable/ic_action_cancel"
+        android:tint="?attr/colorAccent" />
 
 </LinearLayout>

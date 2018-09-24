@@ -95,4 +95,11 @@ open class WidgetsListActivity : CarWidgetActivity() {
         configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         startActivity(configIntent)
     }
+
+    fun showInCarSettings() {
+        supportFragmentManager.transaction {
+            replace(R.id.content_frame, AboutFragment())
+        }
+        bottomNavigation.selectedItemId = R.id.nav_incar
+    }
 }

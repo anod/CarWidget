@@ -65,8 +65,9 @@ class WidgetsListFragment : androidx.fragment.app.Fragment(), WidgetsListAdapter
                     version.isFreeAndTrialExpired -> startActivity(Intent().forProVersion())
                     version.isFree -> startActivity(Intent().forProVersion())
                     else -> {
-                        val intent = ConfigurationActivity.createFragmentIntent(activity!!, ConfigurationInCar::class.java)
-                        startActivity(intent)
+                        if (activity is WidgetsListActivity) {
+                            (activity as WidgetsListActivity).showInCarSettings()
+                        }
                     }
                 }
             } else {

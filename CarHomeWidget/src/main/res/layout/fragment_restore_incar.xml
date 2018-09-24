@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/restore"
-            android:tint="?attr/colorPrimary"
+            android:tint="?attr/colorAccent"
             android:src="@drawable/ic_action_tick" />
 
         <ImageButton
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/export_backup"
-            android:tint="?attr/colorPrimary"
+            android:tint="?attr/colorAccent"
             android:src="@drawable/ic_action_xhdpi_ul_to_cloud" />
     </LinearLayout>
 

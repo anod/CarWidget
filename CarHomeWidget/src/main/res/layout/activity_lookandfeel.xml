@@ -13,6 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        style="@style/Widget.MaterialComponents.TabLayout.Colored"
         app:tabMode="scrollable" />
 
     <androidx.viewpager.widget.ViewPager
