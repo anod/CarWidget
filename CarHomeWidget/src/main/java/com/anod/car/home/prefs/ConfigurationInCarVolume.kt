@@ -18,7 +18,7 @@ class ConfigurationInCarVolume : ConfigurationPreferenceFragment(), OnCheckedCha
         get() = InCarStorage.PREF_NAME
 
     override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-        val prefs = InCarStorage.load(activity)
+        val prefs = InCarStorage.load(activity!!)
         prefs.isAdjustVolumeLevel = isChecked
         prefs.apply()
     }

@@ -27,7 +27,7 @@ public class InCarStatus {
             return NOT_ACTIVE;
         }
         if (version.isProOrTrial()) {
-            if (InCarStorage.load(context).isInCarEnabled()) {
+            if (InCarStorage.INSTANCE.load(context).isInCarEnabled()) {
                 return ENABLED;
             } else {
                 return DISABLED;

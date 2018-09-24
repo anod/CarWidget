@@ -32,7 +32,7 @@ class ModeHandler(private val mContext: Context, private val mScreenOrientation:
         if (prefs.isEnableBluetooth) {
             enableBluetooth()
         }
-        if (prefs.disableWifi != InCar.WIFI_NOACTION) {
+        if (prefs.disableWifi != InCarInterface.WIFI_NOACTION) {
             disableWifi(mContext)
         }
         if (prefs.isActivateCarMode) {
@@ -44,16 +44,11 @@ class ModeHandler(private val mContext: Context, private val mScreenOrientation:
         }
 
         if (prefs.isHotspotOn) {
-            if (prefs.disableWifi == InCar.WIFI_NOACTION) {
+            if (prefs.disableWifi == InCarInterface.WIFI_NOACTION) {
                 disableWifi(mContext)
             }
             switchHotspot(mContext, true)
         }
-
-        //		Intent intent = new Intent()
-        //				.setComponent(new ComponentName("com.RSen.OpenMic.Pheonix", "com.RSen.OpenMic.Pheonix.StartListeningActivity"))
-        //				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //		Utils.startActivitySafely(intent, context);
 
         if (prefs.screenOrientation != ScreenOrientation.DISABLED) {
             mScreenOrientation.set(prefs.screenOrientation)
@@ -64,7 +59,7 @@ class ModeHandler(private val mContext: Context, private val mScreenOrientation:
             runApp(autorunApp, mContext)
         }
         val brightSetting = prefs.brightness
-        if (brightSetting != InCar.BRIGHTNESS_DISABLED) {
+        if (brightSetting != InCarInterface.BRIGHTNESS_DISABLED) {
             adjustBrightness(brightSetting, mContext)
         }
     }
@@ -85,7 +80,7 @@ class ModeHandler(private val mContext: Context, private val mScreenOrientation:
         if (prefs.isHotspotOn) {
             switchHotspot(mContext, false)
         }
-        if (prefs.disableWifi == InCar.WIFI_TURNOFF) {
+        if (prefs.disableWifi == InCarInterface.WIFI_TURNOFF) {
             restoreWiFi(mContext)
         }
         if (SamsungDrivingMode.hasMode() && prefs.isSamsungDrivingMode) {
@@ -95,7 +90,7 @@ class ModeHandler(private val mContext: Context, private val mScreenOrientation:
         mScreenOrientation.set(ScreenOrientation.DISABLED)
 
         val brightSetting = prefs.brightness
-        if (brightSetting != InCar.BRIGHTNESS_DISABLED) {
+        if (brightSetting != InCarInterface.BRIGHTNESS_DISABLED) {
             restoreBrightness(brightSetting, mContext)
         }
     }
@@ -172,15 +167,15 @@ class ModeHandler(private val mContext: Context, private val mScreenOrientation:
 
             var newBrightLevel = -1
             var newBrightMode = -1
-            if (InCar.BRIGHTNESS_AUTO == brightSetting) {
+            if (InCarInterface.BRIGHTNESS_AUTO == brightSetting) {
                 if (!sCurrentAutoBrightness) {
                     newBrightLevel = sCurrentBrightness
                     newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
                 }
-            } else if (InCar.BRIGHTNESS_DAY == brightSetting) {
+            } else if (InCarInterface.BRIGHTNESS_DAY == brightSetting) {
                 newBrightLevel = BRIGHTNESS_DAY
                 newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
-            } else if (InCar.BRIGHTNESS_NIGHT == brightSetting) {
+            } else if (InCarInterface.BRIGHTNESS_NIGHT == brightSetting) {
                 newBrightLevel = BRIGHTNESS_NIGHT
                 newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
             }
@@ -200,7 +195,7 @@ class ModeHandler(private val mContext: Context, private val mScreenOrientation:
         }
 
         private fun restoreBrightness(brightSetting: String, context: Context): Boolean {
-            if (sCurrentAutoBrightness && InCar.BRIGHTNESS_AUTO == brightSetting) {
+            if (sCurrentAutoBrightness && InCarInterface.BRIGHTNESS_AUTO == brightSetting) {
                 return false
             }
             var newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL

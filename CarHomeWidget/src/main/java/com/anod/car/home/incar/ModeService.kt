@@ -110,10 +110,9 @@ class ModeService : Service() {
 
     private fun attachPhoneListener() {
         AppLog.d("Attach phone listener")
-        val og = App.provide(this)
-        phoneListener = og.modePhoneStateListener
-        val tm = og.telephonyManager
-        tm.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE)
+        val provider = App.provide(this)
+        phoneListener = provider.modePhoneStateListener
+        provider.telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE)
     }
 
     private fun detachPhoneListener() {

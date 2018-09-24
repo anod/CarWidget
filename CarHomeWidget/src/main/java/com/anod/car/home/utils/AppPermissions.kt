@@ -23,6 +23,10 @@ object CallPhone: AppPermission(android.Manifest.permission.CALL_PHONE)
 object WriteExternalStorage: AppPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
 object ReadExternalStorage: AppPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
 object ReadContacts: AppPermission(Manifest.permission.READ_CONTACTS)
+object SystemAlertWindow: AppPermission(Manifest.permission.SYSTEM_ALERT_WINDOW)
+object AnswerPhoneCalls: AppPermission(Manifest.permission.ANSWER_PHONE_CALLS)
+object ModifyPhoneState: AppPermission(Manifest.permission.MODIFY_PHONE_STATE)
+
 
 object AppPermissions {
 

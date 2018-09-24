@@ -44,7 +44,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
     private val isBroadcastServiceRequired: Boolean
         get() {
-            val incar = InCarStorage.load(activity)
+            val incar = InCarStorage.load(activity!!)
             return BroadcastService.isServiceRequired(incar)
         }
 
@@ -74,7 +74,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     }
 
     private fun initInCar() {
-        val incar = InCarStorage.load(activity)
+        val incar = InCarStorage.load(activity!!)
 
         val incarSwitch = findPreference(InCarSettings.INCAR_MODE_ENABLED)
 
@@ -99,6 +99,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         registerBroadcastServiceSwitchListener(InCarSettings.HEADSET_REQUIRED)
         registerBroadcastServiceSwitchListener(InCarSettings.POWER_REQUIRED)
         registerBroadcastServiceSwitchListener(InCarSettings.CAR_DOCK_REQUIRED)
+
 
         initActivityRecognition()
         initScreenTimeout(incar)
@@ -130,15 +131,19 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             val value = newValue as String
-            if ("disabled-charging" == value) {
-                InCarStorage.saveScreenTimeout(true, true, incar)
-                pref.value = "disabled-charging"
-            } else if ("disabled" == value) {
-                InCarStorage.saveScreenTimeout(true, false, incar)
-                pref.value = "disabled"
-            } else {
-                InCarStorage.saveScreenTimeout(false, false, incar)
-                pref.value = "enabled"
+            when (value) {
+                "disabled-charging" -> {
+                    InCarStorage.saveScreenTimeout(true, true, incar)
+                    pref.value = "disabled-charging"
+                }
+                "disabled" -> {
+                    InCarStorage.saveScreenTimeout(true, false, incar)
+                    pref.value = "disabled"
+                }
+                else -> {
+                    InCarStorage.saveScreenTimeout(false, false, incar)
+                    pref.value = "enabled"
+                }
             }
             false
         }

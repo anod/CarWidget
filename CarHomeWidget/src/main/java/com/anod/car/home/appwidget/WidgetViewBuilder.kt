@@ -61,7 +61,7 @@ class WidgetViewBuilder(private val context: Context,
             shortcutViewBuilder!!.setBitmapMemoryCache(it)
         }
         widgetButtonViewBuilder = WidgetButtonViewBuilder(context, prefs, pendingIntentFactory, appWidgetId)
-        widgetButtonViewBuilder!!.setAlternativeHidden(widgetButtonAlternativeHidden)
+        widgetButtonViewBuilder!!.alternativeHidden = widgetButtonAlternativeHidden
         refreshIconTransform()
         return this
     }

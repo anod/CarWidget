@@ -1,21 +1,25 @@
 package com.anod.car.home.incar
 
+import android.annotation.SuppressLint
 import com.anod.car.home.prefs.preferences.InCar
 import info.anodsplace.framework.AppLog
 
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
+import android.os.Build
+import android.telecom.TelecomManager
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
-import android.util.Log
+import com.anod.car.home.prefs.model.InCarInterface
+import com.anod.car.home.utils.AnswerPhoneCalls
+import com.anod.car.home.utils.AppPermissions
+import com.anod.car.home.utils.ModifyPhoneState
 
 import java.util.Timer
 import java.util.TimerTask
 
-
 class ModePhoneStateListener(private val context: Context, private val audioManager: AudioManager) : PhoneStateListener() {
-
     private var answered = false
     private var answerTimer: Timer? = null
     private var autoSpeaker: Boolean = false
@@ -51,14 +55,14 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
             }
             TelephonyManager.CALL_STATE_RINGING -> {
                 AppLog.d("Call state ringing")
-                if (answerMode == InCar.AUTOANSWER_IMMEDIATLY) {
+                if (answerMode == InCarInterface.AUTOANSWER_IMMEDIATLY) {
                     AppLog.d("Check if already answered")
                     if (!answered) {
                         AppLog.d("Answer immediately")
                         answerCall()
                         answered = true
                     }
-                } else if (answerMode == InCar.AUTOANSWER_DELAY_5) {
+                } else if (answerMode == InCarInterface.AUTOANSWER_DELAY_5) {
                     AppLog.d("Check if already answered")
                     if (!answered) {
                         AppLog.d("Answer delayed")
@@ -88,7 +92,7 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
                 override fun run() {
                     answerCall()
                 }
-            }, ANSWER_DALAY_MS.toLong())
+            }, answerDelayMs.toLong())
         }
     }
 
@@ -105,7 +109,15 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun answerPhoneHeadsethook(context: Context) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val telecomManager = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
+            if (AppPermissions.isGranted(context, AnswerPhoneCalls) || AppPermissions.isGranted(context, ModifyPhoneState)) {
+                telecomManager.acceptRingingCall()
+            }
+        }
 
         val intent = Intent(context, AcceptCallActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -115,8 +127,7 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
     }
 
     companion object {
-        private const val ANSWER_DALAY_MS = 5000
+        private const val answerDelayMs = 5000
     }
-
 
 }

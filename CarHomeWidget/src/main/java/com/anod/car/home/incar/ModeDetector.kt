@@ -18,11 +18,11 @@ import com.anod.car.home.utils.PowerUtil
  * @date 12/25/13
  */
 object ModeDetector {
-    const val FLAG_POWER = 0
-    const val FLAG_HEADSET = 1
-    const val FLAG_BLUETOOTH = 2
+    private const val FLAG_POWER = 0
+    private const val FLAG_HEADSET = 1
+    private const val FLAG_BLUETOOTH = 2
     const val FLAG_ACTIVITY = 3
-    const val FLAG_CAR_DOCK = 4
+    private const val FLAG_CAR_DOCK = 4
 
     private val sPrefState = booleanArrayOf(false, false, false, false, false)
     private val sEventState = booleanArrayOf(false, false, false, false, false)
@@ -162,7 +162,7 @@ object ModeDetector {
 
         if (BluetoothDevice.ACTION_ACL_CONNECTED == action) {
             val devices = prefs.btDevices
-            if (devices != null) {
+            if (devices.isNotEmpty()) {
                 val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
                 if (devices.containsKey(device.address)) {
                     sEventState[FLAG_BLUETOOTH] = true
@@ -179,7 +179,7 @@ object ModeDetector {
         }
         if (BluetoothDevice.ACTION_ACL_DISCONNECTED == action) {
             val devices = prefs.btDevices
-            if (devices != null) {
+            if (devices.isNotEmpty()) {
                 val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
                 if (devices.containsKey(device.address)) {
                     sEventState[FLAG_BLUETOOTH] = false

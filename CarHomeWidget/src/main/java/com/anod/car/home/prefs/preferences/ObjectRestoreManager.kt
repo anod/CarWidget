@@ -9,10 +9,7 @@ import com.anod.car.home.model.ShortcutIcon
 import com.anod.car.home.model.ShortcutInfo
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.backup.PreferencesBackupManager
-import com.anod.car.home.prefs.model.InCarSettings
-import com.anod.car.home.prefs.model.InCarStorage
-import com.anod.car.home.prefs.model.PrefsMigrate
-import com.anod.car.home.prefs.model.WidgetStorage
+import com.anod.car.home.prefs.model.*
 
 import info.anodsplace.framework.AppLog
 
@@ -97,7 +94,7 @@ class ObjectRestoreManager(private val mContext: Context) {
 
         //version 1.42
         if (inCarBackup!!.inCar.autoAnswer.isNullOrEmpty()) {
-            inCarBackup!!.inCar.autoAnswer = InCar.AUTOANSWER_DISABLED
+            inCarBackup!!.inCar.autoAnswer = InCarInterface.AUTOANSWER_DISABLED
         }
 
         val dest = InCarStorage.load(mContext)

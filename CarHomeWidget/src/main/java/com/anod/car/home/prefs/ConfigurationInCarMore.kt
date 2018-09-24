@@ -16,7 +16,7 @@ import com.anod.car.home.prefs.model.InCarSettings
 import com.anod.car.home.prefs.model.InCarStorage
 
 class ConfigurationInCarMore : ConfigurationPreferenceFragment(), OnCheckedChangeListener {
-    private val prefs: InCarSettings by lazy { InCarStorage.load(activity) }
+    private val prefs: InCarSettings by lazy { InCarStorage.load(activity!!) }
 
     override val isAppWidgetIdRequired: Boolean
         get() = false
