@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:minWidth="56dp"
-  android:minHeight="56dp"
-  android:initialLayout="@layout/list_item_widget_shortcut"
+  android:minWidth="48dp"
+  android:minHeight="48dp"
+  android:initialLayout="@layout/widget_incar_mode"
   android:updatePeriodMillis="3600000"
   android:previewImage="@drawable/ic_launcher_carwidget"
   android:widgetCategory="home_screen"

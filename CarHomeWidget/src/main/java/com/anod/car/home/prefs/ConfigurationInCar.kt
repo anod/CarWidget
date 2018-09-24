@@ -102,6 +102,9 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         registerBroadcastServiceSwitchListener(InCarSettings.POWER_REQUIRED)
         registerBroadcastServiceSwitchListener(InCarSettings.CAR_DOCK_REQUIRED)
 
+        registerBroadcastServiceSwitchListener(InCarSettings.POWER_BT_ENABLE)
+        registerBroadcastServiceSwitchListener(InCarSettings.POWER_BT_DISABLE)
+
         initActivityRecognition()
         initScreenTimeout(incar)
         initScreenOrientation()

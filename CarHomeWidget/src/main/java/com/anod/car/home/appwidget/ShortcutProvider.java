@@ -20,14 +20,14 @@ public class ShortcutProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.list_item_widget_shortcut);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_incar_mode);
 
         Intent activity = new Intent(context, SwitchInCarActivity.class);
         activity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
 
         PendingIntent switchIntent = PendingIntent.getActivity(context, 0, activity, PendingIntent.FLAG_UPDATE_CURRENT);
 //        pendingIntent.setData(Uri.parse("com.anod.car.home.pro://mode/switch"));
-        views.setOnClickPendingIntent(R.id.incar, switchIntent);
+        views.setOnClickPendingIntent(R.id.button, switchIntent);
 
         appWidgetManager.updateAppWidget(appWidgetIds, views);
     }

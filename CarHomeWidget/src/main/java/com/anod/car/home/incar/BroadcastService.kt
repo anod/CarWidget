@@ -1,6 +1,7 @@
 package com.anod.car.home.incar
 
 import android.app.Service
+import android.app.UiModeManager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -63,6 +64,12 @@ class BroadcastService : Service() {
 
             val filter = IntentFilter()
             filter.addAction(Intent.ACTION_HEADSET_PLUG)
+            filter.addAction(Intent.ACTION_POWER_CONNECTED)
+            filter.addAction(Intent.ACTION_POWER_DISCONNECTED)
+            filter.addAction(Intent.ACTION_DOCK_EVENT)
+            filter.addAction(UiModeManager.ACTION_ENTER_CAR_MODE)
+            filter.addAction(UiModeManager.ACTION_EXIT_CAR_MODE)
+
             receiver = ModeBroadcastReceiver()
             context.registerReceiver(receiver, filter)
             return true
@@ -108,6 +115,12 @@ class BroadcastService : Service() {
                     continue
                 }
                 if (states[i]) {
+                    return true
+                }
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (prefs.isEnableBluetoothOnPower || prefs.isDisableBluetoothOnPower) {
                     return true
                 }
             }
