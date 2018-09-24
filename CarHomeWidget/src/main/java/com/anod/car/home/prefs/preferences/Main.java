@@ -1,5 +1,6 @@
 package com.anod.car.home.prefs.preferences;
 
+import com.anod.car.home.prefs.model.WidgetInterface;
 import com.anod.car.home.utils.BitmapTransform.RotateDirection;
 
 import java.io.IOException;
@@ -202,10 +203,10 @@ public class Main implements Serializable, com.anod.car.home.prefs.model.WidgetI
             iconsRotate = RotateDirection.NONE;
         }
         if (widgetButton1 == 0) {
-            widgetButton1 = Main.WIDGET_BUTTON_INCAR;
+            widgetButton1 = WidgetInterface.Companion.WIDGET_BUTTON_INCAR;
         }
         if (widgetButton2 == 0) {
-            widgetButton2 = Main.WIDGET_BUTTON_SETTINGS;
+            widgetButton2 = WidgetInterface.Companion.WIDGET_BUTTON_SETTINGS;
         }
     }
 }

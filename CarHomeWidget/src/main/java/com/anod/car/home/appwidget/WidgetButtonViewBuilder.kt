@@ -9,6 +9,7 @@ import com.anod.car.home.R
 import com.anod.car.home.incar.ModeService
 import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.InCarStorage
+import com.anod.car.home.prefs.model.WidgetInterface
 import com.anod.car.home.prefs.preferences.Main
 import com.anod.car.home.skin.SkinProperties
 
@@ -33,7 +34,7 @@ class WidgetButtonViewBuilder(
 
     private fun setup(@IdRes btnResId: Int, widgetButtonPref: Int, skinProperties: SkinProperties,
                       views: RemoteViews, buttonId: Int) {
-        if (widgetButtonPref == Main.WIDGET_BUTTON_HIDDEN) {
+        if (widgetButtonPref == WidgetInterface.WIDGET_BUTTON_HIDDEN) {
             if (alternativeHidden) {
                 views.setImageViewResource(btnResId, R.drawable.ic_action_cancel)
                 val configIntent = pendingIntentFactory
@@ -42,7 +43,7 @@ class WidgetButtonViewBuilder(
             } else {
                 views.setViewVisibility(btnResId, View.GONE)
             }
-        } else if (widgetButtonPref == Main.WIDGET_BUTTON_INCAR) {
+        } else if (widgetButtonPref == WidgetInterface.WIDGET_BUTTON_INCAR) {
             if (InCarStorage.load(context).isInCarEnabled) {
                 setInCarButton(btnResId, prefs.isIncarTransparent, skinProperties, views,
                         buttonId)
@@ -54,7 +55,7 @@ class WidgetButtonViewBuilder(
                     views.setViewVisibility(btnResId, View.GONE)
                 }
             }
-        } else if (widgetButtonPref == Main.WIDGET_BUTTON_SETTINGS) {
+        } else if (widgetButtonPref == WidgetInterface.WIDGET_BUTTON_SETTINGS) {
             setSettingsButton(btnResId, skinProperties, views, buttonId)
         }
     }

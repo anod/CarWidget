@@ -12,6 +12,7 @@ import androidx.core.content.res.ResourcesCompat
 
 import com.anod.car.home.R
 import com.anod.car.home.model.Shortcut
+import com.anod.car.home.prefs.model.WidgetInterface
 import com.anod.car.home.utils.BitmapTransform.RotateDirection
 
 import java.util.ArrayList
@@ -46,19 +47,19 @@ object WidgetMigrateStorage {
         val res = context.resources
 
         val p = Main()
-        val skinName = prefs.getString(SKIN, Main.SKIN_CARDS)
+        val skinName = prefs.getString(SKIN, WidgetInterface.SKIN_CARDS)
         p.skin = skinName
 
         val defTileColor = ResourcesCompat.getColor(res, R.color.w7_tale_default_background, null)
         val tileColor = prefs.getInt(BUTTON_COLOR, defTileColor)
         p.tileColor = tileColor
 
-        p.setIconsScaleString(prefs.getString(ICONS_SCALE, ICONS_DEF_VALUE))
+        p.setIconsScaleString(prefs.getString(ICONS_SCALE, ICONS_DEF_VALUE)!!)
         p.isIconsMono = prefs.getBoolean(ICONS_MONO, false)
         p.backgroundColor = prefs.getInt(BG_COLOR, ResourcesCompat.getColor(res, R.color.default_background, null))
         p.iconsColor = prefs.getColor(ICONS_COLOR)
         p.fontColor = prefs.getInt(FONT_COLOR, ResourcesCompat.getColor(res, R.color.default_font_color, null))
-        p.fontSize = prefs.getInt(FONT_SIZE, Main.FONT_SIZE_UNDEFINED)
+        p.fontSize = prefs.getInt(FONT_SIZE, WidgetInterface.FONT_SIZE_UNDEFINED)
         p.isSettingsTransparent = prefs.getBoolean(TRANSPARENT_BTN_SETTINGS, false)
         p.isIncarTransparent = prefs.getBoolean(TRANSPARENT_BTN_INCAR, false)
         p.iconsTheme = prefs.getString(ICONS_THEME, null)
@@ -66,8 +67,8 @@ object WidgetMigrateStorage {
         p.iconsRotate = RotateDirection.valueOf(prefs.getString(ICONS_ROTATE, RotateDirection.NONE.name)!!)
         p.isTitlesHide = prefs.getBoolean(TITLES_HIDE, false)
 
-        p.widgetButton1 = prefs.getInt(WIDGET_BUTTON_1, Main.WIDGET_BUTTON_INCAR)
-        p.widgetButton2 = prefs.getInt(WIDGET_BUTTON_2, Main.WIDGET_BUTTON_SETTINGS)
+        p.widgetButton1 = prefs.getInt(WIDGET_BUTTON_1, WidgetInterface.WIDGET_BUTTON_INCAR)
+        p.widgetButton2 = prefs.getInt(WIDGET_BUTTON_2, WidgetInterface.WIDGET_BUTTON_SETTINGS)
 
         return p
     }

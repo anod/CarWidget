@@ -4,7 +4,6 @@ import com.anod.car.home.model.LauncherSettings
 import com.anod.car.home.model.Shortcut
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.model.WidgetSettings
-import com.anod.car.home.prefs.preferences.Main
 import com.anod.car.home.skin.SkinProperties
 import com.anod.car.home.skin.icon.BackgroundProcessor
 import info.anodsplace.framework.AppLog
@@ -20,6 +19,7 @@ import android.graphics.drawable.Drawable
 import android.util.LruCache
 import android.view.View
 import android.widget.RemoteViews
+import com.anod.car.home.prefs.model.WidgetInterface
 
 /**
  * @author alex
@@ -78,7 +78,7 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
     }
 
     private fun setIconBackground(icon: Bitmap?, res: Int, views: RemoteViews) {
-        val color = backgroundProcessor!!.getColor(prefs, icon)
+        val color = backgroundProcessor!!.getColor(prefs!!, icon)
         if (Color.alpha(color) == 0) {
             views.setViewVisibility(res, View.GONE)
         } else {
@@ -102,7 +102,7 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
 
     private fun setFont(resText: Int, scaledDensity: Float, views: RemoteViews) {
         views.setTextColor(resText, prefs!!.fontColor)
-        if (prefs!!.fontSize != Main.FONT_SIZE_UNDEFINED) {
+        if (prefs!!.fontSize != WidgetInterface.FONT_SIZE_UNDEFINED) {
             if (prefs!!.fontSize == 0) {
                 views.setViewVisibility(resText, View.GONE)
             } else {
@@ -145,7 +145,7 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
         views.setOnClickPendingIntent(res, shortcutIntent)
         views.setOnClickPendingIntent(resText, shortcutIntent)
 
-        return icon!!
+        return icon
     }
 
     private fun addBitmapToMemCache(key: String, bitmap: Bitmap?) {

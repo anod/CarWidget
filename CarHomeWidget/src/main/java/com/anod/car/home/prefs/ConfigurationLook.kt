@@ -9,6 +9,7 @@ import com.android.colorpicker.ColorPickerSwatch
 
 import com.anod.car.home.R
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog
+import com.anod.car.home.prefs.model.WidgetInterface
 import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.prefs.views.SeekBarDialogPreference
@@ -82,7 +83,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
     private fun initFont(prefs: WidgetSettings) {
         val sbPref = findPreference(WidgetSettings.FONT_SIZE) as SeekBarDialogPreference
         val fontSize = prefs.fontSize
-        if (fontSize != WidgetSettings.FONT_SIZE_UNDEFINED) {
+        if (fontSize != WidgetInterface.FONT_SIZE_UNDEFINED) {
             sbPref.value = fontSize
         } else {
             val scaledDensity = resources.displayMetrics.scaledDensity

@@ -15,6 +15,7 @@ import android.widget.ImageView
 import com.anod.car.home.R
 import com.anod.car.home.app.AppCompatGridActivity
 import com.anod.car.home.appwidget.WidgetButtonViewBuilder
+import com.anod.car.home.prefs.model.WidgetInterface
 import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.skin.PropertiesFactory
@@ -102,11 +103,11 @@ class WidgetButtonChoiceActivity : AppCompatGridActivity() {
         val r = resources
         val items = ArrayList<ChoiceAdapter.Item>(3)
         items.add(ChoiceAdapter.Item(r.getString(R.string.pref_settings_transparent),
-                skinProperties.settingsButtonRes, WidgetSettings.WIDGET_BUTTON_SETTINGS))
+                skinProperties.settingsButtonRes, WidgetInterface.WIDGET_BUTTON_SETTINGS))
         items.add(ChoiceAdapter.Item(r.getString(R.string.pref_incar_transparent),
-                skinProperties.inCarButtonEnterRes, WidgetSettings.WIDGET_BUTTON_INCAR))
+                skinProperties.inCarButtonEnterRes, WidgetInterface.WIDGET_BUTTON_INCAR))
         items.add(ChoiceAdapter.Item(r.getString(R.string.hidden), R.drawable.ic_action_cancel,
-                WidgetSettings.WIDGET_BUTTON_HIDDEN))
+                WidgetInterface.WIDGET_BUTTON_HIDDEN))
         return items
     }
 

@@ -21,6 +21,7 @@ import com.anod.car.home.prefs.ConfigurationActivity
 import com.anod.car.home.prefs.ConfigurationLook
 import com.anod.car.home.prefs.LookAndFeelActivity
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog
+import com.anod.car.home.prefs.model.WidgetInterface
 import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.utils.FastBitmapDrawable
@@ -144,12 +145,12 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
     fun refresh() {
         if (initialized) {
             showTileColorButton()
-            menuInfo!!.isVisible = activity.currentSkinItem.value == WidgetSettings.SKIN_BBB
+            menuInfo!!.isVisible = activity.currentSkinItem.value == WidgetInterface.SKIN_BBB
         }
     }
 
     private fun showTileColorButton() {
-        if (activity.currentSkinItem.value == WidgetSettings.SKIN_WINDOWS7) {
+        if (activity.currentSkinItem.value == WidgetInterface.SKIN_WINDOWS7) {
             val prefs = WidgetStorage.load(activity, appWidgetId)
             val size = activity.resources.getDimension(R.dimen.color_preview_size).toInt()
 

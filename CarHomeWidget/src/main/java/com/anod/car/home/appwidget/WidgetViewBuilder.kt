@@ -4,7 +4,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import androidx.collection.SimpleArrayMap
 import android.util.LruCache
 import android.widget.RemoteViews
 
@@ -30,13 +29,9 @@ class WidgetViewBuilder(private val context: Context,
     var overrideSkin: String? = null
 
     private val prefs: WidgetSettings by lazy { WidgetStorage.load(context, appWidgetId) }
-
     private val shortcutsModel: WidgetShortcutsModel by lazy { WidgetShortcutsModel(context, appWidgetId) }
-
     private var shortcutViewBuilder: ShortcutViewBuilder? = null
-
-    private val bitmapTransform: BitmapTransform by lazy { BitmapTransform(context) }
-
+    private var bitmapTransform: BitmapTransform? = null
     private var widgetButtonViewBuilder: WidgetButtonViewBuilder? = null
 
     interface PendingIntentFactory {
@@ -56,6 +51,7 @@ class WidgetViewBuilder(private val context: Context,
 
         shortcutsModel.init()
 
+        bitmapTransform = BitmapTransform(context)
         shortcutViewBuilder = ShortcutViewBuilder(context, appWidgetId, pendingIntentFactory)
         bitmapMemoryCache?.let {
             shortcutViewBuilder!!.setBitmapMemoryCache(it)
@@ -83,7 +79,7 @@ class WidgetViewBuilder(private val context: Context,
         val iconPaddingRes = skinProperties.iconPaddingRes
         if (iconPaddingRes > 0 && !prefs.isTitlesHide) {
             val iconPadding = r.getDimension(iconPaddingRes).toInt()
-            bitmapTransform.setPaddingBottom(iconPadding)
+            bitmapTransform!!.paddingBottom = iconPadding
         }
 
         val views = RemoteViews(context.packageName,
@@ -93,13 +89,13 @@ class WidgetViewBuilder(private val context: Context,
         widgetButtonViewBuilder!!.setup(skinProperties, views)
 
         setBackground(prefs, views)
-        bitmapTransform.setIconProcessor(skinProperties.iconProcessor)
+        bitmapTransform!!.iconProcessor = skinProperties.iconProcessor
 
         val themePackage = prefs.iconsTheme
-        val themeIcons = if (themePackage == null) null else loadThemeIcons(themePackage)
+        val themeIcons = if (themePackage.isEmpty()) null else loadThemeIcons(themePackage)
 
         shortcutViewBuilder!!.init(scaledDensity, skinProperties, themeIcons, prefs, shortcutsModel,
-                bitmapTransform)
+                bitmapTransform!!)
 
         val totalRows = shortcuts.size() / 2
         for (rowNum in 0 until totalRows) {
@@ -159,17 +155,17 @@ class WidgetViewBuilder(private val context: Context,
 
         private fun applyIconTransform(bt: BitmapTransform?, prefs: WidgetSettings) {
             if (prefs.isIconsMono) {
-                bt!!.setApplyGrayFilter(true)
+                bt!!.applyGrayFilter = true
                 if (prefs.iconsColor != null) {
-                    bt.setTintColor(prefs.iconsColor)
+                    bt.tintColor = prefs.iconsColor
                 }
             }
 
             val iconScale = Utils.calcIconsScale(prefs.iconsScale)
             if (iconScale > 1.0f) {
-                bt!!.setScaleSize(iconScale)
+                bt!!.scaleSize = iconScale
             }
-            bt!!.setRotateDirection(prefs.iconsRotate)
+            bt!!.rotateDirection = prefs.iconsRotate
         }
     }
 

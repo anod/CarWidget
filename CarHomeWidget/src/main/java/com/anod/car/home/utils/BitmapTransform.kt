@@ -14,25 +14,25 @@ import android.graphics.PaintFlagsDrawFilter
 
 class BitmapTransform(context: Context) {
 
-    private var mIconSize = -1
-    private var mApplyGrayFilter = false
-    private var mTintColor: Int? = null
-    private var mScaleSize = 1.0f
-    private var mRotateDirection = RotateDirection.NONE
-    private var mPaddingBottom = 0
-    private var mIconProcessor: IconProcessor? = null
+    private var iconSize = -1
+    var applyGrayFilter = false
+    var tintColor: Int? = null
+    var scaleSize = 1.0f
+    var rotateDirection = RotateDirection.NONE
+    var paddingBottom = 0
+    var iconProcessor: IconProcessor? = null
 
     val cacheKey: String
-        get() = mApplyGrayFilter.toString() + "," +
-                mTintColor.toString() + "," +
-                mScaleSize.toString() + "," +
-                mRotateDirection.name + "," +
-                mPaddingBottom.toString() + "," +
+        get() = applyGrayFilter.toString() + "," +
+                tintColor.toString() + "," +
+                scaleSize.toString() + "," +
+                rotateDirection.name + "," +
+                paddingBottom.toString() + "," +
                 iconProcessorId
 
-    val iconProcessorId: String
-        get() = if (mIconProcessor != null) {
-            mIconProcessor!!.id()
+    private val iconProcessorId: String
+        get() = if (iconProcessor != null) {
+            iconProcessor!!.id
         } else "none"
 
     enum class RotateDirection {
@@ -40,46 +40,15 @@ class BitmapTransform(context: Context) {
     }
 
     init {
-        mIconSize = UtilitiesBitmap.getSystemIconSize(context)
+        iconSize = UtilitiesBitmap.getSystemIconSize(context)
     }
 
-    fun setApplyGrayFilter(applyGrayFilter: Boolean): BitmapTransform {
-        mApplyGrayFilter = applyGrayFilter
-        return this
-    }
-
-    fun setTintColor(tintColor: Int?): BitmapTransform {
-        mTintColor = tintColor
-        return this
-    }
-
-    fun setScaleSize(scaleSize: Float): BitmapTransform {
-        mScaleSize = scaleSize
-        return this
-    }
-
-    fun setRotateDirection(dir: RotateDirection): BitmapTransform {
-        mRotateDirection = dir
-        return this
-    }
-
-    fun setPaddingBottom(paddingBottom: Int): BitmapTransform {
-        mPaddingBottom = paddingBottom
-        return this
-    }
-
-
-    fun setIconProcessor(ip: IconProcessor): BitmapTransform {
-        mIconProcessor = ip
-        return this
-    }
-
-    fun transform(src: Bitmap): Bitmap {
-        var src = src
+    fun transform(bitmap: Bitmap): Bitmap {
+        var src = bitmap
         var sizeDiff = 0.0f
-        if (mIconProcessor != null) {
-            src = mIconProcessor!!.process(src)
-            sizeDiff = mIconProcessor!!.sizeDiff
+        if (iconProcessor != null) {
+            src = iconProcessor!!.process(src)
+            sizeDiff = iconProcessor!!.sizeDiff
         }
 
         val height = src.height
@@ -91,11 +60,11 @@ class BitmapTransform(context: Context) {
         val paint = Paint()
         paint.isFilterBitmap = true
 
-        if (mApplyGrayFilter) {
+        if (applyGrayFilter) {
             val cm = ColorMatrix()
             cm.setSaturation(0f) //gray scale
 
-            if (mTintColor != null) {
+            if (tintColor != null) {
                 applyTintColor(cm)
             }
 
@@ -106,12 +75,12 @@ class BitmapTransform(context: Context) {
         val matrix = Matrix()
 
         var degrees = 0
-        if (mRotateDirection != RotateDirection.NONE) {
-            degrees = if (mRotateDirection == RotateDirection.LEFT) 90 else 270
+        if (rotateDirection != RotateDirection.NONE) {
+            degrees = if (rotateDirection == RotateDirection.LEFT) 90 else 270
         }
 
-        val iconSize = mIconSize - sizeDiff
-        val scaledSize = (iconSize * mScaleSize).toInt()
+        val iconSize = iconSize - sizeDiff
+        val scaledSize = (iconSize * scaleSize).toInt()
         val ratioX = scaledSize / width.toFloat()
         val ratioY = scaledSize / height.toFloat()
         val scaledMiddleX = scaledSize / 2.0f
@@ -121,7 +90,7 @@ class BitmapTransform(context: Context) {
         matrix.postRotate(degrees.toFloat(), scaledMiddleX, scaledMiddleX)
 
         val output = Bitmap
-                .createBitmap(scaledSize, scaledSize + mPaddingBottom, Bitmap.Config.ARGB_8888)
+                .createBitmap(scaledSize, scaledSize + paddingBottom, Bitmap.Config.ARGB_8888)
         canvas.setBitmap(output)
 
         //paint.setColor(android.graphics.Color.RED);
@@ -135,9 +104,9 @@ class BitmapTransform(context: Context) {
     }
 
     private fun applyTintColor(cm: ColorMatrix) {
-        val r = Color.red(mTintColor!!) / 255.0f
-        val g = Color.green(mTintColor!!) / 255.0f
-        val b = Color.blue(mTintColor!!) / 255.0f
+        val r = Color.red(tintColor!!) / 255.0f
+        val g = Color.green(tintColor!!) / 255.0f
+        val b = Color.blue(tintColor!!) / 255.0f
 
         val matrix = floatArrayOf(r, 0f, 0f, 0f, 0f, //red
                 0f, g, 0f, 0f, 0f, //green
