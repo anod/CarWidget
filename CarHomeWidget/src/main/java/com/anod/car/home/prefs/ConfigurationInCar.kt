@@ -20,6 +20,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import android.net.Uri
 import android.content.Intent
+import android.content.SharedPreferences
 
 class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
@@ -35,20 +36,25 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     override val sharedPreferencesName: String
         get() = InCarStorage.PREF_NAME
 
-    private val broadcastServiceSwitchListener = Preference.OnPreferenceChangeListener { _, newValue ->
-        if (newValue as Boolean || isBroadcastServiceRequired) {
-            BroadcastService.startService(activity!!)
-        } else {
-            BroadcastService.stopService(activity!!)
-        }
-        true
-    }
+    private val serviceRequiredKeys = arrayOf(
+        InCarSettings.HEADSET_REQUIRED,
+        InCarSettings.POWER_REQUIRED,
+        InCarSettings.CAR_DOCK_REQUIRED,
 
-    private val isBroadcastServiceRequired: Boolean
-        get() {
+        InCarSettings.POWER_BT_ENABLE,
+        InCarSettings.POWER_BT_DISABLE
+    )
+
+    private val broadcastServiceSwitchListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (serviceRequiredKeys.contains(key)) {
             val incar = InCarStorage.load(activity!!)
-            return BroadcastService.isServiceRequired(incar)
+            if (BroadcastService.isServiceRequired(incar)) {
+                BroadcastService.startService(activity!!)
+            } else {
+                BroadcastService.stopService(activity!!)
+            }
         }
+    }
 
     override fun onCreateImpl(savedInstanceState: Bundle?) {
         val version = Version(activity!!)
@@ -98,12 +104,8 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
             true
         }
 
-        registerBroadcastServiceSwitchListener(InCarSettings.HEADSET_REQUIRED)
-        registerBroadcastServiceSwitchListener(InCarSettings.POWER_REQUIRED)
-        registerBroadcastServiceSwitchListener(InCarSettings.CAR_DOCK_REQUIRED)
-
-        registerBroadcastServiceSwitchListener(InCarSettings.POWER_BT_ENABLE)
-        registerBroadcastServiceSwitchListener(InCarSettings.POWER_BT_DISABLE)
+        val sharedPrefs = InCarStorage.getSharedPreferences(activity!!)
+        sharedPrefs.registerOnSharedPreferenceChangeListener(broadcastServiceSwitchListener)
 
         initActivityRecognition()
         initScreenTimeout(incar)
@@ -114,6 +116,12 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         showFragmentOnClick(MEDIA_SCREEN, ConfigurationInCarVolume::class.java)
         showFragmentOnClick(MORE_SCREEN, ConfigurationInCarMore::class.java)
         showFragmentOnClick(PREF_NOTIF_SHORTCUTS, ConfigurationNotificationShortcuts::class.java)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val sharedPrefs = InCarStorage.getSharedPreferences(activity!!)
+        sharedPrefs.registerOnSharedPreferenceChangeListener(broadcastServiceSwitchListener)
 
     }
 
@@ -152,11 +160,6 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
             }
             true
         }
-    }
-
-    private fun registerBroadcastServiceSwitchListener(key: String) {
-        val pref = findPreference(key)
-        pref.onPreferenceChangeListener = broadcastServiceSwitchListener
     }
 
     private fun initScreenTimeout(incar: InCarSettings) {
