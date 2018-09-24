@@ -1,8 +1,11 @@
 package com.anod.car.home.prefs
 
 import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.provider.Settings
+import android.widget.Toast
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 
@@ -12,16 +15,15 @@ import com.anod.car.home.incar.ActivityRecognitionClientService
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.prefs.model.InCarSettings
 import com.anod.car.home.prefs.model.InCarStorage
-import com.anod.car.home.utils.TrialDialogs
-import com.anod.car.home.utils.Utils
-import com.anod.car.home.utils.Version
+import com.anod.car.home.utils.*
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import android.net.Uri
+import android.content.Intent
 
 class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
     private var trialsLeft: Int = 0
-
     private var trialMessageShown: Boolean = false
 
     override val isAppWidgetIdRequired: Boolean
@@ -100,15 +102,53 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         registerBroadcastServiceSwitchListener(InCarSettings.POWER_REQUIRED)
         registerBroadcastServiceSwitchListener(InCarSettings.CAR_DOCK_REQUIRED)
 
-
         initActivityRecognition()
         initScreenTimeout(incar)
+        initScreenOrientation()
+        initBrightness()
 
         setIntent(SCREEN_BT_DEVICE, BluetoothDeviceActivity::class.java, 0)
         showFragmentOnClick(MEDIA_SCREEN, ConfigurationInCarVolume::class.java)
         showFragmentOnClick(MORE_SCREEN, ConfigurationInCarMore::class.java)
         showFragmentOnClick(PREF_NOTIF_SHORTCUTS, ConfigurationNotificationShortcuts::class.java)
 
+    }
+
+    private fun initBrightness() {
+        val pref = findPreference("brightness") as ListPreference
+        pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            if (newValue != "disabled")
+            {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (!Settings.System.canWrite(context))  {
+                        Toast.makeText(context, R.string.allow_permissions_brightness, Toast.LENGTH_LONG).show()
+                        val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
+                        intent.data = Uri.parse("package:" + context!!.packageName)
+                        context!!.startActivity(intent)
+                        return@OnPreferenceChangeListener false
+                    }
+                }
+            }
+            true
+        }
+    }
+
+    private fun initScreenOrientation() {
+        val pref = findPreference("screen-orientation") as ListPreference
+        pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            if (newValue != "-1")
+            {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (!Settings.canDrawOverlays(context)) {
+                        Toast.makeText(context, R.string.allow_permission_overlay, Toast.LENGTH_LONG).show()
+                        val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + context!!.packageName))
+                        startActivity(intent)
+                        return@OnPreferenceChangeListener false
+                    }
+                }
+            }
+            true
+        }
     }
 
     private fun registerBroadcastServiceSwitchListener(key: String) {
@@ -210,5 +250,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         private const val PREF_NOTIF_SHORTCUTS = "notif-shortcuts"
         const val PS_DIALOG_REQUEST_CODE = 4
         const val SCREEN_TIMEOUT_LIST = "screen-timeout-list"
+
+        const val requestSystemOverlay = 6
     }
 }

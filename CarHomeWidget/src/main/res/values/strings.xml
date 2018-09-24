@@ -265,4 +265,6 @@
     <string name="title">Title</string>
     <string name="info">Info</string>
     <string name="notifcation_mode_detector">InCar mode detector</string>
+    <string name="allow_permissions_brightness">Allow write system settings to change brightness</string>
+    <string name="allow_permission_overlay">Allow app overlay to change orientation</string>
 </resources>

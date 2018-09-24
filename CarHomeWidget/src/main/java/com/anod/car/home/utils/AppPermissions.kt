@@ -46,6 +46,10 @@ object AppPermissions {
         fragment.requestPermissions(permissions.map { it.value }.toTypedArray(), requestCode)
     }
 
+    fun request(fragment: Fragment, permission: AppPermission, requestCode: Int) {
+        fragment.requestPermissions(arrayOf(permission.value), requestCode)
+    }
+
     fun checkResult(requestCode: Int, grantResults: IntArray, checkPermission: Int, result: (result: PermissionResult) -> Unit) {
         if (requestCode == checkPermission) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

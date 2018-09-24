@@ -7,9 +7,12 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.net.wifi.WifiManager
+import android.os.Build
+import android.provider.Settings
+import android.widget.Toast
+import com.anod.car.home.R
 
 import com.anod.car.home.prefs.model.InCarInterface
-import com.anod.car.home.prefs.preferences.InCar
 import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.PowerUtil
 import com.anod.car.home.utils.Utils
@@ -186,11 +189,7 @@ class ModeHandler(private val mContext: Context, private val mScreenOrientation:
                 return
             }
 
-            android.provider.Settings.System
-                    .putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode)
-            android.provider.Settings.System
-                    .putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS, newBrightLevel)
-
+            writeBrightness(context, newBrightMode, newBrightLevel)
             sendBrightnessIntent(newBrightLevel, context)
         }
 
@@ -202,14 +201,25 @@ class ModeHandler(private val mContext: Context, private val mScreenOrientation:
             if (sCurrentAutoBrightness) {
                 newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
             }
-            val cr = context.contentResolver
-            android.provider.Settings.System
-                    .putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode)
-            android.provider.Settings.System
-                    .putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS, sCurrentBrightness)
 
+            writeBrightness(context, newBrightMode, sCurrentBrightness)
             sendBrightnessIntent(sCurrentBrightness, context)
             return true
+        }
+
+        private fun writeBrightness(context: Context, newBrightMode: Int, newBrightLevel: Int) {
+            val cr = context.contentResolver
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (Settings.System.canWrite(context)) {
+                    Settings.System.putInt(cr, Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode)
+                    Settings.System.putInt(cr, Settings.System.SCREEN_BRIGHTNESS, newBrightLevel)
+                } else {
+                    Toast.makeText(context, R.string.allow_permissions_brightness, Toast.LENGTH_LONG).show()
+                }
+            } else {
+                Settings.System.putInt(cr, Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode)
+                Settings.System.putInt(cr, Settings.System.SCREEN_BRIGHTNESS, newBrightLevel)
+            }
         }
 
         fun adjustVolume(prefs: InCarInterface, context: Context) {

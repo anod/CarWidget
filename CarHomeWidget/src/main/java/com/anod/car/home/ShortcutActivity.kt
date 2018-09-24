@@ -85,7 +85,7 @@ class ShortcutActivity : Activity() {
         try {
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(this, getString(R.string.activity_not_found), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.activity_not_found, Toast.LENGTH_SHORT).show()
         } catch (e: SecurityException) {
             Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show()
             AppLog.e(e)

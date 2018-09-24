@@ -1,9 +1,15 @@
 package com.anod.car.home.incar
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
+import com.anod.car.home.R
 
 /**
  * @author alex
@@ -25,6 +31,14 @@ class ScreenOrientation(private val mContext: Context, private val windowManager
             layoutParams = null
             return
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (!Settings.canDrawOverlays(mContext)) {
+                Toast.makeText(mContext, R.string.allow_permission_overlay, Toast.LENGTH_LONG).show()
+                return
+            }
+        }
+
         overlayView = View(mContext)
         layoutParams = createLayoutParams()
 
@@ -40,7 +54,11 @@ class ScreenOrientation(private val mContext: Context, private val windowManager
 
     private fun createLayoutParams(): WindowManager.LayoutParams {
         val lp = WindowManager.LayoutParams()
-        lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR
+        lp.type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        } else {
+            WindowManager.LayoutParams.TYPE_SYSTEM_ERROR
+        }
         lp.width = 0
         lp.height = 0
         lp.flags = (WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
