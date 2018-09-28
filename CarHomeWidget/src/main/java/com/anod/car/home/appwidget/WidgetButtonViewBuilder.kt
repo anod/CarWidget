@@ -1,16 +1,14 @@
 package com.anod.car.home.appwidget
 
 import android.content.Context
-import androidx.annotation.IdRes
 import android.view.View
 import android.widget.RemoteViews
-
+import androidx.annotation.IdRes
 import com.anod.car.home.R
 import com.anod.car.home.incar.ModeService
-import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.prefs.model.WidgetInterface
-import com.anod.car.home.prefs.preferences.Main
+import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.skin.SkinProperties
 
 /**

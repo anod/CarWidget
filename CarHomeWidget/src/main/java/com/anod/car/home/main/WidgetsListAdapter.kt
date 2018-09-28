@@ -1,4 +1,4 @@
-package com.anod.car.home.ui
+package com.anod.car.home.main
 
 import com.anod.car.home.R
 import com.anod.car.home.model.LauncherSettings
@@ -7,7 +7,6 @@ import com.anod.car.home.model.ShortcutIconRequestHandler
 import com.squareup.picasso.Picasso
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View

@@ -10,8 +10,6 @@ import java.io.File;
  */
 public class DeleteFileTask extends AsyncTask<File, Void, Boolean> {
 
-    private int mType;
-
     private DeleteFileTaskListener mListener;
 
     public interface DeleteFileTaskListener {

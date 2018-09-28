@@ -1,12 +1,8 @@
 package com.anod.car.home.prefs.lookandfeel
 
-import com.anod.car.home.prefs.LookAndFeelActivity
-
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import android.util.SparseArray
 import android.view.ViewGroup
+import com.anod.car.home.prefs.LookAndFeelActivity
 
 /**
  * @author alex

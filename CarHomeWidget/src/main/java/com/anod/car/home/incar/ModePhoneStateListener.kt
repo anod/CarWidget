@@ -1,9 +1,6 @@
 package com.anod.car.home.incar
 
 import android.annotation.SuppressLint
-import com.anod.car.home.prefs.preferences.InCar
-import info.anodsplace.framework.AppLog
-
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
@@ -15,9 +12,8 @@ import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.utils.AnswerPhoneCalls
 import com.anod.car.home.utils.AppPermissions
 import com.anod.car.home.utils.ModifyPhoneState
-
-import java.util.Timer
-import java.util.TimerTask
+import info.anodsplace.framework.AppLog
+import java.util.*
 
 class ModePhoneStateListener(private val context: Context, private val audioManager: AudioManager) : PhoneStateListener() {
     private var answered = false

@@ -1,10 +1,9 @@
-package com.anod.car.home.ui
+package com.anod.car.home.main
 
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.prefs.LookAndFeelActivity
-import com.anod.car.home.prefs.model.PrefsMigrate
 import com.anod.car.home.utils.TrialDialogs
 import com.anod.car.home.utils.Utils
 import com.anod.car.home.utils.Version

@@ -50,7 +50,7 @@ class AppIconLoader(context: Context) {
                 }
 
             }
-            icon = UtilitiesBitmap.createSystemIconBitmap(d, mContext)
+            icon = UtilitiesBitmap.createSystemIconBitmap(d!!, mContext)
             return RequestHandler.Result(icon, DISK)
         }
 

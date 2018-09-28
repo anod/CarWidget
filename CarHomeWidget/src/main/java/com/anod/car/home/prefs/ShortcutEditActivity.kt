@@ -9,30 +9,16 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
-
+import androidx.appcompat.app.AlertDialog
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
-import com.anod.car.home.model.AbstractShortcuts
-import com.anod.car.home.model.LauncherSettings
-import com.anod.car.home.model.NotificationShortcutsModel
-import com.anod.car.home.model.Shortcut
-import com.anod.car.home.model.ShortcutIcon
-import com.anod.car.home.model.ShortcutInfoUtils
-import com.anod.car.home.model.ShortcutModel
-import com.anod.car.home.model.WidgetShortcutsModel
+import com.anod.car.home.model.*
+import com.anod.car.home.utils.*
 import info.anodsplace.framework.AppLog
-
-import com.anod.car.home.utils.DrawableUri
-import com.anod.car.home.utils.IconPackUtils
-import com.anod.car.home.utils.ShortcutPicker
-import com.anod.car.home.utils.UtilitiesBitmap
-import com.anod.car.home.utils.Utils
 
 class ShortcutEditActivity : CarWidgetActivity() {
 
@@ -66,10 +52,10 @@ class ShortcutEditActivity : CarWidgetActivity() {
         cellId = intent
                 .getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID)
         val shortcutId = intent
-                .getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, Shortcut.idUnknown.toLong())
+                .getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, Shortcut.idUnknown)
         val appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID)
-        if (cellId == ShortcutPicker.INVALID_CELL_ID || shortcutId == Shortcut.idUnknown.toLong()) {
+        if (cellId == ShortcutPicker.INVALID_CELL_ID || shortcutId == Shortcut.idUnknown) {
             AppLog.e("Missing parameter")
             setResult(Activity.RESULT_CANCELED)
             finish()

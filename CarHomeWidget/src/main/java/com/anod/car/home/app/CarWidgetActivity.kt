@@ -1,12 +1,10 @@
 package com.anod.car.home.app
 
-import com.anod.car.home.CarWidgetApplication
-import com.anod.car.home.prefs.model.AppTheme
-
 import android.os.Bundle
-import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.anod.car.home.CarWidgetApplication
+import com.anod.car.home.prefs.model.AppTheme
 
 /**
  * @author alex

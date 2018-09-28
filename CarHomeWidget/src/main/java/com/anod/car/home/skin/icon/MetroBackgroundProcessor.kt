@@ -1,9 +1,7 @@
 package com.anod.car.home.skin.icon
 
-import com.anod.car.home.prefs.model.WidgetSettings
-import com.anod.car.home.prefs.preferences.Main
-
 import android.graphics.Bitmap
+import com.anod.car.home.prefs.model.WidgetSettings
 
 /**
  * @author alex

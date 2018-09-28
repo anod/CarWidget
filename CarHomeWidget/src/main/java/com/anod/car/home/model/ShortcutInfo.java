@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import androidx.annotation.NonNull;
 import info.anodsplace.framework.AppLog;
 import com.anod.car.home.utils.UtilitiesBitmap;
 
@@ -154,7 +155,7 @@ public class ShortcutInfo implements Serializable {
     }
 
     @Override
-    public String toString() {
+    public @NonNull String toString() {
         return "ShortcutInfo(title=" + title.toString() + ")";
     }
 
@@ -163,7 +164,7 @@ public class ShortcutInfo implements Serializable {
 
         byte[] data = null;
         if (mIcon != null) {
-            data = UtilitiesBitmap.flattenBitmap(mIcon);
+            data = UtilitiesBitmap.INSTANCE.flattenBitmap(mIcon);
         }
         if (data != null) {
             out.writeInt(data.length);

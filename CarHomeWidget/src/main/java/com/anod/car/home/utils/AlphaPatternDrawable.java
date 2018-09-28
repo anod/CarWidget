@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.NonNull;
+
 /**
  * This drawable will draw a simple white and gray chessboard pattern.
  * It's pattern you will often see as a background behind a
@@ -16,7 +18,7 @@ import android.graphics.drawable.Drawable;
  */
 public class AlphaPatternDrawable extends Drawable {
 
-    private int mRectangleSize = 10;
+    private int mRectangleSize;
 
     private Paint mPaint = new Paint();
 
@@ -43,7 +45,7 @@ public class AlphaPatternDrawable extends Drawable {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(@NonNull Canvas canvas) {
         canvas.drawBitmap(mBitmap, null, getBounds(), mPaint);
     }
 

@@ -256,7 +256,5 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         private const val PREF_NOTIF_SHORTCUTS = "notif-shortcuts"
         const val PS_DIALOG_REQUEST_CODE = 4
         const val SCREEN_TIMEOUT_LIST = "screen-timeout-list"
-
-        const val requestSystemOverlay = 6
     }
 }

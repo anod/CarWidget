@@ -1,19 +1,16 @@
 package com.anod.car.home.prefs
 
-import com.anod.car.home.R
-import com.anod.car.home.model.Shortcut
-import com.anod.car.home.model.Shortcuts
-import com.anod.car.home.prefs.views.ShortcutPreference
-import com.anod.car.home.utils.ShortcutPicker
-
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.preference.Preference
+import com.anod.car.home.R
 import com.anod.car.home.app.App
+import com.anod.car.home.model.Shortcut
+import com.anod.car.home.model.Shortcuts
+import com.anod.car.home.prefs.views.ShortcutPreference
+import com.anod.car.home.utils.ShortcutPicker
 
 class PickShortcutUtils(private val configurationFragment: ConfigurationPreferenceFragment,
                         private val model: Shortcuts,
@@ -28,7 +25,7 @@ class PickShortcutUtils(private val configurationFragment: ConfigurationPreferen
     }
 
     override fun onAddShortcut(cellId: Int, info: Shortcut?) {
-        if (info != null && info.id != Shortcut.idUnknown.toLong()) {
+        if (info != null && info.id != Shortcut.idUnknown) {
             val key = preferenceKey.getCompiledKey(cellId)
             val p = configurationFragment.findPreference(key) as ShortcutPreference
             refreshPreference(p)

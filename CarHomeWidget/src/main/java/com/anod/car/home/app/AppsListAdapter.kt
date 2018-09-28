@@ -1,20 +1,17 @@
 package com.anod.car.home.app
 
-import com.anod.car.home.model.AppsList
-import com.anod.car.home.utils.UtilitiesBitmap
-
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
-
-import java.util.ArrayList
+import com.anod.car.home.model.AppsList
+import com.anod.car.home.utils.UtilitiesBitmap
+import java.util.*
 
 class AppsListAdapter(
         context: Context,

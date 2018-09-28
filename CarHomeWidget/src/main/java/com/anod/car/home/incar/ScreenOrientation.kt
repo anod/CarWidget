@@ -1,9 +1,7 @@
 package com.anod.car.home.incar
 
 import android.content.Context
-import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.view.View

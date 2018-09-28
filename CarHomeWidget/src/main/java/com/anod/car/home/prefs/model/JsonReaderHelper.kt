@@ -1,11 +1,8 @@
 package com.anod.car.home.prefs.model
 
-import androidx.collection.SimpleArrayMap
 import android.util.JsonReader
 import android.util.JsonToken
-
 import info.anodsplace.framework.AppLog
-
 import java.io.IOException
 
 /**

@@ -66,7 +66,7 @@ object ShortcutInfoUtils {
         if (icon == null) {
             val packageManager = context.packageManager
             icon = UtilitiesBitmap.makeDefaultIcon(packageManager)
-            result.icon = ShortcutIcon.forFallbackIcon(Shortcut.idUnknown.toLong(), icon)
+            result.icon = ShortcutIcon.forFallbackIcon(Shortcut.idUnknown, icon)
         }
 
         result.info = Shortcut(0, LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT, name, result.icon!!.isCustom, intent)

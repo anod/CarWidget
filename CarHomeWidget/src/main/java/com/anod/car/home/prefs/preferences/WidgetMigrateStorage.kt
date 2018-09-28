@@ -5,18 +5,14 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
-import android.content.res.Resources
 import android.graphics.Color
 import android.preference.PreferenceManager
 import androidx.core.content.res.ResourcesCompat
-
 import com.anod.car.home.R
 import com.anod.car.home.model.Shortcut
 import com.anod.car.home.prefs.model.WidgetInterface
 import com.anod.car.home.utils.BitmapTransform.RotateDirection
-
-import java.util.ArrayList
-import java.util.Locale
+import java.util.*
 
 object WidgetMigrateStorage {
 

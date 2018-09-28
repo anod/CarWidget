@@ -1,6 +1,5 @@
 package com.anod.car.home.backup.ui
 
-import android.Manifest
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Context
@@ -8,33 +7,21 @@ import android.content.Intent
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
-import androidx.core.content.FileProvider
-import androidx.appcompat.app.AlertDialog
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.net.toFile
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import com.anod.car.home.BuildConfig
-
 import com.anod.car.home.R
-import com.anod.car.home.backup.BackupCodeRender
-import com.anod.car.home.backup.BackupTask
-import com.anod.car.home.backup.PreferencesBackupManager
-import com.anod.car.home.backup.RestoreCodeRender
-import com.anod.car.home.backup.RestoreTask
+import com.anod.car.home.backup.*
 import com.anod.car.home.utils.*
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogCustom
-
 import java.io.File
 
 /**

@@ -4,9 +4,7 @@ import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.app.MusicAppsActivity
 import com.anod.car.home.model.AppsList
-import com.anod.car.home.prefs.model.AppSettings
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @author alex

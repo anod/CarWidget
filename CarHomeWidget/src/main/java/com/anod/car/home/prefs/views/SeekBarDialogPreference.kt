@@ -2,10 +2,8 @@ package com.anod.car.home.prefs.views
 
 import android.content.Context
 import android.content.res.TypedArray
-import androidx.preference.DialogPreference
-import androidx.preference.PreferenceManager
 import android.util.AttributeSet
-
+import androidx.preference.DialogPreference
 import com.anod.car.home.R
 
 /**
@@ -26,7 +24,7 @@ class SeekBarDialogPreference @JvmOverloads constructor(context: Context, attrs:
         return a!!.getInt(index, 0)
     }
 
-    override fun onSetInitialValue(restore: Boolean, defaultValue: Any?) {
+    override fun onSetInitialValue(defaultValue: Any?) {
         value = getPersistedInt(defaultValue as? Int ?: 0)
     }
 

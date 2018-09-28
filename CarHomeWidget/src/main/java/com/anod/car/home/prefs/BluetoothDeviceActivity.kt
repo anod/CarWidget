@@ -179,9 +179,9 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
             if (!pairedDevices.isEmpty()) {
                 for (device in pairedDevices) {
                     val addr = device.address
-                    val selected = devices?.containsKey(addr) ?: false
+                    val selected = devices.containsKey(addr)
                     if (selected) {
-                        devices!!.remove(addr)
+                        devices.remove(addr)
                     }
                     val btClass = device.bluetoothClass
                     var res = 0

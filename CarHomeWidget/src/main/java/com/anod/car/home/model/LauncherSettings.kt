@@ -105,7 +105,7 @@ class LauncherSettings {
              * The content:// style URL for this table
              */
             internal fun getContentUri(packageName: String): Uri {
-                return if (Version.isFreeVersion(packageName)) {
+                return if (Version.isFree(packageName)) {
                     Uri.parse(CONTENT_PREFIX + LauncherProvider.AUTHORITY_FREE + "/"
                             + LauncherProvider.TABLE_FAVORITES)
                 } else Uri.parse(CONTENT_PREFIX + LauncherProvider.AUTHORITY_PRO + "/"
@@ -119,7 +119,7 @@ class LauncherSettings {
              * @return The unique content URL for the specified row.
              */
             fun getContentUri(packageName: String, id: Long): Uri {
-                return if (Version.isFreeVersion(packageName)) {
+                return if (Version.isFree(packageName)) {
                     Uri.parse(CONTENT_PREFIX + LauncherProvider.AUTHORITY_FREE + "/"
                             + LauncherProvider.TABLE_FAVORITES + "/" + id)
                 } else Uri.parse(CONTENT_PREFIX + LauncherProvider.AUTHORITY_PRO + "/"

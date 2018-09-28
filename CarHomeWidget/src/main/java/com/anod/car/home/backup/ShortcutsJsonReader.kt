@@ -156,7 +156,7 @@ class ShortcutsJsonReader(private val context: Context) {
                     if (resources != null) {
                         val resId = resources.getIdentifier(iconResourceName, null, null)
                         if (resId > 0) {
-                            bitmap = UtilitiesBitmap.createHiResIconBitmap(ResourcesCompat.getDrawable(resources, resId, null), context)
+                            bitmap = UtilitiesBitmap.createHiResIconBitmap(ResourcesCompat.getDrawable(resources, resId, null)!!, context)
                         }
                     }
                 } catch (e: PackageManager.NameNotFoundException) {

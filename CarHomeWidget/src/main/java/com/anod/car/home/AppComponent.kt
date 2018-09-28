@@ -81,8 +81,6 @@ class AppComponent(val application: CarWidgetApplication) {
             return _iconThemesCache!!
         }
 
-    val updatesHistory: SimpleArrayMap<Int, Boolean> = SimpleArrayMap()
-
     fun cleanAppListCache() {
         if (_appListCache != null) {
             _appListCache!!.flush()

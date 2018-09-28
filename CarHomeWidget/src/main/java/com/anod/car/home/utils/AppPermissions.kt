@@ -5,9 +5,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat
-import com.anod.car.home.app.App
+import androidx.fragment.app.Fragment
 
 /**
  * @author algavris

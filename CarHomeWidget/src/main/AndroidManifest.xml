@@ -161,9 +161,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.WidgetsListActivity" />
+        <activity android:name=".main.WidgetsListActivity" />
         <activity
-            android:name=".ui.WizardActivity"
+            android:name=".main.WizardActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".prefs.BluetoothDeviceActivity"

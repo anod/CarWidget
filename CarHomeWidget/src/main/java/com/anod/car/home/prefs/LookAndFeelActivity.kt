@@ -26,7 +26,7 @@ import com.anod.car.home.prefs.lookandfeel.WidgetButtonChoiceActivity
 import com.anod.car.home.prefs.model.SkinList
 import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
-import com.anod.car.home.ui.AboutFragment
+import com.anod.car.home.main.AboutFragment
 import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.BitmapLruCache
 import com.anod.car.home.utils.forNewShortcut

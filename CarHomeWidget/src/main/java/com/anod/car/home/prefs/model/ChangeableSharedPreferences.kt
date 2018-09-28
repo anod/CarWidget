@@ -45,6 +45,6 @@ open class ChangeableSharedPreferences(prefs: SharedPreferences) {
         }
         edit.putBoolean("migrated", true)
         edit.apply()
-        changes = SimpleArrayMap();
+        changes = SimpleArrayMap()
     }
 }

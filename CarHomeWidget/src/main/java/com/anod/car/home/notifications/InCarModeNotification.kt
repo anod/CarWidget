@@ -4,7 +4,6 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat

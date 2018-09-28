@@ -1,4 +1,4 @@
-package com.anod.car.home.ui
+package com.anod.car.home.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
-import com.anod.car.home.prefs.model.AppTheme
 import com.anod.car.home.utils.HtmlCompat
 import com.anod.car.home.utils.Version
 import kotlinx.android.synthetic.main.wizard_activity.*
@@ -124,7 +123,7 @@ class WizardActivity : CarWidgetActivity() {
                 val desc3 = rootView.findViewById<TextView>(R.id.desc3)
                 desc3.text = HtmlCompat.fromHtml(getString(R.string.enable_incar_description))
 
-                val v = Version(activity)
+                val v = Version(activity!!)
                 val desc4 = rootView.findViewById<TextView>(R.id.desc4)
                 if (v.isFree) {
                     desc4.text = HtmlCompat.fromHtml(

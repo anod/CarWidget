@@ -4,15 +4,13 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.appcompat.view.ContextThemeWrapper
+import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-
 import com.android.colorpicker.ColorPickerDialog
 import com.android.colorpicker.ColorPickerPalette
 import com.android.colorpicker.ColorPickerSwatch

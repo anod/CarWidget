@@ -93,7 +93,7 @@ class ObjectRestoreManager(private val mContext: Context) {
         }
 
         //version 1.42
-        if (inCarBackup!!.inCar.autoAnswer.isNullOrEmpty()) {
+        if (inCarBackup!!.inCar.autoAnswer.isEmpty()) {
             inCarBackup!!.inCar.autoAnswer = InCarInterface.AUTOANSWER_DISABLED
         }
 

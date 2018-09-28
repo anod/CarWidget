@@ -2,10 +2,7 @@ package com.anod.car.home.incar
 
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
-import android.util.Log
-
 import info.anodsplace.framework.AppLog
-
 import java.lang.reflect.Method
 
 /**

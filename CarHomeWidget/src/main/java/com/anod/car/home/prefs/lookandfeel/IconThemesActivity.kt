@@ -1,24 +1,20 @@
 package com.anod.car.home.prefs.lookandfeel
 
 import android.appwidget.AppWidgetManager
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
-
 import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.appscache.AppsCacheActivity
 import com.anod.car.home.model.AppsList
 import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
-import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.IconPackUtils
 import com.anod.car.home.utils.Utils
-
-import java.util.ArrayList
+import info.anodsplace.framework.AppLog
 
 class IconThemesActivity : AppsCacheActivity() {
 
@@ -66,7 +62,7 @@ class IconThemesActivity : AppsCacheActivity() {
     }
 
     override fun onResumeImpl() {
-        themePackageName = prefs.iconsTheme ?: ""
+        themePackageName = prefs.iconsTheme
     }
 
     public override fun onItemsSet(items: List<AppsList.Entry>) {
@@ -103,7 +99,7 @@ class IconThemesActivity : AppsCacheActivity() {
     }
 
     private fun saveAndClose() {
-        val prevTheme = prefs.iconsTheme ?: ""
+        val prevTheme = prefs.iconsTheme
         var update = false
         if (themePackageName.isEmpty() && prevTheme.isNotEmpty()) {
             update = true

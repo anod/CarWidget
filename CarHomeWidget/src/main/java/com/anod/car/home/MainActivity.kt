@@ -1,6 +1,6 @@
 package com.anod.car.home
 
-import com.anod.car.home.ui.WidgetsListActivity
+import com.anod.car.home.main.WidgetsListActivity
 
 /**
  * @author alex

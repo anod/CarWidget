@@ -1,4 +1,4 @@
-package com.anod.car.home.ui
+package com.anod.car.home.main
 
 import android.content.Intent
 import android.content.pm.PackageManager

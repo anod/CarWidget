@@ -6,11 +6,9 @@ import android.content.Context
 import android.view.KeyEvent
 import android.widget.CheckBox
 import android.widget.Toast
-
 import com.anod.car.home.BuildConfig
 import com.anod.car.home.R
 import com.anod.car.home.model.AppsList
-import com.anod.car.home.prefs.model.AppSettings
 import com.anod.car.home.utils.MusicUtils
 
 /**

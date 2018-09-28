@@ -16,7 +16,6 @@
 
 package com.anod.car.home.utils
 
-import android.content.Context
 import android.graphics.Rect
 import android.text.TextUtils
 import android.view.Gravity

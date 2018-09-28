@@ -272,7 +272,7 @@ class PreferencesBackupManager(private val context: Context) {
             model.drop(pos)
             val shortcut = shortcuts.get(pos)
             if (shortcut?.icon != null) {
-                val info = Shortcut(Shortcut.idUnknown.toLong(), shortcut.info)
+                val info = Shortcut(Shortcut.idUnknown, shortcut.info)
                 model.save(pos, info, shortcut.icon)
             }
         }

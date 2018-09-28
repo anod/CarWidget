@@ -1,4 +1,4 @@
-package com.anod.car.home.ui
+package com.anod.car.home.main
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -9,10 +9,6 @@ import com.anod.car.home.prefs.ConfigurationInCar
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,8 +55,8 @@ class WidgetsListFragment : androidx.fragment.app.Fragment(), WidgetsListAdapter
         listView.adapter = adapter
 
         inCarView.setOnClickListener {
-            val status = InCarStatus.get(appWidgetIds.size, version, activity)
-            if (status == InCarStatus.ENABLED) {
+            val status = InCarStatus(appWidgetIds.size, version, activity!!)
+            if (status.isEnabled) {
                 when {
                     version.isFreeAndTrialExpired -> startActivity(Intent().forProVersion())
                     version.isFree -> startActivity(Intent().forProVersion())
@@ -97,8 +93,8 @@ class WidgetsListFragment : androidx.fragment.app.Fragment(), WidgetsListAdapter
     }
 
     private fun updateInCarHeader(cardView: androidx.cardview.widget.CardView) {
-        val status = InCarStatus.get(appWidgetIds.size, version, activity)
-        val active = activity!!.getString(InCarStatus.render(status))
+        val status = InCarStatus(appWidgetIds.size, version, activity!!)
+        val active = activity!!.getString(status.resId)
 
         val incarTitleView = cardView.findViewById<View>(R.id.incarTitle) as TextView
         incarTitleView.text = getString(R.string.pref_incar_mode_title) + " - " + active

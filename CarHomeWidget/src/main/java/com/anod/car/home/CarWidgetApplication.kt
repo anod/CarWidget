@@ -1,15 +1,10 @@
 package com.anod.car.home
 
 import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import com.anod.car.home.acra.BrowserUrlSender
-import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.notifications.Channels
-import com.anod.car.home.prefs.model.AppSettings
 import com.anod.car.home.prefs.model.AppTheme
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.ApplicationInstance

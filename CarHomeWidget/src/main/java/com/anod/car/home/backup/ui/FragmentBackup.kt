@@ -137,10 +137,6 @@ class FragmentBackup : Fragment() {
     }
 
     companion object {
-
-        internal const val DOWNLOAD_MAIN_REQUEST_CODE = 1
-        internal const val DOWNLOAD_INCAR_REQUEST_CODE = 2
-
         internal const val DATE_FORMAT = (DateUtils.FORMAT_SHOW_DATE
                 or DateUtils.FORMAT_SHOW_WEEKDAY
                 or DateUtils.FORMAT_SHOW_TIME

@@ -84,7 +84,7 @@ class ShortcutModel(private val context: Context) {
                         if (resources != null) {
                             val resId = resources.getIdentifier(resourceName, null, null)
                             if (resId > 0) {
-                                val iconDrawable = ResourcesCompat.getDrawable(resources, resId, null)
+                                val iconDrawable = ResourcesCompat.getDrawable(resources, resId, null)!!
                                 icon = UtilitiesBitmap.createHiResIconBitmap(iconDrawable, context)
                             }
                         }

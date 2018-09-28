@@ -5,14 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.NumberPicker
+import androidx.appcompat.app.AlertDialog
 import com.android.colorpicker.ColorPickerSwatch
-
 import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.backup.ui.FragmentBackup
@@ -22,7 +21,6 @@ import com.anod.car.home.prefs.ConfigurationLook
 import com.anod.car.home.prefs.LookAndFeelActivity
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog
 import com.anod.car.home.prefs.model.WidgetInterface
-import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.utils.FastBitmapDrawable
 import com.anod.car.home.utils.HtmlCompat

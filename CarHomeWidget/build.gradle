@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.61'
+    ext.kotlin_version = '1.2.71'
     repositories {
         mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
@@ -52,7 +52,7 @@ dependencies {
     implementation "ch.acra:acra-core:5.2.0"
     implementation "ch.acra:acra-notification:5.2.0"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 }
 

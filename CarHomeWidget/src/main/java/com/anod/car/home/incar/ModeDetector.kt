@@ -5,13 +5,11 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.Intent
-import androidx.collection.ArrayMap
-
 import com.anod.car.home.BuildConfig
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarStorage
-import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.PowerUtil
+import info.anodsplace.framework.AppLog
 
 /**
  * @author alex
