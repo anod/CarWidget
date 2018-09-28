@@ -105,6 +105,7 @@
             android:name="com.anod.car.home.prefs.LookAndFeelActivity"
             android:clearTaskOnLaunch="true"
             android:label="@string/app_name"
+            android:theme="@style/SplashScreen"
             android:taskAffinity="com.anod.car.home.settings">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -153,6 +154,7 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
+            android:theme="@style/SplashScreen"
             android:taskAffinity="com.anod.car.home.main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
