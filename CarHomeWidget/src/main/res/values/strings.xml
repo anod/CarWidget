@@ -267,4 +267,14 @@
     <string name="notifcation_mode_detector">InCar mode detector</string>
     <string name="allow_permissions_brightness">Allow write system settings to change brightness</string>
     <string name="allow_permission_overlay">Allow app overlay to change orientation</string>
+    <string name="needs_permissions_to_work">Needs permissions to work</string>
+    <string name="allow_access">Allow access</string>
+
+    <string name="permission_write_settings">Write System Settings</string>
+    <string name="adjust_brightness">Adjust brightness</string>
+    <string name="permission_draw_overlay">Draw over other appps</string>
+    <string name="change_screen_orientation">Change screen orientation</string>
+    <string name="permission_answer_calls">Answer calls and Modify phone state</string>
+    <string name="answer_phone_calls">Answer phone calls</string>
+
 </resources>

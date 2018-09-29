@@ -4,16 +4,20 @@ import android.content.Context
 
 import com.anod.car.home.R
 import com.anod.car.home.appwidget.WidgetHelper
+import com.anod.car.home.prefs.model.InCarSettings
 import com.anod.car.home.prefs.model.InCarStorage
 
-class InCarStatus(widgetsCount: Int, version: Version, context: Context) {
+class InCarStatus(widgetsCount: Int, version: Version, settings: InCarSettings) {
+
+    constructor(widgetsCount: Int, version: Version, context: Context)
+        : this(widgetsCount, version, InCarStorage.load(context))
 
     constructor(context: Context) : this(
             WidgetHelper.getLargeWidgetIds(context).size,
             Version(context),
             context)
 
-    val value = calc(widgetsCount, version, context)
+    val value = calc(widgetsCount, version, settings)
     val isEnabled = value == ENABLED
 
     companion object {
@@ -21,12 +25,12 @@ class InCarStatus(widgetsCount: Int, version: Version, context: Context) {
         const val ENABLED = 1
         const val DISABLED = 2
 
-        private fun calc(widgetsCount: Int, version: Version, context: Context): Int {
+        private fun calc(widgetsCount: Int, version: Version, settings: InCarSettings): Int {
             if (widgetsCount == 0) {
                 return NOT_ACTIVE
             }
             return if (version.isProOrTrial) {
-                if (InCarStorage.load(context).isInCarEnabled) {
+                if (settings.isInCarEnabled) {
                     ENABLED
                 } else {
                     DISABLED

@@ -4,15 +4,16 @@ import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.prefs.LookAndFeelActivity
-import com.anod.car.home.utils.TrialDialogs
-import com.anod.car.home.utils.Utils
-import com.anod.car.home.utils.Version
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.transaction
+import com.anod.car.home.incar.ScreenOrientation
 import com.anod.car.home.prefs.ConfigurationInCar
+import com.anod.car.home.prefs.model.InCarInterface
+import com.anod.car.home.prefs.model.InCarStorage
+import com.anod.car.home.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -62,6 +63,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
             }
         }
 
+
         if (!wizardShown) {
             if (version.isFree && Utils.isProInstalled(this)) {
                 if (!proDialogShown) {
@@ -70,12 +72,47 @@ open class WidgetsListActivity : CarWidgetActivity() {
                 }
             }
             val isFreeInstalled = !version.isFree && Utils.isFreeInstalled(this)
-            val allWidgtIds = WidgetHelper.getAllWidgetIds(this)
-            if (allWidgtIds.isEmpty() && !isFreeInstalled) {
+            val appWidgetIds = WidgetHelper.getAllWidgetIds(this)
+            if (appWidgetIds.isEmpty() && !isFreeInstalled) {
                 wizardShown = true
                 startWizard()
             }
         }
+
+        if (!wizardShown && !proDialogShown) {
+            val appWidgetIds = WidgetHelper.getAllWidgetIds(this)
+            if (appWidgetIds.isNotEmpty()) {
+                val permissions = requestPermissions(appWidgetIds)
+                if (permissions.isNotEmpty()) {
+                    RequestPermissionsActivity.start(this, permissions.toTypedArray())
+                }
+            }
+        }
+    }
+
+    private fun requestPermissions(appWidgetIds: IntArray): List<String> {
+        val settings = InCarStorage.load(this)
+        val status = InCarStatus(appWidgetIds.size, version, settings)
+        if (!status.isEnabled) {
+            return emptyList()
+        }
+        val permissions = mutableListOf<String>()
+        if (settings.screenOrientation != ScreenOrientation.DISABLED && !AppPermissions.isGranted(this, CanDrawOverlay)) {
+            permissions.add(CanDrawOverlay.value)
+        }
+        if (settings.brightness != InCarInterface.BRIGHTNESS_DISABLED && !AppPermissions.isGranted(this, WriteSettings)) {
+            permissions.add(WriteSettings.value)
+        }
+        if (settings.autoAnswer != InCarInterface.AUTOANSWER_DISABLED) {
+            if (!AppPermissions.isGranted(this, AnswerPhoneCalls)) {
+                permissions.add(AnswerPhoneCalls.value)
+            }
+            if (!AppPermissions.isGranted(this, ModifyPhoneState)) {
+                permissions.add(ModifyPhoneState.value)
+            }
+        }
+
+        return permissions
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -21,6 +21,8 @@ import com.google.android.gms.common.GoogleApiAvailability
 import android.net.Uri
 import android.content.Intent
 import android.content.SharedPreferences
+import com.anod.car.home.incar.ScreenOrientation
+import com.anod.car.home.prefs.model.InCarInterface
 
 class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
@@ -128,17 +130,14 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     private fun initBrightness() {
         val pref = findPreference("brightness") as ListPreference
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            if (newValue != "disabled")
+            if (newValue != InCarInterface.BRIGHTNESS_DISABLED)
             {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!Settings.System.canWrite(context))  {
-                        Toast.makeText(context, R.string.allow_permissions_brightness, Toast.LENGTH_LONG).show()
-                        val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
-                        intent.data = Uri.parse("package:" + context!!.packageName)
-                        context!!.startActivity(intent)
-                        return@OnPreferenceChangeListener false
-                    }
+                if (!AppPermissions.isGranted(context!!, WriteSettings)) {
+                    Toast.makeText(context, R.string.allow_permissions_brightness, Toast.LENGTH_LONG).show()
+                    AppPermissions.requestWriteSettings(this, requestWriteSettings)
+                    return@OnPreferenceChangeListener false
                 }
+
             }
             true
         }
@@ -147,15 +146,12 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     private fun initScreenOrientation() {
         val pref = findPreference("screen-orientation") as ListPreference
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            if (newValue != "-1")
+            if (newValue != ScreenOrientation.DISABLED.toString())
             {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!Settings.canDrawOverlays(context)) {
-                        Toast.makeText(context, R.string.allow_permission_overlay, Toast.LENGTH_LONG).show()
-                        val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + context!!.packageName))
-                        startActivity(intent)
-                        return@OnPreferenceChangeListener false
-                    }
+                if (!AppPermissions.isGranted(context!!, CanDrawOverlay)) {
+                    Toast.makeText(context, R.string.allow_permission_overlay, Toast.LENGTH_LONG).show()
+                    AppPermissions.requestDrawOverlay(this, requestDrawOverlay)
+                    return@OnPreferenceChangeListener false
                 }
             }
             true
@@ -256,5 +252,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         private const val PREF_NOTIF_SHORTCUTS = "notif-shortcuts"
         const val PS_DIALOG_REQUEST_CODE = 4
         const val SCREEN_TIMEOUT_LIST = "screen-timeout-list"
+        const val requestDrawOverlay = 7
+        const val requestWriteSettings = 8
     }
 }

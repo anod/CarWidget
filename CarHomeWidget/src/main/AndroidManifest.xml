@@ -278,6 +278,10 @@
             android:taskAffinity=""
             android:theme="@style/BrightnessTheme" />
 
+        <activity
+            android:name=".main.RequestPermissionsActivity"
+            />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
