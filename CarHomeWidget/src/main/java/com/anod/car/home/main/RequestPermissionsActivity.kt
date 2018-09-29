@@ -1,7 +1,9 @@
 package com.anod.car.home.main
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.R
 import com.anod.car.home.utils.*
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_request_permissions.*
 
 class RequestPermissionsActivity : CarWidgetActivity() {
@@ -57,8 +60,8 @@ class RequestPermissionsActivity : CarWidgetActivity() {
         var writeSettings = false
         permissions.forEach {
             when (it) {
-                AppPermissions.Permission.CAN_DRAW_OVERLAY -> canDrawOverlay = true
-                AppPermissions.Permission.WRITE_SETTINGS -> writeSettings = true
+                CanDrawOverlay.value -> canDrawOverlay = true
+                WriteSettings.value -> writeSettings = true
                 else -> manifestPermissions.add(it)
             }
         }
@@ -68,11 +71,15 @@ class RequestPermissionsActivity : CarWidgetActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
+        if (grantResults.contains(PackageManager.PERMISSION_DENIED)) {
+            setResult(resultPermissionDenied)
+        }
+
         val p = getPermissions()
         when {
             p.canDrawOverlay -> AppPermissions.requestDrawOverlay(this, requestOverlay)
             p.writeSettings -> AppPermissions.requestWriteSettings(this, requestWriteSettings)
-            else ->finish()
+            else -> finish()
         }
     }
 
@@ -97,7 +104,7 @@ class RequestPermissionsActivity : CarWidgetActivity() {
         class Item(@DrawableRes val icon: Int, @StringRes val title: Int, @StringRes val description: Int)
 
         val items: List<Item> = permissions
-                .filter { it == ModifyPhoneState.value }
+                .filter { it != ModifyPhoneState.value }
                 .map { allItems[it]!! }
 
         companion object {
@@ -147,10 +154,12 @@ class RequestPermissionsActivity : CarWidgetActivity() {
         const val requestOverlay = 2
         const val requestWriteSettings = 3
 
-        fun start(context: Context, permissions: Array<String>) {
-            val intent = Intent(context, RequestPermissionsActivity::class.java)
+        const val resultPermissionDenied = 10
+
+        fun start(activity: Activity, permissions: Array<String>, requestCode: Int) {
+            val intent = Intent(activity, RequestPermissionsActivity::class.java)
             intent.putExtra("permissions", permissions)
-            context.startActivity(intent)
+            activity.startActivityForResult(intent, requestCode)
         }
     }
 }

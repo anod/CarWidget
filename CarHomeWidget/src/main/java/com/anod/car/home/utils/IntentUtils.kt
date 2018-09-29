@@ -92,6 +92,13 @@ private fun commonPickShortcutIntent(title: String, shortcutIntent: Intent): Int
     return intent
 }
 
+fun Intent.forAppSettings(context: Context): Intent {
+    action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+    data = Uri.parse("package:${context.packageName}")
+    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    return this
+}
+
 fun Intent.forDirectCall(contactUri: Uri, context: Context): Intent? {
     val projection = arrayOf(
         ContactsContract.CommonDataKinds.Phone.NUMBER,

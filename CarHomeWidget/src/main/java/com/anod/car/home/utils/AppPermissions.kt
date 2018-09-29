@@ -41,7 +41,6 @@ object AppPermissions {
         }
     }
 
-
     fun isGranted(context: Context, permission: AppPermission): Boolean {
         if (permission == CanDrawOverlay) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -58,6 +57,24 @@ object AppPermissions {
         return ContextCompat.checkSelfPermission(context, permission.value) == PackageManager.PERMISSION_GRANTED
     }
 
+    fun shouldShowMessage(activity: Activity, permission: AppPermission): Boolean {
+        if (isGranted(activity, permission)) {
+            return false
+        }
+        if (permission == CanDrawOverlay) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return true
+            }
+            return false
+        }
+        if (permission == WriteSettings) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return true
+            }
+            return true
+        }
+        return ActivityCompat.shouldShowRequestPermissionRationale(activity, permission.value)
+    }
     fun request(activity: Activity, permission: AppPermission, requestCode: Int) {
         ActivityCompat.requestPermissions(activity, arrayOf(permission.value), requestCode)
     }

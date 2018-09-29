@@ -8,12 +8,14 @@ import com.anod.car.home.prefs.LookAndFeelActivity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.transaction
 import com.anod.car.home.incar.ScreenOrientation
 import com.anod.car.home.prefs.ConfigurationInCar
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.utils.*
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -84,8 +86,23 @@ open class WidgetsListActivity : CarWidgetActivity() {
             if (appWidgetIds.isNotEmpty()) {
                 val permissions = requestPermissions(appWidgetIds)
                 if (permissions.isNotEmpty()) {
-                    RequestPermissionsActivity.start(this, permissions.toTypedArray())
+                    RequestPermissionsActivity.start(this, permissions.toTypedArray(), requestPermissionsResult)
                 }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == requestPermissionsResult) {
+            if (resultCode == RequestPermissionsActivity.resultPermissionDenied) {
+                Snackbar
+                    .make(content_frame, R.string.permissions_denied_open_settings, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.settings) {
+                        startActivity(Intent().forAppSettings(this@WidgetsListActivity))
+                    }
+                    .show()
             }
         }
     }
@@ -97,17 +114,17 @@ open class WidgetsListActivity : CarWidgetActivity() {
             return emptyList()
         }
         val permissions = mutableListOf<String>()
-        if (settings.screenOrientation != ScreenOrientation.DISABLED && !AppPermissions.isGranted(this, CanDrawOverlay)) {
+        if (settings.screenOrientation != ScreenOrientation.DISABLED && AppPermissions.shouldShowMessage(this, CanDrawOverlay)) {
             permissions.add(CanDrawOverlay.value)
         }
-        if (settings.brightness != InCarInterface.BRIGHTNESS_DISABLED && !AppPermissions.isGranted(this, WriteSettings)) {
+        if (settings.brightness != InCarInterface.BRIGHTNESS_DISABLED && AppPermissions.shouldShowMessage(this, WriteSettings)) {
             permissions.add(WriteSettings.value)
         }
         if (settings.autoAnswer != InCarInterface.AUTOANSWER_DISABLED) {
-            if (!AppPermissions.isGranted(this, AnswerPhoneCalls)) {
+            if (!AppPermissions.shouldShowMessage(this, AnswerPhoneCalls)) {
                 permissions.add(AnswerPhoneCalls.value)
             }
-            if (!AppPermissions.isGranted(this, ModifyPhoneState)) {
+            if (!AppPermissions.shouldShowMessage(this, ModifyPhoneState)) {
                 permissions.add(ModifyPhoneState.value)
             }
         }
@@ -137,5 +154,9 @@ open class WidgetsListActivity : CarWidgetActivity() {
             replace(R.id.content_frame, AboutFragment())
         }
         bottomNavigation.selectedItemId = R.id.nav_incar
+    }
+
+    companion object {
+        const val requestPermissionsResult = 1
     }
 }
