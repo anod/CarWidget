@@ -12,6 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1.0"
+        android:paddingStart="@dimen/notification_padding"
+        android:paddingEnd="@dimen/notification_padding"
         android:orientation="vertical">
 
         <TextView
