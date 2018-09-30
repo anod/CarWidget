@@ -270,12 +270,12 @@
     <string name="needs_permissions_to_work">Needs permissions to work</string>
     <string name="allow_access">Allow access</string>
 
-    <string name="permission_write_settings">Write System Settings</string>
+    <string name="permission_write_settings">Write system settings</string>
     <string name="adjust_brightness">Adjust brightness</string>
     <string name="permission_draw_overlay">Draw over other appps</string>
     <string name="change_screen_orientation">Change screen orientation</string>
-    <string name="permission_answer_calls">Answer calls and Modify phone state</string>
-    <string name="answer_phone_calls">Answer phone calls</string>
+    <string name="permission_answer_calls">Answer phone calls</string>
+    <string name="allow_answer_phone_calls">Allow to answer calls</string>
     <string name="permissions_denied_open_settings">Permissions denied, enable them in app settings</string>
 
 </resources>

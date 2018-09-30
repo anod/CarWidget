@@ -113,11 +113,26 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         initScreenTimeout(incar)
         initScreenOrientation()
         initBrightness()
+        initAutoAnswer()
 
         setIntent(SCREEN_BT_DEVICE, BluetoothDeviceActivity::class.java, 0)
         showFragmentOnClick(MEDIA_SCREEN, ConfigurationInCarVolume::class.java)
         showFragmentOnClick(MORE_SCREEN, ConfigurationInCarMore::class.java)
         showFragmentOnClick(PREF_NOTIF_SHORTCUTS, ConfigurationNotificationShortcuts::class.java)
+    }
+
+    private fun initAutoAnswer() {
+        val pref = findPreference("auto_answer") as ListPreference
+        pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            if (newValue != InCarInterface.AUTOANSWER_DISABLED)
+            {
+                if (!AppPermissions.isGranted(context!!, AnswerPhoneCalls)) {
+                    Toast.makeText(context, R.string.allow_answer_phone_calls, Toast.LENGTH_LONG).show()
+                    AppPermissions.requestWriteSettings(this, requestAnswerPhone)
+                }
+            }
+            true
+        }
     }
 
     override fun onDestroy() {
@@ -135,9 +150,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
                 if (!AppPermissions.isGranted(context!!, WriteSettings)) {
                     Toast.makeText(context, R.string.allow_permissions_brightness, Toast.LENGTH_LONG).show()
                     AppPermissions.requestWriteSettings(this, requestWriteSettings)
-                    return@OnPreferenceChangeListener false
                 }
-
             }
             true
         }
@@ -151,7 +164,6 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
                 if (!AppPermissions.isGranted(context!!, CanDrawOverlay)) {
                     Toast.makeText(context, R.string.allow_permission_overlay, Toast.LENGTH_LONG).show()
                     AppPermissions.requestDrawOverlay(this, requestDrawOverlay)
-                    return@OnPreferenceChangeListener false
                 }
             }
             true
@@ -254,5 +266,6 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         const val SCREEN_TIMEOUT_LIST = "screen-timeout-list"
         const val requestDrawOverlay = 7
         const val requestWriteSettings = 8
+        const val requestAnswerPhone = 9
     }
 }

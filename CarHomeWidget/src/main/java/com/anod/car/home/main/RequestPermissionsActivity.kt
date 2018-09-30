@@ -103,9 +103,7 @@ class RequestPermissionsActivity : CarWidgetActivity() {
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
         class Item(@DrawableRes val icon: Int, @StringRes val title: Int, @StringRes val description: Int)
 
-        val items: List<Item> = permissions
-                .filter { it != ModifyPhoneState.value }
-                .map { allItems[it]!! }
+        val items: List<Item> = permissions.map { allItems[it]!! }
 
         companion object {
             val allItems = mapOf(
@@ -122,7 +120,7 @@ class RequestPermissionsActivity : CarWidgetActivity() {
                 AnswerPhoneCalls.value to Item(
                         R.drawable.ic_action_ring_volume,
                         R.string.permission_answer_calls,
-                        R.string.answer_phone_calls)
+                        R.string.allow_answer_phone_calls)
             )
 
         }

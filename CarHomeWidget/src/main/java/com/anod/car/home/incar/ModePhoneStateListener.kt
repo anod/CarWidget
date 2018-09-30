@@ -8,12 +8,14 @@ import android.os.Build
 import android.telecom.TelecomManager
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
+import android.widget.Toast
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.utils.AnswerPhoneCalls
 import com.anod.car.home.utils.AppPermissions
 import com.anod.car.home.utils.ModifyPhoneState
 import info.anodsplace.framework.AppLog
 import java.util.*
+import com.anod.car.home.R
 
 class ModePhoneStateListener(private val context: Context, private val audioManager: AudioManager) : PhoneStateListener() {
     private var answered = false
@@ -109,13 +111,15 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
     private fun answerPhoneHeadsethook(context: Context) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val telecomManager = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
             if (AppPermissions.isGranted(context, AnswerPhoneCalls) || AppPermissions.isGranted(context, ModifyPhoneState)) {
+                val telecomManager = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
                 telecomManager.acceptRingingCall()
                 if (autoSpeaker && !audioManager.isSpeakerphoneOn) {
                     AppLog.d("Enable speakerphone in AcceptCallActivity")
                     audioManager.isSpeakerphoneOn = true
                 }
+            } else {
+                Toast.makeText(context, "CarWidget: Allow permission to answer calls", Toast.LENGTH_LONG).show()
             }
         }
 

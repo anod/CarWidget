@@ -121,11 +121,8 @@ open class WidgetsListActivity : CarWidgetActivity() {
             permissions.add(WriteSettings.value)
         }
         if (settings.autoAnswer != InCarInterface.AUTOANSWER_DISABLED) {
-            if (!AppPermissions.shouldShowMessage(this, AnswerPhoneCalls)) {
+            if (AppPermissions.shouldShowMessage(this, AnswerPhoneCalls)) {
                 permissions.add(AnswerPhoneCalls.value)
-            }
-            if (!AppPermissions.shouldShowMessage(this, ModifyPhoneState)) {
-                permissions.add(ModifyPhoneState.value)
             }
         }
 
