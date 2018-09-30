@@ -43,14 +43,18 @@ class WidgetShortcutsModel(context: Context, private val appWidgetId: Int) : Abs
 
     private fun initShortcuts(appWidgetId: Int) {
         val list = arrayOf(
+                ComponentName("com.google.android.dialer", "com.google.android.dialer.extensions.GoogleDialtactsActivity"),
                 ComponentName("com.android.contacts", "com.android.contacts.DialtactsActivity"),
                 ComponentName("com.android.htccontacts", "com.android.htccontacts.DialerTabActivity"), //HTC CallPhone
                 //
-                ComponentName("com.android.music", "com.android.music.MusicBrowserActivity"),
+                ComponentName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity"),
+                //
+                ComponentName("com.google.android.music", "com.android.music.activitymanagement.TopLevelActivity"),
                 ComponentName("com.htc.music", "com.htc.music.HtcMusic"),
                 ComponentName("com.sec.android.app.music", "com.sec.android.app.music.MusicActionTabActivity"),
-                ComponentName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity"),
-                // TODO: add spotify deezer, play music
+                ComponentName("com.spotify.music", "com.spotify.music.MainActivity"),
+                ComponentName("tunein.player", "tunein.ui.actvities.TuneInHomeActivity"),
+
                 ComponentName("com.google.android.googlequicksearchbox", "com.google.android.googlequicksearchbox.VoiceSearchActivity"))
 
         var cellId = 0

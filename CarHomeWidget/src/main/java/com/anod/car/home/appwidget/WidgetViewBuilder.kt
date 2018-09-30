@@ -143,14 +143,16 @@ class WidgetViewBuilder(private val context: Context,
                 R.id.btn_text0, R.id.btn_text1, //2
                 R.id.btn_text2, R.id.btn_text3, //4
                 R.id.btn_text4, R.id.btn_text5, //6
-                R.id.btn_text6, R.id.btn_text7  //8
+                R.id.btn_text6, R.id.btn_text7, //8
+                R.id.btn_text8, R.id.btn_text9  //10
         )
 
         val btnIds = intArrayOf(
                 R.id.btn0, R.id.btn1, //2
                 R.id.btn2, R.id.btn3, //4
                 R.id.btn4, R.id.btn5, //6
-                R.id.btn6, R.id.btn7 //8
+                R.id.btn6, R.id.btn7, //8
+                R.id.btn8, R.id.btn9  //10
         )
 
         private fun applyIconTransform(bt: BitmapTransform?, prefs: WidgetSettings) {

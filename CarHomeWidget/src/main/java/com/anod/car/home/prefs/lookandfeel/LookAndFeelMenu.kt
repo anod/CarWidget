@@ -25,6 +25,7 @@ import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.utils.FastBitmapDrawable
 import com.anod.car.home.utils.HtmlCompat
 import com.anod.car.home.utils.Utils
+import info.anodsplace.framework.app.DialogCustom
 import info.anodsplace.framework.app.DialogMessage
 import info.anodsplace.framework.app.DialogSingleChoice
 
@@ -168,32 +169,32 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
     private fun createNumberPickerDialog(): AlertDialog {
         val nums = activity.resources.getStringArray(R.array.shortcut_numbers)
 
-        val inflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val npView = inflater.inflate(R.layout.numberpicker, null)
-
-        val numberPicker = npView.findViewById<View>(R.id.numberPicker) as NumberPicker
-        numberPicker.minValue = 0
-        numberPicker.maxValue = nums.size - 1
-        numberPicker.displayedValues = nums
-
+        var index = 0
         val countStr = model.count.toString()
         for (i in nums.indices) {
             if (countStr == nums[i]) {
-                numberPicker.value = i
+                index = i
                 break
             }
         }
 
-        val builder = AlertDialog.Builder(activity)
-        builder.setView(npView)
-                .setPositiveButton(android.R.string.ok) { _, _ ->
-                    val value = numberPicker.value
-                    model.updateCount(Integer.valueOf(nums[value]))
-                    activity.refreshSkinPreview()
-                }
-                .setNegativeButton(android.R.string.cancel) { dialogInterface, _ -> dialogInterface.dismiss() }
-                .setTitle(R.string.number_shortcuts_title)
-        return builder.create()
+        return DialogCustom(activity, activity.theme.alert, R.string.number_shortcuts_title, R.layout.numberpicker) { view, builder ->
+
+            val numberPicker = view.findViewById<View>(R.id.numberPicker) as NumberPicker
+            numberPicker.minValue = 0
+            numberPicker.maxValue = nums.size - 1
+            numberPicker.displayedValues = nums
+            numberPicker.value = index
+
+            builder.setPositiveButton(android.R.string.ok) { _, _ ->
+                val value = numberPicker.value
+                model.updateCount(Integer.valueOf(nums[value]))
+                activity.refreshSkinPreview()
+            }
+
+            builder.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.dismiss() }
+        }.create()
+
     }
 
     companion object {

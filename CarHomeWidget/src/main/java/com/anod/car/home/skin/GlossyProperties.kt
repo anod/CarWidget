@@ -11,11 +11,11 @@ class GlossyProperties : BaseProperties() {
         get() = R.layout.sk_glass_row
 
     override fun getLayout(number: Int): Int {
-        if (number == 4) {
-            return R.layout.sk_glass_4
+        return when (number) {
+            4 -> R.layout.sk_glass_4
+            8 -> R.layout.sk_glass_8
+            10 -> R.layout.sk_glass_10
+            else -> R.layout.sk_glass_6
         }
-        return if (number == 8) {
-            R.layout.sk_glass_8
-        } else R.layout.sk_glass_6
     }
 }

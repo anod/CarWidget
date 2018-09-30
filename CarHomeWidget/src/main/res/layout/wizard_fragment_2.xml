@@ -20,9 +20,11 @@
 			android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
 		<ImageView
-			android:layout_width="wrap_content"
+			android:layout_width="349dp"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
+			android:layout_marginLeft="32dp"
+			android:layout_marginRight="32dp"
 			android:adjustViewBounds="true"
 			android:cropToPadding="false"
 			android:paddingTop="12dp"

@@ -28,12 +28,12 @@ class CardsProperties : BaseProperties() {
         get() = CardsBackgroundProcessor()
 
     override fun getLayout(number: Int): Int {
-        if (number == 4) {
-            return R.layout.sk_material_4
+        return when (number) {
+            4 -> R.layout.sk_material_4
+            8 -> R.layout.sk_material_8
+            10 -> R.layout.sk_material_10
+            else -> R.layout.sk_material_6
         }
-        return if (number == 8) {
-            R.layout.sk_material_8
-        } else R.layout.sk_material_6
     }
 
     override fun hasWidgetButton1(): Boolean {

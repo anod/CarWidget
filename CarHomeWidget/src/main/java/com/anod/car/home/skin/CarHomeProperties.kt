@@ -12,11 +12,11 @@ class CarHomeProperties : BaseProperties() {
 
 
     override fun getLayout(number: Int): Int {
-        if (number == 4) {
-            return R.layout.sk_carhome_4
+        return when (number) {
+            4 -> R.layout.sk_carhome_4
+            8 -> R.layout.sk_carhome_8
+            10 -> R.layout.sk_carhome_10
+            else -> R.layout.sk_carhome_6
         }
-        return if (number == 8) {
-            R.layout.sk_carhome_8
-        } else R.layout.sk_carhome_6
     }
 }

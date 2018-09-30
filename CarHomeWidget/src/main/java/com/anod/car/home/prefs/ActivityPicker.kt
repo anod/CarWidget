@@ -207,15 +207,12 @@ open class ActivityPicker : AppCompatGridActivity() {
              * @return
              */
             private fun createThumbnail(source: Drawable?, context: Context): Drawable {
-                var bitmap: Bitmap?
+                val bitmap: Bitmap?
                 if (source == null) {
                     bitmap = UtilitiesBitmap.makeDefaultIcon(context.packageManager)
                     return FastBitmapDrawable(bitmap)
                 }
                 bitmap = UtilitiesBitmap.createSystemIconBitmap(source, context)
-                if (bitmap == null) {
-                    bitmap = UtilitiesBitmap.makeDefaultIcon(context.packageManager)
-                }
                 return FastBitmapDrawable(bitmap)
             }
 
@@ -229,11 +226,10 @@ open class ActivityPicker : AppCompatGridActivity() {
                 if (this.intent != null) {
                     return this.intent!!
                 }
-                val intent: Intent
-                if (baseIntent != null) {
-                    intent = Intent(baseIntent)
+                val intent = if (baseIntent != null) {
+                    Intent(baseIntent)
                 } else {
-                    intent = Intent(Intent.ACTION_MAIN)
+                    Intent(Intent.ACTION_MAIN)
                 }
                 if (packageName != null && className != null) {
                     // Valid package and class, so fill details as normal intent
