@@ -1,241 +1,243 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
-	<string name="permlab_read_settings">Lire les paramètres et les raccourcis du widget Voiture</string>
-	<string name="permdesc_read_settings">Permet à une application de lire les paramètres et les raccourcis dans widget Voiture.</string>
-	<string name="permlab_write_settings">Sauvegarder les paramètres et les raccourcis du widget Voiture</string>
-	<string name="permdesc_write_settings">Permet à une application de modifier les paramètres et les raccourcis dans le widget Voiture..</string>
-	<string name="color_dialog_title">Choisir une couleur</string>
-	<string name="pref_tile_color_title">Couleur de mosaïque</string>
-	<string name="pref_bg_color_title">Couleur d\'arrière-plan</string>
-	<string name="pref_icons_mono_title">Icônes monochromes</string>
-	<string name="pref_tint_color_title">Couleur de teinte</string>
-	<string name="pref_tint_color_summary">Choisir une couleur d\'icônes</string>
-	<string name="pref_font_color_title">Couleur de police</string>
-	<string name="pref_font_color_summary">Choisir la couleur du titre</string>
-	<string name="pref_font_size_title">Taille de police</string>
-	<string name="pref_font_size_summary">Choisir la taille du titre</string>
-	<string name="dialog_donate_title_expired">Période d\'essai expirée,</string>
-	<string name="dialog_donate_message_expired">Cette fonction est disponible uniquement dans la version Pro du widget Voiture.\n\n Voulez-vous l\'installer maintenant ?</string>
-	<string name="dialog_donate_title_trial">Version d\'essai,</string>
-	<string name="dialog_donate_message_trial">\n\nLe mode Voiture illimité est disponible uniquement dans la version Pro du widget Voiture.\n\n Voulez-vous l\'installer maintenant ?</string>
-	<string name="dialog_donate_title_install">Version Pro détectée,</string>
-	<string name="dialog_donate_message_installed">Veuillez ajouter le nouveau widget installé sur l\'écran d\'accueil pour accéder aux fonctionnalités de la version Pro.\n\nCopier les paramètres :\nVous pouvez copier les paramètres à l\'aide de l\'option \"Sauvegarde/Restauration\". La version gratuite du widget n\'est plus nécessaire.\nMerci.</string>
-	<string name="dialog_donate_btn_trial">Continuer en version d\'essai</string>
-	<string name="dialog_donate_btn_yes">Oui, s\'il vous plaît !</string>
-	<string name="dialog_donate_btn_no">Non, merci.</string>
-	<string name="set_shortcut">Configurer un raccourci</string>
-	<string name="pref_look_and_feel_title">Apparence</string>
-	<string name="pref_look_and_feel_summary">Personnaliser l\'habillage, les couleurs et la taille de police</string>
-	<string name="pref_incar_mode_title">Mode Voiture</string>
-	<string name="pref_incar_mode_summary">Choisir comment détecter lorsque vous êtes en voiture et les paramètres qui seront ajustés</string>
-	<string name="pref_incar_mode_enabled">Activer le mode Voiture</string>
-	<string name="pref_power_contorl_bt">Contrôle de l\'alimentation Bluetooth</string>
-	<string name="pref_power_plugged_bt_on_title">On lorsque branché</string>
-	<string name="pref_power_plugged_bt_on_summary">Allumer le Bluetooth lorsque le câble d\'alimentation est branché</string>
-	<string name="pref_power_unplugged_bt_off_title">Off lorsque débranché</string>
-	<string name="pref_power_unplugged_bt_off_summary">Éteindre le Bluetooth lorsque le câble d\'alimentation est débranché</string>
-	<string name="pref_detection">Gâchette</string>
-	<string name="pref_blutooth_device_title">Périphérique Bluetooth</string>
-	<string name="pref_blutooth_device_summary">Choisir un périphérique Bluetooth qui permette le mode voiture</string>
-	<string name="bluetooth">Bluetooth</string>
-	<string name="turn_on_bluetooth_summary">Activer le Bluetooth</string>
-	<string name="bluetooth_device_category_title">Activer le mode Voiture lors de la connexion à :</string>
-	<string name="no_paired_devices_found_summary">Avant de pouvoir sélectionner un périphérique, il doit être couplé et le Bluetooth doit être activé</string>
-	<string name="pref_headset_connected_title">Oreillette sans fil connectée</string>
-	<string name="pref_headset_connected_summary">Activer le mode Voiture lorsqu\'une prise audio est connectée</string>
-	<string name="pref_power_connected_title">Alimentation branchée</string>
-	<string name="pref_power_connected_summary">Activer le mode Voiture lorsqu\'un câble d\'alimentation est branché</string>
-	<string name="pref_screen_timeout">Désactiver la mise en veille de l\'écran</string>
-	<string name="pref_screen_timeout_summary">Lorsque cette case est cochée, cela empêche l\'écran de s\'éteindre automatiquement</string>
-	<string name="pref_brightness_mode">Mode éclairage</string>
-	<string name="pref_brightness_mode_summary">Sélectionnez le mode d\'ajustement de la luminosité</string>
-	<string name="pref_change_media_volume">Régler le volume</string>
-	<string name="pref_change_media_volume_summary">Modifier le volume pour le niveau spécifique</string>
-	<string name="pref_media_volume_level">Niveau de milieu</string>
-	<string name="pref_volume_level_summary">Modifier le niveau du volume désiré</string>
-	<string name="pref_phone_volume_level">Niveau d\'appel</string>
-	<string name="notif_expired">Période d\'essai expirée</string>
-	<string name="notif_consider">Pensez à installer la version Pro</string>
-	<string name="incar_mode_enabled">Mode Voiture activé</string>
-	<string name="click_to_disable">Cliquer pour désactiver</string>
-	<string name="click_to_disable_trial">Cliquer pour désactiver, essai : %d fois à gauche</string>
-	<plurals name="notif_activations_left">
-    <item quantity="one">%1$d activation à gauche</item>
-    <item quantity="other">%1$d activations à gauche</item>
-  </plurals>
-	<string name="version_title">%1$s vers. %2$s</string>
-	<string name="version_summary">Évaluer ce widget dans le Play Store</string>
-	<string name="shortcut_edit_title">Modifier raccourci</string>
-	<string name="shortcut_edit_hint">Toucher l\'icône pour la modifier</string>
-	<string name="photo_picker_not_found">Aucune image disponible sur le téléphone.</string>
-	<string name="error_text">Erreur : %1$s</string>
-	<string name="pref_route_to_speaker">Acheminer vers le haut-parleur</string>
-	<string name="pref_route_to_speaker_summary">Acheminer tous les appels entrants vers le haut-parleur du téléphone</string>
-	<string name="pref_scale_icon">Dimension des icônes</string>
-	<string name="pref_wifi_summary">Si une connexion Wifi est activée, vous pouvez l\'éteindre temporairement ou de manière définitive</string>
-	<string name="pref_settings_transparent">Touche Paramètres</string>
-	<string name="pref_settings_transparent_summary">La touche Paramètres restera à la même place, mais elle deviendra transparente</string>
-	<string name="pref_incar_transparent">Touche Voiture</string>
-	<string name="pref_incar_transparent_summary">Lorsque le mode Voiture est activé, la touche reste à la même place mais devient transparente</string>
-	<string name="pref_activate_car_mode">Mode voiture intégré</string>
-	<string name="pref_activate_car_mode_summary">Android en mode Voiture intégré sera activé et une icône de notification supplémentaire s\'affichera.</string>
-	<string name="pref_backup_title">Sauvegarde/Restauration</string>
-	<string name="pref_backup_summary">Paramètres de sauvegarde du widget</string>
-	<string name="last_backup">Dernière sauvegarde : %1$s</string>
-	<string name="backup_current_widget">Widget actuel</string>
-	<string name="backup_incar_settings">Paramètres Voiture</string>
-	<string name="backup_name_title">Nom de la sauvegarde :</string>
-	<string name="backup_name_summary">Veuillez définir un nom pour identifier la sauvegarde du widget actuel</string>
-	<string name="backup_done">Sauvegarde effectuée.</string>
-	<string name="external_storage_not_available">Stockage externe non disponible.</string>
-	<string name="failed_to_write_file">Impossible d\'écrire le fichier.</string>
-	<string name="restore_done">Restauration effectuée.</string>
-	<string name="restore_deserialize_failed">Impossible de désérialiser la sauvegarde.</string>
-	<string name="failed_to_read_file">Impossible de lire le fichier.</string>
-	<string name="backup_not_exist">Aucun fichier de sauvegarde n\'est disponible.</string>
-	<string name="unable_delete_file">Impossible de supprimer le fichier.</string>
-	<string name="no_backup_files_found">Aucun fichier de sauvegarde n\'a été trouvé.</string>
-	<string name="pref_auto_answer">Réponse automatique</string>
-	<string name="pref_auto_answer_summary">Réponse automatique aux appels entrants immédiatement ou avec un délai de 5 secondes. (Expérimental)</string>
-	<string name="pref_autorun_app_title">App. Démarrage automatique</string>
-	<string name="switch_in_car_activity">Commutateur Voiture</string>
-	<string name="incar_mode_disabled">Mode Voiture désactivé.\nActivez-le dans les paramètres du widget pour utiliser un raccourci.</string>
-	<string name="set_shortcut_short">CONFIGURER</string>
-	<string name="notification">Notification</string>
-	<string name="shortcuts_summary">Vous pouvez placer jusqu\'à 3 raccourcis dans la barre d\'état</string>
-	<string name="icons_theme">Thème d\'icônes</string>
-	<string name="not_set">Non défini</string>
-	<string name="default_car_dock_app">Fonction socle de voiture par défaut</string>
-	<string name="cardock_btn_1">Ouvrir l\'application Info</string>
-	<string name="cardock_text1">Pour effacer l\'application par défaut actuelle :\n1. Ouvrir l\'application Info par défaut\n2. Cliquer sur le bouton \"Supprimer par défaut\"</string>
-	<string name="cardock_text2">La prochaine fois que le Socle de voiture est activé, choisissez \"Widget Voiture\" comme application par défaut.</string>
-	<string name="select_shortcut_title">Sélectionner un raccourci</string>
-	<string name="select_icon_pack">Sélectionner un pack d\'icônes</string>
-	<string name="custom_image_error">Une erreur s\'est produite lors de l\'ouverture de l\'image sélectionnée</string>
-	<string name="pref_rotate_icon_title">Rotation des icônes</string>
-	<string name="pref_titles_hide_title">Masquer les titres</string>
-	<string name="pref_titles_hide_summary">Ne pas afficher de titres pour les raccourcis</string>
-	<string name="not_active">Inactif</string>
-	<string name="welcome">Bienvenue</string>
-	<string name="welcome_text">&lt;b&gt; Le widget Voiture &lt;/ b&gt; facilite et accélère l\'accès aux fonctions du téléphone lorsque vous êtes en voiture.</string>
-	<string name="install_a_widget">Installer un widget</string>
-	<string name="install_widget">Allez à &lt;b&gt;l\'écran d\'accueil&lt;/ b&gt; et ouvrez votre &lt;b&gt;tiroir d\'application&lt;/ b&gt;. Sélectionnez &lt;b&gt;l\'onglet du widget&lt;/ b&gt;, puis choisissez &lt;b&gt;widget Voiture&lt;/ b&gt; et affichez-le sur l\'écran disponible.</string>
-	<string name="configure_text">Dans la boîte de dialogue Paramètres du widget, vous pouvez définir des &lt;b&gt;raccourcis&lt;/ b&gt;, configurer leur apparence en changeant &lt;b&gt;l\'habillage&lt;/ b&gt; ou appliquer des &lt;b&gt;effets&lt;/ b&gt;</string>
-	<string name="open_settings_description">Appuyez sur la touche &lt;b&gt;Paramètres&lt;/ b&gt; pour ouvrir l\'écran de configuration</string>
-	<string name="incar_mode">Mode  Voiture</string>
-	<string name="detect_incar_description">&lt;b&gt; Il détecte &lt;/ b&gt; lorsque vous êtes à l\'intérieur de la voiture</string>
-	<string name="adjust_incar_description">&lt;b&gt; Régler &lt;/ b&gt; les paramètres communs</string>
-	<string name="enable_incar_description">&lt;b&gt; Activer &lt;/ b&gt; le mode Voiture dans la boîte de dialogue des paramètres.</string>
-	<string name="trial_description">Version d\'essai gratuite pour %d activations.</string>
-	<string name="swipe_continue">Faîtes glisser pour continuer →</string>
-	<string name="gms_success">Utiliser les services Google Play pour détecter l\'activité</string>
-	<string name="gms_service_missing">Les services Google Play ne sont pas disponibles sur cet appareil.</string>
-	<string name="gms_service_update_required">La version installée des services Google Play n\'est pas à jour.</string>
-	<string name="gms_service_disabled">La version installée des services Google Play a été désactivée sur cet appareil.</string>
-	<string name="gms_service_invalid">La version des services de Google Play installée sur cet appareil n\'est pas authentique.</string>
-	<string name="activity_recognition">Reconnaissance de l\'activité</string>
-	<string name="shortcuts">Raccourcis de notification</string>
-	<string name="pref_actions">Actions</string>
-	<string name="bluetooth_device_laptop">Ordinateur</string>
-	<string name="bluetooth_device_cellphone">Téléphone</string>
-	<string name="bluetooth_device_headphones">Écouteurs</string>
-	<string name="bluetooth_device_headset">Oreillette sans fil</string>
-	<string name="information_title">Informations</string>
-	<string name="issue_title">Remarques</string>
-	<string name="applications">Applications</string>
-	<string name="pref_wifi">Wifi</string>
-	<string name="transparent">Transparent</string>
-	<string name="dialog_title_select">Sélectionner</string>
-	<string name="icon_custom">Personnaliser</string>
-	<string name="icon_adw_icon_pack">Ensemble d\'icônes</string>
-	<string name="never">Jamais</string>
-	<string name="backup">Sauvegarde</string>
-	<string name="restore">Restaurer</string>
-	<string name="backup_save">Sauvegarder</string>
-	<string name="settings">Paramètres</string>
-	<string name="more">Plus...</string>
-	<string name="none">Aucun</string>
-	<string name="download">Téléchargement...</string>
-	<string name="enabled">Activé</string>
-	<string name="disabled">Désactivé</string>
-	<string name="configure">Enregister</string>
-	<string name="finish">Terminer</string>
-	<string name="skip">Ignorer</string>
-	<string name="next">Suivant</string>
-	<string name="choose_a_theme">Choisissez un thème</string>
-	<string name="theme_gray">Clair</string>
-	<string name="theme_holo">Sombre</string>
-	<string name="icon_default">Par défaut</string>
-	<string name="failed_fetch_icon">Impossible de récupérer l\'icône par défaut.</string>
-	<string name="please_add_widget">Veuillez ajouter un widget à l\'écran d\'accueil</string>
-	<string name="samsung_driving_summary">Activer le mode voiture intégré de Samsung</string>
-	<string name="samsung_driving_title">Mode voiture de Samsung</string>
-	<string-array name="brightness_mode_titles">
-    <item>Système</item>
-    <item>Automatique</item>
-    <item>Jour</item>
-    <item>Nuit</item>
-  </string-array>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="permlab_read_settings">Lire les paramètres et les raccourcis du widget Voiture</string>
+    <string name="permdesc_read_settings">Permet à une application de lire les paramètres et les raccourcis dans widget Voiture.</string>
+    <string name="permlab_write_settings">Sauvegarder les paramètres et les raccourcis du widget Voiture</string>
+    <string name="permdesc_write_settings">Permet à une application de modifier les paramètres et les raccourcis dans le widget Voiture..</string>
+    <string name="color_dialog_title">Choisir une couleur</string>
+    <string name="pref_tile_color_title">Couleur de mosaïque</string>
+    <string name="pref_bg_color_title">Couleur d\'arrière-plan</string>
+    <string name="pref_icons_mono_title">Icônes monochromes</string>
+    <string name="pref_tint_color_title">Couleur de teinte</string>
+    <string name="pref_tint_color_summary">Choisir une couleur d\'icônes</string>
+    <string name="pref_font_color_title">Couleur de police</string>
+    <string name="pref_font_color_summary">Choisir la couleur du titre</string>
+    <string name="pref_font_size_title">Taille de police</string>
+    <string name="pref_font_size_summary">Choisir la taille du titre</string>
+    <string name="dialog_donate_title_expired">Période d\'essai expirée,</string>
+    <string name="dialog_donate_message_expired">Cette fonction est disponible uniquement dans la version Pro du widget Voiture.\n\n Voulez-vous l\'installer maintenant ?</string>
+    <string name="dialog_donate_title_trial">Version d\'essai,</string>
+    <string name="dialog_donate_message_trial">\n\nLe mode Voiture illimité est disponible uniquement dans la version Pro du widget Voiture.\n\n Voulez-vous l\'installer maintenant ?</string>
+    <string name="dialog_donate_title_install">Version Pro détectée,</string>
+    <string name="dialog_donate_message_installed">Veuillez ajouter le nouveau widget installé sur l\'écran d\'accueil pour accéder aux fonctionnalités de la version Pro.\n\nCopier les paramètres :\nVous pouvez copier les paramètres à l\'aide de l\'option \"Sauvegarde/Restauration\". La version gratuite du widget n\'est plus nécessaire.\nMerci.</string>
+    <string name="dialog_donate_btn_trial">Continuer en version d\'essai</string>
+    <string name="dialog_donate_btn_yes">Oui, s\'il vous plaît !</string>
+    <string name="dialog_donate_btn_no">Non, merci.</string>
+    <string name="set_shortcut">Configurer un raccourci</string>
+    <string name="pref_look_and_feel_title">Apparence</string>
+    <string name="pref_look_and_feel_summary">Personnaliser l\'habillage, les couleurs et la taille de police</string>
+    <string name="pref_incar_mode_title">Mode Voiture</string>
+    <string name="pref_incar_mode_summary">Choisir comment détecter lorsque vous êtes en voiture et les paramètres qui seront ajustés</string>
+    <string name="pref_incar_mode_enabled">Activer le mode Voiture</string>
+    <string name="pref_power_contorl_bt">Contrôle de l\'alimentation Bluetooth</string>
+    <string name="pref_power_plugged_bt_on_title">On lorsque branché</string>
+    <string name="pref_power_plugged_bt_on_summary">Allumer le Bluetooth lorsque le câble d\'alimentation est branché</string>
+    <string name="pref_power_unplugged_bt_off_title">Off lorsque débranché</string>
+    <string name="pref_power_unplugged_bt_off_summary">Éteindre le Bluetooth lorsque le câble d\'alimentation est débranché</string>
+    <string name="pref_detection">Gâchette</string>
+    <string name="pref_blutooth_device_title">Périphérique Bluetooth</string>
+    <string name="pref_blutooth_device_summary">Choisir un périphérique Bluetooth qui permette le mode voiture</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="turn_on_bluetooth_summary">Activer le Bluetooth</string>
+    <string name="bluetooth_device_category_title">Activer le mode Voiture lors de la connexion à :</string>
+    <string name="no_paired_devices_found_summary">Avant de pouvoir sélectionner un périphérique, il doit être couplé et le Bluetooth doit être activé</string>
+    <string name="pref_headset_connected_title">Oreillette sans fil connectée</string>
+    <string name="pref_headset_connected_summary">Activer le mode Voiture lorsqu\'une prise audio est connectée</string>
+    <string name="pref_power_connected_title">Alimentation branchée</string>
+    <string name="pref_power_connected_summary">Activer le mode Voiture lorsqu\'un câble d\'alimentation est branché</string>
+    <string name="pref_screen_timeout">Désactiver la mise en veille de l\'écran</string>
+    <string name="pref_screen_timeout_summary">Lorsque cette case est cochée, cela empêche l\'écran de s\'éteindre automatiquement</string>
+    <string name="pref_brightness_mode">Mode éclairage</string>
+    <string name="pref_brightness_mode_summary">Sélectionnez le mode d\'ajustement de la luminosité</string>
+    <string name="pref_change_media_volume">Régler le volume</string>
+    <string name="pref_change_media_volume_summary">Modifier le volume pour le niveau spécifique</string>
+    <string name="pref_media_volume_level">Niveau de milieu</string>
+    <string name="pref_volume_level_summary">Modifier le niveau du volume désiré</string>
+    <string name="pref_phone_volume_level">Niveau d\'appel</string>
+    <string name="notif_expired">Période d\'essai expirée</string>
+    <string name="notif_consider">Pensez à installer la version Pro</string>
+    <string name="incar_mode_enabled">Mode Voiture activé</string>
+    <string name="click_to_disable">Cliquer pour désactiver</string>
+    <string name="click_to_disable_trial">Cliquer pour désactiver, essai : %d fois à gauche</string>
+    <plurals name="notif_activations_left">
+        <item quantity="one">%1$d activation à gauche</item>
+        <item quantity="other">%1$d activations à gauche</item>
+    </plurals>
+    <string name="version_title">%1$s vers. %2$s</string>
+    <string name="version_summary">Évaluer ce widget dans le Play Store</string>
+    <string name="shortcut_edit_title">Modifier raccourci</string>
+    <string name="shortcut_edit_hint">Toucher l\'icône pour la modifier</string>
+    <string name="photo_picker_not_found">Aucune image disponible sur le téléphone.</string>
+    <string name="error_text">Erreur : %1$s</string>
+    <string name="pref_route_to_speaker">Acheminer vers le haut-parleur</string>
+    <string name="pref_route_to_speaker_summary">Acheminer tous les appels entrants vers le haut-parleur du téléphone</string>
+    <string name="pref_scale_icon">Dimension des icônes</string>
+    <string name="pref_wifi_summary">Si une connexion Wifi est activée, vous pouvez l\'éteindre temporairement ou de manière définitive</string>
+    <string name="pref_settings_transparent">Touche Paramètres</string>
+    <string name="pref_settings_transparent_summary">La touche Paramètres restera à la même place, mais elle deviendra transparente</string>
+    <string name="pref_incar_transparent">Touche Voiture</string>
+    <string name="pref_incar_transparent_summary">Lorsque le mode Voiture est activé, la touche reste à la même place mais devient transparente</string>
+    <string name="pref_activate_car_mode">Mode voiture intégré</string>
+    <string name="pref_activate_car_mode_summary">Android en mode Voiture intégré sera activé et une icône de notification supplémentaire s\'affichera.</string>
+    <string name="pref_backup_title">Sauvegarde/Restauration</string>
+    <string name="pref_backup_summary">Paramètres de sauvegarde du widget</string>
+    <string name="last_backup">Dernière sauvegarde : %1$s</string>
+    <string name="backup_current_widget">Widget actuel</string>
+    <string name="backup_incar_settings">Paramètres Voiture</string>
+    <string name="backup_name_title">Nom de la sauvegarde :</string>
+    <string name="backup_name_summary">Veuillez définir un nom pour identifier la sauvegarde du widget actuel</string>
+    <string name="backup_done">Sauvegarde effectuée.</string>
+    <string name="external_storage_not_available">Stockage externe non disponible.</string>
+    <string name="failed_to_write_file">Impossible d\'écrire le fichier.</string>
+    <string name="restore_done">Restauration effectuée.</string>
+    <string name="restore_deserialize_failed">Impossible de désérialiser la sauvegarde.</string>
+    <string name="failed_to_read_file">Impossible de lire le fichier.</string>
+    <string name="backup_not_exist">Aucun fichier de sauvegarde n\'est disponible.</string>
+    <string name="unable_delete_file">Impossible de supprimer le fichier.</string>
+    <string name="no_backup_files_found">Aucun fichier de sauvegarde n\'a été trouvé.</string>
+    <string name="pref_auto_answer">Réponse automatique</string>
+    <string name="pref_auto_answer_summary">Réponse automatique aux appels entrants immédiatement ou avec un délai de 5 secondes. (Expérimental)</string>
+    <string name="pref_autorun_app_title">App. Démarrage automatique</string>
+    <string name="switch_in_car_activity">Commutateur Voiture</string>
+    <string name="incar_mode_disabled">Mode Voiture désactivé.\nActivez-le dans les paramètres du widget pour utiliser un raccourci.</string>
+    <string name="set_shortcut_short">CONFIGURER</string>
+    <string name="notification">Notification</string>
+    <string name="shortcuts_summary">Vous pouvez placer jusqu\'à 3 raccourcis dans la barre d\'état</string>
+    <string name="icons_theme">Thème d\'icônes</string>
+    <string name="not_set">Non défini</string>
+    <string name="default_car_dock_app">Fonction socle de voiture par défaut</string>
+    <string name="cardock_btn_1">Ouvrir l\'application Info</string>
+    <string name="cardock_text1">Pour effacer l\'application par défaut actuelle :\n1. Ouvrir l\'application Info par défaut\n2. Cliquer sur le bouton \"Supprimer par défaut\"</string>
+    <string name="cardock_text2">La prochaine fois que le Socle de voiture est activé, choisissez \"Widget Voiture\" comme application par défaut.</string>
+    <string name="select_shortcut_title">Sélectionner un raccourci</string>
+    <string name="select_icon_pack">Sélectionner un pack d\'icônes</string>
+    <string name="custom_image_error">Une erreur s\'est produite lors de l\'ouverture de l\'image sélectionnée</string>
+    <string name="pref_rotate_icon_title">Rotation des icônes</string>
+    <string name="pref_titles_hide_title">Masquer les titres</string>
+    <string name="pref_titles_hide_summary">Ne pas afficher de titres pour les raccourcis</string>
+    <string name="not_active">Inactif</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="welcome_text">&lt;b&gt; Le widget Voiture &lt;/ b&gt; facilite et accélère l\'accès aux fonctions du téléphone lorsque vous êtes en voiture.</string>
+    <string name="install_a_widget">Installer un widget</string>
+    <string name="install_widget">Allez à &lt;b&gt;l\'écran d\'accueil&lt;/ b&gt; et ouvrez votre &lt;b&gt;tiroir d\'application&lt;/ b&gt;. Sélectionnez &lt;b&gt;l\'onglet du widget&lt;/ b&gt;, puis choisissez &lt;b&gt;widget Voiture&lt;/ b&gt; et affichez-le sur l\'écran disponible.</string>
+    <string name="configure_text">Dans la boîte de dialogue Paramètres du widget, vous pouvez définir des &lt;b&gt;raccourcis&lt;/ b&gt;, configurer leur apparence en changeant &lt;b&gt;l\'habillage&lt;/ b&gt; ou appliquer des &lt;b&gt;effets&lt;/ b&gt;</string>
+    <string name="open_settings_description">Appuyez sur la touche &lt;b&gt;Paramètres&lt;/ b&gt; pour ouvrir l\'écran de configuration</string>
+    <string name="incar_mode">Mode  Voiture</string>
+    <string name="detect_incar_description">&lt;b&gt; Il détecte &lt;/ b&gt; lorsque vous êtes à l\'intérieur de la voiture</string>
+    <string name="adjust_incar_description">&lt;b&gt; Régler &lt;/ b&gt; les paramètres communs</string>
+    <string name="enable_incar_description">&lt;b&gt; Activer &lt;/ b&gt; le mode Voiture dans la boîte de dialogue des paramètres.</string>
+    <string name="trial_description">Version d\'essai gratuite pour %d activations.</string>
+    <string name="swipe_continue">Faîtes glisser pour continuer →</string>
+    <string name="gms_success">Utiliser les services Google Play pour détecter l\'activité</string>
+    <string name="gms_service_missing">Les services Google Play ne sont pas disponibles sur cet appareil.</string>
+    <string name="gms_service_update_required">La version installée des services Google Play n\'est pas à jour.</string>
+    <string name="gms_service_disabled">La version installée des services Google Play a été désactivée sur cet appareil.</string>
+    <string name="gms_service_invalid">La version des services de Google Play installée sur cet appareil n\'est pas authentique.</string>
+    <string name="activity_recognition">Reconnaissance de l\'activité</string>
+    <string name="shortcuts">Raccourcis de notification</string>
+    <string name="pref_actions">Actions</string>
+    <string name="bluetooth_device_laptop">Ordinateur</string>
+    <string name="bluetooth_device_cellphone">Téléphone</string>
+    <string name="bluetooth_device_headphones">Écouteurs</string>
+    <string name="bluetooth_device_headset">Oreillette sans fil</string>
+    <string name="information_title">Informations</string>
+    <string name="issue_title">Remarques</string>
+    <string name="applications">Applications</string>
+    <string name="pref_wifi">Wifi</string>
+    <string name="transparent">Transparent</string>
+    <string name="dialog_title_select">Sélectionner</string>
+    <string name="icon_custom">Personnaliser</string>
+    <string name="icon_adw_icon_pack">Ensemble d\'icônes</string>
+    <string name="never">Jamais</string>
+    <string name="backup">Sauvegarde</string>
+    <string name="restore">Restaurer</string>
+    <string name="backup_save">Sauvegarder</string>
+    <string name="settings">Paramètres</string>
+    <string name="more">Plus...</string>
+    <string name="none">Aucun</string>
+    <string name="download">Téléchargement...</string>
+    <string name="enabled">Activé</string>
+    <string name="disabled">Désactivé</string>
+    <string name="configure">Enregister</string>
+    <string name="finish">Terminer</string>
+    <string name="skip">Ignorer</string>
+    <string name="next">Suivant</string>
+    <string name="choose_a_theme">Choisissez un thème</string>
+    <string name="theme_gray">Clair</string>
+    <string name="theme_holo">Sombre</string>
+    <string name="icon_default">Par défaut</string>
+    <string name="failed_fetch_icon">Impossible de récupérer l\'icône par défaut.</string>
+    <string name="please_add_widget">Veuillez ajouter un widget à l\'écran d\'accueil</string>
+    <string name="samsung_driving_summary">Activer le mode voiture intégré de Samsung</string>
+    <string name="samsung_driving_title">Mode voiture de Samsung</string>
+    <string-array name="brightness_mode_titles">
+        <item>Système</item>
+        <item>Automatique</item>
+        <item>Jour</item>
+        <item>Nuit</item>
+    </string-array>
 
-	<string-array name="wifi_action_titles">
-    <item>Aucune action</item>
-    <item>Temporaire</item>
-    <item>Permanent</item>
-  </string-array>
+    <string-array name="wifi_action_titles">
+        <item>Aucune action</item>
+        <item>Temporaire</item>
+        <item>Permanent</item>
+    </string-array>
 
-	<string-array name="autoanswer_titles">
-    <item>Désactivé</item>
-    <item>Immédiatement</item>
-    <item>délai de 5 sec.</item>
-  </string-array>
+    <string-array name="autoanswer_titles">
+        <item>Désactivé</item>
+        <item>Immédiatement</item>
+        <item>délai de 5 sec.</item>
+    </string-array>
 
-	<string-array name="autorun_app_titles">
-    <item>Désactivé</item>
-    <item>Sélectionner...</item>
-  </string-array>
+    <string-array name="autorun_app_titles">
+        <item>Désactivé</item>
+        <item>Sélectionner...</item>
+    </string-array>
 
-	<string-array name="carwidget_shortcuts">
-    <item>Commutateur Voiture</item>
-    <item>Lecture/Pause</item>
-    <item>Suivant</item>
-    <item>Précédent</item>
-  </string-array>
+    <string-array name="carwidget_shortcuts">
+        <item>Commutateur Voiture</item>
+        <item>Appel direct</item>
+        <item>Lecture/Pause</item>
+        <item>Suivant</item>
+        <item>Précédent</item>
+    </string-array>
 
-	<string-array name="icon_rotate_titles">
-    <item>Aucun</item>
-    <item>90° vers la gauche</item>
-    <item>90º vers la droite</item>
-  </string-array>
+    <string-array name="icon_rotate_titles">
+        <item>Aucun</item>
+        <item>90° vers la gauche</item>
+        <item>90º vers la droite</item>
+    </string-array>
 
-	<string name="export_backup">Exporter fichier de sauvegarde</string>
-	<string name="import_backup">Importer fichier de sauvegarde</string>
-	<string name="delete">Supprimer</string>
-	<string name="number">Nombre de raccourcis</string>
-	<string name="number_shortcuts_title">Nombre de raccourcis</string>
-	<string name="car_dock">Station d\'accueil pour voiture</string>
-	<string name="car_dock_summary">Activer le mode voiture lorsque le téléphone est placé dans la station d\'accueil de la voiture</string>
+    <string name="export_backup">Exporter fichier de sauvegarde</string>
+    <string name="import_backup">Importer fichier de sauvegarde</string>
+    <string name="delete">Supprimer</string>
+    <string name="number">Nombre de raccourcis</string>
+    <string name="number_shortcuts_title">Nombre de raccourcis</string>
+    <string name="car_dock">Station d\'accueil pour voiture</string>
+    <string name="car_dock_summary">Activer le mode voiture lorsque le téléphone est placé dans la station d\'accueil de la voiture</string>
     <string name="widgets">Widgets</string>
     <string name="show_choice">Afficher le choix</string>
     <string name="music_app">Application musicale</string>
     <string name="use_as_default_music_app">Utiliser comme application musicale par défaut</string>
     <string name="choose_music_app_explanation">Choisissez l\'application musicale qui sera utilisée pour le raccourci de lecture / pause</string>
-	<string name="app_theme">Thème de l\'application</string>
-	<string name="widgets_hint">Sélectionnez un élément pour configurer le widget</string>
-	<string name="list_of_active_widgets">Liste des widgets actifs</string>
+    <string name="app_theme">Thème de l\'application</string>
+    <string name="widgets_hint">Sélectionnez un élément pour configurer le widget</string>
+    <string name="list_of_active_widgets">Liste des widgets actifs</string>
     <string name="shortcuts_and_look">Raccourcis et recherche</string>
     <string name="shortcuts_and_look_summary">Personnaliser les raccourcis, le type et la taille de la police</string>
     <string name="current_widget">Widget actuel</string>
     <string name="no_active_widget">Aucun widget actif n\'a été trouvé. Assurez-vous d\'en ajouter un sur votre écran d\'accueil.</string>
 
-	<string-array name="disable_screen_timeout">
-    <item>Désactiver (pendant la charge)</item>
-    <item>Désactiver</item>
-    <item>Activer</item>
-  </string-array>
+    <string-array name="disable_screen_timeout">
+        <item>Désactiver (pendant la charge)</item>
+        <item>Désactiver</item>
+        <item>Activer</item>
+    </string-array>
 
     <string-array name="orientation_titles">
-    <item>Système</item>
-    <item>Portrait</item>
-    <item>Paysage</item>
-    <item>Paysage (inverse)</item>
-  </string-array>
+        <item>Système</item>
+        <item>Portrait</item>
+        <item>Paysage</item>
+        <item>Paysage (inverse)</item>
+    </string-array>
 </resources>

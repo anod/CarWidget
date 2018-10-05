@@ -189,6 +189,7 @@
 
 	<string-array name="carwidget_shortcuts">
 		<item>В автомобиле</item>
+		<item>Прямой вызов</item>
 		<item>Играть/Пауза</item>
 		<item>Следующий</item>
 		<item>Предыдущий</item>
@@ -240,4 +241,14 @@
     <string name="color_swatch_description_selected">Цвет %1$d выбран</string>
 	<string name="pref_hotspot_title">Включить WiFi Hotspot</string>
 	<string name="pref_hotspot_summary">Автоматически включать режим модема на устройстве</string>
+	<string name="allow_permission_overlay">Разрешите отображение поверх для поворота экрана</string>
+	<string name="needs_permissions_to_work">Нет разрешений для работы</string>
+	<string name="allow_access">Разрешить доступ</string>
+	<string name="permission_write_settings">Изменение системных настроек</string>
+	<string name="adjust_brightness">Регулировка ярк</string>
+	<string name="permission_draw_overlay">Поверх других приложений</string>
+	<string name="change_screen_orientation">Поворот экрана</string>
+	<string name="permission_answer_calls">Ответ на звонки</string>
+	<string name="allow_answer_phone_calls">Разрешить отвечать на звонки</string>
+	<string name="permissions_denied_open_settings">Нет разрешения, включите в настройках аппликации</string>
 </resources>

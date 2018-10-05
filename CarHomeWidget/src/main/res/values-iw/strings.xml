@@ -1,209 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="permlab_read_settings">לקרוא הגדרות וקיצורי דרך של ווידג\'ט לרכב</string>
-	<string name="permdesc_read_settings">מאפשר ליישומים לקרוא את ההגדרות ואת קיצורי דרך של ווידג\'ט לרכב</string>
-	<string name="permlab_write_settings">כתיבת הגדרות וקיצורי דרך של ווידג\'ט לרכב</string>
-	<string name="permdesc_write_settings">מאפשר ליישומים לשנות את ההגדרות ואת קיצורי דרך של ווידג\'ט לרכב.</string>
-	<string name="color_dialog_title">בחר צבע</string>
-	<string name="pref_tile_color_title">צבע של משבצת</string>
-	<string name="pref_bg_color_title">צבע רקע</string>
-	<string name="pref_icons_mono_title">אייקונים בשחור-לבן</string>
-	<string name="pref_tint_color_title">צבע גוון</string>
-	<string name="pref_tint_color_summary">בחר צבע גוון של אייקונים</string>
-	<string name="pref_font_color_title">צבע גופן</string>
-	<string name="pref_font_color_summary">בחר צבע של כותרת</string>
-	<string name="pref_font_size_title">גודל גופן</string>
-	<string name="pref_font_size_summary">בחר גודל של כותרת</string>
-	<string name="dialog_donate_title_expired">תקופת הנסיון הסתיימה,</string>
-	<string name="dialog_donate_message_expired">תכונה זו זמינה רק בגירסה ווידג\'ט לרכב פרו.\n\n האם רוצה לקבל אותה עכשיו?</string>
-	<string name="dialog_donate_title_trial">תקופת נסיון,</string>
-	<string name="dialog_donate_message_trial">\n\nמצב הרכב ללא הגבלה זמין רק בגרסת פרו.\n\n האם רוצה לקבל אותה עכשיו?</string>
-	<string name="dialog_donate_title_install">גרסה פרו מותקנת,</string>
-	<string name="dialog_donate_message_installed">נא להוסיף את הווידג\'ט החדש המותקן למסך הבית על מנת לקבל גישה לתכונות של גרסת פרו.\n\n העברת ההגדרות:\nניתן להעביר את ההגדרות הקיימות באמצעות אפשרות \"גיבוי / שחזור\". אין צורך בגרסה חינמית יותר.\n\nתודה רבה.</string>
-	<string name="dialog_donate_btn_trial">המשך תקופת ניסיון</string>
-	<string name="dialog_donate_btn_yes">כן, בבקשה!</string>
-	<string name="dialog_donate_btn_no">לא, תודה.</string>
-	<string name="set_shortcut">הגדר קיצור דרך</string>
-	<string name="pref_look_and_feel_title">מראה ותחושה</string>
-	<string name="pref_look_and_feel_summary">התאמה אישית של הסקין, צבעים וגודל הגופן</string>
-	<string name="pref_incar_mode_title">מצב ברכב</string>
-	<string name="pref_incar_mode_summary">בחר כיצד לזהות כאשר אתה בתוך הרכב ואת ההגדרות יותאמו</string>
-	<string name="pref_incar_mode_enabled">לאפשר מצב ברכב</string>
-	<string name="pref_power_contorl_bt">חשמל שולט על Bluetooth</string>
-	<string name="pref_power_plugged_bt_on_title">להפעיל כאשר מחובר</string>
-	<string name="pref_power_plugged_bt_on_summary">להפעיל Bluetooth כאשר כבל חשמל מחובר</string>
-	<string name="pref_power_unplugged_bt_off_title">לכבות כאשר מנותק</string>
-	<string name="pref_power_unplugged_bt_off_summary">להפעיל Bluetooth כאשר כבל חשמל מחובר</string>
-	<string name="pref_detection">זיהוי</string>
-	<string name="pref_blutooth_device_title">מכשיר Bluetooth</string>
-	<string name="pref_blutooth_device_summary"> בחרו מכשיר Bluetooth המאפשר מצב ברכב</string>
-	<string name="bluetooth">Bluetooth</string>
-	<string name="turn_on_bluetooth_summary">הפעל את Bluetooth</string>
-	<string name="bluetooth_device_category_title">אפשר מצב \"ברכב\" על קישור עם:</string>
-	<string name="no_paired_devices_found_summary">לפני שיהיה ניתן לבחור המכשיר, הוא צריך להיות מחובר ו-Bluetooth צריך להיות מופעל</string>
-	<string name="pref_headset_connected_title">האוזניה מחוברת</string>
-	<string name="pref_headset_connected_summary">להפעיל מצב ברכב כאשר כבל אודיו מחובר</string>
-	<string name="pref_power_connected_title">חשמל מחובר</string>
-	<string name="pref_power_connected_summary">להפעיל מצב ברכב כאשר כבל חשמל מחובר</string>
-	<string name="pref_screen_timeout">ביטול מצב שינה של המסך</string>
-	<string name="pref_screen_timeout_summary">כאשר אפשרות זו מסומנת, מונע ממסך להתכבות באופן אוטומטי</string>
-	<string name="pref_brightness_mode">מצב הבהירות</string>
-	<string name="pref_brightness_mode_summary">בחר כיצד להתאים את הבהירות</string>
-	<string name="pref_change_media_volume">שינוי עוצמת המדיה</string>
-	<string name="pref_change_media_volume_summary">כוון עוצמת מדיה לרמה מסוימת</string>
-	<string name="pref_media_volume_level">עוצמת המוזיקה</string>
-	<string name="pref_phone_volume_level">עוצמת צלצול</string>
-	<string name="notif_expired">תקופת נסיון הסתיימה</string>
-	<string name="incar_mode_enabled">מצב ברכב מופעל</string>
-	<string name="click_to_disable">לחץ כדי לבטל</string>
-	<string name="click_to_disable_trial">לחץ כדי לבטל, תקופת ניסיון: %d הפעלות נשארו</string>
-	<plurals name="notif_activations_left">
-		<item quantity="one">%1$d הפעלה נשארה</item>
-		<item quantity="other">%1$d הפעלות נשארו</item>
-	</plurals>
-	<string name="version_title">%1$s גרסה %2$s</string>
-	<string name="version_summary">נא דרג את הוודג\'ט במרקט</string>
-	<string name="shortcut_edit_title">עריכת קיצור דרך</string>
-	<string name="shortcut_edit_hint">לחץ על האייקון כדי לשנות אותו</string>
-	<string name="photo_picker_not_found">לא נמצאו תמונות בטלפון</string>
-	<string name="error_text">שגיאה: %1$s</string>
-	<string name="pref_route_to_speaker">לנתב לרמקול</string>
-	<string name="pref_route_to_speaker_summary">נתב שיחות נכנסות לרמקול של טלפון</string>
-	<string name="pref_scale_icon">להגדיל אייקון</string>
-	<string name="pref_wifi_summary">אם Wi-Fi מופעל, אתם יכולים לכבות אותו זמני או סופי</string>
-	<string name="pref_settings_transparent">כפתור הגדרות</string>
-	<string name="pref_settings_transparent_summary">כפתור ישאר באותו מקום אבל יהיה שקוף</string>
-	<string name="pref_incar_transparent">כפתור ברכב</string>
-	<string name="pref_incar_transparent_summary">כאשר מצב ברכב מופעל, הכפתור ישאר באותו מקום אבל יהיה שקוף</string>
-	<string name="pref_activate_car_mode">מצב מכונית</string>
-	<string name="pref_activate_car_mode_summary">מצב מכונית מובנה באנדרויד יופעל, אייקון נוסף יופיעה</string>
-	<string name="pref_backup_title">גיבוי / שחזור</string>
-	<string name="pref_backup_summary">גיבוי הגדרות של ווידג\'ט לכרטיס זכרון</string>
-	<string name="last_backup">גיבוי אחרון: %1$s</string>
-	<string name="backup_current_widget">גיבוי של ווידג\'ט הנוכחי</string>
-	<string name="backup_incar_settings">גיבוי מצב ברכב</string>
-	<string name="backup_name_title">שם לגיבוי:</string>
-	<string name="backup_name_summary">בבקשה תגדירו שם לזיהוי של גיבוי של ווידג\'ט הנוכחי</string>
-	<string name="backup_done">גיבוי הסתיים.</string>
-	<string name="external_storage_not_available">אחסון חיצוני אינו זמין.</string>
-	<string name="failed_to_write_file">כתיבה לקובץ נכשלה.</string>
-	<string name="restore_done">שחזור הסתיים.</string>
-	<string name="restore_deserialize_failed">נכשל לבטל עריכה בסידרה גיבוי.</string>
-	<string name="failed_to_read_file">קריאה מקובץ נכשלה.</string>
-	<string name="backup_not_exist">קובץ גיבוי לא נמצא.</string>
-	<string name="unable_delete_file">לא ניתן למחוק קובץ.</string>
-	<string name="no_backup_files_found">קבצי גיבוי לא נמצאו.</string>
-	<string name="pref_auto_answer">מענה אוטומטי</string>
-	<string name="pref_auto_answer_summary">מענה מיידי או בהשהייה של 5 שניות לשיחות נכנסות (נסיוני)</string>
-	<string name="pref_autorun_app_title">הפעלת היישום</string>
-	<string name="switch_in_car_activity">מצב ברכב</string>
-	<string name="incar_mode_disabled">מצב \"ברכב\" לא מופעל.\nתפעילו אותו בהגדרות של ווידג\'ט</string>
-	<string name="set_shortcut_short">הגדר</string>
-	<string name="notification">התראה</string>
-	<string name="shortcuts_summary">ניתן להגדיר עד 3 קיצורי דרך בוילון התראות</string>
-	<string name="icons_theme">נושאי אייקונים</string>
-	<string name="not_set">לא הוגדר</string>
-	<string name="default_car_dock_app">ברירת מחדל לCar Dock</string>
-	<string name="cardock_btn_1">לפתוח פרטי יישום</string>
-	<string name="cardock_text1">על מנת לנקות את יישום ברירת מחדל נוכחי:\n1.פתח פרטי יישום\n2.לחץ על כפתור \"נקה ברירת מחדל\" </string>
-	<string name="cardock_text2">בפעם הבאה כאשר Car Dock יופעל, בחר \"ווידג\'ט לרכב\" כיישום ברירת מחדל.</string>
-	<string name="select_shortcut_title">בחר קיצור דרך</string>
-	<string name="select_icon_pack">בחרבחבילת אייקון</string>
-	
-	<string name="pref_volume_level_summary">לשנות את הרמה הרצויה של עוצמת הקול</string>
-	
-	<string name="notif_consider">תשקלו להתקין גרסת פרו</string>
-	<string name="custom_image_error">שגיאה בעת ניסיון לפתוח את התמונה</string>
-	<string name="pref_rotate_icon_title">לסובב איקונים</string>
-	<string name="pref_titles_hide_title">להסתיר כותרות</string>
-	<string name="pref_titles_hide_summary">לא להציג כותרות לקיצורי דרך</string>
-	<string name="not_active">לא פעיל</string>
-	<string name="welcome">ברוך הבא</string>
-	<string name="welcome_text"><![CDATA[<b>ווידג\'ט לרכב</b> מהקל ומיעיל גישה לתכונות של טלפונ במכונית]]></string>
-	<string name="install_a_widget">התקנה של הווידג\'ט</string>
-	<string name="install_widget"><![CDATA[תעברו <b>למסך הבית</b> ותפתחו את <b>רשימת האפליקציות</b>. תבחרו <b>ברשימת ווידג\'טים</b> לאחר מכן תבחרו את <b>וודג\'ט לרכב</b> מרשימה תגררו  אותו על המסך הבית.]]></string>
-	<string name="configure_text"><![CDATA[בתוך הגדרות של ווידג\'ט ניתן להגדיר <b>קיצורי דרך</b> ומראה שלו על ידי שינוי <b>סקין</b> והחלת <b>אפקטים</b>]]></string>
-	<string name="open_settings_description"><![CDATA[לחצו על כפתור <b>הגדרות</b> על מנת לפתוח את מסך קונפיגורציה]]></string>
-	<string name="incar_mode">מצב \"ברכב\"</string>
-	<string name="detect_incar_description"><![CDATA[<b>מזהה</b> כאשר אתם בתוך הרכב]]></string>
-	<string name="adjust_incar_description"><![CDATA[<b>מתאם</b> את הגדרות נפוצות]]></string>
-	<string name="enable_incar_description"><![CDATA[הפעל מצב ברכב בהגדרות.]]></string>
-	<string name="trial_description">ניסיון של %d הפעלות בגירסה חינמית</string>
-	<string name="swipe_continue">עבור למסך הבאה →</string>
-	<string name="gms_success">להשתמש ב-Google Play services לזיהוי פעילות</string>
-	<string name="gms_service_missing">Google Play services חסרים במכשיר זה.</string>
-	<string name="gms_service_update_required">הגרסה המותקנת של Google Play services אינה מעודכנת.</string>
-	<string name="gms_service_disabled">הגרסה המותקנת שירותים של Google Play services הושבת במכשיר זה.</string>
-	<string name="gms_service_invalid">הגרסה של Google Play services המותקת במכשיר זה לא אותנטית.</string>
-	<string name="activity_recognition">זיהוי פעילות</string>
-	<string name="shortcuts">קיצורי דרך </string>
-	<string name="pref_actions">פעולות</string>
-	<string name="bluetooth_device_laptop">מחשב</string>
-	<string name="bluetooth_device_cellphone">טלפון</string>
-	<string name="bluetooth_device_headphones">אוזניות</string>
-	<string name="bluetooth_device_headset">האוזנייה האלחוטית</string>
-	<string name="information_title">מידע</string>
-	<string name="issue_title">משוב</string>
-	<string name="applications">יישומים</string>
-	<string name="pref_wifi">Wi-Fi</string>
-	<string name="transparent">שקוף</string>
-	<string name="dialog_title_select">בחר</string>
-	<string name="icon_default">ברירת מחדל </string>
-	<string name="icon_custom">בחר מגלריה</string>
-	<string name="icon_adw_icon_pack">Icon Pack</string>
-	<string name="never">אף פעם</string>
-	<string name="backup">גיבוי</string>
-	<string name="restore">שחזור</string>
-	<string name="backup_save">לשמור</string>
-	<string name="settings">הגדרות</string>
-	<string name="more">עוד...</string>
-	<string name="none">אין</string>
-	<string name="download">הורד...</string>
-	<string name="enabled">מופעל</string>
-	<string name="disabled">מופסק</string>
-	<string name="configure">הגדרות</string>
-	<string name="finish">סיום</string>
-	<string name="skip">דלג</string>
-	<string name="next">הבא</string>
-	<string-array name="brightness_mode_titles">
-		<item>ללא שינוי</item>
-		<item>אוטומטי</item>
-		<item>יום</item>
-		<item>לילה</item>
-	</string-array>
-	<string-array name="wifi_action_titles">
-		<item>ללא פעולה</item>
-		<item>זמני</item>
-		<item>סופי</item>
-	</string-array>
-	<string-array name="autoanswer_titles">
-		<item>כבוי</item>
-		<item>מענה מיידי</item>
-		<item>השהייה ל-5 שניות</item>
-	</string-array>
+    <string name="permlab_read_settings">לקרוא הגדרות וקיצורי דרך של ווידג\'ט לרכב</string>
+    <string name="permdesc_read_settings">מאפשר ליישומים לקרוא את ההגדרות ואת קיצורי דרך של ווידג\'ט לרכב</string>
+    <string name="permlab_write_settings">כתיבת הגדרות וקיצורי דרך של ווידג\'ט לרכב</string>
+    <string name="permdesc_write_settings">מאפשר ליישומים לשנות את ההגדרות ואת קיצורי דרך של ווידג\'ט לרכב.</string>
+    <string name="color_dialog_title">בחר צבע</string>
+    <string name="pref_tile_color_title">צבע של משבצת</string>
+    <string name="pref_bg_color_title">צבע רקע</string>
+    <string name="pref_icons_mono_title">אייקונים בשחור-לבן</string>
+    <string name="pref_tint_color_title">צבע גוון</string>
+    <string name="pref_tint_color_summary">בחר צבע גוון של אייקונים</string>
+    <string name="pref_font_color_title">צבע גופן</string>
+    <string name="pref_font_color_summary">בחר צבע של כותרת</string>
+    <string name="pref_font_size_title">גודל גופן</string>
+    <string name="pref_font_size_summary">בחר גודל של כותרת</string>
+    <string name="dialog_donate_title_expired">תקופת הנסיון הסתיימה,</string>
+    <string name="dialog_donate_message_expired">תכונה זו זמינה רק בגירסה ווידג\'ט לרכב פרו.\n\n האם רוצה לקבל אותה עכשיו?</string>
+    <string name="dialog_donate_title_trial">תקופת נסיון,</string>
+    <string name="dialog_donate_message_trial">\n\nמצב הרכב ללא הגבלה זמין רק בגרסת פרו.\n\n האם רוצה לקבל אותה עכשיו?</string>
+    <string name="dialog_donate_title_install">גרסה פרו מותקנת,</string>
+    <string name="dialog_donate_message_installed">נא להוסיף את הווידג\'ט החדש המותקן למסך הבית על מנת לקבל גישה לתכונות של גרסת פרו.\n\n העברת ההגדרות:\nניתן להעביר את ההגדרות הקיימות באמצעות אפשרות \"גיבוי / שחזור\". אין צורך בגרסה חינמית יותר.\n\nתודה רבה.</string>
+    <string name="dialog_donate_btn_trial">המשך תקופת ניסיון</string>
+    <string name="dialog_donate_btn_yes">כן, בבקשה!</string>
+    <string name="dialog_donate_btn_no">לא, תודה.</string>
+    <string name="set_shortcut">הגדר קיצור דרך</string>
+    <string name="pref_look_and_feel_title">מראה ותחושה</string>
+    <string name="pref_look_and_feel_summary">התאמה אישית של הסקין, צבעים וגודל הגופן</string>
+    <string name="pref_incar_mode_title">מצב ברכב</string>
+    <string name="pref_incar_mode_summary">בחר כיצד לזהות כאשר אתה בתוך הרכב ואת ההגדרות יותאמו</string>
+    <string name="pref_incar_mode_enabled">לאפשר מצב ברכב</string>
+    <string name="pref_power_contorl_bt">חשמל שולט על Bluetooth</string>
+    <string name="pref_power_plugged_bt_on_title">להפעיל כאשר מחובר</string>
+    <string name="pref_power_plugged_bt_on_summary">להפעיל Bluetooth כאשר כבל חשמל מחובר</string>
+    <string name="pref_power_unplugged_bt_off_title">לכבות כאשר מנותק</string>
+    <string name="pref_power_unplugged_bt_off_summary">להפעיל Bluetooth כאשר כבל חשמל מחובר</string>
+    <string name="pref_detection">זיהוי</string>
+    <string name="pref_blutooth_device_title">מכשיר Bluetooth</string>
+    <string name="pref_blutooth_device_summary"> בחרו מכשיר Bluetooth המאפשר מצב ברכב</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="turn_on_bluetooth_summary">הפעל את Bluetooth</string>
+    <string name="bluetooth_device_category_title">אפשר מצב \"ברכב\" על קישור עם:</string>
+    <string name="no_paired_devices_found_summary">לפני שיהיה ניתן לבחור המכשיר, הוא צריך להיות מחובר ו-Bluetooth צריך להיות מופעל</string>
+    <string name="pref_headset_connected_title">האוזניה מחוברת</string>
+    <string name="pref_headset_connected_summary">להפעיל מצב ברכב כאשר כבל אודיו מחובר</string>
+    <string name="pref_power_connected_title">חשמל מחובר</string>
+    <string name="pref_power_connected_summary">להפעיל מצב ברכב כאשר כבל חשמל מחובר</string>
+    <string name="pref_screen_timeout">ביטול מצב שינה של המסך</string>
+    <string name="pref_screen_timeout_summary">כאשר אפשרות זו מסומנת, מונע ממסך להתכבות באופן אוטומטי</string>
+    <string name="pref_brightness_mode">מצב הבהירות</string>
+    <string name="pref_brightness_mode_summary">בחר כיצד להתאים את הבהירות</string>
+    <string name="pref_change_media_volume">שינוי עוצמת המדיה</string>
+    <string name="pref_change_media_volume_summary">כוון עוצמת מדיה לרמה מסוימת</string>
+    <string name="pref_media_volume_level">עוצמת המוזיקה</string>
+    <string name="pref_phone_volume_level">עוצמת צלצול</string>
+    <string name="notif_expired">תקופת נסיון הסתיימה</string>
+    <string name="incar_mode_enabled">מצב ברכב מופעל</string>
+    <string name="click_to_disable">לחץ כדי לבטל</string>
+    <string name="click_to_disable_trial">לחץ כדי לבטל, תקופת ניסיון: %d הפעלות נשארו</string>
+    <plurals name="notif_activations_left">
+        <item quantity="one">%1$d הפעלה נשארה</item>
+        <item quantity="other">%1$d הפעלות נשארו</item>
+    </plurals>
+    <string name="version_title">%1$s גרסה %2$s</string>
+    <string name="version_summary">נא דרג את הוודג\'ט במרקט</string>
+    <string name="shortcut_edit_title">עריכת קיצור דרך</string>
+    <string name="shortcut_edit_hint">לחץ על האייקון כדי לשנות אותו</string>
+    <string name="photo_picker_not_found">לא נמצאו תמונות בטלפון</string>
+    <string name="error_text">שגיאה: %1$s</string>
+    <string name="pref_route_to_speaker">לנתב לרמקול</string>
+    <string name="pref_route_to_speaker_summary">נתב שיחות נכנסות לרמקול של טלפון</string>
+    <string name="pref_scale_icon">להגדיל אייקון</string>
+    <string name="pref_wifi_summary">אם Wi-Fi מופעל, אתם יכולים לכבות אותו זמני או סופי</string>
+    <string name="pref_settings_transparent">כפתור הגדרות</string>
+    <string name="pref_settings_transparent_summary">כפתור ישאר באותו מקום אבל יהיה שקוף</string>
+    <string name="pref_incar_transparent">כפתור ברכב</string>
+    <string name="pref_incar_transparent_summary">כאשר מצב ברכב מופעל, הכפתור ישאר באותו מקום אבל יהיה שקוף</string>
+    <string name="pref_activate_car_mode">מצב מכונית</string>
+    <string name="pref_activate_car_mode_summary">מצב מכונית מובנה באנדרויד יופעל, אייקון נוסף יופיעה</string>
+    <string name="pref_backup_title">גיבוי / שחזור</string>
+    <string name="pref_backup_summary">גיבוי הגדרות של ווידג\'ט לכרטיס זכרון</string>
+    <string name="last_backup">גיבוי אחרון: %1$s</string>
+    <string name="backup_current_widget">גיבוי של ווידג\'ט הנוכחי</string>
+    <string name="backup_incar_settings">גיבוי מצב ברכב</string>
+    <string name="backup_name_title">שם לגיבוי:</string>
+    <string name="backup_name_summary">בבקשה תגדירו שם לזיהוי של גיבוי של ווידג\'ט הנוכחי</string>
+    <string name="backup_done">גיבוי הסתיים.</string>
+    <string name="external_storage_not_available">אחסון חיצוני אינו זמין.</string>
+    <string name="failed_to_write_file">כתיבה לקובץ נכשלה.</string>
+    <string name="restore_done">שחזור הסתיים.</string>
+    <string name="restore_deserialize_failed">נכשל לבטל עריכה בסידרה גיבוי.</string>
+    <string name="failed_to_read_file">קריאה מקובץ נכשלה.</string>
+    <string name="backup_not_exist">קובץ גיבוי לא נמצא.</string>
+    <string name="unable_delete_file">לא ניתן למחוק קובץ.</string>
+    <string name="no_backup_files_found">קבצי גיבוי לא נמצאו.</string>
+    <string name="pref_auto_answer">מענה אוטומטי</string>
+    <string name="pref_auto_answer_summary">מענה מיידי או בהשהייה של 5 שניות לשיחות נכנסות (נסיוני)</string>
+    <string name="pref_autorun_app_title">הפעלת היישום</string>
+    <string name="switch_in_car_activity">מצב ברכב</string>
+    <string name="incar_mode_disabled">מצב \"ברכב\" לא מופעל.\nתפעילו אותו בהגדרות של ווידג\'ט</string>
+    <string name="set_shortcut_short">הגדר</string>
+    <string name="notification">התראה</string>
+    <string name="shortcuts_summary">ניתן להגדיר עד 3 קיצורי דרך בוילון התראות</string>
+    <string name="icons_theme">נושאי אייקונים</string>
+    <string name="not_set">לא הוגדר</string>
+    <string name="default_car_dock_app">ברירת מחדל לCar Dock</string>
+    <string name="cardock_btn_1">לפתוח פרטי יישום</string>
+    <string name="cardock_text1">על מנת לנקות את יישום ברירת מחדל נוכחי:\n1.פתח פרטי יישום\n2.לחץ על כפתור \"נקה ברירת מחדל\" </string>
+    <string name="cardock_text2">בפעם הבאה כאשר Car Dock יופעל, בחר \"ווידג\'ט לרכב\" כיישום ברירת מחדל.</string>
+    <string name="select_shortcut_title">בחר קיצור דרך</string>
+    <string name="select_icon_pack">בחרבחבילת אייקון</string>
 
-	<string-array name="autorun_app_titles">
-		<item>כבוי</item>
-		<item>לבחור&#8230;</item>
-	</string-array>
+    <string name="pref_volume_level_summary">לשנות את הרמה הרצויה של עוצמת הקול</string>
 
-	<string-array name="carwidget_shortcuts">
-		<item>מצב ברכב</item>
-		<item>נגן/השהה</item>
-		<item>הבא</item>
-		<item>קודם</item>
-	</string-array>
+    <string name="notif_consider">תשקלו להתקין גרסת פרו</string>
+    <string name="custom_image_error">שגיאה בעת ניסיון לפתוח את התמונה</string>
+    <string name="pref_rotate_icon_title">לסובב איקונים</string>
+    <string name="pref_titles_hide_title">להסתיר כותרות</string>
+    <string name="pref_titles_hide_summary">לא להציג כותרות לקיצורי דרך</string>
+    <string name="not_active">לא פעיל</string>
+    <string name="welcome">ברוך הבא</string>
+    <string name="welcome_text"><![CDATA[<b>ווידג\'ט לרכב</b> מהקל ומיעיל גישה לתכונות של טלפונ במכונית]]></string>
+    <string name="install_a_widget">התקנה של הווידג\'ט</string>
+    <string name="install_widget"><![CDATA[תעברו <b>למסך הבית</b> ותפתחו את <b>רשימת האפליקציות</b>. תבחרו <b>ברשימת ווידג\'טים</b> לאחר מכן תבחרו את <b>וודג\'ט לרכב</b> מרשימה תגררו  אותו על המסך הבית.]]></string>
+    <string name="configure_text"><![CDATA[בתוך הגדרות של ווידג\'ט ניתן להגדיר <b>קיצורי דרך</b> ומראה שלו על ידי שינוי <b>סקין</b> והחלת <b>אפקטים</b>]]></string>
+    <string name="open_settings_description"><![CDATA[לחצו על כפתור <b>הגדרות</b> על מנת לפתוח את מסך קונפיגורציה]]></string>
+    <string name="incar_mode">מצב \"ברכב\"</string>
+    <string name="detect_incar_description"><![CDATA[<b>מזהה</b> כאשר אתם בתוך הרכב]]></string>
+    <string name="adjust_incar_description"><![CDATA[<b>מתאם</b> את הגדרות נפוצות]]></string>
+    <string name="enable_incar_description"><![CDATA[הפעל מצב ברכב בהגדרות.]]></string>
+    <string name="trial_description">ניסיון של %d הפעלות בגירסה חינמית</string>
+    <string name="swipe_continue">עבור למסך הבאה →</string>
+    <string name="gms_success">להשתמש ב-Google Play services לזיהוי פעילות</string>
+    <string name="gms_service_missing">Google Play services חסרים במכשיר זה.</string>
+    <string name="gms_service_update_required">הגרסה המותקנת של Google Play services אינה מעודכנת.</string>
+    <string name="gms_service_disabled">הגרסה המותקנת שירותים של Google Play services הושבת במכשיר זה.</string>
+    <string name="gms_service_invalid">הגרסה של Google Play services המותקת במכשיר זה לא אותנטית.</string>
+    <string name="activity_recognition">זיהוי פעילות</string>
+    <string name="shortcuts">קיצורי דרך </string>
+    <string name="pref_actions">פעולות</string>
+    <string name="bluetooth_device_laptop">מחשב</string>
+    <string name="bluetooth_device_cellphone">טלפון</string>
+    <string name="bluetooth_device_headphones">אוזניות</string>
+    <string name="bluetooth_device_headset">האוזנייה האלחוטית</string>
+    <string name="information_title">מידע</string>
+    <string name="issue_title">משוב</string>
+    <string name="applications">יישומים</string>
+    <string name="pref_wifi">Wi-Fi</string>
+    <string name="transparent">שקוף</string>
+    <string name="dialog_title_select">בחר</string>
+    <string name="icon_default">ברירת מחדל </string>
+    <string name="icon_custom">בחר מגלריה</string>
+    <string name="icon_adw_icon_pack">Icon Pack</string>
+    <string name="never">אף פעם</string>
+    <string name="backup">גיבוי</string>
+    <string name="restore">שחזור</string>
+    <string name="backup_save">לשמור</string>
+    <string name="settings">הגדרות</string>
+    <string name="more">עוד...</string>
+    <string name="none">אין</string>
+    <string name="download">הורד...</string>
+    <string name="enabled">מופעל</string>
+    <string name="disabled">מופסק</string>
+    <string name="configure">הגדרות</string>
+    <string name="finish">סיום</string>
+    <string name="skip">דלג</string>
+    <string name="next">הבא</string>
+    <string-array name="brightness_mode_titles">
+        <item>ללא שינוי</item>
+        <item>אוטומטי</item>
+        <item>יום</item>
+        <item>לילה</item>
+    </string-array>
+    <string-array name="wifi_action_titles">
+        <item>ללא פעולה</item>
+        <item>זמני</item>
+        <item>סופי</item>
+    </string-array>
+    <string-array name="autoanswer_titles">
+        <item>כבוי</item>
+        <item>מענה מיידי</item>
+        <item>השהייה ל-5 שניות</item>
+    </string-array>
 
-	<string-array name="icon_rotate_titles">
-		<item>ללא שינוי</item>
-		<item>90&#186; שמאלה</item>
-		<item>90&#186; ימינה</item>
-	</string-array>
+    <string-array name="autorun_app_titles">
+        <item>כבוי</item>
+        <item>לבחור&#8230;</item>
+    </string-array>
 
-	<string name="choose_a_theme">בחר צבעים</string>
+    <string-array name="carwidget_shortcuts">
+        <item>מצב ברכב</item>
+        <item>שיחה ישירה</item>
+        <item>נגן/השהה</item>
+        <item>הבא</item>
+        <item>קודם</item>
+    </string-array>
+
+    <string-array name="icon_rotate_titles">
+        <item>ללא שינוי</item>
+        <item>90&#186; שמאלה</item>
+        <item>90&#186; ימינה</item>
+    </string-array>
+
+    <string name="choose_a_theme">בחר צבעים</string>
     <string name="delete">מחק</string>
     <string name="export_backup">שמירה</string>
-	<string name="failed_fetch_icon">בעית קבלת איקוון</string>
+    <string name="failed_fetch_icon">בעית קבלת איקוון</string>
     <string name="import_backup">משיכה</string>
     <string name="number">מספר</string>
     <string name="number_shortcuts_title">מספר קיצורי דרך</string>
@@ -221,13 +222,13 @@
         <item>לאפשר</item>
     </string-array>
     <string name="current_widget">הוידג׳ט הנבחר</string>
-	<string name="list_of_active_widgets">רשימת וידג׳טים פועלים</string>
-	<string name="shortcuts_and_look">קיצורי דרך ומראה</string>
+    <string name="list_of_active_widgets">רשימת וידג׳טים פועלים</string>
+    <string name="shortcuts_and_look">קיצורי דרך ומראה</string>
     <string name="shortcuts_and_look_summary">התאמה אישית של קיצורי דרך ,הסקין וגודל הגופן</string>
-	<string name="widgets_hint">בחר וידג׳ט מהרשימה להגדרה</string>
+    <string name="widgets_hint">בחר וידג׳ט מהרשימה להגדרה</string>
     <string name="app_theme">ערכת נושא</string>
     <string name="no_active_widget">לא נמצאן ווידג׳טים פעילים. נא לוודא שהוספת ווידג׳ט למסך הבית.</string>
-	<string name="color_picker_default_title">בחר צבע</string>
+    <string name="color_picker_default_title">בחר צבע</string>
     <string name="color_swatch_description">צבע %1$d </string>
     <string name="color_swatch_description_selected">צבע %1$d נבחר</string>
     <string name="car_dock">מתקן לרכב</string>
