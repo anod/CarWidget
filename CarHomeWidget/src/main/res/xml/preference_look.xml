@@ -33,6 +33,12 @@
 
         />
 
+    <!--<ListPreference-->
+        <!--android:entries="@array/adaptive_icon_style_names"-->
+        <!--android:entryValues="@array/adaptive_icon_style_paths_values"-->
+        <!--android:key="adaptive-icon-style"-->
+        <!--android:title="@string/adaptive_icon_style" />-->
+
     <CheckBoxPreference
         android:key="titles-hide"
         android:summary="@string/pref_titles_hide_summary"

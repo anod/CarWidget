@@ -277,5 +277,14 @@
     <string name="permission_answer_calls">Answer phone calls</string>
     <string name="allow_answer_phone_calls">Allow to answer calls</string>
     <string name="permissions_denied_open_settings">Permissions denied, enable them in app settings</string>
+    <string name="adaptive_icon_style">Adaptive icon style</string>
 
+    <array name="adaptive_icon_style_names">
+        <item>None</item>
+        <item>Square</item>
+        <item>Rounded square</item>
+        <item>Squircle</item>
+        <item>Circle</item>
+        <item>Teardrop</item>
+    </array>
 </resources>
