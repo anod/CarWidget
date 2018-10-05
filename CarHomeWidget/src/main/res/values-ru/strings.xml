@@ -251,4 +251,25 @@
 	<string name="permission_answer_calls">Ответ на звонки</string>
 	<string name="allow_answer_phone_calls">Разрешить отвечать на звонки</string>
 	<string name="permissions_denied_open_settings">Нет разрешения, включите в настройках аппликации</string>
+	<string name="unavailable_bt_device">Недоступен</string>
+	<string name="choose">Выбирите</string>
+	<string name="crash_dialog_report_button">Отчет</string>
+	<string name="crash_dialog_report_comment_button">Коментарий</string>
+	<string name="crash_dialog_title">Авто Виджет остановлен</string>
+	<string name="crash_dialog_toast">Браузер будет открыт</string>
+	<string name="crash_dialog_text">Пожалуста отошлите отчет об ошибке</string>
+	<string name="crash_dialog_comment">Добавить коментарий</string>
+	<string name="in_car_mode_switch">Переключение \"В автомобиле\"</string>
+	<string name="configure_select_item_hint">Выберите элемент для настройки виджета</string>
+	<string name="new_backup">Резервная копия</string>
+	<string name="save_widget">Сохранить настройки виджета</string>
+	<string name="permission_denied">Нет разрешения</string>
+	<string name="general">Общие</string>
+	<string name="mode_detector_channel">Отслежевание режима \"В Автомобиле\"</string>
+	<string name="app_preferences">Настройки аппликации</string>
+	<string name="title">Название</string>
+	<string name="info">Информация</string>
+	<string name="allow_permissions_brightness">Резрешите изменять системны настройки для изменения яркости</string>
+	<string name="notifcation_mode_detector">Отслежевание режима \"В Автомобиле\"</string>
+	<string name="samsung_driving_title">Автомобильный режим Samsung</string>
 </resources>

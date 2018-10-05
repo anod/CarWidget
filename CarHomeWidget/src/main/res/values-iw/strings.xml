@@ -60,6 +60,8 @@
     <plurals name="notif_activations_left">
         <item quantity="one">%1$d הפעלה נשארה</item>
         <item quantity="other">%1$d הפעלות נשארו</item>
+        <item quantity="two">%1$d הפעלות נשארו</item>
+        <item quantity="many">%1$d הפעלות נשארו</item>
     </plurals>
     <string name="version_title">%1$s גרסה %2$s</string>
     <string name="version_summary">נא דרג את הוודג\'ט במרקט</string>
@@ -233,5 +235,43 @@
     <string name="color_swatch_description_selected">צבע %1$d נבחר</string>
     <string name="car_dock">מתקן לרכב</string>
     <string name="car_dock_summary">להפעיל מצב ברכב כאשר טלפון מתחבר למתקן אקטיבי </string>
+
+
+    <string name="unavailable_bt_device">לא זמין</string>
+    <string name="hidden">מוּסתָר</string>
+    <string name="choose">בחר</string>
+    <string name="crash_dialog_report_button">להגיש תלונה</string>
+    <string name="crash_dialog_report_comment_button">תגובה</string>
+    <string name="crash_dialog_title">ווידג\'ט לרכב נעצר</string>
+    <string name="crash_dialog_toast">הדפדפן ייפתח</string>
+    <string name="crash_dialog_text">אנא דווח על ההתרסקות</string>
+    <string name="crash_dialog_comment">ציין הערה</string>
+
+    <string name="pref_hotspot_title">WiFi Hotspot הפעל</string>
+    <string name="pref_hotspot_summary">לאפשר הוטספוט באופן אוטומטי</string>
+    <string name="in_car_mode_switch">מתג מצב ברכב</string>
+    <string name="configure_select_item_hint">בחר פריט כדי להגדיר את הווידג\'ט</string>
+    <string name="new_backup">גיבוי</string>
+    <string name="save_widget">שמור הגדרות של הווידג\'ט</string>
+    <string name="permission_denied">ההרשאה נדחתה</string>
+    <string name="general">כללי</string>
+    <string name="mode_detector_channel">מזהה מצב ברכב</string>
+
+    <string name="app_preferences">הגדרות היישום</string>
+    <string name="title">כותרת</string>
+    <string name="info">מידע</string>
+    <string name="notifcation_mode_detector">זיהוי מצב ברכב</string>
+    <string name="allow_permissions_brightness">לאפשר לכתוב הגדרות המערכת לשינוי הבהירות</string>
+    <string name="allow_permission_overlay">לאפשר תצוגה מעל אפליקציות כדי לשנות כיוון</string>
+    <string name="needs_permissions_to_work">צריך הרשאות לעבודה</string>
+    <string name="allow_access">לאפשר גישה</string>
+
+    <string name="permission_write_settings">שינוי הגדרות מערכת</string>
+    <string name="adjust_brightness">כוונן את הבהירות</string>
+    <string name="permission_draw_overlay">תצוגה מעל אפליקציות אחרות</string>
+    <string name="change_screen_orientation">שינוי כיוון המסך</string>
+    <string name="permission_answer_calls">לענות לשיחות טלפון</string>
+    <string name="allow_answer_phone_calls">לאפשר לענות לשיחות</string>
+    <string name="permissions_denied_open_settings">הרשאות נדחו,תאפשרו אותן בהגדרות האפליקציה</string>
 
 </resources>
