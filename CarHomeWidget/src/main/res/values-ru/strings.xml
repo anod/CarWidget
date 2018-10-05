@@ -26,7 +26,7 @@
 	<string name="set_shortcut">Выбрать ярлык</string>
 	<string name="pref_look_and_feel_title">Внешний вид и интеграция</string>
 	<string name="pref_look_and_feel_summary">Настройки скина, цвета и размера шрифта</string>
-	<string name="pref_incar_mode_title">Режим «В автомобиле»</string>
+	<string name="pref_incar_mode_title">«В автомобиле»</string>
 	<string name="pref_incar_mode_summary">Выберите способ определить, когда вы в машине, и параметры, которые будут скорректированы</string>
 	<string name="pref_incar_mode_enabled">Разрешить режим</string>
 	<string name="pref_power_contorl_bt">Питание контролирует Bluetooth</string>
@@ -121,7 +121,7 @@
 	<string name="welcome">Здравствуйте</string>
 	<string name="welcome_text"><![CDATA[<b>Авто Виджет</b> упрощает и ускоряет доступ к функциям телефона в автомобиле]]></string>
 	<string name="install_a_widget">Установка</string>
-	<string name="install_widget"><![CDATA[Перейдите на <b>домашний экран</b> и откройте <b>список приложений</b>. Перейдите на <b>вкладку виджеты</b>, затем выберите <b>Авто Виджет</b> и поместите его на свободном экране.]]></string>
+	<string name="install_widget"><![CDATA[Перейдите на <b>домашний экран</b> &gt; <b>длинное нажатие</b> &gt; выберите <b>виджеты</b>, затем выберите <b>Авто Виджет</b> и поместите его на свободном экране.]]></string>
 	<string name="configure_text"><![CDATA[В настройках виджета вы можете определить <b>ярлыки</b>, настроить внешний вид путем изменения <b>скина</b> или применения <b>эффектов</b>]]></string>
 	<string name="open_settings_description"><![CDATA[Нажмите кнопку <b>Настройки</b>, чтобы открыть экран конфигурации]]></string>
 	<string name="incar_mode">Режим\n\"В автомобиле\"</string>
