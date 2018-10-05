@@ -123,7 +123,7 @@
     <string name="welcome">ברוך הבא</string>
     <string name="welcome_text"><![CDATA[<b>ווידג\'ט לרכב</b> מהקל ומיעיל גישה לתכונות של טלפונ במכונית]]></string>
     <string name="install_a_widget">התקנה של הווידג\'ט</string>
-    <string name="install_widget"><![CDATA[תעברו <b>למסך הבית</b> ותפתחו את <b>רשימת האפליקציות</b>. תבחרו <b>ברשימת ווידג\'טים</b> לאחר מכן תבחרו את <b>וודג\'ט לרכב</b> מרשימה תגררו  אותו על המסך הבית.]]></string>
+    <string name="install_widget"><![CDATA[תעברו <b>למסך הבית</b> &gt; <b>לחיצה ערוכה</b> &gt; תבחרו <b>ווידג\'טים</b> לאחר מכן תבחרו את <b>וודג\'ט לרכב</b> מרשימה תגררו  אותו על המסך הבית.]]></string>
     <string name="configure_text"><![CDATA[בתוך הגדרות של ווידג\'ט ניתן להגדיר <b>קיצורי דרך</b> ומראה שלו על ידי שינוי <b>סקין</b> והחלת <b>אפקטים</b>]]></string>
     <string name="open_settings_description"><![CDATA[לחצו על כפתור <b>הגדרות</b> על מנת לפתוח את מסך קונפיגורציה]]></string>
     <string name="incar_mode">מצב \"ברכב\"</string>
@@ -131,7 +131,7 @@
     <string name="adjust_incar_description"><![CDATA[<b>מתאם</b> את הגדרות נפוצות]]></string>
     <string name="enable_incar_description"><![CDATA[הפעל מצב ברכב בהגדרות.]]></string>
     <string name="trial_description">ניסיון של %d הפעלות בגירסה חינמית</string>
-    <string name="swipe_continue">עבור למסך הבאה →</string>
+    <string name="swipe_continue">עבור למסך הבאה ←</string>
     <string name="gms_success">להשתמש ב-Google Play services לזיהוי פעילות</string>
     <string name="gms_service_missing">Google Play services חסרים במכשיר זה.</string>
     <string name="gms_service_update_required">הגרסה המותקנת של Google Play services אינה מעודכנת.</string>
@@ -240,7 +240,7 @@
     <string name="unavailable_bt_device">לא זמין</string>
     <string name="hidden">מוּסתָר</string>
     <string name="choose">בחר</string>
-    <string name="crash_dialog_report_button">להגיש תלונה</string>
+    <string name="crash_dialog_report_button">לדווח</string>
     <string name="crash_dialog_report_comment_button">תגובה</string>
     <string name="crash_dialog_title">ווידג\'ט לרכב נעצר</string>
     <string name="crash_dialog_toast">הדפדפן ייפתח</string>

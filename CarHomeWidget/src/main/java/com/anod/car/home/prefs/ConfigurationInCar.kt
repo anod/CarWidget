@@ -38,22 +38,13 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     override val sharedPreferencesName: String
         get() = InCarStorage.PREF_NAME
 
-    private val serviceRequiredKeys = arrayOf(
-        InCarSettings.HEADSET_REQUIRED,
-        InCarSettings.POWER_REQUIRED,
-        InCarSettings.CAR_DOCK_REQUIRED,
-
-        InCarSettings.POWER_BT_ENABLE,
-        InCarSettings.POWER_BT_DISABLE
-    )
-
     private val broadcastServiceSwitchListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         if (serviceRequiredKeys.contains(key)) {
-            val incar = InCarStorage.load(activity!!)
+            val incar = InCarStorage.load(context!!)
             if (BroadcastService.isServiceRequired(incar)) {
-                BroadcastService.startService(activity!!)
+                BroadcastService.startService(context!!)
             } else {
-                BroadcastService.stopService(activity!!)
+                BroadcastService.stopService(context!!)
             }
         }
     }
@@ -267,5 +258,15 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         const val requestDrawOverlay = 7
         const val requestWriteSettings = 8
         const val requestAnswerPhone = 9
+
+
+        private val serviceRequiredKeys = arrayOf(
+                InCarSettings.HEADSET_REQUIRED,
+                InCarSettings.POWER_REQUIRED,
+                InCarSettings.CAR_DOCK_REQUIRED,
+
+                InCarSettings.POWER_BT_ENABLE,
+                InCarSettings.POWER_BT_DISABLE
+        )
     }
 }

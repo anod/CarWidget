@@ -35,16 +35,11 @@ class WizardActivity : CarWidgetActivity() {
         pager.currentItem = current
         buttonNext.tag = TYPE_NEXT
 
-        strip.setOnPageSelectedListener { position ->
-            val newPosition = Math.min(pagerAdapter.count - 1, position)
-            if (pager.currentItem != newPosition) {
-                pager.currentItem = newPosition
-            }
-        }
+        updateStrip(current)
 
         pager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                strip.setCurrentPage(position)
+                updateStrip(position)
                 if (position == NUM_PAGES - 1) {
                     buttonNext.tag = TYPE_FINISH
                     buttonNext.setText(R.string.finish)
@@ -52,7 +47,6 @@ class WizardActivity : CarWidgetActivity() {
                 }
             }
         })
-        strip.setPageCount(NUM_PAGES)
 
         findViewById<Button>(R.id.buttonSkip).setOnClickListener {
             finishWizard()
@@ -63,6 +57,16 @@ class WizardActivity : CarWidgetActivity() {
                 finishWizard()
             } else {
                 pager.currentItem = pager.currentItem + 1
+            }
+        }
+    }
+
+    private fun updateStrip(selectedPage: Int) {
+        stripBars.forEachIndexed { index, id ->
+            when {
+                index < selectedPage -> findViewById<View>(id).setBackgroundResource(R.color.step_pager_previous_tab_color)
+                index > selectedPage -> findViewById<View>(id).setBackgroundResource(R.color.step_pager_next_tab_color)
+                else -> findViewById<View>(id).setBackgroundResource(R.color.step_pager_selected_tab_color)
             }
         }
     }
@@ -157,5 +161,12 @@ class WizardActivity : CarWidgetActivity() {
          */
         private const val NUM_PAGES = 4
         const val EXTRA_PAGE = "page"
+
+
+        private val stripBars = intArrayOf(
+                R.id.strip_bar1,
+                R.id.strip_bar2,
+                R.id.strip_bar3,
+                R.id.strip_bar4)
     }
 }

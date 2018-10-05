@@ -8,14 +8,44 @@
     android:padding="16dp"
     android:orientation="vertical">
 
-    <com.example.android.wizardpager.wizard.ui.StepPagerStrip
+    <LinearLayout
         android:id="@+id/strip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="16dp"
         android:paddingBottom="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/strip_bar1"
+            android:layout_width="@dimen/step_pager_tab_width"
+            android:layout_height="@dimen/step_pager_tab_height"
+            android:background="@color/step_pager_selected_last_tab_color" />
+
+        <View
+            android:id="@+id/strip_bar2"
+            android:layout_marginStart="@dimen/step_pager_tab_spacing"
+            android:layout_width="@dimen/step_pager_tab_width"
+            android:layout_height="@dimen/step_pager_tab_height"
+            android:background="@color/step_pager_selected_tab_color" />
+
+        <View
+            android:id="@+id/strip_bar3"
+            android:layout_marginStart="@dimen/step_pager_tab_spacing"
+            android:layout_width="@dimen/step_pager_tab_width"
+            android:layout_height="@dimen/step_pager_tab_height"
+            android:background="@color/step_pager_next_tab_color" />
+
+        <View
+            android:id="@+id/strip_bar4"
+            android:layout_marginStart="@dimen/step_pager_tab_spacing"
+            android:layout_width="@dimen/step_pager_tab_width"
+            android:layout_height="@dimen/step_pager_tab_height"
+            android:background="@color/step_pager_next_tab_color" />
+
+    </LinearLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager"
