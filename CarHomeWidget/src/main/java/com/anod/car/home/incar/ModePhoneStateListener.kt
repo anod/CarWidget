@@ -16,6 +16,10 @@ import com.anod.car.home.utils.ModifyPhoneState
 import info.anodsplace.framework.AppLog
 import java.util.*
 import com.anod.car.home.R
+import android.view.KeyEvent
+import android.content.ComponentName
+import android.media.session.MediaSessionManager
+
 
 class ModePhoneStateListener(private val context: Context, private val audioManager: AudioManager) : PhoneStateListener() {
     private var answered = false
@@ -115,19 +119,44 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
                 val telecomManager = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
                 telecomManager.acceptRingingCall()
                 if (autoSpeaker && !audioManager.isSpeakerphoneOn) {
-                    AppLog.d("Enable speakerphone in AcceptCallActivity")
+                    AppLog.d("Enable speakerphone")
                     audioManager.isSpeakerphoneOn = true
                 }
             } else {
-                Toast.makeText(context, "CarWidget: Allow permission to answer calls", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, R.string.answer_error_oreo, Toast.LENGTH_LONG).show()
             }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)  {
+            sendHeadsetHook(context)
+            if (autoSpeaker && !audioManager.isSpeakerphoneOn) {
+                AppLog.d("Enable speakerphone")
+                audioManager.isSpeakerphoneOn = true
+            }
+        } else {
+            val intent = Intent(context, AcceptCallActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+            intent.putExtra(AcceptCallActivity.EXTRA_ENABLE_SPEAKER, autoSpeaker)
+            context.startActivity(intent)
+        }
+    }
+
+    fun sendHeadsetHook(context: Context) {
+        val mediaSessionManager = context.getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
+
+        try {
+            val mediaControllerList = mediaSessionManager.getActiveSessions(ComponentName(context, NotificationReceiverService::class.java))
+
+            for (m in mediaControllerList) {
+                if ("com.android.server.telecom" == m.packageName) {
+                    m.dispatchMediaButtonEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK))
+                    AppLog.d("HEADSETHOOK sent to telecom server")
+                    break
+                }
+            }
+        } catch (e: SecurityException) {
+            Toast.makeText(context, R.string.answer_error_marshmallow, Toast.LENGTH_LONG).show()
         }
 
-        val intent = Intent(context, AcceptCallActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-        intent.putExtra(AcceptCallActivity.EXTRA_ENABLE_SPEAKER, autoSpeaker)
-        context.startActivity(intent)
     }
 
     companion object {

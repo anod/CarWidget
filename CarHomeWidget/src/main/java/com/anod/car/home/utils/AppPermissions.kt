@@ -54,6 +54,15 @@ object AppPermissions {
             }
             return true
         }
+        if (permission == AnswerPhoneCalls) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                return ContextCompat.checkSelfPermission(context, permission.value) == PackageManager.PERMISSION_GRANTED
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return hasNotificationsAccess(context)
+            }
+            return true
+        }
         return ContextCompat.checkSelfPermission(context, permission.value) == PackageManager.PERMISSION_GRANTED
     }
 
@@ -71,16 +80,18 @@ object AppPermissions {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 return true
             }
-            return true
+            return false
+        }
+        if (permission == AnswerPhoneCalls) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return true
+            }
+            return false
         }
         return ActivityCompat.shouldShowRequestPermissionRationale(activity, permission.value)
     }
     fun request(activity: Activity, permission: AppPermission, requestCode: Int) {
         ActivityCompat.requestPermissions(activity, arrayOf(permission.value), requestCode)
-    }
-
-    fun request(activity: Activity, permissions: Array<AppPermission>, requestCode: Int) {
-        ActivityCompat.requestPermissions(activity, permissions.map { it.value }.toTypedArray(), requestCode)
     }
 
     fun request(fragment: Fragment, permissions: Array<AppPermission>, requestCode: Int) {
@@ -115,6 +126,24 @@ object AppPermissions {
         activity.startActivityForResult(intent, requestCode)
     }
 
+    fun requestAnswerPhoneCalls(fragment: Fragment, requestCode: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            request(fragment, AnswerPhoneCalls, requestCode)
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)  {
+            val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+            fragment.startActivityForResult(intent, requestCode)
+        }
+    }
+
+    fun requestAnswerPhoneCalls(activity: Activity, requestCode: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            request(activity, AnswerPhoneCalls, requestCode)
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)  {
+            val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+            activity.startActivityForResult(intent, requestCode)
+        }
+    }
+
     fun checkResult(requestCode: Int, grantResults: IntArray, checkPermission: Int, result: (result: PermissionResult) -> Unit) {
         if (requestCode == checkPermission) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -123,6 +152,14 @@ object AppPermissions {
                 result(Denied)
             }
         }
+    }
+
+    private fun hasNotificationsAccess(context: Context): Boolean {
+        val contentResolver = context.contentResolver
+        val enabledNotificationListeners = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+        val packageName = context.packageName
+        // check to see if the enabledNotificationListeners String contains our package name
+        return !(enabledNotificationListeners == null || !enabledNotificationListeners.contains(packageName))
     }
 
 }

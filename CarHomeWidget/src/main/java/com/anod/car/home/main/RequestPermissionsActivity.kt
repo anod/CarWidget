@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,6 +44,7 @@ class RequestPermissionsActivity : CarWidgetActivity() {
             val p = getPermissions()
             when {
                 p.manifestPermissions.isNotEmpty() -> ActivityCompat.requestPermissions(this, p.manifestPermissions, requestPermissionsCode)
+                p.answerPhoneCalls -> AppPermissions.requestAnswerPhoneCalls(this, requestAnswerPhoneCalls)
                 p.canDrawOverlay -> AppPermissions.requestDrawOverlay(this, requestOverlay)
                 p.writeSettings -> AppPermissions.requestWriteSettings(this, requestWriteSettings)
                 else -> finish()
@@ -50,7 +52,11 @@ class RequestPermissionsActivity : CarWidgetActivity() {
         }
     }
 
-    class Permissions(val canDrawOverlay: Boolean, val writeSettings: Boolean, val manifestPermissions: Array<String>)
+    class Permissions(
+            val canDrawOverlay: Boolean,
+            val writeSettings: Boolean,
+            val answerPhoneCalls: Boolean,
+            val manifestPermissions: Array<String>)
 
     private fun getPermissions(): Permissions {
         val permissions = intent.extras?.getStringArray("permissions") ?: emptyArray()
@@ -58,14 +64,22 @@ class RequestPermissionsActivity : CarWidgetActivity() {
         val manifestPermissions = mutableListOf<String>()
         var canDrawOverlay = false
         var writeSettings = false
+        var answerPhoneCalls = false
         permissions.forEach {
             when (it) {
                 CanDrawOverlay.value -> canDrawOverlay = true
                 WriteSettings.value -> writeSettings = true
+                AnswerPhoneCalls.value -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        manifestPermissions.add(it)
+                    } else {
+                        answerPhoneCalls = true
+                    }
+                }
                 else -> manifestPermissions.add(it)
             }
         }
-        return Permissions(canDrawOverlay, writeSettings, manifestPermissions.toTypedArray())
+        return Permissions(canDrawOverlay, writeSettings, answerPhoneCalls, manifestPermissions.toTypedArray())
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -87,9 +101,19 @@ class RequestPermissionsActivity : CarWidgetActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         val p = getPermissions()
-        if (requestCode == requestOverlay) {
+        if (requestCode == requestAnswerPhoneCalls) {
+            if (p.canDrawOverlay) {
+                AppPermissions.requestDrawOverlay(this, requestOverlay)
+            } else if (p.writeSettings) {
+                AppPermissions.requestWriteSettings(this, requestWriteSettings)
+            } else {
+                finish()
+            }
+        } else if (requestCode == requestOverlay) {
             if (p.writeSettings) {
                 AppPermissions.requestWriteSettings(this, requestWriteSettings)
+            } else {
+                finish()
             }
         } else if (requestCode == requestWriteSettings) {
             finish()
@@ -119,7 +143,10 @@ class RequestPermissionsActivity : CarWidgetActivity() {
 
                 AnswerPhoneCalls.value to Item(
                         R.drawable.ic_action_ring_volume,
-                        R.string.permission_answer_calls,
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                            R.string.permission_answer_calls
+                        else
+                            R.string.permission_notification_listener,
                         R.string.allow_answer_phone_calls)
             )
 
@@ -151,6 +178,7 @@ class RequestPermissionsActivity : CarWidgetActivity() {
         const val requestPermissionsCode = 1
         const val requestOverlay = 2
         const val requestWriteSettings = 3
+        const val requestAnswerPhoneCalls = 4
 
         const val resultPermissionDenied = 10
 

@@ -278,6 +278,9 @@
     <string name="allow_answer_phone_calls">Allow to answer calls</string>
     <string name="permissions_denied_open_settings">Permissions denied, enable them in app settings</string>
     <string name="adaptive_icon_style">Adaptive icon style</string>
+    <string name="answer_error_marshmallow">CarWidget: Allow access to notification to answer calls</string>
+    <string name="answer_error_oreo">CarWidget: Allow permission to answer calls</string>
+    <string name="permission_notification_listener">Access to notifications</string>
 
     <array name="adaptive_icon_style_names">
         <item>None</item>

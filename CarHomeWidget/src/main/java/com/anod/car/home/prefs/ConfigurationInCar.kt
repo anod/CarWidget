@@ -1,6 +1,7 @@
 package com.anod.car.home.prefs
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -39,14 +40,26 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         get() = InCarStorage.PREF_NAME
 
     private val broadcastServiceSwitchListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (serviceRequiredKeys.contains(key)) {
+        if (serviceRequiredKeys.contains(key) && context != null) {
             val incar = InCarStorage.load(context!!)
-            if (BroadcastService.isServiceRequired(incar)) {
+            if (incar.isInCarEnabled && BroadcastService.isServiceRequired(incar)) {
                 BroadcastService.startService(context!!)
             } else {
                 BroadcastService.stopService(context!!)
             }
         }
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        val sharedPrefs = InCarStorage.getSharedPreferences(activity!!)
+        sharedPrefs.registerOnSharedPreferenceChangeListener(broadcastServiceSwitchListener)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        val sharedPrefs = InCarStorage.getSharedPreferences(activity!!)
+        sharedPrefs.unregisterOnSharedPreferenceChangeListener(broadcastServiceSwitchListener)
     }
 
     override fun onCreateImpl(savedInstanceState: Bundle?) {
@@ -97,9 +110,6 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
             true
         }
 
-        val sharedPrefs = InCarStorage.getSharedPreferences(activity!!)
-        sharedPrefs.registerOnSharedPreferenceChangeListener(broadcastServiceSwitchListener)
-
         initActivityRecognition()
         initScreenTimeout(incar)
         initScreenOrientation()
@@ -119,18 +129,11 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
             {
                 if (!AppPermissions.isGranted(context!!, AnswerPhoneCalls)) {
                     Toast.makeText(context, R.string.allow_answer_phone_calls, Toast.LENGTH_LONG).show()
-                    AppPermissions.requestWriteSettings(this, requestAnswerPhone)
+                    AppPermissions.requestAnswerPhoneCalls(this, requestAnswerPhone)
                 }
             }
             true
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        val sharedPrefs = InCarStorage.getSharedPreferences(activity!!)
-        sharedPrefs.registerOnSharedPreferenceChangeListener(broadcastServiceSwitchListener)
-
     }
 
     private fun initBrightness() {
