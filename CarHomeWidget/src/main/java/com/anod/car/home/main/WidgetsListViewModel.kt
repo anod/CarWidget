@@ -12,7 +12,7 @@ import info.anodsplace.framework.app.ApplicationContext
 import info.anodsplace.framework.os.BackgroundTask
 
 class WidgetList {
-    var large: SparseArray<SparseArray<Shortcut>> = SparseArray()
+    var large: SparseArray<SparseArray<Shortcut?>> = SparseArray()
     var shortcuts: IntArray = intArrayOf()
 
     val isEmpty: Boolean

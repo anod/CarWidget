@@ -8,7 +8,7 @@ import java.util.ArrayList
 
 abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
 
-    override val shortcuts: SparseArray<Shortcut> = SparseArray()
+    override val shortcuts: SparseArray<Shortcut?> = SparseArray()
 
     val shortcutModel: ShortcutModel = ShortcutModel(context)
 
@@ -60,8 +60,7 @@ abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
 
     }
 
-    override fun saveIntent(position: Int, data: Intent,
-                            isApplicationShortcut: Boolean): Shortcut {
+    override fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Shortcut? {
         val shortcut = ShortcutInfoUtils.createShortcut(context, data, isApplicationShortcut)
         save(position, shortcut.info, shortcut.icon)
         return shortcuts.get(position)

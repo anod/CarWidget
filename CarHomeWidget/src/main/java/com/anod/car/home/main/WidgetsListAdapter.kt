@@ -91,7 +91,7 @@ class WidgetsListAdapter(private val context: Context, private val clickHandler:
 
     interface Item
 
-    internal class LargeItem(var appWidgetId: Int, var shortcuts: SparseArray<Shortcut>) : Item
+    internal class LargeItem(var appWidgetId: Int, var shortcuts: SparseArray<Shortcut?>) : Item
 
     internal class HintItem : Item
 

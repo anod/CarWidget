@@ -16,7 +16,7 @@ import java.io.IOException
 class ShortcutsJsonWriter {
 
     @Throws(IOException::class)
-    fun writeList(shortcutsWriter: JsonWriter, shortcuts: SparseArray<Shortcut>, model: Shortcuts) {
+    fun writeList(shortcutsWriter: JsonWriter, shortcuts: SparseArray<Shortcut?>, model: Shortcuts) {
         for (idx in 0 until shortcuts.size()) {
             val pos = shortcuts.keyAt(idx)
             val info = shortcuts.get(pos) ?: continue

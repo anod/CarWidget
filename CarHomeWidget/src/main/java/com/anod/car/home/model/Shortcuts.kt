@@ -4,7 +4,7 @@ import android.content.Intent
 import android.util.SparseArray
 
 interface Shortcuts {
-    val shortcuts: SparseArray<Shortcut>
+    val shortcuts: SparseArray<Shortcut?>
     val count: Int
 
     fun createDefaultShortcuts()
@@ -15,7 +15,7 @@ interface Shortcuts {
 
     fun get(position: Int): Shortcut?
 
-    fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Shortcut
+    fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Shortcut?
 
     fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?)
 

@@ -16,7 +16,6 @@ import com.android.colorpicker.ColorPickerPalette
 import com.android.colorpicker.ColorPickerSwatch
 import com.anod.car.home.R
 import com.anod.car.home.app.App
-import com.anod.car.home.utils.AlphaPatternDrawable
 import com.anod.car.home.utils.ColorUtils
 
 class CarHomeColorPickerDialog : ColorPickerDialog() {
