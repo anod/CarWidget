@@ -134,7 +134,7 @@ class ShortcutEditActivity : CarWidgetActivity() {
         return builder.create()
     }
 
-    internal fun iconDialogClick(item: Int) {
+    private fun iconDialogClick(item: Int) {
         val chooseIntent: Intent
         if (item == PICK_CUSTOM_ICON) {
             val tempFile = getFileStreamPath("tempImage")
@@ -144,8 +144,7 @@ class ShortcutEditActivity : CarWidgetActivity() {
             chooseIntent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.name)
             Utils.startActivityForResultSafetly(chooseIntent, PICK_CUSTOM_ICON, this)
         } else if (item == PICK_ADW_ICON_PACK) {
-            chooseIntent = Intent()
-            IconPackUtils.fillAdwIconPackIntent(chooseIntent)
+            chooseIntent = Intent().forIconPack()
             Utils.startActivityForResultSafetly(
                     Intent.createChooser(chooseIntent, getString(R.string.select_icon_pack)),
                     PICK_ADW_ICON_PACK, this)
@@ -205,10 +204,10 @@ class ShortcutEditActivity : CarWidgetActivity() {
 
     private fun getBitmapIconPackIntent(data: Intent): Bitmap? {
         var bitmap: Bitmap? = null
-        val imageUri = data.data ?: return bitmap
         if (data.hasExtra("icon")) {
             bitmap = data.getParcelableExtra("icon")
         } else {
+            val imageUri = data.data ?: return bitmap
             val icon = DrawableUri(this).resolve(imageUri)
             if (icon != null) {
                 bitmap = UtilitiesBitmap.createHiResIconBitmap(icon, this)

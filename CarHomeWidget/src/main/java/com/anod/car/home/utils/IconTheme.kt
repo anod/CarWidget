@@ -19,7 +19,7 @@ import org.xmlpull.v1.XmlPullParserFactory
 import java.io.IOException
 import java.util.*
 
-class IconTheme(internal var mContext: Context, packageName: String) {
+class IconTheme(private var context: Context, packageName: String) {
 
     var packageName: String
         internal set
@@ -34,7 +34,7 @@ class IconTheme(internal var mContext: Context, packageName: String) {
 
     fun loadThemeResources(): Boolean {
         try {
-            themeResources = mContext.packageManager.getResourcesForApplication(packageName)
+            themeResources = context.packageManager.getResourcesForApplication(packageName)
         } catch (e: PackageManager.NameNotFoundException) {
             AppLog.w(e.message ?: "theme package not found")
         }
@@ -152,7 +152,7 @@ class IconTheme(internal var mContext: Context, packageName: String) {
     }
 
     fun getDrawable(@DrawableRes resId: Int): Drawable? {
-        return ResourcesCompat.getDrawableForDensity(themeResources!!, resId, UtilitiesBitmap.getTargetDensity(mContext), null)
+        return ResourcesCompat.getDrawableForDensity(themeResources!!, resId, UtilitiesBitmap.getTargetDensity(context), null)
     }
 
     companion object {
