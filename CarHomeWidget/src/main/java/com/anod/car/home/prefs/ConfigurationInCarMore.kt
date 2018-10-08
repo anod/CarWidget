@@ -7,15 +7,17 @@ import android.os.Bundle
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
-import android.widget.CompoundButton
-import android.widget.CompoundButton.OnCheckedChangeListener
+import android.widget.Toast
+import androidx.preference.CheckBoxPreference
 
 import com.anod.car.home.R
 import com.anod.car.home.incar.SamsungDrivingMode
 import com.anod.car.home.prefs.model.InCarSettings
 import com.anod.car.home.prefs.model.InCarStorage
+import com.anod.car.home.utils.AppPermissions
+import com.anod.car.home.utils.WriteSettings
 
-class ConfigurationInCarMore : ConfigurationPreferenceFragment(), OnCheckedChangeListener {
+class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
     private val prefs: InCarSettings by lazy { InCarStorage.load(activity!!) }
 
     override val isAppWidgetIdRequired: Boolean
@@ -32,11 +34,6 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment(), OnCheckedChang
         initSamsungHandsfree()
     }
 
-    override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-        prefs.isAdjustVolumeLevel = isChecked
-        prefs.apply()
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_PICK_APPLICATION) {
             saveAutorunApp(data)
@@ -46,11 +43,19 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment(), OnCheckedChang
 
 
     private fun initSamsungHandsfree() {
+        val samDrivingPref = findPreference(InCarSettings.SAMSUNG_DRIVING_MODE) as CheckBoxPreference
         if (!SamsungDrivingMode.hasMode()) {
-            val samDrivingPref = findPreference(
-                    InCarSettings.SAMSUNG_DRIVING_MODE)
-            (findPreference("incar-more-category") as PreferenceCategory)
-                    .removePreference(samDrivingPref)
+            (findPreference("incar-more-category") as PreferenceCategory).removePreference(samDrivingPref)
+        } else {
+            samDrivingPref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                if (newValue as Boolean) {
+                    if (!AppPermissions.isGranted(context!!, WriteSettings)) {
+                        Toast.makeText(context, R.string.allow_permissions_samsung_mode, Toast.LENGTH_LONG).show()
+                        AppPermissions.requestWriteSettings(this, requestWriteSettings)
+                    }
+                }
+                true
+            }
         }
     }
 
@@ -115,5 +120,6 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment(), OnCheckedChang
         private const val AUTORUN_APP_DISABLED = "disabled"
         private const val AUTORUN_APP_CUSTOM = "custom"
         private const val REQUEST_PICK_APPLICATION = 0
+        private const val requestWriteSettings = 1
     }
 }

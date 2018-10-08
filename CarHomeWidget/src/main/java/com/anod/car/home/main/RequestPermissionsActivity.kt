@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.R
+import com.anod.car.home.prefs.model.InCarInterface
+import com.anod.car.home.prefs.model.InCarSettings
+import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.utils.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_request_permissions.*
@@ -127,29 +130,37 @@ class RequestPermissionsActivity : CarWidgetActivity() {
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
         class Item(@DrawableRes val icon: Int, @StringRes val title: Int, @StringRes val description: Int)
 
-        val items: List<Item> = permissions.map { allItems[it]!! }
-
-        companion object {
-            val allItems = mapOf(
-                WriteSettings.value to Item(
-                        R.drawable.ic_action_brightness_medium,
-                        R.string.permission_write_settings,
-                        R.string.adjust_brightness),
-
-                CanDrawOverlay.value to Item(
+        val settings: InCarSettings by lazy { InCarStorage.load(context) }
+        val items: List<Item> = permissions.map {
+            when (it) {
+                WriteSettings.value -> {
+                    if (settings.brightness == InCarInterface.BRIGHTNESS_DISABLED && settings.isSamsungDrivingMode) {
+                        Item(
+                                R.drawable.ic_directions_car_black_24dp,
+                                R.string.permission_write_settings,
+                                R.string.samsung_driving_title)
+                    } else {
+                        Item(
+                                R.drawable.ic_action_brightness_medium,
+                                R.string.permission_write_settings,
+                                R.string.adjust_brightness)
+                    }
+                }
+                CanDrawOverlay.value -> Item(
                         R.drawable.ic_screen_rotation_black_24dp,
                         R.string.permission_draw_overlay,
-                        R.string.change_screen_orientation),
-
-                AnswerPhoneCalls.value to Item(
+                        R.string.change_screen_orientation)
+                AnswerPhoneCalls.value -> Item(
                         R.drawable.ic_action_ring_volume,
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                             R.string.permission_answer_calls
                         else
                             R.string.permission_notification_listener,
                         R.string.allow_answer_phone_calls)
-            )
-
+                else -> {
+                    Item(0,0,0)
+                }
+            }
         }
 
 

@@ -3,6 +3,8 @@ package com.anod.car.home.incar
 import android.content.Context
 import android.os.Build
 import android.provider.Settings
+import android.widget.Toast
+import com.anod.car.home.R
 
 /**
  * @author alex
@@ -10,12 +12,11 @@ import android.provider.Settings
  */
 object SamsungDrivingMode {
 
-    const val DRIVING_MODE_ON = "driving_mode_on"
-    const val DEVICE_SAMSUNG = "samsung"
-    private val IS_SAMSUNG = Build.MANUFACTURER == DEVICE_SAMSUNG
+    private const val DRIVING_MODE_ON = "driving_mode_on"
+    private const val DEVICE_SAMSUNG = "samsung"
 
     fun hasMode(): Boolean {
-        return IS_SAMSUNG
+        return Build.MANUFACTURER == DEVICE_SAMSUNG && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M
     }
 
     fun enabled(context: Context): Boolean {
@@ -24,11 +25,23 @@ object SamsungDrivingMode {
     }
 
     fun enable(context: Context) {
-        Settings.System.putInt(context.contentResolver, DRIVING_MODE_ON, 1)
+        write(true, context)
     }
 
     fun disable(context: Context) {
-        Settings.System.putInt(context.contentResolver, DRIVING_MODE_ON, 0)
+        write(false, context)
     }
 
+    private fun write(enable: Boolean, context: Context) {
+        val value = if (enable) 1 else 0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Settings.System.canWrite(context)) {
+                Settings.System.putInt(context.contentResolver, DRIVING_MODE_ON, value)
+            } else {
+                Toast.makeText(context, R.string.allow_permissions_samsung_mode, Toast.LENGTH_LONG).show()
+            }
+        } else {
+            Settings.System.putInt(context.contentResolver, DRIVING_MODE_ON, value)
+        }
+    }
 }

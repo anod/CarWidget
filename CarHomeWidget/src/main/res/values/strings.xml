@@ -269,6 +269,7 @@
     <string name="allow_permission_overlay">Allow app overlay to change orientation</string>
     <string name="needs_permissions_to_work">Needs permissions to work</string>
     <string name="allow_access">Allow access</string>
+    <string name="allow_permissions_samsung_mode">Allow write system settings to change driving mode</string>
 
     <string name="permission_write_settings">Write system settings</string>
     <string name="adjust_brightness">Adjust brightness</string>

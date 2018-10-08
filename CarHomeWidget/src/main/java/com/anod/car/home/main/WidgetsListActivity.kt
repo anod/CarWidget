@@ -117,7 +117,8 @@ open class WidgetsListActivity : CarWidgetActivity() {
         if (settings.screenOrientation != ScreenOrientation.DISABLED && AppPermissions.shouldShowMessage(this, CanDrawOverlay)) {
             permissions.add(CanDrawOverlay.value)
         }
-        if (settings.brightness != InCarInterface.BRIGHTNESS_DISABLED && AppPermissions.shouldShowMessage(this, WriteSettings)) {
+        val needsWritePermission = settings.brightness != InCarInterface.BRIGHTNESS_DISABLED || settings.isSamsungDrivingMode
+        if (needsWritePermission && AppPermissions.shouldShowMessage(this, WriteSettings)) {
             permissions.add(WriteSettings.value)
         }
         if (settings.autoAnswer != InCarInterface.AUTOANSWER_DISABLED) {
