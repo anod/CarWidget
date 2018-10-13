@@ -44,7 +44,7 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
 
     private fun initSamsungHandsfree() {
         val samDrivingPref = findPreference(InCarSettings.SAMSUNG_DRIVING_MODE) as CheckBoxPreference
-        if (!SamsungDrivingMode.hasMode()) {
+        if (!SamsungDrivingMode.hasMode) {
             (findPreference("incar-more-category") as PreferenceCategory).removePreference(samDrivingPref)
         } else {
             samDrivingPref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->

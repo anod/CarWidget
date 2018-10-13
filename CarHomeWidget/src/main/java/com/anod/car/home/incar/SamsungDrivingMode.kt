@@ -15,21 +15,27 @@ object SamsungDrivingMode {
     private const val DRIVING_MODE_ON = "driving_mode_on"
     private const val DEVICE_SAMSUNG = "samsung"
 
-    fun hasMode(): Boolean {
-        return Build.MANUFACTURER == DEVICE_SAMSUNG && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M
-    }
+    val hasMode: Boolean
+        get() =  Build.MANUFACTURER == DEVICE_SAMSUNG && Build.VERSION.SDK_INT < Build.VERSION_CODES.M
 
     fun enabled(context: Context): Boolean {
+        if (!hasMode) {
+            return false
+        }
         val v = Settings.System.getInt(context.contentResolver, DRIVING_MODE_ON, 0)
         return v == 1
     }
 
     fun enable(context: Context) {
-        write(true, context)
+        if (hasMode) {
+            write(true, context)
+        }
     }
 
     fun disable(context: Context) {
-        write(false, context)
+        if (hasMode) {
+            write(false, context)
+        }
     }
 
     private fun write(enable: Boolean, context: Context) {

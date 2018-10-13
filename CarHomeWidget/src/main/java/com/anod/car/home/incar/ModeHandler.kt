@@ -17,84 +17,84 @@ import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.PowerUtil
 import com.anod.car.home.utils.Utils
 
-class ModeHandler(private val mContext: Context, private val mScreenOrientation: ScreenOrientation) {
+class ModeHandler(private val context: Context, private val screenOrientation: ScreenOrientation) {
 
     fun enable(prefs: InCarInterface) {
         if (prefs.isDisableScreenTimeout) {
             if (prefs.isDisableScreenTimeoutCharging) {
-                if (PowerUtil.isConnected(mContext)) {
-                    ModeService.acquireWakeLock(mContext)
+                if (PowerUtil.isConnected(context)) {
+                    ModeService.acquireWakeLock(context)
                 }
             } else {
-                ModeService.acquireWakeLock(mContext)
+                ModeService.acquireWakeLock(context)
             }
         }
         if (prefs.isAdjustVolumeLevel) {
-            adjustVolume(prefs, mContext)
+            adjustVolume(prefs, context)
         }
         if (prefs.isEnableBluetooth) {
             enableBluetooth()
         }
         if (prefs.disableWifi != InCarInterface.WIFI_NOACTION) {
-            disableWifi(mContext)
+            disableWifi(context)
         }
         if (prefs.isActivateCarMode) {
-            activateCarMode(mContext)
+            activateCarMode(context)
         }
 
-        if (SamsungDrivingMode.hasMode() && prefs.isSamsungDrivingMode) {
-            SamsungDrivingMode.enable(mContext)
+        if (prefs.isSamsungDrivingMode) {
+            SamsungDrivingMode.enable(context)
         }
 
         if (prefs.isHotspotOn) {
             if (prefs.disableWifi == InCarInterface.WIFI_NOACTION) {
-                disableWifi(mContext)
+                disableWifi(context)
             }
-            switchHotspot(mContext, true)
+            switchHotspot(context, true)
         }
 
         if (prefs.screenOrientation != ScreenOrientation.DISABLED) {
-            mScreenOrientation.set(prefs.screenOrientation)
+            screenOrientation.set(prefs.screenOrientation)
         }
 
         val autorunApp = prefs.autorunApp
         if (autorunApp != null) {
-            runApp(autorunApp, mContext)
+            runApp(autorunApp, context)
         }
         val brightSetting = prefs.brightness
         if (brightSetting != InCarInterface.BRIGHTNESS_DISABLED) {
-            adjustBrightness(brightSetting, mContext)
+            adjustBrightness(brightSetting, context)
         }
     }
 
     fun disable(prefs: InCarInterface) {
         if (prefs.isDisableScreenTimeout) {
-            ModeService.releaseWakeLock(mContext)
+            ModeService.releaseWakeLock(context)
         }
         if (prefs.isAdjustVolumeLevel) {
-            restoreVolume(mContext)
+            restoreVolume(context)
         }
         if (prefs.isEnableBluetooth) {
             restoreBluetooth()
         }
         if (prefs.isActivateCarMode) {
-            deactivateCarMode(mContext)
+            deactivateCarMode(context)
         }
         if (prefs.isHotspotOn) {
-            switchHotspot(mContext, false)
+            switchHotspot(context, false)
         }
         if (prefs.disableWifi == InCarInterface.WIFI_TURNOFF) {
-            restoreWiFi(mContext)
+            restoreWiFi(context)
         }
-        if (SamsungDrivingMode.hasMode() && prefs.isSamsungDrivingMode) {
-            SamsungDrivingMode.disable(mContext)
+        if (prefs.isSamsungDrivingMode) {
+            SamsungDrivingMode.disable(context)
         }
 
-        mScreenOrientation.set(ScreenOrientation.DISABLED)
+        screenOrientation.set(ScreenOrientation.DISABLED)
 
         val brightSetting = prefs.brightness
         if (brightSetting != InCarInterface.BRIGHTNESS_DISABLED) {
-            restoreBrightness(brightSetting, mContext)
+            restoreBrightness(brightSetting, context)
         }
     }
 

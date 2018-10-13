@@ -178,7 +178,7 @@ class InCarSettings(mPrefs: SharedPreferences) : ChangeableSharedPreferences(mPr
         if (autoRunAppString != null) {
             writer.name(AUTORUN_APP).value(autoRunAppString)
         }
-        if (SamsungDrivingMode.hasMode()) {
+        if (SamsungDrivingMode.hasMode) {
             writer.name(SAMSUNG_DRIVING_MODE).value(isSamsungDrivingMode)
         }
         val screenOrientation = prefs.getString(SCREEN_ORIENTATION, ScreenOrientation.DISABLED.toString())
