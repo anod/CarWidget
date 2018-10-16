@@ -20,7 +20,7 @@ abstract class MusicAppsActivity : AppsListActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.appsList = AppsList()
-        viewModel.loader = MediaAppsLoader(this, viewModel)
+        viewModel.loaderFactory = { context, callback -> MediaAppsLoader(context, callback) }
     }
 
     internal class MediaAppsLoader(context: Context, private val callback: AppsListResultCallback) : AsyncTask<Void, Void, List<AppsList.Entry>>() {

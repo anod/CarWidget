@@ -8,7 +8,7 @@ abstract class AppsCacheActivity : AppsListActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.loader = AppsCacheLoader(this, createQueryIntent(), viewModel)
+        viewModel.loaderFactory = { context, callback -> AppsCacheLoader(context, createQueryIntent(), callback) }
     }
 
     abstract fun createQueryIntent(): Intent

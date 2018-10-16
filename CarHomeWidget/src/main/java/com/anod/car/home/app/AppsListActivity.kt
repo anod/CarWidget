@@ -22,15 +22,17 @@ interface AppsListResultCallback {
     fun onResult(result: List<AppsList.Entry>)
 }
 
+typealias AppsListLoaderFactory = (context: Context, callback: AppsListResultCallback) -> AsyncTask<Void, Void, List<AppsList.Entry>>
+
 class AppsListViewModel(application: Application) : AndroidViewModel(application), AppsListResultCallback {
 
     val list = MutableLiveData<List<AppsList.Entry>>()
-    var loader: AsyncTask<Void, Void, List<AppsList.Entry>>? = null
+    var loaderFactory: AppsListLoaderFactory? = null
     var isRefreshCache = false
     var appsList = getApplication<CarWidgetApplication>().appComponent.appListCache
 
     fun load() {
-        this.loader?.execute()
+        loaderFactory?.let { it(getApplication<CarWidgetApplication>(), this) }?.execute()
     }
 
     fun loadIfNeeded() {
