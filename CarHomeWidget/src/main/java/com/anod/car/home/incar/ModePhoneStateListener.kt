@@ -19,6 +19,8 @@ import com.anod.car.home.R
 import android.view.KeyEvent
 import android.content.ComponentName
 import android.media.session.MediaSessionManager
+import android.os.Handler
+import android.os.Looper
 
 
 class ModePhoneStateListener(private val context: Context, private val audioManager: AudioManager) : PhoneStateListener() {
@@ -123,7 +125,9 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
                     audioManager.isSpeakerphoneOn = true
                 }
             } else {
-                Toast.makeText(context, R.string.answer_error_oreo, Toast.LENGTH_LONG).show()
+                Handler(Looper.getMainLooper()).post {
+                    Toast.makeText(context, R.string.answer_error_oreo, Toast.LENGTH_LONG).show()
+                }
             }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)  {
             sendHeadsetHook(context)
@@ -140,7 +144,7 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
         }
     }
 
-    fun sendHeadsetHook(context: Context) {
+    private fun sendHeadsetHook(context: Context) {
         val mediaSessionManager = context.getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
 
         try {
@@ -154,7 +158,9 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
                 }
             }
         } catch (e: SecurityException) {
-            Toast.makeText(context, R.string.answer_error_marshmallow, Toast.LENGTH_LONG).show()
+            Handler(Looper.getMainLooper()).post {
+                Toast.makeText(context, R.string.answer_error_marshmallow, Toast.LENGTH_LONG).show()
+            }
         }
 
     }
