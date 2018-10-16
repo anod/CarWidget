@@ -119,7 +119,6 @@
 
 	<array name="adaptive_icon_style_paths_values" tools:ignore="MissingTranslation" translatable="false">
 		<item />
-		<item>none</item>
 		<item>M50,0L100,0 100,100 0,100 0,0z</item>
 		<item>M50,0L70,0 A30,30,0,0 1 100,30 L100,70 A30,30,0,0 1 70,100 L30,100 A30,30,0,0 1 0,70 L 0,30 A30,30,0,0 1 30,0z</item>
 		<item>M50,0 C10,0 0,10 0,50 0,90 10,100 50,100 90,100 100,90 100,50 100,10 90,0 50,0 Z</item>

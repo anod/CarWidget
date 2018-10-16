@@ -284,7 +284,7 @@
     <string name="permission_notification_listener">Access to notifications</string>
 
     <array name="adaptive_icon_style_names">
-        <item>None</item>
+        <item>Default</item>
         <item>Square</item>
         <item>Rounded square</item>
         <item>Squircle</item>

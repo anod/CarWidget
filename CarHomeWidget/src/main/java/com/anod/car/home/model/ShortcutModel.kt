@@ -65,10 +65,10 @@ class ShortcutModel(private val context: Context) {
             var icon: Bitmap? = null
             if (itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
                 icon = getIconFromCursor(c, iconIndex, bitmapOptions)
-                if (c.getInt(isCustomIconIndex) == 1) {
-                    shortcutIcon = ShortcutIcon.forCustomIcon(id, icon!!)
+                shortcutIcon = if (c.getInt(isCustomIconIndex) == 1) {
+                    ShortcutIcon.forCustomIcon(id, icon!!)
                 } else {
-                    shortcutIcon = ShortcutIcon.forActivity(id, icon!!)
+                    ShortcutIcon.forActivity(id, icon!!)
                 }
             } else {
                 val iconType = c.getInt(iconTypeIndex)

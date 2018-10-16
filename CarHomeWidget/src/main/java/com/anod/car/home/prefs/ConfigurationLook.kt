@@ -1,10 +1,12 @@
 package com.anod.car.home.prefs
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
 import com.android.colorpicker.ColorPickerSwatch
 
 import com.anod.car.home.R
@@ -20,6 +22,8 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
 
     private val iconRotateValues: Array<String> by lazy { resources.getStringArray(R.array.icon_rotate_values) ?: emptyArray() }
     private val iconRotateTitles: Array<String> by lazy { resources.getStringArray(R.array.icon_rotate_titles) ?: emptyArray() }
+    private val adaptiveIconTitles: Array<String> by lazy { resources.getStringArray(R.array.adaptive_icon_style_names) ?: emptyArray() }
+    private val adaptiveIconValues: Array<String> by lazy { resources.getStringArray(R.array.adaptive_icon_style_paths_values) ?: emptyArray() }
 
     override val xmlResource: Int
         get() = R.xml.preference_look
@@ -35,12 +39,25 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
 
         val rotatePref = findPreference(WidgetSettings.ICONS_ROTATE) as ListPreference
         rotatePref.value = prefs.iconsRotate.name
-
         updateRotateSummary(rotatePref, prefs.iconsRotate.name)
         rotatePref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, o ->
             updateRotateSummary(preference as ListPreference, o as String)
             true
         }
+
+        val adaptiveIconPref = findPreference(WidgetSettings.ADAPTIVE_ICON_STYLE) as ListPreference
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            adaptiveIconPref.value = prefs.adaptiveIconStyle
+            adaptiveIconPref.summary = adaptiveIconTitles.elementAtOrNull(adaptiveIconValues.indexOf(prefs.adaptiveIconStyle))
+
+            adaptiveIconPref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, o ->
+                preference.summary = adaptiveIconTitles.elementAtOrNull(adaptiveIconValues.indexOf(o))
+                true
+            }
+        } else {
+            (findPreference("look-more-category") as PreferenceCategory).removePreference(adaptiveIconPref)
+        }
+
 
         initWidgetPrefCheckBox(WidgetSettings.TITLES_HIDE, prefs.isTitlesHide)
         initWidgetPrefCheckBox(WidgetSettings.TRANSPARENT_BTN_SETTINGS,

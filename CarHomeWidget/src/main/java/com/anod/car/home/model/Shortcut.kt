@@ -28,6 +28,9 @@ class Shortcut(
          */
         val intent: Intent) {
 
+    val isApp: Boolean
+        get() = itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
+
     constructor(id: Long, item: Shortcut) : this(id, item.itemType, item.title, item.isCustomIcon, item.intent)
 
     companion object {

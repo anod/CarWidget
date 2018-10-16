@@ -14,12 +14,17 @@ import com.anod.car.home.utils.UtilitiesBitmap
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Path
+import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.LruCache
 import android.view.View
 import android.widget.RemoteViews
 import com.anod.car.home.prefs.model.WidgetInterface
+import com.anod.car.home.utils.AdaptiveIcon
+import java.lang.Exception
 
 /**
  * @author alex
@@ -38,11 +43,13 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
 
     private var shortcuts: WidgetShortcutsModel? = null
 
-    private var bitmapMemoryCache: LruCache<String, Bitmap>? = null
+    var bitmapMemoryCache: LruCache<String, Bitmap>? = null
 
     private var bitmapTransform: BitmapTransform? = null
 
     private var backgroundProcessor: BackgroundProcessor? = null
+
+    private var adaptiveIconPath = Path()
 
     fun init(scaledDensity: Float, skinProperties: SkinProperties,
              iconTheme: IconTheme?, prefs: WidgetSettings, shortcuts: WidgetShortcutsModel,
@@ -54,6 +61,7 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
         this.shortcuts = shortcuts
         this.bitmapTransform = bitmapTransform
         this.backgroundProcessor = this.skinProperties!!.backgroundProcessor
+        this.adaptiveIconPath = prefs.adaptiveIconPath
     }
 
     fun fill(views: RemoteViews, position: Int, resBtn: Int, resText: Int) {
@@ -129,7 +137,7 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
 
         var icon = getBitmapFromMemCache(imageKey)
         if (icon == null) {
-            icon = getShortcutIcon(info, themeIcons)
+            icon = shortcutBitmap(info, themeIcons)
             icon = bitmapTransform!!.transform(icon)
             addBitmapToMemCache(imageKey, icon)
         }
@@ -168,8 +176,20 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
         }
     }
 
-    private fun getShortcutIcon(info: Shortcut, themeIcons: IconTheme?): Bitmap {
-        if (themeIcons == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon) {
+    private fun shortcutBitmap(info: Shortcut, themeIcons: IconTheme?): Bitmap {
+        if (themeIcons == null || !info.isApp || info.isCustomIcon) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && info.isApp && !info.isCustomIcon) {
+                try {
+                    val activityIcon = context.packageManager.getActivityIcon(info.intent)
+                    if (activityIcon is AdaptiveIconDrawable) {
+                        return AdaptiveIcon(activityIcon, adaptiveIconPath, context).toBitmap()
+                    }
+                } catch (e: Exception) {
+                    AppLog.e(e)
+                }
+            }
+
             val icon = shortcuts!!.loadIcon(info.id)
             return icon.bitmap
         }
@@ -187,10 +207,6 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
         }
         val icon = shortcuts!!.loadIcon(info.id)
         return icon.bitmap
-    }
-
-    fun setBitmapMemoryCache(bitmapMemoryCache: LruCache<String, Bitmap>) {
-        this.bitmapMemoryCache = bitmapMemoryCache
     }
 
     companion object {

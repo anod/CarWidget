@@ -4,6 +4,9 @@
     android:title="@string/pref_look_and_feel_title"
 >
 
+    <PreferenceCategory
+        android:key="look-more-category"
+        >
     <Preference
         android:key="icons-color"
         android:summary="@string/pref_tint_color_summary"
@@ -33,16 +36,18 @@
 
         />
 
-    <!--<ListPreference-->
-        <!--android:entries="@array/adaptive_icon_style_names"-->
-        <!--android:entryValues="@array/adaptive_icon_style_paths_values"-->
-        <!--android:key="adaptive-icon-style"-->
-        <!--android:title="@string/adaptive_icon_style" />-->
+    <ListPreference
+        android:entries="@array/adaptive_icon_style_names"
+        android:entryValues="@array/adaptive_icon_style_paths_values"
+        android:key="adaptive-icon-style"
+        android:title="@string/adaptive_icon_style" />
 
     <CheckBoxPreference
         android:key="titles-hide"
         android:summary="@string/pref_titles_hide_summary"
         android:title="@string/pref_titles_hide_title" />
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:key="transparent-category"

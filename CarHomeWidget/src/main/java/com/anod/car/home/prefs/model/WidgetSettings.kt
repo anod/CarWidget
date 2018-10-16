@@ -3,6 +3,8 @@ package com.anod.car.home.prefs.model
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Path
+import android.os.Build
 import androidx.core.content.res.ResourcesCompat
 import androidx.collection.SimpleArrayMap
 import android.util.JsonReader
@@ -11,6 +13,7 @@ import android.util.JsonWriter
 
 import com.anod.car.home.R
 import com.anod.car.home.utils.BitmapTransform
+import info.anodsplace.framework.graphics.PathParser
 
 import java.io.IOException
 
@@ -87,6 +90,21 @@ class WidgetSettings(prefs: SharedPreferences, private val mResources: Resources
         get() = prefs.getInt(WIDGET_BUTTON_2, WidgetInterface.WIDGET_BUTTON_SETTINGS)
         set(widgetButton2) = putChange(WIDGET_BUTTON_2, widgetButton2)
 
+    var adaptiveIconStyle: String
+        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) prefs.getString(ADAPTIVE_ICON_STYLE, "")!! else ""
+        set(style) = putChange(ADAPTIVE_ICON_STYLE, style)
+
+    val adaptiveIconPath: Path
+        get() {
+            val pathData = adaptiveIconStyle
+            return when {
+                pathData.isNotBlank() -> {
+                    PathParser.createPathFromPathData(pathData)
+                }
+                else -> Path()
+            }
+        }
+
     override fun setIconsScaleString(iconsScale: String) {
         putChange(ICONS_SCALE, iconsScale)
     }
@@ -118,6 +136,7 @@ class WidgetSettings(prefs: SharedPreferences, private val mResources: Resources
         writer.name(WIDGET_BUTTON_1).value(widgetButton1.toLong())
         writer.name(WIDGET_BUTTON_2).value(widgetButton2.toLong())
 
+        writer.name(ADAPTIVE_ICON_STYLE).value(adaptiveIconStyle)
         writer.endObject()
     }
 
@@ -149,6 +168,8 @@ class WidgetSettings(prefs: SharedPreferences, private val mResources: Resources
         types.put(WIDGET_BUTTON_1, JsonToken.NUMBER)
         types.put(WIDGET_BUTTON_2, JsonToken.NUMBER)
 
+        types.put(ADAPTIVE_ICON_STYLE, JsonToken.STRING)
+
         JsonReaderHelper.readValues(reader, types, this)
 
         reader.endObject()
@@ -172,6 +193,7 @@ class WidgetSettings(prefs: SharedPreferences, private val mResources: Resources
         private const val WIDGET_BUTTON_1 = "widget-button-1"
         private const val WIDGET_BUTTON_2 = "widget-button-2"
         private const val ICONS_DEF_VALUE = "5"
+        const val ADAPTIVE_ICON_STYLE = "adaptive-icon-style"
 
         private fun getColor(key: String, prefs: SharedPreferences): Int? {
             return if (!prefs.contains(key)) {

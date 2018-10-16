@@ -163,8 +163,7 @@ object ShortcutInfoUtils {
 
     private fun loadHighResIcon(resolveInfo: ResolveInfo, context: Context): Drawable? {
         try {
-            val otherAppCtxt = context
-                    .createPackageContext(resolveInfo.activityInfo.packageName,
+            val otherAppCtxt = context.createPackageContext(resolveInfo.activityInfo.packageName,
                             Context.CONTEXT_IGNORE_SECURITY)
             val icon = if (resolveInfo.activityInfo.icon > 0)
                 resolveInfo.activityInfo.icon

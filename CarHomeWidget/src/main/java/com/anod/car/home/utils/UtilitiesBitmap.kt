@@ -20,14 +20,14 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 object UtilitiesBitmap {
-    private const val SIZE_ICON = 0 // icon with higher density
-    private const val SIZE_SYSTEM = 1 // default system icon size
-    private const val SIZE_MAX = 2 // max scale size
-    private const val MAX_SCALE = 3
+    private const val sizeIcon = 0 // icon with higher density
+    private const val sizeSystem = 1 // default system icon size
+    const val sizeMax = 2 // max scale size
+    const val maxScale = 3
 
     private var sIconSize = -1
     private var sIconSystem = -1
-    private var sIconMaxScale = -1
+    var sIconMaxScale = -1
     private var sSystemDensity = -1
     private var sIconDensity = -1
 
@@ -48,7 +48,7 @@ object UtilitiesBitmap {
         sIconSystem = r.getDimension(R.dimen.icon_size).toInt()
         sIconSize = convertForDensity(sIconSystem, sIconDensity, metrics.densityDpi).toInt()
 
-        sIconMaxScale = sIconSize * MAX_SCALE
+        sIconMaxScale = sIconSize * maxScale
 
         val localPaintFlagsDrawFilter = PaintFlagsDrawFilter(4, 2)
         sCanvas.drawFilter = localPaintFlagsDrawFilter
@@ -115,15 +115,15 @@ object UtilitiesBitmap {
     }
 
     fun createSystemIconBitmap(icon: Drawable, context: Context): Bitmap {
-        return createIconBitmapSize(icon, SIZE_SYSTEM, context)
+        return createIconBitmapSize(icon, sizeSystem, context)
     }
 
     fun createHiResIconBitmap(icon: Drawable, context: Context): Bitmap {
-        return createIconBitmapSize(icon, SIZE_ICON, context)
+        return createIconBitmapSize(icon, sizeIcon, context)
     }
 
     fun createMaxSizeIcon(icon: Drawable, context: Context): Bitmap {
-        return createIconBitmapSize(icon, SIZE_MAX, context)
+        return createIconBitmapSize(icon, sizeMax, context)
     }
 
     /**
@@ -140,10 +140,10 @@ object UtilitiesBitmap {
             var width: Int
             var height: Int
 
-            if (size == SIZE_ICON) {
+            if (size == sizeIcon) {
                 width = sIconSize
                 height = sIconSize
-            } else if (size == SIZE_MAX) {
+            } else if (size == sizeMax) {
                 width = sIconMaxScale
                 height = sIconMaxScale
             } else {
@@ -187,17 +187,7 @@ object UtilitiesBitmap {
                 }
             }
 
-            val bitmapSize: Int
-            if (size == SIZE_MAX && (width >= sIconMaxScale || height >= sIconMaxScale)) {
-                bitmapSize = sIconMaxScale
-            } else if (size == SIZE_ICON && (width >= sIconSize || height >= sIconSize)) {
-                bitmapSize = sIconSize
-            } else if (width > sIconSystem || height > sIconSystem) {
-                bitmapSize = if (width > height) width else height
-            } else {
-                bitmapSize = sIconSystem
-            }
-
+            val bitmapSize = getSize(size, width, height)
             val bitmap = Bitmap.createBitmap(bitmapSize, bitmapSize, Bitmap.Config.ARGB_8888)
             val canvas = sCanvas
             canvas.setBitmap(bitmap)
@@ -212,6 +202,18 @@ object UtilitiesBitmap {
             icon.draw(canvas)
             icon.bounds = sOldBounds
             return bitmap
+        }
+    }
+
+    fun getSize(size: Int, width: Int, height: Int): Int {
+        return if (size == sizeMax && (width >= sIconMaxScale || height >= sIconMaxScale)) {
+            sIconMaxScale
+        } else if (size == sizeIcon && (width >= sIconSize || height >= sIconSize)) {
+            sIconSize
+        } else if (width > sIconSystem || height > sIconSystem) {
+            if (width > height) width else height
+        } else {
+            sIconSystem
         }
     }
 
