@@ -49,8 +49,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
 
-    implementation "ch.acra:acra-core:5.2.0"
-    implementation "ch.acra:acra-notification:5.2.0"
+    implementation "ch.acra:acra-core:5.2.1"
+    implementation "ch.acra:acra-notification:5.2.1"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
