@@ -22,7 +22,7 @@ class ShortcutsJsonWriter {
             val pos = shortcuts.keyAt(idx)
             val info = shortcuts.get(pos) ?: continue
             shortcutsWriter.beginObject()
-            val icon = model.iconLoader.load(info)
+            val icon = model.iconLoader.loadFromDatabase(info.id)
             val values = ShortcutsDatabase.createShortcutContentValues(info, icon)
             shortcutsWriter.name("pos").value(pos.toLong())
 

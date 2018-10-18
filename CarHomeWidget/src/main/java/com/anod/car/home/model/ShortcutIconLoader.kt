@@ -20,10 +20,9 @@ class ShortcutIconLoader(
     fun load(shortcut: Shortcut): ShortcutIcon {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && shortcut.isApp && !shortcut.isCustomIcon) {
             if (adaptiveIconPath.isEmpty) {
-                val shortcutUri = LauncherSettings.Favorites.getContentUri(context.packageName, shortcut.id)
-                return db.loadShortcutIcon(shortcutUri)
+                return loadFromDatabase(shortcut.id)
             }
-            
+
             try {
                 val activityIcon = context.packageManager.getActivityIcon(shortcut.intent)
                 if (activityIcon is AdaptiveIconDrawable) {
@@ -35,7 +34,11 @@ class ShortcutIconLoader(
             }
         }
 
-        val shortcutUri = LauncherSettings.Favorites.getContentUri(context.packageName, shortcut.id)
+        return loadFromDatabase(shortcut.id)
+    }
+
+    fun loadFromDatabase(shortcutId: Long): ShortcutIcon {
+        val shortcutUri = LauncherSettings.Favorites.getContentUri(context.packageName, shortcutId)
         return db.loadShortcutIcon(shortcutUri)
     }
 
