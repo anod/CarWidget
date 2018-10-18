@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.util.forEach
 import androidx.core.util.isNotEmpty
+import com.anod.car.home.prefs.model.WidgetStorage
 
 /**
  * @author alex
@@ -31,7 +32,10 @@ class WidgetsListAdapter(private val context: Context, private val clickHandler:
     fun setResult(list: WidgetList) {
         val newItems = mutableListOf<Item>()
         newItems.addAll(list.shortcuts.map { ShortcutItem() })
-        list.large.forEach { key, value -> newItems.add(LargeItem(key, value)) }
+
+        list.large.forEach { key, value ->
+            newItems.add(LargeItem(key, value, WidgetStorage.load(context, key).adaptiveIconStyle))
+        }
 
         if (list.large.isNotEmpty()) {
             newItems.add(HintItem())
@@ -73,8 +77,11 @@ class WidgetsListAdapter(private val context: Context, private val clickHandler:
                 }
                 if (info != null) {
                     icon.visibility = View.VISIBLE
-                    picasso.load(LauncherSettings.Favorites.getContentUri(context.packageName, info.id))
-                            .into(icon)
+                    val uri = LauncherSettings.Favorites.getContentUri(context.packageName, info.id).buildUpon()
+                            .appendQueryParameter("adaptiveIconStyle", item.adaptiveIconStyle)
+                            .build()
+                    picasso.load(uri)
+                           .into(icon)
                 } else {
                     icon.visibility = View.INVISIBLE
                 }
@@ -91,7 +98,11 @@ class WidgetsListAdapter(private val context: Context, private val clickHandler:
 
     interface Item
 
-    internal class LargeItem(var appWidgetId: Int, var shortcuts: SparseArray<Shortcut?>) : Item
+    internal class LargeItem(
+            val appWidgetId: Int,
+            val shortcuts: SparseArray<Shortcut?>,
+            val adaptiveIconStyle: String
+    ) : Item
 
     internal class HintItem : Item
 

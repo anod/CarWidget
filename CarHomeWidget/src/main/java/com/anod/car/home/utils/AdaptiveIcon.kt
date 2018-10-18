@@ -38,22 +38,28 @@ class AdaptiveIcon(val drawable: AdaptiveIconDrawable, private val mask: Path, v
         mask.transform(maskMatrix, cMask)
 
         val maskBitmap = Bitmap.createBitmap(layerSize, layerSize, Bitmap.Config.ALPHA_8)
-        canvas.setBitmap(maskBitmap)
-        paint.shader = null
-        canvas.drawPath(cMask, paint)
-
         val layersBitmap = Bitmap.createBitmap(layerSize, layerSize, Bitmap.Config.ARGB_8888)
-        canvas.setBitmap(layersBitmap)
-        canvas.drawColor(Color.BLACK)
-
         val background = drawable.background
-        background.draw(canvas)
-
         val foreground = drawable.foreground
-        foreground.draw(canvas)
 
-        canvas.setBitmap(resultBitmap)
+        paint.shader = null
 
+        canvas.run {
+            // Apply mask path to mask bitmap
+            setBitmap(maskBitmap)
+            drawPath(cMask, paint)
+
+            // combine foreground and background on the layers bitmap
+            setBitmap(layersBitmap)
+            drawColor(Color.BLACK)
+
+            background.draw(this)
+            foreground.draw(this)
+
+            setBitmap(resultBitmap)
+        }
+
+        // Draw mask with layers shader on result bitmap
         paint.shader = BitmapShader(layersBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
         canvas.drawBitmap(maskBitmap, 0f, 0f, paint)
 

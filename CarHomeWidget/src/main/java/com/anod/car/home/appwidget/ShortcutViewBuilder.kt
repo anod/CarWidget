@@ -22,6 +22,7 @@ import android.os.Build
 import android.util.LruCache
 import android.view.View
 import android.widget.RemoteViews
+import com.anod.car.home.model.ShortcutIconLoader
 import com.anod.car.home.prefs.model.WidgetInterface
 import com.anod.car.home.utils.AdaptiveIcon
 import java.lang.Exception
@@ -178,19 +179,7 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
 
     private fun shortcutBitmap(info: Shortcut, themeIcons: IconTheme?): Bitmap {
         if (themeIcons == null || !info.isApp || info.isCustomIcon) {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && info.isApp && !info.isCustomIcon) {
-                try {
-                    val activityIcon = context.packageManager.getActivityIcon(info.intent)
-                    if (activityIcon is AdaptiveIconDrawable) {
-                        return AdaptiveIcon(activityIcon, adaptiveIconPath, context).toBitmap()
-                    }
-                } catch (e: Exception) {
-                    AppLog.e(e)
-                }
-            }
-
-            val icon = shortcuts!!.loadIcon(info.id)
+            val icon = ShortcutIconLoader(shortcuts!!.shortcutsDatabase, adaptiveIconPath, context).load(info)
             return icon.bitmap
         }
 
@@ -205,7 +194,7 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
         if (iconDrawable != null) {
             return UtilitiesBitmap.createHiResIconBitmap(iconDrawable, context)
         }
-        val icon = shortcuts!!.loadIcon(info.id)
+        val icon = ShortcutIconLoader(shortcuts!!.shortcutsDatabase, adaptiveIconPath, context).load(info)
         return icon.bitmap
     }
 

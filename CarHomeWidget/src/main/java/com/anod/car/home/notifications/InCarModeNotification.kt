@@ -63,7 +63,7 @@ object InCarModeNotification {
             if (info == null) {
                 contentView.setViewVisibility(resId, View.GONE)
             } else {
-                val icon = model.loadIcon(info.id)
+                val icon = model.iconLoader.load(info)
                 contentView.setImageViewBitmap(resId, icon.bitmap)
                 val pendingIntent = spi.createShortcut(info.intent, prefix, i)
                 contentView.setOnClickPendingIntent(resId, pendingIntent)

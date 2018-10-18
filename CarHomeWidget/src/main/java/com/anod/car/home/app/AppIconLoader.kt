@@ -21,8 +21,8 @@ class AppIconLoader(context: Context) {
     private val context: Context = context.applicationContext
     private var picasso: Picasso? = null
 
-    internal class PackageIconRequestHandler(private val mContext: Context) : RequestHandler() {
-        private val packageManager: PackageManager = mContext.packageManager
+    internal class PackageIconRequestHandler(private val context: Context) : RequestHandler() {
+        private val packageManager: PackageManager = context.packageManager
 
         override fun canHandleRequest(data: Request): Boolean {
             return SCHEME == data.uri.scheme
@@ -50,7 +50,7 @@ class AppIconLoader(context: Context) {
                 }
 
             }
-            icon = UtilitiesBitmap.createSystemIconBitmap(d!!, mContext)
+            icon = UtilitiesBitmap.createSystemIconBitmap(d!!, context)
             return RequestHandler.Result(icon, DISK)
         }
 

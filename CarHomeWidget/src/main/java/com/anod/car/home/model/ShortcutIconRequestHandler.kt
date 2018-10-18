@@ -2,6 +2,7 @@ package com.anod.car.home.model
 
 import android.content.ContentResolver
 import android.content.Context
+import android.graphics.Path
 
 import com.squareup.picasso.Request
 import com.squareup.picasso.RequestHandler
@@ -9,15 +10,16 @@ import com.squareup.picasso.RequestHandler
 import java.io.IOException
 
 import com.squareup.picasso.Picasso.LoadedFrom.DISK
+import info.anodsplace.framework.graphics.PathParser
 
 /**
  * @author algavris
  * @date 23/08/2016.
  */
 
-class ShortcutIconRequestHandler(context: Context) : RequestHandler() {
+class ShortcutIconRequestHandler(private val context: Context) : RequestHandler() {
     private val authority: String? = LauncherSettings.Favorites.getContentUri(context.packageName).authority
-    private val model: ShortcutModel = ShortcutModel(context)
+    private val db: ShortcutsDatabase = ShortcutsDatabase(context)
 
     override fun canHandleRequest(data: Request): Boolean {
         return if (ContentResolver.SCHEME_CONTENT == data.uri.scheme) {
@@ -27,8 +29,12 @@ class ShortcutIconRequestHandler(context: Context) : RequestHandler() {
 
     @Throws(IOException::class)
     override fun load(request: Request, networkPolicy: Int): RequestHandler.Result? {
-        val icon = model.loadShortcutIcon(request.uri)
-        return RequestHandler.Result(icon!!.bitmap, DISK)
+        val shortcutId = request.uri.lastPathSegment?.toLong() ?: return null
+        val shortcut = db.loadShortcut(shortcutId) ?: return null
+        val adaptiveIconStyle = request.uri.getQueryParameter("adaptiveIconStyle") ?: ""
+        val adaptiveIconPath = if (adaptiveIconStyle.isNotBlank()) PathParser.createPathFromPathData(adaptiveIconStyle) else Path()
+        val icon = ShortcutIconLoader(db, adaptiveIconPath, context.applicationContext).load(shortcut)
+        return RequestHandler.Result(icon.bitmap, DISK)
     }
 
 }

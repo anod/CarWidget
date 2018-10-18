@@ -14,6 +14,9 @@ class WidgetShortcutsModel(context: Context, private val appWidgetId: Int) : Abs
 
     override var count: Int = 0
 
+    override val iconLoader: ShortcutIconLoader
+        get() = ShortcutIconLoader(shortcutsDatabase, appWidgetId, context)
+
     public override fun loadCount() {
         count = WidgetStorage.getLaunchComponentNumber(context, appWidgetId)
     }

@@ -27,7 +27,7 @@ class ShortcutEditActivity : CarWidgetActivity() {
     private val iconView: ImageView by lazy { findViewById<ImageView>(R.id.icon_edit) }
     private val labelEdit: EditText by lazy { findViewById<EditText>(R.id.label_edit) }
 
-    private var model: ShortcutModel? = null
+    private var db: ShortcutsDatabase? = null
 
     private var shortcut: Shortcut? = null
     private var shortcutIcon: ShortcutIcon? = null
@@ -62,15 +62,16 @@ class ShortcutEditActivity : CarWidgetActivity() {
             return
         }
 
-        if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-            containerModel = NotificationShortcutsModel.init(this)
+        containerModel = if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+            NotificationShortcutsModel.init(this)
         } else {
-            containerModel = WidgetShortcutsModel.init(this, appWidgetId)
+            WidgetShortcutsModel.init(this, appWidgetId)
         }
-        model = containerModel!!.shortcutModel
+        db = containerModel!!.shortcutsDatabase
 
-        shortcut = model!!.loadShortcut(shortcutId)
-        shortcutIcon = model!!.loadShortcutIcon(shortcutId)
+        shortcut = db!!.loadShortcut(shortcutId)
+        shortcutIcon = containerModel!!.iconLoader.load(shortcut!!)
+
         labelEdit.setText(shortcut!!.title)
         iconView.setImageBitmap(shortcutIcon!!.bitmap)
 
@@ -99,7 +100,7 @@ class ShortcutEditActivity : CarWidgetActivity() {
                 needUpdate = true
             }
             if (needUpdate) {
-                model!!.updateItemInDatabase(this, shortcut!!, shortcutIcon!!)
+                db!!.updateItemInDatabase(this, shortcut!!, shortcutIcon!!)
             }
 
             setResult(Activity.RESULT_OK, intent)
@@ -113,18 +114,17 @@ class ShortcutEditActivity : CarWidgetActivity() {
         init(intent)
     }
 
-    protected fun createIconMenu(): Dialog {
-        val items: Array<CharSequence>
-        if (shortcut!!.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
-            items = arrayOf(
-                    getString(R.string.icon_custom), // PICK_CUSTOM_ICON
-                    getString(R.string.icon_adw_icon_pack), // PICK_ADW_ICON_PACK
-                    getString(R.string.icon_default) // PICK_DEFAULT_ICON
+    private fun createIconMenu(): Dialog {
+        val items: Array<CharSequence> = if (shortcut!!.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
+            arrayOf(
+                getString(R.string.icon_custom), // PICK_CUSTOM_ICON
+                getString(R.string.icon_adw_icon_pack), // PICK_ADW_ICON_PACK
+                getString(R.string.icon_default) // PICK_DEFAULT_ICON
             )
         } else {
-            items = arrayOf(
-                    getString(R.string.icon_custom), // PICK_CUSTOM_ICON
-                    getString(R.string.icon_adw_icon_pack) // PICK_ADW_ICON_PACK
+            arrayOf(
+                getString(R.string.icon_custom), // PICK_CUSTOM_ICON
+                getString(R.string.icon_adw_icon_pack) // PICK_ADW_ICON_PACK
             )
         }
 

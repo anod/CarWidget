@@ -4,7 +4,8 @@ import android.util.JsonWriter
 import android.util.SparseArray
 
 import com.anod.car.home.model.Shortcut
-import com.anod.car.home.model.ShortcutModel
+import com.anod.car.home.model.ShortcutIcon
+import com.anod.car.home.model.ShortcutsDatabase
 import com.anod.car.home.model.Shortcuts
 
 import java.io.IOException
@@ -21,8 +22,8 @@ class ShortcutsJsonWriter {
             val pos = shortcuts.keyAt(idx)
             val info = shortcuts.get(pos) ?: continue
             shortcutsWriter.beginObject()
-            val icon = model.loadIcon(info.id)
-            val values = ShortcutModel.createShortcutContentValues(info, icon)
+            val icon = model.iconLoader.load(info)
+            val values = ShortcutsDatabase.createShortcutContentValues(info, icon)
             shortcutsWriter.name("pos").value(pos.toLong())
 
             for (key in values.keySet()) {
@@ -47,3 +48,4 @@ class ShortcutsJsonWriter {
         }
     }
 }
+

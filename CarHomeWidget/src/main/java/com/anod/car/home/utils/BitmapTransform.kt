@@ -14,7 +14,7 @@ import android.graphics.PaintFlagsDrawFilter
 
 class BitmapTransform(context: Context) {
 
-    private var iconSize = -1
+    private var iconSize = UtilitiesBitmap.getSystemIconSize(context)
     var applyGrayFilter = false
     var tintColor: Int? = null
     var scaleSize = 1.0f
@@ -31,24 +31,19 @@ class BitmapTransform(context: Context) {
                 iconProcessorId
 
     private val iconProcessorId: String
-        get() = if (iconProcessor != null) {
-            iconProcessor!!.id
-        } else "none"
+        get() = iconProcessor?.id ?: "none"
 
     enum class RotateDirection {
         NONE, RIGHT, LEFT
     }
 
-    init {
-        iconSize = UtilitiesBitmap.getSystemIconSize(context)
-    }
-
     fun transform(bitmap: Bitmap): Bitmap {
         var src = bitmap
         var sizeDiff = 0.0f
-        if (iconProcessor != null) {
-            src = iconProcessor!!.process(src)
-            sizeDiff = iconProcessor!!.sizeDiff
+
+        iconProcessor?.let {
+            src = it.process(src)
+            sizeDiff = it.sizeDiff
         }
 
         val height = src.height
@@ -64,15 +59,13 @@ class BitmapTransform(context: Context) {
             val cm = ColorMatrix()
             cm.setSaturation(0f) //gray scale
 
-            if (tintColor != null) {
-                applyTintColor(cm)
+            tintColor?.let {
+                applyTintColor(it, cm)
             }
 
             val filter = ColorMatrixColorFilter(cm)
             paint.colorFilter = filter
         }
-
-        val matrix = Matrix()
 
         var degrees = 0
         if (rotateDirection != RotateDirection.NONE) {
@@ -86,16 +79,12 @@ class BitmapTransform(context: Context) {
         val scaledMiddleX = scaledSize / 2.0f
         val scaledMiddleY = scaledSize / 2.0f
 
+        val matrix = Matrix()
         matrix.postScale(ratioX, ratioY, scaledMiddleX, scaledMiddleY)
         matrix.postRotate(degrees.toFloat(), scaledMiddleX, scaledMiddleX)
 
-        val output = Bitmap
-                .createBitmap(scaledSize, scaledSize + paddingBottom, Bitmap.Config.ARGB_8888)
+        val output = Bitmap.createBitmap(scaledSize, scaledSize + paddingBottom, Bitmap.Config.ARGB_8888)
         canvas.setBitmap(output)
-
-        //paint.setColor(android.graphics.Color.RED);
-        //paint.setStyle(Paint.Style.FILL);
-        //canvas.drawRect(0, 0, output.getWidth(), output.getHeight(), paint);
 
         canvas.matrix = matrix
         canvas.drawBitmap(src, scaledMiddleX - width / 2, scaledMiddleY - height / 2, paint)
@@ -103,10 +92,10 @@ class BitmapTransform(context: Context) {
         return output
     }
 
-    private fun applyTintColor(cm: ColorMatrix) {
-        val r = Color.red(tintColor!!) / 255.0f
-        val g = Color.green(tintColor!!) / 255.0f
-        val b = Color.blue(tintColor!!) / 255.0f
+    private fun applyTintColor(color: Int, cm: ColorMatrix) {
+        val r = Color.red(color) / 255.0f
+        val g = Color.green(color) / 255.0f
+        val b = Color.blue(color) / 255.0f
 
         val matrix = floatArrayOf(r, 0f, 0f, 0f, 0f, //red
                 0f, g, 0f, 0f, 0f, //green

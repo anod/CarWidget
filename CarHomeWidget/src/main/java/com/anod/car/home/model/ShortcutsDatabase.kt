@@ -22,7 +22,7 @@ import com.anod.car.home.utils.Utils
 
 import java.net.URISyntaxException
 
-class ShortcutModel(private val context: Context) {
+class ShortcutsDatabase(private val context: Context) {
 
     private val contentResolver: ContentResolver = context.contentResolver
     private val packageManager: PackageManager = context.packageManager
@@ -44,8 +44,13 @@ class ShortcutModel(private val context: Context) {
         }
     }
 
-    fun loadShortcutIcon(shortcutUri: Uri): ShortcutIcon? {
-        val c = contentResolver.query(shortcutUri, null, null, null, null) ?: return null
+    fun loadShortcutIcon(shortcutUri: Uri): ShortcutIcon {
+        val c = contentResolver.query(shortcutUri, null, null, null, null)
+
+        if (c == null) {
+            val icon = UtilitiesBitmap.makeDefaultIcon(packageManager)
+            return ShortcutIcon.forFallbackIcon(shortcutUri.lastPathSegment!!.toLong(), icon)
+        }
 
         var shortcutIcon: ShortcutIcon? = null
         try {
@@ -108,22 +113,18 @@ class ShortcutModel(private val context: Context) {
                 }
             }
 
-            if (icon == null) {
-                icon = UtilitiesBitmap.makeDefaultIcon(packageManager)
-                shortcutIcon = ShortcutIcon.forFallbackIcon(id, icon)
-            }
         } catch (e: Exception) {
             AppLog.e(e)
         } finally {
             c.close()
         }
 
-        return shortcutIcon
-    }
+        if (shortcutIcon == null) {
+            val icon = UtilitiesBitmap.makeDefaultIcon(packageManager)
+            return ShortcutIcon.forFallbackIcon(shortcutUri.lastPathSegment!!.toLong(), icon)
+        }
 
-    fun loadShortcutIcon(shortcutId: Long): ShortcutIcon? {
-        val shortcutUri = LauncherSettings.Favorites.getContentUri(context.packageName, shortcutId)
-        return loadShortcutIcon(shortcutUri)
+        return shortcutIcon
     }
 
     fun loadShortcut(shortcutId: Long): Shortcut? {

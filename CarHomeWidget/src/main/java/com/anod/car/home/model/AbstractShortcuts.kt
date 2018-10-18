@@ -10,7 +10,7 @@ abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
 
     override val shortcuts: SparseArray<Shortcut?> = SparseArray()
 
-    val shortcutModel: ShortcutModel = ShortcutModel(context)
+    val shortcutsDatabase: ShortcutsDatabase = ShortcutsDatabase(context)
 
     protected abstract fun loadCount()
 
@@ -28,7 +28,7 @@ abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
             val shortcutId = currentShortcutIds[cellId]
             var info: Shortcut? = null
             if (shortcutId != Shortcut.idUnknown) {
-                info = shortcutModel.loadShortcut(shortcutId)
+                info = shortcutsDatabase.loadShortcut(shortcutId)
             }
             shortcuts.put(cellId, info)
         }
@@ -42,7 +42,7 @@ abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
         if (shortcutId == Shortcut.idUnknown) {
             shortcuts.put(position, null)
         } else {
-            val info = shortcutModel.loadShortcut(shortcutId)
+            val info = shortcutsDatabase.loadShortcut(shortcutId)
             shortcuts.put(position, info)
         }
     }
@@ -70,7 +70,7 @@ abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
         if (shortcut == null) {
             shortcuts.put(position, null)
         } else {
-            val id = shortcutModel.addItemToDatabase(context, shortcut, icon!!)
+            val id = shortcutsDatabase.addItemToDatabase(context, shortcut, icon!!)
             if (id == Shortcut.idUnknown) {
                 shortcuts.put(position, null)
             } else {
@@ -84,13 +84,9 @@ abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
     override fun drop(position: Int) {
         val info = shortcuts.get(position)
         if (info != null) {
-            shortcutModel.deleteItemFromDatabase(info.id)
+            shortcutsDatabase.deleteItemFromDatabase(info.id)
             shortcuts.put(position, null)
             dropId(position)
         }
-    }
-
-    override fun loadIcon(id: Long): ShortcutIcon {
-        return shortcutModel.loadShortcutIcon(id)!!
     }
 }

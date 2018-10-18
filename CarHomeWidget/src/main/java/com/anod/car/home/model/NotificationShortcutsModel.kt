@@ -1,6 +1,7 @@
 package com.anod.car.home.model
 
 import android.content.Context
+import android.graphics.Path
 
 import com.anod.car.home.prefs.model.InCarStorage
 
@@ -10,6 +11,9 @@ class NotificationShortcutsModel private constructor(context: Context) : Abstrac
 
     override val count: Int
         get() = InCarStorage.NOTIFICATION_COMPONENT_NUMBER
+
+    override val iconLoader: ShortcutIconLoader
+        get() = ShortcutIconLoader(shortcutsDatabase, Path(), context)
 
     val filledCount: Int
         get() {

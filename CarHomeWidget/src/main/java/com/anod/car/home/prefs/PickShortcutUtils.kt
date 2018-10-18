@@ -85,7 +85,7 @@ class PickShortcutUtils(private val configurationFragment: ConfigurationPreferen
             pref.showAddIcon = true
             pref.showEditButton = false
         } else {
-            val icon = model.loadIcon(info.id)
+            val icon = model.iconLoader.load(info)
             pref.iconBitmap = icon.bitmap
             pref.showAddIcon = false
             pref.title = info.title

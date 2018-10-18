@@ -4,6 +4,7 @@ import android.content.Intent
 import android.util.SparseArray
 
 interface Shortcuts {
+    val iconLoader: ShortcutIconLoader
     val shortcuts: SparseArray<Shortcut?>
     val count: Int
 
@@ -24,6 +25,4 @@ interface Shortcuts {
     fun move(from: Int, to: Int)
 
     fun updateCount(count: Int)
-
-    fun loadIcon(id: Long): ShortcutIcon
 }

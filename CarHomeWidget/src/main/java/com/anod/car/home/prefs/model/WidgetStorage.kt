@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 
 import com.anod.car.home.model.Shortcut
-import com.anod.car.home.model.ShortcutModel
+import com.anod.car.home.model.ShortcutsDatabase
 import info.anodsplace.framework.AppLog
 
 import java.io.File
@@ -71,7 +71,7 @@ object WidgetStorage {
     fun saveShortcutId(context: Context, preferences: SharedPreferences, shortcutId: Long, key: String) {
         val curShortcutId = preferences.getLong(key, Shortcut.idUnknown)
         if (curShortcutId != Shortcut.idUnknown) {
-            val model = ShortcutModel(context)
+            val model = ShortcutsDatabase(context)
             model.deleteItemFromDatabase(curShortcutId)
         }
         val editor = preferences.edit()
@@ -80,7 +80,7 @@ object WidgetStorage {
     }
 
     fun dropWidgetSettings(context: Context, appWidgetIds: IntArray) {
-        val model = ShortcutModel(context)
+        val model = ShortcutsDatabase(context)
         for (appWidgetId in appWidgetIds) {
             val prefs = getSharedPreferences(context, appWidgetId)
 

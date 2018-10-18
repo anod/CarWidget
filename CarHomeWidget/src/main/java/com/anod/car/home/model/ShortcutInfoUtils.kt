@@ -25,13 +25,11 @@ object ShortcutInfoUtils {
     }
 
     internal fun createShortcut(context: Context, data: Intent, isAppShortcut: Boolean): ShortcutWithIcon {
-        val info: ShortcutWithIcon
-        if (isAppShortcut) {
-            info = infoFromApplicationIntent(context, data)
+        return if (isAppShortcut) {
+            infoFromApplicationIntent(context, data)
         } else {
-            info = infoFromShortcutIntent(context, data)
+            infoFromShortcutIntent(context, data)
         }
-        return info
     }
 
     private fun infoFromShortcutIntent(context: Context, data: Intent): ShortcutWithIcon {
