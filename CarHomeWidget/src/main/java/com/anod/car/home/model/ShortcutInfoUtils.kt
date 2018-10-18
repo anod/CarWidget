@@ -33,8 +33,8 @@ object ShortcutInfoUtils {
     }
 
     private fun infoFromShortcutIntent(context: Context, data: Intent): ShortcutWithIcon {
-        val intent = data.getParcelableExtra<Intent>(Intent.EXTRA_SHORTCUT_INTENT)
-        val name = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME)
+        val intent = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT) ?: Intent()
+        val name = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME) ?: ""
         val bitmap = data.getParcelableExtra<Parcelable>(Intent.EXTRA_SHORTCUT_ICON)
 
         var icon: Bitmap? = null
