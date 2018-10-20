@@ -17,8 +17,6 @@ class PickShortcutUtils(private val configurationFragment: ConfigurationPreferen
                         private val preferenceKey: PreferenceKey) : ShortcutPicker.Handler {
 
     private val picker: ShortcutPicker = ShortcutPicker(model, this, configurationFragment.context!!)
-    private val resources: Resources
-        get() = configurationFragment.context!!.resources
 
     override fun startActivityForResult(intent: Intent, requestCode: Int) {
         configurationFragment.startActivityForResult(intent, requestCode)

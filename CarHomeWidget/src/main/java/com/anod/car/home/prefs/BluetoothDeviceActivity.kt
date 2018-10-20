@@ -90,16 +90,10 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
 
     private fun onDeviceStateChange(device: Device?, newState: Boolean) {
         val prefs = InCarStorage.load(this)
-        var devices = prefs.btDevices
+        val devices = prefs.btDevices
         if (newState) {
-            if (devices == null) {
-                devices = androidx.collection.ArrayMap()
-            }
             devices[device!!.address] = device.address
         } else {
-            if (devices == null) {
-                return
-            }
             devices.remove(device!!.address)
         }
         prefs.btDevices = devices
