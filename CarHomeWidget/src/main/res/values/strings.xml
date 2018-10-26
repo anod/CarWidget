@@ -282,6 +282,8 @@
     <string name="answer_error_marshmallow">CarWidget: Allow access to notification to answer calls</string>
     <string name="answer_error_oreo">CarWidget: Allow permission to answer calls</string>
     <string name="permission_notification_listener">Access to notifications</string>
+    <string name="choose_color">Choose color</string>
+    <string name="auto_color">Auto color</string>
 
     <array name="adaptive_icon_style_names">
         <item>Default</item>

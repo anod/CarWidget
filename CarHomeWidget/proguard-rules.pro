@@ -52,7 +52,8 @@
 -keep interface android.support.v7.preference.** { *; }
 
 #Acra
--keep class * extends org.acra.sender.ReportSenderFactory
+-keep class * implements org.acra.sender.ReportSenderFactory
+-keep class * implements org.acra.sender.ReportSender
 
 #Picasso
 -dontwarn com.squareup.okhttp.**

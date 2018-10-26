@@ -272,4 +272,11 @@
 	<string name="allow_permissions_brightness">Резрешите изменять системны настройки для изменения яркости</string>
 	<string name="notifcation_mode_detector">Отслежевание режима \"В Автомобиле\"</string>
 	<string name="samsung_driving_title">Автомобильный режим Samsung</string>
+    <string name="adaptive_icon_style">Адаптивная иконка</string>
+	<string name="answer_error_marshmallow">Авто Виджет: Разрешите доступ к уведомлениям для ответа</string>
+	<string name="answer_error_oreo">Авто Виджет: Нужно разрешение для ответа</string>
+	<string name="permission_notification_listener">Доступ к уведомлениям</string>
+	<string name="choose_color">Выбрать цвет</string>
+	<string name="auto_color">Авто-цвет</string>
+	<string name="hidden">Скрыт</string>
 </resources>

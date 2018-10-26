@@ -273,5 +273,11 @@
     <string name="permission_answer_calls">לענות לשיחות טלפון</string>
     <string name="allow_answer_phone_calls">לאפשר לענות לשיחות</string>
     <string name="permissions_denied_open_settings">הרשאות נדחו,תאפשרו אותן בהגדרות האפליקציה</string>
+    <string name="choose_color">בחר צבע</string>
+    <string name="auto_color">צבע איקון</string>
+    <string name="permission_notification_listener">גישה להתראות</string>
+    <string name="answer_error_oreo">וודידג׳ט לרכב: חסרה הרשאה כדי לענות לשיחה</string>
+    <string name="answer_error_marshmallow">וודידג׳ט לרכב: אפשר גישה להתראות</string>
+    <string name="adaptive_icon_style">סגנון אייקון</string>
 
 </resources>

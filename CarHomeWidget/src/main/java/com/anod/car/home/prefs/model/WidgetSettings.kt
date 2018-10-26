@@ -94,6 +94,10 @@ class WidgetSettings(prefs: SharedPreferences, private val mResources: Resources
         get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) prefs.getString(ADAPTIVE_ICON_STYLE, "")!! else ""
         set(style) = putChange(ADAPTIVE_ICON_STYLE, style)
 
+    var paletteBackground: Boolean
+        get() = prefs.getBoolean("palette-background", false)
+        set(paletteBackgroun) = putChange("palette-background", paletteBackgroun)
+
     val adaptiveIconPath: Path
         get() {
             val pathData = adaptiveIconStyle

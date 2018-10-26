@@ -1,6 +1,8 @@
 package com.anod.car.home.skin.icon
 
 import android.graphics.Bitmap
+import android.graphics.Color
+import androidx.palette.graphics.Palette
 import com.anod.car.home.prefs.model.WidgetSettings
 
 /**
@@ -10,6 +12,13 @@ import com.anod.car.home.prefs.model.WidgetSettings
 class MetroBackgroundProcessor : BackgroundProcessor {
 
     override fun getColor(prefs: WidgetSettings, icon: Bitmap?): Int {
+        if (prefs.paletteBackground) {
+            if (icon == null) {
+                return Color.DKGRAY
+            }
+            val palette = Palette.Builder(icon).generate()
+            return palette.cardBackground
+        }
         return prefs.tileColor!!
     }
 }

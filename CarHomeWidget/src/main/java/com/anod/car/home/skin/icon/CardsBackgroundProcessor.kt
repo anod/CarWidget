@@ -17,17 +17,6 @@ class CardsBackgroundProcessor : BackgroundProcessor {
             return Color.DKGRAY
         }
         val palette = Palette.Builder(icon).generate()
-
-        var swatch: Palette.Swatch? = palette.mutedSwatch
-
-        if (swatch != null) {
-            return swatch.rgb
-        }
-        swatch = palette.darkVibrantSwatch
-        if (swatch != null) {
-            return swatch.rgb
-        }
-        swatch = palette.vibrantSwatch
-        return swatch?.rgb ?: Color.DKGRAY
+        return palette.cardBackground
     }
 }

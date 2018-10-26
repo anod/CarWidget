@@ -65,17 +65,24 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
                 createNumberPickerDialog().show()
                 return true
             }
-            R.id.tile_color -> {
-                val value = prefs.tileColor
-                val d = CarHomeColorPickerDialog
-                        .newInstance(value!!, true, activity)
+            R.id.choose_tile_color -> {
+                val value = prefs.tileColor!!
+                val d = CarHomeColorPickerDialog.newInstance(value, true, activity)
                 d.listener = ColorPickerSwatch.OnColorSelectedListener { color ->
                     prefs.tileColor = color
+                    prefs.paletteBackground = false
                     prefs.apply()
                     showTileColorButton()
                     activity.refreshSkinPreview()
                 }
                 d.show(activity.supportFragmentManager, "tileColor")
+                return true
+            }
+            R.id.palette_background -> {
+                prefs.paletteBackground = !prefs.paletteBackground
+                prefs.apply()
+                showTileColorButton()
+                activity.refreshSkinPreview()
                 return true
             }
             R.id.more -> {
@@ -149,19 +156,26 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
     }
 
     private fun showTileColorButton() {
-        if (activity.currentSkinItem.value == WidgetInterface.SKIN_WINDOWS7) {
-            val prefs = WidgetStorage.load(activity, appWidgetId)
-            val size = activity.resources.getDimension(R.dimen.color_preview_size).toInt()
+        menuTileColor?.also {
+            if (activity.currentSkinItem.value == WidgetInterface.SKIN_WINDOWS7) {
+                val prefs = WidgetStorage.load(activity, appWidgetId)
+                it.subMenu.findItem(R.id.palette_background).isChecked = prefs.paletteBackground
+                if (prefs.paletteBackground) {
+                    it.icon = activity.getDrawable(R.drawable.ic_format_color_fill_black_24dp)
+                } else {
+                    val size = activity.resources.getDimension(R.dimen.color_preview_size).toInt()
 
-            val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
-            val c = Canvas(bitmap)
-            c.drawColor(prefs.tileColor!!)
-            val d = FastBitmapDrawable(bitmap)
+                    val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+                    val c = Canvas(bitmap)
+                    c.drawColor(prefs.tileColor!!)
+                    val d = FastBitmapDrawable(bitmap)
 
-            menuTileColor!!.icon = d
-            menuTileColor!!.isVisible = true
-        } else {
-            menuTileColor!!.isVisible = false
+                    it.icon = d
+                }
+                it.isVisible = true
+            } else {
+                it.isVisible = false
+            }
         }
     }
 

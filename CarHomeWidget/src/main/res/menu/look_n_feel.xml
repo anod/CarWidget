@@ -7,6 +7,16 @@
         android:id="@+id/tile_color"
         android:title="@string/pref_tile_color_title"
         app:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/choose_tile_color"
+                android:title="@string/choose_color" />
+            <item
+                android:id="@+id/palette_background"
+                android:checkable="true"
+                android:title="@string/auto_color" />
+        </menu>
     </item>
     <item
         android:id="@+id/apply"

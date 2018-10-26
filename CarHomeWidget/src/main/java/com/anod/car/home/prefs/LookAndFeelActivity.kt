@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.transaction
+import androidx.viewpager.widget.ViewPager
 
 import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.R
@@ -46,7 +47,7 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
     val prefs: WidgetSettings by lazy { WidgetStorage.load(this, appWidgetId) }
     private val skinList: SkinList by lazy { SkinList(prefs.skin, isKeyguard, this) }
     private var bitmapMemoryCache: BitmapLruCache? = null
-    private val gallery: androidx.viewpager.widget.ViewPager by lazy { findViewById<androidx.viewpager.widget.ViewPager>(R.id.gallery) }
+    private val gallery: ViewPager by lazy { findViewById<ViewPager>(R.id.gallery) }
     private val loaderView: View by lazy { findViewById<View>(R.id.loading) }
     private val lookAndFeelMenu: LookAndFeelMenu by lazy { LookAndFeelMenu(this, model) }
     private val model: WidgetShortcutsModel by lazy { WidgetShortcutsModel(App.get(this), appWidgetId) }
