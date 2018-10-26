@@ -1,31 +1,25 @@
 package com.anod.car.home.appwidget
 
-import com.anod.car.home.model.LauncherSettings
-import com.anod.car.home.model.Shortcut
-import com.anod.car.home.model.WidgetShortcutsModel
-import com.anod.car.home.prefs.model.WidgetSettings
-import com.anod.car.home.skin.SkinProperties
-import com.anod.car.home.skin.icon.BackgroundProcessor
-import info.anodsplace.framework.AppLog
-import com.anod.car.home.utils.BitmapTransform
-import com.anod.car.home.utils.IconTheme
-import com.anod.car.home.utils.UtilitiesBitmap
-
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Path
-import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.util.LruCache
 import android.view.View
 import android.widget.RemoteViews
+import com.anod.car.home.model.Shortcut
 import com.anod.car.home.model.ShortcutIconLoader
+import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.model.WidgetInterface
-import com.anod.car.home.utils.AdaptiveIcon
-import java.lang.Exception
+import com.anod.car.home.prefs.model.WidgetSettings
+import com.anod.car.home.skin.SkinProperties
+import com.anod.car.home.skin.icon.BackgroundProcessor
+import com.anod.car.home.utils.BitmapTransform
+import com.anod.car.home.utils.IconTheme
+import com.anod.car.home.utils.UtilitiesBitmap
+import info.anodsplace.framework.AppLog
 
 /**
  * @author alex

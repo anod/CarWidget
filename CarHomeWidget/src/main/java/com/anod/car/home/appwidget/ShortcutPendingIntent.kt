@@ -45,25 +45,22 @@ class ShortcutPendingIntent(private val context: Context) : WidgetViewBuilder.Pe
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    override fun createShortcut(intent: Intent, appWidgetId: Int, position: Int,
-                                shortcutId: Long): PendingIntent {
+    override fun createShortcut(intent: Intent, appWidgetId: Int, position: Int, shortcutId: Long): PendingIntent {
         return createShortcut(intent, appWidgetId.toString(), position)
     }
 
     fun createShortcut(intent: Intent, prefix: String, position: Int): PendingIntent {
-        val action = intent.action
+        val action = intent.action ?: ""
         val isCall = INTENT_ACTION_CALL_PRIVILEGED == action || Intent.ACTION_CALL == action
         if (intent.extras == null && !isCall) { // Samsung s3 bug
-            return PendingIntent.getActivity(context, 0 /* no requestCode */, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT)
+            return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
         val path = "$prefix - $position"
         val data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"), path)
 
-        if (action != null && action == ShortcutActivity.ACTION_MEDIA_BUTTON) {
+        if (action == ShortcutActivity.ACTION_MEDIA_BUTTON) {
             intent.data = data
-            return PendingIntent.getActivity(context, 0 /* no requestCode */, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT)
+            return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
         val launchIntent = Intent(context, ShortcutActivity::class.java)
@@ -71,8 +68,7 @@ class ShortcutPendingIntent(private val context: Context) : WidgetViewBuilder.Pe
         launchIntent.data = data
         launchIntent.action = Intent.ACTION_MAIN
         launchIntent.putExtra(ShortcutActivity.EXTRA_INTENT, intent)
-        return PendingIntent.getActivity(context, 0 /* no requestCode */, launchIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(context, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     override fun createInCar(on: Boolean, buttonId: Int): PendingIntent {
