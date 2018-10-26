@@ -9,6 +9,7 @@ import com.anod.car.home.BuildConfig
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.utils.PowerUtil
+import com.google.android.gms.location.ActivityTransitionResult
 import info.anodsplace.framework.AppLog
 
 /**
@@ -35,10 +36,6 @@ object ModeDetector {
         get() = synchronized(sLock) {
             return sPrefState
         }
-
-    fun getEventState(flag: Int): Boolean {
-        return sEventState[flag]
-    }
 
     fun onRegister(context: Context) {
         sEventState[FLAG_POWER] = PowerUtil.isConnected(context)
@@ -78,9 +75,11 @@ object ModeDetector {
         if (!prefs.isInCarEnabled) {
             return
         }
-        if (Intent.ACTION_POWER_DISCONNECTED == intent.action) {
+        val action = intent.action ?: ""
+
+        if (Intent.ACTION_POWER_DISCONNECTED == action) {
             onPowerDisconnected(prefs, context)
-        } else if (Intent.ACTION_POWER_CONNECTED == intent.action) {
+        } else if (Intent.ACTION_POWER_CONNECTED == action) {
             onPowerConnected(prefs, context)
         }
 
@@ -102,7 +101,6 @@ object ModeDetector {
             context.stopService(service)
         }
 
-        val action = intent.action
         val inCarEnabled = ModeService.sInCarMode && newMode
         if (inCarEnabled && BluetoothAdapter.ACTION_STATE_CHANGED == action) {
             if (prefs.isAdjustVolumeLevel) {
@@ -115,9 +113,8 @@ object ModeDetector {
     private fun updateEventState(prefs: InCarInterface, intent: Intent) {
         val action = intent.action
 
-        if (ModeBroadcastReceiver.ACTION_ACTIVITY_RECOGNITION == action) {
-            sEventState[FLAG_ACTIVITY] = ActivityRecognitionHelper
-                    .checkCarState(intent, sEventState[FLAG_ACTIVITY])
+        if (ActivityTransitionResult.hasResult(intent)) {
+            sEventState[FLAG_ACTIVITY] = ActivityTransitionTracker.checkCarState(ActivityTransitionResult.extractResult(intent)!!)
             return
         }
 
@@ -229,7 +226,6 @@ object ModeDetector {
      */
     private fun resetActivityState() {
         sEventState[FLAG_ACTIVITY] = false
-        ActivityRecognitionService.resetLastResult()
     }
 
     fun switchOn(prefs: InCarInterface, modeHandler: ModeHandler) {
@@ -240,7 +236,6 @@ object ModeDetector {
     fun switchOff(prefs: InCarInterface, modeHandler: ModeHandler) {
         sMode = false
         resetActivityState()
-
         modeHandler.disable(prefs)
     }
 }

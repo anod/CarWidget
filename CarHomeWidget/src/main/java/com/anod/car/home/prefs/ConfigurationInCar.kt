@@ -2,25 +2,20 @@ package com.anod.car.home.prefs
 
 import android.app.Dialog
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.provider.Settings
 import android.widget.Toast
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 
 import com.anod.car.home.R
 import com.anod.car.home.appwidget.WidgetHelper
-import com.anod.car.home.incar.ActivityRecognitionClientService
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.prefs.model.InCarSettings
 import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.utils.*
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import android.net.Uri
-import android.content.Intent
 import android.content.SharedPreferences
 import com.anod.car.home.incar.ScreenOrientation
 import com.anod.car.home.prefs.model.InCarInterface
@@ -219,16 +214,6 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
                 d.show()
                 false
             }
-        } else {
-            pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                val `val` = newValue as Boolean
-                if (`val`) {
-                    ActivityRecognitionClientService.startService(activity!!)
-                } else {
-                    ActivityRecognitionClientService.stopService(activity!!)
-                }
-                true
-            }
         }
 
     }
@@ -269,7 +254,9 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
                 InCarSettings.CAR_DOCK_REQUIRED,
 
                 InCarSettings.POWER_BT_ENABLE,
-                InCarSettings.POWER_BT_DISABLE
+                InCarSettings.POWER_BT_DISABLE,
+
+                InCarSettings.ACTIVITY_RECOGNITION
         )
     }
 }

@@ -24,7 +24,7 @@ class BroadcastService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Start once
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundNotification()
+            startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this) )
         }
         if (receiver != null) {
             return Service.START_STICKY
@@ -35,10 +35,6 @@ class BroadcastService : Service() {
         stopForeground(true)
         stopSelf()
         return Service.START_NOT_STICKY
-    }
-
-    private fun startForegroundNotification() {
-        startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this) )
     }
 
     override fun onDestroy() {
@@ -53,8 +49,8 @@ class BroadcastService : Service() {
             ModeDetector.onRegister(context)
             val prefs = InCarStorage.load(context)
             if (prefs.isActivityRequired) {
-                AppLog.d("ActivityRecognitionClientService started")
-                ActivityRecognitionClientService.startService(context)
+                AppLog.d("ActivityTransitionTracker start tracking")
+                ActivityTransitionTracker(context).track()
             }
 
             if (!isServiceRequired(prefs)) {
@@ -86,7 +82,7 @@ class BroadcastService : Service() {
         val prefs = InCarStorage.load(context)
 
         if (!prefs.isActivityRequired) {
-            ActivityRecognitionClientService.stopService(context)
+            ActivityTransitionTracker(context).stop()
         }
     }
 
@@ -111,9 +107,6 @@ class BroadcastService : Service() {
             val states = ModeDetector.prefState
 
             for (i in states.indices) {
-                if (i == ModeDetector.FLAG_ACTIVITY) {
-                    continue
-                }
                 if (states[i]) {
                     return true
                 }

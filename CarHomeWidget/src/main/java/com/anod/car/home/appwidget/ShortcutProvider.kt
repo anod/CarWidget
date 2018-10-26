@@ -8,7 +8,10 @@ import android.content.Intent
 import android.widget.RemoteViews
 
 import com.anod.car.home.R
+import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.incar.SwitchInCarActivity
+import com.anod.car.home.prefs.model.InCarStorage
+import com.anod.car.home.utils.Version
 
 /**
  * @author algavris
@@ -28,7 +31,21 @@ class ShortcutProvider : AppWidgetProvider() {
         //        pendingIntent.setData(Uri.parse("com.anod.car.home.pro://mode/switch"));
         views.setOnClickPendingIntent(R.id.button, switchIntent)
 
+        val version = Version(context)
+        registerBroadcastService(context, version.isProOrTrial)
+
         appWidgetManager.updateAppWidget(appWidgetIds, views)
     }
 
+    private fun registerBroadcastService(context: Context, isProOrTrial: Boolean) {
+        val inCarEnabled = if (isProOrTrial)
+            InCarStorage.load(context).isInCarEnabled
+        else
+            false
+        if (inCarEnabled) {
+            BroadcastService.startService(context)
+        } else {
+            BroadcastService.stopService(context)
+        }
+    }
 }
