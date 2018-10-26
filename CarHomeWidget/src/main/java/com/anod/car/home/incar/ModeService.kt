@@ -48,6 +48,9 @@ class ModeService : Service() {
         AppLog.d("ModeService onStartCommand, sInCarMode = " + sInCarMode + ", redelivered = "
                 + redelivered)
 
+        val version = Version(this)
+        startForeground(InCarModeNotification.id, InCarModeNotification.create(version, this))
+
         if (intent == null) {
             AppLog.e("ModeService started without intent")
             stopSelf()
@@ -67,7 +70,6 @@ class ModeService : Service() {
         // mode == MODE_SWITCH_ON
         forceState = intent.getBooleanExtra(EXTRA_FORCE_STATE, false)
 
-        val version = Version(this)
         if (version.isFreeAndTrialExpired) {
             TrialExpiredNotification.show(this)
             stopSelf()
@@ -87,8 +89,6 @@ class ModeService : Service() {
         if (version.isFree) {
             version.increaseTrialCounter()
         }
-
-        startForeground(InCarModeNotification.id, InCarModeNotification.create(version, this))
 
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.
