@@ -115,6 +115,7 @@
     <string name="pref_titles_hide_title">Hide titles</string>
     <string name="pref_titles_hide_summary">Do not display titles for the shortcuts</string>
     <string name="not_active">Not active</string>
+    <string name="active">Active</string>
     <string name="welcome">Welcome</string>
     <string name="welcome_text"><![CDATA[<b>Car Widget</b> makes easier and quicker access to phone features when you\'re in the car.]]></string>
     <string name="install_a_widget">Install a widget</string>
@@ -284,6 +285,8 @@
     <string name="permission_notification_listener">Access to notifications</string>
     <string name="choose_color">Choose color</string>
     <string name="auto_color">Auto color</string>
+    <string name="status">Status</string>
+    <string name="incar_trigger_status">InCar triggers status</string>
 
     <array name="adaptive_icon_style_names">
         <item>Default</item>

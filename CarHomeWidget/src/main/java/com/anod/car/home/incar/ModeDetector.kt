@@ -8,7 +8,7 @@ import android.content.Intent
 import com.anod.car.home.BuildConfig
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarStorage
-import com.anod.car.home.utils.PowerUtil
+import com.anod.car.home.utils.Power
 import com.google.android.gms.location.ActivityTransitionResult
 import info.anodsplace.framework.AppLog
 
@@ -16,12 +16,19 @@ import info.anodsplace.framework.AppLog
  * @author alex
  * @date 12/25/13
  */
+
+class EventState(
+    val id: Int,
+    val enabled: Boolean,
+    val active: Boolean
+)
+
 object ModeDetector {
-    private const val FLAG_POWER = 0
-    private const val FLAG_HEADSET = 1
-    private const val FLAG_BLUETOOTH = 2
+    internal const val FLAG_POWER = 0
+    internal const val FLAG_HEADSET = 1
+    internal const val FLAG_BLUETOOTH = 2
     const val FLAG_ACTIVITY = 3
-    private const val FLAG_CAR_DOCK = 4
+    internal const val FLAG_CAR_DOCK = 4
 
     private val sPrefState = booleanArrayOf(false, false, false, false, false)
     private val sEventState = booleanArrayOf(false, false, false, false, false)
@@ -37,8 +44,21 @@ object ModeDetector {
             return sPrefState
         }
 
+    fun eventsState(): List<EventState> {
+        synchronized(sLock) {
+            return listOf(
+                EventState(FLAG_POWER, sPrefState[FLAG_POWER], sEventState[FLAG_POWER]),
+                EventState(FLAG_HEADSET, sPrefState[FLAG_HEADSET], sEventState[FLAG_HEADSET]),
+                EventState(FLAG_BLUETOOTH, sPrefState[FLAG_BLUETOOTH], sEventState[FLAG_BLUETOOTH]),
+                EventState(FLAG_ACTIVITY, sPrefState[FLAG_ACTIVITY], sEventState[FLAG_ACTIVITY]),
+                EventState(FLAG_CAR_DOCK, sPrefState[FLAG_CAR_DOCK], sEventState[FLAG_CAR_DOCK])
+            )
+        }
+    }
+
+
     fun onRegister(context: Context) {
-        sEventState[FLAG_POWER] = PowerUtil.isConnected(context)
+        sEventState[FLAG_POWER] = Power.isConnected(context)
     }
 
     fun updatePrefState(prefs: InCarInterface) {
@@ -221,13 +241,6 @@ object ModeDetector {
         }
     }
 
-    /**
-     * reset activity state flag
-     */
-    private fun resetActivityState() {
-        sEventState[FLAG_ACTIVITY] = false
-    }
-
     fun switchOn(prefs: InCarInterface, modeHandler: ModeHandler) {
         sMode = true
         modeHandler.enable(prefs)
@@ -235,7 +248,7 @@ object ModeDetector {
 
     fun switchOff(prefs: InCarInterface, modeHandler: ModeHandler) {
         sMode = false
-        resetActivityState()
         modeHandler.disable(prefs)
     }
+
 }

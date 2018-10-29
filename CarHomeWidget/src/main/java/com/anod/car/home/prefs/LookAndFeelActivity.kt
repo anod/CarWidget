@@ -31,6 +31,7 @@ import com.anod.car.home.main.AboutFragment
 import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.BitmapLruCache
 import com.anod.car.home.utils.forNewShortcut
+import info.anodsplace.framework.app.DialogCustom
 import kotlinx.android.synthetic.main.activity_main.*
 
 class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory, ShortcutDragListener.DropCallback {
@@ -173,13 +174,23 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         when (bottomNavigation.selectedItemId) {
             R.id.nav_widget -> lookAndFeelMenu.onCreateOptionsMenu(menu)
+            R.id.nav_incar -> menuInflater.inflate(R.menu.look_n_feel_incar, menu)
             else -> menuInflater.inflate(R.menu.look_n_feel_other, menu)
         }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return lookAndFeelMenu.onOptionsItemSelected(item)
+        if (!lookAndFeelMenu.onOptionsItemSelected(item)) {
+            if (item.itemId == R.id.incar_status) {
+                DialogCustom(this, theme.alert, R.string.status, R.layout.dialog_incar_status) { view, _ ->
+                    InCarStatus(view).apply()
+                }.show()
+                return true
+            }
+            return false
+        }
+        return true
     }
 
     fun persistPrefs() {

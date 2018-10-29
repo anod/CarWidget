@@ -14,7 +14,7 @@ import com.anod.car.home.R
 
 import com.anod.car.home.prefs.model.InCarInterface
 import info.anodsplace.framework.AppLog
-import com.anod.car.home.utils.PowerUtil
+import com.anod.car.home.utils.Power
 import com.anod.car.home.utils.Utils
 
 class ModeHandler(private val context: Context, private val screenOrientation: ScreenOrientation) {
@@ -22,7 +22,7 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
     fun enable(prefs: InCarInterface) {
         if (prefs.isDisableScreenTimeout) {
             if (prefs.isDisableScreenTimeoutCharging) {
-                if (PowerUtil.isConnected(context)) {
+                if (Power.isConnected(context)) {
                     ModeService.acquireWakeLock(context)
                 }
             } else {
