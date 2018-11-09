@@ -80,16 +80,20 @@ class AboutFragment : Fragment() {
     private fun createThemesDialog(): AlertDialog {
         val style = App.theme(context!!).dialog
         return DialogSingleChoice(context!!, style, R.string.choose_a_theme, R.array.app_themes, App.theme(context!!).themeIdx) {
-            _, which ->
+            d, which ->
 
-            val appSettings = App.provide(context!!).appSettings
-            appSettings.theme = which
-            appSettings.apply()
-            val app = App.get(context!!)
-            app.appComponent.theme = AppTheme(which)
-            AppCompatDelegate.setDefaultNightMode(app.nightMode)
-            activity!!.setTheme(app.appComponent.theme.mainResource)
-            activity!!.recreate()
+            context?.also {
+                val appSettings = App.provide(it).appSettings
+                appSettings.theme = which
+                appSettings.apply()
+                val app = App.get(it)
+                app.appComponent.theme = AppTheme(which)
+                AppCompatDelegate.setDefaultNightMode(app.nightMode)
+                activity!!.setTheme(app.appComponent.theme.mainResource)
+                activity!!.recreate()
+            }
+            d.dismiss()
+
         }.create()
     }
 

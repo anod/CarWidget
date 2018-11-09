@@ -1,7 +1,10 @@
 package com.anod.car.home
 
+import android.annotation.TargetApi
 import android.app.Application
 import android.content.Context
+import android.os.Build
+import android.os.DeadSystemException
 import androidx.appcompat.app.AppCompatDelegate
 import com.anod.car.home.acra.BrowserUrlSender
 import com.anod.car.home.notifications.Channels
@@ -49,7 +52,31 @@ class CarWidgetApplication : Application(), ApplicationInstance {
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
+        initCrashReporter()
+    }
+
+    private fun initCrashReporter() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            initCrashReporter24()
+        } else {
+            ACRA.init(this)
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    private fun initCrashReporter24() {
+        val androidCrashHandler = Thread.getDefaultUncaughtExceptionHandler()
         ACRA.init(this)
+        val acraCrashHandler = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { thread, exception ->
+            when {
+                // Not sure what is going here
+                exception is DeadSystemException -> androidCrashHandler.uncaughtException(thread, exception)
+                // Bug in Android 7.1.1
+                exception.message?.contains("startForegroundService")?: false -> androidCrashHandler.uncaughtException(thread, exception)
+                else -> acraCrashHandler.uncaughtException(thread, exception)
+            }
+        }
     }
 
     override fun onCreate() {

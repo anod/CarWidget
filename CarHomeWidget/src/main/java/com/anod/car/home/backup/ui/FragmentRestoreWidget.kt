@@ -175,7 +175,7 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
 
             val name = entry!!.name
             val title = name.substring(0, name.lastIndexOf("."))
-            holder.title.tag = entry.name
+            holder.title.tag = entry.toUri()
             holder.title.text = title
             holder.title.setOnClickListener(restoreListener)
 

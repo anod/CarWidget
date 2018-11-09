@@ -3,6 +3,7 @@ package com.anod.car.home.incar
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
 import android.telephony.PhoneStateListener
@@ -123,8 +124,14 @@ class ModeService : Service() {
         phoneListener = null
     }
 
+    private val binder = NotificationServiceBinder()
+    inner class NotificationServiceBinder : Binder() {
+        val service: ModeService
+            get() = this@ModeService
+    }
+
     override fun onBind(arg0: Intent): IBinder? {
-        return null
+        return binder
     }
 
     companion object {
