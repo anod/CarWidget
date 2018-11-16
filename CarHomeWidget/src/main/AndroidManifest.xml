@@ -253,12 +253,6 @@
         </receiver>
 
         <service
-            android:name="com.anod.car.home.incar.ActivityRecognitionClientService"
-            android:exported="false" />
-        <service
-            android:name="com.anod.car.home.incar.ActivityRecognitionService"
-            android:exported="false" />
-        <service
             android:name=".UpdateWidgetJob"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />

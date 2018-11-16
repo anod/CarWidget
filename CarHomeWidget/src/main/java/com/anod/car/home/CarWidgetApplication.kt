@@ -15,6 +15,8 @@ import org.acra.ACRA
 import org.acra.ReportField
 import org.acra.annotation.AcraCore
 import org.acra.annotation.AcraNotification
+import com.anod.car.home.utils.AppUpgrade
+
 
 @AcraCore(
         resReportSendSuccessToast = R.string.crash_dialog_toast,
@@ -52,7 +54,9 @@ class CarWidgetApplication : Application(), ApplicationInstance {
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
-        initCrashReporter()
+        if (!AppUpgrade.isUpgraded(this)) {
+            initCrashReporter()
+        }
     }
 
     private fun initCrashReporter() {
