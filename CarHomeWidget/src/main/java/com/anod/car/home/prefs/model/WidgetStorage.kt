@@ -100,13 +100,6 @@ object WidgetStorage {
         }
     }
 
-    fun hasSettingsFile(context: Context, appWidgetId: Int): Boolean {
-        val prefName = String.format(Locale.US, PREF_NAME, appWidgetId)
-        val filePath = context.filesDir.parent + String.format(Locale.US, WidgetStorage.SHARED_PREFS_PATH, prefName)
-        val file = File(filePath)
-        return file.isFile
-    }
-
     fun dropShortcutPreference(cellId: Int, appWidgetId: Int, context: Context) {
         val prefs = getSharedPreferences(context, appWidgetId)
         val edit = prefs.edit()

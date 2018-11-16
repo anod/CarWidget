@@ -158,11 +158,6 @@ class ModeService : Service() {
             return sLockStatic
         }
 
-        fun isWakeLockHeld(context: Context): Boolean {
-            val lock = ModeService.getLock(context.applicationContext)
-            return lock!!.isHeld
-        }
-
         fun acquireWakeLock(context: Context) {
             val lock = ModeService.getLock(context.applicationContext)
             if (!lock!!.isHeld) {

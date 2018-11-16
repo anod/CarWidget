@@ -8,7 +8,6 @@ import com.anod.car.home.prefs.LookAndFeelActivity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.transaction
 import com.anod.car.home.incar.ScreenOrientation
 import com.anod.car.home.prefs.ConfigurationInCar

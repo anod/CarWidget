@@ -68,9 +68,9 @@ class ScreenOrientation(private val mContext: Context, private val windowManager
     }
 
     companion object {
-        val DISABLED = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-        val PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        val LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        val LANDSCAPE_REVERSE = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+        const val DISABLED = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        const val PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        const val LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        const val LANDSCAPE_REVERSE = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
     }
 }

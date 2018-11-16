@@ -22,7 +22,6 @@ import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarSettings
 import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.utils.*
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_request_permissions.*
 
 class RequestPermissionsActivity : CarWidgetActivity() {
