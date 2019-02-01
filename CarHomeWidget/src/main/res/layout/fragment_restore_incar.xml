@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/export_backup"
             android:tint="?attr/colorAccent"
-            android:src="@drawable/ic_action_xhdpi_ul_to_cloud" />
+            android:src="@drawable/ic_cloud_upload" />
     </LinearLayout>
 
 

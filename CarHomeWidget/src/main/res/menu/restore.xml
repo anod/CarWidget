@@ -12,7 +12,7 @@
 
     <item
         android:id="@+id/menu_download_from_cloud"
-        android:icon="@drawable/ic_action_xhdpi_dl_from_cloud"
+        android:icon="@drawable/ic_cloud_download"
         android:title="@string/import_backup"
         app:showAsAction="always" />
 

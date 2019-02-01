@@ -54,7 +54,7 @@
         android:contentDescription="@string/export_backup"
         android:gravity="center"
         android:scaleType="center"
-        android:src="@drawable/ic_action_xhdpi_ul_to_cloud"
+        android:src="@drawable/ic_cloud_upload"
         android:tint="?attr/colorAccent" />
 
     <ImageView

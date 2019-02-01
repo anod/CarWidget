@@ -35,28 +35,28 @@
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    tools:src="@drawable/ic_android_white_24dp" />
+                    tools:src="@drawable/ic_android" />
 
                 <ImageView
                     android:id="@+id/imageView3"
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    tools:src="@drawable/ic_android_white_24dp" />
+                    tools:src="@drawable/ic_android" />
 
                 <ImageView
                     android:id="@+id/imageView5"
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    tools:src="@drawable/ic_android_white_24dp" />
+                    tools:src="@drawable/ic_android" />
 
                 <ImageView
                     android:id="@+id/imageView7"
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    tools:src="@drawable/ic_android_white_24dp" />
+                    tools:src="@drawable/ic_android" />
             </LinearLayout>
 
             <LinearLayout
@@ -68,7 +68,7 @@
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    tools:src="@drawable/ic_android_white_24dp" />
+                    tools:src="@drawable/ic_android" />
 
 
                 <ImageView
@@ -76,7 +76,7 @@
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    tools:src="@drawable/ic_android_white_24dp" />
+                    tools:src="@drawable/ic_android" />
 
 
                 <ImageView
@@ -84,7 +84,7 @@
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    tools:src="@drawable/ic_android_white_24dp" />
+                    tools:src="@drawable/ic_android" />
 
 
                 <ImageView
@@ -92,7 +92,7 @@
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/settings_icon_margin"
-                    tools:src="@drawable/ic_android_white_24dp" />
+                    tools:src="@drawable/ic_android" />
             </LinearLayout>
         </LinearLayout>
 
