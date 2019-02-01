@@ -46,7 +46,7 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
             SamsungDrivingMode.enable(context)
         }
 
-        if (prefs.isHotspotOn) {
+        if (WifiApControl.isSupported && prefs.isHotspotOn) {
             if (prefs.disableWifi == InCarInterface.WIFI_NOACTION) {
                 disableWifi(context)
             }
@@ -80,7 +80,7 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
         if (prefs.isActivateCarMode) {
             deactivateCarMode(context)
         }
-        if (prefs.isHotspotOn) {
+        if (WifiApControl.isSupported && prefs.isHotspotOn) {
             switchHotspot(context, false)
         }
         if (prefs.disableWifi == InCarInterface.WIFI_TURNOFF) {
@@ -276,11 +276,9 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
          */
         private fun switchHotspot(context: Context, isTurnToOn: Boolean) {
             val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-            val apControl = WifiApControl.getApControl(wifiManager)
-            if (apControl != null) {
-                AppLog.d("is WiFi AP enabled:" + apControl.isWifiApEnabled())
-                apControl.setWifiApEnabled(apControl.wifiApConfiguration!!, isTurnToOn)
-            }
+            val apControl = WifiApControl(wifiManager)
+            AppLog.d("is WiFi AP enabled:" + apControl.isEnabled)
+            apControl.isEnabled = isTurnToOn
         }
     }
 }

@@ -12,6 +12,7 @@ import androidx.preference.CheckBoxPreference
 
 import com.anod.car.home.R
 import com.anod.car.home.incar.SamsungDrivingMode
+import com.anod.car.home.incar.WifiApControl
 import com.anod.car.home.prefs.model.InCarSettings
 import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.utils.AppPermissions
@@ -32,6 +33,14 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
     override fun onCreateImpl(savedInstanceState: Bundle?) {
         initAutorunApp()
         initSamsungHandsfree()
+        initHotspot()
+    }
+
+    private fun initHotspot() {
+        if (!WifiApControl.isSupported) {
+            val hotspot = findPreference(InCarSettings.HOTSPOT) as CheckBoxPreference
+            (findPreference("incar-more-category") as PreferenceCategory).removePreference(hotspot)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
