@@ -89,10 +89,10 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
         private const val ITEMS_NUM = 5
         private val ICONS = intArrayOf(
                 R.drawable.ic_launcher_carwidget,
-                R.drawable.ic_call_white_24dp,
-                R.drawable.ic_media_play_pause,
-                R.drawable.ic_media_next,
-                R.drawable.ic_media_prev
+                R.drawable.ic_shortcut_call,
+                R.drawable.ic_shortcut_play,
+                R.drawable.ic_shortcut_next,
+                R.drawable.ic_shortcut_previous
         )
 
         const val requestReadContacts = 304
