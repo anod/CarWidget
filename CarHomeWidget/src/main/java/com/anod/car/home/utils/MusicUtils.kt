@@ -3,6 +3,8 @@ package com.anod.car.home.utils
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.media.AudioManager
+import android.os.Build
 import android.os.IBinder
 import android.os.SystemClock
 import android.view.KeyEvent
@@ -16,9 +18,15 @@ import info.anodsplace.framework.AppLog
 object MusicUtils {
 
     fun sendKeyEvent(key: Int, context: Context) {
-        AppLog.d("Sending event key $key")
-        handleMediaKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, key), context)
-        handleMediaKeyEvent(KeyEvent(KeyEvent.ACTION_UP, key), context)
+        AppLog.i("Sending event key $key")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ) {
+            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            audioManager.dispatchMediaKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, key))
+            audioManager.dispatchMediaKeyEvent(KeyEvent(KeyEvent.ACTION_UP, key))
+        } else {
+            handleMediaKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, key), context)
+            handleMediaKeyEvent(KeyEvent(KeyEvent.ACTION_UP, key), context)
+        }
     }
 
     private fun handleMediaKeyEvent(keyEvent: KeyEvent, context: Context) {
