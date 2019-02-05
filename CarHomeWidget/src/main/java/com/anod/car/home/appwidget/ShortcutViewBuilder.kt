@@ -66,7 +66,7 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
         if (info == null) {
             setNoShortcut(resBtn, resText, views, position, skinProperties!!)
         } else {
-            AppLog.d("Shortcut:" + info.intent.toString())
+            AppLog.i("Shortcut: " + (info.intent.component?.toShortString() ?: info.intent.toString()))
             icon = applyShortcut(resBtn, resText, info, views, position, iconTheme)
         }
         if (prefs!!.isTitlesHide) {

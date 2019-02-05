@@ -60,7 +60,7 @@ class BrowserUrlSender : ReportSender {
 
     private fun minifyTrace(fullTrace: String): String {
         AppLog.d(fullTrace)
-        val lines = fullTrace.split("\n").dropLastWhile({ it.isEmpty() })
+        val lines = fullTrace.split("\n").dropLastWhile { it.isEmpty() }
 
         if (lines.isNotEmpty()) {
             val sb = StringBuilder()

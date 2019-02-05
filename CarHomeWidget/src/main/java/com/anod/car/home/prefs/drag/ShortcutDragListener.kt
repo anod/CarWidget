@@ -103,7 +103,7 @@ class ShortcutDragListener(activity: Activity, private val dropCallback: DropCal
                 v.invalidate()
                 // Does a getResult(), and displays what happened.
                 if (dragEvent.result) {
-                    AppLog.d("Delete was handled.")
+                    AppLog.i("Delete was handled.")
 
                 }
                 return true
@@ -174,7 +174,7 @@ class ShortcutDragListener(activity: Activity, private val dropCallback: DropCal
                 v.invalidate()
                 // Does a getResult(), and displays what happened.
                 if (dragEvent.result) {
-                    AppLog.d("handleShortcutEvent: The drop was handled.")
+                    AppLog.i("The drop was handled.")
                 }
                 // returns true; the value is ignored.
                 return true

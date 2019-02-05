@@ -287,6 +287,8 @@
     <string name="auto_color">Auto color</string>
     <string name="status">Status</string>
     <string name="incar_trigger_status">InCar triggers status</string>
+    <string name="user_log">User log</string>
+    <string name="share">Share</string>
 
     <array name="adaptive_icon_style_names">
         <item>Default</item>

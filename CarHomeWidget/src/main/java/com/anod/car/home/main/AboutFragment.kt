@@ -20,6 +20,7 @@ import com.anod.car.home.prefs.MusicAppSettingsActivity
 import com.anod.car.home.prefs.model.AppTheme
 import com.anod.car.home.utils.Utils
 import com.anod.car.home.utils.forApplicationDetails
+import com.anod.car.home.log.UserLogActivity
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogCustom
 import info.anodsplace.framework.app.DialogSingleChoice
@@ -56,6 +57,9 @@ class AboutFragment : Fragment() {
         buttonMusicApp.setOnClickListener {
             val musicAppsIntent = Intent(context, MusicAppSettingsActivity::class.java)
             context!!.startActivity(musicAppsIntent)
+        }
+        buttonUserLog.setOnClickListener {
+            context!!.startActivity(Intent(context, UserLogActivity::class.java))
         }
 
         val musicApp = renderMusicApp()

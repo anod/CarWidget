@@ -10,11 +10,13 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.KeyEvent
+import info.anodsplace.framework.AppLog
 
 fun Intent.forNewShortcut(context: Context, appWidgetId: Int, cellId: Int): Intent {
     component = ComponentName(context, NewShortcutActivity::class.java)
@@ -105,7 +107,14 @@ fun Intent.forDirectCall(contactUri: Uri, context: Context): Intent? {
         ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
         ContactsContract.CommonDataKinds.Phone.PHOTO_URI
     )
-    val cursor = context.contentResolver.query(contactUri, projection, null, null, null)
+
+    val cursor: Cursor?
+    try {
+        cursor = context.contentResolver.query(contactUri, projection, null, null, null)
+    } catch (e: IllegalArgumentException) {
+        AppLog.e(e)
+        return null
+    }
 
     // If the cursor returned is valid, get the phone number
     if (cursor != null) {

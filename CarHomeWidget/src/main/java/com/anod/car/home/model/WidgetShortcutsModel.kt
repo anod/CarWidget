@@ -69,7 +69,7 @@ class WidgetShortcutsModel(context: Context, private val appWidgetId: Int) : Abs
             }
             val shortcut = ShortcutInfoUtils.infoFromApplicationIntent(context, data)
             if (shortcut.info != null) {
-                AppLog.d("Init shortcut - " + shortcut.info + " Widget - " + appWidgetId)
+                AppLog.i("Init shortcut - " + shortcut.info + " for #$appWidgetId")
                 save(cellId, shortcut.info, shortcut.icon)
                 cellId++
             }

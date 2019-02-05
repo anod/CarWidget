@@ -43,7 +43,7 @@ class WidgetButtonChoiceActivity : AppCompatGridActivity() {
 
         appWidgetId = Utils.readAppWidgetId(savedInstanceState, intent)
         if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-            AppLog.d("Invalid AppWidgetId")
+            AppLog.e("Invalid AppWidgetId")
             finish()
             return
         }
@@ -58,7 +58,7 @@ class WidgetButtonChoiceActivity : AppCompatGridActivity() {
             button = savedInstanceState.getInt(EXTRA_BTN, -1)
         }
         if (skin.isEmpty() || button == -1) {
-            AppLog.d("Invalid params")
+            AppLog.e("Invalid params")
             finish()
             return
         }

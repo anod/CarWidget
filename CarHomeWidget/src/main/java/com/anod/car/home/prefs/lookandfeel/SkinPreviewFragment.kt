@@ -12,10 +12,12 @@ import android.content.ClipData
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.view.InflateException
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
@@ -38,7 +40,14 @@ class SkinPreviewViewModel(application: Application): AndroidViewModel(applicati
                 param.first.init()
                 param.first.overrideSkin = param.second
                 val rv = param.first.build()
-                return rv.apply(context.actual, null)
+                try {
+                    return rv.apply(context.actual, null)
+                } catch (e: InflateException) {
+                    AppLog.e("Cannot generate preview for ${param.second}", e)
+                    return TextView(applicationContext.actual).apply {
+                        text = "Cannot generate preview"
+                    }
+                }
             }
 
             override fun finished(result: View) {

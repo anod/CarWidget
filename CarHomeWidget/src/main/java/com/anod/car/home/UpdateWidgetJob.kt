@@ -41,10 +41,9 @@ class UpdateWidgetJob : JobIntentService() {
             val appWidgetId = appWidgetIds[i]
             val builder = WidgetViewBuilder(context, appWidgetId, ShortcutPendingIntent(context))
             val views = builder.init().build()
-            AppLog.d("Performing update for $appWidgetId")
+            AppLog.i("Performing update for widget #$appWidgetId")
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
-
     }
 
     private fun registerBroadcastService(context: Context, isProOrTrial: Boolean) {

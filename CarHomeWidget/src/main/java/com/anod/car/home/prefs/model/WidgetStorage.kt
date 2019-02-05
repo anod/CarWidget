@@ -16,7 +16,7 @@ object WidgetStorage {
     private const val LAUNCH_COMPONENT_NUMBER_MAX = 10
     private const val LAUNCH_COMPONENT_NUMBER_DEFAULT = 6
 
-    const val CMP_NUMBER = "cmp-number"
+    private const val CMP_NUMBER = "cmp-number"
     private const val LAUNCH_COMPONENT = "launch-component-%d"
 
     const val PREF_NAME = "widget-%d"
@@ -94,7 +94,7 @@ object WidgetStorage {
 
             val prefName = String.format(Locale.US, PREF_NAME, appWidgetId)
             val filePath = context.filesDir.parent + String.format(Locale.US, WidgetStorage.SHARED_PREFS_PATH, prefName)
-            AppLog.d("Drop widget file: $filePath")
+            AppLog.i("Drop widget file: $filePath")
             val file = File(filePath)
             file.delete()
         }

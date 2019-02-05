@@ -112,7 +112,7 @@ object ModeDetector {
         }
 
         val newMode = detectNewMode()
-        AppLog.d("New mode : " + newMode + " Car Mode:" + ModeService.sInCarMode)
+        AppLog.i("New mode: " + newMode + " Car Mode: " + ModeService.sInCarMode)
         if (!ModeService.sInCarMode && newMode) {
             val service = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_ON)
             context.startService(service)

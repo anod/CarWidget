@@ -61,14 +61,14 @@
         android:name="com.anod.car.home.CarWidgetApplication"
         android:allowBackup="true"
         android:backupAgent=".backup.BackupFileHelperAgent"
-        android:supportsRtl="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
             android:name="com.anod.car.home.prefs.ShortcutEditActivity"
-            android:theme="@style/DialogGrey"/>
+            android:theme="@style/DialogGrey" />
         <activity
             android:name="com.anod.car.home.prefs.AllAppsActivity"
             android:theme="@style/AppListTheme" />
@@ -105,8 +105,8 @@
             android:name="com.anod.car.home.prefs.LookAndFeelActivity"
             android:clearTaskOnLaunch="true"
             android:label="@string/app_name"
-            android:theme="@style/AppThemeGray.Transparent"
-            android:taskAffinity="com.anod.car.home.settings">
+            android:taskAffinity="com.anod.car.home.settings"
+            android:theme="@style/AppThemeGray.Transparent">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -154,8 +154,8 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
-            android:theme="@style/SplashScreen"
-            android:taskAffinity="com.anod.car.home.main">
+            android:taskAffinity="com.anod.car.home.main"
+            android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -272,9 +272,8 @@
             android:taskAffinity=""
             android:theme="@style/BrightnessTheme" />
 
-        <activity
-            android:name=".main.RequestPermissionsActivity"
-            />
+        <activity android:name=".main.RequestPermissionsActivity" />
+        <activity android:name="com.anod.car.home.log.UserLogActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -286,9 +285,11 @@
                 android:resource="@xml/backup_paths" />
         </provider>
 
-        <service android:name=".incar.NotificationReceiverService"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
-            android:enabled="@bool/notification_receiver_enabled" android:exported="true">
+        <service
+            android:name=".incar.NotificationReceiverService"
+            android:enabled="@bool/notification_receiver_enabled"
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>

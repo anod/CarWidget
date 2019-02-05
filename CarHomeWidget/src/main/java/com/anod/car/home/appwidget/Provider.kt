@@ -21,7 +21,6 @@ import info.anodsplace.framework.AppLog
 open class Provider : AppWidgetProvider() {
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        AppLog.d("onUpdate: $appWidgetIds")
         requestUpdate(context, appWidgetIds)
     }
 

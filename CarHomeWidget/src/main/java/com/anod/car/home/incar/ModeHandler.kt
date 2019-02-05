@@ -184,7 +184,7 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
             }
 
             if (newBrightLevel == -1) {
-                AppLog.d("Wrong brightness setting Mode : " + brightSetting + " Level : "
+                AppLog.e("Wrong brightness setting Mode : " + brightSetting + " Level : "
                         + newBrightLevel)
                 return
             }
@@ -277,7 +277,7 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
         private fun switchHotspot(context: Context, isTurnToOn: Boolean) {
             val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
             val apControl = WifiApControl(wifiManager)
-            AppLog.d("is WiFi AP enabled:" + apControl.isEnabled)
+            AppLog.i("is WiFi AP enabled: " + apControl.isEnabled)
             apControl.isEnabled = isTurnToOn
         }
     }

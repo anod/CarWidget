@@ -46,7 +46,7 @@ class ModeService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         val redelivered = flags and Service.START_FLAG_REDELIVERY == Service.START_FLAG_REDELIVERY
-        AppLog.d("ModeService onStartCommand, sInCarMode = " + sInCarMode + ", redelivered = "
+        AppLog.i("Start InCar Mode service, sInCarMode = " + sInCarMode + ", redelivered = "
                 + redelivered)
 
         val version = Version(this)
@@ -110,14 +110,14 @@ class ModeService : Service() {
     }
 
     private fun attachPhoneListener() {
-        AppLog.d("Attach phone listener")
+        AppLog.i("Attach phone listener")
         val provider = App.provide(this)
         phoneListener = provider.modePhoneStateListener
         provider.telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE)
     }
 
     private fun detachPhoneListener() {
-        AppLog.d("Detach phone listener")
+        AppLog.i("Detach phone listener")
         val tm = App.provide(this).telephonyManager
         tm.listen(phoneListener, PhoneStateListener.LISTEN_NONE)
         phoneListener!!.cancelActions()
@@ -161,20 +161,20 @@ class ModeService : Service() {
         fun acquireWakeLock(context: Context) {
             val lock = ModeService.getLock(context.applicationContext)
             if (!lock!!.isHeld) {
-                AppLog.d("WakeLock is not held")
+                AppLog.i("WakeLock is not held")
                 lock.acquire()
             }
-            AppLog.d("WakeLock acquired")
+            AppLog.i("WakeLock acquired")
         }
 
         fun releaseWakeLock(context: Context) {
             val lock = ModeService.getLock(context.applicationContext)
 
             if (lock!!.isHeld) {
-                AppLog.d("WakeLock is held")
+                AppLog.i("WakeLock is held")
                 lock.release()
             }
-            AppLog.d("WakeLock released")
+            AppLog.i("WakeLock released")
         }
 
         fun createStartIntent(context: Context, mode: Int): Intent {

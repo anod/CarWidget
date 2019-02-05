@@ -15,14 +15,13 @@ abstract class CarWidgetActivity : AppCompatActivity() {
     val app: CarWidgetApplication
         get() = App.get(this)
 
-    val theme: AppTheme
+    open val theme: AppTheme
         get() = App.theme(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(appThemeRes)
         AppCompatDelegate.setDefaultNightMode(app.nightMode)
         super.onCreate(savedInstanceState)
-
     }
 
     protected open val appThemeRes: Int

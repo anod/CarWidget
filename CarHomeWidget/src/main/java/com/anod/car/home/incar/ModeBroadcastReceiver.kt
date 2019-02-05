@@ -10,7 +10,7 @@ class ModeBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val act = intent.action ?: ""
-        AppLog.d(" Action: $act")
+        AppLog.i(" Action: $act")
 
         BroadcastService.startService(context)
 

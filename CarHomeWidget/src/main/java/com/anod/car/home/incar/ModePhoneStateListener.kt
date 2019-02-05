@@ -45,20 +45,20 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
         this.state = state
         when (state) {
             TelephonyManager.CALL_STATE_IDLE -> {
-                AppLog.d("Call state idle")
+                AppLog.i("Call state idle")
                 audioManager.isSpeakerphoneOn = false
                 cancelAnswerTimer()
                 answered = false
             }
             TelephonyManager.CALL_STATE_OFFHOOK -> {
-                AppLog.d("Call state off hook")
+                AppLog.i("Call state off hook")
                 if (autoSpeaker && !audioManager.isSpeakerphoneOn) {
                     AppLog.d("Enable speakerphone while off hook")
                     audioManager.isSpeakerphoneOn = true
                 }
             }
             TelephonyManager.CALL_STATE_RINGING -> {
-                AppLog.d("Call state ringing")
+                AppLog.i("Call state ringing")
                 if (answerMode == InCarInterface.AUTOANSWER_IMMEDIATLY) {
                     AppLog.d("Check if already answered")
                     if (!answered) {
@@ -69,17 +69,17 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
                 } else if (answerMode == InCarInterface.AUTOANSWER_DELAY_5) {
                     AppLog.d("Check if already answered")
                     if (!answered) {
-                        AppLog.d("Answer delayed")
+                        AppLog.i("Answer delayed")
                         answerCallDelayed()
                         answered = true
                     }
                 } else {
-                    AppLog.d("Cancel answer timer")
+                    AppLog.i("Cancel answer timer")
                     cancelAnswerTimer()
                 }
             }
         }
-        AppLog.d("Call state <unknown>: $state")
+        AppLog.e("Call state <unknown>: $state")
     }
 
     private fun cancelAnswerTimer() {
@@ -108,7 +108,7 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
         audioManager.isMicrophoneMute = false
 
         if (autoSpeaker && !audioManager.isSpeakerphoneOn) {
-            AppLog.d("Enable speakerphone while ringing")
+            AppLog.i("Enable speakerphone while ringing")
             audioManager.isSpeakerphoneOn = true
         }
     }
@@ -121,7 +121,7 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
                 val telecomManager = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
                 telecomManager.acceptRingingCall()
                 if (autoSpeaker && !audioManager.isSpeakerphoneOn) {
-                    AppLog.d("Enable speakerphone")
+                    AppLog.i("Enable speakerphone")
                     audioManager.isSpeakerphoneOn = true
                 }
             } else {
@@ -132,7 +132,7 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)  {
             sendHeadsetHook(context)
             if (autoSpeaker && !audioManager.isSpeakerphoneOn) {
-                AppLog.d("Enable speakerphone")
+                AppLog.i("Enable speakerphone")
                 audioManager.isSpeakerphoneOn = true
             }
         } else {
@@ -153,7 +153,7 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
             for (m in mediaControllerList) {
                 if ("com.android.server.telecom" == m.packageName) {
                     m.dispatchMediaButtonEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK))
-                    AppLog.d("HEADSETHOOK sent to telecom server")
+                    AppLog.i("HEADSETHOOK sent to telecom server")
                     break
                 }
             }

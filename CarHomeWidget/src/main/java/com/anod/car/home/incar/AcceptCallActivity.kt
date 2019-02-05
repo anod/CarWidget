@@ -50,7 +50,7 @@ class AcceptCallActivity : Activity() {
         acceptCall()
 
         if (enableSpeaker && !audioManager!!.isSpeakerphoneOn) {
-            AppLog.d("Enable speakerphone in AcceptCallActivity")
+            AppLog.i("Enable speakerphone in AcceptCallActivity")
             audioManager!!.isSpeakerphoneOn = true
         }
     }
@@ -96,12 +96,12 @@ class AcceptCallActivity : Activity() {
 
         try {
             try {
-                AppLog.d("execute input keycode headset hook")
+                AppLog.i("execute input keycode headset hook")
                 Runtime.getRuntime().exec("input keyevent " + Integer.toString(KeyEvent.KEYCODE_HEADSETHOOK))
 
             } catch (e: IOException) {
                 // Runtime.exec(String) had an I/O problem, try to fall back
-                AppLog.d("send keycode headset hook intents")
+                AppLog.i("send keycode headset hook intents")
                 val enforcedPerm = "android.permission.CALL_PRIVILEGED"
                 val btnDown = Intent(Intent.ACTION_MEDIA_BUTTON).putExtra(
                         Intent.EXTRA_KEY_EVENT, KeyEvent(KeyEvent.ACTION_DOWN,

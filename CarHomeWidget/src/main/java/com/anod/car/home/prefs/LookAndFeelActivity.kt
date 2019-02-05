@@ -218,7 +218,7 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
     }
 
     fun refreshSkinPreview() {
-        AppLog.d("Refresh Skin Requested")
+        AppLog.i("Refresh skin preview")
         adapter!!.refresh()
     }
 

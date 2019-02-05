@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.IBinder
+import androidx.core.content.ContextCompat
 import com.anod.car.home.notifications.ModeDetectorNotification
 
 import com.anod.car.home.prefs.model.InCarInterface
@@ -26,12 +27,14 @@ class BroadcastService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this) )
         }
-        if (receiver != null) {
+        if (receiver == null) {
+            if (register(this)) {
+                return Service.START_STICKY
+            }
+        } else {
             return Service.START_STICKY
         }
-        if (register(this)) {
-            return Service.START_STICKY
-        }
+
         stopForeground(true)
         stopSelf()
         return Service.START_NOT_STICKY
@@ -43,38 +46,34 @@ class BroadcastService : Service() {
     }
 
     private fun register(context: Context): Boolean {
-        AppLog.d("BroadcastService::register")
-        if (receiver == null) {
-
-            ModeDetector.onRegister(context)
-            val prefs = InCarStorage.load(context)
-            if (prefs.isActivityRequired) {
-                AppLog.d("ActivityTransitionTracker start tracking")
-                ActivityTransitionTracker(context).track()
-            }
-
-            if (!isServiceRequired(prefs)) {
-                AppLog.d("Broadcast service is not required")
-                return false
-            }
-
-            val filter = IntentFilter()
-            filter.addAction(Intent.ACTION_HEADSET_PLUG)
-            filter.addAction(Intent.ACTION_POWER_CONNECTED)
-            filter.addAction(Intent.ACTION_POWER_DISCONNECTED)
-            filter.addAction(Intent.ACTION_DOCK_EVENT)
-            filter.addAction(UiModeManager.ACTION_ENTER_CAR_MODE)
-            filter.addAction(UiModeManager.ACTION_EXIT_CAR_MODE)
-
-            receiver = ModeBroadcastReceiver()
-            context.registerReceiver(receiver, filter)
-            return true
+        AppLog.i("Register BroadcastService")
+        ModeDetector.onRegister(context)
+        val prefs = InCarStorage.load(context)
+        if (prefs.isActivityRequired) {
+            AppLog.i("Start activity transition tracking")
+            ActivityTransitionTracker(context).track()
         }
+
+        if (!isServiceRequired(prefs)) {
+            AppLog.i("Broadcast service is not required")
+            return false
+        }
+
+        val filter = IntentFilter()
+        filter.addAction(Intent.ACTION_HEADSET_PLUG)
+        filter.addAction(Intent.ACTION_POWER_CONNECTED)
+        filter.addAction(Intent.ACTION_POWER_DISCONNECTED)
+        filter.addAction(Intent.ACTION_DOCK_EVENT)
+        filter.addAction(UiModeManager.ACTION_ENTER_CAR_MODE)
+        filter.addAction(UiModeManager.ACTION_EXIT_CAR_MODE)
+
+        receiver = ModeBroadcastReceiver()
+        context.registerReceiver(receiver, filter)
         return true
     }
 
     private fun unregister(context: Context) {
-        AppLog.d("BroadcastService::unregister")
+        AppLog.i("Unregister BroadcastService")
         if (receiver != null) {
             context.unregisterReceiver(receiver)
             receiver = null
@@ -90,11 +89,7 @@ class BroadcastService : Service() {
 
         fun startService(context: Context) {
             val service = Intent(context.applicationContext, BroadcastService::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(service)
-            } else {
-                context.startService(service)
-            }
+            ContextCompat.startForegroundService(context, service)
         }
 
         fun stopService(context: Context) {

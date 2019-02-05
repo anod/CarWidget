@@ -13,7 +13,7 @@ object ActivityRecognitionNotification {
 
     fun show(result: ActivityRecognitionResult, context: Context) {
         val probActivity = result.mostProbableActivity
-        AppLog.d("Activity: [" + String.format("%03d", probActivity.confidence) + "] "
+        AppLog.i("Activity: [" + String.format("%03d", probActivity.confidence) + "] "
                 + renderActivityType(probActivity.type))
 
         val notification = NotificationCompat.Builder(context, Channels.general)

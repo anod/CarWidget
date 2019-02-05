@@ -64,6 +64,10 @@ class AppLog {
             log(Log.VERBOSE, format(msg))
         }
 
+        fun i(msg: String) {
+            log(Log.INFO, msg)
+        }
+
         fun e(msg: String) {
             loge(format(msg), null)
         }
@@ -110,7 +114,7 @@ class AppLog {
                     formatted = String.format(Locale.US, msg, *array)
                 } catch (ex: IllegalFormatException) {
                     e("IllegalFormatException: formatString='%s' numArgs=%d", msg, array.size)
-                    formatted = msg + " (An error occurred while formatting the message.)"
+                    formatted = "$msg (An error occurred while formatting the message.)"
                 }
             }
             val stackTrace = Throwable().fillInStackTrace().stackTrace

@@ -172,7 +172,7 @@ object ShortcutInfoUtils {
             } else loadDrawableForTargetDensity(icon, otherAppCtxt.resources, context)
 
         } catch (e: PackageManager.NameNotFoundException) {
-            AppLog.d("NameNotFoundException: " + e.message)
+            AppLog.i("NameNotFoundException: " + e.message)
         }
 
         return null

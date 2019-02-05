@@ -25,7 +25,7 @@ class ActivityTransitionTracker(private val context: Context) {
 
         val task = ActivityRecognition.getClient(context).requestActivityTransitionUpdates(request, broadcastIntent)
         task.addOnSuccessListener {
-            AppLog.d("Activity is tracking")
+            AppLog.i("Activity is tracking")
         }
 
         task.addOnFailureListener {
@@ -39,7 +39,7 @@ class ActivityTransitionTracker(private val context: Context) {
 
     companion object {
         fun checkCarState(result: ActivityTransitionResult): Boolean {
-            AppLog.d("Events:  " + result.transitionEvents.joinToString { "; " })
+            AppLog.i("Events:  " + result.transitionEvents.joinToString { "; " })
             val event = result.transitionEvents.lastOrNull() ?: return  false
 
             return when(event.activityType) {
