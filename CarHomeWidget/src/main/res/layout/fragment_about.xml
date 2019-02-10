@@ -61,12 +61,4 @@
         android:drawableTint="?attr/colorPrimary"
         android:text="@string/issue_title" />
 
-    <Button
-        android:id="@+id/buttonUserLog"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_email_black_24dp"
-        android:drawableTint="?attr/colorPrimary"
-        android:text="@string/user_log" />
 </LinearLayout>

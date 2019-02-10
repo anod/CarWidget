@@ -30,15 +30,14 @@ import com.anod.car.home.utils.AppUpgrade
             (ReportField.PHONE_MODEL),
             (ReportField.BRAND),
             (ReportField.STACK_TRACE),
-            (ReportField.USER_COMMENT)],
-        reportSenderFactoryClasses = [(BrowserUrlSender.Factory::class)])
+            (ReportField.LOGCAT)],
+        reportSenderFactoryClasses = [(BrowserUrlSender.Factory::class)],
+        logcatArguments = ["-t", "100","-v","brief", "AppLog:D", "*:S"])
 @AcraNotification(
         resChannelName = R.string.channel_crash_reports,
         resText = R.string.crash_dialog_text,
         resTitle = R.string.crash_dialog_title,
-        resSendButtonText = R.string.crash_dialog_report_button,
-        resSendWithCommentButtonText = R.string.crash_dialog_report_comment_button,
-        resCommentPrompt = R.string.crash_dialog_comment)
+        resSendButtonText = R.string.crash_dialog_report_button)
 class CarWidgetApplication : Application(), ApplicationInstance {
 
     val appComponent: AppComponent by lazy { AppComponent(this) }

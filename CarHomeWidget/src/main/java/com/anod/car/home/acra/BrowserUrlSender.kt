@@ -47,7 +47,7 @@ class BrowserUrlSender : ReportSender {
         builder.appendQueryParameter("v", minifyTrace(
                 errorContent.getString(ReportField.STACK_TRACE) ?: ""))
 
-        builder.appendQueryParameter("w", errorContent.getString(ReportField.USER_COMMENT))
+        builder.appendQueryParameter("l", errorContent.getString(ReportField.LOGCAT))
 
         val uri = builder.build()
 

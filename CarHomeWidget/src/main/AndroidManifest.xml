@@ -273,7 +273,6 @@
             android:theme="@style/BrightnessTheme" />
 
         <activity android:name=".main.RequestPermissionsActivity" />
-        <activity android:name="com.anod.car.home.log.UserLogActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
