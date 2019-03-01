@@ -45,11 +45,11 @@ class ShortcutPendingIntent(private val context: Context) : WidgetViewBuilder.Pe
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    override fun createShortcut(intent: Intent, appWidgetId: Int, position: Int, shortcutId: Long): PendingIntent {
+    override fun createShortcut(intent: Intent, appWidgetId: Int, position: Int, shortcutId: Long): PendingIntent? {
         return createShortcut(intent, appWidgetId.toString(), position)
     }
 
-    fun createShortcut(intent: Intent, prefix: String, position: Int): PendingIntent {
+    fun createShortcut(intent: Intent, prefix: String, position: Int): PendingIntent? {
         val action = intent.action ?: ""
         val isCall = INTENT_ACTION_CALL_PRIVILEGED == action || Intent.ACTION_CALL == action
         if (intent.extras == null && !isCall) { // Samsung s3 bug

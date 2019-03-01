@@ -143,11 +143,10 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
             val title = info.title.toString()
             views.setTextViewText(resText, title)
         }
-        val shortcutIntent = pendingIntentFactory
-                .createShortcut(info.intent, appWidgetId, cellId, info.id)
-        views.setOnClickPendingIntent(res, shortcutIntent)
-        views.setOnClickPendingIntent(resText, shortcutIntent)
-
+        pendingIntentFactory.createShortcut(info.intent, appWidgetId, cellId, info.id)?.let {
+            views.setOnClickPendingIntent(res, it)
+            views.setOnClickPendingIntent(resText, it)
+        }
         return icon
     }
 
