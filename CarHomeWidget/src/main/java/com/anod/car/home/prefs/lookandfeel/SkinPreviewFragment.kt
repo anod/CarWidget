@@ -1,13 +1,6 @@
 package com.anod.car.home.prefs.lookandfeel
 
 import android.app.Application
-import com.anod.car.home.R
-import com.anod.car.home.appwidget.WidgetViewBuilder
-import com.anod.car.home.model.WidgetShortcutsModel
-import com.anod.car.home.prefs.LookAndFeelActivity
-import com.anod.car.home.prefs.drag.ShortcutShadowBuilder
-import info.anodsplace.framework.AppLog
-
 import android.content.ClipData
 import android.content.Context
 import android.os.Build
@@ -24,6 +17,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.anod.car.home.R
+import com.anod.car.home.appwidget.WidgetViewBuilder
+import com.anod.car.home.model.WidgetShortcutsModel
+import com.anod.car.home.prefs.LookAndFeelActivity
+import com.anod.car.home.prefs.drag.ShortcutShadowBuilder
+import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.ApplicationContext
 import info.anodsplace.framework.os.BackgroundTask
 
@@ -64,7 +63,7 @@ class SkinPreviewFragment : Fragment(), View.OnLongClickListener {
 
     private var lookAndFeelActivity: LookAndFeelActivity? = null
 
-    internal var viewGroup: ViewGroup? = null
+    private var viewGroup: ViewGroup? = null
 
     private var shortcutsCount: Int = 0
 
@@ -80,7 +79,7 @@ class SkinPreviewFragment : Fragment(), View.OnLongClickListener {
         lookAndFeelActivity!!.onPreviewStart(position)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         position = arguments!!.getInt(ARG_POSITION)
         lookAndFeelActivity = context as LookAndFeelActivity?

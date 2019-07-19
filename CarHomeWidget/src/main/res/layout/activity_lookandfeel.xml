@@ -26,7 +26,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tabs" />
 
     <ProgressBar
-        android:id="@+id/loading"
+        android:id="@+id/loader"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/drag_delete_bg"
+        android:id="@+id/dragDeleteBg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|top"
@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tabs" />
 
     <ImageView
-        android:id="@+id/drag_delete_shortcut"
+        android:id="@+id/dragDeleteShortcut"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_gravity="center_horizontal|top"
@@ -66,7 +66,7 @@
         app:srcCompat="@drawable/ic_cancel_black_24dp" />
 
     <FrameLayout
-        android:id="@+id/content_frame"
+        android:id="@+id/content"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="?attr/activityBackground"

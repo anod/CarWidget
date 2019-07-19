@@ -29,7 +29,7 @@ class AppIconLoader(context: Context) {
         }
 
         @Throws(IOException::class)
-        override fun load(request: Request, networkPolicy: Int): RequestHandler.Result? {
+        override fun load(request: Request, networkPolicy: Int): Result? {
             var d: Drawable? = null
             val icon: Bitmap
 
@@ -51,7 +51,7 @@ class AppIconLoader(context: Context) {
 
             }
             icon = UtilitiesBitmap.createSystemIconBitmap(d!!, context)
-            return RequestHandler.Result(icon, DISK)
+            return Result(icon, DISK)
         }
 
     }

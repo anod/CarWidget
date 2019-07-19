@@ -56,8 +56,7 @@ class WifiApControl internal constructor(private val wifiManager: WifiManager) {
             // lookup methods and fields not defined publicly in the SDK.
             val cls = WifiManager::class.java
             for (method in cls.declaredMethods) {
-                val methodName = method.name
-                when (methodName) {
+                when (method.name) {
                     "isWifiApEnabled" -> methodIsWifiApEnabled = method
                     "setWifiApEnabled" -> methodSetWifiApEnabled = method
                     "getWifiApConfiguration" -> methodGetWifiApConfiguration = method

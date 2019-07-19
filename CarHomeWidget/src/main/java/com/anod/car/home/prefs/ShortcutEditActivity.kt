@@ -9,9 +9,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.View
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.anod.car.home.R
@@ -19,13 +16,11 @@ import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.model.*
 import com.anod.car.home.utils.*
 import info.anodsplace.framework.AppLog
+import kotlinx.android.synthetic.main.activity_shortcutedit.*
 
 class ShortcutEditActivity : CarWidgetActivity() {
 
     private var customIcon: Bitmap? = null
-
-    private val iconView: ImageView by lazy { findViewById<ImageView>(R.id.icon_edit) }
-    private val labelEdit: EditText by lazy { findViewById<EditText>(R.id.label_edit) }
 
     private var db: ShortcutsDatabase? = null
 
@@ -50,9 +45,9 @@ class ShortcutEditActivity : CarWidgetActivity() {
 
     private fun init(intent: Intent) {
         cellId = intent
-                .getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID)
+                .getIntExtra(EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID)
         val shortcutId = intent
-                .getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, Shortcut.idUnknown)
+                .getLongExtra(EXTRA_SHORTCUT_ID, Shortcut.idUnknown)
         val appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID)
         if (cellId == ShortcutPicker.INVALID_CELL_ID || shortcutId == Shortcut.idUnknown) {
@@ -75,17 +70,17 @@ class ShortcutEditActivity : CarWidgetActivity() {
         labelEdit.setText(shortcut!!.title)
         iconView.setImageBitmap(shortcutIcon!!.bitmap)
 
-        findViewById<View>(R.id.btn_delete).setOnClickListener {
+        deleteButton.setOnClickListener {
             containerModel!!.drop(cellId)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
 
-        findViewById<View>(R.id.icon_edit).setOnClickListener {
+        iconView.setOnClickListener {
             createIconMenu().show()
         }
 
-        findViewById<View>(R.id.btn_ok).setOnClickListener {
+        okButton.setOnClickListener {
             var needUpdate = false
             if (customIcon != null) {
                 shortcutIcon = ShortcutIcon.forCustomIcon(shortcutIcon!!.id, customIcon!!)
@@ -221,8 +216,8 @@ class ShortcutEditActivity : CarWidgetActivity() {
         fun createIntent(context: Context, cellId: Int, shortcutId: Long,
                          appWidgetId: Int): Intent {
             val editIntent = Intent(context, ShortcutEditActivity::class.java)
-            editIntent.putExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, shortcutId)
-            editIntent.putExtra(ShortcutEditActivity.EXTRA_CELL_ID, cellId)
+            editIntent.putExtra(EXTRA_SHORTCUT_ID, shortcutId)
+            editIntent.putExtra(EXTRA_CELL_ID, cellId)
             editIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             editIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             return editIntent

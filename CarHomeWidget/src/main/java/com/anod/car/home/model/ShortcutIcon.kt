@@ -31,19 +31,19 @@ class ShortcutIcon(val id: Long,
     companion object {
 
         fun forActivity(id: Long, icon: Bitmap): ShortcutIcon {
-            return ShortcutIcon(id, false, false, null, icon)
+            return ShortcutIcon(id, isCustom = false, isFallback = false, resource = null, bitmap = icon)
         }
 
         fun forFallbackIcon(id: Long, icon: Bitmap): ShortcutIcon {
-            return ShortcutIcon(id, false, true, null, icon)
+            return ShortcutIcon(id, isCustom = false, isFallback = true, resource = null, bitmap = icon)
         }
 
         fun forCustomIcon(id: Long, icon: Bitmap): ShortcutIcon {
-            return ShortcutIcon(id, true, false, null, icon)
+            return ShortcutIcon(id, isCustom = true, isFallback = false, resource = null, bitmap = icon)
         }
 
         fun forIconResource(id: Long, icon: Bitmap, res: Intent.ShortcutIconResource): ShortcutIcon {
-            return ShortcutIcon(id, false, false, res, icon)
+            return ShortcutIcon(id, isCustom = false, isFallback = false, resource = res, bitmap = icon)
         }
     }
 

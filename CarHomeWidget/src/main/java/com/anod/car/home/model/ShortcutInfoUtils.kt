@@ -11,11 +11,10 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Parcelable
-import androidx.core.content.res.ResourcesCompat
 import android.util.Log
-
-import info.anodsplace.framework.AppLog
+import androidx.core.content.res.ResourcesCompat
 import com.anod.car.home.utils.UtilitiesBitmap
+import info.anodsplace.framework.AppLog
 
 object ShortcutInfoUtils {
 
@@ -81,12 +80,10 @@ object ShortcutInfoUtils {
         val drawableIcon = loadDrawableForTargetDensity(id, resources, context)
 
         val icon: Bitmap?
-        if (drawableIcon is BitmapDrawable) {
-            icon = drawableIcon.bitmap
-        } else if (drawableIcon != null) {
-            icon = UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context)
-        } else {
-            icon = null
+        when {
+            drawableIcon is BitmapDrawable -> icon = drawableIcon.bitmap
+            drawableIcon != null -> icon = UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context)
+            else -> icon = null
         }
         return icon
     }

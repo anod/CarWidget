@@ -1,29 +1,27 @@
 package com.anod.car.home.main
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.anod.car.home.R
-import com.anod.car.home.appwidget.WidgetHelper
-import com.anod.car.home.prefs.ConfigurationActivity
-import com.anod.car.home.prefs.ConfigurationInCar
-
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.anod.car.home.utils.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.anod.car.home.R
+import com.anod.car.home.appwidget.WidgetHelper
+import com.anod.car.home.prefs.ConfigurationActivity
+import com.anod.car.home.prefs.ConfigurationInCar
+import com.anod.car.home.utils.InCarStatus
+import com.anod.car.home.utils.Version
+import com.anod.car.home.utils.forProVersion
+import kotlinx.android.synthetic.main.fragment_widgets_list.*
 
 class WidgetsListFragment : androidx.fragment.app.Fragment(), WidgetsListAdapter.OnItemClickListener {
 
     private val adapter: WidgetsListAdapter by lazy { WidgetsListAdapter(activity!!, this) }
     private var appWidgetIds: IntArray = intArrayOf()
     private val version: Version by lazy { Version(activity!!) }
-
-    private val inCarView: androidx.cardview.widget.CardView by lazy { view!!.findViewById<androidx.cardview.widget.CardView>(R.id.widgets_incar) }
-    private val emptyView: View by lazy { view!!.findViewById<View>(android.R.id.empty) }
-    private val listView: androidx.recyclerview.widget.RecyclerView by lazy { view!!.findViewById<androidx.recyclerview.widget.RecyclerView>(android.R.id.list) }
 
     private val viewModel: WidgetsListViewModel by lazy { ViewModelProviders.of(activity!!).get(WidgetsListViewModel::class.java) }
 
@@ -41,18 +39,18 @@ class WidgetsListFragment : androidx.fragment.app.Fragment(), WidgetsListAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        emptyView.visibility = View.GONE
-        listView.visibility = View.GONE
+        empty.visibility = View.GONE
+        list.visibility = View.GONE
         inCarView.visibility = View.GONE
 
-        emptyView.setOnClickListener {
+        empty.setOnClickListener {
             val intent = Intent(activity, WizardActivity::class.java)
             intent.putExtra(WizardActivity.EXTRA_PAGE, 1)
             startActivity(intent)
         }
 
-        listView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-        listView.adapter = adapter
+        list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+        list.adapter = adapter
 
         inCarView.setOnClickListener {
             val status = InCarStatus(appWidgetIds.size, version, activity!!)
@@ -81,14 +79,14 @@ class WidgetsListFragment : androidx.fragment.app.Fragment(), WidgetsListAdapter
 
     private fun updateViews() {
         if (adapter.isEmpty) {
-            emptyView.visibility = View.VISIBLE
+            empty.visibility = View.VISIBLE
             inCarView.visibility = View.GONE
-            listView.visibility = View.GONE
+            list.visibility = View.GONE
         } else {
-            emptyView.visibility = View.GONE
+            empty.visibility = View.GONE
             updateInCarHeader(inCarView)
             inCarView.visibility = View.VISIBLE
-            listView.visibility = View.VISIBLE
+            list.visibility = View.VISIBLE
         }
     }
 
@@ -100,16 +98,16 @@ class WidgetsListFragment : androidx.fragment.app.Fragment(), WidgetsListAdapter
         incarTitleView.text = getString(R.string.pref_incar_mode_title) + " - " + active
 
         val trialText = cardView.findViewById<View>(R.id.incarTrial) as TextView
-        if (version.isFreeAndTrialExpired) {
-            trialText.text = getString(R.string.dialog_donate_title_expired) + " " + getString(
+        when {
+            version.isFreeAndTrialExpired -> trialText.text = getString(R.string.dialog_donate_title_expired) + " " + getString(
                     R.string.notif_consider)
-        } else if (version.isFree) {
-            val activationsLeft = resources
-                    .getQuantityString(R.plurals.notif_activations_left,
-                            version.trialTimesLeft, version.trialTimesLeft)
-            trialText.text = getString(R.string.dialog_donate_title_trial) + " " + activationsLeft
-        } else {
-            trialText.visibility = View.GONE
+            version.isFree -> {
+                val activationsLeft = resources
+                        .getQuantityString(R.plurals.notif_activations_left,
+                                version.trialTimesLeft, version.trialTimesLeft)
+                trialText.text = getString(R.string.dialog_donate_title_trial) + " " + activationsLeft
+            }
+            else -> trialText.visibility = View.GONE
         }
     }
 
@@ -118,11 +116,4 @@ class WidgetsListFragment : androidx.fragment.app.Fragment(), WidgetsListAdapter
             (activity as WidgetsListActivity).startConfigActivity(item.appWidgetId)
         }
     }
-
-    companion object {
-        fun newInstance(): WidgetsListFragment {
-            return WidgetsListFragment()
-        }
-    }
-
 }

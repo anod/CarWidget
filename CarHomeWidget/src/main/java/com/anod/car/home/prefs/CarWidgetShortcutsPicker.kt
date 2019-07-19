@@ -24,12 +24,12 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
 
     override val items: List<Item>
         get() {
-            val items = ArrayList<PickAdapter.Item>()
+            val items = ArrayList<Item>()
             val r = resources
             val titles = r.getStringArray(R.array.carwidget_shortcuts)
             for (i in 0 until ITEMS_NUM) {
                 val intent = Intent().forPickShortcutLocal(i, titles[i], ICONS[i], this)
-                val item = PickAdapter.Item(this, titles[i], ResourcesCompat.getDrawable(r, ICONS[i], null),
+                val item = Item(this, titles[i], ResourcesCompat.getDrawable(r, ICONS[i], null),
                         intent)
                 items.add(item)
             }

@@ -57,7 +57,7 @@ class CarHomeColorPickerDialog : ColorPickerDialog() {
         val selectedColor = arguments!!.getInt(KEY_SELECTED_COLOR)
         this.selectedColor = alphaColor(ALPHA_OPAQUE, selectedColor)
 
-        setStyle(DialogFragment.STYLE_NO_FRAME, 0)
+        setStyle(STYLE_NO_FRAME, 0)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

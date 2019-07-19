@@ -1,13 +1,5 @@
 package com.anod.car.home.utils
 
-import com.anod.car.home.R
-import com.anod.car.home.model.Shortcut
-import com.anod.car.home.model.Shortcuts
-import com.anod.car.home.prefs.ActivityPicker
-import com.anod.car.home.prefs.AllAppsActivity
-import com.anod.car.home.prefs.CarWidgetShortcutsPicker
-import com.anod.car.home.prefs.ShortcutEditActivity
-
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -15,8 +7,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-
-import java.util.ArrayList
+import com.anod.car.home.R
+import com.anod.car.home.model.Shortcut
+import com.anod.car.home.model.Shortcuts
+import com.anod.car.home.prefs.ActivityPicker
+import com.anod.car.home.prefs.AllAppsActivity
+import com.anod.car.home.prefs.CarWidgetShortcutsPicker
+import com.anod.car.home.prefs.ShortcutEditActivity
+import java.util.*
 
 /**
  * @author alex
@@ -87,14 +85,16 @@ class ShortcutPicker(private val model: Shortcuts, private val handler: Handler,
 
         val shortcutName = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME)
         currentCellId = intent.getIntExtra(EXTRA_CELL_ID, INVALID_CELL_ID)
-        if (applicationName == shortcutName) {
-            val mainIntent = Intent(context, AllAppsActivity::class.java)
-            startActivityForResultSafely(mainIntent, REQUEST_PICK_APPLICATION)
-        } else if (shortcutsName == shortcutName) {
-            val mainIntent = Intent(context, CarWidgetShortcutsPicker::class.java)
-            startActivityForResultSafely(mainIntent, REQUEST_CREATE_SHORTCUT)
-        } else {
-            startActivityForResultSafely(intent, REQUEST_CREATE_SHORTCUT)
+        when {
+            applicationName == shortcutName -> {
+                val mainIntent = Intent(context, AllAppsActivity::class.java)
+                startActivityForResultSafely(mainIntent, REQUEST_PICK_APPLICATION)
+            }
+            shortcutsName == shortcutName -> {
+                val mainIntent = Intent(context, CarWidgetShortcutsPicker::class.java)
+                startActivityForResultSafely(mainIntent, REQUEST_CREATE_SHORTCUT)
+            }
+            else -> startActivityForResultSafely(intent, REQUEST_CREATE_SHORTCUT)
         }
         return true
     }

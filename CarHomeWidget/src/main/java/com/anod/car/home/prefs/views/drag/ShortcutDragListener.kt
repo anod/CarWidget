@@ -5,11 +5,10 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import androidx.core.content.res.ResourcesCompat
 import android.util.Log
 import android.view.DragEvent
 import android.view.View
-
+import androidx.core.content.res.ResourcesCompat
 import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.prefs.views.ShortcutPreference
@@ -35,9 +34,8 @@ class ShortcutDragListener(context: Context,
     override fun onDrag(view: View, dragEvent: DragEvent): Boolean {
         // Defines a variable to store the action type for the incoming event
         val v = view.parent as View
-        val action = dragEvent.action
         // Handles each of the expected events
-        when (action) {
+        when (dragEvent.action) {
 
             DragEvent.ACTION_DRAG_STARTED -> {
                 // Determines if this View can accept the dragged data

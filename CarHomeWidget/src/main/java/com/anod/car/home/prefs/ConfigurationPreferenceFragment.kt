@@ -11,7 +11,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.transaction
+import androidx.fragment.app.commit
 
 import com.anod.car.home.R
 import com.anod.car.home.prefs.views.SeekBarDialogPreference
@@ -38,13 +38,13 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
 
     protected open fun onCreateImpl(savedInstanceState: Bundle?) { }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         val res = optionsMenuResource
         if (res == 0) {
             super.onCreateOptionsMenu(menu, inflater)
             return
         }
-        inflater!!.inflate(res, menu)
+        inflater.inflate(res, menu)
         super.onCreateOptionsMenu(menu, inflater)
 
     }
@@ -90,7 +90,7 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
     }
 
     protected fun setIntent(key: String, cls: Class<*>, appWidgetId: Int) {
-        val pref = findPreference(key)
+        val pref: Preference = findPreference(key)!!
         val intent = Intent(activity, cls)
         if (appWidgetId > 0) {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
@@ -99,7 +99,7 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
     }
 
     protected fun showFragmentOnClick(key: String, fragmentCls: Class<*>) {
-        val pref = findPreference(key)
+        val pref: Preference = findPreference(key)!!
         pref.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
             this.startPreferencePanel(fragmentCls.name, preference)
             true
@@ -111,13 +111,13 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
     }
 
     private fun startPreferencePanel(fragmentClass: String, titleText: CharSequence?,
-                                     resultTo: androidx.fragment.app.Fragment?, resultRequestCode: Int) {
-        val args = Bundle()
-        val f = Fragment.instantiate(context, fragmentClass, args)
+                                     resultTo: Fragment?, resultRequestCode: Int) {
+        val f = fragmentManager!!.fragmentFactory.instantiate(context!!.classLoader, fragmentClass)
+        f.arguments = Bundle.EMPTY
         if (resultTo != null) {
             f.setTargetFragment(resultTo, resultRequestCode)
         }
-        fragmentManager!!.transaction(allowStateLoss = true) {
+        fragmentManager!!.commit(allowStateLoss = true) {
             replace(R.id.content_frame, f)
             if (titleText != null) {
                 setBreadCrumbTitle(titleText)
@@ -127,8 +127,8 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item!!.itemId == R.id.apply) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.apply) {
             fragmentManager!!.popBackStack()
             return true
         }
@@ -148,4 +148,7 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
         }
     }
 
+    fun <T : Preference> requirePreference(key: CharSequence): T {
+        return findPreference<T>(key)!!
+    }
 }

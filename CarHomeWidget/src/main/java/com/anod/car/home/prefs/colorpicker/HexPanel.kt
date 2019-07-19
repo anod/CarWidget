@@ -1,13 +1,8 @@
 package com.anod.car.home.prefs.colorpicker
 
-import com.android.colorpicker.ColorStateDrawable
-import com.anod.car.home.R
-import com.anod.car.home.utils.ColorUtils
-
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import androidx.core.content.res.ResourcesCompat
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils
@@ -18,6 +13,10 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.content.res.ResourcesCompat
+import com.android.colorpicker.ColorStateDrawable
+import com.anod.car.home.R
+import com.anod.car.home.utils.ColorUtils
 
 /**
  * @author alex
@@ -35,7 +34,7 @@ class HexPanel @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private var alphaSupport: Boolean = false
 
     init {
-        orientation = LinearLayout.HORIZONTAL
+        orientation = HORIZONTAL
 
         LayoutInflater.from(context).inflate(R.layout.color_picker_hex_panel, this)
 
@@ -92,7 +91,7 @@ class HexPanel @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         setPreviewColor(color)
     }
 
-    protected fun setPreviewColor(color: Int) {
+    private fun setPreviewColor(color: Int) {
         val drawable: Drawable = ResourcesCompat.getDrawable(context.resources, R.drawable.color_picker_swatch, null)!!
         mPreview.setImageDrawable(ColorStateDrawable(arrayOf(drawable), color))
     }

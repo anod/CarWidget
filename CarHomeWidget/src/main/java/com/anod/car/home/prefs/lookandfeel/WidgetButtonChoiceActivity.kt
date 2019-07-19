@@ -11,7 +11,6 @@ import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
-
 import com.anod.car.home.R
 import com.anod.car.home.app.AppCompatGridActivity
 import com.anod.car.home.appwidget.WidgetButtonViewBuilder
@@ -20,10 +19,9 @@ import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.skin.PropertiesFactory
 import com.anod.car.home.skin.SkinProperties
-import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.Utils
-
-import java.util.ArrayList
+import info.anodsplace.framework.AppLog
+import java.util.*
 
 /**
  * @author alex
@@ -111,7 +109,7 @@ class WidgetButtonChoiceActivity : AppCompatGridActivity() {
         return items
     }
 
-    private class ChoiceAdapter(context: Context, items: List<ChoiceAdapter.Item>) : ArrayAdapter<ChoiceAdapter.Item>(context, R.layout.list_item_app, android.R.id.text1) {
+    private class ChoiceAdapter(context: Context, items: List<Item>) : ArrayAdapter<ChoiceAdapter.Item>(context, R.layout.list_item_app, android.R.id.text1) {
 
         class Item constructor(val title: String, val icon: Int, val value: Int) {
             var checked: Boolean = false
@@ -151,9 +149,9 @@ class WidgetButtonChoiceActivity : AppCompatGridActivity() {
         fun createIntent(appWidgetId: Int, skin: String, buttonId: Int, context: Context): Intent {
             val intent = Intent(context, WidgetButtonChoiceActivity::class.java)
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            intent.putExtra(WidgetButtonChoiceActivity.EXTRA_SKIN, skin)
-            intent.putExtra(WidgetButtonChoiceActivity.EXTRA_BTN, buttonId)
-            val path = appWidgetId.toString() + "/widgetButton" + buttonId
+            intent.putExtra(EXTRA_SKIN, skin)
+            intent.putExtra(EXTRA_BTN, buttonId)
+            val path = "$appWidgetId/widgetButton$buttonId"
             val data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"), path)
             intent.data = data
             return intent

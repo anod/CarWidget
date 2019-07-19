@@ -2,23 +2,23 @@ package com.anod.car.home.prefs
 
 import android.app.Dialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
 import androidx.preference.ListPreference
 import androidx.preference.Preference
-
+import androidx.preference.SwitchPreferenceCompat
 import com.anod.car.home.R
 import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.incar.BroadcastService
+import com.anod.car.home.incar.ScreenOrientation
+import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarSettings
 import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.utils.*
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import android.content.SharedPreferences
-import com.anod.car.home.incar.ScreenOrientation
-import com.anod.car.home.prefs.model.InCarInterface
 
 class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
@@ -45,7 +45,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         val sharedPrefs = InCarStorage.getSharedPreferences(activity!!)
         sharedPrefs.registerOnSharedPreferenceChangeListener(broadcastServiceSwitchListener)
@@ -85,7 +85,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     private fun initInCar() {
         val incar = InCarStorage.load(activity!!)
 
-        val incarSwitch = findPreference(InCarSettings.INCAR_MODE_ENABLED)
+        val incarSwitch: SwitchPreferenceCompat = findPreference(InCarSettings.INCAR_MODE_ENABLED)!!
 
         val allWidgetIds = WidgetHelper.getAllWidgetIds(activity!!)
         if (allWidgetIds.isEmpty()) {
@@ -118,7 +118,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     }
 
     private fun initAutoAnswer() {
-        val pref = findPreference("auto_answer") as ListPreference
+        val pref: ListPreference = findPreference("auto_answer")!!
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (newValue != InCarInterface.AUTOANSWER_DISABLED)
             {
@@ -132,7 +132,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     }
 
     private fun initBrightness() {
-        val pref = findPreference("brightness") as ListPreference
+        val pref: ListPreference = findPreference("brightness")!!
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (newValue != InCarInterface.BRIGHTNESS_DISABLED)
             {
@@ -146,7 +146,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     }
 
     private fun initScreenOrientation() {
-        val pref = findPreference("screen-orientation") as ListPreference
+        val pref: ListPreference = findPreference("screen-orientation")!!
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (newValue != ScreenOrientation.DISABLED.toString())
             {
@@ -160,7 +160,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     }
 
     private fun initScreenTimeout(incar: InCarSettings) {
-        val pref = findPreference(SCREEN_TIMEOUT_LIST) as ListPreference
+        val pref: ListPreference = findPreference(SCREEN_TIMEOUT_LIST)!!
 
         if (incar.isDisableScreenTimeout) {
             if (incar.isDisableScreenTimeoutCharging) {
@@ -173,18 +173,17 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         }
 
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            val value = newValue as String
-            when (value) {
+            when (newValue as String) {
                 "disabled-charging" -> {
-                    InCarStorage.saveScreenTimeout(true, true, incar)
+                    InCarStorage.saveScreenTimeout(true, disableCharging = true, prefs = incar)
                     pref.value = "disabled-charging"
                 }
                 "disabled" -> {
-                    InCarStorage.saveScreenTimeout(true, false, incar)
+                    InCarStorage.saveScreenTimeout(true, disableCharging = false, prefs = incar)
                     pref.value = "disabled"
                 }
                 else -> {
-                    InCarStorage.saveScreenTimeout(false, false, incar)
+                    InCarStorage.saveScreenTimeout(false, disableCharging = false, prefs = incar)
                     pref.value = "enabled"
                 }
             }
@@ -193,7 +192,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     }
 
     private fun initActivityRecognition() {
-        val pref = findPreference(InCarSettings.ACTIVITY_RECOGNITION)
+        val pref: Preference = findPreference(InCarSettings.ACTIVITY_RECOGNITION)!!
         val handler = Handler()
 
         Thread(Runnable {

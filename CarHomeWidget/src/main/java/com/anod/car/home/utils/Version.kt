@@ -21,7 +21,7 @@ class Version(private val context: Context) {
             return MAX_TRIAL_TIMES - trialCounterCache
         }
 
-    val isTrialExpired: Boolean
+    private val isTrialExpired: Boolean
         get() = trialTimesLeft <= 0
 
     val isFreeAndTrialExpired: Boolean

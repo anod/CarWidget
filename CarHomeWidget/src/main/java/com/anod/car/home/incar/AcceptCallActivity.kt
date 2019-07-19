@@ -1,7 +1,5 @@
 package com.anod.car.home.incar
 
-import info.anodsplace.framework.AppLog
-
 import android.app.Activity
 import android.app.KeyguardManager
 import android.content.BroadcastReceiver
@@ -14,7 +12,7 @@ import android.os.Bundle
 import android.telephony.TelephonyManager
 import android.view.KeyEvent
 import android.view.WindowManager
-
+import info.anodsplace.framework.AppLog
 import java.io.IOException
 
 class AcceptCallActivity : Activity() {
@@ -97,7 +95,7 @@ class AcceptCallActivity : Activity() {
         try {
             try {
                 AppLog.i("execute input keycode headset hook")
-                Runtime.getRuntime().exec("input keyevent " + Integer.toString(KeyEvent.KEYCODE_HEADSETHOOK))
+                Runtime.getRuntime().exec("input keyevent " + KeyEvent.KEYCODE_HEADSETHOOK.toString())
 
             } catch (e: IOException) {
                 // Runtime.exec(String) had an I/O problem, try to fall back

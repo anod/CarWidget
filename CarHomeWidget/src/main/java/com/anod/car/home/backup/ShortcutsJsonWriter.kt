@@ -2,12 +2,9 @@ package com.anod.car.home.backup
 
 import android.util.JsonWriter
 import android.util.SparseArray
-
 import com.anod.car.home.model.Shortcut
-import com.anod.car.home.model.ShortcutIcon
-import com.anod.car.home.model.ShortcutsDatabase
 import com.anod.car.home.model.Shortcuts
-
+import com.anod.car.home.model.ShortcutsDatabase
 import java.io.IOException
 
 /**

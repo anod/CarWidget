@@ -16,12 +16,15 @@ import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.R
+import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarSettings
 import com.anod.car.home.prefs.model.InCarStorage
-import com.anod.car.home.utils.*
+import com.anod.car.home.utils.AnswerPhoneCalls
+import com.anod.car.home.utils.AppPermissions
+import com.anod.car.home.utils.CanDrawOverlay
+import com.anod.car.home.utils.WriteSettings
 import kotlinx.android.synthetic.main.activity_request_permissions.*
 
 class RequestPermissionsActivity : CarWidgetActivity() {
@@ -104,12 +107,10 @@ class RequestPermissionsActivity : CarWidgetActivity() {
 
         val p = getPermissions()
         if (requestCode == requestAnswerPhoneCalls) {
-            if (p.canDrawOverlay) {
-                AppPermissions.requestDrawOverlay(this, requestOverlay)
-            } else if (p.writeSettings) {
-                AppPermissions.requestWriteSettings(this, requestWriteSettings)
-            } else {
-                finish()
+            when {
+                p.canDrawOverlay -> AppPermissions.requestDrawOverlay(this, requestOverlay)
+                p.writeSettings -> AppPermissions.requestWriteSettings(this, requestWriteSettings)
+                else -> finish()
             }
         } else if (requestCode == requestOverlay) {
             if (p.writeSettings) {
@@ -163,7 +164,7 @@ class RequestPermissionsActivity : CarWidgetActivity() {
         }
 
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PermissionsAdapter.ViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(context).inflate(R.layout.list_item_permission, parent, false)
             return ViewHolder(view)
         }
@@ -172,7 +173,7 @@ class RequestPermissionsActivity : CarWidgetActivity() {
             return items.size
         }
 
-        override fun onBindViewHolder(holder: PermissionsAdapter.ViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = items[position]
             val title =holder.itemView.findViewById<TextView>(R.id.title)
             title.setText(item.title)

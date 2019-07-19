@@ -62,10 +62,10 @@ class FragmentBackup : Fragment() {
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater!!.inflate(R.menu.restore, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.restore, menu)
 
-        refreshMenuItem = menu!!.findItem(R.id.menu_refresh)
+        refreshMenuItem = menu.findItem(R.id.menu_refresh)
         refreshMenuItem!!.isVisible = false
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -125,7 +125,7 @@ class FragmentBackup : Fragment() {
             return 2
         }
 
-        override fun getItem(position: Int): androidx.fragment.app.Fragment {
+        override fun getItem(position: Int): Fragment {
             return if (position == 0) {
                 FragmentRestoreWidget.create(appWidgetId)
             } else FragmentRestoreInCar()

@@ -82,7 +82,7 @@ object WidgetMigrateStorage {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val ids = ArrayList<Long>(count)
         for (i in 0 until count) {
-            val key = WidgetMigrateStorage.getLaunchComponentName(i, appWidgetId)
+            val key = getLaunchComponentName(i, appWidgetId)
             val id = prefs.getLong(key, Shortcut.idUnknown)
             ids.add(i, id)
         }

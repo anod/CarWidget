@@ -23,9 +23,9 @@ object Granted: PermissionResult()
 object Denied: PermissionResult()
 
 sealed class AppPermission(val value: String)
-object CallPhone: AppPermission(android.Manifest.permission.CALL_PHONE)
-object WriteExternalStorage: AppPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-object ReadExternalStorage: AppPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+object CallPhone: AppPermission(Manifest.permission.CALL_PHONE)
+object WriteExternalStorage: AppPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+object ReadExternalStorage: AppPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
 object ReadContacts: AppPermission(Manifest.permission.READ_CONTACTS)
 @TargetApi(Build.VERSION_CODES.O)
 object AnswerPhoneCalls: AppPermission(Manifest.permission.ANSWER_PHONE_CALLS)
@@ -98,7 +98,7 @@ object AppPermissions {
         fragment.requestPermissions(permissions.map { it.value }.toTypedArray(), requestCode)
     }
 
-    fun request(fragment: Fragment, permission: AppPermission, requestCode: Int) {
+    private fun request(fragment: Fragment, permission: AppPermission, requestCode: Int) {
         fragment.requestPermissions(arrayOf(permission.value), requestCode)
     }
 

@@ -6,19 +6,18 @@ import android.appwidget.AppWidgetProviderInfo
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import com.google.android.material.tabs.TabLayout
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
-import androidx.fragment.app.transaction
+import androidx.fragment.app.commit
 import androidx.viewpager.widget.ViewPager
-
-import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.app.CarWidgetActivity
+import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.appwidget.WidgetViewBuilder
+import com.anod.car.home.main.AboutFragment
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.drag.ShortcutDragListener
 import com.anod.car.home.prefs.lookandfeel.LookAndFeelMenu
@@ -27,14 +26,13 @@ import com.anod.car.home.prefs.lookandfeel.WidgetButtonChoiceActivity
 import com.anod.car.home.prefs.model.SkinList
 import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
-import com.anod.car.home.main.AboutFragment
-import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.BitmapLruCache
 import com.anod.car.home.utils.forNewShortcut
+import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogCustom
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_lookandfeel.*
 
-class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory, ShortcutDragListener.DropCallback {
+class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory, ShortcutDragListener.DropCallback {
 
     private var currentPage: Int = 0
 
@@ -48,8 +46,6 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
     val prefs: WidgetSettings by lazy { WidgetStorage.load(this, appWidgetId) }
     private val skinList: SkinList by lazy { SkinList(prefs.skin, isKeyguard, this) }
     private var bitmapMemoryCache: BitmapLruCache? = null
-    private val gallery: ViewPager by lazy { findViewById<ViewPager>(R.id.gallery) }
-    private val loaderView: View by lazy { findViewById<View>(R.id.loading) }
     private val lookAndFeelMenu: LookAndFeelMenu by lazy { LookAndFeelMenu(this, model) }
     private val model: WidgetShortcutsModel by lazy { WidgetShortcutsModel(App.get(this), appWidgetId) }
 
@@ -84,17 +80,15 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
     }
 
     override fun onDragFinish() {
-        val deleteView = findViewById<View>(R.id.drag_delete_shortcut)
-        deleteView.visibility = View.GONE
+        dragDeleteShortcut.visibility = View.GONE
     }
 
     fun onBeforeDragStart() {
-        val deleteView = findViewById<View>(R.id.drag_delete_shortcut)
-        deleteView.tag = ShortcutDragListener.TAG_DELETE_SHORTCUT
-        deleteView.setOnDragListener(dragListener)
-        deleteView.visibility = View.VISIBLE
+        dragDeleteShortcut.tag = ShortcutDragListener.TAG_DELETE_SHORTCUT
+        dragDeleteShortcut.setOnDragListener(dragListener)
+        dragDeleteShortcut.visibility = View.VISIBLE
         val animation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
-        deleteView.startAnimation(animation)
+        dragDeleteShortcut.startAnimation(animation)
     }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,17 +118,16 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
         gallery.currentItem = currentPage
         gallery.addOnPageChangeListener(this)
 
-        val tabLayout = findViewById<View>(R.id.tabs) as TabLayout
-        tabLayout.setupWithViewPager(gallery)
+        tabs.setupWithViewPager(gallery)
 
         bitmapMemoryCache = BitmapLruCache(this)
 
-        content_frame.visibility = View.GONE
+        content.visibility = View.GONE
         bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_widget -> {
                     invalidateOptionsMenu()
-                    content_frame.visibility = View.GONE
+                    content.visibility = View.GONE
                     for (i in 0 until supportFragmentManager.backStackEntryCount) {
                         supportFragmentManager.popBackStack()
                     }
@@ -142,16 +135,16 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
                 }
                 R.id.nav_info -> {
                     invalidateOptionsMenu()
-                    content_frame.visibility = View.VISIBLE
-                    supportFragmentManager.transaction {
+                    content.visibility = View.VISIBLE
+                    supportFragmentManager.commit {
                         replace(R.id.content_frame, AboutFragment())
                     }
                     true
                 }
                 R.id.nav_incar -> {
                     invalidateOptionsMenu()
-                    content_frame.visibility = View.VISIBLE
-                    supportFragmentManager.transaction {
+                    content.visibility = View.VISIBLE
+                    supportFragmentManager.commit {
                         replace(R.id.content_frame, ConfigurationInCar())
                     }
                     true
@@ -198,14 +191,14 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
     }
 
     fun getSkinItem(position: Int): SkinList.Item {
-        return skinList.get(position)
+        return skinList[position]
     }
 
     override fun onPageSelected(position: Int) {
         currentPage = position
 
         if (!previewInitialized[position]) {
-            loaderView.visibility = View.VISIBLE
+            loader.visibility = View.VISIBLE
         }
 
         lookAndFeelMenu.refresh()
@@ -244,7 +237,7 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
                                 shortcutId: Long): PendingIntent {
         val editIntent = ShortcutEditActivity
                 .createIntent(this, position, shortcutId, appWidgetId)
-        val path = appWidgetId.toString() + "/" + position
+        val path = "$appWidgetId/$position"
         val data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"), path)
         editIntent.data = data
         return PendingIntent
@@ -257,7 +250,7 @@ class LookAndFeelActivity : CarWidgetActivity(), androidx.viewpager.widget.ViewP
 
     fun onPreviewCreated(position: Int) {
         if (currentPage == position) {
-            loaderView.visibility = View.GONE
+            loader.visibility = View.GONE
         }
         previewInitialized[position] = true
     }

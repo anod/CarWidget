@@ -8,7 +8,7 @@
 
 
     <ImageButton
-        android:id="@+id/icon_edit"
+        android:id="@+id/iconView"
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_marginStart="16dp"
@@ -16,12 +16,12 @@
         android:background="@drawable/image_border"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_launcher_application"
-        app:layout_constraintEnd_toStartOf="@+id/label_edit"
+        app:layout_constraintEnd_toStartOf="@+id/labelEdit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/label_edit"
+        android:id="@+id/labelEdit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -30,8 +30,8 @@
         android:hint="@string/title"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/icon_edit"
-        app:layout_constraintTop_toTopOf="@+id/icon_edit" />
+        app:layout_constraintStart_toEndOf="@+id/iconView"
+        app:layout_constraintTop_toTopOf="@+id/iconView" />
 
     <TextView
         android:layout_width="0dp"
@@ -41,14 +41,14 @@
         android:gravity="center_horizontal"
         android:text="@string/shortcut_edit_hint"
         android:textSize="12.0sp"
-        app:layout_constraintBottom_toBottomOf="@+id/icon_edit"
+        app:layout_constraintBottom_toBottomOf="@+id/iconView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/label_edit"
-        app:layout_constraintTop_toBottomOf="@+id/label_edit"
+        app:layout_constraintStart_toStartOf="@+id/labelEdit"
+        app:layout_constraintTop_toBottomOf="@+id/labelEdit"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/btn_delete"
+        android:id="@+id/deleteButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,23 +58,23 @@
         android:text="@string/delete"
         android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_ok"
+        app:layout_constraintEnd_toStartOf="@+id/okButton"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icon_edit" />
+        app:layout_constraintTop_toBottomOf="@+id/iconView" />
 
     <TextView
-        android:id="@+id/empty_view"
+        android:id="@+id/empty"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_ok"
-        app:layout_constraintStart_toEndOf="@+id/btn_delete"/>
+        app:layout_constraintEnd_toStartOf="@+id/okButton"
+        app:layout_constraintStart_toEndOf="@+id/deleteButton"/>
 
     <Button
-        android:id="@+id/btn_ok"
+        android:id="@+id/okButton"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -85,8 +85,8 @@
         android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/empty_view"
-        app:layout_constraintTop_toBottomOf="@+id/icon_edit" />
+        app:layout_constraintStart_toEndOf="@+id/empty"
+        app:layout_constraintTop_toBottomOf="@+id/iconView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,22 +11,19 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.core.content.res.ResourcesCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.TextView
-
+import androidx.core.content.res.ResourcesCompat
 import com.anod.car.home.R
 import com.anod.car.home.app.AppCompatGridActivity
-import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.FastBitmapDrawable
 import com.anod.car.home.utils.UtilitiesBitmap
-
-import java.util.ArrayList
-import java.util.Collections
+import info.anodsplace.framework.AppLog
+import java.util.*
 
 open class ActivityPicker : AppCompatGridActivity() {
 
@@ -87,7 +84,7 @@ open class ActivityPicker : AppCompatGridActivity() {
         initPicker(intent)
     }
 
-    protected fun initPicker(intent: Intent) {
+    private fun initPicker(intent: Intent) {
 
         // Read base intent from extras
         val parcel = intent.getParcelableExtra<Parcelable>(Intent.EXTRA_INTENT)
@@ -119,7 +116,7 @@ open class ActivityPicker : AppCompatGridActivity() {
      * Build the specific [Intent] for a given list position. Convenience
      * method that calls through to [PickAdapter.Item.getIntent].
      */
-    protected fun getIntentForPosition(position: Int): Intent {
+    private fun getIntentForPosition(position: Int): Intent {
         val item = pickAdapter.getItem(position) as PickAdapter.Item
         return item.getIntent(mBaseIntent)
     }
@@ -128,7 +125,7 @@ open class ActivityPicker : AppCompatGridActivity() {
     /**
      * Fill the given list with any activities matching the base [Intent].
      */
-    protected fun putIntentItems(baseIntent: Intent, items: MutableList<PickAdapter.Item>) {
+    private fun putIntentItems(baseIntent: Intent, items: MutableList<PickAdapter.Item>) {
         val packageManager = packageManager
         val list = packageManager.queryIntentActivities(
                 baseIntent, 0 /* no flags */
@@ -164,7 +161,7 @@ open class ActivityPicker : AppCompatGridActivity() {
 
             internal var className: String? = null
 
-            internal var extras: Bundle? = null
+            private var extras: Bundle? = null
 
             internal var intent: Intent? = null
 

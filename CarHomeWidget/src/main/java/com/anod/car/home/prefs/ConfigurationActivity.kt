@@ -3,14 +3,13 @@ package com.anod.car.home.prefs
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceScreen
-import android.view.MenuItem
-
-import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
+import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.utils.Utils
 
 
@@ -56,7 +55,9 @@ class ConfigurationActivity : CarWidgetActivity(), PreferenceFragmentCompat.OnPr
         val extras = intent.extras
         val fragmentClass = extras!!.get(EXTRA_FRAGMENT) as Class<*>
         val fragmentClassName = fragmentClass.name
-        return androidx.fragment.app.Fragment.instantiate(this, fragmentClassName, Bundle())
+        return supportFragmentManager.fragmentFactory.instantiate(classLoader, fragmentClassName).apply {
+            arguments = Bundle.EMPTY
+        }
     }
 
     override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat, preference: Preference): Boolean {

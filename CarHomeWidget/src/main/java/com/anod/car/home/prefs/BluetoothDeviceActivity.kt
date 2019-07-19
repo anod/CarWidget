@@ -11,13 +11,7 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.CheckBox
-import android.widget.ListView
-import android.widget.Switch
-import android.widget.TextView
-
+import android.widget.*
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.incar.Bluetooth
@@ -25,6 +19,7 @@ import com.anod.car.home.incar.BluetoothClassHelper
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.prefs.model.InCarStorage
 import info.anodsplace.framework.app.ApplicationContext
+import kotlinx.android.synthetic.main.activity_bluetooth_device.*
 
 /**
  * @author alex
@@ -32,7 +27,6 @@ import info.anodsplace.framework.app.ApplicationContext
  */
 class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickListener {
     private var bluetoothReceiver: BroadcastReceiver? = null
-    private val devicesList: ListView  by lazy { findViewById<ListView>(R.id.deviceList) }
     private val listAdapter: DeviceAdapter by lazy { DeviceAdapter(this) }
 
     private val isBroadcastServiceRequired: Boolean
@@ -45,13 +39,13 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bluetooth_device)
 
-        devicesList.onItemClickListener = this
+        deviceList.onItemClickListener = this
 
-        devicesList.divider = ColorDrawable(Color.TRANSPARENT)
-        devicesList.dividerHeight = resources.getDimensionPixelOffset(R.dimen.preference_item_margin)
+        deviceList.divider = ColorDrawable(Color.TRANSPARENT)
+        deviceList.dividerHeight = resources.getDimensionPixelOffset(R.dimen.preference_item_margin)
 
-        devicesList.emptyView = findViewById(R.id.empty)
-        devicesList.adapter = listAdapter
+        deviceList.emptyView = empty
+        deviceList.adapter = listAdapter
 
         initSwitch()
 
@@ -170,7 +164,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
             val pairedList = mutableListOf<Device>()
 
             // If there are paired devices, add each one to the ArrayAdapter
-            if (!pairedDevices.isEmpty()) {
+            if (pairedDevices.isNotEmpty()) {
                 for (device in pairedDevices) {
                     val addr = device.address
                     val selected = devices.containsKey(addr)
@@ -193,7 +187,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
 
             }
 
-            if (devices != null && !devices.isEmpty) {
+            if (!devices.isEmpty) {
                 for (addr in devices.keys) {
                     val d = Device(addr, addr, context.getString(R.string.unavailable_bt_device), true)
                     pairedList.add(d)

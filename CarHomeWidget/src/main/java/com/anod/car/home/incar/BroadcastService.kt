@@ -29,15 +29,15 @@ class BroadcastService : Service() {
         }
         if (receiver == null) {
             if (register(this)) {
-                return Service.START_STICKY
+                return START_STICKY
             }
         } else {
-            return Service.START_STICKY
+            return START_STICKY
         }
 
         stopForeground(true)
         stopSelf()
-        return Service.START_NOT_STICKY
+        return START_NOT_STICKY
     }
 
     override fun onDestroy() {

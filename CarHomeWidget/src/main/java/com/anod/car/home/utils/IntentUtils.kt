@@ -1,10 +1,5 @@
 package com.anod.car.home.utils
 
-import com.anod.car.home.ShortcutActivity
-import com.anod.car.home.app.NewShortcutActivity
-import com.anod.car.home.incar.SwitchInCarActivity
-import com.anod.car.home.prefs.LookAndFeelActivity
-
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
@@ -16,6 +11,10 @@ import android.provider.ContactsContract
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.KeyEvent
+import com.anod.car.home.ShortcutActivity
+import com.anod.car.home.app.NewShortcutActivity
+import com.anod.car.home.incar.SwitchInCarActivity
+import com.anod.car.home.prefs.LookAndFeelActivity
 import info.anodsplace.framework.AppLog
 
 fun Intent.forNewShortcut(context: Context, appWidgetId: Int, cellId: Int): Intent {
@@ -23,7 +22,7 @@ fun Intent.forNewShortcut(context: Context, appWidgetId: Int, cellId: Int): Inte
     putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
     putExtra(ShortcutPicker.EXTRA_CELL_ID, cellId)
     addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION or Intent.FLAG_ACTIVITY_NEW_TASK)
-    val path = appWidgetId.toString() + "/" + cellId
+    val path = "$appWidgetId/$cellId"
     data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"), path)
     return this
 }
@@ -48,7 +47,7 @@ fun Intent.forApplicationDetails(packageName: String): Intent {
 fun Intent.isAvailable(context: Context): Boolean {
     val packageManager = context.packageManager
     val list = packageManager.queryIntentActivities(this, PackageManager.MATCH_DEFAULT_ONLY)
-    return !list.isEmpty()
+    return list.isNotEmpty()
 }
 
 fun Intent.forProVersion(): Intent {

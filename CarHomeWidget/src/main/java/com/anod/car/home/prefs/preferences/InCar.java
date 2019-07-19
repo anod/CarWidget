@@ -3,7 +3,6 @@ package com.anod.car.home.prefs.preferences;
 import android.content.ComponentName;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.collection.ArrayMap;
 
 import com.anod.car.home.prefs.model.InCarInterface;
@@ -47,11 +46,11 @@ public class InCar implements Serializable, InCarInterface {
 
     private boolean enableBluetooth;
 
-    private String autoAnswer = InCarInterface.Companion.AUTOANSWER_DISABLED;
+    private String autoAnswer = InCarInterface.AUTOANSWER_DISABLED;
 
-    private String brightness = InCarInterface.Companion.BRIGHTNESS_AUTO;
+    private String brightness = InCarInterface.BRIGHTNESS_AUTO;
 
-    private String disableWifi = InCarInterface.Companion.WIFI_NOACTION;
+    private String disableWifi = InCarInterface.WIFI_NOACTION;
 
     private boolean autoSpeaker;
 
@@ -176,7 +175,7 @@ public class InCar implements Serializable, InCarInterface {
     @Override
     @NonNull
     public String getBrightness() {
-        return brightness == null ? InCarInterface.Companion.BRIGHTNESS_AUTO : brightness;
+        return brightness == null ? InCarInterface.BRIGHTNESS_AUTO : brightness;
     }
 
     @Override
@@ -259,7 +258,7 @@ public class InCar implements Serializable, InCarInterface {
     @Override
     @NonNull
     public String getDisableWifi() {
-        return disableWifi == null ? InCarInterface.Companion.WIFI_NOACTION : disableWifi;
+        return disableWifi == null ? InCarInterface.WIFI_NOACTION : disableWifi;
     }
 
     @Override
@@ -286,7 +285,7 @@ public class InCar implements Serializable, InCarInterface {
     @Override
     @NonNull
     public String getAutoAnswer() {
-        return autoAnswer == null ? InCarInterface.Companion.AUTOANSWER_DISABLED : autoAnswer;
+        return autoAnswer == null ? InCarInterface.AUTOANSWER_DISABLED : autoAnswer;
     }
 
     @Override

@@ -1,8 +1,5 @@
 package com.anod.car.home.prefs.drag
 
-import com.anod.car.home.R
-import info.anodsplace.framework.AppLog
-
 import android.app.Activity
 import android.content.ClipDescription
 import android.graphics.Color
@@ -11,6 +8,8 @@ import android.graphics.PorterDuffColorFilter
 import android.view.DragEvent
 import android.view.View
 import android.widget.ImageView
+import com.anod.car.home.R
+import info.anodsplace.framework.AppLog
 
 /**
  * @author alex
@@ -53,10 +52,9 @@ class ShortcutDragListener(activity: Activity, private val dropCallback: DropCal
      */
     private fun handleDeleteShortcutEvent(view: View, dragEvent: DragEvent): Boolean {
         val v = view as ImageView
-        val action = dragEvent.action
 
         // Handles each of the expected events
-        when (action) {
+        when (val action = dragEvent.action) {
 
             DragEvent.ACTION_DRAG_STARTED -> {
                 return dragEvent.clipDescription
@@ -120,9 +118,8 @@ class ShortcutDragListener(activity: Activity, private val dropCallback: DropCal
      */
     private fun handleShortcutEvent(view: View, dragEvent: DragEvent): Boolean {
         val v = view as ImageView
-        val action = dragEvent.action
         // Handles each of the expected events
-        when (action) {
+        when (val action = dragEvent.action) {
 
             DragEvent.ACTION_DRAG_STARTED -> {
                 // Determines if this View can accept the dragged data

@@ -93,7 +93,7 @@ object WidgetStorage {
             }
 
             val prefName = String.format(Locale.US, PREF_NAME, appWidgetId)
-            val filePath = context.filesDir.parent + String.format(Locale.US, WidgetStorage.SHARED_PREFS_PATH, prefName)
+            val filePath = context.filesDir.parent + String.format(Locale.US, SHARED_PREFS_PATH, prefName)
             AppLog.i("Drop widget file: $filePath")
             val file = File(filePath)
             file.delete()

@@ -37,7 +37,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
         initIcon(prefs)
         initFont(prefs)
 
-        val rotatePref = findPreference(WidgetSettings.ICONS_ROTATE) as ListPreference
+        val rotatePref = requirePreference(WidgetSettings.ICONS_ROTATE) as ListPreference
         rotatePref.value = prefs.iconsRotate.name
         updateRotateSummary(rotatePref, prefs.iconsRotate.name)
         rotatePref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, o ->
@@ -45,7 +45,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
             true
         }
 
-        val adaptiveIconPref = findPreference(WidgetSettings.ADAPTIVE_ICON_STYLE) as ListPreference
+        val adaptiveIconPref = requirePreference(WidgetSettings.ADAPTIVE_ICON_STYLE) as ListPreference
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             adaptiveIconPref.value = prefs.adaptiveIconStyle
             adaptiveIconPref.summary = adaptiveIconTitles.elementAtOrNull(adaptiveIconValues.indexOf(prefs.adaptiveIconStyle))
@@ -55,7 +55,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
                 true
             }
         } else {
-            (findPreference("look-more-category") as PreferenceCategory).removePreference(adaptiveIconPref)
+            (requirePreference("look-more-category") as PreferenceCategory).removePreference(adaptiveIconPref)
         }
 
 
@@ -68,7 +68,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
     }
 
     private fun initWidgetPrefCheckBox(key: String, checked: Boolean) {
-        val pref = findPreference(key) as CheckBoxPreference
+        val pref = requirePreference(key) as CheckBoxPreference
         pref.isChecked = checked
     }
 
@@ -82,7 +82,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
     }
 
     private fun initIcon(prefs: WidgetSettings) {
-        val icnColor = findPreference(WidgetSettings.ICONS_COLOR)
+        val icnColor: Preference = requirePreference(WidgetSettings.ICONS_COLOR)
         icnColor.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val icnTintColor = prefs.iconsColor
             val value = icnTintColor ?: Color.WHITE
@@ -98,7 +98,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
     }
 
     private fun initFont(prefs: WidgetSettings) {
-        val sbPref = findPreference(WidgetSettings.FONT_SIZE) as SeekBarDialogPreference
+        val sbPref = requirePreference(WidgetSettings.FONT_SIZE) as SeekBarDialogPreference
         val fontSize = prefs.fontSize
         if (fontSize != WidgetInterface.FONT_SIZE_UNDEFINED) {
             sbPref.value = fontSize
@@ -108,7 +108,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
             sbPref.value = size.toInt()
         }
 
-        val fontColor = findPreference(WidgetSettings.FONT_COLOR)
+        val fontColor: Preference = requirePreference(WidgetSettings.FONT_COLOR)
         fontColor.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val value = prefs.fontColor
             val d = CarHomeColorPickerDialog.newInstance(value, true, activity!!)

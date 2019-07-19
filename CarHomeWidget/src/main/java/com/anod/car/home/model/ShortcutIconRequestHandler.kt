@@ -28,13 +28,13 @@ class ShortcutIconRequestHandler(private val context: Context) : RequestHandler(
     }
 
     @Throws(IOException::class)
-    override fun load(request: Request, networkPolicy: Int): RequestHandler.Result? {
+    override fun load(request: Request, networkPolicy: Int): Result? {
         val shortcutId = request.uri.lastPathSegment?.toLong() ?: return null
         val shortcut = db.loadShortcut(shortcutId) ?: return null
         val adaptiveIconStyle = request.uri.getQueryParameter("adaptiveIconStyle") ?: ""
         val adaptiveIconPath = if (adaptiveIconStyle.isNotBlank()) PathParser.createPathFromPathData(adaptiveIconStyle) else Path()
         val icon = ShortcutIconLoader(db, adaptiveIconPath, context.applicationContext).load(shortcut)
-        return RequestHandler.Result(icon.bitmap, DISK)
+        return Result(icon.bitmap, DISK)
     }
 
 }

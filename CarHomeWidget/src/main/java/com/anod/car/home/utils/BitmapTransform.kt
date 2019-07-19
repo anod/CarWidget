@@ -97,10 +97,11 @@ class BitmapTransform(context: Context) {
         val g = Color.green(color) / 255.0f
         val b = Color.blue(color) / 255.0f
 
-        val matrix = floatArrayOf(r, 0f, 0f, 0f, 0f, //red
-                0f, g, 0f, 0f, 0f, //green
-                0f, 0f, b, 0f, 0f, //blue
-                0f, 0f, 0f, 1.0f, 0f //alpha
+        val matrix = floatArrayOf(
+            r, 0f, 0f, 0f, 0f, //red
+            0f, g, 0f, 0f, 0f, //green
+            0f, 0f, b, 0f, 0f, //blue
+            0f, 0f, 0f, 1.0f, 0f //alpha
         )
 
         cm.postConcat(ColorMatrix(matrix))

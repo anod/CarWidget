@@ -32,15 +32,14 @@ open class ChangeableSharedPreferences(prefs: SharedPreferences) {
         val edit = prefs.edit()
         for (i in 0 until changes.size()) {
             val key = changes.keyAt(i)
-            val value = changes.get(key)
-            when (value) {
+            when (val value = changes.get(key)) {
                 null -> edit.remove(key)
                 is Boolean -> edit.putBoolean(key, (value as Boolean?)!!)
                 is String -> edit.putString(key, value as String?)
                 is Int -> edit.putInt(key, (value as Int?)!!)
                 is Long -> edit.putLong(key, (value as Long?)!!)
                 is ComponentName -> edit.putString(key, value.flattenToString())
-                else -> AppLog.e("Unknown value " + value.toString() + " for key " + key)
+                else -> AppLog.e("Unknown value $value for key $key")
             }
         }
         edit.putBoolean("migrated", true)

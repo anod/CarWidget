@@ -20,7 +20,7 @@ class ShortcutPreference : Preference, OnClickListener {
     var appTheme: Int = 0
     var iconBitmap: Bitmap? = null
 
-    var deleteClickListener: Preference.OnPreferenceClickListener? = null
+    var deleteClickListener: OnPreferenceClickListener? = null
 
     var showEditButton: Boolean = false
     var shortcutPosition: Int = 0

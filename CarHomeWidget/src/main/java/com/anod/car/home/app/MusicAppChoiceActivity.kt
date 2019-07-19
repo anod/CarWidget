@@ -4,12 +4,12 @@ import android.app.ActivityManager
 import android.content.ComponentName
 import android.content.Context
 import android.view.KeyEvent
-import android.widget.CheckBox
 import android.widget.Toast
 import com.anod.car.home.BuildConfig
 import com.anod.car.home.R
 import com.anod.car.home.model.AppsList
 import com.anod.car.home.utils.MusicUtils
+import kotlinx.android.synthetic.main.list_footer_music_app_choice.*
 
 /**
  * @author alex
@@ -19,8 +19,6 @@ class MusicAppChoiceActivity : MusicAppsActivity() {
 
     override val footerViewId: Int
         get() = R.layout.list_footer_music_app_choice
-
-    internal val defaultApp: CheckBox by lazy { findViewById<CheckBox>(R.id.defaultApp) }
 
     override fun onEntryClick(position: Int, entry: AppsList.Entry) {
         val musicCmp = entry.componentName!!

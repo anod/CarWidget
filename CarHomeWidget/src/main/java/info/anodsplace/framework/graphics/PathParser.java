@@ -418,61 +418,61 @@ public class PathParser {
             for (int k = 0; k < val.length; k += incr) {
                 switch (cmd) {
                     case 'm': // moveto - Start a new sub-path (relative)
-                        currentX += val[k + 0];
+                        currentX += val[k];
                         currentY += val[k + 1];
                         if (k > 0) {
                             // According to the spec, if a moveto is followed by multiple
                             // pairs of coordinates, the subsequent pairs are treated as
                             // implicit lineto commands.
-                            path.rLineTo(val[k + 0], val[k + 1]);
+                            path.rLineTo(val[k], val[k + 1]);
                         } else {
-                            path.rMoveTo(val[k + 0], val[k + 1]);
+                            path.rMoveTo(val[k], val[k + 1]);
                             currentSegmentStartX = currentX;
                             currentSegmentStartY = currentY;
                         }
                         break;
                     case 'M': // moveto - Start a new sub-path
-                        currentX = val[k + 0];
+                        currentX = val[k];
                         currentY = val[k + 1];
                         if (k > 0) {
                             // According to the spec, if a moveto is followed by multiple
                             // pairs of coordinates, the subsequent pairs are treated as
                             // implicit lineto commands.
-                            path.lineTo(val[k + 0], val[k + 1]);
+                            path.lineTo(val[k], val[k + 1]);
                         } else {
-                            path.moveTo(val[k + 0], val[k + 1]);
+                            path.moveTo(val[k], val[k + 1]);
                             currentSegmentStartX = currentX;
                             currentSegmentStartY = currentY;
                         }
                         break;
                     case 'l': // lineto - Draw a line from the current point (relative)
-                        path.rLineTo(val[k + 0], val[k + 1]);
-                        currentX += val[k + 0];
+                        path.rLineTo(val[k], val[k + 1]);
+                        currentX += val[k];
                         currentY += val[k + 1];
                         break;
                     case 'L': // lineto - Draw a line from the current point
-                        path.lineTo(val[k + 0], val[k + 1]);
-                        currentX = val[k + 0];
+                        path.lineTo(val[k], val[k + 1]);
+                        currentX = val[k];
                         currentY = val[k + 1];
                         break;
                     case 'h': // horizontal lineto - Draws a horizontal line (relative)
-                        path.rLineTo(val[k + 0], 0);
-                        currentX += val[k + 0];
+                        path.rLineTo(val[k], 0);
+                        currentX += val[k];
                         break;
                     case 'H': // horizontal lineto - Draws a horizontal line
-                        path.lineTo(val[k + 0], currentY);
-                        currentX = val[k + 0];
+                        path.lineTo(val[k], currentY);
+                        currentX = val[k];
                         break;
                     case 'v': // vertical lineto - Draws a vertical line from the current point (r)
-                        path.rLineTo(0, val[k + 0]);
-                        currentY += val[k + 0];
+                        path.rLineTo(0, val[k]);
+                        currentY += val[k];
                         break;
                     case 'V': // vertical lineto - Draws a vertical line from the current point
-                        path.lineTo(currentX, val[k + 0]);
-                        currentY = val[k + 0];
+                        path.lineTo(currentX, val[k]);
+                        currentY = val[k];
                         break;
                     case 'c': // curveto - Draws a cubic Bézier curve (relative)
-                        path.rCubicTo(val[k + 0], val[k + 1], val[k + 2], val[k + 3],
+                        path.rCubicTo(val[k], val[k + 1], val[k + 2], val[k + 3],
                                 val[k + 4], val[k + 5]);
 
                         ctrlPointX = currentX + val[k + 2];
@@ -482,7 +482,7 @@ public class PathParser {
 
                         break;
                     case 'C': // curveto - Draws a cubic Bézier curve
-                        path.cubicTo(val[k + 0], val[k + 1], val[k + 2], val[k + 3],
+                        path.cubicTo(val[k], val[k + 1], val[k + 2], val[k + 3],
                                 val[k + 4], val[k + 5]);
                         currentX = val[k + 4];
                         currentY = val[k + 5];
@@ -498,10 +498,10 @@ public class PathParser {
                             reflectiveCtrlPointY = currentY - ctrlPointY;
                         }
                         path.rCubicTo(reflectiveCtrlPointX, reflectiveCtrlPointY,
-                                val[k + 0], val[k + 1],
+                                val[k], val[k + 1],
                                 val[k + 2], val[k + 3]);
 
-                        ctrlPointX = currentX + val[k + 0];
+                        ctrlPointX = currentX + val[k];
                         ctrlPointY = currentY + val[k + 1];
                         currentX += val[k + 2];
                         currentY += val[k + 3];
@@ -515,22 +515,22 @@ public class PathParser {
                             reflectiveCtrlPointY = 2 * currentY - ctrlPointY;
                         }
                         path.cubicTo(reflectiveCtrlPointX, reflectiveCtrlPointY,
-                                val[k + 0], val[k + 1], val[k + 2], val[k + 3]);
-                        ctrlPointX = val[k + 0];
+                                val[k], val[k + 1], val[k + 2], val[k + 3]);
+                        ctrlPointX = val[k];
                         ctrlPointY = val[k + 1];
                         currentX = val[k + 2];
                         currentY = val[k + 3];
                         break;
                     case 'q': // Draws a quadratic Bézier (relative)
-                        path.rQuadTo(val[k + 0], val[k + 1], val[k + 2], val[k + 3]);
-                        ctrlPointX = currentX + val[k + 0];
+                        path.rQuadTo(val[k], val[k + 1], val[k + 2], val[k + 3]);
+                        ctrlPointX = currentX + val[k];
                         ctrlPointY = currentY + val[k + 1];
                         currentX += val[k + 2];
                         currentY += val[k + 3];
                         break;
                     case 'Q': // Draws a quadratic Bézier
-                        path.quadTo(val[k + 0], val[k + 1], val[k + 2], val[k + 3]);
-                        ctrlPointX = val[k + 0];
+                        path.quadTo(val[k], val[k + 1], val[k + 2], val[k + 3]);
+                        ctrlPointX = val[k];
                         ctrlPointY = val[k + 1];
                         currentX = val[k + 2];
                         currentY = val[k + 3];
@@ -544,10 +544,10 @@ public class PathParser {
                             reflectiveCtrlPointY = currentY - ctrlPointY;
                         }
                         path.rQuadTo(reflectiveCtrlPointX, reflectiveCtrlPointY,
-                                val[k + 0], val[k + 1]);
+                                val[k], val[k + 1]);
                         ctrlPointX = currentX + reflectiveCtrlPointX;
                         ctrlPointY = currentY + reflectiveCtrlPointY;
-                        currentX += val[k + 0];
+                        currentX += val[k];
                         currentY += val[k + 1];
                         break;
                     case 'T': // Draws a quadratic Bézier curve (reflective control point)
@@ -559,10 +559,10 @@ public class PathParser {
                             reflectiveCtrlPointY = 2 * currentY - ctrlPointY;
                         }
                         path.quadTo(reflectiveCtrlPointX, reflectiveCtrlPointY,
-                                val[k + 0], val[k + 1]);
+                                val[k], val[k + 1]);
                         ctrlPointX = reflectiveCtrlPointX;
                         ctrlPointY = reflectiveCtrlPointY;
-                        currentX = val[k + 0];
+                        currentX = val[k];
                         currentY = val[k + 1];
                         break;
                     case 'a': // Draws an elliptical arc
@@ -572,7 +572,7 @@ public class PathParser {
                                 currentY,
                                 val[k + 5] + currentX,
                                 val[k + 6] + currentY,
-                                val[k + 0],
+                                val[k],
                                 val[k + 1],
                                 val[k + 2],
                                 val[k + 3] != 0,
@@ -588,7 +588,7 @@ public class PathParser {
                                 currentY,
                                 val[k + 5],
                                 val[k + 6],
-                                val[k + 0],
+                                val[k],
                                 val[k + 1],
                                 val[k + 2],
                                 val[k + 3] != 0,

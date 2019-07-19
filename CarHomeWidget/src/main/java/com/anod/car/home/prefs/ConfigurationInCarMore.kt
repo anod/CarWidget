@@ -38,8 +38,8 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
 
     private fun initHotspot() {
         if (!WifiApControl.isSupported) {
-            val hotspot = findPreference(InCarSettings.HOTSPOT) as CheckBoxPreference
-            (findPreference("incar-more-category") as PreferenceCategory).removePreference(hotspot)
+            val hotspot = requirePreference<CheckBoxPreference>(InCarSettings.HOTSPOT)
+            requirePreference<PreferenceCategory>("incar-more-category").removePreference(hotspot)
         }
     }
 
@@ -52,9 +52,9 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
 
 
     private fun initSamsungHandsfree() {
-        val samDrivingPref = findPreference(InCarSettings.SAMSUNG_DRIVING_MODE) as CheckBoxPreference
+        val samDrivingPref = requirePreference<CheckBoxPreference>(InCarSettings.SAMSUNG_DRIVING_MODE)
         if (!SamsungDrivingMode.hasMode) {
-            (findPreference("incar-more-category") as PreferenceCategory).removePreference(samDrivingPref)
+            requirePreference<PreferenceCategory>("incar-more-category").removePreference(samDrivingPref)
         } else {
             samDrivingPref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
@@ -80,7 +80,7 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
     }
 
     private fun initAutorunApp() {
-        val pref = findPreference(AUTORUN_APP_PREF) as ListPreference
+        val pref = requirePreference(AUTORUN_APP_PREF) as ListPreference
         val autorunApp = prefs.autorunApp
         if (autorunApp == null) {
             updateAutorunAppPref(null)
@@ -102,7 +102,7 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
     }
 
     private fun updateAutorunAppPref(data: Intent?) {
-        val pref = findPreference(AUTORUN_APP_PREF) as ListPreference
+        val pref = requirePreference(AUTORUN_APP_PREF) as ListPreference
         val title: String
         val value: String
         if (data == null) {

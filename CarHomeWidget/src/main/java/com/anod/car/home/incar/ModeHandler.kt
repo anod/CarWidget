@@ -160,27 +160,27 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
         private fun adjustBrightness(brightSetting: String, context: Context) {
             val cr = context.contentResolver
 
-            sCurrentBrightness = android.provider.Settings.System.getInt(cr,
-                    android.provider.Settings.System.SCREEN_BRIGHTNESS, BRIGHTNESS_MAX
+            sCurrentBrightness = Settings.System.getInt(cr,
+                    Settings.System.SCREEN_BRIGHTNESS, BRIGHTNESS_MAX
             )
-            sCurrentAutoBrightness = android.provider.Settings.System.getInt(cr,
-                    android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE,
-                    android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
-            ) == android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
+            sCurrentAutoBrightness = Settings.System.getInt(cr,
+                    Settings.System.SCREEN_BRIGHTNESS_MODE,
+                    Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+            ) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
 
             var newBrightLevel = -1
             var newBrightMode = -1
             if (InCarInterface.BRIGHTNESS_AUTO == brightSetting) {
                 if (!sCurrentAutoBrightness) {
                     newBrightLevel = sCurrentBrightness
-                    newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
+                    newBrightMode = Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
                 }
             } else if (InCarInterface.BRIGHTNESS_DAY == brightSetting) {
                 newBrightLevel = BRIGHTNESS_DAY
-                newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+                newBrightMode = Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
             } else if (InCarInterface.BRIGHTNESS_NIGHT == brightSetting) {
                 newBrightLevel = BRIGHTNESS_NIGHT
-                newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+                newBrightMode = Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
             }
 
             if (newBrightLevel == -1) {
@@ -197,9 +197,9 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
             if (sCurrentAutoBrightness && InCarInterface.BRIGHTNESS_AUTO == brightSetting) {
                 return false
             }
-            var newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+            var newBrightMode = Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
             if (sCurrentAutoBrightness) {
-                newBrightMode = android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
+                newBrightMode = Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
             }
 
             writeBrightness(context, newBrightMode, sCurrentBrightness)

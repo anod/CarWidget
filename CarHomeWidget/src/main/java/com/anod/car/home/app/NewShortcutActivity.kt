@@ -38,7 +38,7 @@ class NewShortcutActivity : Activity(), ShortcutPicker.Handler {
 
         val defaultResultValue = Intent()
         defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        setResult(Activity.RESULT_OK, defaultResultValue)
+        setResult(RESULT_OK, defaultResultValue)
 
         val model = WidgetShortcutsModel.init(this, appWidgetId)
         shortcutPicker = ShortcutPicker(model, this, this)

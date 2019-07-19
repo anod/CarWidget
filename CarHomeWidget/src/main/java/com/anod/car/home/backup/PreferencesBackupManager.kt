@@ -235,13 +235,10 @@ class PreferencesBackupManager(private val context: Context) {
                 val reader = JsonReader(InputStreamReader(BufferedInputStream(inputStream!!)))
                 reader.beginObject()
                 while (reader.hasNext()) {
-                    val name = reader.nextName()
-                    if (name == "settings") {
-                        widget.readJson(reader)
-                    } else if (name == "shortcuts") {
-                        shortcuts = shortcutsJsonReader.readList(reader)
-                    } else {
-                        reader.skipValue()
+                    when (reader.nextName()) {
+                        "settings" -> widget.readJson(reader)
+                        "shortcuts" -> shortcuts = shortcutsJsonReader.readList(reader)
+                        else -> reader.skipValue()
                     }
                 }
                 reader.endObject()
@@ -336,13 +333,10 @@ class PreferencesBackupManager(private val context: Context) {
                 val reader = JsonReader(InputStreamReader(BufferedInputStream(inputStream!!)))
                 reader.beginObject()
                 while (reader.hasNext()) {
-                    val name = reader.nextName()
-                    if (name == "settings") {
-                        incar.readJson(reader)
-                    } else if (name == "shortcuts") {
-                        shortcuts = shortcutsJsonReader.readList(reader)
-                    } else {
-                        reader.skipValue()
+                    when (reader.nextName()) {
+                        "settings" -> incar.readJson(reader)
+                        "shortcuts" -> shortcuts = shortcutsJsonReader.readList(reader)
+                        else -> reader.skipValue()
                     }
                 }
                 reader.endObject()

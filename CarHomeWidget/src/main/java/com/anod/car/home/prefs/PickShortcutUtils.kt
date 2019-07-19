@@ -2,7 +2,6 @@ package com.anod.car.home.prefs
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import androidx.preference.Preference
 import com.anod.car.home.R
@@ -25,14 +24,14 @@ class PickShortcutUtils(private val configurationFragment: ConfigurationPreferen
     override fun onAddShortcut(cellId: Int, info: Shortcut?) {
         if (info != null && info.id != Shortcut.idUnknown) {
             val key = preferenceKey.getCompiledKey(cellId)
-            val p = configurationFragment.findPreference(key) as ShortcutPreference
+            val p = configurationFragment.requirePreference(key) as ShortcutPreference
             refreshPreference(p)
         }
     }
 
     override fun onEditComplete(cellId: Int) {
         val key = preferenceKey.getCompiledKey(cellId)
-        val p = configurationFragment.findPreference(key) as ShortcutPreference
+        val p = configurationFragment.requirePreference(key) as ShortcutPreference
         refreshPreference(p)
     }
 

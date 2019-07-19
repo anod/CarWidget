@@ -1,23 +1,15 @@
 package com.anod.car.home.prefs.preferences
 
 import android.content.Context
-
-import com.anod.car.home.model.AbstractShortcuts
-import com.anod.car.home.model.NotificationShortcutsModel
-import com.anod.car.home.model.Shortcut
-import com.anod.car.home.model.ShortcutIcon
-import com.anod.car.home.model.ShortcutInfo
-import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.backup.PreferencesBackupManager
+import com.anod.car.home.model.*
 import com.anod.car.home.prefs.model.*
-
 import info.anodsplace.framework.AppLog
-
 import java.io.BufferedInputStream
 import java.io.IOException
 import java.io.InputStream
 import java.io.ObjectInputStream
-import java.util.HashMap
+import java.util.*
 
 class ObjectRestoreManager(private val mContext: Context) {
 
@@ -26,7 +18,7 @@ class ObjectRestoreManager(private val mContext: Context) {
     }
 
     fun doRestoreMain(inputStream: InputStream, appWidgetId: Int): Int {
-        var prefs: ShortcutsMain? = null
+        var prefs: ShortcutsMain?
         try {
             synchronized(sLock) {
                 val `is` = ObjectInputStream(BufferedInputStream(inputStream))
@@ -74,7 +66,7 @@ class ObjectRestoreManager(private val mContext: Context) {
     }
 
     fun doRestoreInCar(inputStream: InputStream): Int {
-        var inCarBackup: InCarBackup? = null
+        var inCarBackup: InCarBackup?
         try {
             synchronized(sLock) {
                 val `is` = ObjectInputStream(BufferedInputStream(inputStream))
@@ -111,8 +103,8 @@ class ObjectRestoreManager(private val mContext: Context) {
 
     companion object {
 
-        val FILE_EXT_DAT = ".dat"
-        val FILE_INCAR_DAT = "backup_incar.dat"
+        const val FILE_EXT_DAT = ".dat"
+        const val FILE_INCAR_DAT = "backup_incar.dat"
 
         internal val sLock = arrayOfNulls<Any>(0)
 

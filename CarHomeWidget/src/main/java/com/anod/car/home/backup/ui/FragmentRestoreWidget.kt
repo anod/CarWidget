@@ -66,8 +66,8 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
         setHasOptionsMenu(true)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.menu_new_backup -> {
                 backup()
                 return true

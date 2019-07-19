@@ -28,7 +28,7 @@ class ConfigurationNotificationShortcuts : ConfigurationPreferenceFragment(), Pr
         pickShortcutUtils.onRestoreInstanceState(savedInstanceState)
 
         for (i in 0 until InCarStorage.NOTIFICATION_COMPONENT_NUMBER) {
-            val p = findPreference(getInitialKey(i)) as ShortcutPreference
+            val p = requirePreference(getInitialKey(i)) as ShortcutPreference
             pickShortcutUtils.initLauncherPreference(i, p)
             p.dropCallback = this
         }
@@ -69,7 +69,7 @@ class ConfigurationNotificationShortcuts : ConfigurationPreferenceFragment(), Pr
         model.init()
         for (i in 0 until InCarStorage.NOTIFICATION_COMPONENT_NUMBER) {
             val key = getCompiledKey(i)
-            val p = findPreference(key) as ShortcutPreference
+            val p = requirePreference(key) as ShortcutPreference
             pickShortcutUtils.refreshPreference(p)
         }
     }

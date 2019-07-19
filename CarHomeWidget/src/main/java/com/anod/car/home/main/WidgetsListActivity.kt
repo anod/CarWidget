@@ -8,7 +8,7 @@ import com.anod.car.home.prefs.LookAndFeelActivity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.transaction
+import androidx.fragment.app.commit
 import com.anod.car.home.incar.ScreenOrientation
 import com.anod.car.home.prefs.ConfigurationInCar
 import com.anod.car.home.prefs.model.InCarInterface
@@ -32,8 +32,8 @@ open class WidgetsListActivity : CarWidgetActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            supportFragmentManager.transaction {
-                replace(R.id.content_frame, WidgetsListFragment.newInstance())
+            supportFragmentManager.commit {
+                replace(R.id.content_frame, WidgetsListFragment())
             }
         } else {
             wizardShown = savedInstanceState.getBoolean("wizard-shown")
@@ -43,19 +43,19 @@ open class WidgetsListActivity : CarWidgetActivity() {
         bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_widgets -> {
-                    supportFragmentManager.transaction {
-                        replace(R.id.content_frame, WidgetsListFragment.newInstance())
+                    supportFragmentManager.commit {
+                        replace(R.id.content_frame, WidgetsListFragment())
                     }
                     true
                 }
                 R.id.nav_info -> {
-                    supportFragmentManager.transaction {
+                    supportFragmentManager.commit {
                         replace(R.id.content_frame, AboutFragment())
                     }
                     true
                 }
                 R.id.nav_incar -> {
-                    supportFragmentManager.transaction {
+                    supportFragmentManager.commit {
                         replace(R.id.content_frame, ConfigurationInCar())
                     }
                     true
@@ -76,7 +76,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
             val appWidgetIds = WidgetHelper.getAllWidgetIds(this)
             if (appWidgetIds.isEmpty() && !isFreeInstalled) {
                 wizardShown = true
-                startWizard()
+                startActivity(Intent(this, WizardActivity::class.java))
             }
         }
 
@@ -135,11 +135,6 @@ open class WidgetsListActivity : CarWidgetActivity() {
         super.onSaveInstanceState(outState)
     }
 
-    private fun startWizard() {
-        val intent = Intent(this, WizardActivity::class.java)
-        startActivity(intent)
-    }
-
     fun startConfigActivity(appWidgetId: Int) {
         val configIntent = Intent(this, LookAndFeelActivity::class.java)
         configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
@@ -147,7 +142,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
     }
 
     fun showInCarSettings() {
-        supportFragmentManager.transaction {
+        supportFragmentManager.commit {
             replace(R.id.content_frame, AboutFragment())
         }
         bottomNavigation.selectedItemId = R.id.nav_incar

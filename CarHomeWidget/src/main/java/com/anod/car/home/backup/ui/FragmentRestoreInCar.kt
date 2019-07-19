@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.core.content.FileProvider
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -13,14 +12,13 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
-
 import com.anod.car.home.R
 import com.anod.car.home.backup.*
 import com.anod.car.home.prefs.preferences.ObjectRestoreManager
 import com.anod.car.home.utils.*
 import info.anodsplace.framework.AppLog
-
 import java.io.File
 
 /**
@@ -83,8 +81,8 @@ class FragmentRestoreInCar : androidx.fragment.app.Fragment(), RestoreTask.Resto
         setHasOptionsMenu(true)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.menu_new_backup -> {
                 val uri = backupManager.backupIncarFile.toUri()
                 BackupTask(backupManager, uri, this@FragmentRestoreInCar).execute()
@@ -106,13 +104,13 @@ class FragmentRestoreInCar : androidx.fragment.app.Fragment(), RestoreTask.Resto
 
         if (requestCode == requestDownload && resultCode == Activity.RESULT_OK) {
             resultData?.data?.let {
-                AppLog.d("Uri: " + it.toString())
+                AppLog.d("Uri: $it")
                 RestoreTask(backupManager, it, this@FragmentRestoreInCar).execute()
 
             }
         } else if (requestCode == requestUpload && resultCode == Activity.RESULT_OK) {
             resultData?.data?.let {
-                AppLog.d("Uri: " + it.toString())
+                AppLog.d("Uri: $it")
                 BackupTask(backupManager, it, this@FragmentRestoreInCar).execute()
             }
         }

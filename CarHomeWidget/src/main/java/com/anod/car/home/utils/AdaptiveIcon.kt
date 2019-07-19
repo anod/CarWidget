@@ -7,6 +7,7 @@ import android.graphics.drawable.AdaptiveIconDrawable
 import android.os.Build
 import android.util.TypedValue
 import info.anodsplace.framework.graphics.PathParser
+import kotlin.math.roundToInt
 
 @TargetApi(Build.VERSION_CODES.O)
 class AdaptiveIcon(val drawable: AdaptiveIconDrawable, private val mask: Path, val context: Context) {
@@ -14,8 +15,8 @@ class AdaptiveIcon(val drawable: AdaptiveIconDrawable, private val mask: Path, v
     constructor(drawable: AdaptiveIconDrawable, pathData: String, context: Context)
         : this(drawable, PathParser.createPathFromPathData(pathData), context)
 
-    private val layerSize = Math.round(TypedValue.applyDimension(
-    TypedValue.COMPLEX_UNIT_DIP, 108f * UtilitiesBitmap.maxScale, context.resources.displayMetrics))
+    private val layerSize = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, 108f * UtilitiesBitmap.maxScale, context.resources.displayMetrics).roundToInt()
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG or
             Paint.FILTER_BITMAP_FLAG)

@@ -38,7 +38,7 @@ object CheatSheet {
      * The estimated height of a toast, in dips (density-independent pixels). This is used to
      * determine whether or not the toast should appear above or below the UI element.
      */
-    private val ESTIMATED_TOAST_HEIGHT_DIPS = 48
+    private const val ESTIMATED_TOAST_HEIGHT_DIPS = 48
 
     /**
      * Sets up a cheat sheet (tooltip) for the given view by setting its [ ]. When the view is long-pressed, a [Toast] with
@@ -60,7 +60,7 @@ object CheatSheet {
      * @param textResId The string resource containing the text to show on long-press.
      */
     fun setup(view: View, textResId: Int) {
-        view.setOnLongClickListener { view -> showCheatSheet(view, view.context.getString(textResId)) }
+        view.setOnLongClickListener { showCheatSheet(it, it.context.getString(textResId)) }
     }
 
     /**
@@ -72,7 +72,7 @@ object CheatSheet {
      * @param text The text to show on long-press.
      */
     fun setup(view: View, text: CharSequence) {
-        view.setOnLongClickListener { view -> showCheatSheet(view, text) }
+        view.setOnLongClickListener { showCheatSheet(it, text) }
     }
 
     /**

@@ -2,32 +2,26 @@ package com.anod.car.home.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.PaintFlagsDrawFilter
-import android.graphics.Rect
+import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.PaintDrawable
 import android.util.DisplayMetrics
 import android.util.Log
-
 import com.anod.car.home.R
-
 import java.io.ByteArrayOutputStream
 import java.io.IOException
+import kotlin.math.max
 
 object UtilitiesBitmap {
     private const val sizeIcon = 0 // icon with higher density
     private const val sizeSystem = 1 // default system icon size
-    const val sizeMax = 2 // max scale size
+    private const val sizeMax = 2 // max scale size
     const val maxScale = 3
 
     private var sIconSize = -1
     private var sIconSystem = -1
-    var sIconMaxScale = -1
+    private var sIconMaxScale = -1
     private var sSystemDensity = -1
     private var sIconDensity = -1
 
@@ -93,7 +87,7 @@ object UtilitiesBitmap {
         }
     }
 
-    fun getHigherDensity(deviceDensity: Int): Int {
+    private fun getHigherDensity(deviceDensity: Int): Int {
 
         if (deviceDensity <= DisplayMetrics.DENSITY_TV) {
             return DisplayMetrics.DENSITY_XXHIGH
@@ -106,8 +100,8 @@ object UtilitiesBitmap {
 
     fun makeDefaultIcon(manager: PackageManager): Bitmap {
         val d = manager.defaultActivityIcon
-        val b = Bitmap.createBitmap(Math.max(d.intrinsicWidth, 1),
-                Math.max(d.intrinsicHeight, 1), Bitmap.Config.ARGB_8888)
+        val b = Bitmap.createBitmap(max(d.intrinsicWidth, 1),
+                max(d.intrinsicHeight, 1), Bitmap.Config.ARGB_8888)
         val c = Canvas(b)
         d.setBounds(0, 0, b.width, b.height)
         d.draw(c)
@@ -140,15 +134,19 @@ object UtilitiesBitmap {
             var width: Int
             var height: Int
 
-            if (size == sizeIcon) {
-                width = sIconSize
-                height = sIconSize
-            } else if (size == sizeMax) {
-                width = sIconMaxScale
-                height = sIconMaxScale
-            } else {
-                width = sIconSystem
-                height = sIconSystem
+            when (size) {
+                sizeIcon -> {
+                    width = sIconSize
+                    height = sIconSize
+                }
+                sizeMax -> {
+                    width = sIconMaxScale
+                    height = sIconMaxScale
+                }
+                else -> {
+                    width = sIconSystem
+                    height = sIconSystem
+                }
             }
 
             if (icon is PaintDrawable) {
@@ -205,7 +203,7 @@ object UtilitiesBitmap {
         }
     }
 
-    fun getSize(size: Int, width: Int, height: Int): Int {
+    private fun getSize(size: Int, width: Int, height: Int): Int {
         return if (size == sizeMax && (width >= sIconMaxScale || height >= sIconMaxScale)) {
             sIconMaxScale
         } else if (size == sizeIcon && (width >= sIconSize || height >= sIconSize)) {

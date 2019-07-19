@@ -35,13 +35,13 @@ class AppLog {
     companion object {
 
         var tag = "AppLog"
-        var level = Log.INFO
-        val instance: AppLog by lazy { AppLog() }
+        private var level = Log.INFO
+        private val instance: AppLog by lazy { AppLog() }
 
         val isVerbose = level <= Log.VERBOSE
         val isDebug = level <= Log.DEBUG
 
-        var logger: Logger = Logger.Android()
+        private var logger: Logger = Logger.Android()
 
         fun setDebug(buildConfigDebug: Boolean, loggableTag: String) {
             val isDebug = buildConfigDebug || Log.isLoggable(loggableTag, Log.DEBUG)

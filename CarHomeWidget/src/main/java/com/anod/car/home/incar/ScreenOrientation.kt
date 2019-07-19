@@ -20,7 +20,7 @@ class ScreenOrientation(private val mContext: Context, private val windowManager
     private var viewAdded: Boolean = false
 
     fun set(orientation: Int) {
-        if (orientation == ScreenOrientation.DISABLED) {
+        if (orientation == DISABLED) {
             if (viewAdded) {
                 windowManager.removeView(overlayView)
             }

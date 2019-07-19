@@ -84,7 +84,7 @@ class DialogSingleChoice(context: Context,
                          @StyleRes themeResId: Int,
                          @StringRes titleRes: Int,
                          @ArrayRes private val itemsRes: Int,
-                         val checkedItem: Int,
+                         private val checkedItem: Int,
                          val listener: (dialog: DialogInterface, which: Int) -> Unit)
     : BaseDialog(context, themeResId, titleRes){
 

@@ -3,7 +3,7 @@ package com.anod.car.home.prefs
 import android.view.View
 import android.widget.TextView
 import com.anod.car.home.incar.ModeDetector
-import com.anod.car.home.R;
+import com.anod.car.home.R
 
 class InCarStatus(private val view: View) {
 

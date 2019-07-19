@@ -23,7 +23,7 @@ class InCarStatus(widgetsCount: Int, version: Version, settings: InCarSettings) 
     companion object {
         const val NOT_ACTIVE = 0
         const val ENABLED = 1
-        const val DISABLED = 2
+        private const val DISABLED = 2
 
         private fun calc(widgetsCount: Int, version: Version, settings: InCarSettings): Int {
             if (widgetsCount == 0) {

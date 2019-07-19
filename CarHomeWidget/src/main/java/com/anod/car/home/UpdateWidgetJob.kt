@@ -21,7 +21,7 @@ class UpdateWidgetJob : JobIntentService() {
         fun enqueue(context: Context, appWidgetIds: IntArray) {
             val intent = Intent()
             intent.putExtra(inputWidgetIds, appWidgetIds)
-            JobIntentService.enqueueWork(context, UpdateWidgetJob::class.java, jobId, intent)
+            enqueueWork(context, UpdateWidgetJob::class.java, jobId, intent)
         }
     }
 
