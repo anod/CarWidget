@@ -13,16 +13,15 @@
 
     <Button
         android:id="@+id/buttonAppTheme"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        style="@style/AboutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_invert_colors"
-        android:drawableTint="?attr/colorPrimary"
         android:text="@string/app_theme" />
 
     <Button
         android:id="@+id/buttonMusicApp"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/AboutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_action_headphones"
@@ -30,11 +29,10 @@
 
     <Button
         android:id="@+id/buttonDefaultCarDockApp"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/AboutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_android"
-        android:drawableTint="?attr/colorPrimary"
         android:text="@string/default_car_dock_app" />
 
     <TextView
@@ -45,20 +43,18 @@
 
     <Button
         android:id="@+id/buttonVersion"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/AboutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_stars"
-        android:drawableTint="?attr/colorPrimary"
         android:text="@string/version_summary" />
 
     <Button
         android:id="@+id/buttonFeedback"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/AboutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_email_black_24dp"
-        android:drawableTint="?attr/colorPrimary"
         android:text="@string/issue_title" />
 
 </LinearLayout>

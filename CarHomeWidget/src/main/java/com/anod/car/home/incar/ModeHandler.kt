@@ -11,11 +11,10 @@ import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
 import com.anod.car.home.R
-
 import com.anod.car.home.prefs.model.InCarInterface
-import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.Power
-import com.anod.car.home.utils.Utils
+import com.anod.car.home.utils.startActivitySafely
+import info.anodsplace.framework.AppLog
 
 class ModeHandler(private val context: Context, private val screenOrientation: ScreenOrientation) {
 
@@ -116,7 +115,7 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
             val intent = Intent(Intent.ACTION_MAIN)
                     .setComponent(autorunApp)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            Utils.startActivitySafely(intent, context)
+            context.startActivitySafely(intent)
         }
 
         private fun activateCarMode(context: Context) {

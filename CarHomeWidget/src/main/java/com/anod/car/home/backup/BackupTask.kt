@@ -2,7 +2,8 @@ package com.anod.car.home.backup
 
 import android.content.ContentResolver
 import android.net.Uri
-import android.os.AsyncTask
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * @author alex
@@ -13,14 +14,13 @@ class BackupTask(
         private val type: Int,
         private val backupManager: PreferencesBackupManager,
         private val appWidgetId: Int,
-        private val uri: Uri,
-        private val listener: BackupTaskListener) : AsyncTask<Void, Void, Int>() {
+        private val uri: Uri) {
 
-    constructor(backupManager: PreferencesBackupManager, appWidgetId: Int, uri: Uri, listener: BackupTaskListener)
-            : this(PreferencesBackupManager.TYPE_MAIN, backupManager, appWidgetId, uri, listener)
+    constructor(backupManager: PreferencesBackupManager, appWidgetId: Int, uri: Uri)
+            : this(PreferencesBackupManager.TYPE_MAIN, backupManager, appWidgetId, uri)
 
-    constructor(backupManager: PreferencesBackupManager, uri: Uri, listener: BackupTaskListener)
-            : this(PreferencesBackupManager.TYPE_INCAR, backupManager, 0, uri, listener)
+    constructor(backupManager: PreferencesBackupManager, uri: Uri)
+            : this(PreferencesBackupManager.TYPE_INCAR, backupManager, 0, uri)
 
 
     interface BackupTaskListener {
@@ -28,25 +28,17 @@ class BackupTask(
         fun onBackupFinish(type: Int, code: Int)
     }
 
-    override fun onPreExecute() {
-        listener.onBackupPreExecute(type)
-    }
-
-    override fun doInBackground(vararg params: Void): Int? {
+    suspend fun execute(): Int = withContext(Dispatchers.IO) {
 
         if (type == PreferencesBackupManager.TYPE_INCAR) {
             if (ContentResolver.SCHEME_FILE == uri.scheme) {
-                return backupManager.doBackupInCarLocal(uri)
+                return@withContext backupManager.doBackupInCarLocal(uri)
             }
-            return backupManager.doBackupInCarUri(uri)
+            return@withContext backupManager.doBackupInCarUri(uri)
         }
 
-        return if (ContentResolver.SCHEME_FILE == uri.scheme) {
+        return@withContext if (ContentResolver.SCHEME_FILE == uri.scheme) {
             backupManager.doBackupWidgetLocal(uri, appWidgetId)
         } else backupManager.doBackupWidgetUri(uri, appWidgetId)
-    }
-
-    override fun onPostExecute(result: Int?) {
-        listener.onBackupFinish(type, result!!)
     }
 }

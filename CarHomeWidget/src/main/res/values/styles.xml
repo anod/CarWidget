@@ -128,4 +128,9 @@
     <style name="Notification.Button">
         <item name="android:background">@drawable/notification_button_background</item>
     </style>
+
+    <style name="AboutButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="iconTint">?attr/colorOnSurface</item>
+    </style>
 </resources>

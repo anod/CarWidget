@@ -1,6 +1,5 @@
 package com.anod.car.home.prefs.drag
 
-import android.app.Activity
 import android.content.ClipDescription
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -8,20 +7,17 @@ import android.graphics.PorterDuffColorFilter
 import android.view.DragEvent
 import android.view.View
 import android.widget.ImageView
-import com.anod.car.home.R
 import info.anodsplace.framework.AppLog
 
 /**
  * @author alex
  * @date 2014-10-25
  */
-class ShortcutDragListener(activity: Activity, private val dropCallback: DropCallback?) : View.OnDragListener {
+class ShortcutDragListener(private val deleteBackground: View, private val dropCallback: DropCallback?) : View.OnDragListener {
     private val colorFilter: PorterDuffColorFilter = PorterDuffColorFilter(Color.argb(255, 100, 100, 100),
             PorterDuff.Mode.MULTIPLY)
     private val deleteFilter: PorterDuffColorFilter = PorterDuffColorFilter(Color.argb(255, 100, 0, 0),
             PorterDuff.Mode.MULTIPLY)
-    private val deleteBackground: View = activity.findViewById(R.id.drag_delete_bg)
-
 
     interface DropCallback {
         fun onDelete(srcCellId: Int): Boolean

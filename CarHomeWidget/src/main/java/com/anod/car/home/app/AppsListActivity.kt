@@ -1,53 +1,45 @@
 package com.anod.car.home.app
 
-import com.anod.car.home.R
-import com.anod.car.home.model.AppsList
-
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.os.AsyncTask
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.FrameLayout
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.*
 import com.anod.car.home.CarWidgetApplication
+import com.anod.car.home.R
+import com.anod.car.home.model.AppsList
+import kotlinx.coroutines.launch
 
-interface AppsListResultCallback {
-    fun onResult(result: List<AppsList.Entry>)
+interface AppsListLoader{
+    suspend fun loadAppsList(): List<AppsList.Entry>
 }
 
-typealias AppsListLoaderFactory = (context: Context, callback: AppsListResultCallback) -> AsyncTask<Void, Void, List<AppsList.Entry>>
-
-class AppsListViewModel(application: Application) : AndroidViewModel(application), AppsListResultCallback {
+class AppsListViewModel(application: Application) : AndroidViewModel(application) {
 
     val list = MutableLiveData<List<AppsList.Entry>>()
-    var loaderFactory: AppsListLoaderFactory? = null
+    lateinit var loader: AppsListLoader
     var isRefreshCache = false
     var appsList = getApplication<CarWidgetApplication>().appComponent.appListCache
 
     fun load() {
-        loaderFactory?.let { it(getApplication<CarWidgetApplication>(), this) }?.execute()
+        viewModelScope.launch {
+            val result = loader.loadAppsList()
+            appsList.replace(result)
+            list.value = result
+        }
     }
 
     fun loadIfNeeded() {
         val apps = appsList.entries
-
         if (apps.isEmpty() || isRefreshCache) {
             this.load()
         } else {
             this.list.value = apps
         }
-    }
-
-    override fun onResult(result: List<AppsList.Entry>) {
-        this.appsList.replace(result)
-        this.list.value = result
     }
 }
 

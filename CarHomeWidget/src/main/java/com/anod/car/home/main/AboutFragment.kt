@@ -18,8 +18,8 @@ import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.prefs.MusicAppSettingsActivity
 import com.anod.car.home.prefs.model.AppTheme
-import com.anod.car.home.utils.Utils
 import com.anod.car.home.utils.forApplicationDetails
+import com.anod.car.home.utils.startActivitySafely
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogCustom
 import info.anodsplace.framework.app.DialogSingleChoice
@@ -68,7 +68,7 @@ class AboutFragment : Fragment() {
             val url = DETAIL_MARKET_URL
             val uri = Uri.parse(String.format(url, context!!.packageName))
             val intent = Intent(Intent.ACTION_VIEW, uri)
-            Utils.startActivitySafely(intent, context!!)
+            requireContext().startActivitySafely(intent)
         }
 
         val ver = renderVersion()
@@ -110,7 +110,7 @@ class AboutFragment : Fragment() {
                 intent.addCategory(Intent.CATEGORY_CAR_DOCK)
                 val info = App.provide(context!!).packageManager
                         .resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
-                Utils.startActivitySafely(Intent().forApplicationDetails(info.activityInfo.applicationInfo.packageName), context!!)
+                requireContext().startActivitySafely(Intent().forApplicationDetails(info.activityInfo.applicationInfo.packageName))
             }
         }.show()
     }
@@ -148,8 +148,6 @@ class AboutFragment : Fragment() {
 
     companion object {
         private const val DETAIL_MARKET_URL = "market://details?id=%s"
-        private const val URL_GOOGLE_PLUS = "https://plus.google.com/communities/106765737887289122631"
-        private const val RESOLVER_ACTIVITY = "com.android.internal.app.ResolverActivity"
     }
 
 }

@@ -111,7 +111,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         setContentView(R.layout.activity_lookandfeel)
 
         currentPage = skinList.selectedSkinPosition
-        dragListener = ShortcutDragListener(this, this)
+        dragListener = ShortcutDragListener(dragDeleteBg, this)
 
         adapter = SkinPagerAdapter(this, skinList.count, supportFragmentManager)
         gallery.adapter = adapter
@@ -137,7 +137,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
                     invalidateOptionsMenu()
                     content.visibility = View.VISIBLE
                     supportFragmentManager.commit {
-                        replace(R.id.content_frame, AboutFragment())
+                        replace(R.id.content, AboutFragment())
                     }
                     true
                 }
@@ -145,7 +145,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
                     invalidateOptionsMenu()
                     content.visibility = View.VISIBLE
                     supportFragmentManager.commit {
-                        replace(R.id.content_frame, ConfigurationInCar())
+                        replace(R.id.content, ConfigurationInCar())
                     }
                     true
                 }

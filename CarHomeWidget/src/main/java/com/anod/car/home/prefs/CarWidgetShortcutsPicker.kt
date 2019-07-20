@@ -1,26 +1,44 @@
 package com.anod.car.home.prefs
 
 import android.app.Activity
+import android.app.Application
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
-import androidx.core.content.res.ResourcesCompat
 import android.view.View
 import android.widget.AdapterView
-
+import androidx.activity.viewModels
+import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.observe
+import androidx.lifecycle.viewModelScope
 import com.anod.car.home.R
 import com.anod.car.home.prefs.ActivityPicker.PickAdapter.Item
-import com.anod.car.home.utils.AppPermissions
-import com.anod.car.home.utils.ReadContacts
-import com.anod.car.home.utils.forDirectCall
-import com.anod.car.home.utils.forPickShortcutLocal
-import info.anodsplace.framework.app.ApplicationContext
-import info.anodsplace.framework.os.BackgroundTask
+import com.anod.car.home.utils.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.*
 
-import java.util.ArrayList
+private class CarWidgetShortcutsPickerViewModel(application: Application) : AndroidViewModel(application) {
+    val result = SingleLiveEvent<Intent?>()
+
+    suspend fun resolveContact(uri: Uri): Intent? = withContext(Dispatchers.IO) {
+        return@withContext Intent().resolveDirectCall(uri, getApplication())
+    }
+
+    fun loadContact(uri: Uri) {
+        viewModelScope.launch {
+            val intent = resolveContact(uri)
+            result.value = intent
+        }
+    }
+}
 
 class CarWidgetShortcutsPicker : ActivityPicker() {
+
+    private val viewModel: CarWidgetShortcutsPickerViewModel by viewModels()
 
     override val items: List<Item>
         get() {
@@ -39,6 +57,14 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTitle(R.string.car_widget_shortcuts)
+        viewModel.result.observe(this) {
+            if (it != null) {
+                setResult(Activity.RESULT_OK, it)
+            } else {
+                setResult(Activity.RESULT_CANCELED)
+            }
+            finish()
+        }
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -61,29 +87,15 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
         if (requestCode == REQUEST_PICK_CONTACT) {
             val uri = data?.data
             if (resultCode == Activity.RESULT_OK && uri != null) {
-                BackgroundTask(object : BackgroundTask.Worker<Uri, Intent?>(this, uri) {
-
-                    override fun run(param: Uri, context: ApplicationContext): Intent? {
-                        return Intent().forDirectCall(param, context.actual)
-                    }
-
-                    override fun finished(result: Intent?) {
-                        if (result != null) {
-                            setResult(Activity.RESULT_OK, result)
-                        } else {
-                            setResult(Activity.RESULT_CANCELED)
-                        }
-                        finish()
-                    }
-                }).execute()
+                viewModel.loadContact(uri)
+                return
             }
-            return
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
     companion object {
-        const val IDX_SWITCH_CAR_MODE = 0
+        // const val IDX_SWITCH_CAR_MODE = 0
         const val IDX_DIRECT_CALL = 1
         private const val REQUEST_PICK_CONTACT = 100
         private const val ITEMS_NUM = 5

@@ -6,6 +6,9 @@
 		<item name="colorPrimaryDark">@color/secondaryDarkColor</item>
 		<item name="activityBackground">@color/secondaryColor</item>
 		<item name="colorAccent">@color/material_bluegray_300</item>
+		<item name="colorOnPrimary">@color/material_bluegray_100</item>
+		<item name="colorOnBackground">@color/material_bluegray_100</item>
+		<item name="colorOnSurface">@color/material_bluegray_100</item>
         <item name="android:fontFamily">@font/rubik</item>
         <item name="fontFamily">@font/rubik</item>
         <item name="cardBackground">@color/secondaryColor</item>

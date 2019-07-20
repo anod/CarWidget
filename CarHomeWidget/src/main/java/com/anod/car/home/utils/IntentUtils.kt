@@ -1,6 +1,8 @@
 package com.anod.car.home.utils
 
+import android.app.Activity
 import android.appwidget.AppWidgetManager
+import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -11,6 +13,9 @@ import android.provider.ContactsContract
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.KeyEvent
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.anod.car.home.R
 import com.anod.car.home.ShortcutActivity
 import com.anod.car.home.app.NewShortcutActivity
 import com.anod.car.home.incar.SwitchInCarActivity
@@ -80,17 +85,16 @@ fun Intent.forPickShortcutLocal(i: Int, title: String, icnResId: Int, ctx: Conte
     val shortcutIntent = Intent().forShortcut(ctx, i)
     shortcutIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
 
-    val intent = commonPickShortcutIntent(title, shortcutIntent)
+    val intent = commonPickShortcutIntent(this, title, shortcutIntent)
     val iconResource = Intent.ShortcutIconResource.fromContext(ctx, icnResId)
     intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource)
     return intent
 }
 
-private fun commonPickShortcutIntent(title: String, shortcutIntent: Intent): Intent {
-    val intent = Intent()
-    intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent)
-    intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, title)
-    return intent
+private fun commonPickShortcutIntent(thisIntent: Intent, title: String, shortcutIntent: Intent): Intent {
+    thisIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent)
+    thisIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, title)
+    return thisIntent
 }
 
 fun Intent.forAppSettings(context: Context): Intent {
@@ -100,7 +104,7 @@ fun Intent.forAppSettings(context: Context): Intent {
     return this
 }
 
-fun Intent.forDirectCall(contactUri: Uri, context: Context): Intent? {
+fun Intent.resolveDirectCall(contactUri: Uri, context: Context): Intent? {
     val projection = arrayOf(
         ContactsContract.CommonDataKinds.Phone.NUMBER,
         ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
@@ -129,7 +133,7 @@ fun Intent.forDirectCall(contactUri: Uri, context: Context): Intent? {
             val callIntent = Intent(Intent.ACTION_CALL)
             callIntent.data = Uri.parse("tel:$number")
 
-            val intent = commonPickShortcutIntent(name, callIntent)
+            val intent = commonPickShortcutIntent(this, name, callIntent)
             if (!TextUtils.isEmpty(photoUri)) {
                 val d = DrawableUri(context).resolve(Uri.parse(photoUri))
                 if (d != null) {
@@ -142,4 +146,44 @@ fun Intent.forDirectCall(contactUri: Uri, context: Context): Intent? {
         cursor.close()
     }
     return null
+}
+
+fun Activity.startActivityForResultSafetly(intent: Intent, requestCode: Int) {
+    try {
+        startActivityForResult(intent, requestCode)
+    } catch (activityNotFoundException: ActivityNotFoundException) {
+        Toast.makeText(this, R.string.photo_picker_not_found, Toast.LENGTH_LONG).show()
+    } catch (exception: Exception) {
+        val errStr = String.format(resources.getString(R.string.error_text),
+                exception.message)
+        Toast.makeText(this, errStr, Toast.LENGTH_LONG).show()
+    }
+}
+
+fun Fragment.startActivityForResultSafetly(intent: Intent, requestCode: Int) {
+    try {
+        startActivityForResult(intent, requestCode)
+    } catch (activityNotFoundException: ActivityNotFoundException) {
+        Toast.makeText(context, R.string.photo_picker_not_found, Toast.LENGTH_LONG).show()
+    } catch (exception: Exception) {
+        val errStr = String.format(resources.getString(R.string.error_text),
+                exception.message)
+        Toast.makeText(context, errStr, Toast.LENGTH_LONG).show()
+    }
+}
+
+fun Context.startActivitySafely(intent: Intent) {
+    try {
+        startActivity(intent)
+    } catch (e: ActivityNotFoundException) {
+        Toast.makeText(this, getString(R.string.activity_not_found),
+                Toast.LENGTH_SHORT).show()
+    } catch (e: SecurityException) {
+        Toast.makeText(this, getString(R.string.permission_denied),
+                Toast.LENGTH_SHORT).show()
+        AppLog.e("Widget does not have the permission to launch " + intent +
+                ". Make sure to create a MAIN intent-filter for the corresponding activity " +
+                "or use the exported attribute for this activity.")
+        AppLog.e(e)
+    }
 }

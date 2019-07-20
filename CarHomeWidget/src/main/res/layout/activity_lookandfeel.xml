@@ -60,9 +60,9 @@
         android:paddingBottom="16dp"
         android:tint="?attr/colorPrimary"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/drag_delete_bg"
-        app:layout_constraintStart_toStartOf="@+id/drag_delete_bg"
-        app:layout_constraintTop_toTopOf="@+id/drag_delete_bg"
+        app:layout_constraintEnd_toEndOf="@+id/dragDeleteBg"
+        app:layout_constraintStart_toStartOf="@+id/dragDeleteBg"
+        app:layout_constraintTop_toTopOf="@+id/dragDeleteBg"
         app:srcCompat="@drawable/ic_cancel_black_24dp" />
 
     <FrameLayout

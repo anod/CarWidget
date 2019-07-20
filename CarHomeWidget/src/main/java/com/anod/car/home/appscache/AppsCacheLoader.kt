@@ -1,22 +1,22 @@
 package com.anod.car.home.appscache
 
-import com.anod.car.home.model.AppsList
-
 import android.content.Context
 import android.content.Intent
-import android.os.AsyncTask
-import com.anod.car.home.app.AppsListResultCallback
+import com.anod.car.home.app.AppsListLoader
+import com.anod.car.home.model.AppsList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * @author alex
  * @date 2014-09-02
  */
-class AppsCacheLoader(context: Context, private val queryIntent: Intent, private val callback: AppsListResultCallback) : AsyncTask<Void, Void, List<AppsList.Entry>>() {
+class AppsCacheLoader(context: Context, private val queryIntent: Intent) : AppsListLoader {
+
     private val packageManager = context.packageManager
     private val selfPackage = context.packageName
 
-    override fun doInBackground(vararg params: Void?): List<AppsList.Entry> {
-
+    override suspend fun loadAppsList(): List<AppsList.Entry> = withContext(Dispatchers.Default) {
         val list = mutableListOf<AppsList.Entry>()
 
         val apps = packageManager.queryIntentActivities(queryIntent, 0)
@@ -28,11 +28,6 @@ class AppsCacheLoader(context: Context, private val queryIntent: Intent, private
         }
 
         list.sortBy { it.title }
-        return list
-    }
-
-    override fun onPostExecute(result: List<AppsList.Entry>?) {
-        super.onPostExecute(result)
-        callback.onResult(result ?: emptyList())
+        return@withContext list
     }
 }

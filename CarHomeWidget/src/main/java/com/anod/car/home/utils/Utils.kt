@@ -1,24 +1,16 @@
 package com.anod.car.home.utils
 
-import com.anod.car.home.R
-
 import android.annotation.TargetApi
-import android.app.Activity
 import android.app.ActivityManager
 import android.appwidget.AppWidgetManager
-import android.content.ActivityNotFoundException
 import android.content.ComponentCallbacks2
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo.FLAG_LARGE_HEAP
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
-
-import info.anodsplace.framework.AppLog
-
-import android.content.pm.ApplicationInfo.FLAG_LARGE_HEAP
 
 object Utils {
 
@@ -75,50 +67,6 @@ object Utils {
     fun stringToComponent(compString: String): ComponentName {
         val compParts = compString.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         return ComponentName(compParts[0], compParts[1])
-    }
-
-    fun startActivityForResultSafetly(intent: Intent, requestCode: Int,
-                                      activity: Activity) {
-        try {
-            activity.startActivityForResult(intent, requestCode)
-        } catch (activityNotFoundException: ActivityNotFoundException) {
-            Toast.makeText(activity, R.string.photo_picker_not_found, Toast.LENGTH_LONG).show()
-        } catch (exception: Exception) {
-            val errStr = String.format(activity.resources.getString(R.string.error_text),
-                    exception.message)
-            Toast.makeText(activity, errStr, Toast.LENGTH_LONG).show()
-        }
-
-    }
-
-    fun startActivityForResultSafetly(intent: Intent, requestCode: Int,
-                                      fragment: androidx.fragment.app.Fragment) {
-        try {
-            fragment.startActivityForResult(intent, requestCode)
-        } catch (activityNotFoundException: ActivityNotFoundException) {
-            Toast.makeText(fragment.context, R.string.photo_picker_not_found, Toast.LENGTH_LONG).show()
-        } catch (exception: Exception) {
-            val errStr = String.format(fragment.resources.getString(R.string.error_text),
-                    exception.message)
-            Toast.makeText(fragment.context, errStr, Toast.LENGTH_LONG).show()
-        }
-    }
-
-    fun startActivitySafely(intent: Intent, context: Context) {
-        try {
-            context.startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
-            Toast.makeText(context, context.getString(R.string.activity_not_found),
-                    Toast.LENGTH_SHORT).show()
-        } catch (e: SecurityException) {
-            Toast.makeText(context, context.getString(R.string.activity_not_found),
-                    Toast.LENGTH_SHORT).show()
-            AppLog.e("Widget does not have the permission to launch " + intent +
-                    ". Make sure to create a MAIN intent-filter for the corresponding activity " +
-                    "or use the exported attribute for this activity.")
-            AppLog.e(e)
-        }
-
     }
 
     fun calculateMemoryCacheSize(context: Context): Int {

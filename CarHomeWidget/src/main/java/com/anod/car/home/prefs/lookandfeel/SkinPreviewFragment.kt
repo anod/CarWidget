@@ -13,48 +13,42 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.*
 import com.anod.car.home.R
 import com.anod.car.home.appwidget.WidgetViewBuilder
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.LookAndFeelActivity
 import com.anod.car.home.prefs.drag.ShortcutShadowBuilder
 import info.anodsplace.framework.AppLog
-import info.anodsplace.framework.app.ApplicationContext
-import info.anodsplace.framework.os.BackgroundTask
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SkinPreviewViewModel(application: Application): AndroidViewModel(application) {
     val view = MutableLiveData<View>()
-    private val applicationContext = ApplicationContext(getApplication())
-    var builder: WidgetViewBuilder? = null
+    lateinit var builder: WidgetViewBuilder
     var overrideSkin: String? = null
 
     fun load() {
-        val param = Pair(this.builder!!, this.overrideSkin)
-        BackgroundTask(object : BackgroundTask.Worker<Pair<WidgetViewBuilder, String?>, View>(applicationContext, param) {
-            override fun run(param: Pair<WidgetViewBuilder, String?>, context: ApplicationContext): View {
-                param.first.init()
-                param.first.overrideSkin = param.second
-                val rv = param.first.build()
-                try {
-                    return rv.apply(context.actual, null)
-                } catch (e: InflateException) {
-                    AppLog.e("Cannot generate preview for ${param.second}", e)
-                    return TextView(applicationContext.actual).apply {
-                        text = "Cannot generate preview"
-                    }
-                }
-            }
-
-            override fun finished(result: View) {
-                this@SkinPreviewViewModel.view.value = result
-            }
-        }).execute()
+        viewModelScope.launch {
+            val preview = renderPreview(builder, overrideSkin)
+            view.value = preview
+        }
     }
 
+    private suspend fun renderPreview(builder: WidgetViewBuilder, overrideSkin: String?): View = withContext(Dispatchers.Default) {
+        builder.init()
+        builder.overrideSkin = overrideSkin
+        val rv = builder.build()
+        try {
+            return@withContext rv.apply(getApplication(), null)
+        } catch (e: InflateException) {
+            AppLog.e("Cannot generate preview for $overrideSkin", e)
+            return@withContext TextView(getApplication()).apply {
+                text = "Cannot generate preview"
+            }
+        }
+    }
 }
 
 class SkinPreviewFragment : Fragment(), View.OnLongClickListener {

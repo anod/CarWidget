@@ -1,11 +1,10 @@
 package com.anod.car.home.utils
 
-import com.anod.car.home.R
-
-import androidx.appcompat.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import androidx.appcompat.app.AlertDialog
+import com.anod.car.home.R
 import com.anod.car.home.app.App
 import info.anodsplace.framework.app.DialogMessage
 
@@ -51,7 +50,7 @@ object TrialDialogs {
                                       negativeRes: Int) {
         builder.setNeutralButton(R.string.dialog_donate_btn_yes) { dialog, _ ->
             val intent = Intent().forProVersion()
-            Utils.startActivitySafely(intent, context)
+            context.startActivitySafely(intent)
             dialog.dismiss()
         }
         builder.setNegativeButton(negativeRes) { dialog, _ -> dialog.dismiss() }

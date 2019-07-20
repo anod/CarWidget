@@ -37,7 +37,7 @@ class ConfigurationActivity : CarWidgetActivity(), PreferenceFragmentCompat.OnPr
 
             val conf = createFragmentInstance()
             conf.arguments = intent.extras
-            supportFragmentManager.beginTransaction().add(R.id.content_frame, conf).commit()
+            supportFragmentManager.beginTransaction().add(R.id.content, conf).commit()
         }
     }
 

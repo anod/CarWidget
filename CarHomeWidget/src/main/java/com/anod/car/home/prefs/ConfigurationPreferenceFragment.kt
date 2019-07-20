@@ -118,7 +118,7 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
             f.setTargetFragment(resultTo, resultRequestCode)
         }
         fragmentManager!!.commit(allowStateLoss = true) {
-            replace(R.id.content_frame, f)
+            replace(R.id.content, f)
             if (titleText != null) {
                 setBreadCrumbTitle(titleText)
             }

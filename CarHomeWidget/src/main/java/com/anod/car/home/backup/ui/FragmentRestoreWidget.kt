@@ -1,11 +1,11 @@
 package com.anod.car.home.backup.ui
 
 import android.app.Activity
+import android.app.Application
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Bundle
 import android.text.format.DateUtils
 import android.view.LayoutInflater
@@ -16,29 +16,57 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import com.anod.car.home.BuildConfig
 import com.anod.car.home.R
-import com.anod.car.home.backup.*
+import com.anod.car.home.backup.BackupCodeRender
+import com.anod.car.home.backup.PreferencesBackupManager
+import com.anod.car.home.backup.RestoreCodeRender
 import com.anod.car.home.utils.*
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogCustom
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
+
+private class RestoreWidgetViewModel(application: Application) : RestoreViewModel(application) {
+    init {
+        type = PreferencesBackupManager.TYPE_MAIN
+    }
+
+    fun backup(filename: String) {
+        backup(backupManager.getBackupWidgetFile(filename).toUri())
+    }
+
+    fun upload(name: String) {
+        val file = backupManager.getBackupWidgetFile(name)
+        upload(name, file)
+    }
+
+    override suspend fun refreshFiles(): List<File> = withContext(Dispatchers.IO) {
+        backupManager.mainBackups.toList()
+    }
+}
 
 /**
  * @author algavris
  * @date 30/07/2016.
  */
-class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.RestoreTaskListener, DeleteFileTask.DeleteFileTaskListener, BackupTask.BackupTaskListener {
+class FragmentRestoreWidget : Fragment() {
 
     private var listView: ListView? = null
 
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
-    private val backupManager: PreferencesBackupManager by lazy { restoreFragment.backupManager }
+    private val viewModel: RestoreWidgetViewModel by viewModels()
     private val adapter: RestoreAdapter by lazy {
         RestoreAdapter(context!!,
-                RestoreClickListener(backupManager, appWidgetId, this),
-                DeleteClickListener(this),
-                ExportClickListener(backupManager, this)) }
+                View.OnClickListener { viewModel.restore(it.tag as Uri) },
+                View.OnClickListener { viewModel.delete(it.tag as File) },
+                View.OnClickListener { viewModel.upload(it.tag as String) }
+        )
+    }
 
     private val restoreFragment: FragmentBackup
         get() = parentFragment as FragmentBackup
@@ -55,11 +83,48 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        appWidgetId = arguments!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID)
+        viewModel.appWidgetId = arguments!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID)
+        viewModel.backupManager = restoreFragment.backupManager
+
+        viewModel.uploadEvent.observe(this) {
+            upload(it.first, it.second)
+        }
+
+        viewModel.restoreEvent.observe(this) { code ->
+            when (code) {
+                PreferencesBackupManager.NO_RESULT -> restoreFragment.startRefreshAnim()
+                else -> {
+                    restoreFragment.stopRefreshAnim()
+                    Toast.makeText(context, RestoreCodeRender.render(code), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        viewModel.backupEvent.observe(this) { code ->
+            when (code) {
+                PreferencesBackupManager.NO_RESULT -> restoreFragment.startRefreshAnim()
+                else -> {
+                    restoreFragment.stopRefreshAnim()
+                    Toast.makeText(context, BackupCodeRender.render(code), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        viewModel.deleteEvent.observe(this) { success ->
+            if (!success) {
+                Toast.makeText(context, R.string.unable_delete_file, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        viewModel.files.observe(this) {
+            adapter.clear()
+            adapter.addAll(it)
+            adapter.notifyDataSetChanged()
+        }
 
         listView!!.adapter = adapter
         if (AppPermissions.isGranted(context!!, ReadExternalStorage)) {
-            FileListTask(backupManager, adapter).execute(0)
+            viewModel.loadFiles()
         } else {
             AppPermissions.request(this, arrayOf(ReadExternalStorage, WriteExternalStorage), requestList)
         }
@@ -99,7 +164,7 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
 
         AppPermissions.checkResult(requestCode, grantResults, requestList) {
             when (it) {
-                is Granted -> FileListTask(backupManager, adapter).execute(0)
+                is Granted -> viewModel.loadFiles()
                 is Denied -> Toast.makeText(context, "Permissions are required", Toast.LENGTH_SHORT).show()
             }
         }
@@ -108,38 +173,16 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
     override fun onActivityResult(requestCode: Int, resultCode: Int, result: Intent?) {
         if (requestCode == requestUpload) {
             if (resultCode == Activity.RESULT_OK) {
-                val uri = result!!.data
-                AppLog.d("Uri: " + uri!!.toString())
-                BackupTask(backupManager, appWidgetId, uri, this).execute()
+                val uri = result!!.data!!
+                AppLog.d("Uri: $uri")
+                viewModel.backup(uri)
             }
         } else if (requestCode == requestDownload) {
             if (resultCode == Activity.RESULT_OK) {
                 val uri = result!!.data
                 AppLog.d("Uri: " + uri!!.toString())
-                RestoreTask(backupManager, appWidgetId, uri, this@FragmentRestoreWidget).execute()
+                viewModel.backup(uri)
             }
-        }
-    }
-
-    override fun onBackupPreExecute(type: Int) {
-        restoreFragment.startRefreshAnim()
-    }
-
-    override fun onBackupFinish(type: Int, code: Int) {
-        if (code == PreferencesBackupManager.RESULT_DONE) {
-            FileListTask(backupManager, adapter).execute(0)
-        }
-
-        restoreFragment.stopRefreshAnim()
-        val res = BackupCodeRender.render(code)
-        Toast.makeText(context, res, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onDeleteFileFinish(success: Boolean) {
-        if (!success) {
-            Toast.makeText(context, R.string.unable_delete_file, Toast.LENGTH_SHORT).show()
-        } else {
-            FileListTask(backupManager, adapter).execute(0)
         }
     }
 
@@ -153,9 +196,9 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
 
     private class RestoreAdapter constructor(
             context: Context,
-            private val restoreListener: RestoreClickListener,
-            private val deleteListener: DeleteClickListener,
-            private val exportListener: ExportClickListener)
+            private val restoreListener: View.OnClickListener,
+            private val deleteListener: View.OnClickListener,
+            private val exportListener: View.OnClickListener)
         : ArrayAdapter<File>(context, R.layout.fragment_restore_item) {
 
         override fun getView(position: Int, view: View?, parent: ViewGroup): View {
@@ -199,50 +242,6 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
         }
     }
 
-    private class FileListTask(
-            private val backupManager: PreferencesBackupManager,
-            private val adapter: RestoreAdapter) : AsyncTask<Int, Void, Array<File>>() {
-
-        override fun doInBackground(vararg params: Int?): Array<File> {
-            return backupManager.mainBackups
-        }
-
-        override fun onPostExecute(result: Array<File>) {
-            adapter.clear()
-            adapter.addAll(result.toList())
-            adapter.notifyDataSetChanged()
-        }
-    }
-
-    override fun onRestorePreExecute(type: Int) {
-        restoreFragment.startRefreshAnim()
-    }
-
-    override fun onRestoreFinish(type: Int, code: Int) {
-        restoreFragment.stopRefreshAnim()
-        val res = RestoreCodeRender.render(code)
-        Toast.makeText(context, res, Toast.LENGTH_SHORT).show()
-    }
-
-    private class RestoreClickListener(
-            private val backupManager: PreferencesBackupManager,
-            private val appWidgetId: Int,
-            private val listener: RestoreTask.RestoreTaskListener) : View.OnClickListener {
-
-        override fun onClick(v: View) {
-            RestoreTask(PreferencesBackupManager.TYPE_MAIN, backupManager, appWidgetId, v.tag as Uri,
-                    listener)
-                    .execute()
-        }
-    }
-
-    private class DeleteClickListener(private val listener: DeleteFileTask.DeleteFileTaskListener) : View.OnClickListener {
-
-        override fun onClick(v: View) {
-            DeleteFileTask(listener).execute(v.tag as File)
-        }
-    }
-
     private fun createBackupNameDialog(currentName: String): AlertDialog {
         // This example shows how to add a custom layout to an AlertDialog
         return DialogCustom(context!!, 0, R.string.save_widget, R.layout.backup_dialog_enter_name) {
@@ -254,8 +253,7 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
             builder.setPositiveButton(R.string.backup_save) { _, _ ->
                 val filename = backupName.text.toString()
                 if (filename.isNotBlank()) {
-                    BackupTask(backupManager, appWidgetId, backupManager.getBackupWidgetFile(filename).toUri(), this@FragmentRestoreWidget)
-                            .execute()
+                    viewModel.backup(filename)
                 }
             }
 
@@ -264,44 +262,22 @@ class FragmentRestoreWidget : androidx.fragment.app.Fragment(), RestoreTask.Rest
         }.create()
     }
 
-    private class ExportClickListener(
-            private val backupManager: PreferencesBackupManager,
-            private val fragment: FragmentRestoreWidget) : View.OnClickListener {
-
-        override fun onClick(v: View) {
-            val name = v.tag as String
-            val file = backupManager.getBackupWidgetFile(name)
-            fragment.upload("car-$name", file)
-        }
-    }
-
     private fun download() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "*/*"
-        val mimeTypes = arrayOf("application/json", "application/octet-stream", "text/plain", "*/*")
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-        Utils.startActivityForResultSafetly(intent, requestDownload, this)
+        startActivityForResultSafetly(Intent().forOpenBackup(), requestDownload)
     }
 
     private fun upload(filename: String, source: File) {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         val uri = FileProvider.getUriForFile(context!!.applicationContext, AUTHORITY, source)
-
-        intent.setDataAndType(uri, "application/json")
-        intent.putExtra(Intent.EXTRA_TITLE, filename)
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        Utils.startActivityForResultSafetly(intent, requestUpload, this)
+        startActivityForResultSafetly(Intent().forCreateBackup(filename, uri), requestUpload)
     }
 
     companion object {
-
-        const val AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider"
-
         const val requestUpload = 123
         const val requestDownload = 124
         const val requestBackup = 125
         const val requestList = 126
+
+        const val AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider"
 
         fun create(appWidgetId: Int): FragmentRestoreWidget {
             val fragment = FragmentRestoreWidget()

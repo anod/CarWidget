@@ -1,15 +1,18 @@
 package com.anod.car.home.main
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
+import android.content.Context
 import android.util.SparseArray
 import androidx.core.util.isEmpty
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.model.Shortcut
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.utils.AppViewModel
-import info.anodsplace.framework.app.ApplicationContext
-import info.anodsplace.framework.os.BackgroundTask
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WidgetList {
     var large: SparseArray<SparseArray<Shortcut?>> = SparseArray()
@@ -23,25 +26,24 @@ class WidgetsListViewModel(application: Application) : AppViewModel(application)
     val list = MutableLiveData<WidgetList>()
 
     fun loadList() {
-        BackgroundTask(object : BackgroundTask.Worker<Void?, WidgetList>(app, null) {
-            override fun run(param: Void?, context: ApplicationContext): WidgetList {
-                val appWidgetIds = WidgetHelper.getLargeWidgetIds(context.actual)
-                val result = WidgetList()
+        viewModelScope.launch {
+            val result = loadWidgetList(app)
+            list.value = result
+        }
+    }
 
-                for (i in appWidgetIds.indices) {
-                    val model = WidgetShortcutsModel(context.actual, appWidgetIds[i])
-                    model.init()
+    private suspend fun loadWidgetList(context: Context): WidgetList = withContext(Dispatchers.Default) {
+        val appWidgetIds = WidgetHelper.getLargeWidgetIds(context)
+        val result = WidgetList()
 
-                    result.large.put(appWidgetIds[i], model.shortcuts)
-                }
+        for (i in appWidgetIds.indices) {
+            val model = WidgetShortcutsModel(context, appWidgetIds[i])
+            model.init()
 
-                result.shortcuts = WidgetHelper.getShortcutWidgetIds(context.actual)
-                return result
-            }
+            result.large.put(appWidgetIds[i], model.shortcuts)
+        }
 
-            override fun finished(result: WidgetList) {
-                list.value = result
-            }
-        }).execute()
+        result.shortcuts = WidgetHelper.getShortcutWidgetIds(context)
+        return@withContext result
     }
 }

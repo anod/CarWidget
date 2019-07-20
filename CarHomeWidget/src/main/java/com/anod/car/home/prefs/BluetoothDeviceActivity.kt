@@ -1,5 +1,6 @@
 package com.anod.car.home.prefs
 
+import android.app.Application
 import android.bluetooth.BluetoothAdapter
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,28 +8,126 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.AsyncTask
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.*
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.incar.Bluetooth
 import com.anod.car.home.incar.BluetoothClassHelper
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.prefs.model.InCarStorage
-import info.anodsplace.framework.app.ApplicationContext
 import kotlinx.android.synthetic.main.activity_bluetooth_device.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+private class BluetoothDevice(var address: String, var name: String, var btClassName: String, var selected: Boolean) {
+    override fun toString(): String {
+        return name
+    }
+}
+
+private class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(application) {
+    private val btAdapter: BluetoothAdapter? by lazy { BluetoothAdapter.getDefaultAdapter() }
+    private var bluetoothReceiver: BroadcastReceiver? = null
+    val devices = MutableLiveData<List<BluetoothDevice>>(emptyList())
+    private val context: Context
+        get() = getApplication()
+
+    fun load() {
+        viewModelScope.launch {
+            val list = loadDevices()
+            devices.value = list
+        }
+    }
+
+    override fun onCleared() {
+        if (bluetoothReceiver != null) {
+            context.unregisterReceiver(bluetoothReceiver)
+        }
+    }
+
+    fun registerBroadcastReceiver() {
+        if (bluetoothReceiver != null) {
+            context.unregisterReceiver(bluetoothReceiver)
+            bluetoothReceiver = null
+        }
+        bluetoothReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val state = intent?.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
+                if (state == BluetoothAdapter.STATE_ON) {
+                    load()
+                }/* else if (state == BluetoothAdapter.STATE_OFF || state == BluetoothAdapter.ERROR) {
+
+                }*/
+            }
+        }
+
+        if (bluetoothReceiver != null) {
+            context.registerReceiver(bluetoothReceiver, INTENT_FILTER)
+        }
+    }
+
+    suspend fun loadDevices(): List<BluetoothDevice> = withContext(Dispatchers.Default) {
+
+        if (btAdapter == null) {
+            return@withContext emptyList<BluetoothDevice>()
+        }
+
+        // Get a set of currently paired devices
+        val pairedDevices = btAdapter!!.bondedDevices
+        val devices = InCarStorage.load(context).btDevices
+        val pairedList = mutableListOf<BluetoothDevice>()
+
+        // If there are paired devices, add each one to the ArrayAdapter
+        if (pairedDevices.isNotEmpty()) {
+            for (device in pairedDevices) {
+                val addr = device.address
+                val selected = devices.containsKey(addr)
+                if (selected) {
+                    devices.remove(addr)
+                }
+                val btClass = device.bluetoothClass
+                var res = 0
+                if (btClass != null) {
+                    res = BluetoothClassHelper.getBtClassString(btClass)
+                }
+                var btClassName = ""
+                if (res > 0) {
+                    btClassName = context.getString(res)
+                }
+                val d = BluetoothDevice(device.address, device.name, btClassName, selected)
+
+                pairedList.add(d)
+            }
+        }
+
+        if (!devices.isEmpty) {
+            for (addr in devices.keys) {
+                val d = BluetoothDevice(addr, addr, context.getString(R.string.unavailable_bt_device), true)
+                pairedList.add(d)
+            }
+        }
+
+        return@withContext pairedList
+    }
+
+    companion object {
+        private val INTENT_FILTER = IntentFilter(
+                BluetoothAdapter.ACTION_STATE_CHANGED)
+    }
+}
 
 /**
  * @author alex
  * @date 6/6/14
  */
 class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickListener {
-    private var bluetoothReceiver: BroadcastReceiver? = null
     private val listAdapter: DeviceAdapter by lazy { DeviceAdapter(this) }
-
+    private val viewModel by lazy { ViewModelProviders.of(this).get(BluetoothDevicesViewModel::class.java) }
     private val isBroadcastServiceRequired: Boolean
         get() {
             val incar = InCarStorage.load(this)
@@ -49,22 +148,11 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
 
         initSwitch()
 
-        InitBluetoothDevicesTask(listAdapter, ApplicationContext(this)).execute(0)
-    }
-
-    public override fun onPause() {
-        super.onPause()
-        if (bluetoothReceiver != null) {
-            unregisterReceiver(bluetoothReceiver)
-        }
-    }
-
-
-    public override fun onResume() {
-        super.onResume()
-        if (bluetoothReceiver != null) {
-            registerReceiver(bluetoothReceiver, INTENT_FILTER)
-        }
+        viewModel.devices.observe(this, Observer {
+            listAdapter.clear()
+            listAdapter.addAll(it)
+        })
+        viewModel.load()
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -82,7 +170,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
         }
     }
 
-    private fun onDeviceStateChange(device: Device?, newState: Boolean) {
+    private fun onDeviceStateChange(device: BluetoothDevice?, newState: Boolean) {
         val prefs = InCarStorage.load(this)
         val devices = prefs.btDevices
         if (newState) {
@@ -100,18 +188,11 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
         }
     }
 
-    class Device(var address: String, var name: String, var btClassName: String, var selected: Boolean) {
-        override fun toString(): String {
-            return name
-        }
-    }
-
     private fun initSwitch() {
         val btSwitch = findViewById<Switch>(R.id.switch1)
         btSwitch.isChecked = Bluetooth.state == BluetoothAdapter.STATE_ON
         btSwitch.setOnClickListener {
-            bluetoothReceiver = BluetoothStateReceiver(this)
-            registerReceiver(bluetoothReceiver, INTENT_FILTER)
+            viewModel.registerBroadcastReceiver()
             if (Bluetooth.state == BluetoothAdapter.STATE_ON) {
                 Bluetooth.switchOff()
                 btSwitch.isChecked = false
@@ -120,86 +201,9 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
                 btSwitch.isChecked = true
             }
         }
-
     }
 
-    private class BluetoothStateReceiver(private val activity: BluetoothDeviceActivity) : BroadcastReceiver() {
-
-        override fun onReceive(paramContext: Context, paramIntent: Intent) {
-            val state = paramIntent
-                    .getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
-            if (state == BluetoothAdapter.STATE_ON) {
-                InitBluetoothDevicesTask(activity.listAdapter, ApplicationContext(activity)).execute(0)
-            } else if (state == BluetoothAdapter.STATE_OFF || state == BluetoothAdapter.ERROR) {
-
-            }
-        }
-
-    }
-
-    private class InitBluetoothDevicesTask(
-            private val listAdapter: DeviceAdapter,
-            private val context: ApplicationContext) : AsyncTask<Int, Int, List<Device>>() {
-
-        private val btAdapter: BluetoothAdapter? by lazy { BluetoothAdapter.getDefaultAdapter() }
-
-        override fun onPreExecute() {
-            listAdapter.clear()
-        }
-
-        override fun onPostExecute(pairedList: List<Device>) {
-            listAdapter.clear()
-            listAdapter.addAll(pairedList)
-        }
-
-        override fun doInBackground(vararg params: Int?): List<Device> {
-
-            if (btAdapter == null) {
-                return emptyList()
-            }
-
-            // Get a set of currently paired devices
-            val pairedDevices = btAdapter!!.bondedDevices
-            val devices = InCarStorage.load(context.actual).btDevices
-            val pairedList = mutableListOf<Device>()
-
-            // If there are paired devices, add each one to the ArrayAdapter
-            if (pairedDevices.isNotEmpty()) {
-                for (device in pairedDevices) {
-                    val addr = device.address
-                    val selected = devices.containsKey(addr)
-                    if (selected) {
-                        devices.remove(addr)
-                    }
-                    val btClass = device.bluetoothClass
-                    var res = 0
-                    if (btClass != null) {
-                        res = BluetoothClassHelper.getBtClassString(btClass)
-                    }
-                    var btClassName = ""
-                    if (res > 0) {
-                        btClassName = context.getString(res)
-                    }
-                    val d = Device(device.address, device.name, btClassName, selected)
-
-                    pairedList.add(d)
-                }
-
-            }
-
-            if (!devices.isEmpty) {
-                for (addr in devices.keys) {
-                    val d = Device(addr, addr, context.getString(R.string.unavailable_bt_device), true)
-                    pairedList.add(d)
-                }
-            }
-
-            return pairedList
-        }
-    }
-
-
-    private class DeviceAdapter(context: Context) : ArrayAdapter<Device>(context, R.layout.list_item_bluetooth_device, R.id.deviceName) {
+    private class DeviceAdapter(context: Context) : ArrayAdapter<BluetoothDevice>(context, R.layout.list_item_bluetooth_device, R.id.deviceName) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = super.getView(position, convertView, parent)
@@ -213,8 +217,4 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
         }
     }
 
-    companion object {
-        private val INTENT_FILTER = IntentFilter(
-                BluetoothAdapter.ACTION_STATE_CHANGED)
-    }
 }

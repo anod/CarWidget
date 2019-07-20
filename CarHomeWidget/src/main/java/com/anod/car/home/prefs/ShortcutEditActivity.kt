@@ -137,12 +137,12 @@ class ShortcutEditActivity : CarWidgetActivity() {
             chooseIntent.type = MIME_IMAGE
             chooseIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile))
             chooseIntent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.name)
-            Utils.startActivityForResultSafetly(chooseIntent, PICK_CUSTOM_ICON, this)
+            startActivityForResultSafetly(chooseIntent, PICK_CUSTOM_ICON)
         } else if (item == PICK_ADW_ICON_PACK) {
             chooseIntent = Intent().forIconPack()
-            Utils.startActivityForResultSafetly(
+            startActivityForResultSafetly(
                     Intent.createChooser(chooseIntent, getString(R.string.select_icon_pack)),
-                    PICK_ADW_ICON_PACK, this)
+                    PICK_ADW_ICON_PACK)
         } else if (item == PICK_DEFAULT_ICON) {
 
             val componentName = shortcut!!.intent.component

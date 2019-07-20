@@ -78,7 +78,7 @@ class PreferencesBackupManager(private val context: Context) {
         return result
     }
 
-    fun doBackupWidgetUri(uri: Uri, appWidgetId: Int): Int? {
+    fun doBackupWidgetUri(uri: Uri, appWidgetId: Int): Int {
         val outputStream: OutputStream?
         try {
             outputStream = context.contentResolver.openOutputStream(uri)
@@ -210,7 +210,7 @@ class PreferencesBackupManager(private val context: Context) {
         return doRestoreWidget(inputStream, appWidgetId)
     }
 
-    fun doRestoreWidgetUri(uri: Uri, appWidgetId: Int): Int? {
+    fun doRestoreWidgetUri(uri: Uri, appWidgetId: Int): Int {
         val inputStream: InputStream?
         try {
             inputStream = context.contentResolver.openInputStream(uri)
@@ -375,6 +375,7 @@ class PreferencesBackupManager(private val context: Context) {
         private const val BACKUP_PACKAGE = "com.anod.car.home.pro"
         internal const val DIR_BACKUP = "/data/com.anod.car.home/backup"
         const val FILE_EXT_JSON = ".json"
+        const val NO_RESULT = -1
         const val RESULT_DONE = 0
         const val ERROR_STORAGE_NOT_AVAILABLE = 1
         const val ERROR_FILE_NOT_EXIST = 2

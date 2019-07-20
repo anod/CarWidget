@@ -33,7 +33,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
-                replace(R.id.content_frame, WidgetsListFragment())
+                replace(R.id.content, WidgetsListFragment())
             }
         } else {
             wizardShown = savedInstanceState.getBoolean("wizard-shown")
@@ -44,19 +44,19 @@ open class WidgetsListActivity : CarWidgetActivity() {
             when (it.itemId) {
                 R.id.nav_widgets -> {
                     supportFragmentManager.commit {
-                        replace(R.id.content_frame, WidgetsListFragment())
+                        replace(R.id.content, WidgetsListFragment())
                     }
                     true
                 }
                 R.id.nav_info -> {
                     supportFragmentManager.commit {
-                        replace(R.id.content_frame, AboutFragment())
+                        replace(R.id.content, AboutFragment())
                     }
                     true
                 }
                 R.id.nav_incar -> {
                     supportFragmentManager.commit {
-                        replace(R.id.content_frame, ConfigurationInCar())
+                        replace(R.id.content, ConfigurationInCar())
                     }
                     true
                 }
@@ -97,7 +97,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
         if (requestCode == requestPermissionsResult) {
             if (resultCode == RequestPermissionsActivity.resultPermissionDenied) {
                 Snackbar
-                    .make(content_frame, R.string.permissions_denied_open_settings, Snackbar.LENGTH_LONG)
+                    .make(content, R.string.permissions_denied_open_settings, Snackbar.LENGTH_LONG)
                     .setAction(R.string.settings) {
                         startActivity(Intent().forAppSettings(this@WidgetsListActivity))
                     }
@@ -143,7 +143,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
 
     fun showInCarSettings() {
         supportFragmentManager.commit {
-            replace(R.id.content_frame, AboutFragment())
+            replace(R.id.content, AboutFragment())
         }
         bottomNavigation.selectedItemId = R.id.nav_incar
     }
