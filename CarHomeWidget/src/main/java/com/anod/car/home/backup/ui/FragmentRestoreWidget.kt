@@ -31,7 +31,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 
-private class RestoreWidgetViewModel(application: Application) : RestoreViewModel(application) {
+class RestoreWidgetViewModel(application: Application) : RestoreViewModel(application) {
     init {
         type = PreferencesBackupManager.TYPE_MAIN
     }
