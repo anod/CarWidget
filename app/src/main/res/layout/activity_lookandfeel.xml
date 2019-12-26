@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
@@ -44,6 +43,8 @@
         android:layout_gravity="center_horizontal|top"
         android:src="@drawable/drag_delete_bg"
         android:visibility="gone"
+        tools:visibility="visible"
+        android:contentDescription="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,15 +52,16 @@
 
     <ImageView
         android:id="@+id/dragDeleteShortcut"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_gravity="center_horizontal|top"
-        android:padding="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="4dp"
         android:tint="?attr/colorPrimary"
         android:visibility="gone"
+        tools:visibility="visible"
+        android:contentDescription="@null"
         app:layout_constraintEnd_toEndOf="@+id/dragDeleteBg"
         app:layout_constraintStart_toStartOf="@+id/dragDeleteBg"
         app:layout_constraintTop_toTopOf="@+id/dragDeleteBg"
@@ -80,6 +82,7 @@
         android:id="@+id/bottomNavigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

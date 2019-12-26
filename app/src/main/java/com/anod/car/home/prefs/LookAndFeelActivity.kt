@@ -266,5 +266,4 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         beforeFinish()
         super.onBackPressed()
     }
-
 }

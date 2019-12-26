@@ -25,13 +25,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private class BluetoothDevice(var address: String, var name: String, var btClassName: String, var selected: Boolean) {
+class BluetoothDevice(var address: String, var name: String, var btClassName: String, var selected: Boolean) {
     override fun toString(): String {
         return name
     }
 }
 
-private class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(application) {
+class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(application) {
     private val btAdapter: BluetoothAdapter? by lazy { BluetoothAdapter.getDefaultAdapter() }
     private var bluetoothReceiver: BroadcastReceiver? = null
     val devices = MutableLiveData<List<BluetoothDevice>>(emptyList())
@@ -72,7 +72,7 @@ private class BluetoothDevicesViewModel(application: Application) : AndroidViewM
         }
     }
 
-    suspend fun loadDevices(): List<BluetoothDevice> = withContext(Dispatchers.Default) {
+    private suspend fun loadDevices(): List<BluetoothDevice> = withContext(Dispatchers.Default) {
 
         if (btAdapter == null) {
             return@withContext emptyList<BluetoothDevice>()
