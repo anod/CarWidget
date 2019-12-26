@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.FrameLayout
+import androidx.activity.viewModels
 import androidx.lifecycle.*
 import com.anod.car.home.CarWidgetApplication
 import com.anod.car.home.R
@@ -66,7 +67,7 @@ abstract class AppsListActivity : AppCompatGridActivity(), AdapterView.OnItemCli
 
     protected abstract fun onEntryClick(position: Int, entry: AppsList.Entry)
 
-    val viewModel: AppsListViewModel by lazy { ViewModelProviders.of(this).get(AppsListViewModel::class.java) }
+    val viewModel: AppsListViewModel by viewModels()
 
     protected open fun onResumeImpl() {
         // Nothing by default
@@ -101,9 +102,7 @@ abstract class AppsListActivity : AppCompatGridActivity(), AdapterView.OnItemCli
             adapter.notifyDataSetChanged()
             onItemsSet(items)
         })
-
     }
-
 
     override fun onResume() {
         super.onResume()

@@ -178,8 +178,8 @@ object ModeDetector {
         if (BluetoothDevice.ACTION_ACL_CONNECTED == action) {
             val devices = prefs.btDevices
             if (devices.isNotEmpty()) {
-                val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-                if (devices.containsKey(device.address)) {
+                val device: BluetoothDevice? = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
+                if (device != null && devices.containsKey(device.address)) {
                     sEventState[FLAG_BLUETOOTH] = true
                     return
                 }
@@ -195,8 +195,8 @@ object ModeDetector {
         if (BluetoothDevice.ACTION_ACL_DISCONNECTED == action) {
             val devices = prefs.btDevices
             if (devices.isNotEmpty()) {
-                val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-                if (devices.containsKey(device.address)) {
+                val device: BluetoothDevice? = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
+                if (device != null && devices.containsKey(device.address)) {
                     sEventState[FLAG_BLUETOOTH] = false
                     return
                 }

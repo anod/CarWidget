@@ -118,7 +118,7 @@ object ShortcutInfoUtils {
 
         // fall back to the class name of the activity
         if (title == null) {
-            title = componentName.className ?: ""
+            title = componentName.className
         }
 
         val result = ShortcutWithIcon()

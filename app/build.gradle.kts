@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-
 repositories {
     mavenCentral()
     jcenter()
@@ -18,7 +15,6 @@ plugins {
 
 dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation("androidx.appcompat:appcompat:1.1.0-rc01")
     implementation("com.google.android.material:material:1.2.0-alpha03")
     implementation("androidx.preference:preference:1.1.0")
     implementation("androidx.palette:palette:1.0.0")
@@ -103,6 +99,12 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        this.let {
+            it.jvmTarget = "1.8"
+        }
     }
 }
 

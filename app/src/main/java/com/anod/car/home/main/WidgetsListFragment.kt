@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.anod.car.home.R
 import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.prefs.ConfigurationActivity
@@ -17,20 +18,18 @@ import com.anod.car.home.utils.Version
 import com.anod.car.home.utils.forProVersion
 import kotlinx.android.synthetic.main.fragment_widgets_list.*
 
-class WidgetsListFragment : androidx.fragment.app.Fragment(), WidgetsListAdapter.OnItemClickListener {
+class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
 
     private val adapter: WidgetsListAdapter by lazy { WidgetsListAdapter(activity!!, this) }
     private var appWidgetIds: IntArray = intArrayOf()
     private val version: Version by lazy { Version(activity!!) }
-
-    private val viewModel: WidgetsListViewModel by lazy { ViewModelProviders.of(activity!!).get(WidgetsListViewModel::class.java) }
+    private val viewModel: WidgetsListViewModel by activityViewModels()
 
     override fun onResume() {
         super.onResume()
         appWidgetIds = WidgetHelper.getAllWidgetIds(activity!!)
         viewModel.loadList()
     }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_widgets_list, container, false)
@@ -71,7 +70,7 @@ class WidgetsListFragment : androidx.fragment.app.Fragment(), WidgetsListAdapter
             }
         }
 
-        viewModel.list.observe(this, Observer {
+        viewModel.list.observe(viewLifecycleOwner, Observer {
             adapter.setResult(it ?: WidgetList())
             updateViews()
         })

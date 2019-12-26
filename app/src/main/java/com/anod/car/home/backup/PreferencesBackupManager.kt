@@ -30,7 +30,7 @@ class PreferencesBackupManager(private val context: Context) {
                 return emptyArray()
             }
             val filter = FilenameFilter { _, filename -> filename.endsWith(FILE_EXT_JSON) || filename.endsWith(ObjectRestoreManager.FILE_EXT_DAT) }
-            return saveDir.listFiles(filter)
+            return saveDir.listFiles(filter) ?: emptyArray()
         }
 
     val incarTime: Long
@@ -67,7 +67,7 @@ class PreferencesBackupManager(private val context: Context) {
         }
 
         val file = uri.toFile()
-        val saveDir = uri.toFile().parentFile
+        val saveDir = uri.toFile().parentFile ?: return ERROR_UNEXPECTED
         if (!saveDir.exists()) {
             saveDir.mkdirs()
         }
@@ -80,12 +80,12 @@ class PreferencesBackupManager(private val context: Context) {
 
     fun doBackupWidgetUri(uri: Uri, appWidgetId: Int): Int {
         val outputStream: OutputStream?
-        try {
-            outputStream = context.contentResolver.openOutputStream(uri)
-            return doBackupWidget(outputStream, appWidgetId)
+        return try {
+            outputStream = context.contentResolver.openOutputStream(uri) ?: return ERROR_UNEXPECTED
+            doBackupWidget(outputStream, appWidgetId)
         } catch (e: FileNotFoundException) {
             AppLog.e(e)
-            return ERROR_FILE_READ
+            ERROR_FILE_READ
         }
     }
 
@@ -121,7 +121,7 @@ class PreferencesBackupManager(private val context: Context) {
             return ERROR_STORAGE_NOT_AVAILABLE
         }
         val file = uri.toFile()
-        val saveDir = uri.toFile().parentFile
+        val saveDir = uri.toFile().parentFile ?: return ERROR_UNEXPECTED
         if (!saveDir.exists()) {
             saveDir.mkdirs()
         }
@@ -134,12 +134,12 @@ class PreferencesBackupManager(private val context: Context) {
 
     fun doBackupInCarUri(uri: Uri): Int {
         val outputStream: OutputStream?
-        try {
-            outputStream = context.contentResolver.openOutputStream(uri)
-            return doBackupInCar(outputStream)
+        return try {
+            outputStream = context.contentResolver.openOutputStream(uri) ?: return ERROR_UNEXPECTED
+            doBackupInCar(outputStream)
         } catch (e: FileNotFoundException) {
             AppLog.e(e)
-            return ERROR_FILE_READ
+            ERROR_FILE_READ
         }
     }
 

@@ -86,7 +86,7 @@ class BitmapTransform(context: Context) {
         val output = Bitmap.createBitmap(scaledSize, scaledSize + paddingBottom, Bitmap.Config.ARGB_8888)
         canvas.setBitmap(output)
 
-        canvas.matrix = matrix
+        canvas.setMatrix(matrix)
         canvas.drawBitmap(src, scaledMiddleX - width / 2, scaledMiddleY - height / 2, paint)
 
         return output
@@ -106,6 +106,4 @@ class BitmapTransform(context: Context) {
 
         cm.postConcat(ColorMatrix(matrix))
     }
-
-
 }

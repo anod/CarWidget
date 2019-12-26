@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.lifecycle.*
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
@@ -127,7 +128,7 @@ private class BluetoothDevicesViewModel(application: Application) : AndroidViewM
  */
 class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickListener {
     private val listAdapter: DeviceAdapter by lazy { DeviceAdapter(this) }
-    private val viewModel by lazy { ViewModelProviders.of(this).get(BluetoothDevicesViewModel::class.java) }
+    private val viewModel: BluetoothDevicesViewModel by viewModels()
     private val isBroadcastServiceRequired: Boolean
         get() {
             val incar = InCarStorage.load(this)

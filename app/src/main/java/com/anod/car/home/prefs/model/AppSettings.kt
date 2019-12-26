@@ -3,7 +3,7 @@ package com.anod.car.home.prefs.model
 import android.content.ComponentName
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 
 /**
  * @author algavris

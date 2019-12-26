@@ -9,31 +9,28 @@ import java.lang.reflect.Method
 
 /**
  * This class is use to handle all Hotspot related information.
- *
- *
- *
  */
 class WifiApControl internal constructor(private val wifiManager: WifiManager) {
 
 
     private val wifiApConfiguration: WifiConfiguration?
         get() {
-            try {
-                return methodGetWifiApConfiguration?.invoke(wifiManager) as WifiConfiguration
+            return try {
+                methodGetWifiApConfiguration?.invoke(wifiManager) as WifiConfiguration
             } catch (e: Exception) {
                 AppLog.e(e)
-                return null
+                null
             }
 
         }
 
     var isEnabled: Boolean
         get() {
-            try {
-                return methodIsWifiApEnabled?.invoke(wifiManager) as Boolean
+            return try {
+                methodIsWifiApEnabled?.invoke(wifiManager) as Boolean
             } catch (e: Exception) {
                 AppLog.e(e)
-                return false
+                false
             }
         }
         set(value) {

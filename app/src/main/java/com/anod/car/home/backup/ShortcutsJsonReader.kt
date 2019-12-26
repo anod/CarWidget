@@ -151,13 +151,10 @@ class ShortcutsJsonReader(private val context: Context) {
                 iconResource.resourceName = iconResourceName
                 // the resource
                 try {
-                    val resources = context.packageManager
-                            .getResourcesForApplication(iconPackageName)
-                    if (resources != null) {
-                        val resId = resources.getIdentifier(iconResourceName, null, null)
-                        if (resId > 0) {
-                            bitmap = UtilitiesBitmap.createHiResIconBitmap(ResourcesCompat.getDrawable(resources, resId, null)!!, context)
-                        }
+                    val resources = context.packageManager.getResourcesForApplication(iconPackageName)
+                    val resId = resources.getIdentifier(iconResourceName, null, null)
+                    if (resId > 0) {
+                        bitmap = UtilitiesBitmap.createHiResIconBitmap(ResourcesCompat.getDrawable(resources, resId, null)!!, context)
                     }
                 } catch (e: PackageManager.NameNotFoundException) {
                     // drop this. we have other places to look for icons

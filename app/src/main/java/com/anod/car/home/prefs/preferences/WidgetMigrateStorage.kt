@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.graphics.Color
-import android.preference.PreferenceManager
 import androidx.core.content.res.ResourcesCompat
+import androidx.preference.PreferenceManager
 import com.anod.car.home.R
 import com.anod.car.home.model.Shortcut
 import com.anod.car.home.prefs.model.WidgetInterface

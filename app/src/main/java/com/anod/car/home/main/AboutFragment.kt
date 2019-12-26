@@ -108,8 +108,7 @@ class AboutFragment : Fragment() {
             view.findViewById<Button>(android.R.id.button1).setOnClickListener {
                 val intent = Intent(Intent.ACTION_MAIN)
                 intent.addCategory(Intent.CATEGORY_CAR_DOCK)
-                val info = App.provide(context!!).packageManager
-                        .resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                val info = App.provide(context!!).packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
                 requireContext().startActivitySafely(Intent().forApplicationDetails(info.activityInfo.applicationInfo.packageName))
             }
         }.show()

@@ -112,12 +112,12 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
 
     private fun startPreferencePanel(fragmentClass: String, titleText: CharSequence?,
                                      resultTo: Fragment?, resultRequestCode: Int) {
-        val f = fragmentManager!!.fragmentFactory.instantiate(context!!.classLoader, fragmentClass)
+        val f = parentFragmentManager.fragmentFactory.instantiate(context!!.classLoader, fragmentClass)
         f.arguments = Bundle.EMPTY
         if (resultTo != null) {
             f.setTargetFragment(resultTo, resultRequestCode)
         }
-        fragmentManager!!.commit(allowStateLoss = true) {
+        parentFragmentManager.commit(allowStateLoss = true) {
             replace(R.id.content, f)
             if (titleText != null) {
                 setBreadCrumbTitle(titleText)
@@ -129,7 +129,7 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.apply) {
-            fragmentManager!!.popBackStack()
+            parentFragmentManager.popBackStack()
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -137,11 +137,11 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
 
     override fun onDisplayPreferenceDialog(preference: Preference) {
         if (preference is SeekBarDialogPreference) {
-            if (fragmentManager!!.findFragmentByTag("android.support.v7.preference.PreferenceFragment.DIALOG") == null) {
+            if (parentFragmentManager.findFragmentByTag("android.support.v7.preference.PreferenceFragment.DIALOG") == null) {
 
                 val f = SeekBarPreferenceDialogFragment.newInstance(preference.getKey())
                 f.setTargetFragment(this, 0)
-                f.show(this.fragmentManager!!, "android.support.v7.preference.PreferenceFragment.DIALOG")
+                f.show(this.parentFragmentManager, "android.support.v7.preference.PreferenceFragment.DIALOG")
             }
         } else {
             super.onDisplayPreferenceDialog(preference)

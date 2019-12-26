@@ -2,7 +2,7 @@ package com.anod.car.home.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 
 class Version(private val context: Context) {
 

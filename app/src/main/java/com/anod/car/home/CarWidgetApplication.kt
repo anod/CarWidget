@@ -68,9 +68,9 @@ class CarWidgetApplication : Application(), ApplicationInstance {
 
     @TargetApi(Build.VERSION_CODES.N)
     private fun initCrashReporter24() {
-        val androidCrashHandler = Thread.getDefaultUncaughtExceptionHandler()
+        val androidCrashHandler = Thread.getDefaultUncaughtExceptionHandler() ?: return
         ACRA.init(this)
-        val acraCrashHandler = Thread.getDefaultUncaughtExceptionHandler()
+        val acraCrashHandler = Thread.getDefaultUncaughtExceptionHandler() ?: return
         Thread.setDefaultUncaughtExceptionHandler { thread, exception ->
             when {
                 // Not sure what is going here

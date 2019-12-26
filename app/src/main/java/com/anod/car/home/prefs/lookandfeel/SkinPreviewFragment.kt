@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import com.anod.car.home.R
 import com.anod.car.home.appwidget.WidgetViewBuilder
@@ -61,7 +62,7 @@ class SkinPreviewFragment : Fragment(), View.OnLongClickListener {
 
     private var shortcutsCount: Int = 0
 
-    private val viewModel: SkinPreviewViewModel by lazy { ViewModelProviders.of(this).get(SkinPreviewViewModel::class.java) }
+    private val viewModel: SkinPreviewViewModel by viewModels()
 
     override fun onResume() {
         super.onResume()

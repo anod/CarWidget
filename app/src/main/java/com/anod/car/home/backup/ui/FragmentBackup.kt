@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.fragment.app.FragmentPagerAdapter
 
 import com.anod.car.home.R
 import com.anod.car.home.backup.PreferencesBackupManager
@@ -118,7 +119,7 @@ class FragmentBackup : Fragment() {
         constructor(
                 private val appWidgetId: Int,
                 fm: androidx.fragment.app.FragmentManager,
-                private val mContext: Context) : androidx.fragment.app.FragmentPagerAdapter(fm) {
+                private val mContext: Context) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         internal var titles = intArrayOf(R.string.backup_current_widget, R.string.backup_incar_settings)
 
         override fun getCount(): Int {

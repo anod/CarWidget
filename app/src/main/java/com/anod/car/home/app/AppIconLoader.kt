@@ -37,7 +37,9 @@ class AppIconLoader(context: Context) {
             AppLog.d("Get Activity Info: $part")
             val cmp = ComponentName.unflattenFromString(part)
             try {
-                d = packageManager.getActivityIcon(cmp)
+                if (cmp != null) {
+                    d = packageManager.getActivityIcon(cmp)
+                }
             } catch (ignored: PackageManager.NameNotFoundException) {
             }
 

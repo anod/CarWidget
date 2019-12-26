@@ -95,7 +95,7 @@ class DrawableUri(private val mContext: Context) {
     fun getResourceId(uri: Uri): OpenResourceIdResult {
         val authority = uri.authority
         val r: Resources
-        if (TextUtils.isEmpty(authority)) {
+        if (authority.isNullOrEmpty()) {
             throw FileNotFoundException("No authority: $uri")
         } else {
             try {
@@ -106,19 +106,21 @@ class DrawableUri(private val mContext: Context) {
 
         }
         val path = uri.pathSegments ?: throw FileNotFoundException("No path: $uri")
-        val len = path.size
-        val id: Int
-        if (len == 1) {
-            try {
-                id = Integer.parseInt(path[0])
-            } catch (e: NumberFormatException) {
-                throw FileNotFoundException("Single path segment is not a resource ID: $uri")
-            }
+        val id = when (path.size) {
+            1 -> {
+                try {
+                    Integer.parseInt(path[0])
+                } catch (e: NumberFormatException) {
+                    throw FileNotFoundException("Single path segment is not a resource ID: $uri")
+                }
 
-        } else if (len == 2) {
-            id = r.getIdentifier(path[1], path[0], authority)
-        } else {
-            throw FileNotFoundException("More than two path segments: $uri")
+            }
+            2 -> {
+                r.getIdentifier(path[1], path[0], authority)
+            }
+            else -> {
+                throw FileNotFoundException("More than two path segments: $uri")
+            }
         }
         if (id == 0) {
             throw FileNotFoundException("No resource found for: $uri")

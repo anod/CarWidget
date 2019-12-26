@@ -20,10 +20,10 @@ import java.util.Locale
 
 class ConfigurationLook : ConfigurationPreferenceFragment() {
 
-    private val iconRotateValues: Array<String> by lazy { resources.getStringArray(R.array.icon_rotate_values) ?: emptyArray() }
-    private val iconRotateTitles: Array<String> by lazy { resources.getStringArray(R.array.icon_rotate_titles) ?: emptyArray() }
-    private val adaptiveIconTitles: Array<String> by lazy { resources.getStringArray(R.array.adaptive_icon_style_names) ?: emptyArray() }
-    private val adaptiveIconValues: Array<String> by lazy { resources.getStringArray(R.array.adaptive_icon_style_paths_values) ?: emptyArray() }
+    private val iconRotateValues: Array<String> by lazy { resources.getStringArray(R.array.icon_rotate_values) }
+    private val iconRotateTitles: Array<String> by lazy { resources.getStringArray(R.array.icon_rotate_titles) }
+    private val adaptiveIconTitles: Array<String> by lazy { resources.getStringArray(R.array.adaptive_icon_style_names) }
+    private val adaptiveIconValues: Array<String> by lazy { resources.getStringArray(R.array.adaptive_icon_style_paths_values) }
 
     override val xmlResource: Int
         get() = R.xml.preference_look
@@ -91,7 +91,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
                 prefs.iconsColor = color
                 prefs.apply()
             }
-            d.show(fragmentManager!!, "icnColor")
+            d.show(parentFragmentManager, "icnColor")
             false
         }
 
@@ -116,7 +116,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
                 prefs.fontColor = color
                 prefs.apply()
             }
-            d.show(fragmentManager!!, "fontColor")
+            d.show(parentFragmentManager, "fontColor")
             false
         }
     }
