@@ -2,6 +2,4 @@
 <resources>
 	<dimen name="skin_padding_horiz">180dp</dimen>
 	<dimen name="skin_padding_vert">40dp</dimen>
-	<!-- Preference widget area width (to the left of the text) -->
-	<dimen name="lockscreen_row_height">124dp</dimen>
 </resources>

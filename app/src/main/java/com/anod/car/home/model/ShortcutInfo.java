@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
-import info.anodsplace.framework.AppLog;
+
 import com.anod.car.home.utils.UtilitiesBitmap;
 
 import java.io.IOException;
@@ -14,6 +14,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.URISyntaxException;
+
+import info.anodsplace.framework.AppLog;
 
 
 /**
@@ -125,7 +127,6 @@ public class ShortcutInfo implements Serializable {
 
     /**
      * Creates the application intent based on a component name and various launch flags.
-     * Sets {@link #itemType} to {@link LauncherSettings.BaseLauncherColumns#ITEM_TYPE_APPLICATION}.
      *
      * @param className   the class name of the component representing the intent
      * @param launchFlags the launch flags

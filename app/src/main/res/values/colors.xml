@@ -17,11 +17,6 @@
 	<color name="panel_bg_dark_pressed">#424242</color>
 
 	<color name="activity_bg">#FFfafafa</color>
-	<color name="font_color">#FFFFFF</color>
-	<color name="font_color_sec">#eeeeee</color>
-	<color name="font_color_dark">#424242</color>
-
-	<color name="font_green">#ff669900</color>
 
 	<color name="step_pager_previous_tab_color">#4490a4ae</color>
 	<color name="step_pager_selected_tab_color">#ff37474f</color>
@@ -31,8 +26,6 @@
 	<color name="background_holo_light">#fff3f3f3</color>
 	<color name="bright_foreground_holo_dark">@color/background_holo_light</color>
 
-	<color name="dim_foreground_holo_dark">#bebebe</color>
-
 	<color name="bright_foreground_disabled_grey">#bdbdbd</color>
 
 	<color name="material_bluegray_600">#546E7A</color>
@@ -40,10 +33,7 @@
     <color name="material_bluegray_300">#90a4ae</color>
 	<color name="material_bluegray_100">#FFBBDEFB</color>
 	<color name="material_grey_400">#BDBDBD</color>
-	<color name="primaryTextColor">#ffffff</color>
 
 	<color name="secondaryColor">#212121</color>
-	<color name="secondaryLightColor">#484848</color>
 	<color name="secondaryDarkColor">#000000</color>
-	<color name="secondaryTextColor">#ffffff</color>
 </resources>

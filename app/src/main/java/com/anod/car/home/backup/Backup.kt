@@ -18,7 +18,7 @@ object Backup {
     const val ERROR_UNEXPECTED = 6
     const val ERROR_INCORRECT_FORMAT = 7
     const val FILE_INCAR_JSON = "backup_incar.json"
-    const val LEGACY_PATH = "/data/com.anod.car.home/backup";
+    const val LEGACY_PATH = "/data/com.anod.car.home/backup"
     const val AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider"
 
     const val requestRestore = 126

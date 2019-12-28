@@ -8,24 +8,21 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.PorterDuff
-import androidx.core.content.res.ResourcesCompat
 import android.text.TextUtils
 import android.util.JsonReader
 import android.util.SparseArray
-
+import androidx.core.content.res.ResourcesCompat
 import com.anod.car.home.model.LauncherSettings
 import com.anod.car.home.model.Shortcut
 import com.anod.car.home.model.ShortcutIcon
-import info.anodsplace.framework.AppLog
-
 import com.anod.car.home.utils.SoftReferenceThreadLocal
 import com.anod.car.home.utils.UtilitiesBitmap
-
+import info.anodsplace.framework.AppLog
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.lang.ref.SoftReference
 import java.net.URISyntaxException
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @author algavris
@@ -201,12 +198,12 @@ class ShortcutsJsonReader(private val context: Context) {
         if (UtilitiesBitmap.canUseForInBitmap(unusedBitmap, opts)) {
             opts.inBitmap = unusedBitmap
         }
-        try {
-            return BitmapFactory.decodeByteArray(data, 0, data.size, opts)
+        return try {
+            BitmapFactory.decodeByteArray(data, 0, data.size, opts)
         } catch (e: Exception) {
             AppLog.e(e)
             // throw new RuntimeException(e.getMessage(), e);
-            return null
+            null
         }
 
     }

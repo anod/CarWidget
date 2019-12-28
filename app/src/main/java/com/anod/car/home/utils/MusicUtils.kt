@@ -1,5 +1,6 @@
 package com.anod.car.home.utils
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -29,6 +30,7 @@ object MusicUtils {
         }
     }
 
+    @SuppressLint("DiscouragedPrivateApi", "PrivateApi")
     private fun handleMediaKeyEvent(keyEvent: KeyEvent, context: Context) {
         var hasDispatchSucceeded = false
         try {

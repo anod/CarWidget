@@ -257,11 +257,10 @@ open class ActivityPicker : AppCompatGridActivity() {
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            val textView: TextView
-            if (convertView == null) {
-                textView = inflater.inflate(R.layout.pick_item, parent, false) as TextView
+            val textView: TextView = if (convertView == null) {
+                inflater.inflate(R.layout.pick_item, parent, false) as TextView
             } else {
-                textView = convertView as TextView
+                convertView as TextView
             }
 
             val item = getItem(position) as Item

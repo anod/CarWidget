@@ -29,11 +29,10 @@ class ShortcutDragListener(private val deleteBackground: View, private val dropC
         // Defines a variable to store the action type for the incoming event
 
         val tag = view.tag as String
-        val result: Boolean
-        if (tag == TAG_DELETE_SHORTCUT) {
-            result = handleDeleteShortcutEvent(view, dragEvent)
+        val result: Boolean = if (tag == TAG_DELETE_SHORTCUT) {
+            handleDeleteShortcutEvent(view, dragEvent)
         } else {
-            result = handleShortcutEvent(view, dragEvent)
+            handleShortcutEvent(view, dragEvent)
         }
 
         if (dragEvent.action == DragEvent.ACTION_DROP) {

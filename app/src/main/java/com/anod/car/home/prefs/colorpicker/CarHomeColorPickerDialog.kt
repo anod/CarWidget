@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
-import androidx.fragment.app.DialogFragment
 import com.android.colorpicker.ColorPickerDialog
 import com.android.colorpicker.ColorPickerPalette
 import com.android.colorpicker.ColorPickerSwatch

@@ -80,21 +80,13 @@
     <string name="pref_activate_car_mode">Mode voiture intégré</string>
     <string name="pref_activate_car_mode_summary">Android en mode Voiture intégré sera activé et une icône de notification supplémentaire s\'affichera.</string>
     <string name="pref_backup_title">Sauvegarde/Restauration</string>
-    <string name="pref_backup_summary">Paramètres de sauvegarde du widget</string>
-    <string name="last_backup">Dernière sauvegarde : %1$s</string>
     <string name="backup_current_widget">Widget actuel</string>
     <string name="backup_incar_settings">Paramètres Voiture</string>
-    <string name="backup_name_title">Nom de la sauvegarde :</string>
-    <string name="backup_name_summary">Veuillez définir un nom pour identifier la sauvegarde du widget actuel</string>
     <string name="backup_done">Sauvegarde effectuée.</string>
-    <string name="external_storage_not_available">Stockage externe non disponible.</string>
     <string name="failed_to_write_file">Impossible d\'écrire le fichier.</string>
     <string name="restore_done">Restauration effectuée.</string>
     <string name="restore_deserialize_failed">Impossible de désérialiser la sauvegarde.</string>
     <string name="failed_to_read_file">Impossible de lire le fichier.</string>
-    <string name="backup_not_exist">Aucun fichier de sauvegarde n\'est disponible.</string>
-    <string name="unable_delete_file">Impossible de supprimer le fichier.</string>
-    <string name="no_backup_files_found">Aucun fichier de sauvegarde n\'a été trouvé.</string>
     <string name="pref_auto_answer">Réponse automatique</string>
     <string name="pref_auto_answer_summary">Réponse automatique aux appels entrants immédiatement ou avec un délai de 5 secondes. (Expérimental)</string>
     <string name="pref_autorun_app_title">App. Démarrage automatique</string>
@@ -104,7 +96,6 @@
     <string name="notification">Notification</string>
     <string name="shortcuts_summary">Vous pouvez placer jusqu\'à 3 raccourcis dans la barre d\'état</string>
     <string name="icons_theme">Thème d\'icônes</string>
-    <string name="shortcut_not_set">Non défini</string>
     <string name="default_car_dock_app">Fonction socle de voiture par défaut</string>
     <string name="cardock_btn_1">Ouvrir l\'application Info</string>
     <string name="cardock_text1">Pour effacer l\'application par défaut actuelle :\n1. Ouvrir l\'application Info par défaut\n2. Cliquer sur le bouton \"Supprimer par défaut\"</string>
@@ -141,21 +132,17 @@
     <string name="bluetooth_device_headphones">Écouteurs</string>
     <string name="bluetooth_device_headset">Oreillette sans fil</string>
     <string name="information_title">Informations</string>
-    <string name="issue_title">Remarques</string>
     <string name="applications">Applications</string>
     <string name="pref_wifi">Wifi</string>
     <string name="transparent">Transparent</string>
     <string name="dialog_title_select">Sélectionner</string>
     <string name="icon_custom">Personnaliser</string>
     <string name="icon_adw_icon_pack">Ensemble d\'icônes</string>
-    <string name="never">Jamais</string>
-    <string name="backup">Sauvegarde</string>
     <string name="restore">Restaurer</string>
-    <string name="backup_save">Sauvegarder</string>
     <string name="settings">Paramètres</string>
-    <string name="more">Plus...</string>
+    <string name="more">Plus…</string>
     <string name="none">Aucun</string>
-    <string name="download">Téléchargement...</string>
+    <string name="download">Téléchargement…</string>
     <string name="enabled">Activé</string>
     <string name="disabled">Désactivé</string>
     <string name="configure">Enregister</string>
@@ -163,8 +150,6 @@
     <string name="skip">Ignorer</string>
     <string name="next">Suivant</string>
     <string name="choose_a_theme">Choisissez un thème</string>
-    <string name="theme_gray">Clair</string>
-    <string name="theme_holo">Sombre</string>
     <string name="icon_default">Par défaut</string>
     <string name="failed_fetch_icon">Impossible de récupérer l\'icône par défaut.</string>
     <string name="please_add_widget">Veuillez ajouter un widget à l\'écran d\'accueil</string>
@@ -191,7 +176,7 @@
 
     <string-array name="autorun_app_titles">
         <item>Désactivé</item>
-        <item>Sélectionner...</item>
+        <item>Sélectionner…</item>
     </string-array>
 
     <string-array name="carwidget_shortcuts">
@@ -208,8 +193,6 @@
         <item>90º vers la droite</item>
     </string-array>
 
-    <string name="export_backup">Exporter fichier de sauvegarde</string>
-    <string name="import_backup">Importer fichier de sauvegarde</string>
     <string name="delete">Supprimer</string>
     <string name="number">Nombre de raccourcis</string>
     <string name="number_shortcuts_title">Nombre de raccourcis</string>
@@ -223,8 +206,6 @@
     <string name="app_theme">Thème de l\'application</string>
     <string name="widgets_hint">Sélectionnez un élément pour configurer le widget</string>
     <string name="list_of_active_widgets">Liste des widgets actifs</string>
-    <string name="shortcuts_and_look">Raccourcis et recherche</string>
-    <string name="shortcuts_and_look_summary">Personnaliser les raccourcis, le type et la taille de la police</string>
     <string name="current_widget">Widget actuel</string>
     <string name="no_active_widget">Aucun widget actif n\'a été trouvé. Assurez-vous d\'en ajouter un sur votre écran d\'accueil.</string>
 

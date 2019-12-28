@@ -9,10 +9,8 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import androidx.core.content.res.ResourcesCompat
-import android.text.TextUtils
 import android.util.Log
-
+import androidx.core.content.res.ResourcesCompat
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream

@@ -20,7 +20,6 @@ dependencies {
     implementation("androidx.palette:palette:1.0.0")
 
     implementation("com.squareup.picasso:picasso:2.71828")
-    implementation("androidx.exifinterface:exifinterface:1.1.0-beta01")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3")

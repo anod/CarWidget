@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -14,8 +12,7 @@
     card_view:cardPreventCornerOverlap="true"
     card_view:contentPadding="16dp">
 
-    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/incar"
+    <ImageView
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
         android:orientation="vertical"

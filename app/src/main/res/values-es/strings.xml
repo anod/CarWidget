@@ -80,21 +80,13 @@
     <string name="pref_activate_car_mode">Modo Built-in Car</string>
     <string name="pref_activate_car_mode_summary">El modo Built-in Car Android se activará y se mostrará un icono de notificación adicional.</string>
     <string name="pref_backup_title">Copia de seguridad / Restaurar</string>
-    <string name="pref_backup_summary">Configuración de la copia de seguridad del reproductor</string>
-    <string name="last_backup">Última copia de seguridad: %1$s</string>
     <string name="backup_current_widget">Reproductor actual</string>
     <string name="backup_incar_settings">Configuración InCar</string>
-    <string name="backup_name_title">Nombre de copia de seguridad:</string>
-    <string name="backup_name_summary">Por favor, defina el nombre para identificar la copia de seguridad del reproductor actual</string>
     <string name="backup_done">Se ha efectuado una copia de seguridad.</string>
-    <string name="external_storage_not_available">El almacenamiento externo no está disponible.</string>
     <string name="failed_to_write_file">Se ha producido un error al escribir el archivo.</string>
     <string name="restore_done">Los datos se han restaurado con éxito.</string>
     <string name="restore_deserialize_failed">Se ha producido un error al deserializar la copia de seguridad.</string>
     <string name="failed_to_read_file">Se ha producido un error al leer el archivo.</string>
-    <string name="backup_not_exist">El archivo de copia de seguridad no existe.</string>
-    <string name="unable_delete_file">No se ha podido eliminar el archivo.</string>
-    <string name="no_backup_files_found">No se ha encontrado ninguna copia de seguridad.</string>
     <string name="pref_auto_answer">Respuesta automática</string>
     <string name="pref_auto_answer_summary">Respuesta automática a las llamadas entrantes, tanto inmediata como con 5 segundos de retardo. (Experimental)</string>
     <string name="pref_autorun_app_title">Aplicación Autorun</string>
@@ -104,7 +96,6 @@
     <string name="notification">Notificación</string>
     <string name="shortcuts_summary">Puede poner hasta 3 accesos directos en la barra de estado</string>
     <string name="icons_theme">Tema de iconos</string>
-    <string name="shortcut_not_set">No ha sido establecido</string>
     <string name="default_car_dock_app">Aplicación predeterminada Car Dock</string>
     <string name="cardock_btn_1">Abrir la información de la aplicación</string>
     <string name="cardock_text1">Para borrar la aplicación actual por defecto:\n1. Abra la información de la aplicación actual\n2. Haga clic en la tecla  \"Borrar configuraciones predeterminadas\"</string>
@@ -141,21 +132,17 @@
     <string name="bluetooth_device_headphones">Auriculares</string>
     <string name="bluetooth_device_headset">Auriculares</string>
     <string name="information_title">Información</string>
-    <string name="issue_title">Valoración</string>
     <string name="applications">Aplicaciones</string>
     <string name="pref_wifi">Wi-Fi</string>
     <string name="transparent">Transparente</string>
     <string name="dialog_title_select">Seleccionar</string>
     <string name="icon_custom">Costumbre</string>
     <string name="icon_adw_icon_pack">Paquete de iconos</string>
-    <string name="never">Nunca</string>
-    <string name="backup">Copia de seguridad</string>
     <string name="restore">Restaurar</string>
-    <string name="backup_save">Guardar</string>
     <string name="settings">Configuración</string>
-    <string name="more">Más ...</string>
+    <string name="more">Más …</string>
     <string name="none">Ninguno</string>
-    <string name="download">Descargar ...</string>
+    <string name="download">Descargar …</string>
     <string name="enabled">Activado</string>
     <string name="disabled">Desactivado</string>
     <string name="configure">Configurar</string>
@@ -163,8 +150,6 @@
     <string name="skip">Omitir</string>
     <string name="next">Siguiente</string>
     <string name="choose_a_theme">Elegir un tema</string>
-    <string name="theme_gray">Claro</string>
-    <string name="theme_holo">Oscuro</string>
     <string name="icon_default">Por defecto</string>
     <string name="failed_fetch_icon">Se ha producido un error al buscar el icono por defecto.</string>
     <string name="please_add_widget">Por favor, añada un reproductor para la pantalla de inicio</string>
@@ -191,7 +176,7 @@
 
     <string-array name="autorun_app_titles">
         <item>Desactivado</item>
-        <item>Elegir ...</item>
+        <item>Elegir …</item>
     </string-array>
 
     <string-array name="carwidget_shortcuts">
@@ -208,8 +193,6 @@
         <item>90º a la derecha</item>
     </string-array>
 
-    <string name="export_backup">Exportar archivo de copia de seguridad</string>
-    <string name="import_backup">Importar archivo de copia de seguridad</string>
     <string name="delete">Borrar</string>
     <string name="number">Número de accesos directos</string>
     <string name="number_shortcuts_title">Número de accesos directos</string>
@@ -223,8 +206,6 @@
     <string name="app_theme">Tema de aplicación</string>
     <string name="widgets_hint">Seleccione un elemento para configurar el reproductor</string>
     <string name="list_of_active_widgets">Lista de reproductores activos</string>
-    <string name="shortcuts_and_look">Accesos directos y bloqueo</string>
-    <string name="shortcuts_and_look_summary">Personalice los accesos directos, las texturas y el tamaño de fuente</string>
     <string name="current_widget">Reproductor actual</string>
     <string name="no_active_widget">No se han encontrado reproductores activos. Asegúrese de añadir un reproductor a su pantalla de inicio.</string>
 

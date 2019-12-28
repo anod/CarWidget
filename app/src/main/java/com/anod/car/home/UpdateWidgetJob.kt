@@ -3,14 +3,13 @@ package com.anod.car.home
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
-
+import com.anod.car.home.app.App
 import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.appwidget.WidgetViewBuilder
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.utils.Version
 import info.anodsplace.framework.AppLog
-import com.anod.car.home.app.App
 
 class UpdateWidgetJob : JobIntentService() {
 
@@ -37,12 +36,11 @@ class UpdateWidgetJob : JobIntentService() {
         registerBroadcastService(context, version.isProOrTrial)
         // Perform this loop procedure for each App Widget that belongs to this
         // provider
-        for (i in 0 until appWidgetIds.size) {
-            val appWidgetId = appWidgetIds[i]
-            val builder = WidgetViewBuilder(context, appWidgetId, ShortcutPendingIntent(context))
+        for (element in appWidgetIds) {
+            val builder = WidgetViewBuilder(context, element, ShortcutPendingIntent(context))
             val views = builder.init().build()
-            AppLog.i("Performing update for widget #$appWidgetId")
-            appWidgetManager.updateAppWidget(appWidgetId, views)
+            AppLog.i("Performing update for widget #$element")
+            appWidgetManager.updateAppWidget(element, views)
         }
     }
 

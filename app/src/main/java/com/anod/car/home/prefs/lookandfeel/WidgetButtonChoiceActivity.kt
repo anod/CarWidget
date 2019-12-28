@@ -71,11 +71,10 @@ class WidgetButtonChoiceActivity : AppCompatGridActivity() {
     }
 
     private fun initCheckedItem(items: List<ChoiceAdapter.Item>, prefs: WidgetSettings) {
-        val value: Int
-        if (button == WidgetButtonViewBuilder.BUTTON_1) {
-            value = prefs.widgetButton1
+        val value: Int = if (button == WidgetButtonViewBuilder.BUTTON_1) {
+            prefs.widgetButton1
         } else {
-            value = prefs.widgetButton2
+            prefs.widgetButton2
         }
 
         for (i in items.indices) {

@@ -80,21 +80,13 @@
     <string name="pref_activate_car_mode">מצב מכונית</string>
     <string name="pref_activate_car_mode_summary">מצב מכונית מובנה באנדרויד יופעל, אייקון נוסף יופיעה</string>
     <string name="pref_backup_title">גיבוי / שחזור</string>
-    <string name="pref_backup_summary">גיבוי הגדרות של ווידג\'ט לכרטיס זכרון</string>
-    <string name="last_backup">גיבוי אחרון: %1$s</string>
     <string name="backup_current_widget">גיבוי של ווידג\'ט הנוכחי</string>
     <string name="backup_incar_settings">גיבוי מצב ברכב</string>
-    <string name="backup_name_title">שם לגיבוי:</string>
-    <string name="backup_name_summary">בבקשה תגדירו שם לזיהוי של גיבוי של ווידג\'ט הנוכחי</string>
     <string name="backup_done">גיבוי הסתיים.</string>
-    <string name="external_storage_not_available">אחסון חיצוני אינו זמין.</string>
     <string name="failed_to_write_file">כתיבה לקובץ נכשלה.</string>
     <string name="restore_done">שחזור הסתיים.</string>
     <string name="restore_deserialize_failed">נכשל לבטל עריכה בסידרה גיבוי.</string>
     <string name="failed_to_read_file">קריאה מקובץ נכשלה.</string>
-    <string name="backup_not_exist">קובץ גיבוי לא נמצא.</string>
-    <string name="unable_delete_file">לא ניתן למחוק קובץ.</string>
-    <string name="no_backup_files_found">קבצי גיבוי לא נמצאו.</string>
     <string name="pref_auto_answer">מענה אוטומטי</string>
     <string name="pref_auto_answer_summary">מענה מיידי או בהשהייה של 5 שניות לשיחות נכנסות (נסיוני)</string>
     <string name="pref_autorun_app_title">הפעלת היישום</string>
@@ -104,7 +96,6 @@
     <string name="notification">התראה</string>
     <string name="shortcuts_summary">ניתן להגדיר עד 3 קיצורי דרך בוילון התראות</string>
     <string name="icons_theme">נושאי אייקונים</string>
-    <string name="shortcut_not_set">לא הוגדר</string>
     <string name="default_car_dock_app">ברירת מחדל לCar Dock</string>
     <string name="cardock_btn_1">לפתוח פרטי יישום</string>
     <string name="cardock_text1">על מנת לנקות את יישום ברירת מחדל נוכחי:\n1.פתח פרטי יישום\n2.לחץ על כפתור \"נקה ברירת מחדל\" </string>
@@ -145,7 +136,6 @@
     <string name="bluetooth_device_headphones">אוזניות</string>
     <string name="bluetooth_device_headset">האוזנייה האלחוטית</string>
     <string name="information_title">מידע</string>
-    <string name="issue_title">משוב</string>
     <string name="applications">יישומים</string>
     <string name="pref_wifi">Wi-Fi</string>
     <string name="transparent">שקוף</string>
@@ -153,14 +143,11 @@
     <string name="icon_default">ברירת מחדל </string>
     <string name="icon_custom">בחר מגלריה</string>
     <string name="icon_adw_icon_pack">Icon Pack</string>
-    <string name="never">אף פעם</string>
-    <string name="backup">גיבוי</string>
     <string name="restore">שחזור</string>
-    <string name="backup_save">לשמור</string>
     <string name="settings">הגדרות</string>
-    <string name="more">עוד...</string>
+    <string name="more">עוד…</string>
     <string name="none">אין</string>
-    <string name="download">הורד...</string>
+    <string name="download">הורד…</string>
     <string name="enabled">מופעל</string>
     <string name="disabled">מופסק</string>
     <string name="configure">הגדרות</string>
@@ -205,13 +192,9 @@
 
     <string name="choose_a_theme">בחר צבעים</string>
     <string name="delete">מחק</string>
-    <string name="export_backup">שמירה</string>
     <string name="failed_fetch_icon">בעית קבלת איקוון</string>
-    <string name="import_backup">משיכה</string>
     <string name="number">מספר</string>
     <string name="number_shortcuts_title">מספר קיצורי דרך</string>
-    <string name="theme_gray">בהיר</string>
-    <string name="theme_holo">חשוך</string>
     <string name="widgets">ווידג׳טים</string>
     <string name="please_add_widget">בבקשה תוסיפו ווידג׳ט למסך הבית</string>
     <string name="use_as_default_music_app">נגן ברירת מחדל</string>
@@ -225,8 +208,6 @@
     </string-array>
     <string name="current_widget">הוידג׳ט הנבחר</string>
     <string name="list_of_active_widgets">רשימת וידג׳טים פועלים</string>
-    <string name="shortcuts_and_look">קיצורי דרך ומראה</string>
-    <string name="shortcuts_and_look_summary">התאמה אישית של קיצורי דרך ,הסקין וגודל הגופן</string>
     <string name="widgets_hint">בחר וידג׳ט מהרשימה להגדרה</string>
     <string name="app_theme">ערכת נושא</string>
     <string name="no_active_widget">לא נמצאן ווידג׳טים פעילים. נא לוודא שהוספת ווידג׳ט למסך הבית.</string>
@@ -241,18 +222,13 @@
     <string name="hidden">מוּסתָר</string>
     <string name="choose">בחר</string>
     <string name="crash_dialog_report_button">לדווח</string>
-    <string name="crash_dialog_report_comment_button">תגובה</string>
     <string name="crash_dialog_title">ווידג\'ט לרכב נעצר</string>
     <string name="crash_dialog_toast">הדפדפן ייפתח</string>
     <string name="crash_dialog_text">אנא דווח על ההתרסקות</string>
-    <string name="crash_dialog_comment">ציין הערה</string>
 
     <string name="pref_hotspot_title">WiFi Hotspot הפעל</string>
     <string name="pref_hotspot_summary">לאפשר הוטספוט באופן אוטומטי</string>
     <string name="in_car_mode_switch">מתג מצב ברכב</string>
-    <string name="configure_select_item_hint">בחר פריט כדי להגדיר את הווידג\'ט</string>
-    <string name="new_backup">גיבוי</string>
-    <string name="save_widget">שמור הגדרות של הווידג\'ט</string>
     <string name="permission_denied">ההרשאה נדחתה</string>
     <string name="general">כללי</string>
     <string name="mode_detector_channel">מזהה מצב ברכב</string>

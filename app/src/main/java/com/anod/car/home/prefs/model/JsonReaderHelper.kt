@@ -14,7 +14,7 @@ object JsonReaderHelper {
 
     @Throws(IOException::class)
     fun readValues(reader: JsonReader, types: SimpleArrayMap<String, JsonToken>, prefs: ChangeableSharedPreferences): Int {
-        var found = 0;
+        var found = 0
         while (reader.hasNext()) {
             val name = reader.nextName()
             if (!types.containsKey(name)) {

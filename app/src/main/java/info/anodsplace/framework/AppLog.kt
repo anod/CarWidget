@@ -2,8 +2,7 @@ package info.anodsplace.framework
 
 import android.os.Looper
 import android.util.Log
-import java.util.IllegalFormatException
-import java.util.Locale
+import java.util.*
 
 /**
  * @author alex
@@ -45,10 +44,10 @@ class AppLog {
 
         fun setDebug(buildConfigDebug: Boolean, loggableTag: String) {
             val isDebug = buildConfigDebug || Log.isLoggable(loggableTag, Log.DEBUG)
-            if (isDebug) {
-                level = Log.DEBUG
+            level = if (isDebug) {
+                Log.DEBUG
             } else {
-                level = Log.INFO
+                Log.INFO
             }
         }
 
@@ -106,15 +105,14 @@ class AppLog {
         }
 
         private fun format(msg: String, vararg array: Any): String {
-            var formatted: String
-            if (array.isEmpty()) {
-                formatted = msg
+            val formatted: String = if (array.isEmpty()) {
+                msg
             } else {
                 try {
-                    formatted = String.format(Locale.US, msg, *array)
+                    String.format(Locale.US, msg, *array)
                 } catch (ex: IllegalFormatException) {
                     e("IllegalFormatException: formatString='%s' numArgs=%d", msg, array.size)
-                    formatted = "$msg (An error occurred while formatting the message.)"
+                    "$msg (An error occurred while formatting the message.)"
                 }
             }
             val stackTrace = Throwable().fillInStackTrace().stackTrace

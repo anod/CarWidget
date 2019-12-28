@@ -4,20 +4,19 @@ import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
-
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import com.anod.car.home.R
 import com.anod.car.home.prefs.views.SeekBarDialogPreference
 import com.anod.car.home.prefs.views.SeekBarPreferenceDialogFragment
-import info.anodsplace.framework.AppLog
 import com.anod.car.home.utils.Utils
+import info.anodsplace.framework.AppLog
 
 /**
  * @author alex
@@ -149,6 +148,6 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
     }
 
     fun <T : Preference> requirePreference(key: CharSequence): T {
-        return findPreference<T>(key)!!
+        return findPreference(key)!!
     }
 }

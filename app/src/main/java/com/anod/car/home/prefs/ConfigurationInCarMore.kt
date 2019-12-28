@@ -4,12 +4,11 @@ import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
+import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
-import android.widget.Toast
-import androidx.preference.CheckBoxPreference
-
 import com.anod.car.home.R
 import com.anod.car.home.incar.SamsungDrivingMode
 import com.anod.car.home.incar.WifiApControl
@@ -112,10 +111,10 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
             // get name
             val pm = activity!!.packageManager
             val resolveInfo = pm.resolveActivity(data, 0)
-            if (resolveInfo != null) {
-                title = resolveInfo.activityInfo.loadLabel(pm) as String
+            title = if (resolveInfo != null) {
+                resolveInfo.activityInfo.loadLabel(pm) as String
             } else {
-                title = data.component!!.packageName
+                data.component!!.packageName
             }
             value = AUTORUN_APP_CUSTOM
         }

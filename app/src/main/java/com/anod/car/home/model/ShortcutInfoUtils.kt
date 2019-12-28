@@ -79,13 +79,11 @@ object ShortcutInfoUtils {
 
         val drawableIcon = loadDrawableForTargetDensity(id, resources, context)
 
-        val icon: Bitmap?
-        when {
-            drawableIcon is BitmapDrawable -> icon = drawableIcon.bitmap
-            drawableIcon != null -> icon = UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context)
-            else -> icon = null
+        return when {
+            drawableIcon is BitmapDrawable -> drawableIcon.bitmap
+            drawableIcon != null -> UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context)
+            else -> null
         }
-        return icon
     }
 
 

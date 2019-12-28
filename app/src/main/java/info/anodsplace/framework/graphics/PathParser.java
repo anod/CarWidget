@@ -16,14 +16,14 @@
 
 package info.anodsplace.framework.graphics;
 
-import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-
 import android.graphics.Path;
 import android.util.Log;
 
 import androidx.annotation.RestrictTo;
 
 import java.util.ArrayList;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 /**
  * This class is a duplicate from the PathParser.java of frameworks/base, with slight
@@ -110,7 +110,7 @@ public class PathParser {
         if ((end - start) == 1 && start < pathData.length()) {
             addNode(list, pathData.charAt(start), new float[0]);
         }
-        return list.toArray(new PathDataNode[list.size()]);
+        return list.toArray(new PathDataNode[0]);
     }
 
     /**
@@ -161,9 +161,7 @@ public class PathParser {
     public static void updateNodes(PathDataNode[] target, PathDataNode[] source) {
         for (int i = 0; i < source.length; i++) {
             target[i].mType = source[i].mType;
-            for (int j = 0; j < source[i].mParams.length; j++) {
-                target[i].mParams[j] = source[i].mParams[j];
-            }
+            System.arraycopy(source[i].mParams, 0, target[i].mParams, 0, source[i].mParams.length);
         }
     }
 

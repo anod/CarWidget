@@ -8,15 +8,9 @@
         app:showAsAction="always">
     </item>
     <item
-        android:id="@+id/backup"
-        android:title="@string/pref_backup_title"
-        android:tooltipText="@string/pref_backup_summary"
-        app:showAsAction="never">
-    </item>
-    <item
         android:id="@+id/incar_status"
         android:title="@string/status"
-        android:tooltipText="@string/incar_trigger_status"
+        app:tooltipText="@string/incar_trigger_status"
         app:showAsAction="never">
     </item>
 </menu>

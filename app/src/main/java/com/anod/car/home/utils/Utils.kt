@@ -24,20 +24,20 @@ object Utils {
         }
 
     fun isProInstalled(context: Context): Boolean {
-        try {
+        return try {
             context.packageManager.getApplicationInfo("com.anod.car.home.pro", 0)
-            return true
+            true
         } catch (e: PackageManager.NameNotFoundException) {
-            return false
+            false
         }
     }
 
     fun isFreeInstalled(context: Context): Boolean {
-        try {
+        return try {
             context.packageManager.getApplicationInfo("com.anod.car.home.free", 0)
-            return true
+            true
         } catch (e: PackageManager.NameNotFoundException) {
-            return false
+            false
         }
 
     }

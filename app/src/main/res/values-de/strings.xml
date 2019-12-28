@@ -80,21 +80,13 @@
     <string name="pref_activate_car_mode">Eingebauter Auto-Modus</string>
     <string name="pref_activate_car_mode_summary">Eingebauter Android Auto-Modus wird aktiviert, zusätzliches Symbol für Benachrichtigungen wird angezeigt.</string>
     <string name="pref_backup_title">Bachup/Wiederherstellen</string>
-    <string name="pref_backup_summary">Backup-Einstellungen dieses Widgets</string>
-    <string name="last_backup">Letztes Backup: %1$s</string>
     <string name="backup_current_widget">Aktuelles Widget</string>
     <string name="backup_incar_settings">InCar-Einstellungen</string>
-    <string name="backup_name_title">Backup-Name:</string>
-    <string name="backup_name_summary">Bitte legen Sie den Namen des aktuellen Widget-Backups zur Identifizierung fest.</string>
     <string name="backup_done">Backup fertig.</string>
-    <string name="external_storage_not_available">Externer Speicher ist nicht verfügbar.</string>
     <string name="failed_to_write_file">Fehler beim Schreiben der Datei.</string>
     <string name="restore_done">Wiederherstellung wird durchgeführt.</string>
     <string name="restore_deserialize_failed">Fehler bei Deserialisierung des Backups.</string>
     <string name="failed_to_read_file">Fehler beim Lesen der Datei.</string>
-    <string name="backup_not_exist">Backup-Datei ist nicht vorhanden.</string>
-    <string name="unable_delete_file">Kann Datei nicht löschen.</string>
-    <string name="no_backup_files_found">Keine Backup-Dateien gefunden.</string>
     <string name="pref_auto_answer">Automatische Rufannahme</string>
     <string name="pref_auto_answer_summary">Automatische Annahme eingehender Anrufe, sofort oder mit 5 Sekunden Verzögerung. (Experimentell)</string>
     <string name="pref_autorun_app_title">App-Automatik</string>
@@ -104,7 +96,6 @@
     <string name="notification">Benachrichtigung</string>
     <string name="shortcuts_summary">Sie können bis zu 3 Verknüpfungen in der Statusleiste ablegen</string>
     <string name="icons_theme">Symbol-Thema</string>
-    <string name="shortcut_not_set">Nicht festgelegt</string>
     <string name="default_car_dock_app">Standard Autodock-App</string>
     <string name="cardock_btn_1">App-Info öffnen</string>
     <string name="cardock_text1">Um die aktuellen Standard-Anwendung zu löschen:\n1. Standard App-Info öffnen\n2. \"Clear Defaults\" drücken</string>
@@ -141,21 +132,17 @@
     <string name="bluetooth_device_headphones">Kopfhörer</string>
     <string name="bluetooth_device_headset">Headset</string>
     <string name="information_title">Information</string>
-    <string name="issue_title">Feedback</string>
     <string name="applications">Anwendungen</string>
     <string name="pref_wifi">Wi-Fi</string>
     <string name="transparent">Transparent</string>
     <string name="dialog_title_select">Wählen</string>
     <string name="icon_custom">Benutzerdefiniert</string>
     <string name="icon_adw_icon_pack">Icon-Pack</string>
-    <string name="never">Niemals</string>
-    <string name="backup">Backup</string>
     <string name="restore">Wiederherstellen</string>
-    <string name="backup_save">Speichern</string>
     <string name="settings">Einstellungen</string>
-    <string name="more">Mehr ...</string>
+    <string name="more">Mehr …</string>
     <string name="none">Keine</string>
-    <string name="download">Herunterladen ...</string>
+    <string name="download">Herunterladen …</string>
     <string name="enabled">Aktiviert</string>
     <string name="disabled">Deaktiviert</string>
     <string name="configure">Konfigurieren</string>
@@ -163,8 +150,6 @@
     <string name="skip">Überspringen</string>
     <string name="next">Nächste</string>
     <string name="choose_a_theme">Wählen Sie ein Thema</string>
-    <string name="theme_gray">Hell</string>
-    <string name="theme_holo">Dunkel</string>
     <string name="icon_default">Standard</string>
     <string name="failed_fetch_icon">Fehler beim Laden des Standardsymbols.</string>
     <string name="please_add_widget">Bitte fügen Sie das Widget auf dem Start-Bildschirm hinzu</string>
@@ -191,7 +176,7 @@
 
     <string-array name="autorun_app_titles">
         <item>Deaktiviert</item>
-        <item>Wählen Sie ...</item>
+        <item>Wählen Sie …</item>
     </string-array>
 
     <string-array name="carwidget_shortcuts">
@@ -208,8 +193,6 @@
         <item>90 ° rechts</item>
     </string-array>
 
-    <string name="export_backup">Backup-Datei exportieren</string>
-    <string name="import_backup">Backup-Datei importieren</string>
     <string name="delete">Löschen</string>
     <string name="number">Anzahl der Verknüpfungen</string>
     <string name="number_shortcuts_title">Anzahl der Verknüpfungen</string>
@@ -223,8 +206,6 @@
     <string name="app_theme">Anwendungs-Thema</string>
     <string name="widgets_hint">Wählen Sie ein Element, um das Widget zu konfigurieren</string>
     <string name="list_of_active_widgets">Liste der aktiven Widgets</string>
-    <string name="shortcuts_and_look">Verknüpfungen und Ansicht</string>
-    <string name="shortcuts_and_look_summary">Anpassen von Verknüpfungen, Benutzeroberfläche und Schriftgröße</string>
     <string name="current_widget">Aktuelles Widget</string>
     <string name="no_active_widget">Es wurden keine aktiven Widgets gefunden. Bitte überprüfen Sie, ob Sie Ihrem Startbildschirm ein Widget hinzugefügt haben.</string>
 

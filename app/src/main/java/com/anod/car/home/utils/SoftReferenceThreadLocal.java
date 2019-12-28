@@ -21,14 +21,13 @@ public abstract class SoftReferenceThreadLocal<T> {
         if (reference == null) {
             obj = initialValue();
             mThreadLocal.set(new SoftReference<T>(obj));
-            return obj;
         } else {
             obj = reference.get();
             if (obj == null) {
                 obj = initialValue();
                 mThreadLocal.set(new SoftReference<T>(obj));
             }
-            return obj;
         }
+        return obj;
     }
 }

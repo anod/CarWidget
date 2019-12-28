@@ -12,14 +12,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.BaseColumns
-import androidx.core.content.res.ResourcesCompat
 import android.text.TextUtils
-
-import info.anodsplace.framework.AppLog
-
+import androidx.core.content.res.ResourcesCompat
 import com.anod.car.home.utils.UtilitiesBitmap
 import com.anod.car.home.utils.Utils
-
+import info.anodsplace.framework.AppLog
 import java.net.URISyntaxException
 
 class ShortcutsDatabase(private val context: Context) {
@@ -130,13 +127,12 @@ class ShortcutsDatabase(private val context: Context) {
     fun loadShortcut(shortcutId: Long): Shortcut? {
         val selection = BaseColumns._ID + "=?"
         val selectionArgs = arrayOf(shortcutId.toString())
-
-        val c = contentResolver
-                .query(LauncherSettings.Favorites.getContentUri(context.packageName), null,
+        var info: Shortcut? = null
+        val cursor = contentResolver.query(
+                LauncherSettings.Favorites.getContentUri(context.packageName), null,
                         selection, selectionArgs, null) ?: return null
 
-        val info: Shortcut
-        try {
+        cursor.use { c ->
             val intentIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.INTENT)
             c.moveToFirst()
             val intent: Intent
@@ -162,8 +158,6 @@ class ShortcutsDatabase(private val context: Context) {
             val isCustomIcon = c.getInt(isCustomIconIndex) == 1
 
             info = Shortcut(id, itemType, title, isCustomIcon, intent)
-        } finally {
-            c.close()
         }
 
         return info
@@ -212,11 +206,11 @@ class ShortcutsDatabase(private val context: Context) {
 
         private fun getIconFromCursor(c: Cursor, iconIndex: Int, opts: BitmapFactory.Options): Bitmap? {
             val data = c.getBlob(iconIndex)
-            try {
-                return BitmapFactory.decodeByteArray(data, 0, data.size, opts)
+            return try {
+                BitmapFactory.decodeByteArray(data, 0, data.size, opts)
             } catch (e: Exception) {
                 AppLog.e(e)
-                return null
+                null
             }
 
         }

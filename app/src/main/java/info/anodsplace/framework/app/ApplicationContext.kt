@@ -30,7 +30,7 @@ class ApplicationContext(context: Context) {
 
     constructor(application: Application) : this(application.applicationContext)
 
-    val actual: Context = context.applicationContext as Context
+    private val actual: Context = context.applicationContext as Context
     private val app: ApplicationInstance = context.applicationContext as ApplicationInstance
 
     val contentResolver: ContentResolver

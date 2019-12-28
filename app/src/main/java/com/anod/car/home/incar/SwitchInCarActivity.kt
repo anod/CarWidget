@@ -16,16 +16,15 @@ class SwitchInCarActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (InCarStorage.load(this).isInCarEnabled) {
-            val data: Uri
             val service = Intent(this, ModeService::class.java)
-            if (ModeService.sInCarMode) {
+            val data: Uri = if (ModeService.sInCarMode) {
                 service.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_OFF)
                 service.putExtra(ModeService.EXTRA_FORCE_STATE, true)
-                data = Uri.parse("com.anod.car.home.pro://mode/0/2")
+                Uri.parse("com.anod.car.home.pro://mode/0/2")
             } else {
                 service.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_ON)
                 service.putExtra(ModeService.EXTRA_FORCE_STATE, true)
-                data = Uri.parse("com.anod.car.home.pro://mode/1/2")
+                Uri.parse("com.anod.car.home.pro://mode/1/2")
             }
             service.data = data
             startService(service)

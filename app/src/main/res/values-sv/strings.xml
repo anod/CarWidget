@@ -80,21 +80,13 @@
     <string name="pref_activate_car_mode">Inbyggd Bil Läge</string>
     <string name="pref_activate_car_mode_summary">Android inbyggda bil läget kommer att aktiveras, ytterligare notifieringsikon kommer att visas.</string>
     <string name="pref_backup_title">Säkerhetskopiering / Återställning</string>
-    <string name="pref_backup_summary">Backup inställningar av widgeten</string>
-    <string name="last_backup">Senaste säkerhetskopia: %1$s</string>
     <string name="backup_current_widget">Nuvarande widget</string>
     <string name="backup_incar_settings">InCar inställningar</string>
-    <string name="backup_name_title">Säkerhetskopieringens namn:</string>
-    <string name="backup_name_summary">Vänligen ange namn för att identifiera säkerhetskopian av aktuell widget</string>
     <string name="backup_done">Säkerhetskopieringen har gjorts.</string>
-    <string name="external_storage_not_available">Extern lagringsenhet är inte tillgänglig.</string>
     <string name="failed_to_write_file">Det gick inte att skriva filen.</string>
     <string name="restore_done">Återställningen har gjorts.</string>
     <string name="restore_deserialize_failed">Det gick inte att avserialisera säkerhetskopieringen.</string>
     <string name="failed_to_read_file">Det gick inte att läsa filen.</string>
-    <string name="backup_not_exist">Säkerhetskopieringsfilen existerar inte.</string>
-    <string name="unable_delete_file">Kan inte radera fil.</string>
-    <string name="no_backup_files_found">Inga säkerhetskopior hittades.</string>
     <string name="pref_auto_answer">Autosvar</string>
     <string name="pref_auto_answer_summary">Autosvar på inkommande samtal omedelbart eller med 5 sekunders fördröjning. (Experimentell)</string>
     <string name="pref_autorun_app_title">App Autorun</string>
@@ -104,7 +96,6 @@
     <string name="notification">Notifikationer</string>
     <string name="shortcuts_summary">Du kan placera upp till 3 genvägar i statusfältet</string>
     <string name="icons_theme">Ikontema</string>
-    <string name="shortcut_not_set">Inte inställd</string>
     <string name="default_car_dock_app">Standard Bil Dock app</string>
     <string name="cardock_btn_1">Öppna App Info</string>
     <string name="cardock_text1">För att ta bort aktuella standardprogram:\n1. Öppna standard App Info\n2. Klicka på \"Ta bort förinställningar\" knappen</string>
@@ -141,19 +132,15 @@
     <string name="bluetooth_device_headphones">Hörlurar</string>
     <string name="bluetooth_device_headset">Headset</string>
     <string name="information_title">Information</string>
-    <string name="issue_title">Gensvar</string>
     <string name="applications">Tillämpningar</string>
     <string name="pref_wifi">Wi-Fi</string>
     <string name="transparent">Transparent</string>
     <string name="dialog_title_select">Välj</string>
     <string name="icon_custom">Anpassning</string>
     <string name="icon_adw_icon_pack">Ikon Pack</string>
-    <string name="never">Aldrig</string>
-    <string name="backup">Säkerhetskopiera</string>
-    <string name="restore">Återställ...</string>
-    <string name="backup_save">Spara</string>
+    <string name="restore">Återställ…</string>
     <string name="settings">Inställningar</string>
-    <string name="more">Mer(...)</string>
+    <string name="more">Mer(…)</string>
     <string name="none">Ingen</string>
     <string name="download">Ladda ner</string>
     <string name="enabled">Aktiverad</string>
@@ -163,8 +150,6 @@
     <string name="skip">Hoppa över</string>
     <string name="next">Nästa</string>
     <string name="choose_a_theme">Välj ett tema</string>
-    <string name="theme_gray">Lätt</string>
-    <string name="theme_holo">Mörkt</string>
     <string name="icon_default">Standard</string>
     <string name="failed_fetch_icon">Det gick inte att hämta standardikonen.</string>
     <string name="please_add_widget">Vänligen lägg till widget på startskärmen</string>
@@ -191,7 +176,7 @@
 
     <string-array name="autorun_app_titles">
         <item>Har inaktiverats</item>
-        <item>Välj...</item>
+        <item>Välj…</item>
     </string-array>
 
     <string-array name="carwidget_shortcuts">
@@ -208,8 +193,6 @@
         <item>90 º Höger</item>
     </string-array>
 
-    <string name="export_backup">Exportera säkerhetskopia</string>
-    <string name="import_backup">Importera säkerhetskopia</string>
     <string name="delete">Radera</string>
     <string name="number">Antal genvägar</string>
     <string name="number_shortcuts_title">Antal genvägar</string>
@@ -223,8 +206,6 @@
     <string name="app_theme">App Tema</string>
     <string name="widgets_hint">Välj ett objekt att konfigurera widgeten</string>
     <string name="list_of_active_widgets">Lista över aktiva widgets</string>
-    <string name="shortcuts_and_look">Genvägar och utseende</string>
-    <string name="shortcuts_and_look_summary">Anpassa genvägar, hud och teckenstorlek</string>
     <string name="current_widget">Nuvarande widget</string>
     <string name="no_active_widget">Inga aktiva widgets hittades. Se till att lägga till en widget på startskärmen.</string>
 

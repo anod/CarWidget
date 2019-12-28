@@ -80,21 +80,13 @@
     <string name="pref_activate_car_mode">Modalità \"alla guida\" incorporata</string>
     <string name="pref_activate_car_mode_summary">Sarà attivata la modalità \"alla guida\" di Android e verrà visualizzata un\'icona di notifica supplementare.</string>
     <string name="pref_backup_title">Copia / Ripristina</string>
-    <string name="pref_backup_summary">Impostazioni di backup del widget</string>
-    <string name="last_backup">Ultima copia: %1$s</string>
     <string name="backup_current_widget">Widget attuale</string>
     <string name="backup_incar_settings">Impostazioni \"alla guida\"</string>
-    <string name="backup_name_title">Nome della copia:</string>
-    <string name="backup_name_summary">Definisci il nome per identificare la copia del widget attuale</string>
     <string name="backup_done">Copia eseguita.</string>
-    <string name="external_storage_not_available">Memoria esterna non disponibile.</string>
     <string name="failed_to_write_file">Impossibile scrivere il file.</string>
     <string name="restore_done">Ripristino effettuato.</string>
     <string name="restore_deserialize_failed">Impossibile deserializzare la copia.</string>
     <string name="failed_to_read_file">Impossibile leggere il file.</string>
-    <string name="backup_not_exist">Il file della copia non esiste.</string>
-    <string name="unable_delete_file">Impossibile eliminare il file.</string>
-    <string name="no_backup_files_found">Non sono stati trovati i file di copia.</string>
     <string name="pref_auto_answer">Risposta automatica</string>
     <string name="pref_auto_answer_summary">Risposta automatica alle chiamate in arrivo immediatamente o con 5 secondi di ritardo. (Sperimentale)</string>
     <string name="pref_autorun_app_title">Esecuzione automatica applicazione</string>
@@ -104,7 +96,6 @@
     <string name="notification">Notifica</string>
     <string name="shortcuts_summary">È possibile inserire fino a 3 scorciatoie sulla barra di stato</string>
     <string name="icons_theme">Tema icone</string>
-    <string name="shortcut_not_set">Non impostato</string>
     <string name="default_car_dock_app">Applicazione Car Dock predefinita</string>
     <string name="cardock_btn_1">Apri Informazioni applicazione</string>
     <string name="cardock_text1">Per cancellare l\'applicazione predefinita:\n1. Aprire le informazioni sulle applicazioni predefinite\n2. Cliccare sul pulsante \"Cancella predefinite\"</string>
@@ -141,21 +132,17 @@
     <string name="bluetooth_device_headphones">Auricolari</string>
     <string name="bluetooth_device_headset">Auricolare</string>
     <string name="information_title">Informazione</string>
-    <string name="issue_title">Commento</string>
     <string name="applications">Applicazioni</string>
     <string name="pref_wifi">Wi-Fi</string>
     <string name="transparent">Trasparente</string>
     <string name="dialog_title_select">Seleziona</string>
     <string name="icon_custom">Personalizza</string>
     <string name="icon_adw_icon_pack">Pacchetto icone</string>
-    <string name="never">Mai</string>
-    <string name="backup">Copia</string>
     <string name="restore">Ripristina</string>
-    <string name="backup_save">Salva</string>
     <string name="settings">Impostazioni</string>
-    <string name="more">Di più...</string>
+    <string name="more">Di più…</string>
     <string name="none">Nessuno</string>
-    <string name="download">Scarica...</string>
+    <string name="download">Scarica…</string>
     <string name="enabled">Attivato</string>
     <string name="disabled">Disattivato</string>
     <string name="configure">Configura</string>
@@ -163,8 +150,6 @@
     <string name="skip">Ignora</string>
     <string name="next">Avanti</string>
     <string name="choose_a_theme">Scegli un tema</string>
-    <string name="theme_gray">Chiaro</string>
-    <string name="theme_holo">Scuro</string>
     <string name="icon_default">Predefinito</string>
     <string name="failed_fetch_icon">Impossibile recuperare l\'icona predefinita.</string>
     <string name="please_add_widget">Aggiungi il widget alla schermata iniziale</string>
@@ -191,7 +176,7 @@
 
     <string-array name="autorun_app_titles">
         <item>Disattivato</item>
-        <item>Scegli...</item>
+        <item>Scegli…</item>
     </string-array>
 
     <string-array name="carwidget_shortcuts">
@@ -208,8 +193,6 @@
         <item>90º a destra</item>
     </string-array>
 
-    <string name="export_backup">Esporta file di backup</string>
-    <string name="import_backup">Importa file di backup</string>
     <string name="delete">Elimina</string>
     <string name="number">Numero di collegamenti</string>
     <string name="number_shortcuts_title">Numero di collegamenti</string>
@@ -223,8 +206,6 @@
     <string name="app_theme">Tema App</string>
     <string name="widgets_hint">Seleziona un elemento per configurare il widget</string>
     <string name="list_of_active_widgets">Elenco dei widget attivi</string>
-    <string name="shortcuts_and_look">Collegamenti e aspetto</string>
-    <string name="shortcuts_and_look_summary">Personalizza collegamenti, skin e dimensioni del carattere</string>
     <string name="current_widget">Widget attuale</string>
     <string name="no_active_widget">Non sono stati trovati widget attivi. Assicurati di aggiungere un widget nella schermata iniziale.</string>
 

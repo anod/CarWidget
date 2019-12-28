@@ -28,11 +28,8 @@ class AcceptCallActivity : Activity() {
         keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
-        if (savedInstanceState == null) {
-            enableSpeaker = intent.getBooleanExtra(EXTRA_ENABLE_SPEAKER, false)
-        } else {
-            enableSpeaker = savedInstanceState.getBoolean(EXTRA_ENABLE_SPEAKER)
-        }
+        enableSpeaker = savedInstanceState?.getBoolean(EXTRA_ENABLE_SPEAKER)
+                ?: intent.getBooleanExtra(EXTRA_ENABLE_SPEAKER, false)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

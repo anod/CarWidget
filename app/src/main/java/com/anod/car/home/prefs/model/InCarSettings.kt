@@ -221,7 +221,7 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
         reader.beginObject()
         val found = JsonReaderHelper.readValues(reader, types, this)
         reader.endObject()
-        return found;
+        return found
     }
 
     companion object {
