@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="permlab_read_settings">Read Car Widget settings and shortcuts</string>
     <string name="permdesc_read_settings">Allows an application to read the settings and shortcuts in Car Widget.</string>
     <string name="permlab_write_settings">write Car Widget settings and shortcuts</string>
@@ -81,8 +81,8 @@
     <string name="pref_activate_car_mode_summary">Android built-in car mode will be activated, additional notification icon will be shown.</string>
     <string name="pref_backup_title">Backup / Restore</string>
     <string name="pref_backup_summary">Backup settings of the widget</string>
-    <string name="backup_current_widget">Current widget</string>
-    <string name="backup_incar_settings">InCar settings</string>
+    <string name="backup_current_widget">Backup current widget</string>
+    <string name="backup_incar_settings">Backup InCar settings</string>
     <string name="backup_name_title">Backup name:</string>
     <string name="backup_name_summary">Please define name to identify backup of current the widget</string>
     <string name="backup_done">Backup is done.</string>
@@ -103,7 +103,7 @@
     <string name="notification">Notification</string>
     <string name="shortcuts_summary">You can place up to 3 shortcuts in status bar</string>
     <string name="icons_theme">Icons Theme</string>
-    <string name="not_set">Not set</string>
+    <string name="shortcut_not_set">Not set</string>
     <string name="default_car_dock_app">Default Car Dock app</string>
     <string name="cardock_btn_1">Open App Info</string>
     <string name="cardock_text1">To clear current default application:\n1. Open default App Info\n2. Click on \"Clear defaults\" button</string>
@@ -115,7 +115,7 @@
     <string name="pref_titles_hide_title">Hide titles</string>
     <string name="pref_titles_hide_summary">Do not display titles for the shortcuts</string>
     <string name="not_active">Not active</string>
-    <string name="active">Active</string>
+    <string name="active" tools:ignore="MissingTranslation">Active</string>
     <string name="welcome">Welcome</string>
     <string name="welcome_text"><![CDATA[<b>Car Widget</b> makes easier and quicker access to phone features when you\'re in the car.]]></string>
     <string name="install_a_widget">Install a widget</string>
@@ -153,9 +153,9 @@
     <string name="restore">Restore</string>
     <string name="backup_save">Save</string>
     <string name="settings">Settings</string>
-    <string name="more">More...</string>
+    <string name="more">More…</string>
     <string name="none">None</string>
-    <string name="download">Download...</string>
+    <string name="download">Download…</string>
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
     <string name="configure">Configure</string>
@@ -168,8 +168,8 @@
     <string name="icon_default">Default</string>
     <string name="failed_fetch_icon">Failed to fetch the default icon.</string>
     <string name="please_add_widget">Please add widget to the homescreen</string>
-    <string name="samsung_driving_summary">Enable built-in Samsung Car Mode</string>
-    <string name="samsung_driving_title">Samsung Car Mode</string>
+    <string name="samsung_driving_summary" tools:ignore="MissingTranslation">Enable built-in Samsung Car Mode</string>
+    <string name="samsung_driving_title" tools:ignore="MissingTranslation">Samsung Car Mode</string>
     <string-array name="brightness_mode_titles">
         <item>System</item>
         <item>Auto</item>
@@ -241,54 +241,55 @@
         <item>Landscape (reverse)</item>
     </string-array>
 
-    <string name="unavailable_bt_device">Not available</string>
-    <string name="hidden">Hidden</string>
-    <string name="choose">Choose</string>
-    <string name="crash_dialog_report_button">Report</string>
-    <string name="crash_dialog_report_comment_button">Comment</string>
-    <string name="crash_dialog_title">Car Widget has stopped</string>
-    <string name="crash_dialog_toast">Browser will be opened</string>
-    <string name="crash_dialog_text">Please report the crash</string>
-    <string name="crash_dialog_comment">Provide a comment</string>
+    <string name="unavailable_bt_device" tools:ignore="MissingTranslation">Not available</string>
+    <string name="hidden" tools:ignore="MissingTranslation">Hidden</string>
+    <string name="choose" tools:ignore="MissingTranslation">Choose</string>
+    <string name="crash_dialog_report_button" tools:ignore="MissingTranslation">Report</string>
+    <string name="crash_dialog_report_comment_button" tools:ignore="MissingTranslation">Comment</string>
+    <string name="crash_dialog_title" tools:ignore="MissingTranslation">Car Widget has stopped</string>
+    <string name="crash_dialog_toast" tools:ignore="MissingTranslation">Browser will be opened</string>
+    <string name="crash_dialog_text" tools:ignore="MissingTranslation">Please report the crash</string>
+    <string name="crash_dialog_comment" tools:ignore="MissingTranslation">Provide a comment</string>
 
-    <string name="pref_hotspot_title">Enable WiFi Hotspot</string>
-    <string name="pref_hotspot_summary">Automatically enables hotspot on the device</string>
-    <string name="in_car_mode_switch">InCar mode switch</string>
-    <string name="configure_select_item_hint">Select an item to configure the widget</string>
-    <string name="new_backup">BACKUP</string>
-    <string name="save_widget">Save widget settings</string>
-    <string name="last_backup">Last backup: %1$s</string>
-    <string name="permission_denied">Permission denied</string>
-    <string name="general">General</string>
-    <string name="mode_detector_channel">InCar detector</string>
+    <string name="pref_hotspot_title" tools:ignore="MissingTranslation">Enable WiFi Hotspot</string>
+    <string name="pref_hotspot_summary" tools:ignore="MissingTranslation">Automatically enables hotspot on the device</string>
+    <string name="in_car_mode_switch" tools:ignore="MissingTranslation">InCar mode switch</string>
+    <string name="configure_select_item_hint" tools:ignore="MissingTranslation">Select an item to configure the widget</string>
+    <string name="new_backup" tools:ignore="MissingTranslation">BACKUP</string>
+    <string name="save_widget" tools:ignore="MissingTranslation">Save widget settings</string>
+    <string name="last_backup" tools:ignore="MissingTranslation">Last backup: %1$s</string>
+    <string name="permission_denied" tools:ignore="MissingTranslation">Permission denied</string>
+    <string name="general" tools:ignore="MissingTranslation">General</string>
+    <string name="mode_detector_channel" tools:ignore="MissingTranslation">InCar detector</string>
 
-    <string name="app_preferences">App Preferences</string>
-    <string name="title">Title</string>
-    <string name="info">Info</string>
-    <string name="notifcation_mode_detector">InCar mode detector</string>
-    <string name="allow_permissions_brightness">Allow write system settings to change brightness</string>
-    <string name="allow_permission_overlay">Allow app overlay to change orientation</string>
-    <string name="needs_permissions_to_work">Needs permissions to work</string>
-    <string name="allow_access">Allow access</string>
-    <string name="allow_permissions_samsung_mode">Allow write system settings to change driving mode</string>
+    <string name="app_preferences" tools:ignore="MissingTranslation">App Preferences</string>
+    <string name="title" tools:ignore="MissingTranslation">Title</string>
+    <string name="info" tools:ignore="MissingTranslation">Info</string>
+    <string name="notifcation_mode_detector" tools:ignore="MissingTranslation">InCar mode detector</string>
+    <string name="allow_permissions_brightness" tools:ignore="MissingTranslation">Allow write system settings to change brightness</string>
+    <string name="allow_permission_overlay" tools:ignore="MissingTranslation">Allow app overlay to change orientation</string>
+    <string name="needs_permissions_to_work" tools:ignore="MissingTranslation">Needs permissions to work</string>
+    <string name="allow_access" tools:ignore="MissingTranslation">Allow access</string>
+    <string name="allow_permissions_samsung_mode" tools:ignore="MissingTranslation">Allow write system settings to change driving mode</string>
 
-    <string name="permission_write_settings">Write system settings</string>
-    <string name="adjust_brightness">Adjust brightness</string>
-    <string name="permission_draw_overlay">Draw over other appps</string>
-    <string name="change_screen_orientation">Change screen orientation</string>
-    <string name="permission_answer_calls">Answer phone calls</string>
-    <string name="allow_answer_phone_calls">Allow to answer calls</string>
-    <string name="permissions_denied_open_settings">Permissions denied, enable them in app settings</string>
-    <string name="adaptive_icon_style">Adaptive icon style</string>
-    <string name="answer_error_marshmallow">CarWidget: Allow access to notification to answer calls</string>
-    <string name="answer_error_oreo">CarWidget: Allow permission to answer calls</string>
-    <string name="permission_notification_listener">Access to notifications</string>
-    <string name="choose_color">Choose color</string>
-    <string name="auto_color">Auto color</string>
-    <string name="status">Status</string>
-    <string name="incar_trigger_status">InCar triggers status</string>
-    <string name="user_log">User log</string>
-    <string name="share">Share</string>
+    <string name="permission_write_settings" tools:ignore="MissingTranslation">Write system settings</string>
+    <string name="adjust_brightness" tools:ignore="MissingTranslation">Adjust brightness</string>
+    <string name="permission_draw_overlay" tools:ignore="MissingTranslation">Draw over other appps</string>
+    <string name="change_screen_orientation" tools:ignore="MissingTranslation">Change screen orientation</string>
+    <string name="permission_answer_calls" tools:ignore="MissingTranslation">Answer phone calls</string>
+    <string name="allow_answer_phone_calls" tools:ignore="MissingTranslation">Allow to answer calls</string>
+    <string name="permissions_denied_open_settings" tools:ignore="MissingTranslation">Permissions denied, enable them in app settings</string>
+    <string name="adaptive_icon_style" tools:ignore="MissingTranslation">Adaptive icon style</string>
+    <string name="answer_error_marshmallow" tools:ignore="MissingTranslation">CarWidget: Allow access to notification to answer calls</string>
+    <string name="answer_error_oreo" tools:ignore="MissingTranslation">CarWidget: Allow permission to answer calls</string>
+    <string name="permission_notification_listener" tools:ignore="MissingTranslation">Access to notifications</string>
+    <string name="choose_color" tools:ignore="MissingTranslation">Choose color</string>
+    <string name="auto_color" tools:ignore="MissingTranslation">Auto color</string>
+    <string name="status" tools:ignore="MissingTranslation">Status</string>
+    <string name="incar_trigger_status" tools:ignore="MissingTranslation">InCar triggers status</string>
+    <string name="user_log" tools:ignore="MissingTranslation">User log</string>
+    <string name="share" tools:ignore="MissingTranslation">Share</string>
+    <string name="backup_path">Previously backups were stored at %s</string>
 
     <array name="adaptive_icon_style_names">
         <item>Default</item>

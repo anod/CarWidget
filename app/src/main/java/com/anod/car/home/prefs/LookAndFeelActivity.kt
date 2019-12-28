@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
+import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.viewpager.widget.ViewPager
 import com.anod.car.home.R
@@ -137,7 +138,9 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
                     invalidateOptionsMenu()
                     content.visibility = View.VISIBLE
                     supportFragmentManager.commit {
-                        replace(R.id.content, AboutFragment())
+                        replace(R.id.content, AboutFragment().apply {
+                            arguments = bundleOf(AppWidgetManager.EXTRA_APPWIDGET_ID to appWidgetId)
+                        })
                     }
                     true
                 }

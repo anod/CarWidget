@@ -104,7 +104,7 @@
     <string name="notification">התראה</string>
     <string name="shortcuts_summary">ניתן להגדיר עד 3 קיצורי דרך בוילון התראות</string>
     <string name="icons_theme">נושאי אייקונים</string>
-    <string name="not_set">לא הוגדר</string>
+    <string name="shortcut_not_set">לא הוגדר</string>
     <string name="default_car_dock_app">ברירת מחדל לCar Dock</string>
     <string name="cardock_btn_1">לפתוח פרטי יישום</string>
     <string name="cardock_text1">על מנת לנקות את יישום ברירת מחדל נוכחי:\n1.פתח פרטי יישום\n2.לחץ על כפתור \"נקה ברירת מחדל\" </string>

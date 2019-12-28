@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="16dp"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
@@ -35,6 +35,40 @@
         android:drawableStart="@drawable/ic_android"
         android:text="@string/default_car_dock_app" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_backup_title"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+        <Button
+            android:id="@+id/backupWidget"
+            style="@style/AboutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/backup_current_widget" />
+
+        <Button
+            android:id="@+id/backupInCar"
+            style="@style/AboutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/backup_incar_settings" />
+
+        <Button
+            android:id="@+id/restore"
+            style="@style/AboutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/restore" />
+
+    </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,13 +82,5 @@
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_stars"
         android:text="@string/version_summary" />
-
-    <Button
-        android:id="@+id/buttonFeedback"
-        style="@style/AboutButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_email_black_24dp"
-        android:text="@string/issue_title" />
 
 </LinearLayout>

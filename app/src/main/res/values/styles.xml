@@ -23,6 +23,7 @@
     <style name="SplashScreen" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen</item>
         <item name="colorPrimaryDark">@color/material_bluegray_600</item>
+        <item name="android:navigationBarColor">@color/material_bluegray_600</item>
     </style>
 
     <style name="holo_btn_text">
@@ -129,8 +130,8 @@
         <item name="android:background">@drawable/notification_button_background</item>
     </style>
 
-    <style name="AboutButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
-        <item name="android:textColor">?attr/colorOnSurface</item>
+    <style name="AboutButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+
         <item name="iconTint">?attr/colorOnSurface</item>
     </style>
 </resources>

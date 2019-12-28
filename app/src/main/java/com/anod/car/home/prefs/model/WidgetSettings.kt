@@ -5,16 +5,14 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Path
 import android.os.Build
-import androidx.core.content.res.ResourcesCompat
-import androidx.collection.SimpleArrayMap
 import android.util.JsonReader
 import android.util.JsonToken
 import android.util.JsonWriter
-
+import androidx.collection.SimpleArrayMap
+import androidx.core.content.res.ResourcesCompat
 import com.anod.car.home.R
 import com.anod.car.home.utils.BitmapTransform
 import info.anodsplace.framework.graphics.PathParser
-
 import java.io.IOException
 
 /**
@@ -145,8 +143,7 @@ class WidgetSettings(prefs: SharedPreferences, private val mResources: Resources
     }
 
     @Throws(IOException::class)
-    fun readJson(reader: JsonReader) {
-        reader.beginObject()
+    fun readJson(reader: JsonReader): Int {
 
         val types = SimpleArrayMap<String, JsonToken>()
         types.put(FIRST_TIME, JsonToken.BOOLEAN)
@@ -174,9 +171,10 @@ class WidgetSettings(prefs: SharedPreferences, private val mResources: Resources
 
         types.put(ADAPTIVE_ICON_STYLE, JsonToken.STRING)
 
-        JsonReaderHelper.readValues(reader, types, this)
-
+        reader.beginObject()
+        val found = JsonReaderHelper.readValues(reader, types, this)
         reader.endObject()
+        return found
     }
 
     companion object {

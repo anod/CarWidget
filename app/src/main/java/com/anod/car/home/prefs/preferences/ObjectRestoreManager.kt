@@ -1,7 +1,7 @@
 package com.anod.car.home.prefs.preferences
 
 import android.content.Context
-import com.anod.car.home.backup.PreferencesBackupManager
+import com.anod.car.home.backup.Backup
 import com.anod.car.home.model.*
 import com.anod.car.home.prefs.model.*
 import info.anodsplace.framework.AppLog
@@ -27,13 +27,13 @@ class ObjectRestoreManager(private val mContext: Context) {
             }
         } catch (e: IOException) {
             AppLog.e(e)
-            return PreferencesBackupManager.ERROR_FILE_READ
+            return Backup.ERROR_FILE_READ
         } catch (e: ClassNotFoundException) {
             AppLog.e(e)
-            return PreferencesBackupManager.ERROR_DESERIALIZE
+            return Backup.ERROR_DESERIALIZE
         } catch (e: ClassCastException) {
             AppLog.e(e)
-            return PreferencesBackupManager.ERROR_DESERIALIZE
+            return Backup.ERROR_DESERIALIZE
         }
 
         val main = prefs!!.main
@@ -49,7 +49,7 @@ class ObjectRestoreManager(private val mContext: Context) {
         val model = WidgetShortcutsModel.init(mContext, appWidgetId)
         restoreShortcuts(model, shortcuts)
 
-        return PreferencesBackupManager.RESULT_DONE
+        return Backup.RESULT_DONE
     }
 
     private fun restoreShortcuts(model: AbstractShortcuts, shortcuts: HashMap<Int, ShortcutInfo>) {
@@ -75,13 +75,13 @@ class ObjectRestoreManager(private val mContext: Context) {
             }
         } catch (e: IOException) {
             AppLog.e(e)
-            return PreferencesBackupManager.ERROR_FILE_READ
+            return Backup.ERROR_FILE_READ
         } catch (e: ClassNotFoundException) {
             AppLog.e(e)
-            return PreferencesBackupManager.ERROR_DESERIALIZE
+            return Backup.ERROR_DESERIALIZE
         } catch (e: ClassCastException) {
             AppLog.e(e)
-            return PreferencesBackupManager.ERROR_DESERIALIZE
+            return Backup.ERROR_DESERIALIZE
         }
 
         //version 1.42
@@ -98,7 +98,7 @@ class ObjectRestoreManager(private val mContext: Context) {
         val shortcuts = inCarBackup!!.notificationShortcuts
         restoreShortcuts(model, shortcuts)
 
-        return PreferencesBackupManager.RESULT_DONE
+        return Backup.RESULT_DONE
     }
 
     companion object {

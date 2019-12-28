@@ -104,7 +104,7 @@
     <string name="notification">Benachrichtigung</string>
     <string name="shortcuts_summary">Sie können bis zu 3 Verknüpfungen in der Statusleiste ablegen</string>
     <string name="icons_theme">Symbol-Thema</string>
-    <string name="not_set">Nicht festgelegt</string>
+    <string name="shortcut_not_set">Nicht festgelegt</string>
     <string name="default_car_dock_app">Standard Autodock-App</string>
     <string name="cardock_btn_1">App-Info öffnen</string>
     <string name="cardock_text1">Um die aktuellen Standard-Anwendung zu löschen:\n1. Standard App-Info öffnen\n2. \"Clear Defaults\" drücken</string>

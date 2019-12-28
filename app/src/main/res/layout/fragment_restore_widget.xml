@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/panel_header_margin"
-    tools:context=".backup.ui.FragmentBackup">
+    tools:context=".backup.legacy.FragmentBackup">
 
     <TextView
         android:id="@android:id/empty"

@@ -9,6 +9,7 @@
         <item name="android:fontFamily">@font/rubik</item>
         <item name="fontFamily">@font/rubik</item>
         <item name="cardBackground">@color/panel_background_grey</item>
+        <item name="android:navigationBarColor">@color/material_bluegray_600</item>
     </style>
 
     <style name="AlertGray" parent="Theme.MaterialComponents.Light.Dialog.Alert">

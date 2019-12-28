@@ -2,6 +2,7 @@ package com.anod.car.home.prefs.model
 
 import android.util.JsonReader
 import android.util.JsonToken
+import androidx.collection.SimpleArrayMap
 import info.anodsplace.framework.AppLog
 import java.io.IOException
 
@@ -12,8 +13,8 @@ import java.io.IOException
 object JsonReaderHelper {
 
     @Throws(IOException::class)
-    fun readValues(reader: JsonReader, types: androidx.collection.SimpleArrayMap<String, JsonToken>, prefs: ChangeableSharedPreferences) {
-
+    fun readValues(reader: JsonReader, types: SimpleArrayMap<String, JsonToken>, prefs: ChangeableSharedPreferences): Int {
+        var found = 0;
         while (reader.hasNext()) {
             val name = reader.nextName()
             if (!types.containsKey(name)) {
@@ -25,9 +26,18 @@ object JsonReaderHelper {
             val isNull = reader.peek() == JsonToken.NULL
             var skipped = false
             when (type) {
-                JsonToken.BOOLEAN -> prefs.putChange(name, reader.nextBoolean())
-                JsonToken.STRING -> prefs.putChange(name, if (isNull) null else reader.nextString())
-                JsonToken.NUMBER -> prefs.putChange(name, if (isNull) null else reader.nextInt())
+                JsonToken.BOOLEAN -> {
+                    prefs.putChange(name, reader.nextBoolean())
+                    found++
+                }
+                JsonToken.STRING -> {
+                    prefs.putChange(name, if (isNull) null else reader.nextString())
+                    found++
+                }
+                JsonToken.NUMBER -> {
+                    prefs.putChange(name, if (isNull) null else reader.nextInt())
+                    found++
+                }
                 else -> {
                     AppLog.e("Unknown type: $type for name: $name")
                     skipped = true
@@ -38,6 +48,6 @@ object JsonReaderHelper {
                 reader.nextNull()
             }
         }
-
+        return found
     }
 }

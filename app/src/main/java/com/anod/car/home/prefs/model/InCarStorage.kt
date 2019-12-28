@@ -2,11 +2,8 @@ package com.anod.car.home.prefs.model
 
 import android.content.Context
 import android.content.SharedPreferences
-
 import com.anod.car.home.model.Shortcut
-
-import java.util.ArrayList
-import java.util.Locale
+import java.util.*
 
 /**
  * @author algavris
@@ -14,7 +11,6 @@ import java.util.Locale
  */
 object InCarStorage {
     const val NOTIFICATION_COMPONENT_NUMBER = 3
-    private const val MODE_FORCE_STATE = "mode-force-state"
     private const val NOTIF_COMPONENT = "notif-component-%d"
     const val PREF_NAME = "incar"
 

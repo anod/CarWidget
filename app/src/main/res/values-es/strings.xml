@@ -104,7 +104,7 @@
     <string name="notification">Notificación</string>
     <string name="shortcuts_summary">Puede poner hasta 3 accesos directos en la barra de estado</string>
     <string name="icons_theme">Tema de iconos</string>
-    <string name="not_set">No ha sido establecido</string>
+    <string name="shortcut_not_set">No ha sido establecido</string>
     <string name="default_car_dock_app">Aplicación predeterminada Car Dock</string>
     <string name="cardock_btn_1">Abrir la información de la aplicación</string>
     <string name="cardock_text1">Para borrar la aplicación actual por defecto:\n1. Abra la información de la aplicación actual\n2. Haga clic en la tecla  \"Borrar configuraciones predeterminadas\"</string>

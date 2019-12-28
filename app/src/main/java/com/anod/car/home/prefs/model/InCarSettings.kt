@@ -2,24 +2,22 @@ package com.anod.car.home.prefs.model
 
 import android.content.ComponentName
 import android.content.SharedPreferences
-import androidx.collection.ArrayMap
-import androidx.collection.SimpleArrayMap
 import android.text.TextUtils
 import android.util.JsonReader
 import android.util.JsonToken
 import android.util.JsonWriter
-
+import androidx.collection.ArrayMap
+import androidx.collection.SimpleArrayMap
 import com.anod.car.home.incar.SamsungDrivingMode
 import com.anod.car.home.incar.ScreenOrientation
 import com.anod.car.home.utils.Utils
-
 import java.io.IOException
 
 /**
  * @author algavris
  * @date 08/04/2016.
  */
-class InCarSettings(mPrefs: SharedPreferences) : ChangeableSharedPreferences(mPrefs), InCarInterface {
+class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPreferences(sharedPreferences), InCarInterface {
 
     override var isInCarEnabled: Boolean
         get() = prefs.getBoolean(INCAR_MODE_ENABLED, false)
@@ -188,8 +186,7 @@ class InCarSettings(mPrefs: SharedPreferences) : ChangeableSharedPreferences(mPr
     }
 
     @Throws(IOException::class)
-    fun readJson(reader: JsonReader) {
-        reader.beginObject()
+    fun readJson(reader: JsonReader): Int {
 
         val types = SimpleArrayMap<String, JsonToken>()
         types.put(INCAR_MODE_ENABLED, JsonToken.BOOLEAN)
@@ -221,9 +218,10 @@ class InCarSettings(mPrefs: SharedPreferences) : ChangeableSharedPreferences(mPr
         types.put(SCREEN_ORIENTATION, JsonToken.STRING)
         types.put(HOTSPOT, JsonToken.BOOLEAN)
 
-        JsonReaderHelper.readValues(reader, types, this)
-
+        reader.beginObject()
+        val found = JsonReaderHelper.readValues(reader, types, this)
         reader.endObject()
+        return found;
     }
 
     companion object {

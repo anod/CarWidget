@@ -104,7 +104,7 @@
     <string name="notification">Notification</string>
     <string name="shortcuts_summary">Vous pouvez placer jusqu\'à 3 raccourcis dans la barre d\'état</string>
     <string name="icons_theme">Thème d\'icônes</string>
-    <string name="not_set">Non défini</string>
+    <string name="shortcut_not_set">Non défini</string>
     <string name="default_car_dock_app">Fonction socle de voiture par défaut</string>
     <string name="cardock_btn_1">Ouvrir l\'application Info</string>
     <string name="cardock_text1">Pour effacer l\'application par défaut actuelle :\n1. Ouvrir l\'application Info par défaut\n2. Cliquer sur le bouton \"Supprimer par défaut\"</string>

@@ -21,10 +21,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
-private class CarWidgetShortcutsPickerViewModel(application: Application) : AndroidViewModel(application) {
+class CarWidgetShortcutsPickerViewModel(application: Application) : AndroidViewModel(application) {
     val result = SingleLiveEvent<Intent?>()
 
-    suspend fun resolveContact(uri: Uri): Intent? = withContext(Dispatchers.IO) {
+    private suspend fun resolveContact(uri: Uri): Intent? = withContext(Dispatchers.IO) {
         return@withContext Intent().resolveDirectCall(uri, getApplication())
     }
 

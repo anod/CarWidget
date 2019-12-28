@@ -104,7 +104,7 @@
     <string name="notification">Notifikationer</string>
     <string name="shortcuts_summary">Du kan placera upp till 3 genvägar i statusfältet</string>
     <string name="icons_theme">Ikontema</string>
-    <string name="not_set">Inte inställd</string>
+    <string name="shortcut_not_set">Inte inställd</string>
     <string name="default_car_dock_app">Standard Bil Dock app</string>
     <string name="cardock_btn_1">Öppna App Info</string>
     <string name="cardock_text1">För att ta bort aktuella standardprogram:\n1. Öppna standard App Info\n2. Klicka på \"Ta bort förinställningar\" knappen</string>

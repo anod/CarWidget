@@ -104,7 +104,7 @@
     <string name="notification">Notifica</string>
     <string name="shortcuts_summary">È possibile inserire fino a 3 scorciatoie sulla barra di stato</string>
     <string name="icons_theme">Tema icone</string>
-    <string name="not_set">Non impostato</string>
+    <string name="shortcut_not_set">Non impostato</string>
     <string name="default_car_dock_app">Applicazione Car Dock predefinita</string>
     <string name="cardock_btn_1">Apri Informazioni applicazione</string>
     <string name="cardock_text1">Per cancellare l\'applicazione predefinita:\n1. Aprire le informazioni sulle applicazioni predefinite\n2. Cliccare sul pulsante \"Cancella predefinite\"</string>

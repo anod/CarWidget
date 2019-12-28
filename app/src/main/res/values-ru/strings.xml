@@ -106,7 +106,7 @@
 	<string name="notification">Уведомление</string>
 	<string name="shortcuts_summary">Вы можете разместить до 3 ярлыков на уведомлении</string>
 	<string name="icons_theme">Тема иконок</string>
-	<string name="not_set">Не установлено</string>
+	<string name="shortcut_not_set">Не установлено</string>
 	<string name="default_car_dock_app">Car Dock app по умолчанию</string>
 	<string name="cardock_btn_1">Открыть \"О приложении\"</string>
 	<string name="cardock_text1">Чтобы очистить текущее приложение запускаемое по умолчанию:\n1. Откройте \"О приложении\"\n2. Нажмите на кнопку \"Удалить настройки по умолчанию\"</string>

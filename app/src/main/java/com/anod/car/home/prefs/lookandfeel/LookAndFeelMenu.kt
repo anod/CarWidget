@@ -12,7 +12,6 @@ import androidx.appcompat.app.AlertDialog
 import com.android.colorpicker.ColorPickerSwatch
 import com.anod.car.home.R
 import com.anod.car.home.app.App
-import com.anod.car.home.backup.ui.FragmentBackup
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.ConfigurationActivity
 import com.anod.car.home.prefs.ConfigurationLook
@@ -126,12 +125,6 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
                     dialog.dismiss()
                     activity.refreshSkinPreview()
                 }.show()
-                return true
-            }
-            R.id.backup -> {
-                val intent = ConfigurationActivity.createFragmentIntent(activity, FragmentBackup::class.java)
-                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                activity.startActivity(intent)
                 return true
             }
             R.id.skin_info -> {

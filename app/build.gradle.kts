@@ -35,8 +35,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc03")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.sqlite:sqlite-ktx:2.0.1")
-
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0-rc03")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.2.0-rc03")
     kapt("androidx.lifecycle:lifecycle-compiler:2.2.0-rc03")
 
     implementation("ch.acra:acra-core:5.3.0")
