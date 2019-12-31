@@ -236,7 +236,7 @@
     <string name="app_preferences">הגדרות היישום</string>
     <string name="title">כותרת</string>
     <string name="info">מידע</string>
-    <string name="notifcation_mode_detector">זיהוי מצב ברכב</string>
+    <string name="notification_mode_detector_title">זיהוי מצב ברכב</string>
     <string name="allow_permissions_brightness">לאפשר לכתוב הגדרות המערכת לשינוי הבהירות</string>
     <string name="allow_permission_overlay">לאפשר תצוגה מעל אפליקציות כדי לשנות כיוון</string>
     <string name="needs_permissions_to_work">צריך הרשאות לעבודה</string>

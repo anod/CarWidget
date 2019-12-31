@@ -1,16 +1,15 @@
 package com.anod.car.home.main
 
-import com.anod.car.home.R
-import com.anod.car.home.app.CarWidgetActivity
-import com.anod.car.home.appwidget.WidgetHelper
-import com.anod.car.home.prefs.LookAndFeelActivity
-
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.commit
+import com.anod.car.home.R
+import com.anod.car.home.app.CarWidgetActivity
+import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.incar.ScreenOrientation
 import com.anod.car.home.prefs.ConfigurationInCar
+import com.anod.car.home.prefs.LookAndFeelActivity
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.utils.*
@@ -32,8 +31,10 @@ open class WidgetsListActivity : CarWidgetActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
+            val openInCarTab = intent?.extras?.getBoolean(extraInCarTab) ?: false
+            bottomNavigation.selectedItemId = if (openInCarTab) R.id.nav_incar else R.id.nav_widgets
             supportFragmentManager.commit {
-                replace(R.id.content, WidgetsListFragment())
+                replace(R.id.content, if (openInCarTab) ConfigurationInCar() else WidgetsListFragment())
             }
         } else {
             wizardShown = savedInstanceState.getBoolean("wizard-shown")
@@ -150,5 +151,6 @@ open class WidgetsListActivity : CarWidgetActivity() {
 
     companion object {
         const val requestPermissionsResult = 1
+        const val extraInCarTab = "EXTRA_INCAR"
     }
 }

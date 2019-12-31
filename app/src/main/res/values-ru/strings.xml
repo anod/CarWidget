@@ -246,7 +246,7 @@
 	<string name="title">Название</string>
 	<string name="info">Информация</string>
 	<string name="allow_permissions_brightness">Резрешите изменять системны настройки для изменения яркости</string>
-	<string name="notifcation_mode_detector">Отслежевание режима \"В Автомобиле\"</string>
+	<string name="notification_mode_detector_title">Отслежевание режима \"В Автомобиле\"</string>
 	<string name="samsung_driving_title">Автомобильный режим Samsung</string>
     <string name="adaptive_icon_style">Адаптивная иконка</string>
 	<string name="answer_error_marshmallow">Авто Виджет: Разрешите доступ к уведомлениям для ответа</string>

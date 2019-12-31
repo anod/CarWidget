@@ -87,6 +87,7 @@
     <string name="restore_done">Restore is done.</string>
     <string name="restore_deserialize_failed">Failed to deserialize backup.</string>
     <string name="failed_to_read_file">Failed to read the file.</string>
+    <string name="backup_unknown_format" tools:ignore="MissingTranslation">Unknown file format. Make sure to restore specific widget</string>
     <string name="pref_auto_answer">Auto Answer</string>
     <string name="pref_auto_answer_summary">Auto answer to incoming calls immediately or with 5 seconds delay. (Experimental)</string>
     <string name="pref_autorun_app_title">App Autorun</string>
@@ -111,7 +112,7 @@
     <string name="welcome">Welcome</string>
     <string name="welcome_text"><![CDATA[<b>Car Widget</b> makes easier and quicker access to phone features when you\'re in the car.]]></string>
     <string name="install_a_widget">Install a widget</string>
-    <string name="install_widget"><![CDATA[Go to <b>home screen</b> &gt; <b>touche & hold</b> to show menu &gt; choose <b>widgets</b> &gt; find <b>Car Widget</b> and put it on available screen.]]></string>
+    <string name="install_widget"><![CDATA[Go to <b>home screen</b> &gt; <b>touch & hold</b> to show menu &gt; choose <b>widgets</b> &gt; find <b>Car Widget</b> and put it on available screen.]]></string>
     <string name="configure_text"><![CDATA[Inside settings of the widget you can define <b>shortcuts</b>, configure its look by changing <b>skin</b> and applying <b>effects</b>]]></string>
     <string name="open_settings_description"><![CDATA[Press <b>Settings</b> button in order to open configuration screen]]></string>
     <string name="incar_mode">InCar mode</string>
@@ -241,7 +242,8 @@
     <string name="app_preferences" tools:ignore="MissingTranslation">App Preferences</string>
     <string name="title" tools:ignore="MissingTranslation">Title</string>
     <string name="info" tools:ignore="MissingTranslation">Info</string>
-    <string name="notifcation_mode_detector" tools:ignore="MissingTranslation">InCar mode detector</string>
+    <string name="notification_mode_detector_title" tools:ignore="MissingTranslation">InCar mode detector.</string>
+    <string name="notification_mode_detector_content" tools:ignore="MissingTranslation">Can be minimized in notification settings</string>
     <string name="allow_permissions_brightness" tools:ignore="MissingTranslation">Allow write system settings to change brightness</string>
     <string name="allow_permission_overlay" tools:ignore="MissingTranslation">Allow app overlay to change orientation</string>
     <string name="needs_permissions_to_work" tools:ignore="MissingTranslation">Needs permissions to work</string>
@@ -263,8 +265,8 @@
     <string name="auto_color" tools:ignore="MissingTranslation">Auto color</string>
     <string name="status" tools:ignore="MissingTranslation">Status</string>
     <string name="incar_trigger_status" tools:ignore="MissingTranslation">InCar triggers status</string>
-    <string name="backup_path">Previously backups were stored at %s</string>
-    <string name="cannot_generate_preview">Cannot generate preview</string>
+    <string name="backup_path" tools:ignore="MissingTranslation">Previously backups were stored at %s</string>
+    <string name="cannot_generate_preview" tools:ignore="MissingTranslation">Cannot generate preview</string>
 
     <array name="adaptive_icon_style_names">
         <item>Default</item>

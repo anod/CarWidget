@@ -48,6 +48,7 @@ object Backup {
             ERROR_DESERIALIZE -> R.string.restore_deserialize_failed
             ERROR_FILE_READ -> R.string.failed_to_read_file
             ERROR_UNEXPECTED -> R.string.unexpected_error
+            ERROR_INCORRECT_FORMAT -> R.string.backup_unknown_format
             else -> R.string.unexpected_error
         }
     }
