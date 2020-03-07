@@ -91,9 +91,6 @@ class AboutFragment : Fragment() {
                     backupInCar.stopProgressAnimation()
                     backupWidget.stopProgressAnimation()
                     Toast.makeText(context, Backup.renderBackupCode(code), Toast.LENGTH_SHORT).show()
-                    if (code == Backup.RESULT_DONE && activity is BackupManager.OnRestore) {
-                        (activity as BackupManager.OnRestore).restoreCompleted()
-                    }
                 }
             }
         }
@@ -104,6 +101,9 @@ class AboutFragment : Fragment() {
                 else -> {
                     restore.stopProgressAnimation()
                     Toast.makeText(context, Backup.renderRestoreCode(code), Toast.LENGTH_SHORT).show()
+                    if (code == Backup.RESULT_DONE && activity is BackupManager.OnRestore) {
+                        (activity as BackupManager.OnRestore).restoreCompleted()
+                    }
                 }
             }
         }
@@ -134,7 +134,7 @@ class AboutFragment : Fragment() {
                 startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                     val uri = FileProvider.getUriForFile(applicationContext, Backup.AUTHORITY, Backup.legacyBackupDir)
                     setDataAndType(uri, "application/json")
-                    putExtra(Intent.EXTRA_TITLE, "widget-${viewModel.appWidgetId}" + Backup.FILE_EXT_JSON)
+                    putExtra(Intent.EXTRA_TITLE, "carwidget-${viewModel.appWidgetId}" + Backup.FILE_EXT_JSON)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri)
                     }
@@ -156,12 +156,24 @@ class AboutFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-        if (requestCode == Backup.requestBackupWidget && resultCode == Activity.RESULT_OK) {
-            resultData?.data?.let { viewModel.backup(Backup.TYPE_MAIN, it) }
-        } else if (requestCode == Backup.requestBackupInCar && resultCode == Activity.RESULT_OK) {
-            resultData?.data?.let { viewModel.backup(Backup.TYPE_INCAR, it) }
-        } else if (requestCode == Backup.requestRestore && resultCode == Activity.RESULT_OK) {
-            resultData?.data?.let { viewModel.restore(it) }
+        if (requestCode == Backup.requestBackupWidget) {
+            if (resultCode == Activity.RESULT_OK) {
+                resultData?.data?.let { viewModel.backup(Backup.TYPE_MAIN, it) }
+            } else {
+                backupWidget.stopProgressAnimation()
+            }
+        } else if (requestCode == Backup.requestBackupInCar) {
+            if (resultCode == Activity.RESULT_OK) {
+                resultData?.data?.let { viewModel.backup(Backup.TYPE_INCAR, it) }
+            } else {
+                backupInCar.stopProgressAnimation()
+            }
+        } else if (requestCode == Backup.requestRestore) {
+            if (resultCode == Activity.RESULT_OK) {
+                resultData?.data?.let { viewModel.restore(it) }
+            } else {
+                restore.stopProgressAnimation()
+            }
         }
     }
 

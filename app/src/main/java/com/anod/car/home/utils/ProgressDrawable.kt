@@ -1,13 +1,14 @@
 package com.anod.car.home.utils
 
 import android.content.Context
+import android.graphics.Color
 import android.view.View
 import android.widget.TextView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 
 fun createProgressDrawable(context: Context) = CircularProgressDrawable(context).apply {
-    //setStyle(CircularProgressDrawable.LARGE)
-    // setColorSchemeColors(Color.WHITE)
+    setStyle(CircularProgressDrawable.DEFAULT)
+    setColorSchemeColors(Color.CYAN)
 
     //bounds definition is required to show drawable correctly
     val size = (centerRadius + strokeWidth).toInt() * 2

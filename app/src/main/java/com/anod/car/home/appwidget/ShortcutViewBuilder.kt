@@ -2,7 +2,6 @@ package com.anod.car.home.appwidget
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.Path
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -84,12 +83,8 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
 
     private fun setIconBackground(icon: Bitmap?, res: Int, views: RemoteViews) {
         val color = backgroundProcessor!!.getColor(prefs!!, icon)
-        if (Color.alpha(color) == 0) {
-            views.setViewVisibility(res, View.GONE)
-        } else {
-            views.setViewVisibility(res, View.VISIBLE)
-            views.setInt(res, "setBackgroundColor", color)
-        }
+        views.setViewVisibility(res, View.VISIBLE)
+        views.setInt(res, "setBackgroundColor", color)
     }
 
     private fun setNoShortcut(res: Int, resText: Int, views: RemoteViews, cellId: Int,

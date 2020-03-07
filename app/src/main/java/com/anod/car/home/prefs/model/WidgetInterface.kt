@@ -11,7 +11,7 @@ interface WidgetInterface {
     var isSettingsTransparent: Boolean
     var isIncarTransparent: Boolean
     var skin: String
-    var tileColor: Int?
+    var tileColor: Int? // nullable because old backups can have null value
     var isIconsMono: Boolean
     var iconsColor: Int?
     val iconsScale: String

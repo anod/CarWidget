@@ -12,6 +12,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.viewpager.widget.ViewPager
 import com.anod.car.home.R
@@ -144,7 +145,8 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         return when (itemId) {
             R.id.nav_widget -> {
                 invalidateOptionsMenu()
-                content.visibility = View.GONE
+                gallery.isVisible = true
+                content.isVisible = false
                 for (i in 0 until supportFragmentManager.backStackEntryCount) {
                     supportFragmentManager.popBackStack()
                 }
@@ -152,7 +154,8 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
             }
             R.id.nav_info -> {
                 invalidateOptionsMenu()
-                content.visibility = View.VISIBLE
+                gallery.isVisible = false
+                content.isVisible = true
                 supportFragmentManager.commit {
                     replace(R.id.content, AboutFragment().apply {
                         arguments = bundleOf(AppWidgetManager.EXTRA_APPWIDGET_ID to appWidgetId)
@@ -162,7 +165,8 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
             }
             R.id.nav_incar -> {
                 invalidateOptionsMenu()
-                content.visibility = View.VISIBLE
+                gallery.isVisible = false
+                content.isVisible = true
                 supportFragmentManager.commit {
                     replace(R.id.content, ConfigurationInCar())
                 }

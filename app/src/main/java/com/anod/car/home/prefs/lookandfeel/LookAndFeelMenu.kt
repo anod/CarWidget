@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -151,7 +152,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
             if (activity.currentSkinItem.value == WidgetInterface.SKIN_WINDOWS7) {
                 val prefs = WidgetStorage.load(activity, appWidgetId)
                 it.subMenu.findItem(R.id.palette_background).isChecked = prefs.paletteBackground
-                if (prefs.paletteBackground) {
+                if (prefs.paletteBackground || Color.alpha(prefs.tileColor!!) == 0) {
                     it.icon = activity.getDrawable(R.drawable.ic_format_color_fill_black_24dp)
                 } else {
                     val size = activity.resources.getDimension(R.dimen.color_preview_size).toInt()

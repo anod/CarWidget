@@ -29,11 +29,13 @@ open class Provider : AppWidgetProvider() {
      */
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         super.onDeleted(context, appWidgetIds)
+        Log.e("CarWidget", "onDeleted: ${appWidgetIds.joinToString(",")}")
         // Drop the settings if the widget is deleted
         WidgetStorage.dropWidgetSettings(context, appWidgetIds)
     }
 
     override fun onDisabled(context: Context) {
+        Log.e("CarWidget", "onDisabled")
         // Launch over to service so it can perform update
         val updateIntent = Intent(context, UpdateWidgetJob::class.java)
         context.stopService(updateIntent)
@@ -50,7 +52,7 @@ open class Provider : AppWidgetProvider() {
     override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager,
                                            appWidgetId: Int, newOptions: Bundle) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
-
+        Log.e("CarWidget", "onAppWidgetOptionsChanged: ${appWidgetId}")
         val maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, -1)
 
         val myOptions = appWidgetManager.getAppWidgetOptions(appWidgetId)
@@ -66,6 +68,7 @@ open class Provider : AppWidgetProvider() {
     companion object {
 
         fun requestUpdate(context: Context, appWidgetIds: IntArray) {
+            Log.e("CarWidget", "requestUpdate: ${appWidgetIds.joinToString(",")}")
             if (appWidgetIds.isEmpty()) {
                 val appWidgetManager = App.provide(context).appWidgetManager
                 val thisAppWidget = getComponentName(context)
@@ -81,6 +84,7 @@ open class Provider : AppWidgetProvider() {
                 AppLog.w("appWidgetIds is empty, skipp[ing update")
                 return
             }
+            Log.e("CarWidget", "enqueue: ${appWidgetIds.joinToString(",")}")
             UpdateWidgetJob.enqueue(context, appWidgetIds)
         }
 
