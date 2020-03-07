@@ -65,7 +65,6 @@ open class WidgetsListActivity : CarWidgetActivity() {
             }
         }
 
-
         if (!wizardShown) {
             if (version.isFree && Utils.isProInstalled(this)) {
                 if (!proDialogShown) {

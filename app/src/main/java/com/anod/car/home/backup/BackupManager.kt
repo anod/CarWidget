@@ -20,6 +20,10 @@ import java.io.*
 
 class BackupManager(private val context: Context) {
 
+    interface OnRestore {
+        fun restoreCompleted()
+    }
+
     suspend fun backup(type: Int, appWidgetId: Int, uri: Uri): Int = withContext(Dispatchers.IO) {
         if (type == Backup.TYPE_INCAR) {
             return@withContext doBackupInCarUri(uri)

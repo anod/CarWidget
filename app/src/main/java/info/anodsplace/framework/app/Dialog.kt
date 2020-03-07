@@ -2,13 +2,13 @@ package info.anodsplace.framework.app
 
 import android.content.Context
 import android.content.DialogInterface
+import android.view.LayoutInflater
+import android.view.View
 import androidx.annotation.ArrayRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AlertDialog
-import android.view.LayoutInflater
-import android.view.View
 
 abstract class BaseDialog(val context: Context,
                           @StyleRes private val themeResId: Int,
@@ -72,7 +72,7 @@ class DialogItems(context: Context,
                   @StyleRes themeResId: Int,
                   @StringRes titleRes: Int,
                   @ArrayRes private val itemsRes: Int,
-                  val listener: (dialog: DialogInterface, which: Int) -> Unit)
+                  private val listener: (dialog: DialogInterface, which: Int) -> Unit)
     : BaseDialog(context, themeResId, titleRes){
 
     override fun apply(builder: AlertDialog.Builder) {
@@ -85,7 +85,7 @@ class DialogSingleChoice(context: Context,
                          @StringRes titleRes: Int,
                          @ArrayRes private val itemsRes: Int,
                          private val checkedItem: Int,
-                         val listener: (dialog: DialogInterface, which: Int) -> Unit)
+                         private val listener: (dialog: DialogInterface, which: Int) -> Unit)
     : BaseDialog(context, themeResId, titleRes){
 
     constructor(context: Context, @StyleRes themeResId: Int, itemsRes: Int, checkedItem: Int, listener: (dialog: DialogInterface, which: Int) -> Unit)

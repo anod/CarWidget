@@ -50,7 +50,7 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (isAppWidgetIdRequired) {
-            appWidgetId = Utils.readAppWidgetId(savedInstanceState, activity!!.intent)
+            appWidgetId = Utils.readAppWidgetId(savedInstanceState, requireActivity().intent)
         }
         super.onCreate(savedInstanceState)
         if (optionsMenuResource > 0) {
@@ -72,10 +72,10 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
             if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
                 val defaultResultValue = Intent()
                 defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                activity!!.setResult(Activity.RESULT_OK, defaultResultValue)
+                requireActivity().setResult(Activity.RESULT_OK, defaultResultValue)
             } else {
                 AppLog.w("AppWidgetId required")
-                activity!!.finish()
+                requireActivity().finish()
             }
         }
 
@@ -111,7 +111,7 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
 
     private fun startPreferencePanel(fragmentClass: String, titleText: CharSequence?,
                                      resultTo: Fragment?, resultRequestCode: Int) {
-        val f = parentFragmentManager.fragmentFactory.instantiate(context!!.classLoader, fragmentClass)
+        val f = parentFragmentManager.fragmentFactory.instantiate(requireContext().classLoader, fragmentClass)
         f.arguments = Bundle.EMPTY
         if (resultTo != null) {
             f.setTargetFragment(resultTo, resultRequestCode)

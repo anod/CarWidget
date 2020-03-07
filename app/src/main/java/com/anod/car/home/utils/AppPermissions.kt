@@ -104,7 +104,7 @@ object AppPermissions {
 
     @TargetApi(Build.VERSION_CODES.M)
     fun requestDrawOverlay(fragment: Fragment, requestCode: Int) {
-        val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + fragment.context!!.packageName))
+        val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + fragment.requireContext().packageName))
         fragment.startActivityForResult(intent, requestCode)
     }
 
@@ -116,7 +116,7 @@ object AppPermissions {
 
     @TargetApi(Build.VERSION_CODES.M)
     fun requestWriteSettings(fragment: Fragment, requestCode: Int) {
-        val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + fragment.context!!.packageName))
+        val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + fragment.requireContext().packageName))
         fragment.startActivityForResult(intent, requestCode)
     }
 

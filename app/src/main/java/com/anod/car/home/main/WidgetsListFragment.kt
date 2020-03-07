@@ -20,14 +20,14 @@ import kotlinx.android.synthetic.main.fragment_widgets_list.*
 
 class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
 
-    private val adapter: WidgetsListAdapter by lazy { WidgetsListAdapter(activity!!, this) }
+    private val adapter: WidgetsListAdapter by lazy { WidgetsListAdapter(requireContext(), this) }
     private var appWidgetIds: IntArray = intArrayOf()
-    private val version: Version by lazy { Version(activity!!) }
+    private val version: Version by lazy { Version(requireContext()) }
     private val viewModel: WidgetsListViewModel by activityViewModels()
 
     override fun onResume() {
         super.onResume()
-        appWidgetIds = WidgetHelper.getAllWidgetIds(activity!!)
+        appWidgetIds = WidgetHelper.getAllWidgetIds(requireContext())
         viewModel.loadList()
     }
 
@@ -52,7 +52,7 @@ class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
         list.adapter = adapter
 
         inCarView.setOnClickListener {
-            val status = InCarStatus(appWidgetIds.size, version, activity!!)
+            val status = InCarStatus(appWidgetIds.size, version, requireContext())
             if (status.isEnabled) {
                 when {
                     version.isFreeAndTrialExpired -> startActivity(Intent().forProVersion())
@@ -65,7 +65,7 @@ class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
                 }
             } else {
                 val intent = ConfigurationActivity
-                        .createFragmentIntent(activity!!, ConfigurationInCar::class.java)
+                        .createFragmentIntent(requireActivity(), ConfigurationInCar::class.java)
                 startActivity(intent)
             }
         }
@@ -90,8 +90,8 @@ class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
     }
 
     private fun updateInCarHeader(cardView: androidx.cardview.widget.CardView) {
-        val status = InCarStatus(appWidgetIds.size, version, activity!!)
-        val active = activity!!.getString(status.resId)
+        val status = InCarStatus(appWidgetIds.size, version, requireContext())
+        val active = getString(status.resId)
 
         val incarTitleView = cardView.findViewById<View>(R.id.incarTitle) as TextView
         incarTitleView.text = getString(R.string.pref_incar_mode_title) + " - " + active

@@ -43,7 +43,7 @@ class SkinPreviewFragment : Fragment(), View.OnLongClickListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        position = arguments!!.getInt(ARG_POSITION)
+        position = requireArguments().getInt(ARG_POSITION)
         lookAndFeelActivity = context as LookAndFeelActivity?
     }
 

@@ -18,7 +18,7 @@ import com.anod.car.home.utils.AppPermissions
 import com.anod.car.home.utils.WriteSettings
 
 class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
-    private val prefs: InCarSettings by lazy { InCarStorage.load(activity!!) }
+    private val prefs: InCarSettings by lazy { InCarStorage.load(requireActivity()) }
 
     override val isAppWidgetIdRequired: Boolean
         get() = false
@@ -57,7 +57,7 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
         } else {
             samDrivingPref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
-                    if (!AppPermissions.isGranted(context!!, WriteSettings)) {
+                    if (!AppPermissions.isGranted(requireContext(), WriteSettings)) {
                         Toast.makeText(context, R.string.allow_permissions_samsung_mode, Toast.LENGTH_LONG).show()
                         AppPermissions.requestWriteSettings(this, requestWriteSettings)
                     }
@@ -109,7 +109,7 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
             value = AUTORUN_APP_DISABLED
         } else {
             // get name
-            val pm = activity!!.packageManager
+            val pm = requireActivity().packageManager
             val resolveInfo = pm.resolveActivity(data, 0)
             title = if (resolveInfo != null) {
                 resolveInfo.activityInfo.loadLabel(pm) as String

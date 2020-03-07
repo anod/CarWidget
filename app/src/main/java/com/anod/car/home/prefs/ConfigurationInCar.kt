@@ -36,29 +36,29 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
     private val broadcastServiceSwitchListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         if (serviceRequiredKeys.contains(key) && context != null) {
-            val incar = InCarStorage.load(context!!)
+            val incar = InCarStorage.load(requireContext())
             if (incar.isInCarEnabled && BroadcastService.isServiceRequired(incar)) {
-                BroadcastService.startService(context!!)
+                BroadcastService.startService(requireContext())
             } else {
-                BroadcastService.stopService(context!!)
+                BroadcastService.stopService(requireContext())
             }
         }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val sharedPrefs = InCarStorage.getSharedPreferences(activity!!)
+        val sharedPrefs = InCarStorage.getSharedPreferences(requireActivity())
         sharedPrefs.registerOnSharedPreferenceChangeListener(broadcastServiceSwitchListener)
     }
 
     override fun onDetach() {
         super.onDetach()
-        val sharedPrefs = InCarStorage.getSharedPreferences(activity!!)
+        val sharedPrefs = InCarStorage.getSharedPreferences(requireActivity())
         sharedPrefs.unregisterOnSharedPreferenceChangeListener(broadcastServiceSwitchListener)
     }
 
     override fun onCreateImpl(savedInstanceState: Bundle?) {
-        val version = Version(activity!!)
+        val version = Version(requireActivity())
 
         initInCar()
         if (version.isFree) {
@@ -68,11 +68,11 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     }
 
     private fun createTrialDialog(): Dialog {
-        return if (Utils.isProInstalled(activity!!)) {
-            TrialDialogs.buildProInstalledDialog(activity!!)
+        return if (Utils.isProInstalled(requireActivity())) {
+            TrialDialogs.buildProInstalledDialog(requireActivity())
         } else {
             trialMessageShown = true
-            TrialDialogs.buildTrialDialog(trialsLeft, activity!!)
+            TrialDialogs.buildTrialDialog(trialsLeft, requireActivity())
         }
     }
 
@@ -83,11 +83,11 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     }
 
     private fun initInCar() {
-        val incar = InCarStorage.load(activity!!)
+        val incar = InCarStorage.load(requireActivity())
 
         val incarSwitch: SwitchPreferenceCompat = findPreference(InCarSettings.INCAR_MODE_ENABLED)!!
 
-        val allWidgetIds = WidgetHelper.getAllWidgetIds(activity!!)
+        val allWidgetIds = WidgetHelper.getAllWidgetIds(requireActivity())
         if (allWidgetIds.isEmpty()) {
             incarSwitch.isEnabled = false
             incarSwitch.setSummary(R.string.please_add_widget)
@@ -98,9 +98,9 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
         incarSwitch.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (newValue as Boolean) {
-                BroadcastService.startService(activity!!)
+                BroadcastService.startService(requireActivity())
             } else {
-                BroadcastService.stopService(activity!!)
+                BroadcastService.stopService(requireActivity())
             }
             true
         }
@@ -122,7 +122,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (newValue != InCarInterface.AUTOANSWER_DISABLED)
             {
-                if (!AppPermissions.isGranted(context!!, AnswerPhoneCalls)) {
+                if (!AppPermissions.isGranted(requireContext(), AnswerPhoneCalls)) {
                     Toast.makeText(context, R.string.allow_answer_phone_calls, Toast.LENGTH_LONG).show()
                     AppPermissions.requestAnswerPhoneCalls(this, requestAnswerPhone)
                 }
@@ -136,7 +136,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (newValue != InCarInterface.BRIGHTNESS_DISABLED)
             {
-                if (!AppPermissions.isGranted(context!!, WriteSettings)) {
+                if (!AppPermissions.isGranted(requireContext(), WriteSettings)) {
                     Toast.makeText(context, R.string.allow_permissions_brightness, Toast.LENGTH_LONG).show()
                     AppPermissions.requestWriteSettings(this, requestWriteSettings)
                 }
@@ -150,7 +150,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (newValue != ScreenOrientation.DISABLED.toString())
             {
-                if (!AppPermissions.isGranted(context!!, CanDrawOverlay)) {
+                if (!AppPermissions.isGranted(requireContext(), CanDrawOverlay)) {
                     Toast.makeText(context, R.string.allow_permission_overlay, Toast.LENGTH_LONG).show()
                     AppPermissions.requestDrawOverlay(this, requestDrawOverlay)
                 }
@@ -196,7 +196,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         val handler = Handler()
 
         Thread(Runnable {
-            val status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity!!)
+            val status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireActivity())
             val summary = renderPlayServiceStatus(status)
             handler.post { updateActivityRecognition(status, summary, pref) }
         }).start()

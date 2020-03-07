@@ -43,7 +43,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
 
         menuTileColor = menu.findItem(R.id.tile_color)
         menuInfo = menu.findItem(R.id.skin_info)
-        menu.findItem(R.id.icons_mono).isChecked = activity.prefs.isIconsMono
+        menu.findItem(R.id.icons_mono).isChecked = activity.prefs!!.isIconsMono
         initialized = true
         refresh()
     }
@@ -90,7 +90,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
                 return true
             }
             R.id.bg_color -> {
-                val value = activity.prefs.backgroundColor
+                val value = activity.prefs!!.backgroundColor
                 val d = CarHomeColorPickerDialog.newInstance(value, true, activity)
                 d.listener = ColorPickerSwatch.OnColorSelectedListener { color ->
                     prefs.backgroundColor = color
@@ -107,7 +107,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
                 return true
             }
             R.id.icons_mono -> {
-                activity.prefs.isIconsMono = !menuItem.isChecked
+                activity.prefs!!.isIconsMono = !menuItem.isChecked
                 activity.persistPrefs()
                 menuItem.isChecked = !menuItem.isChecked
                 activity.refreshSkinPreview()
@@ -115,12 +115,12 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
             }
             R.id.icons_scale -> {
                 val values = activity.resources.getStringArray(R.array.icon_scale_values)
-                val scale = activity.prefs.iconsScale
+                val scale = activity.prefs!!.iconsScale
                 val idx = values.indexOf(scale)
                 val style = App.theme(activity).alert
                 DialogSingleChoice(activity, style, R.string.pref_scale_icon, R.array.icon_scale_titles, idx) {
                     dialog, which ->
-                    activity.prefs.setIconsScaleString(values[which])
+                    activity.prefs!!.setIconsScaleString(values[which])
                     activity.persistPrefs()
                     dialog.dismiss()
                     activity.refreshSkinPreview()

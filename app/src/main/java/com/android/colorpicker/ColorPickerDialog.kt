@@ -16,15 +16,14 @@
 
 package com.android.colorpicker
 
-import com.android.colorpicker.ColorPickerSwatch.OnColorSelectedListener
-import com.anod.car.home.R
-
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
-import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
+import androidx.fragment.app.DialogFragment
+import com.android.colorpicker.ColorPickerSwatch.OnColorSelectedListener
+import com.anod.car.home.R
 
 /**
  * A dialog which takes in as input an array of colors and creates a palette allowing the user to
@@ -38,12 +37,12 @@ open class ColorPickerDialog : DialogFragment(), OnColorSelectedListener {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val activity = activity
 
-        val size = arguments!!.getInt(KEY_SIZE)
-        val columns = arguments!!.getInt(KEY_COLUMNS)
-        val colors = arguments!!.getIntArray(KEY_COLORS)
-        selectedColor = arguments!!.getInt(KEY_SELECTED_COLOR)
-        val tileResId = arguments!!.getInt(KEY_TITLE_ID, R.string.color_picker_default_title)
-        val theme = arguments!!.getInt(KEY_THEME)
+        val size = requireArguments().getInt(KEY_SIZE)
+        val columns = requireArguments().getInt(KEY_COLUMNS)
+        val colors = requireArguments().getIntArray(KEY_COLORS)
+        selectedColor = requireArguments().getInt(KEY_SELECTED_COLOR)
+        val tileResId = requireArguments().getInt(KEY_TITLE_ID, R.string.color_picker_default_title)
+        val theme = requireArguments().getInt(KEY_THEME)
 
         val view = LayoutInflater.from(getActivity()).inflate(R.layout.color_picker_dialog, null)
         palette = view.findViewById(R.id.color_picker)
@@ -51,7 +50,7 @@ open class ColorPickerDialog : DialogFragment(), OnColorSelectedListener {
 
         palette!!.drawPalette(colors, selectedColor)
 
-        return AlertDialog.Builder(activity!!, theme)
+        return AlertDialog.Builder(requireActivity(), theme)
                 .setTitle(tileResId)
                 .setView(view)
                 .create()
@@ -69,7 +68,7 @@ open class ColorPickerDialog : DialogFragment(), OnColorSelectedListener {
 
         if (color != selectedColor) {
             selectedColor = color
-            val colors = arguments!!.getIntArray(KEY_COLORS)
+            val colors = requireArguments().getIntArray(KEY_COLORS)
             palette!!.drawPalette(colors, selectedColor)
         }
 

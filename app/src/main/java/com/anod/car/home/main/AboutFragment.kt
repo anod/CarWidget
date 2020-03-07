@@ -26,6 +26,7 @@ import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.backup.Backup
 import com.anod.car.home.backup.Backup.LEGACY_PATH
+import com.anod.car.home.backup.BackupManager
 import com.anod.car.home.prefs.MusicAppSettingsActivity
 import com.anod.car.home.prefs.model.AppTheme
 import com.anod.car.home.utils.*
@@ -90,6 +91,9 @@ class AboutFragment : Fragment() {
                     backupInCar.stopProgressAnimation()
                     backupWidget.stopProgressAnimation()
                     Toast.makeText(context, Backup.renderBackupCode(code), Toast.LENGTH_SHORT).show()
+                    if (code == Backup.RESULT_DONE && activity is BackupManager.OnRestore) {
+                        (activity as BackupManager.OnRestore).restoreCompleted()
+                    }
                 }
             }
         }
@@ -198,14 +202,14 @@ class AboutFragment : Fragment() {
     }
 
     private fun renderMusicApp(): String {
-        val musicAppCmp = App.provide(context!!).appSettings.musicApp
+        val musicAppCmp = App.provide(requireContext()).appSettings.musicApp
         return if (musicAppCmp == null) {
-            context!!.getString(R.string.show_choice)
+            getString(R.string.show_choice)
         } else {
             try {
-                val info = App.provide(context!!).packageManager
+                val info = App.provide(requireContext()).packageManager
                         .getApplicationInfo(musicAppCmp.packageName, 0)
-                info.loadLabel(App.provide(context!!).packageManager).toString()
+                info.loadLabel(App.provide(requireContext()).packageManager).toString()
             } catch (e: PackageManager.NameNotFoundException) {
                 AppLog.e(e)
                 musicAppCmp.flattenToShortString()
@@ -215,12 +219,12 @@ class AboutFragment : Fragment() {
     }
 
     private fun renderVersion(): String {
-        val versionText = context!!.getString(R.string.version_title)
-        val appName = context!!.getString(R.string.app_name)
+        val versionText = getString(R.string.version_title)
+        val appName = getString(R.string.app_name)
         var versionName = ""
         try {
-            versionName = App.provide(context!!).packageManager
-                    .getPackageInfo(context!!.packageName, 0).versionName
+            versionName = App.provide(requireContext()).packageManager
+                    .getPackageInfo(requireContext().packageName, 0).versionName
         } catch (e: PackageManager.NameNotFoundException) {
             AppLog.e(e)
         }

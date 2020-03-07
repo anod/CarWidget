@@ -63,5 +63,5 @@ class ApplicationContext(context: Context) {
 }
 
 fun Fragment.applicationContext(): ApplicationContext {
-    return ApplicationContext(this.activity!!)
+    return ApplicationContext(this.requireActivity())
 }

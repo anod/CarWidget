@@ -8,15 +8,13 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import com.android.colorpicker.ColorPickerSwatch
-
 import com.anod.car.home.R
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog
 import com.anod.car.home.prefs.model.WidgetInterface
 import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.prefs.views.SeekBarDialogPreference
-
-import java.util.Locale
+import java.util.*
 
 class ConfigurationLook : ConfigurationPreferenceFragment() {
 
@@ -32,7 +30,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
         get() = String.format(Locale.US, WidgetStorage.PREF_NAME, appWidgetId)
 
     override fun onCreateImpl(savedInstanceState: Bundle?) {
-        val prefs = WidgetStorage.load(context!!, appWidgetId)
+        val prefs = WidgetStorage.load(requireContext(), appWidgetId)
 
         initIcon(prefs)
         initFont(prefs)
@@ -86,7 +84,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
         icnColor.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val icnTintColor = prefs.iconsColor
             val value = icnTintColor ?: Color.WHITE
-            val d = CarHomeColorPickerDialog.newInstance(value, false, activity!!)
+            val d = CarHomeColorPickerDialog.newInstance(value, false, requireActivity())
             d.listener = ColorPickerSwatch.OnColorSelectedListener { color ->
                 prefs.iconsColor = color
                 prefs.apply()
@@ -111,7 +109,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
         val fontColor: Preference = requirePreference(WidgetSettings.FONT_COLOR)
         fontColor.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val value = prefs.fontColor
-            val d = CarHomeColorPickerDialog.newInstance(value, true, activity!!)
+            val d = CarHomeColorPickerDialog.newInstance(value, true, requireActivity())
             d.listener = ColorPickerSwatch.OnColorSelectedListener{ color ->
                 prefs.fontColor = color
                 prefs.apply()

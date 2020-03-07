@@ -52,26 +52,26 @@ class CarHomeColorPickerDialog : ColorPickerDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        alphaSliderVisible = arguments!!.getBoolean(KEY_ALPHA)
-        val selectedColor = arguments!!.getInt(KEY_SELECTED_COLOR)
+        alphaSliderVisible = requireArguments().getBoolean(KEY_ALPHA)
+        val selectedColor = requireArguments().getInt(KEY_SELECTED_COLOR)
         this.selectedColor = alphaColor(ALPHA_OPAQUE, selectedColor)
 
         setStyle(STYLE_NO_FRAME, 0)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return Dialog(activity!!, App.theme(activity!!).dialog)
+        return Dialog(requireActivity(), App.theme(requireActivity()).dialog)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val size = arguments!!.getInt(KEY_SIZE)
-        val columns = arguments!!.getInt(KEY_COLUMNS)
-        colors = arguments!!.getIntArray(KEY_COLORS)
-        val tileResId = arguments!!.getInt(KEY_TITLE_ID, R.string.color_dialog_title)
-        val theme = arguments!!.getInt(KEY_THEME)
+        val size = requireArguments().getInt(KEY_SIZE)
+        val columns = requireArguments().getInt(KEY_COLUMNS)
+        colors = requireArguments().getIntArray(KEY_COLORS)
+        val tileResId = requireArguments().getInt(KEY_TITLE_ID, R.string.color_dialog_title)
+        val theme = requireArguments().getInt(KEY_THEME)
         selectedAlpha = Color.alpha(selectedColor)
 
-        context!!.theme.applyStyle(theme, true)
+        requireContext().theme.applyStyle(theme, true)
         val view = inflater.inflate(R.layout.color_picker_dialog, container, false)
 
         val toolbar = view.findViewById<Toolbar>(R.id.color_dialog_toolbar)

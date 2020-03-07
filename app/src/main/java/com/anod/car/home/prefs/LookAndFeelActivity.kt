@@ -19,6 +19,7 @@ import com.anod.car.home.app.App
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.appwidget.WidgetViewBuilder
+import com.anod.car.home.backup.BackupManager
 import com.anod.car.home.main.AboutFragment
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.drag.ShortcutDragListener
@@ -34,9 +35,10 @@ import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogCustom
 import kotlinx.android.synthetic.main.activity_lookandfeel.*
 
-class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory, ShortcutDragListener.DropCallback {
+class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory, ShortcutDragListener.DropCallback, BackupManager.OnRestore {
 
-    private var currentPage: Int = 0
+    private val currentPage: Int
+        get() = gallery.currentItem
 
     override val appThemeRes: Int
         get() = theme.transparentResource
@@ -45,8 +47,8 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         private set
 
     private val previewInitialized = booleanArrayOf(false, false, false, false, false, false)
-    val prefs: WidgetSettings by lazy { WidgetStorage.load(this, appWidgetId) }
-    private val skinList: SkinList by lazy { SkinList(prefs.skin, isKeyguard, this) }
+    var prefs: WidgetSettings? = null
+    private var skinList: SkinList? = null
     private var bitmapMemoryCache: BitmapLruCache? = null
     private val lookAndFeelMenu: LookAndFeelMenu by lazy { LookAndFeelMenu(this, model) }
     private val model: WidgetShortcutsModel by lazy { WidgetShortcutsModel(App.get(this), appWidgetId) }
@@ -112,12 +114,13 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         }
         setContentView(R.layout.activity_lookandfeel)
 
-        currentPage = skinList.selectedSkinPosition
+        prefs = WidgetStorage.load(this, appWidgetId)
+        skinList = SkinList(prefs!!.skin, isKeyguard, this)
         dragListener = ShortcutDragListener(dragDeleteBg, this)
 
-        adapter = SkinPagerAdapter(this, skinList.count, supportFragmentManager)
+        adapter = SkinPagerAdapter(this, skinList!!.count, supportFragmentManager)
         gallery.adapter = adapter
-        gallery.currentItem = currentPage
+        gallery.currentItem = skinList!!.selectedSkinPosition
         gallery.addOnPageChangeListener(this)
 
         tabs.setupWithViewPager(gallery)
@@ -207,16 +210,14 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     }
 
     fun persistPrefs() {
-        prefs.apply()
+        prefs!!.apply()
     }
 
     fun getSkinItem(position: Int): SkinList.Item {
-        return skinList[position]
+        return skinList!![position]
     }
 
     override fun onPageSelected(position: Int) {
-        currentPage = position
-
         if (!previewInitialized[position]) {
             loader.visibility = View.VISIBLE
         }
@@ -285,5 +286,15 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     override fun onBackPressed() {
         beforeFinish()
         super.onBackPressed()
+    }
+
+    override fun restoreCompleted() {
+        prefs = WidgetStorage.load(this, appWidgetId)
+        skinList = SkinList(prefs!!.skin, isKeyguard, this).also {
+            gallery.currentItem = it.selectedSkinPosition
+        }
+        model.init()
+        bitmapMemoryCache?.evictAll()
+        refreshSkinPreview()
     }
 }

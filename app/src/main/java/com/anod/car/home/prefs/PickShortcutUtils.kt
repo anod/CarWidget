@@ -15,7 +15,7 @@ class PickShortcutUtils(private val configurationFragment: ConfigurationPreferen
                         private val model: Shortcuts,
                         private val preferenceKey: PreferenceKey) : ShortcutPicker.Handler {
 
-    private val picker: ShortcutPicker = ShortcutPicker(model, this, configurationFragment.context!!)
+    private val picker: ShortcutPicker = ShortcutPicker(model, this, configurationFragment.requireContext())
 
     override fun startActivityForResult(intent: Intent, requestCode: Int) {
         configurationFragment.startActivityForResult(intent, requestCode)
@@ -76,7 +76,7 @@ class PickShortcutUtils(private val configurationFragment: ConfigurationPreferen
     fun refreshPreference(pref: ShortcutPreference) {
         val cellId = pref.shortcutPosition
         val info = model.get(cellId)
-        pref.appTheme = App.theme(configurationFragment.context!!).themeIdx
+        pref.appTheme = App.theme(configurationFragment.requireContext()).themeIdx
         if (info == null) {
             pref.setTitle(R.string.set_shortcut)
             pref.showAddIcon = true
