@@ -52,9 +52,9 @@ android {
     defaultConfig {
         minSdkVersion(21)
         targetSdkVersion(29)
-        versionCode = 20600
-        versionName = "2.0.6"
-        vectorDrawables.generatedDensities("hdpi","xxhdpi")
+        versionCode = 21000
+        versionName = "2.1.0"
+        vectorDrawables.generatedDensities("hdpi", "xxhdpi")
     }
 
     signingConfigs {
