@@ -16,6 +16,7 @@
 		android:maxLines="2"
 		android:minHeight="48dip"
 		android:text="@android:string/cancel"
+		android:layout_margin="4dp"
 		android:textSize="14sp" />
 
 	<Button
@@ -28,6 +29,7 @@
 		android:maxLines="2"
 		android:minHeight="48dip"
 		android:text="@string/download"
+		android:layout_margin="4dp"
 		android:textSize="14sp" />
 
 </LinearLayout>

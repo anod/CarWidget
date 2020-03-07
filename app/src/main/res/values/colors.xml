@@ -16,8 +16,6 @@
 	<color name="panel_bg_dark_focused">#616161</color>
 	<color name="panel_bg_dark_pressed">#424242</color>
 
-	<color name="activity_bg">#FFfafafa</color>
-
 	<color name="step_pager_previous_tab_color">#4490a4ae</color>
 	<color name="step_pager_selected_tab_color">#ff37474f</color>
 	<color name="step_pager_selected_last_tab_color">#5b5b5b</color>
@@ -29,11 +27,32 @@
 	<color name="bright_foreground_disabled_grey">#bdbdbd</color>
 
 	<color name="material_bluegray_600">#546E7A</color>
-    <color name="material_bluegray_800">#37474f</color>
-    <color name="material_bluegray_300">#90a4ae</color>
+	<color name="material_bluegray_800">#37474f</color>
+	<color name="material_bluegray_300">#90a4ae</color>
 	<color name="material_bluegray_100">#FFBBDEFB</color>
 	<color name="material_grey_400">#BDBDBD</color>
 
-	<color name="secondaryColor">#212121</color>
-	<color name="secondaryDarkColor">#000000</color>
+	<!--colorPrimary colors map to components and elements, such as app bars and buttons. -->
+	<!--colorSecondary colors are most often used as accents on components, such as FABs and -->
+	<!--selection controls.-->
+	<color name="color_primary">@color/material_bluegray_600</color>
+	<color name="color_primary_variant">@color/material_bluegray_800</color>
+	<color name="color_secondary">@color/material_bluegray_300</color>
+	<color name="color_secondary_variant">@color/material_bluegray_100</color>
+
+	<!--colorBackground appears behind scrollable content and is used for the default window-->
+	<!--background. colorSurface is mapped to the surface of components such as cards, sheets-->
+	<!--and menus. colorError is used to indicate an error state for components such as-->
+	<!--text fields.-->
+	<color name="color_background">#ffffff</color>
+	<color name="color_surface">#546E7A</color>
+	<color name="color_error">#b00020</color>
+
+	<!--"On" colors define how text, icons and strokes are colored in relation to the surface-->
+	<!--on which they appear.-->
+	<color name="color_on_primary">#ffffff</color>
+	<color name="color_on_secondary">#000000</color>
+	<color name="color_on_background">#000000</color>
+	<color name="color_on_surface">#000000</color>
+	<color name="color_on_error">#ffffff</color>
 </resources>

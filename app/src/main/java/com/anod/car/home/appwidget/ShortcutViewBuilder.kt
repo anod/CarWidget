@@ -60,13 +60,15 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
     }
 
     fun fill(views: RemoteViews, position: Int, resBtn: Int, resText: Int) {
-        val info = shortcuts!!.get(position)
+        val shortcuts = shortcuts ?: return // tODO: check why it can be null
+        val info = shortcuts.get(position)
 
         var icon: Bitmap? = null
         if (info == null) {
             setNoShortcut(resBtn, resText, views, position, skinProperties!!)
         } else {
-            AppLog.i("Shortcut: " + (info.intent.component?.toShortString() ?: info.intent.toString()))
+            AppLog.i("Shortcut: " + (info.intent.component?.toShortString()
+                    ?: info.intent.toString()))
             icon = applyShortcut(resBtn, resText, info, views, position, iconTheme)
         }
         if (prefs!!.isTitlesHide) {

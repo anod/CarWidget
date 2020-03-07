@@ -16,24 +16,24 @@ class AppTheme(val themeIdx: Int) {
     }
 
     val main: Int
-        @StyleRes get() = R.style.AppThemeGray
+        @StyleRes get() = R.style.AppTheme
 
     val mainResource: Int
-        @StyleRes get() = if (themeIdx == gray) R.style.AppThemeGray else R.style.AppThemeHolo
+        @StyleRes get() = R.style.AppTheme
 
     val transparentResource: Int
-        @StyleRes get() = if (themeIdx == gray) R.style.AppThemeGray_Transparent else R.style.AppThemeHolo_Transparent
+        @StyleRes get() = R.style.AppTheme_Transparent
 
     val noActionBarResource: Int
-        @StyleRes get() = if (themeIdx == gray) R.style.AppThemeGray_NoActionBar else R.style.AppThemeHolo_NoActionBar
+        @StyleRes get() = R.style.AppTheme_Transparent
 
     val backgroundResource: Int
         @ColorRes get() =  if (themeIdx == gray) R.color.panel_background_grey else R.color.panel_background_dark
 
     val alert: Int
-        @StyleRes get() = if (themeIdx == gray) R.style.AlertGray else R.style.AlertHolo
+        @StyleRes get() = R.style.Alert
 
     val dialog: Int
-        @StyleRes get() = if (themeIdx == gray) R.style.DialogGrey else R.style.DialogHolo
+        @StyleRes get() = R.style.Dialog
 
 }

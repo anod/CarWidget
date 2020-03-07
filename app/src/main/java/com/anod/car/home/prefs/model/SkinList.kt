@@ -1,8 +1,7 @@
 package com.anod.car.home.prefs.model
 
-import com.anod.car.home.R
-
 import android.content.Context
+import com.anod.car.home.R
 
 /**
  * @author alex
@@ -33,5 +32,4 @@ class SkinList(skin: String, isKeyguard: Boolean, context: Context) {
     operator fun get(position: Int): Item {
         return items[position]
     }
-
 }

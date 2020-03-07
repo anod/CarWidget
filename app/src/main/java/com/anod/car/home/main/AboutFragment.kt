@@ -58,7 +58,7 @@ class AboutFragment : Fragment() {
 
         buttonMusicApp.setOnClickListener {
             val musicAppsIntent = Intent(context, MusicAppSettingsActivity::class.java)
-            context!!.startActivity(musicAppsIntent)
+            requireContext().startActivity(musicAppsIntent)
         }
 
         val musicApp = renderMusicApp()
@@ -69,7 +69,7 @@ class AboutFragment : Fragment() {
 
         buttonVersion.setOnClickListener {
             val url = DETAIL_MARKET_URL
-            val uri = Uri.parse(String.format(url, context!!.packageName))
+            val uri = Uri.parse(String.format(url, requireContext().packageName))
             val intent = Intent(Intent.ACTION_VIEW, uri)
             requireContext().startActivitySafely(intent)
         }
@@ -162,9 +162,8 @@ class AboutFragment : Fragment() {
     }
 
     private fun createThemesDialog(): AlertDialog {
-        val style = App.theme(context!!).dialog
-        return DialogSingleChoice(context!!, style, R.string.choose_a_theme, R.array.app_themes, App.theme(context!!).themeIdx) {
-            d, which ->
+        val style = App.theme(requireContext()).dialog
+        return DialogSingleChoice(requireContext(), style, R.string.choose_a_theme, R.array.app_themes, App.theme(requireContext()).themeIdx) { d, which ->
 
             context?.also {
                 val appSettings = App.provide(it).appSettings
@@ -173,8 +172,8 @@ class AboutFragment : Fragment() {
                 val app = App.get(it)
                 app.appComponent.theme = AppTheme(which)
                 AppCompatDelegate.setDefaultNightMode(app.nightMode)
-                activity!!.setTheme(app.appComponent.theme.mainResource)
-                activity!!.recreate()
+                requireActivity().setTheme(app.appComponent.theme.mainResource)
+                requireActivity().recreate()
             }
             d.dismiss()
 
@@ -182,8 +181,8 @@ class AboutFragment : Fragment() {
     }
 
     private fun onCarDockAppClick() {
-        val style = App.theme(context!!).alert
-        DialogCustom(context!!, style, R.string.default_car_dock_app, R.layout.default_car_dock_app) { view, dialog ->
+        val style = App.theme(requireContext()).alert
+        DialogCustom(requireContext(), style, R.string.default_car_dock_app, R.layout.default_car_dock_app) { view, dialog ->
 
             dialog.setCancelable(true)
 
@@ -192,7 +191,7 @@ class AboutFragment : Fragment() {
             view.findViewById<Button>(android.R.id.button1).setOnClickListener {
                 val intent = Intent(Intent.ACTION_MAIN)
                 intent.addCategory(Intent.CATEGORY_CAR_DOCK)
-                val info = App.provide(context!!).packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                val info = App.provide(requireContext()).packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
                 requireContext().startActivitySafely(Intent().forApplicationDetails(info.activityInfo.applicationInfo.packageName))
             }
         }.show()

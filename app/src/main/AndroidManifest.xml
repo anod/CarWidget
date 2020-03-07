@@ -63,11 +63,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
             android:name="com.anod.car.home.prefs.ShortcutEditActivity"
-            android:theme="@style/DialogGrey" />
+            android:theme="@style/Dialog" />
         <activity
             android:name="com.anod.car.home.prefs.AllAppsActivity"
             android:theme="@style/AppListTheme" />
@@ -105,7 +106,7 @@
             android:clearTaskOnLaunch="true"
             android:label="@string/app_name"
             android:taskAffinity="com.anod.car.home.settings"
-            android:theme="@style/AppThemeGray.Transparent">
+            android:theme="@style/AppTheme.Transparent">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -190,7 +191,7 @@
         <activity
             android:name=".app.MusicAppChoiceActivity"
             android:excludeFromRecents="true"
-            android:theme="@style/AppListTheme.Light" />
+            android:theme="@style/AppListTheme" />
 
         <activity
             android:name=".prefs.lookandfeel.WidgetButtonChoiceActivity"

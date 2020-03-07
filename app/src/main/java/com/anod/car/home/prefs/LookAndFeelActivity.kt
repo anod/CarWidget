@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
+import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.viewpager.widget.ViewPager
@@ -125,36 +126,52 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
 
         content.visibility = View.GONE
         bottomNavigation.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.nav_widget -> {
-                    invalidateOptionsMenu()
-                    content.visibility = View.GONE
-                    for (i in 0 until supportFragmentManager.backStackEntryCount) {
-                        supportFragmentManager.popBackStack()
-                    }
-                    true
-                }
-                R.id.nav_info -> {
-                    invalidateOptionsMenu()
-                    content.visibility = View.VISIBLE
-                    supportFragmentManager.commit {
-                        replace(R.id.content, AboutFragment().apply {
-                            arguments = bundleOf(AppWidgetManager.EXTRA_APPWIDGET_ID to appWidgetId)
-                        })
-                    }
-                    true
-                }
-                R.id.nav_incar -> {
-                    invalidateOptionsMenu()
-                    content.visibility = View.VISIBLE
-                    supportFragmentManager.commit {
-                        replace(R.id.content, ConfigurationInCar())
-                    }
-                    true
-                }
-                else -> false
+            navigate(it.itemId)
+        }
+
+        if (savedInstanceState != null) {
+            val bottomItemId = savedInstanceState.getInt("bottom_item_id", 0)
+            if (bottomItemId > 0) {
+                navigate(bottomItemId)
             }
         }
+    }
+
+    private fun navigate(@IdRes itemId: Int): Boolean {
+        return when (itemId) {
+            R.id.nav_widget -> {
+                invalidateOptionsMenu()
+                content.visibility = View.GONE
+                for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                    supportFragmentManager.popBackStack()
+                }
+                true
+            }
+            R.id.nav_info -> {
+                invalidateOptionsMenu()
+                content.visibility = View.VISIBLE
+                supportFragmentManager.commit {
+                    replace(R.id.content, AboutFragment().apply {
+                        arguments = bundleOf(AppWidgetManager.EXTRA_APPWIDGET_ID to appWidgetId)
+                    })
+                }
+                true
+            }
+            R.id.nav_incar -> {
+                invalidateOptionsMenu()
+                content.visibility = View.VISIBLE
+                supportFragmentManager.commit {
+                    replace(R.id.content, ConfigurationInCar())
+                }
+                true
+            }
+            else -> false
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt("bottom_item_id", bottomNavigation.selectedItemId)
+        super.onSaveInstanceState(outState)
     }
 
     public override fun onResume() {
