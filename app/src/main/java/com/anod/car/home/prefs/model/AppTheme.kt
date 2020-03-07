@@ -25,7 +25,7 @@ class AppTheme(val themeIdx: Int) {
         @StyleRes get() = R.style.AppTheme_Transparent
 
     val noActionBarResource: Int
-        @StyleRes get() = R.style.AppTheme_Transparent
+        @StyleRes get() = R.style.AppTheme_NoActionBar
 
     val backgroundResource: Int
         @ColorRes get() =  if (themeIdx == gray) R.color.panel_background_grey else R.color.panel_background_dark

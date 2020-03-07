@@ -164,9 +164,7 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity android:name=".main.WidgetsListActivity" />
-        <activity
-            android:name=".main.WizardActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".main.WizardActivity" />
         <activity
             android:name=".prefs.BluetoothDeviceActivity"
             android:label="@string/pref_blutooth_device_title" />
