@@ -267,6 +267,7 @@
     <string name="incar_trigger_status" tools:ignore="MissingTranslation">InCar triggers status</string>
     <string name="backup_path" tools:ignore="MissingTranslation">Previously backups were stored at %s</string>
     <string name="cannot_generate_preview" tools:ignore="MissingTranslation">Cannot generate preview</string>
+    <string name="allow_activity_recognition" tools:ignore="MissingTranslation">Allow activity recognition</string>
 
     <array name="adaptive_icon_style_names">
         <item>Default</item>

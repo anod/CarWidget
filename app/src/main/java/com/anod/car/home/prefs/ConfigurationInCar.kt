@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.SwitchPreferenceCompat
@@ -19,6 +20,9 @@ import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.utils.*
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
@@ -195,26 +199,36 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         val pref: Preference = findPreference(InCarSettings.ACTIVITY_RECOGNITION)!!
         val handler = Handler()
 
-        Thread(Runnable {
-            val status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireActivity())
+        lifecycleScope.launch {
+            val status = withContext(Dispatchers.Default) { GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireActivity()) }
             val summary = renderPlayServiceStatus(status)
-            handler.post { updateActivityRecognition(status, summary, pref) }
-        }).start()
+            updateActivityRecognition(status, summary, pref)
+        }
 
     }
 
-    private fun updateActivityRecognition(status: Int, summary: String,
-                                          pref: Preference) {
+    private fun updateActivityRecognition(status: Int, summary: String, pref: Preference) {
         pref.summary = summary
         if (status != ConnectionResult.SUCCESS) {
             pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
-                val d = GoogleApiAvailability.getInstance()
-                        .getErrorDialog(activity, status, PS_DIALOG_REQUEST_CODE)
+                val d = GoogleApiAvailability.getInstance().getErrorDialog(activity, status, PS_DIALOG_REQUEST_CODE)
                 d.show()
                 false
             }
+        } else {
+            if (AppPermissions.shouldShowMessage(requireActivity(), ActivityRecognition)) {
+                pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                    if (newValue == true) {
+                        if (!AppPermissions.isGranted(requireContext(), AnswerPhoneCalls)) {
+                            Toast.makeText(context, R.string.allow_activity_recognition, Toast.LENGTH_LONG).show()
+                            AppPermissions.request(this, ActivityRecognition, requestActivityRecognition)
+                        }
+                        return@OnPreferenceChangeListener false
+                    }
+                    true
+                }
+            }
         }
-
     }
 
     private fun renderPlayServiceStatus(errorCode: Int): String {
@@ -245,6 +259,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         const val requestDrawOverlay = 7
         const val requestWriteSettings = 8
         const val requestAnswerPhone = 9
+        const val requestActivityRecognition = 10
 
 
         private val serviceRequiredKeys = arrayOf(

@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -19,19 +20,21 @@ import androidx.fragment.app.Fragment
  */
 
 sealed class PermissionResult
-object Granted: PermissionResult()
-object Denied: PermissionResult()
+object Granted : PermissionResult()
+object Denied : PermissionResult()
 
 sealed class AppPermission(val value: String)
-object CallPhone: AppPermission(Manifest.permission.CALL_PHONE)
-object WriteExternalStorage: AppPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-object ReadExternalStorage: AppPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-object ReadContacts: AppPermission(Manifest.permission.READ_CONTACTS)
+object CallPhone : AppPermission(Manifest.permission.CALL_PHONE)
+object ReadContacts : AppPermission(Manifest.permission.READ_CONTACTS)
+
 @TargetApi(Build.VERSION_CODES.O)
-object AnswerPhoneCalls: AppPermission(Manifest.permission.ANSWER_PHONE_CALLS)
-object ModifyPhoneState: AppPermission(Manifest.permission.MODIFY_PHONE_STATE)
-object CanDrawOverlay: AppPermission(AppPermissions.Permission.CAN_DRAW_OVERLAY)
-object WriteSettings: AppPermission(AppPermissions.Permission.WRITE_SETTINGS)
+object AnswerPhoneCalls : AppPermission(Manifest.permission.ANSWER_PHONE_CALLS)
+object ModifyPhoneState : AppPermission(Manifest.permission.MODIFY_PHONE_STATE)
+object CanDrawOverlay : AppPermission(AppPermissions.Permission.CAN_DRAW_OVERLAY)
+object WriteSettings : AppPermission(AppPermissions.Permission.WRITE_SETTINGS)
+
+@RequiresApi(Build.VERSION_CODES.Q)
+object ActivityRecognition : AppPermission(Manifest.permission.ACTIVITY_RECOGNITION)
 
 object AppPermissions {
     interface Permission {
@@ -98,7 +101,7 @@ object AppPermissions {
         fragment.requestPermissions(permissions.map { it.value }.toTypedArray(), requestCode)
     }
 
-    private fun request(fragment: Fragment, permission: AppPermission, requestCode: Int) {
+    fun request(fragment: Fragment, permission: AppPermission, requestCode: Int) {
         fragment.requestPermissions(arrayOf(permission.value), requestCode)
     }
 
