@@ -121,7 +121,7 @@
     <string name="enable_incar_description"><![CDATA[<b>Enable</b> InCar mode in the settings dialog.]]></string>
     <string name="trial_description">Free version trial for %d activations.</string>
     <string name="swipe_continue">Swipe to continue →</string>
-    <string name="gms_success">Use Google Play services to detect activity</string>
+    <string name="use_gms_for_activity">Use Google Play services to detect activity</string>
     <string name="gms_service_missing">Google Play services is missing on this device.</string>
     <string name="gms_service_update_required">The installed version of Google Play services is out of date.</string>
     <string name="gms_service_disabled">The installed version of Google Play services has been disabled on this device.</string>

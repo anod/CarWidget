@@ -119,7 +119,7 @@
     <string name="enable_incar_description"> InCar-Modus im Einstellungsdialog &lt;b&gt; aktivieren &lt;/ b&gt;.</string>
     <string name="trial_description">Kostenlose Testversion für %d Aktivierungen.</string>
     <string name="swipe_continue">Streichen um weiterzumachen→</string>
-    <string name="gms_success">Verwenden Sie Google Play, um die Aktivität zu erkennen</string>
+    <string name="use_gms_for_activity">Verwenden Sie Google Play, um die Aktivität zu erkennen</string>
     <string name="gms_service_missing">Google Play-Dienste auf diesem Gerät nicht vorhanden.</string>
     <string name="gms_service_update_required">Die installierte Version von Google Play ist nicht mehr aktuell.</string>
     <string name="gms_service_disabled">Die installierte Version von Google Play wurde auf diesem Gerät deaktiviert.</string>

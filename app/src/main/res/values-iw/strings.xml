@@ -123,7 +123,7 @@
     <string name="enable_incar_description"><![CDATA[הפעל מצב ברכב בהגדרות.]]></string>
     <string name="trial_description">ניסיון של %d הפעלות בגירסה חינמית</string>
     <string name="swipe_continue">עבור למסך הבאה ←</string>
-    <string name="gms_success">להשתמש ב-Google Play services לזיהוי פעילות</string>
+    <string name="use_gms_for_activity">להשתמש ב-Google Play services לזיהוי פעילות</string>
     <string name="gms_service_missing">Google Play services חסרים במכשיר זה.</string>
     <string name="gms_service_update_required">הגרסה המותקנת של Google Play services אינה מעודכנת.</string>
     <string name="gms_service_disabled">הגרסה המותקנת שירותים של Google Play services הושבת במכשיר זה.</string>

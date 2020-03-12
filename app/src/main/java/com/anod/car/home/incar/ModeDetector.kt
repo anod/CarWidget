@@ -129,7 +129,6 @@ object ModeDetector {
         }
     }
 
-
     private fun updateEventState(prefs: InCarInterface, intent: Intent) {
         val action = intent.action
 

@@ -3,10 +3,11 @@ package com.anod.car.home.prefs
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Handler
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.SwitchPreferenceCompat
@@ -88,7 +89,6 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
     private fun initInCar() {
         val incar = InCarStorage.load(requireActivity())
-
         val incarSwitch: SwitchPreferenceCompat = findPreference(InCarSettings.INCAR_MODE_ENABLED)!!
 
         val allWidgetIds = WidgetHelper.getAllWidgetIds(requireActivity())
@@ -197,14 +197,11 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
     private fun initActivityRecognition() {
         val pref: Preference = findPreference(InCarSettings.ACTIVITY_RECOGNITION)!!
-        val handler = Handler()
-
         lifecycleScope.launch {
             val status = withContext(Dispatchers.Default) { GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireActivity()) }
             val summary = renderPlayServiceStatus(status)
             updateActivityRecognition(status, summary, pref)
         }
-
     }
 
     private fun updateActivityRecognition(status: Int, summary: String, pref: Preference) {
@@ -219,11 +216,10 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
             if (AppPermissions.shouldShowMessage(requireActivity(), ActivityRecognition)) {
                 pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
                     if (newValue == true) {
-                        if (!AppPermissions.isGranted(requireContext(), AnswerPhoneCalls)) {
-                            Toast.makeText(context, R.string.allow_activity_recognition, Toast.LENGTH_LONG).show()
+                        if (!AppPermissions.isGranted(requireContext(), ActivityRecognition)) {
                             AppPermissions.request(this, ActivityRecognition, requestActivityRecognition)
+                            return@OnPreferenceChangeListener false
                         }
-                        return@OnPreferenceChangeListener false
                     }
                     true
                 }
@@ -231,9 +227,17 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == requestActivityRecognition && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            val pref: CheckBoxPreference = findPreference(InCarSettings.ACTIVITY_RECOGNITION)!!
+            pref.isChecked = true
+        }
+    }
+
     private fun renderPlayServiceStatus(errorCode: Int): String {
         if (errorCode == ConnectionResult.SUCCESS) {
-            return getString(R.string.gms_success)
+            return getString(R.string.use_gms_for_activity)
         }
         if (errorCode == ConnectionResult.SERVICE_MISSING) {
             return getString(R.string.gms_service_missing)
@@ -260,7 +264,6 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         const val requestWriteSettings = 8
         const val requestAnswerPhone = 9
         const val requestActivityRecognition = 10
-
 
         private val serviceRequiredKeys = arrayOf(
                 InCarSettings.HEADSET_REQUIRED,

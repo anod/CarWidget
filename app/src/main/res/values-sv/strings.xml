@@ -119,7 +119,7 @@
     <string name="enable_incar_description">&lt;b&gt; Aktivera &lt;/ b&gt; InCar läget i inställningsdialogrutan.</string>
     <string name="trial_description">Gratis testversion för %d aktiveringar.</string>
     <string name="swipe_continue">Svep för att fortsätta →</string>
-    <string name="gms_success">Använd Google Play tjänster för att upptäcka aktivitet</string>
+    <string name="use_gms_for_activity">Använd Google Play tjänster för att upptäcka aktivitet</string>
     <string name="gms_service_missing">Google Play tjänster saknas på den här enheten.</string>
     <string name="gms_service_update_required">Den installerade versionen av Google Play tjänster är inaktuell.</string>
     <string name="gms_service_disabled">Den installerade versionen av Google Play tjänster har inaktiverats på den här enheten.</string>

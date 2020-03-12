@@ -119,7 +119,7 @@
     <string name="enable_incar_description">&lt;b&gt; Activer &lt;/ b&gt; le mode Voiture dans la boîte de dialogue des paramètres.</string>
     <string name="trial_description">Version d\'essai gratuite pour %d activations.</string>
     <string name="swipe_continue">Faîtes glisser pour continuer →</string>
-    <string name="gms_success">Utiliser les services Google Play pour détecter l\'activité</string>
+    <string name="use_gms_for_activity">Utiliser les services Google Play pour détecter l\'activité</string>
     <string name="gms_service_missing">Les services Google Play ne sont pas disponibles sur cet appareil.</string>
     <string name="gms_service_update_required">La version installée des services Google Play n\'est pas à jour.</string>
     <string name="gms_service_disabled">La version installée des services Google Play a été désactivée sur cet appareil.</string>

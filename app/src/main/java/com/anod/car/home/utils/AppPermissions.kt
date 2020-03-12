@@ -91,6 +91,13 @@ object AppPermissions {
             }
             return false
         }
+
+        if (permission == ActivityRecognition) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                return true
+            }
+            return false
+        }
         return ActivityCompat.shouldShowRequestPermissionRationale(activity, permission.value)
     }
     fun request(activity: Activity, permission: AppPermission, requestCode: Int) {

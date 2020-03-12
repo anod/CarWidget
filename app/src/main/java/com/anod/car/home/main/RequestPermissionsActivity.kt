@@ -21,10 +21,7 @@ import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarSettings
 import com.anod.car.home.prefs.model.InCarStorage
-import com.anod.car.home.utils.AnswerPhoneCalls
-import com.anod.car.home.utils.AppPermissions
-import com.anod.car.home.utils.CanDrawOverlay
-import com.anod.car.home.utils.WriteSettings
+import com.anod.car.home.utils.*
 import kotlinx.android.synthetic.main.activity_request_permissions.*
 
 class RequestPermissionsActivity : CarWidgetActivity() {
@@ -80,6 +77,9 @@ class RequestPermissionsActivity : CarWidgetActivity() {
                     } else {
                         answerPhoneCalls = true
                     }
+                }
+                ActivityRecognition.value -> {
+                    manifestPermissions.add(it)
                 }
                 else -> manifestPermissions.add(it)
             }
@@ -157,8 +157,13 @@ class RequestPermissionsActivity : CarWidgetActivity() {
                         else
                             R.string.permission_notification_listener,
                         R.string.allow_answer_phone_calls)
+                ActivityRecognition.value -> Item(
+                        R.drawable.ic_action_directions_run_24,
+                        R.string.activity_recognition,
+                        R.string.use_gms_for_activity
+                )
                 else -> {
-                    Item(0,0,0)
+                    Item(0, 0, 0)
                 }
             }
         }
@@ -182,7 +187,6 @@ class RequestPermissionsActivity : CarWidgetActivity() {
             val icon =holder.itemView.findViewById<ImageView>(R.id.icon)
             icon.setImageResource(item.icon)
         }
-
     }
 
     companion object {

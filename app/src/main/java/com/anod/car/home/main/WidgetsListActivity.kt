@@ -125,7 +125,11 @@ open class WidgetsListActivity : CarWidgetActivity() {
                 permissions.add(AnswerPhoneCalls.value)
             }
         }
-
+        if (settings.isActivityRequired) {
+            if (AppPermissions.shouldShowMessage(this, ActivityRecognition)) {
+                permissions.add(ActivityRecognition.value)
+            }
+        }
         return permissions
     }
 

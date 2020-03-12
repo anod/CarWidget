@@ -121,7 +121,7 @@
 	<string name="enable_incar_description"><![CDATA[<b>Включите</b> режим \"В автомобиле\" в настройках]]></string>
 	<string name="trial_description">%d активаций в пробной версии.</string>
 	<string name="swipe_continue">Продолжение →</string>
-	<string name="gms_success">Использовать сенсоры для определения движения</string>
+	<string name="use_gms_for_activity">Использовать сенсоры для определения движения</string>
 	<string name="gms_service_missing">Google Play services отсутствует на этом устройстве.</string>
 	<string name="gms_service_update_required">Установленная версия Google Play services устарела.</string>
 	<string name="gms_service_disabled">Установленная версия Google Play services была отключена на этом устройства.</string>

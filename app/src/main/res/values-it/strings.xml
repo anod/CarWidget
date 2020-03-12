@@ -119,7 +119,7 @@
     <string name="enable_incar_description">&lt;b&gt;Abilita&lt;/​​b&gt; la modalità \"alla guida\" nella finestra di dialogo delle impostazioni.</string>
     <string name="trial_description">Versione di prova gratuita per %d attivazioni.</string>
     <string name="swipe_continue">Scorri per continuare →</string>
-    <string name="gms_success">Utilizza i servizi di Google Play per rilevare l\'attività</string>
+    <string name="use_gms_for_activity">Utilizza i servizi di Google Play per rilevare l\'attività</string>
     <string name="gms_service_missing">I servizi di Google Play sono assenti su questo dispositivo.</string>
     <string name="gms_service_update_required">La versione installata dei servizi di Google Play non è aggiornata.</string>
     <string name="gms_service_disabled">La versione installata dei servizi di Google Play è stata disabilitata su questo dispositivo.</string>
