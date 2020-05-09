@@ -195,7 +195,7 @@ class AboutFragment : Fragment() {
 
     private fun onCarDockAppClick() {
         val style = App.theme(requireContext()).alert
-        DialogCustom(requireContext(), style, R.string.default_car_dock_app, R.layout.default_car_dock_app) { view, dialog ->
+        DialogCustom(requireContext(), style, R.string.default_car_dock_app, R.layout.dialog_car_dock_app) { view, dialog ->
 
             dialog.setCancelable(true)
 

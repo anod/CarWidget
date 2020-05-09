@@ -245,10 +245,10 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
         types.put(HOTSPOT, JsonToken.BOOLEAN)
 
         reader.beginObject()
-        val found = JsonReaderHelper.readValues(reader, types, this) { name, reader ->
+        val found = JsonReaderHelper.readValues(reader, types, this) { name, r ->
             when (name) {
                 "screen-on-alert" -> {
-                    this.screenOnAlert = readScreenAlert(reader)
+                    this.screenOnAlert = readScreenAlert(r)
                     true
                 }
                 else -> false

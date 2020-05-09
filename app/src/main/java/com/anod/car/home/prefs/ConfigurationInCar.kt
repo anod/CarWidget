@@ -183,7 +183,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
                     requireContext(),
                     style,
                     R.string.pref_screen_timeout,
-                    R.layout.view_screen_timeout
+                    R.layout.dialog_screen_timeout
             ) { view, _ ->
                 val v = ViewScreenTimeout(view)
                 v.screenOnSwitch.isChecked = incar.isDisableScreenTimeout
@@ -193,11 +193,12 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
                 v.onStateChange { keepOn, whileCharging, useAlert ->
                     InCarStorage.saveScreenTimeout(keepOn, disableCharging = whileCharging, prefs = incar)
                     if (useAlert && AlertWindow.isSupported) {
-                        if (AlertWindow.hasPermission(requireContext())) {
-                            incar.screenOnAlert = ScreenOnAlert.Settings(true, incar.screenOnAlert)
-                        } else {
-                            startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + requireContext().getPackageName())))
+                        incar.screenOnAlert = ScreenOnAlert.Settings(true, incar.screenOnAlert)
+                        if (!AlertWindow.hasPermission(requireContext())) {
+                            startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + requireContext().packageName)))
                         }
+                    } else {
+                        incar.screenOnAlert = ScreenOnAlert.Settings(false, incar.screenOnAlert)
                     }
                 }
             }.show()

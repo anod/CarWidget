@@ -184,7 +184,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
             }
         }
 
-        return DialogCustom(activity, activity.theme.alert, R.string.number_shortcuts_title, R.layout.numberpicker) { view, builder ->
+        return DialogCustom(activity, activity.theme.alert, R.string.number_shortcuts_title, R.layout.dialog_numberpicker) { view, builder ->
 
             val numberPicker = view.findViewById<View>(R.id.numberPicker) as NumberPicker
             numberPicker.minValue = 0
