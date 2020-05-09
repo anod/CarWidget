@@ -25,11 +25,15 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
             if (prefs.isDisableScreenTimeoutCharging) {
                 if (Power.isConnected(context)) {
                     ModeService.acquireWakeLock(context)
-                    alertWindow.show()
+                    if (prefs.screenOnAlert.enabled) {
+                        alertWindow.show()
+                    }
                 }
             } else {
                 ModeService.acquireWakeLock(context)
-                alertWindow.show()
+                if (prefs.screenOnAlert.enabled) {
+                    alertWindow.show()
+                }
             }
         }
         if (prefs.isAdjustVolumeLevel) {
