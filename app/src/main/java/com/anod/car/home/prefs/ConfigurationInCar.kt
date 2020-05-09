@@ -171,17 +171,10 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
     private fun initScreenTimeout(incar: InCarSettings) {
         val pref: Preference = requirePreference(SCREEN_TIMEOUT_LIST)
-        val style = App.theme(requireContext()).alert
-        val values = resources.getStringArray(R.array.disable_screen_timeout_values)
-        val selectedItem = if (incar.isDisableScreenTimeout)
-            if (incar.isDisableScreenTimeoutCharging) "disabled-charging" else "disabled"
-        else "enabled"
-        values.indexOf(selectedItem)
-
         pref.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             DialogCustom(
                     requireContext(),
-                    style,
+                    App.theme(requireContext()).alert,
                     R.string.pref_screen_timeout,
                     R.layout.dialog_screen_timeout
             ) { view, _ ->
@@ -200,6 +193,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
                     } else {
                         incar.screenOnAlert = ScreenOnAlert.Settings(false, incar.screenOnAlert)
                     }
+                    incar.apply()
                 }
             }.show()
             true

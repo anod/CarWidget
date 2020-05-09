@@ -54,7 +54,7 @@ android {
     defaultConfig {
         minSdkVersion(21)
         targetSdkVersion(28) // 29 wifi switch not working
-        versionCode = 21300
+        versionCode = 21301
         versionName = "2.1.3"
         vectorDrawables.generatedDensities("hdpi", "xxhdpi")
     }
