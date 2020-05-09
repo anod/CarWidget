@@ -11,6 +11,8 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
 }
 
 dependencies {

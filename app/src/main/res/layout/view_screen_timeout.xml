@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Switch
+        android:id="@+id/screenOnSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/keep_on" />
+
+    <CheckBox
+        android:id="@+id/whileCharging"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/while_charging" />
+
+    <LinearLayout
+        android:id="@+id/useAlertGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/useAlert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/screen_on_alternative" />
+
+        <TextView
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/screen_on_alternative_text" />
+
+    </LinearLayout>
+</LinearLayout>

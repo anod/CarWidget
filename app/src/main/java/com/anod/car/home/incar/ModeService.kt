@@ -125,6 +125,7 @@ class ModeService : Service() {
     }
 
     private val binder = NotificationServiceBinder()
+
     inner class NotificationServiceBinder : Binder() {
         val service: ModeService
             get() = this@ModeService
@@ -136,7 +137,7 @@ class ModeService : Service() {
 
     companion object {
 
-        private const val wakelockTag = "carhomewidget:wakelock"
+        private const val wakelockTag = "com.anod.car.home.incar/.ModeService:wakelock"
         const val EXTRA_MODE = "extra_mode"
         const val EXTRA_FORCE_STATE = "extra_force_state"
 
@@ -149,38 +150,41 @@ class ModeService : Service() {
         private var sLockStatic: PowerManager.WakeLock? = null
 
         @Synchronized
-        private fun getLock(context: Context): PowerManager.WakeLock? {
+        fun getLock(context: Context): PowerManager.WakeLock? {
             if (sLockStatic == null) {
                 val mgr = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-                sLockStatic = mgr.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP, wakelockTag)
+                sLockStatic = mgr.newWakeLock(
+                        PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
+                        wakelockTag
+                )
             }
-
             return sLockStatic
         }
 
         fun acquireWakeLock(context: Context) {
-            val lock = getLock(context.applicationContext)
-            if (!lock!!.isHeld) {
+            val lock = getLock(context.applicationContext)!!
+            if (!lock.isHeld) {
                 AppLog.i("WakeLock is not held")
                 lock.acquire()
+                lock.setReferenceCounted(false)
             }
             AppLog.i("WakeLock acquired")
         }
 
         fun releaseWakeLock(context: Context) {
-            val lock = getLock(context.applicationContext)
+            val lock = getLock(context.applicationContext)!!
 
-            if (lock!!.isHeld) {
+            if (lock.isHeld) {
                 AppLog.i("WakeLock is held")
                 lock.release()
             }
+            sLockStatic = null
             AppLog.i("WakeLock released")
         }
 
-        fun createStartIntent(context: Context, mode: Int): Intent {
-            val service = Intent(context, ModeService::class.java)
-            service.putExtra(EXTRA_MODE, mode)
-            return service
-        }
+        fun createStartIntent(context: Context, mode: Int) =
+                Intent(context, ModeService::class.java).apply {
+                    putExtra(EXTRA_MODE, mode)
+                }
     }
 }

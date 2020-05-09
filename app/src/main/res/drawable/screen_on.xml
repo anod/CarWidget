@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/screen_on_background"
+        android:width="@dimen/screen_on_alert"
+        android:height="@dimen/screen_on_alert" />
+    <item
+        android:drawable="@drawable/ic_action_bulb"
+        android:top="2dp"
+        android:start="2dp"
+        android:width="28dp"
+        android:height="28dp" />
+</layer-list>

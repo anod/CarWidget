@@ -35,10 +35,7 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_actions">
-        <ListPreference
-            android:defaultValue="enabled"
-            android:entries="@array/disable_screen_timeout"
-            android:entryValues="@array/disable_screen_timeout_values"
+        <Preference
             android:key="screen-timeout-list"
             android:summary="@string/pref_screen_timeout_summary"
             android:title="@string/pref_screen_timeout" />

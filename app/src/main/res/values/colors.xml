@@ -47,6 +47,7 @@
 	<color name="color_background">#ffffff</color>
 	<color name="color_surface">#546E7A</color>
 	<color name="color_error">#b00020</color>
+	<color name="color_navigation">#546E7A</color>
 
 	<!--"On" colors define how text, icons and strokes are colored in relation to the surface-->
 	<!--on which they appear.-->

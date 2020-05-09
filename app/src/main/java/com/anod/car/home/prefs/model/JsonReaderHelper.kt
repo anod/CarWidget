@@ -13,13 +13,15 @@ import java.io.IOException
 object JsonReaderHelper {
 
     @Throws(IOException::class)
-    fun readValues(reader: JsonReader, types: SimpleArrayMap<String, JsonToken>, prefs: ChangeableSharedPreferences): Int {
+    fun readValues(reader: JsonReader, types: SimpleArrayMap<String, JsonToken>, prefs: ChangeableSharedPreferences, typeHandler: (name: String, reader: JsonReader) -> Boolean): Int {
         var found = 0
         while (reader.hasNext()) {
             val name = reader.nextName()
             if (!types.containsKey(name)) {
-                AppLog.e("No type for name: $name")
-                reader.skipValue()
+                if (!typeHandler(name, reader)) {
+                    AppLog.e("No type for name: $name")
+                    reader.skipValue()
+                }
                 continue
             }
             val type = types.get(name)

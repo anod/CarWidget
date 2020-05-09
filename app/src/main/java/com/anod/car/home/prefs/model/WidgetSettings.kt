@@ -173,7 +173,7 @@ class WidgetSettings(prefs: SharedPreferences, private val mResources: Resources
         types.put(ADAPTIVE_ICON_STYLE, JsonToken.STRING)
         types.put("palette-background", JsonToken.BOOLEAN)
         reader.beginObject()
-        val found = JsonReaderHelper.readValues(reader, types, this)
+        val found = JsonReaderHelper.readValues(reader, types, this) { _, _ -> false }
         reader.endObject()
         return found
     }

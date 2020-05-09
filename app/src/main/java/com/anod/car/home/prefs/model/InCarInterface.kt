@@ -2,6 +2,7 @@ package com.anod.car.home.prefs.model
 
 import android.content.ComponentName
 import androidx.collection.ArrayMap
+import com.anod.car.home.incar.ScreenOnAlert
 
 /**
  * @author algavris
@@ -32,6 +33,7 @@ interface InCarInterface {
     var isDisableScreenTimeoutCharging: Boolean
     var screenOrientation: Int
     var isHotspotOn: Boolean
+    var screenOnAlert: ScreenOnAlert.Settings
 
     companion object {
         const val BRIGHTNESS_DISABLED = "disabled"

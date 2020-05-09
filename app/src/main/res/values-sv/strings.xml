@@ -208,17 +208,15 @@
     <string name="list_of_active_widgets">Lista över aktiva widgets</string>
     <string name="current_widget">Nuvarande widget</string>
     <string name="no_active_widget">Inga aktiva widgets hittades. Se till att lägga till en widget på startskärmen.</string>
-
-    <string-array name="disable_screen_timeout">
-        <item>Inaktivera (under laddning)</item>
-        <item>Inaktivera</item>
-        <item>Aktivera</item>
-    </string-array>
-
     <string-array name="orientation_titles">
         <item>System</item>
         <item>Porträtt</item>
         <item>Landskap</item>
         <item>Landskap (bakåt)</item>
     </string-array>
+
+    <string name="keep_on">Håll skärmen på</string>
+    <string name="while_charging">Under laddning</string>
+    <string name="screen_on_alternative">alltid ovanpå</string>
+    <string name="screen_on_alternative_text">Aktivera alternativt sätt att hålla skärmen påslagen (detta kräver dessutom tillstånd)</string>
 </resources>

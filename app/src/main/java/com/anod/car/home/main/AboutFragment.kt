@@ -16,7 +16,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -32,7 +31,6 @@ import com.anod.car.home.prefs.model.AppTheme
 import com.anod.car.home.utils.*
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogCustom
-import info.anodsplace.framework.app.DialogSingleChoice
 import info.anodsplace.framework.app.applicationContext
 import info.anodsplace.framework.app.startActivityForResultSafely
 import kotlinx.android.synthetic.main.fragment_about.*
@@ -49,9 +47,15 @@ class AboutFragment : Fragment() {
 
         viewModel.appWidgetId = Utils.readAppWidgetId(savedInstanceState, requireActivity().intent)
 
+        val themeIdx = App.theme(requireContext()).themeIdx
         buttonAppTheme.setOnClickListener {
-            createThemesDialog().show()
+            changeTheme(themeIdx)
         }
+        val themes = resources.getStringArray(R.array.app_themes)
+        val themeName = themes[themeIdx]
+        val themeText = SpannableStringBuilder("${getString(R.string.app_theme)}\n$themeName")
+        themeText.setSpan(AbsoluteSizeSpan(8, true), themeText.length - themeName.length, themeText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        buttonAppTheme.text = themeText
 
         buttonDefaultCarDockApp.setOnClickListener {
             onCarDockAppClick()
@@ -65,7 +69,6 @@ class AboutFragment : Fragment() {
         val musicApp = renderMusicApp()
         val musicAppText = SpannableStringBuilder("${getString(R.string.music_app)}\n$musicApp")
         musicAppText.setSpan(AbsoluteSizeSpan(8, true), musicAppText.length - musicApp.length, musicAppText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
         buttonMusicApp.text = musicAppText
 
         buttonVersion.setOnClickListener {
@@ -79,14 +82,27 @@ class AboutFragment : Fragment() {
 
         val ver = renderVersion()
         val versionText = SpannableStringBuilder("$ver\n${getString(R.string.version_summary)}")
-        versionText.setSpan(AbsoluteSizeSpan(8, true), ver.length+1, versionText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        versionText.setSpan(AbsoluteSizeSpan(8, true), ver.length + 1, versionText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         buttonVersion.text = versionText
+    }
+
+    private fun changeTheme(themeIdx: Int) {
+        val newThemeIdx = if (themeIdx == 0) 1 else 0
+        val appSettings = App.provide(requireContext()).appSettings
+        appSettings.theme = newThemeIdx
+        appSettings.apply()
+        val app = App.get(requireContext())
+        app.appComponent.theme = AppTheme(newThemeIdx)
+        AppCompatDelegate.setDefaultNightMode(app.nightMode)
+        requireActivity().setTheme(app.appComponent.theme.mainResource)
+        requireActivity().recreate()
     }
 
     private fun initBackup() {
         viewModel.backupEvent.observe(viewLifecycleOwner) { code ->
             when (code) {
-                Backup.NO_RESULT -> { }
+                Backup.NO_RESULT -> {
+                }
                 else -> {
                     backupInCar.stopProgressAnimation()
                     backupWidget.stopProgressAnimation()
@@ -175,25 +191,6 @@ class AboutFragment : Fragment() {
                 restore.stopProgressAnimation()
             }
         }
-    }
-
-    private fun createThemesDialog(): AlertDialog {
-        val style = App.theme(requireContext()).dialog
-        return DialogSingleChoice(requireContext(), style, R.string.choose_a_theme, R.array.app_themes, App.theme(requireContext()).themeIdx) { d, which ->
-
-            context?.also {
-                val appSettings = App.provide(it).appSettings
-                appSettings.theme = which
-                appSettings.apply()
-                val app = App.get(it)
-                app.appComponent.theme = AppTheme(which)
-                AppCompatDelegate.setDefaultNightMode(app.nightMode)
-                requireActivity().setTheme(app.appComponent.theme.mainResource)
-                requireActivity().recreate()
-            }
-            d.dismiss()
-
-        }.create()
     }
 
     private fun onCarDockAppClick() {

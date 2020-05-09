@@ -11,21 +11,25 @@ import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
 import com.anod.car.home.R
+import com.anod.car.home.app.App
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.utils.Power
 import com.anod.car.home.utils.startActivitySafely
 import info.anodsplace.framework.AppLog
 
 class ModeHandler(private val context: Context, private val screenOrientation: ScreenOrientation) {
+    private val alertWindow: ScreenOnAlert by lazy { App.provide(context).alertWindow }
 
     fun enable(prefs: InCarInterface) {
         if (prefs.isDisableScreenTimeout) {
             if (prefs.isDisableScreenTimeoutCharging) {
                 if (Power.isConnected(context)) {
                     ModeService.acquireWakeLock(context)
+                    alertWindow.show()
                 }
             } else {
                 ModeService.acquireWakeLock(context)
+                alertWindow.show()
             }
         }
         if (prefs.isAdjustVolumeLevel) {
@@ -67,6 +71,7 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
     }
 
     fun disable(prefs: InCarInterface) {
+        alertWindow.hide()
         if (prefs.isDisableScreenTimeout) {
             ModeService.releaseWakeLock(context)
         }

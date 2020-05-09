@@ -10,10 +10,14 @@ import android.view.WindowManager
 import com.anod.car.home.app.AppIconLoader
 import com.anod.car.home.incar.ModeHandler
 import com.anod.car.home.incar.ModePhoneStateListener
+import com.anod.car.home.incar.ScreenOnAlert
 import com.anod.car.home.incar.ScreenOrientation
 import com.anod.car.home.model.AppsList
 import com.anod.car.home.prefs.model.AppSettings
 import com.anod.car.home.prefs.model.AppTheme
+import com.anod.car.home.prefs.model.InCarSettings
+import com.anod.car.home.prefs.model.InCarStorage
+import info.anodsplace.framework.app.AlertWindow
 
 /**
  * @author alex
@@ -46,7 +50,10 @@ class AppComponent(val application: CarWidgetApplication) {
         get() = ModePhoneStateListener(this.application, audioManager)
 
     val handler: ModeHandler
-        get() = ModeHandler(this.application, screenOrientation)
+        get() = ModeHandler(application, screenOrientation)
+
+    val alertWindow: ScreenOnAlert
+        get() = ScreenOnAlert(application, inCarSettings, AlertWindow(this.application))
 
     val notificationManager: NotificationManager
         get() = this.application.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -77,6 +84,9 @@ class AppComponent(val application: CarWidgetApplication) {
             }
             return _iconThemesCache!!
         }
+
+    val inCarSettings: InCarSettings
+        get() = InCarStorage.load(application)
 
     fun cleanAppListCache() {
         if (_appListCache != null) {

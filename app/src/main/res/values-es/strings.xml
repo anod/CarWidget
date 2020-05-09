@@ -209,16 +209,15 @@
     <string name="current_widget">Reproductor actual</string>
     <string name="no_active_widget">No se han encontrado reproductores activos. Asegúrese de añadir un reproductor a su pantalla de inicio.</string>
 
-    <string-array name="disable_screen_timeout">
-        <item>Desactivar (durante la carga)</item>
-        <item>Desactivar</item>
-        <item>Activar</item>
-    </string-array>
-
     <string-array name="orientation_titles">
         <item>Sistema</item>
         <item>Retrato</item>
         <item>Paisaje</item>
         <item>Paisaje (por detrás)</item>
     </string-array>
+
+    <string name="keep_on">Mantenga la pantalla en</string>
+    <string name="while_charging">Durante la carga</string>
+    <string name="screen_on_alternative">siempre en la cima</string>
+    <string name="screen_on_alternative_text">Habilitar forma alternativa para mantener la pantalla encendida (esto requiere el permiso adición)</string>
 </resources>

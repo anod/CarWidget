@@ -207,11 +207,6 @@
     <string name="show_choice">Показывать выбор</string>
     <string name="music_app">Аудиоплеер</string>
     <string name="choose_music_app_explanation">Выбирите приложение для ярылка Играть/Пауза</string>
-    <string-array name="disable_screen_timeout">
-        <item>Отменить (При зарядке)</item>
-        <item>Отменить</item>
-        <item>Разрешить</item>
-    </string-array>
     <string name="current_widget">Выбранный виджет</string>
 	<string name="list_of_active_widgets">Список активных виджетов</string>
 	<string name="widgets_hint">Выберите виджет из списка для настойки</string>
@@ -235,11 +230,11 @@
 	<string name="unavailable_bt_device">Недоступен</string>
 	<string name="choose">Выбирите</string>
 	<string name="crash_dialog_report_button">Отчет</string>
-    <string name="crash_dialog_title">Авто Виджет остановлен</string>
+	<string name="crash_dialog_title">Авто Виджет остановлен</string>
 	<string name="crash_dialog_toast">Браузер будет открыт</string>
 	<string name="crash_dialog_text">Пожалуста отошлите отчет об ошибке</string>
-    <string name="in_car_mode_switch">Переключение \"В автомобиле\"</string>
-    <string name="permission_denied">Нет разрешения</string>
+	<string name="in_car_mode_switch">Переключение \"В автомобиле\"</string>
+	<string name="permission_denied">Нет разрешения</string>
 	<string name="general">Общие</string>
 	<string name="mode_detector_channel">Отслежевание режима \"В Автомобиле\"</string>
 	<string name="app_preferences">Настройки аппликации</string>
@@ -248,11 +243,15 @@
 	<string name="allow_permissions_brightness">Резрешите изменять системны настройки для изменения яркости</string>
 	<string name="notification_mode_detector_title">Отслежевание режима \"В Автомобиле\"</string>
 	<string name="samsung_driving_title">Автомобильный режим Samsung</string>
-    <string name="adaptive_icon_style">Адаптивная иконка</string>
+	<string name="adaptive_icon_style">Адаптивная иконка</string>
 	<string name="answer_error_marshmallow">Авто Виджет: Разрешите доступ к уведомлениям для ответа</string>
 	<string name="answer_error_oreo">Авто Виджет: Нужно разрешение для ответа</string>
 	<string name="permission_notification_listener">Доступ к уведомлениям</string>
 	<string name="choose_color">Выбрать цвет</string>
 	<string name="auto_color">Авто-цвет</string>
 	<string name="hidden">Скрыт</string>
+	<string name="keep_on">Оставьте экран включенным</string>
+	<string name="while_charging">Во время зарядки</string>
+	<string name="screen_on_alternative">Всегда сверху</string>
+	<string name="screen_on_alternative_text">Включить альтернативный способ держать экран включенным (требует дополнительного разрешения)</string>
 </resources>

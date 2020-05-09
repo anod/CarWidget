@@ -201,11 +201,6 @@
     <string name="show_choice">להציג בחירה</string>
     <string name="music_app">נגן מוזיקה</string>
     <string name="choose_music_app_explanation">בחרו אפליקציה שתשמש על ידי קיצור דרך נגן/השהה</string>
-    <string-array name="disable_screen_timeout">
-        <item>לבטל (בעת טעינה)</item>
-        <item>לבטל</item>
-        <item>לאפשר</item>
-    </string-array>
     <string name="current_widget">הוידג׳ט הנבחר</string>
     <string name="list_of_active_widgets">רשימת וידג׳טים פועלים</string>
     <string name="widgets_hint">בחר וידג׳ט מהרשימה להגדרה</string>
@@ -256,4 +251,8 @@
     <string name="answer_error_marshmallow">וודידג׳ט לרכב: אפשר גישה להתראות</string>
     <string name="adaptive_icon_style">סגנון אייקון</string>
 
+    <string name="keep_on">השאר מסך דלוק</string>
+    <string name="while_charging">במהלך טעינה</string>
+    <string name="screen_on_alternative">תמיד בראש</string>
+    <string name="screen_on_alternative_text">אפשר דרך חלופית כדי לשמור המסך מופעל (דורש אישור נוסף)</string>
 </resources>

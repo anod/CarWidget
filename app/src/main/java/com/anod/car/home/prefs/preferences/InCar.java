@@ -5,7 +5,10 @@ import android.content.ComponentName;
 import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 
+import com.anod.car.home.incar.ScreenOnAlert;
 import com.anod.car.home.prefs.model.InCarInterface;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -378,5 +381,16 @@ public class InCar implements Serializable, InCarInterface {
     @Override
     public void setHotspotOn(boolean on) {
         hotspotOn = on;
+    }
+
+    @NotNull
+    @Override
+    public ScreenOnAlert.Settings getScreenOnAlert() {
+        return new ScreenOnAlert.Settings(false, new Integer[]{25, 100});
+    }
+
+    @Override
+    public void setScreenOnAlert(@NotNull ScreenOnAlert.Settings screenOnAlert) {
+
     }
 }

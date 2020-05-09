@@ -2,25 +2,34 @@ package com.anod.car.home.prefs
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.SwitchPreferenceCompat
 import com.anod.car.home.R
+import com.anod.car.home.app.App
 import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.incar.BroadcastService
+import com.anod.car.home.incar.ScreenOnAlert
 import com.anod.car.home.incar.ScreenOrientation
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarSettings
 import com.anod.car.home.prefs.model.InCarStorage
+import com.anod.car.home.prefs.views.ViewScreenTimeout
 import com.anod.car.home.utils.*
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import info.anodsplace.framework.app.AlertWindow
+import info.anodsplace.framework.app.DialogCustom
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -124,8 +133,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     private fun initAutoAnswer() {
         val pref: ListPreference = findPreference("auto_answer")!!
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            if (newValue != InCarInterface.AUTOANSWER_DISABLED)
-            {
+            if (newValue != InCarInterface.AUTOANSWER_DISABLED) {
                 if (!AppPermissions.isGranted(requireContext(), AnswerPhoneCalls)) {
                     Toast.makeText(context, R.string.allow_answer_phone_calls, Toast.LENGTH_LONG).show()
                     AppPermissions.requestAnswerPhoneCalls(this, requestAnswerPhone)
@@ -138,8 +146,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     private fun initBrightness() {
         val pref: ListPreference = findPreference("brightness")!!
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            if (newValue != InCarInterface.BRIGHTNESS_DISABLED)
-            {
+            if (newValue != InCarInterface.BRIGHTNESS_DISABLED) {
                 if (!AppPermissions.isGranted(requireContext(), WriteSettings)) {
                     Toast.makeText(context, R.string.allow_permissions_brightness, Toast.LENGTH_LONG).show()
                     AppPermissions.requestWriteSettings(this, requestWriteSettings)
@@ -152,8 +159,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     private fun initScreenOrientation() {
         val pref: ListPreference = findPreference("screen-orientation")!!
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            if (newValue != ScreenOrientation.DISABLED.toString())
-            {
+            if (newValue != ScreenOrientation.DISABLED.toString()) {
                 if (!AppPermissions.isGranted(requireContext(), CanDrawOverlay)) {
                     Toast.makeText(context, R.string.allow_permission_overlay, Toast.LENGTH_LONG).show()
                     AppPermissions.requestDrawOverlay(this, requestDrawOverlay)
@@ -164,34 +170,38 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     }
 
     private fun initScreenTimeout(incar: InCarSettings) {
-        val pref: ListPreference = findPreference(SCREEN_TIMEOUT_LIST)!!
+        val pref: Preference = requirePreference(SCREEN_TIMEOUT_LIST)
+        val style = App.theme(requireContext()).alert
+        val values = resources.getStringArray(R.array.disable_screen_timeout_values)
+        val selectedItem = if (incar.isDisableScreenTimeout)
+            if (incar.isDisableScreenTimeoutCharging) "disabled-charging" else "disabled"
+        else "enabled"
+        values.indexOf(selectedItem)
 
-        if (incar.isDisableScreenTimeout) {
-            if (incar.isDisableScreenTimeoutCharging) {
-                pref.value = "disabled-charging"
-            } else {
-                pref.value = "disabled"
-            }
-        } else {
-            pref.value = "enabled"
-        }
-
-        pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            when (newValue as String) {
-                "disabled-charging" -> {
-                    InCarStorage.saveScreenTimeout(true, disableCharging = true, prefs = incar)
-                    pref.value = "disabled-charging"
+        pref.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            DialogCustom(
+                    requireContext(),
+                    style,
+                    R.string.pref_screen_timeout,
+                    R.layout.view_screen_timeout
+            ) { view, _ ->
+                val v = ViewScreenTimeout(view)
+                v.screenOnSwitch.isChecked = incar.isDisableScreenTimeout
+                v.whileCharging.isChecked = incar.isDisableScreenTimeoutCharging
+                v.useAlertGroup.isVisible = AlertWindow.isSupported
+                v.useAlert.isChecked = incar.screenOnAlert.enabled
+                v.onStateChange { keepOn, whileCharging, useAlert ->
+                    InCarStorage.saveScreenTimeout(keepOn, disableCharging = whileCharging, prefs = incar)
+                    if (useAlert && AlertWindow.isSupported) {
+                        if (AlertWindow.hasPermission(requireContext())) {
+                            incar.screenOnAlert = ScreenOnAlert.Settings(true, incar.screenOnAlert)
+                        } else {
+                            startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + requireContext().getPackageName())))
+                        }
+                    }
                 }
-                "disabled" -> {
-                    InCarStorage.saveScreenTimeout(true, disableCharging = false, prefs = incar)
-                    pref.value = "disabled"
-                }
-                else -> {
-                    InCarStorage.saveScreenTimeout(false, disableCharging = false, prefs = incar)
-                    pref.value = "enabled"
-                }
-            }
-            false
+            }.show()
+            true
         }
     }
 

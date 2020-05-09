@@ -9,6 +9,7 @@ import android.util.JsonWriter
 import androidx.collection.ArrayMap
 import androidx.collection.SimpleArrayMap
 import com.anod.car.home.incar.SamsungDrivingMode
+import com.anod.car.home.incar.ScreenOnAlert
 import com.anod.car.home.incar.ScreenOrientation
 import com.anod.car.home.utils.Utils
 import java.io.IOException
@@ -143,6 +144,19 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
         get() = prefs.getBoolean(HOTSPOT, false)
         set(on) = putChange(HOTSPOT, on)
 
+    override var screenOnAlert: ScreenOnAlert.Settings
+        get() = ScreenOnAlert.Settings(
+                prefs.getBoolean("screen-on-alert-enabled", false),
+                arrayOf(
+                        prefs.getInt("screen-on-alert-x", ScreenOnAlert.Settings.defaultX),
+                        prefs.getInt("screen-on-alert-y", ScreenOnAlert.Settings.defaultY)
+                )
+        )
+        set(value) {
+            putChange("screen-on-alert-enabled", value.enabled)
+            putChange("screen-on-alert-x", value.loc[0])
+            putChange("screen-on-alert-y", value.loc[1])
+        }
 
     @Throws(IOException::class)
     fun writeJson(writer: JsonWriter) {
@@ -182,6 +196,18 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
         val screenOrientation = prefs.getString(SCREEN_ORIENTATION, ScreenOrientation.DISABLED.toString())
         writer.name(SCREEN_ORIENTATION).value(screenOrientation)
         writer.name(HOTSPOT).value(isHotspotOn)
+        val screenOnAlert = screenOnAlert
+        writer.name("screen-on-alert").also { alert ->
+            alert.beginObject()
+            alert.name("enabled").value(screenOnAlert.enabled)
+            alert.name("loc").also { loc ->
+                loc.beginArray()
+                loc.value(screenOnAlert.loc[0])
+                loc.value(screenOnAlert.loc[1])
+                loc.endArray()
+            }
+            alert.endObject()
+        }
         writer.endObject()
     }
 
@@ -219,9 +245,42 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
         types.put(HOTSPOT, JsonToken.BOOLEAN)
 
         reader.beginObject()
-        val found = JsonReaderHelper.readValues(reader, types, this)
+        val found = JsonReaderHelper.readValues(reader, types, this) { name, reader ->
+            when (name) {
+                "screen-on-alert" -> {
+                    this.screenOnAlert = readScreenAlert(reader)
+                    true
+                }
+                else -> false
+            }
+        }
+
         reader.endObject()
         return found
+    }
+
+    private fun readScreenAlert(reader: JsonReader): ScreenOnAlert.Settings {
+        reader.beginObject()
+        var enabled = false
+        val loc = arrayOf(ScreenOnAlert.Settings.defaultX, ScreenOnAlert.Settings.defaultY)
+        while (reader.hasNext()) {
+            when (reader.nextName()) {
+                "enabled" -> {
+                    enabled = reader.nextBoolean()
+                }
+                "loc" -> {
+                    reader.beginArray()
+                    loc[0] = reader.nextInt()
+                    loc[1] = reader.nextInt()
+                    reader.endArray()
+                }
+                else -> {
+                    reader.skipValue()
+                }
+            }
+        }
+        reader.endObject()
+        return ScreenOnAlert.Settings(enabled, loc)
     }
 
     companion object {

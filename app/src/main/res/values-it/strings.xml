@@ -209,16 +209,15 @@
     <string name="current_widget">Widget attuale</string>
     <string name="no_active_widget">Non sono stati trovati widget attivi. Assicurati di aggiungere un widget nella schermata iniziale.</string>
 
-    <string-array name="disable_screen_timeout">
-        <item>Disattiva (durante la carica)</item>
-        <item>Disattiva</item>
-        <item>Attiva</item>
-    </string-array>
-
     <string-array name="orientation_titles">
         <item>Sistema</item>
         <item>Ritratto</item>
         <item>Panorama</item>
         <item>Panorama (inverso)</item>
     </string-array>
+
+    <string name="keep_on">Tieni lo schermo acceso</string>
+    <string name="while_charging">während des Ladevorgangs</string>
+    <string name="screen_on_alternative">sempre in cima</string>
+    <string name="screen_on_alternative_text">Abilita modo alternativo per mantenere schermo acceso (questo richiede il permesso aggiunta)</string>
 </resources>

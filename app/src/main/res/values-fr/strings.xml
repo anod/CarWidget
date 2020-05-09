@@ -209,16 +209,15 @@
     <string name="current_widget">Widget actuel</string>
     <string name="no_active_widget">Aucun widget actif n\'a été trouvé. Assurez-vous d\'en ajouter un sur votre écran d\'accueil.</string>
 
-    <string-array name="disable_screen_timeout">
-        <item>Désactiver (pendant la charge)</item>
-        <item>Désactiver</item>
-        <item>Activer</item>
-    </string-array>
-
     <string-array name="orientation_titles">
         <item>Système</item>
         <item>Portrait</item>
         <item>Paysage</item>
         <item>Paysage (inverse)</item>
     </string-array>
+
+    <string name="keep_on">"Gardez l'écran allumé"</string>
+    <string name="while_charging">Pendant la charge</string>
+    <string name="screen_on_alternative">toujours au sommet</string>
+    <string name="screen_on_alternative_text">"Activer autre façon de garder l'écran allumé (ce qui nécessite l'autorisation d'addition)"</string>
 </resources>
