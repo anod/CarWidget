@@ -43,6 +43,7 @@ dependencies {
 
     implementation("ch.acra:acra-core:5.5.1")
     implementation("ch.acra:acra-notification:5.5.1")
+    implementation("ch.acra:acra-limiter:5.5.1")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.72")
     implementation("com.android.support.constraint:constraint-layout:2.0.0-beta6")
@@ -54,8 +55,8 @@ android {
     defaultConfig {
         minSdkVersion(21)
         targetSdkVersion(28) // 29 wifi switch not working
-        versionCode = 21301
-        versionName = "2.1.3"
+        versionCode = 21400
+        versionName = "2.1.4"
         vectorDrawables.generatedDensities("hdpi", "xxhdpi")
     }
 

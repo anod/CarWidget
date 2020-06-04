@@ -9,13 +9,14 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.anod.car.home.acra.BrowserUrlSender
 import com.anod.car.home.notifications.Channels
 import com.anod.car.home.prefs.model.AppTheme
+import com.anod.car.home.utils.AppUpgrade
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.ApplicationInstance
 import org.acra.ACRA
 import org.acra.ReportField
 import org.acra.annotation.AcraCore
+import org.acra.annotation.AcraLimiter
 import org.acra.annotation.AcraNotification
-import com.anod.car.home.utils.AppUpgrade
 
 
 @AcraCore(
@@ -38,6 +39,12 @@ import com.anod.car.home.utils.AppUpgrade
         resText = R.string.crash_dialog_text,
         resTitle = R.string.crash_dialog_title,
         resSendButtonText = R.string.crash_dialog_report_button)
+@AcraLimiter(
+        overallLimit = 3,
+        exceptionClassLimit = 1,
+        failedReportLimit = 1,
+        stacktraceLimit = 1
+)
 class CarWidgetApplication : Application(), ApplicationInstance {
 
     val appComponent: AppComponent by lazy { AppComponent(this) }
@@ -76,7 +83,8 @@ class CarWidgetApplication : Application(), ApplicationInstance {
                 // Not sure what is going here
                 exception is DeadSystemException -> androidCrashHandler.uncaughtException(thread, exception)
                 // Bug in Android 7.1.1
-                exception.message?.contains("startForegroundService")?: false -> androidCrashHandler.uncaughtException(thread, exception)
+                exception.message?.contains("startForegroundService") == true -> androidCrashHandler.uncaughtException(thread, exception)
+                exception.message?.contains("system server dead") == true -> androidCrashHandler.uncaughtException(thread, exception)
                 else -> acraCrashHandler.uncaughtException(thread, exception)
             }
         }
