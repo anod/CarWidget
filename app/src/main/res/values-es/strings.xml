@@ -220,4 +220,15 @@
     <string name="while_charging">Durante la carga</string>
     <string name="screen_on_alternative">siempre en la cima</string>
     <string name="screen_on_alternative_text">Habilitar forma alternativa para mantener la pantalla encendida (esto requiere el permiso adición)</string>
+    <string name="color_picker_default_title">Elija un color</string>
+    <string name="color_swatch_description">Color de %1$d</string>
+    <string name="color_swatch_description_selected">Color de %1$d seleccionado</string>
+    <string name="app_shortcuts_limited">apoyo atajos aplicación está limitada por Android</string>
+    <string name="unavailable_bt_device">No disponible</string>
+    <string name="hidden">Oculto</string>
+    <string name="choose">Escoger</string>
+    <string name="permission_denied">Permiso denegado</string>
+    <string name="mode_detector_channel">Detección de modo InCar</string>
+    <string name="notification_mode_detector_title">Detección de modo InCar</string>
+    <string name="notification_mode_detector_content">Pueden estar escondidos en la configuración de notificaciones</string>
 </resources>

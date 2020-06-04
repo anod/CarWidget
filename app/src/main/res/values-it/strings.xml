@@ -220,4 +220,15 @@
     <string name="while_charging">während des Ladevorgangs</string>
     <string name="screen_on_alternative">sempre in cima</string>
     <string name="screen_on_alternative_text">Abilita modo alternativo per mantenere schermo acceso (questo richiede il permesso aggiunta)</string>
+    <string name="color_picker_default_title">Selezionare un colore</string>
+    <string name="color_swatch_description">Colore %1$d</string>
+    <string name="color_swatch_description_selected">Colore %1$d selezionata</string>
+    <string name="app_shortcuts_limited">supporto App scorciatoie è limitato da Android</string>
+    <string name="unavailable_bt_device">Non disponibile</string>
+    <string name="hidden">Nascosto</string>
+    <string name="choose">Scegliere</string>
+    <string name="permission_denied">Permesso negato</string>
+    <string name="mode_detector_channel">Rilevamento di modalità InCar</string>
+    <string name="notification_mode_detector_title">Rilevamento di modalità InCar</string>
+    <string name="notification_mode_detector_content">Può essere nascosto in impostazioni di notifica</string>
 </resources>

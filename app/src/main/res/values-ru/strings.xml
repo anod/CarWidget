@@ -254,4 +254,7 @@
 	<string name="while_charging">Во время зарядки</string>
 	<string name="screen_on_alternative">Всегда сверху</string>
 	<string name="screen_on_alternative_text">Включить альтернативный способ держать экран включенным (требует дополнительного разрешения)</string>
+	<string name="app_shortcuts_limited">Поддержка App ярлыков ограничена Android</string>
+	<string name="notification_mode_detector_content">Может быть скрыто в настройках уведомлений</string>
+	<string name="allow_permissions_samsung_mode">Разрешить запись настроек системы, чтобы изменять режим вождения</string>
 </resources>

@@ -219,4 +219,15 @@
     <string name="while_charging">Under laddning</string>
     <string name="screen_on_alternative">alltid ovanpå</string>
     <string name="screen_on_alternative_text">Aktivera alternativt sätt att hålla skärmen påslagen (detta kräver dessutom tillstånd)</string>
+    <string name="color_picker_default_title">Välj en färg</string>
+    <string name="color_swatch_description">Färg %1$d</string>
+    <string name="color_swatch_description_selected">Färg %1$d vald</string>
+    <string name="app_shortcuts_limited">App genvägar stöd begränsas av Android</string>
+    <string name="unavailable_bt_device">Inte tillgänglig</string>
+    <string name="hidden">Dold</string>
+    <string name="choose">Välja</string>
+    <string name="permission_denied">Åtkomst nekad</string>
+    <string name="mode_detector_channel">Detektion av InCar läge</string>
+    <string name="notification_mode_detector_title">Detektion av InCar läge</string>
+    <string name="notification_mode_detector_content">Kan döljas i meddelandeinställningar</string>
 </resources>

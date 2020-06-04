@@ -142,9 +142,9 @@ class ShortcutPicker(private val model: Shortcuts, private val handler: Handler,
         val result = model.saveIntent(currentCellId, data, isApplicationShortcut)
         handler.onAddShortcut(currentCellId, result.first, result.second)
         if (result.second == ShortcutInfoUtils.successAppShortcut) {
-            Toast.makeText(context, "App shortcuts support is limited by Android", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.app_shortcuts_limited, Toast.LENGTH_SHORT).show()
         } else if (result.second == ShortcutInfoUtils.failedAppShortcut) {
-            Toast.makeText(context, "App shortcuts support is limited by Android", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, R.string.app_shortcuts_limited, Toast.LENGTH_LONG).show()
         }
         currentCellId = INVALID_CELL_ID
         return true

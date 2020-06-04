@@ -255,4 +255,7 @@
     <string name="while_charging">במהלך טעינה</string>
     <string name="screen_on_alternative">תמיד בראש</string>
     <string name="screen_on_alternative_text">אפשר דרך חלופית כדי לשמור המסך מופעל (דורש אישור נוסף)</string>
+    <string name="app_shortcuts_limited">תמיכת קיצורי דרך ליישומים מוגבלת על ידי אנדרואיד</string>
+    <string name="notification_mode_detector_content">ניתן להסתיר בהגדרות ההתראות</string>
+    <string name="allow_permissions_samsung_mode">אפשר כתיבה של הגדרות מערכת כדי שנות למצב הנהיגה</string>
 </resources>

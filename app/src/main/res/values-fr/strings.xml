@@ -220,4 +220,15 @@
     <string name="while_charging">Pendant la charge</string>
     <string name="screen_on_alternative">toujours au sommet</string>
     <string name="screen_on_alternative_text">"Activer autre façon de garder l'écran allumé (ce qui nécessite l'autorisation d'addition)"</string>
+    <string name="color_picker_default_title">Sélectionnez une couleur</string>
+    <string name="color_swatch_description">Couleur %1$d</string>
+    <string name="color_swatch_description_selected">Couleur %1$d sélectionné</string>
+    <string name="app_shortcuts_limited">Le soutien de l\'application est limitée par Android</string>
+    <string name="unavailable_bt_device">Indisponible</string>
+    <string name="hidden">Caché</string>
+    <string name="choose">Choisir</string>
+    <string name="permission_denied">Permission refusée</string>
+    <string name="mode_detector_channel">Détection du mode InCar</string>
+    <string name="notification_mode_detector_title">Détection du mode InCar</string>
+    <string name="notification_mode_detector_content">Peut être caché dans les paramètres de notification</string>
 </resources>
