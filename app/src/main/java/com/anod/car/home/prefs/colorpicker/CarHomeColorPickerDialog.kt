@@ -9,13 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.widget.Toolbar
+import androidx.core.graphics.alpha
 import androidx.core.os.bundleOf
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.android.colorpicker.ColorPickerDialog
 import com.android.colorpicker.ColorPickerPalette
 import com.android.colorpicker.ColorPickerSwatch
 import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.utils.ColorUtils
+import com.anod.car.home.utils.opaque
+import com.anod.car.home.utils.toColorHex
+import com.anod.car.home.utils.withAlpha
 
 class CarHomeColorPickerDialog : ColorPickerDialog() {
     private var palette: ColorPickerPalette? = null
@@ -30,21 +36,20 @@ class CarHomeColorPickerDialog : ColorPickerDialog() {
     private val colorSelectListener = ColorPickerSwatch.OnColorSelectedListener { color ->
         if (color != selectedColor) {
             selectedColor = color
-            // Redraw palette to show checkmark on newly selected color before dismissing.
+            // Redraw palette to show check mark on newly selected color before dismissing.
             palette!!.drawPalette(colors, selectedColor)
-            if (alpha != null) {
-                alpha!!.drawPalette(generateAlphaColors(selectedColor), selectedColor)
-            }
+            val selectedColorWithAlpha = selectedColor.withAlpha(selectedAlpha)
+            alpha?.drawPalette(generateAlphaColors(selectedColor), selectedColorWithAlpha)
             updateHexButton()
         }
     }
 
     private val alphaSelectListener = ColorPickerSwatch.OnColorSelectedListener { color ->
-        val alpha = Color.alpha(color)
+        val alpha = color.alpha
         if (alpha != selectedAlpha) {
             selectedAlpha = alpha
-            val selectedColorWithAlpha = alphaColor(selectedAlpha, selectedColor)
-            // Redraw palette to show checkmark on newly selected color before dismissing.
+            val selectedColorWithAlpha = selectedColor.withAlpha(selectedAlpha)
+            // Redraw palette to show check mark on newly selected color before dismissing.
             this.alpha!!.drawPalette(generateAlphaColors(selectedColor), selectedColorWithAlpha)
             updateHexButton()
         }
@@ -54,7 +59,8 @@ class CarHomeColorPickerDialog : ColorPickerDialog() {
         super.onCreate(savedInstanceState)
         alphaSliderVisible = requireArguments().getBoolean(KEY_ALPHA)
         val selectedColor = requireArguments().getInt(KEY_SELECTED_COLOR)
-        this.selectedColor = alphaColor(ALPHA_OPAQUE, selectedColor)
+        this.selectedColor = selectedColor.opaque
+        selectedAlpha = selectedColor.alpha
 
         setStyle(STYLE_NO_FRAME, 0)
     }
@@ -69,7 +75,6 @@ class CarHomeColorPickerDialog : ColorPickerDialog() {
         colors = requireArguments().getIntArray(KEY_COLORS)
         val tileResId = requireArguments().getInt(KEY_TITLE_ID, R.string.color_dialog_title)
         val theme = requireArguments().getInt(KEY_THEME)
-        selectedAlpha = Color.alpha(selectedColor)
 
         requireContext().theme.applyStyle(theme, true)
         val view = inflater.inflate(R.layout.color_picker_dialog, container, false)
@@ -81,26 +86,29 @@ class CarHomeColorPickerDialog : ColorPickerDialog() {
         updateHexButton()
         hexButton!!.setOnClickListener { toggleHexDialog() }
 
-        palette = view.findViewById(R.id.color_picker)
-        palette!!.init(size, columns, colorSelectListener)
+        palette = view.findViewById<ColorPickerPalette>(R.id.color_picker).also {
+            it.init(size, columns, colorSelectListener)
+        }
         colorsPanel = view.findViewById(R.id.colors_panel)
 
-        hexPanel = view.findViewById(R.id.hex_panel)
-        hexPanel!!.init(selectedColor, alphaSliderVisible)
-        hexPanel!!.hide()
+        hexPanel = view.findViewById<HexPanel>(R.id.hex_panel).also {
+            it.init(selectedColor, alphaSliderVisible)
+            it.isVisible = false
+        }
 
         if (alphaSliderVisible) {
             val density = resources.displayMetrics.density
-            alpha = view.findViewById(R.id.alpha_picker)
-            alpha!!.background = AlphaPatternDrawable((5 * density).toInt())
-            alpha!!.visibility = View.VISIBLE
-            alpha!!.init(size, ALPHA_LEVELS, alphaSelectListener)
+            alpha = view.findViewById<ColorPickerPalette>(R.id.alpha_picker).also {
+                it.background = AlphaPatternDrawable((5 * density).toInt())
+                it.isVisible = true
+                it.init(size, ALPHA_LEVELS, alphaSelectListener)
+            }
         }
 
         val positiveButton = view.findViewById<Button>(android.R.id.button1)
         positiveButton.setText(android.R.string.ok)
         positiveButton.setOnClickListener {
-            var color = alphaColor(selectedAlpha, selectedColor)
+            var color = selectedColor.withAlpha(selectedAlpha)
             if (hexPanel!!.isVisible) {
                 color = hexPanel!!.getColor(color)
             }
@@ -119,23 +127,14 @@ class CarHomeColorPickerDialog : ColorPickerDialog() {
     }
 
     private fun updateHexButton() {
-        hexButton!!.text = "#${ColorUtils.toHex(selectedColor, alphaSliderVisible)}"
+        val selectedColorWithAlpha = selectedColor.withAlpha(selectedAlpha)
+        hexButton!!.text = "#${selectedColorWithAlpha.toColorHex(alphaSliderVisible)}"
     }
 
     private fun refreshPalette() {
-        if (palette != null) {
-            palette!!.drawPalette(colors, selectedColor)
-            if (alpha != null) {
-                alpha!!.drawPalette(generateAlphaColors(selectedColor), selectedColor)
-            }
-        }
-    }
-
-    private fun alphaColor(alpha: Int, color: Int): Int {
-        val r = Color.red(color)
-        val g = Color.green(color)
-        val b = Color.blue(color)
-        return Color.argb(alpha, r, g, b)
+        palette?.drawPalette(colors, selectedColor)
+        val colorWithAlpha = selectedColor.withAlpha(selectedAlpha)
+        alpha?.drawPalette(generateAlphaColors(selectedColor), colorWithAlpha)
     }
 
     private fun generateAlphaColors(color: Int): IntArray {
@@ -155,14 +154,15 @@ class CarHomeColorPickerDialog : ColorPickerDialog() {
     }
 
     private fun toggleHexDialog() {
-        if (hexPanel!!.isVisible) {
-            hexPanel!!.hide()
-            colorsPanel!!.visibility = View.VISIBLE
+        val panel = hexPanel!!
+        if (panel.isVisible) {
+            panel.isVisible = false
+            colorsPanel!!.isVisible = true
             return
         }
-        hexPanel!!.setColor(selectedColor)
-        hexPanel!!.show()
-        colorsPanel!!.visibility = View.INVISIBLE
+        panel.setColor(selectedColor)
+        panel.isVisible = true
+        colorsPanel!!.isInvisible = true
     }
 
     companion object {

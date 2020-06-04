@@ -13,10 +13,12 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
 import com.android.colorpicker.ColorStateDrawable
 import com.anod.car.home.R
 import com.anod.car.home.utils.ColorUtils
+import com.anod.car.home.utils.toColorHex
 
 /**
  * @author alex
@@ -25,9 +27,6 @@ import com.anod.car.home.utils.ColorUtils
 class HexPanel @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
     private val mPreview: ImageView
-
-    var isVisible: Boolean = false
-        private set
 
     private val hexEdit: EditText
 
@@ -45,7 +44,7 @@ class HexPanel @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         }
     }
 
-    fun init(color: Int, alphaSupport: Boolean) {
+    fun init(@ColorInt color: Int, alphaSupport: Boolean) {
         this.alphaSupport = alphaSupport
         val filter0 = InputFilter.LengthFilter(if (alphaSupport) 8 else 6)
         val filter1 = InputFilter { source, start, end, _, _, _ ->
@@ -86,28 +85,18 @@ class HexPanel @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     }
 
-    fun setColor(color: Int) {
-        hexEdit.setText(ColorUtils.toHex(color, alphaSupport))
+
+    fun setColor(@ColorInt color: Int) {
+        hexEdit.setText(color.toColorHex(alphaSupport))
         setPreviewColor(color)
     }
 
-    private fun setPreviewColor(color: Int) {
+    private fun setPreviewColor(@ColorInt color: Int) {
         val drawable: Drawable = ResourcesCompat.getDrawable(context.resources, R.drawable.color_picker_swatch, null)!!
         mPreview.setImageDrawable(ColorStateDrawable(arrayOf(drawable), color))
     }
 
-    fun hide() {
-        visibility = View.GONE
-        isVisible = false
-    }
-
-    fun show() {
-        visibility = View.VISIBLE
-        isVisible = true
-    }
-
-    fun getColor(defaultColor: Int): Int {
+    fun getColor(@ColorInt defaultColor: Int): Int {
         return ColorUtils.fromHex(hexEdit.text.toString(), alphaSupport, defaultColor)
     }
-
 }

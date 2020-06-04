@@ -16,9 +16,6 @@
 
 package com.android.colorpicker;
 
-import com.android.colorpicker.ColorPickerSwatch.OnColorSelectedListener;
-import com.anod.car.home.R;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
@@ -27,6 +24,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
+import androidx.annotation.ColorInt;
+
+import com.android.colorpicker.ColorPickerSwatch.OnColorSelectedListener;
+import com.anod.car.home.R;
 
 /**
  * A color picker custom view which creates an grid of color squares.  The number of squares per
@@ -85,7 +87,7 @@ public class ColorPickerPalette extends TableLayout {
     /**
      * Adds swatches to table in a serpentine format.
      */
-    public void drawPalette(int[] colors, int selectedColor) {
+    public void drawPalette(int[] colors, @ColorInt int selectedColor) {
         if (colors == null) {
             return;
         }
