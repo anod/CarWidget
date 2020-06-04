@@ -1,17 +1,16 @@
 package com.anod.car.home.app
 
-import com.anod.car.home.appwidget.Provider
-import com.anod.car.home.model.Shortcut
-import com.anod.car.home.model.WidgetShortcutsModel
-import info.anodsplace.framework.AppLog
-import com.anod.car.home.utils.ShortcutPicker
-import com.anod.car.home.utils.Utils
-
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.Window
+import com.anod.car.home.appwidget.Provider
+import com.anod.car.home.model.Shortcut
+import com.anod.car.home.model.WidgetShortcutsModel
+import com.anod.car.home.utils.ShortcutPicker
+import com.anod.car.home.utils.Utils
+import info.anodsplace.framework.AppLog
 
 /**
  * @author alex
@@ -64,7 +63,7 @@ class NewShortcutActivity : Activity(), ShortcutPicker.Handler {
         }
     }
 
-    override fun onAddShortcut(cellId: Int, info: Shortcut?) {
+    override fun onAddShortcut(cellId: Int, info: Shortcut?, resultCode: Int) {
         Provider.requestUpdate(this, intArrayOf(appWidgetId))
         finish()
     }

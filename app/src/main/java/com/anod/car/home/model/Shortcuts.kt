@@ -16,7 +16,7 @@ interface Shortcuts {
 
     fun get(position: Int): Shortcut?
 
-    fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Shortcut?
+    fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Pair<Shortcut?, Int>
 
     fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?)
 

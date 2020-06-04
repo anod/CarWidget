@@ -129,11 +129,15 @@ class AboutFragment : Fragment() {
                 it.startProgressAnimation()
                 Toast.makeText(context, getString(R.string.backup_path, LEGACY_PATH), Toast.LENGTH_LONG).show()
                 startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                    val uri = FileProvider.getUriForFile(applicationContext, Backup.AUTHORITY, Backup.legacyBackupDir)
-                    setDataAndType(uri, "application/json")
                     putExtra(Intent.EXTRA_TITLE, Backup.FILE_INCAR_JSON)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri)
+                    try {
+                        val uri = FileProvider.getUriForFile(applicationContext, Backup.AUTHORITY, Backup.legacyBackupDir)
+                        setDataAndType(uri, "application/json")
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri)
+                        }
+                    } catch (e: Exception) {
+                        AppLog.e(e)
                     }
                 }, Backup.requestBackupInCar)
             } catch (e: Exception) {
@@ -148,11 +152,15 @@ class AboutFragment : Fragment() {
                 it.startProgressAnimation()
                 Toast.makeText(context, getString(R.string.backup_path, LEGACY_PATH), Toast.LENGTH_LONG).show()
                 startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                    val uri = FileProvider.getUriForFile(applicationContext, Backup.AUTHORITY, Backup.legacyBackupDir)
-                    setDataAndType(uri, "application/json")
                     putExtra(Intent.EXTRA_TITLE, "carwidget-${viewModel.appWidgetId}" + Backup.FILE_EXT_JSON)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri)
+                    try {
+                        val uri = FileProvider.getUriForFile(applicationContext, Backup.AUTHORITY, Backup.legacyBackupDir)
+                        setDataAndType(uri, "application/json")
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri)
+                        }
+                    } catch (e: Exception) {
+                        AppLog.e(e)
                     }
                 }, Backup.requestBackupWidget)
             } catch (e: Exception) {

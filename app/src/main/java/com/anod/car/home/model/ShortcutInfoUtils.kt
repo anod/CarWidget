@@ -1,27 +1,40 @@
 package com.anod.car.home.model
 
 import android.content.ComponentName
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ShortcutIconResource
+import android.content.pm.LauncherApps
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.os.Build
 import android.os.Parcelable
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
 import com.anod.car.home.utils.UtilitiesBitmap
+import com.anod.car.home.utils.toBitmap
 import info.anodsplace.framework.AppLog
 
 object ShortcutInfoUtils {
 
-    class ShortcutWithIcon {
-        var info: Shortcut? = null
-        var icon: ShortcutIcon? = null
-    }
+    val successApp = 0
+    val successCustom = 1
+    val successAppShortcut = 2
+    val failedApp = 3
+    val failedAppShortcut = 4
+
+    class ShortcutWithIcon(
+            val result: Int,
+            val info: Shortcut?,
+            val icon: ShortcutIcon?
+    )
 
     internal fun createShortcut(context: Context, data: Intent, isAppShortcut: Boolean): ShortcutWithIcon {
         return if (isAppShortcut) {
@@ -32,25 +45,33 @@ object ShortcutInfoUtils {
     }
 
     private fun infoFromShortcutIntent(context: Context, data: Intent): ShortcutWithIcon {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Use fully supported EXTRA_SHORTCUT_INTENT when available
+            if (!data.hasExtra(Intent.EXTRA_SHORTCUT_INTENT) && data.hasExtra(LauncherApps.EXTRA_PIN_ITEM_REQUEST)) {
+                val item = data.getParcelableExtra<LauncherApps.PinItemRequest>(LauncherApps.EXTRA_PIN_ITEM_REQUEST)
+                        ?: return ShortcutWithIcon(failedAppShortcut, null, null)
+                return shortcutFromPinItemRequest(item, context)
+            }
+        }
+
         val intent = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT) ?: Intent()
         val name = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME) ?: ""
-        val bitmap = data.getParcelableExtra<Parcelable>(Intent.EXTRA_SHORTCUT_ICON)
+        val extraIcon = data.getParcelableExtra<Parcelable>(Intent.EXTRA_SHORTCUT_ICON)
+        var bitmap: Bitmap? = null
+        var icon: ShortcutIcon? = null
 
-        var icon: Bitmap? = null
-
-        val result = ShortcutWithIcon()
-
-        if (bitmap is Bitmap) {
+        if (extraIcon is Bitmap) {
             AppLog.d("Custom shortcut with Bitmap")
-            icon = UtilitiesBitmap.createMaxSizeIcon(BitmapDrawable(context.resources, bitmap), context)
-            result.icon = ShortcutIcon.forCustomIcon(0, icon)
+            bitmap = UtilitiesBitmap.createMaxSizeIcon(BitmapDrawable(context.resources, extraIcon), context)
+            icon = ShortcutIcon.forCustomIcon(0, bitmap)
         } else {
             val extra = data.getParcelableExtra<Parcelable>(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)
             if (extra is ShortcutIconResource) {
                 AppLog.d("Custom shortcut with Icon Resource")
                 try {
-                    icon = getPackageIcon(context, extra)
-                    result.icon = ShortcutIcon.forIconResource(Shortcut.idUnknown, icon!!, extra)
+                    bitmap = getPackageIcon(context, extra)
+                    icon = ShortcutIcon.forIconResource(Shortcut.idUnknown, bitmap!!, extra)
                 } catch (e: Resources.NotFoundException) {
                     AppLog.e(e)
                 } catch (e: PackageManager.NameNotFoundException) {
@@ -60,15 +81,55 @@ object ShortcutInfoUtils {
             }
         }
 
-        if (icon == null) {
+        if (bitmap == null) {
             val packageManager = context.packageManager
-            icon = UtilitiesBitmap.makeDefaultIcon(packageManager)
-            result.icon = ShortcutIcon.forFallbackIcon(Shortcut.idUnknown, icon)
+            bitmap = UtilitiesBitmap.makeDefaultIcon(packageManager)
+            icon = ShortcutIcon.forFallbackIcon(Shortcut.idUnknown, bitmap)
         }
 
-        result.info = Shortcut(0, LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT, name, result.icon!!.isCustom, intent)
+        return ShortcutWithIcon(
+                result = successCustom,
+                icon = icon,
+                info = Shortcut(0, LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT, name, icon!!.isCustom, intent)
+        )
+    }
 
-        return result
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun shortcutFromPinItemRequest(pinItem: LauncherApps.PinItemRequest, context: Context): ShortcutWithIcon {
+        val shortcutInfo = pinItem.shortcutInfo
+                ?: return ShortcutWithIcon(failedAppShortcut, null, null)
+
+        val launcherApps = context.getSystemService(LauncherApps::class.java)
+        var bitmap: Bitmap? = null
+        try {
+            bitmap = launcherApps?.getShortcutIconDrawable(shortcutInfo, UtilitiesBitmap.getTargetDensity(context)).toBitmap(context)
+        } catch (e: SecurityException) {
+            AppLog.e("Failed to get shortcut icon", e)
+        } catch (e: IllegalStateException) {
+            AppLog.e("Failed to get shortcut icon", e)
+        }
+
+        val idData = Uri.parse(shortcutInfo.id)
+        val intent = shortcutInfo.intent ?: Intent().also {
+            it.component = shortcutInfo.activity
+            if (ContentResolver.SCHEME_CONTENT == idData.scheme) {
+                it.data = idData
+            }
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
+
+        val label = shortcutInfo.shortLabel ?: ""
+        val resolveInfo = context.packageManager.resolveActivity(intent, 0)
+        val icon = if (bitmap == null)
+            resolveAppIcon(resolveInfo, shortcutInfo.activity, context)
+        else
+            ShortcutIcon.forCustomIcon(Shortcut.idUnknown, bitmap)
+
+        return ShortcutWithIcon(
+                result = successAppShortcut,
+                icon = icon,
+                info = Shortcut(0, LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT, label, icon.isCustom, intent)
+        )
     }
 
     @Throws(PackageManager.NameNotFoundException::class)
@@ -77,13 +138,7 @@ object ShortcutInfoUtils {
         val resources = packageManager.getResourcesForApplication(iconResource.packageName)
         val id = resources.getIdentifier(iconResource.resourceName, null, null)
 
-        val drawableIcon = loadDrawableForTargetDensity(id, resources, context)
-
-        return when {
-            drawableIcon is BitmapDrawable -> drawableIcon.bitmap
-            drawableIcon != null -> UtilitiesBitmap.createHiResIconBitmap(drawableIcon, context)
-            else -> null
-        }
+        return loadDrawableForTargetDensity(id, resources, context).toBitmap(context)
     }
 
 
@@ -93,13 +148,11 @@ object ShortcutInfoUtils {
      * If c is not null, then it will be used to fill in missing data like the title and icon.
      */
     fun infoFromApplicationIntent(context: Context, intent: Intent): ShortcutWithIcon {
-        val componentName = intent.component ?: return ShortcutWithIcon()
+        val componentName = intent.component
+                ?: return ShortcutWithIcon(failedAppShortcut, null, null)
         Log.d("CarHomeWidget", "Component Name - $componentName")
 
         val manager = context.packageManager
-        var icon: Bitmap? = null
-
-
         // TODO: See if the PackageManager knows about this case.  If it doesn't
         // then return null & delete this.
 
@@ -119,21 +172,25 @@ object ShortcutInfoUtils {
             title = componentName.className
         }
 
-        val result = ShortcutWithIcon()
+        val icon = resolveAppIcon(resolveInfo, componentName, context)
+        return ShortcutWithIcon(
+                result = successApp,
+                icon = icon,
+                info = Shortcut.forActivity(Shortcut.idUnknown, title, icon.isCustom, componentName, Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
+        )
+    }
 
+    private fun resolveAppIcon(resolveInfo: ResolveInfo?, componentName: ComponentName?, context: Context): ShortcutIcon {
+        var bitmap: Bitmap?
         if (resolveInfo != null) {
-            icon = getIcon(componentName, resolveInfo, manager, context)
-            result.icon = ShortcutIcon.forActivity(Shortcut.idUnknown, icon!!)
+            bitmap = getIcon(componentName, resolveInfo, context.packageManager, context)
+            if (bitmap != null) {
+                return ShortcutIcon.forActivity(Shortcut.idUnknown, bitmap)
+            }
         }
         // the fallback icon
-        if (icon == null) {
-            icon = UtilitiesBitmap.makeDefaultIcon(manager)
-            result.icon = ShortcutIcon.forFallbackIcon(Shortcut.idUnknown, icon)
-        }
-
-        result.info = Shortcut.forActivity(Shortcut.idUnknown, title, result.icon!!.isCustom, componentName, Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
-
-        return result
+        bitmap = UtilitiesBitmap.makeDefaultIcon(context.packageManager)
+        return ShortcutIcon.forFallbackIcon(Shortcut.idUnknown, bitmap)
     }
 
     fun getIcon(component: ComponentName?, resolveInfo: ResolveInfo?,
@@ -148,16 +205,13 @@ object ShortcutInfoUtils {
             drawable = resolveInfo.activityInfo.loadIcon(manager)
         }
 
-        return if (drawable == null) {
-            null
-        } else UtilitiesBitmap.createHiResIconBitmap(drawable, context)
-
+        return drawable.toBitmap(context)
     }
 
     private fun loadHighResIcon(resolveInfo: ResolveInfo, context: Context): Drawable? {
         try {
             val otherAppCtxt = context.createPackageContext(resolveInfo.activityInfo.packageName,
-                            Context.CONTEXT_IGNORE_SECURITY)
+                    Context.CONTEXT_IGNORE_SECURITY)
             val icon = if (resolveInfo.activityInfo.icon > 0)
                 resolveInfo.activityInfo.icon
             else

@@ -17,19 +17,19 @@ plugins {
 
 dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation("com.google.android.material:material:1.2.0-alpha06")
+    implementation("com.google.android.material:material:1.2.0-beta01")
     implementation("androidx.preference:preference:1.1.1")
     implementation("androidx.palette:palette:1.0.0")
 
     implementation("com.squareup.picasso:picasso:2.71828")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.6")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.6")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7")
 
     // Activity recognition
     implementation("com.google.android.gms:play-services-location:17.0.0")
 
-    implementation("androidx.core:core-ktx:1.2.0")
+    implementation("androidx.core:core-ktx:1.3.0")
     implementation("androidx.fragment:fragment-ktx:1.2.4")
     implementation("androidx.collection:collection-ktx:1.1.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
@@ -45,7 +45,7 @@ dependencies {
     implementation("ch.acra:acra-notification:5.5.1")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.72")
-    implementation("com.android.support.constraint:constraint-layout:2.0.0-beta5")
+    implementation("com.android.support.constraint:constraint-layout:2.0.0-beta6")
 }
 
 android {

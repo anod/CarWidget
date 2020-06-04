@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.Toast
 import com.anod.car.home.R
 import com.anod.car.home.model.Shortcut
+import com.anod.car.home.model.ShortcutInfoUtils
 import com.anod.car.home.model.Shortcuts
 import com.anod.car.home.prefs.ActivityPicker
 import com.anod.car.home.prefs.AllAppsActivity
@@ -25,7 +26,7 @@ class ShortcutPicker(private val model: Shortcuts, private val handler: Handler,
 
     interface Handler {
         fun startActivityForResult(intent: Intent, requestCode: Int)
-        fun onAddShortcut(cellId: Int, info: Shortcut?)
+        fun onAddShortcut(cellId: Int, info: Shortcut?, resultCode: Int)
         fun onEditComplete(cellId: Int)
     }
 
@@ -138,8 +139,13 @@ class ShortcutPicker(private val model: Shortcuts, private val handler: Handler,
             return false
         }
 
-        val info = model.saveIntent(currentCellId, data, isApplicationShortcut)
-        handler.onAddShortcut(currentCellId, info)
+        val result = model.saveIntent(currentCellId, data, isApplicationShortcut)
+        handler.onAddShortcut(currentCellId, result.first, result.second)
+        if (result.second == ShortcutInfoUtils.successAppShortcut) {
+            Toast.makeText(context, "App shortcuts support is limited by Android", Toast.LENGTH_SHORT).show()
+        } else if (result.second == ShortcutInfoUtils.failedAppShortcut) {
+            Toast.makeText(context, "App shortcuts support is limited by Android", Toast.LENGTH_LONG).show()
+        }
         currentCellId = INVALID_CELL_ID
         return true
     }

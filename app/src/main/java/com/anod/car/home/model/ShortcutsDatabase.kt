@@ -83,18 +83,16 @@ class ShortcutsDatabase(private val context: Context) {
                     // the resource
                     try {
                         val resources = packageManager.getResourcesForApplication(packageName)
-                        if (resources != null) {
-                            val resId = resources.getIdentifier(resourceName, null, null)
-                            if (resId > 0) {
-                                val iconDrawable = ResourcesCompat.getDrawable(resources, resId, null)!!
-                                icon = UtilitiesBitmap.createHiResIconBitmap(iconDrawable, context)
-                            }
+                        val resId = resources.getIdentifier(resourceName, null, null)
+                        if (resId > 0) {
+                            val iconDrawable = ResourcesCompat.getDrawable(resources, resId, null)!!
+                            icon = UtilitiesBitmap.createHiResIconBitmap(iconDrawable, context)
                         }
                     } catch (e: NameNotFoundException) {
                         // drop this. we have other places to look for icons
-                        AppLog.e(e)
+                        AppLog.w("loadShortcutIcon: NameNotFoundException $packageName/$resourceName")
                     } catch (e: NotFoundException) {
-                        AppLog.e(e)
+                        AppLog.w("loadShortcutIcon: NotFoundException $packageName/$resourceName")
                     }
 
                     // the db

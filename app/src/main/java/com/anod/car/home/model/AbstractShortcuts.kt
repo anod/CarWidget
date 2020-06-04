@@ -3,8 +3,7 @@ package com.anod.car.home.model
 import android.content.Context
 import android.content.Intent
 import android.util.SparseArray
-
-import java.util.ArrayList
+import java.util.*
 
 abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
 
@@ -60,10 +59,10 @@ abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
 
     }
 
-    override fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Shortcut? {
+    override fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Pair<Shortcut?, Int> {
         val shortcut = ShortcutInfoUtils.createShortcut(context, data, isApplicationShortcut)
         save(position, shortcut.info, shortcut.icon)
-        return shortcuts.get(position)
+        return Pair(shortcuts.get(position), shortcut.result)
     }
 
     override fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?) {

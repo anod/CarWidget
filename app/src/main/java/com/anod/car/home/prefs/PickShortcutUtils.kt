@@ -21,7 +21,7 @@ class PickShortcutUtils(private val configurationFragment: ConfigurationPreferen
         configurationFragment.startActivityForResult(intent, requestCode)
     }
 
-    override fun onAddShortcut(cellId: Int, info: Shortcut?) {
+    override fun onAddShortcut(cellId: Int, info: Shortcut?, resultCode: Int) {
         if (info != null && info.id != Shortcut.idUnknown) {
             val key = preferenceKey.getCompiledKey(cellId)
             val p = configurationFragment.requirePreference(key) as ShortcutPreference
