@@ -1,10 +1,9 @@
 package com.anod.car.home.incar
 
-import info.anodsplace.framework.AppLog
-
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import info.anodsplace.framework.AppLog
 
 class ModeBroadcastReceiver : BroadcastReceiver() {
 
@@ -12,9 +11,12 @@ class ModeBroadcastReceiver : BroadcastReceiver() {
         val act = intent.action ?: ""
         AppLog.i(" Action: $act")
 
-        BroadcastService.startService(context)
-
-        ModeDetector.onBroadcastReceive(context, intent)
+        try {
+            BroadcastService.startService(context)
+            ModeDetector.onBroadcastReceive(context, intent)
+        } catch (e: Exception) {
+            AppLog.e(e)
+        }
     }
 
 }

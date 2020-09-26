@@ -11,11 +11,11 @@ import android.widget.AdapterView
 import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.observe
 import androidx.lifecycle.viewModelScope
 import com.anod.car.home.R
 import com.anod.car.home.prefs.ActivityPicker.PickAdapter.Item
 import com.anod.car.home.utils.*
+import info.anodsplace.framework.app.startActivityForResultSafely
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -57,14 +57,14 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTitle(R.string.car_widget_shortcuts)
-        viewModel.result.observe(this) {
+        viewModel.result.observe(this, {
             if (it != null) {
-                setResult(Activity.RESULT_OK, it)
+                setResult(RESULT_OK, it)
             } else {
-                setResult(Activity.RESULT_CANCELED)
+                setResult(RESULT_CANCELED)
             }
             finish()
-        }
+        })
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -72,7 +72,7 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
             if (AppPermissions.isGranted(this, ReadContacts)) {
                 val intent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
                 intent.type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
-                startActivityForResult(intent, REQUEST_PICK_CONTACT)
+                startActivityForResultSafely(intent, REQUEST_PICK_CONTACT)
             } else {
                 AppPermissions.request(this, ReadContacts, requestReadContacts)
                 setResult(Activity.RESULT_CANCELED)

@@ -20,7 +20,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
+import androidx.lifecycle.Observer
 import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.backup.Backup
@@ -28,11 +28,15 @@ import com.anod.car.home.backup.Backup.LEGACY_PATH
 import com.anod.car.home.backup.BackupManager
 import com.anod.car.home.prefs.MusicAppSettingsActivity
 import com.anod.car.home.prefs.model.AppTheme
-import com.anod.car.home.utils.*
+import com.anod.car.home.utils.Utils
+import com.anod.car.home.utils.forApplicationDetails
+import com.anod.car.home.utils.startProgressAnimation
+import com.anod.car.home.utils.stopProgressAnimation
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogCustom
 import info.anodsplace.framework.app.applicationContext
 import info.anodsplace.framework.app.startActivityForResultSafely
+import info.anodsplace.framework.app.startActivitySafely
 import kotlinx.android.synthetic.main.fragment_about.*
 
 class AboutFragment : Fragment() {
@@ -99,7 +103,7 @@ class AboutFragment : Fragment() {
     }
 
     private fun initBackup() {
-        viewModel.backupEvent.observe(viewLifecycleOwner) { code ->
+        viewModel.backupEvent.observe(viewLifecycleOwner, Observer { code ->
             when (code) {
                 Backup.NO_RESULT -> {
                 }
@@ -109,11 +113,12 @@ class AboutFragment : Fragment() {
                     Toast.makeText(context, Backup.renderBackupCode(code), Toast.LENGTH_SHORT).show()
                 }
             }
-        }
+        })
 
-        viewModel.restoreEvent.observe(viewLifecycleOwner) { code ->
+        viewModel.restoreEvent.observe(viewLifecycleOwner, Observer { code ->
             when (code) {
-                Backup.NO_RESULT -> { }
+                Backup.NO_RESULT -> {
+                }
                 else -> {
                     restore.stopProgressAnimation()
                     Toast.makeText(context, Backup.renderRestoreCode(code), Toast.LENGTH_SHORT).show()
@@ -122,7 +127,7 @@ class AboutFragment : Fragment() {
                     }
                 }
             }
-        }
+        })
 
         backupInCar.setOnClickListener {
             try {
@@ -213,7 +218,8 @@ class AboutFragment : Fragment() {
                 val intent = Intent(Intent.ACTION_MAIN)
                 intent.addCategory(Intent.CATEGORY_CAR_DOCK)
                 val info = App.provide(requireContext()).packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
-                requireContext().startActivitySafely(Intent().forApplicationDetails(info.activityInfo.applicationInfo.packageName))
+                requireContext().startActivitySafely(Intent().forApplicationDetails(info?.activityInfo?.applicationInfo?.packageName
+                        ?: ""))
             }
         }.show()
     }

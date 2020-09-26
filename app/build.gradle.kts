@@ -41,6 +41,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-common-java8:2.2.0")
     kapt("androidx.lifecycle:lifecycle-compiler:2.2.0")
 
+    implementation("androidx.work:work-runtime:2.4.0")
+    implementation("androidx.work:work-runtime-ktx:2.4.0")
+
     implementation("ch.acra:acra-core:5.7.0")
     implementation("ch.acra:acra-notification:5.7.0")
     implementation("ch.acra:acra-limiter:5.7.0")

@@ -15,6 +15,7 @@ import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.utils.Utils
 import com.anod.car.home.utils.forIconTheme
 import info.anodsplace.framework.AppLog
+import info.anodsplace.framework.app.startActivitySafely
 
 class IconThemesActivity : AppsCacheActivity() {
 
@@ -53,7 +54,7 @@ class IconThemesActivity : AppsCacheActivity() {
             val uri = Uri.parse(ADW_ICON_THEME_MARKET_URL)
             val intent = Intent(Intent.ACTION_VIEW, uri)
             refresh = true
-            startActivity(intent)
+            startActivitySafely(intent)
         }
 
         findViewById<Button>(R.id.btn_cancel).setOnClickListener {

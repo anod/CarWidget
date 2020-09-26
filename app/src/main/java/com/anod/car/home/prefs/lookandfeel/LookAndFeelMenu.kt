@@ -22,10 +22,10 @@ import com.anod.car.home.prefs.model.WidgetInterface
 import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.utils.FastBitmapDrawable
 import com.anod.car.home.utils.HtmlCompat
-import com.anod.car.home.utils.startActivityForResultSafetly
 import info.anodsplace.framework.app.DialogCustom
 import info.anodsplace.framework.app.DialogMessage
 import info.anodsplace.framework.app.DialogSingleChoice
+import info.anodsplace.framework.app.startActivityForResultSafely
 
 /**
  * @author alex
@@ -104,7 +104,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
             R.id.icons_theme -> {
                 val mainIntent = Intent(activity, IconThemesActivity::class.java)
                 mainIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                activity.startActivityForResultSafetly(mainIntent, REQUEST_PICK_ICON_THEME)
+                activity.startActivityForResultSafely(mainIntent, REQUEST_PICK_ICON_THEME)
                 return true
             }
             R.id.icons_mono -> {

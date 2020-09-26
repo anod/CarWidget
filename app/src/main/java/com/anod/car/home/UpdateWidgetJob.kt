@@ -11,6 +11,10 @@ import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.utils.Version
 import info.anodsplace.framework.AppLog
 
+/**
+ * WorkManager can't be used since it causes constant update trigger
+ * https://commonsware.com/blog/2018/11/24/workmanager-app-widgets-side-effects.html
+ */
 class UpdateWidgetJob : JobIntentService() {
 
     companion object {

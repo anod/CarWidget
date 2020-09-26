@@ -14,8 +14,12 @@ import androidx.appcompat.app.AlertDialog
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.model.*
-import com.anod.car.home.utils.*
+import com.anod.car.home.utils.DrawableUri
+import com.anod.car.home.utils.ShortcutPicker
+import com.anod.car.home.utils.UtilitiesBitmap
+import com.anod.car.home.utils.forIconPack
 import info.anodsplace.framework.AppLog
+import info.anodsplace.framework.app.startActivityForResultSafely
 import kotlinx.android.synthetic.main.activity_shortcutedit.*
 
 class ShortcutEditActivity : CarWidgetActivity() {
@@ -137,10 +141,10 @@ class ShortcutEditActivity : CarWidgetActivity() {
             chooseIntent.type = MIME_IMAGE
             chooseIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile))
             chooseIntent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.name)
-            startActivityForResultSafetly(chooseIntent, PICK_CUSTOM_ICON)
+            startActivityForResultSafely(chooseIntent, PICK_CUSTOM_ICON)
         } else if (item == PICK_ADW_ICON_PACK) {
             chooseIntent = Intent().forIconPack()
-            startActivityForResultSafetly(
+            startActivityForResultSafely(
                     Intent.createChooser(chooseIntent, getString(R.string.select_icon_pack)),
                     PICK_ADW_ICON_PACK)
         } else if (item == PICK_DEFAULT_ICON) {

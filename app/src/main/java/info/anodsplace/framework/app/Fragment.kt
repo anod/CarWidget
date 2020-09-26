@@ -11,9 +11,9 @@ val Fragment.applicationContext: Context
 
 fun Fragment.startActivityForResultSafely(intent: Intent, requestCode: Int) {
     try {
-        this.startActivityForResult(intent, requestCode)
+        startActivityForResult(intent, requestCode)
     } catch (e: Exception) {
         AppLog.e(e)
-        Toast.makeText(context, "Cannot start activity: $intent", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Cannot launch activity: $intent", Toast.LENGTH_SHORT).show()
     }
 }

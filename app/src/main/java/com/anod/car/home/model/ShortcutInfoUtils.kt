@@ -15,7 +15,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Parcelable
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
 import com.anod.car.home.utils.UtilitiesBitmap
@@ -150,7 +149,7 @@ object ShortcutInfoUtils {
     fun infoFromApplicationIntent(context: Context, intent: Intent): ShortcutWithIcon {
         val componentName = intent.component
                 ?: return ShortcutWithIcon(failedAppShortcut, null, null)
-        Log.d("CarHomeWidget", "Component Name - $componentName")
+        AppLog.d("Component Name - $componentName")
 
         val manager = context.packageManager
         // TODO: See if the PackageManager knows about this case.  If it doesn't

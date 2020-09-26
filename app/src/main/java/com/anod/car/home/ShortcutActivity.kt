@@ -12,7 +12,7 @@ import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.utils.AppPermissions
 import com.anod.car.home.utils.CallPhone
 import com.anod.car.home.utils.MusicUtils
-import com.anod.car.home.utils.startActivitySafely
+import info.anodsplace.framework.app.startActivitySafely
 
 class ShortcutActivity : Activity() {
 

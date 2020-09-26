@@ -49,6 +49,7 @@ class AppLog {
             } else {
                 Log.INFO
             }
+            tag = loggableTag
         }
 
         fun d(msg: String) {

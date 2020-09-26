@@ -1,8 +1,6 @@
 package com.anod.car.home.utils
 
-import android.app.Activity
 import android.appwidget.AppWidgetManager
-import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -13,9 +11,6 @@ import android.provider.ContactsContract
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.KeyEvent
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import com.anod.car.home.R
 import com.anod.car.home.ShortcutActivity
 import com.anod.car.home.app.NewShortcutActivity
 import com.anod.car.home.incar.SwitchInCarActivity
@@ -146,44 +141,4 @@ fun Intent.resolveDirectCall(contactUri: Uri, context: Context): Intent? {
         cursor.close()
     }
     return null
-}
-
-fun Activity.startActivityForResultSafetly(intent: Intent, requestCode: Int) {
-    try {
-        startActivityForResult(intent, requestCode)
-    } catch (activityNotFoundException: ActivityNotFoundException) {
-        Toast.makeText(this, R.string.photo_picker_not_found, Toast.LENGTH_LONG).show()
-    } catch (exception: Exception) {
-        val errStr = String.format(resources.getString(R.string.error_text),
-                exception.message)
-        Toast.makeText(this, errStr, Toast.LENGTH_LONG).show()
-    }
-}
-
-fun Fragment.startActivityForResultSafetly(intent: Intent, requestCode: Int) {
-    try {
-        startActivityForResult(intent, requestCode)
-    } catch (activityNotFoundException: ActivityNotFoundException) {
-        Toast.makeText(context, R.string.photo_picker_not_found, Toast.LENGTH_LONG).show()
-    } catch (exception: Exception) {
-        val errStr = String.format(resources.getString(R.string.error_text),
-                exception.message)
-        Toast.makeText(context, errStr, Toast.LENGTH_LONG).show()
-    }
-}
-
-fun Context.startActivitySafely(intent: Intent) {
-    try {
-        startActivity(intent)
-    } catch (e: ActivityNotFoundException) {
-        Toast.makeText(this, getString(R.string.activity_not_found),
-                Toast.LENGTH_SHORT).show()
-    } catch (e: SecurityException) {
-        Toast.makeText(this, getString(R.string.permission_denied),
-                Toast.LENGTH_SHORT).show()
-        AppLog.e("Widget does not have the permission to launch " + intent +
-                ". Make sure to create a MAIN intent-filter for the corresponding activity " +
-                "or use the exported attribute for this activity.")
-        AppLog.e(e)
-    }
 }

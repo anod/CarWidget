@@ -13,7 +13,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.viewModels
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.incar.Bluetooth
@@ -24,6 +27,7 @@ import kotlinx.android.synthetic.main.activity_bluetooth_device.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.collections.set
 
 class BluetoothDevice(var address: String, var name: String, var btClassName: String, var selected: Boolean) {
     override fun toString(): String {
@@ -100,9 +104,12 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
                 if (res > 0) {
                     btClassName = context.getString(res)
                 }
-                val d = BluetoothDevice(device.address, device.name, btClassName, selected)
+                if (!device.address.isNullOrEmpty()) {
+                    val d = BluetoothDevice(device.address, device.name
+                            ?: "Unknown", btClassName, selected)
 
-                pairedList.add(d)
+                    pairedList.add(d)
+                }
             }
         }
 
