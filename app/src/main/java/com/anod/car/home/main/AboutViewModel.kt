@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.anod.car.home.backup.Backup
 import com.anod.car.home.backup.BackupManager
-import com.anod.car.home.utils.SingleLiveEvent
+import info.anodsplace.framework.livedata.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class AboutViewModel(application: Application): AndroidViewModel(application) {

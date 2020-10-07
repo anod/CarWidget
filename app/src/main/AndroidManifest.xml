@@ -170,7 +170,8 @@
         <activity android:name=".main.WizardActivity" />
         <activity
             android:name="info.anodsplace.carwidget.prefs.IntentEditActivity"
-            android:label="@string/edit_intent" />
+            android:label="@string/edit_intent"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".prefs.BluetoothDeviceActivity"
             android:label="@string/pref_blutooth_device_title" />

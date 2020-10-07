@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="none">None</string>
+    <string name="extras">Extras</string>
+    <string name="action">Action</string>
+    <string name="package_name">Package name</string>
+    <string name="class_name">Class name</string>
+    <string name="data">Data</string>
+    <string name="mime_type">Mime type</string>
+    <string name="flags">Flags</string>
+    <string name="categories">Categories</string>
+    <string name="add_extra">Add extra</string>
+</resources>

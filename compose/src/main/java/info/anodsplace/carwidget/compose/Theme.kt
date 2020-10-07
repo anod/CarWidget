@@ -20,42 +20,23 @@ private val Rubik = fontFamily(
     font(R.font.rubik_medium, FontWeight.W500),
 )
 
+val typography = Typography()
 val CarWidgetTypography = Typography(
-        h4 = TextStyle(
-                fontFamily = Rubik,
-        ),
-        h5 = TextStyle(
-                fontFamily = Rubik,
-        ),
-        h6 = TextStyle(
-                fontFamily = Rubik,
-        ),
-        subtitle1 = TextStyle(
-                fontFamily = Rubik,
-        ),
-        subtitle2 = TextStyle(
-                fontFamily = Rubik,
-        ),
-        body1 = TextStyle(
-                fontFamily = Rubik,
-        ),
-        body2 = TextStyle(
-                fontFamily = Rubik,
-        ),
-        button = TextStyle(
-                fontFamily = Rubik,
-        ),
-        caption = TextStyle(
-                fontFamily = Rubik,
-        ),
-        overline = TextStyle(
-                fontFamily = Rubik,
-        )
+        h4 = typography.h4.merge(TextStyle(fontFamily = Rubik)),
+        h5 = typography.h5.merge(TextStyle(fontFamily = Rubik)),
+        h6 = typography.h6.merge(TextStyle(fontFamily = Rubik)),
+        subtitle1 = typography.subtitle1.merge(TextStyle(fontFamily = Rubik)),
+        subtitle2 = typography.subtitle2.merge(TextStyle(fontFamily = Rubik)),
+        body1 = typography.body1.merge(TextStyle(fontFamily = Rubik)),
+        body2 = typography.body2.merge(TextStyle(fontFamily = Rubik)),
+        button = typography.button.merge(TextStyle(fontFamily = Rubik)),
+        caption = typography.caption.merge(TextStyle(fontFamily = Rubik)),
+        overline = typography.overline.merge(TextStyle(fontFamily = Rubik))
 )
 
-private val BlueGray600 = Color(0x546E7A)
-private val BlueGray800 = Color(0x37474f)
-private val BlueGray300 = Color(0x90a4ae)
+private val BlueGray600 = Color(0xFF546E7A)
+private val BlueGray800 = Color(0xFF0037474f)
+private val BlueGray300 = Color(0xFF0090a4ae)
 private val BlueGray100 = Color(0xFFBBDEFB)
 
 private val LightThemeColors = lightColors(
@@ -64,8 +45,8 @@ private val LightThemeColors = lightColors(
         secondary = BlueGray300,
         secondaryVariant = BlueGray100,
         background = Color.White,
-        surface = Color(0x546E7A),
-        error = Color(0xb00020),
+        surface = Color(0xFF546E7A),
+        error = Color(0xbFF00020),
         onPrimary = Color.White,
         onSecondary = Color.Black,
         onBackground = Color.Black,
@@ -78,8 +59,8 @@ private val DarkThemeColors = darkColors(
         primaryVariant = BlueGray800,
         secondary = BlueGray300,
         background = Color.Black,
-        surface = Color(0x001c26),
-        error = Color(0xcf6679),
+        surface = Color(0xFF001c26),
+        error = Color(0xFFcf6679),
         onPrimary = Color.Black,
         onSecondary = Color.Black,
         onBackground = Color.White,

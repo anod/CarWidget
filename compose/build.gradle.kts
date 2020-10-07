@@ -12,6 +12,10 @@ plugins {
 android {
     compileSdkVersion(29)
 
+    defaultConfig {
+        minSdkVersion(21)
+    }
+
     buildFeatures {
         // Enables Jetpack Compose for this module
         compose = true
@@ -37,6 +41,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.10")
     implementation(project(":lib:framework"))
     implementation("androidx.appcompat:appcompat:1.3.0-alpha02")
+    implementation("androidx.activity:activity-ktx:1.1.0")
 
     implementation("androidx.compose.ui:ui:1.0.0-alpha04")
     // Tooling support (Previews, etc.)

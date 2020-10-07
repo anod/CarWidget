@@ -66,7 +66,6 @@ class ShortcutEditActivity : CarWidgetActivity() {
 
         shortcut = db!!.loadShortcut(shortcutId)
         shortcutIcon = containerModel!!.iconLoader.load(shortcut!!)
-
         binding.labelEdit.setText(shortcut!!.title)
         binding.iconView.setImageBitmap(shortcutIcon!!.bitmap)
 
@@ -81,7 +80,9 @@ class ShortcutEditActivity : CarWidgetActivity() {
         }
 
         binding.advancedButton.setOnClickListener {
-            startActivity(Intent(this, IntentEditActivity::class.java))
+            startActivity(Intent(this, IntentEditActivity::class.java).apply {
+                putExtra(IntentEditActivity.extraUri, shortcut!!.intent.toUri(0))
+            })
         }
 
         binding.okButton.setOnClickListener {
