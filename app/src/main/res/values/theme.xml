@@ -70,7 +70,7 @@
         <item name="colorAccent">?colorSecondary</item>
     </style>
 
-    <style name="Dialog" parent="Theme.MaterialComponents.DayNight.Dialog">
+    <style name="Dialog" parent="Theme.MaterialComponents.DayNight.Dialog.MinWidth">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryVariant">@color/color_primary_variant</item>
         <item name="colorSecondary">@color/color_secondary</item>

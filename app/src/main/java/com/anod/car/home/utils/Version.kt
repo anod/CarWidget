@@ -3,10 +3,13 @@ package com.anod.car.home.utils
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import info.anodsplace.framework.app.ApplicationContext
 
-class Version(private val context: Context) {
+class Version(private val context: ApplicationContext) {
 
-    val isFree = isFree(context.packageName)
+    constructor(context: Context): this(ApplicationContext(context))
+
+    val isFree = isFree(context.actual.packageName)
 
     private var trialCounterCache = -1
 
@@ -41,7 +44,7 @@ class Version(private val context: Context) {
 
     private fun initTrialCounter() {
         if (trialCounterCache == -1) {
-            prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            prefs = PreferenceManager.getDefaultSharedPreferences(context.actual)
             trialCounterCache = prefs!!.getInt(PREF_TRIAL_TIMES, 0)
         }
     }

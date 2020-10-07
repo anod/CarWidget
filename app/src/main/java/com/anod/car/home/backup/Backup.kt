@@ -21,10 +21,6 @@ object Backup {
     const val LEGACY_PATH = "/data/com.anod.car.home/backup"
     const val AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider"
 
-    const val requestRestore = 126
-    const val requestBackupWidget = 127
-    const val requestBackupInCar = 128
-
     val legacyBackupDir: File
         get() {
             val externalPath = Environment.getExternalStorageDirectory()

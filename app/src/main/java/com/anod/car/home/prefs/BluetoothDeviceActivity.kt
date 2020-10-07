@@ -19,11 +19,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
+import com.anod.car.home.databinding.ActivityBluetoothDeviceBinding
 import com.anod.car.home.incar.Bluetooth
 import com.anod.car.home.incar.BluetoothClassHelper
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.prefs.model.InCarStorage
-import kotlinx.android.synthetic.main.activity_bluetooth_device.*
+import com.google.android.material.switchmaterial.SwitchMaterial
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -134,6 +135,7 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
  * @date 6/6/14
  */
 class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickListener {
+    private lateinit var binding: ActivityBluetoothDeviceBinding
     private val listAdapter: DeviceAdapter by lazy { DeviceAdapter(this) }
     private val viewModel: BluetoothDevicesViewModel by viewModels()
     private val isBroadcastServiceRequired: Boolean
@@ -144,15 +146,16 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bluetooth_device)
+        binding = ActivityBluetoothDeviceBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        deviceList.onItemClickListener = this
+        binding.deviceList.onItemClickListener = this
 
-        deviceList.divider = ColorDrawable(Color.TRANSPARENT)
-        deviceList.dividerHeight = resources.getDimensionPixelOffset(R.dimen.preference_item_margin)
+        binding.deviceList.divider = ColorDrawable(Color.TRANSPARENT)
+        binding.deviceList.dividerHeight = resources.getDimensionPixelOffset(R.dimen.preference_item_margin)
 
-        deviceList.emptyView = empty
-        deviceList.adapter = listAdapter
+        binding.deviceList.emptyView = binding.empty
+        binding.deviceList.adapter = listAdapter
 
         initSwitch()
 
@@ -197,7 +200,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
     }
 
     private fun initSwitch() {
-        val btSwitch = findViewById<Switch>(R.id.switch1)
+        val btSwitch = findViewById<SwitchMaterial>(R.id.switch1)
         btSwitch.isChecked = Bluetooth.state == BluetoothAdapter.STATE_ON
         btSwitch.setOnClickListener {
             viewModel.registerBroadcastReceiver()

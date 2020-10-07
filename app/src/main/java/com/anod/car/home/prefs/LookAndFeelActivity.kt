@@ -21,6 +21,7 @@ import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.appwidget.WidgetViewBuilder
 import com.anod.car.home.backup.BackupManager
+import com.anod.car.home.databinding.ActivityLookandfeelBinding
 import com.anod.car.home.main.AboutFragment
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.drag.ShortcutDragListener
@@ -34,12 +35,12 @@ import com.anod.car.home.utils.BitmapLruCache
 import com.anod.car.home.utils.forNewShortcut
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogCustom
-import kotlinx.android.synthetic.main.activity_lookandfeel.*
 
 class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory, ShortcutDragListener.DropCallback, BackupManager.OnRestore {
 
+    private lateinit var binding: ActivityLookandfeelBinding
     private val currentPage: Int
-        get() = gallery.currentItem
+        get() = binding.gallery.currentItem
 
     override val appThemeRes: Int
         get() = theme.transparentResource
@@ -85,15 +86,15 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     }
 
     override fun onDragFinish() {
-        dragDeleteShortcut.visibility = View.GONE
+        binding.dragDeleteShortcut.visibility = View.GONE
     }
 
     fun onBeforeDragStart() {
-        dragDeleteShortcut.tag = ShortcutDragListener.TAG_DELETE_SHORTCUT
-        dragDeleteShortcut.setOnDragListener(dragListener)
-        dragDeleteShortcut.visibility = View.VISIBLE
+        binding.dragDeleteShortcut.tag = ShortcutDragListener.TAG_DELETE_SHORTCUT
+        binding.dragDeleteShortcut.setOnDragListener(dragListener)
+        binding.dragDeleteShortcut.visibility = View.VISIBLE
         val animation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
-        dragDeleteShortcut.startAnimation(animation)
+        binding.dragDeleteShortcut.startAnimation(animation)
     }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,23 +114,24 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
             finish()
             return
         }
-        setContentView(R.layout.activity_lookandfeel)
+        binding = ActivityLookandfeelBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         prefs = WidgetStorage.load(this, appWidgetId)
         skinList = SkinList(prefs!!.skin, isKeyguard, this)
-        dragListener = ShortcutDragListener(dragDeleteBg, this)
+        dragListener = ShortcutDragListener(binding.dragDeleteBg, this)
 
         adapter = SkinPagerAdapter(this, skinList!!.count, supportFragmentManager)
-        gallery.adapter = adapter
-        gallery.currentItem = skinList!!.selectedSkinPosition
-        gallery.addOnPageChangeListener(this)
+        binding.gallery.adapter = adapter
+        binding.gallery.currentItem = skinList!!.selectedSkinPosition
+        binding.gallery.addOnPageChangeListener(this)
 
-        tabs.setupWithViewPager(gallery)
+        binding.tabs.setupWithViewPager(binding.gallery)
 
         bitmapMemoryCache = BitmapLruCache(this)
 
-        content.visibility = View.GONE
-        bottomNavigation.setOnNavigationItemSelectedListener {
+        binding.content.visibility = View.GONE
+        binding.bottomNavigation.setOnNavigationItemSelectedListener {
             navigate(it.itemId)
         }
 
@@ -145,8 +147,8 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         return when (itemId) {
             R.id.nav_widget -> {
                 invalidateOptionsMenu()
-                gallery.isVisible = true
-                content.isVisible = false
+                binding.gallery.isVisible = true
+                binding.content.isVisible = false
                 for (i in 0 until supportFragmentManager.backStackEntryCount) {
                     supportFragmentManager.popBackStack()
                 }
@@ -154,8 +156,8 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
             }
             R.id.nav_info -> {
                 invalidateOptionsMenu()
-                gallery.isVisible = false
-                content.isVisible = true
+                binding.gallery.isVisible = false
+                binding.content.isVisible = true
                 supportFragmentManager.commit {
                     replace(R.id.content, AboutFragment().apply {
                         arguments = bundleOf(AppWidgetManager.EXTRA_APPWIDGET_ID to appWidgetId)
@@ -165,8 +167,8 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
             }
             R.id.nav_incar -> {
                 invalidateOptionsMenu()
-                gallery.isVisible = false
-                content.isVisible = true
+                binding.gallery.isVisible = false
+                binding.content.isVisible = true
                 supportFragmentManager.commit {
                     replace(R.id.content, ConfigurationInCar())
                 }
@@ -177,7 +179,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt("bottom_item_id", bottomNavigation.selectedItemId)
+        outState.putInt("bottom_item_id", binding.bottomNavigation.selectedItemId)
         super.onSaveInstanceState(outState)
     }
 
@@ -192,7 +194,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        when (bottomNavigation.selectedItemId) {
+        when (binding.bottomNavigation.selectedItemId) {
             R.id.nav_widget -> lookAndFeelMenu.onCreateOptionsMenu(menu)
             R.id.nav_incar -> menuInflater.inflate(R.menu.look_n_feel_incar, menu)
             else -> menuInflater.inflate(R.menu.look_n_feel_other, menu)
@@ -223,7 +225,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
 
     override fun onPageSelected(position: Int) {
         if (!previewInitialized[position]) {
-            loader.visibility = View.VISIBLE
+            binding.loader.visibility = View.VISIBLE
         }
 
         lookAndFeelMenu.refresh()
@@ -275,7 +277,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
 
     fun onPreviewCreated(position: Int) {
         if (currentPage == position) {
-            loader.visibility = View.GONE
+            binding.loader.visibility = View.GONE
         }
         previewInitialized[position] = true
     }
@@ -295,7 +297,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     override fun restoreCompleted() {
         prefs = WidgetStorage.load(this, appWidgetId)
         skinList = SkinList(prefs!!.skin, isKeyguard, this).also {
-            gallery.currentItem = it.selectedSkinPosition
+            binding.gallery.currentItem = it.selectedSkinPosition
         }
         model.init()
         bitmapMemoryCache?.evictAll()

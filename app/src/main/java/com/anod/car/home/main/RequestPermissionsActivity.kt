@@ -18,20 +18,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
+import com.anod.car.home.databinding.ActivityRequestPermissionsBinding
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarSettings
 import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.utils.*
-import kotlinx.android.synthetic.main.activity_request_permissions.*
 
 class RequestPermissionsActivity : CarWidgetActivity() {
+
+    private lateinit var binding: ActivityRequestPermissionsBinding
 
     override val appThemeRes: Int
         get() = theme.noActionBarResource
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_request_permissions)
+        binding = ActivityRequestPermissionsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val permissions = intent.extras?.getStringArray("permissions") ?: emptyArray()
         if (permissions.isEmpty()) {
@@ -39,10 +42,10 @@ class RequestPermissionsActivity : CarWidgetActivity() {
             return
         }
 
-        listPermissions.adapter = PermissionsAdapter(permissions, this)
-        listPermissions.layoutManager = LinearLayoutManager(this)
+        binding.listPermissions.adapter = PermissionsAdapter(permissions, this)
+        binding.listPermissions.layoutManager = LinearLayoutManager(this)
 
-        buttonAllowAccess.setOnClickListener {
+        binding.buttonAllowAccess.setOnClickListener {
             val p = getPermissions()
             when {
                 p.manifestPermissions.isNotEmpty() -> ActivityCompat.requestPermissions(this, p.manifestPermissions, requestPermissionsCode)

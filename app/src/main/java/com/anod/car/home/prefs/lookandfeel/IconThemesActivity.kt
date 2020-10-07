@@ -4,11 +4,15 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
 import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.appscache.AppsCacheActivity
+import com.anod.car.home.databinding.ListFooterIconThemesBinding
 import com.anod.car.home.model.AppsList
 import com.anod.car.home.prefs.model.WidgetSettings
 import com.anod.car.home.prefs.model.WidgetStorage
@@ -18,9 +22,6 @@ import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.content.startActivitySafely
 
 class IconThemesActivity : AppsCacheActivity() {
-
-    override val footerViewId: Int
-        get() = R.layout.list_footer_icon_themes
 
     override val isShowTitle: Boolean
         get() = true
@@ -36,6 +37,11 @@ class IconThemesActivity : AppsCacheActivity() {
     private val prefs: WidgetSettings by lazy { WidgetStorage.load(this, appWidgetId) }
     private var themePackageName = ""
     private var refresh = false
+
+    override fun inflateFooterView(layoutInflater: LayoutInflater, parent: ViewGroup): View? {
+        val binding = ListFooterIconThemesBinding.inflate(layoutInflater, parent, false)
+        return binding.root
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

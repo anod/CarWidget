@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.FrameLayout
 import androidx.activity.viewModels
@@ -59,9 +60,6 @@ abstract class AppsListActivity : AppCompatGridActivity(), AdapterView.OnItemCli
 
     protected open val headEntries: List<AppsList.Entry> = emptyList()
 
-    protected open val footerViewId: Int
-        get() = 0
-
     protected open val isRefreshCache: Boolean
         get() = false
 
@@ -73,16 +71,15 @@ abstract class AppsListActivity : AppCompatGridActivity(), AdapterView.OnItemCli
         // Nothing by default
     }
 
+    protected open fun inflateFooterView(layoutInflater: LayoutInflater, parent: ViewGroup): View? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.apps_list)
         gridView.onItemClickListener = this
-        val footerViewId = footerViewId
-        if (footerViewId > 0) {
-            val panel = findViewById<View>(R.id.panel) as FrameLayout
-            val inflater = getSystemService(
-                    Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val footerView = inflater.inflate(footerViewId, null)
+        val panel = findViewById<View>(R.id.panel) as FrameLayout
+        val footerView = inflateFooterView(layoutInflater, panel)
+        if (footerView != null) {
             panel.addView(footerView)
             panel.visibility = View.VISIBLE
         }

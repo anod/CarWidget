@@ -11,15 +11,17 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
+import com.anod.car.home.databinding.WizardActivityBinding
 import com.anod.car.home.utils.HtmlCompat
 import com.anod.car.home.utils.Version
-import kotlinx.android.synthetic.main.wizard_activity.*
 
 /**
  * @author alex
  * @date 5/24/13
  */
 class WizardActivity : CarWidgetActivity() {
+
+    private lateinit var binding: WizardActivityBinding
 
     /**
      * The pager adapter, which provides the pages to the view pager widget.
@@ -28,24 +30,25 @@ class WizardActivity : CarWidgetActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.wizard_activity)
+        binding = WizardActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Instantiate a ViewPager and a PagerAdapter.
-        pager.adapter = pagerAdapter
+        binding.pager.adapter = pagerAdapter
 
         val current = intent?.getIntExtra(EXTRA_PAGE, 0) ?: 0
-        pager.currentItem = current
-        buttonNext.tag = TYPE_NEXT
+        binding.pager.currentItem = current
+        binding.buttonNext.tag = TYPE_NEXT
 
         updateStrip(current)
 
-        pager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener() {
+        binding.pager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 updateStrip(position)
                 if (position == NUM_PAGES - 1) {
-                    buttonNext.tag = TYPE_FINISH
-                    buttonNext.setText(R.string.finish)
-                    buttonSkip.visibility = View.GONE
+                    binding.buttonNext.tag = TYPE_FINISH
+                    binding.buttonNext.setText(R.string.finish)
+                    binding.buttonSkip.visibility = View.GONE
                 }
             }
         })
@@ -55,10 +58,10 @@ class WizardActivity : CarWidgetActivity() {
         }
 
         findViewById<Button>(R.id.buttonNext).setOnClickListener {
-            if (buttonNext.tag == TYPE_FINISH) {
+            if (binding.buttonNext.tag == TYPE_FINISH) {
                 finishWizard()
             } else {
-                pager.currentItem = pager.currentItem + 1
+                binding.pager.currentItem = binding.pager.currentItem + 1
             }
         }
     }
@@ -81,13 +84,13 @@ class WizardActivity : CarWidgetActivity() {
     }
 
     override fun onBackPressed() {
-        if (pager.currentItem == 0) {
+        if (binding.pager.currentItem == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed()
         } else {
             // Otherwise, select the previous step.
-            pager.currentItem = pager.currentItem - 1
+            binding.pager.currentItem = binding.pager.currentItem - 1
         }
     }
 
@@ -129,7 +132,7 @@ class WizardActivity : CarWidgetActivity() {
                 val desc3 = rootView.findViewById<TextView>(R.id.desc3)
                 desc3.text = HtmlCompat.fromHtml(getString(R.string.enable_incar_description))
 
-                val v = Version(activity!!)
+                val v = Version(requireContext())
                 val desc4 = rootView.findViewById<TextView>(R.id.desc4)
                 if (v.isFree) {
                     desc4.text = HtmlCompat.fromHtml(

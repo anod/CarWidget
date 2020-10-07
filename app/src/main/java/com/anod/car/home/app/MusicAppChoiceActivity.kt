@@ -3,13 +3,17 @@ package com.anod.car.home.app
 import android.app.ActivityManager
 import android.content.ComponentName
 import android.content.Context
+import android.os.Bundle
 import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import com.anod.car.home.BuildConfig
 import com.anod.car.home.R
+import com.anod.car.home.databinding.ListFooterMusicAppChoiceBinding
 import com.anod.car.home.model.AppsList
 import com.anod.car.home.utils.MusicUtils
-import kotlinx.android.synthetic.main.list_footer_music_app_choice.*
 
 /**
  * @author alex
@@ -17,8 +21,12 @@ import kotlinx.android.synthetic.main.list_footer_music_app_choice.*
  */
 class MusicAppChoiceActivity : MusicAppsActivity() {
 
-    override val footerViewId: Int
-        get() = R.layout.list_footer_music_app_choice
+    private lateinit var binding: ListFooterMusicAppChoiceBinding
+
+    override fun inflateFooterView(layoutInflater: LayoutInflater, parent: ViewGroup): View? {
+       binding = ListFooterMusicAppChoiceBinding.inflate(layoutInflater, parent, false)
+       return binding.root
+    }
 
     override fun onEntryClick(position: Int, entry: AppsList.Entry) {
         val musicCmp = entry.componentName!!
@@ -29,7 +37,7 @@ class MusicAppChoiceActivity : MusicAppsActivity() {
                 KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, this, musicCmp, !isRunning
         )
 
-        if (defaultApp.isChecked) {
+        if (binding.defaultApp.isChecked) {
             val appSettings = App.provide(this).appSettings
             appSettings.musicApp = musicCmp
             appSettings.apply()
@@ -40,8 +48,7 @@ class MusicAppChoiceActivity : MusicAppsActivity() {
 
     private fun isMusicCmpRunning(musicCmp: ComponentName): Boolean {
         val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val procInfos = activityManager
-                .runningAppProcesses ?: return false
+        val procInfos = activityManager.runningAppProcesses ?: return false
         for (i in procInfos.indices) {
             if (procInfos[i].processName.startsWith(musicCmp.packageName)) {
                 if (BuildConfig.DEBUG) {

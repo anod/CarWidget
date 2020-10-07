@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -26,6 +27,7 @@ import com.anod.car.home.app.App
 import com.anod.car.home.backup.Backup
 import com.anod.car.home.backup.Backup.LEGACY_PATH
 import com.anod.car.home.backup.BackupManager
+import com.anod.car.home.databinding.FragmentAboutBinding
 import com.anod.car.home.prefs.MusicAppSettingsActivity
 import com.anod.car.home.prefs.model.AppTheme
 import com.anod.car.home.utils.Utils
@@ -35,15 +37,24 @@ import com.anod.car.home.utils.stopProgressAnimation
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogCustom
 import info.anodsplace.framework.app.applicationContext
-import info.anodsplace.framework.content.startActivityForResultSafely
+import info.anodsplace.framework.content.CreateDocument
 import info.anodsplace.framework.content.startActivitySafely
-import kotlinx.android.synthetic.main.fragment_about.*
 
 class AboutFragment : Fragment() {
+    private var _binding: FragmentAboutBinding? = null
+    private val binding get() = _binding!!
+
     private val viewModel: AboutViewModel by viewModels()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_about, container, false)
+        _binding = FragmentAboutBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,20 +63,20 @@ class AboutFragment : Fragment() {
         viewModel.appWidgetId = Utils.readAppWidgetId(savedInstanceState, requireActivity().intent)
 
         val themeIdx = App.theme(requireContext()).themeIdx
-        buttonAppTheme.setOnClickListener {
+        binding.buttonAppTheme.setOnClickListener {
             changeTheme(themeIdx)
         }
         val themes = resources.getStringArray(R.array.app_themes)
         val themeName = themes[themeIdx]
         val themeText = SpannableStringBuilder("${getString(R.string.app_theme)}\n$themeName")
         themeText.setSpan(AbsoluteSizeSpan(8, true), themeText.length - themeName.length, themeText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        buttonAppTheme.text = themeText
+        binding.buttonAppTheme.text = themeText
 
-        buttonDefaultCarDockApp.setOnClickListener {
+        binding.buttonDefaultCarDockApp.setOnClickListener {
             onCarDockAppClick()
         }
 
-        buttonMusicApp.setOnClickListener {
+        binding.buttonMusicApp.setOnClickListener {
             val musicAppsIntent = Intent(context, MusicAppSettingsActivity::class.java)
             requireContext().startActivity(musicAppsIntent)
         }
@@ -73,9 +84,9 @@ class AboutFragment : Fragment() {
         val musicApp = renderMusicApp()
         val musicAppText = SpannableStringBuilder("${getString(R.string.music_app)}\n$musicApp")
         musicAppText.setSpan(AbsoluteSizeSpan(8, true), musicAppText.length - musicApp.length, musicAppText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        buttonMusicApp.text = musicAppText
+        binding.buttonMusicApp.text = musicAppText
 
-        buttonVersion.setOnClickListener {
+        binding.buttonVersion.setOnClickListener {
             val url = DETAIL_MARKET_URL
             val uri = Uri.parse(String.format(url, requireContext().packageName))
             val intent = Intent(Intent.ACTION_VIEW, uri)
@@ -87,7 +98,7 @@ class AboutFragment : Fragment() {
         val ver = renderVersion()
         val versionText = SpannableStringBuilder("$ver\n${getString(R.string.version_summary)}")
         versionText.setSpan(AbsoluteSizeSpan(8, true), ver.length + 1, versionText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        buttonVersion.text = versionText
+        binding.buttonVersion.text = versionText
     }
 
     private fun changeTheme(themeIdx: Int) {
@@ -108,8 +119,8 @@ class AboutFragment : Fragment() {
                 Backup.NO_RESULT -> {
                 }
                 else -> {
-                    backupInCar.stopProgressAnimation()
-                    backupWidget.stopProgressAnimation()
+                    binding.backupInCar.stopProgressAnimation()
+                    binding.backupWidget.stopProgressAnimation()
                     Toast.makeText(context, Backup.renderBackupCode(code), Toast.LENGTH_SHORT).show()
                 }
             }
@@ -120,7 +131,7 @@ class AboutFragment : Fragment() {
                 Backup.NO_RESULT -> {
                 }
                 else -> {
-                    restore.stopProgressAnimation()
+                    binding.restore.stopProgressAnimation()
                     Toast.makeText(context, Backup.renderRestoreCode(code), Toast.LENGTH_SHORT).show()
                     if (code == Backup.RESULT_DONE && activity is BackupManager.OnRestore) {
                         (activity as BackupManager.OnRestore).restoreCompleted()
@@ -129,91 +140,61 @@ class AboutFragment : Fragment() {
             }
         })
 
-        backupInCar.setOnClickListener {
+        binding.backupInCar.setOnClickListener {
             try {
                 it.startProgressAnimation()
                 Toast.makeText(context, getString(R.string.backup_path, LEGACY_PATH), Toast.LENGTH_LONG).show()
-                startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                    putExtra(Intent.EXTRA_TITLE, Backup.FILE_INCAR_JSON)
-                    try {
-                        val uri = FileProvider.getUriForFile(applicationContext().actual, Backup.AUTHORITY, Backup.legacyBackupDir)
-                        setDataAndType(uri, "application/json")
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri)
-                        }
-                    } catch (e: Exception) {
-                        AppLog.e(e)
+                val initialUri = FileProvider.getUriForFile(applicationContext().actual, Backup.AUTHORITY, Backup.legacyBackupDir)
+                registerForActivityResult(CreateDocument(initialUri, "application/json")) { destUri ->
+                    if (destUri == null) {
+                        binding.backupInCar.stopProgressAnimation()
+                    } else {
+                        viewModel.backup(Backup.TYPE_INCAR, destUri)
                     }
-                }, Backup.requestBackupInCar)
+                }.launch(Backup.FILE_INCAR_JSON)
             } catch (e: Exception) {
                 AppLog.e(e)
                 Toast.makeText(context, "Cannot start activity: ACTION_CREATE_DOCUMENT", Toast.LENGTH_SHORT).show()
             }
         }
 
-        backupWidget.isEnabled = viewModel.appWidgetId > AppWidgetManager.INVALID_APPWIDGET_ID
-        backupWidget.setOnClickListener {
+        binding.backupWidget.isEnabled = viewModel.appWidgetId > AppWidgetManager.INVALID_APPWIDGET_ID
+        binding.backupWidget.setOnClickListener {
             try {
                 it.startProgressAnimation()
                 Toast.makeText(context, getString(R.string.backup_path, LEGACY_PATH), Toast.LENGTH_LONG).show()
-                startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                    putExtra(Intent.EXTRA_TITLE, "carwidget-${viewModel.appWidgetId}" + Backup.FILE_EXT_JSON)
-                    try {
-                        val uri = FileProvider.getUriForFile(applicationContext().actual, Backup.AUTHORITY, Backup.legacyBackupDir)
-                        setDataAndType(uri, "application/json")
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri)
-                        }
-                    } catch (e: Exception) {
-                        AppLog.e(e)
+                val initialUri = FileProvider.getUriForFile(applicationContext().actual, Backup.AUTHORITY, Backup.legacyBackupDir)
+                registerForActivityResult(CreateDocument(initialUri, "application/json")) { destUri ->
+                    if (destUri == null) {
+                        binding.backupWidget.stopProgressAnimation()
+                    } else {
+                        viewModel.backup(Backup.TYPE_MAIN, destUri)
                     }
-                }, Backup.requestBackupWidget)
+                }.launch("carwidget-${viewModel.appWidgetId}" + Backup.FILE_EXT_JSON)
             } catch (e: Exception) {
                 AppLog.e(e)
                 Toast.makeText(context, "Cannot start activity: ACTION_CREATE_DOCUMENT", Toast.LENGTH_SHORT).show()
             }
         }
 
-        restore.setOnClickListener {
+        binding.restore.setOnClickListener {
             it.startProgressAnimation()
-            startActivityForResultSafely(Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "*/*"
-                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("application/json", "text/plain", "*/*"))
-            }, Backup.requestRestore)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-        if (requestCode == Backup.requestBackupWidget) {
-            if (resultCode == Activity.RESULT_OK) {
-                resultData?.data?.let { viewModel.backup(Backup.TYPE_MAIN, it) }
-            } else {
-                backupWidget.stopProgressAnimation()
-            }
-        } else if (requestCode == Backup.requestBackupInCar) {
-            if (resultCode == Activity.RESULT_OK) {
-                resultData?.data?.let { viewModel.backup(Backup.TYPE_INCAR, it) }
-            } else {
-                backupInCar.stopProgressAnimation()
-            }
-        } else if (requestCode == Backup.requestRestore) {
-            if (resultCode == Activity.RESULT_OK) {
-                resultData?.data?.let { viewModel.restore(it) }
-            } else {
-                restore.stopProgressAnimation()
-            }
+            //  addCategory(Intent.CATEGORY_OPENABLE)
+            registerForActivityResult(ActivityResultContracts.OpenDocument()) { destUri ->
+                if (destUri == null) {
+                    binding.restore.stopProgressAnimation()
+                } else {
+                    viewModel.restore(destUri)
+                }
+            }.launch(arrayOf("application/json", "text/plain", "*/*"))
         }
     }
 
     private fun onCarDockAppClick() {
         val style = App.theme(requireContext()).alert
         DialogCustom(requireContext(), style, R.string.default_car_dock_app, R.layout.dialog_car_dock_app) { view, dialog ->
-
             dialog.setCancelable(true)
-
             dialog.setPositiveButton(android.R.string.ok) { d, _ -> d.dismiss() }
-
             view.findViewById<Button>(android.R.id.button1).setOnClickListener {
                 val intent = Intent(Intent.ACTION_MAIN)
                 intent.addCategory(Intent.CATEGORY_CAR_DOCK)

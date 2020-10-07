@@ -11,15 +11,17 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.anod.car.home.R
 import com.anod.car.home.appwidget.WidgetHelper
+import com.anod.car.home.databinding.FragmentWidgetsListBinding
 import com.anod.car.home.prefs.ConfigurationActivity
 import com.anod.car.home.prefs.ConfigurationInCar
 import com.anod.car.home.utils.InCarStatus
 import com.anod.car.home.utils.Version
 import com.anod.car.home.utils.forProVersion
-import kotlinx.android.synthetic.main.fragment_widgets_list.*
 
 class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
 
+    private var _binding: FragmentWidgetsListBinding? = null
+    private val binding get() = _binding!!
     private val adapter: WidgetsListAdapter by lazy { WidgetsListAdapter(requireContext(), this) }
     private var appWidgetIds: IntArray = intArrayOf()
     private val version: Version by lazy { Version(requireContext()) }
@@ -32,26 +34,32 @@ class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_widgets_list, container, false)
+        _binding = FragmentWidgetsListBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        empty.visibility = View.GONE
-        list.visibility = View.GONE
-        inCarView.visibility = View.GONE
+        binding.empty.visibility = View.GONE
+        binding.list.visibility = View.GONE
+        binding.inCarView.visibility = View.GONE
 
-        empty.setOnClickListener {
+        binding.empty.setOnClickListener {
             val intent = Intent(activity, WizardActivity::class.java)
             intent.putExtra(WizardActivity.EXTRA_PAGE, 1)
             startActivity(intent)
         }
 
-        list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-        list.adapter = adapter
+        binding.list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+        binding.list.adapter = adapter
 
-        inCarView.setOnClickListener {
+        binding.inCarView.setOnClickListener {
             val status = InCarStatus(appWidgetIds.size, version, requireContext())
             if (status.isEnabled) {
                 when {
@@ -78,14 +86,14 @@ class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
 
     private fun updateViews() {
         if (adapter.isEmpty) {
-            empty.visibility = View.VISIBLE
-            inCarView.visibility = View.GONE
-            list.visibility = View.GONE
+            binding.empty.visibility = View.VISIBLE
+            binding.inCarView.visibility = View.GONE
+            binding.list.visibility = View.GONE
         } else {
-            empty.visibility = View.GONE
-            updateInCarHeader(inCarView)
-            inCarView.visibility = View.VISIBLE
-            list.visibility = View.VISIBLE
+            binding.empty.visibility = View.GONE
+            updateInCarHeader(binding.inCarView)
+            binding.inCarView.visibility = View.VISIBLE
+            binding.list.visibility = View.VISIBLE
         }
     }
 

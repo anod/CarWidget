@@ -12,36 +12,35 @@ import android.widget.Toast
 import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.app.CarWidgetActivity
+import com.anod.car.home.databinding.ActivityShortcuteditBinding
 import com.anod.car.home.model.*
 import com.anod.car.home.utils.DrawableUri
 import com.anod.car.home.utils.ShortcutPicker
 import com.anod.car.home.utils.UtilitiesBitmap
 import com.anod.car.home.utils.forIconPack
+import info.anodsplace.carwidget.prefs.IntentEditActivity
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogItems
 import info.anodsplace.framework.content.startActivityForResultSafely
-import kotlinx.android.synthetic.main.activity_shortcutedit.*
 
 class ShortcutEditActivity : CarWidgetActivity() {
 
     private var customIcon: Bitmap? = null
-
     private var db: ShortcutsDatabase? = null
-
     private var shortcut: Shortcut? = null
     private var shortcutIcon: ShortcutIcon? = null
     private var iconDefault: Bitmap? = null
-
     private var containerModel: AbstractShortcuts? = null
-
     private var cellId: Int = 0
+    private lateinit var binding: ActivityShortcuteditBinding
 
     override val appThemeRes: Int
         get() = theme.dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_shortcutedit)
+        binding = ActivityShortcuteditBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setTitle(R.string.shortcut_edit_title)
 
         init(intent)
@@ -68,20 +67,24 @@ class ShortcutEditActivity : CarWidgetActivity() {
         shortcut = db!!.loadShortcut(shortcutId)
         shortcutIcon = containerModel!!.iconLoader.load(shortcut!!)
 
-        labelEdit.setText(shortcut!!.title)
-        iconView.setImageBitmap(shortcutIcon!!.bitmap)
+        binding.labelEdit.setText(shortcut!!.title)
+        binding.iconView.setImageBitmap(shortcutIcon!!.bitmap)
 
-        deleteButton.setOnClickListener {
+        binding.deleteButton.setOnClickListener {
             containerModel!!.drop(cellId)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
 
-        iconView.setOnClickListener {
+        binding.iconView.setOnClickListener {
             createIconMenu().show()
         }
 
-        okButton.setOnClickListener {
+        binding.advancedButton.setOnClickListener {
+            startActivity(Intent(this, IntentEditActivity::class.java))
+        }
+
+        binding.okButton.setOnClickListener {
             var needUpdate = false
             if (customIcon != null) {
                 shortcutIcon = ShortcutIcon.forCustomIcon(shortcutIcon!!.id, customIcon!!)
@@ -90,7 +93,7 @@ class ShortcutEditActivity : CarWidgetActivity() {
                 shortcutIcon = ShortcutIcon.forActivity(shortcutIcon!!.id, iconDefault!!)
                 needUpdate = true
             }
-            val title = labelEdit.text
+            val title = binding.labelEdit.text
             if (title != shortcut!!.title) {
                 shortcut = Shortcut(shortcut!!.id, shortcut!!.itemType, title, shortcutIcon!!.isCustom, shortcut!!.intent)
                 needUpdate = true
@@ -143,7 +146,7 @@ class ShortcutEditActivity : CarWidgetActivity() {
             if (icon != null) {
                 iconDefault = icon
                 customIcon = null
-                iconView.setImageBitmap(icon)
+                binding.iconView.setImageBitmap(icon)
             } else {
                 Toast.makeText(this, R.string.failed_fetch_icon, Toast.LENGTH_LONG).show()
             }
@@ -166,7 +169,7 @@ class ShortcutEditActivity : CarWidgetActivity() {
     private fun setCustomIcon(icon: Bitmap) {
         customIcon = icon
         iconDefault = null
-        iconView.setImageBitmap(customIcon)
+        binding.iconView.setImageBitmap(customIcon)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

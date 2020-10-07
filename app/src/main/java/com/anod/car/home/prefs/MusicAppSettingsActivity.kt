@@ -1,8 +1,12 @@
 package com.anod.car.home.prefs
 
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.app.MusicAppsActivity
+import com.anod.car.home.databinding.ListFooterMusicAppSettingsBinding
 import com.anod.car.home.model.AppsList
 import java.util.*
 
@@ -23,8 +27,10 @@ class MusicAppSettingsActivity : MusicAppsActivity() {
     override val isShowTitle: Boolean
         get() = true
 
-    override val footerViewId: Int
-        get() = R.layout.list_footer_music_app_settings
+    override fun inflateFooterView(layoutInflater: LayoutInflater, parent: ViewGroup): View? {
+        val binding = ListFooterMusicAppSettingsBinding.inflate(layoutInflater, parent, false)
+        return binding.root
+    }
 
     override fun onEntryClick(position: Int, entry: AppsList.Entry) {
         val appSettings = App.provide(this).appSettings

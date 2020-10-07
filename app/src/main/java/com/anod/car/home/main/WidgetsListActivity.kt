@@ -7,6 +7,7 @@ import androidx.fragment.app.commit
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.appwidget.WidgetHelper
+import com.anod.car.home.databinding.ActivityMainBinding
 import com.anod.car.home.incar.ScreenOrientation
 import com.anod.car.home.prefs.ConfigurationInCar
 import com.anod.car.home.prefs.LookAndFeelActivity
@@ -14,7 +15,6 @@ import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.prefs.model.InCarStorage
 import com.anod.car.home.utils.*
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * @author alex
@@ -22,17 +22,19 @@ import kotlinx.android.synthetic.main.activity_main.*
  */
 open class WidgetsListActivity : CarWidgetActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     private var wizardShown: Boolean = false
     private val version: Version by lazy { Version(this) }
     private var proDialogShown: Boolean = false
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         if (savedInstanceState == null) {
             val openInCarTab = intent?.extras?.getBoolean(extraInCarTab) ?: false
-            bottomNavigation.selectedItemId = if (openInCarTab) R.id.nav_incar else R.id.nav_widgets
+            binding.bottomNavigation.selectedItemId = if (openInCarTab) R.id.nav_incar else R.id.nav_widgets
             supportFragmentManager.commit {
                 replace(R.id.content, if (openInCarTab) ConfigurationInCar() else WidgetsListFragment())
             }
@@ -41,7 +43,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
             proDialogShown = savedInstanceState.getBoolean("dialog-shown")
         }
 
-        bottomNavigation.setOnNavigationItemSelectedListener {
+        binding.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_widgets -> {
                     supportFragmentManager.commit {
@@ -97,7 +99,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
         if (requestCode == requestPermissionsResult) {
             if (resultCode == RequestPermissionsActivity.resultPermissionDenied) {
                 Snackbar
-                    .make(content, R.string.permissions_denied_open_settings, Snackbar.LENGTH_LONG)
+                    .make(binding.content, R.string.permissions_denied_open_settings, Snackbar.LENGTH_LONG)
                     .setAction(R.string.settings) {
                         startActivity(Intent().forAppSettings(this@WidgetsListActivity))
                     }
@@ -149,7 +151,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
         supportFragmentManager.commit {
             replace(R.id.content, AboutFragment())
         }
-        bottomNavigation.selectedItemId = R.id.nav_incar
+        binding.bottomNavigation.selectedItemId = R.id.nav_incar
     }
 
     companion object {
