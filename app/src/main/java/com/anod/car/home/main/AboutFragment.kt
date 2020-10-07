@@ -35,8 +35,8 @@ import com.anod.car.home.utils.stopProgressAnimation
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogCustom
 import info.anodsplace.framework.app.applicationContext
-import info.anodsplace.framework.app.startActivityForResultSafely
-import info.anodsplace.framework.app.startActivitySafely
+import info.anodsplace.framework.content.startActivityForResultSafely
+import info.anodsplace.framework.content.startActivitySafely
 import kotlinx.android.synthetic.main.fragment_about.*
 
 class AboutFragment : Fragment() {
@@ -136,7 +136,7 @@ class AboutFragment : Fragment() {
                 startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                     putExtra(Intent.EXTRA_TITLE, Backup.FILE_INCAR_JSON)
                     try {
-                        val uri = FileProvider.getUriForFile(applicationContext, Backup.AUTHORITY, Backup.legacyBackupDir)
+                        val uri = FileProvider.getUriForFile(applicationContext().actual, Backup.AUTHORITY, Backup.legacyBackupDir)
                         setDataAndType(uri, "application/json")
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri)
@@ -159,7 +159,7 @@ class AboutFragment : Fragment() {
                 startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                     putExtra(Intent.EXTRA_TITLE, "carwidget-${viewModel.appWidgetId}" + Backup.FILE_EXT_JSON)
                     try {
-                        val uri = FileProvider.getUriForFile(applicationContext, Backup.AUTHORITY, Backup.legacyBackupDir)
+                        val uri = FileProvider.getUriForFile(applicationContext().actual, Backup.AUTHORITY, Backup.legacyBackupDir)
                         setDataAndType(uri, "application/json")
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri)

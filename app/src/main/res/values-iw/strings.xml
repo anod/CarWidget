@@ -139,7 +139,7 @@
     <string name="applications">יישומים</string>
     <string name="pref_wifi">Wi-Fi</string>
     <string name="transparent">שקוף</string>
-    <string name="dialog_title_select">בחר</string>
+    <string name="dialog_choose_icon">בחר</string>
     <string name="icon_default">ברירת מחדל </string>
     <string name="icon_custom">בחר מגלריה</string>
     <string name="icon_adw_icon_pack">Icon Pack</string>

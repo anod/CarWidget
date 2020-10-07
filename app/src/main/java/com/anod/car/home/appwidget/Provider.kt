@@ -61,7 +61,7 @@ open class Provider : AppWidgetProvider() {
         val isKeyguard = category == AppWidgetProviderInfo.WIDGET_CATEGORY_KEYGUARD
 
         if (isKeyguard && maxHeight != -1) {
-            AppLog.d("CarWidgetOptions", "isKeyguard: $isKeyguard, maxHeight: $maxHeight")
+            AppLog.d("isKeyguard: $isKeyguard, maxHeight: $maxHeight")
             requestUpdate(context, intArrayOf(appWidgetId))
         }
     }

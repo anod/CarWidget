@@ -15,7 +15,7 @@ import com.anod.car.home.prefs.model.WidgetStorage
 import com.anod.car.home.utils.Utils
 import com.anod.car.home.utils.forIconTheme
 import info.anodsplace.framework.AppLog
-import info.anodsplace.framework.app.startActivitySafely
+import info.anodsplace.framework.content.startActivitySafely
 
 class IconThemesActivity : AppsCacheActivity() {
 

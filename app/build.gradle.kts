@@ -18,6 +18,8 @@ plugins {
 dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("com.google.android.material:material:1.2.1")
+    implementation(project(":lib:framework"))
+    implementation(project(":lib:colorpicker"))
     implementation("androidx.preference:preference:1.1.1")
     implementation("androidx.palette:palette:1.0.0")
 
@@ -49,7 +51,7 @@ dependencies {
     implementation("ch.acra:acra-limiter:5.7.0")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.10")
-    implementation("com.android.support.constraint:constraint-layout:2.0.1")
+    implementation("com.android.support.constraint:constraint-layout:2.0.2")
 }
 
 android {

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import com.anod.car.home.R
 import com.anod.car.home.app.App
 import info.anodsplace.framework.app.DialogMessage
-import info.anodsplace.framework.app.startActivitySafely
+import info.anodsplace.framework.content.startActivitySafely
 
 object TrialDialogs {
 

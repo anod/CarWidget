@@ -135,7 +135,7 @@
     <string name="applications">Applicazioni</string>
     <string name="pref_wifi">Wi-Fi</string>
     <string name="transparent">Trasparente</string>
-    <string name="dialog_title_select">Seleziona</string>
+    <string name="dialog_choose_icon">Seleziona</string>
     <string name="icon_custom">Personalizza</string>
     <string name="icon_adw_icon_pack">Pacchetto icone</string>
     <string name="restore">Ripristina</string>

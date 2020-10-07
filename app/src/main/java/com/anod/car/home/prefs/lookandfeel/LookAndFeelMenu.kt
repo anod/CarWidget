@@ -25,7 +25,7 @@ import com.anod.car.home.utils.HtmlCompat
 import info.anodsplace.framework.app.DialogCustom
 import info.anodsplace.framework.app.DialogMessage
 import info.anodsplace.framework.app.DialogSingleChoice
-import info.anodsplace.framework.app.startActivityForResultSafely
+import info.anodsplace.framework.content.startActivityForResultSafely
 
 /**
  * @author alex
@@ -130,9 +130,13 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
             }
             R.id.skin_info -> {
                 val style = App.theme(activity).alert
-                DialogMessage(activity, style, R.string.info, HtmlCompat.fromHtml(activity.getString(R.string.skin_info_bbb))) {
+                DialogMessage(
+                        context = activity,
+                        themeResId = style,
+                        titleRes = R.string.info,
+                        message = HtmlCompat.fromHtml(activity.getString(R.string.skin_info_bbb))) {
                     it.setCancelable(true)
-                    it.setPositiveButton(android.R.string.ok) { _, _ ->  }
+                    it.setPositiveButton(android.R.string.ok) { _, _ -> }
                 }.show()
                 return true
             }

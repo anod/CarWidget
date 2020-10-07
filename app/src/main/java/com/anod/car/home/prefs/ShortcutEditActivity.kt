@@ -1,7 +1,6 @@
 package com.anod.car.home.prefs
 
 import android.app.Activity
-import android.app.Dialog
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
@@ -10,8 +9,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.anod.car.home.R
+import com.anod.car.home.app.App
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.model.*
 import com.anod.car.home.utils.DrawableUri
@@ -19,7 +18,8 @@ import com.anod.car.home.utils.ShortcutPicker
 import com.anod.car.home.utils.UtilitiesBitmap
 import com.anod.car.home.utils.forIconPack
 import info.anodsplace.framework.AppLog
-import info.anodsplace.framework.app.startActivityForResultSafely
+import info.anodsplace.framework.app.DialogItems
+import info.anodsplace.framework.content.startActivityForResultSafely
 import kotlinx.android.synthetic.main.activity_shortcutedit.*
 
 class ShortcutEditActivity : CarWidgetActivity() {
@@ -48,12 +48,9 @@ class ShortcutEditActivity : CarWidgetActivity() {
     }
 
     private fun init(intent: Intent) {
-        cellId = intent
-                .getIntExtra(EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID)
-        val shortcutId = intent
-                .getLongExtra(EXTRA_SHORTCUT_ID, Shortcut.idUnknown)
-        val appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                AppWidgetManager.INVALID_APPWIDGET_ID)
+        cellId = intent.getIntExtra(EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID)
+        val shortcutId = intent.getLongExtra(EXTRA_SHORTCUT_ID, Shortcut.idUnknown)
+        val appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
         if (cellId == ShortcutPicker.INVALID_CELL_ID || shortcutId == Shortcut.idUnknown) {
             AppLog.e("Missing parameter")
             setResult(Activity.RESULT_CANCELED)
@@ -113,24 +110,12 @@ class ShortcutEditActivity : CarWidgetActivity() {
         init(intent)
     }
 
-    private fun createIconMenu(): Dialog {
-        val items: Array<CharSequence> = if (shortcut!!.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
-            arrayOf(
-                getString(R.string.icon_custom), // PICK_CUSTOM_ICON
-                getString(R.string.icon_adw_icon_pack), // PICK_ADW_ICON_PACK
-                getString(R.string.icon_default) // PICK_DEFAULT_ICON
-            )
-        } else {
-            arrayOf(
-                getString(R.string.icon_custom), // PICK_CUSTOM_ICON
-                getString(R.string.icon_adw_icon_pack) // PICK_ADW_ICON_PACK
-            )
-        }
-
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.dialog_title_select))
-        builder.setItems(items) { _, item -> iconDialogClick(item) }
-        return builder.create()
+    private fun createIconMenu(): DialogItems {
+        return DialogItems(
+                context = this,
+                themeResId = App.theme(this).alert,
+                titleRes = R.string.dialog_choose_icon,
+                itemsRes = if (shortcut!!.isApp) R.array.edit_icon_app else R.array.edit_icon_custom) { _, item -> iconDialogClick(item) }
     }
 
     private fun iconDialogClick(item: Int) {
@@ -144,9 +129,7 @@ class ShortcutEditActivity : CarWidgetActivity() {
             startActivityForResultSafely(chooseIntent, PICK_CUSTOM_ICON)
         } else if (item == PICK_ADW_ICON_PACK) {
             chooseIntent = Intent().forIconPack()
-            startActivityForResultSafely(
-                    Intent.createChooser(chooseIntent, getString(R.string.select_icon_pack)),
-                    PICK_ADW_ICON_PACK)
+            startActivityForResultSafely(Intent.createChooser(chooseIntent, getString(R.string.select_icon_pack)), PICK_ADW_ICON_PACK)
         } else if (item == PICK_DEFAULT_ICON) {
 
             val componentName = shortcut!!.intent.component
@@ -217,8 +200,7 @@ class ShortcutEditActivity : CarWidgetActivity() {
 
     companion object {
 
-        fun createIntent(context: Context, cellId: Int, shortcutId: Long,
-                         appWidgetId: Int): Intent {
+        fun createIntent(context: Context, cellId: Int, shortcutId: Long, appWidgetId: Int): Intent {
             val editIntent = Intent(context, ShortcutEditActivity::class.java)
             editIntent.putExtra(EXTRA_SHORTCUT_ID, shortcutId)
             editIntent.putExtra(EXTRA_CELL_ID, cellId)

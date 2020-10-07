@@ -137,7 +137,7 @@
     <string name="applications">Applications</string>
     <string name="pref_wifi">Wi-Fi</string>
     <string name="transparent">Transparent</string>
-    <string name="dialog_title_select">Select</string>
+    <string name="dialog_choose_icon">Choose Icon</string>
     <string name="icon_custom">Custom</string>
     <string name="icon_adw_icon_pack">Icon Pack</string>
     <string name="restore">Restore</string>
@@ -162,6 +162,17 @@
         <item>Auto</item>
         <item>Day</item>
         <item>Night</item>
+    </string-array>
+
+    <string-array name="edit_icon_app">
+        <item>@string/icon_custom</item>
+        <item>@string/icon_adw_icon_pack</item>
+        <item>@string/icon_default</item>
+    </string-array>
+
+    <string-array name="edit_icon_custom">
+        <item>@string/icon_custom</item>
+        <item>@string/icon_adw_icon_pack</item>
     </string-array>
 
     <string-array name="wifi_action_titles">
@@ -267,6 +278,7 @@
     <string name="screen_on_alternative">Alert on top</string>
     <string name="screen_on_alternative_text">Use alternative way to keep screen on, requires addition permission</string>
     <string name="app_shortcuts_limited">App shortcuts support is limited by Android</string>
+    <string name="descr_shortcut_icon">Shortcut icon</string>
 
     <array name="adaptive_icon_style_names">
         <item>Default</item>

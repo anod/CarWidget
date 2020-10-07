@@ -6,6 +6,7 @@ import android.content.Context.*
 import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.telephony.TelephonyManager
+import android.util.LruCache
 import android.view.WindowManager
 import com.anod.car.home.app.AppIconLoader
 import com.anod.car.home.incar.ModeHandler
@@ -18,6 +19,7 @@ import com.anod.car.home.prefs.model.AppTheme
 import com.anod.car.home.prefs.model.InCarSettings
 import com.anod.car.home.prefs.model.InCarStorage
 import info.anodsplace.framework.app.AlertWindow
+import info.anodsplace.framework.util.createLruCache
 
 /**
  * @author alex
@@ -103,4 +105,7 @@ class AppComponent(val application: CarWidgetApplication) {
         }
     }
 
+    val memoryCache: LruCache<String, Any?> by lazy {
+        createLruCache()
+    }
 }

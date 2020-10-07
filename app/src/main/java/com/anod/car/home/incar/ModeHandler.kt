@@ -15,7 +15,7 @@ import com.anod.car.home.app.App
 import com.anod.car.home.prefs.model.InCarInterface
 import com.anod.car.home.utils.Power
 import info.anodsplace.framework.AppLog
-import info.anodsplace.framework.app.startActivitySafely
+import info.anodsplace.framework.content.startActivitySafely
 
 class ModeHandler(private val context: Context, private val screenOrientation: ScreenOrientation) {
     private val alertWindow: ScreenOnAlert by lazy { App.provide(context).alertWindow }

@@ -2,9 +2,11 @@ package com.anod.car.home
 
 import android.annotation.TargetApi
 import android.app.Application
+import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.os.DeadSystemException
+import android.util.LruCache
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.work.Configuration
 import com.anod.car.home.acra.BrowserUrlSender
@@ -49,6 +51,10 @@ import org.acra.annotation.AcraNotification
 class CarWidgetApplication : Application(), ApplicationInstance, Configuration.Provider {
 
     val appComponent: AppComponent by lazy { AppComponent(this) }
+    override val notificationManager: NotificationManager
+        get() = appComponent.notificationManager
+    override val memoryCache: LruCache<String, Any?>
+        get() = appComponent.memoryCache
 
     override val nightMode: Int
         get() {

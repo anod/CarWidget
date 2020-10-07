@@ -15,7 +15,7 @@ import androidx.lifecycle.viewModelScope
 import com.anod.car.home.R
 import com.anod.car.home.prefs.ActivityPicker.PickAdapter.Item
 import com.anod.car.home.utils.*
-import info.anodsplace.framework.app.startActivityForResultSafely
+import info.anodsplace.framework.content.startActivityForResultSafely
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

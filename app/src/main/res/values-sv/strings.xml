@@ -135,7 +135,7 @@
     <string name="applications">Tillämpningar</string>
     <string name="pref_wifi">Wi-Fi</string>
     <string name="transparent">Transparent</string>
-    <string name="dialog_title_select">Välj</string>
+    <string name="dialog_choose_icon">Välj</string>
     <string name="icon_custom">Anpassning</string>
     <string name="icon_adw_icon_pack">Ikon Pack</string>
     <string name="restore">Återställ…</string>
