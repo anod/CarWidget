@@ -1,13 +1,10 @@
 package com.anod.car.home.main
 
-import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
@@ -16,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.FileProvider
@@ -41,10 +39,41 @@ import info.anodsplace.framework.content.CreateDocument
 import info.anodsplace.framework.content.startActivitySafely
 
 class AboutFragment : Fragment() {
+    private lateinit var createDocumentLauncherWidget: ActivityResultLauncher<CreateDocument.Args>
+    private lateinit var createDocumentLauncherIncar: ActivityResultLauncher<CreateDocument.Args>
+    private lateinit var openDocumentLauncher: ActivityResultLauncher<Array<String>>
+
     private var _binding: FragmentAboutBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: AboutViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        openDocumentLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { destUri ->
+            if (destUri == null) {
+                binding.restore.stopProgressAnimation()
+            } else {
+                viewModel.restore(destUri)
+            }
+        }
+
+        createDocumentLauncherIncar = registerForActivityResult(CreateDocument()) { destUri ->
+            if (destUri == null) {
+                binding.backupInCar.stopProgressAnimation()
+            } else {
+                viewModel.backup(Backup.TYPE_INCAR, destUri)
+            }
+        }
+
+        createDocumentLauncherWidget = registerForActivityResult(CreateDocument()) { destUri ->
+            if (destUri == null) {
+                binding.backupWidget.stopProgressAnimation()
+            } else {
+                viewModel.backup(Backup.TYPE_MAIN, destUri)
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -145,13 +174,7 @@ class AboutFragment : Fragment() {
                 it.startProgressAnimation()
                 Toast.makeText(context, getString(R.string.backup_path, LEGACY_PATH), Toast.LENGTH_LONG).show()
                 val initialUri = FileProvider.getUriForFile(applicationContext().actual, Backup.AUTHORITY, Backup.legacyBackupDir)
-                registerForActivityResult(CreateDocument(initialUri, "application/json")) { destUri ->
-                    if (destUri == null) {
-                        binding.backupInCar.stopProgressAnimation()
-                    } else {
-                        viewModel.backup(Backup.TYPE_INCAR, destUri)
-                    }
-                }.launch(Backup.FILE_INCAR_JSON)
+                createDocumentLauncherIncar.launch(CreateDocument.Args(initialUri, "application/json", Backup.FILE_INCAR_JSON))
             } catch (e: Exception) {
                 AppLog.e(e)
                 Toast.makeText(context, "Cannot start activity: ACTION_CREATE_DOCUMENT", Toast.LENGTH_SHORT).show()
@@ -164,13 +187,7 @@ class AboutFragment : Fragment() {
                 it.startProgressAnimation()
                 Toast.makeText(context, getString(R.string.backup_path, LEGACY_PATH), Toast.LENGTH_LONG).show()
                 val initialUri = FileProvider.getUriForFile(applicationContext().actual, Backup.AUTHORITY, Backup.legacyBackupDir)
-                registerForActivityResult(CreateDocument(initialUri, "application/json")) { destUri ->
-                    if (destUri == null) {
-                        binding.backupWidget.stopProgressAnimation()
-                    } else {
-                        viewModel.backup(Backup.TYPE_MAIN, destUri)
-                    }
-                }.launch("carwidget-${viewModel.appWidgetId}" + Backup.FILE_EXT_JSON)
+                createDocumentLauncherWidget.launch(CreateDocument.Args(initialUri, "application/json", "carwidget-${viewModel.appWidgetId}" + Backup.FILE_EXT_JSON))
             } catch (e: Exception) {
                 AppLog.e(e)
                 Toast.makeText(context, "Cannot start activity: ACTION_CREATE_DOCUMENT", Toast.LENGTH_SHORT).show()
@@ -180,13 +197,7 @@ class AboutFragment : Fragment() {
         binding.restore.setOnClickListener {
             it.startProgressAnimation()
             //  addCategory(Intent.CATEGORY_OPENABLE)
-            registerForActivityResult(ActivityResultContracts.OpenDocument()) { destUri ->
-                if (destUri == null) {
-                    binding.restore.stopProgressAnimation()
-                } else {
-                    viewModel.restore(destUri)
-                }
-            }.launch(arrayOf("application/json", "text/plain", "*/*"))
+            openDocumentLauncher.launch(arrayOf("application/json", "text/plain", "*/*"))
         }
     }
 

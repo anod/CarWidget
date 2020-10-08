@@ -14,7 +14,7 @@ import androidx.ui.tooling.preview.Preview
 import info.anodsplace.framework.livedata.SingleLiveEvent
 
 @Composable
-fun AppBar(action: SingleLiveEvent<UiAction>) {
+fun CarWidgetToolbar(action: SingleLiveEvent<UiAction>) {
     TopAppBar(
             title = {
                 Text(text = "Edit Intent")
@@ -39,7 +39,7 @@ fun PreviewAppBarDark() {
     CarWidgetTheme(darkTheme = true) {
         Surface(color = MaterialTheme.colors.primary) {
             Scaffold(
-                    topBar = { AppBar(SingleLiveEvent()) },
+                    topBar = { CarWidgetToolbar(SingleLiveEvent()) },
                     bodyContent = { Text(text = "Content") }
             )
         }
@@ -52,7 +52,7 @@ fun PreviewAppBarLight() {
     CarWidgetTheme(darkTheme = false) {
         Surface() {
             Scaffold(
-                    topBar = { AppBar(SingleLiveEvent()) },
+                    topBar = { CarWidgetToolbar(SingleLiveEvent()) },
                     bodyContent = { Text(text = "Content") }
             )
         }

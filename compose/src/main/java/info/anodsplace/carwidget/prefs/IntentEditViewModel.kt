@@ -8,8 +8,6 @@ import info.anodsplace.carwidget.compose.UiAction
 import info.anodsplace.framework.livedata.SingleLiveEvent
 
 class IntentEditViewModel(application: Application): AndroidViewModel(application) {
-
     val intent = MutableLiveData(Intent())
     val action = SingleLiveEvent<UiAction>()
-
 }
