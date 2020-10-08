@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.setContent
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.compose.UiAction
-import info.anodsplace.carwidget.compose.intent.AddExtra
 import info.anodsplace.carwidget.compose.intent.IntentEditScreen
 import info.anodsplace.framework.AppLog
 
@@ -35,20 +34,17 @@ class IntentEditActivity : AppCompatActivity() {
             return
         }
 
+        viewModel.intent.value = shortcutIntent
+
         setContent {
             CarWidgetTheme {
-                IntentEditScreen(shortcutIntent, viewModel.extras, viewModel.action)
+                IntentEditScreen(viewModel.intent, viewModel.action)
             }
         }
 
         viewModel.action.observe(this, {
             when (it) {
                 is UiAction.OnBackNav -> finish()
-                is AddExtra -> {
-                    val currentBundle = viewModel.extras.value ?: Bundle.EMPTY
-                    currentBundle.putInt("key", 1)
-                    viewModel.extras.value = currentBundle
-                }
                 is UiAction.IntentEditAction -> { }
             }
         })

@@ -2,10 +2,7 @@ package info.anodsplace.carwidget.compose.intent
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.compose.foundation.Icon
-import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.Text
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -13,14 +10,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.PlayForWork
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.VectorAsset
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.toHexString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.ui.tooling.preview.Preview
@@ -28,9 +28,10 @@ import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.compose.TextRes
 import info.anodsplace.carwidget.compose.UiAction
+import info.anodsplace.carwidget.prefs.*
 import info.anodsplace.framework.livedata.SingleLiveEvent
 
-object AddExtra : UiAction.IntentEditAction()
+class UpdateField(val field: IntentField) : UiAction.IntentEditAction()
 
 @Composable
 fun IntentFieldTitle(text: TextRes) = Text(text = text.value, style = MaterialTheme.typography.subtitle1)
@@ -61,77 +62,78 @@ fun IntentInfoRow(icon: VectorAsset, title: TextRes, modifier: Modifier = Modifi
 }
 
 @Composable
-fun IntentInfoField(icon: VectorAsset, title: TextRes, value: String?, type: Int, modifier: Modifier = Modifier, onClick: (EditSheetState) -> Unit) {
-    val (editState, _) = mutableStateOf(EditSheetState(title.value, value = value, type = type))
+fun IntentInfoField(icon: VectorAsset, field: IntentField.StringValue, modifier: Modifier = Modifier, onClick: (IntentField) -> Unit) {
     IntentInfoRow(
             icon = icon,
-            title = title,
+            title = TextRes(field.title),
             modifier = modifier,
-            onClick = { onClick(editState) }
+            onClick = { onClick(field as IntentField) }
     ) {
-        IntentFieldValue(value = value, modifier = Modifier.padding(vertical = 8.dp))
+        IntentFieldValue(value = field.value, modifier = Modifier.padding(vertical = 8.dp))
     }
 }
 
 @Composable
-fun IntentExtras(intent: Intent, extras: LiveData<Bundle>, action: SingleLiveEvent<UiAction>) {
-    val items = extras.observeAsState(initial = intent.extras ?: Bundle.EMPTY)
-    val extraKeys = items.value.keySet() ?: emptySet()
-    if (extraKeys.isEmpty()) {
-        IntentFieldValue(value = null, modifier = Modifier.padding(vertical = 8.dp))
-    } else {
-        for (key in extraKeys) {
-            val value = items.value.get(key)
-            ProvideEmphasis(emphasis = EmphasisAmbient.current.medium) {
-                Text(text = "$key: $value", style = MaterialTheme.typography.body2)
+fun IntentExtrasField(intent: Intent, onClick: (IntentField) -> Unit) {
+    val items = intent.extras ?: Bundle.EMPTY
+    val extraKeys = items.keySet() ?: emptySet()
+    val title = TextRes(id = R.string.extras)
+    IntentInfoRow(
+            icon = Icons.Filled.FormatListBulleted,
+            title = title,
+            onClick = { onClick(IntentField.Extras(items, title.value)) }
+    ) {
+        if (extraKeys.isEmpty()) {
+            IntentFieldValue(value = null, modifier = Modifier.padding(vertical = 8.dp))
+        } else {
+            for (key in extraKeys) {
+                val value = items.get(key)
+                IntentFieldValue(value = "$key: $value", modifier = Modifier.padding(vertical = 8.dp))
             }
         }
     }
-    Spacer(Modifier.preferredWidth(8.dp))
-    Button(onClick = { action.value = AddExtra }) {
-        Icon(Icons.Filled.Add)
-        Text(text = stringResource(id = R.string.add_extra), style = MaterialTheme.typography.overline)
-    }
 }
 
 @Composable
-fun IntentEditView(intent: Intent, extras: LiveData<Bundle>, action: SingleLiveEvent<UiAction>, onItemClick: (EditSheetState) -> Unit) {
+fun IntentEditView(intent: Intent, action: SingleLiveEvent<UiAction>, onItemClick: (IntentField) -> Unit) {
     ScrollableColumn(Modifier.padding(16.dp).fillMaxSize()) {
+
         IntentInfoField(
                 icon = Icons.Outlined.PlayForWork,
-                title = TextRes(id = R.string.action),
-                value = intent.action,
-                type = 0,
+                field = IntentField.Action(intent.action, stringResource(id = R.string.action)),
                 onClick = onItemClick
         )
         IntentInfoField(
                 icon = Icons.Filled.LibraryBooks,
-                title = TextRes(id = R.string.package_name),
-                value = intent.component?.packageName,
-                type = 1,
+                field = IntentField.PackageName(intent.component?.packageName, stringResource(id = R.string.package_name)),
                 onClick = onItemClick
         )
         IntentInfoField(
                 icon = Icons.Filled.Article,
-                title = TextRes(id = R.string.class_name),
-                value = intent.component?.className,
-                type = 2,
+                field = IntentField.ClassName(intent.component?.className, stringResource(id = R.string.class_name)),
                 onClick = onItemClick
         )
         IntentInfoField(
                 icon = Icons.Filled.OpenWith,
-                title = TextRes(id = R.string.data),
-                value = intent.data?.toString(),
-                type = 3,
+                field = IntentField.Data(intent.data?.toString(), stringResource(id = R.string.data)),
                 onClick = onItemClick
         )
         IntentInfoField(
                 icon = Icons.Filled.Description,
-                title = TextRes(id = R.string.mime_type),
-                value = intent.type,
-                type = 4,
+                field = IntentField.MimeType(intent.type, stringResource(id = R.string.mime_type)),
                 onClick = onItemClick
         )
+        IntentInfoRow(
+                icon = Icons.Filled.Flag,
+                title = TextRes(id = R.string.flags),
+                onClick = { }
+        ) {
+            if (intent.flags == 0) {
+                IntentFieldValue(value = null, modifier = Modifier.padding(vertical = 8.dp))
+            } else {
+                IntentFieldValue(value = intent.flags.toHexString(), modifier = Modifier.padding(vertical = 8.dp))
+            }
+        }
         IntentInfoRow(
                 icon = Icons.Filled.Category,
                 title = TextRes(id = R.string.categories),
@@ -140,48 +142,62 @@ fun IntentEditView(intent: Intent, extras: LiveData<Bundle>, action: SingleLiveE
             if (intent.categories.isNullOrEmpty()) {
                 IntentFieldValue(value = null, modifier = Modifier.padding(vertical = 8.dp))
             } else {
-                IntentFieldValue(value = intent.categories?.joinToString()
-                        ?: "", modifier = Modifier.padding(vertical = 8.dp))
+                for (category in intent.categories) {
+                    IntentFieldValue(value = category, modifier = Modifier.padding(vertical = 8.dp))
+                }
             }
         }
-        IntentInfoRow(
-                icon = Icons.Filled.FormatListBulleted,
-                title = TextRes(id = R.string.extras),
-                onClick = { }
+        IntentExtrasField(intent, onClick = onItemClick)
+
+        Spacer(modifier = Modifier.preferredHeight(16.dp))
+
+        Surface(
+                modifier = Modifier.fillMaxWidth()
+                        .align(Alignment.CenterHorizontally),
+                color = MaterialTheme.colors.surface.copy(alpha = 0.4f),
+                shape = RoundedCornerShape(8.dp),
+                border = BorderStroke(1.dp, MaterialTheme.colors.onBackground.copy(0.2f))
         ) {
-            IntentExtras(intent, extras, action)
+            Text(
+                    text = intent.toUri(0).toString(),
+                    style = MaterialTheme.typography.overline,
+                    modifier = Modifier.padding(16.dp),
+                    softWrap = true
+            )
         }
     }
 }
 
-data class EditSheetState(val title: String, var value: String?, val type: Int)
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun IntentEditScreen(intent: Intent, extras: LiveData<Bundle>, action: SingleLiveEvent<UiAction>) {
-    val scaffoldState = rememberBottomSheetScaffoldState()
-    val (editState, setEditState) = remember { mutableStateOf(EditSheetState("", "", 0)) }
-    BottomSheetScaffold(
-            sheetContent = {
-                FieldEditDialog(editState, onClick = {
-                    scaffoldState.bottomSheetState.collapse()
-                })
-            },
-            sheetShape = RoundedCornerShape(
-                    topLeft = 4.dp,
-                    topRight = 4.dp,
-                    bottomLeft = 0.dp,
-                    bottomRight = 0.dp
-            ),
-            sheetPeekHeight = 0.dp,
+fun IntentEditScreen(intent: LiveData<Intent>, action: SingleLiveEvent<UiAction>) {
+    val intentState = intent.observeAsState(Intent())
+    val scaffoldState = rememberBackdropScaffoldState(initialValue = BackdropValue.Concealed)
+    val editState: MutableState<IntentField> = remember { mutableStateOf(IntentField.Action("", "")) }
+
+    BackdropScaffold(
             scaffoldState = scaffoldState,
-            topBar = {
-                info.anodsplace.carwidget.compose.AppBar(action)
+            appBar = { info.anodsplace.carwidget.compose.AppBar(action) },
+            backLayerContent = {
+                when (editState.value) {
+                    is IntentField.StringValue -> {
+                        FieldEditDialog(editState as MutableState<IntentField.StringValue>, onClick = {
+                            scaffoldState.conceal()
+                        })
+                    }
+                    is IntentField.Extras -> {
+                        ExtraAddDialog(editState as MutableState<IntentField.Extras>, onClick = {
+                            scaffoldState.conceal()
+                        })
+                    }
+                    else -> throw RuntimeException("Unknown field")
+                }
             },
-            bodyContent = {
-                IntentEditView(intent, extras, action) {
-                    setEditState(it)
-                    scaffoldState.bottomSheetState.expand()
+            frontLayerBackgroundColor = MaterialTheme.colors.background,
+            frontLayerContent = {
+                IntentEditView(intentState.value, action) {
+                    editState.value = it
+                    scaffoldState.reveal()
                 }
             }
     )
@@ -192,17 +208,17 @@ fun IntentEditScreen(intent: Intent, extras: LiveData<Bundle>, action: SingleLiv
 fun PreviewIntentEdit() {
     CarWidgetTheme(darkTheme = false) {
         Surface {
-            IntentEditScreen(intent = Intent(Intent.ACTION_DIAL), extras = MutableLiveData(), action = SingleLiveEvent())
+            IntentEditScreen(intent = MutableLiveData(Intent(Intent.ACTION_ANSWER)), action = SingleLiveEvent())
         }
     }
 }
 
-@Preview("Intent Edit Screen2")
+@Preview("Intent Edit Screen Dark")
 @Composable
-fun PreviewIntentEdit2() {
-    CarWidgetTheme(darkTheme = false) {
+fun PreviewIntentEditDark() {
+    CarWidgetTheme(darkTheme = true) {
         Surface {
-            IntentEditView(intent = Intent(Intent.ACTION_DIAL), extras = MutableLiveData(), action = SingleLiveEvent()) { }
+            IntentEditScreen(intent = MutableLiveData(Intent(Intent.ACTION_ANSWER)), action = SingleLiveEvent())
         }
     }
 }

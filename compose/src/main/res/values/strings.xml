@@ -10,4 +10,9 @@
     <string name="flags">Flags</string>
     <string name="categories">Categories</string>
     <string name="add_extra">Add extra</string>
+    <string name="close">Close</string>
+    <string name="save">Save</string>
+    <string name="key">Key</string>
+    <string name="value">Value</string>
+    <string name="add">Add</string>
 </resources>
