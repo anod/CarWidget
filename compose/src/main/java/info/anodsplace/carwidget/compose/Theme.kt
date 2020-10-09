@@ -35,8 +35,8 @@ val CarWidgetTypography = Typography(
 )
 
 private val BlueGray600 = Color(0xFF546E7A)
-private val BlueGray800 = Color(0xFF0037474f)
-private val BlueGray300 = Color(0xFF0090a4ae)
+private val BlueGray800 = Color(0xFF37474f)
+private val BlueGray300 = Color(0xFF90a4ae)
 private val BlueGray100 = Color(0xFFBBDEFB)
 
 private val LightThemeColors = lightColors(

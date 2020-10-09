@@ -38,7 +38,7 @@ class IntentEditActivity : AppCompatActivity() {
 
         setContent {
             CarWidgetTheme {
-                IntentEditScreen(viewModel.intent, viewModel.action)
+                IntentEditScreen(viewModel.intent, viewModel.action, viewModel.editField)
             }
         }
 

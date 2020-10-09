@@ -101,6 +101,9 @@ interface IntentField {
     }
 
     @Immutable
+    data class None(override val title: String = ""): IntentField
+
+    @Immutable
     data class Action(override val value: String?, override val title: String) : StringValue {
         override fun copy(newValue: String) = copy(value = newValue)
     }

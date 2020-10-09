@@ -24,6 +24,7 @@ import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.*
 import info.anodsplace.carwidget.prefs.*
 import info.anodsplace.framework.livedata.SingleLiveEvent
+import java.lang.RuntimeException
 
 class UpdateField(val field: IntentField) : UiAction.IntentEditAction()
 
@@ -175,13 +176,29 @@ fun IntentEditView(intent: Intent, action: SingleLiveEvent<UiAction>, onItemClic
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun IntentEditScreen(intent: LiveData<Intent>, action: SingleLiveEvent<UiAction>) {
+fun IntentEditScreen(
+        intent: LiveData<Intent>,
+        action: SingleLiveEvent<UiAction>,
+        editField: MutableLiveData<IntentField?>,
+        initialBackdropValue: BackdropValue = BackdropValue.Concealed,
+) {
     val intentState = intent.observeAsState(Intent())
-    val scaffoldState = rememberBackdropScaffoldState(initialValue = BackdropValue.Concealed)
-    val editState: MutableState<IntentField> = remember { mutableStateOf(IntentField.Action("", "")) }
-    val checkBoxScreenState = rememberCheckBoxScreenState()
     val flagsState = mutableStateListOf<String>().apply { addAll(intentState.value.flagNames) }
     val categoriesState = mutableStateListOf<String>().apply { addAll(intentState.value.categoryNames) }
+    val editState = editField.observeAsState(IntentField.None())
+    val scaffoldState: BackdropScaffoldState = rememberBackdropScaffoldState(initialValue = initialBackdropValue)
+
+    if (initialBackdropValue == BackdropValue.Concealed) {
+        if (editState.value is IntentField.None) {
+            if (scaffoldState.isRevealed) {
+                scaffoldState.conceal()
+            }
+        } else {
+            if (scaffoldState.isConcealed) {
+                scaffoldState.reveal()
+            }
+        }
+    }
 
     BackdropScaffold(
             scaffoldState = scaffoldState,
@@ -190,47 +207,45 @@ fun IntentEditScreen(intent: LiveData<Intent>, action: SingleLiveEvent<UiAction>
                 when (editState.value) {
                     is IntentField.StringValue -> {
                         FieldEditDialog(editState as MutableState<IntentField.StringValue>, onClick = {
-                            scaffoldState.conceal()
+                            action.value = UpdateField(editState.value)
+                            editField.value = IntentField.None()
                         })
                     }
                     is IntentField.Extras -> {
                         ExtraAddDialog(editState as MutableState<IntentField.Extras>, onClick = {
-                            scaffoldState.conceal()
+                            action.value = UpdateField(editState.value)
+                            editField.value = IntentField.None()
                         })
+                    }
+                    is IntentField.Flags -> {
+                        val flagsText = stringResource(id = R.string.flags)
+                        val stateValue = CheckBoxScreenState(
+                                flagsText, IntentFlags, flagsState
+                        )
+                        CheckBoxScreen(stateValue, onDismissRequest = {
+                            editField.value = IntentField.None()
+                        })
+                    }
+                    is IntentField.Categories -> {
+                        val categoriesText = stringResource(id = R.string.categories)
+                        val stateValue = CheckBoxScreenState(
+                                categoriesText, IntentCategories, categoriesState
+                        )
+                        CheckBoxScreen(stateValue, onDismissRequest = {
+                            editField.value = IntentField.None()
+                        })
+                    }
+                    is IntentField.None -> {
+                        Text(text = "")
                     }
                     else -> throw RuntimeException("Unknown field")
                 }
             },
             frontLayerBackgroundColor = MaterialTheme.colors.background,
             frontLayerContent = {
-                val categoriesText = stringResource(id = R.string.categories)
-                val flagsText = stringResource(id = R.string.flags)
-
                 IntentEditView(intentState.value, action) {
-                    when (it) {
-                        is IntentField.StringValue -> {
-                            editState.value = it
-                            scaffoldState.reveal()
-                        }
-                        is IntentField.Extras -> {
-                            editState.value = it
-                            scaffoldState.reveal()
-                        }
-                        is IntentField.Categories -> {
-                            checkBoxScreenState.value = CheckBoxScreenVisibility.Visible(
-                                    categoriesText, IntentCategories, categoriesState
-                            )
-                        }
-                        is IntentField.Flags -> {
-                            checkBoxScreenState.value = CheckBoxScreenVisibility.Visible(
-                                    flagsText, IntentFlags, flagsState
-                            )
-                        }
-                    }
+                    editField.value = it
                 }
-                CheckBoxDialog(state = checkBoxScreenState, onDismissRequest = {
-                    checkBoxScreenState.value = CheckBoxScreenVisibility.Hidden
-                })
             }
     )
 }
@@ -240,7 +255,7 @@ fun IntentEditScreen(intent: LiveData<Intent>, action: SingleLiveEvent<UiAction>
 fun PreviewIntentEdit() {
     CarWidgetTheme(darkTheme = false) {
         Surface {
-            IntentEditScreen(intent = MutableLiveData(Intent(Intent.ACTION_ANSWER)), action = SingleLiveEvent())
+            IntentEditScreen(intent = MutableLiveData(Intent(Intent.ACTION_ANSWER)), action = SingleLiveEvent(), editField = MutableLiveData(IntentField.None()))
         }
     }
 }
@@ -250,7 +265,39 @@ fun PreviewIntentEdit() {
 fun PreviewIntentEditDark() {
     CarWidgetTheme(darkTheme = true) {
         Surface {
-            IntentEditScreen(intent = MutableLiveData(Intent(Intent.ACTION_ANSWER)), action = SingleLiveEvent())
+            IntentEditScreen(intent = MutableLiveData(Intent(Intent.ACTION_ANSWER)), action = SingleLiveEvent(), editField = MutableLiveData(IntentField.None()))
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Preview("Intent simple edit")
+@Composable
+fun PreviewIntentSimpleEdit() {
+    CarWidgetTheme(darkTheme = false) {
+        Surface {
+            IntentEditScreen(
+                    intent = MutableLiveData(Intent(Intent.ACTION_ANSWER)),
+                    action = SingleLiveEvent(),
+                    editField = MutableLiveData(IntentField.Action(Intent.ACTION_ANSWER, "Action")),
+                    initialBackdropValue = BackdropValue.Revealed,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Preview("Intent checkbox edit")
+@Composable
+fun PreviewIntentCheckboxEdit() {
+    CarWidgetTheme(darkTheme = false) {
+        Surface {
+            IntentEditScreen(
+                    intent = MutableLiveData(Intent(Intent.ACTION_ANSWER)),
+                    action = SingleLiveEvent(),
+                    editField = MutableLiveData(IntentField.Categories(setOf(), "Categories")),
+                    initialBackdropValue = BackdropValue.Revealed,
+            )
         }
     }
 }
