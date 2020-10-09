@@ -1,6 +1,5 @@
 package info.anodsplace.carwidget.compose
 
-import androidx.compose.foundation.ProvideTextStyle
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*

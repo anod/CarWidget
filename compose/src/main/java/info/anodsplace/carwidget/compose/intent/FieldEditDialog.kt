@@ -19,16 +19,16 @@ import info.anodsplace.carwidget.prefs.IntentField
 import java.util.*
 
 @Composable
-fun EditDialog(confirmText: String, onClick: () -> Unit, content: @Composable () -> Unit) {
+fun EditDialog(confirmText: String, onClick: (Boolean) -> Unit, content: @Composable () -> Unit) {
     Column(Modifier.padding(16.dp)) {
         content()
         Spacer(modifier = Modifier.preferredHeight(16.dp))
         Row {
-            Button(onClick = onClick) {
+            Button(onClick = { onClick(false) }) {
                 Text(text = stringResource(id = R.string.close).toUpperCase(Locale.getDefault()))
             }
             Spacer(modifier = Modifier.weight(1f))
-            Button(onClick = onClick) {
+            Button(onClick = { onClick(true) }) {
                 Text(text = confirmText.toUpperCase(Locale.getDefault()))
             }
         }
@@ -36,7 +36,7 @@ fun EditDialog(confirmText: String, onClick: () -> Unit, content: @Composable ()
 }
 
 @Composable
-fun ExtraAddDialog(state: MutableState<IntentField.Extras>, onClick: (Pair<String, String>) -> Unit) {
+fun ExtraAddDialog(initial: IntentField.Extras, onClick: (Pair<String, String>) -> Unit) {
     val (newExtra, setNewExtra) = remember { mutableStateOf(Pair("", "")) }
     EditDialog(
             confirmText = stringResource(id = R.string.add),
@@ -45,7 +45,7 @@ fun ExtraAddDialog(state: MutableState<IntentField.Extras>, onClick: (Pair<Strin
                 setNewExtra(Pair("", ""))
             }
     ) {
-        Text(text = state.value.title, style = MaterialTheme.typography.subtitle2)
+        Text(text = initial.title, style = MaterialTheme.typography.subtitle2)
         Spacer(modifier = Modifier.preferredHeight(8.dp))
 
         OutlinedTextField(
@@ -75,28 +75,37 @@ fun ExtraAddDialog(state: MutableState<IntentField.Extras>, onClick: (Pair<Strin
 }
 
 @Composable
-fun FieldEditDialog(state: MutableState<IntentField.StringValue>, onClick: () -> Unit) {
+fun FieldEditDialog(initial: IntentField.StringValue, onClick: (IntentField.StringValue?) -> Unit) {
+    val field = mutableStateOf(initial)
     EditDialog(
             confirmText = stringResource(id = R.string.save),
-            onClick = onClick
+            onClick = { apply -> onClick(if (apply) field.value else null) }
     ) {
+        val isErrorValue = if (field.value.value.isNullOrEmpty()) false else !field.value.isValid
+        if (isErrorValue) {
+            Text(
+                    text = stringResource(R.string.value_might_be_not_valid),
+                    color = MaterialTheme.colors.error
+            )
+        }
         OutlinedTextField(
                 activeColor = MaterialTheme.colors.onSurface,
                 modifier = Modifier.fillMaxWidth(),
-                value = state.value.value ?: "",
+                value = field.value.value ?: "",
                 onValueChange = {
-                    if (it != state.value.value) {
-                        state.value = state.value.copy(it)
+                    if (it != field.value.value) {
+                        field.value = field.value.copy(it)
                     }
                 },
                 label = {
-                    Text(text = state.value.title, style = MaterialTheme.typography.subtitle1)
+                    Text(text = field.value.title, style = MaterialTheme.typography.subtitle1)
                 },
                 placeholder = {
-                    if (state.value.value.isNullOrEmpty()) {
+                    if (field.value.value.isNullOrEmpty()) {
                         Text(text = stringResource(id = R.string.none), style = MaterialTheme.typography.subtitle1)
                     }
-                }
+                },
+                isErrorValue = isErrorValue
         )
     }
 }
@@ -104,7 +113,7 @@ fun FieldEditDialog(state: MutableState<IntentField.StringValue>, onClick: () ->
 @Preview("Intent Edit Dialog")
 @Composable
 fun PreviewIntentEditDialog() {
-    val editState: MutableState<IntentField.StringValue> = remember { mutableStateOf(IntentField.Action(Intent.ACTION_DIAL, "Action")) }
+    val editState:  IntentField.StringValue = IntentField.Action(Intent.ACTION_DIAL, "Action")
     CarWidgetTheme(darkTheme = false) {
         Surface {
             FieldEditDialog(editState, onClick = { })
@@ -115,7 +124,7 @@ fun PreviewIntentEditDialog() {
 @Preview("Intent Edit Dialog Empty")
 @Composable
 fun PreviewIntentEditDialogEmpty() {
-    val editState: MutableState<IntentField.StringValue> = remember { mutableStateOf(IntentField.PackageName(null, "Package name")) }
+    val editState: IntentField.StringValue = IntentField.PackageName(null, "Package name")
     CarWidgetTheme(darkTheme = true) {
         Surface {
             FieldEditDialog(editState, onClick = { })
@@ -126,7 +135,7 @@ fun PreviewIntentEditDialogEmpty() {
 @Preview("Intent Extra Add Dialog Empty")
 @Composable
 fun PreviewExtraAddDialogEmpty() {
-    val editState: MutableState<IntentField.Extras> = remember { mutableStateOf(IntentField.Extras(Bundle.EMPTY, "Add extra")) }
+    val editState = IntentField.Extras(Bundle.EMPTY, "Add extra")
     CarWidgetTheme(darkTheme = true) {
         Surface {
             ExtraAddDialog(editState, onClick = { })
