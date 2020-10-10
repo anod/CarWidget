@@ -241,16 +241,19 @@ fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<
 fun IntentEditScreen(
         intent: LiveData<Intent>,
         action: SingleLiveEvent<UiAction>,
-        initialEditValue: IntentField = IntentField.None()
+        addBackPressHandler: Boolean = false,
+        initialEditValue: IntentField = IntentField.None(),
 ) {
     val intentState = intent.observeAsState(Intent())
     var editState by remember { mutableStateOf(initialEditValue) }
     val editVisible: Boolean = editState !is IntentField.None
 
-    backPressHandler(
-        onBackPressed = { editState = IntentField.None() },
-        enabled = editVisible
-    )
+    if (addBackPressHandler) {
+        backPressHandler(
+                onBackPressed = { editState = IntentField.None() },
+                enabled = editVisible
+        )
+    }
 
     Scaffold(
             topBar = {

@@ -41,7 +41,7 @@ class IntentEditActivity : AppCompatActivity() {
         setContent {
             Providers(BackPressedDispatcherAmbient provides this) {
                 CarWidgetTheme {
-                    IntentEditScreen(viewModel.intent, viewModel.action)
+                    IntentEditScreen(viewModel.intent, viewModel.action, addBackPressHandler = true)
                 }
             }
         }

@@ -66,8 +66,10 @@ fun CheckBoxList(items: Map<String, Any?>, checked: SnapshotStateList<String>, m
 
 @Composable
 fun CheckBoxScreen(state: CheckBoxScreenState, onDismissRequest: () -> Unit) {
-    Surface(color = Color.Transparent) {
-        Column {
+    Surface(color = MaterialTheme.colors.background) {
+        Column(
+                modifier = Modifier.fillMaxHeight()
+        ) {
             Box(modifier = Modifier.padding(16.dp).align(Alignment.Start)) {
                 ProvideEmphasis(EmphasisAmbient.current.high) {
                     Text(state.title, style = MaterialTheme.typography.subtitle1)
@@ -78,7 +80,7 @@ fun CheckBoxScreen(state: CheckBoxScreenState, onDismissRequest: () -> Unit) {
                     checked = state.checked,
                     modifier = Modifier
                             .padding(horizontal = 16.dp)
-                            .weight(0.8f, fill = false),
+                            .weight(0.1f, fill = true),
             ) { _: String, _: Any?, _: Boolean -> }
             ButtonsPanel(onDismissRequest = onDismissRequest)
         }
