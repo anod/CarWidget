@@ -52,7 +52,6 @@
         <item name="colorSecondary">@color/color_secondary</item>
         <item name="colorSecondaryVariant">@color/color_secondary_variant</item>
 
-        <item name="android:colorBackground">@color/dialog_background</item>
         <item name="colorSurface">@color/color_surface</item>
         <item name="colorError">@color/color_error</item>
 
@@ -64,6 +63,8 @@
 
         <item name="android:fontFamily">@font/rubik</item>
         <item name="fontFamily">@font/rubik</item>
+
+        <item name="android:colorBackground">@color/dialog_background</item>
 
         <!--Remap legacy AppCompat attributes to MaterialComponent attributes-->
         <item name="colorPrimaryDark">?colorPrimaryVariant</item>
@@ -88,8 +89,9 @@
         <item name="android:fontFamily">@font/rubik</item>
         <item name="fontFamily">@font/rubik</item>
 
+        <item name="android:colorBackground">@color/dialog_background</item>
+        <!--<item name="android:colorBackground">?attr/colorBackgroundFloating</item>-->
         <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:colorBackground">?attr/colorBackgroundFloating</item>
 
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowFrame">@null</item>
@@ -100,6 +102,10 @@
         <!--Remap legacy AppCompat attributes to MaterialComponent attributes-->
         <item name="colorPrimaryDark">?colorPrimaryVariant</item>
         <item name="colorAccent">?colorSecondary</item>
+
+        <!-- Use custom action bar -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">

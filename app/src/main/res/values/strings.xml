@@ -281,6 +281,7 @@
     <string name="descr_shortcut_icon">Shortcut icon</string>
     <string name="advanced">Advanced</string>
     <string name="edit_intent">Edit Intent</string>
+    <string name="intent_info">Intent info</string>
 
     <array name="adaptive_icon_style_names">
         <item>Default</item>

@@ -7,7 +7,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.provider.MediaStore
+import android.view.Menu
+import android.view.MenuItem
+import android.view.Window
 import android.widget.Toast
 import com.anod.car.home.R
 import com.anod.car.home.app.App
@@ -41,9 +45,29 @@ class ShortcutEditActivity : CarWidgetActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityShortcuteditBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setTitle(R.string.shortcut_edit_title)
+        setSupportActionBar(null)
+
+        binding.topAppBar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.intent_advanced -> {
+                    startActivity(Intent(this, IntentEditActivity::class.java).apply {
+                        putExtra(IntentEditActivity.extraUri, shortcut!!.intent.toUri(0))
+                    })
+                    true
+                }
+                else -> false
+            }
+        }
 
         init(intent)
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onPostCreate(savedInstanceState, persistentState)
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
     }
 
     private fun init(intent: Intent) {
@@ -77,12 +101,6 @@ class ShortcutEditActivity : CarWidgetActivity() {
 
         binding.iconView.setOnClickListener {
             createIconMenu().show()
-        }
-
-        binding.advancedButton.setOnClickListener {
-            startActivity(Intent(this, IntentEditActivity::class.java).apply {
-                putExtra(IntentEditActivity.extraUri, shortcut!!.intent.toUri(0))
-            })
         }
 
         binding.okButton.setOnClickListener {

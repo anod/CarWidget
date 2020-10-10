@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import com.anod.car.home.R
 import com.anod.car.home.model.Shortcut
 import com.anod.car.home.model.ShortcutInfoUtils
@@ -33,6 +34,7 @@ class ShortcutPicker(private val model: Shortcuts, private val handler: Handler,
     fun showEditActivity(cellId: Int, shortcutId: Long, appWidgetId: Int) {
         val editIntent = ShortcutEditActivity.createIntent(context, cellId, shortcutId, appWidgetId)
         startActivityForResultSafely(editIntent, REQUEST_EDIT_SHORTCUT)
+
     }
 
     fun showActivityPicker(position: Int) {

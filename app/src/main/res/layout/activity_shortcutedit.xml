@@ -6,6 +6,18 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:menu="@menu/shortcut_edit"
+        app:navigationIcon="@null"
+        app:title="@string/shortcut_edit_title" />
+
     <ImageButton
         android:id="@+id/iconView"
         android:layout_width="96dp"
@@ -15,12 +27,21 @@
         android:background="@drawable/image_border"
         android:scaleType="fitCenter"
         android:contentDescription="@string/descr_shortcut_icon"
-        android:src="@drawable/ic_launcher_application"
+        android:src="@drawable/ic_circle_24"
         app:layout_constraintEnd_toStartOf="@+id/labelEdit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/topAppBar"/>
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_circle_edit"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/iconView"
+        app:layout_constraintEnd_toEndOf="@+id/iconView" />
 
     <EditText
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:id="@+id/labelEdit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -33,20 +54,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iconView"
         app:layout_constraintTop_toTopOf="@+id/iconView" />
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="12dp"
-        android:gravity="center_horizontal"
-        android:text="@string/shortcut_edit_hint"
-        android:textSize="12.0sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iconView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/labelEdit"
-        app:layout_constraintTop_toBottomOf="@+id/labelEdit"
-        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -73,16 +80,6 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="0dp" />
-
-        <Button
-            android:id="@+id/advancedButton"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/advanced"
-            android:textAllCaps="true" />
 
         <Button
             android:id="@+id/okButton"
