@@ -2,11 +2,6 @@ package info.anodsplace.carwidget.compose.intent
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.compose.animation.DpPropKey
-import androidx.compose.animation.core.keyframes
-import androidx.compose.animation.core.transitionDefinition
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.transition
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
@@ -23,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.VectorAsset
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -31,10 +26,20 @@ import androidx.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.*
 import info.anodsplace.carwidget.prefs.*
-import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.livedata.SingleLiveEvent
 
 class UpdateField(val field: IntentField) : UiAction.IntentEditAction()
+
+@Composable
+private val DefaultFrontLayerShape: Shape
+    get() = MaterialTheme.shapes.large
+            .copy(topLeft = CornerSize(16.dp), topRight = CornerSize(16.dp))
+
+private val DefaultFrontLayerElevation = 1.dp
+
+@Composable
+private val DefaultFrontLayerScrimColor: Color
+    get() = MaterialTheme.colors.surface.copy(alpha = 0.60f)
 
 @Composable
 fun IntentFieldTitle(text: String) = Text(text = text, style = MaterialTheme.typography.subtitle1)
@@ -43,13 +48,18 @@ fun IntentFieldTitle(text: String) = Text(text = text, style = MaterialTheme.typ
 fun IntentFieldValue(value: String?, modifier: Modifier = Modifier) {
     val text = if (value.isNullOrBlank()) stringResource(id = R.string.none) else value
     ProvideEmphasis(emphasis = EmphasisAmbient.current.medium) {
-        Text(text = text, style = MaterialTheme.typography.body2, modifier = modifier)
+        Text(
+                text = text,
+                style = MaterialTheme.typography.body2,
+                modifier = modifier,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis
+        )
     }
 }
 
 @Composable
 fun IntentInfoRow(icon: VectorAsset, title: String, modifier: Modifier = Modifier, onClick: () -> Unit, content: @Composable () -> Unit) {
-    AppLog.d("[IntentEditScreen] IntentInfoRow $title pass")
     Row(modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
@@ -89,16 +99,18 @@ fun IntentExtrasField(intent: Intent, onClick: (IntentField) -> Unit) {
         if (extraKeys.isEmpty()) {
             IntentFieldValue(value = null, modifier = Modifier.padding(vertical = 8.dp))
         } else {
-            for (key in extraKeys) {
-                val value = items.get(key)
-                IntentFieldValue(value = "$key: $value", modifier = Modifier.padding(vertical = 8.dp))
+            Column(Modifier.padding(vertical = 8.dp)) {
+                for (key in extraKeys) {
+                    val value = items.get(key)
+                    IntentFieldValue(value = "$key: $value", modifier = Modifier.padding(vertical = 4.dp))
+                }
             }
         }
     }
 }
 
 @Composable
-fun IntentEditView(intent: Intent, modifier: Modifier = Modifier, onItemClick: (IntentField) -> Unit) {
+fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick: (IntentField) -> Unit) {
     ScrollableColumn(modifier) {
 
         IntentInfoField(
@@ -187,55 +199,43 @@ fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<
     val flagsState = remember(intent.flags) { mutableStateListOf(*intent.flagNames.toTypedArray()) }
     val categoriesState =remember(intent.categories) {  mutableStateListOf(*intent.categoryNames.toTypedArray()) }
 
-    AppLog.d("[IntentEditScreen] EditSection pass")
-        when (editState) {
-            is IntentField.StringValue -> {
-                FieldEditDialog(editState, onClick = { newState ->
-                    if (newState != null) {
-                        action.value = UpdateField(newState)
-                    }
-                    onClose()
-                })
-            }
-            is IntentField.Extras -> {
-                ExtraAddDialog(editState, onClick = {
-                    // action.value = UpdateField(editState.value)
-                    onClose()
-                })
-            }
-            is IntentField.Flags -> {
-                val flagsText = stringResource(id = R.string.flags)
-                val stateValue = CheckBoxScreenState(
-                        flagsText, IntentFlags, flagsState
-                )
-                CheckBoxScreen(stateValue, onDismissRequest = {
-                    onClose()
-                })
-            }
-            is IntentField.Categories -> {
-                val categoriesText = stringResource(id = R.string.categories)
-                val stateValue = CheckBoxScreenState(
-                        categoriesText, IntentCategories, categoriesState
-                )
-                CheckBoxScreen(stateValue, onDismissRequest = {
-                    onClose()
-                })
-            }
-            is IntentField.None -> { }
-            else -> throw RuntimeException("Unknown field")
+    when (editState) {
+        is IntentField.StringValue -> {
+            FieldEditDialog(editState, onClick = { newState ->
+                if (newState != null) {
+                    action.value = UpdateField(newState)
+                }
+                onClose()
+            })
         }
+        is IntentField.Extras -> {
+            ExtraAddDialog(editState, onClick = {
+                // action.value = UpdateField(editState.value)
+                onClose()
+            })
+        }
+        is IntentField.Flags -> {
+            val flagsText = stringResource(id = R.string.flags)
+            val stateValue = CheckBoxScreenState(
+                    flagsText, IntentFlags, flagsState
+            )
+            CheckBoxScreen(stateValue, onDismissRequest = {
+                onClose()
+            })
+        }
+        is IntentField.Categories -> {
+            val categoriesText = stringResource(id = R.string.categories)
+            val stateValue = CheckBoxScreenState(
+                    categoriesText, IntentCategories, categoriesState
+            )
+            CheckBoxScreen(stateValue, onDismissRequest = {
+                onClose()
+            })
+        }
+        is IntentField.None -> { }
+        else -> throw RuntimeException("Unknown field")
     }
-
-@Composable
-val DefaultFrontLayerShape: Shape
-    get() = MaterialTheme.shapes.large
-            .copy(topLeft = CornerSize(16.dp), topRight = CornerSize(16.dp))
-
-val DefaultFrontLayerElevation = 1.dp
-
-@Composable
-val DefaultFrontLayerScrimColor: Color
-    get() = MaterialTheme.colors.surface.copy(alpha = 0.60f)
+}
 
 @Composable
 fun IntentEditScreen(
@@ -245,10 +245,8 @@ fun IntentEditScreen(
 ) {
     val intentState = intent.observeAsState(Intent())
     var editState by remember { mutableStateOf(initialEditValue) }
-
-    AppLog.d("[IntentEditScreen] layout pass")
-
     val editVisible: Boolean = editState !is IntentField.None
+
     backPressHandler(
         onBackPressed = { editState = IntentField.None() },
         enabled = editVisible
@@ -256,9 +254,9 @@ fun IntentEditScreen(
 
     Scaffold(
             topBar = {
-                //if (!editVisible) {
+                if (!editVisible) {
                     CarWidgetToolbar(action)
-                //}
+                }
             },
             backgroundColor = MaterialTheme.colors.surface,
             bodyContent = {
@@ -277,7 +275,7 @@ fun IntentEditScreen(
                             color = MaterialTheme.colors.background,
                     ) {
                         androidx.compose.foundation.layout.Box() {
-                            IntentEditView(intentState.value, modifier = Modifier.padding(16.dp).fillMaxSize()) {
+                            IntentDetailsView(intentState.value, modifier = Modifier.padding(16.dp).fillMaxSize()) {
                                 editState = it
                             }
                             OverlayScrim(

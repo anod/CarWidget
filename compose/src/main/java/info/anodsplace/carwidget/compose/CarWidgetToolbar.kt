@@ -28,7 +28,7 @@ fun CarWidgetToolbar(action: SingleLiveEvent<UiAction>) {
             actions = {
                 Spacer(modifier = Modifier.preferredWidth(68.dp))
             },
-            backgroundColor = MaterialTheme.colors.primary,
+            backgroundColor = MaterialTheme.colors.surface,
             elevation = 0.dp
     )
 }

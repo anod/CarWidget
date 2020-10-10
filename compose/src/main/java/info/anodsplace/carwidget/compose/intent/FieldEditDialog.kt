@@ -5,10 +5,7 @@ import android.os.Bundle
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -16,6 +13,7 @@ import androidx.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.prefs.IntentField
+import kotlinx.coroutines.flow.collect
 import java.util.*
 
 @Composable
@@ -75,19 +73,14 @@ fun ExtraAddDialog(initial: IntentField.Extras, onClick: (Pair<String, String>) 
 }
 
 @Composable
-fun FieldEditDialog(initial: IntentField.StringValue, onClick: (IntentField.StringValue?) -> Unit) {
+fun FieldEditDialog(initial: IntentField.StringValue, initialValid: Boolean = true, onClick: (IntentField.StringValue?) -> Unit) {
     val field = mutableStateOf(initial)
     EditDialog(
             confirmText = stringResource(id = R.string.save),
             onClick = { apply -> onClick(if (apply) field.value else null) }
     ) {
-        val isErrorValue = if (field.value.value.isNullOrEmpty()) false else !field.value.isValid
-        if (isErrorValue) {
-            Text(
-                    text = stringResource(R.string.value_might_be_not_valid),
-                    color = MaterialTheme.colors.error
-            )
-        }
+        val isValid = field.value.isValid.collectAsState(initial = initialValid)
+        val isEmpty = field.value.value.isNullOrEmpty()
         OutlinedTextField(
                 activeColor = MaterialTheme.colors.onSurface,
                 modifier = Modifier.fillMaxWidth(),
@@ -105,8 +98,18 @@ fun FieldEditDialog(initial: IntentField.StringValue, onClick: (IntentField.Stri
                         Text(text = stringResource(id = R.string.none), style = MaterialTheme.typography.subtitle1)
                     }
                 },
-                isErrorValue = isErrorValue
+                isErrorValue = !isEmpty && !isValid.value
         )
+
+        if (!isEmpty && !isValid.value) {
+            Text(
+                    text = stringResource(R.string.value_might_be_not_valid),
+                    color = MaterialTheme.colors.error,
+                    modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+            )
+        }
     }
 }
 
@@ -116,7 +119,7 @@ fun PreviewIntentEditDialog() {
     val editState:  IntentField.StringValue = IntentField.Action(Intent.ACTION_DIAL, "Action")
     CarWidgetTheme(darkTheme = false) {
         Surface {
-            FieldEditDialog(editState, onClick = { })
+            FieldEditDialog(editState, initialValid = false, onClick = { })
         }
     }
 }
