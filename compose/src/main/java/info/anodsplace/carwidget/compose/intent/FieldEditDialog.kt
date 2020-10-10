@@ -15,6 +15,7 @@ import androidx.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.prefs.IntentField
+import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.util.isScalar
 import info.anodsplace.framework.util.put
 import info.anodsplace.framework.util.putAny
@@ -86,11 +87,13 @@ fun ExtraEditDialog(initial: IntentField.Extras, onClick: (newExtra: Bundle) -> 
         if (value == null) String::class.java else value::class.java
     })
 
+    AppLog.d("ExtraEditDialog $newExtra")
+
     EditDialog(
             confirmText = stringResource(id = R.string.add),
             onClick = {
                 onClick(newExtra)
-                setNewExtra(Bundle.EMPTY)
+                setNewExtra(Bundle())
             }
     ) {
         Text(text = initial.title, style = MaterialTheme.typography.subtitle2)
@@ -107,6 +110,7 @@ fun ExtraEditDialog(initial: IntentField.Extras, onClick: (newExtra: Bundle) -> 
                     }
                     else -> newExtra.putAny(newKey, newValue)
                 }
+                setNewExtra(newExtra)
             }
         }
         // New field
@@ -119,6 +123,7 @@ fun ExtraEditDialog(initial: IntentField.Extras, onClick: (newExtra: Bundle) -> 
                 }
                 else -> newExtra.putAny(newKey, newValue)
             }
+            setNewExtra(newExtra)
         }
     }
 }

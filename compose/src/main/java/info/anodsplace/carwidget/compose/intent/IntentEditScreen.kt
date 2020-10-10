@@ -88,7 +88,7 @@ fun IntentInfoField(icon: VectorAsset, field: IntentField.StringValue, modifier:
 
 @Composable
 fun IntentExtrasField(intent: Intent, onClick: (IntentField) -> Unit) {
-    val items = intent.extras ?: Bundle.EMPTY
+    val items = intent.extras ?: Bundle()
     val extraKeys = items.keySet() ?: emptySet()
     val title = stringResource(id = R.string.extras)
     IntentInfoRow(
