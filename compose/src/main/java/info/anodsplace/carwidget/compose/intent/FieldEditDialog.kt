@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.compose.intent
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.compose.foundation.InteractionState
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -9,11 +10,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
 import androidx.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.prefs.IntentField
-import kotlinx.coroutines.flow.collect
+import info.anodsplace.framework.util.isScalar
+import info.anodsplace.framework.util.put
+import info.anodsplace.framework.util.putAny
 import java.util.*
 
 @Composable
@@ -33,42 +37,89 @@ fun EditDialog(confirmText: String, onClick: (Boolean) -> Unit, content: @Compos
     }
 }
 
+
 @Composable
-fun ExtraAddDialog(initial: IntentField.Extras, onClick: (Pair<String, String>) -> Unit) {
-    val (newExtra, setNewExtra) = remember { mutableStateOf(Pair("", "")) }
+fun ExtraKeyValue(initialKey: String, value: Any?, onValueChange: (String, String, Any?) -> Unit) {
+    val (newExtra, setNewExtra) = remember { mutableStateOf(Pair(initialKey, value ?: "")) }
+    val enabled by mutableStateOf(value?.isScalar == true)
+
+    Row {
+        OutlinedTextField(
+                activeColor = MaterialTheme.colors.onSurface,
+                modifier = Modifier.weight(0.5f),
+                value = newExtra.first,
+                onValueChange = {
+                    setNewExtra(Pair(it, newExtra.second))
+                    onValueChange(initialKey, it, newExtra.second)
+                },
+                label = {
+                    Text(text = stringResource(id = R.string.key), style = MaterialTheme.typography.subtitle1)
+                },
+                isErrorValue = newExtra.first.isBlank() && newExtra.second.toString().isNotBlank()
+        )
+
+        Spacer(modifier = Modifier.preferredWidth(8.dp))
+
+        OutlinedTextField(
+                activeColor = MaterialTheme.colors.onSurface,
+                modifier = Modifier.weight(0.5f),
+                value = newExtra.second.toString(),
+                onValueChange = {
+                    if (enabled) {
+                        setNewExtra(Pair(newExtra.first, it))
+                        onValueChange(initialKey, newExtra.first, it)
+                    }
+                },
+                label = {
+                    Text(text = stringResource(id = R.string.value), style = MaterialTheme.typography.subtitle1)
+                },
+                isErrorValue = newExtra.first.isBlank() && newExtra.second.toString().isNotBlank()
+        )
+    }
+}
+
+@Composable
+fun ExtraEditDialog(initial: IntentField.Extras, onClick: (newExtra: Bundle) -> Unit) {
+    val (newExtra, setNewExtra) = remember { mutableStateOf(initial.bundle) }
+    val typeMap: Map<String, Class<out Any>> = newExtra.keySet().associateBy({ it }, { key ->
+        val value = newExtra.get(key)
+        if (value == null) String::class.java else value::class.java
+    })
+
     EditDialog(
             confirmText = stringResource(id = R.string.add),
             onClick = {
                 onClick(newExtra)
-                setNewExtra(Pair("", ""))
+                setNewExtra(Bundle.EMPTY)
             }
     ) {
         Text(text = initial.title, style = MaterialTheme.typography.subtitle2)
         Spacer(modifier = Modifier.preferredHeight(8.dp))
 
-        OutlinedTextField(
-                activeColor = MaterialTheme.colors.onSurface,
-                modifier = Modifier.fillMaxWidth(),
-                value = newExtra.first,
-                onValueChange = {
-                    setNewExtra(Pair(it, newExtra.second))
-                },
-                label = {
-                    Text(text = stringResource(id = R.string.key), style = MaterialTheme.typography.subtitle1)
+        for (key in newExtra.keySet()) {
+            val value = newExtra.get(key)
+            ExtraKeyValue(key, value) { initialKey, newKey, newValue ->
+                when {
+                    newKey.isBlank() -> newExtra.remove(initialKey)
+                    newValue is String -> {
+                        val type = typeMap[initialKey] ?: String::class.java
+                        newExtra.put(newKey, newValue, type)
+                    }
+                    else -> newExtra.putAny(newKey, newValue)
                 }
-        )
-
-        OutlinedTextField(
-                activeColor = MaterialTheme.colors.onSurface,
-                modifier = Modifier.fillMaxWidth(),
-                value = newExtra.first,
-                onValueChange = {
-                    setNewExtra(Pair(newExtra.first, it))
-                },
-                label = {
-                    Text(text = stringResource(id = R.string.value), style = MaterialTheme.typography.subtitle1)
+            }
+        }
+        // New field
+        ExtraKeyValue("", "") { initialKey, newKey, newValue ->
+            when {
+                newKey.isBlank() -> newExtra.remove(initialKey)
+                newValue is String -> {
+                    val type = typeMap[initialKey] ?: String::class.java
+                    newExtra.put(newKey, newValue, type)
                 }
-        )
+                else -> newExtra.putAny(newKey, newValue)
+            }
+        }
     }
 }
 
@@ -138,10 +189,14 @@ fun PreviewIntentEditDialogEmpty() {
 @Preview("Intent Extra Add Dialog Empty")
 @Composable
 fun PreviewExtraAddDialogEmpty() {
-    val editState = IntentField.Extras(Bundle.EMPTY, "Add extra")
+    val editState = IntentField.Extras(Bundle().apply {
+        putString("Banana", null)
+        putInt("Int", 325)
+        putIntArray("Array", intArrayOf(125, 67, 80))
+    }, "Add extra")
     CarWidgetTheme(darkTheme = true) {
         Surface {
-            ExtraAddDialog(editState, onClick = { })
+            ExtraEditDialog(editState, onClick = { })
         }
     }
 }

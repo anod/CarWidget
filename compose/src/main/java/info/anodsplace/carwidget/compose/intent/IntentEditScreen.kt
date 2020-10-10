@@ -197,7 +197,7 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
 @Composable
 fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<UiAction>, onClose: () -> Unit) {
     val flagsState = remember(intent.flags) { mutableStateListOf(*intent.flagNames.toTypedArray()) }
-    val categoriesState =remember(intent.categories) {  mutableStateListOf(*intent.categoryNames.toTypedArray()) }
+    val categoriesState = remember(intent.categories) {  mutableStateListOf(*intent.categoryNames.toTypedArray()) }
 
     when (editState) {
         is IntentField.StringValue -> {
@@ -209,7 +209,7 @@ fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<
             })
         }
         is IntentField.Extras -> {
-            ExtraAddDialog(editState, onClick = {
+            ExtraEditDialog(editState, onClick = {
                 // action.value = UpdateField(editState.value)
                 onClose()
             })
@@ -220,6 +220,7 @@ fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<
                     flagsText, IntentFlags, flagsState
             )
             CheckBoxScreen(stateValue, onDismissRequest = {
+                action.value = UpdateField(IntentField.Flags(flagNamesToInt(flagsState), ""))
                 onClose()
             })
         }
@@ -229,6 +230,7 @@ fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<
                     categoriesText, IntentCategories, categoriesState
             )
             CheckBoxScreen(stateValue, onDismissRequest = {
+                action.value = UpdateField(IntentField.Categories(categoriesState.mapNotNull { IntentCategories[it] }.toSet(), ""))
                 onClose()
             })
         }

@@ -62,14 +62,6 @@ class ShortcutEditActivity : CarWidgetActivity() {
         init(intent)
     }
 
-    override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onPostCreate(savedInstanceState, persistentState)
-    }
-
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-    }
-
     private fun init(intent: Intent) {
         cellId = intent.getIntExtra(EXTRA_CELL_ID, ShortcutPicker.INVALID_CELL_ID)
         val shortcutId = intent.getLongExtra(EXTRA_SHORTCUT_ID, Shortcut.idUnknown)
