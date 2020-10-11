@@ -200,18 +200,20 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
 }
 
 @Composable
-fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<UiAction>, onClose: () -> Unit) {
+fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<UiAction>, onSuggestions: (IntentField.Suggestions) -> Unit, onClose: () -> Unit) {
     val flagsState = remember(intent.flags) { mutableStateListOf(*intent.flagNames.toTypedArray()) }
     val categoriesState = remember(intent.categories) { mutableStateListOf(*intent.categoryNames.toTypedArray()) }
 
     when (editState) {
         is IntentField.StringValue -> {
-            FieldEditDialog(editState.title, editState, onClick = { newState ->
-                if (newState != null) {
-                    action.value = UpdateField(newState)
-                }
-                onClose()
-            })
+            FieldEditDialog(editState.title, editState,
+                onSuggestions = { onSuggestions(editState.suggestions) },
+                onClick = { newState ->
+                    if (newState != null) {
+                        action.value = UpdateField(newState)
+                    }
+                    onClose()
+                })
         }
         is IntentField.Component -> {
             ComponentEditDialog(editState, onClose = { newComponent ->
@@ -264,26 +266,31 @@ fun IntentEditScreen(
     val intentState = intent.observeAsState(Intent())
     var editState by remember { mutableStateOf(initialEditValue) }
     val editVisible: Boolean = editState !is IntentField.None
+    var suggestionsState by remember { mutableStateOf(IntentField.Suggestions.None) }
 
     if (addBackPressHandler) {
         backPressHandler(
-                onBackPressed = { editState = IntentField.None },
-                enabled = editVisible
+                onBackPressed = {
+                    if (suggestionsState == IntentField.Suggestions.None) {
+                        editState = IntentField.None
+                    } else {
+                        suggestionsState = IntentField.Suggestions.None
+                    }
+                },
+                enabled = editVisible || suggestionsState != IntentField.Suggestions.None
         )
     }
 
     Scaffold(
-            topBar = {
-                if (!editVisible) {
-                    CarWidgetToolbar(action)
-                }
-            },
+            topBar = { CarWidgetToolbar(action) },
             backgroundColor = MaterialTheme.colors.surface,
             bodyContent = {
                 Column {
                     if (editVisible) {
                         Surface {
-                            EditSection(intentState.value, editState, action) {
+                            EditSection(intentState.value, editState, action, onSuggestions = {
+                                suggestionsState = it
+                            }) {
                                 editState = IntentField.None
                             }
                         }
@@ -305,6 +312,35 @@ fun IntentEditScreen(
                             )
                         }
                     }
+                }
+
+                when (suggestionsState) {
+                    IntentField.Suggestions.Action -> {
+                        SingleListScreen(
+                                state = SingleScreenState(
+                                        title = stringResource(id = R.string.action),
+                                        items = IntentActions
+                                ),
+                        ) { _, value ->
+                            action.value = UpdateField(IntentField.Action(value, ""))
+                            suggestionsState = IntentField.Suggestions.None
+                        }
+                    }
+                    IntentField.Suggestions.MimeType -> {
+                        SingleListScreen(
+                                state = SingleScreenState(
+                                        title = stringResource(id = R.string.mime_type),
+                                        items = MediaTypes
+                                ),
+                        ) { _, value ->
+                            action.value = UpdateField(IntentField.MimeType(value, ""))
+                            suggestionsState = IntentField.Suggestions.None
+                        }
+                    }
+                    IntentField.Suggestions.Component -> {
+
+                    }
+                    IntentField.Suggestions.None -> { }
                 }
             }
     )

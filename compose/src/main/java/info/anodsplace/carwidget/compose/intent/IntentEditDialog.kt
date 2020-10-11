@@ -3,10 +3,15 @@ package info.anodsplace.carwidget.compose.intent
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
+import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -168,7 +173,7 @@ fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: Co
 }
 
 @Composable
-fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialValid: Boolean = true, onClick: (IntentField.StringValue?) -> Unit) {
+fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialValid: Boolean = true, onSuggestions: () -> Unit, onClick: (IntentField.StringValue?) -> Unit) {
     val field = mutableStateOf(initial)
     EditDialog(
             confirmText = stringResource(id = R.string.save),
@@ -176,25 +181,36 @@ fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialVali
     ) {
         val isValid = field.value.isValid.collectAsState(initial = initialValid)
         val isEmpty = field.value.value.isNullOrEmpty()
-        OutlinedTextField(
-                activeColor = MaterialTheme.colors.onSurface,
-                modifier = Modifier.fillMaxWidth(),
-                value = field.value.value ?: "",
-                onValueChange = {
-                    if (it != field.value.value) {
-                        field.value = field.value.copy(value = it)
-                    }
-                },
-                label = {
-                    Text(text = title, style = MaterialTheme.typography.subtitle1)
-                },
-                placeholder = {
-                    if (field.value.value.isNullOrEmpty()) {
-                        Text(text = stringResource(id = R.string.none), style = MaterialTheme.typography.subtitle1)
-                    }
-                },
-                isErrorValue = !isEmpty && !isValid.value
-        )
+        Box(
+
+        ) {
+            OutlinedTextField(
+                    activeColor = MaterialTheme.colors.onSurface,
+                    modifier = Modifier.fillMaxWidth().padding(end = 48.dp),
+                    value = field.value.value ?: "",
+                    onValueChange = {
+                        if (it != field.value.value) {
+                            field.value = field.value.copy(value = it)
+                        }
+                    },
+                    label = {
+                        Text(text = title, style = MaterialTheme.typography.subtitle1)
+                    },
+                    placeholder = {
+                        if (field.value.value.isNullOrEmpty()) {
+                            Text(text = stringResource(id = R.string.none), style = MaterialTheme.typography.subtitle1)
+                        }
+                    },
+                    isErrorValue = !isEmpty && !isValid.value
+            )
+            if (initial.suggestions != IntentField.Suggestions.None) {
+                IconButton(
+                        modifier = Modifier.align(Alignment.CenterEnd),
+                        onClick = onSuggestions) {
+                    Icon(asset = Icons.Filled.ExpandMore)
+                }
+            }
+        }
 
         if (!isEmpty && !isValid.value) {
             Text(
@@ -214,7 +230,7 @@ fun PreviewIntentEditDialog() {
     val editState: IntentField.StringValue = IntentField.Action(Intent.ACTION_DIAL, "Action")
     CarWidgetTheme(darkTheme = false) {
         Surface {
-            FieldEditDialog("Action", editState, initialValid = false, onClick = { })
+            FieldEditDialog("Action", editState, initialValid = false, onSuggestions = {}, onClick = { })
         }
     }
 }
