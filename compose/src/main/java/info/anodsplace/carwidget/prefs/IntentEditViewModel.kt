@@ -10,5 +10,16 @@ import info.anodsplace.framework.livedata.SingleLiveEvent
 class IntentEditViewModel(application: Application): AndroidViewModel(application) {
     val intent = MutableLiveData(Intent())
     val action = SingleLiveEvent<UiAction>()
-    val editField: MutableLiveData<IntentField?> = MutableLiveData()
+
+    fun updateField(field: IntentField) {
+        val intent = intent.value!!
+        when (field) {
+            is IntentField.Action -> {
+                intent.action = field.value
+            }
+            is IntentField.Data -> {
+                intent.data = field.uri
+            }
+        }
+    }
 }

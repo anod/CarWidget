@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.compose.intent
 
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import androidx.compose.foundation.*
@@ -94,7 +95,7 @@ fun IntentExtrasField(intent: Intent, onClick: (IntentField) -> Unit) {
     IntentInfoRow(
             icon = Icons.Filled.FormatListBulleted,
             title = title,
-            onClick = { onClick(IntentField.Extras(items, title)) }
+            onClick = { onClick(IntentField.Extras(items)) }
     ) {
         if (extraKeys.isEmpty()) {
             IntentFieldValue(value = null, modifier = Modifier.padding(vertical = 8.dp))
@@ -110,6 +111,17 @@ fun IntentExtrasField(intent: Intent, onClick: (IntentField) -> Unit) {
 }
 
 @Composable
+fun IntentComponentField(component: ComponentName?, onClick: (IntentField) -> Unit) {
+    IntentInfoRow(
+            title = stringResource(id = R.string.component),
+            icon = Icons.Filled.LibraryBooks,
+            onClick = { onClick(IntentField.Component(component)) }
+    ) {
+        IntentFieldValue(value = component?.flattenToString(), modifier = Modifier.padding(vertical = 8.dp))
+    }
+}
+
+@Composable
 fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick: (IntentField) -> Unit) {
     ScrollableColumn(modifier) {
 
@@ -119,21 +131,14 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
                 onClick = onItemClick
         )
 
-        IntentInfoField(
-                icon = Icons.Filled.LibraryBooks,
-                field = IntentField.PackageName(intent.component?.packageName, stringResource(id = R.string.package_name)),
-                onClick = onItemClick
-        )
-
-        IntentInfoField(
-                icon = Icons.Filled.Article,
-                field = IntentField.ClassName(intent.component?.className, stringResource(id = R.string.class_name)),
+        IntentComponentField(
+                component = intent.component,
                 onClick = onItemClick
         )
 
         IntentInfoField(
                 icon = Icons.Filled.OpenWith,
-                field = IntentField.Data(intent.data?.toString(), stringResource(id = R.string.data)),
+                field = IntentField.Data(intent.data, stringResource(id = R.string.data)),
                 onClick = onItemClick
         )
 
@@ -146,7 +151,7 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
         IntentInfoRow(
                 icon = Icons.Filled.Flag,
                 title = stringResource(id = R.string.flags),
-                onClick = { onItemClick(IntentField.Flags(intent.flags, "")) }
+                onClick = { onItemClick(IntentField.Flags(intent.flags)) }
         ) {
             val flagNames = intent.flagNames
             if (flagNames.isEmpty()) {
@@ -163,7 +168,7 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
         IntentInfoRow(
                 icon = Icons.Filled.Category,
                 title = stringResource(id = R.string.categories),
-                onClick = { onItemClick(IntentField.Categories(intent.categories, "")) }
+                onClick = { onItemClick(IntentField.Categories(intent.categories)) }
         ) {
             val categoryNames = intent.categoryNames
             if (categoryNames.isEmpty()) {
@@ -197,20 +202,30 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
 @Composable
 fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<UiAction>, onClose: () -> Unit) {
     val flagsState = remember(intent.flags) { mutableStateListOf(*intent.flagNames.toTypedArray()) }
-    val categoriesState = remember(intent.categories) {  mutableStateListOf(*intent.categoryNames.toTypedArray()) }
+    val categoriesState = remember(intent.categories) { mutableStateListOf(*intent.categoryNames.toTypedArray()) }
 
     when (editState) {
         is IntentField.StringValue -> {
-            FieldEditDialog(editState, onClick = { newState ->
+            FieldEditDialog(editState.title, editState, onClick = { newState ->
                 if (newState != null) {
                     action.value = UpdateField(newState)
                 }
                 onClose()
             })
         }
+        is IntentField.Component -> {
+            ComponentEditDialog(editState, onClose = { newComponent ->
+                if (newComponent != null) {
+                    action.value = UpdateField(IntentField.Component(newComponent))
+                }
+                onClose()
+            })
+        }
         is IntentField.Extras -> {
-            ExtraEditDialog(editState, onClick = {
-                // action.value = UpdateField(editState.value)
+            ExtraEditDialog(editState, onClose = { newBundle ->
+                if (newBundle != null) {
+                    action.value = UpdateField(IntentField.Extras(newBundle))
+                }
                 onClose()
             })
         }
@@ -220,7 +235,7 @@ fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<
                     flagsText, IntentFlags, flagsState
             )
             CheckBoxScreen(stateValue, onDismissRequest = {
-                action.value = UpdateField(IntentField.Flags(flagNamesToInt(flagsState), ""))
+                action.value = UpdateField(IntentField.Flags(flagNamesToInt(flagsState)))
                 onClose()
             })
         }
@@ -230,7 +245,7 @@ fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<
                     categoriesText, IntentCategories, categoriesState
             )
             CheckBoxScreen(stateValue, onDismissRequest = {
-                action.value = UpdateField(IntentField.Categories(categoriesState.mapNotNull { IntentCategories[it] }.toSet(), ""))
+                action.value = UpdateField(IntentField.Categories(categoriesState.mapNotNull { IntentCategories[it] }.toSet()))
                 onClose()
             })
         }
@@ -244,7 +259,7 @@ fun IntentEditScreen(
         intent: LiveData<Intent>,
         action: SingleLiveEvent<UiAction>,
         addBackPressHandler: Boolean = false,
-        initialEditValue: IntentField = IntentField.None(),
+        initialEditValue: IntentField = IntentField.None,
 ) {
     val intentState = intent.observeAsState(Intent())
     var editState by remember { mutableStateOf(initialEditValue) }
@@ -252,7 +267,7 @@ fun IntentEditScreen(
 
     if (addBackPressHandler) {
         backPressHandler(
-                onBackPressed = { editState = IntentField.None() },
+                onBackPressed = { editState = IntentField.None },
                 enabled = editVisible
         )
     }
@@ -269,7 +284,7 @@ fun IntentEditScreen(
                     if (editVisible) {
                         Surface {
                             EditSection(intentState.value, editState, action) {
-                                editState = IntentField.None()
+                                editState = IntentField.None
                             }
                         }
                     }
@@ -285,7 +300,7 @@ fun IntentEditScreen(
                             }
                             OverlayScrim(
                                     color = DefaultFrontLayerScrimColor,
-                                    onDismiss = { editState = IntentField.None() },
+                                    onDismiss = { editState = IntentField.None },
                                     visible = editVisible
                             )
                         }
@@ -339,7 +354,7 @@ fun PreviewIntentCheckboxEdit() {
             IntentEditScreen(
                     intent = MutableLiveData(Intent(Intent.ACTION_ANSWER)),
                     action = SingleLiveEvent(),
-                    initialEditValue = IntentField.Categories(setOf(), "Categories")
+                    initialEditValue = IntentField.Categories(setOf())
             )
         }
     }

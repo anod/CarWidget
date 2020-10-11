@@ -16,4 +16,5 @@
     <string name="value">Value</string>
     <string name="add">Add</string>
     <string name="value_might_be_not_valid">The value might not be valid</string>
+    <string name="component">Component</string>
 </resources>

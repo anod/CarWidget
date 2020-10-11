@@ -106,59 +106,56 @@ val mimeTypeRegex = Regex("\\w+/[-+.\\w]+")
 
 fun flagNamesToInt(flagNames: List<String>): Int {
     var flags = 0
-    for (flagNames in flagNames) {
-        val flagValue = IntentFlags[flagNames] ?: 0
+    for (flagName in flagNames) {
+        val flagValue = IntentFlags[flagName] ?: 0
         flags = flags or flagValue
     }
     return flags
 }
 
 interface IntentField {
-    val title: String
 
     interface StringValue: IntentField {
+        val title: String
+        fun copy(value: String?): StringValue
         val value: String?
-        fun copy(newValue: String): StringValue
         val isValid: Flow<Boolean>
     }
 
     @Immutable
-    data class None(override val title: String = ""): IntentField
+    object None: IntentField
 
     @Immutable
-    data class Action(override val value: String?, override val title: String) : StringValue {
-        override fun copy(newValue: String) = copy(value = newValue)
+    class Action(override val value: String?, override val title: String) : StringValue {
+        override fun copy(value: String?) = Action(value, title)
         override val isValid get() = flow { emit(value != null && value.isNotBlank()) }
     }
+
     @Immutable
-    data class PackageName(override val value: String?, override val title: String) : StringValue {
-        override fun copy(newValue: String) = copy(value = newValue)
-        override val isValid get() = flow {
-            val result = withContext(Dispatchers.Default) { value != null && packageNameRegex.matches(value) }
+    class Component(val value: ComponentName?) : IntentField {
+        val isValid get() = flow {
+            val result = withContext(Dispatchers.Default) {
+                value != null
+                        && packageNameRegex.matches(value.packageName)
+                        && packageNameRegex.matches(value.className)
+            }
             emit(result)
         }
     }
+
     @Immutable
-    data class ClassName(override val value: String?, override val title: String) : StringValue {
-        override fun copy(newValue: String) = copy(value = newValue)
-        override val isValid get() = flow {
-            val result = withContext(Dispatchers.Default) { value != null && packageNameRegex.matches(value) }
-            AppLog.d("ClassName.isValid: $result")
-            emit(result)
-        }
-    }
-    @Immutable
-    data class Data(override val value: String?, override val title: String) : StringValue {
-        override fun copy(newValue: String) = copy(value = newValue)
+    class Data(val uri: Uri?, override val title: String) : StringValue {
+        override fun copy(value: String?) = Data(if (value == null) null else Uri.parse(value), title)
+        override val value: String?
+            get() = uri?.toString()
         override val isValid: Flow<Boolean> get() = flow {
             val result = withContext(Dispatchers.Default) {
-                val newValue = value ?: return@withContext false
+                val newValue = uri ?: return@withContext false
                 return@withContext try {
-                    val uri = Uri.parse(newValue)
-                    (uri.authority?.isNotBlank() == true
-                            || uri.scheme?.isNotBlank() == true
-                            || uri.path?.isNotBlank() == true
-                            || uri.query?.isNotBlank() == true)
+                    (newValue.authority?.isNotBlank() == true
+                            || newValue.scheme?.isNotBlank() == true
+                            || newValue.path?.isNotBlank() == true
+                            || newValue.query?.isNotBlank() == true)
                 } catch (e: Exception) {
                     false
                 }
@@ -167,20 +164,24 @@ interface IntentField {
             emit(result)
         }
     }
+
     @Immutable
-    data class MimeType(override val value: String?, override val title: String) : StringValue {
-        override fun copy(newValue: String) = copy(value = newValue)
+    class MimeType(override val value: String?, override val title: String) : StringValue {
+        override fun copy(value: String?) = MimeType(value, title)
         override val isValid get() = flow {
             val result = withContext(Dispatchers.Default) { value != null && mimeTypeRegex.matches(value) }
             emit(result)
         }
     }
+
     @Immutable
-    data class Categories(val value: Set<String>?, override val title: String) : IntentField
+    class Categories(val value: Set<String>?) : IntentField
+
     @Immutable
-    data class Flags(val value: Int, override val title: String) : IntentField
+    class Flags(val value: Int) : IntentField
+
     @Immutable
-    data class Extras(val bundle: Bundle, override val title: String) : IntentField {
+    class Extras(val bundle: Bundle) : IntentField {
         fun isValid(newValue: Pair<String, Any?>): Flow<Boolean> = flow {
             val result = withContext(Dispatchers.Default) {
                 if (newValue.first.isBlank()) {

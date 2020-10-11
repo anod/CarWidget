@@ -11,6 +11,7 @@ import info.anodsplace.carwidget.compose.BackPressedDispatcherAmbient
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.compose.UiAction
 import info.anodsplace.carwidget.compose.intent.IntentEditScreen
+import info.anodsplace.carwidget.compose.intent.UpdateField
 import info.anodsplace.framework.AppLog
 
 class IntentEditActivity : AppCompatActivity() {
@@ -49,7 +50,9 @@ class IntentEditActivity : AppCompatActivity() {
         viewModel.action.observe(this, {
             when (it) {
                 is UiAction.OnBackNav -> finish()
-                is UiAction.IntentEditAction -> { }
+                is UpdateField -> {
+                    viewModel.updateField(it.field)
+                }
             }
         })
     }

@@ -1,8 +1,8 @@
 package info.anodsplace.carwidget.compose.intent
 
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
-import androidx.compose.foundation.InteractionState
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -10,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
 import androidx.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.CarWidgetTheme
@@ -22,22 +21,21 @@ import info.anodsplace.framework.util.putAny
 import java.util.*
 
 @Composable
-fun EditDialog(confirmText: String, onClick: (Boolean) -> Unit, content: @Composable () -> Unit) {
+fun EditDialog(confirmText: String, onClose: (Boolean) -> Unit, content: @Composable () -> Unit) {
     Column(Modifier.padding(16.dp)) {
         content()
         Spacer(modifier = Modifier.preferredHeight(16.dp))
         Row {
-            Button(onClick = { onClick(false) }) {
+            Button(onClick = { onClose(false) }) {
                 Text(text = stringResource(id = R.string.close).toUpperCase(Locale.getDefault()))
             }
             Spacer(modifier = Modifier.weight(1f))
-            Button(onClick = { onClick(true) }) {
+            Button(onClick = { onClose(true) }) {
                 Text(text = confirmText.toUpperCase(Locale.getDefault()))
             }
         }
     }
 }
-
 
 @Composable
 fun ExtraKeyValue(initialKey: String, value: Any?, onValueChange: (String, String, Any?) -> Unit) {
@@ -80,7 +78,7 @@ fun ExtraKeyValue(initialKey: String, value: Any?, onValueChange: (String, Strin
 }
 
 @Composable
-fun ExtraEditDialog(initial: IntentField.Extras, onClick: (newExtra: Bundle) -> Unit) {
+fun ExtraEditDialog(initial: IntentField.Extras, onClose: (newExtra: Bundle?) -> Unit) {
     val (newExtra, setNewExtra) = remember { mutableStateOf(initial.bundle) }
     val typeMap: Map<String, Class<out Any>> = newExtra.keySet().associateBy({ it }, { key ->
         val value = newExtra.get(key)
@@ -91,12 +89,12 @@ fun ExtraEditDialog(initial: IntentField.Extras, onClick: (newExtra: Bundle) -> 
 
     EditDialog(
             confirmText = stringResource(id = R.string.add),
-            onClick = {
-                onClick(newExtra)
+            onClose = {
+                onClose(if (it) newExtra else null)
                 setNewExtra(Bundle())
             }
     ) {
-        Text(text = initial.title, style = MaterialTheme.typography.subtitle2)
+        Text(text = stringResource(id = R.string.extras), style = MaterialTheme.typography.subtitle2)
         Spacer(modifier = Modifier.preferredHeight(8.dp))
 
         for (key in newExtra.keySet()) {
@@ -112,6 +110,7 @@ fun ExtraEditDialog(initial: IntentField.Extras, onClick: (newExtra: Bundle) -> 
                 }
                 setNewExtra(newExtra)
             }
+            Spacer(modifier = Modifier.preferredHeight(8.dp))
         }
         // New field
         ExtraKeyValue("", "") { initialKey, newKey, newValue ->
@@ -129,11 +128,51 @@ fun ExtraEditDialog(initial: IntentField.Extras, onClick: (newExtra: Bundle) -> 
 }
 
 @Composable
-fun FieldEditDialog(initial: IntentField.StringValue, initialValid: Boolean = true, onClick: (IntentField.StringValue?) -> Unit) {
+fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: ComponentName?) -> Unit) {
+    val (newComponent, setNewComponent) = remember { mutableStateOf(field.value) }
+    EditDialog(
+            confirmText = stringResource(id = R.string.save),
+            onClose = { onClose(if (it) newComponent else null) }
+    ) {
+        Text(text = stringResource(id = R.string.component), style = MaterialTheme.typography.subtitle2)
+        Spacer(modifier = Modifier.preferredHeight(8.dp))
+
+        OutlinedTextField(
+                activeColor = MaterialTheme.colors.onSurface,
+                modifier = Modifier.fillMaxWidth(),
+                value = newComponent?.packageName ?: "",
+                onValueChange = {
+                    setNewComponent(ComponentName(it, newComponent?.className ?: ""))
+                },
+                label = {
+                    Text(text = stringResource(id = R.string.package_name), style = MaterialTheme.typography.subtitle1)
+                },
+                isErrorValue = newComponent?.packageName.isNullOrBlank() && (newComponent?.className?.isNotBlank() == true)
+        )
+
+        Spacer(modifier = Modifier.preferredHeight(8.dp))
+
+        OutlinedTextField(
+                activeColor = MaterialTheme.colors.onSurface,
+                modifier = Modifier.fillMaxWidth(),
+                value = newComponent?.className ?: "",
+                onValueChange = {
+                    setNewComponent(ComponentName(newComponent?.packageName ?: "", it))
+                },
+                label = {
+                    Text(text = stringResource(id = R.string.class_name), style = MaterialTheme.typography.subtitle1)
+                },
+                isErrorValue = newComponent?.packageName.isNullOrBlank() && (newComponent?.className?.isNotBlank() == true)
+        )
+    }
+}
+
+@Composable
+fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialValid: Boolean = true, onClick: (IntentField.StringValue?) -> Unit) {
     val field = mutableStateOf(initial)
     EditDialog(
             confirmText = stringResource(id = R.string.save),
-            onClick = { apply -> onClick(if (apply) field.value else null) }
+            onClose = { apply -> onClick(if (apply) field.value else null) }
     ) {
         val isValid = field.value.isValid.collectAsState(initial = initialValid)
         val isEmpty = field.value.value.isNullOrEmpty()
@@ -143,11 +182,11 @@ fun FieldEditDialog(initial: IntentField.StringValue, initialValid: Boolean = tr
                 value = field.value.value ?: "",
                 onValueChange = {
                     if (it != field.value.value) {
-                        field.value = field.value.copy(it)
+                        field.value = field.value.copy(value = it)
                     }
                 },
                 label = {
-                    Text(text = field.value.title, style = MaterialTheme.typography.subtitle1)
+                    Text(text = title, style = MaterialTheme.typography.subtitle1)
                 },
                 placeholder = {
                     if (field.value.value.isNullOrEmpty()) {
@@ -172,21 +211,21 @@ fun FieldEditDialog(initial: IntentField.StringValue, initialValid: Boolean = tr
 @Preview("Intent Edit Dialog")
 @Composable
 fun PreviewIntentEditDialog() {
-    val editState:  IntentField.StringValue = IntentField.Action(Intent.ACTION_DIAL, "Action")
+    val editState: IntentField.StringValue = IntentField.Action(Intent.ACTION_DIAL, "Action")
     CarWidgetTheme(darkTheme = false) {
         Surface {
-            FieldEditDialog(editState, initialValid = false, onClick = { })
+            FieldEditDialog("Action", editState, initialValid = false, onClick = { })
         }
     }
 }
 
-@Preview("Intent Edit Dialog Empty")
+@Preview("Intent Edit Component")
 @Composable
 fun PreviewIntentEditDialogEmpty() {
-    val editState: IntentField.StringValue = IntentField.PackageName(null, "Package name")
+    val editState = IntentField.Component(ComponentName("com.banana", ".Kiwi"))
     CarWidgetTheme(darkTheme = true) {
         Surface {
-            FieldEditDialog(editState, onClick = { })
+            ComponentEditDialog(editState, onClose = { })
         }
     }
 }
@@ -198,10 +237,10 @@ fun PreviewExtraAddDialogEmpty() {
         putString("Banana", null)
         putInt("Int", 325)
         putIntArray("Array", intArrayOf(125, 67, 80))
-    }, "Add extra")
+    })
     CarWidgetTheme(darkTheme = true) {
         Surface {
-            ExtraEditDialog(editState, onClick = { })
+            ExtraEditDialog(editState, onClose = { })
         }
     }
 }
