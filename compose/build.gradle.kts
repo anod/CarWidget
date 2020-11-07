@@ -45,16 +45,16 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
 
-    implementation("androidx.compose.ui:ui:1.0.0-alpha04")
+    implementation("androidx.compose.ui:ui:1.0.0-alpha06")
     // Tooling support (Previews, etc.)
-    implementation("androidx.ui:ui-tooling:1.0.0-alpha04")
+    implementation("androidx.ui:ui-tooling:1.0.0-alpha06")
     // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    implementation("androidx.compose.foundation:foundation:1.0.0-alpha04")
+    implementation("androidx.compose.foundation:foundation:1.0.0-alpha06")
     // Material Design
-    implementation("androidx.compose.material:material:1.0.0-alpha04")
+    implementation("androidx.compose.material:material:1.0.0-alpha06")
     // Material design icons
-    implementation("androidx.compose.material:material-icons-core:1.0.0-alpha04")
-    implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha04")
+    implementation("androidx.compose.material:material-icons-core:1.0.0-alpha06")
+    implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha06")
     // Integration with observables
-    implementation("androidx.compose.runtime:runtime-livedata:1.0.0-alpha04")
+    implementation("androidx.compose.runtime:runtime-livedata:1.0.0-alpha06")
 }

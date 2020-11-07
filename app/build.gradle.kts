@@ -20,8 +20,8 @@ dependencies {
 
     implementation("com.squareup.picasso:picasso:2.71828")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.0")
 
     // Activity recognition
     implementation("com.google.android.gms:play-services-location:17.0.0")
@@ -48,7 +48,7 @@ dependencies {
     implementation("ch.acra:acra-limiter:5.7.0")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.10")
-    implementation("com.android.support.constraint:constraint-layout:2.0.2")
+    implementation("com.android.support.constraint:constraint-layout:2.0.4")
 }
 
 android {

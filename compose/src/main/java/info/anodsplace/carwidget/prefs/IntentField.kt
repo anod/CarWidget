@@ -129,7 +129,7 @@ interface IntentField {
 
     @Immutable
     class Action(override val value: String?, override val title: String) : StringValue {
-        override fun select(intent: Intent) = intent.action
+        override fun select(intent: Intent): String = intent.action ?: ""
         override val suggestions = Suggestions.Action
         override fun copy(value: String?) = Action(value, title)
         override val isValid get() = flow { emit(value != null && value.isNotBlank()) }
@@ -149,7 +149,7 @@ interface IntentField {
 
     @Immutable
     class Data(val uri: Uri?, override val title: String) : StringValue {
-        override fun select(intent: Intent) = intent.action
+        override fun select(intent: Intent): String = intent.data?.toString() ?: ""
         override val suggestions = Suggestions.None
         override fun copy(value: String?) = Data(if (value == null) null else Uri.parse(value), title)
         override val value: String?
@@ -174,6 +174,7 @@ interface IntentField {
     @Immutable
     class MimeType(override val value: String?, override val title: String) : StringValue {
         override val suggestions = Suggestions.MimeType
+        override fun select(intent: Intent): String = TODO("add media type")
         override fun copy(value: String?) = MimeType(value, title)
         override val isValid get() = flow {
             val result = withContext(Dispatchers.Default) { value != null && value.toMediaTypeOrNull() != null }
