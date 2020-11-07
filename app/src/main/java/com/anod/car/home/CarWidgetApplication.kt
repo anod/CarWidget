@@ -6,7 +6,6 @@ import android.content.Context
 import android.os.Build
 import android.os.DeadSystemException
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.work.Configuration
 import com.anod.car.home.acra.BrowserUrlSender
 import com.anod.car.home.notifications.Channels
 import com.anod.car.home.prefs.model.AppTheme
@@ -46,7 +45,7 @@ import org.acra.annotation.AcraNotification
         failedReportLimit = 1,
         stacktraceLimit = 1
 )
-class CarWidgetApplication : Application(), ApplicationInstance, Configuration.Provider {
+class CarWidgetApplication : Application(), ApplicationInstance {
 
     val appComponent: AppComponent by lazy { AppComponent(this) }
 
@@ -103,8 +102,4 @@ class CarWidgetApplication : Application(), ApplicationInstance, Configuration.P
         super.onTrimMemory(level)
         AppLog.w("Level: $level")
     }
-
-    override fun getWorkManagerConfiguration() = Configuration.Builder().apply {
-        setMinimumLoggingLevel(android.util.Log.DEBUG)
-    }.build()
 }

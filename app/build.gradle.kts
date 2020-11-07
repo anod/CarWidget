@@ -41,9 +41,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-common-java8:2.2.0")
     kapt("androidx.lifecycle:lifecycle-compiler:2.2.0")
 
-    implementation("androidx.work:work-runtime:2.4.0")
-    implementation("androidx.work:work-runtime-ktx:2.4.0")
-
     implementation("ch.acra:acra-core:5.7.0")
     implementation("ch.acra:acra-notification:5.7.0")
     implementation("ch.acra:acra-limiter:5.7.0")
@@ -58,8 +55,8 @@ android {
     defaultConfig {
         minSdkVersion(21)
         targetSdkVersion(28) // 29 wifi switch not working
-        versionCode = 21500
-        versionName = "2.1.5"
+        versionCode = 21600
+        versionName = "2.1.6"
         vectorDrawables.generatedDensities("hdpi", "xxhdpi")
     }
 
