@@ -20,13 +20,13 @@ dependencies {
 
     implementation("com.squareup.picasso:picasso:2.71828")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2")
 
     // Activity recognition
     implementation("com.google.android.gms:play-services-location:17.0.0")
 
-    implementation("com.google.android.material:material:1.3.0-alpha03")
+    implementation("com.google.android.material:material:1.3.0-beta01")
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.core:core-ktx:1.3.2")
@@ -49,15 +49,15 @@ dependencies {
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(30)
 
     buildFeatures {
         viewBinding = true
     }
 
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(28) // 29 wifi switch not working
+        minSdkVersion(29)
+        targetSdkVersion(30) // 29 wifi switch not working
         versionCode = 21600
         versionName = "2.1.6"
         vectorDrawables.generatedDensities("hdpi", "xxhdpi")
@@ -94,11 +94,11 @@ android {
     productFlavors {
         create("pro") {
             applicationId = "com.anod.car.home.pro"
-            setDimension("tier")
+            dimension = "tier"
         }
         create("free") {
             applicationId = "com.anod.car.home.free"
-            setDimension("tier")
+            dimension = "tier"
         }
     }
 

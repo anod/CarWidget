@@ -10,10 +10,10 @@ plugins {
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(30)
 
     defaultConfig {
-        minSdkVersion(21)
+        minSdkVersion(29)
     }
 
     buildFeatures {
@@ -38,23 +38,23 @@ android {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.20")
     implementation(project(":lib:framework"))
     implementation("androidx.appcompat:appcompat:1.3.0-alpha02")
     implementation("androidx.activity:activity-ktx:1.1.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
 
-    implementation("androidx.compose.ui:ui:1.0.0-alpha06")
+    implementation("androidx.compose.ui:ui:1.0.0-alpha09")
     // Tooling support (Previews, etc.)
-    implementation("androidx.ui:ui-tooling:1.0.0-alpha06")
+    implementation("androidx.ui:ui-tooling:1.0.0-alpha07")
     // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    implementation("androidx.compose.foundation:foundation:1.0.0-alpha06")
+    implementation("androidx.compose.foundation:foundation:1.0.0-alpha09")
     // Material Design
-    implementation("androidx.compose.material:material:1.0.0-alpha06")
+    implementation("androidx.compose.material:material:1.0.0-alpha09")
     // Material design icons
-    implementation("androidx.compose.material:material-icons-core:1.0.0-alpha06")
-    implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha06")
+    implementation("androidx.compose.material:material-icons-core:1.0.0-alpha09")
+    implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha09")
     // Integration with observables
-    implementation("androidx.compose.runtime:runtime-livedata:1.0.0-alpha06")
+    implementation("androidx.compose.runtime:runtime-livedata:1.0.0-alpha09")
 }
