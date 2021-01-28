@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.compose
 
 import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.material.*

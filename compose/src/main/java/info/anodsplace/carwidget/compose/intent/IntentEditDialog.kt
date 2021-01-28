@@ -3,13 +3,10 @@ package info.anodsplace.carwidget.compose.intent
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
-import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +21,8 @@ import info.anodsplace.framework.util.isScalar
 import info.anodsplace.framework.util.put
 import info.anodsplace.framework.util.putAny
 import java.util.*
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 
 @Composable
 fun EditDialog(confirmText: String, onClose: (Boolean) -> Unit, content: @Composable () -> Unit) {
@@ -207,7 +206,7 @@ fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialVali
                 IconButton(
                         modifier = Modifier.align(Alignment.CenterEnd),
                         onClick = onSuggestions) {
-                    Icon(asset = Icons.Filled.ExpandMore)
+                    Icon(imageVector = Icons.Filled.ExpandMore, "More")
                 }
             }
         }

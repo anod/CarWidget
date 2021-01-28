@@ -1,16 +1,17 @@
 package info.anodsplace.carwidget.compose
 
 import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.prefs.IntentActions
+import androidx.compose.material.Text
 
 class SingleScreenState(
         val title: String,
@@ -49,8 +50,8 @@ fun SingleListScreen(state: SingleScreenState, onSelect: (key: String, value: St
             color = MaterialTheme.colors.surface) {
         Column {
             Box(modifier = Modifier.padding(16.dp)) {
-                ProvideEmphasis(EmphasisAmbient.current.high) {
-                    Text(state.title, style = MaterialTheme.typography.subtitle1)
+                Providers(AmbientContentAlpha provides ContentAlpha.high) {
+                    Text(text = state.title, style = MaterialTheme.typography.subtitle1)
                 }
             }
             SingleScreenList(
@@ -69,7 +70,7 @@ fun SingleListScreen(state: SingleScreenState, onSelect: (key: String, value: St
 fun SingleListScreenPreview() {
     val state = SingleScreenState("Action", IntentActions)
     CarWidgetTheme(darkTheme = false) {
-        Box(alignment = Alignment.Center) {
+        Box(contentAlignment = Alignment.Center) {
             SingleListScreen(state, onSelect = { _, _ ->  })
         }
     }

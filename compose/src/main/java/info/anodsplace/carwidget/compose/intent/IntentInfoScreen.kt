@@ -17,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.VectorAsset
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -28,6 +27,9 @@ import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.*
 import info.anodsplace.carwidget.prefs.*
 import info.anodsplace.framework.livedata.SingleLiveEvent
+import androidx.compose.material.Text
+import androidx.compose.material.Icon
+import androidx.compose.ui.graphics.vector.ImageVector
 
 class UpdateField(val field: IntentField) : UiAction.IntentEditAction()
 
@@ -48,7 +50,7 @@ fun IntentFieldTitle(text: String) = Text(text = text, style = MaterialTheme.typ
 @Composable
 fun IntentFieldValue(value: String?, modifier: Modifier = Modifier) {
     val text = if (value.isNullOrBlank()) stringResource(id = R.string.none) else value
-    ProvideEmphasis(emphasis = EmphasisAmbient.current.medium) {
+    Providers(AmbientContentAlpha provides ContentAlpha.high) {
         Text(
                 text = text,
                 style = MaterialTheme.typography.body2,
@@ -60,13 +62,13 @@ fun IntentFieldValue(value: String?, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun IntentInfoRow(icon: VectorAsset, title: String, modifier: Modifier = Modifier, onClick: () -> Unit, content: @Composable () -> Unit) {
+fun IntentInfoRow(icon: ImageVector, title: String, modifier: Modifier = Modifier, onClick: () -> Unit, content: @Composable () -> Unit) {
     Row(modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(8.dp)
     ) {
-        Icon(asset = icon)
+        Icon(imageVector = icon)
         Spacer(Modifier.preferredWidth(8.dp))
         Column {
             IntentFieldTitle(text = title)
@@ -76,7 +78,7 @@ fun IntentInfoRow(icon: VectorAsset, title: String, modifier: Modifier = Modifie
 }
 
 @Composable
-fun IntentInfoField(icon: VectorAsset, field: IntentField.StringValue, modifier: Modifier = Modifier, onClick: (IntentField) -> Unit) {
+fun IntentInfoField(icon: ImageVector, field: IntentField.StringValue, modifier: Modifier = Modifier, onClick: (IntentField) -> Unit) {
     IntentInfoRow(
             icon = icon,
             title = field.title,

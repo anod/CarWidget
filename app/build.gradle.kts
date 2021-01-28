@@ -24,9 +24,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2")
 
     // Activity recognition
-    implementation("com.google.android.gms:play-services-location:17.0.0")
+    implementation("com.google.android.gms:play-services-location:17.1.0")
 
-    implementation("com.google.android.material:material:1.3.0-beta01")
+    implementation("com.google.android.material:material:1.3.0-rc01")
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.core:core-ktx:1.3.2")
@@ -44,7 +44,7 @@ dependencies {
     implementation("ch.acra:acra-notification:5.7.0")
     implementation("ch.acra:acra-limiter:5.7.0")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.21")
     implementation("com.android.support.constraint:constraint-layout:2.0.4")
 }
 
