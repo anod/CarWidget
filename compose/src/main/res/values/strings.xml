@@ -17,4 +17,6 @@
     <string name="add">Add</string>
     <string name="value_might_be_not_valid">The value might not be valid</string>
     <string name="component">Component</string>
+    <string name="edit_intent">Edit intent</string>
+    <string name="back">Back</string>
 </resources>

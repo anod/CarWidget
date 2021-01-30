@@ -11,7 +11,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.PlayForWork
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.Icon
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -67,7 +68,7 @@ fun IntentInfoRow(icon: ImageVector, title: String, modifier: Modifier = Modifie
             .clickable(onClick = onClick)
             .padding(8.dp)
     ) {
-        Icon(imageVector = icon)
+        Icon(imageVector = icon, contentDescription = title)
         Spacer(Modifier.preferredWidth(8.dp))
         Column {
             IntentFieldTitle(text = title)
@@ -307,7 +308,9 @@ fun IntentEditScreen(
                             color = MaterialTheme.colors.background,
                     ) {
                         Box() {
-                            IntentDetailsView(intentState.value, modifier = Modifier.padding(16.dp).fillMaxSize()) {
+                            IntentDetailsView(intentState.value, modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxSize()) {
                                 editState = it
                             }
                             OverlayScrim(

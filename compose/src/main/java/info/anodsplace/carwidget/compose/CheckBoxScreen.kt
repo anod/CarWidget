@@ -31,8 +31,7 @@ fun CheckBoxList(items: Map<String, Any?>, checked: SnapshotStateList<String>, m
         items(items.entries.toList()) { item ->
             val isItemChecked = checkedMap.containsKey(item.key)
             val (itemChecked, onItemChecked) = remember { mutableStateOf(isItemChecked) }
-            Row(
-                    modifier = Modifier
+            Row(modifier = Modifier
                             .toggleable(value = itemChecked, onValueChange = onItemChecked)
             ) {
                 Checkbox(
@@ -71,9 +70,7 @@ fun CheckBoxList(items: Map<String, Any?>, checked: SnapshotStateList<String>, m
 @Composable
 fun CheckBoxScreen(state: CheckBoxScreenState, onDismissRequest: () -> Unit) {
     Surface(color = MaterialTheme.colors.background) {
-        Column(
-                modifier = Modifier.fillMaxHeight()
-        ) {
+        Column(modifier = Modifier.fillMaxHeight()) {
             Box(modifier = Modifier.padding(16.dp).align(Alignment.Start)) {
                 Providers(AmbientContentAlpha provides ContentAlpha.high) {
                     Text(state.title, style = MaterialTheme.typography.subtitle1)
@@ -102,9 +99,7 @@ fun CheckBoxScreenPreview() {
                 topBar = { CarWidgetToolbar(SingleLiveEvent()) },
                 backgroundColor = MaterialTheme.colors.background,
                 bodyContent = {
-                    Box(
-                            contentAlignment = Alignment.Center
-                    ) {
+                    Box(contentAlignment = Alignment.Center) {
                         CheckBoxScreen(state, onDismissRequest = {})
                     }
                 }
@@ -123,9 +118,7 @@ fun CheckBoxScreenPreviewDark() {
                 topBar = { CarWidgetToolbar(SingleLiveEvent()) },
                 backgroundColor = MaterialTheme.colors.background,
                 bodyContent = {
-                    Box(
-                            contentAlignment = Alignment.Center
-                    ) {
+                    Box(contentAlignment = Alignment.Center) {
                         CheckBoxScreen(visibility, onDismissRequest = {})
                     }
                 }

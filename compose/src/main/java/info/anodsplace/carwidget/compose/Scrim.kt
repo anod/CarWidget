@@ -1,7 +1,7 @@
 package info.anodsplace.carwidget.compose
 
-import androidx.compose.animation.animate
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -16,7 +16,7 @@ fun OverlayScrim(
         visible: Boolean
 ) {
     if (color != Color.Transparent) {
-        val alpha = animate(target = if (visible) 1f else 0f, animSpec = TweenSpec())
+        val alpha = animateFloatAsState(targetValue = if (visible) 1f else 0f, animationSpec = TweenSpec()).value
         val dismissModifier = if (visible) Modifier.tapGestureFilter { onDismiss() } else Modifier
         Canvas(
             Modifier
