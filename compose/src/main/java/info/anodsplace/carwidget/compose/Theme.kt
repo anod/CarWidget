@@ -7,17 +7,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.font
-import androidx.compose.ui.text.font.fontFamily
+import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import info.anodsplace.carwidget.R
 
-private val Rubik = fontFamily(
-    font(R.font.rubik_regular),
-    font(R.font.rubik_light, FontWeight.W300),
-    font(R.font.rubik_medium, FontWeight.W500),
+private val Rubik = FontFamily(
+    Font(R.font.rubik_regular),
+    Font(R.font.rubik_light, FontWeight.W300),
+    Font(R.font.rubik_medium, FontWeight.W500)
 )
 
 val typography = Typography()

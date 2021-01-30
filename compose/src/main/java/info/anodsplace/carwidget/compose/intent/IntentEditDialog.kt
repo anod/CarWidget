@@ -180,9 +180,7 @@ fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialVali
     ) {
         val isValid = field.value.isValid.collectAsState(initial = initialValid)
         val isEmpty = field.value.value.isNullOrEmpty()
-        Box(
-
-        ) {
+        Box() {
             OutlinedTextField(
                     activeColor = MaterialTheme.colors.onSurface,
                     modifier = Modifier.fillMaxWidth().padding(end = 48.dp),

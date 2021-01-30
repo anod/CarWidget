@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -13,7 +14,6 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.PlayForWork
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -28,7 +28,6 @@ import info.anodsplace.carwidget.compose.*
 import info.anodsplace.carwidget.prefs.*
 import info.anodsplace.framework.livedata.SingleLiveEvent
 import androidx.compose.material.Text
-import androidx.compose.material.Icon
 import androidx.compose.ui.graphics.vector.ImageVector
 
 class UpdateField(val field: IntentField) : UiAction.IntentEditAction()
@@ -125,78 +124,82 @@ fun IntentComponentField(component: ComponentName?, onClick: (IntentField) -> Un
 
 @Composable
 fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick: (IntentField) -> Unit) {
-    ScrollableColumn(modifier) {
+    rememberScrollState(0f)
+    LazyColumn(modifier = modifier) {
+        // use `item` for separate elements like headers
+        // and `items` for lists of identical elements
+        item {
 
-        IntentInfoField(
-                icon = Icons.Outlined.PlayForWork,
-                field = IntentField.Action(intent.action, stringResource(id = R.string.action)),
-                onClick = onItemClick
-        )
+            IntentInfoField(
+                    icon = Icons.Outlined.PlayForWork,
+                    field = IntentField.Action(intent.action, stringResource(id = R.string.action)),
+                    onClick = onItemClick
+            )
 
-        IntentComponentField(
-                component = intent.component,
-                onClick = onItemClick
-        )
+            IntentComponentField(
+                    component = intent.component,
+                    onClick = onItemClick
+            )
 
-        IntentInfoField(
-                icon = Icons.Filled.OpenWith,
-                field = IntentField.Data(intent.data, stringResource(id = R.string.data)),
-                onClick = onItemClick
-        )
+            IntentInfoField(
+                    icon = Icons.Filled.OpenWith,
+                    field = IntentField.Data(intent.data, stringResource(id = R.string.data)),
+                    onClick = onItemClick
+            )
 
-        IntentInfoField(
-                icon = Icons.Filled.Description,
-                field = IntentField.MimeType(intent.type, stringResource(id = R.string.mime_type)),
-                onClick = onItemClick
-        )
+            IntentInfoField(
+                    icon = Icons.Filled.Description,
+                    field = IntentField.MimeType(intent.type, stringResource(id = R.string.mime_type)),
+                    onClick = onItemClick
+            )
 
-        IntentInfoRow(
-                icon = Icons.Filled.Flag,
-                title = stringResource(id = R.string.flags),
-                onClick = { onItemClick(IntentField.Flags(intent.flags)) }
-        ) {
-            val flagNames = intent.flagNames
-            if (flagNames.isEmpty()) {
-                IntentFieldValue(value = null, modifier = Modifier.padding(vertical = 8.dp))
-            } else {
-                Column(Modifier.padding(vertical = 8.dp)) {
-                    for (flagName in flagNames) {
-                        IntentFieldValue(value = flagName)
+            IntentInfoRow(
+                    icon = Icons.Filled.Flag,
+                    title = stringResource(id = R.string.flags),
+                    onClick = { onItemClick(IntentField.Flags(intent.flags)) }
+            ) {
+                val flagNames = intent.flagNames
+                if (flagNames.isEmpty()) {
+                    IntentFieldValue(value = null, modifier = Modifier.padding(vertical = 8.dp))
+                } else {
+                    Column(Modifier.padding(vertical = 8.dp)) {
+                        for (flagName in flagNames) {
+                            IntentFieldValue(value = flagName)
+                        }
                     }
                 }
             }
-        }
 
-        IntentInfoRow(
-                icon = Icons.Filled.Category,
-                title = stringResource(id = R.string.categories),
-                onClick = { onItemClick(IntentField.Categories(intent.categories)) }
-        ) {
-            val categoryNames = intent.categoryNames
-            if (categoryNames.isEmpty()) {
-                IntentFieldValue(value = null, modifier = Modifier.padding(vertical = 8.dp))
-            } else {
-                for (categoryName in categoryNames) {
-                    IntentFieldValue(value = categoryName, modifier = Modifier.padding(vertical = 8.dp))
+            IntentInfoRow(
+                    icon = Icons.Filled.Category,
+                    title = stringResource(id = R.string.categories),
+                    onClick = { onItemClick(IntentField.Categories(intent.categories)) }
+            ) {
+                val categoryNames = intent.categoryNames
+                if (categoryNames.isEmpty()) {
+                    IntentFieldValue(value = null, modifier = Modifier.padding(vertical = 8.dp))
+                } else {
+                    for (categoryName in categoryNames) {
+                        IntentFieldValue(value = categoryName, modifier = Modifier.padding(vertical = 8.dp))
+                    }
                 }
             }
-        }
 
-        IntentExtrasField(intent, onClick = onItemClick)
-        Spacer(modifier = Modifier.preferredHeight(16.dp))
-        Surface(
-                modifier = Modifier.fillMaxWidth()
-                        .align(Alignment.CenterHorizontally),
-                color = MaterialTheme.colors.surface.copy(alpha = 0.4f),
-                shape = RoundedCornerShape(8.dp),
-                border = BorderStroke(1.dp, MaterialTheme.colors.onBackground.copy(0.2f))
-        ) {
-            Text(
-                text = intent.toUri(0).toString(),
-                style = MaterialTheme.typography.overline,
-                modifier = Modifier.padding(16.dp),
-                softWrap = true
-            )
+            IntentExtrasField(intent, onClick = onItemClick)
+            Spacer(modifier = Modifier.preferredHeight(16.dp))
+            Surface(
+                    modifier = Modifier.fillMaxWidth(), //.align(Alignment.CenterHorizontally),
+                    color = MaterialTheme.colors.surface.copy(alpha = 0.4f),
+                    shape = RoundedCornerShape(8.dp),
+                    border = BorderStroke(1.dp, MaterialTheme.colors.onBackground.copy(0.2f))
+            ) {
+                Text(
+                        text = intent.toUri(0).toString(),
+                        style = MaterialTheme.typography.overline,
+                        modifier = Modifier.padding(16.dp),
+                        softWrap = true
+                )
+            }
         }
     }
 }
@@ -303,7 +306,7 @@ fun IntentEditScreen(
                             elevation = DefaultFrontLayerElevation,
                             color = MaterialTheme.colors.background,
                     ) {
-                        androidx.compose.foundation.layout.Box() {
+                        Box() {
                             IntentDetailsView(intentState.value, modifier = Modifier.padding(16.dp).fillMaxSize()) {
                                 editState = it
                             }
@@ -368,7 +371,6 @@ fun PreviewIntentEditDark() {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Preview("Intent simple edit")
 @Composable
 fun PreviewIntentSimpleEdit() {
@@ -383,7 +385,6 @@ fun PreviewIntentSimpleEdit() {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Preview("Intent checkbox edit")
 @Composable
 fun PreviewIntentCheckboxEdit() {

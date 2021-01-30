@@ -206,5 +206,4 @@ interface IntentField {
             emit(result)
         }
     }
-
 }

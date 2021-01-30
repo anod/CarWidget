@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.compose
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.*
@@ -27,43 +28,41 @@ fun CheckBoxList(items: Map<String, Any?>, checked: SnapshotStateList<String>, m
     val checkedMap = checked.associateWith { true }
     rememberScrollState(0f)
     LazyColumn(modifier = modifier) {
-        // use `item` for separate elements like headers
-        // and `items` for lists of identical elements
-        item {
-            for (item in items) {
-                val isItemChecked = checkedMap.containsKey(item.key)
-                val (itemChecked, onItemChecked) = remember { mutableStateOf(isItemChecked) }
-                Row(
-                        modifier = Modifier
-                                .toggleable(value = itemChecked, onValueChange = onItemChecked)
-                ) {
-                    Checkbox(
-                            modifier = Modifier.align(Alignment.CenterVertically),
-                            checked = itemChecked,
-                            onCheckedChange = { newState ->
-                                if (checkedMap.containsKey(item.key)) {
-                                    if (!newState) {
-                                        checked.remove(item.key)
-                                    }
-                                } else {
-                                    if (newState) {
-                                        checked.add(item.key)
-                                    }
+        items(items.entries.toList()) { item ->
+            val isItemChecked = checkedMap.containsKey(item.key)
+            val (itemChecked, onItemChecked) = remember { mutableStateOf(isItemChecked) }
+            Row(
+                    modifier = Modifier
+                            .toggleable(value = itemChecked, onValueChange = onItemChecked)
+            ) {
+                Checkbox(
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        checked = itemChecked,
+                        onCheckedChange = { newState ->
+                            if (checkedMap.containsKey(item.key)) {
+                                if (!newState) {
+                                    checked.remove(item.key)
                                 }
-                                onItemChecked(newState)
-                            },
-                    )
-                    Text(
-                            text = item.key,
-                            style = MaterialTheme.typography.body1,
-                            modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 4.dp, vertical = 8.dp)
-                                    .align(Alignment.CenterVertically)
-                    )
-                    Spacer(modifier = Modifier.preferredHeight(8.dp))
-                }
+                            } else {
+                                if (newState) {
+                                    checked.add(item.key)
+                                }
+                            }
+                            onItemChecked(newState)
+                        },
+                )
+                Text(
+                        text = item.key,
+                        style = MaterialTheme.typography.body1,
+                        modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 4.dp, vertical = 8.dp)
+                                .align(Alignment.CenterVertically)
+                )
+                Spacer(modifier = Modifier.preferredHeight(8.dp))
             }
+        }
+        item {
             Spacer(modifier = Modifier.preferredHeight(8.dp))
         }
     }

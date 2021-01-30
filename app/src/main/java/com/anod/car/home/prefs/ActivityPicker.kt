@@ -46,9 +46,7 @@ open class ActivityPicker : AppCompatGridActivity() {
      */
     protected open val items: List<PickAdapter.Item>
         get() {
-            val packageManager = packageManager
             val items = ArrayList<PickAdapter.Item>()
-            val intent = intent
             val labels = intent.getStringArrayListExtra(Intent.EXTRA_SHORTCUT_NAME)
             val icons = intent
                     .getParcelableArrayListExtra<ShortcutIconResource>(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)

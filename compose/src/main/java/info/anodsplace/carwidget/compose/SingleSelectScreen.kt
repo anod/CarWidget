@@ -1,8 +1,10 @@
 package info.anodsplace.carwidget.compose
 
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
@@ -19,11 +21,11 @@ class SingleScreenState(
 )
 
 @Composable
-fun SingleScreenList(items: Map<String, String>, modifier: Modifier = Modifier, onSelect: (key: String, value: String) -> Unit) {
-    ScrollableColumn(modifier = modifier) {
-        for (item in items) {
-            Row(
-                    modifier = Modifier
+fun SingleScreenList(listContent: Map<String, String>, modifier: Modifier = Modifier, onSelect: (key: String, value: String) -> Unit) {
+    rememberScrollState(0f)
+    LazyColumn(modifier = modifier) {
+        items(listContent.entries.toList()) { item ->
+            Row(modifier = Modifier
                             .clickable(onClick = { onSelect(item.key, item.value) })
             ) {
                 Text(
@@ -36,8 +38,8 @@ fun SingleScreenList(items: Map<String, String>, modifier: Modifier = Modifier, 
                 )
                 Spacer(modifier = Modifier.preferredHeight(8.dp))
             }
+            Spacer(modifier = Modifier.preferredHeight(8.dp))
         }
-        Spacer(modifier = Modifier.preferredHeight(8.dp))
     }
 }
 
@@ -55,7 +57,7 @@ fun SingleListScreen(state: SingleScreenState, onSelect: (key: String, value: St
                 }
             }
             SingleScreenList(
-                    items = state.items,
+                    listContent = state.items,
                     modifier = Modifier
                             .padding(horizontal = 16.dp)
                             .fillMaxWidth(),

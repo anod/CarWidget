@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Providers
 import androidx.compose.ui.platform.setContent
-import info.anodsplace.carwidget.compose.BackPressedDispatcherAmbient
+import info.anodsplace.carwidget.compose.AmbientBackPressedDispatcher
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.compose.UiAction
 import info.anodsplace.carwidget.compose.intent.IntentEditScreen
@@ -40,7 +40,7 @@ class IntentEditActivity : AppCompatActivity() {
         viewModel.intent.value = shortcutIntent
 
         setContent {
-            Providers(BackPressedDispatcherAmbient provides this) {
+            Providers(AmbientBackPressedDispatcher provides this) {
                 CarWidgetTheme {
                     IntentEditScreen(viewModel.intent, viewModel.action, addBackPressHandler = true)
                 }
