@@ -17,7 +17,7 @@ fun ButtonsPanel(onDismissRequest: () -> Unit) {
         Divider()
         Row(
                 Modifier
-                        .preferredHeight(56.dp)
+                        .height(56.dp)
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 16.dp)
         ) {
@@ -29,6 +29,6 @@ fun ButtonsPanel(onDismissRequest: () -> Unit) {
                 Text(text = stringResource(id = R.string.save))
             }
         }
-        Spacer(modifier = Modifier.preferredHeight(8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }

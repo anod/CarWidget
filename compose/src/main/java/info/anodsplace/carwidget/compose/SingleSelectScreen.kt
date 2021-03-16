@@ -7,13 +7,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.prefs.IntentActions
 import androidx.compose.material.Text
+import androidx.compose.runtime.CompositionLocalProvider
 
 class SingleScreenState(
         val title: String,
@@ -22,7 +22,7 @@ class SingleScreenState(
 
 @Composable
 fun SingleScreenList(listContent: Map<String, String>, modifier: Modifier = Modifier, onSelect: (key: String, value: String) -> Unit) {
-    rememberScrollState(0f)
+    rememberScrollState(0)
     LazyColumn(modifier = modifier) {
         items(listContent.entries.toList()) { item ->
             Row(modifier = Modifier
@@ -36,9 +36,9 @@ fun SingleScreenList(listContent: Map<String, String>, modifier: Modifier = Modi
                                 .padding(horizontal = 4.dp, vertical = 8.dp)
                                 .align(Alignment.CenterVertically)
                 )
-                Spacer(modifier = Modifier.preferredHeight(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
             }
-            Spacer(modifier = Modifier.preferredHeight(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
@@ -52,7 +52,7 @@ fun SingleListScreen(state: SingleScreenState, onSelect: (key: String, value: St
             color = MaterialTheme.colors.surface) {
         Column {
             Box(modifier = Modifier.padding(16.dp)) {
-                Providers(AmbientContentAlpha provides ContentAlpha.high) {
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                     Text(text = state.title, style = MaterialTheme.typography.subtitle1)
                 }
             }

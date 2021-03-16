@@ -1,8 +1,8 @@
 repositories {
     mavenCentral()
-    jcenter()
     maven(url = "https://jitpack.io" )
     maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
+    jcenter()
     google()
 }
 
@@ -10,7 +10,6 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
-    id("kotlin-android")
 }
 
 dependencies {
@@ -24,27 +23,26 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2")
 
     // Activity recognition
-    implementation("com.google.android.gms:play-services-location:17.1.0")
-
-    implementation("com.google.android.material:material:1.3.0-rc01")
+    implementation("com.google.android.gms:play-services-location:18.0.0")
+    implementation("com.google.android.material:material:1.3.0")
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.fragment:fragment-ktx:1.2.5")
+    implementation("androidx.fragment:fragment-ktx:1.3.1")
     implementation("androidx.collection:collection-ktx:1.1.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0")
     implementation("androidx.sqlite:sqlite-ktx:2.1.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.2.0")
-    kapt("androidx.lifecycle:lifecycle-compiler:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.3.0")
+    kapt("androidx.lifecycle:lifecycle-compiler:2.3.0")
 
     implementation("ch.acra:acra-core:5.7.0")
     implementation("ch.acra:acra-notification:5.7.0")
     implementation("ch.acra:acra-limiter:5.7.0")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.21")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.30")
     implementation("com.android.support.constraint:constraint-layout:2.0.4")
 }
 

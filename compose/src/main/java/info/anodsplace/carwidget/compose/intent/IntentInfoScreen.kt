@@ -33,15 +33,16 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 class UpdateField(val field: IntentField) : UiAction.IntentEditAction()
 
-@Composable
 private val DefaultFrontLayerShape: Shape
-    get() = MaterialTheme.shapes.large
-            .copy(topLeft = CornerSize(16.dp), topRight = CornerSize(16.dp))
+    @Composable
+    @ReadOnlyComposable
+    get() = MaterialTheme.shapes.large.copy(topStart = CornerSize(16.dp), topEnd = CornerSize(16.dp))
 
 private val DefaultFrontLayerElevation = 1.dp
 
-@Composable
 private val DefaultFrontLayerScrimColor: Color
+    @Composable
+    @ReadOnlyComposable
     get() = MaterialTheme.colors.surface.copy(alpha = 0.60f)
 
 @Composable
@@ -50,7 +51,7 @@ fun IntentFieldTitle(text: String) = Text(text = text, style = MaterialTheme.typ
 @Composable
 fun IntentFieldValue(value: String?, modifier: Modifier = Modifier) {
     val text = if (value.isNullOrBlank()) stringResource(id = R.string.none) else value
-    Providers(AmbientContentAlpha provides ContentAlpha.high) {
+    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
         Text(
                 text = text,
                 style = MaterialTheme.typography.body2,
@@ -69,7 +70,7 @@ fun IntentInfoRow(icon: ImageVector, title: String, modifier: Modifier = Modifie
             .padding(8.dp)
     ) {
         Icon(imageVector = icon, contentDescription = title)
-        Spacer(Modifier.preferredWidth(8.dp))
+        Spacer(Modifier.width(8.dp))
         Column {
             IntentFieldTitle(text = title)
             content()
@@ -125,7 +126,7 @@ fun IntentComponentField(component: ComponentName?, onClick: (IntentField) -> Un
 
 @Composable
 fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick: (IntentField) -> Unit) {
-    rememberScrollState(0f)
+    rememberScrollState(0)
     LazyColumn(modifier = modifier) {
         // use `item` for separate elements like headers
         // and `items` for lists of identical elements
@@ -187,7 +188,7 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
             }
 
             IntentExtrasField(intent, onClick = onItemClick)
-            Spacer(modifier = Modifier.preferredHeight(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Surface(
                     modifier = Modifier.fillMaxWidth(), //.align(Alignment.CenterHorizontally),
                     color = MaterialTheme.colors.surface.copy(alpha = 0.4f),
@@ -275,7 +276,7 @@ fun IntentEditScreen(
     var suggestionsState by remember { mutableStateOf(IntentField.Suggestions.None) }
 
     if (addBackPressHandler) {
-        backPressHandler(
+        BackPressHandler(
                 onBackPressed = {
                     if (suggestionsState == IntentField.Suggestions.None) {
                         editState = IntentField.None
@@ -290,7 +291,7 @@ fun IntentEditScreen(
     Scaffold(
             topBar = { CarWidgetToolbar(action) },
             backgroundColor = MaterialTheme.colors.surface,
-            bodyContent = {
+            content = {
                 Column {
                     if (editVisible) {
                         Surface {
@@ -307,7 +308,7 @@ fun IntentEditScreen(
                             elevation = DefaultFrontLayerElevation,
                             color = MaterialTheme.colors.background,
                     ) {
-                        Box() {
+                        Box {
                             IntentDetailsView(intentState.value, modifier = Modifier
                                     .padding(16.dp)
                                     .fillMaxSize()) {

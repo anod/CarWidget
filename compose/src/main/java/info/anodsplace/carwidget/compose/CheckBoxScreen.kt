@@ -26,7 +26,7 @@ class CheckBoxScreenState(
 @Composable
 fun CheckBoxList(items: Map<String, Any?>, checked: SnapshotStateList<String>, modifier: Modifier = Modifier, onCheckedChange: (key: String, value: Any?, checked: Boolean) -> Unit) {
     val checkedMap = checked.associateWith { true }
-    rememberScrollState(0f)
+    rememberScrollState(0)
     LazyColumn(modifier = modifier) {
         items(items.entries.toList()) { item ->
             val isItemChecked = checkedMap.containsKey(item.key)
@@ -58,11 +58,11 @@ fun CheckBoxList(items: Map<String, Any?>, checked: SnapshotStateList<String>, m
                                 .padding(horizontal = 4.dp, vertical = 8.dp)
                                 .align(Alignment.CenterVertically)
                 )
-                Spacer(modifier = Modifier.preferredHeight(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
         item {
-            Spacer(modifier = Modifier.preferredHeight(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
@@ -72,7 +72,7 @@ fun CheckBoxScreen(state: CheckBoxScreenState, onDismissRequest: () -> Unit) {
     Surface(color = MaterialTheme.colors.background) {
         Column(modifier = Modifier.fillMaxHeight()) {
             Box(modifier = Modifier.padding(16.dp).align(Alignment.Start)) {
-                Providers(AmbientContentAlpha provides ContentAlpha.high) {
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                     Text(state.title, style = MaterialTheme.typography.subtitle1)
                 }
             }
@@ -98,7 +98,7 @@ fun CheckBoxScreenPreview() {
         Scaffold(
                 topBar = { CarWidgetToolbar(SingleLiveEvent()) },
                 backgroundColor = MaterialTheme.colors.background,
-                bodyContent = {
+                content = {
                     Box(contentAlignment = Alignment.Center) {
                         CheckBoxScreen(state, onDismissRequest = {})
                     }
@@ -117,7 +117,7 @@ fun CheckBoxScreenPreviewDark() {
         Scaffold(
                 topBar = { CarWidgetToolbar(SingleLiveEvent()) },
                 backgroundColor = MaterialTheme.colors.background,
-                bodyContent = {
+                content = {
                     Box(contentAlignment = Alignment.Center) {
                         CheckBoxScreen(visibility, onDismissRequest = {})
                     }

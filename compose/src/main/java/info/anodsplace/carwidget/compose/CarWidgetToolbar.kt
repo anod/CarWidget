@@ -1,7 +1,7 @@
 package info.anodsplace.carwidget.compose
 
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.preferredWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
@@ -26,7 +26,7 @@ fun CarWidgetToolbar(action: SingleLiveEvent<UiAction>) {
             },
             // We need to balance the navigation icon, so we add a spacer.
             actions = {
-                Spacer(modifier = Modifier.preferredWidth(68.dp))
+                Spacer(modifier = Modifier.width(68.dp))
             },
             backgroundColor = MaterialTheme.colors.surface,
             elevation = 0.dp
@@ -40,7 +40,7 @@ fun PreviewAppBarDark() {
         Surface(color = MaterialTheme.colors.primary) {
             Scaffold(
                     topBar = { CarWidgetToolbar(SingleLiveEvent()) },
-                    bodyContent = { Text(text = "Content") }
+                    content = { Text(text = "Content") }
             )
         }
     }
@@ -53,7 +53,7 @@ fun PreviewAppBarLight() {
         Surface() {
             Scaffold(
                     topBar = { CarWidgetToolbar(SingleLiveEvent()) },
-                    bodyContent = { Text(text = "Content") }
+                    content = { Text(text = "Content") }
             )
         }
     }

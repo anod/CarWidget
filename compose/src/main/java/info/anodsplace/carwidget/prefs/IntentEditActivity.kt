@@ -3,11 +3,11 @@ package info.anodsplace.carwidget.prefs
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.Providers
-import androidx.compose.ui.platform.setContent
-import info.anodsplace.carwidget.compose.AmbientBackPressedDispatcher
+import androidx.compose.runtime.CompositionLocalProvider
+import info.anodsplace.carwidget.compose.LocalBackPressedDispatcher
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.compose.UiAction
 import info.anodsplace.carwidget.compose.intent.IntentEditScreen
@@ -40,7 +40,7 @@ class IntentEditActivity : AppCompatActivity() {
         viewModel.intent.value = shortcutIntent
 
         setContent {
-            Providers(AmbientBackPressedDispatcher provides this) {
+            CompositionLocalProvider(LocalBackPressedDispatcher provides this) {
                 CarWidgetTheme {
                     IntentEditScreen(viewModel.intent, viewModel.action, addBackPressHandler = true)
                 }
@@ -52,6 +52,9 @@ class IntentEditActivity : AppCompatActivity() {
                 is UiAction.OnBackNav -> finish()
                 is UpdateField -> {
                     viewModel.updateField(it.field)
+                }
+                is UiAction.IntentEditAction -> {
+
                 }
             }
         })
