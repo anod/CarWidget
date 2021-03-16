@@ -28,6 +28,8 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.core:core-ktx:1.3.2")
+    implementation("androidx.activity:activity:1.2.1")
+    implementation("androidx.fragment:fragment:1.3.1")
     implementation("androidx.fragment:fragment-ktx:1.3.1")
     implementation("androidx.collection:collection-ktx:1.1.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0")
@@ -43,7 +45,7 @@ dependencies {
     implementation("ch.acra:acra-limiter:5.7.0")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.30")
-    implementation("com.android.support.constraint:constraint-layout:2.0.4")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
 }
 
 android {
@@ -108,6 +110,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
         useIR = true
+    }
+
+    lint {
+        warning("InvalidFragmentVersionForActivityResult")
     }
 }
 
