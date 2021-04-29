@@ -6,21 +6,29 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import info.anodsplace.framework.livedata.SingleLiveEvent
 import info.anodsplace.carwidget.R
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 
 @Composable
-fun CarWidgetToolbar(action: SingleLiveEvent<UiAction>) {
+fun CarWidgetToolbar(action: MutableSharedFlow<UiAction>) {
+    val scope = rememberCoroutineScope()
+
     TopAppBar(
             title = {
                 Text(text = stringResource(id = R.string.edit_intent))
             },
             navigationIcon = {
-                IconButton(onClick = { action.value = UiAction.OnBackNav }) {
+                IconButton(onClick = {
+                    scope.launch {
+                        action.emit(UiAction.OnBackNav)
+                    }
+                }) {
                     Icon(Icons.Filled.ChevronLeft, contentDescription = stringResource(id = R.string.back))
                 }
             },
@@ -39,7 +47,7 @@ fun PreviewAppBarDark() {
     CarWidgetTheme(darkTheme = true) {
         Surface(color = MaterialTheme.colors.primary) {
             Scaffold(
-                    topBar = { CarWidgetToolbar(SingleLiveEvent()) },
+                    topBar = { CarWidgetToolbar(MutableSharedFlow()) },
                     content = { Text(text = "Content") }
             )
         }
@@ -52,7 +60,7 @@ fun PreviewAppBarLight() {
     CarWidgetTheme(darkTheme = false) {
         Surface() {
             Scaffold(
-                    topBar = { CarWidgetToolbar(SingleLiveEvent()) },
+                    topBar = { CarWidgetToolbar(MutableSharedFlow()) },
                     content = { Text(text = "Content") }
             )
         }

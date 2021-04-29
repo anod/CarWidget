@@ -14,22 +14,22 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.Icon
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.*
 import info.anodsplace.carwidget.prefs.*
-import info.anodsplace.framework.livedata.SingleLiveEvent
 import androidx.compose.material.Text
 import androidx.compose.ui.graphics.vector.ImageVector
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 
 class UpdateField(val field: IntentField) : UiAction.IntentEditAction()
 
@@ -64,7 +64,8 @@ fun IntentFieldValue(value: String?, modifier: Modifier = Modifier) {
 
 @Composable
 fun IntentInfoRow(icon: ImageVector, title: String, modifier: Modifier = Modifier, onClick: () -> Unit, content: @Composable () -> Unit) {
-    Row(modifier
+    Row(
+        modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(8.dp)
@@ -207,17 +208,19 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
 }
 
 @Composable
-fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<UiAction>, onSuggestions: (IntentField.Suggestions) -> Unit, onClose: () -> Unit) {
+fun EditSection(intent: Intent, editState: IntentField, action: MutableSharedFlow<UiAction>, onSuggestions: (IntentField.Suggestions) -> Unit, onClose: () -> Unit) {
     val flagsState = remember(intent.flags) { mutableStateListOf(*intent.flagNames.toTypedArray()) }
     val categoriesState = remember(intent.categories) { mutableStateListOf(*intent.categoryNames.toTypedArray()) }
-
+    val scope = rememberCoroutineScope()
     when (editState) {
         is IntentField.StringValue -> {
             FieldEditDialog(editState.title, editState,
                 onSuggestions = { onSuggestions(editState.suggestions) },
                 onClick = { newState ->
                     if (newState != null) {
-                        action.value = UpdateField(newState)
+                        scope.launch {
+                            action.emit(UpdateField(newState))
+                        }
                     }
                     onClose()
                 })
@@ -225,7 +228,9 @@ fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<
         is IntentField.Component -> {
             ComponentEditDialog(editState, onClose = { newComponent ->
                 if (newComponent != null) {
-                    action.value = UpdateField(IntentField.Component(newComponent))
+                    scope.launch {
+                        action.emit(UpdateField(IntentField.Component(newComponent)))
+                    }
                 }
                 onClose()
             })
@@ -233,7 +238,9 @@ fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<
         is IntentField.Extras -> {
             ExtraEditDialog(editState, onClose = { newBundle ->
                 if (newBundle != null) {
-                    action.value = UpdateField(IntentField.Extras(newBundle))
+                    scope.launch {
+                        action.emit(UpdateField(IntentField.Extras(newBundle)))
+                    }
                 }
                 onClose()
             })
@@ -244,7 +251,9 @@ fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<
                     flagsText, IntentFlags, flagsState
             )
             CheckBoxScreen(stateValue, onDismissRequest = {
-                action.value = UpdateField(IntentField.Flags(flagNamesToInt(flagsState)))
+                scope.launch {
+                    action.emit(UpdateField(IntentField.Flags(flagNamesToInt(flagsState))))
+                }
                 onClose()
             })
         }
@@ -254,7 +263,9 @@ fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<
                     categoriesText, IntentCategories, categoriesState
             )
             CheckBoxScreen(stateValue, onDismissRequest = {
-                action.value = UpdateField(IntentField.Categories(categoriesState.mapNotNull { IntentCategories[it] }.toSet()))
+                scope.launch {
+                    action.emit(UpdateField(IntentField.Categories(categoriesState.mapNotNull { IntentCategories[it] }.toSet())))
+                }
                 onClose()
             })
         }
@@ -265,15 +276,16 @@ fun EditSection(intent: Intent, editState: IntentField, action: SingleLiveEvent<
 
 @Composable
 fun IntentEditScreen(
-        intent: LiveData<Intent>,
-        action: SingleLiveEvent<UiAction>,
+        intent: Flow<Intent>,
+        action: MutableSharedFlow<UiAction>,
         addBackPressHandler: Boolean = false,
         initialEditValue: IntentField = IntentField.None,
 ) {
-    val intentState = intent.observeAsState(Intent())
+    val intentState = intent.collectAsState(initial = Intent())
     var editState by remember { mutableStateOf(initialEditValue) }
     val editVisible: Boolean = editState !is IntentField.None
     var suggestionsState by remember { mutableStateOf(IntentField.Suggestions.None) }
+    val scope = rememberCoroutineScope()
 
     if (addBackPressHandler) {
         BackPressHandler(
@@ -310,8 +322,8 @@ fun IntentEditScreen(
                     ) {
                         Box {
                             IntentDetailsView(intentState.value, modifier = Modifier
-                                    .padding(16.dp)
-                                    .fillMaxSize()) {
+                                .padding(16.dp)
+                                .fillMaxSize()) {
                                 editState = it
                             }
                             OverlayScrim(
@@ -331,7 +343,9 @@ fun IntentEditScreen(
                                         items = IntentActions
                                 ),
                         ) { _, value ->
-                            action.value = UpdateField(IntentField.Action(value, ""))
+                            scope.launch {
+                                action.emit(UpdateField(IntentField.Action(value, "")))
+                            }
                             suggestionsState = IntentField.Suggestions.None
                         }
                     }
@@ -342,7 +356,9 @@ fun IntentEditScreen(
                                         items = MediaTypes
                                 ),
                         ) { _, value ->
-                            action.value = UpdateField(IntentField.MimeType(value, ""))
+                            scope.launch {
+                                action.emit(UpdateField(IntentField.MimeType(value, "")))
+                            }
                             suggestionsState = IntentField.Suggestions.None
                         }
                     }
@@ -360,7 +376,7 @@ fun IntentEditScreen(
 fun PreviewIntentEdit() {
     CarWidgetTheme(darkTheme = false) {
         Surface {
-            IntentEditScreen(intent = MutableLiveData(Intent(Intent.ACTION_ANSWER)), action = SingleLiveEvent())
+            IntentEditScreen(intent = flowOf(Intent(Intent.ACTION_ANSWER)), action = MutableSharedFlow())
         }
     }
 }
@@ -370,7 +386,7 @@ fun PreviewIntentEdit() {
 fun PreviewIntentEditDark() {
     CarWidgetTheme(darkTheme = true) {
         Surface {
-            IntentEditScreen(intent = MutableLiveData(Intent(Intent.ACTION_ANSWER)), action = SingleLiveEvent())
+            IntentEditScreen(intent = flowOf(Intent(Intent.ACTION_ANSWER)), action = MutableSharedFlow())
         }
     }
 }
@@ -381,8 +397,8 @@ fun PreviewIntentSimpleEdit() {
     CarWidgetTheme(darkTheme = false) {
         Surface {
             IntentEditScreen(
-                    intent = MutableLiveData(Intent(Intent.ACTION_ANSWER)),
-                    action = SingleLiveEvent(),
+                    intent = flowOf(Intent(Intent.ACTION_ANSWER)),
+                    action = MutableSharedFlow(),
                     initialEditValue = IntentField.Action(Intent.ACTION_ANSWER, "Action")
             )
         }
@@ -395,8 +411,8 @@ fun PreviewIntentCheckboxEdit() {
     CarWidgetTheme(darkTheme = false) {
         Surface {
             IntentEditScreen(
-                    intent = MutableLiveData(Intent(Intent.ACTION_ANSWER)),
-                    action = SingleLiveEvent(),
+                    intent = flowOf(Intent(Intent.ACTION_ANSWER)),
+                    action = MutableSharedFlow(),
                     initialEditValue = IntentField.Categories(setOf())
             )
         }

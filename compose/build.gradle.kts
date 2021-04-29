@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    // AppLog, Bundle extensions
     implementation(project(":lib:framework"))
 
     implementation("androidx.compose.ui:ui:1.0.0-beta05")
@@ -48,13 +49,10 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.0.0-beta05")
     // Tooling support (Previews, etc.)
     implementation("androidx.ui:ui-tooling:1.0.0-alpha07")
-    // Integration with observables
-    implementation("androidx.compose.runtime:runtime-livedata:1.0.0-beta05")
     // Integration with activities
     implementation("androidx.activity:activity-compose:1.3.0-alpha07")
 
     implementation("androidx.appcompat:appcompat:1.3.0-rc01")
     implementation("androidx.activity:activity-ktx:1.2.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
 }

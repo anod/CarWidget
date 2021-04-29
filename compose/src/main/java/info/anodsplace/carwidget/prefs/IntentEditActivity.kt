@@ -7,12 +7,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.lifecycle.lifecycleScope
 import info.anodsplace.carwidget.compose.LocalBackPressedDispatcher
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.compose.UiAction
 import info.anodsplace.carwidget.compose.intent.IntentEditScreen
 import info.anodsplace.carwidget.compose.intent.UpdateField
 import info.anodsplace.framework.AppLog
+import kotlinx.coroutines.flow.collect
 
 class IntentEditActivity : AppCompatActivity() {
 
@@ -47,17 +49,19 @@ class IntentEditActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.action.observe(this, {
-            when (it) {
-                is UiAction.OnBackNav -> finish()
-                is UpdateField -> {
-                    viewModel.updateField(it.field)
-                }
-                is UiAction.IntentEditAction -> {
+        lifecycleScope.launchWhenResumed {
+            viewModel.action.collect {
+                when (it) {
+                    is UiAction.OnBackNav -> finish()
+                    is UpdateField -> {
+                        viewModel.updateField(it.field)
+                    }
+                    is UiAction.IntentEditAction -> {
 
+                    }
                 }
             }
-        })
+        }
     }
 
 }

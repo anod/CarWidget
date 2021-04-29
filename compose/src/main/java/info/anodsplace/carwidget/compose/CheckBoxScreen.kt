@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.prefs.IntentCategories
 import info.anodsplace.carwidget.prefs.IntentFlags
-import info.anodsplace.framework.livedata.SingleLiveEvent
 import androidx.compose.material.Text
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 class CheckBoxScreenState(
         val title: String,
@@ -96,7 +96,7 @@ fun CheckBoxScreenPreview() {
     )
     CarWidgetTheme(darkTheme = false) {
         Scaffold(
-                topBar = { CarWidgetToolbar(SingleLiveEvent()) },
+                topBar = { CarWidgetToolbar(MutableSharedFlow()) },
                 backgroundColor = MaterialTheme.colors.background,
                 content = {
                     Box(contentAlignment = Alignment.Center) {
@@ -115,7 +115,7 @@ fun CheckBoxScreenPreviewDark() {
     )
     CarWidgetTheme(darkTheme = true) {
         Scaffold(
-                topBar = { CarWidgetToolbar(SingleLiveEvent()) },
+                topBar = { CarWidgetToolbar(MutableSharedFlow()) },
                 backgroundColor = MaterialTheme.colors.background,
                 content = {
                     Box(contentAlignment = Alignment.Center) {

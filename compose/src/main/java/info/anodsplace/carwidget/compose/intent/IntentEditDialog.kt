@@ -44,7 +44,7 @@ fun EditDialog(confirmText: String, onClose: (Boolean) -> Unit, content: @Compos
 @Composable
 fun ExtraKeyValue(initialKey: String, value: Any?, onValueChange: (String, String, Any?) -> Unit) {
     val (newExtra, setNewExtra) = remember { mutableStateOf(Pair(initialKey, value ?: "")) }
-    val enabled by mutableStateOf(value?.isScalar == true)
+    val enabled by remember { mutableStateOf(value?.isScalar == true) }
 
     Row {
         OutlinedTextField(
@@ -173,28 +173,28 @@ fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: Co
 
 @Composable
 fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialValid: Boolean = true, onSuggestions: () -> Unit, onClick: (IntentField.StringValue?) -> Unit) {
-    val field = mutableStateOf(initial)
+    var field by remember { mutableStateOf(initial) }
     EditDialog(
             confirmText = stringResource(id = R.string.save),
-            onClose = { apply -> onClick(if (apply) field.value else null) }
+            onClose = { apply -> onClick(if (apply) field else null) }
     ) {
-        val isValid = field.value.isValid.collectAsState(initial = initialValid)
-        val isEmpty = field.value.value.isNullOrEmpty()
+        val isValid = field.isValid.collectAsState(initial = initialValid)
+        val isEmpty = field.value.isNullOrEmpty()
         Box {
             OutlinedTextField(
                     colors = TextFieldDefaults.outlinedTextFieldColors( textColor = MaterialTheme.colors.onSurface),
                     modifier = Modifier.fillMaxWidth().padding(end = 48.dp),
-                    value = field.value.value ?: "",
+                    value = field.value ?: "",
                     onValueChange = { value ->
-                        if (value != field.value.value) {
-                            field.value = field.value.copy(value = value)
+                        if (value != field.value) {
+                            field = field.copy(value = value)
                         }
                     },
                     label = {
                         Text(text = title, style = MaterialTheme.typography.subtitle1)
                     },
                     placeholder = {
-                        if (field.value.value.isNullOrEmpty()) {
+                        if (field.value.isNullOrEmpty()) {
                             Text(text = stringResource(id = R.string.none), style = MaterialTheme.typography.subtitle1)
                         }
                     },

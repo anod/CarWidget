@@ -3,16 +3,16 @@ package info.anodsplace.carwidget.prefs
 import android.app.Application
 import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import info.anodsplace.carwidget.compose.UiAction
-import info.anodsplace.framework.livedata.SingleLiveEvent
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class IntentEditViewModel(application: Application): AndroidViewModel(application) {
-    val intent = MutableLiveData(Intent())
-    val action = SingleLiveEvent<UiAction>()
+    val intent = MutableStateFlow(Intent())
+    val action = MutableSharedFlow<UiAction>()
 
     fun updateField(field: IntentField) {
-        val current = intent.value!!
+        val current = intent.value
         when (field) {
             is IntentField.Action -> {
                 current.action = field.value

@@ -35,8 +35,6 @@ open class ColorPickerDialog : DialogFragment(), OnColorSelectedListener {
     var selectedColor: Int = 0
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val activity = activity
-
         val size = requireArguments().getInt(KEY_SIZE)
         val columns = requireArguments().getInt(KEY_COLUMNS)
         val colors = requireArguments().getIntArray(KEY_COLORS)

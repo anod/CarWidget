@@ -125,7 +125,7 @@ class ShortcutsDatabase(private val context: Context) {
     fun loadShortcut(shortcutId: Long): Shortcut? {
         val selection = BaseColumns._ID + "=?"
         val selectionArgs = arrayOf(shortcutId.toString())
-        var info: Shortcut? = null
+        var info: Shortcut?
         val cursor = contentResolver.query(
                 LauncherSettings.Favorites.getContentUri(context.packageName), null,
                         selection, selectionArgs, null) ?: return null

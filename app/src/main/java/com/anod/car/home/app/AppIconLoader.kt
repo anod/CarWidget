@@ -52,7 +52,7 @@ class AppIconLoader(context: Context) {
                 }
 
             }
-            icon = UtilitiesBitmap.createSystemIconBitmap(d!!, context)
+            icon = UtilitiesBitmap.createSystemIconBitmap(d, context)
             return Result(icon, DISK)
         }
 

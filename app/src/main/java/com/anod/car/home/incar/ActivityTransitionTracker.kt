@@ -54,4 +54,4 @@ private fun activityTransitionOf(type: Int, transition: Int) =
         ActivityTransition.Builder()
                 .setActivityTransition(transition)
                 .setActivityType(type)
-                .build()!!
+                .build()
