@@ -19,8 +19,8 @@ dependencies {
 
     implementation("com.squareup.picasso:picasso:2.71828")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3")
 
     // Activity recognition
     implementation("com.google.android.gms:play-services-location:18.0.0")
@@ -28,23 +28,23 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.activity:activity:1.2.1")
-    implementation("androidx.fragment:fragment:1.3.1")
-    implementation("androidx.fragment:fragment-ktx:1.3.1")
+    implementation("androidx.activity:activity:1.2.2")
+    implementation("androidx.fragment:fragment:1.3.3")
+    implementation("androidx.fragment:fragment-ktx:1.3.3")
     implementation("androidx.collection:collection-ktx:1.1.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
     implementation("androidx.sqlite:sqlite-ktx:2.1.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.3.0")
-    kapt("androidx.lifecycle:lifecycle-compiler:2.3.0")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.3.1")
+    kapt("androidx.lifecycle:lifecycle-compiler:2.3.1")
 
     implementation("ch.acra:acra-core:5.7.0")
     implementation("ch.acra:acra-notification:5.7.0")
     implementation("ch.acra:acra-limiter:5.7.0")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.30")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
 }
 
@@ -58,8 +58,8 @@ android {
     defaultConfig {
         minSdkVersion(29)
         targetSdkVersion(30) // 29 wifi switch not working
-        versionCode = 21600
-        versionName = "2.1.6"
+        versionCode = 22000
+        versionName = "2.2.0"
         vectorDrawables.generatedDensities("hdpi", "xxhdpi")
     }
 

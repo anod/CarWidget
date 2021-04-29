@@ -37,6 +37,7 @@ import info.anodsplace.framework.app.DialogCustom
 import info.anodsplace.framework.app.applicationContext
 import info.anodsplace.framework.content.CreateDocument
 import info.anodsplace.framework.content.startActivitySafely
+import java.util.*
 
 class AboutFragment : Fragment() {
     private lateinit var createDocumentLauncherWidget: ActivityResultLauncher<CreateDocument.Args>
@@ -116,8 +117,7 @@ class AboutFragment : Fragment() {
         binding.buttonMusicApp.text = musicAppText
 
         binding.buttonVersion.setOnClickListener {
-            val url = DETAIL_MARKET_URL
-            val uri = Uri.parse(String.format(url, requireContext().packageName))
+            val uri = Uri.parse(DETAIL_MARKET_URL.format(requireContext().packageName))
             val intent = Intent(Intent.ACTION_VIEW, uri)
             requireContext().startActivitySafely(intent)
         }
@@ -234,7 +234,6 @@ class AboutFragment : Fragment() {
     }
 
     private fun renderVersion(): String {
-        val versionText = getString(R.string.version_title)
         val appName = getString(R.string.app_name)
         var versionName = ""
         try {
@@ -244,7 +243,7 @@ class AboutFragment : Fragment() {
             AppLog.e(e)
         }
 
-        return String.format(versionText, appName, versionName)
+        return getString(R.string.version_title, appName, versionName)
     }
 
     companion object {
