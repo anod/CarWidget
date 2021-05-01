@@ -54,6 +54,6 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.2.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
 
-    debugImplementation("androidx.compose.ui:ui-tooling:1.0.0-beta05")
-    debugImplementation("org.jetbrains.kotlin:kotlin-reflect:1.4.30")
+    implementation("androidx.compose.ui:ui-tooling:1.0.0-beta05")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.30")
 }
