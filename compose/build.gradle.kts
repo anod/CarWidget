@@ -21,8 +21,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
@@ -48,12 +48,13 @@ dependencies {
     // Material design icons
     implementation("androidx.compose.material:material-icons-core:1.0.0-beta05")
     implementation("androidx.compose.material:material-icons-extended:1.0.0-beta05")
-    // Tooling support (Previews, etc.)
-    implementation("androidx.ui:ui-tooling:1.0.0-alpha07")
     // Integration with activities
     implementation("androidx.activity:activity-compose:1.3.0-alpha07")
 
     implementation("androidx.appcompat:appcompat:1.3.0-rc01")
     implementation("androidx.activity:activity-ktx:1.2.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
+
+    debugImplementation("androidx.compose.ui:ui-tooling:1.0.0-beta05")
+    debugImplementation("org.jetbrains.kotlin:kotlin-reflect:1.4.32")
 }
