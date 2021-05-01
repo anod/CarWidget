@@ -6,7 +6,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
-import android.net.wifi.WifiManager
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
@@ -42,22 +41,12 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
         if (prefs.isEnableBluetooth) {
             enableBluetooth()
         }
-        if (prefs.disableWifi != InCarInterface.WIFI_NOACTION) {
-            disableWifi(context)
-        }
         if (prefs.isActivateCarMode) {
             activateCarMode(context)
         }
 
         if (prefs.isSamsungDrivingMode) {
             SamsungDrivingMode.enable(context)
-        }
-
-        if (WifiApControl.isSupported && prefs.isHotspotOn) {
-            if (prefs.disableWifi == InCarInterface.WIFI_NOACTION) {
-                disableWifi(context)
-            }
-            switchHotspot(context, true)
         }
 
         if (prefs.screenOrientation != ScreenOrientation.DISABLED) {
@@ -87,12 +76,6 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
         }
         if (prefs.isActivateCarMode) {
             deactivateCarMode(context)
-        }
-        if (WifiApControl.isSupported && prefs.isHotspotOn) {
-            switchHotspot(context, false)
-        }
-        if (prefs.disableWifi == InCarInterface.WIFI_TURNOFF) {
-            restoreWiFi(context)
         }
         if (prefs.isSamsungDrivingMode) {
             SamsungDrivingMode.disable(context)
@@ -135,21 +118,6 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
         private fun deactivateCarMode(context: Context) {
             val ui = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
             ui.disableCarMode(0)
-        }
-
-        private fun disableWifi(context: Context) {
-            val wm = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-            sCurrentWiFiState = wm.wifiState
-            if (sCurrentWiFiState != WifiManager.WIFI_STATE_DISABLED) {
-                wm.isWifiEnabled = false
-            }
-        }
-
-        private fun restoreWiFi(context: Context) {
-            val wm = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-            if (sCurrentWiFiState == WifiManager.WIFI_STATE_ENABLED) {
-                wm.isWifiEnabled = true
-            }
         }
 
         private fun enableBluetooth() {
@@ -276,17 +244,6 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
             val bt = newBrightLevel.toFloat() / BRIGHTNESS_MAX
             intent.putExtra(ChangeBrightnessActivity.EXTRA_BRIGHT_LEVEL, bt)
             context.startActivity(intent)
-        }
-
-        /**
-         * Turn on or off Hotspot.
-         *
-         */
-        private fun switchHotspot(context: Context, isTurnToOn: Boolean) {
-            val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-            val apControl = WifiApControl(wifiManager)
-            AppLog.i("is WiFi AP enabled: " + apControl.isEnabled)
-            apControl.isEnabled = isTurnToOn
         }
     }
 }

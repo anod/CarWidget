@@ -101,10 +101,6 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
         get() = prefs.getBoolean(CAR_DOCK_REQUIRED, false)
         set(carDockRequired) = putChange(CAR_DOCK_REQUIRED, carDockRequired)
 
-    override var disableWifi: String
-        get() = prefs.getString(ADJUST_WIFI, InCarInterface.WIFI_NOACTION)!!
-        set(disableWifi) = putChange(ADJUST_WIFI, disableWifi)
-
     override var isActivateCarMode: Boolean
         get() = prefs.getBoolean(ACTIVATE_CAR_MODE, false)
         set(activate) = putChange(ACTIVATE_CAR_MODE, activate)
@@ -138,11 +134,6 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
             return Integer.parseInt(orientation!!)
         }
         set(screenOrientation) = putChange(SCREEN_ORIENTATION, screenOrientation.toString())
-
-
-    override var isHotspotOn: Boolean
-        get() = prefs.getBoolean(HOTSPOT, false)
-        set(on) = putChange(HOTSPOT, on)
 
     override var screenOnAlert: ScreenOnAlert.Settings
         get() = ScreenOnAlert.Settings(
@@ -184,7 +175,6 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
         writer.name(CALL_VOLUME_LEVEL).value(callVolumeLevel.toLong())
         writer.name(AUTO_SPEAKER).value(isAutoSpeaker)
         writer.name(AUTO_ANSWER).value(autoAnswer)
-        writer.name(ADJUST_WIFI).value(disableWifi)
         writer.name(ACTIVATE_CAR_MODE).value(isActivateCarMode)
         val autoRunAppString = prefs.getString(AUTORUN_APP, null)
         if (autoRunAppString != null) {
@@ -195,7 +185,6 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
         }
         val screenOrientation = prefs.getString(SCREEN_ORIENTATION, ScreenOrientation.DISABLED.toString())
         writer.name(SCREEN_ORIENTATION).value(screenOrientation)
-        writer.name(HOTSPOT).value(isHotspotOn)
         val screenOnAlert = screenOnAlert
         writer.name("screen-on-alert").also { alert ->
             alert.beginObject()
@@ -237,12 +226,10 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
         types.put(CALL_VOLUME_LEVEL, JsonToken.NUMBER)
         types.put(AUTO_SPEAKER, JsonToken.BOOLEAN)
         types.put(AUTO_ANSWER, JsonToken.STRING)
-        types.put(ADJUST_WIFI, JsonToken.STRING)
         types.put(ACTIVATE_CAR_MODE, JsonToken.BOOLEAN)
         types.put(AUTORUN_APP, JsonToken.STRING)
         types.put(SAMSUNG_DRIVING_MODE, JsonToken.BOOLEAN)
         types.put(SCREEN_ORIENTATION, JsonToken.STRING)
-        types.put(HOTSPOT, JsonToken.BOOLEAN)
 
         reader.beginObject()
         val found = JsonReaderHelper.readValues(reader, types, this) { name, r ->
@@ -298,7 +285,6 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
         const val MEDIA_VOLUME_LEVEL = "volume-level"
         const val AUTO_SPEAKER = "auto_speaker"
         const val AUTO_ANSWER = "auto_answer"
-        const val ADJUST_WIFI = "wi-fi"
         const val ACTIVATE_CAR_MODE = "activate-car-mode"
         const val AUTORUN_APP = "autorun-app"
         const val CALL_VOLUME_LEVEL = "call-volume-level"
@@ -306,6 +292,5 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
         const val SAMSUNG_DRIVING_MODE = "sam_driving_mode"
         const val SCREEN_ORIENTATION = "screen-orientation"
         const val CAR_DOCK_REQUIRED = "car-dock"
-        const val HOTSPOT = "hotspot"
     }
 }

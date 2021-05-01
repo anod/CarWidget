@@ -72,11 +72,7 @@ class CarWidgetApplication : Application(), ApplicationInstance {
     }
 
     private fun initCrashReporter() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            initCrashReporter24()
-        } else {
-            ACRA.init(this)
-        }
+        initCrashReporter24()
     }
 
     @TargetApi(Build.VERSION_CODES.N)
@@ -98,6 +94,7 @@ class CarWidgetApplication : Application(), ApplicationInstance {
 
     override fun onCreate() {
         super.onCreate()
+        AppLog.tag = "CarWidget"
         AppLog.setDebug(BuildConfig.DEBUG, "CarWidget")
 
         AppCompatDelegate.setDefaultNightMode(nightMode)
@@ -106,6 +103,6 @@ class CarWidgetApplication : Application(), ApplicationInstance {
 
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
-        AppLog.w("Level: $level")
+        AppLog.w("Level: $level", tag = "onTrimMemory")
     }
 }

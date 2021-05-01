@@ -31,13 +31,13 @@ open class Provider : AppWidgetProvider() {
      */
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         super.onDeleted(context, appWidgetIds)
-        AppLog.e("CarWidget", "onDeleted: ${appWidgetIds.joinToString(",")}")
+        AppLog.i("appWidgetIds: ${appWidgetIds.joinToString(",")}", tag = "onDeleted")
         // Drop the settings if the widget is deleted
         WidgetStorage.dropWidgetSettings(context, appWidgetIds)
     }
 
     override fun onDisabled(context: Context) {
-        AppLog.e("CarWidget", "onDisabled")
+        AppLog.i( "", tag = "onDisabled")
         val updateIntent = Intent(context, UpdateWidgetJob::class.java)
         context.stopService(updateIntent)
 
@@ -53,7 +53,7 @@ open class Provider : AppWidgetProvider() {
     override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager,
                                            appWidgetId: Int, newOptions: Bundle) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
-        AppLog.e("CarWidget", "onAppWidgetOptionsChanged: ${appWidgetId}")
+        AppLog.i("appWidgetId: $appWidgetId", tag ="onAppWidgetOptionsChanged")
         val maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, -1)
 
         val myOptions = appWidgetManager.getAppWidgetOptions(appWidgetId)
@@ -69,7 +69,7 @@ open class Provider : AppWidgetProvider() {
     companion object {
 
         fun requestUpdate(context: Context, appWidgetIds: IntArray) {
-            AppLog.e("requestUpdate: ${appWidgetIds.joinToString(",")}")
+            AppLog.i("appWidgetIds: ${appWidgetIds.joinToString(",")}", tag = "requestUpdate")
             if (appWidgetIds.isEmpty()) {
                 val appWidgetManager = App.provide(context).appWidgetManager
                 val thisAppWidget = getComponentName(context)
@@ -82,10 +82,10 @@ open class Provider : AppWidgetProvider() {
 
         private fun enqueue(appWidgetIds: IntArray, context: Context) {
             if (appWidgetIds.isEmpty()) {
-                AppLog.w("appWidgetIds is empty, skipp[ing update")
+                AppLog.w("appWidgetIds is empty, skipp[ing update", tag = "enqueue")
                 return
             }
-            AppLog.e("enqueue: ${appWidgetIds.joinToString(",")}")
+            AppLog.i("appWidgetIds: ${appWidgetIds.joinToString(",")}", tag = "enqueue")
             UpdateWidgetJob.enqueue(context, appWidgetIds)
         }
 

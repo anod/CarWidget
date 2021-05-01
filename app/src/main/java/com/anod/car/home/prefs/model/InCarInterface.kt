@@ -25,14 +25,12 @@ interface InCarInterface {
     var isEnableBluetooth: Boolean
     var brightness: String
     var isCarDockRequired: Boolean
-    var disableWifi: String
     var isActivateCarMode: Boolean
     var autoAnswer: String
     var autorunApp: ComponentName?
     var isSamsungDrivingMode: Boolean
     var isDisableScreenTimeoutCharging: Boolean
     var screenOrientation: Int
-    var isHotspotOn: Boolean
     var screenOnAlert: ScreenOnAlert.Settings
 
     companion object {
@@ -43,9 +41,6 @@ interface InCarInterface {
         const val AUTOANSWER_DISABLED = "disabled"
         const val AUTOANSWER_IMMEDIATLY = "immediately"
         const val AUTOANSWER_DELAY_5 = "delay-5"
-        const val WIFI_NOACTION = "no_action"
-        const val WIFI_TURNOFF = "turn_off_wifi"
-        const val WIFI_DISABLE = "disable_wifi"
         const val DEFAULT_VOLUME_LEVEL = 80
     }
 }

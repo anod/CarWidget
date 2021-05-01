@@ -6,18 +6,6 @@
     <PreferenceCategory
         android:key="incar-more-category"
         android:title="@string/pref_actions">
-        <ListPreference
-            android:defaultValue="no_action"
-            android:entries="@array/wifi_action_titles"
-            android:entryValues="@array/wifi_action_values"
-            android:key="wi-fi"
-            android:summary="@string/pref_wifi_summary"
-            android:title="@string/pref_wifi" />
-
-        <CheckBoxPreference
-            android:key="hotspot"
-            android:summary="@string/pref_hotspot_summary"
-            android:title="@string/pref_hotspot_title" />
 
         <CheckBoxPreference
             android:key="activate-car-mode"
