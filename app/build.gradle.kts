@@ -49,15 +49,15 @@ dependencies {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
 
     buildFeatures {
         viewBinding = true
     }
 
     defaultConfig {
-        minSdkVersion(29)
-        targetSdkVersion(30) // 29 wifi switch not working
+        minSdk = 29
+        targetSdk = 30 // 29 wifi switch not working
         versionCode = 22000
         versionName = "2.2.0"
         vectorDrawables.generatedDensities("hdpi", "xxhdpi")
@@ -78,12 +78,10 @@ android {
     buildTypes {
         getByName("debug") {
             isMinifyEnabled = false
-            isShrinkResources = false
             applicationIdSuffix = ".debug"
         }
         getByName("release") {
             isMinifyEnabled = true
-            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
