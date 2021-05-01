@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.prefs.IntentField
@@ -23,6 +22,7 @@ import info.anodsplace.framework.util.putAny
 import java.util.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun EditDialog(confirmText: String, onClose: (Boolean) -> Unit, content: @Composable () -> Unit) {

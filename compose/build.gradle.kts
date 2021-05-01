@@ -31,7 +31,6 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion = "1.4.32"
         kotlinCompilerExtensionVersion = "1.0.0-beta01"
     }
 }
@@ -56,5 +55,5 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
 
     debugImplementation("androidx.compose.ui:ui-tooling:1.0.0-beta05")
-    debugImplementation("org.jetbrains.kotlin:kotlin-reflect:1.4.32")
+    debugImplementation("org.jetbrains.kotlin:kotlin-reflect:1.4.30")
 }

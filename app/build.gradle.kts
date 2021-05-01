@@ -2,7 +2,6 @@ repositories {
     mavenCentral()
     maven(url = "https://jitpack.io" )
     maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
-    jcenter()
     google()
 }
 
@@ -17,7 +16,7 @@ dependencies {
     implementation(project(":lib:framework"))
     implementation(project(":lib:colorpicker"))
 
-    implementation("com.squareup.picasso:picasso:2.71828")
+    implementation("com.squareup.picasso:picasso:2.8")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3")
@@ -106,7 +105,7 @@ android {
     }
 
     kotlinOptions {
-        // jvmTarget = "1.8"
+        jvmTarget = "11"
         useIR = true
     }
 
