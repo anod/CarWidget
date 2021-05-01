@@ -31,7 +31,6 @@ class AppIconLoader(context: Context) {
         @Throws(IOException::class)
         override fun load(request: Request, networkPolicy: Int): Result? {
             var d: Drawable? = null
-            val icon: Bitmap
 
             val part = request.uri.schemeSpecificPart
             AppLog.d("Get Activity Info: $part")
@@ -52,7 +51,7 @@ class AppIconLoader(context: Context) {
                 }
 
             }
-            icon = UtilitiesBitmap.createSystemIconBitmap(d, context)
+            val icon: Bitmap = UtilitiesBitmap.createSystemIconBitmap(d, context)
             return Result(icon, DISK)
         }
 

@@ -13,7 +13,7 @@ class BBBProperties : BaseProperties() {
     override val inCarButtonEnterRes: Int
         get() = R.drawable.ic_incar_enter_bbb
 
-    override val iconProcessor: IconProcessor?
+    override val iconProcessor: IconProcessor
         get() = BBBIconProcessor()
 
     override val setShortcutRes: Int

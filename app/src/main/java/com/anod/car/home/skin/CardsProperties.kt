@@ -24,7 +24,7 @@ class CardsProperties : BaseProperties() {
     override val iconPaddingRes: Int
         get() = 0
 
-    override val backgroundProcessor: BackgroundProcessor?
+    override val backgroundProcessor: BackgroundProcessor
         get() = CardsBackgroundProcessor()
 
     override fun getLayout(number: Int): Int {

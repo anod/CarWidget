@@ -159,7 +159,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
 
         initSwitch()
 
-        viewModel.devices.observe(this, Observer {
+        viewModel.devices.observe(this, {
             listAdapter.clear()
             listAdapter.addAll(it)
         })

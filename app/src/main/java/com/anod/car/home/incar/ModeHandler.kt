@@ -97,7 +97,6 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
         private const val BRIGHTNESS_DAY = BRIGHTNESS_MAX
 
         private var sCurrentBtState: Int = 0
-        private var sCurrentWiFiState: Int = 0
         private var sCurrentMediaVolume = VOLUME_NOT_SET
         private var sCurrentCallVolume = VOLUME_NOT_SET
         private var sCurrentBrightness: Int = 0

@@ -38,15 +38,6 @@ object TrialDialogs {
         }.create()
     }
 
-    fun buildProOnlyDialog(context: Context): Dialog = DialogMessage(
-            context,
-            App.theme(context).alert,
-            R.string.app_name,
-            R.string.dialog_donate_message_expired
-    ) {
-        setTrialDialogButtons(context, it, R.string.dialog_donate_btn_no)
-    }.create()
-
     private fun setTrialDialogButtons(context: Context, builder: AlertDialog.Builder,
                                       negativeRes: Int) {
         builder.setNeutralButton(R.string.dialog_donate_btn_yes) { dialog, _ ->

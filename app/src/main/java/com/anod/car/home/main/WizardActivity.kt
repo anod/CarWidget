@@ -112,7 +112,7 @@ class WizardActivity : CarWidgetActivity() {
 
     class ScreenSlidePageFragment: Fragment() {
 
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
             val pos = arguments?.getInt("position", 0) ?: 0
             val layoutId = sFragments[pos]
             val rootView = inflater.inflate(layoutId, container, false) as ViewGroup

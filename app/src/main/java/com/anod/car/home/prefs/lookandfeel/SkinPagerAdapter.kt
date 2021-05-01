@@ -21,7 +21,7 @@ class SkinPagerAdapter(private val activity: LookAndFeelActivity, private val co
         return SkinPreviewFragment.newInstance(position)
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
+    override fun getPageTitle(position: Int): CharSequence {
         return activity.getSkinItem(position).title
     }
 

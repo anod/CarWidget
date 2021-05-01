@@ -3,14 +3,12 @@ package com.anod.car.home.app
 import android.app.ActivityManager
 import android.content.ComponentName
 import android.content.Context
-import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.anod.car.home.BuildConfig
-import com.anod.car.home.R
 import com.anod.car.home.databinding.ListFooterMusicAppChoiceBinding
 import com.anod.car.home.model.AppsList
 import com.anod.car.home.utils.MusicUtils
@@ -23,7 +21,7 @@ class MusicAppChoiceActivity : MusicAppsActivity() {
 
     private lateinit var binding: ListFooterMusicAppChoiceBinding
 
-    override fun inflateFooterView(layoutInflater: LayoutInflater, parent: ViewGroup): View? {
+    override fun inflateFooterView(layoutInflater: LayoutInflater, parent: ViewGroup): View {
        binding = ListFooterMusicAppChoiceBinding.inflate(layoutInflater, parent, false)
        return binding.root
     }

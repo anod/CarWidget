@@ -33,7 +33,7 @@ class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
         viewModel.loadList()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentWidgetsListBinding.inflate(inflater, container, false)
         return binding.root
     }

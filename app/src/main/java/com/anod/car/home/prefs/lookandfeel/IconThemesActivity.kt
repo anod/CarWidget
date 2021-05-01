@@ -38,7 +38,7 @@ class IconThemesActivity : AppsCacheActivity() {
     private var themePackageName = ""
     private var refresh = false
 
-    override fun inflateFooterView(layoutInflater: LayoutInflater, parent: ViewGroup): View? {
+    override fun inflateFooterView(layoutInflater: LayoutInflater, parent: ViewGroup): View {
         val binding = ListFooterIconThemesBinding.inflate(layoutInflater, parent, false)
         return binding.root
     }

@@ -45,13 +45,11 @@ object ShortcutInfoUtils {
 
     private fun infoFromShortcutIntent(context: Context, data: Intent): ShortcutWithIcon {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Use fully supported EXTRA_SHORTCUT_INTENT when available
-            if (!data.hasExtra(Intent.EXTRA_SHORTCUT_INTENT) && data.hasExtra(LauncherApps.EXTRA_PIN_ITEM_REQUEST)) {
-                val item = data.getParcelableExtra<LauncherApps.PinItemRequest>(LauncherApps.EXTRA_PIN_ITEM_REQUEST)
-                        ?: return ShortcutWithIcon(failedAppShortcut, null, null)
-                return shortcutFromPinItemRequest(item, context)
-            }
+        // Use fully supported EXTRA_SHORTCUT_INTENT when available
+        if (!data.hasExtra(Intent.EXTRA_SHORTCUT_INTENT) && data.hasExtra(LauncherApps.EXTRA_PIN_ITEM_REQUEST)) {
+            val item = data.getParcelableExtra<LauncherApps.PinItemRequest>(LauncherApps.EXTRA_PIN_ITEM_REQUEST)
+                    ?: return ShortcutWithIcon(failedAppShortcut, null, null)
+            return shortcutFromPinItemRequest(item, context)
         }
 
         val intent = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT) ?: Intent()

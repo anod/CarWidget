@@ -131,7 +131,7 @@ class ModeService : Service() {
             get() = this@ModeService
     }
 
-    override fun onBind(arg0: Intent): IBinder? {
+    override fun onBind(arg0: Intent): IBinder {
         return binder
     }
 

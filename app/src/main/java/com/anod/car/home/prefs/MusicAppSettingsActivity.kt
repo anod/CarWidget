@@ -27,7 +27,7 @@ class MusicAppSettingsActivity : MusicAppsActivity() {
     override val isShowTitle: Boolean
         get() = true
 
-    override fun inflateFooterView(layoutInflater: LayoutInflater, parent: ViewGroup): View? {
+    override fun inflateFooterView(layoutInflater: LayoutInflater, parent: ViewGroup): View {
         val binding = ListFooterMusicAppSettingsBinding.inflate(layoutInflater, parent, false)
         return binding.root
     }

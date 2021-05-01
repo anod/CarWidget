@@ -21,7 +21,7 @@ class MetroProperties : BaseProperties() {
     override val rowLayout: Int
         get() = R.layout.sk_windows7_row
 
-    override val backgroundProcessor: BackgroundProcessor?
+    override val backgroundProcessor: BackgroundProcessor
         get() = MetroBackgroundProcessor()
 
     override fun getLayout(number: Int): Int {

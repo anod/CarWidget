@@ -15,7 +15,7 @@ import com.anod.car.home.R
 import com.anod.car.home.prefs.views.drag.ShortcutDragListener
 import com.anod.car.home.prefs.views.drag.ShortcutShadowBuilder
 
-class ShortcutPreference : Preference, OnClickListener {
+class ShortcutPreference @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : Preference(context, attrs), OnClickListener {
 
     var appTheme: Int = 0
     var iconBitmap: Bitmap? = null
@@ -35,18 +35,6 @@ class ShortcutPreference : Preference, OnClickListener {
     interface DropCallback {
         fun onScrollRequest(top: Int): Int
         fun onDrop(oldCellId: Int, newCellId: Int): Boolean
-    }
-
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
-        layoutResource = R.layout.pref_shortcut
-    }
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        layoutResource = R.layout.pref_shortcut
-    }
-
-    constructor(context: Context) : super(context) {
-        layoutResource = R.layout.pref_shortcut
     }
 
     fun requestLayout() {
@@ -90,13 +78,7 @@ class ShortcutPreference : Preference, OnClickListener {
     private fun initDragButton(dragButton: ImageView, mainView: View) {
         dragButton.setOnLongClickListener {
             val data = ClipData.newPlainText(shortcutPosition.toString() + "", shortcutPosition.toString() + "")
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mainView.startDragAndDrop(data, ShortcutShadowBuilder(mainView), null, 0)
-            } else {
-                mainView.startDrag(data, ShortcutShadowBuilder(mainView), null, 0)
-            }
-
+            mainView.startDragAndDrop(data, ShortcutShadowBuilder(mainView), null, 0)
             true
         }
         dragButton.setOnDragListener(ShortcutDragListener(context, dropCallback))
@@ -104,9 +86,5 @@ class ShortcutPreference : Preference, OnClickListener {
 
     override fun onClick(v: View) {
         deleteClickListener?.onPreferenceClick(this)
-    }
-
-    companion object {
-        private const val INVALID_RESOURCE = 0
     }
 }

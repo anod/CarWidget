@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.fragment.app.DialogFragment
 import com.anod.car.home.R
 import com.anod.car.home.model.Shortcut
 import com.anod.car.home.model.ShortcutInfoUtils

@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.backup.Backup
@@ -37,7 +36,6 @@ import info.anodsplace.framework.app.DialogCustom
 import info.anodsplace.framework.app.applicationContext
 import info.anodsplace.framework.content.CreateDocument
 import info.anodsplace.framework.content.startActivitySafely
-import java.util.*
 
 class AboutFragment : Fragment() {
     private lateinit var createDocumentLauncherWidget: ActivityResultLauncher<CreateDocument.Args>
@@ -77,7 +75,7 @@ class AboutFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         _binding = FragmentAboutBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -143,7 +141,7 @@ class AboutFragment : Fragment() {
     }
 
     private fun initBackup() {
-        viewModel.backupEvent.observe(viewLifecycleOwner, Observer { code ->
+        viewModel.backupEvent.observe(viewLifecycleOwner, { code ->
             when (code) {
                 Backup.NO_RESULT -> {
                 }
@@ -155,7 +153,7 @@ class AboutFragment : Fragment() {
             }
         })
 
-        viewModel.restoreEvent.observe(viewLifecycleOwner, Observer { code ->
+        viewModel.restoreEvent.observe(viewLifecycleOwner, { code ->
             when (code) {
                 Backup.NO_RESULT -> {
                 }

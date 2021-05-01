@@ -46,25 +46,13 @@ object AppPermissions {
 
     fun isGranted(context: Context, permission: AppPermission): Boolean {
         if (permission == CanDrawOverlay) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                return Settings.canDrawOverlays(context)
-            }
-            return true
+            return Settings.canDrawOverlays(context)
         }
         if (permission == WriteSettings) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                return Settings.System.canWrite(context)
-            }
-            return true
+            return Settings.System.canWrite(context)
         }
         if (permission == AnswerPhoneCalls) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                return ContextCompat.checkSelfPermission(context, permission.value) == PackageManager.PERMISSION_GRANTED
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                return hasNotificationsAccess(context)
-            }
-            return true
+            return ContextCompat.checkSelfPermission(context, permission.value) == PackageManager.PERMISSION_GRANTED
         }
         return ContextCompat.checkSelfPermission(context, permission.value) == PackageManager.PERMISSION_GRANTED
     }
@@ -74,29 +62,17 @@ object AppPermissions {
             return false
         }
         if (permission == CanDrawOverlay) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                return true
-            }
-            return false
+            return true
         }
         if (permission == WriteSettings) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                return true
-            }
-            return false
+            return true
         }
         if (permission == AnswerPhoneCalls) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                return true
-            }
-            return false
+            return true
         }
 
         if (permission == ActivityRecognition) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                return true
-            }
-            return false
+            return true
         }
         return ActivityCompat.shouldShowRequestPermissionRationale(activity, permission.value)
     }
@@ -137,21 +113,11 @@ object AppPermissions {
     }
 
     fun requestAnswerPhoneCalls(fragment: Fragment, requestCode: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            request(fragment, AnswerPhoneCalls, requestCode)
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)  {
-            val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-            fragment.startActivityForResult(intent, requestCode)
-        }
+        request(fragment, AnswerPhoneCalls, requestCode)
     }
 
     fun requestAnswerPhoneCalls(activity: Activity, requestCode: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            request(activity, AnswerPhoneCalls, requestCode)
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)  {
-            val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-            activity.startActivityForResult(intent, requestCode)
-        }
+        request(activity, AnswerPhoneCalls, requestCode)
     }
 
     fun checkResult(requestCode: Int, grantResults: IntArray, checkPermission: Int, result: (result: PermissionResult) -> Unit) {
@@ -163,13 +129,4 @@ object AppPermissions {
             }
         }
     }
-
-    private fun hasNotificationsAccess(context: Context): Boolean {
-        val contentResolver = context.contentResolver
-        val enabledNotificationListeners = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
-        val packageName = context.packageName
-        // check to see if the enabledNotificationListeners String contains our package name
-        return !(enabledNotificationListeners == null || !enabledNotificationListeners.contains(packageName))
-    }
-
 }

@@ -24,7 +24,7 @@ class LauncherProvider : ContentProvider() {
         return true
     }
 
-    override fun getType(uri: Uri): String? {
+    override fun getType(uri: Uri): String {
         val args = SqlArguments(uri, null, null)
         return if (TextUtils.isEmpty(args.where)) {
             "vnd.android.cursor.dir/" + args.table
@@ -94,7 +94,7 @@ class LauncherProvider : ContentProvider() {
         return db.update(args.table, values, args.where, args.args)
     }
 
-    private class DatabaseHelper internal constructor(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+    private class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
         override fun onCreate(db: SQLiteDatabase) {
             if (LOGD) {

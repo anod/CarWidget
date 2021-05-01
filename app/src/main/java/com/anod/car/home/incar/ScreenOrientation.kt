@@ -30,11 +30,9 @@ class ScreenOrientation(private val mContext: Context, private val windowManager
             return
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (!Settings.canDrawOverlays(mContext)) {
-                Toast.makeText(mContext, R.string.allow_permission_overlay, Toast.LENGTH_LONG).show()
-                return
-            }
+        if (!Settings.canDrawOverlays(mContext)) {
+            Toast.makeText(mContext, R.string.allow_permission_overlay, Toast.LENGTH_LONG).show()
+            return
         }
 
         overlayView = View(mContext)
@@ -52,11 +50,7 @@ class ScreenOrientation(private val mContext: Context, private val windowManager
 
     private fun createLayoutParams(): WindowManager.LayoutParams {
         val lp = WindowManager.LayoutParams()
-        lp.type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-        } else {
-            WindowManager.LayoutParams.TYPE_SYSTEM_ERROR
-        }
+        lp.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         lp.width = 0
         lp.height = 0
         lp.flags = (WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
