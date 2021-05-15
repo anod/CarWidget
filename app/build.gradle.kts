@@ -27,7 +27,7 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.activity:activity:1.2.2")
+    implementation("androidx.activity:activity:1.2.3")
     implementation("androidx.fragment:fragment:1.3.3")
     implementation("androidx.fragment:fragment-ktx:1.3.3")
     implementation("androidx.collection:collection-ktx:1.1.0")
