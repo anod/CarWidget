@@ -103,6 +103,11 @@
             android:label="@string/settings" />
 
         <activity
+            android:name="info.anodsplace.framework.app.FragmentContainerActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+        />
+
+        <activity
             android:name="com.anod.car.home.ShortcutActivity"
             android:clearTaskOnLaunch="true"
             android:excludeFromRecents="true"
@@ -126,7 +131,8 @@
             android:clearTaskOnLaunch="true"
             android:label="@string/app_name"
             android:taskAffinity="com.anod.car.home.settings"
-            android:theme="@style/AppTheme.Transparent">
+            android:theme="@style/AppTheme.Transparent"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -143,7 +149,8 @@
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:taskAffinity="com.anod.car.home.carhome"
-            android:theme="@style/BrightnessTheme">
+            android:theme="@style/BrightnessTheme"
+            android:exported="true">
             <meta-data
                 android:name="android.dock_home"
                 android:value="true" />
@@ -186,13 +193,11 @@
         </activity>
         <activity android:name=".main.WidgetsListActivity" />
         <activity android:name=".main.WizardActivity" />
-        <activity
-            android:name="info.anodsplace.carwidget.prefs.IntentEditActivity"
-            android:label="@string/edit_intent"
-            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".prefs.BluetoothDeviceActivity"
             android:label="@string/pref_blutooth_device_title" />
+
         <activity
             android:name="com.anod.car.home.prefs.CarWidgetShortcutsPicker"
             android:finishOnCloseSystemDialogs="true"

@@ -14,7 +14,7 @@ import info.anodsplace.carwidget.R
 private val Rubik = FontFamily(
     Font(R.font.rubik_regular),
     Font(R.font.rubik_light, FontWeight.W300),
-    Font(R.font.rubik_medium, FontWeight.W500)
+   // Font(R.font.rubik_medium, FontWeight.W500)
 )
 
 val typography = Typography()
@@ -47,7 +47,7 @@ private val LightThemeColors = lightColors(
         onPrimary = Color.White,
         onSecondary = Color.Black,
         onBackground = Color.Black,
-        onSurface = Color.Black,
+        onSurface = Color.White,
         onError = Color.White,
 )
 

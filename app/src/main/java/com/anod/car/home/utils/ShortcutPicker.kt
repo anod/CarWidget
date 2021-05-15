@@ -11,10 +11,7 @@ import com.anod.car.home.R
 import com.anod.car.home.model.Shortcut
 import com.anod.car.home.model.ShortcutInfoUtils
 import com.anod.car.home.model.Shortcuts
-import com.anod.car.home.prefs.ActivityPicker
-import com.anod.car.home.prefs.AllAppsActivity
-import com.anod.car.home.prefs.CarWidgetShortcutsPicker
-import com.anod.car.home.prefs.ShortcutEditActivity
+import com.anod.car.home.prefs.*
 import java.util.*
 
 /**
@@ -152,8 +149,8 @@ class ShortcutPicker(private val model: Shortcuts, private val handler: Handler,
     }
 
     private fun completeEditShortcut(data: Intent): Boolean {
-        val cellId = data.getIntExtra(ShortcutEditActivity.EXTRA_CELL_ID, INVALID_CELL_ID)
-        val shortcutId = data.getLongExtra(ShortcutEditActivity.EXTRA_SHORTCUT_ID, Shortcut.idUnknown)
+        val cellId = data.getIntExtra(ShortcutEditFragment.extraCellId, INVALID_CELL_ID)
+        val shortcutId = data.getLongExtra(ShortcutEditFragment.extraShortcutId, Shortcut.idUnknown)
         if (cellId != INVALID_CELL_ID) {
             model.reloadShortcut(cellId, shortcutId)
             handler.onEditComplete(cellId)
