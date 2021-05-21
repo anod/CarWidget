@@ -284,6 +284,8 @@
     <string name="intent_info">Intent info</string>
     <string name="allow_bluetooth">Allow Bluetooth</string>
     <string name="allow_bluetooth_summary">Turn on Bluetooth</string>
+    <string name="widget_description_switch">Widget to switch InCar mode</string>
+    <string name="widget_description_large">Widget with large configurable buttons</string>
 
     <array name="adaptive_icon_style_names">
         <item>Default</item>

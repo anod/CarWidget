@@ -19,7 +19,7 @@ class ShortcutPendingIntent(private val context: Context) : WidgetViewBuilder.Pe
             onIntent.putExtra(ModeService.EXTRA_FORCE_STATE, true)
             val data = Uri.parse("com.anod.car.home.pro://mode/1/1")
             onIntent.data = data
-            return PendingIntent.getService(context, 0, onIntent, 0)
+            return PendingIntent.getService(context, 0, onIntent, PendingIntent.FLAG_IMMUTABLE)
         }
 
     private val inCarOffIntent: PendingIntent
@@ -29,12 +29,12 @@ class ShortcutPendingIntent(private val context: Context) : WidgetViewBuilder.Pe
             offIntent.putExtra(ModeService.EXTRA_FORCE_STATE, true)
             val data = Uri.parse("com.anod.car.home.pro://mode/0/1")
             offIntent.data = data
-            return PendingIntent.getService(context, 0, offIntent, 0)
+            return PendingIntent.getService(context, 0, offIntent, PendingIntent.FLAG_IMMUTABLE)
         }
 
     override fun createNew(appWidgetId: Int, cellId: Int): PendingIntent {
         val intent = Intent().forNewShortcut(context, appWidgetId, cellId)
-        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     /**
@@ -42,7 +42,7 @@ class ShortcutPendingIntent(private val context: Context) : WidgetViewBuilder.Pe
      */
     override fun createSettings(appWidgetId: Int, buttonId: Int): PendingIntent {
         val intent = Intent().forSettings(context, appWidgetId)
-        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     override fun createShortcut(intent: Intent, appWidgetId: Int, position: Int, shortcutId: Long): PendingIntent? {
@@ -53,14 +53,14 @@ class ShortcutPendingIntent(private val context: Context) : WidgetViewBuilder.Pe
         val action = intent.action ?: ""
         val isCall = INTENT_ACTION_CALL_PRIVILEGED == action || Intent.ACTION_CALL == action
         if (intent.extras == null && !isCall) { // Samsung s3 bug
-            return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
         val path = "$prefix - $position"
         val data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"), path)
 
         if (action == ShortcutActivity.ACTION_MEDIA_BUTTON) {
             intent.data = data
-            return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
 
         val launchIntent = Intent(context, ShortcutActivity::class.java)
@@ -68,7 +68,7 @@ class ShortcutPendingIntent(private val context: Context) : WidgetViewBuilder.Pe
         launchIntent.data = data
         launchIntent.action = Intent.ACTION_MAIN
         launchIntent.putExtra(ShortcutActivity.EXTRA_INTENT, intent)
-        return PendingIntent.getActivity(context, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(context, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     override fun createInCar(on: Boolean, buttonId: Int): PendingIntent {

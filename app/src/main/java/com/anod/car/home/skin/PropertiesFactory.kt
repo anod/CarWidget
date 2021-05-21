@@ -11,6 +11,7 @@ object PropertiesFactory {
             WidgetInterface.SKIN_GLOSSY -> GlossyProperties()
             WidgetInterface.SKIN_BBB -> BBBProperties()
             WidgetInterface.SKIN_CARDS -> CardsProperties()
+            WidgetInterface.SKIN_YOU -> YouProperties()
             else -> CarHomeProperties()
         }
     }

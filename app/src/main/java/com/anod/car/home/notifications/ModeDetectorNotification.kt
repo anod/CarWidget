@@ -19,7 +19,7 @@ object ModeDetectorNotification {
                 .setPriority(NotificationCompat.PRIORITY_MIN)
                 .setContentIntent(PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java).apply {
                     putExtra(WidgetsListActivity.extraInCarTab, true)
-                }, 0))
+                }, PendingIntent.FLAG_IMMUTABLE))
                 .build()
     }
 }

@@ -32,6 +32,7 @@ interface WidgetInterface {
         const val SKIN_HOLO = "holo"
         const val SKIN_BBB = "blackbearblanc"
         const val SKIN_CARDS = "cards"
+        const val SKIN_YOU = "you"
         const val FONT_SIZE_UNDEFINED = -1
         const val WIDGET_BUTTON_INCAR = 1
         const val WIDGET_BUTTON_SETTINGS = 2

@@ -7,9 +7,9 @@ $opts = getopt("an:");
 
 $files = [];
 if (isset($opts['a'])) {
-	$files = glob("src/main/res/layout*/sk_[a-z]*_[0-9]*.xml");
+	$files = glob("app/src/main/res/layout*/sk_[a-z]*_[0-9]*.xml");
 } else if (isset($opts['n'])) {
-	$files = glob("src/main/res/layout*/sk_".$opts['n']."_[0-9]*.xml");
+	$files = glob("app/src/main/res/layout*/sk_".$opts['n']."_[0-9]*.xml");
 	if (!$files) {
 		echo "Theme '".$opts['n']."' not found. \n";
 		exit(1);
@@ -29,13 +29,12 @@ foreach($files AS $path) {
 	$row = new DOMDocument();
 	$row->load($info->getRowPath());
 	
-
 	$skin = new DOMDocument();
 	$skin->formatOutput = true;
 	$skin->load($info->path);
 	
 	$skinXpath = new DOMXPath( $skin );
-	$workspace = $skinXpath->query( '//LinearLayout[@android:id="@+id/workspace"]' )->item(0);
+	$workspace = $skinXpath->query( '//LinearLayout[@android:id="@+id/generate"]' )->item(0);
 	
 	// remove any child
 	while ($workspace->hasChildNodes()) {

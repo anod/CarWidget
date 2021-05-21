@@ -164,7 +164,5 @@ class WidgetViewBuilder(private val context: Context,
             bt.rotateDirection = prefs.iconsRotate
         }
     }
-
-
 }
 

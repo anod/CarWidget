@@ -4,22 +4,6 @@
     package="com.anod.car.home"
     android:installLocation="internalOnly">
 
-    <permission
-        android:name="${applicationId}.permission.READ_SETTINGS"
-        android:description="@string/permdesc_read_settings"
-        android:label="@string/permlab_read_settings"
-        android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
-        android:protectionLevel="normal" />
-    <permission
-        android:name="${applicationId}.permission.WRITE_SETTINGS"
-        android:description="@string/permdesc_write_settings"
-        android:label="@string/permlab_write_settings"
-        android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
-        android:protectionLevel="normal" />
-
-    <uses-permission android:name="${applicationId}.permission.READ_SETTINGS" />
-    <uses-permission android:name="${applicationId}.permission.WRITE_SETTINGS" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />

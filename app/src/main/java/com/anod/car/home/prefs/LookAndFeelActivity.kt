@@ -48,7 +48,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     var appWidgetId: Int = 0
         private set
 
-    private val previewInitialized = booleanArrayOf(false, false, false, false, false, false)
+    private val previewInitialized = booleanArrayOf(false, false, false, false, false, false, false)
     var prefs: WidgetSettings? = null
     private var skinList: SkinList? = null
     private var bitmapMemoryCache: BitmapLruCache? = null

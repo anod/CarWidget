@@ -156,4 +156,13 @@
         <item name="colorAccent">?colorSecondary</item>
     </style>
 
+    <style name="Theme.AppWidget.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault.DayNight">
+        <item name="appWidgetRadius">16dp</item>
+        <item name="appWidgetInnerRadius">8dp</item>
+    </style>
+
+    <style name="AppWidgetContainer" parent="Theme.AppWidget.AppWidgetContainerParent">
+        <item name="appWidgetInnerRadius">16dp</item>
+    </style>
+
 </resources>
