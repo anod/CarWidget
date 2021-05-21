@@ -26,10 +26,10 @@ dependencies {
     implementation("com.google.android.material:material:1.3.0")
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
-    implementation("androidx.core:core-ktx:1.3.2")
+    implementation("androidx.core:core-ktx:1.5.0")
     implementation("androidx.activity:activity:1.2.3")
-    implementation("androidx.fragment:fragment:1.3.3")
-    implementation("androidx.fragment:fragment-ktx:1.3.3")
+    implementation("androidx.fragment:fragment:1.3.4")
+    implementation("androidx.fragment:fragment-ktx:1.3.4")
     implementation("androidx.collection:collection-ktx:1.1.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
@@ -56,7 +56,7 @@ android {
 
     defaultConfig {
         minSdk = 29
-        targetSdk = 30 // 29 wifi switch not working
+        targetSdk = 31 // 29 wifi switch not working
         versionCode = 22000
         versionName = "2.2.0"
         vectorDrawables.generatedDensities("hdpi", "xxhdpi")
@@ -106,7 +106,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "11"
-        useIR = true
     }
 
     lint {
