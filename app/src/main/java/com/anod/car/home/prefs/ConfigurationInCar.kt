@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.CheckBoxPreference
@@ -36,6 +37,7 @@ import kotlinx.coroutines.withContext
 
 class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
+    private lateinit var activityRecognitionRequest: ActivityResultLauncher<Void>
     private var trialsLeft: Int = 0
     private var trialMessageShown: Boolean = false
 
@@ -71,7 +73,14 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         sharedPrefs.unregisterOnSharedPreferenceChangeListener(broadcastServiceSwitchListener)
     }
 
-    override fun onCreateImpl(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activityRecognitionRequest = AppPermissions.register(this, ActivityRecognition) { isGranted ->
+            if (isGranted) {
+                val pref: CheckBoxPreference = findPreference(InCarSettings.ACTIVITY_RECOGNITION)!!
+                pref.isChecked = true
+            }
+        }
         val version = Version(requireActivity())
 
         initInCar()
@@ -222,21 +231,13 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
                 pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
                     if (newValue == true) {
                         if (!AppPermissions.isGranted(requireContext(), ActivityRecognition)) {
-                            AppPermissions.request(this, ActivityRecognition, requestActivityRecognition)
+                            activityRecognitionRequest.launch(null)
                             return@OnPreferenceChangeListener false
                         }
                     }
                     true
                 }
             }
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == requestActivityRecognition && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            val pref: CheckBoxPreference = findPreference(InCarSettings.ACTIVITY_RECOGNITION)!!
-            pref.isChecked = true
         }
     }
 
@@ -268,7 +269,6 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         const val requestDrawOverlay = 7
         const val requestWriteSettings = 8
         const val requestAnswerPhone = 9
-        const val requestActivityRecognition = 10
 
         private val serviceRequiredKeys = arrayOf(
                 InCarSettings.HEADSET_REQUIRED,

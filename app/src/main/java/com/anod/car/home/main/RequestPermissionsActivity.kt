@@ -49,7 +49,6 @@ class RequestPermissionsActivity : CarWidgetActivity() {
             val p = getPermissions()
             when {
                 p.manifestPermissions.isNotEmpty() -> ActivityCompat.requestPermissions(this, p.manifestPermissions, requestPermissionsCode)
-                p.answerPhoneCalls -> AppPermissions.requestAnswerPhoneCalls(this, requestAnswerPhoneCalls)
                 p.canDrawOverlay -> AppPermissions.requestDrawOverlay(this, requestOverlay)
                 p.writeSettings -> AppPermissions.requestWriteSettings(this, requestWriteSettings)
                 else -> finish()
@@ -60,7 +59,6 @@ class RequestPermissionsActivity : CarWidgetActivity() {
     class Permissions(
             val canDrawOverlay: Boolean,
             val writeSettings: Boolean,
-            val answerPhoneCalls: Boolean,
             val manifestPermissions: Array<String>)
 
     private fun getPermissions(): Permissions {
@@ -69,17 +67,12 @@ class RequestPermissionsActivity : CarWidgetActivity() {
         val manifestPermissions = mutableListOf<String>()
         var canDrawOverlay = false
         var writeSettings = false
-        var answerPhoneCalls = false
         permissions.forEach {
             when (it) {
                 CanDrawOverlay.value -> canDrawOverlay = true
                 WriteSettings.value -> writeSettings = true
                 AnswerPhoneCalls.value -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        manifestPermissions.add(it)
-                    } else {
-                        answerPhoneCalls = true
-                    }
+                    manifestPermissions.add(it)
                 }
                 ActivityRecognition.value -> {
                     manifestPermissions.add(it)
@@ -87,7 +80,7 @@ class RequestPermissionsActivity : CarWidgetActivity() {
                 else -> manifestPermissions.add(it)
             }
         }
-        return Permissions(canDrawOverlay, writeSettings, answerPhoneCalls, manifestPermissions.toTypedArray())
+        return Permissions(canDrawOverlay, writeSettings, manifestPermissions.toTypedArray())
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -155,10 +148,7 @@ class RequestPermissionsActivity : CarWidgetActivity() {
                         R.string.change_screen_orientation)
                 AnswerPhoneCalls.value -> Item(
                         R.drawable.ic_action_ring_volume,
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                            R.string.permission_answer_calls
-                        else
-                            R.string.permission_notification_listener,
+                        R.string.permission_answer_calls,
                         R.string.allow_answer_phone_calls)
                 ActivityRecognition.value -> Item(
                         R.drawable.ic_action_directions_run_24,

@@ -1,5 +1,6 @@
 package com.anod.car.home.prefs
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.bluetooth.BluetoothAdapter
 import android.content.BroadcastReceiver
@@ -8,11 +9,15 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -24,6 +29,7 @@ import com.anod.car.home.incar.Bluetooth
 import com.anod.car.home.incar.BluetoothClassHelper
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.prefs.model.InCarStorage
+import com.anod.car.home.utils.*
 import com.google.android.material.switchmaterial.SwitchMaterial
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -77,6 +83,7 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
         }
     }
 
+    @SuppressLint("MissingPermission")
     private suspend fun loadDevices(): List<BluetoothDevice> = withContext(Dispatchers.Default) {
 
         if (btAdapter == null) {
@@ -125,8 +132,7 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
     }
 
     companion object {
-        private val INTENT_FILTER = IntentFilter(
-                BluetoothAdapter.ACTION_STATE_CHANGED)
+        private val INTENT_FILTER = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
     }
 }
 
@@ -135,6 +141,7 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
  * @date 6/6/14
  */
 class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickListener {
+    private lateinit var bluetoothPermissions: ActivityResultLauncher<Void>
     private lateinit var binding: ActivityBluetoothDeviceBinding
     private val listAdapter: DeviceAdapter by lazy { DeviceAdapter(this) }
     private val viewModel: BluetoothDevicesViewModel by viewModels()
@@ -149,6 +156,13 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
         binding = ActivityBluetoothDeviceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        bluetoothPermissions = AppPermissions.register(this, listOf(BluetoothScan, BluetoothConnect)) { (allGeanted, _) ->
+            if (allGeanted) {
+                initSwitch()
+                viewModel.load()
+            }
+        }
+
         binding.deviceList.onItemClickListener = this
 
         binding.deviceList.divider = ColorDrawable(Color.TRANSPARENT)
@@ -157,13 +171,22 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
         binding.deviceList.emptyView = binding.empty
         binding.deviceList.adapter = listAdapter
 
-        initSwitch()
-
         viewModel.devices.observe(this, {
             listAdapter.clear()
             listAdapter.addAll(it)
         })
-        viewModel.load()
+
+        if (!AppPermissions.isGranted(this, BluetoothScan) || !AppPermissions.isGranted(this, BluetoothConnect)) {
+            binding.requestPermission.setOnClickListener {
+                bluetoothPermissions.launch(null)
+            }
+            binding.emptyText.setText(R.string.allow_bluetooth_summary)
+            binding.requestPermission.isVisible = true
+            binding.btSwitch.isVisible = false
+        } else {
+            initSwitch()
+            viewModel.load()
+        }
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -200,16 +223,18 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
     }
 
     private fun initSwitch() {
-        val btSwitch = findViewById<SwitchMaterial>(R.id.switch1)
-        btSwitch.isChecked = Bluetooth.state == BluetoothAdapter.STATE_ON
-        btSwitch.setOnClickListener {
+        binding.emptyText.setText(R.string.turn_on_bluetooth_summary)
+        binding.requestPermission.isVisible = false
+        binding.btSwitch.isVisible = true
+        binding.btSwitch.isChecked = Bluetooth.state == BluetoothAdapter.STATE_ON
+        binding.btSwitch.setOnClickListener {
             viewModel.registerBroadcastReceiver()
             if (Bluetooth.state == BluetoothAdapter.STATE_ON) {
                 Bluetooth.switchOff()
-                btSwitch.isChecked = false
+                binding.btSwitch.isChecked = false
             } else {
                 Bluetooth.switchOn()
-                btSwitch.isChecked = true
+                binding.btSwitch.isChecked = true
             }
         }
     }

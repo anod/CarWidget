@@ -244,20 +244,20 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
 
     override fun createNew(appWidgetId: Int, cellId: Int): PendingIntent {
         val intent = Intent().forNewShortcut(this, appWidgetId, cellId)
-        return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     override fun createSettings(appWidgetId: Int, buttonId: Int): PendingIntent {
 
         val intent = WidgetButtonChoiceActivity
                 .createIntent(appWidgetId, getSkinItem(currentPage).value, buttonId, this)
-        return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     override fun createInCar(on: Boolean, buttonId: Int): PendingIntent {
         val intent = WidgetButtonChoiceActivity
                 .createIntent(appWidgetId, getSkinItem(currentPage).value, buttonId, this)
-        return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     override fun createShortcut(intent: Intent, appWidgetId: Int, position: Int,
@@ -268,7 +268,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         val data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"), path)
         editIntent.data = data
         return PendingIntent
-                .getActivity(this, 0, editIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+                .getActivity(this, 0, editIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     fun onPreviewStart(position: Int) {

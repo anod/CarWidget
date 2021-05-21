@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.view.View
 import android.widget.AdapterView
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.AndroidViewModel
@@ -39,6 +40,7 @@ class CarWidgetShortcutsPickerViewModel(application: Application) : AndroidViewM
 
 class CarWidgetShortcutsPicker : ActivityPicker() {
 
+    private lateinit var readContactsPermission: ActivityResultLauncher<Void>
     private val viewModel: CarWidgetShortcutsPickerViewModel by viewModels()
 
     override val items: List<Item>
@@ -58,6 +60,9 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTitle(R.string.car_widget_shortcuts)
+        readContactsPermission = AppPermissions.register(this, ReadContacts) {
+
+        }
         viewModel.result.observe(this, {
             if (it != null) {
                 setResult(RESULT_OK, it)
@@ -75,7 +80,7 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
                 intent.type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
                 startActivityForResultSafely(intent, REQUEST_PICK_CONTACT)
             } else {
-                AppPermissions.request(this, ReadContacts, requestReadContacts)
+                readContactsPermission.launch(null)
                 setResult(Activity.RESULT_CANCELED)
                 finish()
             }
@@ -107,7 +112,5 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
                 R.drawable.ic_shortcut_next,
                 R.drawable.ic_shortcut_previous
         )
-
-        const val requestReadContacts = 304
     }
 }

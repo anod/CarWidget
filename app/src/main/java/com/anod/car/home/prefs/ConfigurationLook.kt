@@ -1,12 +1,10 @@
 package com.anod.car.home.prefs
 
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
-import androidx.preference.PreferenceCategory
 import com.android.colorpicker.ColorPickerSwatch
 import com.anod.car.home.R
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog
@@ -29,7 +27,8 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
     override val sharedPreferencesName: String
         get() = String.format(Locale.US, WidgetStorage.PREF_NAME, appWidgetId)
 
-    override fun onCreateImpl(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         val prefs = WidgetStorage.load(requireContext(), appWidgetId)
 
         initIcon(prefs)
@@ -44,25 +43,17 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
         }
 
         val adaptiveIconPref = requirePreference(WidgetSettings.ADAPTIVE_ICON_STYLE) as ListPreference
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            adaptiveIconPref.value = prefs.adaptiveIconStyle
-            adaptiveIconPref.summary = adaptiveIconTitles.elementAtOrNull(adaptiveIconValues.indexOf(prefs.adaptiveIconStyle))
+        adaptiveIconPref.value = prefs.adaptiveIconStyle
+        adaptiveIconPref.summary = adaptiveIconTitles.elementAtOrNull(adaptiveIconValues.indexOf(prefs.adaptiveIconStyle))
 
-            adaptiveIconPref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, o ->
-                preference.summary = adaptiveIconTitles.elementAtOrNull(adaptiveIconValues.indexOf(o))
-                true
-            }
-        } else {
-            (requirePreference("look-more-category") as PreferenceCategory).removePreference(adaptiveIconPref)
+        adaptiveIconPref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, o ->
+            preference.summary = adaptiveIconTitles.elementAtOrNull(adaptiveIconValues.indexOf(o))
+            true
         }
 
-
         initWidgetPrefCheckBox(WidgetSettings.TITLES_HIDE, prefs.isTitlesHide)
-        initWidgetPrefCheckBox(WidgetSettings.TRANSPARENT_BTN_SETTINGS,
-                prefs.isSettingsTransparent)
-        initWidgetPrefCheckBox(WidgetSettings.TRANSPARENT_BTN_INCAR,
-                prefs.isIncarTransparent)
-
+        initWidgetPrefCheckBox(WidgetSettings.TRANSPARENT_BTN_SETTINGS, prefs.isSettingsTransparent)
+        initWidgetPrefCheckBox(WidgetSettings.TRANSPARENT_BTN_INCAR, prefs.isIncarTransparent)
     }
 
     private fun initWidgetPrefCheckBox(key: String, checked: Boolean) {
@@ -118,6 +109,4 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
             false
         }
     }
-
-
 }

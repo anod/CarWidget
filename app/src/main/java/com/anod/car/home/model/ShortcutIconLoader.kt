@@ -18,7 +18,7 @@ class ShortcutIconLoader(
         : this(db, WidgetStorage.load(context, appWidgetId).adaptiveIconPath, context)
 
     fun load(shortcut: Shortcut): ShortcutIcon {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && shortcut.isApp && !shortcut.isCustomIcon) {
+        if (shortcut.isApp && !shortcut.isCustomIcon) {
             if (adaptiveIconPath.isEmpty) {
                 return loadFromDatabase(shortcut.id)
             }

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
@@ -35,8 +36,6 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
     protected open val optionsMenuResource: Int
         get() = 0
 
-    protected open fun onCreateImpl(savedInstanceState: Bundle?) { }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         val res = optionsMenuResource
         if (res == 0) {
@@ -45,9 +44,9 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
         }
         inflater.inflate(res, menu)
         super.onCreateOptionsMenu(menu, inflater)
-
     }
 
+    @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         if (isAppWidgetIdRequired) {
             appWidgetId = Utils.readAppWidgetId(savedInstanceState, requireActivity().intent)
@@ -56,8 +55,6 @@ abstract class ConfigurationPreferenceFragment : PreferenceFragmentCompat() {
         if (optionsMenuResource > 0) {
             setHasOptionsMenu(true)
         }
-
-        onCreateImpl(savedInstanceState)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

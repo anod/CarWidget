@@ -28,7 +28,8 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
     override val sharedPreferencesName: String
         get() = InCarStorage.PREF_NAME
 
-    override fun onCreateImpl(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         initAutorunApp()
         initSamsungHandsfree()
     }

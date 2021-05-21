@@ -24,9 +24,7 @@ class BroadcastService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Start once
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this) )
-        }
+        startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this) )
         if (receiver == null) {
             if (register(this)) {
                 return START_STICKY
@@ -107,10 +105,8 @@ class BroadcastService : Service() {
                 }
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (prefs.isEnableBluetoothOnPower || prefs.isDisableBluetoothOnPower) {
-                    return true
-                }
+            if (prefs.isEnableBluetoothOnPower || prefs.isDisableBluetoothOnPower) {
+                return true
             }
             return false
         }

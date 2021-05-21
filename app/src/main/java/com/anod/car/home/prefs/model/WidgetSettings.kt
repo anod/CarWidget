@@ -89,7 +89,7 @@ class WidgetSettings(prefs: SharedPreferences, private val mResources: Resources
         set(widgetButton2) = putChange(WIDGET_BUTTON_2, widgetButton2)
 
     var adaptiveIconStyle: String
-        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) prefs.getString(ADAPTIVE_ICON_STYLE, "")!! else ""
+        get() = prefs.getString(ADAPTIVE_ICON_STYLE, "")!!
         set(style) = putChange(ADAPTIVE_ICON_STYLE, style)
 
     var paletteBackground: Boolean

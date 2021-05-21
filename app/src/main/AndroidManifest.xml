@@ -4,7 +4,6 @@
     package="com.anod.car.home"
     android:installLocation="internalOnly">
 
-
     <permission
         android:name="${applicationId}.permission.READ_SETTINGS"
         android:description="@string/permdesc_read_settings"
@@ -26,8 +25,6 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
@@ -42,6 +39,11 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
     <queries>
         <intent>
@@ -182,6 +184,7 @@
             android:name=".MainActivity"
             android:launchMode="singleTask"
             android:taskAffinity="com.anod.car.home.main"
+            android:exported="true"
             android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -202,6 +205,7 @@
             android:name="com.anod.car.home.prefs.CarWidgetShortcutsPicker"
             android:finishOnCloseSystemDialogs="true"
             android:label="@string/car_widget_shortcuts"
+            android:exported="true"
             android:theme="@style/AppListTheme">
             <!--  This intent-filter allows your shortcuts to be created in the launcher. -->
             <intent-filter>
@@ -259,6 +263,7 @@
             android:writePermission="${applicationId}.permission.WRITE_SETTINGS" />
 
         <receiver
+            android:exported="true"
             android:name="com.anod.car.home.LargeProvider"
             android:label="@string/app_name">
             <intent-filter>
@@ -271,6 +276,7 @@
         </receiver>
 
         <receiver
+            android:exported="true"
             android:name="com.anod.car.home.appwidget.ShortcutProvider"
             android:label="@string/in_car_mode_switch">
             <intent-filter>

@@ -1,11 +1,12 @@
 package com.anod.car.home
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.os.Bundle
 import android.view.KeyEvent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.fragment.app.FragmentActivity
 import com.anod.car.home.app.App
 import com.anod.car.home.app.MusicAppChoiceActivity
 import com.anod.car.home.appwidget.ShortcutPendingIntent
@@ -14,14 +15,20 @@ import com.anod.car.home.utils.CallPhone
 import com.anod.car.home.utils.MusicUtils
 import info.anodsplace.framework.content.startActivitySafely
 
-class ShortcutActivity : Activity() {
+class ShortcutActivity : FragmentActivity() {
+
+    private lateinit var callPhonePermission: ActivityResultLauncher<Void>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        callPhonePermission = AppPermissions.register(this, CallPhone) {
+
+        }
         execute(intent)
     }
 
     override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
         execute(intent)
     }
 
@@ -66,7 +73,7 @@ class ShortcutActivity : Activity() {
         }
         if (Intent.ACTION_CALL == action) {
             if (!AppPermissions.isGranted(this, CallPhone)) {
-                AppPermissions.request(this, CallPhone, requestPhone)
+                callPhonePermission.launch(null)
             }
         }
 
@@ -81,7 +88,5 @@ class ShortcutActivity : Activity() {
         const val EXTRA_INTENT = "intent"
         const val EXTRA_MEDIA_BUTTON = "media_button"
         const val ACTION_MEDIA_BUTTON = "action_media_button"
-
-        const val requestPhone = 303
     }
 }

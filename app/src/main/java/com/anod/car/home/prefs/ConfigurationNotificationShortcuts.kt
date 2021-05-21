@@ -23,8 +23,8 @@ class ConfigurationNotificationShortcuts : ConfigurationPreferenceFragment(), Pr
     override val sharedPreferencesName: String
         get() = InCarStorage.PREF_NAME
 
-    override fun onCreateImpl(savedInstanceState: Bundle?) {
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         pickShortcutUtils.onRestoreInstanceState(savedInstanceState)
 
         for (i in 0 until InCarStorage.NOTIFICATION_COMPONENT_NUMBER) {
