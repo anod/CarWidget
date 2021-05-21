@@ -10,8 +10,7 @@
         android:layout_height="84dp"
         android:background="@drawable/permissions_custom_icon_background"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/icon"

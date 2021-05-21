@@ -11,8 +11,8 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import info.anodsplace.carwidget.prefs.IntentCategories
-import info.anodsplace.carwidget.prefs.IntentFlags
+import info.anodsplace.carwidget.intent.IntentCategories
+import info.anodsplace.carwidget.intent.IntentFlags
 import androidx.compose.material.Text
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.flow.MutableSharedFlow

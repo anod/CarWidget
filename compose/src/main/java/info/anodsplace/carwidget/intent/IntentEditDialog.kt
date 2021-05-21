@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.compose.intent
+package info.anodsplace.carwidget.intent
 
 import android.content.ComponentName
 import android.content.Intent
@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.CarWidgetTheme
-import info.anodsplace.carwidget.prefs.IntentField
+import info.anodsplace.carwidget.intent.IntentField
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.util.isScalar
 import info.anodsplace.framework.util.put

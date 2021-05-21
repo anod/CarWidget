@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.prefs
+package info.anodsplace.carwidget.intent
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,8 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.compose.LocalBackPressedDispatcher
 import info.anodsplace.carwidget.compose.UiAction
-import info.anodsplace.carwidget.compose.intent.IntentEditScreen
-import info.anodsplace.carwidget.compose.intent.UpdateField
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.FragmentFactory
 import kotlinx.coroutines.flow.collect

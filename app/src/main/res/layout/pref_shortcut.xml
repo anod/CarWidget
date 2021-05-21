@@ -14,8 +14,7 @@
         android:src="@drawable/ic_drag_normal"
         android:tint="?attr/colorAccent"
         android:layout_marginEnd="8dp"
-        android:contentDescription="@null"
-        />
+        android:contentDescription="@null" />
 
     <ImageView
         android:id="@+id/add_icon"
@@ -23,8 +22,7 @@
         android:layout_height="48dp"
         android:src="@drawable/ic_add_black_24dp"
         android:tint="?attr/colorAccent"
-        android:contentDescription="@string/shortcut_edit_title"
-    />
+        android:contentDescription="@string/shortcut_edit_title" />
 
     <ImageView
         android:id="@android:id/icon"
@@ -32,7 +30,7 @@
         android:layout_height="48dp"
         android:adjustViewBounds="false"
         android:scaleType="centerInside"
-        android:contentDescription="@null"/>
+        android:contentDescription="@null" />
 
     <TextView
         android:id="@android:id/title"
@@ -65,7 +63,7 @@
         android:scaleType="center"
         android:src="@drawable/ic_action_edit"
         android:tint="?attr/colorAccent"
-        android:contentDescription="@string/shortcut_edit_title"/>
+        android:contentDescription="@string/shortcut_edit_title" />
 
     <View
         android:id="@+id/divider"

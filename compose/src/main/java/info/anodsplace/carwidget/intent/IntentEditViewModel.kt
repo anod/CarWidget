@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.prefs
+package info.anodsplace.carwidget.intent
 
 import android.app.Application
 import android.content.Intent

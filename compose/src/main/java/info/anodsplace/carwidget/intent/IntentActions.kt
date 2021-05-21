@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.prefs
+package info.anodsplace.carwidget.intent
 
 val IntentActions = listOf(
         "android.intent.action.MAIN",

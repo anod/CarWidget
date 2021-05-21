@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.compose.intent
+package info.anodsplace.carwidget.intent
 
 import android.content.ComponentName
 import android.content.Intent
@@ -22,7 +22,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.*
-import info.anodsplace.carwidget.prefs.*
 import androidx.compose.material.Text
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview

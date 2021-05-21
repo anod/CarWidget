@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-  android:orientation="vertical"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent" android:padding="6dp">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="6dp">
 
     <TextView
         tools:text="Splash text"
         android:id="@+id/splashText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <RelativeLayout android:layout_gravity="center"
-        android:layout_height="wrap_content" android:layout_width="match_parent">
-        <EditText android:inputType="number" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" android:id="@+id/value" android:textSize="28sp">
-        </EditText>
+
+    <RelativeLayout
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <EditText
+            android:inputType="number"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/value"
+            android:textSize="28sp"></EditText>
 
         <TextView
             android:layout_height="wrap_content"
@@ -26,8 +36,13 @@
             android:textSize="28sp"
             android:layout_toEndOf="@+id/value" />
     </RelativeLayout>
-    <SeekBar android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/seekBar">
+
+    <SeekBar
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/seekBar">
+
         <requestFocus />
     </SeekBar>
-    
+
 </LinearLayout>

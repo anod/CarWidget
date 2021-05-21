@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="wrap_content" android:layout_width="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/welcome"
-			android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3" />
 
-		<TextView
-			android:id="@+id/desc1"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/welcome_text"
-			android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+        <TextView
+            android:id="@+id/desc1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_text"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:gravity="center_horizontal"
-			android:padding="12dp"
-			android:text="@string/swipe_continue"
-			android:textAppearance="@style/TextAppearance.MaterialComponents.Chip" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="12dp"
+            android:text="@string/swipe_continue"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Chip" />
 
-		<ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:src="@drawable/widget_preview" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/widget_preview" />
 
-	</LinearLayout>
+    </LinearLayout>
 </ScrollView>

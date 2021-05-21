@@ -1,69 +1,164 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/container" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/default_background" android:gravity="center_vertical" android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent" android:layout_height="0dip" android:layout_weight="1" android:baselineAligned="false" android:orientation="vertical"><LinearLayout android:layout_width="match_parent" android:layout_height="0dip" android:layout_gravity="center_vertical|center_horizontal" android:layout_weight="1" android:baselineAligned="false" android:gravity="bottom" android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:baselineAligned="false"
+        android:orientation="vertical">
 
-<FrameLayout style="@style/bbb_btn">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:gravity="bottom"
+            android:orientation="horizontal">
 
-	<Button android:id="@+id/btn_text0" style="@style/bbb_btn_text" android:text="@string/set_shortcut_short"/>
+            <FrameLayout style="@style/bbb_btn">
 
-	<ImageView android:id="@+id/btn0" style="@style/bbb_btn_icon" android:src="@drawable/ic_add_shortcut_holo"/>
-</FrameLayout>
+                <Button
+                    android:id="@+id/btn_text0"
+                    style="@style/bbb_btn_text"
+                    android:text="@string/set_shortcut_short" />
 
-<FrameLayout style="@style/bbb_btn">
+                <ImageView
+                    android:id="@+id/btn0"
+                    style="@style/bbb_btn_icon"
+                    android:src="@drawable/ic_add_shortcut_holo" />
+            </FrameLayout>
 
-	<Button android:id="@+id/btn_text1" style="@style/bbb_btn_text" android:text="@string/set_shortcut_short"/>
+            <FrameLayout style="@style/bbb_btn">
 
-	<ImageView android:id="@+id/btn1" style="@style/bbb_btn_icon" android:src="@drawable/ic_add_shortcut_holo"/>
-</FrameLayout>
-</LinearLayout><LinearLayout android:layout_width="match_parent" android:layout_height="0dip" android:layout_gravity="center_vertical|center_horizontal" android:layout_weight="1" android:baselineAligned="false" android:gravity="bottom" android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_text1"
+                    style="@style/bbb_btn_text"
+                    android:text="@string/set_shortcut_short" />
 
-<FrameLayout style="@style/bbb_btn">
+                <ImageView
+                    android:id="@+id/btn1"
+                    style="@style/bbb_btn_icon"
+                    android:src="@drawable/ic_add_shortcut_holo" />
+            </FrameLayout>
+        </LinearLayout>
 
-	<Button android:id="@+id/btn_text2" style="@style/bbb_btn_text" android:text="@string/set_shortcut_short"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:gravity="bottom"
+            android:orientation="horizontal">
 
-	<ImageView android:id="@+id/btn2" style="@style/bbb_btn_icon" android:src="@drawable/ic_add_shortcut_holo"/>
-</FrameLayout>
+            <FrameLayout style="@style/bbb_btn">
 
-<FrameLayout style="@style/bbb_btn">
+                <Button
+                    android:id="@+id/btn_text2"
+                    style="@style/bbb_btn_text"
+                    android:text="@string/set_shortcut_short" />
 
-	<Button android:id="@+id/btn_text3" style="@style/bbb_btn_text" android:text="@string/set_shortcut_short"/>
+                <ImageView
+                    android:id="@+id/btn2"
+                    style="@style/bbb_btn_icon"
+                    android:src="@drawable/ic_add_shortcut_holo" />
+            </FrameLayout>
 
-	<ImageView android:id="@+id/btn3" style="@style/bbb_btn_icon" android:src="@drawable/ic_add_shortcut_holo"/>
-</FrameLayout>
-</LinearLayout><LinearLayout android:layout_width="match_parent" android:layout_height="0dip" android:layout_gravity="center_vertical|center_horizontal" android:layout_weight="1" android:baselineAligned="false" android:gravity="bottom" android:orientation="horizontal">
+            <FrameLayout style="@style/bbb_btn">
 
-<FrameLayout style="@style/bbb_btn">
+                <Button
+                    android:id="@+id/btn_text3"
+                    style="@style/bbb_btn_text"
+                    android:text="@string/set_shortcut_short" />
 
-	<Button android:id="@+id/btn_text4" style="@style/bbb_btn_text" android:text="@string/set_shortcut_short"/>
+                <ImageView
+                    android:id="@+id/btn3"
+                    style="@style/bbb_btn_icon"
+                    android:src="@drawable/ic_add_shortcut_holo" />
+            </FrameLayout>
+        </LinearLayout>
 
-	<ImageView android:id="@+id/btn4" style="@style/bbb_btn_icon" android:src="@drawable/ic_add_shortcut_holo"/>
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:gravity="bottom"
+            android:orientation="horizontal">
 
-<FrameLayout style="@style/bbb_btn">
+            <FrameLayout style="@style/bbb_btn">
 
-	<Button android:id="@+id/btn_text5" style="@style/bbb_btn_text" android:text="@string/set_shortcut_short"/>
+                <Button
+                    android:id="@+id/btn_text4"
+                    style="@style/bbb_btn_text"
+                    android:text="@string/set_shortcut_short" />
 
-	<ImageView android:id="@+id/btn5" style="@style/bbb_btn_icon" android:src="@drawable/ic_add_shortcut_holo"/>
-</FrameLayout>
-</LinearLayout><LinearLayout android:layout_width="match_parent" android:layout_height="0dip" android:layout_gravity="center_vertical|center_horizontal" android:layout_weight="1" android:baselineAligned="false" android:gravity="bottom" android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/btn4"
+                    style="@style/bbb_btn_icon"
+                    android:src="@drawable/ic_add_shortcut_holo" />
+            </FrameLayout>
 
-<FrameLayout style="@style/bbb_btn">
+            <FrameLayout style="@style/bbb_btn">
 
-	<Button android:id="@+id/btn_text6" style="@style/bbb_btn_text" android:text="@string/set_shortcut_short"/>
+                <Button
+                    android:id="@+id/btn_text5"
+                    style="@style/bbb_btn_text"
+                    android:text="@string/set_shortcut_short" />
 
-	<ImageView android:id="@+id/btn6" style="@style/bbb_btn_icon" android:src="@drawable/ic_add_shortcut_holo"/>
-</FrameLayout>
+                <ImageView
+                    android:id="@+id/btn5"
+                    style="@style/bbb_btn_icon"
+                    android:src="@drawable/ic_add_shortcut_holo" />
+            </FrameLayout>
+        </LinearLayout>
 
-<FrameLayout style="@style/bbb_btn">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:gravity="bottom"
+            android:orientation="horizontal">
 
-	<Button android:id="@+id/btn_text7" style="@style/bbb_btn_text" android:text="@string/set_shortcut_short"/>
+            <FrameLayout style="@style/bbb_btn">
 
-	<ImageView android:id="@+id/btn7" style="@style/bbb_btn_icon" android:src="@drawable/ic_add_shortcut_holo"/>
-</FrameLayout>
-</LinearLayout></LinearLayout>
+                <Button
+                    android:id="@+id/btn_text6"
+                    style="@style/bbb_btn_text"
+                    android:text="@string/set_shortcut_short" />
 
-	<include layout="@layout/sk_blackbearblank_buttons"/>
+                <ImageView
+                    android:id="@+id/btn6"
+                    style="@style/bbb_btn_icon"
+                    android:src="@drawable/ic_add_shortcut_holo" />
+            </FrameLayout>
+
+            <FrameLayout style="@style/bbb_btn">
+
+                <Button
+                    android:id="@+id/btn_text7"
+                    style="@style/bbb_btn_text"
+                    android:text="@string/set_shortcut_short" />
+
+                <ImageView
+                    android:id="@+id/btn7"
+                    style="@style/bbb_btn_icon"
+                    android:src="@drawable/ic_add_shortcut_holo" />
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/sk_blackbearblank_buttons" />
 
 </LinearLayout>
