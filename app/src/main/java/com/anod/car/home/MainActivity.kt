@@ -1,9 +1,9 @@
 package com.anod.car.home
 
-import com.anod.car.home.main.WidgetsListActivity
+import info.anodsplace.carwidget.MainComposeActivity
 
 /**
  * @author alex
  * @date 5/22/13
  */
-class MainActivity : WidgetsListActivity()
+class MainActivity : MainComposeActivity()
