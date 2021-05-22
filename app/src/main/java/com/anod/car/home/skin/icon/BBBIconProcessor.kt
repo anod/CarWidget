@@ -1,6 +1,7 @@
 package com.anod.car.home.skin.icon
 
 import android.graphics.Bitmap
+import info.anodsplace.carwidget.utils.IconProcessor
 
 class BBBIconProcessor : IconProcessor {
 

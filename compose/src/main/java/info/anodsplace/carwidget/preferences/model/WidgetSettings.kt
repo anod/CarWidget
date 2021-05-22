@@ -1,17 +1,16 @@
-package com.anod.car.home.prefs.model
+package info.anodsplace.carwidget.preferences.model
 
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Path
-import android.os.Build
 import android.util.JsonReader
 import android.util.JsonToken
 import android.util.JsonWriter
 import androidx.collection.SimpleArrayMap
 import androidx.core.content.res.ResourcesCompat
-import com.anod.car.home.R
-import com.anod.car.home.utils.BitmapTransform
+import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.utils.BitmapTransform
 import info.anodsplace.framework.graphics.PathParser
 import java.io.IOException
 

@@ -15,6 +15,8 @@ import com.anod.car.home.ShortcutActivity
 import com.anod.car.home.app.NewShortcutActivity
 import com.anod.car.home.incar.SwitchInCarActivity
 import com.anod.car.home.prefs.LookAndFeelActivity
+import info.anodsplace.carwidget.utils.UtilitiesBitmap
+import info.anodsplace.carwidget.utils.Version
 import info.anodsplace.framework.AppLog
 
 fun Intent.forNewShortcut(context: Context, appWidgetId: Int, cellId: Int): Intent {

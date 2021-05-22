@@ -8,13 +8,14 @@ import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.databinding.ActivityMainBinding
-import com.anod.car.home.incar.ScreenOrientation
+import info.anodsplace.carwidget.incar.ScreenOrientation
 import com.anod.car.home.prefs.ConfigurationInCar
 import com.anod.car.home.prefs.LookAndFeelActivity
-import com.anod.car.home.prefs.model.InCarInterface
-import com.anod.car.home.prefs.model.InCarStorage
+import info.anodsplace.carwidget.preferences.model.InCarInterface
+import info.anodsplace.carwidget.preferences.model.InCarStorage
 import com.anod.car.home.utils.*
 import com.google.android.material.snackbar.Snackbar
+import info.anodsplace.carwidget.utils.Version
 
 /**
  * @author alex
@@ -118,7 +119,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
         if (settings.screenOrientation != ScreenOrientation.DISABLED && AppPermissions.shouldShowMessage(this, CanDrawOverlay)) {
             permissions.add(CanDrawOverlay.value)
         }
-        val needsWritePermission = settings.brightness != InCarInterface.BRIGHTNESS_DISABLED || settings.isSamsungDrivingMode
+        val needsWritePermission = settings.brightness != InCarInterface.BRIGHTNESS_DISABLED
         if (needsWritePermission && AppPermissions.shouldShowMessage(this, WriteSettings)) {
             permissions.add(WriteSettings.value)
         }

@@ -11,13 +11,13 @@ import android.view.WindowManager
 import com.anod.car.home.app.AppIconLoader
 import com.anod.car.home.incar.ModeHandler
 import com.anod.car.home.incar.ModePhoneStateListener
-import com.anod.car.home.incar.ScreenOnAlert
-import com.anod.car.home.incar.ScreenOrientation
+import info.anodsplace.carwidget.incar.ScreenOnAlert
+import info.anodsplace.carwidget.incar.ScreenOrientation
 import com.anod.car.home.model.AppsList
 import com.anod.car.home.prefs.model.AppSettings
 import com.anod.car.home.prefs.model.AppTheme
-import com.anod.car.home.prefs.model.InCarSettings
-import com.anod.car.home.prefs.model.InCarStorage
+import info.anodsplace.carwidget.preferences.model.InCarSettings
+import info.anodsplace.carwidget.preferences.model.InCarStorage
 import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.util.createLruCache
 

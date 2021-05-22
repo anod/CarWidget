@@ -1,18 +1,17 @@
-package com.anod.car.home.model
+package info.anodsplace.carwidget.db
 
 import android.content.Context
 import android.graphics.Path
 import android.graphics.drawable.AdaptiveIconDrawable
-import android.os.Build
-import com.anod.car.home.prefs.model.WidgetStorage
-import com.anod.car.home.utils.AdaptiveIcon
+import info.anodsplace.carwidget.preferences.model.WidgetStorage
+import info.anodsplace.carwidget.utils.AdaptiveIcon
 import info.anodsplace.framework.AppLog
 import java.lang.Exception
 
 class ShortcutIconLoader(
-        private val db: ShortcutsDatabase,
-        private val adaptiveIconPath: Path,
-        private val context: Context) {
+    private val db: ShortcutsDatabase,
+    private val adaptiveIconPath: Path,
+    private val context: Context) {
 
     constructor(db: ShortcutsDatabase, appWidgetId: Int, context: Context)
         : this(db, WidgetStorage.load(context, appWidgetId).adaptiveIconPath, context)

@@ -21,7 +21,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.anod.car.home.R
 import com.anod.car.home.app.AppCompatGridActivity
 import com.anod.car.home.utils.FastBitmapDrawable
-import com.anod.car.home.utils.UtilitiesBitmap
+import info.anodsplace.carwidget.utils.UtilitiesBitmap
 import info.anodsplace.framework.AppLog
 import java.util.*
 

@@ -8,9 +8,9 @@ import androidx.preference.Preference
 import com.android.colorpicker.ColorPickerSwatch
 import com.anod.car.home.R
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog
-import com.anod.car.home.prefs.model.WidgetInterface
-import com.anod.car.home.prefs.model.WidgetSettings
-import com.anod.car.home.prefs.model.WidgetStorage
+import info.anodsplace.carwidget.preferences.model.WidgetInterface
+import info.anodsplace.carwidget.preferences.model.WidgetSettings
+import info.anodsplace.carwidget.preferences.model.WidgetStorage
 import com.anod.car.home.prefs.views.SeekBarDialogPreference
 import java.util.*
 

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="icon_size">48.0dip</dimen>
+    <dimen name="screen_on_alert">32dp</dimen>
+</resources>

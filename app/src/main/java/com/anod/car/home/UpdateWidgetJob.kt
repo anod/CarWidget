@@ -7,8 +7,8 @@ import com.anod.car.home.app.App
 import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.appwidget.WidgetViewBuilder
 import com.anod.car.home.incar.BroadcastService
-import com.anod.car.home.prefs.model.InCarStorage
-import com.anod.car.home.utils.Version
+import info.anodsplace.carwidget.preferences.model.InCarStorage
+import info.anodsplace.carwidget.utils.Version
 import info.anodsplace.framework.AppLog
 
 /**

@@ -3,6 +3,10 @@ package com.anod.car.home.model
 import android.content.Context
 import android.content.Intent
 import android.util.SparseArray
+import info.anodsplace.carwidget.db.Shortcut
+import info.anodsplace.carwidget.db.ShortcutIcon
+import info.anodsplace.carwidget.db.Shortcuts
+import info.anodsplace.carwidget.db.ShortcutsDatabase
 import java.util.*
 
 abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {

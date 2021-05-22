@@ -14,9 +14,9 @@ import android.widget.ImageView
 import com.anod.car.home.R
 import com.anod.car.home.app.AppCompatGridActivity
 import com.anod.car.home.appwidget.WidgetButtonViewBuilder
-import com.anod.car.home.prefs.model.WidgetInterface
-import com.anod.car.home.prefs.model.WidgetSettings
-import com.anod.car.home.prefs.model.WidgetStorage
+import info.anodsplace.carwidget.preferences.model.WidgetInterface
+import info.anodsplace.carwidget.preferences.model.WidgetSettings
+import info.anodsplace.carwidget.preferences.model.WidgetStorage
 import com.anod.car.home.skin.PropertiesFactory
 import com.anod.car.home.skin.SkinProperties
 import com.anod.car.home.utils.Utils

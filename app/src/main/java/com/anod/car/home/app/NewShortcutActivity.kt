@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import com.anod.car.home.appwidget.Provider
-import com.anod.car.home.model.Shortcut
+import info.anodsplace.carwidget.db.Shortcut
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.utils.ShortcutPicker
 import com.anod.car.home.utils.Utils

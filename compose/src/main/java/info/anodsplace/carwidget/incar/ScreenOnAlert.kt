@@ -1,4 +1,4 @@
-package com.anod.car.home.incar
+package info.anodsplace.carwidget.incar
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,8 +6,8 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import com.anod.car.home.R
-import com.anod.car.home.prefs.model.InCarInterface
+import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.preferences.model.InCarInterface
 import info.anodsplace.framework.app.AlertWindow
 
 class ScreenOnAlert(private val context: Context, private val prefs: InCarInterface, private val alertWindow: AlertWindow) : View.OnTouchListener {

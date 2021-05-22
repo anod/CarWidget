@@ -76,9 +76,9 @@
     <string name="pref_phone_volume_level">Call level</string>
     <string name="notif_expired">Trial expired</string>
     <string name="notif_consider">Consider to install Pro version</string>
-    <string name="incar_mode_enabled">InCar mode</string>
-    <string name="click_to_disable">Click to disable</string>
-    <string name="click_to_disable_trial">Click to disable, Trial: %d times left</string>
+    <string name="incar_mode_enabled">InCar mode enabled</string>
+    <string name="disable">Disable</string>
+    <string name="trial_left">Trial: %d times left</string>
     <plurals name="notif_activations_left">
         <item quantity="one">%1$d activation left</item>
         <item quantity="other">%1$d activations left</item>

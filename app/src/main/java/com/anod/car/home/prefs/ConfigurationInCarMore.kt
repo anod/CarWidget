@@ -10,9 +10,8 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import com.anod.car.home.R
-import com.anod.car.home.incar.SamsungDrivingMode
-import com.anod.car.home.prefs.model.InCarSettings
-import com.anod.car.home.prefs.model.InCarStorage
+import info.anodsplace.carwidget.preferences.model.InCarSettings
+import info.anodsplace.carwidget.preferences.model.InCarStorage
 import com.anod.car.home.utils.AppPermissions
 import com.anod.car.home.utils.WriteSettings
 
@@ -31,7 +30,6 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initAutorunApp()
-        initSamsungHandsfree()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -39,24 +37,6 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
             saveAutorunApp(data)
         }
         super.onActivityResult(requestCode, resultCode, data)
-    }
-
-
-    private fun initSamsungHandsfree() {
-        val samDrivingPref = requirePreference<CheckBoxPreference>(InCarSettings.SAMSUNG_DRIVING_MODE)
-        if (!SamsungDrivingMode.hasMode) {
-            requirePreference<PreferenceCategory>("incar-more-category").removePreference(samDrivingPref)
-        } else {
-            samDrivingPref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                if (newValue as Boolean) {
-                    if (!AppPermissions.isGranted(requireContext(), WriteSettings)) {
-                        Toast.makeText(context, R.string.allow_permissions_samsung_mode, Toast.LENGTH_LONG).show()
-                        AppPermissions.requestWriteSettings(this, requestWriteSettings)
-                    }
-                }
-                true
-            }
-        }
     }
 
     private fun saveAutorunApp(data: Intent?) {

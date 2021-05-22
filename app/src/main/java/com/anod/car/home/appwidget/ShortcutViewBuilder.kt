@@ -8,16 +8,16 @@ import android.graphics.drawable.Drawable
 import android.util.LruCache
 import android.view.View
 import android.widget.RemoteViews
-import com.anod.car.home.model.Shortcut
-import com.anod.car.home.model.ShortcutIconLoader
+import info.anodsplace.carwidget.db.Shortcut
+import info.anodsplace.carwidget.db.ShortcutIconLoader
 import com.anod.car.home.model.WidgetShortcutsModel
-import com.anod.car.home.prefs.model.WidgetInterface
-import com.anod.car.home.prefs.model.WidgetSettings
+import info.anodsplace.carwidget.preferences.model.WidgetInterface
+import info.anodsplace.carwidget.preferences.model.WidgetSettings
 import com.anod.car.home.skin.SkinProperties
 import com.anod.car.home.skin.icon.BackgroundProcessor
-import com.anod.car.home.utils.BitmapTransform
+import info.anodsplace.carwidget.utils.BitmapTransform
 import com.anod.car.home.utils.IconTheme
-import com.anod.car.home.utils.UtilitiesBitmap
+import info.anodsplace.carwidget.utils.UtilitiesBitmap
 import info.anodsplace.framework.AppLog
 
 /**
@@ -47,7 +47,8 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
 
     fun init(scaledDensity: Float, skinProperties: SkinProperties,
              iconTheme: IconTheme?, prefs: WidgetSettings, shortcuts: WidgetShortcutsModel,
-             bitmapTransform: BitmapTransform) {
+             bitmapTransform: BitmapTransform
+    ) {
         this.scaledDensity = scaledDensity
         this.skinProperties = skinProperties
         this.iconTheme = iconTheme

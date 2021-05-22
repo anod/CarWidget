@@ -1,6 +1,6 @@
-package com.anod.car.home.prefs.model
+package info.anodsplace.carwidget.preferences.model
 
-import com.anod.car.home.utils.BitmapTransform
+import info.anodsplace.carwidget.utils.BitmapTransform
 
 /**
  * @author algavris
@@ -26,6 +26,8 @@ interface WidgetInterface {
     fun setIconsScaleString(iconsScale: String)
 
     companion object {
+        const val idUnknown: Long = -1
+
         const val SKIN_GLOSSY = "glossy"
         const val SKIN_CARHOME = "carhome"
         const val SKIN_WINDOWS7 = "windows7"

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,9 +18,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.databinding.ActivityRequestPermissionsBinding
-import com.anod.car.home.prefs.model.InCarInterface
-import com.anod.car.home.prefs.model.InCarSettings
-import com.anod.car.home.prefs.model.InCarStorage
+import info.anodsplace.carwidget.preferences.model.InCarInterface
+import info.anodsplace.carwidget.preferences.model.InCarSettings
+import info.anodsplace.carwidget.preferences.model.InCarStorage
 import com.anod.car.home.utils.*
 
 class RequestPermissionsActivity : CarWidgetActivity() {
@@ -130,17 +129,10 @@ class RequestPermissionsActivity : CarWidgetActivity() {
         val items: List<Item> = permissions.map {
             when (it) {
                 WriteSettings.value -> {
-                    if (settings.brightness == InCarInterface.BRIGHTNESS_DISABLED && settings.isSamsungDrivingMode) {
-                        Item(
-                                R.drawable.ic_directions_car_black_24dp,
-                                R.string.permission_write_settings,
-                                R.string.samsung_driving_title)
-                    } else {
                         Item(
                                 R.drawable.ic_action_brightness_medium,
                                 R.string.permission_write_settings,
                                 R.string.adjust_brightness)
-                    }
                 }
                 CanDrawOverlay.value -> Item(
                         R.drawable.ic_screen_rotation_black_24dp,

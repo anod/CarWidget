@@ -18,8 +18,8 @@ import com.anod.car.home.prefs.ConfigurationActivity
 import com.anod.car.home.prefs.ConfigurationLook
 import com.anod.car.home.prefs.LookAndFeelActivity
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog
-import com.anod.car.home.prefs.model.WidgetInterface
-import com.anod.car.home.prefs.model.WidgetStorage
+import info.anodsplace.carwidget.preferences.model.WidgetInterface
+import info.anodsplace.carwidget.preferences.model.WidgetStorage
 import com.anod.car.home.utils.FastBitmapDrawable
 import com.anod.car.home.utils.HtmlCompat
 import info.anodsplace.framework.app.DialogCustom

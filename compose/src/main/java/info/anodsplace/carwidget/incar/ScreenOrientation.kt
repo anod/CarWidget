@@ -1,13 +1,12 @@
-package com.anod.car.home.incar
+package info.anodsplace.carwidget.incar
 
 import android.content.Context
 import android.content.pm.ActivityInfo
-import android.os.Build
 import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
-import com.anod.car.home.R
+import info.anodsplace.carwidget.R
 
 /**
  * @author alex

@@ -11,9 +11,9 @@ import com.anod.car.home.app.App
 import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.notifications.InCarModeNotification
 import com.anod.car.home.notifications.TrialExpiredNotification
-import com.anod.car.home.prefs.model.InCarInterface
-import com.anod.car.home.prefs.model.InCarStorage
-import com.anod.car.home.utils.Version
+import info.anodsplace.carwidget.preferences.model.InCarInterface
+import info.anodsplace.carwidget.preferences.model.InCarStorage
+import info.anodsplace.carwidget.utils.Version
 import info.anodsplace.framework.AppLog
 
 class ModeService : Service() {

@@ -3,7 +3,7 @@ package com.anod.car.home.skin.icon
 import android.graphics.Bitmap
 import android.graphics.Color
 import androidx.palette.graphics.Palette
-import com.anod.car.home.prefs.model.WidgetSettings
+import info.anodsplace.carwidget.preferences.model.WidgetSettings
 
 /**
  * @author alex

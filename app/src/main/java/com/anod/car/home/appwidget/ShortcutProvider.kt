@@ -10,8 +10,8 @@ import android.widget.RemoteViews
 import com.anod.car.home.R
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.incar.SwitchInCarActivity
-import com.anod.car.home.prefs.model.InCarStorage
-import com.anod.car.home.utils.Version
+import info.anodsplace.carwidget.preferences.model.InCarStorage
+import info.anodsplace.carwidget.utils.Version
 
 /**
  * @author algavris
@@ -27,25 +27,9 @@ class ShortcutProvider : AppWidgetProvider() {
         val activity = Intent(context, SwitchInCarActivity::class.java)
         activity.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
 
-        val switchIntent = PendingIntent.getActivity(context, 0, activity, PendingIntent.FLAG_UPDATE_CURRENT)
-        //        pendingIntent.setData(Uri.parse("com.anod.car.home.pro://mode/switch"));
+        val switchIntent = PendingIntent.getActivity(context, 0, activity, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         views.setOnClickPendingIntent(R.id.button, switchIntent)
 
-        val version = Version(context)
-        registerBroadcastService(context, version.isProOrTrial)
-
         appWidgetManager.updateAppWidget(appWidgetIds, views)
-    }
-
-    private fun registerBroadcastService(context: Context, isProOrTrial: Boolean) {
-        val inCarEnabled = if (isProOrTrial)
-            InCarStorage.load(context).isInCarEnabled
-        else
-            false
-        if (inCarEnabled) {
-            BroadcastService.startService(context)
-        } else {
-            BroadcastService.stopService(context)
-        }
     }
 }

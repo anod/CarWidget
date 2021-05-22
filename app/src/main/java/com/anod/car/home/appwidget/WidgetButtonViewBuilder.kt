@@ -6,9 +6,9 @@ import android.widget.RemoteViews
 import androidx.annotation.IdRes
 import com.anod.car.home.R
 import com.anod.car.home.incar.ModeService
-import com.anod.car.home.prefs.model.InCarStorage
-import com.anod.car.home.prefs.model.WidgetInterface
-import com.anod.car.home.prefs.model.WidgetSettings
+import info.anodsplace.carwidget.preferences.model.InCarStorage
+import info.anodsplace.carwidget.preferences.model.WidgetInterface
+import info.anodsplace.carwidget.preferences.model.WidgetSettings
 import com.anod.car.home.skin.SkinProperties
 
 /**
@@ -16,10 +16,10 @@ import com.anod.car.home.skin.SkinProperties
  * @date 2015-01-31
  */
 class WidgetButtonViewBuilder(
-        private val context: Context,
-        private val prefs: WidgetSettings,
-        private val pendingIntentFactory: WidgetViewBuilder.PendingIntentFactory,
-        private val appWidgetId: Int) {
+    private val context: Context,
+    private val prefs: WidgetSettings,
+    private val pendingIntentFactory: WidgetViewBuilder.PendingIntentFactory,
+    private val appWidgetId: Int) {
 
     var alternativeHidden = false
 

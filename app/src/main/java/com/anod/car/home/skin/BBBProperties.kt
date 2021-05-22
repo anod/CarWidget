@@ -2,8 +2,7 @@ package com.anod.car.home.skin
 
 import com.anod.car.home.R
 import com.anod.car.home.skin.icon.BBBIconProcessor
-import com.anod.car.home.skin.icon.IconProcessor
-
+import info.anodsplace.carwidget.utils.IconProcessor
 
 class BBBProperties : BaseProperties() {
 

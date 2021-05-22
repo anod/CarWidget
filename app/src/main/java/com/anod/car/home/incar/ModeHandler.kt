@@ -11,8 +11,10 @@ import android.provider.Settings
 import android.widget.Toast
 import com.anod.car.home.R
 import com.anod.car.home.app.App
-import com.anod.car.home.prefs.model.InCarInterface
+import info.anodsplace.carwidget.preferences.model.InCarInterface
 import com.anod.car.home.utils.Power
+import info.anodsplace.carwidget.incar.ScreenOnAlert
+import info.anodsplace.carwidget.incar.ScreenOrientation
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.content.startActivitySafely
 
@@ -45,10 +47,6 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
             activateCarMode(context)
         }
 
-        if (prefs.isSamsungDrivingMode) {
-            SamsungDrivingMode.enable(context)
-        }
-
         if (prefs.screenOrientation != ScreenOrientation.DISABLED) {
             screenOrientation.set(prefs.screenOrientation)
         }
@@ -77,12 +75,8 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
         if (prefs.isActivateCarMode) {
             deactivateCarMode(context)
         }
-        if (prefs.isSamsungDrivingMode) {
-            SamsungDrivingMode.disable(context)
-        }
 
         screenOrientation.set(ScreenOrientation.DISABLED)
-
         val brightSetting = prefs.brightness
         if (brightSetting != InCarInterface.BRIGHTNESS_DISABLED) {
             restoreBrightness(brightSetting, context)

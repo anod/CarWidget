@@ -1,6 +1,7 @@
 package com.anod.car.home.incar
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,13 +10,14 @@ import android.widget.Toast
 import com.anod.car.home.R
 import com.anod.car.home.prefs.ConfigurationActivity
 import com.anod.car.home.prefs.ConfigurationInCar
-import com.anod.car.home.prefs.model.InCarStorage
+import info.anodsplace.carwidget.preferences.model.InCarStorage
 
 class SwitchInCarActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (InCarStorage.load(this).isInCarEnabled) {
+        val isInCarEnabled = InCarStorage.load(this).isInCarEnabled
+        if (isInCarEnabled) {
             val service = Intent(this, ModeService::class.java)
             val data: Uri = if (ModeService.sInCarMode) {
                 service.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_OFF)
@@ -34,8 +36,15 @@ class SwitchInCarActivity : Activity() {
             val intent = ConfigurationActivity.createFragmentIntent(this, ConfigurationInCar::class.java)
             startActivity(intent)
         }
+        // registerBroadcastService(applicationContext, isInCarEnabled)
         finish()
     }
 
-
+    private fun registerBroadcastService(context: Context, isInCarEnabled: Boolean) {
+        if (isInCarEnabled) {
+            BroadcastService.startService(context)
+        } else {
+            BroadcastService.stopService(context)
+        }
+    }
 }

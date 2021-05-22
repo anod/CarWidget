@@ -8,9 +8,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.anod.car.home.R
-import com.anod.car.home.model.Shortcut
+import info.anodsplace.carwidget.db.Shortcut
 import com.anod.car.home.model.ShortcutInfoUtils
-import com.anod.car.home.model.Shortcuts
+import info.anodsplace.carwidget.db.Shortcuts
 import com.anod.car.home.prefs.*
 import java.util.*
 

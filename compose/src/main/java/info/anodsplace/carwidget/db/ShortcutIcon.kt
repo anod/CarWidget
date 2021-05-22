@@ -1,4 +1,4 @@
-package com.anod.car.home.model
+package info.anodsplace.carwidget.db
 
 import android.content.Intent
 import android.graphics.Bitmap

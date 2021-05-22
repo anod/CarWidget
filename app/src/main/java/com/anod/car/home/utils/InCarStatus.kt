@@ -4,8 +4,9 @@ import android.content.Context
 
 import com.anod.car.home.R
 import com.anod.car.home.appwidget.WidgetHelper
-import com.anod.car.home.prefs.model.InCarSettings
-import com.anod.car.home.prefs.model.InCarStorage
+import info.anodsplace.carwidget.preferences.model.InCarSettings
+import info.anodsplace.carwidget.preferences.model.InCarStorage
+import info.anodsplace.carwidget.utils.Version
 
 class InCarStatus(widgetsCount: Int, version: Version, settings: InCarSettings) {
 

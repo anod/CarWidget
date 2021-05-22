@@ -1,4 +1,4 @@
-package com.anod.car.home.utils
+package info.anodsplace.carwidget.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.PaintDrawable
 import android.util.DisplayMetrics
 import android.util.Log
-import com.anod.car.home.R
+import info.anodsplace.carwidget.R
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import kotlin.math.max

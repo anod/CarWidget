@@ -10,6 +10,9 @@ import com.squareup.picasso.RequestHandler
 import java.io.IOException
 
 import com.squareup.picasso.Picasso.LoadedFrom.DISK
+import info.anodsplace.carwidget.db.LauncherSettings
+import info.anodsplace.carwidget.db.ShortcutIconLoader
+import info.anodsplace.carwidget.db.ShortcutsDatabase
 import info.anodsplace.framework.graphics.PathParser
 
 /**

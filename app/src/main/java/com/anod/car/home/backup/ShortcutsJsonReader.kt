@@ -12,11 +12,11 @@ import android.text.TextUtils
 import android.util.JsonReader
 import android.util.SparseArray
 import androidx.core.content.res.ResourcesCompat
-import com.anod.car.home.model.LauncherSettings
-import com.anod.car.home.model.Shortcut
-import com.anod.car.home.model.ShortcutIcon
+import info.anodsplace.carwidget.db.LauncherSettings
+import info.anodsplace.carwidget.db.Shortcut
+import info.anodsplace.carwidget.db.ShortcutIcon
 import com.anod.car.home.utils.SoftReferenceThreadLocal
-import com.anod.car.home.utils.UtilitiesBitmap
+import info.anodsplace.carwidget.utils.UtilitiesBitmap
 import info.anodsplace.framework.AppLog
 import java.io.ByteArrayOutputStream
 import java.io.IOException

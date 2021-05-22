@@ -1,9 +1,10 @@
-package com.anod.car.home.model
+package info.anodsplace.carwidget.db
 
 import android.net.Uri
 import android.provider.BaseColumns
 
-import com.anod.car.home.utils.Version
+import info.anodsplace.carwidget.content.LauncherContentProvider
+import info.anodsplace.carwidget.utils.Version
 
 /**
  * Settings related utilities.
@@ -104,12 +105,14 @@ class LauncherSettings {
             /**
              * The content:// style URL for this table
              */
-            internal fun getContentUri(packageName: String): Uri {
+            fun getContentUri(packageName: String): Uri {
                 return if (Version.isFree(packageName)) {
-                    Uri.parse(CONTENT_PREFIX + LauncherProvider.AUTHORITY_FREE + "/"
-                            + LauncherProvider.TABLE_FAVORITES)
-                } else Uri.parse(CONTENT_PREFIX + LauncherProvider.AUTHORITY_PRO + "/"
-                        + LauncherProvider.TABLE_FAVORITES)
+                    Uri.parse(
+                        CONTENT_PREFIX + LauncherContentProvider.AUTHORITY_FREE + "/"
+                            + LauncherContentProvider.TABLE_FAVORITES)
+                } else Uri.parse(
+                    CONTENT_PREFIX + LauncherContentProvider.AUTHORITY_PRO + "/"
+                        + LauncherContentProvider.TABLE_FAVORITES)
             }
 
             /**
@@ -120,10 +123,12 @@ class LauncherSettings {
              */
             fun getContentUri(packageName: String, id: Long): Uri {
                 return if (Version.isFree(packageName)) {
-                    Uri.parse(CONTENT_PREFIX + LauncherProvider.AUTHORITY_FREE + "/"
-                            + LauncherProvider.TABLE_FAVORITES + "/" + id)
-                } else Uri.parse(CONTENT_PREFIX + LauncherProvider.AUTHORITY_PRO + "/"
-                        + LauncherProvider.TABLE_FAVORITES + "/" + id)
+                    Uri.parse(
+                        CONTENT_PREFIX + LauncherContentProvider.AUTHORITY_FREE + "/"
+                            + LauncherContentProvider.TABLE_FAVORITES + "/" + id)
+                } else Uri.parse(
+                    CONTENT_PREFIX + LauncherContentProvider.AUTHORITY_PRO + "/"
+                        + LauncherContentProvider.TABLE_FAVORITES + "/" + id)
             }
         }
 

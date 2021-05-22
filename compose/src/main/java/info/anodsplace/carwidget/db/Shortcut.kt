@@ -1,7 +1,8 @@
-package com.anod.car.home.model
+package info.anodsplace.carwidget.db
 
 import android.content.ComponentName
 import android.content.Intent
+import info.anodsplace.carwidget.preferences.model.WidgetInterface
 
 /**
  * @author algavris
@@ -34,7 +35,7 @@ class Shortcut(
     constructor(id: Long, item: Shortcut) : this(id, item.itemType, item.title, item.isCustomIcon, item.intent)
 
     companion object {
-        const val idUnknown: Long = -1
+        const val idUnknown: Long = WidgetInterface.idUnknown
 
         /**
          * Creates the application intent based on a component name and various launch flags.

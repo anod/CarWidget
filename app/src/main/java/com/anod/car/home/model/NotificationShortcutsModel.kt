@@ -2,8 +2,10 @@ package com.anod.car.home.model
 
 import android.content.Context
 import android.graphics.Path
+import info.anodsplace.carwidget.db.Shortcut
+import info.anodsplace.carwidget.db.ShortcutIconLoader
 
-import com.anod.car.home.prefs.model.InCarStorage
+import info.anodsplace.carwidget.preferences.model.InCarStorage
 
 import java.util.ArrayList
 

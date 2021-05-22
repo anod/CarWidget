@@ -7,7 +7,7 @@ import androidx.core.util.isEmpty
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.anod.car.home.appwidget.WidgetHelper
-import com.anod.car.home.model.Shortcut
+import info.anodsplace.carwidget.db.Shortcut
 import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.utils.AppViewModel
 import kotlinx.coroutines.Dispatchers

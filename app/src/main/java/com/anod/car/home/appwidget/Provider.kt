@@ -12,7 +12,7 @@ import com.anod.car.home.UpdateWidgetJob
 import com.anod.car.home.app.App
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.incar.ModeService
-import com.anod.car.home.prefs.model.WidgetStorage
+import info.anodsplace.carwidget.preferences.model.WidgetStorage
 import info.anodsplace.framework.AppLog
 
 

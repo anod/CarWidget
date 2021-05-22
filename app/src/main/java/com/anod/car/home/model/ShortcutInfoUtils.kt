@@ -17,8 +17,11 @@ import android.os.Build
 import android.os.Parcelable
 import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
-import com.anod.car.home.utils.UtilitiesBitmap
+import info.anodsplace.carwidget.utils.UtilitiesBitmap
 import com.anod.car.home.utils.toBitmap
+import info.anodsplace.carwidget.db.LauncherSettings
+import info.anodsplace.carwidget.db.Shortcut
+import info.anodsplace.carwidget.db.ShortcutIcon
 import info.anodsplace.framework.AppLog
 
 object ShortcutInfoUtils {
@@ -30,9 +33,9 @@ object ShortcutInfoUtils {
     val failedAppShortcut = 4
 
     class ShortcutWithIcon(
-            val result: Int,
-            val info: Shortcut?,
-            val icon: ShortcutIcon?
+        val result: Int,
+        val info: Shortcut?,
+        val icon: ShortcutIcon?
     )
 
     internal fun createShortcut(context: Context, data: Intent, isAppShortcut: Boolean): ShortcutWithIcon {

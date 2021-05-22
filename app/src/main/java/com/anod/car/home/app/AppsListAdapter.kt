@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.anod.car.home.model.AppsList
-import com.anod.car.home.utils.UtilitiesBitmap
+import info.anodsplace.carwidget.utils.UtilitiesBitmap
 import java.util.*
 
 class AppsListAdapter(

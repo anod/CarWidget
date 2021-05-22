@@ -4,8 +4,9 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 
-import com.anod.car.home.prefs.model.WidgetStorage
+import info.anodsplace.carwidget.preferences.model.WidgetStorage
 import com.anod.car.home.utils.isAvailable
+import info.anodsplace.carwidget.db.ShortcutIconLoader
 import info.anodsplace.framework.AppLog
 
 import java.util.ArrayList

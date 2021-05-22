@@ -5,13 +5,12 @@ import android.app.UiModeManager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Build
 import android.os.IBinder
 import androidx.core.content.ContextCompat
 import com.anod.car.home.notifications.ModeDetectorNotification
 
-import com.anod.car.home.prefs.model.InCarInterface
-import com.anod.car.home.prefs.model.InCarStorage
+import info.anodsplace.carwidget.preferences.model.InCarInterface
+import info.anodsplace.carwidget.preferences.model.InCarStorage
 import info.anodsplace.framework.AppLog
 
 class BroadcastService : Service() {

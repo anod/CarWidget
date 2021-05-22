@@ -6,7 +6,7 @@ import android.os.Bundle
 import com.anod.car.home.R
 import com.anod.car.home.model.NotificationShortcutsModel
 import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey
-import com.anod.car.home.prefs.model.InCarStorage
+import info.anodsplace.carwidget.preferences.model.InCarStorage
 import com.anod.car.home.prefs.views.ShortcutPreference
 
 class ConfigurationNotificationShortcuts : ConfigurationPreferenceFragment(), PreferenceKey, ShortcutPreference.DropCallback {

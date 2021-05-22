@@ -1,8 +1,8 @@
 package com.anod.car.home.main
 
 import com.anod.car.home.R
-import com.anod.car.home.model.LauncherSettings
-import com.anod.car.home.model.Shortcut
+import info.anodsplace.carwidget.db.LauncherSettings
+import info.anodsplace.carwidget.db.Shortcut
 import com.anod.car.home.model.ShortcutIconRequestHandler
 import com.squareup.picasso.Picasso
 
@@ -14,7 +14,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.util.forEach
 import androidx.core.util.isNotEmpty
-import com.anod.car.home.prefs.model.WidgetStorage
+import info.anodsplace.carwidget.preferences.model.WidgetStorage
 
 /**
  * @author alex
@@ -99,9 +99,9 @@ class WidgetsListAdapter(private val context: Context, private val clickHandler:
     interface Item
 
     internal class LargeItem(
-            val appWidgetId: Int,
-            val shortcuts: SparseArray<Shortcut?>,
-            val adaptiveIconStyle: String
+        val appWidgetId: Int,
+        val shortcuts: SparseArray<Shortcut?>,
+        val adaptiveIconStyle: String
     ) : Item
 
     internal class HintItem : Item

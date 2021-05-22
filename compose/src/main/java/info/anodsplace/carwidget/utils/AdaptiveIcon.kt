@@ -1,4 +1,4 @@
-package com.anod.car.home.utils
+package info.anodsplace.carwidget.utils
 
 import android.annotation.TargetApi
 import android.content.Context

@@ -17,7 +17,12 @@ import com.anod.car.home.app.App
 import com.anod.car.home.databinding.FragmentShortcutEditBinding
 import com.anod.car.home.model.*
 import com.anod.car.home.utils.*
+import info.anodsplace.carwidget.db.Shortcut
+import info.anodsplace.carwidget.db.ShortcutIcon
+import info.anodsplace.carwidget.db.ShortcutIconLoader
+import info.anodsplace.carwidget.db.ShortcutsDatabase
 import info.anodsplace.carwidget.intent.IntentEditFragment
+import info.anodsplace.carwidget.utils.UtilitiesBitmap
 import info.anodsplace.framework.AppLog
 import info.anodsplace.framework.app.DialogItems
 import info.anodsplace.framework.app.FragmentContainerActivity

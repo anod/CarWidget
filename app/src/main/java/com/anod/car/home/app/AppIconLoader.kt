@@ -7,7 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 
 import info.anodsplace.framework.AppLog
-import com.anod.car.home.utils.UtilitiesBitmap
+import info.anodsplace.carwidget.utils.UtilitiesBitmap
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Request
 import com.squareup.picasso.RequestHandler

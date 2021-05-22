@@ -14,15 +14,6 @@ import android.os.Bundle
 
 object Utils {
 
-    val isLowMemoryDevice: Boolean
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-        get() {
-            val memory = ActivityManager.RunningAppProcessInfo()
-            ActivityManager.getMyMemoryState(memory)
-
-            return memory.lastTrimLevel >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW
-        }
-
     fun isProInstalled(context: Context): Boolean {
         return try {
             context.packageManager.getApplicationInfo("com.anod.car.home.pro", 0)
@@ -61,12 +52,6 @@ object Utils {
 
     fun calcIconsScale(scaleString: String): Float {
         return 1.0f + 0.1f * Integer.valueOf(scaleString)
-    }
-
-
-    fun stringToComponent(compString: String): ComponentName {
-        val compParts = compString.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        return ComponentName(compParts[0], compParts[1])
     }
 
     fun calculateMemoryCacheSize(context: Context): Int {

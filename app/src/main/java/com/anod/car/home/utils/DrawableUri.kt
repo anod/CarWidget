@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import androidx.core.content.res.ResourcesCompat
+import info.anodsplace.carwidget.utils.UtilitiesBitmap
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream

@@ -1,6 +1,6 @@
 package com.anod.car.home.skin
 
-import com.anod.car.home.prefs.model.WidgetInterface
+import info.anodsplace.carwidget.preferences.model.WidgetInterface
 
 object PropertiesFactory {
 

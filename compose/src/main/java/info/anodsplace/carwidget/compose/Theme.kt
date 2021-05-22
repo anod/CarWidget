@@ -42,12 +42,12 @@ private val LightThemeColors = lightColors(
         secondary = BlueGray300,
         secondaryVariant = BlueGray100,
         background = Color.White,
-        surface = Color(0xFF546E7A),
+        surface = BlueGray600,
         error = Color(0xbFF00020),
         onPrimary = Color.White,
         onSecondary = Color.Black,
         onBackground = Color.Black,
-        onSurface = Color.White,
+        onSurface = BlueGray800,
         onError = Color.White,
 )
 

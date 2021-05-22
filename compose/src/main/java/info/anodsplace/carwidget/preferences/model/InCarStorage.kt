@@ -1,8 +1,7 @@
-package com.anod.car.home.prefs.model
+package info.anodsplace.carwidget.preferences.model
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.anod.car.home.model.Shortcut
 import java.util.*
 
 /**
@@ -58,7 +57,7 @@ object InCarStorage {
         val ids = ArrayList<Long>(NOTIFICATION_COMPONENT_NUMBER)
         for (i in 0 until NOTIFICATION_COMPONENT_NUMBER) {
             val key = getNotifComponentName(i)
-            val id = prefs.getLong(key, Shortcut.idUnknown)
+            val id = prefs.getLong(key, WidgetInterface.idUnknown)
             ids.add(i, id)
         }
         return ids

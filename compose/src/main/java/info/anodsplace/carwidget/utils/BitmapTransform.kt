@@ -1,6 +1,4 @@
-package com.anod.car.home.utils
-
-import com.anod.car.home.skin.icon.IconProcessor
+package info.anodsplace.carwidget.utils
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -11,6 +9,12 @@ import android.graphics.ColorMatrixColorFilter
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.PaintFlagsDrawFilter
+
+interface IconProcessor {
+    val id: String
+    val sizeDiff: Float
+    fun process(icon: Bitmap): Bitmap
+}
 
 class BitmapTransform(context: Context) {
 

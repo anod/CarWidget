@@ -19,10 +19,6 @@
             android:summary="@string/disabled"
             android:title="@string/pref_autorun_app_title" />
 
-        <CheckBoxPreference
-            android:key="sam_driving_mode"
-            android:summary="@string/samsung_driving_summary"
-            android:title="@string/samsung_driving_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>

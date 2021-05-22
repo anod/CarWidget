@@ -1,10 +1,9 @@
-package com.anod.car.home.prefs.model
+package info.anodsplace.carwidget.preferences.model
 
 import android.content.Context
 import android.content.SharedPreferences
 
-import com.anod.car.home.model.Shortcut
-import com.anod.car.home.model.ShortcutsDatabase
+import info.anodsplace.carwidget.db.ShortcutsDatabase
 import info.anodsplace.framework.AppLog
 
 import java.io.File
@@ -42,7 +41,7 @@ object WidgetStorage {
         val ids = ArrayList<Long>(count)
         for (i in 0 until count) {
             val key = getLaunchComponentKey(i)
-            val id = prefs.getLong(key, Shortcut.idUnknown)
+            val id = prefs.getLong(key, WidgetInterface.idUnknown)
             ids.add(i, id)
         }
         return ids
@@ -69,8 +68,8 @@ object WidgetStorage {
     }
 
     fun saveShortcutId(context: Context, preferences: SharedPreferences, shortcutId: Long, key: String) {
-        val curShortcutId = preferences.getLong(key, Shortcut.idUnknown)
-        if (curShortcutId != Shortcut.idUnknown) {
+        val curShortcutId = preferences.getLong(key, WidgetInterface.idUnknown)
+        if (curShortcutId != WidgetInterface.idUnknown) {
             val model = ShortcutsDatabase(context)
             model.deleteItemFromDatabase(curShortcutId)
         }
@@ -86,8 +85,8 @@ object WidgetStorage {
 
             for (i in 0 until LAUNCH_COMPONENT_NUMBER_MAX) {
                 val key = getLaunchComponentKey(i)
-                val curShortcutId = prefs.getLong(key, Shortcut.idUnknown)
-                if (curShortcutId != Shortcut.idUnknown) {
+                val curShortcutId = prefs.getLong(key, WidgetInterface.idUnknown)
+                if (curShortcutId != WidgetInterface.idUnknown) {
                     model.deleteItemFromDatabase(curShortcutId)
                 }
             }

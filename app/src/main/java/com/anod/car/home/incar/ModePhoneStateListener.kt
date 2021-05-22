@@ -10,7 +10,7 @@ import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import android.widget.Toast
 import com.anod.car.home.R
-import com.anod.car.home.prefs.model.InCarInterface
+import info.anodsplace.carwidget.preferences.model.InCarInterface
 import com.anod.car.home.utils.AnswerPhoneCalls
 import com.anod.car.home.utils.AppPermissions
 import com.anod.car.home.utils.ModifyPhoneState

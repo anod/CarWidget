@@ -7,12 +7,12 @@ import android.util.JsonWriter
 import android.util.SparseArray
 import com.anod.car.home.model.AbstractShortcuts
 import com.anod.car.home.model.NotificationShortcutsModel
-import com.anod.car.home.model.Shortcut
+import info.anodsplace.carwidget.db.Shortcut
 import com.anod.car.home.model.WidgetShortcutsModel
-import com.anod.car.home.prefs.model.InCarSettings
-import com.anod.car.home.prefs.model.InCarStorage
-import com.anod.car.home.prefs.model.WidgetSettings
-import com.anod.car.home.prefs.model.WidgetStorage
+import info.anodsplace.carwidget.preferences.model.InCarSettings
+import info.anodsplace.carwidget.preferences.model.InCarStorage
+import info.anodsplace.carwidget.preferences.model.WidgetSettings
+import info.anodsplace.carwidget.preferences.model.WidgetStorage
 import info.anodsplace.framework.AppLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

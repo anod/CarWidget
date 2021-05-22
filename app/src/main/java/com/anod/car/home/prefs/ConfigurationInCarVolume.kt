@@ -4,7 +4,7 @@ import android.widget.CompoundButton
 import android.widget.CompoundButton.OnCheckedChangeListener
 
 import com.anod.car.home.R
-import com.anod.car.home.prefs.model.InCarStorage
+import info.anodsplace.carwidget.preferences.model.InCarStorage
 
 class ConfigurationInCarVolume : ConfigurationPreferenceFragment(), OnCheckedChangeListener {
 

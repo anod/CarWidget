@@ -9,12 +9,12 @@ import android.widget.RemoteViews
 import androidx.collection.SimpleArrayMap
 
 import com.anod.car.home.R
-import com.anod.car.home.model.LauncherSettings
+import info.anodsplace.carwidget.db.LauncherSettings
 import com.anod.car.home.model.WidgetShortcutsModel
-import com.anod.car.home.prefs.model.WidgetSettings
-import com.anod.car.home.prefs.model.WidgetStorage
+import info.anodsplace.carwidget.preferences.model.WidgetSettings
+import info.anodsplace.carwidget.preferences.model.WidgetStorage
 import com.anod.car.home.skin.PropertiesFactory
-import com.anod.car.home.utils.BitmapTransform
+import info.anodsplace.carwidget.utils.BitmapTransform
 import com.anod.car.home.utils.IconTheme
 import com.anod.car.home.utils.Utils
 

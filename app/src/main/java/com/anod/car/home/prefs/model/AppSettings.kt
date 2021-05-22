@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import info.anodsplace.carwidget.preferences.model.ChangeableSharedPreferences
 
 /**
  * @author algavris

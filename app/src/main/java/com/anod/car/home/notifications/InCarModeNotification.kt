@@ -11,7 +11,7 @@ import com.anod.car.home.R
 import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.incar.ModeService
 import com.anod.car.home.model.NotificationShortcutsModel
-import com.anod.car.home.utils.Version
+import info.anodsplace.carwidget.utils.Version
 
 object InCarModeNotification {
     const val id = 1
@@ -25,17 +25,17 @@ object InCarModeNotification {
         notificationIntent.data = data
 
         val r = context.resources
-        val contentIntent = PendingIntent.getService(context, 0, notificationIntent, 0)
+        val contentIntent = PendingIntent.getService(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
         val text = if (version.isFree) {
-            context.getString(R.string.click_to_disable_trial, version.trialTimesLeft)
+            context.getString(R.string.trial_left, version.trialTimesLeft)
         } else {
-            r.getString(R.string.click_to_disable)
+            ""
         }
 
         val notification = NotificationCompat.Builder(context, Channels.inCarMode)
                 .setSmallIcon(R.drawable.ic_stat_incar)
                 .setOngoing(true)
-                .setContentIntent(contentIntent)
+                .addAction(0, context.getString(R.string.disable), contentIntent)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setStyle(NotificationCompat.DecoratedCustomViewStyle())
@@ -47,7 +47,9 @@ object InCarModeNotification {
             notification.setContent(contentView)
         } else {
             notification.setContentTitle(r.getString(R.string.incar_mode_enabled))
-            notification.setContentText(text)
+            if (text.isNotEmpty()) {
+                notification.setContentText(text)
+            }
         }
 
         return notification.build()

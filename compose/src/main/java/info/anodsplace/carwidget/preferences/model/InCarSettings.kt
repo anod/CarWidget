@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.model
+package info.anodsplace.carwidget.preferences.model
 
 import android.content.ComponentName
 import android.content.SharedPreferences
@@ -8,10 +8,9 @@ import android.util.JsonToken
 import android.util.JsonWriter
 import androidx.collection.ArrayMap
 import androidx.collection.SimpleArrayMap
-import com.anod.car.home.incar.SamsungDrivingMode
-import com.anod.car.home.incar.ScreenOnAlert
-import com.anod.car.home.incar.ScreenOrientation
-import com.anod.car.home.utils.Utils
+import info.anodsplace.carwidget.extentions.toComponentName
+import info.anodsplace.carwidget.incar.ScreenOnAlert
+import info.anodsplace.carwidget.incar.ScreenOrientation
 import java.io.IOException
 
 /**
@@ -59,7 +58,6 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
 
     override val isBluetoothRequired: Boolean
         get() = prefs.getString(BLUETOOTH_DEVICE_ADDRESSES, null) != null
-
 
     override var isDisableBluetoothOnPower: Boolean
         get() = prefs.getBoolean(POWER_BT_DISABLE, false)
@@ -110,18 +108,8 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
         set(autoAnswer) = putChange(AUTO_ANSWER, autoAnswer)
 
     override var autorunApp: ComponentName?
-        get() {
-            val autorunAppString = prefs.getString(AUTORUN_APP, null)
-
-            return if (autorunAppString != null) {
-                Utils.stringToComponent(autorunAppString)
-            } else null
-        }
+        get() = prefs.getString(AUTORUN_APP, null)?.toComponentName()
         set(autorunApp) = putChange(AUTORUN_APP, autorunApp)
-
-    override var isSamsungDrivingMode: Boolean
-        get() = prefs.getBoolean(SAMSUNG_DRIVING_MODE, false)
-        set(samsungDrivingMode) = putChange(SAMSUNG_DRIVING_MODE, samsungDrivingMode)
 
     override var isDisableScreenTimeoutCharging: Boolean
         get() = prefs.getBoolean(SCREEN_TIMEOUT_CHARGING, false)
@@ -179,9 +167,6 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
         val autoRunAppString = prefs.getString(AUTORUN_APP, null)
         if (autoRunAppString != null) {
             writer.name(AUTORUN_APP).value(autoRunAppString)
-        }
-        if (SamsungDrivingMode.hasMode) {
-            writer.name(SAMSUNG_DRIVING_MODE).value(isSamsungDrivingMode)
         }
         val screenOrientation = prefs.getString(SCREEN_ORIENTATION, ScreenOrientation.DISABLED.toString())
         writer.name(SCREEN_ORIENTATION).value(screenOrientation)

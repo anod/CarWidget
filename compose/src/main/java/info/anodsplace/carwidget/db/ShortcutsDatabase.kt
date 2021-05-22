@@ -1,4 +1,4 @@
-package com.anod.car.home.model
+package info.anodsplace.carwidget.db
 
 import android.content.ContentResolver
 import android.content.ContentValues
@@ -14,8 +14,8 @@ import android.net.Uri
 import android.provider.BaseColumns
 import android.text.TextUtils
 import androidx.core.content.res.ResourcesCompat
-import com.anod.car.home.utils.UtilitiesBitmap
-import com.anod.car.home.utils.Utils
+import info.anodsplace.carwidget.utils.UtilitiesBitmap
+import info.anodsplace.carwidget.extentions.isLowMemoryDevice
 import info.anodsplace.framework.AppLog
 import java.net.URISyntaxException
 
@@ -32,7 +32,7 @@ class ShortcutsDatabase(private val context: Context) {
         bitmapOptions.outWidth = iconMaxSize
         bitmapOptions.outHeight = iconMaxSize
         bitmapOptions.inSampleSize = 1
-        if (Utils.isLowMemoryDevice) {
+        if (context.isLowMemoryDevice) {
             // Always prefer RGB_565 config for low res. If the bitmap has transparency, it will
             // automatically be loaded as ALPHA_8888.
             bitmapOptions.inPreferredConfig = Bitmap.Config.RGB_565

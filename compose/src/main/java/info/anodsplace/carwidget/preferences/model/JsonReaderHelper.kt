@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.model
+package info.anodsplace.carwidget.preferences.model
 
 import android.util.JsonReader
 import android.util.JsonToken
