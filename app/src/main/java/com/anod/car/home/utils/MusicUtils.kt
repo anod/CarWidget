@@ -6,7 +6,7 @@ import android.content.Intent
 import android.media.AudioManager
 import android.os.SystemClock
 import android.view.KeyEvent
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 
 /**
  * @author alex

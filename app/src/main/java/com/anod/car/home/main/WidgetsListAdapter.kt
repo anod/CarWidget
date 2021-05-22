@@ -1,9 +1,8 @@
 package com.anod.car.home.main
 
 import com.anod.car.home.R
-import info.anodsplace.carwidget.db.LauncherSettings
-import info.anodsplace.carwidget.db.Shortcut
-import com.anod.car.home.model.ShortcutIconRequestHandler
+import info.anodsplace.carwidget.content.db.LauncherSettings
+import info.anodsplace.carwidget.content.db.Shortcut
 import com.squareup.picasso.Picasso
 
 import android.content.Context
@@ -14,7 +13,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.util.forEach
 import androidx.core.util.isNotEmpty
-import info.anodsplace.carwidget.preferences.model.WidgetStorage
+import com.anod.car.home.utils.ShortcutIconRequestHandler
+import info.anodsplace.carwidget.content.preferences.WidgetStorage
+import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 
 /**
  * @author alex
@@ -33,8 +34,9 @@ class WidgetsListAdapter(private val context: Context, private val clickHandler:
         val newItems = mutableListOf<Item>()
         newItems.addAll(list.shortcuts.map { ShortcutItem() })
 
+        val defaultsProvider = DefaultsResourceProvider(context)
         list.large.forEach { key, value ->
-            newItems.add(LargeItem(key, value, WidgetStorage.load(context, key).adaptiveIconStyle))
+            newItems.add(LargeItem(key, value, WidgetStorage.load(context, defaultsProvider, key).adaptiveIconStyle))
         }
 
         if (list.large.isNotEmpty()) {

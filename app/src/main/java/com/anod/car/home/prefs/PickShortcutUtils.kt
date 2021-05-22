@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.preference.Preference
 import com.anod.car.home.R
 import com.anod.car.home.app.App
-import info.anodsplace.carwidget.db.Shortcut
-import info.anodsplace.carwidget.db.Shortcuts
+import info.anodsplace.carwidget.content.db.Shortcut
+import info.anodsplace.carwidget.content.db.Shortcuts
 import com.anod.car.home.prefs.views.ShortcutPreference
 import com.anod.car.home.utils.ShortcutPicker
 

@@ -6,8 +6,8 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 
-import info.anodsplace.framework.AppLog
-import info.anodsplace.carwidget.utils.UtilitiesBitmap
+import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Request
 import com.squareup.picasso.RequestHandler

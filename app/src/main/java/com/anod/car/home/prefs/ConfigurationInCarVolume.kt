@@ -4,7 +4,7 @@ import android.widget.CompoundButton
 import android.widget.CompoundButton.OnCheckedChangeListener
 
 import com.anod.car.home.R
-import info.anodsplace.carwidget.preferences.model.InCarStorage
+import info.anodsplace.carwidget.content.preferences.InCarStorage
 
 class ConfigurationInCarVolume : ConfigurationPreferenceFragment(), OnCheckedChangeListener {
 
@@ -15,10 +15,10 @@ class ConfigurationInCarVolume : ConfigurationPreferenceFragment(), OnCheckedCha
         get() = R.xml.preference_incar_volume
 
     override val sharedPreferencesName: String
-        get() = InCarStorage.PREF_NAME
+        get() = info.anodsplace.carwidget.content.preferences.InCarStorage.PREF_NAME
 
     override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-        val prefs = InCarStorage.load(requireActivity())
+        val prefs = info.anodsplace.carwidget.content.preferences.InCarStorage.load(requireActivity())
         prefs.isAdjustVolumeLevel = isChecked
         prefs.apply()
     }

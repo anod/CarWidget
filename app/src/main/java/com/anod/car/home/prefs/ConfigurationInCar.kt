@@ -21,14 +21,12 @@ import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.incar.BroadcastService
 import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
-import info.anodsplace.carwidget.preferences.model.InCarInterface
-import info.anodsplace.carwidget.preferences.model.InCarSettings
-import info.anodsplace.carwidget.preferences.model.InCarStorage
 import com.anod.car.home.prefs.views.ViewScreenTimeout
 import com.anod.car.home.utils.*
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import info.anodsplace.carwidget.utils.Version
+import info.anodsplace.carwidget.content.Version
+import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.app.DialogCustom
 import kotlinx.coroutines.Dispatchers
@@ -48,11 +46,11 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         get() = R.xml.preference_incar
 
     override val sharedPreferencesName: String
-        get() = InCarStorage.PREF_NAME
+        get() = info.anodsplace.carwidget.content.preferences.InCarStorage.PREF_NAME
 
     private val broadcastServiceSwitchListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         if (serviceRequiredKeys.contains(key) && context != null) {
-            val incar = InCarStorage.load(requireContext())
+            val incar = info.anodsplace.carwidget.content.preferences.InCarStorage.load(requireContext())
             if (incar.isInCarEnabled && BroadcastService.isServiceRequired(incar)) {
                 BroadcastService.startService(requireContext())
             } else {
@@ -63,13 +61,13 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val sharedPrefs = InCarStorage.getSharedPreferences(requireActivity())
+        val sharedPrefs = info.anodsplace.carwidget.content.preferences.InCarStorage.getSharedPreferences(requireActivity())
         sharedPrefs.registerOnSharedPreferenceChangeListener(broadcastServiceSwitchListener)
     }
 
     override fun onDetach() {
         super.onDetach()
-        val sharedPrefs = InCarStorage.getSharedPreferences(requireActivity())
+        val sharedPrefs = info.anodsplace.carwidget.content.preferences.InCarStorage.getSharedPreferences(requireActivity())
         sharedPrefs.unregisterOnSharedPreferenceChangeListener(broadcastServiceSwitchListener)
     }
 
@@ -77,7 +75,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         super.onCreate(savedInstanceState)
         activityRecognitionRequest = AppPermissions.register(this, ActivityRecognition) { isGranted ->
             if (isGranted) {
-                val pref: CheckBoxPreference = findPreference(InCarSettings.ACTIVITY_RECOGNITION)!!
+                val pref: CheckBoxPreference = findPreference(info.anodsplace.carwidget.content.preferences.InCarSettings.ACTIVITY_RECOGNITION)!!
                 pref.isChecked = true
             }
         }
@@ -106,8 +104,8 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     }
 
     private fun initInCar() {
-        val incar = InCarStorage.load(requireActivity())
-        val incarSwitch: SwitchPreferenceCompat = findPreference(InCarSettings.INCAR_MODE_ENABLED)!!
+        val incar = info.anodsplace.carwidget.content.preferences.InCarStorage.load(requireActivity())
+        val incarSwitch: SwitchPreferenceCompat = findPreference(info.anodsplace.carwidget.content.preferences.InCarSettings.INCAR_MODE_ENABLED)!!
 
         val allWidgetIds = WidgetHelper.getAllWidgetIds(requireActivity())
         if (allWidgetIds.isEmpty()) {
@@ -142,7 +140,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     private fun initAutoAnswer() {
         val pref: ListPreference = findPreference("auto_answer")!!
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            if (newValue != InCarInterface.AUTOANSWER_DISABLED) {
+            if (newValue != info.anodsplace.carwidget.content.preferences.InCarInterface.AUTOANSWER_DISABLED) {
                 if (!AppPermissions.isGranted(requireContext(), AnswerPhoneCalls)) {
                     Toast.makeText(context, R.string.allow_answer_phone_calls, Toast.LENGTH_LONG).show()
                     AppPermissions.requestAnswerPhoneCalls(this, requestAnswerPhone)
@@ -155,7 +153,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     private fun initBrightness() {
         val pref: ListPreference = findPreference("brightness")!!
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            if (newValue != InCarInterface.BRIGHTNESS_DISABLED) {
+            if (newValue != info.anodsplace.carwidget.content.preferences.InCarInterface.BRIGHTNESS_DISABLED) {
                 if (!AppPermissions.isGranted(requireContext(), WriteSettings)) {
                     Toast.makeText(context, R.string.allow_permissions_brightness, Toast.LENGTH_LONG).show()
                     AppPermissions.requestWriteSettings(this, requestWriteSettings)
@@ -178,7 +176,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         }
     }
 
-    private fun initScreenTimeout(incar: InCarSettings) {
+    private fun initScreenTimeout(incar: info.anodsplace.carwidget.content.preferences.InCarSettings) {
         val pref: Preference = requirePreference(SCREEN_TIMEOUT_LIST)
         pref.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             DialogCustom(
@@ -193,14 +191,14 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
                 v.useAlertGroup.isVisible = AlertWindow.isSupported
                 v.useAlert.isChecked = incar.screenOnAlert.enabled
                 v.onStateChange { keepOn, whileCharging, useAlert ->
-                    InCarStorage.saveScreenTimeout(keepOn, disableCharging = whileCharging, prefs = incar)
+                    info.anodsplace.carwidget.content.preferences.InCarStorage.saveScreenTimeout(keepOn, disableCharging = whileCharging, prefs = incar)
                     if (useAlert && AlertWindow.isSupported) {
-                        incar.screenOnAlert = ScreenOnAlert.Settings(true, incar.screenOnAlert)
+                        incar.screenOnAlert = InCarInterface.ScreenOnAlertSettings(true, incar.screenOnAlert)
                         if (!AlertWindow.hasPermission(requireContext())) {
                             startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + requireContext().packageName)))
                         }
                     } else {
-                        incar.screenOnAlert = ScreenOnAlert.Settings(false, incar.screenOnAlert)
+                        incar.screenOnAlert = InCarInterface.ScreenOnAlertSettings(false, incar.screenOnAlert)
                     }
                     incar.apply()
                 }
@@ -210,7 +208,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     }
 
     private fun initActivityRecognition() {
-        val pref: Preference = findPreference(InCarSettings.ACTIVITY_RECOGNITION)!!
+        val pref: Preference = findPreference(info.anodsplace.carwidget.content.preferences.InCarSettings.ACTIVITY_RECOGNITION)!!
         lifecycleScope.launch {
             val status = withContext(Dispatchers.Default) { GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireActivity()) }
             val summary = renderPlayServiceStatus(status)
@@ -271,14 +269,14 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         const val requestAnswerPhone = 9
 
         private val serviceRequiredKeys = arrayOf(
-                InCarSettings.HEADSET_REQUIRED,
-                InCarSettings.POWER_REQUIRED,
-                InCarSettings.CAR_DOCK_REQUIRED,
+                info.anodsplace.carwidget.content.preferences.InCarSettings.HEADSET_REQUIRED,
+                info.anodsplace.carwidget.content.preferences.InCarSettings.POWER_REQUIRED,
+                info.anodsplace.carwidget.content.preferences.InCarSettings.CAR_DOCK_REQUIRED,
 
-                InCarSettings.POWER_BT_ENABLE,
-                InCarSettings.POWER_BT_DISABLE,
+                info.anodsplace.carwidget.content.preferences.InCarSettings.POWER_BT_ENABLE,
+                info.anodsplace.carwidget.content.preferences.InCarSettings.POWER_BT_DISABLE,
 
-                InCarSettings.ACTIVITY_RECOGNITION
+                info.anodsplace.carwidget.content.preferences.InCarSettings.ACTIVITY_RECOGNITION
         )
     }
 }

@@ -11,17 +11,16 @@ import android.provider.Settings
 import android.widget.Toast
 import com.anod.car.home.R
 import com.anod.car.home.app.App
-import info.anodsplace.carwidget.preferences.model.InCarInterface
 import com.anod.car.home.utils.Power
 import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 import info.anodsplace.framework.content.startActivitySafely
 
 class ModeHandler(private val context: Context, private val screenOrientation: ScreenOrientation) {
     private val alertWindow: ScreenOnAlert by lazy { App.provide(context).alertWindow }
 
-    fun enable(prefs: InCarInterface) {
+    fun enable(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface) {
         if (prefs.isDisableScreenTimeout) {
             if (prefs.isDisableScreenTimeoutCharging) {
                 if (Power.isConnected(context)) {
@@ -56,12 +55,12 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
             runApp(autorunApp, context)
         }
         val brightSetting = prefs.brightness
-        if (brightSetting != InCarInterface.BRIGHTNESS_DISABLED) {
+        if (brightSetting != info.anodsplace.carwidget.content.preferences.InCarInterface.BRIGHTNESS_DISABLED) {
             adjustBrightness(brightSetting, context)
         }
     }
 
-    fun disable(prefs: InCarInterface) {
+    fun disable(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface) {
         alertWindow.hide()
         if (prefs.isDisableScreenTimeout) {
             ModeService.releaseWakeLock(context)
@@ -78,7 +77,7 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
 
         screenOrientation.set(ScreenOrientation.DISABLED)
         val brightSetting = prefs.brightness
-        if (brightSetting != InCarInterface.BRIGHTNESS_DISABLED) {
+        if (brightSetting != info.anodsplace.carwidget.content.preferences.InCarInterface.BRIGHTNESS_DISABLED) {
             restoreBrightness(brightSetting, context)
         }
     }
@@ -139,15 +138,15 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
 
             var newBrightLevel = -1
             var newBrightMode = -1
-            if (InCarInterface.BRIGHTNESS_AUTO == brightSetting) {
+            if (info.anodsplace.carwidget.content.preferences.InCarInterface.BRIGHTNESS_AUTO == brightSetting) {
                 if (!sCurrentAutoBrightness) {
                     newBrightLevel = sCurrentBrightness
                     newBrightMode = Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
                 }
-            } else if (InCarInterface.BRIGHTNESS_DAY == brightSetting) {
+            } else if (info.anodsplace.carwidget.content.preferences.InCarInterface.BRIGHTNESS_DAY == brightSetting) {
                 newBrightLevel = BRIGHTNESS_DAY
                 newBrightMode = Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
-            } else if (InCarInterface.BRIGHTNESS_NIGHT == brightSetting) {
+            } else if (info.anodsplace.carwidget.content.preferences.InCarInterface.BRIGHTNESS_NIGHT == brightSetting) {
                 newBrightLevel = BRIGHTNESS_NIGHT
                 newBrightMode = Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
             }
@@ -163,7 +162,7 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
         }
 
         private fun restoreBrightness(brightSetting: String, context: Context): Boolean {
-            if (sCurrentAutoBrightness && InCarInterface.BRIGHTNESS_AUTO == brightSetting) {
+            if (sCurrentAutoBrightness && info.anodsplace.carwidget.content.preferences.InCarInterface.BRIGHTNESS_AUTO == brightSetting) {
                 return false
             }
             var newBrightMode = Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
@@ -191,7 +190,7 @@ class ModeHandler(private val context: Context, private val screenOrientation: S
             }
         }
 
-        fun adjustVolume(prefs: InCarInterface, context: Context) {
+        fun adjustVolume(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface, context: Context) {
             val audio = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
             val adjVolume = prefs.mediaVolumeLevel

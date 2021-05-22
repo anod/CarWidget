@@ -12,7 +12,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 
 class BrowserUrlSender : ReportSender {
     private val baseUri = Uri.parse("https://anodsplace.info/acra/report/adapter.php")

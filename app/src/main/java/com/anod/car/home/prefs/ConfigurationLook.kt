@@ -8,10 +8,11 @@ import androidx.preference.Preference
 import com.android.colorpicker.ColorPickerSwatch
 import com.anod.car.home.R
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog
-import info.anodsplace.carwidget.preferences.model.WidgetInterface
-import info.anodsplace.carwidget.preferences.model.WidgetSettings
-import info.anodsplace.carwidget.preferences.model.WidgetStorage
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.content.preferences.WidgetSettings
+import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import com.anod.car.home.prefs.views.SeekBarDialogPreference
+import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import java.util.*
 
 class ConfigurationLook : ConfigurationPreferenceFragment() {
@@ -29,7 +30,7 @@ class ConfigurationLook : ConfigurationPreferenceFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val prefs = WidgetStorage.load(requireContext(), appWidgetId)
+        val prefs = WidgetStorage.load(requireContext(), DefaultsResourceProvider(requireContext()), appWidgetId)
 
         initIcon(prefs)
         initFont(prefs)

@@ -25,12 +25,11 @@ import com.anod.car.home.databinding.ActivityBluetoothDeviceBinding
 import com.anod.car.home.incar.Bluetooth
 import com.anod.car.home.incar.BluetoothClassHelper
 import com.anod.car.home.incar.BroadcastService
-import info.anodsplace.carwidget.preferences.model.InCarStorage
+import info.anodsplace.carwidget.content.preferences.InCarStorage
 import com.anod.car.home.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.collections.set
 
 class BluetoothDevice(var address: String, var name: String, var btClassName: String, var selected: Boolean) {
     override fun toString(): String {
@@ -88,7 +87,7 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
 
         // Get a set of currently paired devices
         val pairedDevices = btAdapter!!.bondedDevices
-        val devices = InCarStorage.load(context).btDevices
+        val devices = info.anodsplace.carwidget.content.preferences.InCarStorage.load(context).btDevices
         val pairedList = mutableListOf<BluetoothDevice>()
 
         // If there are paired devices, add each one to the ArrayAdapter
@@ -143,7 +142,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
     private val viewModel: BluetoothDevicesViewModel by viewModels()
     private val isBroadcastServiceRequired: Boolean
         get() {
-            val incar = InCarStorage.load(this)
+            val incar = info.anodsplace.carwidget.content.preferences.InCarStorage.load(this)
             return BroadcastService.isServiceRequired(incar)
         }
 
@@ -201,7 +200,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
     }
 
     private fun onDeviceStateChange(device: BluetoothDevice?, newState: Boolean) {
-        val prefs = InCarStorage.load(this)
+        val prefs = info.anodsplace.carwidget.content.preferences.InCarStorage.load(this)
         val devices = prefs.btDevices
         if (newState) {
             devices[device!!.address] = device.address

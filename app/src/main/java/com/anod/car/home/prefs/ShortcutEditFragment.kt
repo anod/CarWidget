@@ -17,13 +17,18 @@ import com.anod.car.home.app.App
 import com.anod.car.home.databinding.FragmentShortcutEditBinding
 import com.anod.car.home.model.*
 import com.anod.car.home.utils.*
-import info.anodsplace.carwidget.db.Shortcut
-import info.anodsplace.carwidget.db.ShortcutIcon
-import info.anodsplace.carwidget.db.ShortcutIconLoader
-import info.anodsplace.carwidget.db.ShortcutsDatabase
+import info.anodsplace.carwidget.content.db.Shortcut
+import info.anodsplace.carwidget.content.db.ShortcutIcon
+import info.anodsplace.carwidget.content.db.ShortcutIconLoader
+import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.intent.IntentEditFragment
-import info.anodsplace.carwidget.utils.UtilitiesBitmap
-import info.anodsplace.framework.AppLog
+import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
+import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.model.AbstractShortcuts
+import info.anodsplace.carwidget.content.model.NotificationShortcutsModel
+import info.anodsplace.carwidget.content.model.ShortcutInfoUtils
+import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import info.anodsplace.framework.app.DialogItems
 import info.anodsplace.framework.app.FragmentContainerActivity
 
@@ -106,7 +111,7 @@ class ShortcutEditFragment : Fragment() {
         containerModel = if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             NotificationShortcutsModel.init(requireContext())
         } else {
-            WidgetShortcutsModel.init(requireContext(), appWidgetId)
+            WidgetShortcutsModel.init(requireContext(), DefaultsResourceProvider(requireContext()), appWidgetId)
         }
 
         shortcut = db.loadShortcut(shortcutId)

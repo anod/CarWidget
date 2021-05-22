@@ -14,10 +14,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.anod.car.home.R
 import com.anod.car.home.appwidget.WidgetViewBuilder
-import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.LookAndFeelActivity
 import com.anod.car.home.prefs.drag.ShortcutShadowBuilder
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 
 class SkinPreviewFragment : Fragment(), View.OnLongClickListener {
 
@@ -74,7 +75,7 @@ class SkinPreviewFragment : Fragment(), View.OnLongClickListener {
                 viewGroup!!.removeAllViews()
             }
 
-            val model = WidgetShortcutsModel.init(activity!!, lookAndFeelActivity!!.appWidgetId)
+            val model = WidgetShortcutsModel.init(requireContext(), DefaultsResourceProvider(requireContext()), lookAndFeelActivity!!.appWidgetId)
             shortcutsCount = model.count
 
             setupDragNDrop(inflatedView, model)

@@ -16,8 +16,8 @@ import info.anodsplace.carwidget.incar.ScreenOrientation
 import com.anod.car.home.model.AppsList
 import com.anod.car.home.prefs.model.AppSettings
 import com.anod.car.home.prefs.model.AppTheme
-import info.anodsplace.carwidget.preferences.model.InCarSettings
-import info.anodsplace.carwidget.preferences.model.InCarStorage
+import info.anodsplace.carwidget.content.preferences.InCarSettings
+import info.anodsplace.carwidget.content.preferences.InCarStorage
 import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.util.createLruCache
 
@@ -87,8 +87,8 @@ class AppComponent(val application: CarWidgetApplication) {
             return _iconThemesCache!!
         }
 
-    val inCarSettings: InCarSettings
-        get() = InCarStorage.load(application)
+    val inCarSettings: info.anodsplace.carwidget.content.preferences.InCarSettings
+        get() = info.anodsplace.carwidget.content.preferences.InCarStorage.load(application)
 
     fun cleanAppListCache() {
         if (_appListCache != null) {

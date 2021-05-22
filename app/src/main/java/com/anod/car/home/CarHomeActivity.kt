@@ -1,6 +1,6 @@
 package com.anod.car.home
 
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 
 import android.app.Activity
 import android.content.Intent

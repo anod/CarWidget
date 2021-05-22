@@ -11,7 +11,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 
 import com.anod.car.home.R
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 
 
 class SeekBarPreferenceDialogFragment : PreferenceDialogFragmentCompat(), SeekBar.OnSeekBarChangeListener {

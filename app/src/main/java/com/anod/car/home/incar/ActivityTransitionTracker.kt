@@ -4,7 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.google.android.gms.location.*
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 
 class ActivityTransitionTracker(private val context: Context) {
 

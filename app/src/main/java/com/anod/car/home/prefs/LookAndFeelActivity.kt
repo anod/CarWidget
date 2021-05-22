@@ -20,20 +20,20 @@ import com.anod.car.home.app.App
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.appwidget.WidgetViewBuilder
-import com.anod.car.home.backup.BackupManager
+import info.anodsplace.carwidget.content.backup.BackupManager
 import com.anod.car.home.databinding.ActivityLookandfeelBinding
 import com.anod.car.home.main.AboutFragment
-import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.drag.ShortcutDragListener
 import com.anod.car.home.prefs.lookandfeel.LookAndFeelMenu
 import com.anod.car.home.prefs.lookandfeel.SkinPagerAdapter
 import com.anod.car.home.prefs.lookandfeel.WidgetButtonChoiceActivity
 import com.anod.car.home.prefs.model.SkinList
-import info.anodsplace.carwidget.preferences.model.WidgetSettings
-import info.anodsplace.carwidget.preferences.model.WidgetStorage
 import com.anod.car.home.utils.BitmapLruCache
 import com.anod.car.home.utils.forNewShortcut
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.preferences.WidgetStorage
+import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import info.anodsplace.framework.app.DialogCustom
 
 class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory, ShortcutDragListener.DropCallback, BackupManager.OnRestore {
@@ -49,11 +49,11 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         private set
 
     private val previewInitialized = booleanArrayOf(false, false, false, false, false, false, false)
-    var prefs: WidgetSettings? = null
+    var prefs: info.anodsplace.carwidget.content.preferences.WidgetSettings? = null
     private var skinList: SkinList? = null
     private var bitmapMemoryCache: BitmapLruCache? = null
     private val lookAndFeelMenu: LookAndFeelMenu by lazy { LookAndFeelMenu(this, model) }
-    private val model: WidgetShortcutsModel by lazy { WidgetShortcutsModel(App.get(this), appWidgetId) }
+    private val model: WidgetShortcutsModel by lazy { WidgetShortcutsModel(App.get(this), DefaultsResourceProvider(this), appWidgetId) }
 
     var dragListener: ShortcutDragListener? = null
         private set
@@ -117,7 +117,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         binding = ActivityLookandfeelBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        prefs = WidgetStorage.load(this, appWidgetId)
+        prefs = WidgetStorage.load(this, DefaultsResourceProvider(this), appWidgetId)
         skinList = SkinList(prefs!!.skin, isKeyguard, this)
         dragListener = ShortcutDragListener(binding.dragDeleteBg, this)
 
@@ -295,7 +295,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     }
 
     override fun restoreCompleted() {
-        prefs = WidgetStorage.load(this, appWidgetId)
+        prefs = WidgetStorage.load(this, DefaultsResourceProvider(this), appWidgetId)
         skinList = SkinList(prefs!!.skin, isKeyguard, this).also {
             binding.gallery.currentItem = it.selectedSkinPosition
         }

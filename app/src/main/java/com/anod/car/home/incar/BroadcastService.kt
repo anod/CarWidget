@@ -9,9 +9,7 @@ import android.os.IBinder
 import androidx.core.content.ContextCompat
 import com.anod.car.home.notifications.ModeDetectorNotification
 
-import info.anodsplace.carwidget.preferences.model.InCarInterface
-import info.anodsplace.carwidget.preferences.model.InCarStorage
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 
 class BroadcastService : Service() {
 
@@ -45,7 +43,7 @@ class BroadcastService : Service() {
     private fun register(context: Context): Boolean {
         AppLog.i("Register BroadcastService")
         ModeDetector.onRegister(context)
-        val prefs = InCarStorage.load(context)
+        val prefs = info.anodsplace.carwidget.content.preferences.InCarStorage.load(context)
         if (prefs.isActivityRequired) {
             AppLog.i("Start activity transition tracking")
             ActivityTransitionTracker(context).track()
@@ -75,7 +73,7 @@ class BroadcastService : Service() {
             context.unregisterReceiver(receiver)
             receiver = null
         }
-        val prefs = InCarStorage.load(context)
+        val prefs = info.anodsplace.carwidget.content.preferences.InCarStorage.load(context)
 
         if (!prefs.isActivityRequired) {
             ActivityTransitionTracker(context).stop()
@@ -94,7 +92,7 @@ class BroadcastService : Service() {
             context.stopService(service)
         }
 
-        fun isServiceRequired(prefs: InCarInterface): Boolean {
+        fun isServiceRequired(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface): Boolean {
             ModeDetector.updatePrefState(prefs)
             val states = ModeDetector.prefState
 

@@ -12,7 +12,7 @@ import android.os.Bundle
 import android.telephony.TelephonyManager
 import android.view.KeyEvent
 import android.view.WindowManager
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 import java.io.IOException
 
 class AcceptCallActivity : Activity() {

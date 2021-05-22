@@ -32,11 +32,12 @@ android {
 
 dependencies {
     // AppLog, Bundle extensions
+    implementation(project(":lib:applog"))
     implementation(project(":lib:framework"))
+    implementation(project(":content"))
 
     implementation("androidx.fragment:fragment-ktx:1.3.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
-    implementation("androidx.preference:preference-ktx:1.1.1")
 
     implementation("androidx.compose.ui:ui:1.0.0-beta07")
     implementation("androidx.compose.foundation:foundation:1.0.0-beta07")

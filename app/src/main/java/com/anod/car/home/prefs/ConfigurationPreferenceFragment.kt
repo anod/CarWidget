@@ -17,7 +17,7 @@ import com.anod.car.home.R
 import com.anod.car.home.prefs.views.SeekBarDialogPreference
 import com.anod.car.home.prefs.views.SeekBarPreferenceDialogFragment
 import com.anod.car.home.utils.Utils
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 
 /**
  * @author alex

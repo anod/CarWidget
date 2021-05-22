@@ -15,7 +15,7 @@ import com.anod.car.home.databinding.FragmentWidgetsListBinding
 import com.anod.car.home.prefs.ConfigurationActivity
 import com.anod.car.home.prefs.ConfigurationInCar
 import com.anod.car.home.utils.InCarStatus
-import info.anodsplace.carwidget.utils.Version
+import info.anodsplace.carwidget.content.Version
 import com.anod.car.home.utils.forProVersion
 
 class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {

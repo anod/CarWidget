@@ -6,11 +6,9 @@ import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.Intent
 import com.anod.car.home.BuildConfig
-import info.anodsplace.carwidget.preferences.model.InCarInterface
-import info.anodsplace.carwidget.preferences.model.InCarStorage
 import com.anod.car.home.utils.Power
 import com.google.android.gms.location.ActivityTransitionResult
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 
 /**
  * @author alex
@@ -61,7 +59,7 @@ object ModeDetector {
         sEventState[FLAG_POWER] = Power.isConnected(context)
     }
 
-    fun updatePrefState(prefs: InCarInterface) {
+    fun updatePrefState(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface) {
         synchronized(sLock) {
             sPrefState[FLAG_POWER] = prefs.isPowerRequired
             sPrefState[FLAG_BLUETOOTH] = prefs.isBluetoothRequired
@@ -71,7 +69,7 @@ object ModeDetector {
         }
     }
 
-    fun forceState(prefs: InCarInterface, forceMode: Boolean) {
+    fun forceState(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface, forceMode: Boolean) {
         updatePrefState(prefs)
         if (sPrefState[FLAG_POWER]) {
             sEventState[FLAG_POWER] = forceMode
@@ -91,7 +89,7 @@ object ModeDetector {
     }
 
     fun onBroadcastReceive(context: Context, intent: Intent) {
-        val prefs = InCarStorage.load(context)
+        val prefs = info.anodsplace.carwidget.content.preferences.InCarStorage.load(context)
         if (!prefs.isInCarEnabled) {
             return
         }
@@ -129,7 +127,7 @@ object ModeDetector {
         }
     }
 
-    private fun updateEventState(prefs: InCarInterface, intent: Intent) {
+    private fun updateEventState(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface, intent: Intent) {
         val action = intent.action
 
         if (ActivityTransitionResult.hasResult(intent)) {
@@ -218,7 +216,7 @@ object ModeDetector {
         return newMode
     }
 
-    private fun onPowerConnected(prefs: InCarInterface, context: Context) {
+    private fun onPowerConnected(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface, context: Context) {
         if (prefs.isEnableBluetoothOnPower && Bluetooth.state != BluetoothAdapter.STATE_ON) {
             Bluetooth.switchOn()
         }
@@ -229,7 +227,7 @@ object ModeDetector {
         }
     }
 
-    private fun onPowerDisconnected(prefs: InCarInterface, context: Context) {
+    private fun onPowerDisconnected(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface, context: Context) {
         if (prefs.isDisableBluetoothOnPower && Bluetooth.state != BluetoothAdapter.STATE_OFF) {
             Bluetooth.switchOff()
         }
@@ -240,12 +238,12 @@ object ModeDetector {
         }
     }
 
-    fun switchOn(prefs: InCarInterface, modeHandler: ModeHandler) {
+    fun switchOn(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface, modeHandler: ModeHandler) {
         sMode = true
         modeHandler.enable(prefs)
     }
 
-    fun switchOff(prefs: InCarInterface, modeHandler: ModeHandler) {
+    fun switchOff(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface, modeHandler: ModeHandler) {
         sMode = false
         modeHandler.disable(prefs)
     }

@@ -9,6 +9,8 @@ import android.graphics.ColorMatrixColorFilter
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.PaintFlagsDrawFilter
+import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
+import info.anodsplace.carwidget.content.preferences.BitmapRotateDirection
 
 interface IconProcessor {
     val id: String
@@ -22,7 +24,7 @@ class BitmapTransform(context: Context) {
     var applyGrayFilter = false
     var tintColor: Int? = null
     var scaleSize = 1.0f
-    var rotateDirection = RotateDirection.NONE
+    var rotateDirection = BitmapRotateDirection.NONE
     var paddingBottom = 0
     var iconProcessor: IconProcessor? = null
 
@@ -36,10 +38,6 @@ class BitmapTransform(context: Context) {
 
     private val iconProcessorId: String
         get() = iconProcessor?.id ?: "none"
-
-    enum class RotateDirection {
-        NONE, RIGHT, LEFT
-    }
 
     fun transform(bitmap: Bitmap): Bitmap {
         var src = bitmap
@@ -72,8 +70,8 @@ class BitmapTransform(context: Context) {
         }
 
         var degrees = 0
-        if (rotateDirection != RotateDirection.NONE) {
-            degrees = if (rotateDirection == RotateDirection.LEFT) 90 else 270
+        if (rotateDirection != BitmapRotateDirection.NONE) {
+            degrees = if (rotateDirection == BitmapRotateDirection.LEFT) 90 else 270
         }
 
         val iconSize = iconSize - sizeDiff

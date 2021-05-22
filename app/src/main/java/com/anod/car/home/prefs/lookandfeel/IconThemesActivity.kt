@@ -14,11 +14,12 @@ import com.anod.car.home.app.App
 import com.anod.car.home.appscache.AppsCacheActivity
 import com.anod.car.home.databinding.ListFooterIconThemesBinding
 import com.anod.car.home.model.AppsList
-import info.anodsplace.carwidget.preferences.model.WidgetSettings
-import info.anodsplace.carwidget.preferences.model.WidgetStorage
 import com.anod.car.home.utils.Utils
 import com.anod.car.home.utils.forIconTheme
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.preferences.WidgetSettings
+import info.anodsplace.carwidget.content.preferences.WidgetStorage
+import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import info.anodsplace.framework.content.startActivitySafely
 
 class IconThemesActivity : AppsCacheActivity() {
@@ -34,7 +35,7 @@ class IconThemesActivity : AppsCacheActivity() {
 
     private var currentSelected = 0
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
-    private val prefs: WidgetSettings by lazy { WidgetStorage.load(this, appWidgetId) }
+    private val prefs: WidgetSettings by lazy { WidgetStorage.load(this, DefaultsResourceProvider(this), appWidgetId) }
     private var themePackageName = ""
     private var refresh = false
 

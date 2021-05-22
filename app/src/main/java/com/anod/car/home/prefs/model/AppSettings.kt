@@ -4,13 +4,13 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import info.anodsplace.carwidget.preferences.model.ChangeableSharedPreferences
+import info.anodsplace.carwidget.content.preferences.ChangeableSharedPreferences
 
 /**
  * @author algavris
  * @date 19/03/2016.
  */
-class AppSettings(context: Context) : ChangeableSharedPreferences(getSharedPreferences(context)) {
+class AppSettings(context: Context) : info.anodsplace.carwidget.content.preferences.ChangeableSharedPreferences(getSharedPreferences(context)) {
 
     var musicApp: ComponentName?
         get() {

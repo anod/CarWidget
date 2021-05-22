@@ -11,11 +11,9 @@ import com.anod.car.home.databinding.ActivityMainBinding
 import info.anodsplace.carwidget.incar.ScreenOrientation
 import com.anod.car.home.prefs.ConfigurationInCar
 import com.anod.car.home.prefs.LookAndFeelActivity
-import info.anodsplace.carwidget.preferences.model.InCarInterface
-import info.anodsplace.carwidget.preferences.model.InCarStorage
 import com.anod.car.home.utils.*
 import com.google.android.material.snackbar.Snackbar
-import info.anodsplace.carwidget.utils.Version
+import info.anodsplace.carwidget.content.Version
 
 /**
  * @author alex
@@ -110,7 +108,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
     }
 
     private fun requestPermissions(appWidgetIds: IntArray): List<String> {
-        val settings = InCarStorage.load(this)
+        val settings = info.anodsplace.carwidget.content.preferences.InCarStorage.load(this)
         val status = InCarStatus(appWidgetIds.size, version, settings)
         if (!status.isEnabled) {
             return emptyList()
@@ -119,11 +117,11 @@ open class WidgetsListActivity : CarWidgetActivity() {
         if (settings.screenOrientation != ScreenOrientation.DISABLED && AppPermissions.shouldShowMessage(this, CanDrawOverlay)) {
             permissions.add(CanDrawOverlay.value)
         }
-        val needsWritePermission = settings.brightness != InCarInterface.BRIGHTNESS_DISABLED
+        val needsWritePermission = settings.brightness != info.anodsplace.carwidget.content.preferences.InCarInterface.BRIGHTNESS_DISABLED
         if (needsWritePermission && AppPermissions.shouldShowMessage(this, WriteSettings)) {
             permissions.add(WriteSettings.value)
         }
-        if (settings.autoAnswer != InCarInterface.AUTOANSWER_DISABLED) {
+        if (settings.autoAnswer != info.anodsplace.carwidget.content.preferences.InCarInterface.AUTOANSWER_DISABLED) {
             if (AppPermissions.shouldShowMessage(this, AnswerPhoneCalls)) {
                 permissions.add(AnswerPhoneCalls.value)
             }

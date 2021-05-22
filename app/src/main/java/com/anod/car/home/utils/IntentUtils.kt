@@ -15,9 +15,9 @@ import com.anod.car.home.ShortcutActivity
 import com.anod.car.home.app.NewShortcutActivity
 import com.anod.car.home.incar.SwitchInCarActivity
 import com.anod.car.home.prefs.LookAndFeelActivity
-import info.anodsplace.carwidget.utils.UtilitiesBitmap
-import info.anodsplace.carwidget.utils.Version
-import info.anodsplace.framework.AppLog
+import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
+import info.anodsplace.carwidget.content.Version
+import info.anodsplace.applog.AppLog
 
 fun Intent.forNewShortcut(context: Context, appWidgetId: Int, cellId: Int): Intent {
     component = ComponentName(context, NewShortcutActivity::class.java)
@@ -44,12 +44,6 @@ fun Intent.forApplicationDetails(packageName: String): Intent {
     data = Uri.fromParts("package", packageName, null)
     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
     return this
-}
-
-fun Intent.isAvailable(context: Context): Boolean {
-    val packageManager = context.packageManager
-    val list = packageManager.queryIntentActivities(this, PackageManager.MATCH_DEFAULT_ONLY)
-    return list.isNotEmpty()
 }
 
 fun Intent.forProVersion(): Intent {

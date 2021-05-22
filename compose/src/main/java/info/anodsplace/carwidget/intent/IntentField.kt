@@ -6,7 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.compose.runtime.Immutable
 import androidx.core.os.bundleOf
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

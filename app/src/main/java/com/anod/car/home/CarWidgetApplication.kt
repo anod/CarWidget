@@ -12,7 +12,7 @@ import com.anod.car.home.acra.BrowserUrlSender
 import com.anod.car.home.notifications.Channels
 import com.anod.car.home.prefs.model.AppTheme
 import com.anod.car.home.utils.AppUpgrade
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 import info.anodsplace.framework.app.ApplicationInstance
 import org.acra.ACRA
 import org.acra.ReportField

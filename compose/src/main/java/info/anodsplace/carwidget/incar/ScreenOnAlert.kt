@@ -7,10 +7,10 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import info.anodsplace.carwidget.R
-import info.anodsplace.carwidget.preferences.model.InCarInterface
+import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.framework.app.AlertWindow
 
-class ScreenOnAlert(private val context: Context, private val prefs: InCarInterface, private val alertWindow: AlertWindow) : View.OnTouchListener {
+class ScreenOnAlert(private val context: Context, private val prefs: info.anodsplace.carwidget.content.preferences.InCarInterface, private val alertWindow: AlertWindow) : View.OnTouchListener {
     class Settings(val enabled: Boolean, val loc: Array<Int>) {
         constructor(enabled: Boolean, settings: Settings) : this(enabled, settings.loc)
 

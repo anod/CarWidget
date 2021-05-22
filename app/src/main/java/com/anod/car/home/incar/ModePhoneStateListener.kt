@@ -10,11 +10,10 @@ import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import android.widget.Toast
 import com.anod.car.home.R
-import info.anodsplace.carwidget.preferences.model.InCarInterface
 import com.anod.car.home.utils.AnswerPhoneCalls
 import com.anod.car.home.utils.AppPermissions
 import com.anod.car.home.utils.ModifyPhoneState
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 import java.util.*
 
 class ModePhoneStateListener(private val context: Context, private val audioManager: AudioManager) : PhoneStateListener() {
@@ -53,14 +52,14 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
             }
             TelephonyManager.CALL_STATE_RINGING -> {
                 AppLog.i("Call state ringing")
-                if (answerMode == InCarInterface.AUTOANSWER_IMMEDIATLY) {
+                if (answerMode == info.anodsplace.carwidget.content.preferences.InCarInterface.AUTOANSWER_IMMEDIATLY) {
                     AppLog.d("Check if already answered")
                     if (!answered) {
                         AppLog.d("Answer immediately")
                         answerCall()
                         answered = true
                     }
-                } else if (answerMode == InCarInterface.AUTOANSWER_DELAY_5) {
+                } else if (answerMode == info.anodsplace.carwidget.content.preferences.InCarInterface.AUTOANSWER_DELAY_5) {
                     AppLog.d("Check if already answered")
                     if (!answered) {
                         AppLog.i("Answer delayed")

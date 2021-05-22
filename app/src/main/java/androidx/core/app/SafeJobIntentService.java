@@ -9,7 +9,7 @@ import android.os.IBinder;
 
 import androidx.annotation.RequiresApi;
 
-import info.anodsplace.framework.AppLog;
+import info.anodsplace.applog.AppLog;
 
 /**
  * Catch SecurityException

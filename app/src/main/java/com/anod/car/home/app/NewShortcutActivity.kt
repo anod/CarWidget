@@ -6,11 +6,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import com.anod.car.home.appwidget.Provider
-import info.anodsplace.carwidget.db.Shortcut
-import com.anod.car.home.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.db.Shortcut
 import com.anod.car.home.utils.ShortcutPicker
 import com.anod.car.home.utils.Utils
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 
 /**
  * @author alex
@@ -39,7 +40,7 @@ class NewShortcutActivity : Activity(), ShortcutPicker.Handler {
         defaultResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         setResult(RESULT_OK, defaultResultValue)
 
-        val model = WidgetShortcutsModel.init(this, appWidgetId)
+        val model = WidgetShortcutsModel.init(this, DefaultsResourceProvider(this), appWidgetId)
         shortcutPicker = ShortcutPicker(model, this, this)
         val cellId = shortcutPicker!!.onRestoreInstanceState(savedInstanceState, intent)
         if (cellId == ShortcutPicker.INVALID_CELL_ID) {

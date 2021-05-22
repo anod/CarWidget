@@ -13,15 +13,16 @@ import androidx.appcompat.app.AlertDialog
 import com.android.colorpicker.ColorPickerSwatch
 import com.anod.car.home.R
 import com.anod.car.home.app.App
-import com.anod.car.home.model.WidgetShortcutsModel
 import com.anod.car.home.prefs.ConfigurationActivity
 import com.anod.car.home.prefs.ConfigurationLook
 import com.anod.car.home.prefs.LookAndFeelActivity
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog
-import info.anodsplace.carwidget.preferences.model.WidgetInterface
-import info.anodsplace.carwidget.preferences.model.WidgetStorage
 import com.anod.car.home.utils.FastBitmapDrawable
 import com.anod.car.home.utils.HtmlCompat
+import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.content.preferences.WidgetStorage
+import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import info.anodsplace.framework.app.DialogCustom
 import info.anodsplace.framework.app.DialogMessage
 import info.anodsplace.framework.app.DialogSingleChoice
@@ -50,7 +51,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
     }
 
     fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
-        val prefs = WidgetStorage.load(activity, appWidgetId)
+        val prefs = WidgetStorage.load(activity, DefaultsResourceProvider(activity), appWidgetId)
         return when (menuItem.itemId) {
             R.id.apply -> {
                 prefs.skin = activity.currentSkinItem.value
@@ -154,7 +155,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
     private fun showTileColorButton() {
         menuTileColor?.also {
             if (activity.currentSkinItem.value == WidgetInterface.SKIN_WINDOWS7) {
-                val prefs = WidgetStorage.load(activity, appWidgetId)
+                val prefs = WidgetStorage.load(activity, DefaultsResourceProvider(activity), appWidgetId)
                 it.subMenu.findItem(R.id.palette_background).isChecked = prefs.paletteBackground
                 if (prefs.paletteBackground || Color.alpha(prefs.tileColor!!) == 0) {
                     it.icon = activity.getDrawable(R.drawable.ic_format_color_fill_black_24dp)

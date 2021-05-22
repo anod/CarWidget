@@ -47,7 +47,7 @@ private val LightThemeColors = lightColors(
         onPrimary = Color.White,
         onSecondary = Color.Black,
         onBackground = Color.Black,
-        onSurface = BlueGray800,
+        onSurface = Color.White,
         onError = Color.White,
 )
 

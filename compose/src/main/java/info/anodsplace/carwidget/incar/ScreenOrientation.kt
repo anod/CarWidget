@@ -7,6 +7,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.content.preferences.InCarInterface
 
 /**
  * @author alex
@@ -61,9 +62,6 @@ class ScreenOrientation(private val mContext: Context, private val windowManager
     }
 
     companion object {
-        const val DISABLED = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-        const val PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        const val LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        const val LANDSCAPE_REVERSE = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+        const val DISABLED = InCarInterface.SCREEN_ORIENTATION_DISABLED
     }
 }

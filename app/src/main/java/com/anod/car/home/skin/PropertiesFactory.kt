@@ -1,17 +1,17 @@
 package com.anod.car.home.skin
 
-import info.anodsplace.carwidget.preferences.model.WidgetInterface
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
 
 object PropertiesFactory {
 
     fun create(skinName: String): SkinProperties {
         return when (skinName) {
-            WidgetInterface.SKIN_WINDOWS7 -> MetroProperties()
-            WidgetInterface.SKIN_HOLO -> HoloProperties()
-            WidgetInterface.SKIN_GLOSSY -> GlossyProperties()
-            WidgetInterface.SKIN_BBB -> BBBProperties()
-            WidgetInterface.SKIN_CARDS -> CardsProperties()
-            WidgetInterface.SKIN_YOU -> YouProperties()
+            info.anodsplace.carwidget.content.preferences.WidgetInterface.SKIN_WINDOWS7 -> MetroProperties()
+            info.anodsplace.carwidget.content.preferences.WidgetInterface.SKIN_HOLO -> HoloProperties()
+            info.anodsplace.carwidget.content.preferences.WidgetInterface.SKIN_GLOSSY -> GlossyProperties()
+            info.anodsplace.carwidget.content.preferences.WidgetInterface.SKIN_BBB -> BBBProperties()
+            info.anodsplace.carwidget.content.preferences.WidgetInterface.SKIN_CARDS -> CardsProperties()
+            info.anodsplace.carwidget.content.preferences.WidgetInterface.SKIN_YOU -> YouProperties()
             else -> CarHomeProperties()
         }
     }

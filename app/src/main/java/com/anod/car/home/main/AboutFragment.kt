@@ -19,19 +19,18 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.anod.car.home.BuildConfig
 import com.anod.car.home.R
 import com.anod.car.home.app.App
-import com.anod.car.home.backup.Backup
-import com.anod.car.home.backup.Backup.LEGACY_PATH
-import com.anod.car.home.backup.BackupManager
+import info.anodsplace.carwidget.content.backup.Backup
+import info.anodsplace.carwidget.content.backup.Backup.LEGACY_PATH
+import info.anodsplace.carwidget.content.backup.BackupManager
 import com.anod.car.home.databinding.FragmentAboutBinding
 import com.anod.car.home.prefs.MusicAppSettingsActivity
 import com.anod.car.home.prefs.model.AppTheme
-import com.anod.car.home.utils.Utils
-import com.anod.car.home.utils.forApplicationDetails
-import com.anod.car.home.utils.startProgressAnimation
-import com.anod.car.home.utils.stopProgressAnimation
-import info.anodsplace.framework.AppLog
+import com.anod.car.home.utils.*
+import info.anodsplace.carwidget.screens.AboutViewModel
+import info.anodsplace.applog.AppLog
 import info.anodsplace.framework.app.DialogCustom
 import info.anodsplace.framework.app.applicationContext
 import info.anodsplace.framework.content.CreateDocument
@@ -41,6 +40,7 @@ class AboutFragment : Fragment() {
     private lateinit var createDocumentLauncherWidget: ActivityResultLauncher<CreateDocument.Args>
     private lateinit var createDocumentLauncherIncar: ActivityResultLauncher<CreateDocument.Args>
     private lateinit var openDocumentLauncher: ActivityResultLauncher<Array<String>>
+    private val AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider"
 
     private var _binding: FragmentAboutBinding? = null
     private val binding get() = _binding!!
@@ -148,7 +148,7 @@ class AboutFragment : Fragment() {
                 else -> {
                     binding.backupInCar.stopProgressAnimation()
                     binding.backupWidget.stopProgressAnimation()
-                    Toast.makeText(context, Backup.renderBackupCode(code), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, renderBackupCode(code), Toast.LENGTH_SHORT).show()
                 }
             }
         })
@@ -159,7 +159,7 @@ class AboutFragment : Fragment() {
                 }
                 else -> {
                     binding.restore.stopProgressAnimation()
-                    Toast.makeText(context, Backup.renderRestoreCode(code), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, renderRestoreCode(code), Toast.LENGTH_SHORT).show()
                     if (code == Backup.RESULT_DONE && activity is BackupManager.OnRestore) {
                         (activity as BackupManager.OnRestore).restoreCompleted()
                     }
@@ -171,7 +171,7 @@ class AboutFragment : Fragment() {
             try {
                 it.startProgressAnimation()
                 Toast.makeText(context, getString(R.string.backup_path, LEGACY_PATH), Toast.LENGTH_LONG).show()
-                val initialUri = FileProvider.getUriForFile(applicationContext().actual, Backup.AUTHORITY, Backup.legacyBackupDir)
+                val initialUri = FileProvider.getUriForFile(applicationContext().actual, AUTHORITY, Backup.legacyBackupDir)
                 createDocumentLauncherIncar.launch(CreateDocument.Args(initialUri, "application/json", Backup.FILE_INCAR_JSON))
             } catch (e: Exception) {
                 AppLog.e(e)
@@ -184,7 +184,7 @@ class AboutFragment : Fragment() {
             try {
                 it.startProgressAnimation()
                 Toast.makeText(context, getString(R.string.backup_path, LEGACY_PATH), Toast.LENGTH_LONG).show()
-                val initialUri = FileProvider.getUriForFile(applicationContext().actual, Backup.AUTHORITY, Backup.legacyBackupDir)
+                val initialUri = FileProvider.getUriForFile(applicationContext().actual, AUTHORITY, Backup.legacyBackupDir)
                 createDocumentLauncherWidget.launch(CreateDocument.Args(initialUri, "application/json", "carwidget-${viewModel.appWidgetId}" + Backup.FILE_EXT_JSON))
             } catch (e: Exception) {
                 AppLog.e(e)

@@ -13,7 +13,7 @@ import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.databinding.WizardActivityBinding
 import com.anod.car.home.utils.HtmlCompat
-import info.anodsplace.carwidget.utils.Version
+import info.anodsplace.carwidget.content.Version
 
 /**
  * @author alex

@@ -10,13 +10,13 @@ import android.widget.Toast
 import com.anod.car.home.R
 import com.anod.car.home.prefs.ConfigurationActivity
 import com.anod.car.home.prefs.ConfigurationInCar
-import info.anodsplace.carwidget.preferences.model.InCarStorage
+import info.anodsplace.carwidget.content.preferences.InCarStorage
 
 class SwitchInCarActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val isInCarEnabled = InCarStorage.load(this).isInCarEnabled
+        val isInCarEnabled = info.anodsplace.carwidget.content.preferences.InCarStorage.load(this).isInCarEnabled
         if (isInCarEnabled) {
             val service = Intent(this, ModeService::class.java)
             val data: Uri = if (ModeService.sInCarMode) {

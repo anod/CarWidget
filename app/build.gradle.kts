@@ -12,7 +12,10 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":content"))
     implementation(project(":compose"))
+    implementation(project(":lib:applog"))
+    implementation(project(":lib:graphics"))
     implementation(project(":lib:framework"))
     implementation(project(":lib:colorpicker"))
 

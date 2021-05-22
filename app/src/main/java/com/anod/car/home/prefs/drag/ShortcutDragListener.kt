@@ -7,7 +7,7 @@ import android.graphics.PorterDuffColorFilter
 import android.view.DragEvent
 import android.view.View
 import android.widget.ImageView
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 
 /**
  * @author alex

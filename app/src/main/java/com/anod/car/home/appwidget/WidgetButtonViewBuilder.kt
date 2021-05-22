@@ -6,9 +6,9 @@ import android.widget.RemoteViews
 import androidx.annotation.IdRes
 import com.anod.car.home.R
 import com.anod.car.home.incar.ModeService
-import info.anodsplace.carwidget.preferences.model.InCarStorage
-import info.anodsplace.carwidget.preferences.model.WidgetInterface
-import info.anodsplace.carwidget.preferences.model.WidgetSettings
+import info.anodsplace.carwidget.content.preferences.InCarStorage
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import com.anod.car.home.skin.SkinProperties
 
 /**
@@ -17,7 +17,7 @@ import com.anod.car.home.skin.SkinProperties
  */
 class WidgetButtonViewBuilder(
     private val context: Context,
-    private val prefs: WidgetSettings,
+    private val prefs: info.anodsplace.carwidget.content.preferences.WidgetSettings,
     private val pendingIntentFactory: WidgetViewBuilder.PendingIntentFactory,
     private val appWidgetId: Int) {
 
@@ -32,7 +32,7 @@ class WidgetButtonViewBuilder(
 
     private fun setup(@IdRes btnResId: Int, widgetButtonPref: Int, skinProperties: SkinProperties,
                       views: RemoteViews, buttonId: Int) {
-        if (widgetButtonPref == WidgetInterface.WIDGET_BUTTON_HIDDEN) {
+        if (widgetButtonPref == info.anodsplace.carwidget.content.preferences.WidgetInterface.WIDGET_BUTTON_HIDDEN) {
             if (alternativeHidden) {
                 views.setImageViewResource(btnResId, R.drawable.ic_action_cancel)
                 val configIntent = pendingIntentFactory
@@ -41,8 +41,8 @@ class WidgetButtonViewBuilder(
             } else {
                 views.setViewVisibility(btnResId, View.GONE)
             }
-        } else if (widgetButtonPref == WidgetInterface.WIDGET_BUTTON_INCAR) {
-            if (InCarStorage.load(context).isInCarEnabled) {
+        } else if (widgetButtonPref == info.anodsplace.carwidget.content.preferences.WidgetInterface.WIDGET_BUTTON_INCAR) {
+            if (info.anodsplace.carwidget.content.preferences.InCarStorage.load(context).isInCarEnabled) {
                 setInCarButton(btnResId, prefs.isIncarTransparent, skinProperties, views,
                         buttonId)
             } else {
@@ -53,7 +53,7 @@ class WidgetButtonViewBuilder(
                     views.setViewVisibility(btnResId, View.GONE)
                 }
             }
-        } else if (widgetButtonPref == WidgetInterface.WIDGET_BUTTON_SETTINGS) {
+        } else if (widgetButtonPref == info.anodsplace.carwidget.content.preferences.WidgetInterface.WIDGET_BUTTON_SETTINGS) {
             setSettingsButton(btnResId, skinProperties, views, buttonId)
         }
     }

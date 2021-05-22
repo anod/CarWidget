@@ -18,9 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.databinding.ActivityRequestPermissionsBinding
-import info.anodsplace.carwidget.preferences.model.InCarInterface
-import info.anodsplace.carwidget.preferences.model.InCarSettings
-import info.anodsplace.carwidget.preferences.model.InCarStorage
+import info.anodsplace.carwidget.content.preferences.InCarSettings
+import info.anodsplace.carwidget.content.preferences.InCarStorage
 import com.anod.car.home.utils.*
 
 class RequestPermissionsActivity : CarWidgetActivity() {
@@ -125,7 +124,7 @@ class RequestPermissionsActivity : CarWidgetActivity() {
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
         class Item(@DrawableRes val icon: Int, @StringRes val title: Int, @StringRes val description: Int)
 
-        val settings: InCarSettings by lazy { InCarStorage.load(context) }
+        val settings: info.anodsplace.carwidget.content.preferences.InCarSettings by lazy { info.anodsplace.carwidget.content.preferences.InCarStorage.load(context) }
         val items: List<Item> = permissions.map {
             when (it) {
                 WriteSettings.value -> {

@@ -4,14 +4,12 @@ import android.content.Context
 
 import com.anod.car.home.R
 import com.anod.car.home.appwidget.WidgetHelper
-import info.anodsplace.carwidget.preferences.model.InCarSettings
-import info.anodsplace.carwidget.preferences.model.InCarStorage
-import info.anodsplace.carwidget.utils.Version
+import info.anodsplace.carwidget.content.Version
 
-class InCarStatus(widgetsCount: Int, version: Version, settings: InCarSettings) {
+class InCarStatus(widgetsCount: Int, version: Version, settings: info.anodsplace.carwidget.content.preferences.InCarSettings) {
 
     constructor(widgetsCount: Int, version: Version, context: Context)
-        : this(widgetsCount, version, InCarStorage.load(context))
+        : this(widgetsCount, version, info.anodsplace.carwidget.content.preferences.InCarStorage.load(context))
 
     constructor(context: Context) : this(
             WidgetHelper.getLargeWidgetIds(context).size,
@@ -26,7 +24,7 @@ class InCarStatus(widgetsCount: Int, version: Version, settings: InCarSettings) 
         const val ENABLED = 1
         private const val DISABLED = 2
 
-        private fun calc(widgetsCount: Int, version: Version, settings: InCarSettings): Int {
+        private fun calc(widgetsCount: Int, version: Version, settings: info.anodsplace.carwidget.content.preferences.InCarSettings): Int {
             if (widgetsCount == 0) {
                 return NOT_ACTIVE
             }

@@ -8,10 +8,7 @@ import android.content.Intent
 import android.widget.RemoteViews
 
 import com.anod.car.home.R
-import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.incar.SwitchInCarActivity
-import info.anodsplace.carwidget.preferences.model.InCarStorage
-import info.anodsplace.carwidget.utils.Version
 
 /**
  * @author algavris

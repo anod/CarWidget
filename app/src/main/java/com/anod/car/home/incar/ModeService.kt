@@ -11,10 +11,8 @@ import com.anod.car.home.app.App
 import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.notifications.InCarModeNotification
 import com.anod.car.home.notifications.TrialExpiredNotification
-import info.anodsplace.carwidget.preferences.model.InCarInterface
-import info.anodsplace.carwidget.preferences.model.InCarStorage
-import info.anodsplace.carwidget.utils.Version
-import info.anodsplace.framework.AppLog
+import info.anodsplace.carwidget.content.Version
+import info.anodsplace.applog.AppLog
 
 class ModeService : Service() {
     private var phoneListener: ModePhoneStateListener? = null
@@ -24,7 +22,7 @@ class ModeService : Service() {
     override fun onDestroy() {
         stopForeground(true)
 
-        val prefs = InCarStorage.load(this)
+        val prefs = info.anodsplace.carwidget.content.preferences.InCarStorage.load(this)
         if (forceState) {
             ModeDetector.forceState(prefs, false)
         }
@@ -77,7 +75,7 @@ class ModeService : Service() {
             return START_NOT_STICKY
         }
 
-        val prefs = InCarStorage.load(this)
+        val prefs = info.anodsplace.carwidget.content.preferences.InCarStorage.load(this)
         sInCarMode = true
         if (forceState) {
             ModeDetector.forceState(prefs, true)
@@ -96,8 +94,8 @@ class ModeService : Service() {
         return START_REDELIVER_INTENT
     }
 
-    private fun initPhoneListener(prefs: InCarInterface) {
-        if (prefs.isAutoSpeaker || prefs.autoAnswer != InCarInterface.AUTOANSWER_DISABLED) {
+    private fun initPhoneListener(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface) {
+        if (prefs.isAutoSpeaker || prefs.autoAnswer != info.anodsplace.carwidget.content.preferences.InCarInterface.AUTOANSWER_DISABLED) {
             if (phoneListener == null) {
                 attachPhoneListener()
             }

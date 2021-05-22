@@ -7,9 +7,10 @@ import androidx.core.util.isEmpty
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.anod.car.home.appwidget.WidgetHelper
-import info.anodsplace.carwidget.db.Shortcut
-import com.anod.car.home.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.db.Shortcut
 import com.anod.car.home.utils.AppViewModel
+import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -36,8 +37,9 @@ class WidgetsListViewModel(application: Application) : AppViewModel(application)
         val appWidgetIds = WidgetHelper.getLargeWidgetIds(context)
         val result = WidgetList()
 
+        val defaultsProvider = DefaultsResourceProvider(context)
         for (i in appWidgetIds.indices) {
-            val model = WidgetShortcutsModel(context, appWidgetIds[i])
+            val model = WidgetShortcutsModel(context, defaultsProvider, appWidgetIds[i])
             model.init()
 
             result.large.put(appWidgetIds[i], model.shortcuts)

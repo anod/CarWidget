@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.collection.SimpleArrayMap
 import com.anod.car.home.BuildConfig
 import com.anod.car.home.model.AppsList
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

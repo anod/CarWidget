@@ -4,10 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 
 import com.anod.car.home.R
-import com.anod.car.home.model.NotificationShortcutsModel
 import com.anod.car.home.prefs.PickShortcutUtils.PreferenceKey
-import info.anodsplace.carwidget.preferences.model.InCarStorage
 import com.anod.car.home.prefs.views.ShortcutPreference
+import info.anodsplace.carwidget.content.model.NotificationShortcutsModel
 
 class ConfigurationNotificationShortcuts : ConfigurationPreferenceFragment(), PreferenceKey, ShortcutPreference.DropCallback {
 
@@ -21,13 +20,13 @@ class ConfigurationNotificationShortcuts : ConfigurationPreferenceFragment(), Pr
         get() = R.xml.preference_notif_shortcuts
 
     override val sharedPreferencesName: String
-        get() = InCarStorage.PREF_NAME
+        get() = info.anodsplace.carwidget.content.preferences.InCarStorage.PREF_NAME
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pickShortcutUtils.onRestoreInstanceState(savedInstanceState)
 
-        for (i in 0 until InCarStorage.NOTIFICATION_COMPONENT_NUMBER) {
+        for (i in 0 until info.anodsplace.carwidget.content.preferences.InCarStorage.NOTIFICATION_COMPONENT_NUMBER) {
             val p = requirePreference(getInitialKey(i)) as ShortcutPreference
             pickShortcutUtils.initLauncherPreference(i, p)
             p.dropCallback = this
@@ -40,11 +39,11 @@ class ConfigurationNotificationShortcuts : ConfigurationPreferenceFragment(), Pr
     }
 
     override fun getInitialKey(position: Int): String {
-        return InCarStorage.getNotifComponentName(position)
+        return info.anodsplace.carwidget.content.preferences.InCarStorage.getNotifComponentName(position)
     }
 
     override fun getCompiledKey(position: Int): String {
-        return InCarStorage.getNotifComponentName(position)
+        return info.anodsplace.carwidget.content.preferences.InCarStorage.getNotifComponentName(position)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -67,7 +66,7 @@ class ConfigurationNotificationShortcuts : ConfigurationPreferenceFragment(), Pr
 
     private fun refreshShortcuts() {
         model.init()
-        for (i in 0 until InCarStorage.NOTIFICATION_COMPONENT_NUMBER) {
+        for (i in 0 until info.anodsplace.carwidget.content.preferences.InCarStorage.NOTIFICATION_COMPONENT_NUMBER) {
             val key = getCompiledKey(i)
             val p = requirePreference(key) as ShortcutPreference
             pickShortcutUtils.refreshPreference(p)

@@ -12,8 +12,8 @@ import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import androidx.annotation.DrawableRes
 import androidx.core.content.res.ResourcesCompat
-import info.anodsplace.carwidget.utils.UtilitiesBitmap
-import info.anodsplace.framework.AppLog
+import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
+import info.anodsplace.applog.AppLog
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory

@@ -8,17 +8,15 @@ import android.graphics.drawable.Drawable
 import android.util.LruCache
 import android.view.View
 import android.widget.RemoteViews
-import info.anodsplace.carwidget.db.Shortcut
-import info.anodsplace.carwidget.db.ShortcutIconLoader
-import com.anod.car.home.model.WidgetShortcutsModel
-import info.anodsplace.carwidget.preferences.model.WidgetInterface
-import info.anodsplace.carwidget.preferences.model.WidgetSettings
+import info.anodsplace.carwidget.content.db.Shortcut
+import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import com.anod.car.home.skin.SkinProperties
 import com.anod.car.home.skin.icon.BackgroundProcessor
 import info.anodsplace.carwidget.utils.BitmapTransform
 import com.anod.car.home.utils.IconTheme
-import info.anodsplace.carwidget.utils.UtilitiesBitmap
-import info.anodsplace.framework.AppLog
+import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
+import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
 
 /**
  * @author alex
@@ -33,7 +31,7 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
 
     private var iconTheme: IconTheme? = null
 
-    private var prefs: WidgetSettings? = null
+    private var prefs: info.anodsplace.carwidget.content.preferences.WidgetSettings? = null
 
     private var shortcuts: WidgetShortcutsModel? = null
 
@@ -46,7 +44,7 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
     private var adaptiveIconPath = Path()
 
     fun init(scaledDensity: Float, skinProperties: SkinProperties,
-             iconTheme: IconTheme?, prefs: WidgetSettings, shortcuts: WidgetShortcutsModel,
+             iconTheme: IconTheme?, prefs: info.anodsplace.carwidget.content.preferences.WidgetSettings, shortcuts: WidgetShortcutsModel,
              bitmapTransform: BitmapTransform
     ) {
         this.scaledDensity = scaledDensity
@@ -103,7 +101,7 @@ class ShortcutViewBuilder(private val context: Context, private val appWidgetId:
 
     private fun setFont(resText: Int, scaledDensity: Float, views: RemoteViews) {
         views.setTextColor(resText, prefs!!.fontColor)
-        if (prefs!!.fontSize != WidgetInterface.FONT_SIZE_UNDEFINED) {
+        if (prefs!!.fontSize != info.anodsplace.carwidget.content.preferences.WidgetInterface.FONT_SIZE_UNDEFINED) {
             if (prefs!!.fontSize == 0) {
                 views.setViewVisibility(resText, View.GONE)
             } else {

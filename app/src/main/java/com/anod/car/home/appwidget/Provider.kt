@@ -12,8 +12,7 @@ import com.anod.car.home.UpdateWidgetJob
 import com.anod.car.home.app.App
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.incar.ModeService
-import info.anodsplace.carwidget.preferences.model.WidgetStorage
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 
 
 open class Provider : AppWidgetProvider() {
@@ -33,7 +32,7 @@ open class Provider : AppWidgetProvider() {
         super.onDeleted(context, appWidgetIds)
         AppLog.i("appWidgetIds: ${appWidgetIds.joinToString(",")}", tag = "onDeleted")
         // Drop the settings if the widget is deleted
-        WidgetStorage.dropWidgetSettings(context, appWidgetIds)
+        info.anodsplace.carwidget.content.preferences.WidgetStorage.dropWidgetSettings(context, appWidgetIds)
     }
 
     override fun onDisabled(context: Context) {

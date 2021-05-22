@@ -4,19 +4,14 @@ import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
-import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
-import androidx.preference.PreferenceCategory
 import com.anod.car.home.R
-import info.anodsplace.carwidget.preferences.model.InCarSettings
-import info.anodsplace.carwidget.preferences.model.InCarStorage
-import com.anod.car.home.utils.AppPermissions
-import com.anod.car.home.utils.WriteSettings
+import info.anodsplace.carwidget.content.preferences.InCarSettings
+import info.anodsplace.carwidget.content.preferences.InCarStorage
 
 class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
-    private val prefs: InCarSettings by lazy { InCarStorage.load(requireActivity()) }
+    private val prefs: info.anodsplace.carwidget.content.preferences.InCarSettings by lazy { info.anodsplace.carwidget.content.preferences.InCarStorage.load(requireActivity()) }
 
     override val isAppWidgetIdRequired: Boolean
         get() = false
@@ -25,7 +20,7 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
         get() = R.xml.preference_incar_more
 
     override val sharedPreferencesName: String
-        get() = InCarStorage.PREF_NAME
+        get() = info.anodsplace.carwidget.content.preferences.InCarStorage.PREF_NAME
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

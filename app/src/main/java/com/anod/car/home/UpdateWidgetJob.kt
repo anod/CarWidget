@@ -7,9 +7,8 @@ import com.anod.car.home.app.App
 import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.appwidget.WidgetViewBuilder
 import com.anod.car.home.incar.BroadcastService
-import info.anodsplace.carwidget.preferences.model.InCarStorage
-import info.anodsplace.carwidget.utils.Version
-import info.anodsplace.framework.AppLog
+import info.anodsplace.carwidget.content.Version
+import info.anodsplace.applog.AppLog
 
 /**
  * WorkManager can't be used since it causes updates loop
@@ -51,7 +50,7 @@ class UpdateWidgetJob : JobIntentService() {
 
     private fun registerBroadcastService(context: Context, isProOrTrial: Boolean) {
         val inCarEnabled = if (isProOrTrial)
-            InCarStorage.load(context).isInCarEnabled
+            info.anodsplace.carwidget.content.preferences.InCarStorage.load(context).isInCarEnabled
         else
             false
         if (inCarEnabled) {

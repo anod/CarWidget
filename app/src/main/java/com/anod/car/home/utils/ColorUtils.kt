@@ -6,7 +6,7 @@ import androidx.core.graphics.blue
 import androidx.core.graphics.green
 import androidx.core.graphics.red
 
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
 
 fun Int.toColorHex(withAlpha: Boolean): String {
     var hexStr = String.format("%08X", this)

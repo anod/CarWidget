@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Car Widget</string>
     <string name="none">None</string>
     <string name="extras">Extras</string>
     <string name="action">Action</string>
@@ -103,6 +104,7 @@
     <string name="backup_current_widget">Backup current widget</string>
     <string name="backup_incar_settings">Backup InCar settings</string>
     <string name="backup_done">Backup is done.</string>
+    <string name="unexpected_error">Unexpected error.</string>
     <string name="failed_to_write_file">Failed to write the file.</string>
     <string name="restore_done">Restore is done.</string>
     <string name="restore_deserialize_failed">Failed to deserialize backup.</string>

@@ -14,13 +14,13 @@ import android.widget.ImageView
 import com.anod.car.home.R
 import com.anod.car.home.app.AppCompatGridActivity
 import com.anod.car.home.appwidget.WidgetButtonViewBuilder
-import info.anodsplace.carwidget.preferences.model.WidgetInterface
-import info.anodsplace.carwidget.preferences.model.WidgetSettings
-import info.anodsplace.carwidget.preferences.model.WidgetStorage
 import com.anod.car.home.skin.PropertiesFactory
 import com.anod.car.home.skin.SkinProperties
 import com.anod.car.home.utils.Utils
-import info.anodsplace.framework.AppLog
+import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.preferences.WidgetSettings
+import info.anodsplace.carwidget.content.preferences.WidgetStorage
+import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import java.util.*
 
 /**
@@ -64,7 +64,7 @@ class WidgetButtonChoiceActivity : AppCompatGridActivity() {
         val skinProperties = PropertiesFactory.create(skin)
         val items = createItems(skinProperties)
 
-        val prefs = WidgetStorage.load(this, appWidgetId)
+        val prefs = WidgetStorage.load(this, DefaultsResourceProvider(this), appWidgetId)
         initCheckedItem(items, prefs)
 
         listAdapter = ChoiceAdapter(this, items)
@@ -85,7 +85,7 @@ class WidgetButtonChoiceActivity : AppCompatGridActivity() {
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-        val prefs = WidgetStorage.load(this, appWidgetId)
+        val prefs = WidgetStorage.load(this, DefaultsResourceProvider(this), appWidgetId)
         val item = listAdapter!!.getItem(position) as ChoiceAdapter.Item
         if (button == WidgetButtonViewBuilder.BUTTON_1) {
             prefs.widgetButton1 = item.value
@@ -100,11 +100,11 @@ class WidgetButtonChoiceActivity : AppCompatGridActivity() {
         val r = resources
         val items = ArrayList<ChoiceAdapter.Item>(3)
         items.add(ChoiceAdapter.Item(r.getString(R.string.pref_settings_transparent),
-                skinProperties.settingsButtonRes, WidgetInterface.WIDGET_BUTTON_SETTINGS))
+                skinProperties.settingsButtonRes, info.anodsplace.carwidget.content.preferences.WidgetInterface.WIDGET_BUTTON_SETTINGS))
         items.add(ChoiceAdapter.Item(r.getString(R.string.pref_incar_transparent),
-                skinProperties.inCarButtonEnterRes, WidgetInterface.WIDGET_BUTTON_INCAR))
+                skinProperties.inCarButtonEnterRes, info.anodsplace.carwidget.content.preferences.WidgetInterface.WIDGET_BUTTON_INCAR))
         items.add(ChoiceAdapter.Item(r.getString(R.string.hidden), R.drawable.ic_action_cancel,
-                WidgetInterface.WIDGET_BUTTON_HIDDEN))
+                info.anodsplace.carwidget.content.preferences.WidgetInterface.WIDGET_BUTTON_HIDDEN))
         return items
     }
 

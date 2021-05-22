@@ -9,14 +9,15 @@ import android.widget.RemoteViews
 import androidx.collection.SimpleArrayMap
 
 import com.anod.car.home.R
-import info.anodsplace.carwidget.db.LauncherSettings
-import com.anod.car.home.model.WidgetShortcutsModel
-import info.anodsplace.carwidget.preferences.model.WidgetSettings
-import info.anodsplace.carwidget.preferences.model.WidgetStorage
+import info.anodsplace.carwidget.content.db.LauncherSettings
 import com.anod.car.home.skin.PropertiesFactory
 import info.anodsplace.carwidget.utils.BitmapTransform
 import com.anod.car.home.utils.IconTheme
 import com.anod.car.home.utils.Utils
+import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.preferences.WidgetSettings
+import info.anodsplace.carwidget.content.preferences.WidgetStorage
+import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 
 class WidgetViewBuilder(private val context: Context,
                         var appWidgetId: Int,
@@ -29,8 +30,8 @@ class WidgetViewBuilder(private val context: Context,
 
     var overrideSkin: String? = null
 
-    private val prefs: WidgetSettings by lazy { WidgetStorage.load(context, appWidgetId) }
-    private val shortcutsModel: WidgetShortcutsModel by lazy { WidgetShortcutsModel(context, appWidgetId) }
+    private val prefs: WidgetSettings by lazy { WidgetStorage.load(context, DefaultsResourceProvider(context), appWidgetId) }
+    private val shortcutsModel: WidgetShortcutsModel by lazy { WidgetShortcutsModel(context, DefaultsResourceProvider(context), appWidgetId) }
     private var shortcutViewBuilder: ShortcutViewBuilder? = null
     private var bitmapTransform: BitmapTransform? = null
     private var widgetButtonViewBuilder: WidgetButtonViewBuilder? = null
@@ -149,7 +150,7 @@ class WidgetViewBuilder(private val context: Context,
             R.id.btn8, R.id.btn9  //10
         )
 
-        private fun applyIconTransform(bt: BitmapTransform, prefs: WidgetSettings) {
+        private fun applyIconTransform(bt: BitmapTransform, prefs: info.anodsplace.carwidget.content.preferences.WidgetSettings) {
             if (prefs.isIconsMono) {
                 bt.applyGrayFilter = true
                 if (prefs.iconsColor != null) {
