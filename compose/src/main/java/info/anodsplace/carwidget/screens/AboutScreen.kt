@@ -24,9 +24,12 @@ import info.anodsplace.carwidget.compose.CarWidgetTheme
 import java.util.*
 
 @Composable
-fun AboutButton(@StringRes titleRes: Int,
-                subtitle: String,
-                onClick: () -> Unit) {
+fun AboutButton(@StringRes titleRes: Int = 0,
+                title: String = "",
+                subtitle: String = "",
+                onClick: () -> Unit = {},
+                enabled: Boolean = true
+) {
     OutlinedButton(
         onClick = onClick,
         modifier = Modifier
@@ -34,12 +37,15 @@ fun AboutButton(@StringRes titleRes: Int,
             .padding(bottom = 16.dp),
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = MaterialTheme.colors.onSurface
-        )
+        ),
+        enabled = enabled
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = stringResource(id = titleRes).toUpperCase(Locale.getDefault()))
+            Text(text = if (titleRes != 0) {
+                stringResource(id = titleRes).toUpperCase(Locale.getDefault())
+            } else title.toUpperCase(Locale.getDefault()))
             if (subtitle.isNotEmpty()) {
                 Text(text = subtitle.toUpperCase(Locale.getDefault()),
                     style = MaterialTheme.typography.caption.copy(
@@ -62,7 +68,7 @@ fun AboutTitle(@StringRes titleRes: Int) {
 }
 
 @Composable
-fun AboutScreen(modifier: Modifier = Modifier) {
+fun AboutScreen(screenState: AboutScreenState, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -70,15 +76,15 @@ fun AboutScreen(modifier: Modifier = Modifier) {
             .verticalScroll(rememberScrollState())
     ) {
         AboutTitle(titleRes = R.string.app_preferences)
-        AboutButton(titleRes = R.string.app_theme, "Dark", onClick = {})
-        AboutButton(titleRes = R.string.music_app, "SHOW CHOICE", onClick = {})
-        AboutButton(titleRes = R.string.default_car_dock_app, "", onClick = {})
+        AboutButton(titleRes = R.string.app_theme, subtitle = screenState.themeName, onClick = {})
+        AboutButton(titleRes = R.string.music_app, subtitle = screenState.musicApp, onClick = {})
+        AboutButton(titleRes = R.string.default_car_dock_app, onClick = {})
         AboutTitle(titleRes = R.string.pref_backup_title)
-        AboutButton(titleRes = R.string.backup_current_widget, "", onClick = {})
-        AboutButton(titleRes = R.string.backup_incar_settings, "", onClick = {})
-        AboutButton(titleRes = R.string.restore, "", onClick = {})
+        AboutButton(titleRes = R.string.backup_current_widget, enabled = screenState.isValidWidget, onClick = {})
+        AboutButton(titleRes = R.string.backup_incar_settings, onClick = {})
+        AboutButton(titleRes = R.string.restore, onClick = {})
         AboutTitle(titleRes = R.string.information_title)
-        AboutButton(titleRes = R.string.version_summary, "RATE", onClick = {})
+        AboutButton(title = screenState.appVersion, subtitle = stringResource(id = R.string.version_summary), onClick = {})
     }
 }
 
@@ -87,7 +93,7 @@ fun AboutScreen(modifier: Modifier = Modifier) {
 fun PreviewAboutScreenLight() {
     CarWidgetTheme(darkTheme = false) {
         BackgroundSurface {
-            AboutScreen()
+            AboutScreen(AboutScreenState(0, 0, "Light", "CHOICE", "DUMMY"))
         }
     }
 }
@@ -97,7 +103,7 @@ fun PreviewAboutScreenLight() {
 fun PreviewAboutScreenDark() {
     CarWidgetTheme(darkTheme = true) {
         BackgroundSurface {
-            AboutScreen()
+            AboutScreen(AboutScreenState(1, 0, "Dark", "Yandex", "v123"))
         }
     }
 }

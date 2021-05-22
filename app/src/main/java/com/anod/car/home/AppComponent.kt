@@ -1,5 +1,6 @@
 package com.anod.car.home
 
+import android.app.Application
 import android.app.NotificationManager
 import android.appwidget.AppWidgetManager
 import android.content.Context.*
@@ -14,23 +15,28 @@ import com.anod.car.home.incar.ModePhoneStateListener
 import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
 import com.anod.car.home.model.AppsList
-import com.anod.car.home.prefs.model.AppSettings
+import info.anodsplace.carwidget.content.preferences.AppSettings
 import com.anod.car.home.prefs.model.AppTheme
+import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.carwidget.content.preferences.InCarStorage
 import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.util.createLruCache
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
 /**
  * @author alex
  * @date 2014-10-27
  */
-class AppComponent(val application: CarWidgetApplication) {
+class AppComponent(val application: Application) : KoinComponent {
     private var _appListCache: AppsList? = null
     private var _iconThemesCache: AppsList? = null
     private var _appIconLoader: AppIconLoader? = null
 
-    val appSettings = AppSettings(application)
+    val appSettings: AppSettings
+        get() = get()
+
     var theme = AppTheme(appSettings.theme)
 
     val appWidgetManager: AppWidgetManager
@@ -55,7 +61,7 @@ class AppComponent(val application: CarWidgetApplication) {
         get() = ModeHandler(application, screenOrientation)
 
     val alertWindow: ScreenOnAlert
-        get() = ScreenOnAlert(application, inCarSettings, AlertWindow(this.application))
+        get() = ScreenOnAlert(application, get(), AlertWindow(this.application))
 
     val notificationManager: NotificationManager
         get() = this.application.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -86,9 +92,6 @@ class AppComponent(val application: CarWidgetApplication) {
             }
             return _iconThemesCache!!
         }
-
-    val inCarSettings: info.anodsplace.carwidget.content.preferences.InCarSettings
-        get() = info.anodsplace.carwidget.content.preferences.InCarStorage.load(application)
 
     fun cleanAppListCache() {
         if (_appListCache != null) {

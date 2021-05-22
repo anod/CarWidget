@@ -17,3 +17,9 @@ val Context.isHighPerformingDevice: Boolean
         && (Runtime.getRuntime().availableProcessors() >= 4)
         && activityManager.memoryClass >= 128)
     }
+
+@Suppress("DEPRECATION") // Deprecated for third party Services.
+fun <T> Context.isServiceRunning(service: Class<T>) =
+    (getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager)
+        .getRunningServices(Integer.MAX_VALUE)
+        .any { it.service.className == service.name }

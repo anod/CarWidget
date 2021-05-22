@@ -88,14 +88,19 @@ class AboutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.appWidgetId = Utils.readAppWidgetId(savedInstanceState, requireActivity().intent)
+
+        val appWidgetId = Utils.readAppWidgetId(savedInstanceState, requireActivity().intent)
+        viewModel.init(appWidgetId)
 
         val themeIdx = App.theme(requireContext()).themeIdx
         binding.buttonAppTheme.setOnClickListener {
-            changeTheme(themeIdx)
+            viewModel.changeTheme(themeIdx)
+            applyTheme(themeIdx)
         }
-        val themes = resources.getStringArray(R.array.app_themes)
-        val themeName = themes[themeIdx]
+
+        val screenState = viewModel.screenState.value!!
+
+        val themeName = screenState.themeName
         val themeText = SpannableStringBuilder("${getString(R.string.app_theme)}\n$themeName")
         themeText.setSpan(AbsoluteSizeSpan(8, true), themeText.length - themeName.length, themeText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.buttonAppTheme.text = themeText
@@ -109,7 +114,7 @@ class AboutFragment : Fragment() {
             requireContext().startActivity(musicAppsIntent)
         }
 
-        val musicApp = renderMusicApp()
+        val musicApp = screenState.musicApp
         val musicAppText = SpannableStringBuilder("${getString(R.string.music_app)}\n$musicApp")
         musicAppText.setSpan(AbsoluteSizeSpan(8, true), musicAppText.length - musicApp.length, musicAppText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.buttonMusicApp.text = musicAppText
@@ -122,17 +127,13 @@ class AboutFragment : Fragment() {
 
         initBackup()
 
-        val ver = renderVersion()
+        val ver = screenState.appVersion
         val versionText = SpannableStringBuilder("$ver\n${getString(R.string.version_summary)}")
         versionText.setSpan(AbsoluteSizeSpan(8, true), ver.length + 1, versionText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.buttonVersion.text = versionText
     }
 
-    private fun changeTheme(themeIdx: Int) {
-        val newThemeIdx = if (themeIdx == 0) 1 else 0
-        val appSettings = App.provide(requireContext()).appSettings
-        appSettings.theme = newThemeIdx
-        appSettings.apply()
+    private fun applyTheme(newThemeIdx: Int) {
         val app = App.get(requireContext())
         app.appComponent.theme = AppTheme(newThemeIdx)
         AppCompatDelegate.setDefaultNightMode(app.nightMode)
@@ -214,35 +215,6 @@ class AboutFragment : Fragment() {
         }.show()
     }
 
-    private fun renderMusicApp(): String {
-        val musicAppCmp = App.provide(requireContext()).appSettings.musicApp
-        return if (musicAppCmp == null) {
-            getString(R.string.show_choice)
-        } else {
-            try {
-                val info = App.provide(requireContext()).packageManager
-                        .getApplicationInfo(musicAppCmp.packageName, 0)
-                info.loadLabel(App.provide(requireContext()).packageManager).toString()
-            } catch (e: PackageManager.NameNotFoundException) {
-                AppLog.e(e)
-                musicAppCmp.flattenToShortString()
-            }
-
-        }
-    }
-
-    private fun renderVersion(): String {
-        val appName = getString(R.string.app_name)
-        var versionName = ""
-        try {
-            versionName = App.provide(requireContext()).packageManager
-                    .getPackageInfo(requireContext().packageName, 0).versionName
-        } catch (e: PackageManager.NameNotFoundException) {
-            AppLog.e(e)
-        }
-
-        return getString(R.string.version_title, appName, versionName)
-    }
 
     companion object {
         private const val DETAIL_MARKET_URL = "market://details?id=%s"

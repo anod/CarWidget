@@ -1,16 +1,15 @@
-package com.anod.car.home.prefs.model
+package info.anodsplace.carwidget.content.preferences
 
 import android.content.ComponentName
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import info.anodsplace.carwidget.content.preferences.ChangeableSharedPreferences
 
 /**
  * @author algavris
  * @date 19/03/2016.
  */
-class AppSettings(context: Context) : info.anodsplace.carwidget.content.preferences.ChangeableSharedPreferences(getSharedPreferences(context)) {
+class AppSettings(context: Context) : ChangeableSharedPreferences(getSharedPreferences(context)) {
 
     var musicApp: ComponentName?
         get() {
@@ -23,10 +22,13 @@ class AppSettings(context: Context) : info.anodsplace.carwidget.content.preferen
         set(musicApp) = putChange(MUSIC_APP, musicApp)
 
     var theme: Int
-        get() = prefs.getInt(APP_THEME, AppTheme.gray)
+        get() = prefs.getInt(APP_THEME, gray)
         set(value) = putChange(APP_THEME, value)
 
     companion object {
+        const val gray = 0
+        const val dark = 1
+
         const val MUSIC_APP = "music-app"
         private const val APP_THEME = "app_theme"
 

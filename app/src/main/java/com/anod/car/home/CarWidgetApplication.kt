@@ -13,12 +13,19 @@ import com.anod.car.home.notifications.Channels
 import com.anod.car.home.prefs.model.AppTheme
 import com.anod.car.home.utils.AppUpgrade
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.createAppModule
 import info.anodsplace.framework.app.ApplicationInstance
 import org.acra.ACRA
 import org.acra.ReportField
 import org.acra.annotation.AcraCore
 import org.acra.annotation.AcraLimiter
 import org.acra.annotation.AcraNotification
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.context.startKoin
+import org.koin.core.qualifier.named
+import org.koin.dsl.bind
+import org.koin.dsl.module
 
 
 @AcraCore(
@@ -47,22 +54,16 @@ import org.acra.annotation.AcraNotification
         failedReportLimit = 1,
         stacktraceLimit = 1
 )
-class CarWidgetApplication : Application(), ApplicationInstance {
+class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
 
-    val appComponent: AppComponent by lazy { AppComponent(this) }
+    lateinit var appComponent: AppComponent
     override val notificationManager: NotificationManager
         get() = appComponent.notificationManager
     override val memoryCache: LruCache<String, Any?>
         get() = appComponent.memoryCache
 
     override val nightMode: Int
-        get() {
-            return if (appComponent.appSettings.theme == AppTheme.dark) {
-                AppCompatDelegate.MODE_NIGHT_YES
-            } else {
-                AppCompatDelegate.MODE_NIGHT_NO
-            }
-        }
+        get() = get(named("NightMode"))
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
@@ -97,7 +98,15 @@ class CarWidgetApplication : Application(), ApplicationInstance {
         AppLog.tag = "CarWidget"
         AppLog.setDebug(BuildConfig.DEBUG, "CarWidget")
 
+        startKoin {
+            koin.loadModules(listOf(module {
+                single<Context> { this@CarWidgetApplication } bind Application::class
+            }))
+            modules(createAppModule())
+        }
         AppCompatDelegate.setDefaultNightMode(nightMode)
+        appComponent = AppComponent(this)
+
         Channels.register(this)
     }
 

@@ -14,7 +14,9 @@ import com.anod.car.home.prefs.ConfigurationInCar
 import com.anod.car.home.prefs.LookAndFeelActivity
 import com.anod.car.home.utils.*
 import com.google.android.material.snackbar.Snackbar
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Version
+import info.anodsplace.carwidget.content.extentions.isServiceRunning
 
 /**
  * @author alex
@@ -91,6 +93,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
                 }
             }
         }
+        AppLog.d("BroadcastService is running: ${isServiceRunning(BroadcastService::class.java)}")
     }
 
     override fun onPause() {

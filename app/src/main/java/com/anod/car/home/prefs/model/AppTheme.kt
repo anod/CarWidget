@@ -3,6 +3,7 @@ package com.anod.car.home.prefs.model
 import androidx.annotation.ColorRes
 import androidx.annotation.StyleRes
 import com.anod.car.home.R
+import info.anodsplace.carwidget.content.preferences.AppSettings
 
 /**
  * @author algavris
@@ -11,8 +12,8 @@ import com.anod.car.home.R
 class AppTheme(val themeIdx: Int) {
 
     companion object {
-        const val gray = 0
-        const val dark = 1
+        const val gray = AppSettings.gray
+        const val dark = AppSettings.dark
     }
 
     val main: Int

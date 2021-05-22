@@ -19,6 +19,7 @@ dependencies {
     implementation(project(":lib:framework"))
     implementation(project(":lib:colorpicker"))
 
+    implementation("io.insert-koin:koin-core:3.0.2")
     implementation("com.squareup.picasso:picasso:2.8")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
