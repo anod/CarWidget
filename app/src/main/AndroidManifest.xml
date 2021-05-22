@@ -277,6 +277,15 @@
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
+        <receiver
+            android:name=".BootCompleted"
+            android:exported="true"
+            android:directBootAware="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIwrTs2H7J2Rs0kglDTHtziqQ8_7YbAZGeS7bDUA" />

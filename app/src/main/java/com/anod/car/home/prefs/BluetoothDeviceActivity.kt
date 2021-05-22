@@ -87,7 +87,7 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
 
         // Get a set of currently paired devices
         val pairedDevices = btAdapter!!.bondedDevices
-        val devices = info.anodsplace.carwidget.content.preferences.InCarStorage.load(context).btDevices
+        val devices = InCarStorage.load(context).btDevices
         val pairedList = mutableListOf<BluetoothDevice>()
 
         // If there are paired devices, add each one to the ArrayAdapter
@@ -142,7 +142,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
     private val viewModel: BluetoothDevicesViewModel by viewModels()
     private val isBroadcastServiceRequired: Boolean
         get() {
-            val incar = info.anodsplace.carwidget.content.preferences.InCarStorage.load(this)
+            val incar = InCarStorage.load(this)
             return BroadcastService.isServiceRequired(incar)
         }
 
@@ -200,7 +200,7 @@ class BluetoothDeviceActivity : CarWidgetActivity(), AdapterView.OnItemClickList
     }
 
     private fun onDeviceStateChange(device: BluetoothDevice?, newState: Boolean) {
-        val prefs = info.anodsplace.carwidget.content.preferences.InCarStorage.load(this)
+        val prefs = InCarStorage.load(this)
         val devices = prefs.btDevices
         if (newState) {
             devices[device!!.address] = device.address

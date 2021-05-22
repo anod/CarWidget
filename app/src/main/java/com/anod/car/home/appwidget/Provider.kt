@@ -14,7 +14,6 @@ import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.incar.ModeService
 import info.anodsplace.applog.AppLog
 
-
 open class Provider : AppWidgetProvider() {
 
     init {

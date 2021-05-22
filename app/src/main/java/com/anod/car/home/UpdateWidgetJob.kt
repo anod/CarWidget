@@ -35,9 +35,6 @@ class UpdateWidgetJob : JobIntentService() {
 
     private fun performUpdate(context: Context, appWidgetIds: IntArray) {
         val appWidgetManager = App.provide(context).appWidgetManager
-        val version = Version(context)
-
-        registerBroadcastService(context, version.isProOrTrial)
         // Perform this loop procedure for each App Widget that belongs to this
         // provider
         for (element in appWidgetIds) {
@@ -47,17 +44,4 @@ class UpdateWidgetJob : JobIntentService() {
             appWidgetManager.updateAppWidget(element, views)
         }
     }
-
-    private fun registerBroadcastService(context: Context, isProOrTrial: Boolean) {
-        val inCarEnabled = if (isProOrTrial)
-            info.anodsplace.carwidget.content.preferences.InCarStorage.load(context).isInCarEnabled
-        else
-            false
-        if (inCarEnabled) {
-            BroadcastService.startService(context)
-        } else {
-            BroadcastService.stopService(context)
-        }
-    }
-
 }

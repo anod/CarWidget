@@ -10,6 +10,9 @@ import androidx.core.content.ContextCompat
 import com.anod.car.home.notifications.ModeDetectorNotification
 
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.Version
+import info.anodsplace.carwidget.content.preferences.InCarInterface
+import info.anodsplace.carwidget.content.preferences.InCarStorage
 
 class BroadcastService : Service() {
 
@@ -21,12 +24,13 @@ class BroadcastService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Start once
-        startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this) )
         if (receiver == null) {
+            startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this))
             if (register(this)) {
                 return START_STICKY
             }
         } else {
+            startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this))
             return START_STICKY
         }
 
@@ -43,7 +47,7 @@ class BroadcastService : Service() {
     private fun register(context: Context): Boolean {
         AppLog.i("Register BroadcastService")
         ModeDetector.onRegister(context)
-        val prefs = info.anodsplace.carwidget.content.preferences.InCarStorage.load(context)
+        val prefs = InCarStorage.load(context)
         if (prefs.isActivityRequired) {
             AppLog.i("Start activity transition tracking")
             ActivityTransitionTracker(context).track()
@@ -73,7 +77,7 @@ class BroadcastService : Service() {
             context.unregisterReceiver(receiver)
             receiver = null
         }
-        val prefs = info.anodsplace.carwidget.content.preferences.InCarStorage.load(context)
+        val prefs = InCarStorage.load(context)
 
         if (!prefs.isActivityRequired) {
             ActivityTransitionTracker(context).stop()
@@ -81,6 +85,23 @@ class BroadcastService : Service() {
     }
 
     companion object {
+
+        fun shouldStart(context: Context): Boolean {
+            val isProOrTrial = Version(context).isProOrTrial
+            return if (isProOrTrial) {
+                val inCar = InCarStorage.load(context)
+                inCar.isInCarEnabled && isServiceRequired(inCar)
+            } else
+                false
+        }
+
+        fun registerBroadcastService(context: Context) {
+            if (shouldStart(context)) {
+                startService(context)
+            } else {
+                stopService(context)
+            }
+        }
 
         fun startService(context: Context) {
             val service = Intent(context.applicationContext, BroadcastService::class.java)
@@ -92,7 +113,7 @@ class BroadcastService : Service() {
             context.stopService(service)
         }
 
-        fun isServiceRequired(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface): Boolean {
+        fun isServiceRequired(prefs: InCarInterface): Boolean {
             ModeDetector.updatePrefState(prefs)
             val states = ModeDetector.prefState
 

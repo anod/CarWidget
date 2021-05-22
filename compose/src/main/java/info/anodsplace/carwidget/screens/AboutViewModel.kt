@@ -12,6 +12,10 @@ import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import info.anodsplace.framework.livedata.SingleLiveEvent
 import kotlinx.coroutines.launch
 
+class ScreenState {
+
+}
+
 class AboutViewModel(application: Application): AndroidViewModel(application) {
     var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
     private val context: Context

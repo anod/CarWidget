@@ -19,7 +19,7 @@ object TrialExpiredNotification {
                 .setContentTitle(r.getString(R.string.notif_expired))
                 .setTicker(notifText)
                 .setContentTitle(notifText)
-                .setContentIntent(PendingIntent.getActivity(context, 0, Intent(), 0))
+                .setContentIntent(PendingIntent.getActivity(context, 0, Intent(), PendingIntent.FLAG_IMMUTABLE))
                 .build()
 
         val notificationManager = context

@@ -8,6 +8,7 @@ import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.databinding.ActivityMainBinding
+import com.anod.car.home.incar.BroadcastService
 import info.anodsplace.carwidget.incar.ScreenOrientation
 import com.anod.car.home.prefs.ConfigurationInCar
 import com.anod.car.home.prefs.LookAndFeelActivity
@@ -90,6 +91,11 @@ open class WidgetsListActivity : CarWidgetActivity() {
                 }
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        BroadcastService.registerBroadcastService(applicationContext)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

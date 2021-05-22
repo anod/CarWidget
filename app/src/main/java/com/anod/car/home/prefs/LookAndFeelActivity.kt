@@ -22,6 +22,7 @@ import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.appwidget.WidgetViewBuilder
 import info.anodsplace.carwidget.content.backup.BackupManager
 import com.anod.car.home.databinding.ActivityLookandfeelBinding
+import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.main.AboutFragment
 import com.anod.car.home.prefs.drag.ShortcutDragListener
 import com.anod.car.home.prefs.lookandfeel.LookAndFeelMenu
@@ -141,6 +142,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
                 navigate(bottomItemId)
             }
         }
+        BroadcastService.registerBroadcastService(applicationContext)
     }
 
     private fun navigate(@IdRes itemId: Int): Boolean {

@@ -11,7 +11,7 @@ class ActivityTransitionTracker(private val context: Context) {
     private val broadcastIntent = PendingIntent.getBroadcast(
             context, 0 ,
             Intent(context, ModeBroadcastReceiver::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT)!!
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)!!
 
     fun track() {
         val transitions = listOf(

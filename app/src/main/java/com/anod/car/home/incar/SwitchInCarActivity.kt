@@ -16,7 +16,7 @@ class SwitchInCarActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val isInCarEnabled = info.anodsplace.carwidget.content.preferences.InCarStorage.load(this).isInCarEnabled
+        val isInCarEnabled = InCarStorage.load(this).isInCarEnabled
         if (isInCarEnabled) {
             val service = Intent(this, ModeService::class.java)
             val data: Uri = if (ModeService.sInCarMode) {
@@ -36,15 +36,7 @@ class SwitchInCarActivity : Activity() {
             val intent = ConfigurationActivity.createFragmentIntent(this, ConfigurationInCar::class.java)
             startActivity(intent)
         }
-        // registerBroadcastService(applicationContext, isInCarEnabled)
+        BroadcastService.registerBroadcastService(applicationContext)
         finish()
-    }
-
-    private fun registerBroadcastService(context: Context, isInCarEnabled: Boolean) {
-        if (isInCarEnabled) {
-            BroadcastService.startService(context)
-        } else {
-            BroadcastService.stopService(context)
-        }
     }
 }
