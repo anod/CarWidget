@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.annotation.IdRes
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.viewpager.widget.ViewPager
@@ -23,7 +22,6 @@ import com.anod.car.home.appwidget.WidgetViewBuilder
 import info.anodsplace.carwidget.content.backup.BackupManager
 import com.anod.car.home.databinding.ActivityLookandfeelBinding
 import com.anod.car.home.incar.BroadcastService
-import com.anod.car.home.main.AboutFragment
 import com.anod.car.home.prefs.drag.ShortcutDragListener
 import com.anod.car.home.prefs.lookandfeel.LookAndFeelMenu
 import com.anod.car.home.prefs.lookandfeel.SkinPagerAdapter
@@ -161,9 +159,9 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
                 binding.gallery.isVisible = false
                 binding.content.isVisible = true
                 supportFragmentManager.commit {
-                    replace(R.id.content, AboutFragment().apply {
-                        arguments = bundleOf(AppWidgetManager.EXTRA_APPWIDGET_ID to appWidgetId)
-                    })
+//                    replace(R.id.content, AboutFragment().apply {
+//                        arguments = bundleOf(AppWidgetManager.EXTRA_APPWIDGET_ID to appWidgetId)
+//                    })
                 }
                 true
             }

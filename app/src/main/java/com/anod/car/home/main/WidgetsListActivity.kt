@@ -54,9 +54,6 @@ open class WidgetsListActivity : CarWidgetActivity() {
                     true
                 }
                 R.id.nav_info -> {
-                    supportFragmentManager.commit {
-                        replace(R.id.content, AboutFragment())
-                    }
                     true
                 }
                 R.id.nav_incar -> {
@@ -156,9 +153,6 @@ open class WidgetsListActivity : CarWidgetActivity() {
     }
 
     fun showInCarSettings() {
-        supportFragmentManager.commit {
-            replace(R.id.content, AboutFragment())
-        }
         binding.bottomNavigation.selectedItemId = R.id.nav_incar
     }
 

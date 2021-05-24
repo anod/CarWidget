@@ -1,8 +1,5 @@
 package info.anodsplace.carwidget.content.backup
 
-import android.os.Environment
-import java.io.File
-
 object Backup {
     const val TYPE_MAIN = 1
     const val TYPE_INCAR = 2
@@ -17,10 +14,4 @@ object Backup {
     const val ERROR_INCORRECT_FORMAT = 7
     const val FILE_INCAR_JSON = "backup_incar.json"
     const val LEGACY_PATH = "/data/com.anod.car.home/backup"
-
-    val legacyBackupDir: File
-        get() {
-            val externalPath = Environment.getExternalStorageDirectory()
-            return File(externalPath, LEGACY_PATH)
-        }
 }

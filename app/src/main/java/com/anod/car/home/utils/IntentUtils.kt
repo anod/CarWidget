@@ -39,13 +39,6 @@ fun Intent.forSettings(context: Context, appWidgetId: Int): Intent {
     return this
 }
 
-fun Intent.forApplicationDetails(packageName: String): Intent {
-    action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-    data = Uri.fromParts("package", packageName, null)
-    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-    return this
-}
-
 fun Intent.forProVersion(): Intent {
     action = Intent.ACTION_VIEW
     data = Uri.parse(String.format("market://details?id=%s", Version.PRO_PACKAGE_NAME))

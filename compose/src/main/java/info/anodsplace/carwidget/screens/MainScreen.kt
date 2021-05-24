@@ -75,12 +75,8 @@ fun MainScreen(
             composable(TabItem.InCar.route) { InCarScreen(inCar) }
             composable(TabItem.Info.route) {
                 val aboutViewModel: AboutViewModel = viewModel()
-                val aboutScreenState by aboutViewModel.screenState.collectAsState()
-                if (aboutScreenState == null) {
-                    aboutViewModel.init(appWidgetId = appWidgetId)
-                } else {
-                    AboutScreen(aboutScreenState!!)
-                }
+                val aboutScreenState by aboutViewModel.initScreenState(appWidgetId = appWidgetId).collectAsState()
+                AboutScreen(aboutScreenState, aboutViewModel.uiAction)
             }
         }
     }
