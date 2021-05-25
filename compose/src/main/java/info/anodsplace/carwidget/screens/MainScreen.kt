@@ -2,12 +2,14 @@ package info.anodsplace.carwidget.screens
 
 import android.appwidget.AppWidgetManager
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -69,14 +71,14 @@ fun MainScreen(
                 }
             }
         }
-    ) {
+    ) { innerPadding ->
         NavHost(navController, startDestination = TabItem.Widgets.route) {
             composable(TabItem.Widgets.route) { Text("Widgets") }
-            composable(TabItem.InCar.route) { InCarScreen(inCar) }
+            composable(TabItem.InCar.route) { InCarScreen(inCar, modifier = Modifier.padding(innerPadding)) }
             composable(TabItem.Info.route) {
                 val aboutViewModel: AboutViewModel = viewModel()
                 val aboutScreenState by aboutViewModel.initScreenState(appWidgetId = appWidgetId).collectAsState()
-                AboutScreen(aboutScreenState, aboutViewModel.uiAction)
+                AboutScreen(aboutScreenState, aboutViewModel.uiAction, modifier = Modifier.padding(innerPadding))
             }
         }
     }

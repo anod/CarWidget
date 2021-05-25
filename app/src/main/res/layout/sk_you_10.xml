@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
-    android:orientation="vertical"
     android:theme="@style/AppWidgetContainer"
+    android:orientation="vertical"
     tools:ignore="NestedWeights,NestedWeights">
 
     <LinearLayout
@@ -382,6 +382,9 @@
         </LinearLayout>
     </LinearLayout>
 
-    <include layout="@layout/sk_you_buttons" />
+    <include
+        layout="@layout/sk_you_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-</FrameLayout>
+</LinearLayout>

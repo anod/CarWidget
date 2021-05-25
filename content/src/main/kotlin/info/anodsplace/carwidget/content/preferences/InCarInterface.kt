@@ -32,6 +32,9 @@ interface InCarInterface {
     var screenOrientation: Int
     var screenOnAlert: ScreenOnAlertSettings
 
+    fun putChange(key: String, value: Any?)
+    fun apply()
+
     companion object {
         const val BRIGHTNESS_DISABLED = "disabled"
         const val BRIGHTNESS_AUTO = "auto"
@@ -81,5 +84,8 @@ interface InCarInterface {
         override var isDisableScreenTimeoutCharging: Boolean = false,
         override var screenOrientation: Int = SCREEN_ORIENTATION_DISABLED,
         override var screenOnAlert: ScreenOnAlertSettings = ScreenOnAlertSettings(false, arrayOf())
-    ) : InCarInterface
+    ) : InCarInterface {
+        override fun putChange(key: String, value: Any?) {}
+        override fun apply() {}
+    }
 }

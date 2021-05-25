@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="end"
-    android:layout_margin="4dp">
+    android:layout_height="wrap_content">
+
+    <ImageButton
+        android:id="@+id/widget_btn1"
+        android:src="@drawable/you_edit_24"
+        android:background="@drawable/you_button_background"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="40dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginTop="4dp"
+        />
 
     <ImageButton
         android:id="@+id/widget_btn2"
-        android:layout_gravity="bottom|end"
-        android:src="@drawable/you_settings_24"
-        android:background="@drawable/you_fab_background"
-        android:layout_width="40dp"
-        android:layout_height="40dp" />
-
-</FrameLayout>
+        android:src="@drawable/you_wheel"
+        android:background="@drawable/you_button_background"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="40dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="4dp"
+        />
+</LinearLayout>

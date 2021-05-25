@@ -16,7 +16,7 @@ class YouProperties : BaseProperties() {
         get() = R.drawable.you_add_24
 
     override val settingsButtonRes: Int
-        get() = R.drawable.you_settings_24
+        get() = R.drawable.you_edit_24
 
     override val rowLayout: Int
         get() = R.layout.sk_you_row
@@ -34,6 +34,6 @@ class YouProperties : BaseProperties() {
     }
 
     override fun hasWidgetButton1(): Boolean {
-        return false
+        return true
     }
 }

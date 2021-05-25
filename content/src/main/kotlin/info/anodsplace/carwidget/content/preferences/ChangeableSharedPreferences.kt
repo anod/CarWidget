@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import androidx.collection.SimpleArrayMap
 
 import info.anodsplace.applog.AppLog
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 /**
  * @author algavris
@@ -13,7 +15,9 @@ import info.anodsplace.applog.AppLog
  */
 open class ChangeableSharedPreferences(prefs: SharedPreferences) {
 
-    private var changes = SimpleArrayMap<String, Any?>()
+    private val _changes = MutableSharedFlow<Pair<String, Any?>>()
+    val changes: SharedFlow<Pair<String, Any?>> = _changes
+    private var pendingChanges = SimpleArrayMap<String, Any?>()
     var prefs: SharedPreferences
         protected set
 
@@ -22,28 +26,29 @@ open class ChangeableSharedPreferences(prefs: SharedPreferences) {
     }
 
     fun putChange(key: String, value: Any?) {
-        changes.put(key, value)
+        pendingChanges.put(key, value)
+        _changes.tryEmit(Pair(key, value))
     }
 
     fun apply() {
-        if (changes.isEmpty) {
+        if (pendingChanges.isEmpty) {
             return
         }
         val edit = prefs.edit()
-        for (i in 0 until changes.size()) {
-            val key = changes.keyAt(i)
-            when (val value = changes.get(key)) {
+        for (i in 0 until pendingChanges.size()) {
+            val key = pendingChanges.keyAt(i)
+            when (val value = pendingChanges.get(key)) {
                 null -> edit.remove(key)
-                is Boolean -> edit.putBoolean(key, (value as Boolean?)!!)
-                is String -> edit.putString(key, value as String?)
-                is Int -> edit.putInt(key, (value as Int?)!!)
-                is Long -> edit.putLong(key, (value as Long?)!!)
+                is Boolean -> edit.putBoolean(key, value)
+                is String -> edit.putString(key, value)
+                is Int -> edit.putInt(key, value)
+                is Long -> edit.putLong(key, value)
                 is ComponentName -> edit.putString(key, value.flattenToString())
                 else -> AppLog.e("Unknown value $value for key $key")
             }
         }
         edit.putBoolean("migrated", true)
         edit.apply()
-        changes = SimpleArrayMap()
+        pendingChanges = SimpleArrayMap()
     }
 }

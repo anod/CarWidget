@@ -11,6 +11,9 @@ import androidx.preference.PreferenceManager
  */
 class AppSettings(context: Context) : ChangeableSharedPreferences(getSharedPreferences(context)) {
 
+    val isDarkTheme: Boolean
+        get() = theme == dark
+
     var musicApp: ComponentName?
         get() {
             val musicAppString = prefs.getString(MUSIC_APP, null)
@@ -30,7 +33,7 @@ class AppSettings(context: Context) : ChangeableSharedPreferences(getSharedPrefe
         const val dark = 1
 
         const val MUSIC_APP = "music-app"
-        private const val APP_THEME = "app_theme"
+        const val APP_THEME = "app_theme"
 
         private fun getSharedPreferences(context: Context): SharedPreferences {
             return PreferenceManager.getDefaultSharedPreferences(context)

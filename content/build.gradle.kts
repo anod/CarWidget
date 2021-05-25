@@ -35,5 +35,7 @@ dependencies {
     implementation("io.insert-koin:koin-core:3.0.2")
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.collection:collection-ktx:1.1.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
 }
