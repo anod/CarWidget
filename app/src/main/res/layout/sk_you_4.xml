@@ -22,16 +22,15 @@
             android:layout_weight="1"
             android:baselineAligned="false"
             android:orientation="horizontal"
+            android:paddingBottom="4dp"
             android:theme="@style/AppWidgetContainer">
 
             <FrameLayout
                 android:layout_width="0dip"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:layout_marginBottom="2dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginTop="2dp">
+                android:layout_marginEnd="2dp">
 
                 <ImageButton
                     android:id="@+id/btn0"
@@ -58,12 +57,10 @@
 
             <FrameLayout
                 android:layout_width="0dip"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:layout_marginBottom="2dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="2dp">
+                android:layout_marginStart="2dp">
 
                 <ImageButton
                     android:id="@+id/btn1"
@@ -95,16 +92,15 @@
             android:layout_weight="1"
             android:baselineAligned="false"
             android:orientation="horizontal"
+            android:paddingBottom="4dp"
             android:theme="@style/AppWidgetContainer">
 
             <FrameLayout
                 android:layout_width="0dip"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:layout_marginBottom="2dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginTop="2dp">
+                android:layout_marginEnd="2dp">
 
                 <ImageButton
                     android:id="@+id/btn2"
@@ -131,12 +127,10 @@
 
             <FrameLayout
                 android:layout_width="0dip"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:layout_marginBottom="2dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="2dp">
+                android:layout_marginStart="2dp">
 
                 <ImageButton
                     android:id="@+id/btn3"
