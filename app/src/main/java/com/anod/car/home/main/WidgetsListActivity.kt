@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.commit
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
-import com.anod.car.home.appwidget.WidgetHelper
+import info.anodsplace.carwidget.appwidget.WidgetIds
 import com.anod.car.home.databinding.ActivityMainBinding
 import com.anod.car.home.incar.BroadcastService
 import info.anodsplace.carwidget.incar.ScreenOrientation
@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.extentions.isServiceRunning
+import info.anodsplace.carwidget.incar.InCarStatus
 
 /**
  * @author alex
@@ -74,7 +75,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
                 }
             }
             val isFreeInstalled = !version.isFree && Utils.isFreeInstalled(this)
-            val appWidgetIds = WidgetHelper.getAllWidgetIds(this)
+            val appWidgetIds = WidgetIds.getAllWidgetIds(this)
             if (appWidgetIds.isEmpty() && !isFreeInstalled) {
                 wizardShown = true
                 startActivity(Intent(this, WizardActivity::class.java))
@@ -82,7 +83,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
         }
 
         if (!wizardShown && !proDialogShown) {
-            val appWidgetIds = WidgetHelper.getAllWidgetIds(this)
+            val appWidgetIds = WidgetIds.getAllWidgetIds(this)
             if (appWidgetIds.isNotEmpty()) {
                 val permissions = requestPermissions(appWidgetIds)
                 if (permissions.isNotEmpty()) {

@@ -1,16 +1,12 @@
 package info.anodsplace.carwidget.screens
 
 import android.appwidget.AppWidgetManager
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DirectionsCar
-import androidx.compose.material.icons.filled.Widgets
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -18,16 +14,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.BackgroundSurface
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.content.preferences.InCarInterface
-
-sealed class TabItem(val route: String, @StringRes val resourceId: Int, val icon: ImageVector) {
-    object Widgets : TabItem("widgets", R.string.widgets, Icons.Filled.Widgets)
-    object InCar : TabItem("incar", R.string.pref_incar_mode_title, Icons.Filled.DirectionsCar)
-    object Info : TabItem("info", R.string.info, Icons.Outlined.Info)
-}
 
 @Composable
 fun MainScreen(
@@ -35,7 +26,7 @@ fun MainScreen(
     appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID
 ) {
     val navController = rememberNavController()
-    val items = listOf(TabItem.Widgets, TabItem.InCar, TabItem.Info)
+    val items: List<NavItem.TabItem> = listOf(NavItem.Widgets, NavItem.InCar, NavItem.Info)
 
     Scaffold(
         topBar = {
@@ -49,15 +40,16 @@ fun MainScreen(
                 val currentRoute = navBackStackEntry?.destination?.route
                 items.forEachIndexed { _, item ->
                     BottomNavigationItem(
-                        icon = { Icon(item.icon, contentDescription = null ) },
+                        icon = { Icon(item.icon, contentDescription = null) },
                         label = { Text(stringResource(id = item.resourceId)) },
-                        selected = currentRoute == item.route,
+                        selected = currentRoute?.startsWith(item.route) == true,
                         onClick = {
                             navController.navigate(item.route) {
                                 // Pop up to the start destination of the graph to
                                 // avoid building up a large stack of destinations
                                 // on the back stack as users select items
-                                popUpTo(navController.graph.startDestinationRoute!!) {
+                                val start = item.parent?.route ?: navController.graph.startDestinationRoute!!
+                                popUpTo(start) {
                                     saveState = true
                                 }
                                 // Avoid multiple copies of the same destination when
@@ -72,10 +64,17 @@ fun MainScreen(
             }
         }
     ) { innerPadding ->
-        NavHost(navController, startDestination = TabItem.Widgets.route) {
-            composable(TabItem.Widgets.route) { Text("Widgets") }
-            composable(TabItem.InCar.route) { InCarScreen(inCar, modifier = Modifier.padding(innerPadding)) }
-            composable(TabItem.Info.route) {
+        NavHost(navController, startDestination = NavItem.Widgets.route) {
+            composable(NavItem.Widgets.route) {
+                val widgetsListViewModel: WidgetsListViewModel = viewModel()
+                val widgetList by widgetsListViewModel.loadList().collectAsState(initial = emptyList())
+                WidgetsScreen(widgetList)
+            }
+            navigation(startDestination = NavItem.InCar.Main.route, route = NavItem.InCar.route) {
+                composable(NavItem.InCar.Main.route) { InCarMainScreen(inCar, navController = navController, modifier = Modifier.padding(innerPadding)) }
+                composable(NavItem.InCar.Bluetooth.route) { InCarBluetoothScreen(inCar, modifier = Modifier.padding(innerPadding)) }
+            }
+            composable(NavItem.Info.route) {
                 val aboutViewModel: AboutViewModel = viewModel()
                 val aboutScreenState by aboutViewModel.initScreenState(appWidgetId = appWidgetId).collectAsState()
                 AboutScreen(aboutScreenState, aboutViewModel.uiAction, modifier = Modifier.padding(innerPadding))

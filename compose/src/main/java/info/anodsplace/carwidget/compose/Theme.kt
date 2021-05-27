@@ -35,6 +35,7 @@ private val BlueGray600 = Color(0xFF546E7A)
 private val BlueGray800 = Color(0xFF37474f)
 private val BlueGray300 = Color(0xFF90a4ae)
 private val BlueGray100 = Color(0xFFBBDEFB)
+val WarningColor = Color(0xfff4511e)
 
 private val LightThemeColors = lightColors(
         primary = BlueGray600,

@@ -1,31 +1,32 @@
 package com.anod.car.home.appwidget
 
+import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 
 import com.anod.car.home.LargeProvider
 import com.anod.car.home.app.App
+import info.anodsplace.carwidget.appwidget.WidgetIds
 
 /**
  * @author alex
  * @date 5/24/13
  */
-object WidgetHelper {
+class WidgetHelper(private val context: Context) : WidgetIds {
+    private val appWidgetManager: AppWidgetManager
+        get() = AppWidgetManager.getInstance(context)
 
-    fun getLargeWidgetIds(context: Context): IntArray {
+    override fun getLargeWidgetIds(): IntArray {
         val provider = ComponentName(context, LargeProvider::class.java)
-        return App.provide(context).appWidgetManager.getAppWidgetIds(provider)
+        return appWidgetManager.getAppWidgetIds(provider)
     }
 
-    fun getShortcutWidgetIds(context: Context): IntArray {
+    override fun getShortcutWidgetIds(): IntArray {
         val provider = ComponentName(context, ShortcutProvider::class.java)
-        return App.provide(context).appWidgetManager.getAppWidgetIds(provider)
+        return appWidgetManager.getAppWidgetIds(provider)
     }
 
-    fun getAllWidgetIds(context: Context): IntArray {
-        val array1 = getLargeWidgetIds(context)
-        val array2 = getShortcutWidgetIds(context)
-        return array1 + array2
+    override fun getAllWidgetIds(): IntArray {
+        return getLargeWidgetIds() + getShortcutWidgetIds()
     }
-
 }

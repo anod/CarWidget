@@ -3,6 +3,8 @@ package info.anodsplace.carwidget.screens
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import info.anodsplace.carwidget.compose.BackgroundSurface
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.compose.PreferenceItem
@@ -11,7 +13,10 @@ import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.preferences.createCarScreenItems
 
 @Composable
-fun InCarScreen(inCar: InCarInterface, modifier: Modifier = Modifier) {
+fun InCarMainScreen(
+    inCar: InCarInterface,
+    navController: NavHostController = rememberNavController(),
+    modifier: Modifier = Modifier) {
 
     PreferencesScreen(
         preferences = createCarScreenItems(inCar),
@@ -29,10 +34,18 @@ fun InCarScreen(inCar: InCarInterface, modifier: Modifier = Modifier) {
                 inCar.putChange(item.key, item.value)
             }
             is PreferenceItem.Text -> {
-
+                if (item.key == "bt-device-screen") {
+                    navController.navigate(NavItem.InCar.Bluetooth.route) { }
+                }
             }
         }
     })
+
+}
+
+@Composable
+fun InCarBluetoothScreen(inCar: InCarInterface, modifier: Modifier) {
+
 
 }
 
@@ -41,7 +54,7 @@ fun InCarScreen(inCar: InCarInterface, modifier: Modifier = Modifier) {
 fun InCarScreenLight() {
     CarWidgetTheme(darkTheme = false) {
         BackgroundSurface {
-            InCarScreen(InCarInterface.NoOp())
+            InCarMainScreen(InCarInterface.NoOp())
         }
     }
 }
@@ -51,7 +64,7 @@ fun InCarScreenLight() {
 fun InCarScreenDark() {
     CarWidgetTheme(darkTheme = true) {
         BackgroundSurface {
-            InCarScreen(InCarInterface.NoOp())
+            InCarMainScreen(InCarInterface.NoOp())
         }
     }
 }

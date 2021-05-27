@@ -8,17 +8,23 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.anod.car.home.R
-import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.databinding.FragmentWidgetsListBinding
 import com.anod.car.home.prefs.ConfigurationActivity
 import com.anod.car.home.prefs.ConfigurationInCar
-import com.anod.car.home.utils.InCarStatus
-import info.anodsplace.carwidget.content.Version
 import com.anod.car.home.utils.forProVersion
+import info.anodsplace.carwidget.appwidget.WidgetIds
+import info.anodsplace.carwidget.content.Version
+import info.anodsplace.carwidget.incar.InCarStatus
+import info.anodsplace.carwidget.screens.WidgetItem
+import info.anodsplace.carwidget.screens.WidgetsListViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
+class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener, KoinComponent {
 
     private var _binding: FragmentWidgetsListBinding? = null
     private val binding get() = _binding!!
@@ -26,10 +32,11 @@ class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
     private var appWidgetIds: IntArray = intArrayOf()
     private val version: Version by lazy { Version(requireContext()) }
     private val viewModel: WidgetsListViewModel by activityViewModels()
+    private val widgetIds: WidgetIds by inject()
 
     override fun onResume() {
         super.onResume()
-        appWidgetIds = WidgetHelper.getAllWidgetIds(requireContext())
+        appWidgetIds = widgetIds.getAllWidgetIds()
         viewModel.loadList()
     }
 
@@ -78,10 +85,12 @@ class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
             }
         }
 
-        viewModel.list.observe(viewLifecycleOwner, Observer {
-            adapter.setResult(it ?: WidgetList())
-            updateViews()
-        })
+        lifecycleScope.launch {
+            viewModel.loadList().collect {
+                adapter.setResult(it)
+                updateViews()
+            }
+        }
     }
 
     private fun updateViews() {
@@ -118,8 +127,8 @@ class WidgetsListFragment : Fragment(), WidgetsListAdapter.OnItemClickListener {
         }
     }
 
-    override fun onItemClick(item: WidgetsListAdapter.Item) {
-        if (item is WidgetsListAdapter.LargeItem) {
+    override fun onItemClick(item: WidgetItem) {
+        if (item is WidgetItem.Large) {
             (activity as WidgetsListActivity).startConfigActivity(item.appWidgetId)
         }
     }

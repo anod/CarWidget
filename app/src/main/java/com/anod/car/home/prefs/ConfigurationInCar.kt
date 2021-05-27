@@ -17,9 +17,8 @@ import androidx.preference.Preference
 import androidx.preference.SwitchPreferenceCompat
 import com.anod.car.home.R
 import com.anod.car.home.app.App
-import com.anod.car.home.appwidget.WidgetHelper
+import info.anodsplace.carwidget.appwidget.WidgetIds
 import com.anod.car.home.incar.BroadcastService
-import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
 import com.anod.car.home.prefs.views.ViewScreenTimeout
 import com.anod.car.home.utils.*
@@ -107,7 +106,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         val incar = info.anodsplace.carwidget.content.preferences.InCarStorage.load(requireActivity())
         val incarSwitch: SwitchPreferenceCompat = findPreference(info.anodsplace.carwidget.content.preferences.InCarSettings.INCAR_MODE_ENABLED)!!
 
-        val allWidgetIds = WidgetHelper.getAllWidgetIds(requireActivity())
+        val allWidgetIds = WidgetIds.getAllWidgetIds(requireActivity())
         if (allWidgetIds.isEmpty()) {
             incarSwitch.isEnabled = false
             incarSwitch.setSummary(R.string.please_add_widget)

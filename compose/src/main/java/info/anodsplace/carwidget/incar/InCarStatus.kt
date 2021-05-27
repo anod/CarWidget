@@ -1,9 +1,8 @@
-package com.anod.car.home.utils
+package info.anodsplace.carwidget.incar
 
 import android.content.Context
 
-import com.anod.car.home.R
-import com.anod.car.home.appwidget.WidgetHelper
+import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.Version
 
 class InCarStatus(widgetsCount: Int, version: Version, settings: info.anodsplace.carwidget.content.preferences.InCarSettings) {
@@ -11,10 +10,7 @@ class InCarStatus(widgetsCount: Int, version: Version, settings: info.anodsplace
     constructor(widgetsCount: Int, version: Version, context: Context)
         : this(widgetsCount, version, info.anodsplace.carwidget.content.preferences.InCarStorage.load(context))
 
-    constructor(context: Context) : this(
-            WidgetHelper.getLargeWidgetIds(context).size,
-            Version(context),
-            context)
+    constructor(widgetsCount: Int, context: Context) : this(widgetsCount, Version(context), context)
 
     val value = calc(widgetsCount, version, settings)
     val isEnabled = value == ENABLED

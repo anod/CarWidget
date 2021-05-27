@@ -1,21 +1,17 @@
 package com.anod.car.home.main
 
-import com.anod.car.home.R
-import info.anodsplace.carwidget.content.db.LauncherSettings
-import info.anodsplace.carwidget.content.db.Shortcut
-import com.squareup.picasso.Picasso
-
 import android.content.Context
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.util.forEach
-import androidx.core.util.isNotEmpty
+import com.anod.car.home.R
 import com.anod.car.home.utils.ShortcutIconRequestHandler
-import info.anodsplace.carwidget.content.preferences.WidgetStorage
-import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
+import com.squareup.picasso.Picasso
+import info.anodsplace.carwidget.content.db.LauncherSettings
+import info.anodsplace.carwidget.content.db.Shortcut
+import info.anodsplace.carwidget.screens.WidgetItem
 
 /**
  * @author alex
@@ -25,24 +21,12 @@ import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 class WidgetsListAdapter(private val context: Context, private val clickHandler: OnItemClickListener) : androidx.recyclerview.widget.RecyclerView.Adapter<WidgetsListAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
-        fun onItemClick(item: Item)
+        fun onItemClick(item: WidgetItem)
     }
 
-    internal var items = listOf<Item>()
+    internal var items = listOf<WidgetItem>()
 
-    fun setResult(list: WidgetList) {
-        val newItems = mutableListOf<Item>()
-        newItems.addAll(list.shortcuts.map { ShortcutItem() })
-
-        val defaultsProvider = DefaultsResourceProvider(context)
-        list.large.forEach { key, value ->
-            newItems.add(LargeItem(key, value, WidgetStorage.load(context, defaultsProvider, key).adaptiveIconStyle))
-        }
-
-        if (list.large.isNotEmpty()) {
-            newItems.add(HintItem())
-        }
-
+    fun setResult(newItems: List<WidgetItem>) {
         this.items = newItems
         notifyDataSetChanged()
     }
@@ -64,7 +48,7 @@ class WidgetsListAdapter(private val context: Context, private val clickHandler:
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
 
-        if (item is LargeItem) {
+        if (item is WidgetItem.Large) {
             val shortcuts = item.shortcuts
             val size = shortcuts.size()
 
@@ -114,8 +98,8 @@ class WidgetsListAdapter(private val context: Context, private val clickHandler:
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {
-            is HintItem -> 2
-            is ShortcutItem -> 1
+            is WidgetItem.Hint -> 2
+            is WidgetItem.Shortcut -> 1
             else -> 0
         }
     }

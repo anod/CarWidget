@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.content
 
+import android.appwidget.AppWidgetManager
 import androidx.appcompat.app.AppCompatDelegate
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.preferences.AppSettings
@@ -24,6 +25,7 @@ class AndroidLogger : Logger(Level.DEBUG) {
 }
 
 fun createAppModule(): Module = module {
+    factory<AppWidgetManager> { AppWidgetManager.getInstance(get()) }
     single<Logger> { AndroidLogger() }
     single { AppSettings(get()) }
     factory<InCarInterface> { InCarStorage.load(get()) }
