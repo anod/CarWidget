@@ -35,8 +35,6 @@ interface WidgetItem {
         val adaptiveIconStyle: String
     ) : WidgetItem
 
-    class Hint : WidgetItem
-
     class Shortcut : WidgetItem
 }
 
@@ -55,10 +53,6 @@ class WidgetsListViewModel(application: Application) : AndroidViewModel(applicat
             newItems.add(WidgetItem.Large(
                 key, value, WidgetStorage.load(getApplication(), defaultsProvider, key).adaptiveIconStyle
             ))
-        }
-
-        if (list.large.isNotEmpty()) {
-            newItems.add(WidgetItem.Hint())
         }
 
         emit(newItems)

@@ -1,7 +1,9 @@
 package info.anodsplace.carwidget.content.db
 
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 
 /**
@@ -53,4 +55,10 @@ class Shortcut(
             return Shortcut(id, LauncherSettings.Favorites.ITEM_TYPE_APPLICATION, title, isCustomIcon, intent)
         }
     }
+}
+
+fun Shortcut.iconUri(context: Context, adaptiveIconStyle: String): Uri {
+    return LauncherSettings.Favorites.getContentUri(context.packageName, id).buildUpon()
+    .appendQueryParameter("adaptiveIconStyle", adaptiveIconStyle)
+    .build()
 }

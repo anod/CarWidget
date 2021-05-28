@@ -37,6 +37,7 @@ dependencies {
     implementation(project(":content"))
 
     implementation("io.insert-koin:koin-core:3.0.2")
+    implementation("com.squareup.picasso:picasso:2.8")
 
     implementation("androidx.fragment:fragment-ktx:1.3.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")

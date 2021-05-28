@@ -31,12 +31,15 @@ import info.anodsplace.framework.app.DialogCustom
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class ConfigurationInCar : ConfigurationPreferenceFragment() {
+class ConfigurationInCar : ConfigurationPreferenceFragment(), KoinComponent {
 
     private lateinit var activityRecognitionRequest: ActivityResultLauncher<Void>
     private var trialsLeft: Int = 0
     private var trialMessageShown: Boolean = false
+    private val widgetIds: WidgetIds by inject()
 
     override val isAppWidgetIdRequired: Boolean
         get() = false
@@ -106,7 +109,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
         val incar = info.anodsplace.carwidget.content.preferences.InCarStorage.load(requireActivity())
         val incarSwitch: SwitchPreferenceCompat = findPreference(info.anodsplace.carwidget.content.preferences.InCarSettings.INCAR_MODE_ENABLED)!!
 
-        val allWidgetIds = WidgetIds.getAllWidgetIds(requireActivity())
+        val allWidgetIds = widgetIds.getAllWidgetIds()
         if (allWidgetIds.isEmpty()) {
             incarSwitch.isEnabled = false
             incarSwitch.setSummary(R.string.please_add_widget)
@@ -139,7 +142,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     private fun initAutoAnswer() {
         val pref: ListPreference = findPreference("auto_answer")!!
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            if (newValue != info.anodsplace.carwidget.content.preferences.InCarInterface.AUTOANSWER_DISABLED) {
+            if (newValue != InCarInterface.AUTOANSWER_DISABLED) {
                 if (!AppPermissions.isGranted(requireContext(), AnswerPhoneCalls)) {
                     Toast.makeText(context, R.string.allow_answer_phone_calls, Toast.LENGTH_LONG).show()
                     AppPermissions.requestAnswerPhoneCalls(this, requestAnswerPhone)
@@ -152,7 +155,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment() {
     private fun initBrightness() {
         val pref: ListPreference = findPreference("brightness")!!
         pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            if (newValue != info.anodsplace.carwidget.content.preferences.InCarInterface.BRIGHTNESS_DISABLED) {
+            if (newValue != InCarInterface.BRIGHTNESS_DISABLED) {
                 if (!AppPermissions.isGranted(requireContext(), WriteSettings)) {
                     Toast.makeText(context, R.string.allow_permissions_brightness, Toast.LENGTH_LONG).show()
                     AppPermissions.requestWriteSettings(this, requestWriteSettings)

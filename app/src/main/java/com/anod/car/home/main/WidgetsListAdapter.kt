@@ -33,7 +33,6 @@ class WidgetsListAdapter(private val context: Context, private val clickHandler:
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val resource = when (viewType) {
-            2 -> R.layout.list_item_widget_hint
             1 -> R.layout.list_item_widget_shortcut
             else -> R.layout.list_item_widget_large
         }
@@ -98,7 +97,6 @@ class WidgetsListAdapter(private val context: Context, private val clickHandler:
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {
-            is WidgetItem.Hint -> 2
             is WidgetItem.Shortcut -> 1
             else -> 0
         }

@@ -18,17 +18,20 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.extentions.isServiceRunning
 import info.anodsplace.carwidget.incar.InCarStatus
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * @author alex
  * @date 5/24/13
  */
-open class WidgetsListActivity : CarWidgetActivity() {
+open class WidgetsListActivity : CarWidgetActivity(), KoinComponent {
 
     private lateinit var binding: ActivityMainBinding
     private var wizardShown: Boolean = false
     private val version: Version by lazy { Version(this) }
     private var proDialogShown: Boolean = false
+    private val widgetIds: WidgetIds by inject()
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +78,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
                 }
             }
             val isFreeInstalled = !version.isFree && Utils.isFreeInstalled(this)
-            val appWidgetIds = WidgetIds.getAllWidgetIds(this)
+            val appWidgetIds = widgetIds.getAllWidgetIds()
             if (appWidgetIds.isEmpty() && !isFreeInstalled) {
                 wizardShown = true
                 startActivity(Intent(this, WizardActivity::class.java))
@@ -83,7 +86,7 @@ open class WidgetsListActivity : CarWidgetActivity() {
         }
 
         if (!wizardShown && !proDialogShown) {
-            val appWidgetIds = WidgetIds.getAllWidgetIds(this)
+            val appWidgetIds = widgetIds.getAllWidgetIds()
             if (appWidgetIds.isNotEmpty()) {
                 val permissions = requestPermissions(appWidgetIds)
                 if (permissions.isNotEmpty()) {

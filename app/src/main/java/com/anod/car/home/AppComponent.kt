@@ -9,7 +9,6 @@ import android.media.AudioManager
 import android.telephony.TelephonyManager
 import android.util.LruCache
 import android.view.WindowManager
-import com.anod.car.home.app.AppIconLoader
 import com.anod.car.home.incar.ModeHandler
 import com.anod.car.home.incar.ModePhoneStateListener
 import info.anodsplace.carwidget.incar.ScreenOnAlert
@@ -17,9 +16,7 @@ import info.anodsplace.carwidget.incar.ScreenOrientation
 import com.anod.car.home.model.AppsList
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import com.anod.car.home.prefs.model.AppTheme
-import info.anodsplace.carwidget.content.preferences.InCarInterface
-import info.anodsplace.carwidget.content.preferences.InCarSettings
-import info.anodsplace.carwidget.content.preferences.InCarStorage
+import com.squareup.picasso.Picasso
 import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.util.createLruCache
 import org.koin.core.component.KoinComponent
@@ -32,7 +29,6 @@ import org.koin.core.component.get
 class AppComponent(val application: Application) : KoinComponent {
     private var _appListCache: AppsList? = null
     private var _iconThemesCache: AppsList? = null
-    private var _appIconLoader: AppIconLoader? = null
 
     val appSettings: AppSettings
         get() = get()
@@ -77,13 +73,8 @@ class AppComponent(val application: Application) : KoinComponent {
             return _appListCache!!
         }
 
-    val appIconLoader: AppIconLoader
-        get() {
-            if (_appIconLoader == null) {
-                _appIconLoader = AppIconLoader(this.application)
-            }
-            return _appIconLoader!!
-        }
+    val appIconLoader: Picasso
+        get() = get()
 
     val iconThemesCache: AppsList
         get() {
@@ -101,10 +92,6 @@ class AppComponent(val application: Application) : KoinComponent {
         if (_iconThemesCache != null) {
             _iconThemesCache!!.flush()
             _iconThemesCache = null
-        }
-        if (_appIconLoader != null) {
-            _appIconLoader!!.shutdown()
-            _appIconLoader = null
         }
     }
 
