@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
@@ -13,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
@@ -20,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.squareup.picasso.Picasso
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.BackgroundSurface
 import info.anodsplace.carwidget.compose.CarWidgetTheme
@@ -28,15 +31,17 @@ import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.incar.InCarStatus
 import info.anodsplace.carwidget.utils.LocalPicasso
+import info.anodsplace.carwidget.utils.SystemIconSize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @Composable
-fun cardStyle(): Modifier = Modifier
-    .fillMaxWidth()
-    .background(MaterialTheme.colors.surface)
-    .padding(16.dp)
-    .clip(MaterialTheme.shapes.medium)
+fun Modifier.cardStyle(): Modifier = then(
+    fillMaxWidth()
+        .clip(shape = RoundedCornerShape(16.dp))
+        .background(MaterialTheme.colors.surface)
+        .padding(16.dp)
+)
 
 @Composable
 fun WidgetsEmptyScreen() {
@@ -77,6 +82,7 @@ fun loadNetworkImage(
             val result = withContext(Dispatchers.IO) { picasso.load(url).get() }
             RemoteImageState.Loaded(result.asImageBitmap())
         } catch (e: Exception) {
+            AppLog.e(e)
             RemoteImageState.LoadError
         }
     }
@@ -90,15 +96,30 @@ fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>) {
             val shortcut = item.shortcuts.get(idx)
             if (shortcut != null) {
                 val imageResult by loadNetworkImage(shortcut.iconUri(context, item.adaptiveIconStyle))
+                val iconModifier = Modifier
+                    .size(SystemIconSize)
+                    .padding(4.dp)
                 when (imageResult) {
                     is RemoteImageState.Loading -> {
-                        CircularProgressIndicator()
+                        Box(modifier = iconModifier) {
+
+                        }
                     }
                     is RemoteImageState.Loaded -> {
-                        Image(bitmap = (imageResult as RemoteImageState.Loaded).image, contentDescription = null)
+                        Icon(
+                            modifier = iconModifier,
+                            bitmap = (imageResult as RemoteImageState.Loaded).image,
+                            contentDescription = null,
+                            tint = Color.Unspecified
+                        )
                     }
                     is RemoteImageState.LoadError -> {
-                        Image(imageVector = Icons.Filled.Cancel, contentDescription = null)
+                        Icon(
+                            modifier = iconModifier,
+                            imageVector = Icons.Filled.Cancel,
+                            contentDescription = null,
+                            tint = Color.White
+                        )
                     }
                 }
             }
@@ -108,7 +129,9 @@ fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>) {
 
 @Composable
 fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit) {
-    Column(modifier = cardStyle().clickable { onClick() }) {
+    Column(modifier = Modifier
+        .clickable { onClick() }
+        .cardStyle()) {
         LargeWidgetRow(item = item, indexes = listOf(1, 3, 5, 7))
         LargeWidgetRow(item = item, indexes = listOf(0, 2, 4, 5))
     }
@@ -132,8 +155,13 @@ fun WidgetsScreen(widgetList: List<WidgetItem>) {
                 Spacer(modifier = Modifier.height(16.dp))
                 when (item) {
                     is WidgetItem.Shortcut -> {
-                        Box(modifier = cardStyle()) {
-                            Icon(imageVector = Icons.Filled.Widgets, contentDescription = null)
+                        Box(modifier = Modifier.cardStyle()) {
+                            Icon(
+                                modifier = Modifier.size(SystemIconSize),
+                                imageVector = Icons.Filled.Widgets,
+                                contentDescription = null,
+                                tint = Color.White
+                            )
                         }
                     }
                     is WidgetItem.Large -> {
@@ -156,7 +184,7 @@ fun InCarHeader(widgetsCount: Int) {
     val status = InCarStatus(widgetsCount, version, LocalContext.current)
     val active = stringResource(status.resId)
 
-    Column(modifier = cardStyle()) {
+    Column(modifier = Modifier.cardStyle()) {
         Text(
             text = stringResource(id = R.string.pref_incar_mode_title) + " - " + active,
             color = MaterialTheme.colors.onSurface

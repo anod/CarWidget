@@ -242,9 +242,7 @@
         <!-- The settings provider contains Home's data, like the workspace favorites -->
         <provider
             android:name="com.anod.car.home.model.LauncherProvider"
-            android:authorities="@string/widget_provider"
-            android:readPermission="${applicationId}.permission.READ_SETTINGS"
-            android:writePermission="${applicationId}.permission.WRITE_SETTINGS" />
+            android:authorities="${applicationId}.shortcutsprovider" />
 
         <receiver
             android:exported="true"

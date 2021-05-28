@@ -162,14 +162,14 @@ open class LauncherContentProvider : ContentProvider() {
         private const val DATABASE_VERSION = 2
 
         val AUTHORITY_FREE = if (BuildConfig.DEBUG)
-            "com.anod.car.home.debug.settings"
+            "com.anod.car.home.free.debug.shortcutsprovider"
         else
-            "com.anod.car.home.settings"
+            "com.anod.car.home.free.shortcutsprovider"
 
         val AUTHORITY_PRO = if (BuildConfig.DEBUG)
-            "com.anod.car.home.debug.settings.pro"
+            "com.anod.car.home.pro.debug.shortcutsprovider"
         else
-            "com.anod.car.home.settings.pro"
+            "com.anod.car.home.pro.shortcutsprovider"
 
         internal const val TABLE_FAVORITES = "favorites"
 

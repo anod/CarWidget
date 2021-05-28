@@ -41,9 +41,9 @@ open class WidgetsListActivity : CarWidgetActivity(), KoinComponent {
         if (savedInstanceState == null) {
             val openInCarTab = intent?.extras?.getBoolean(extraInCarTab) ?: false
             binding.bottomNavigation.selectedItemId = if (openInCarTab) R.id.nav_incar else R.id.nav_widgets
-            supportFragmentManager.commit {
-                replace(R.id.content, if (openInCarTab) ConfigurationInCar() else WidgetsListFragment())
-            }
+//            supportFragmentManager.commit {
+//                replace(R.id.content, if (openInCarTab) ConfigurationInCar() else WidgetsListFragment())
+//            }
         } else {
             wizardShown = savedInstanceState.getBoolean("wizard-shown")
             proDialogShown = savedInstanceState.getBoolean("dialog-shown")
@@ -52,9 +52,9 @@ open class WidgetsListActivity : CarWidgetActivity(), KoinComponent {
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_widgets -> {
-                    supportFragmentManager.commit {
-                        replace(R.id.content, WidgetsListFragment())
-                    }
+//                    supportFragmentManager.commit {
+//                        replace(R.id.content, WidgetsListFragment())
+//                    }
                     true
                 }
                 R.id.nav_info -> {
