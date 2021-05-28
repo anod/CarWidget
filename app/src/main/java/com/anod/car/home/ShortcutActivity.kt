@@ -10,8 +10,8 @@ import androidx.fragment.app.FragmentActivity
 import com.anod.car.home.app.App
 import com.anod.car.home.app.MusicAppChoiceActivity
 import com.anod.car.home.appwidget.ShortcutPendingIntent
-import com.anod.car.home.utils.AppPermissions
-import com.anod.car.home.utils.CallPhone
+import info.anodsplace.framework.permissions.AppPermissions
+import info.anodsplace.framework.permissions.CallPhone
 import com.anod.car.home.utils.MusicUtils
 import info.anodsplace.framework.content.startActivitySafely
 

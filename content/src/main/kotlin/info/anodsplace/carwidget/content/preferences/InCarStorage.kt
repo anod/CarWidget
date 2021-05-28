@@ -22,12 +22,6 @@ object InCarStorage {
         return InCarSettings(prefs)
     }
 
-    fun saveScreenTimeout(disabled: Boolean, disableCharging: Boolean, prefs: InCarSettings) {
-        prefs.isDisableScreenTimeout = disabled
-        prefs.isDisableScreenTimeoutCharging = disableCharging
-        prefs.apply()
-    }
-
     fun getNotifComponentName(position: Int): String {
         return String.format(Locale.US, NOTIF_COMPONENT, position)
     }

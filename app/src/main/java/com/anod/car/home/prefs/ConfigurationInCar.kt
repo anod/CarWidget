@@ -26,8 +26,10 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.preferences.InCarInterface
+import info.anodsplace.carwidget.screens.incar.saveScreenTimeout
 import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.app.DialogCustom
+import info.anodsplace.framework.permissions.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -193,7 +195,7 @@ class ConfigurationInCar : ConfigurationPreferenceFragment(), KoinComponent {
                 v.useAlertGroup.isVisible = AlertWindow.isSupported
                 v.useAlert.isChecked = incar.screenOnAlert.enabled
                 v.onStateChange { keepOn, whileCharging, useAlert ->
-                    info.anodsplace.carwidget.content.preferences.InCarStorage.saveScreenTimeout(keepOn, disableCharging = whileCharging, prefs = incar)
+                    incar.saveScreenTimeout(keepOn, disableCharging = whileCharging)
                     if (useAlert && AlertWindow.isSupported) {
                         incar.screenOnAlert = InCarInterface.ScreenOnAlertSettings(true, incar.screenOnAlert)
                         if (!AlertWindow.hasPermission(requireContext())) {

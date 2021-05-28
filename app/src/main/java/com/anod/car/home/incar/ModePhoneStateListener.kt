@@ -10,9 +10,9 @@ import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import android.widget.Toast
 import com.anod.car.home.R
-import com.anod.car.home.utils.AnswerPhoneCalls
-import com.anod.car.home.utils.AppPermissions
-import com.anod.car.home.utils.ModifyPhoneState
+import info.anodsplace.framework.permissions.AnswerPhoneCalls
+import info.anodsplace.framework.permissions.AppPermissions
+import info.anodsplace.framework.permissions.ModifyPhoneState
 import info.anodsplace.applog.AppLog
 import java.util.*
 

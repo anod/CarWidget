@@ -35,8 +35,7 @@ fun Preference(item: PreferenceItem, modifier: Modifier = Modifier, onClick: () 
         modifier = modifier
             .defaultMinSize(minHeight = 56.dp)
             .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
+            .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
@@ -57,8 +56,7 @@ fun Preference(item: PreferenceItem, modifier: Modifier = Modifier, onClick: () 
         }
         Box(
             modifier = modifier
-                .weight(1f)
-                .fillMaxSize(),
+                .weight(1f),
             contentAlignment = Alignment.Center
         ) {
             content()
@@ -102,26 +100,42 @@ fun PreferencesScreen(preferences: List<PreferenceItem>, onClick: (item: Prefere
         modifier = modifier.fillMaxWidth()
     ) {
         items(preferences.size) { index ->
+            val itemModifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
             when (val item = preferences[index]) {
                 is PreferenceItem.Category -> PreferenceCategory(item = item)
                 is PreferenceItem.CheckBox -> {
                     var checked by remember { mutableStateOf(item.checked) }
-                    PreferenceCheckbox(checked, item, onCheckedChange = { newChecked ->
+                    PreferenceCheckbox(
+                        modifier = itemModifier,
+                        checked = checked,
+                        item = item,
+                        onCheckedChange = { newChecked ->
                         checked = newChecked
                         item.checked = newChecked
                         onClick(item)
                     })
                 }
-                is PreferenceItem.List -> Preference(item, onClick = { listItem = item }) { }
+                is PreferenceItem.List -> Preference(
+                    modifier = itemModifier,
+                    item = item,
+                    onClick = { listItem = item }
+                ) { }
                 is PreferenceItem.Switch -> {
                     var checked by remember { mutableStateOf(item.checked) }
-                    PreferenceSwitch(checked, item, onCheckedChange = { newChecked ->
+                    PreferenceSwitch(
+                        modifier = itemModifier,
+                        checked = checked,
+                        item = item,
+                        onCheckedChange = { newChecked ->
                         item.checked = newChecked
                         checked = newChecked
                         onClick(item)
                     })
                 }
-                is PreferenceItem.Text -> Preference(item, onClick = { onClick(item) }) { }
+                is PreferenceItem.Text -> Preference(
+                    modifier = itemModifier,
+                    item = item,
+                    onClick = { onClick(item) }) { }
             }
         }
     }

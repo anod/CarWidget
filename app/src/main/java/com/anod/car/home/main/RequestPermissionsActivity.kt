@@ -18,9 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.databinding.ActivityRequestPermissionsBinding
-import info.anodsplace.carwidget.content.preferences.InCarSettings
-import info.anodsplace.carwidget.content.preferences.InCarStorage
-import com.anod.car.home.utils.*
+import info.anodsplace.framework.permissions.*
 
 class RequestPermissionsActivity : CarWidgetActivity() {
 

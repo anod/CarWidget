@@ -303,7 +303,7 @@
     <string name="advanced">Advanced</string>
     <string name="intent_info">Intent info</string>
     <string name="allow_bluetooth">Allow Bluetooth</string>
-    <string name="allow_bluetooth_summary">Turn on Bluetooth</string>
+    <string name="allow_bluetooth_summary">Access to list of bluetooth devices requires permissions</string>
     <string name="widget_description_switch">Widget to switch InCar mode</string>
     <string name="widget_description_large">Widget with large configurable buttons</string>
     <string name="pref_screen_orientation_summary">Force any app into orientation. Notice: not all apps can work correctly</string>

@@ -14,7 +14,8 @@ fun createCarScreenItems(inCar: InCarInterface): List<PreferenceItem> {
         PreferenceItem.CheckBox(checked = inCar.isActivityRequired, key = "activity-recognition", summaryRes = R.string.gms_service_missing, titleRes = R.string.activity_recognition),
         PreferenceItem.CheckBox(checked = inCar.isCarDockRequired, key = "car-dock", summaryRes = R.string.car_dock_summary, titleRes = R.string.car_dock),
         PreferenceItem.Category(titleRes = R.string.pref_actions),
-        PreferenceItem.Text(key = "screen-timeout-list", summaryRes = R.string.pref_screen_timeout_summary, titleRes = R.string.pref_screen_timeout),
+        PreferenceItem.Text(
+            key = "screen-timeout-list", summaryRes = R.string.pref_screen_timeout_summary, titleRes = R.string.pref_screen_timeout),
         PreferenceItem.List(
             value = inCar.brightness,
             entries = R.array.brightness_mode_titles,

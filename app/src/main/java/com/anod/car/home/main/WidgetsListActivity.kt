@@ -1,23 +1,20 @@
 package com.anod.car.home.main
 
-import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.commit
 import com.anod.car.home.R
 import com.anod.car.home.app.CarWidgetActivity
 import info.anodsplace.carwidget.appwidget.WidgetIds
 import com.anod.car.home.databinding.ActivityMainBinding
 import com.anod.car.home.incar.BroadcastService
 import info.anodsplace.carwidget.incar.ScreenOrientation
-import com.anod.car.home.prefs.ConfigurationInCar
-import com.anod.car.home.prefs.LookAndFeelActivity
 import com.anod.car.home.utils.*
 import com.google.android.material.snackbar.Snackbar
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.extentions.isServiceRunning
 import info.anodsplace.carwidget.incar.InCarStatus
+import info.anodsplace.framework.permissions.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

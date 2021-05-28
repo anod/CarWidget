@@ -19,6 +19,8 @@ import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.BackgroundSurface
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.content.preferences.InCarInterface
+import info.anodsplace.carwidget.screens.incar.BluetoothDevices
+import info.anodsplace.carwidget.screens.incar.BluetoothDevicesViewModel
 
 @Composable
 fun MainScreen(
@@ -73,7 +75,10 @@ fun MainScreen(
             }
             navigation(startDestination = NavItem.InCar.Main.route, route = NavItem.InCar.route) {
                 composable(NavItem.InCar.Main.route) { InCarMainScreen(inCar, navController = navController, modifier = Modifier.padding(innerPadding)) }
-                composable(NavItem.InCar.Bluetooth.route) { InCarBluetoothScreen(inCar, modifier = Modifier.padding(innerPadding)) }
+                composable(NavItem.InCar.Bluetooth.route) {
+                    val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel()
+                    BluetoothDevices(viewModel = bluetoothDevicesViewModel, modifier = Modifier.padding(innerPadding))
+                }
             }
             composable(NavItem.Info.route) {
                 val aboutViewModel: AboutViewModel = viewModel()

@@ -15,6 +15,7 @@ import com.anod.car.home.utils.Power
 import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
 import info.anodsplace.applog.AppLog
+import info.anodsplace.framework.bluetooth.Bluetooth
 import info.anodsplace.framework.content.startActivitySafely
 
 class ModeHandler(private val context: Context, private val screenOrientation: ScreenOrientation) {

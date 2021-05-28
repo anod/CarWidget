@@ -9,6 +9,7 @@ import com.anod.car.home.BuildConfig
 import com.anod.car.home.utils.Power
 import com.google.android.gms.location.ActivityTransitionResult
 import info.anodsplace.applog.AppLog
+import info.anodsplace.framework.bluetooth.Bluetooth
 
 /**
  * @author alex
