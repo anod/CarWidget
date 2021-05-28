@@ -39,35 +39,9 @@ open class WidgetsListActivity : CarWidgetActivity(), KoinComponent {
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
-            val openInCarTab = intent?.extras?.getBoolean(extraInCarTab) ?: false
-            binding.bottomNavigation.selectedItemId = if (openInCarTab) R.id.nav_incar else R.id.nav_widgets
-//            supportFragmentManager.commit {
-//                replace(R.id.content, if (openInCarTab) ConfigurationInCar() else WidgetsListFragment())
-//            }
         } else {
             wizardShown = savedInstanceState.getBoolean("wizard-shown")
             proDialogShown = savedInstanceState.getBoolean("dialog-shown")
-        }
-
-        binding.bottomNavigation.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.nav_widgets -> {
-//                    supportFragmentManager.commit {
-//                        replace(R.id.content, WidgetsListFragment())
-//                    }
-                    true
-                }
-                R.id.nav_info -> {
-                    true
-                }
-                R.id.nav_incar -> {
-                    supportFragmentManager.commit {
-                        replace(R.id.content, ConfigurationInCar())
-                    }
-                    true
-                }
-                else -> false
-            }
         }
 
         if (!wizardShown) {
@@ -97,10 +71,6 @@ open class WidgetsListActivity : CarWidgetActivity(), KoinComponent {
         AppLog.d("BroadcastService is running: ${isServiceRunning(BroadcastService::class.java)}")
     }
 
-    override fun onPause() {
-        super.onPause()
-        BroadcastService.registerBroadcastService(applicationContext)
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -148,16 +118,6 @@ open class WidgetsListActivity : CarWidgetActivity(), KoinComponent {
         outState.putBoolean("wizard-shown", wizardShown)
         outState.putBoolean("dialog-shown", proDialogShown)
         super.onSaveInstanceState(outState)
-    }
-
-    fun startConfigActivity(appWidgetId: Int) {
-        val configIntent = Intent(this, LookAndFeelActivity::class.java)
-        configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        startActivity(configIntent)
-    }
-
-    fun showInCarSettings() {
-        binding.bottomNavigation.selectedItemId = R.id.nav_incar
     }
 
     companion object {

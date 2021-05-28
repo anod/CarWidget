@@ -1,10 +1,9 @@
 package info.anodsplace.carwidget.screens
 
-import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -15,25 +14,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.squareup.picasso.Picasso
-import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
-import info.anodsplace.carwidget.compose.BackgroundSurface
-import info.anodsplace.carwidget.compose.CarWidgetTheme
-import info.anodsplace.carwidget.compose.WarningColor
+import info.anodsplace.carwidget.compose.*
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.incar.InCarStatus
-import info.anodsplace.carwidget.utils.LocalPicasso
 import info.anodsplace.carwidget.utils.SystemIconSize
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @Composable
 fun Modifier.cardStyle(): Modifier = then(
@@ -66,27 +57,6 @@ fun WidgetsEmptyScreen() {
     }
 }
 
-sealed class RemoteImageState {
-    object Loading : RemoteImageState()
-    class Loaded(val image: ImageBitmap) : RemoteImageState()
-    object LoadError : RemoteImageState()
-}
-
-@Composable
-fun loadNetworkImage(
-    url: Uri,
-    picasso: Picasso = LocalPicasso.current
-): State<RemoteImageState> {
-    return produceState(initialValue = RemoteImageState.Loading, url, picasso) {
-        value = try {
-            val result = withContext(Dispatchers.IO) { picasso.load(url).get() }
-            RemoteImageState.Loaded(result.asImageBitmap())
-        } catch (e: Exception) {
-            AppLog.e(e)
-            RemoteImageState.LoadError
-        }
-    }
-}
 
 @Composable
 fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>) {
@@ -95,25 +65,25 @@ fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>) {
         for (idx in indexes) {
             val shortcut = item.shortcuts.get(idx)
             if (shortcut != null) {
-                val imageResult by loadNetworkImage(shortcut.iconUri(context, item.adaptiveIconStyle))
+                val imageResult by loadPicassoImage(shortcut.iconUri(context, item.adaptiveIconStyle))
                 val iconModifier = Modifier
                     .size(SystemIconSize)
                     .padding(4.dp)
                 when (imageResult) {
-                    is RemoteImageState.Loading -> {
+                    is PicassoImage.Loading -> {
                         Box(modifier = iconModifier) {
 
                         }
                     }
-                    is RemoteImageState.Loaded -> {
+                    is PicassoImage.Loaded -> {
                         Icon(
                             modifier = iconModifier,
-                            bitmap = (imageResult as RemoteImageState.Loaded).image,
+                            bitmap = (imageResult as PicassoImage.Loaded).image,
                             contentDescription = null,
                             tint = Color.Unspecified
                         )
                     }
-                    is RemoteImageState.LoadError -> {
+                    is PicassoImage.Error -> {
                         Icon(
                             modifier = iconModifier,
                             imageVector = Icons.Filled.Cancel,
@@ -134,47 +104,6 @@ fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit) {
         .cardStyle()) {
         LargeWidgetRow(item = item, indexes = listOf(1, 3, 5, 7))
         LargeWidgetRow(item = item, indexes = listOf(0, 2, 4, 5))
-    }
-}
-
-@Composable
-fun WidgetsScreen(widgetList: List<WidgetItem>) {
-    Column (
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize()
-    ){
-        if (widgetList.isEmpty()) {
-            WidgetsEmptyScreen()
-            Spacer(modifier = Modifier.height(16.dp))
-            InCarHeader(widgetList.size)
-        } else {
-            InCarHeader(widgetList.size)
-            var hasLargeItem = false
-            for (item in widgetList) {
-                Spacer(modifier = Modifier.height(16.dp))
-                when (item) {
-                    is WidgetItem.Shortcut -> {
-                        Box(modifier = Modifier.cardStyle()) {
-                            Icon(
-                                modifier = Modifier.size(SystemIconSize),
-                                imageVector = Icons.Filled.Widgets,
-                                contentDescription = null,
-                                tint = Color.White
-                            )
-                        }
-                    }
-                    is WidgetItem.Large -> {
-                        hasLargeItem = true
-                        LargeWidgetItem(item, onClick = { })
-                    }
-                }
-            }
-            if (hasLargeItem) {
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = stringResource(id = R.string.widgets_hint))
-            }
-        }
     }
 }
 
@@ -200,18 +129,79 @@ fun InCarHeader(widgetsCount: Int) {
                 val resources = LocalContext.current.resources
                 val activationsLeft =
                     resources
-                    .getQuantityString(R.plurals.notif_activations_left,
-                        version.trialTimesLeft, version.trialTimesLeft)
+                        .getQuantityString(
+                            R.plurals.notif_activations_left,
+                            version.trialTimesLeft, version.trialTimesLeft
+                        )
                 Text(
                     text = stringResource(R.string.dialog_donate_title_trial) + " " + activationsLeft,
                     color = MaterialTheme.colors.onSurface
                 )
             }
-            else -> { }
+            else -> {
+            }
         }
     }
-    
+}
 
+@Composable
+fun WidgetsScreen(widgetList: List<WidgetItem>, onClick: (appWidgetId: Int) -> Unit) {
+    if (widgetList.isEmpty()) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize()
+        ) {
+            WidgetsEmptyScreen()
+            Spacer(modifier = Modifier.height(16.dp))
+            InCarHeader(widgetList.size)
+        }
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize()
+        ) {
+            var hasLargeItem = false
+
+            item {
+                InCarHeader(widgetList.size)
+            }
+
+            items(widgetList.size) { idx ->
+                val item = widgetList[idx]
+                Spacer(modifier = Modifier.height(16.dp))
+                when (item) {
+                    is WidgetItem.Shortcut -> {
+                        Box(modifier = Modifier.cardStyle()) {
+                            Icon(
+                                modifier = Modifier.size(SystemIconSize),
+                                imageVector = Icons.Filled.Widgets,
+                                contentDescription = null,
+                                tint = Color.White
+                            )
+                        }
+                    }
+                    is WidgetItem.Large -> {
+                        hasLargeItem = true
+                        LargeWidgetItem(item, onClick = { onClick(item.appWidgetId) } )
+                    }
+                }
+            }
+
+            if (hasLargeItem) {
+                item {
+                    Text(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        text = stringResource(id = R.string.widgets_hint)
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Preview("Widgets Screen Empty dark")
@@ -219,7 +209,7 @@ fun InCarHeader(widgetsCount: Int) {
 fun PreviewWidgetsScreenEmptyDark() {
     CarWidgetTheme(darkTheme = true) {
         BackgroundSurface {
-            WidgetsScreen(emptyList())
+            WidgetsScreen(emptyList(), onClick = { })
         }
     }
 }
@@ -230,9 +220,12 @@ fun PreviewWidgetsScreenEmptyDark() {
 fun PreviewWidgetsScreenLight() {
     CarWidgetTheme(darkTheme = false) {
         BackgroundSurface {
-            WidgetsScreen(listOf(
-                WidgetItem.Shortcut()
-            ))
+            WidgetsScreen(
+                listOf(
+                    WidgetItem.Shortcut()
+                ),
+                onClick = { }
+            )
         }
     }
 }

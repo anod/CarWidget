@@ -17,8 +17,12 @@ import org.koin.core.component.get
 import org.koin.core.component.inject
 
 open class MainComposeActivity : ComponentActivity(), KoinComponent {
-    val appSettings: AppSettings by inject()
-    val picasso: Picasso by inject()
+    private val appSettings: AppSettings by inject()
+    private val picasso: Picasso by inject()
+
+    open fun startConfigActivity(appWidgetId: Int) {
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,11 +32,11 @@ open class MainComposeActivity : ComponentActivity(), KoinComponent {
             var isDarkTheme by remember { mutableStateOf(appSettings.isDarkTheme) }
             CarWidgetTheme(darkTheme = isDarkTheme) {
                 CompositionLocalProvider(LocalPicasso provides picasso) {
-                    MainScreen(inCar = get())
+                    MainScreen(inCar = get(), onOpenWidgetConfig = { appWidgetId -> startConfigActivity(appWidgetId) })
                 }
             }
             coroutineScope.launch {
-                appSettings.changes.collect { (key, _) ->
+                appSettings.changes.observe(this@MainComposeActivity) { (key, _) ->
                     if (key == AppSettings.APP_THEME) {
                         isDarkTheme = appSettings.isDarkTheme
                     }

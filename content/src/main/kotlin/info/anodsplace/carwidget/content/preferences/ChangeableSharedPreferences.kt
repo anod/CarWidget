@@ -4,6 +4,8 @@ import android.content.ComponentName
 import android.content.SharedPreferences
 
 import androidx.collection.SimpleArrayMap
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 import info.anodsplace.applog.AppLog
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,8 +17,8 @@ import kotlinx.coroutines.flow.SharedFlow
  */
 open class ChangeableSharedPreferences(prefs: SharedPreferences) {
 
-    private val _changes = MutableSharedFlow<Pair<String, Any?>>()
-    val changes: SharedFlow<Pair<String, Any?>> = _changes
+    private val _changes = MutableLiveData<Pair<String, Any?>>()
+    val changes: LiveData<Pair<String, Any?>> = _changes
     private var pendingChanges = SimpleArrayMap<String, Any?>()
     var prefs: SharedPreferences
         protected set
@@ -27,7 +29,7 @@ open class ChangeableSharedPreferences(prefs: SharedPreferences) {
 
     fun putChange(key: String, value: Any?) {
         pendingChanges.put(key, value)
-        _changes.tryEmit(Pair(key, value))
+        _changes.postValue(Pair(key, value))
     }
 
     fun apply() {

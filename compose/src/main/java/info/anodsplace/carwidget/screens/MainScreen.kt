@@ -23,7 +23,8 @@ import info.anodsplace.carwidget.content.preferences.InCarInterface
 @Composable
 fun MainScreen(
     inCar: InCarInterface,
-    appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID
+    appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
+    onOpenWidgetConfig: (appWidgetId: Int) -> Unit
 ) {
     val navController = rememberNavController()
     val items: List<NavItem.TabItem> = listOf(NavItem.Widgets, NavItem.InCar, NavItem.Info)
@@ -68,7 +69,7 @@ fun MainScreen(
             composable(NavItem.Widgets.route) {
                 val widgetsListViewModel: WidgetsListViewModel = viewModel()
                 val widgetList by widgetsListViewModel.loadList().collectAsState(initial = emptyList())
-                WidgetsScreen(widgetList)
+                WidgetsScreen(widgetList) { appWidgetId -> onOpenWidgetConfig(appWidgetId) }
             }
             navigation(startDestination = NavItem.InCar.Main.route, route = NavItem.InCar.route) {
                 composable(NavItem.InCar.Main.route) { InCarMainScreen(inCar, navController = navController, modifier = Modifier.padding(innerPadding)) }
@@ -88,7 +89,7 @@ fun MainScreen(
 fun PreviewPreferencesScreenLight() {
     CarWidgetTheme(darkTheme = false) {
         BackgroundSurface {
-            MainScreen(InCarInterface.NoOp())
+            MainScreen(InCarInterface.NoOp(), onOpenWidgetConfig = {})
         }
     }
 }
@@ -98,7 +99,7 @@ fun PreviewPreferencesScreenLight() {
 fun PreviewPreferencesScreenDark() {
     CarWidgetTheme(darkTheme = true) {
         BackgroundSurface {
-            MainScreen(InCarInterface.NoOp())
+            MainScreen(InCarInterface.NoOp(), onOpenWidgetConfig = {})
         }
     }
 }
