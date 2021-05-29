@@ -5,34 +5,36 @@ import android.view.View
 import android.view.ViewGroup
 import com.anod.car.home.R
 import com.anod.car.home.app.App
-import com.anod.car.home.app.MusicAppsActivity
+import com.anod.car.home.app.AppsListActivity
 import com.anod.car.home.databinding.ListFooterMusicAppSettingsBinding
-import com.anod.car.home.model.AppsList
+import info.anodsplace.carwidget.chooser.AppsListViewModel
+import info.anodsplace.carwidget.chooser.ChooserEntry
+import info.anodsplace.carwidget.chooser.MediaListLoader
 import java.util.*
 
 /**
  * @author alex
  * @date 2014-09-03
  */
-class MusicAppSettingsActivity : MusicAppsActivity() {
+class MusicAppSettingsActivity : AppsListActivity() {
 
-    override val headEntries: List<AppsList.Entry>
-        get() {
-            val head = ArrayList<AppsList.Entry>(1)
-            val none = AppsList.Entry(null, R.drawable.ic_action_list, getString(R.string.show_choice))
-            head.add(none)
-            return head
-        }
+    override fun viewModelFactory(): AppsListViewModel.Factory {
+        return AppsListViewModel.Factory(App.get(applicationContext), MediaListLoader(applicationContext))
+    }
 
-    override val isShowTitle: Boolean
-        get() = true
+    override val headEntries: List<ChooserEntry>
+        get() = listOf(
+                ChooserEntry(null, getString(R.string.show_choice), R.drawable.ic_action_list)
+            )
+
+    override val isShowTitle = true
 
     override fun inflateFooterView(layoutInflater: LayoutInflater, parent: ViewGroup): View {
         val binding = ListFooterMusicAppSettingsBinding.inflate(layoutInflater, parent, false)
         return binding.root
     }
 
-    override fun onEntryClick(position: Int, entry: AppsList.Entry) {
+    override fun onEntryClick(position: Int, entry: ChooserEntry) {
         val appSettings = App.provide(this).appSettings
         if (position == 0) {
             appSettings.musicApp = null

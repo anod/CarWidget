@@ -11,26 +11,31 @@ import android.widget.Button
 import android.widget.ListView
 import com.anod.car.home.R
 import com.anod.car.home.app.App
-import com.anod.car.home.appscache.AppsCacheActivity
+import com.anod.car.home.app.AppsListActivity
 import com.anod.car.home.databinding.ListFooterIconThemesBinding
-import com.anod.car.home.model.AppsList
 import com.anod.car.home.utils.Utils
 import com.anod.car.home.utils.forIconTheme
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.chooser.AppsListViewModel
+import info.anodsplace.carwidget.chooser.AppsPackageLoader
+import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import info.anodsplace.framework.content.startActivitySafely
 
-class IconThemesActivity : AppsCacheActivity() {
+class IconThemesActivity : AppsListActivity() {
+
+    override fun viewModelFactory(): AppsListViewModel.Factory {
+        return AppsListViewModel.Factory(App.get(applicationContext), AppsPackageLoader(this, createQueryIntent()))
+    }
 
     override val isShowTitle: Boolean
         get() = true
 
-    override val headEntries: List<AppsList.Entry>
+    override val headEntries: List<ChooserEntry>
         get() {
-            val none = AppsList.Entry(null, 0, getString(R.string.none))
-            return listOf(none)
+            return listOf(ChooserEntry(null, getString(R.string.none)))
         }
 
     private var currentSelected = 0
@@ -54,8 +59,6 @@ class IconThemesActivity : AppsCacheActivity() {
             return
         }
         refresh = false
-        viewModel.appsList = App.provide(this).iconThemesCache
-        viewModel.isRefreshCache = false
 
         findViewById<Button>(R.id.btn_download).setOnClickListener {
             val uri = Uri.parse(ADW_ICON_THEME_MARKET_URL)
@@ -69,15 +72,16 @@ class IconThemesActivity : AppsCacheActivity() {
         }
     }
 
-    override fun onResumeImpl() {
+    override fun onResume() {
+        super.onResume()
         themePackageName = prefs.iconsTheme
     }
 
-    public override fun onItemsSet(items: List<AppsList.Entry>) {
+    public override fun onItemsSet(items: List<ChooserEntry>) {
         if (themePackageName.isNotEmpty()) {
             for (i in 1 until items.size) {
                 val entry = items[i]
-                if (entry.componentName != null && entry.componentName.packageName == themePackageName) {
+                if (entry.componentName?.packageName == themePackageName) {
                     currentSelected = i
                     break
                 }
@@ -86,15 +90,12 @@ class IconThemesActivity : AppsCacheActivity() {
         gridView.setItemChecked(currentSelected, true)
     }
 
-    override fun createQueryIntent(): Intent {
+    private fun createQueryIntent(): Intent {
         return Intent().forIconTheme()
     }
 
-    override fun onEntryClick(position: Int, entry: AppsList.Entry) {
-        themePackageName = if (entry.componentName == null)
-            ""
-        else
-            entry.componentName.packageName
+    override fun onEntryClick(position: Int, entry: ChooserEntry) {
+        themePackageName =  entry.componentName?.packageName ?: ""
         gridView.setItemChecked(position, true)
         saveAndClose()
     }

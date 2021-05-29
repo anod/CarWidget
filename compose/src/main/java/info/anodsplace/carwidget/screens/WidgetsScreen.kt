@@ -65,33 +65,10 @@ fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>) {
         for (idx in indexes) {
             val shortcut = item.shortcuts.get(idx)
             if (shortcut != null) {
-                val imageResult by loadPicassoImage(shortcut.iconUri(context, item.adaptiveIconStyle))
                 val iconModifier = Modifier
                     .size(SystemIconSize)
                     .padding(4.dp)
-                when (imageResult) {
-                    is PicassoImage.Loading -> {
-                        Box(modifier = iconModifier) {
-
-                        }
-                    }
-                    is PicassoImage.Loaded -> {
-                        Icon(
-                            modifier = iconModifier,
-                            bitmap = (imageResult as PicassoImage.Loaded).image,
-                            contentDescription = null,
-                            tint = Color.Unspecified
-                        )
-                    }
-                    is PicassoImage.Error -> {
-                        Icon(
-                            modifier = iconModifier,
-                            imageVector = Icons.Filled.Cancel,
-                            contentDescription = null,
-                            tint = Color.White
-                        )
-                    }
-                }
+                PicassoIcon(shortcut.iconUri(context, item.adaptiveIconStyle), modifier = iconModifier)
             }
         }
     }

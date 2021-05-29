@@ -286,7 +286,6 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         if (AppWidgetManager.ACTION_APPWIDGET_CONFIGURE == intent.action && appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
             Provider.requestUpdate(this, intArrayOf(appWidgetId))
         }
-        App.provide(this).cleanAppListCache()
     }
 
     override fun onBackPressed() {

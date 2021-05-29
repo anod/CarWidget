@@ -2,21 +2,21 @@ package com.anod.car.home.prefs
 
 import android.app.Activity
 import com.anod.car.home.app.App
-import com.anod.car.home.appscache.AppsCacheActivity
-import com.anod.car.home.model.AppsList
 
 import android.content.ComponentName
 import android.content.Intent
-import android.os.Bundle
+import com.anod.car.home.app.AppsListActivity
+import info.anodsplace.carwidget.chooser.AppsListViewModel
+import info.anodsplace.carwidget.chooser.AppsPackageLoader
+import info.anodsplace.carwidget.chooser.ChooserEntry
 
-class AllAppsActivity : AppsCacheActivity() {
+class AllAppsActivity : AppsListActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.appsList = App.provide(this).appListCache
+    override fun viewModelFactory(): AppsListViewModel.Factory {
+        return AppsListViewModel.Factory(App.get(applicationContext), AppsPackageLoader(this, createQueryIntent()))
     }
 
-    override fun onEntryClick(position: Int, entry: AppsList.Entry) {
+    override fun onEntryClick(position: Int, entry: ChooserEntry) {
         val intent = createActivityIntent(entry.componentName)
         setResult(Activity.RESULT_OK, intent)
         finish()
@@ -30,7 +30,7 @@ class AllAppsActivity : AppsCacheActivity() {
         return intent
     }
 
-    override fun createQueryIntent(): Intent {
+    private fun createQueryIntent(): Intent {
         val intent = Intent()
         intent.action = Intent.ACTION_MAIN
         intent.addCategory(Intent.CATEGORY_LAUNCHER)

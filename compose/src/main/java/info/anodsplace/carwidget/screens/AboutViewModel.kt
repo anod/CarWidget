@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.screens
 
 import android.app.Application
 import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -33,13 +34,13 @@ import org.koin.core.qualifier.named
 
 sealed class AboutUiAction {
     object ChangeTheme: AboutUiAction()
-    object ChooseMusicApp: AboutUiAction()
     object OpenPlayStoreDetails: AboutUiAction()
     object  OpenDefaultCarDock: AboutUiAction()
     class BackupWidget(val dstUri: Uri) : AboutUiAction()
     class BackupInCar(val dstUri: Uri) : AboutUiAction()
     class Restore(val srcUri: Uri) : AboutUiAction()
     class ShowToast(val text: String) : AboutUiAction()
+    class ChangeMusicApp(val component: ComponentName?) : AboutUiAction()
 }
 
 data class AboutScreenState(
@@ -106,8 +107,9 @@ class AboutViewModel(application: Application): AndroidViewModel(application), K
                         appSettings.apply()
                         screenState.value = screenState.value.copy(themeIndex = appSettings.theme, themeName = themes[newThemeIdx])
                     }
-                    AboutUiAction.ChooseMusicApp -> {
-
+                    is AboutUiAction.ChangeMusicApp -> {
+                        appSettings.musicApp = it.component
+                        screenState.value = screenState.value.copy(musicApp = renderMusicApp())
                     }
                     is AboutUiAction.Restore -> {
                         val code = backupManager.restore(appWidgetId, it.srcUri)

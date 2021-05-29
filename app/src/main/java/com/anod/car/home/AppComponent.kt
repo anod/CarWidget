@@ -13,7 +13,6 @@ import com.anod.car.home.incar.ModeHandler
 import com.anod.car.home.incar.ModePhoneStateListener
 import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
-import com.anod.car.home.model.AppsList
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import com.anod.car.home.prefs.model.AppTheme
 import com.squareup.picasso.Picasso
@@ -27,9 +26,6 @@ import org.koin.core.component.get
  * @date 2014-10-27
  */
 class AppComponent(val application: Application) : KoinComponent {
-    private var _appListCache: AppsList? = null
-    private var _iconThemesCache: AppsList? = null
-
     val appSettings: AppSettings
         get() = get()
 
@@ -65,35 +61,8 @@ class AppComponent(val application: Application) : KoinComponent {
     val packageManager: PackageManager
         get() = application.packageManager
 
-    val appListCache: AppsList
-        get() {
-            if (_appListCache == null) {
-                _appListCache = AppsList()
-            }
-            return _appListCache!!
-        }
-
     val appIconLoader: Picasso
         get() = get()
-
-    val iconThemesCache: AppsList
-        get() {
-            if (_iconThemesCache == null) {
-                _iconThemesCache = AppsList()
-            }
-            return _iconThemesCache!!
-        }
-
-    fun cleanAppListCache() {
-        if (_appListCache != null) {
-            _appListCache!!.flush()
-            _appListCache = null
-        }
-        if (_iconThemesCache != null) {
-            _iconThemesCache!!.flush()
-            _iconThemesCache = null
-        }
-    }
 
     val memoryCache: LruCache<String, Any?> by lazy {
         createLruCache()

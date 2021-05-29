@@ -1,7 +1,6 @@
 package com.anod.car.home.app
 
 import android.app.Activity
-import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,43 +8,12 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.FrameLayout
 import androidx.activity.viewModels
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.viewModelScope
-import com.anod.car.home.CarWidgetApplication
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import com.anod.car.home.R
-import com.anod.car.home.model.AppsList
-import kotlinx.coroutines.launch
-
-interface AppsListLoader{
-    suspend fun loadAppsList(): List<AppsList.Entry>
-}
-
-class AppsListViewModel(application: Application) : AndroidViewModel(application) {
-
-    val list = MutableLiveData<List<AppsList.Entry>>()
-    lateinit var loader: AppsListLoader
-    var isRefreshCache = false
-    var appsList = getApplication<CarWidgetApplication>().appComponent.appListCache
-
-    fun load() {
-        viewModelScope.launch {
-            val result = loader.loadAppsList()
-            appsList.replace(result)
-            list.value = result
-        }
-    }
-
-    fun loadIfNeeded() {
-        val apps = appsList.entries
-        if (apps.isEmpty() || isRefreshCache) {
-            this.load()
-        } else {
-            this.list.value = apps
-        }
-    }
-}
+import info.anodsplace.carwidget.chooser.AppsListViewModel
+import info.anodsplace.carwidget.chooser.ChooserEntry
+import kotlinx.coroutines.flow.collect
 
 /**
  * @author alex
@@ -60,18 +28,15 @@ abstract class AppsListActivity : AppCompatGridActivity(), AdapterView.OnItemCli
 
     private val rowLayoutId = R.layout.list_item_app
 
-    protected open val headEntries: List<AppsList.Entry> = emptyList()
+    protected open val headEntries: List<ChooserEntry> = emptyList()
 
     protected open val isRefreshCache: Boolean
         get() = false
 
-    protected abstract fun onEntryClick(position: Int, entry: AppsList.Entry)
+    protected abstract fun onEntryClick(position: Int, entry: ChooserEntry)
 
-    val viewModel: AppsListViewModel by viewModels()
-
-    protected open fun onResumeImpl() {
-        // Nothing by default
-    }
+    abstract fun viewModelFactory(): AppsListViewModel.Factory
+    val viewModel: AppsListViewModel by viewModels { viewModelFactory() }
 
     protected open fun inflateFooterView(layoutInflater: LayoutInflater, parent: ViewGroup): View? = null
 
@@ -93,20 +58,17 @@ abstract class AppsListActivity : AppCompatGridActivity(), AdapterView.OnItemCli
 
         listAdapter = adapter
 
-        viewModel.list.observe(this, Observer {
-            adapter.clear()
+        lifecycleScope.launchWhenCreated {
+            viewModel.load().collect {
+                adapter.clear()
 
-            val items = headEntries + it
-            adapter.addAll(items)
-            adapter.notifyDataSetChanged()
-            onItemsSet(items)
-        })
-    }
+                val items = headEntries + it
+                adapter.addAll(items)
+                adapter.notifyDataSetChanged()
+                onItemsSet(items)
+            }
+        }
 
-    override fun onResume() {
-        super.onResume()
-        onResumeImpl()
-        viewModel.loadIfNeeded()
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -114,7 +76,7 @@ abstract class AppsListActivity : AppCompatGridActivity(), AdapterView.OnItemCli
         onEntryClick(position, entry)
     }
 
-    protected open fun onItemsSet(items: List<AppsList.Entry>) {
+    protected open fun onItemsSet(items: List<ChooserEntry>) {
         // Nothing by default
     }
 

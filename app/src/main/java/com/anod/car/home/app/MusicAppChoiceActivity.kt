@@ -10,14 +10,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.anod.car.home.BuildConfig
 import com.anod.car.home.databinding.ListFooterMusicAppChoiceBinding
-import com.anod.car.home.model.AppsList
 import com.anod.car.home.utils.MusicUtils
+import info.anodsplace.carwidget.chooser.AppsListViewModel
+import info.anodsplace.carwidget.chooser.ChooserEntry
+import info.anodsplace.carwidget.chooser.MediaListLoader
 
 /**
  * @author alex
  * @date 2014-09-03
  */
-class MusicAppChoiceActivity : MusicAppsActivity() {
+class MusicAppChoiceActivity : AppsListActivity() {
+
+    override fun viewModelFactory(): AppsListViewModel.Factory {
+        return AppsListViewModel.Factory(App.get(applicationContext), MediaListLoader(applicationContext))
+    }
 
     private lateinit var binding: ListFooterMusicAppChoiceBinding
 
@@ -26,7 +32,7 @@ class MusicAppChoiceActivity : MusicAppsActivity() {
        return binding.root
     }
 
-    override fun onEntryClick(position: Int, entry: AppsList.Entry) {
+    override fun onEntryClick(position: Int, entry: ChooserEntry) {
         val musicCmp = entry.componentName!!
 
         val isRunning = isMusicCmpRunning(musicCmp)

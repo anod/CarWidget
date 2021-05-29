@@ -7,15 +7,23 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.chooser.ChooserDialog
+import info.anodsplace.carwidget.chooser.ChooserEntry
+import info.anodsplace.carwidget.chooser.Header
+import info.anodsplace.carwidget.chooser.MediaListLoader
 import info.anodsplace.carwidget.compose.BackgroundSurface
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.content.backup.Backup
@@ -79,6 +87,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
     var backupInCarAnimation by remember { mutableStateOf(false) }
     var backupWidgetAnimation by remember { mutableStateOf(false) }
     var showOpenCarDock by remember { mutableStateOf(false) }
+    var showMusicAppDialog by remember { mutableStateOf(false) }
 
     val openDocumentLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocument()) { destUri ->
         if (destUri == null) {
@@ -113,6 +122,8 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
         backupWidgetAnimation = false
     }
 
+    val musicAppDialog =
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -124,7 +135,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
             coroutinesScope.launch { action.emit(AboutUiAction.ChangeTheme) }
         })
         AboutButton(titleRes = R.string.music_app, subtitle = screenState.musicApp, onClick = {
-            // context.startActivity(Intent(context, MusicAppSettingsActivity::class.java))
+            showMusicAppDialog = true
         })
         AboutButton(titleRes = R.string.default_car_dock_app, onClick = { showOpenCarDock = true })
         AboutTitle(titleRes = R.string.pref_backup_title)
@@ -171,6 +182,23 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
             },
             buttons = { },
             onDismissRequest = { showOpenCarDock = false })
+    }
+
+    if (showMusicAppDialog) {
+        val context = LocalContext.current
+        val loader by remember { mutableStateOf(MediaListLoader(context)) }
+        ChooserDialog(
+            headers = listOf(
+                Header(stringResource(R.string.show_choice), iconVector = Icons.Filled.List)
+            ),
+            appsLoader = loader,
+            onDismissRequest = { showMusicAppDialog = false },
+            onClick = { entry ->
+                coroutinesScope.launch {
+                    action.emit(AboutUiAction.ChangeMusicApp(entry.componentName))
+                }
+                showMusicAppDialog = false
+            })
     }
 }
 

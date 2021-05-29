@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import com.anod.car.home.model.AppsList
 import com.squareup.picasso.Picasso
+import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.content.graphics.PackageIconRequestHandler
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import java.util.*
@@ -19,7 +19,7 @@ class AppsListAdapter(
         context: Context,
         private val resource: Int,
         private val iconLoader: Picasso
-) : ArrayAdapter<AppsList.Entry>(context, resource, ArrayList()) {
+) : ArrayAdapter<ChooserEntry>(context, resource, ArrayList()) {
 
     private val defaultIconDrawable: BitmapDrawable
 
@@ -58,7 +58,7 @@ class AppsListAdapter(
         } else {
             holder.icon.visibility = View.VISIBLE
             iconLoader
-                    .load(Uri.fromParts(PackageIconRequestHandler.SCHEME, entry.componentName.flattenToShortString(), null))
+                    .load(Uri.fromParts(PackageIconRequestHandler.SCHEME, entry.componentName!!.flattenToShortString(), null))
                     .placeholder(defaultIconDrawable)
                     .into(holder.icon)
         }
