@@ -9,11 +9,12 @@ import com.anod.car.home.app.AppsListActivity
 import info.anodsplace.carwidget.chooser.AppsListViewModel
 import info.anodsplace.carwidget.chooser.AppsPackageLoader
 import info.anodsplace.carwidget.chooser.ChooserEntry
+import info.anodsplace.framework.content.forLauncher
 
 class AllAppsActivity : AppsListActivity() {
 
     override fun viewModelFactory(): AppsListViewModel.Factory {
-        return AppsListViewModel.Factory(App.get(applicationContext), AppsPackageLoader(this, createQueryIntent()))
+        return AppsListViewModel.Factory(App.get(applicationContext), AppsPackageLoader(this, Intent().forLauncher()))
     }
 
     override fun onEntryClick(position: Int, entry: ChooserEntry) {
@@ -29,12 +30,4 @@ class AllAppsActivity : AppsListActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
         return intent
     }
-
-    private fun createQueryIntent(): Intent {
-        val intent = Intent()
-        intent.action = Intent.ACTION_MAIN
-        intent.addCategory(Intent.CATEGORY_LAUNCHER)
-        return intent
-    }
-
 }

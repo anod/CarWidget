@@ -31,6 +31,7 @@ import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import info.anodsplace.framework.app.DialogItems
 import info.anodsplace.framework.app.FragmentContainerActivity
+import info.anodsplace.framework.content.forIconPack
 
 class ShortcutEditFragment : Fragment() {
 

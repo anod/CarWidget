@@ -15,7 +15,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.BackgroundSurface
 import info.anodsplace.carwidget.compose.CarWidgetTheme
@@ -88,7 +87,7 @@ fun MainScreen(
                     MediaScreen(inCar = inCar, modifier = Modifier.padding(innerPadding))
                 }
                 composable(NavItem.InCar.More.route) {
-                    MoreScreen()
+                    MoreScreen(inCar = inCar, modifier = Modifier.padding(innerPadding))
                 }
             }
             composable(NavItem.Info.route) {

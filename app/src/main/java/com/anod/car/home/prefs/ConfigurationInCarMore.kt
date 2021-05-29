@@ -11,7 +11,7 @@ import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.carwidget.content.preferences.InCarStorage
 
 class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
-    private val prefs: info.anodsplace.carwidget.content.preferences.InCarSettings by lazy { info.anodsplace.carwidget.content.preferences.InCarStorage.load(requireActivity()) }
+    private val prefs: InCarSettings by lazy { InCarStorage.load(requireActivity()) }
 
     override val isAppWidgetIdRequired: Boolean
         get() = false
@@ -20,7 +20,7 @@ class ConfigurationInCarMore : ConfigurationPreferenceFragment() {
         get() = R.xml.preference_incar_more
 
     override val sharedPreferencesName: String
-        get() = info.anodsplace.carwidget.content.preferences.InCarStorage.PREF_NAME
+        get() = InCarStorage.PREF_NAME
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
