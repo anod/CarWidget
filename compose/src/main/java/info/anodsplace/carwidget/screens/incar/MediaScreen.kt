@@ -27,11 +27,15 @@ import info.anodsplace.carwidget.content.preferences.InCarInterface
 fun VolumeSlider(initialVolume: Int, onValueChanged: (Int) -> Unit) {
     var volumeLevel: Float by remember { mutableStateOf(initialVolume.toFloat()) }
     Text(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         text = volumeLevel.toInt().toString(),
         textAlign = TextAlign.Center
     )
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 8.dp),
+        verticalAlignment = Alignment.CenterVertically) {
         Icon(
             modifier = Modifier
                 .size(24.dp)

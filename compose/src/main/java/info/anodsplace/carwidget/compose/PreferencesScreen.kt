@@ -33,24 +33,25 @@ fun PreferenceCategory(item: PreferenceItem.Category, modifier: Modifier = Modif
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Preference(item: PreferenceItem, paddingValues: PaddingValues = PaddingValues(16.dp), onClick: () -> Unit, content: @Composable () -> Unit) {
-    Row(
+fun Preference(item: PreferenceItem, paddingValues: PaddingValues = PaddingValues(4.dp), onClick: () -> Unit, content: @Composable (() -> Unit)? = null) {
+    ListItem(
         modifier = Modifier
             .defaultMinSize(minHeight = 56.dp)
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(paddingValues),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
-            modifier = Modifier.weight(8f)
-        ) {
+            .padding(paddingValues)
+        ,
+        icon = null,
+        text = {
             Text(
                 text = if (item.titleRes != 0) stringResource(id = item.titleRes) else item.title,
                 style = MaterialTheme.typography.h6
             )
-            if (item.summaryRes != 0 || item.summary.isNotEmpty()) {
+        },
+        secondaryText = if (item.summaryRes != 0 || item.summary.isNotEmpty()) {
+            {
                 Text(
                     modifier = Modifier.padding(top = 8.dp),
                     text = if (item.summaryRes != 0) stringResource(id = item.summaryRes) else item.summary,
@@ -59,19 +60,13 @@ fun Preference(item: PreferenceItem, paddingValues: PaddingValues = PaddingValue
                     )
                 )
             }
-        }
-        Box(
-            modifier = Modifier
-                .weight(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            content()
-        }
-    }
+        } else null,
+        trailing = content
+    )
 }
 
 @Composable
-fun PreferenceSwitch(checked: Boolean, item: PreferenceItem, paddingValues: PaddingValues = PaddingValues(16.dp), onCheckedChange: (Boolean) -> Unit) {
+fun PreferenceSwitch(checked: Boolean, item: PreferenceItem, paddingValues: PaddingValues = PaddingValues(4.dp), onCheckedChange: (Boolean) -> Unit) {
     Preference(item, paddingValues, onClick = {
         onCheckedChange(!checked)
     }) {
@@ -84,7 +79,7 @@ fun PreferenceSwitch(checked: Boolean, item: PreferenceItem, paddingValues: Padd
 }
 
 @Composable
-fun PreferenceCheckbox(checked: Boolean, item: PreferenceItem, paddingValues: PaddingValues = PaddingValues(16.dp), onCheckedChange: (Boolean) -> Unit) {
+fun PreferenceCheckbox(checked: Boolean, item: PreferenceItem, paddingValues: PaddingValues = PaddingValues(4.dp), onCheckedChange: (Boolean) -> Unit) {
     Preference(item, paddingValues, onClick = {
         onCheckedChange(!checked)
     }) {
