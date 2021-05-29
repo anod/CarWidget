@@ -32,7 +32,8 @@ interface InCarInterface {
     var screenOrientation: Int
     var screenOnAlert: ScreenOnAlertSettings
 
-    fun putChange(key: String, value: Any?)
+    fun queueChange(key: String, value: Any?)
+    fun applyChange(key: String, value: Any?)
     fun apply()
 
     companion object {
@@ -85,7 +86,8 @@ interface InCarInterface {
         override var screenOrientation: Int = SCREEN_ORIENTATION_DISABLED,
         override var screenOnAlert: ScreenOnAlertSettings = ScreenOnAlertSettings(false, arrayOf())
     ) : InCarInterface {
-        override fun putChange(key: String, value: Any?) {}
+        override fun queueChange(key: String, value: Any?) {}
+        override fun applyChange(key: String, value: Any?) {}
         override fun apply() {}
     }
 }

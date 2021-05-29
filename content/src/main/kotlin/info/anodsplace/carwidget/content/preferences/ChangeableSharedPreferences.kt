@@ -27,8 +27,15 @@ open class ChangeableSharedPreferences(prefs: SharedPreferences) {
         this.prefs = prefs
     }
 
-    fun putChange(key: String, value: Any?) {
+    fun queueChange(key: String, value: Any?) {
         pendingChanges.put(key, value)
+        _changes.postValue(Pair(key, value))
+    }
+
+    fun applyChange(key: String, value: Any?) {
+        val edit = prefs.edit()
+        putChange(edit, key, value)
+        edit.apply()
         _changes.postValue(Pair(key, value))
     }
 
@@ -39,18 +46,22 @@ open class ChangeableSharedPreferences(prefs: SharedPreferences) {
         val edit = prefs.edit()
         for (i in 0 until pendingChanges.size()) {
             val key = pendingChanges.keyAt(i)
-            when (val value = pendingChanges.get(key)) {
-                null -> edit.remove(key)
-                is Boolean -> edit.putBoolean(key, value)
-                is String -> edit.putString(key, value)
-                is Int -> edit.putInt(key, value)
-                is Long -> edit.putLong(key, value)
-                is ComponentName -> edit.putString(key, value.flattenToString())
-                else -> AppLog.e("Unknown value $value for key $key")
-            }
+            putChange(edit, key, pendingChanges.get(key))
         }
         edit.putBoolean("migrated", true)
         edit.apply()
         pendingChanges = SimpleArrayMap()
+    }
+
+    private fun putChange(edit: SharedPreferences.Editor, key: String, value: Any?) {
+        when (value) {
+            null -> edit.remove(key)
+            is Boolean -> edit.putBoolean(key, value)
+            is String -> edit.putString(key, value)
+            is Int -> edit.putInt(key, value)
+            is Long -> edit.putLong(key, value)
+            is ComponentName -> edit.putString(key, value.flattenToString())
+            else -> AppLog.e("Unknown value $value for key $key")
+        }
     }
 }

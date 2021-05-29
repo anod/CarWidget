@@ -20,11 +20,11 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
 
     override var isInCarEnabled: Boolean
         get() = prefs.getBoolean(INCAR_MODE_ENABLED, false)
-        set(enabled) = putChange(INCAR_MODE_ENABLED, enabled)
+        set(enabled) = applyChange(INCAR_MODE_ENABLED, enabled)
 
     override var isAutoSpeaker: Boolean
         get() = prefs.getBoolean(AUTO_SPEAKER, false)
-        set(autoSpeaker) = putChange(AUTO_SPEAKER, autoSpeaker)
+        set(autoSpeaker) = applyChange(AUTO_SPEAKER, autoSpeaker)
 
     override var btDevices: ArrayMap<String, String>
         get() {
@@ -39,20 +39,20 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
         }
         set(btDevices) {
             if (btDevices.isEmpty) {
-                putChange(BLUETOOTH_DEVICE_ADDRESSES, null)
+                applyChange(BLUETOOTH_DEVICE_ADDRESSES, null)
             } else {
                 val addrStr = TextUtils.join(",", btDevices.values)
-                putChange(BLUETOOTH_DEVICE_ADDRESSES, addrStr)
+                applyChange(BLUETOOTH_DEVICE_ADDRESSES, addrStr)
             }
         }
 
     override var isPowerRequired: Boolean
         get() = prefs.getBoolean(POWER_REQUIRED, false)
-        set(powerRequired) = putChange(POWER_REQUIRED, powerRequired)
+        set(powerRequired) = applyChange(POWER_REQUIRED, powerRequired)
 
     override var isHeadsetRequired: Boolean
         get() = prefs.getBoolean(HEADSET_REQUIRED, false)
-        set(headsetRequired) = putChange(HEADSET_REQUIRED, headsetRequired)
+        set(headsetRequired) = applyChange(HEADSET_REQUIRED, headsetRequired)
 
 
     override val isBluetoothRequired: Boolean
@@ -60,59 +60,59 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
 
     override var isDisableBluetoothOnPower: Boolean
         get() = prefs.getBoolean(POWER_BT_DISABLE, false)
-        set(disableBluetoothOnPower) = putChange(POWER_BT_DISABLE, disableBluetoothOnPower)
+        set(disableBluetoothOnPower) = applyChange(POWER_BT_DISABLE, disableBluetoothOnPower)
 
     override var isEnableBluetoothOnPower: Boolean
         get() = prefs.getBoolean(POWER_BT_ENABLE, false)
-        set(enableBluetoothOnPower) = putChange(POWER_BT_ENABLE, enableBluetoothOnPower)
+        set(enableBluetoothOnPower) = applyChange(POWER_BT_ENABLE, enableBluetoothOnPower)
 
     override var isDisableScreenTimeout: Boolean
         get() = prefs.getBoolean(SCREEN_TIMEOUT, true)
-        set(screenTimeout) = putChange(SCREEN_TIMEOUT, screenTimeout)
+        set(screenTimeout) = applyChange(SCREEN_TIMEOUT, screenTimeout)
 
     override var isAdjustVolumeLevel: Boolean
         get() = prefs.getBoolean(ADJUST_VOLUME_LEVEL, false)
-        set(adjustVolumeLevel) = putChange(ADJUST_VOLUME_LEVEL, adjustVolumeLevel)
+        set(adjustVolumeLevel) = applyChange(ADJUST_VOLUME_LEVEL, adjustVolumeLevel)
 
     override var isActivityRequired: Boolean
         get() = prefs.getBoolean(ACTIVITY_RECOGNITION, false)
-        set(activityRequired) = putChange(ACTIVITY_RECOGNITION, activityRequired)
+        set(activityRequired) = applyChange(ACTIVITY_RECOGNITION, activityRequired)
 
     override var mediaVolumeLevel: Int
         get() = prefs.getInt(MEDIA_VOLUME_LEVEL, InCarInterface.DEFAULT_VOLUME_LEVEL)
-        set(mediaVolumeLevel) = putChange(MEDIA_VOLUME_LEVEL, mediaVolumeLevel)
+        set(mediaVolumeLevel) = applyChange(MEDIA_VOLUME_LEVEL, mediaVolumeLevel)
 
     override var callVolumeLevel: Int
         get() = prefs.getInt(CALL_VOLUME_LEVEL, InCarInterface.DEFAULT_VOLUME_LEVEL)
-        set(level) = putChange(CALL_VOLUME_LEVEL, level)
+        set(level) = applyChange(CALL_VOLUME_LEVEL, level)
 
     override var isEnableBluetooth: Boolean
         get() = prefs.getBoolean(BLUETOOTH, false)
-        set(bluetooth) = putChange(BLUETOOTH, bluetooth)
+        set(bluetooth) = applyChange(BLUETOOTH, bluetooth)
 
     override var brightness: String
         get() = prefs.getString(BRIGHTNESS, InCarInterface.BRIGHTNESS_DISABLED)!!
-        set(brightness) = putChange(BRIGHTNESS, brightness)
+        set(brightness) = applyChange(BRIGHTNESS, brightness)
 
     override var isCarDockRequired: Boolean
         get() = prefs.getBoolean(CAR_DOCK_REQUIRED, false)
-        set(carDockRequired) = putChange(CAR_DOCK_REQUIRED, carDockRequired)
+        set(carDockRequired) = applyChange(CAR_DOCK_REQUIRED, carDockRequired)
 
     override var isActivateCarMode: Boolean
         get() = prefs.getBoolean(ACTIVATE_CAR_MODE, false)
-        set(activate) = putChange(ACTIVATE_CAR_MODE, activate)
+        set(activate) = applyChange(ACTIVATE_CAR_MODE, activate)
 
     override var autoAnswer: String
         get() = prefs.getString(AUTO_ANSWER, InCarInterface.AUTOANSWER_DISABLED)!!
-        set(autoAnswer) = putChange(AUTO_ANSWER, autoAnswer)
+        set(autoAnswer) = applyChange(AUTO_ANSWER, autoAnswer)
 
     override var autorunApp: ComponentName?
         get() = prefs.getString(AUTORUN_APP, null)?.toComponentName()
-        set(autorunApp) = putChange(AUTORUN_APP, autorunApp)
+        set(autorunApp) = applyChange(AUTORUN_APP, autorunApp)
 
     override var isDisableScreenTimeoutCharging: Boolean
         get() = prefs.getBoolean(SCREEN_TIMEOUT_CHARGING, false)
-        set(disableScreenTimeoutCharging) = putChange(SCREEN_TIMEOUT_CHARGING, disableScreenTimeoutCharging)
+        set(disableScreenTimeoutCharging) = applyChange(SCREEN_TIMEOUT_CHARGING, disableScreenTimeoutCharging)
 
     override var screenOrientation: Int
         get() {
@@ -120,7 +120,7 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
             val orientation = prefs.getString(SCREEN_ORIENTATION, SCREEN_ORIENTATION_DISABLED.toString())
             return Integer.parseInt(orientation!!)
         }
-        set(screenOrientation) = putChange(SCREEN_ORIENTATION, screenOrientation.toString())
+        set(screenOrientation) = applyChange(SCREEN_ORIENTATION, screenOrientation.toString())
 
     override var screenOnAlert: InCarInterface.ScreenOnAlertSettings
         get() = InCarInterface.ScreenOnAlertSettings(
@@ -131,9 +131,10 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
                 )
         )
         set(value) {
-            putChange("screen-on-alert-enabled", value.enabled)
-            putChange("screen-on-alert-x", value.loc[0])
-            putChange("screen-on-alert-y", value.loc[1])
+            queueChange("screen-on-alert-enabled", value.enabled)
+            queueChange("screen-on-alert-x", value.loc[0])
+            queueChange("screen-on-alert-y", value.loc[1])
+            apply()
         }
 
     @Throws(IOException::class)

@@ -24,77 +24,77 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
 
     var isFirstTime: Boolean
         get() = prefs.getBoolean(FIRST_TIME, true)
-        set(value) = putChange(FIRST_TIME, value)
+        set(value) = applyChange(FIRST_TIME, value)
 
     override var iconsTheme: String
         get() = prefs.getString(ICONS_THEME, "")!!
-        set(iconsTheme) = putChange(ICONS_THEME, iconsTheme)
+        set(iconsTheme) = applyChange(ICONS_THEME, iconsTheme)
 
     override var isSettingsTransparent: Boolean
         get() = prefs.getBoolean(TRANSPARENT_BTN_SETTINGS, false)
-        set(settingsTransparent) = putChange(TRANSPARENT_BTN_SETTINGS, settingsTransparent)
+        set(settingsTransparent) = applyChange(TRANSPARENT_BTN_SETTINGS, settingsTransparent)
 
     override var isIncarTransparent: Boolean
         get() = prefs.getBoolean(TRANSPARENT_BTN_INCAR, false)
-        set(incarTransparent) = putChange(TRANSPARENT_BTN_INCAR, incarTransparent)
+        set(incarTransparent) = applyChange(TRANSPARENT_BTN_INCAR, incarTransparent)
 
     override var skin: String
         get() = prefs.getString(SKIN, WidgetInterface.SKIN_CARDS)!!
-        set(skin) = putChange(SKIN, skin)
+        set(skin) = applyChange(SKIN, skin)
 
     override var tileColor: Int?
         get() {
             return prefs.getInt(BUTTON_COLOR, defaults.tileColor)
         }
-        set(tileColor) = putChange(BUTTON_COLOR, tileColor)
+        set(tileColor) = applyChange(BUTTON_COLOR, tileColor)
 
     override var isIconsMono: Boolean
         get() = prefs.getBoolean(ICONS_MONO, false)
-        set(iconsMono) = putChange(ICONS_MONO, iconsMono)
+        set(iconsMono) = applyChange(ICONS_MONO, iconsMono)
 
     override var iconsColor: Int?
         get() = getColor(ICONS_COLOR, prefs)
-        set(iconsColor) = putChange(ICONS_COLOR, iconsColor)
+        set(iconsColor) = applyChange(ICONS_COLOR, iconsColor)
 
     override val iconsScale: String
         get() = prefs.getString(ICONS_SCALE, ICONS_DEF_VALUE)!!
 
     override var fontColor: Int
         get() = prefs.getInt(FONT_COLOR, defaults.fontColor)
-        set(fontColor) = putChange(FONT_COLOR, fontColor)
+        set(fontColor) = applyChange(FONT_COLOR, fontColor)
 
     override var fontSize: Int
         get() = prefs.getInt(FONT_SIZE, WidgetInterface.FONT_SIZE_UNDEFINED)
-        set(fontSize) = putChange(FONT_SIZE, fontSize)
+        set(fontSize) = applyChange(FONT_SIZE, fontSize)
 
     override var backgroundColor: Int
         get() = prefs.getInt(BG_COLOR, defaults.backgroundColor)
-        set(backgroundColor) = putChange(BG_COLOR, backgroundColor)
+        set(backgroundColor) = applyChange(BG_COLOR, backgroundColor)
 
     override var iconsRotate: BitmapRotateDirection
         get() = BitmapRotateDirection
                 .valueOf(prefs.getString(ICONS_ROTATE, BitmapRotateDirection.NONE.name)!!)
-        set(iconsRotate) = putChange(ICONS_ROTATE, iconsRotate.name)
+        set(iconsRotate) = applyChange(ICONS_ROTATE, iconsRotate.name)
 
     override var isTitlesHide: Boolean
         get() = prefs.getBoolean(TITLES_HIDE, false)
-        set(titlesHide) = putChange(TITLES_HIDE, titlesHide)
+        set(titlesHide) = applyChange(TITLES_HIDE, titlesHide)
 
     override var widgetButton1: Int
         get() = prefs.getInt(WIDGET_BUTTON_1, WidgetInterface.WIDGET_BUTTON_INCAR)
-        set(widgetButton1) = putChange(WIDGET_BUTTON_1, widgetButton1)
+        set(widgetButton1) = applyChange(WIDGET_BUTTON_1, widgetButton1)
 
     override var widgetButton2: Int
         get() = prefs.getInt(WIDGET_BUTTON_2, WidgetInterface.WIDGET_BUTTON_SETTINGS)
-        set(widgetButton2) = putChange(WIDGET_BUTTON_2, widgetButton2)
+        set(widgetButton2) = applyChange(WIDGET_BUTTON_2, widgetButton2)
 
     var adaptiveIconStyle: String
         get() = prefs.getString(ADAPTIVE_ICON_STYLE, "")!!
-        set(style) = putChange(ADAPTIVE_ICON_STYLE, style)
+        set(style) = applyChange(ADAPTIVE_ICON_STYLE, style)
 
     var paletteBackground: Boolean
         get() = prefs.getBoolean("palette-background", false)
-        set(paletteBackgroun) = putChange("palette-background", paletteBackgroun)
+        set(paletteBackgroun) = applyChange("palette-background", paletteBackgroun)
 
     val adaptiveIconPath: Path
         get() {
@@ -108,7 +108,7 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
         }
 
     override fun setIconsScaleString(iconsScale: String) {
-        putChange(ICONS_SCALE, iconsScale)
+        applyChange(ICONS_SCALE, iconsScale)
     }
 
     @Throws(IOException::class)

@@ -22,11 +22,11 @@ class AppSettings(context: Context) : ChangeableSharedPreferences(getSharedPrefe
                 ComponentName.unflattenFromString(musicAppString)
             } else null
         }
-        set(musicApp) = putChange(MUSIC_APP, musicApp)
+        set(musicApp) = applyChange(MUSIC_APP, musicApp)
 
     var theme: Int
         get() = prefs.getInt(APP_THEME, gray)
-        set(value) = putChange(APP_THEME, value)
+        set(value) = applyChange(APP_THEME, value)
 
     companion object {
         const val gray = 0

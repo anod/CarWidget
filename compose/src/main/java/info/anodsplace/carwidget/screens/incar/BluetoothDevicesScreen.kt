@@ -23,7 +23,7 @@ import info.anodsplace.framework.permissions.BluetoothScan
 import info.anodsplace.framework.permissions.RequestMultiplePermissions
 
 @Composable
-fun BluetoothDevices(viewModel: BluetoothDevicesViewModel, modifier: Modifier) {
+fun BluetoothDevicesScreen(viewModel: BluetoothDevicesViewModel, modifier: Modifier) {
     val state by viewModel.load().collectAsState(initial = BluetoothDevicesState.Initial)
     val screenModifier = modifier.padding(16.dp)
     when (state) {
@@ -38,7 +38,6 @@ fun BluetoothDevices(viewModel: BluetoothDevicesViewModel, modifier: Modifier) {
         }
     }
 }
-
 
 @Composable
 fun BluetoothPermissions(viewModel: BluetoothDevicesViewModel, modifier: Modifier = Modifier) {

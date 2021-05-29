@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -24,29 +25,32 @@ fun PreferenceCategory(item: PreferenceItem.Category, modifier: Modifier = Modif
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
         style = MaterialTheme.typography.caption.copy(
-            color = MaterialTheme.colors.primary
+            color = MaterialTheme.colors.primary,
+            fontWeight = FontWeight.Medium
         )
     )
 }
 
 @Composable
-fun Preference(item: PreferenceItem, modifier: Modifier = Modifier, onClick: () -> Unit, content: @Composable () -> Unit) {
+fun Preference(item: PreferenceItem, paddingValues: PaddingValues = PaddingValues(16.dp), onClick: () -> Unit, content: @Composable () -> Unit) {
     Row(
-        modifier = modifier
+        modifier = Modifier
             .defaultMinSize(minHeight = 56.dp)
             .fillMaxWidth()
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick)
+            .padding(paddingValues),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
-            modifier = modifier.weight(8f)
+            modifier = Modifier.weight(8f)
         ) {
             Text(
                 text = if (item.titleRes != 0) stringResource(id = item.titleRes) else item.title,
-                style = MaterialTheme.typography.subtitle2
+                style = MaterialTheme.typography.h6
             )
             if (item.summaryRes != 0 || item.summary.isNotEmpty()) {
                 Text(
+                    modifier = Modifier.padding(top = 8.dp),
                     text = if (item.summaryRes != 0) stringResource(id = item.summaryRes) else item.summary,
                     style = MaterialTheme.typography.body2.copy(
                         color = MaterialTheme.colors.secondary
@@ -55,7 +59,7 @@ fun Preference(item: PreferenceItem, modifier: Modifier = Modifier, onClick: () 
             }
         }
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .weight(1f),
             contentAlignment = Alignment.Center
         ) {
@@ -65,8 +69,8 @@ fun Preference(item: PreferenceItem, modifier: Modifier = Modifier, onClick: () 
 }
 
 @Composable
-fun PreferenceSwitch(checked: Boolean, item: PreferenceItem, modifier: Modifier = Modifier, onCheckedChange: (Boolean) -> Unit) {
-    Preference(item, modifier, onClick = {
+fun PreferenceSwitch(checked: Boolean, item: PreferenceItem, paddingValues: PaddingValues = PaddingValues(16.dp), onCheckedChange: (Boolean) -> Unit) {
+    Preference(item, paddingValues, onClick = {
         onCheckedChange(!checked)
     }) {
         Switch(
@@ -78,8 +82,8 @@ fun PreferenceSwitch(checked: Boolean, item: PreferenceItem, modifier: Modifier 
 }
 
 @Composable
-fun PreferenceCheckbox(checked: Boolean, item: PreferenceItem, modifier: Modifier = Modifier, onCheckedChange: (Boolean) -> Unit) {
-    Preference(item, modifier, onClick = {
+fun PreferenceCheckbox(checked: Boolean, item: PreferenceItem, paddingValues: PaddingValues = PaddingValues(16.dp), onCheckedChange: (Boolean) -> Unit) {
+    Preference(item, paddingValues, onClick = {
         onCheckedChange(!checked)
     }) {
         Checkbox(
@@ -100,13 +104,13 @@ fun PreferencesScreen(preferences: List<PreferenceItem>, onClick: (item: Prefere
         modifier = modifier.fillMaxWidth()
     ) {
         items(preferences.size) { index ->
-            val itemModifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+            val paddingValues: PaddingValues = PaddingValues(16.dp)
             when (val item = preferences[index]) {
                 is PreferenceItem.Category -> PreferenceCategory(item = item)
                 is PreferenceItem.CheckBox -> {
                     var checked by remember { mutableStateOf(item.checked) }
                     PreferenceCheckbox(
-                        modifier = itemModifier,
+                        paddingValues = paddingValues,
                         checked = checked,
                         item = item,
                         onCheckedChange = { newChecked ->
@@ -116,14 +120,14 @@ fun PreferencesScreen(preferences: List<PreferenceItem>, onClick: (item: Prefere
                     })
                 }
                 is PreferenceItem.List -> Preference(
-                    modifier = itemModifier,
+                    paddingValues = paddingValues,
                     item = item,
                     onClick = { listItem = item }
                 ) { }
                 is PreferenceItem.Switch -> {
                     var checked by remember { mutableStateOf(item.checked) }
                     PreferenceSwitch(
-                        modifier = itemModifier,
+                        paddingValues = paddingValues,
                         checked = checked,
                         item = item,
                         onCheckedChange = { newChecked ->
@@ -133,7 +137,7 @@ fun PreferencesScreen(preferences: List<PreferenceItem>, onClick: (item: Prefere
                     })
                 }
                 is PreferenceItem.Text -> Preference(
-                    modifier = itemModifier,
+                    paddingValues = paddingValues,
                     item = item,
                     onClick = { onClick(item) }) { }
             }

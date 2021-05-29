@@ -29,15 +29,15 @@ object JsonReaderHelper {
             var skipped = false
             when (type) {
                 JsonToken.BOOLEAN -> {
-                    prefs.putChange(name, reader.nextBoolean())
+                    prefs.queueChange(name, reader.nextBoolean())
                     found++
                 }
                 JsonToken.STRING -> {
-                    prefs.putChange(name, if (isNull) null else reader.nextString())
+                    prefs.queueChange(name, if (isNull) null else reader.nextString())
                     found++
                 }
                 JsonToken.NUMBER -> {
-                    prefs.putChange(name, if (isNull) null else reader.nextInt())
+                    prefs.queueChange(name, if (isNull) null else reader.nextInt())
                     found++
                 }
                 else -> {

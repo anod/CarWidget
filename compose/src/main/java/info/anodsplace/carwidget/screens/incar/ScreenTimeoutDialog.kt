@@ -78,7 +78,7 @@ fun ScreenTimeoutContent(inCar: InCarInterface) {
 }
 
 @Composable
-fun ScreenTimeout(item: PreferenceItem.Text, inCar: InCarInterface, onDismiss: () -> Unit) {
+fun ScreenTimeoutDialog(item: PreferenceItem.Text, inCar: InCarInterface, onDismiss: () -> Unit) {
     AlertDialog(
         title = { Text(text = if (item.titleRes != 0) stringResource(id = item.titleRes) else item.title) },
         text = { ScreenTimeoutContent(inCar) },
