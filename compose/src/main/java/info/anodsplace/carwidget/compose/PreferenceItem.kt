@@ -25,4 +25,5 @@ sealed class PreferenceItem(
         @ArrayRes val entries: Int,
         @ArrayRes val entryValues: Int
     ): PreferenceItem(titleRes, "", summaryRes, "", key)
+    class Placeholder(titleRes: Int = 0, title: String = "", summaryRes: Int = 0, summary: String = "", key: String = ""): PreferenceItem(titleRes, title, summaryRes, summary, key)
 }

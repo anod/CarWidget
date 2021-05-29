@@ -84,9 +84,6 @@ fun MainScreen(
                 composable(NavItem.InCar.More.route) {
                     MoreScreen()
                 }
-                composable(NavItem.InCar.Shortcuts.route) {
-                    ShortcutsScreen()
-                }
             }
             composable(NavItem.Info.route) {
                 val aboutViewModel: AboutViewModel = viewModel()

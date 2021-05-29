@@ -117,7 +117,7 @@
     <string name="incar_mode_disabled">InCar mode disabled.\nEnable it in widget settings in order to use shortcut.</string>
     <string name="set_shortcut_short">SET</string>
     <string name="notification">Notification</string>
-    <string name="shortcuts_summary">You can place up to 3 shortcuts in status bar</string>
+    <string name="shortcuts_summary">Set up to 3 shortcuts</string>
     <string name="icons_theme">Icons Theme</string>
     <string name="default_car_dock_app">Default Car Dock app</string>
     <string name="cardock_btn_1">Open App Info</string>

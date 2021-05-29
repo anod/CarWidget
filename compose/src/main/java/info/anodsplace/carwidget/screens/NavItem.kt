@@ -18,7 +18,6 @@ sealed class NavItem(val route: String, val parent: NavItem? = null) {
         object Bluetooth : NavItem("incar/bluetooh", parent = InCar)
         object Media : NavItem("incar/media", parent = InCar)
         object More : NavItem("incar/more", parent = InCar)
-        object Shortcuts : NavItem("incar/shortcuts", parent = InCar)
     }
     object Info : TabItem("info", R.string.info, Icons.Outlined.Info)
 }

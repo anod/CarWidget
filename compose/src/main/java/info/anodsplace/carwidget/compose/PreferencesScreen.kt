@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun PreferenceCategory(item: PreferenceItem.Category, modifier: Modifier = Modifier) {
@@ -24,9 +25,10 @@ fun PreferenceCategory(item: PreferenceItem.Category, modifier: Modifier = Modif
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
-        style = MaterialTheme.typography.caption.copy(
+        style = MaterialTheme.typography.overline.copy(
             color = MaterialTheme.colors.primary,
-            fontWeight = FontWeight.Medium
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
         )
     )
 }
@@ -98,13 +100,17 @@ fun PreferenceCheckbox(checked: Boolean, item: PreferenceItem, paddingValues: Pa
 }
 
 @Composable
-fun PreferencesScreen(preferences: List<PreferenceItem>, onClick: (item: PreferenceItem) -> Unit, modifier: Modifier = Modifier) {
+fun PreferencesScreen(
+    preferences: List<PreferenceItem>,
+    onClick: (item: PreferenceItem) -> Unit,
+    modifier: Modifier = Modifier,
+    placeholder: @Composable (PreferenceItem.Placeholder) -> Unit = { }) {
     var listItem by remember { mutableStateOf<PreferenceItem.List?>(null) }
     LazyColumn(
         modifier = modifier.fillMaxWidth()
     ) {
         items(preferences.size) { index ->
-            val paddingValues: PaddingValues = PaddingValues(16.dp)
+            val paddingValues = PaddingValues(16.dp)
             when (val item = preferences[index]) {
                 is PreferenceItem.Category -> PreferenceCategory(item = item)
                 is PreferenceItem.CheckBox -> {
@@ -140,6 +146,9 @@ fun PreferencesScreen(preferences: List<PreferenceItem>, onClick: (item: Prefere
                     paddingValues = paddingValues,
                     item = item,
                     onClick = { onClick(item) }) { }
+                is PreferenceItem.Placeholder -> {
+                    placeholder(item)
+                }
             }
         }
     }
