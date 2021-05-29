@@ -3,10 +3,7 @@ package info.anodsplace.carwidget.screens
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
@@ -46,7 +43,7 @@ fun AboutButton(@StringRes titleRes: Int = 0,
         enabled = enabled
     ) {
         if (loader) {
-            CircularProgressIndicator()
+            CircularProgressIndicator(modifier = Modifier.size(24.dp))
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally

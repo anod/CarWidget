@@ -8,6 +8,7 @@ import androidx.core.util.isEmpty
 import androidx.core.util.isNotEmpty
 import androidx.lifecycle.AndroidViewModel
 import info.anodsplace.carwidget.appwidget.WidgetIds
+import info.anodsplace.carwidget.compose.ScreenLoadState
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
@@ -43,7 +44,7 @@ class WidgetsListViewModel(application: Application) : AndroidViewModel(applicat
     private val context: Context
         get() = getApplication()
 
-    fun loadList(): Flow<List<WidgetItem>> = flow {
+    fun loadScreen(): Flow<ScreenLoadState<List<WidgetItem>>> = flow {
         val list = loadWidgetList(getApplication())
         val newItems = mutableListOf<WidgetItem>()
         newItems.addAll(list.shortcuts.map { WidgetItem.Shortcut() })
@@ -55,7 +56,7 @@ class WidgetsListViewModel(application: Application) : AndroidViewModel(applicat
             ))
         }
 
-        emit(newItems)
+        emit(ScreenLoadState.Ready(newItems))
     }
 
     private suspend fun loadWidgetList(context: Context): WidgetList = withContext(Dispatchers.Default) {

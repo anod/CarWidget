@@ -15,9 +15,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.BackgroundSurface
 import info.anodsplace.carwidget.compose.CarWidgetTheme
+import info.anodsplace.carwidget.compose.ScreenLoadState
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.screens.incar.*
 
@@ -69,8 +71,12 @@ fun MainScreen(
         NavHost(navController, startDestination = NavItem.Widgets.route) {
             composable(NavItem.Widgets.route) {
                 val widgetsListViewModel: WidgetsListViewModel = viewModel()
-                val widgetList by widgetsListViewModel.loadList().collectAsState(initial = emptyList())
-                WidgetsScreen(widgetList) { appWidgetId -> onOpenWidgetConfig(appWidgetId) }
+                val widgetsState by widgetsListViewModel.loadScreen().collectAsState(initial = ScreenLoadState.Loading)
+                if (widgetsState is ScreenLoadState.Ready) {
+                    WidgetsScreen((widgetsState as ScreenLoadState.Ready<List<WidgetItem>>).value) { appWidgetId ->
+                        onOpenWidgetConfig(appWidgetId)
+                    }
+                }
             }
             navigation(startDestination = NavItem.InCar.Main.route, route = NavItem.InCar.route) {
                 composable(NavItem.InCar.Main.route) { InCarMainScreen(inCar, navController = navController, modifier = Modifier.padding(innerPadding)) }
