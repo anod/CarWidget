@@ -3,12 +3,13 @@ package info.anodsplace.carwidget.screens
 import android.app.Application
 import android.content.Context
 import android.util.SparseArray
+import androidx.annotation.StringRes
 import androidx.core.util.forEach
 import androidx.core.util.isEmpty
-import androidx.core.util.isNotEmpty
 import androidx.lifecycle.AndroidViewModel
 import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.carwidget.compose.ScreenLoadState
+import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
@@ -29,7 +30,6 @@ class WidgetList {
 }
 
 interface WidgetItem {
-
     class Large(
         val appWidgetId: Int,
         val shortcuts: SparseArray<info.anodsplace.carwidget.content.db.Shortcut?>,
@@ -39,12 +39,20 @@ interface WidgetItem {
     class Shortcut : WidgetItem
 }
 
+data class WidgetListScreenState(
+    val items: List<WidgetItem>,
+    val isServiceRequired: Boolean,
+    val isServiceRunning: Boolean,
+    @StringRes val statusResId: Int
+)
+
 class WidgetsListViewModel(application: Application) : AndroidViewModel(application), KoinComponent {
     private val widgetIds: WidgetIds by inject(WidgetIds::class.java)
+    private val inCarStatus: InCarStatus by inject(InCarStatus::class.java)
     private val context: Context
         get() = getApplication()
 
-    fun loadScreen(): Flow<ScreenLoadState<List<WidgetItem>>> = flow {
+    fun loadScreen(): Flow<ScreenLoadState<WidgetListScreenState>> = flow {
         val list = loadWidgetList(getApplication())
         val newItems = mutableListOf<WidgetItem>()
         newItems.addAll(list.shortcuts.map { WidgetItem.Shortcut() })
@@ -56,7 +64,12 @@ class WidgetsListViewModel(application: Application) : AndroidViewModel(applicat
             ))
         }
 
-        emit(ScreenLoadState.Ready(newItems))
+        emit(ScreenLoadState.Ready(WidgetListScreenState(
+            items = newItems,
+            isServiceRequired = inCarStatus.isServiceRequired,
+            isServiceRunning = inCarStatus.isServiceRunning,
+            statusResId = inCarStatus.resId
+        )))
     }
 
     private suspend fun loadWidgetList(context: Context): WidgetList = withContext(Dispatchers.Default) {

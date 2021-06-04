@@ -10,6 +10,7 @@ import android.content.IntentFilter
 import androidx.lifecycle.AndroidViewModel
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.InCarStorage
+import info.anodsplace.framework.bluetooth.Bluetooth
 import info.anodsplace.framework.bluetooth.BtClassType
 import info.anodsplace.framework.bluetooth.classType
 import info.anodsplace.framework.permissions.AppPermissions
@@ -27,6 +28,7 @@ class BluetoothDevice(var address: String, var name: String, var btClassName: St
 
 sealed class BluetoothDevicesState {
     object Initial: BluetoothDevicesState()
+    object SwitchedOff: BluetoothDevicesState()
     object RequiresPermissions: BluetoothDevicesState()
     class Devices(val list: List<BluetoothDevice>): BluetoothDevicesState()
 }
@@ -38,13 +40,18 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
         get() = getApplication()
 
     val requiresPermission = MutableStateFlow(checkPermission())
+    val btState = MutableStateFlow(Bluetooth.state)
 
+    @SuppressLint("MissingPermission")
     fun load(): Flow<BluetoothDevicesState> = requiresPermission.map { requires ->
         if (requires) {
             return@map BluetoothDevicesState.RequiresPermissions
         } else {
-            val list = loadDevices()
-            return@map BluetoothDevicesState.Devices(list)
+            if (btAdapter?.isEnabled == true) {
+                val list = loadDevices()
+                return@map BluetoothDevicesState.Devices(list)
+            }
+            return@map BluetoothDevicesState.SwitchedOff
         }
     }
 
@@ -66,6 +73,8 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
         bluetoothReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 val state = intent?.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
+                    ?: Bluetooth.state
+                btState.value = state
                 if (state == BluetoothAdapter.STATE_ON) {
                     load()
                 }/* else if (state == BluetoothAdapter.STATE_OFF || state == BluetoothAdapter.ERROR) {

@@ -31,6 +31,7 @@ fun createAppModule(): Module = module {
     factory<AppWidgetManager> { AppWidgetManager.getInstance(get()) }
     single<Logger> { AndroidLogger() }
     single { AppSettings(get()) }
+    factory { Version(get()) }
     factory {
         Picasso.Builder(get())
             .addRequestHandler(ShortcutIconRequestHandler(get()))

@@ -1,26 +1,31 @@
 package info.anodsplace.carwidget.incar
 
-import android.content.Context
-
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.appwidget.WidgetIds
+import info.anodsplace.carwidget.content.InCarStatus.Companion.DISABLED
+import info.anodsplace.carwidget.content.InCarStatus.Companion.ENABLED
+import info.anodsplace.carwidget.content.InCarStatus.Companion.NOT_ACTIVE
 import info.anodsplace.carwidget.content.Version
+import info.anodsplace.carwidget.content.preferences.InCarInterface
 
-class InCarStatus(widgetsCount: Int, version: Version, settings: info.anodsplace.carwidget.content.preferences.InCarSettings) {
+class InCarStatus(
+    private val widgetIds: WidgetIds,
+    private val version: Version,
+    private val serviceRequired: () -> Boolean,
+    private val serviceRunning: () -> Boolean,
+    private val settings: InCarInterface
+) : info.anodsplace.carwidget.content.InCarStatus {
 
-    constructor(widgetsCount: Int, version: Version, context: Context)
-        : this(widgetsCount, version, info.anodsplace.carwidget.content.preferences.InCarStorage.load(context))
-
-    constructor(widgetsCount: Int, context: Context) : this(widgetsCount, Version(context), context)
-
-    val value = calc(widgetsCount, version, settings)
-    val isEnabled = value == ENABLED
+    override val value: Int by lazy { calc(widgetIds.getAllWidgetIds().size, version, settings) }
+    override val isEnabled: Boolean
+        get() = value == ENABLED
+    override val isServiceRequired: Boolean
+        get() = serviceRequired()
+    override val isServiceRunning: Boolean
+        get() = serviceRunning()
 
     companion object {
-        const val NOT_ACTIVE = 0
-        const val ENABLED = 1
-        private const val DISABLED = 2
-
-        private fun calc(widgetsCount: Int, version: Version, settings: info.anodsplace.carwidget.content.preferences.InCarSettings): Int {
+        private fun calc(widgetsCount: Int, version: Version, settings: InCarInterface): Int {
             if (widgetsCount == 0) {
                 return NOT_ACTIVE
             }
@@ -34,7 +39,7 @@ class InCarStatus(widgetsCount: Int, version: Version, settings: info.anodsplace
         }
     }
 
-    val resId: Int
+    override val resId: Int
         get() {
             if (value == NOT_ACTIVE) {
                 return R.string.not_active

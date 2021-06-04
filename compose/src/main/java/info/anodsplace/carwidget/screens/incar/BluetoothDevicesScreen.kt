@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.screens.incar
 import android.bluetooth.BluetoothAdapter
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
@@ -10,23 +11,37 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.view.isVisible
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.compose.BackgroundSurface
+import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.compose.PreferenceCheckbox
 import info.anodsplace.carwidget.compose.PreferenceItem
+import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.framework.bluetooth.Bluetooth
 import info.anodsplace.framework.permissions.BluetoothConnect
 import info.anodsplace.framework.permissions.BluetoothScan
 import info.anodsplace.framework.permissions.RequestMultiplePermissions
 
+private fun btSwitchRequest(newState: Boolean, viewModel: BluetoothDevicesViewModel) {
+    if (newState) {
+        viewModel.registerBroadcastReceiver()
+        Bluetooth.switchOn()
+    } else {
+        Bluetooth.switchOff()
+    }
+}
+
 @Composable
 fun BluetoothDevicesScreen(viewModel: BluetoothDevicesViewModel, modifier: Modifier) {
-    val state by viewModel.load().collectAsState(initial = BluetoothDevicesState.Initial)
+    val screenState by viewModel.load().collectAsState(initial = BluetoothDevicesState.Initial)
+    val btState by viewModel.btState.collectAsState(initial = Bluetooth.state)
     val screenModifier = modifier.padding(16.dp)
-    when (state) {
+    when (screenState) {
         BluetoothDevicesState.Initial -> {
             CircularProgressIndicator()
         }
@@ -34,7 +49,18 @@ fun BluetoothDevicesScreen(viewModel: BluetoothDevicesViewModel, modifier: Modif
             BluetoothPermissions(viewModel, modifier = screenModifier)
         }
         is BluetoothDevicesState.Devices -> {
-            BluetoothDeviceList((state as BluetoothDevicesState.Devices).list, viewModel, modifier = screenModifier)
+            BluetoothDeviceList(
+                list = (screenState as BluetoothDevicesState.Devices).list,
+                btState = btState,
+                onSwitchRequest = { btSwitchRequest(it, viewModel) },
+                modifier = screenModifier)
+        }
+        BluetoothDevicesState.SwitchedOff -> {
+            BluetoothDeviceEmpty(
+                btState = btState,
+                modifier = screenModifier,
+                onSwitchRequest = { btSwitchRequest(it, viewModel) }
+            )
         }
     }
 }
@@ -56,10 +82,10 @@ fun BluetoothPermissions(viewModel: BluetoothDevicesViewModel, modifier: Modifie
 }
 
 @Composable
-fun BluetoothDeviceList(list: List<BluetoothDevice>, viewModel: BluetoothDevicesViewModel, modifier: Modifier = Modifier) {
+fun BluetoothDeviceList(list: List<BluetoothDevice>, btState: Int, onSwitchRequest: (newState: Boolean) -> Unit, modifier: Modifier = Modifier) {
 
     if (list.isEmpty()) {
-        BluetoothDeviceEmpty(viewModel, modifier = modifier)
+        BluetoothDeviceEmpty(btState, onSwitchRequest, modifier = modifier)
     } else {
         LazyColumn(modifier = modifier) {
             item {
@@ -84,25 +110,43 @@ fun BluetoothDeviceList(list: List<BluetoothDevice>, viewModel: BluetoothDevices
 }
 
 @Composable
-fun BluetoothDeviceEmpty(viewModel: BluetoothDevicesViewModel, modifier: Modifier = Modifier) {
+fun BluetoothDeviceEmpty(btState: Int, onSwitchRequest: (newState: Boolean) -> Unit, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Text(text = stringResource(id = R.string.bluetooth_device_category_title))
+        Text(
+            text = stringResource(id = R.string.no_paired_devices_found_summary),
+            modifier = Modifier.padding(top = 16.dp)
+        )
+        if (btState != BluetoothAdapter.STATE_ON) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(top = 16.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.turn_on_bluetooth_summary),
+                )
+                Switch(
+                    modifier = Modifier.padding(start = 16.dp),
+                    checked = btState == BluetoothAdapter.STATE_ON,
+                    onCheckedChange = { onSwitchRequest(it) },
+                    enabled = btState == BluetoothAdapter.STATE_OFF
+                )
+            }
+        }
+    }
+}
 
-        var btSwitch by remember { mutableStateOf(Bluetooth.state == BluetoothAdapter.STATE_ON) }
-        if (btSwitch) {
-            Text(text = stringResource(id = R.string.no_paired_devices_found_summary))
-        } else {
-            Text(text = stringResource(id = R.string.turn_on_bluetooth_summary))
-            Switch(checked = btSwitch, onCheckedChange = {
-                viewModel.registerBroadcastReceiver()
-                btSwitch = if (Bluetooth.state == BluetoothAdapter.STATE_ON) {
-                    Bluetooth.switchOff()
-                    false
-                } else {
-                    Bluetooth.switchOn()
-                    true
-                }
-            })
+@Preview("BluetoothDeviceEmptyScreen")
+@Composable
+fun BluetoothDeviceEmptyScreen() {
+    CarWidgetTheme(darkTheme = true) {
+        BackgroundSurface {
+            BluetoothDeviceEmpty(
+                btState = BluetoothAdapter.STATE_OFF,
+                onSwitchRequest = { },
+                modifier = Modifier.padding(16.dp)
+            )
         }
     }
 }

@@ -13,6 +13,9 @@ import com.google.android.material.snackbar.Snackbar
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.extentions.isServiceRunning
+import info.anodsplace.carwidget.content.preferences.InCarInterface
+import info.anodsplace.carwidget.content.preferences.InCarSettings
+import info.anodsplace.carwidget.content.preferences.InCarStorage
 import info.anodsplace.carwidget.incar.InCarStatus
 import info.anodsplace.framework.permissions.*
 import org.koin.core.component.KoinComponent
@@ -29,14 +32,15 @@ open class WidgetsListActivity : CarWidgetActivity(), KoinComponent {
     private val version: Version by lazy { Version(this) }
     private var proDialogShown: Boolean = false
     private val widgetIds: WidgetIds by inject()
+    private val inCarSettings: InCarInterface by inject()
+    private val inCarStatus: InCarStatus by inject()
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (savedInstanceState == null) {
-        } else {
+        if (savedInstanceState != null) {
             wizardShown = savedInstanceState.getBoolean("wizard-shown")
             proDialogShown = savedInstanceState.getBoolean("dialog-shown")
         }
@@ -57,17 +61,13 @@ open class WidgetsListActivity : CarWidgetActivity(), KoinComponent {
         }
 
         if (!wizardShown && !proDialogShown) {
-            val appWidgetIds = widgetIds.getAllWidgetIds()
-            if (appWidgetIds.isNotEmpty()) {
-                val permissions = requestPermissions(appWidgetIds)
-                if (permissions.isNotEmpty()) {
-                    RequestPermissionsActivity.start(this, permissions.toTypedArray(), requestPermissionsResult)
-                }
+            val permissions = requestPermissions()
+            if (permissions.isNotEmpty()) {
+                RequestPermissionsActivity.start(this, permissions.toTypedArray(), requestPermissionsResult)
             }
         }
         AppLog.d("BroadcastService is running: ${isServiceRunning(BroadcastService::class.java)}")
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -84,26 +84,24 @@ open class WidgetsListActivity : CarWidgetActivity(), KoinComponent {
         }
     }
 
-    private fun requestPermissions(appWidgetIds: IntArray): List<String> {
-        val settings = info.anodsplace.carwidget.content.preferences.InCarStorage.load(this)
-        val status = InCarStatus(appWidgetIds.size, version, settings)
-        if (!status.isEnabled) {
+    private fun requestPermissions(): List<String> {
+        if (!inCarStatus.isEnabled) {
             return emptyList()
         }
         val permissions = mutableListOf<String>()
-        if (settings.screenOrientation != ScreenOrientation.DISABLED && AppPermissions.shouldShowMessage(this, CanDrawOverlay)) {
+        if (inCarSettings.screenOrientation != ScreenOrientation.DISABLED && AppPermissions.shouldShowMessage(this, CanDrawOverlay)) {
             permissions.add(CanDrawOverlay.value)
         }
-        val needsWritePermission = settings.brightness != info.anodsplace.carwidget.content.preferences.InCarInterface.BRIGHTNESS_DISABLED
+        val needsWritePermission = inCarSettings.brightness != InCarInterface.BRIGHTNESS_DISABLED
         if (needsWritePermission && AppPermissions.shouldShowMessage(this, WriteSettings)) {
             permissions.add(WriteSettings.value)
         }
-        if (settings.autoAnswer != info.anodsplace.carwidget.content.preferences.InCarInterface.AUTOANSWER_DISABLED) {
+        if (inCarSettings.autoAnswer != InCarInterface.AUTOANSWER_DISABLED) {
             if (AppPermissions.shouldShowMessage(this, AnswerPhoneCalls)) {
                 permissions.add(AnswerPhoneCalls.value)
             }
         }
-        if (settings.isActivityRequired) {
+        if (inCarSettings.isActivityRequired) {
             if (AppPermissions.shouldShowMessage(this, ActivityRecognition)) {
                 permissions.add(ActivityRecognition.value)
             }

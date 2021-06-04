@@ -71,8 +71,8 @@ fun MainScreen(
             composable(NavItem.Widgets.route) {
                 val widgetsListViewModel: WidgetsListViewModel = viewModel()
                 val widgetsState by widgetsListViewModel.loadScreen().collectAsState(initial = ScreenLoadState.Loading)
-                if (widgetsState is ScreenLoadState.Ready) {
-                    WidgetsScreen((widgetsState as ScreenLoadState.Ready<List<WidgetItem>>).value) { appWidgetId ->
+                if (widgetsState is ScreenLoadState.Ready<WidgetListScreenState>) {
+                    WidgetsScreen((widgetsState as ScreenLoadState.Ready<WidgetListScreenState>).value) { appWidgetId ->
                         onOpenWidgetConfig(appWidgetId)
                     }
                 }

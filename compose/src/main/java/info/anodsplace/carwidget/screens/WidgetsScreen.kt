@@ -1,13 +1,14 @@
 package info.anodsplace.carwidget.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,7 +24,6 @@ import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.*
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.iconUri
-import info.anodsplace.carwidget.incar.InCarStatus
 import info.anodsplace.carwidget.utils.SystemIconSize
 
 @Composable
@@ -57,18 +57,21 @@ fun WidgetsEmptyScreen() {
     }
 }
 
-
 @Composable
 fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>) {
     val context = LocalContext.current
+    val iconModifier = Modifier
+        .size(SystemIconSize)
+        .padding(4.dp)
     Row {
         for (idx in indexes) {
             val shortcut = item.shortcuts.get(idx)
             if (shortcut != null) {
-                val iconModifier = Modifier
-                    .size(SystemIconSize)
-                    .padding(4.dp)
                 PicassoIcon(shortcut.iconUri(context, item.adaptiveIconStyle), modifier = iconModifier)
+            } else {
+                Box(modifier = iconModifier.border(1.dp, MaterialTheme.colors.onSurface, shape = RoundedCornerShape(8.dp))) {
+
+                }
             }
         }
     }
@@ -85,16 +88,21 @@ fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit) {
 }
 
 @Composable
-fun InCarHeader(widgetsCount: Int) {
+fun InCarHeader(screen: WidgetListScreenState) {
     val version = Version(LocalContext.current)
-    val status = InCarStatus(widgetsCount, version, LocalContext.current)
-    val active = stringResource(status.resId)
+    val active = stringResource(screen.statusResId)
 
     Column(modifier = Modifier.cardStyle()) {
         Text(
             text = stringResource(id = R.string.pref_incar_mode_title) + " - " + active,
             color = MaterialTheme.colors.onSurface
         )
+        if (screen.isServiceRequired) {
+            Text(
+                text = if (screen.isServiceRunning) "Service is running" else "Service is NOT running",
+                color = MaterialTheme.colors.onSurface
+            )
+        }
         when {
             version.isFreeAndTrialExpired -> {
                 Text(
@@ -122,8 +130,8 @@ fun InCarHeader(widgetsCount: Int) {
 }
 
 @Composable
-fun WidgetsScreen(widgetList: List<WidgetItem>, onClick: (appWidgetId: Int) -> Unit) {
-    if (widgetList.isEmpty()) {
+fun WidgetsScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit) {
+    if (screen.items.isEmpty()) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
@@ -131,7 +139,7 @@ fun WidgetsScreen(widgetList: List<WidgetItem>, onClick: (appWidgetId: Int) -> U
         ) {
             WidgetsEmptyScreen()
             Spacer(modifier = Modifier.height(16.dp))
-            InCarHeader(widgetList.size)
+            InCarHeader(screen)
         }
     } else {
         LazyColumn(
@@ -142,11 +150,30 @@ fun WidgetsScreen(widgetList: List<WidgetItem>, onClick: (appWidgetId: Int) -> U
             var hasLargeItem = false
 
             item {
-                InCarHeader(widgetList.size)
+                InCarHeader(screen)
             }
 
-            items(widgetList.size) { idx ->
-                val item = widgetList[idx]
+            if (screen.isServiceRequired && !screen.isServiceRunning) {
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row(modifier = Modifier
+                        .cardStyle()) {
+                        Icon(
+                            imageVector = Icons.Filled.Warning,
+                            modifier = Modifier.size(SystemIconSize),
+                            tint = WarningColor,
+                            contentDescription = null)
+                        Text(
+                            modifier = Modifier.padding(start = 16.dp),
+                            text = "InCar detector service is not running, please disable battery optimization",
+                            color = WarningColor
+                        )
+                    }
+                }
+            }
+
+            items(screen.items.size) { idx ->
+                val item = screen.items[idx]
                 Spacer(modifier = Modifier.height(16.dp))
                 when (item) {
                     is WidgetItem.Shortcut -> {
@@ -186,7 +213,12 @@ fun WidgetsScreen(widgetList: List<WidgetItem>, onClick: (appWidgetId: Int) -> U
 fun PreviewWidgetsScreenEmptyDark() {
     CarWidgetTheme(darkTheme = true) {
         BackgroundSurface {
-            WidgetsScreen(emptyList(), onClick = { })
+            WidgetsScreen(WidgetListScreenState(
+                items = emptyList(),
+                isServiceRunning = true,
+                isServiceRequired = true,
+                statusResId = R.string.enabled
+            ), onClick = { })
         }
     }
 }
@@ -198,8 +230,11 @@ fun PreviewWidgetsScreenLight() {
     CarWidgetTheme(darkTheme = false) {
         BackgroundSurface {
             WidgetsScreen(
-                listOf(
-                    WidgetItem.Shortcut()
+                WidgetListScreenState(
+                    items = listOf( WidgetItem.Shortcut() ),
+                    isServiceRunning = false,
+                    isServiceRequired = true,
+                    statusResId = R.string.enabled
                 ),
                 onClick = { }
             )

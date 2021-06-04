@@ -9,6 +9,7 @@ import com.anod.car.home.BuildConfig
 import com.anod.car.home.utils.Power
 import com.google.android.gms.location.ActivityTransitionResult
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.preferences.InCarStorage
 import info.anodsplace.framework.bluetooth.Bluetooth
 
 /**
@@ -90,7 +91,7 @@ object ModeDetector {
     }
 
     fun onBroadcastReceive(context: Context, intent: Intent) {
-        val prefs = info.anodsplace.carwidget.content.preferences.InCarStorage.load(context)
+        val prefs = InCarStorage.load(context)
         if (!prefs.isInCarEnabled) {
             return
         }

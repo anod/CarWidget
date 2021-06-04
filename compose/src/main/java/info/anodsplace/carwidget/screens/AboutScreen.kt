@@ -26,6 +26,8 @@ import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.MediaListLoader
 import info.anodsplace.carwidget.compose.BackgroundSurface
 import info.anodsplace.carwidget.compose.CarWidgetTheme
+import info.anodsplace.carwidget.compose.PreferenceCategory
+import info.anodsplace.carwidget.compose.PreferenceItem
 import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.framework.content.CreateDocument
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -33,12 +35,13 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 @Composable
-fun AboutButton(@StringRes titleRes: Int = 0,
-                title: String = "",
-                subtitle: String = "",
-                onClick: () -> Unit = {},
-                enabled: Boolean = true,
-                loader: Boolean = false
+fun AboutButton(
+    @StringRes titleRes: Int = 0,
+    title: String = "",
+    subtitle: String = "",
+    onClick: () -> Unit = {},
+    enabled: Boolean = true,
+    loader: Boolean = false
 ) {
     OutlinedButton(
         onClick = onClick,
@@ -71,12 +74,8 @@ fun AboutButton(@StringRes titleRes: Int = 0,
 
 @Composable
 fun AboutTitle(@StringRes titleRes: Int) {
-    Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp),
-        text = stringResource(id = titleRes).toUpperCase(Locale.getDefault()),
-        style = MaterialTheme.typography.overline
+    PreferenceCategory(
+        PreferenceItem.Category(titleRes = titleRes)
     )
 }
 
@@ -122,8 +121,6 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
         backupWidgetAnimation = false
     }
 
-    val musicAppDialog =
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -163,7 +160,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
         })
         AboutTitle(titleRes = R.string.information_title)
         AboutButton(title = screenState.appVersion, subtitle = stringResource(id = R.string.version_summary), onClick = {
-            coroutinesScope.launch { action.emit(AboutUiAction.ChangeTheme) }
+            coroutinesScope.launch { action.emit(AboutUiAction.OpenPlayStoreDetails) }
         })
     }
 

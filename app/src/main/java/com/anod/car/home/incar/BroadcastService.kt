@@ -86,7 +86,7 @@ class BroadcastService : Service() {
 
     companion object {
 
-        fun shouldStart(context: Context): Boolean {
+        private fun shouldStart(context: Context): Boolean {
             val isProOrTrial = Version(context).isProOrTrial
             return if (isProOrTrial) {
                 val inCar = InCarStorage.load(context)

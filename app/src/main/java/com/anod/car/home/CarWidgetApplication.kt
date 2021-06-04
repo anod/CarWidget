@@ -10,12 +10,16 @@ import android.util.LruCache
 import androidx.appcompat.app.AppCompatDelegate
 import com.anod.car.home.acra.BrowserUrlSender
 import com.anod.car.home.appwidget.WidgetHelper
+import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.notifications.Channels
 import com.anod.car.home.prefs.model.AppTheme
 import com.anod.car.home.utils.AppUpgrade
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.WidgetIds
+import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.createAppModule
+import info.anodsplace.carwidget.content.extentions.isServiceRunning
+import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.framework.app.ApplicationInstance
 import org.acra.ACRA
 import org.acra.ReportField
@@ -104,6 +108,15 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
             koin.loadModules(listOf(module {
                 single<Context> { this@CarWidgetApplication } bind Application::class
                 single<WidgetIds> { WidgetHelper(get()) }
+                factory<InCarStatus> {
+                    val prefs: InCarInterface = get()
+                    val context: Context = get()
+                    info.anodsplace.carwidget.incar.InCarStatus(
+                    widgetIds = get(), version = get(),
+                    serviceRequired = { BroadcastService.isServiceRequired(prefs) },
+                        serviceRunning = { context.isServiceRunning(BroadcastService::class.java) },
+                        settings = prefs
+                ) } bind info.anodsplace.carwidget.incar.InCarStatus::class
             }))
             modules(createAppModule())
         }
