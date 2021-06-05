@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.screens
+package info.anodsplace.carwidget.screens.about
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.chooser.ChooserDialog
-import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.MediaListLoader
 import info.anodsplace.carwidget.compose.BackgroundSurface

@@ -13,8 +13,6 @@ import androidx.appcompat.app.AlertDialog
 import com.android.colorpicker.ColorPickerSwatch
 import com.anod.car.home.R
 import com.anod.car.home.app.App
-import com.anod.car.home.prefs.ConfigurationActivity
-import com.anod.car.home.prefs.ConfigurationLook
 import com.anod.car.home.prefs.LookAndFeelActivity
 import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog
 import com.anod.car.home.utils.FastBitmapDrawable
@@ -85,10 +83,10 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
                 return true
             }
             R.id.more -> {
-                val intent = ConfigurationActivity
-                        .createFragmentIntent(activity, ConfigurationLook::class.java)
-                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                activity.startActivityForResult(intent, REQUEST_LOOK_ACTIVITY)
+//                val intent = ConfigurationActivity
+//                        .createFragmentIntent(activity, ConfigurationLook::class.java)
+//                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+//                activity.startActivityForResult(intent, REQUEST_LOOK_ACTIVITY)
                 return true
             }
             R.id.bg_color -> {

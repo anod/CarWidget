@@ -1,7 +1,7 @@
 package com.anod.car.home.utils
 
 import android.content.Context
-import androidx.preference.PreferenceManager
+import android.preference.PreferenceManager
 import com.anod.car.home.BuildConfig
 
 object AppUpgrade {

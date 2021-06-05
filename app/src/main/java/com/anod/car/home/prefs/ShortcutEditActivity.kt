@@ -21,7 +21,6 @@ class ShortcutEditActivity : CarWidgetActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityShortcutEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(null)
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {

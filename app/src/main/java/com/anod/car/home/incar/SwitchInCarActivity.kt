@@ -1,15 +1,12 @@
 package com.anod.car.home.incar
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 
 import com.anod.car.home.R
-import com.anod.car.home.prefs.ConfigurationActivity
-import com.anod.car.home.prefs.ConfigurationInCar
 import info.anodsplace.carwidget.content.preferences.InCarStorage
 
 class SwitchInCarActivity : Activity() {
@@ -32,9 +29,9 @@ class SwitchInCarActivity : Activity() {
             startService(service)
         } else {
             Toast.makeText(this, R.string.incar_mode_disabled, Toast.LENGTH_LONG).show()
-
-            val intent = ConfigurationActivity.createFragmentIntent(this, ConfigurationInCar::class.java)
-            startActivity(intent)
+//
+//            val intent = ConfigurationActivity.createFragmentIntent(this, ConfigurationInCar::class.java)
+//            startActivity(intent)
         }
         BroadcastService.registerBroadcastService(applicationContext)
         finish()

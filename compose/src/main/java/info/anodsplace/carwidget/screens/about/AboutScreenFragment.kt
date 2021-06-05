@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.screens
+package info.anodsplace.carwidget.screens.about
 
 import android.appwidget.AppWidgetManager
 import android.os.Bundle

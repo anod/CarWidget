@@ -34,9 +34,8 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
-import info.anodsplace.carwidget.screens.AboutScreenFragment
-import info.anodsplace.carwidget.screens.InCarScreenFragment
-import info.anodsplace.framework.app.DialogCustom
+import info.anodsplace.carwidget.screens.about.AboutScreenFragment
+import info.anodsplace.carwidget.screens.incar.InCarScreenFragment
 
 class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory, ShortcutDragListener.DropCallback, BackupManager.OnRestore {
 

@@ -1,14 +1,12 @@
-package info.anodsplace.carwidget.screens
+package info.anodsplace.carwidget.screens.about
 
 import android.app.Application
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.widget.Toast
-import androidx.core.content.FileProvider
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import info.anodsplace.applog.AppLog
@@ -19,9 +17,6 @@ import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.extensions.openDefaultCarDock
 import info.anodsplace.carwidget.extensions.openPlayStoreDetails
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
-import info.anodsplace.framework.content.CreateDocument
-import info.anodsplace.framework.content.startActivitySafely
-import info.anodsplace.framework.livedata.SingleLiveEvent
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -82,13 +77,15 @@ class AboutViewModel(application: Application): AndroidViewModel(application), K
     fun initScreenState(appWidgetId: Int): StateFlow<AboutScreenState> {
         val themeIdx = appSettings.theme
         val themes = context.resources.getStringArray(R.array.app_themes)
-        screenState = MutableStateFlow(AboutScreenState(
+        screenState = MutableStateFlow(
+            AboutScreenState(
             appWidgetId = appWidgetId,
             themeIndex = themeIdx,
             themeName = themes[themeIdx],
             musicApp = renderMusicApp(),
             appVersion = renderVersion(),
-        ))
+        )
+        )
         job?.cancel()
         job = viewModelScope.launch {
             uiAction.collect {

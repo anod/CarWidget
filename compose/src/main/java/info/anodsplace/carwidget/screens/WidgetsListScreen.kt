@@ -155,7 +155,7 @@ fun InCarHeader(screen: WidgetListScreenState) {
 }
 
 @Composable
-fun WidgetsScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit) {
+fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit) {
     if (screen.items.isEmpty()) {
         Column(
             modifier = Modifier
@@ -244,7 +244,7 @@ fun WidgetsScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> 
 fun PreviewWidgetsScreenEmptyDark() {
     CarWidgetTheme(darkTheme = true) {
         BackgroundSurface {
-            WidgetsScreen(WidgetListScreenState(
+            WidgetsListScreen(WidgetListScreenState(
                 items = emptyList(),
                 isServiceRunning = true,
                 isServiceRequired = true,
@@ -261,7 +261,7 @@ fun PreviewWidgetsScreenEmptyDark() {
 fun PreviewWidgetsScreenLight() {
     CarWidgetTheme(darkTheme = false) {
         BackgroundSurface {
-            WidgetsScreen(
+            WidgetsListScreen(
                 WidgetListScreenState(
                     items = listOf( WidgetItem.Shortcut() ),
                     isServiceRunning = false,

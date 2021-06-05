@@ -27,6 +27,26 @@ interface WidgetInterface {
 
     fun setIconsScaleString(iconsScale: String)
 
+    class NoOp(
+        override var iconsTheme: String = "",
+        override var isSettingsTransparent: Boolean = false,
+        override var isIncarTransparent: Boolean = false,
+        override var skin: String = "",
+        override var tileColor: Int? = null,
+        override var isIconsMono: Boolean = false,
+        override var iconsColor: Int? = null,
+        override val iconsScale: String = "",
+        override var fontColor: Int = 0,
+        override var fontSize: Int = 0,
+        override var backgroundColor: Int = 0,
+        override var iconsRotate: BitmapRotateDirection = BitmapRotateDirection.NONE,
+        override var isTitlesHide: Boolean = false,
+        override var widgetButton1: Int = 0,
+        override var widgetButton2: Int = 0
+    ) : WidgetInterface {
+        override fun setIconsScaleString(iconsScale: String) { }
+    }
+
     companion object {
         const val idUnknown: Long = -1
 

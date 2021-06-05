@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
-import info.anodsplace.carwidget.screens.AboutViewModel
 import info.anodsplace.framework.content.startActivitySafely
 
 private const val DETAIL_MARKET_URL = "market://details?id=%s"

@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.screens
+package info.anodsplace.carwidget.screens.incar
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -15,8 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import info.anodsplace.carwidget.compose.*
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.preferences.createCarScreenItems
-import info.anodsplace.carwidget.screens.incar.NotificationShortcuts
-import info.anodsplace.carwidget.screens.incar.ScreenTimeoutDialog
+import info.anodsplace.carwidget.screens.NavItem
 
 @Composable
 fun InCarMainScreen(

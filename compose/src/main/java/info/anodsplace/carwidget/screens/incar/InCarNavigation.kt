@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.screens
+package info.anodsplace.carwidget.screens.incar
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -7,13 +7,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import info.anodsplace.carwidget.content.preferences.InCarInterface
-import info.anodsplace.carwidget.screens.incar.BluetoothDevicesScreen
-import info.anodsplace.carwidget.screens.incar.BluetoothDevicesViewModel
-import info.anodsplace.carwidget.screens.incar.MediaScreen
-import info.anodsplace.carwidget.screens.incar.MoreScreen
+import info.anodsplace.carwidget.screens.NavItem
 
 fun NavGraphBuilder.inCarNavigation(inCar: InCarInterface,
                                     navController: NavHostController,

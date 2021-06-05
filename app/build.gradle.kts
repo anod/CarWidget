@@ -29,7 +29,6 @@ dependencies {
     // Activity recognition
     implementation("com.google.android.gms:play-services-location:18.0.0")
     implementation("com.google.android.material:material:1.3.0")
-    implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.core:core-ktx:1.5.0")
     implementation("androidx.activity:activity:1.2.3")

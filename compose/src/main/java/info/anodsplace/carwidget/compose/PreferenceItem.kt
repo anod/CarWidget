@@ -57,3 +57,11 @@ sealed class PreferenceItem{
         override val key: String = ""
     ): PreferenceItem()
 }
+
+fun PreferenceItem.Placeholder.toTextItem() = PreferenceItem.Text(
+    titleRes = titleRes,
+    title = title,
+    summaryRes = summaryRes,
+    summary = summary,
+    key = key
+)

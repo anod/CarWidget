@@ -19,6 +19,54 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
+fun PreferenceSlider(
+    initialValue: Int,
+    onValueChanged: (Int) -> Unit,
+    item: PreferenceItem,
+    suffixText: @Composable () -> Unit = {},
+    startIcon: @Composable (modifier: Modifier) -> Unit = { Box(modifier = it) {} },
+    endIcon: @Composable (modifier: Modifier) -> Unit = { Box(modifier = it) {} }
+) {
+    var value: Float by remember { mutableStateOf(initialValue.toFloat()) }
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Preference(item = item, onClick = { }) { }
+            OutlinedTextField(
+                value = value.toInt().toString(),
+                onValueChange = { value ->
+                    if (value.isEmpty()) {
+                        onValueChanged(value.trim().toInt())
+                    }
+                },
+                trailingIcon = suffixText
+            )
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically) {
+            startIcon(
+                modifier = Modifier
+                    .size(24.dp)
+                    .weight(1f)
+            )
+            Slider(
+                modifier = Modifier.weight(6f),
+                value = value,
+                valueRange = 0f..100f,
+                onValueChangeFinished = {
+                    onValueChanged(value.toInt())
+                },
+                onValueChange = { value = it }
+            )
+            endIcon(
+                modifier = Modifier
+                    .size(24.dp)
+                    .weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
 fun PreferenceCategory(item: PreferenceItem.Category, modifier: Modifier = Modifier) {
     Text(
         text = if (item.titleRes != 0) stringResource(id = item.titleRes) else item.title,
@@ -97,9 +145,10 @@ fun PreferenceCheckbox(checked: Boolean, item: PreferenceItem, paddingValues: Pa
 @Composable
 fun PreferencesScreen(
     preferences: List<PreferenceItem>,
-    onClick: (item: PreferenceItem) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: @Composable (PreferenceItem.Placeholder) -> Unit = { }) {
+    onClick: (item: PreferenceItem) -> Unit = { },
+    placeholder: @Composable (PreferenceItem.Placeholder) -> Unit = { },
+) {
     var listItem by remember { mutableStateOf<PreferenceItem.List?>(null) }
     LazyColumn(
         modifier = modifier.fillMaxWidth()
