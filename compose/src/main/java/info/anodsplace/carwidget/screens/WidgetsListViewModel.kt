@@ -43,6 +43,7 @@ data class WidgetListScreenState(
     val items: List<WidgetItem>,
     val isServiceRequired: Boolean,
     val isServiceRunning: Boolean,
+    val eventsState: List<InCarStatus.EventState>,
     @StringRes val statusResId: Int
 )
 
@@ -68,7 +69,8 @@ class WidgetsListViewModel(application: Application) : AndroidViewModel(applicat
             items = newItems,
             isServiceRequired = inCarStatus.isServiceRequired,
             isServiceRunning = inCarStatus.isServiceRunning,
-            statusResId = inCarStatus.resId
+            statusResId = inCarStatus.resId,
+            eventsState = inCarStatus.eventsState().sortedWith(compareBy({ !it.enabled }, { !it.active }))
         )))
     }
 

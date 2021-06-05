@@ -77,19 +77,7 @@ fun MainScreen(
                     }
                 }
             }
-            navigation(startDestination = NavItem.InCar.Main.route, route = NavItem.InCar.route) {
-                composable(NavItem.InCar.Main.route) { InCarMainScreen(inCar, navController = navController, modifier = Modifier.padding(innerPadding)) }
-                composable(NavItem.InCar.Bluetooth.route) {
-                    val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel()
-                    BluetoothDevicesScreen(viewModel = bluetoothDevicesViewModel, modifier = Modifier.padding(innerPadding))
-                }
-                composable(NavItem.InCar.Media.route) {
-                    MediaScreen(inCar = inCar, modifier = Modifier.padding(innerPadding))
-                }
-                composable(NavItem.InCar.More.route) {
-                    MoreScreen(inCar = inCar, modifier = Modifier.padding(innerPadding))
-                }
-            }
+            inCarNavigation(inCar, navController = navController, innerPadding = innerPadding)
             composable(NavItem.Info.route) {
                 val aboutViewModel: AboutViewModel = viewModel()
                 val aboutScreenState by aboutViewModel.initScreenState(appWidgetId = appWidgetId).collectAsState()

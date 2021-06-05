@@ -16,7 +16,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -24,9 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.*
+import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.iconUri
-import info.anodsplace.carwidget.content.graphics.PackageIconRequestHandler
 import info.anodsplace.carwidget.utils.SystemIconSize
 
 @Composable
@@ -88,6 +87,29 @@ fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit, iconModifier: M
 }
 
 @Composable
+fun EventStates(eventsState: List<InCarStatus.EventState>) {
+    val titles = listOf(
+            R.string.pref_power_connected_title,
+            R.string.pref_headset_connected_title,
+            R.string.pref_blutooth_device_title,
+            R.string.activity_recognition,
+            R.string.car_dock
+    )
+    Column(modifier = Modifier.padding(top = 16.dp)) {
+        for (event in eventsState) {
+            val title = stringResource(titles[event.id])
+            val enabled = if (event.enabled) stringResource(R.string.enabled) else stringResource(R.string.disabled)
+            val active = if (event.active) stringResource(R.string.active) else stringResource(R.string.not_active)
+            Text(
+                text = String.format("%s: %s - %s", title, enabled, active),
+                style = MaterialTheme.typography.overline,
+                color = MaterialTheme.colors.onSurface
+            )
+        }
+    }
+}
+
+@Composable
 fun InCarHeader(screen: WidgetListScreenState) {
     val version = Version(LocalContext.current)
     val active = stringResource(screen.statusResId)
@@ -103,6 +125,9 @@ fun InCarHeader(screen: WidgetListScreenState) {
                 color = MaterialTheme.colors.onSurface
             )
         }
+
+        EventStates(screen.eventsState)
+
         when {
             version.isFreeAndTrialExpired -> {
                 Text(
@@ -223,6 +248,7 @@ fun PreviewWidgetsScreenEmptyDark() {
                 items = emptyList(),
                 isServiceRunning = true,
                 isServiceRequired = true,
+                eventsState = emptyList(),
                 statusResId = R.string.enabled
             ), onClick = { })
         }
@@ -240,6 +266,7 @@ fun PreviewWidgetsScreenLight() {
                     items = listOf( WidgetItem.Shortcut() ),
                     isServiceRunning = false,
                     isServiceRequired = true,
+                    eventsState = emptyList(),
                     statusResId = R.string.enabled
                 ),
                 onClick = { }

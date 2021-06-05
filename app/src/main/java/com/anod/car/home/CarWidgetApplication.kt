@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.anod.car.home.acra.BrowserUrlSender
 import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.incar.BroadcastService
+import com.anod.car.home.incar.ModeDetector
 import com.anod.car.home.notifications.Channels
 import com.anod.car.home.prefs.model.AppTheme
 import com.anod.car.home.utils.AppUpgrade
@@ -105,20 +106,12 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
         AppLog.setDebug(BuildConfig.DEBUG, "CarWidget")
 
         startKoin {
-            koin.loadModules(listOf(module {
+            koin.loadModules(modules = listOf(module {
                 single<Context> { this@CarWidgetApplication } bind Application::class
                 single<WidgetIds> { WidgetHelper(get()) }
-                factory<InCarStatus> {
-                    val prefs: InCarInterface = get()
-                    val context: Context = get()
-                    info.anodsplace.carwidget.incar.InCarStatus(
-                    widgetIds = get(), version = get(),
-                    serviceRequired = { BroadcastService.isServiceRequired(prefs) },
-                        serviceRunning = { context.isServiceRunning(BroadcastService::class.java) },
-                        settings = prefs
-                ) } bind info.anodsplace.carwidget.incar.InCarStatus::class
+                factory<InCarStatus> { createInCarStatus() } bind info.anodsplace.carwidget.incar.InCarStatus::class
             }))
-            modules(createAppModule())
+            modules(modules = createAppModule())
         }
         AppCompatDelegate.setDefaultNightMode(nightMode)
         appComponent = AppComponent(this)
@@ -129,5 +122,17 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
         AppLog.w("Level: $level", tag = "onTrimMemory")
+    }
+
+    private fun createInCarStatus(): info.anodsplace.carwidget.incar.InCarStatus {
+        val prefs: InCarInterface = get()
+        val context: Context = get()
+        return info.anodsplace.carwidget.incar.InCarStatus(
+            widgetIds = get(), version = get(),
+            serviceRequired = { BroadcastService.isServiceRequired(prefs) },
+            serviceRunning = { context.isServiceRunning(BroadcastService::class.java) },
+            modeEventsState = { ModeDetector.eventsState() },
+            settings = prefs
+        )
     }
 }

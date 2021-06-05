@@ -1,3 +1,4 @@
+
 repositories {
     mavenCentral()
     maven(url = "https://jitpack.io" )
@@ -22,8 +23,8 @@ dependencies {
     implementation("io.insert-koin:koin-core:3.0.2")
     implementation("com.squareup.picasso:picasso:2.8")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
 
     // Activity recognition
     implementation("com.google.android.gms:play-services-location:18.0.0")
@@ -47,7 +48,7 @@ dependencies {
     implementation("ch.acra:acra-notification:5.7.0")
     implementation("ch.acra:acra-limiter:5.7.0")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
 }
 

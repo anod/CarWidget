@@ -28,6 +28,11 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    composeOptions {
+        kotlinCompilerVersion = "1.5.10"
+        kotlinCompilerExtensionVersion = "1.0.0-beta08"
+    }
 }
 
 dependencies {
@@ -42,15 +47,15 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.3.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
 
-    implementation("androidx.compose.ui:ui:1.0.0-beta07")
-    implementation("androidx.compose.foundation:foundation:1.0.0-beta07")
-    implementation("androidx.compose.material:material:1.0.0-beta07")
-    implementation("androidx.compose.material:material-icons-core:1.0.0-beta07")
-    implementation("androidx.compose.material:material-icons-extended:1.0.0-beta07")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha05")
-    implementation("androidx.navigation:navigation-compose:2.4.0-alpha01")
-    implementation("androidx.activity:activity-compose:1.3.0-alpha08")
+    implementation("androidx.compose.ui:ui:1.0.0-beta08")
+    implementation("androidx.compose.foundation:foundation:1.0.0-beta08")
+    implementation("androidx.compose.material:material:1.0.0-beta08")
+    implementation("androidx.compose.material:material-icons-core:1.0.0-beta08")
+    implementation("androidx.compose.material:material-icons-extended:1.0.0-beta08")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha06")
+    implementation("androidx.navigation:navigation-compose:2.4.0-alpha02")
+    implementation("androidx.activity:activity-compose:1.3.0-beta01")
 
-    implementation("androidx.compose.ui:ui-tooling:1.0.0-beta07")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.32")
+    implementation("androidx.compose.ui:ui-tooling:1.0.0-beta08")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.10")
 }

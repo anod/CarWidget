@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.incar
 
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.appwidget.WidgetIds
+import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.InCarStatus.Companion.DISABLED
 import info.anodsplace.carwidget.content.InCarStatus.Companion.ENABLED
 import info.anodsplace.carwidget.content.InCarStatus.Companion.NOT_ACTIVE
@@ -13,8 +14,9 @@ class InCarStatus(
     private val version: Version,
     private val serviceRequired: () -> Boolean,
     private val serviceRunning: () -> Boolean,
+    private val modeEventsState: () -> List<InCarStatus.EventState>,
     private val settings: InCarInterface
-) : info.anodsplace.carwidget.content.InCarStatus {
+) : InCarStatus {
 
     override val value: Int by lazy { calc(widgetIds.getAllWidgetIds().size, version, settings) }
     override val isEnabled: Boolean
@@ -23,6 +25,10 @@ class InCarStatus(
         get() = serviceRequired()
     override val isServiceRunning: Boolean
         get() = serviceRunning()
+
+    override fun eventsState(): List<InCarStatus.EventState> {
+        return modeEventsState()
+    }
 
     companion object {
         private fun calc(widgetsCount: Int, version: Version, settings: InCarInterface): Int {

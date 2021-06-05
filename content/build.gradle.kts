@@ -36,7 +36,7 @@ dependencies {
     implementation("com.squareup.picasso:picasso:2.8")
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.collection:collection-ktx:1.1.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10")
 }

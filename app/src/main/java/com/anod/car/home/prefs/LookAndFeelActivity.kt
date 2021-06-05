@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.annotation.IdRes
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.viewpager.widget.ViewPager
@@ -33,6 +34,8 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
+import info.anodsplace.carwidget.screens.AboutScreenFragment
+import info.anodsplace.carwidget.screens.InCarScreenFragment
 import info.anodsplace.framework.app.DialogCustom
 
 class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory, ShortcutDragListener.DropCallback, BackupManager.OnRestore {
@@ -159,9 +162,9 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
                 binding.gallery.isVisible = false
                 binding.content.isVisible = true
                 supportFragmentManager.commit {
-//                    replace(R.id.content, AboutFragment().apply {
-//                        arguments = bundleOf(AppWidgetManager.EXTRA_APPWIDGET_ID to appWidgetId)
-//                    })
+                    replace(R.id.content, AboutScreenFragment().apply {
+                        arguments = bundleOf(AppWidgetManager.EXTRA_APPWIDGET_ID to appWidgetId)
+                    })
                 }
                 true
             }
@@ -170,7 +173,9 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
                 binding.gallery.isVisible = false
                 binding.content.isVisible = true
                 supportFragmentManager.commit {
-                    replace(R.id.content, ConfigurationInCar())
+                    replace(R.id.content, InCarScreenFragment().apply {
+                        arguments = bundleOf(AppWidgetManager.EXTRA_APPWIDGET_ID to appWidgetId)
+                    })
                 }
                 true
             }
@@ -196,20 +201,12 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         when (binding.bottomNavigation.selectedItemId) {
             R.id.nav_widget -> lookAndFeelMenu.onCreateOptionsMenu(menu)
-            R.id.nav_incar -> menuInflater.inflate(R.menu.look_n_feel_incar, menu)
-            else -> menuInflater.inflate(R.menu.look_n_feel_other, menu)
         }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (!lookAndFeelMenu.onOptionsItemSelected(item)) {
-            if (item.itemId == R.id.incar_status) {
-                DialogCustom(this, theme.alert, R.string.status, R.layout.dialog_incar_status) { view, _ ->
-                    InCarStatus(view).apply()
-                }.show()
-                return true
-            }
             return false
         }
         return true

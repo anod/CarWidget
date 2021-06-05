@@ -6,6 +6,13 @@ interface InCarStatus {
     val isServiceRequired: Boolean
     val isServiceRunning: Boolean
     val resId: Int
+    fun eventsState(): List<EventState>
+
+    class EventState(
+        val id: Int,
+        val enabled: Boolean,
+        val active: Boolean
+    )
 
     companion object {
         const val NOT_ACTIVE = 0

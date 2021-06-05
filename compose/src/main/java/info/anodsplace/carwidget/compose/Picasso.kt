@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.compose
 
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -64,10 +65,14 @@ fun loadPicassoImage(
     url: Uri,
     picasso: Picasso = LocalPicasso.current
 ): State<PicassoImage> {
-    return produceState(initialValue = PicassoImage.Loading, url, picasso) {
+    return produceState<PicassoImage>(initialValue = PicassoImage.Loading, url, picasso) {
         value = try {
-            val result = withContext(Dispatchers.IO) { picasso.load(url).get() }
-            PicassoImage.Loaded(result.asImageBitmap())
+            val result: Bitmap? = withContext(Dispatchers.IO) { picasso.load(url).get() }
+            if (result == null) {
+                PicassoImage.Error
+            } else {
+                PicassoImage.Loaded(result.asImageBitmap())
+            }
         } catch (e: Exception) {
             AppLog.e(e)
             PicassoImage.Error
