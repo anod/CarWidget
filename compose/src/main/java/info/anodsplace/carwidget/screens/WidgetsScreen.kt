@@ -1,5 +1,7 @@
 package info.anodsplace.carwidget.screens
 
+import android.content.ContentResolver
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,6 +26,7 @@ import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.*
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.iconUri
+import info.anodsplace.carwidget.content.graphics.PackageIconRequestHandler
 import info.anodsplace.carwidget.utils.SystemIconSize
 
 @Composable
@@ -58,11 +61,8 @@ fun WidgetsEmptyScreen() {
 }
 
 @Composable
-fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>) {
+fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, iconModifier: Modifier = Modifier) {
     val context = LocalContext.current
-    val iconModifier = Modifier
-        .size(SystemIconSize)
-        .padding(4.dp)
     Row {
         for (idx in indexes) {
             val shortcut = item.shortcuts.get(idx)
@@ -78,12 +78,12 @@ fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>) {
 }
 
 @Composable
-fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit) {
+fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit, iconModifier: Modifier = Modifier) {
     Column(modifier = Modifier
         .clickable { onClick() }
         .cardStyle()) {
-        LargeWidgetRow(item = item, indexes = listOf(1, 3, 5, 7))
-        LargeWidgetRow(item = item, indexes = listOf(0, 2, 4, 5))
+        LargeWidgetRow(item = item, indexes = listOf(1, 3, 5, 7), iconModifier = iconModifier)
+        LargeWidgetRow(item = item, indexes = listOf(0, 2, 4, 5), iconModifier = iconModifier)
     }
 }
 
@@ -99,7 +99,7 @@ fun InCarHeader(screen: WidgetListScreenState) {
         )
         if (screen.isServiceRequired) {
             Text(
-                text = if (screen.isServiceRunning) "Service is running" else "Service is NOT running",
+                text = if (screen.isServiceRunning) "Detector service is running" else "Detector service is NOT running",
                 color = MaterialTheme.colors.onSurface
             )
         }
@@ -142,6 +142,10 @@ fun WidgetsScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> 
             InCarHeader(screen)
         }
     } else {
+        val iconModifier = Modifier
+            .size(SystemIconSize)
+            .padding(4.dp)
+
         LazyColumn(
             modifier = Modifier
                 .padding(16.dp)
@@ -178,17 +182,19 @@ fun WidgetsScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> 
                 when (item) {
                     is WidgetItem.Shortcut -> {
                         Box(modifier = Modifier.cardStyle()) {
-                            Icon(
-                                modifier = Modifier.size(SystemIconSize),
-                                imageVector = Icons.Filled.Widgets,
-                                contentDescription = null,
-                                tint = Color.White
-                            )
+                            PicassoIcon(
+                                uri = Uri.Builder()
+                                    .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                                    .encodedAuthority(LocalContext.current.packageName)
+                                    .appendEncodedPath("mipmap")
+                                    .appendEncodedPath("ic_launcher")
+                                    .build(),
+                                modifier = iconModifier)
                         }
                     }
                     is WidgetItem.Large -> {
                         hasLargeItem = true
-                        LargeWidgetItem(item, onClick = { onClick(item.appWidgetId) } )
+                        LargeWidgetItem(item, onClick = { onClick(item.appWidgetId) }, iconModifier = iconModifier)
                     }
                 }
             }
