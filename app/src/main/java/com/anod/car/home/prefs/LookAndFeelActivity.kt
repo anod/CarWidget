@@ -32,6 +32,7 @@ import com.anod.car.home.utils.BitmapLruCache
 import com.anod.car.home.utils.forNewShortcut
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import info.anodsplace.carwidget.screens.about.AboutScreenFragment
@@ -44,13 +45,13 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         get() = binding.gallery.currentItem
 
     override val appThemeRes: Int
-        get() = theme.transparentResource
+        get() = R.style.AppTheme_Transparent
 
     var appWidgetId: Int = 0
         private set
 
     private val previewInitialized = booleanArrayOf(false, false, false, false, false, false, false)
-    var prefs: info.anodsplace.carwidget.content.preferences.WidgetSettings? = null
+    var prefs: WidgetSettings? = null
     private var skinList: SkinList? = null
     private var bitmapMemoryCache: BitmapLruCache? = null
     private val lookAndFeelMenu: LookAndFeelMenu by lazy { LookAndFeelMenu(this, model) }
@@ -136,11 +137,18 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
             navigate(it.itemId)
         }
 
+        binding.toolbar.setTitle(R.string.app_name)
+        binding.toolbar.setOnMenuItemClickListener {
+            lookAndFeelMenu.onOptionsItemSelected(it)
+        }
+
         if (savedInstanceState != null) {
             val bottomItemId = savedInstanceState.getInt("bottom_item_id", 0)
             if (bottomItemId > 0) {
                 navigate(bottomItemId)
             }
+        } else {
+            lookAndFeelMenu.onCreateOptionsMenu(binding.toolbar)
         }
         BroadcastService.registerBroadcastService(applicationContext)
     }
@@ -148,7 +156,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     private fun navigate(@IdRes itemId: Int): Boolean {
         return when (itemId) {
             R.id.nav_widget -> {
-                invalidateOptionsMenu()
+                lookAndFeelMenu.onCreateOptionsMenu(binding.toolbar)
                 binding.gallery.isVisible = true
                 binding.content.isVisible = false
                 for (i in 0 until supportFragmentManager.backStackEntryCount) {
@@ -157,7 +165,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
                 true
             }
             R.id.nav_info -> {
-                invalidateOptionsMenu()
+                binding.toolbar.menu.clear()
                 binding.gallery.isVisible = false
                 binding.content.isVisible = true
                 supportFragmentManager.commit {
@@ -168,7 +176,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
                 true
             }
             R.id.nav_incar -> {
-                invalidateOptionsMenu()
+                binding.toolbar.menu.clear()
                 binding.gallery.isVisible = false
                 binding.content.isVisible = true
                 supportFragmentManager.commit {
@@ -195,20 +203,6 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
 
     fun createBuilder(): WidgetViewBuilder {
         return WidgetViewBuilder(App.get(this), appWidgetId, bitmapMemoryCache, this, true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        when (binding.bottomNavigation.selectedItemId) {
-            R.id.nav_widget -> lookAndFeelMenu.onCreateOptionsMenu(menu)
-        }
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (!lookAndFeelMenu.onOptionsItemSelected(item)) {
-            return false
-        }
-        return true
     }
 
     fun persistPrefs() {

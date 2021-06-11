@@ -6,10 +6,12 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.NumberPicker
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.Toolbar
 import com.android.colorpicker.ColorPickerSwatch
 import com.anod.car.home.R
 import com.anod.car.home.app.App
@@ -37,9 +39,9 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
     private var initialized: Boolean = false
     private var menuInfo: MenuItem? = null
 
-    fun onCreateOptionsMenu(menu: Menu) {
-        val menuInflater = activity.menuInflater
-        menuInflater.inflate(R.menu.look_n_feel, menu)
+    fun onCreateOptionsMenu(toolbar: Toolbar) {
+        toolbar.inflateMenu(R.menu.look_n_feel)
+        val menu = toolbar.menu
 
         menuTileColor = menu.findItem(R.id.tile_color)
         menuInfo = menu.findItem(R.id.skin_info)
@@ -117,7 +119,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
                 val values = activity.resources.getStringArray(R.array.icon_scale_values)
                 val scale = activity.prefs!!.iconsScale
                 val idx = values.indexOf(scale)
-                val style = App.theme(activity).alert
+                val style = R.style.Alert
                 DialogSingleChoice(activity, style, R.string.pref_scale_icon, R.array.icon_scale_titles, idx) {
                     dialog, which ->
                     activity.prefs!!.setIconsScaleString(values[which])
@@ -128,7 +130,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
                 return true
             }
             R.id.skin_info -> {
-                val style = App.theme(activity).alert
+                val style = R.style.Alert
                 DialogMessage(
                         context = activity,
                         themeResId = style,
@@ -187,7 +189,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
             }
         }
 
-        return DialogCustom(activity, activity.theme.alert, R.string.number_shortcuts_title, R.layout.dialog_numberpicker) { view, builder ->
+        return DialogCustom(activity, R.style.Alert, R.string.number_shortcuts_title, R.layout.dialog_numberpicker) { view, builder ->
 
             val numberPicker = view.findViewById<View>(R.id.numberPicker) as NumberPicker
             numberPicker.minValue = 0

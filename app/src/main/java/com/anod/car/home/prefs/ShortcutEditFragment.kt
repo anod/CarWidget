@@ -155,7 +155,7 @@ class ShortcutEditFragment : Fragment() {
     private fun createIconMenu(): DialogItems {
         return DialogItems(
                 context = requireContext(),
-                themeResId = App.theme(requireContext()).alert,
+                themeResId = R.style.Alert,
                 titleRes = R.string.dialog_choose_icon,
                 itemsRes = if (shortcut!!.isApp) R.array.edit_icon_app else R.array.edit_icon_custom) { _, item -> iconDialogClick(item) }
     }

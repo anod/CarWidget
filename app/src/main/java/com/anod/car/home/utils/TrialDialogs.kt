@@ -13,7 +13,7 @@ object TrialDialogs {
 
     fun buildProInstalledDialog(context: Context): Dialog = DialogMessage(
             context,
-            App.theme(context).alert,
+            R.style.Alert,
             R.string.dialog_donate_title_install,
             R.string.dialog_donate_message_installed
     ) {}.create()
@@ -29,7 +29,7 @@ object TrialDialogs {
         val title = if (trialsLeft > 0) R.string.dialog_donate_title_trial else R.string.dialog_donate_title_expired
         return DialogMessage(
                 context,
-                App.theme(context).alert,
+            R.style.Alert,
                 title,
                 message
         ) {

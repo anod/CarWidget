@@ -4,7 +4,6 @@ import com.anod.car.home.CarWidgetApplication
 import com.anod.car.home.AppComponent
 
 import android.content.Context
-import com.anod.car.home.prefs.model.AppTheme
 
 /**
  * @author alex
@@ -18,9 +17,5 @@ object App {
 
     fun provide(context: Context): AppComponent {
         return (context.applicationContext as CarWidgetApplication).appComponent
-    }
-
-    fun theme(context: Context): AppTheme {
-        return provide(context).theme
     }
 }

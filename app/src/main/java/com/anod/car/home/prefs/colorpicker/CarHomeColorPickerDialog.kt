@@ -66,7 +66,7 @@ class CarHomeColorPickerDialog : ColorPickerDialog() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return Dialog(requireActivity(), App.theme(requireActivity()).dialog)
+        return Dialog(requireActivity(), R.style.Dialog)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -179,7 +179,7 @@ class CarHomeColorPickerDialog : ColorPickerDialog() {
                             KEY_TITLE_ID to R.string.color_dialog_title,
                             KEY_COLUMNS to 5,
                             KEY_SIZE to SIZE_SMALL,
-                            KEY_THEME to App.theme(context).dialog
+                            KEY_THEME to R.style.Dialog
                     )
                 }
         }

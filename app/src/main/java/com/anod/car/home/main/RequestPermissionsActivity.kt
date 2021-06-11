@@ -25,7 +25,7 @@ class RequestPermissionsActivity : CarWidgetActivity() {
     private lateinit var binding: ActivityRequestPermissionsBinding
 
     override val appThemeRes: Int
-        get() = theme.noActionBarResource
+        get() = R.style.AppTheme_NoActionBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

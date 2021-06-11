@@ -14,7 +14,6 @@ import com.anod.car.home.incar.ModePhoneStateListener
 import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
 import info.anodsplace.carwidget.content.preferences.AppSettings
-import com.anod.car.home.prefs.model.AppTheme
 import com.squareup.picasso.Picasso
 import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.util.createLruCache
@@ -28,8 +27,6 @@ import org.koin.core.component.get
 class AppComponent(val application: Application) : KoinComponent {
     val appSettings: AppSettings
         get() = get()
-
-    var theme = AppTheme(appSettings.theme)
 
     val appWidgetManager: AppWidgetManager
         get() = application.getSystemService(APPWIDGET_SERVICE) as AppWidgetManager

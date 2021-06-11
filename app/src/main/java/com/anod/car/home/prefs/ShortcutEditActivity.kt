@@ -15,7 +15,7 @@ class ShortcutEditActivity : CarWidgetActivity() {
     private lateinit var binding: ActivityShortcutEditBinding
 
     override val appThemeRes: Int
-        get() = theme.dialog
+        get() = R.style.Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

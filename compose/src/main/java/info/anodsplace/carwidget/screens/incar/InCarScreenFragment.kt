@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.compose.CarWidgetTheme
+import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.screens.NavItem
 import org.koin.core.component.KoinComponent
@@ -18,6 +21,7 @@ import org.koin.core.component.inject
 
 class InCarScreenFragment : Fragment(), KoinComponent {
     private val inCar: InCarInterface by inject()
+    private val appSettings: AppSettings by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,8 +33,11 @@ class InCarScreenFragment : Fragment(), KoinComponent {
         return composeView.apply {
             setContent {
                 val navController = rememberNavController()
-                NavHost(navController, startDestination = NavItem.InCar.route) {
-                    inCarNavigation(inCar, navController = navController, innerPadding = PaddingValues())
+                val isDarkTheme by remember { mutableStateOf(appSettings.isDarkTheme) }
+                CarWidgetTheme(darkTheme = isDarkTheme) {
+                    NavHost(navController, startDestination = NavItem.InCar.route) {
+                        inCarNavigation(inCar, navController = navController, innerPadding = PaddingValues())
+                    }
                 }
             }
         }
