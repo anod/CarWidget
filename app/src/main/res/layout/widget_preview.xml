@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
-    android:orientation="vertical"
     android:theme="@style/AppWidgetContainer"
+    android:orientation="vertical"
     tools:ignore="NestedWeights,NestedWeights">
 
     <LinearLayout
         android:id="@+id/generate"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:baselineAligned="false"
         android:orientation="vertical">
 
@@ -22,23 +23,22 @@
             android:layout_weight="1"
             android:baselineAligned="false"
             android:orientation="horizontal"
+            android:paddingBottom="4dp"
             android:theme="@style/AppWidgetContainer">
 
             <FrameLayout
                 android:layout_width="0dip"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:layout_marginBottom="2dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginTop="2dp">
+                android:layout_marginEnd="2dp">
 
                 <ImageButton
                     android:id="@+id/btn0"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/you_background"
-                    android:src="@drawable/ic_add_shortcut_holo" />
+                    android:src="@drawable/you_add_24" />
 
                 <TextView
                     android:id="@+id/btn_text0"
@@ -49,6 +49,8 @@
                     android:gravity="center_horizontal"
                     android:maxLines="1"
                     android:paddingBottom="8dp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="@dimen/text_size"
                     android:text="@string/set_shortcut" />
@@ -56,20 +58,17 @@
 
             <FrameLayout
                 android:layout_width="0dip"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:layout_marginBottom="2dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="2dp">
+                android:layout_marginStart="2dp">
 
                 <ImageButton
                     android:id="@+id/btn1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/you_background"
-                    android:src="@drawable/ic_add_shortcut_holo"
-                    style="@style/WidgetSkin.Material.Button" />
+                    android:src="@drawable/you_add_24" />
 
                 <TextView
                     android:id="@+id/btn_text1"
@@ -80,6 +79,8 @@
                     android:gravity="center_horizontal"
                     android:maxLines="1"
                     android:paddingBottom="8dp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="@dimen/text_size"
                     android:text="@string/set_shortcut" />
@@ -92,23 +93,22 @@
             android:layout_weight="1"
             android:baselineAligned="false"
             android:orientation="horizontal"
+            android:paddingBottom="4dp"
             android:theme="@style/AppWidgetContainer">
 
             <FrameLayout
                 android:layout_width="0dip"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:layout_marginBottom="2dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginTop="2dp">
+                android:layout_marginEnd="2dp">
 
                 <ImageButton
                     android:id="@+id/btn2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/you_background"
-                    android:src="@drawable/ic_add_shortcut_holo" />
+                    android:src="@drawable/you_add_24" />
 
                 <TextView
                     android:id="@+id/btn_text2"
@@ -119,6 +119,8 @@
                     android:gravity="center_horizontal"
                     android:maxLines="1"
                     android:paddingBottom="8dp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="@dimen/text_size"
                     android:text="@string/set_shortcut" />
@@ -126,20 +128,17 @@
 
             <FrameLayout
                 android:layout_width="0dip"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:layout_marginBottom="2dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="2dp">
+                android:layout_marginStart="2dp">
 
                 <ImageButton
                     android:id="@+id/btn3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/you_background"
-                    android:src="@drawable/ic_add_shortcut_holo"
-                    style="@style/WidgetSkin.Material.Button" />
+                    android:src="@drawable/you_add_24" />
 
                 <TextView
                     android:id="@+id/btn_text3"
@@ -150,6 +149,78 @@
                     android:gravity="center_horizontal"
                     android:maxLines="1"
                     android:paddingBottom="8dp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="@dimen/text_size"
+                    android:text="@string/set_shortcut" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingBottom="4dp"
+            android:theme="@style/AppWidgetContainer">
+
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginEnd="2dp">
+
+                <ImageButton
+                    android:id="@+id/btn4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/you_background"
+                    android:src="@drawable/you_add_24" />
+
+                <TextView
+                    android:id="@+id/btn_text4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="@dimen/text_size"
+                    android:text="@string/set_shortcut" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginStart="2dp">
+
+                <ImageButton
+                    android:id="@+id/btn5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/you_background"
+                    android:src="@drawable/you_add_24" />
+
+                <TextView
+                    android:id="@+id/btn_text5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="@dimen/text_size"
                     android:text="@string/set_shortcut" />
@@ -157,6 +228,9 @@
         </LinearLayout>
     </LinearLayout>
 
-    <include layout="@layout/sk_you_buttons" />
+    <include
+        layout="@layout/sk_you_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-</FrameLayout>
+</LinearLayout>

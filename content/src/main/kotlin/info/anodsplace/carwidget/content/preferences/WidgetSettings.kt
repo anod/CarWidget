@@ -39,7 +39,7 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
         set(incarTransparent) = applyChange(TRANSPARENT_BTN_INCAR, incarTransparent)
 
     override var skin: String
-        get() = prefs.getString(SKIN, WidgetInterface.SKIN_CARDS)!!
+        get() = prefs.getString(SKIN, WidgetInterface.SKIN_YOU)!!
         set(skin) = applyChange(SKIN, skin)
 
     override var tileColor: Int?
