@@ -3,10 +3,7 @@ package com.anod.car.home.acra
 import com.anod.car.home.BuildConfig
 
 import org.acra.ReportField
-import org.acra.config.CoreConfiguration
 import org.acra.data.CrashReportData
-import org.acra.sender.ReportSender
-import org.acra.sender.ReportSenderFactory
 
 import android.content.Context
 import android.content.Intent
@@ -14,47 +11,44 @@ import android.net.Uri
 
 import info.anodsplace.applog.AppLog
 
-class BrowserUrlSender : ReportSender {
+class BrowserUrlSender {
     private val baseUri = Uri.parse("https://anodsplace.info/acra/report/adapter.php")
 
-    class Factory : ReportSenderFactory {
-        override fun create(context: Context, config: CoreConfiguration): ReportSender {
-            return BrowserUrlSender()
-        }
+    init {
+        AppLog.d("BrowserUrlSender registered")
     }
 
-    override fun send(context: Context, errorContent: CrashReportData) {
-
-        val builder = baseUri.buildUpon()
-
+    fun send(context: Context, errorContent: CrashReportData) {
         var appId = if (BuildConfig.FLAVOR == "pro") 0x01 else 0x00
         if (BuildConfig.DEBUG) {
             appId = appId or 0x10
         }
-        builder.appendQueryParameter("a", appId.toString())
-        builder.appendQueryParameter("b", errorContent.getString(ReportField.APP_VERSION_NAME))
-        builder.appendQueryParameter("c", errorContent.getString(ReportField.APP_VERSION_CODE))
 
-        builder.appendQueryParameter("d", errorContent.getString(ReportField.ANDROID_VERSION))
-        builder.appendQueryParameter("e", errorContent.getString(ReportField.USER_APP_START_DATE))
-        builder.appendQueryParameter("f", errorContent.getString(ReportField.USER_CRASH_DATE))
+        val uri = baseUri.buildUpon().apply {
+            appendQueryParameter("a", appId.toString())
+            appendQueryParameter("b", errorContent.getString(ReportField.APP_VERSION_NAME))
+            appendQueryParameter("c", errorContent.getString(ReportField.APP_VERSION_CODE))
 
-        builder.appendQueryParameter("r", errorContent.getString(ReportField.REPORT_ID))
+            appendQueryParameter("d", errorContent.getString(ReportField.ANDROID_VERSION))
+            appendQueryParameter("e", errorContent.getString(ReportField.USER_APP_START_DATE))
+            appendQueryParameter("f", errorContent.getString(ReportField.USER_CRASH_DATE))
 
-        builder.appendQueryParameter("g", errorContent.getString(ReportField.PHONE_MODEL))
-        builder.appendQueryParameter("h", errorContent.getString(ReportField.BRAND))
+            appendQueryParameter("r", errorContent.getString(ReportField.REPORT_ID))
 
-        builder.appendQueryParameter("v", minifyTrace(
+            appendQueryParameter("g", errorContent.getString(ReportField.PHONE_MODEL))
+            appendQueryParameter("h", errorContent.getString(ReportField.BRAND))
+
+            appendQueryParameter("v", minifyTrace(
                 errorContent.getString(ReportField.STACK_TRACE) ?: ""))
 
-        builder.appendQueryParameter("l", errorContent.getString(ReportField.LOGCAT))
-
-        val uri = builder.build()
+            appendQueryParameter("l", errorContent.getString(ReportField.LOGCAT))
+        }.build()
 
         AppLog.d(uri.toString())
 
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+        val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+        }
         context.startActivity(intent)
     }
 

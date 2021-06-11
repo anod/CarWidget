@@ -43,9 +43,12 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-common-java8:2.3.1")
     kapt("androidx.lifecycle:lifecycle-compiler:2.3.1")
 
-    implementation("ch.acra:acra-core:5.7.0")
-    implementation("ch.acra:acra-notification:5.7.0")
-    implementation("ch.acra:acra-limiter:5.7.0")
+    implementation("ch.acra:acra-core:5.8.3")
+    implementation("ch.acra:acra-notification:5.8.3")
+    implementation("ch.acra:acra-limiter:5.8.3")
+
+    compileOnly("com.google.auto.service:auto-service-annotations:1.0")
+    kapt("com.google.auto.service:auto-service:1.0")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
