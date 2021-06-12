@@ -1,36 +1,62 @@
 package info.anodsplace.carwidget.screens.widget
 
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.Text
+import android.view.View
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 
 @Composable
-fun WidgetSkinPreview(skinItem: SkinList.Item) {
+fun WidgetSkinPreview(skinItem: SkinList.Item, viewModel: SkinPreviewViewModel) {
+    val view: View? by viewModel.load(skinItem).collectAsState(initial = null)
+    if (view == null) {
+        CircularProgressIndicator()
+    } else {
+        AndroidView(
+            modifier = Modifier.fillMaxSize(), // Occupy the max size in the Compose UI tree
+            factory = { view!! },
+            update = {
+                // View's been inflated or state read in this block has been updated
+                // Add logic here if necessary
 
+                // As selectedItem is read here, AndroidView will recompose
+                // whenever the state changes
+                // Example of Compose -> View communication
+                // view.coordinator.selectedItem = selectedItem.value
+            }
+        )
+    }
 }
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun WidgetSkinScreen(skinList: SkinList, viewModel: SkinPreviewViewModel) {
+fun WidgetSkinScreen(skinList: SkinList, viewModel: SkinPreviewViewModel, modifier: Modifier = Modifier) {
     val pagerState = rememberPagerState(pageCount = skinList.count, initialPage = skinList.selectedSkinPosition)
 
-    TabRow(
-        selectedTabIndex = pagerState.currentPage,
-    ) {
-        skinList.titles.forEachIndexed { index, title ->
-            Tab(
-                text = { Text(title) },
-                selected = pagerState.currentPage == index,
-                onClick = {  },
-            )
+    Column(modifier = modifier) {
+        ScrollableTabRow(
+            selectedTabIndex = pagerState.currentPage
+        ) {
+            skinList.titles.forEachIndexed { index, title ->
+                Tab(
+                    text = { Text(title) },
+                    selected = pagerState.currentPage == index,
+                    onClick = {  },
+                )
+            }
         }
-    }
 
-    HorizontalPager(state = pagerState) { page ->
-        WidgetSkinPreview(skinList[page])
+        HorizontalPager(state = pagerState, modifier = Modifier.padding(16.dp)) { page ->
+            WidgetSkinPreview(skinList[page], viewModel = viewModel)
+        }
     }
 }

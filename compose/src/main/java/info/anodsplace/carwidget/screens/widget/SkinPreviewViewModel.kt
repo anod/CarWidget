@@ -48,7 +48,7 @@ class SkinPreviewViewModel(application: Application): AndroidViewModel(applicati
         bitmapMemoryCache.evictAll()
     }
 
-    fun load(overrideSkin: SkinList.Item): Flow<View> = flow {
+    fun load(overrideSkin: SkinList.Item): Flow<View?> = flow {
         val intentFactory: PendingIntentFactory = get<PreviewPendingIntentFactory>(parameters = { parametersOf(appWidgetId, overrideSkin) })
         val widgetView: WidgetView = get(parameters = { parametersOf(appWidgetId, bitmapMemoryCache, intentFactory, true) })
         val preview = renderPreview(widgetView, overrideSkin.value)

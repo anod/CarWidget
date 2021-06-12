@@ -155,10 +155,10 @@ fun InCarHeader(screen: WidgetListScreenState) {
 }
 
 @Composable
-fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit) {
+fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier) {
     if (screen.items.isEmpty()) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .padding(16.dp)
                 .fillMaxSize()
         ) {

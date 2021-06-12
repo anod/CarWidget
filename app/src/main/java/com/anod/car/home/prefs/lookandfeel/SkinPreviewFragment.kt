@@ -36,7 +36,7 @@ class SkinPreviewFragment : Fragment(), View.OnLongClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        lookAndFeelActivity!!.onPreviewStart(position)
+        //lookAndFeelActivity!!.onPreviewStart(position)
     }
 
     override fun onAttach(context: Context) {
@@ -59,7 +59,7 @@ class SkinPreviewFragment : Fragment(), View.OnLongClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.appWidgetId = lookAndFeelActivity!!.appWidgetId
+        //viewModel.appWidgetId = lookAndFeelActivity!!.appWidgetId
         load()
     }
 
@@ -69,24 +69,24 @@ class SkinPreviewFragment : Fragment(), View.OnLongClickListener {
 
     private fun load() {
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            val overrideSkin = lookAndFeelActivity!!.getSkinItem(position)
-            viewModel.load(overrideSkin).collect { inflatedView ->
-                lookAndFeelActivity!!.onPreviewCreated(position)
-
-                if (inflatedView.parent != null) {
-                    return@collect
-                }
-
-                if (viewGroup!!.childCount > 0) {
-                    viewGroup!!.removeAllViews()
-                }
-
-                val model = WidgetShortcutsModel.init(requireContext(), DefaultsResourceProvider(requireContext()), lookAndFeelActivity!!.appWidgetId)
-                shortcutsCount = model.count
-
-                setupDragNDrop(inflatedView, model)
-                viewGroup!!.addView(inflatedView)
-            }
+//            val overrideSkin = lookAndFeelActivity!!.getSkinItem(position)
+//            viewModel.load(overrideSkin).collect { inflatedView ->
+//                lookAndFeelActivity!!.onPreviewCreated(position)
+//
+//                if (inflatedView.parent != null) {
+//                    return@collect
+//                }
+//
+//                if (viewGroup!!.childCount > 0) {
+//                    viewGroup!!.removeAllViews()
+//                }
+//
+//                val model = WidgetShortcutsModel.init(requireContext(), DefaultsResourceProvider(requireContext()), lookAndFeelActivity!!.appWidgetId)
+//                shortcutsCount = model.count
+//
+//                setupDragNDrop(inflatedView, model)
+//                viewGroup!!.addView(inflatedView)
+//            }
         }
     }
 
@@ -123,20 +123,20 @@ class SkinPreviewFragment : Fragment(), View.OnLongClickListener {
     }
 
     override fun onLongClick(dragButton: View): Boolean {
-        val dragData = "" + dragButton.tag
-        val data = ClipData.newPlainText(dragData, dragData)
-        lookAndFeelActivity!!.onBeforeDragStart()
-        dragButton.startDragAndDrop(data, ShortcutShadowBuilder(dragButton), null, 0)
+//        val dragData = "" + dragButton.tag
+//        val data = ClipData.newPlainText(dragData, dragData)
+//        lookAndFeelActivity!!.onBeforeDragStart()
+//        dragButton.startDragAndDrop(data, ShortcutShadowBuilder(dragButton), null, 0)
         return true
     }
 
     private fun initDragButton(cellId: Int, dragButton: ImageView,
                                hasShortcut: Boolean) {
-        dragButton.tag = cellId.toString()
-        if (hasShortcut) {
-            dragButton.setOnLongClickListener(this)
-        }
-        dragButton.setOnDragListener(lookAndFeelActivity!!.dragListener)
+//        dragButton.tag = cellId.toString()
+//        if (hasShortcut) {
+//            dragButton.setOnLongClickListener(this)
+//        }
+//        dragButton.setOnDragListener(lookAndFeelActivity!!.dragListener)
     }
 
     companion object {

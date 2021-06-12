@@ -22,7 +22,7 @@ class SkinPagerAdapter(private val activity: LookAndFeelActivity, private val co
     }
 
     override fun getPageTitle(position: Int): CharSequence {
-        return activity.getSkinItem(position).title
+        return "" // activity.getSkinItem(position).title
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
