@@ -1,4 +1,4 @@
-package com.anod.car.home.utils
+package info.anodsplace.carwidget.content
 
 /**
  * @author alex

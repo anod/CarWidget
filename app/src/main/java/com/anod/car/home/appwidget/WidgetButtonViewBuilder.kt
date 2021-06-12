@@ -10,6 +10,7 @@ import info.anodsplace.carwidget.content.preferences.InCarStorage
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import com.anod.car.home.skin.SkinProperties
+import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 
 /**
  * @author alex
@@ -17,8 +18,8 @@ import com.anod.car.home.skin.SkinProperties
  */
 class WidgetButtonViewBuilder(
     private val context: Context,
-    private val prefs: info.anodsplace.carwidget.content.preferences.WidgetSettings,
-    private val pendingIntentFactory: WidgetViewBuilder.PendingIntentFactory,
+    private val prefs: WidgetSettings,
+    private val pendingIntentFactory: PendingIntentFactory,
     private val appWidgetId: Int) {
 
     var alternativeHidden = false

@@ -37,11 +37,12 @@ class UpdateWidgetJob : JobIntentService() {
         val appWidgetManager = App.provide(context).appWidgetManager
         // Perform this loop procedure for each App Widget that belongs to this
         // provider
-        for (element in appWidgetIds) {
-            val builder = WidgetViewBuilder(context, element, ShortcutPendingIntent(context))
-            val views = builder.init().build()
-            AppLog.i("Performing update for widget #$element")
-            appWidgetManager.updateAppWidget(element, views)
+        for (appWidgetId in appWidgetIds) {
+            val views = WidgetViewBuilder(context, appWidgetId, ShortcutPendingIntent(context)).apply {
+                init()
+            }.create()
+            AppLog.i("Performing update for widget #$appWidgetId")
+            appWidgetManager.updateAppWidget(appWidgetId, views)
         }
     }
 }

@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.content
 
 import android.appwidget.AppWidgetManager
-import androidx.appcompat.app.AppCompatDelegate
 import com.squareup.picasso.Picasso
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.graphics.PackageIconRequestHandler
@@ -13,16 +12,16 @@ import org.koin.core.logger.Level
 import org.koin.core.logger.Logger
 import org.koin.core.logger.MESSAGE
 import org.koin.core.module.Module
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 class AndroidLogger : Logger(Level.DEBUG) {
     override fun log(level: Level, msg: MESSAGE) {
-        when(level) {
+        when (level) {
             Level.DEBUG -> AppLog.d(msg)
             Level.INFO -> AppLog.i(msg)
             Level.ERROR -> AppLog.e(msg)
-            Level.NONE -> { }
+            Level.NONE -> {
+            }
         }
     }
 }
@@ -38,5 +37,6 @@ fun createAppModule(): Module = module {
             .addRequestHandler(PackageIconRequestHandler(get()))
             .build()
     }
+    factory { BitmapLruCache(get()) }
     factory<InCarInterface> { InCarStorage.load(get()) }
 }

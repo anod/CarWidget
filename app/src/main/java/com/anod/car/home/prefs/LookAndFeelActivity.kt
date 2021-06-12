@@ -1,44 +1,33 @@
 package com.anod.car.home.prefs
 
-import android.app.PendingIntent
+import android.annotation.SuppressLint
 import android.appwidget.AppWidgetManager
-import android.appwidget.AppWidgetProviderInfo
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
+import androidx.activity.viewModels
 import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.viewpager.widget.ViewPager
 import com.anod.car.home.R
-import com.anod.car.home.app.App
 import com.anod.car.home.app.CarWidgetActivity
 import com.anod.car.home.appwidget.Provider
-import com.anod.car.home.appwidget.WidgetViewBuilder
-import info.anodsplace.carwidget.content.backup.BackupManager
 import com.anod.car.home.databinding.ActivityLookandfeelBinding
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.prefs.drag.ShortcutDragListener
 import com.anod.car.home.prefs.lookandfeel.LookAndFeelMenu
 import com.anod.car.home.prefs.lookandfeel.SkinPagerAdapter
-import com.anod.car.home.prefs.lookandfeel.WidgetButtonChoiceActivity
-import com.anod.car.home.prefs.model.SkinList
-import com.anod.car.home.utils.BitmapLruCache
-import com.anod.car.home.utils.forNewShortcut
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
-import info.anodsplace.carwidget.content.preferences.WidgetSettings
-import info.anodsplace.carwidget.content.preferences.WidgetStorage
-import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
+import info.anodsplace.carwidget.content.backup.BackupManager
 import info.anodsplace.carwidget.screens.about.AboutScreenFragment
 import info.anodsplace.carwidget.screens.incar.InCarScreenFragment
+import info.anodsplace.carwidget.screens.widget.SkinList
+import info.anodsplace.carwidget.screens.widget.SkinPreviewViewModel
+import org.koin.core.component.KoinComponent
 
-class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener, WidgetViewBuilder.PendingIntentFactory, ShortcutDragListener.DropCallback, BackupManager.OnRestore {
+class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener, ShortcutDragListener.DropCallback, BackupManager.OnRestore, KoinComponent {
 
     private lateinit var binding: ActivityLookandfeelBinding
     private val currentPage: Int
@@ -50,12 +39,9 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     var appWidgetId: Int = 0
         private set
 
+    private val viewModel: SkinPreviewViewModel by viewModels()
     private val previewInitialized = booleanArrayOf(false, false, false, false, false, false, false)
-    var prefs: WidgetSettings? = null
-    private var skinList: SkinList? = null
-    private var bitmapMemoryCache: BitmapLruCache? = null
-    private val lookAndFeelMenu: LookAndFeelMenu by lazy { LookAndFeelMenu(this, model) }
-    private val model: WidgetShortcutsModel by lazy { WidgetShortcutsModel(App.get(this), DefaultsResourceProvider(this), appWidgetId) }
+    private val lookAndFeelMenu: LookAndFeelMenu by lazy { LookAndFeelMenu(this, viewModel.shortcuts) }
 
     var dragListener: ShortcutDragListener? = null
         private set
@@ -65,15 +51,8 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     val currentSkinItem: SkinList.Item
         get() = getSkinItem(currentPage)
 
-    private val isKeyguard: Boolean
-        get() {
-            val widgetOptions = App.provide(this).appWidgetManager.getAppWidgetOptions(appWidgetId)
-            val category = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1)
-            return category == AppWidgetProviderInfo.WIDGET_CATEGORY_KEYGUARD
-        }
-
     override fun onDelete(srcCellId: Int): Boolean {
-        model.drop(srcCellId)
+        viewModel.shortcuts.drop(srcCellId)
         refreshSkinPreview()
         return true
     }
@@ -82,7 +61,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         if (srcCellId == dstCellId) {
             return false
         }
-        model.move(srcCellId, dstCellId)
+        viewModel.shortcuts.move(srcCellId, dstCellId)
         refreshSkinPreview()
         return true
     }
@@ -117,18 +96,14 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         binding = ActivityLookandfeelBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        prefs = WidgetStorage.load(this, DefaultsResourceProvider(this), appWidgetId)
-        skinList = SkinList(prefs!!.skin, isKeyguard, this)
         dragListener = ShortcutDragListener(binding.dragDeleteBg, this)
 
-        adapter = SkinPagerAdapter(this, skinList!!.count, supportFragmentManager)
+        adapter = SkinPagerAdapter(this, viewModel.skinList.count, supportFragmentManager)
         binding.gallery.adapter = adapter
-        binding.gallery.currentItem = skinList!!.selectedSkinPosition
+        binding.gallery.currentItem = viewModel.skinList.selectedSkinPosition
         binding.gallery.addOnPageChangeListener(this)
 
         binding.tabs.setupWithViewPager(binding.gallery)
-
-        bitmapMemoryCache = BitmapLruCache(this)
 
         binding.content.visibility = View.GONE
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
@@ -146,7 +121,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
                 navigate(bottomItemId)
             }
         } else {
-            lookAndFeelMenu.onCreateOptionsMenu(binding.toolbar)
+            lookAndFeelMenu.onCreateOptionsMenu(binding.toolbar, viewModel.widgetSettings.isIconsMono)
         }
         BroadcastService.registerBroadcastService(applicationContext)
     }
@@ -154,7 +129,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     private fun navigate(@IdRes itemId: Int): Boolean {
         return when (itemId) {
             R.id.nav_widget -> {
-                lookAndFeelMenu.onCreateOptionsMenu(binding.toolbar)
+                lookAndFeelMenu.onCreateOptionsMenu(binding.toolbar, viewModel.widgetSettings.isIconsMono)
                 binding.gallery.isVisible = true
                 binding.content.isVisible = false
                 for (i in 0 until supportFragmentManager.backStackEntryCount) {
@@ -188,6 +163,7 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
         }
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt("bottom_item_id", binding.bottomNavigation.selectedItemId)
         super.onSaveInstanceState(outState)
@@ -195,20 +171,15 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
 
     public override fun onResume() {
         super.onResume()
-        model.init()
-        bitmapMemoryCache?.evictAll()
-    }
-
-    fun createBuilder(): WidgetViewBuilder {
-        return WidgetViewBuilder(App.get(this), appWidgetId, bitmapMemoryCache, this, true)
+        viewModel.shortcuts.init()
     }
 
     fun persistPrefs() {
-        prefs!!.apply()
+        viewModel.widgetSettings.apply()
     }
 
     fun getSkinItem(position: Int): SkinList.Item {
-        return skinList!![position]
+        return viewModel.skinList[position]
     }
 
     override fun onPageSelected(position: Int) {
@@ -228,35 +199,6 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     fun refreshSkinPreview() {
         AppLog.i("Refresh skin preview")
         adapter!!.refresh()
-    }
-
-    override fun createNew(appWidgetId: Int, cellId: Int): PendingIntent {
-        val intent = Intent().forNewShortcut(this, appWidgetId, cellId)
-        return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-    }
-
-    override fun createSettings(appWidgetId: Int, buttonId: Int): PendingIntent {
-
-        val intent = WidgetButtonChoiceActivity
-                .createIntent(appWidgetId, getSkinItem(currentPage).value, buttonId, this)
-        return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-    }
-
-    override fun createInCar(on: Boolean, buttonId: Int): PendingIntent {
-        val intent = WidgetButtonChoiceActivity
-                .createIntent(appWidgetId, getSkinItem(currentPage).value, buttonId, this)
-        return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-    }
-
-    override fun createShortcut(intent: Intent, appWidgetId: Int, position: Int,
-                                shortcutId: Long): PendingIntent {
-        val editIntent = ShortcutEditActivity
-                .createIntent(this, position, shortcutId, appWidgetId)
-        val path = "$appWidgetId/$position"
-        val data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"), path)
-        editIntent.data = data
-        return PendingIntent
-                .getActivity(this, 0, editIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     fun onPreviewStart(position: Int) {
@@ -282,12 +224,12 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     }
 
     override fun restoreCompleted() {
-        prefs = WidgetStorage.load(this, DefaultsResourceProvider(this), appWidgetId)
-        skinList = SkinList(prefs!!.skin, isKeyguard, this).also {
-            binding.gallery.currentItem = it.selectedSkinPosition
-        }
-        model.init()
-        bitmapMemoryCache?.evictAll()
+//        prefs = WidgetStorage.load(this, DefaultsResourceProvider(this), appWidgetId)
+//        skinList = SkinList(prefs!!.skin, isKeyguard, this).also {
+//            binding.gallery.currentItem = it.selectedSkinPosition
+//        }
+        viewModel.shortcuts.init()
+//        bitmapMemoryCache?.evictAll()
         refreshSkinPreview()
     }
 }

@@ -21,6 +21,7 @@ import com.anod.car.home.utils.FastBitmapDrawable
 import com.anod.car.home.utils.HtmlCompat
 import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import info.anodsplace.framework.app.DialogCustom
@@ -39,13 +40,13 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
     private var initialized: Boolean = false
     private var menuInfo: MenuItem? = null
 
-    fun onCreateOptionsMenu(toolbar: Toolbar) {
+    fun onCreateOptionsMenu(toolbar: Toolbar, isIconsMono: Boolean) {
         toolbar.inflateMenu(R.menu.look_n_feel)
         val menu = toolbar.menu
 
         menuTileColor = menu.findItem(R.id.tile_color)
         menuInfo = menu.findItem(R.id.skin_info)
-        menu.findItem(R.id.icons_mono).isChecked = activity.prefs!!.isIconsMono
+        menu.findItem(R.id.icons_mono).isChecked = isIconsMono
         initialized = true
         refresh()
     }
@@ -92,7 +93,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
                 return true
             }
             R.id.bg_color -> {
-                val value = activity.prefs!!.backgroundColor
+                val value = prefs.backgroundColor
                 val d = CarHomeColorPickerDialog.newInstance(value, true, activity)
                 d.listener = ColorPickerSwatch.OnColorSelectedListener { color ->
                     prefs.backgroundColor = color
@@ -109,7 +110,7 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
                 return true
             }
             R.id.icons_mono -> {
-                activity.prefs!!.isIconsMono = !menuItem.isChecked
+                prefs.isIconsMono = !menuItem.isChecked
                 activity.persistPrefs()
                 menuItem.isChecked = !menuItem.isChecked
                 activity.refreshSkinPreview()
@@ -117,12 +118,12 @@ class LookAndFeelMenu(private val activity: LookAndFeelActivity, private val mod
             }
             R.id.icons_scale -> {
                 val values = activity.resources.getStringArray(R.array.icon_scale_values)
-                val scale = activity.prefs!!.iconsScale
+                val scale = prefs.iconsScale
                 val idx = values.indexOf(scale)
                 val style = R.style.Alert
                 DialogSingleChoice(activity, style, R.string.pref_scale_icon, R.array.icon_scale_titles, idx) {
                     dialog, which ->
-                    activity.prefs!!.setIconsScaleString(values[which])
+                    prefs.setIconsScaleString(values[which])
                     activity.persistPrefs()
                     dialog.dismiss()
                     activity.refreshSkinPreview()

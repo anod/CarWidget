@@ -13,17 +13,21 @@ import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import com.anod.car.home.skin.SkinProperties
 import com.anod.car.home.skin.icon.BackgroundProcessor
 import info.anodsplace.carwidget.utils.BitmapTransform
-import com.anod.car.home.utils.IconTheme
+import info.anodsplace.carwidget.content.IconTheme
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
 
 /**
  * @author alex
  * @date 1/4/14
  */
-class ShortcutViewBuilder(private val context: Context, private val appWidgetId: Int,
-                          private val pendingIntentFactory: WidgetViewBuilder.PendingIntentFactory) {
+class ShortcutViewBuilder(
+    private val context: Context,
+    private val appWidgetId: Int,
+    private val pendingIntentFactory: PendingIntentFactory
+) {
 
     private var scaledDensity: Float = 0.toFloat()
 

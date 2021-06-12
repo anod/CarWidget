@@ -7,16 +7,23 @@ import android.os.DeadSystemException
 import android.util.LruCache
 import androidx.appcompat.app.AppCompatDelegate
 import com.anod.car.home.appwidget.WidgetHelper
+import com.anod.car.home.appwidget.WidgetViewBuilder
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.incar.ModeDetector
 import com.anod.car.home.notifications.Channels
+import com.anod.car.home.prefs.lookandfeel.SkinPreviewIntentFactory
 import com.anod.car.home.utils.AppUpgrade
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
 import info.anodsplace.carwidget.appwidget.WidgetIds
+import info.anodsplace.carwidget.appwidget.WidgetView
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.createAppModule
 import info.anodsplace.carwidget.content.extentions.isServiceRunning
 import info.anodsplace.carwidget.content.preferences.InCarInterface
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.content.preferences.WidgetStorage
+import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import info.anodsplace.framework.app.ApplicationInstance
 import org.acra.ReportField
 import org.acra.config.limiter
@@ -101,6 +108,16 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                 single<Context> { this@CarWidgetApplication } bind Application::class
                 single<WidgetIds> { WidgetHelper(get()) }
                 factory<InCarStatus> { createInCarStatus() } bind info.anodsplace.carwidget.incar.InCarStatus::class
+                factory<WidgetView> { params -> WidgetViewBuilder(
+                        context = get(),
+                        appWidgetId = params[0],
+                        bitmapMemoryCache = params[1],
+                        pendingIntentFactory = params[2],
+                        widgetButtonAlternativeHidden = params[3]
+                    )
+                }
+                factory<PreviewPendingIntentFactory> { params -> SkinPreviewIntentFactory(params.get(), params.get(), get()) }
+                factory<WidgetInterface> { params -> WidgetStorage.load(get(), DefaultsResourceProvider(get<Context>()), params.get()) }
             }))
             modules(modules = createAppModule())
         }

@@ -53,13 +53,4 @@ object Utils {
     fun calcIconsScale(scaleString: String): Float {
         return 1.0f + 0.1f * Integer.valueOf(scaleString)
     }
-
-    fun calculateMemoryCacheSize(context: Context): Int {
-        val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val largeHeap = context.applicationInfo?.flags?.and(FLAG_LARGE_HEAP)
-        val memoryClass = if (largeHeap != 0) am.largeMemoryClass else am.memoryClass
-        // Target ~15% of the available heap.
-        return 1024 * 1024 * memoryClass / 7
-    }
-
 }

@@ -1,10 +1,6 @@
 package com.anod.car.home.appwidget
 
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
-import android.graphics.Bitmap
-import android.util.LruCache
 import android.widget.RemoteViews
 import androidx.collection.SimpleArrayMap
 
@@ -12,23 +8,26 @@ import com.anod.car.home.R
 import info.anodsplace.carwidget.content.db.LauncherSettings
 import com.anod.car.home.skin.PropertiesFactory
 import info.anodsplace.carwidget.utils.BitmapTransform
-import com.anod.car.home.utils.IconTheme
+import info.anodsplace.carwidget.content.IconTheme
 import com.anod.car.home.utils.Utils
+import info.anodsplace.carwidget.appwidget.PendingIntentFactory
+import info.anodsplace.carwidget.appwidget.WidgetView
+import info.anodsplace.carwidget.content.BitmapLruCache
 import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 
 class WidgetViewBuilder(private val context: Context,
-                        var appWidgetId: Int,
-                        private val bitmapMemoryCache: LruCache<String, Bitmap>?,
+                        override val appWidgetId: Int,
+                        private val bitmapMemoryCache: BitmapLruCache?,
                         private val pendingIntentFactory: PendingIntentFactory,
-                        private val widgetButtonAlternativeHidden: Boolean) {
+                        private val widgetButtonAlternativeHidden: Boolean) : WidgetView {
 
     constructor(context: Context, appWidgetId: Int, pendingIntentFactory: PendingIntentFactory)
             : this(context, appWidgetId, null, pendingIntentFactory, false)
 
-    var overrideSkin: String? = null
+    private var overrideSkin: String? = null
 
     private val prefs: WidgetSettings by lazy { WidgetStorage.load(context, DefaultsResourceProvider(context), appWidgetId) }
     private val shortcutsModel: WidgetShortcutsModel by lazy { WidgetShortcutsModel(context, DefaultsResourceProvider(context), appWidgetId) }
@@ -36,14 +35,8 @@ class WidgetViewBuilder(private val context: Context,
     private var bitmapTransform: BitmapTransform? = null
     private var widgetButtonViewBuilder: WidgetButtonViewBuilder? = null
 
-    interface PendingIntentFactory {
-        fun createNew(appWidgetId: Int, cellId: Int): PendingIntent
-        fun createSettings(appWidgetId: Int, buttonId: Int): PendingIntent
-        fun createShortcut(intent: Intent, appWidgetId: Int, position: Int, shortcutId: Long): PendingIntent?
-        fun createInCar(on: Boolean, buttonId: Int): PendingIntent
-    }
-
-    fun init(): WidgetViewBuilder {
+    override fun init(overrideSkin: String?) {
+        this.overrideSkin = overrideSkin
 
         if (prefs.isFirstTime) {
             shortcutsModel.createDefaultShortcuts()
@@ -62,16 +55,15 @@ class WidgetViewBuilder(private val context: Context,
             it.alternativeHidden = widgetButtonAlternativeHidden
         }
         refreshIconTransform()
-        return this
     }
 
-    private fun refreshIconTransform() {
+    override fun refreshIconTransform() {
         bitmapTransform?.let {
             applyIconTransform(it, prefs)
         }
     }
 
-    fun build(): RemoteViews {
+    override fun create(): RemoteViews {
         val shortcuts = shortcutsModel.shortcuts
         val r = context.resources
         val skinName = if (overrideSkin == null) prefs.skin else overrideSkin
@@ -112,7 +104,7 @@ class WidgetViewBuilder(private val context: Context,
         return views
     }
 
-    private fun loadThemeIcons(themePackage: String): IconTheme? {
+    override fun loadThemeIcons(themePackage: String): IconTheme? {
         val shortcuts = shortcutsModel.shortcuts
 
         val theme = IconTheme(context, themePackage)
@@ -142,7 +134,7 @@ class WidgetViewBuilder(private val context: Context,
             R.id.btn_text8, R.id.btn_text9  //10
         )
 
-        val btnIds = intArrayOf(
+        internal val btnIds = intArrayOf(
             R.id.btn0, R.id.btn1, //2
             R.id.btn2, R.id.btn3, //4
             R.id.btn4, R.id.btn5, //6
@@ -150,7 +142,7 @@ class WidgetViewBuilder(private val context: Context,
             R.id.btn8, R.id.btn9  //10
         )
 
-        private fun applyIconTransform(bt: BitmapTransform, prefs: info.anodsplace.carwidget.content.preferences.WidgetSettings) {
+        private fun applyIconTransform(bt: BitmapTransform, prefs: WidgetSettings) {
             if (prefs.isIconsMono) {
                 bt.applyGrayFilter = true
                 if (prefs.iconsColor != null) {

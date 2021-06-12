@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.screens
+package info.anodsplace.carwidget.screens.main
 
 import android.appwidget.AppWidgetManager
 import androidx.compose.foundation.layout.padding
@@ -19,6 +19,7 @@ import info.anodsplace.carwidget.compose.BackgroundSurface
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.compose.ScreenLoadState
 import info.anodsplace.carwidget.content.preferences.InCarInterface
+import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.about.AboutScreen
 import info.anodsplace.carwidget.screens.about.AboutViewModel
 import info.anodsplace.carwidget.screens.incar.inCarNavigation

@@ -57,6 +57,9 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha02")
     implementation("androidx.activity:activity-compose:1.3.0-beta01")
 
+    implementation("com.google.accompanist:accompanist-pager:0.11.1")
+
+
     implementation("androidx.compose.ui:ui-tooling:1.0.0-beta08")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.10")
 }

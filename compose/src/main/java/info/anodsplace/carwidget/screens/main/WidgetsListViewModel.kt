@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.screens
+package info.anodsplace.carwidget.screens.main
 
 import android.app.Application
 import android.content.Context
@@ -60,18 +60,22 @@ class WidgetsListViewModel(application: Application) : AndroidViewModel(applicat
 
         val defaultsProvider = DefaultsResourceProvider(context)
         list.large.forEach { key, value ->
-            newItems.add(WidgetItem.Large(
-                key, value, WidgetStorage.load(getApplication(), defaultsProvider, key).adaptiveIconStyle
-            ))
+            newItems.add(
+                WidgetItem.Large(
+                    key, value, WidgetStorage.load(getApplication(), defaultsProvider, key).adaptiveIconStyle
+                )
+            )
         }
 
-        emit(ScreenLoadState.Ready(WidgetListScreenState(
+        emit(ScreenLoadState.Ready(
+            WidgetListScreenState(
             items = newItems,
             isServiceRequired = inCarStatus.isServiceRequired,
             isServiceRunning = inCarStatus.isServiceRunning,
             statusResId = inCarStatus.resId,
             eventsState = inCarStatus.eventsState().sortedWith(compareBy({ !it.enabled }, { !it.active }))
-        )))
+        )
+        ))
     }
 
     private suspend fun loadWidgetList(context: Context): WidgetList = withContext(Dispatchers.Default) {

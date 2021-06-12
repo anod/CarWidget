@@ -26,6 +26,9 @@ interface WidgetInterface {
     var widgetButton2: Int
 
     fun setIconsScaleString(iconsScale: String)
+    fun queueChange(key: String, value: Any?)
+    fun applyChange(key: String, value: Any?)
+    fun apply()
 
     class NoOp(
         override var iconsTheme: String = "",
@@ -45,6 +48,9 @@ interface WidgetInterface {
         override var widgetButton2: Int = 0
     ) : WidgetInterface {
         override fun setIconsScaleString(iconsScale: String) { }
+        override fun queueChange(key: String, value: Any?) {}
+        override fun applyChange(key: String, value: Any?) {}
+        override fun apply() {}
     }
 
     companion object {

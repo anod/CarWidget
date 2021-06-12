@@ -52,16 +52,6 @@ open class Provider : AppWidgetProvider() {
                                            appWidgetId: Int, newOptions: Bundle) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
         AppLog.i("appWidgetId: $appWidgetId", tag ="onAppWidgetOptionsChanged")
-        val maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, -1)
-
-        val myOptions = appWidgetManager.getAppWidgetOptions(appWidgetId)
-        val category = myOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1)
-        val isKeyguard = category == AppWidgetProviderInfo.WIDGET_CATEGORY_KEYGUARD
-
-        if (isKeyguard && maxHeight != -1) {
-            AppLog.d("isKeyguard: $isKeyguard, maxHeight: $maxHeight")
-            requestUpdate(context, intArrayOf(appWidgetId))
-        }
     }
 
     companion object {

@@ -14,15 +14,6 @@
         <item>Metro</item>
         <item>BlackBearBlanc</item>
     </string-array>
-    <string-array name="skin_values" tools:ignore="MissingTranslation" translatable="false">
-		<item>you</item>
-        <item>cards</item>
-        <item>holo</item>
-        <item>glossy</item>
-        <item>carhome</item>
-        <item>windows7</item>
-        <item>blackbearblanc</item>
-    </string-array>
 	<string-array name="brightness_mode_values" tools:ignore="MissingTranslation" translatable="false">
 		<item>disabled</item>
 		<item>auto</item>

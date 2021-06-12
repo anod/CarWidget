@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.screens
+package info.anodsplace.carwidget.screens.main
 
 import android.content.ContentResolver
 import android.net.Uri
@@ -244,7 +244,8 @@ fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int)
 fun PreviewWidgetsScreenEmptyDark() {
     CarWidgetTheme(darkTheme = true) {
         BackgroundSurface {
-            WidgetsListScreen(WidgetListScreenState(
+            WidgetsListScreen(
+                WidgetListScreenState(
                 items = emptyList(),
                 isServiceRunning = true,
                 isServiceRequired = true,
