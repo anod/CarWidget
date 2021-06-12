@@ -25,7 +25,6 @@ import org.acra.ktx.initAcra
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.context.startKoin
-import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -38,7 +37,7 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
         get() = appComponent.memoryCache
 
     override val nightMode: Int
-        get() = get(named("NightMode"))
+        get() = appComponent.appSettings.nightMode
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
@@ -105,8 +104,9 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
             }))
             modules(modules = createAppModule())
         }
-        AppCompatDelegate.setDefaultNightMode(nightMode)
+
         appComponent = AppComponent(this)
+        AppCompatDelegate.setDefaultNightMode(nightMode)
 
         Channels.register(this)
     }

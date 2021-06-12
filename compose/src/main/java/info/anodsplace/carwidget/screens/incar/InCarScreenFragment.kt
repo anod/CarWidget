@@ -6,7 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.runtime.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.compose.NavHost
@@ -35,8 +39,13 @@ class InCarScreenFragment : Fragment(), KoinComponent {
                 val navController = rememberNavController()
                 val isDarkTheme by remember { mutableStateOf(appSettings.isDarkTheme) }
                 CarWidgetTheme(darkTheme = isDarkTheme) {
-                    NavHost(navController, startDestination = NavItem.InCar.route) {
-                        inCarNavigation(inCar, navController = navController, innerPadding = PaddingValues())
+                    Surface(
+                        color = MaterialTheme.colors.background,
+                        contentColor = MaterialTheme.colors.onBackground
+                    ) {
+                        NavHost(navController, startDestination = NavItem.InCar.route) {
+                            inCarNavigation(inCar, navController = navController, innerPadding = PaddingValues())
+                        }
                     }
                 }
             }

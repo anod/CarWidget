@@ -102,15 +102,13 @@ class LookAndFeelActivity : CarWidgetActivity(), ViewPager.OnPageChangeListener,
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val intent = intent
         if (intent == null) {
             AppLog.w("No intent")
             finish()
             return
         }
 
-        appWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                AppWidgetManager.INVALID_APPWIDGET_ID)
+        appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
         if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             AppLog.e("Invalid app widget id")
             finish()

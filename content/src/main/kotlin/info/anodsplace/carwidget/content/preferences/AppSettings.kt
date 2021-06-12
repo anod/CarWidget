@@ -3,7 +3,11 @@ package info.anodsplace.carwidget.content.preferences
 import android.content.ComponentName
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 
 /**
  * @author algavris
@@ -13,6 +17,17 @@ class AppSettings(context: Context) : ChangeableSharedPreferences(getSharedPrefe
 
     val isDarkTheme: Boolean
         get() = theme == dark
+
+    val darkTheme: Flow<Boolean> = changes
+        .filter { (key, _) -> key == APP_THEME }
+        .map { isDarkTheme }
+
+    val nightMode: Int
+        get() = if (isDarkTheme) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
+        }
 
     var musicApp: ComponentName?
         get() {

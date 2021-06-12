@@ -39,11 +39,4 @@ fun createAppModule(): Module = module {
             .build()
     }
     factory<InCarInterface> { InCarStorage.load(get()) }
-    factory(named("NightMode")) {
-        if (get<AppSettings>().theme == AppSettings.dark) {
-            AppCompatDelegate.MODE_NIGHT_YES
-        } else {
-            AppCompatDelegate.MODE_NIGHT_NO
-        }
-    }
 }

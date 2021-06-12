@@ -3,6 +3,8 @@ package info.anodsplace.carwidget
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.*
 import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.Picasso
@@ -10,13 +12,15 @@ import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.screens.MainScreen
 import info.anodsplace.carwidget.utils.LocalPicasso
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 
-open class MainComposeActivity : ComponentActivity(), KoinComponent {
+open class MainComposeActivity : AppCompatActivity(), KoinComponent {
     private val appSettings: AppSettings by inject()
     private val picasso: Picasso by inject()
 
@@ -25,21 +29,17 @@ open class MainComposeActivity : ComponentActivity(), KoinComponent {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(appSettings.nightMode)
         super.onCreate(savedInstanceState)
-
         setContent {
-            val coroutineScope = rememberCoroutineScope()
-            var isDarkTheme by remember { mutableStateOf(appSettings.isDarkTheme) }
+            val isDarkTheme by appSettings.darkTheme
+                .onEach {
+                    AppCompatDelegate.setDefaultNightMode(appSettings.nightMode)
+                }
+                .collectAsState(initial = appSettings.isDarkTheme)
             CarWidgetTheme(darkTheme = isDarkTheme) {
                 CompositionLocalProvider(LocalPicasso provides picasso) {
                     MainScreen(inCar = get(), onOpenWidgetConfig = { appWidgetId -> startConfigActivity(appWidgetId) })
-                }
-            }
-            coroutineScope.launch {
-                appSettings.changes.observe(this@MainComposeActivity) { (key, _) ->
-                    if (key == AppSettings.APP_THEME) {
-                        isDarkTheme = appSettings.isDarkTheme
-                    }
                 }
             }
         }

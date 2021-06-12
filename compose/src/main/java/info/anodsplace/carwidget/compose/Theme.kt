@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.dp
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
 
 private val Rubik = FontFamily(

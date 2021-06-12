@@ -82,15 +82,16 @@
             android:name=".prefs.lookandfeel.IconThemesActivity"
             android:label="@string/icons_theme"
             android:theme="@style/AppListTheme" />
-        <activity
-            android:name="com.anod.car.home.prefs.ConfigurationActivity"
-            android:clearTaskOnLaunch="true"
-            android:fragment="com.anod.car.home.prefs."
-            android:label="@string/settings" />
+
+        <!--        <activity-->
+<!--            android:name="com.anod.car.home.prefs.ConfigurationActivity"-->
+<!--            android:clearTaskOnLaunch="true"-->
+<!--            android:fragment="com.anod.car.home.prefs."-->
+<!--            android:label="@string/settings" />-->
 
         <activity
             android:name="info.anodsplace.framework.app.FragmentContainerActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme"
         />
 
         <activity
@@ -180,10 +181,6 @@
         </activity>
         <activity android:name=".main.WidgetsListActivity" />
         <activity android:name=".main.WizardActivity" />
-
-        <activity
-            android:name=".prefs.BluetoothDeviceActivity"
-            android:label="@string/pref_blutooth_device_title" />
 
         <activity
             android:name="com.anod.car.home.prefs.CarWidgetShortcutsPicker"

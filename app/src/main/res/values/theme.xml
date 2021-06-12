@@ -3,26 +3,37 @@
 
     <style name="AppTheme" parent="Base.AppTheme" />
 
-    <style name="Base.AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="AppTheme.Transparent" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="Base.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!--Material color attributes -->
         <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorSecondary">@color/color_secondary</item>
-        <item name="android:colorBackground">@color/color_background</item>
-        <item name="colorError">@color/color_error</item>
-
-        <!-- New MaterialComponents attributes. -->
         <item name="colorPrimaryVariant">@color/color_primary_variant</item>
+        <item name="colorSecondary">@color/color_secondary</item>
         <item name="colorSecondaryVariant">@color/color_secondary_variant</item>
+        <item name="android:colorBackground">@color/color_background</item>
         <item name="colorSurface">@color/color_surface</item>
+        <item name="colorError">@color/color_error</item>
         <item name="colorOnPrimary">@color/color_on_primary</item>
         <item name="colorOnSecondary">@color/color_on_secondary</item>
         <item name="colorOnBackground">@color/color_on_background</item>
-        <item name="colorOnError">@color/color_on_error</item>
         <item name="colorOnSurface">@color/color_on_surface</item>
+        <item name="colorOnError">@color/color_on_error</item>
+
         <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
         <item name="android:fontFamily">@font/rubik</item>
         <item name="fontFamily">@font/rubik</item>
+
+        <item name="android:statusBarColor" tools:ignore="NewApi">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
+        <item name="android:navigationBarColor" tools:ignore="NewApi">?attr/colorSurface</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
+        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">?attr/colorSurface</item>
 
         <!--Component styles-->
         <item name="android:alertDialogTheme">@style/Alert</item>
@@ -95,19 +106,6 @@
         <!-- Use custom action bar -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar" parent="AppTheme">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.Transparent" parent="AppTheme">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowShowWallpaper">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-
-        <item name="android:windowActionBarOverlay">true</item>
     </style>
 
     <style name="BrightnessTheme" parent="android:Theme.Translucent">

@@ -67,14 +67,14 @@
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
         android:paddingBottom="4dp"
-        android:tint="?attr/colorPrimary"
         android:visibility="gone"
         tools:visibility="visible"
         android:contentDescription="@null"
         app:layout_constraintEnd_toEndOf="@+id/dragDeleteBg"
         app:layout_constraintStart_toStartOf="@+id/dragDeleteBg"
         app:layout_constraintTop_toTopOf="@+id/dragDeleteBg"
-        app:srcCompat="@drawable/ic_cancel_black_24dp" />
+        app:srcCompat="@drawable/ic_cancel_black_24dp"
+        app:tint="?attr/colorPrimary" />
 
     <FrameLayout
         android:id="@+id/content"
@@ -85,7 +85,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"

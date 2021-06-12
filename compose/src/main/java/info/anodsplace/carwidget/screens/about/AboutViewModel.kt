@@ -7,7 +7,11 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.runtime.DisposableEffect
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
@@ -18,10 +22,7 @@ import info.anodsplace.carwidget.extensions.openDefaultCarDock
 import info.anodsplace.carwidget.extensions.openPlayStoreDetails
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -52,6 +53,7 @@ data class AboutScreenState(
 }
 
 class AboutViewModel(application: Application): AndroidViewModel(application), KoinComponent {
+
     var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
     val uiAction = MutableSharedFlow<AboutUiAction>()
 
@@ -68,9 +70,6 @@ class AboutViewModel(application: Application): AndroidViewModel(application), K
 
     private val appSettings: AppSettings
         get() = get()
-
-    private val nightMode: Int
-        get() = get(named("NightMode"))
 
     private var job: Job? = null
 

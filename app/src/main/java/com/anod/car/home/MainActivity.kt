@@ -3,6 +3,7 @@ package com.anod.car.home
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.prefs.LookAndFeelActivity
 import info.anodsplace.carwidget.MainComposeActivity
