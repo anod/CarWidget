@@ -7,6 +7,8 @@ import android.view.InflateException
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
@@ -18,6 +20,7 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
@@ -29,19 +32,26 @@ class SkinList(skin: String, context: Context) {
     class Item(val title: String, val value: String)
 
     private val values = listOf("you", "cards", "holo", "glossy", "carhome", "windows7", "blackbearblanc")
-    internal val titles = context.resources.getStringArray(R.array.skin_titles)
+    val titles = context.resources.getStringArray(R.array.skin_titles)
     val selectedSkinPosition: Int = values.indexOf(skin)
     val count: Int = values.size
+    val current: Item
+        get() = get(selectedSkinPosition)
 
     operator fun get(position: Int): Item = Item(titles[position], values[position])
 }
 
-class SkinPreviewViewModel(application: Application): AndroidViewModel(application), KoinComponent {
-    var appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID
+class SkinPreviewViewModel(application: Application, var appWidgetId: Int): AndroidViewModel(application), KoinComponent {
     private val bitmapMemoryCache: BitmapLruCache by inject()
-    val skinList: SkinList by lazy { SkinList(widgetSettings.skin, application) }
-    val shortcuts: WidgetShortcutsModel by lazy { WidgetShortcutsModel(application, DefaultsResourceProvider(application), appWidgetId) }
+
     val widgetSettings: WidgetInterface by inject(parameters = { parametersOf(appWidgetId) })
+    val skinList = SkinList(widgetSettings.skin, application)
+    val shortcuts: WidgetShortcutsModel by lazy { WidgetShortcutsModel(application, DefaultsResourceProvider(application), appWidgetId) }
+    val currentSkin = MutableStateFlow(skinList.current)
+
+    class Factory(private val appContext: Context, private val appWidgetId: Int): ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T = SkinPreviewViewModel(appContext as Application, appWidgetId) as T
+    }
 
     override fun onCleared() {
         super.onCleared()

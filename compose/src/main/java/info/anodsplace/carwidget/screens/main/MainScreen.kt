@@ -4,11 +4,13 @@ import android.appwidget.AppWidgetManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.SmartDisplay
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -20,6 +22,7 @@ import info.anodsplace.carwidget.compose.BackgroundSurface
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.compose.ScreenLoadState
 import info.anodsplace.carwidget.content.preferences.InCarInterface
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.about.AboutScreen
 import info.anodsplace.carwidget.screens.about.AboutViewModel
@@ -42,14 +45,25 @@ fun MainScreen(
         NavItem.InCar,
         NavItem.Info
     )
+    var showTileColor by remember { mutableStateOf(false) }
 
     Scaffold(
         backgroundColor = if (isWidget) Color.Transparent else MaterialTheme.colors.background,
         contentColor = MaterialTheme.colors.onBackground,
         topBar = {
-            TopAppBar {
-                Text(text = stringResource(id = R.string.app_name))
-            }
+            TopAppBar(
+                title = { Text(text = stringResource(id = R.string.app_name)) },
+                actions = {
+                    if (isWidget) {
+                        if (showTileColor) {
+                            IconButton(onClick = { }) { Icon(imageVector = Icons.Filled.SmartDisplay, contentDescription = stringResource(id = android.R.string.ok)) }
+                        }
+                        IconButton(onClick = {
+                            
+                        }) { Icon(imageVector = Icons.Filled.Check, contentDescription = stringResource(id = android.R.string.ok)) }
+                    }
+                }
+            )
         },
         bottomBar = {
             BottomNavigation {
@@ -86,44 +100,47 @@ fun MainScreen(
             .background(MaterialTheme.colors.background)
             .padding(innerPadding)
         NavHost(navController, startDestination = startDestination, route = startRoute) {
-            composable(NavItem.Widgets.route) {
+            composable(route = NavItem.Widgets.route) {
                 val widgetsListViewModel: WidgetsListViewModel = viewModel()
                 val widgetsState by widgetsListViewModel.loadScreen().collectAsState(initial = ScreenLoadState.Loading)
                 if (widgetsState is ScreenLoadState.Ready<WidgetListScreenState>) {
                     WidgetsListScreen(
-                        (widgetsState as ScreenLoadState.Ready<WidgetListScreenState>).value,
+                        screen = (widgetsState as ScreenLoadState.Ready<WidgetListScreenState>).value,
                         onClick = { appWidgetId -> onOpenWidgetConfig(appWidgetId) },
                         modifier = modifier
                     )
                 }
             }
             composable(
-                NavItem.CurrentWidget.route,
-                arguments = listOf(navArgument("appWidgetId") { type = NavType.IntType })
-            ) { backStackEntry ->
-                val skinViewModel: SkinPreviewViewModel = viewModel()
-                skinViewModel.appWidgetId = backStackEntry.arguments!!.getInt("appWidgetId")
+                route = NavItem.CurrentWidget.route,
+            ) {
+                val appContext = LocalContext.current.applicationContext
+                val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetId))
+                val currentSkin by skinViewModel.currentSkin.collectAsState(initial = skinViewModel.skinList.current)
+                showTileColor = currentSkin.value == WidgetInterface.SKIN_WINDOWS7
                 WidgetSkinScreen(skinList = skinViewModel.skinList, viewModel = skinViewModel, modifier = Modifier.padding(innerPadding))
             }
             navigation(startDestination = NavItem.InCar.Main.route, route = NavItem.InCar.route) {
-                composable(NavItem.InCar.Main.route) { InCarMainScreen(inCar, navController = navController, modifier = modifier) }
-                composable(NavItem.InCar.Bluetooth.route) {
+                composable(route = NavItem.InCar.Main.route) {
+                    InCarMainScreen(inCar, navController = navController, modifier = modifier)
+                }
+                composable(route = NavItem.InCar.Bluetooth.route) {
                     val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel()
                     BluetoothDevicesScreen(viewModel = bluetoothDevicesViewModel, modifier = modifier)
                 }
-                composable(NavItem.InCar.Media.route) {
+                composable(route = NavItem.InCar.Media.route) {
                     MediaScreen(inCar = inCar, modifier = modifier)
                 }
-                composable(NavItem.InCar.More.route) {
+                composable(route = NavItem.InCar.More.route) {
                     MoreScreen(inCar = inCar, modifier = modifier)
                 }
             }
-            composable(NavItem.Info.route) {
+            composable(route = NavItem.Info.route) {
                 val aboutViewModel: AboutViewModel = viewModel()
                 val aboutScreenState by aboutViewModel.initScreenState(appWidgetId = appWidgetId).collectAsState()
                 AboutScreen(
-                    aboutScreenState,
-                    aboutViewModel.uiAction,
+                    screenState = aboutScreenState,
+                    action = aboutViewModel.uiAction,
                     modifier = modifier
                 )
             }

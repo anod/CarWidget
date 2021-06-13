@@ -29,6 +29,6 @@ sealed class NavItem(val route: String, val parent: NavItem? = null) {
             Widgets.route else CurrentWidget.route
 
         fun startRoute(appWidgetId: Int): String? = if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
-            null else "widgets/$appWidgetId"
+            null else CurrentWidget.forAppWidgetId(appWidgetId)
     }
 }
