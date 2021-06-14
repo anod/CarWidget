@@ -8,12 +8,14 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.launch
 
 @Composable
 fun WidgetSkinPreview(skinItem: SkinList.Item, viewModel: SkinPreviewViewModel) {
@@ -41,6 +43,9 @@ fun WidgetSkinPreview(skinItem: SkinList.Item, viewModel: SkinPreviewViewModel) 
 @Composable
 fun WidgetSkinScreen(skinList: SkinList, viewModel: SkinPreviewViewModel, modifier: Modifier = Modifier) {
     val pagerState = rememberPagerState(pageCount = skinList.count, initialPage = skinList.selectedSkinPosition)
+    val scope = rememberCoroutineScope()
+
+    pagerState.targetPage
 
     Column(modifier = modifier) {
         ScrollableTabRow(
@@ -50,7 +55,9 @@ fun WidgetSkinScreen(skinList: SkinList, viewModel: SkinPreviewViewModel, modifi
                 Tab(
                     text = { Text(title) },
                     selected = pagerState.currentPage == index,
-                    onClick = {  },
+                    onClick = {
+                        scope.launch { pagerState.scrollToPage(page = index) }
+                    },
                 )
             }
         }
