@@ -25,6 +25,8 @@ import info.anodsplace.carwidget.compose.*
 import androidx.compose.material.Text
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import info.anodsplace.carwidget.screens.CarWidgetToolbar
+import info.anodsplace.carwidget.screens.UiAction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
@@ -275,10 +277,10 @@ fun EditSection(intent: Intent, editState: IntentField, action: MutableSharedFlo
 
 @Composable
 fun IntentEditScreen(
-        intent: Flow<Intent>,
-        action: MutableSharedFlow<UiAction>,
-        addBackPressHandler: Boolean = false,
-        initialEditValue: IntentField = IntentField.None,
+    intent: Flow<Intent>,
+    action: MutableSharedFlow<UiAction>,
+    addBackPressHandler: Boolean = false,
+    initialEditValue: IntentField = IntentField.None,
 ) {
     val intentState = intent.collectAsState(initial = Intent())
     var editState by remember { mutableStateOf(initialEditValue) }

@@ -14,13 +14,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navigation
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.BackgroundSurface
 import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.compose.ScreenLoadState
+import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.screens.NavItem
@@ -29,13 +29,16 @@ import info.anodsplace.carwidget.screens.about.AboutViewModel
 import info.anodsplace.carwidget.screens.incar.*
 import info.anodsplace.carwidget.screens.widget.SkinPreviewViewModel
 import info.anodsplace.carwidget.screens.widget.WidgetSkinScreen
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen(
     inCar: InCarInterface,
     appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
-    onOpenWidgetConfig: (appWidgetId: Int) -> Unit
+    action: MutableSharedFlow<UiAction>
 ) {
+    val scope = rememberCoroutineScope()
     val navController = rememberNavController()
     val startDestination = NavItem.startDestination(appWidgetId)
     val startRoute = NavItem.startRoute(appWidgetId)
@@ -45,7 +48,7 @@ fun MainScreen(
         NavItem.InCar,
         NavItem.Info
     )
-    var showTileColor by remember { mutableStateOf(false) }
+    var currentSkinValue by remember { mutableStateOf("") }
 
     Scaffold(
         backgroundColor = if (isWidget) Color.Transparent else MaterialTheme.colors.background,
@@ -55,12 +58,14 @@ fun MainScreen(
                 title = { Text(text = stringResource(id = R.string.app_name)) },
                 actions = {
                     if (isWidget) {
-                        if (showTileColor) {
+                        if (currentSkinValue == WidgetInterface.SKIN_WINDOWS7) {
                             IconButton(onClick = { }) { Icon(imageVector = Icons.Filled.SmartDisplay, contentDescription = stringResource(id = android.R.string.ok)) }
                         }
-                        IconButton(onClick = {
-                            
-                        }) { Icon(imageVector = Icons.Filled.Check, contentDescription = stringResource(id = android.R.string.ok)) }
+                        IconButton(onClick = { scope.launch {
+                            action.emit(UiAction.ApplyWidget(appWidgetId, currentSkinValue))
+                        } }) {
+                            Icon(imageVector = Icons.Filled.Check, contentDescription = stringResource(id = android.R.string.ok))
+                        }
                     }
                 }
             )
@@ -106,7 +111,7 @@ fun MainScreen(
                 if (widgetsState is ScreenLoadState.Ready<WidgetListScreenState>) {
                     WidgetsListScreen(
                         screen = (widgetsState as ScreenLoadState.Ready<WidgetListScreenState>).value,
-                        onClick = { appWidgetId -> onOpenWidgetConfig(appWidgetId) },
+                        onClick = { appWidgetId -> scope.launch { action.emit(UiAction.OpenWidgetConfig(appWidgetId)) } },
                         modifier = modifier
                     )
                 }
@@ -117,7 +122,7 @@ fun MainScreen(
                 val appContext = LocalContext.current.applicationContext
                 val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetId))
                 val currentSkin by skinViewModel.currentSkin.collectAsState(initial = skinViewModel.skinList.current)
-                showTileColor = currentSkin.value == WidgetInterface.SKIN_WINDOWS7
+                currentSkinValue = currentSkin.value
                 WidgetSkinScreen(skinList = skinViewModel.skinList, viewModel = skinViewModel, modifier = Modifier.padding(innerPadding))
             }
             navigation(startDestination = NavItem.InCar.Main.route, route = NavItem.InCar.route) {
@@ -153,7 +158,7 @@ fun MainScreen(
 fun PreviewPreferencesScreenLight() {
     CarWidgetTheme(darkTheme = false) {
         BackgroundSurface {
-            MainScreen(InCarInterface.NoOp(), onOpenWidgetConfig = {})
+            MainScreen(InCarInterface.NoOp(), action = MutableSharedFlow())
         }
     }
 }
@@ -163,7 +168,7 @@ fun PreviewPreferencesScreenLight() {
 fun PreviewPreferencesScreenDark() {
     CarWidgetTheme(darkTheme = true) {
         BackgroundSurface {
-            MainScreen(InCarInterface.NoOp(), onOpenWidgetConfig = {})
+            MainScreen(InCarInterface.NoOp(), action = MutableSharedFlow())
         }
     }
 }

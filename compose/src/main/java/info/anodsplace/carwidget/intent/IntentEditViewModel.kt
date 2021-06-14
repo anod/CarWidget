@@ -3,7 +3,7 @@ package info.anodsplace.carwidget.intent
 import android.app.Application
 import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
-import info.anodsplace.carwidget.compose.UiAction
+import info.anodsplace.carwidget.screens.UiAction
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 

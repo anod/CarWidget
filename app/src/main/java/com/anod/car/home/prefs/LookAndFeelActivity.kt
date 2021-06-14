@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
 import com.anod.car.home.R
+import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.incar.BroadcastService
 import info.anodsplace.carwidget.MainComposeActivity
 
@@ -23,5 +24,9 @@ class LookAndFeelActivity : MainComposeActivity() {
         val configIntent = Intent(this, LookAndFeelActivity::class.java)
         configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         startActivity(configIntent)
+    }
+
+    override fun requestWidgetUpdate(appWidgetId: Int) {
+        Provider.requestUpdate(this, intArrayOf(appWidgetId))
     }
 }

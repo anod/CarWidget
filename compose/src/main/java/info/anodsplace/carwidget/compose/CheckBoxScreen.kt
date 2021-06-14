@@ -15,6 +15,7 @@ import info.anodsplace.carwidget.intent.IntentCategories
 import info.anodsplace.carwidget.intent.IntentFlags
 import androidx.compose.material.Text
 import androidx.compose.ui.tooling.preview.Preview
+import info.anodsplace.carwidget.screens.CarWidgetToolbar
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 class CheckBoxScreenState(
