@@ -31,7 +31,7 @@ import org.koin.core.parameter.parametersOf
 class SkinList(skin: String, context: Context) {
     class Item(val title: String, val value: String)
 
-    private val values = listOf("you", "cards", "holo", "glossy", "carhome", "windows7", "blackbearblanc")
+    private val values = WidgetInterface.skins
     val titles = context.resources.getStringArray(R.array.skin_titles)
     val selectedSkinPosition: Int = values.indexOf(skin)
     val count: Int = values.size

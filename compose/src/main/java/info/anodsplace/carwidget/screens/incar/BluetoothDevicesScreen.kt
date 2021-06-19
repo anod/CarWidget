@@ -4,12 +4,10 @@ import android.bluetooth.BluetoothAdapter
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,26 +39,28 @@ fun BluetoothDevicesScreen(viewModel: BluetoothDevicesViewModel, modifier: Modif
     val screenState by viewModel.load().collectAsState(initial = BluetoothDevicesState.Initial)
     val btState by viewModel.btState.collectAsState(initial = Bluetooth.state)
     val screenModifier = modifier.padding(16.dp)
-    when (screenState) {
-        BluetoothDevicesState.Initial -> {
-            CircularProgressIndicator()
-        }
-        BluetoothDevicesState.RequiresPermissions -> {
-            BluetoothPermissions(viewModel, modifier = screenModifier)
-        }
-        is BluetoothDevicesState.Devices -> {
-            BluetoothDeviceList(
-                list = (screenState as BluetoothDevicesState.Devices).list,
-                btState = btState,
-                onSwitchRequest = { btSwitchRequest(it, viewModel) },
-                modifier = screenModifier)
-        }
-        BluetoothDevicesState.SwitchedOff -> {
-            BluetoothDeviceEmpty(
-                btState = btState,
-                modifier = screenModifier,
-                onSwitchRequest = { btSwitchRequest(it, viewModel) }
-            )
+    BackgroundSurface(modifier = modifier.fillMaxSize()) {
+        when (screenState) {
+            BluetoothDevicesState.Initial -> {
+                CircularProgressIndicator()
+            }
+            BluetoothDevicesState.RequiresPermissions -> {
+                BluetoothPermissions(viewModel, modifier = screenModifier)
+            }
+            is BluetoothDevicesState.Devices -> {
+                BluetoothDeviceList(
+                    list = (screenState as BluetoothDevicesState.Devices).list,
+                    btState = btState,
+                    onSwitchRequest = { btSwitchRequest(it, viewModel) },
+                    modifier = screenModifier)
+            }
+            BluetoothDevicesState.SwitchedOff -> {
+                BluetoothDeviceEmpty(
+                    btState = btState,
+                    modifier = screenModifier,
+                    onSwitchRequest = { btSwitchRequest(it, viewModel) }
+                )
+            }
         }
     }
 }

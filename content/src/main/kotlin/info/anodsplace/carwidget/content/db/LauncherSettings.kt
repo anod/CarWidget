@@ -3,7 +3,6 @@ package info.anodsplace.carwidget.content.db
 import android.net.Uri
 import android.provider.BaseColumns
 
-import info.anodsplace.carwidget.content.LauncherContentProvider
 import info.anodsplace.carwidget.content.Version
 
 /**

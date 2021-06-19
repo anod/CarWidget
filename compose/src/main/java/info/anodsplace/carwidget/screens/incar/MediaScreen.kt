@@ -1,6 +1,7 @@
 package info.anodsplace.carwidget.screens.incar
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
@@ -45,7 +46,9 @@ fun MediaScreen(inCar: InCarInterface, modifier: Modifier) {
     var isAdjustVolumeLevel by remember { mutableStateOf(inCar.isAdjustVolumeLevel) }
 
     Column(
-        modifier = modifier.verticalScroll(state = rememberScrollState())
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(state = rememberScrollState())
     ) {
         PreferenceSwitch(checked = isAdjustVolumeLevel, item = PreferenceItem.Switch(
             checked = isAdjustVolumeLevel,

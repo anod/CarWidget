@@ -51,7 +51,7 @@ fun MainScreen(
         NavItem.InCar,
         NavItem.Info
     )
-    var currentSkinValue by remember { mutableStateOf("") }
+    var currentSkinValue by remember { mutableStateOf(WidgetInterface.SKIN_YOU) }
 
     Scaffold(
         backgroundColor = if (isWidget) Color.Transparent else MaterialTheme.colors.background,

@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.content
+package info.anodsplace.carwidget.content.db
 
 import android.content.ContentProvider
 import android.content.ContentUris
@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteQueryBuilder
 import android.net.Uri
 import android.text.TextUtils
 import android.util.Log
+import info.anodsplace.carwidget.content.BuildConfig
 
 open class LauncherContentProvider : ContentProvider() {
 

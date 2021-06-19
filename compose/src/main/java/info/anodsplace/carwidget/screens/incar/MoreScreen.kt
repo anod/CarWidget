@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -63,7 +64,7 @@ fun MoreScreen(inCar: InCarInterface, modifier: Modifier) {
     var items: List<PreferenceItem> by remember { mutableStateOf(createItems(inCar, context)) }
 
     PreferencesScreen(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         preferences = items,
         onClick = { item ->
         when (item) {

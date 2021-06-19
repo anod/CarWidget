@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -45,7 +42,15 @@ fun WidgetSkinScreen(skinList: SkinList, viewModel: SkinPreviewViewModel, modifi
     val pagerState = rememberPagerState(pageCount = skinList.count, initialPage = skinList.selectedSkinPosition)
     val scope = rememberCoroutineScope()
 
-    pagerState.targetPage
+    var currentPage by remember { mutableStateOf(pagerState.currentPage) }
+
+    if (currentPage != pagerState.currentPage) {
+        SideEffect {
+            viewModel.currentSkin.value = skinList[currentPage]
+        }
+        currentPage = pagerState.currentPage
+    }
+
 
     Column(modifier = modifier) {
         ScrollableTabRow(

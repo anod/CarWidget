@@ -25,7 +25,7 @@
             android:ellipsize="end"
             android:fadingEdge="horizontal"
             android:focusable="true"
-            android:maxLines="1"
+            android:maxLines="2"
             android:text="@string/incar_mode_enabled" />
 
         <TextView

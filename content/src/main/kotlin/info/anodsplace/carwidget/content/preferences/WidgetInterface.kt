@@ -67,5 +67,10 @@ interface WidgetInterface {
         const val WIDGET_BUTTON_INCAR = 1
         const val WIDGET_BUTTON_SETTINGS = 2
         const val WIDGET_BUTTON_HIDDEN = 3
+
+        val skins = listOf(
+            SKIN_YOU, SKIN_CARDS, SKIN_HOLO, SKIN_GLOSSY, SKIN_CARHOME, SKIN_WINDOWS7, SKIN_BBB
+        )
+
     }
 }
