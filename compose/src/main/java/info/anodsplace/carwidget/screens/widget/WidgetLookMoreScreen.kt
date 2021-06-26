@@ -6,6 +6,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.*
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.compose.*
 
 @Composable
 fun FontSize(

@@ -1,7 +1,7 @@
 package info.anodsplace.carwidget.preferences
 
 import info.anodsplace.carwidget.R
-import info.anodsplace.carwidget.compose.PreferenceItem
+import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 
 fun createCarScreenItems(inCar: InCarInterface): List<PreferenceItem> {

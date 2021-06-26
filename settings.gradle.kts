@@ -1,3 +1,3 @@
-include(":app", ":lib:applog", ":lib:graphics", ":lib:framework", ":lib:colorpicker")
+include(":app", ":lib:applog", ":lib:compose", ":lib:graphics", ":lib:framework", ":lib:colorpicker")
 include(":compose")
 include(":content")

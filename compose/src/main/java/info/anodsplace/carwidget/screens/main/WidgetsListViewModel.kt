@@ -8,7 +8,7 @@ import androidx.core.util.forEach
 import androidx.core.util.isEmpty
 import androidx.lifecycle.AndroidViewModel
 import info.anodsplace.carwidget.appwidget.WidgetIds
-import info.anodsplace.carwidget.compose.ScreenLoadState
+import info.anodsplace.compose.ScreenLoadState
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.model.WidgetShortcutsModel

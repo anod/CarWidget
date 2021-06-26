@@ -2,9 +2,7 @@ package info.anodsplace.carwidget.screens.incar
 
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -12,10 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.*
 import info.anodsplace.carwidget.content.preferences.InCarInterface
+import info.anodsplace.compose.BackgroundSurface
+import info.anodsplace.compose.PreferenceCheckbox
+import info.anodsplace.compose.PreferenceItem
+import info.anodsplace.compose.PreferenceSwitch
 import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.content.forOverlayPermission
 import info.anodsplace.framework.content.startActivitySafely

@@ -14,7 +14,7 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.extensions.extras
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.screens.main.MainScreen
-import info.anodsplace.carwidget.utils.LocalPicasso
+import info.anodsplace.compose.LocalPicasso
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach

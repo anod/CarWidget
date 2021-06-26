@@ -27,6 +27,8 @@ import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
+import info.anodsplace.compose.BackgroundSurface
+import info.anodsplace.compose.PicassoIcon
 
 @Composable
 fun Modifier.cardStyle(): Modifier = then(

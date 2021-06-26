@@ -70,7 +70,7 @@ class IconTheme(private var context: Context, packageName: String) {
         for (i in 0 until cmpMap.size()) {
             val className = cmpMap.keyAt(i)
             if (!iconMap.containsKey(className)) {
-                val resName = className.toLowerCase(Locale.US).replace(".", "_")
+                val resName = className.lowercase(Locale.US).replace(".", "_")
                 AppLog.d("Look for icon for resource: R.drawable.$resName")
                 val resourceId = themeResources!!.getIdentifier(resName, "drawable", packageName)
                 if (resourceId != 0) {

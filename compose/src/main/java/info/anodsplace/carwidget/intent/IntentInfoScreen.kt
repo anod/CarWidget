@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.screens.CarWidgetToolbar
 import info.anodsplace.carwidget.screens.UiAction
+import info.anodsplace.compose.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
@@ -251,7 +252,7 @@ fun EditSection(intent: Intent, editState: IntentField, action: MutableSharedFlo
             val stateValue = CheckBoxScreenState(
                     flagsText, IntentFlags, flagsState
             )
-            CheckBoxScreen(stateValue, onDismissRequest = {
+            CheckBoxScreen(saveText = stringResource(id = R.string.save), stateValue, onDismissRequest = {
                 scope.launch {
                     action.emit(UpdateField(IntentField.Flags(flagNamesToInt(flagsState))))
                 }
@@ -263,7 +264,7 @@ fun EditSection(intent: Intent, editState: IntentField, action: MutableSharedFlo
             val stateValue = CheckBoxScreenState(
                     categoriesText, IntentCategories, categoriesState
             )
-            CheckBoxScreen(stateValue, onDismissRequest = {
+            CheckBoxScreen(stringResource(id = R.string.save), stateValue, onDismissRequest = {
                 scope.launch {
                     action.emit(UpdateField(IntentField.Categories(categoriesState.mapNotNull { IntentCategories[it] }.toSet())))
                 }

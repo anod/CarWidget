@@ -16,6 +16,9 @@ import info.anodsplace.carwidget.compose.*
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.preferences.createCarScreenItems
 import info.anodsplace.carwidget.screens.NavItem
+import info.anodsplace.compose.BackgroundSurface
+import info.anodsplace.compose.PreferenceItem
+import info.anodsplace.compose.PreferencesScreen
 
 @Composable
 fun InCarMainScreen(

@@ -18,12 +18,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.*
 import info.anodsplace.carwidget.content.preferences.InCarInterface
+import info.anodsplace.compose.BackgroundSurface
+import info.anodsplace.compose.PreferenceItem
+import info.anodsplace.compose.PreferenceSlider
+import info.anodsplace.compose.PreferenceSwitch
 
 @Composable
 fun VolumeSlider(
     initialValue: Int,
     onValueChanged: (Int) -> Unit,
-    item: PreferenceItem) {
+    item: PreferenceItem
+) {
     PreferenceSlider(
         initialValue = initialValue,
         onValueChanged = onValueChanged,

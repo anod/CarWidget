@@ -3,10 +3,7 @@ package info.anodsplace.carwidget.screens.incar
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,13 +12,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import info.anodsplace.carwidget.R
-import info.anodsplace.carwidget.chooser.AppsListLoader
 import info.anodsplace.carwidget.chooser.AppsPackageLoader
 import info.anodsplace.carwidget.chooser.ChooserDialog
-import info.anodsplace.carwidget.chooser.MediaListLoader
-import info.anodsplace.carwidget.compose.PreferenceCheckbox
-import info.anodsplace.carwidget.compose.PreferenceItem
-import info.anodsplace.carwidget.compose.PreferencesScreen
+import info.anodsplace.compose.PreferenceItem
+import info.anodsplace.compose.PreferencesScreen
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.framework.content.forLauncher
 

@@ -23,10 +23,10 @@ import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.MediaListLoader
-import info.anodsplace.carwidget.compose.BackgroundSurface
+import info.anodsplace.compose.BackgroundSurface
 import info.anodsplace.carwidget.compose.CarWidgetTheme
-import info.anodsplace.carwidget.compose.PreferenceCategory
-import info.anodsplace.carwidget.compose.PreferenceItem
+import info.anodsplace.compose.PreferenceCategory
+import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.framework.content.CreateDocument
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -59,10 +59,11 @@ fun AboutButton(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = if (titleRes != 0) {
-                stringResource(id = titleRes).toUpperCase(Locale.getDefault())
-            } else title.toUpperCase(Locale.getDefault()))
+                stringResource(id = titleRes).uppercase(Locale.getDefault())
+            } else title.uppercase(Locale.getDefault()))
+
             if (subtitle.isNotEmpty()) {
-                Text(text = subtitle.toUpperCase(Locale.getDefault()),
+                Text(text = subtitle.uppercase(Locale.getDefault()),
                     style = MaterialTheme.typography.caption.copy(
                         fontSize = 8.sp
                     ))

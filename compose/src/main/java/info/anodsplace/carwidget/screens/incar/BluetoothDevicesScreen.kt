@@ -15,10 +15,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.R
-import info.anodsplace.carwidget.compose.BackgroundSurface
+import info.anodsplace.compose.BackgroundSurface
 import info.anodsplace.carwidget.compose.CarWidgetTheme
-import info.anodsplace.carwidget.compose.PreferenceCheckbox
-import info.anodsplace.carwidget.compose.PreferenceItem
+import info.anodsplace.compose.PreferenceCheckbox
+import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.framework.bluetooth.Bluetooth
 import info.anodsplace.framework.permissions.BluetoothConnect
