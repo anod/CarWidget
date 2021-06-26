@@ -51,7 +51,6 @@ fun WidgetSkinScreen(skinList: SkinList, viewModel: SkinPreviewViewModel, modifi
         currentPage = pagerState.currentPage
     }
 
-
     Column(modifier = modifier) {
         ScrollableTabRow(
             selectedTabIndex = pagerState.currentPage

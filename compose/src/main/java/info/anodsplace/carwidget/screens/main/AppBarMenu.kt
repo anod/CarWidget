@@ -41,18 +41,39 @@ fun AppBarMenu(showColor: Boolean, appWidgetId: Int, currentSkinValue: String, a
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            DropdownMenuItem(onClick = { scope.launch {  action.emit(UiAction.ChooseShortcutsNumber) } }) { Text(text = stringResource(id = R.string.number)) }
-            DropdownMenuItem(onClick = { scope.launch {  action.emit(UiAction.ChooseBackgroundColor) } }) { Text(text = stringResource(id = R.string.pref_bg_color_title)) }
-            DropdownMenuItem(onClick = { scope.launch {  action.emit(UiAction.ChooseIconsTheme) } }) { Text(text = stringResource(id = R.string.icons_theme)) }
-            DropdownMenuItem(onClick = { scope.launch {  action.emit(UiAction.SwitchIconsMono(!isIconsMono)) } }) {
+            DropdownMenuItem(onClick = {
+                scope.launch {  action.emit(UiAction.ChooseShortcutsNumber) }
+                expanded = false
+            }) { Text(text = stringResource(id = R.string.number)) }
+            DropdownMenuItem(onClick = {
+                scope.launch {  action.emit(UiAction.ChooseBackgroundColor) }
+                expanded = false
+            }) { Text(text = stringResource(id = R.string.pref_bg_color_title)) }
+            DropdownMenuItem(onClick = {
+                scope.launch { action.emit(UiAction.ChooseIconsTheme) }
+                expanded = false
+            }) { Text(text = stringResource(id = R.string.icons_theme)) }
+            DropdownMenuItem(onClick = {
+                scope.launch {  action.emit(UiAction.SwitchIconsMono(!isIconsMono)) }
+                expanded = false
+            }) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = stringResource(id = R.string.pref_icons_mono_title))
-                    Checkbox(checked = isIconsMono, onCheckedChange = { scope.launch {  action.emit(UiAction.SwitchIconsMono(!isIconsMono)) } }, modifier = Modifier.padding(start = 8.dp))
+                    Checkbox(checked = isIconsMono, onCheckedChange = {
+                        scope.launch {  action.emit(UiAction.SwitchIconsMono(!isIconsMono)) }
+                        expanded = false
+                    }, modifier = Modifier.padding(start = 8.dp))
                 }
             }
-            DropdownMenuItem(onClick = { scope.launch {  action.emit(UiAction.ChooseIconsScale) } }) { Text(text = stringResource(id = R.string.pref_scale_icon)) }
+            DropdownMenuItem(onClick = {
+                scope.launch {  action.emit(UiAction.ChooseIconsScale) }
+                expanded = false
+            }) { Text(text = stringResource(id = R.string.pref_scale_icon)) }
             Divider()
-            DropdownMenuItem(onClick = { scope.launch {  action.emit(UiAction.ShowMoreSettings) } }) { Text(text = stringResource(id = R.string.more)) }
+            DropdownMenuItem(onClick = { scope.launch {
+                action.emit(UiAction.ShowMoreSettings) }
+                expanded = false
+            }) { Text(text = stringResource(id = R.string.more)) }
         }
     }
 }

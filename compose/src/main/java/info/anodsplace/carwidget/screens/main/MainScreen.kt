@@ -151,6 +151,10 @@ fun MainScreen(
                 )
             }
         }
+
+        if (isWidget) {
+            // action.collectAsState(initial = UiAction.ChooseTileColor)
+        }
     }
 }
 
