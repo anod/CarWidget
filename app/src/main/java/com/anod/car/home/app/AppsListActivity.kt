@@ -30,13 +30,10 @@ abstract class AppsListActivity : AppCompatGridActivity(), AdapterView.OnItemCli
 
     protected open val headEntries: List<ChooserEntry> = emptyList()
 
-    protected open val isRefreshCache: Boolean
-        get() = false
-
     protected abstract fun onEntryClick(position: Int, entry: ChooserEntry)
 
     abstract fun viewModelFactory(): AppsListViewModel.Factory
-    val viewModel: AppsListViewModel by viewModels { viewModelFactory() }
+    private val viewModel: AppsListViewModel by viewModels { viewModelFactory() }
 
     protected open fun inflateFooterView(layoutInflater: LayoutInflater, parent: ViewGroup): View? = null
 

@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.screens.incar
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -10,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.*
 import info.anodsplace.carwidget.content.preferences.InCarInterface
@@ -81,6 +83,7 @@ fun ScreenTimeoutContent(inCar: InCarInterface) {
 @Composable
 fun ScreenTimeoutDialog(item: PreferenceItem.Text, inCar: InCarInterface, onDismiss: () -> Unit) {
     AlertDialog(
+        modifier = Modifier.padding(16.dp),
         title = { Text(text = if (item.titleRes != 0) stringResource(id = item.titleRes) else item.title) },
         text = { ScreenTimeoutContent(inCar) },
         buttons = { },

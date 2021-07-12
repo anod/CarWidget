@@ -166,6 +166,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
 
     if (showOpenCarDock) {
         AlertDialog(
+            modifier = Modifier.padding(16.dp),
             title = { Text(text = stringResource(id = R.string.default_car_dock_app)) },
             text = {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -185,6 +186,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
         val context = LocalContext.current
         val loader by remember { mutableStateOf(MediaListLoader(context)) }
         ChooserDialog(
+            modifier = Modifier.padding(16.dp),
             headers = listOf(
                 Header(stringResource(R.string.show_choice), iconVector = Icons.Filled.List)
             ),

@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.preferences
+package info.anodsplace.carwidget.screens.incar
 
 import info.anodsplace.carwidget.R
 import info.anodsplace.compose.PreferenceItem

@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.ResolveInfo
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -36,6 +37,7 @@ open class ChooserEntry(
     val componentName: ComponentName?,
     var title: String,
     val iconRes: Int = 0,
+    val icon: Drawable? = null
 ) {
 
     constructor(info: ResolveInfo, title: String?):
@@ -105,6 +107,7 @@ fun ChooserGridList(headers: List<ChooserEntry>, list: List<ChooserEntry>, onCli
 @Composable
 fun ChooserDialog(
     appsLoader: AppsListLoader,
+    modifier: Modifier = Modifier,
     headers: List<ChooserEntry> = listOf(),
     onDismissRequest: () -> Unit,
     onClick: (ChooserEntry) -> Unit
@@ -115,7 +118,7 @@ fun ChooserDialog(
         properties = DialogProperties()
     ) {
         Surface(
-            modifier = Modifier,
+            modifier = modifier,
             shape = MaterialTheme.shapes.medium,
             color = MaterialTheme.colors.surface,
             contentColor = MaterialTheme.colors.onSurface

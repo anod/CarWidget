@@ -123,7 +123,8 @@ fun MainScreen(
             }
             navigation(startDestination = NavItem.InCar.Main.route, route = NavItem.InCar.route) {
                 composable(route = NavItem.InCar.Main.route) {
-                    InCarMainScreen(inCar, navController = navController, modifier = modifier)
+                    val inCarViewModel: InCarViewModel = viewModel()
+                    InCarMainScreen(inCarViewModel, navController = navController, modifier = modifier)
                 }
                 composable(route = NavItem.InCar.Bluetooth.route) {
                     val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel()
