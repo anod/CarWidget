@@ -4,13 +4,14 @@ import android.content.Context
 import android.graphics.Path
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
+import info.anodsplace.carwidget.content.preferences.InCarStorage
 
 import java.util.ArrayList
 
 class NotificationShortcutsModel private constructor(context: Context) : AbstractShortcuts(context) {
 
     override val count: Int
-        get() = info.anodsplace.carwidget.content.preferences.InCarStorage.NOTIFICATION_COMPONENT_NUMBER
+        get() = InCarStorage.NOTIFICATION_COMPONENT_NUMBER
 
     override val iconLoader: ShortcutIconLoader
         get() = ShortcutIconLoader(shortcutsDatabase, Path(), context)
@@ -19,7 +20,7 @@ class NotificationShortcutsModel private constructor(context: Context) : Abstrac
         get() {
             val ids = this.loadIds()
             var count = 0
-            for (i in 0 until info.anodsplace.carwidget.content.preferences.InCarStorage.NOTIFICATION_COMPONENT_NUMBER) {
+            for (i in 0 until InCarStorage.NOTIFICATION_COMPONENT_NUMBER) {
                 count += if (ids[i] == Shortcut.idUnknown) 0 else 1
             }
             return count
@@ -38,16 +39,16 @@ class NotificationShortcutsModel private constructor(context: Context) : Abstrac
     }
 
     override fun saveId(position: Int, shortcutId: Long) {
-        info.anodsplace.carwidget.content.preferences.InCarStorage.saveNotifShortcut(context, shortcutId, position)
+        InCarStorage.saveNotifShortcut(context, shortcutId, position)
 
     }
 
     override fun dropId(position: Int) {
-        info.anodsplace.carwidget.content.preferences.InCarStorage.dropNotifShortcut(position, context)
+        InCarStorage.dropNotifShortcut(position, context)
     }
 
     override fun loadIds(): ArrayList<Long> {
-        return info.anodsplace.carwidget.content.preferences.InCarStorage.getNotifComponents(context)
+        return InCarStorage.getNotifComponents(context)
     }
 
     companion object {

@@ -20,7 +20,7 @@ import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import com.anod.car.home.R
 import com.anod.car.home.app.AppCompatGridActivity
-import com.anod.car.home.utils.FastBitmapDrawable
+import info.anodsplace.graphics.FastBitmapDrawable
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.applog.AppLog
 import java.util.*

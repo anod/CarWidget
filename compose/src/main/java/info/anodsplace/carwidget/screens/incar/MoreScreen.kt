@@ -3,7 +3,9 @@ package info.anodsplace.carwidget.screens.incar
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,12 +56,14 @@ private fun createItems(inCar: InCarInterface, context: Context) = listOf(
 @Composable
 fun MoreScreen(inCar: InCarInterface, modifier: Modifier) {
     val context = LocalContext.current
-    var appChooser by remember { mutableStateOf(false) }
+    var appChooser: PreferenceItem.List? by remember { mutableStateOf(null) }
     var items: List<PreferenceItem> by remember { mutableStateOf(createItems(inCar, context)) }
 
     PreferencesScreen(
         modifier = modifier.fillMaxSize(),
         preferences = items,
+        categoryColor = MaterialTheme.colors.secondary,
+        descriptionColor = MaterialTheme.colors.onBackground,
         onClick = { item ->
         when (item) {
             is PreferenceItem.CheckBox -> {
@@ -70,20 +74,26 @@ fun MoreScreen(inCar: InCarInterface, modifier: Modifier) {
                     inCar.autorunApp = null
                     items = createItems(inCar, context)
                 } else {
-                    appChooser = true
+                    appChooser = item
                 }
             }
             else -> { }
         }
     })
 
-    if (appChooser) {
+    if (appChooser != null) {
         val loader by remember { mutableStateOf(AppsPackageLoader(context, Intent().forLauncher())) }
 
-        ChooserDialog(appsLoader = loader, onDismissRequest = { appChooser = false }) {
+        ChooserDialog(
+                modifier = Modifier.fillMaxHeight(fraction = 0.8f),
+                appsLoader = loader,
+                onDismissRequest = {
+            items = createItems(inCar, context)
+            appChooser = null
+        }) {
             inCar.autorunApp = it.componentName
             items = createItems(inCar, context)
-            appChooser = false
+            appChooser = null
         }
     }
 }

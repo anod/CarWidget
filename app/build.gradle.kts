@@ -55,8 +55,8 @@ dependencies {
 }
 
 android {
-    // compileSdk = 30
-    compileSdkPreview = "android-S"
+    compileSdk = 31
+    // compileSdkPreview = "android-S"
 
     buildFeatures {
         viewBinding = true
@@ -64,8 +64,8 @@ android {
 
     defaultConfig {
         minSdk = 29
-        //targetSdk = 31 // 29 wifi switch not working
-        targetSdkPreview = "S"
+        targetSdk = 31 // 29 wifi switch not working
+        // targetSdkPreview = "S"
         versionCode = 22000
         versionName = "2.2.0"
         vectorDrawables.generatedDensities("hdpi", "xxhdpi")

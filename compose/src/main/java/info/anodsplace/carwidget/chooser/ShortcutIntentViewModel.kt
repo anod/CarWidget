@@ -15,16 +15,11 @@ class ShortcutIntentViewModel(application: Application) : AndroidViewModel(appli
     private val packageManager: PackageManager
         get() = context.packageManager
 
-    private fun resolveIntentItems(baseIntent: Intent) {
+    private fun resolveIntentItems(context: Context, baseIntent: Intent): List<ChooserEntry> {
         val list = packageManager.queryIntentActivities(
             baseIntent, 0 /* no flags */
         )
         Collections.sort(list, ResolveInfo.DisplayNameComparator(packageManager))
-
-        val listSize = list.size
-        for (i in 0 until listSize) {
-            val resolveInfo = list[i]
-            items.add(PickAdapter.Item(this, packageManager, resolveInfo))
-        }
+        return list.map { resolveInfo -> ChooserEntry(packageManager, resolveInfo) }
     }
 }

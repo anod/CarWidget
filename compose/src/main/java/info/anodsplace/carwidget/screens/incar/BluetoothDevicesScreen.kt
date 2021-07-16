@@ -2,10 +2,7 @@ package info.anodsplace.carwidget.screens.incar
 
 import android.bluetooth.BluetoothAdapter
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -70,10 +67,10 @@ fun BluetoothPermissions(viewModel: BluetoothDevicesViewModel, modifier: Modifie
     val bluetoothPermissions = rememberLauncherForActivityResult(contract = RequestMultiplePermissions(listOf(BluetoothScan, BluetoothConnect))) { (allGranted, _) ->
         viewModel.requiresPermission.value = allGranted
     }
-    Column(modifier = modifier) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = stringResource(id = R.string.bluetooth_device_category_title))
         Text(text = stringResource(id = R.string.allow_bluetooth_summary))
-        Button(onClick = {
+        Button(modifier = Modifier.padding(16.dp), onClick = {
             bluetoothPermissions.launch(null)
         }) {
             Text(text = stringResource(id = R.string.allow_bluetooth))

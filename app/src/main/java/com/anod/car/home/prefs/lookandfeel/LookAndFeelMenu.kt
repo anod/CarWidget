@@ -1,33 +1,14 @@
 package com.anod.car.home.prefs.lookandfeel
 
-import android.appwidget.AppWidgetManager
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.NumberPicker
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
-import com.android.colorpicker.ColorPickerSwatch
 import com.anod.car.home.R
-import com.anod.car.home.app.App
 import com.anod.car.home.prefs.LookAndFeelActivity
-import com.anod.car.home.prefs.colorpicker.CarHomeColorPickerDialog
-import com.anod.car.home.utils.FastBitmapDrawable
-import com.anod.car.home.utils.HtmlCompat
 import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
-import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import info.anodsplace.carwidget.content.preferences.WidgetSettings
-import info.anodsplace.carwidget.content.preferences.WidgetStorage
-import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import info.anodsplace.framework.app.DialogCustom
-import info.anodsplace.framework.app.DialogMessage
-import info.anodsplace.framework.app.DialogSingleChoice
-import info.anodsplace.framework.content.startActivityForResultSafely
 
 /**
  * @author alex

@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.screens.incar
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +32,8 @@ fun InCarMainScreen(
     PreferencesScreen(
         preferences = viewModel.items,
         modifier = modifier,
+        categoryColor = MaterialTheme.colors.secondary,
+        descriptionColor = MaterialTheme.colors.onBackground,
         onClick = { item -> onPreferenceClick(item, viewModel.inCar) { textItem ->
             when (textItem.key) {
                 "bt-device-screen" -> {

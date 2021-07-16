@@ -1,11 +1,9 @@
 package info.anodsplace.carwidget.screens.incar
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -28,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.chooser.AppsPackageLoader
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.MediaListLoader
@@ -37,6 +36,7 @@ import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.screens.about.AboutUiAction
 import info.anodsplace.carwidget.utils.SystemIconSize
 import info.anodsplace.compose.PicassoIcon
+import info.anodsplace.framework.content.forLauncher
 
 @Composable
 fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifier) {
@@ -85,19 +85,23 @@ fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifi
         }
 
         if (shortcutIndex >= 0) {
-            val loader by remember { mutableStateOf(MediaListLoader(context)) }
             ChooserDialog(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.fillMaxHeight(fraction = 0.8f),
                 headers = listOf(
                     Header(stringResource(R.string.none), iconVector = Icons.Filled.Cancel)
                 ),
-                appsLoader = loader,
+                appsLoader = viewModel.appsLoader,
                 onDismissRequest = { shortcutIndex = -1 },
                 onClick = { entry ->
-                    viewModel.notificationShortcuts.saveIntent(
-                        shortcutIndex,
-                        entry.componentName
-                    )
+                    if (entry.componentName == null) {
+                        viewModel.notificationShortcuts.drop(shortcutIndex)
+                    } else {
+                        viewModel.notificationShortcuts.saveIntent(
+                                shortcutIndex,
+                                entry.getIntent(baseIntent = null),
+                                isApplicationShortcut = true
+                        )
+                    }
                     shortcutIndex = -1
                 })
         }
