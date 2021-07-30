@@ -1,6 +1,7 @@
 package info.anodsplace.carwidget.screens
 
 sealed class UiAction {
+    object None: UiAction()
     object OnBackNav: UiAction()
     open class IntentEditAction: UiAction()
     class OpenWidgetConfig(val appWidgetId: Int): UiAction()

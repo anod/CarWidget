@@ -98,8 +98,8 @@ fun MainScreen(
         }
     ) { innerPadding ->
         val modifier = Modifier
-            .background(MaterialTheme.colors.background)
-            .padding(innerPadding)
+                .background(MaterialTheme.colors.background)
+                .padding(innerPadding)
         NavHost(navController, startDestination = startDestination, route = startRoute) {
             composable(route = NavItem.Widgets.route) {
                 val widgetsListViewModel: WidgetsListViewModel = viewModel()
@@ -112,14 +112,17 @@ fun MainScreen(
                     )
                 }
             }
-            composable(
-                route = NavItem.CurrentWidget.route,
-            ) {
+            composable(route = NavItem.CurrentWidget.route) {
                 val appContext = LocalContext.current.applicationContext
                 val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetId))
                 val currentSkin by skinViewModel.currentSkin.collectAsState(initial = skinViewModel.skinList.current)
                 currentSkinValue = currentSkin.value
                 WidgetSkinScreen(skinList = skinViewModel.skinList, viewModel = skinViewModel, modifier = Modifier.padding(innerPadding))
+
+                val widgetAction by action.collectAsState(initial = UiAction.None)
+                if (widgetAction != UiAction.None) {
+                    AppBarWidgetAction(widgetAction, action, skinViewModel.widgetSettings)
+                }
             }
             navigation(startDestination = NavItem.InCar.Main.route, route = NavItem.InCar.route) {
                 composable(route = NavItem.InCar.Main.route) {
@@ -147,10 +150,24 @@ fun MainScreen(
                 )
             }
         }
+    }
+}
 
-        if (isWidget) {
-            // action.collectAsState(initial = UiAction.ChooseTileColor)
-        }
+@Composable
+fun AppBarWidgetAction(current: UiAction, action: MutableSharedFlow<UiAction>, widgetSettings: WidgetInterface) {
+    when (current) {
+        is UiAction.ApplyWidget -> { }
+        is UiAction.IntentEditAction -> { }
+        UiAction.None -> { }
+        UiAction.OnBackNav -> { }
+        is UiAction.OpenWidgetConfig -> { }
+        UiAction.ChooseBackgroundColor -> WidgetActionDialog(current, action, widgetSettings)
+        UiAction.ChooseIconsScale -> WidgetActionDialog(current, action, widgetSettings)
+        UiAction.ChooseIconsTheme -> WidgetActionDialog(current, action, widgetSettings)
+        UiAction.ChooseShortcutsNumber -> WidgetActionDialog(current, action, widgetSettings)
+        UiAction.ChooseTileColor -> WidgetActionDialog(current, action, widgetSettings)
+        UiAction.ShowMoreSettings -> WidgetActionDialog(current, action, widgetSettings)
+        is UiAction.SwitchIconsMono -> WidgetActionDialog(current, action, widgetSettings)
     }
 }
 
