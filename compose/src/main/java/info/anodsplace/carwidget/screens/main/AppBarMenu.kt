@@ -15,19 +15,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
+import info.anodsplace.carwidget.screens.WidgetActions
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 @Composable
-fun AppBarMenu(showColor: Boolean, appWidgetId: Int, currentSkinValue: String, action: MutableSharedFlow<UiAction>) {
+fun AppBarMenu(showColor: Boolean, appWidgetId: Int, currentSkinValue: String, action: MutableSharedFlow<UiAction>, navController: NavHostController) {
     val scope = rememberCoroutineScope()
     var expanded by remember { mutableStateOf(false) }
     val isIconsMono = false
     if (showColor) {
         AppBarButton(image = Icons.Filled.SmartDisplay, descRes = R.string.choose_color) {
-            scope.launch {  action.emit(UiAction.ChooseTileColor) }
+            scope.launch {  action.emit(WidgetActions.ChooseTileColor) }
         }
     }
     AppBarButton(image = Icons.Filled.Check, descRes = android.R.string.ok) {
@@ -42,36 +45,36 @@ fun AppBarMenu(showColor: Boolean, appWidgetId: Int, currentSkinValue: String, a
             onDismissRequest = { expanded = false }
         ) {
             DropdownMenuItem(onClick = {
-                scope.launch {  action.emit(UiAction.ChooseShortcutsNumber) }
+                scope.launch {  action.emit(WidgetActions.ChooseShortcutsNumber) }
                 expanded = false
             }) { Text(text = stringResource(id = R.string.number)) }
             DropdownMenuItem(onClick = {
-                scope.launch {  action.emit(UiAction.ChooseBackgroundColor) }
+                scope.launch {  action.emit(WidgetActions.ChooseBackgroundColor) }
                 expanded = false
             }) { Text(text = stringResource(id = R.string.pref_bg_color_title)) }
             DropdownMenuItem(onClick = {
-                scope.launch { action.emit(UiAction.ChooseIconsTheme) }
+                scope.launch { action.emit(WidgetActions.ChooseIconsTheme) }
                 expanded = false
             }) { Text(text = stringResource(id = R.string.icons_theme)) }
             DropdownMenuItem(onClick = {
-                scope.launch {  action.emit(UiAction.SwitchIconsMono(!isIconsMono)) }
+                scope.launch {  action.emit(WidgetActions.SwitchIconsMono(!isIconsMono)) }
                 expanded = false
             }) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = stringResource(id = R.string.pref_icons_mono_title))
                     Checkbox(checked = isIconsMono, onCheckedChange = {
-                        scope.launch {  action.emit(UiAction.SwitchIconsMono(!isIconsMono)) }
+                        scope.launch {  action.emit(WidgetActions.SwitchIconsMono(!isIconsMono)) }
                         expanded = false
                     }, modifier = Modifier.padding(start = 8.dp))
                 }
             }
             DropdownMenuItem(onClick = {
-                scope.launch {  action.emit(UiAction.ChooseIconsScale) }
+                scope.launch {  action.emit(WidgetActions.ChooseIconsScale) }
                 expanded = false
             }) { Text(text = stringResource(id = R.string.pref_scale_icon)) }
             Divider()
-            DropdownMenuItem(onClick = { scope.launch {
-                action.emit(UiAction.ShowMoreSettings) }
+            DropdownMenuItem(onClick = {
+                navController.navigate(NavItem.CurrentWidget.MoreSettings.forId(appWidgetId))
                 expanded = false
             }) { Text(text = stringResource(id = R.string.more)) }
         }

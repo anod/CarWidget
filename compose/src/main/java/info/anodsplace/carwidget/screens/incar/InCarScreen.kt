@@ -50,10 +50,10 @@ fun InCarMainScreen(
                 }
             }
         } },
-        placeholder = { item ->
+        placeholder = { item, paddingValues ->
             when (item.key) {
                 "notif-shortcuts" -> {
-                    Box(modifier = Modifier.padding(16.dp)) {
+                    Box(modifier = Modifier.padding(paddingValues)) {
                         NotificationShortcuts(viewModel)
                     }
                 }

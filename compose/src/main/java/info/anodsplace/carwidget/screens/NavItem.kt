@@ -12,16 +12,24 @@ import info.anodsplace.carwidget.R
 sealed class NavItem(val route: String, val parent: NavItem? = null) {
     abstract class TabItem(route: String, @StringRes val resourceId: Int, val icon: ImageVector) : NavItem(route)
 
-    object Widgets : TabItem("widgets", R.string.widgets, Icons.Filled.Widgets)
+    object Widgets : TabItem("widgets/list", R.string.widgets, Icons.Filled.Widgets)
+
+    object CurrentWidget : TabItem("widgets/{appWidgetId}", R.string.current_widget, Icons.Filled.Widgets) {
+        object Skin : NavItem("widgets/{appWidgetId}/skin", parent = InCar) {
+            fun forId(appWidgetId: Int) = "widgets/$appWidgetId/skin"
+        }
+        object MoreSettings: NavItem("widgets/{appWidgetId}/more", parent = CurrentWidget) {
+            fun forId(appWidgetId: Int) = "widgets/$appWidgetId/more"
+        }
+    }
+
     object InCar : TabItem("incar", R.string.pref_incar_mode_title, Icons.Filled.DirectionsCar) {
         object Main : NavItem("incar/main", parent = InCar)
         object Bluetooth : NavItem("incar/bluetooh", parent = InCar)
         object Media : NavItem("incar/media", parent = InCar)
         object More : NavItem("incar/more", parent = InCar)
     }
-    object CurrentWidget : TabItem("widgets/{appWidgetId}", R.string.current_widget, Icons.Filled.Widgets) {
-        fun forAppWidgetId(appWidgetId: Int) = "widgets/$appWidgetId"
-    }
+
     object Info : TabItem("info", R.string.info, Icons.Outlined.Info)
 
     companion object {
@@ -29,6 +37,6 @@ sealed class NavItem(val route: String, val parent: NavItem? = null) {
             Widgets.route else CurrentWidget.route
 
         fun startRoute(appWidgetId: Int): String? = if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
-            null else CurrentWidget.forAppWidgetId(appWidgetId)
+            null else CurrentWidget.Skin.forId(appWidgetId)
     }
 }

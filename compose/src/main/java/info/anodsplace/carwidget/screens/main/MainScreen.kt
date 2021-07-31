@@ -20,10 +20,13 @@ import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
+import info.anodsplace.carwidget.screens.WidgetActions
 import info.anodsplace.carwidget.screens.about.AboutScreen
 import info.anodsplace.carwidget.screens.about.AboutViewModel
 import info.anodsplace.carwidget.screens.incar.*
 import info.anodsplace.carwidget.screens.widget.SkinPreviewViewModel
+import info.anodsplace.carwidget.screens.widget.WidgetActionDialog
+import info.anodsplace.carwidget.screens.widget.WidgetLookMoreScreen
 import info.anodsplace.carwidget.screens.widget.WidgetSkinScreen
 import info.anodsplace.compose.BackgroundSurface
 import info.anodsplace.compose.ScreenLoadState
@@ -60,7 +63,8 @@ fun MainScreen(
                             showColor = currentSkinValue == WidgetInterface.SKIN_WINDOWS7,
                             appWidgetId = appWidgetId,
                             currentSkinValue = currentSkinValue,
-                            action = action
+                            action = action,
+                            navController = navController
                         )
                     }
                 }
@@ -112,16 +116,30 @@ fun MainScreen(
                     )
                 }
             }
-            composable(route = NavItem.CurrentWidget.route) {
-                val appContext = LocalContext.current.applicationContext
-                val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetId))
-                val currentSkin by skinViewModel.currentSkin.collectAsState(initial = skinViewModel.skinList.current)
-                currentSkinValue = currentSkin.value
-                WidgetSkinScreen(skinList = skinViewModel.skinList, viewModel = skinViewModel, modifier = Modifier.padding(innerPadding))
+            navigation(startDestination = NavItem.CurrentWidget.Skin.route, route = NavItem.CurrentWidget.route) {
+                composable(route = NavItem.CurrentWidget.Skin.route) {
+                    val appContext = LocalContext.current.applicationContext
+                    val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetId))
+                    val currentSkin by skinViewModel.currentSkin.collectAsState(initial = skinViewModel.skinList.current)
+                    currentSkinValue = currentSkin.value
+                    WidgetSkinScreen(
+                            skinList = skinViewModel.skinList,
+                            viewModel = skinViewModel,
+                            modifier = Modifier.padding(innerPadding)
+                    )
 
-                val widgetAction by action.collectAsState(initial = UiAction.None)
-                if (widgetAction != UiAction.None) {
-                    AppBarWidgetAction(widgetAction, action, skinViewModel.widgetSettings)
+                    val widgetAction by action.collectAsState(initial = UiAction.None)
+                    if (widgetAction != UiAction.None) {
+                        AppBarWidgetAction(modifier, widgetAction, action, skinViewModel.widgetSettings)
+                    }
+                }
+                composable(route = NavItem.CurrentWidget.MoreSettings.route) {
+                    val appContext = LocalContext.current.applicationContext
+                    val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetId))
+                    WidgetLookMoreScreen(
+                            settings = skinViewModel.widgetSettings,
+                            modifier = Modifier.padding(innerPadding)
+                    )
                 }
             }
             navigation(startDestination = NavItem.InCar.Main.route, route = NavItem.InCar.route) {
@@ -154,20 +172,15 @@ fun MainScreen(
 }
 
 @Composable
-fun AppBarWidgetAction(current: UiAction, action: MutableSharedFlow<UiAction>, widgetSettings: WidgetInterface) {
+fun AppBarWidgetAction(modifier: Modifier, current: UiAction, action: MutableSharedFlow<UiAction>, widgetSettings: WidgetInterface) {
     when (current) {
-        is UiAction.ApplyWidget -> { }
-        is UiAction.IntentEditAction -> { }
-        UiAction.None -> { }
-        UiAction.OnBackNav -> { }
-        is UiAction.OpenWidgetConfig -> { }
-        UiAction.ChooseBackgroundColor -> WidgetActionDialog(current, action, widgetSettings)
-        UiAction.ChooseIconsScale -> WidgetActionDialog(current, action, widgetSettings)
-        UiAction.ChooseIconsTheme -> WidgetActionDialog(current, action, widgetSettings)
-        UiAction.ChooseShortcutsNumber -> WidgetActionDialog(current, action, widgetSettings)
-        UiAction.ChooseTileColor -> WidgetActionDialog(current, action, widgetSettings)
-        UiAction.ShowMoreSettings -> WidgetActionDialog(current, action, widgetSettings)
-        is UiAction.SwitchIconsMono -> WidgetActionDialog(current, action, widgetSettings)
+        WidgetActions.ChooseBackgroundColor -> WidgetActionDialog(modifier, current, action, widgetSettings)
+        WidgetActions.ChooseIconsScale -> WidgetActionDialog(modifier, current, action, widgetSettings)
+        WidgetActions.ChooseIconsTheme -> WidgetActionDialog(modifier,current, action, widgetSettings)
+        WidgetActions.ChooseShortcutsNumber -> WidgetActionDialog(modifier, current, action, widgetSettings)
+        WidgetActions.ChooseTileColor -> WidgetActionDialog(modifier, current, action, widgetSettings)
+        is WidgetActions.SwitchIconsMono -> WidgetActionDialog(modifier, current, action, widgetSettings)
+        else -> {}
     }
 }
 

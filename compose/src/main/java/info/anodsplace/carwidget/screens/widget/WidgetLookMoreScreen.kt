@@ -1,7 +1,10 @@
 package info.anodsplace.carwidget.screens.widget
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.compose.*
@@ -10,11 +13,13 @@ import info.anodsplace.compose.*
 
 @Composable
 fun FontSize(
+    paddingValues: PaddingValues,
     initialValue: Int,
     onValueChanged: (Int) -> Unit,
     placeholder: PreferenceItem.Placeholder
 ) {
     PreferenceSlider(
+        paddingValues = paddingValues,
         initialValue = initialValue,
         onValueChanged = onValueChanged,
         item = placeholder.toTextItem(),
@@ -74,14 +79,32 @@ private fun createItems(settings: WidgetInterface) = listOf(
 )
 
 @Composable
-fun WidgetLookMoreScreen(settings: WidgetInterface) {
-    PreferencesScreen(preferences = createItems(settings)) { placeholder ->
-        when (placeholder.key) {
-            "font-size" -> { FontSize(
-                initialValue = settings.fontSize,
-                onValueChanged = { settings.fontSize = it},
-                placeholder = placeholder
-            ) }
+fun WidgetLookMoreScreen(modifier: Modifier, settings: WidgetInterface) {
+    BackgroundSurface {
+        PreferencesScreen(
+                modifier = modifier,
+                preferences = createItems(settings),
+                categoryColor = MaterialTheme.colors.secondary,
+                descriptionColor = MaterialTheme.colors.onBackground,
+                onClick = { item ->
+                    when (item) {
+                        is PreferenceItem.CheckBox -> {
+                            settings.applyChange(item.key, item.checked)
+                        }
+                        else -> {}
+                    }
+                }
+        ) { placeholder, paddingValues ->
+            when (placeholder.key) {
+                "font-size" -> {
+                    FontSize(
+                            paddingValues = paddingValues,
+                            initialValue = settings.fontSize,
+                            onValueChanged = { settings.fontSize = it },
+                            placeholder = placeholder
+                    )
+                }
+            }
         }
     }
 }
@@ -90,8 +113,6 @@ fun WidgetLookMoreScreen(settings: WidgetInterface) {
 @Composable
 fun WidgetLookMoreScreenDark() {
     CarWidgetTheme(darkTheme = true) {
-        BackgroundSurface {
-            WidgetLookMoreScreen(WidgetInterface.NoOp())
-        }
+        WidgetLookMoreScreen(Modifier, WidgetInterface.NoOp())
     }
 }

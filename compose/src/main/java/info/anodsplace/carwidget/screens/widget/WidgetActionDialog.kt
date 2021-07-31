@@ -1,24 +1,25 @@
-package info.anodsplace.carwidget.screens.main
+package info.anodsplace.carwidget.screens.widget
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.screens.UiAction
+import info.anodsplace.carwidget.screens.WidgetActions
 import info.anodsplace.compose.ColorDialog
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 @Composable
-fun WidgetActionDialog(current: UiAction, action: MutableSharedFlow<UiAction>, widgetSettings: WidgetInterface) {
+fun WidgetActionDialog(modifier: Modifier, current: UiAction, action: MutableSharedFlow<UiAction>, widgetSettings: WidgetInterface) {
     when (current) {
-        UiAction.ChooseBackgroundColor -> BackgroundColor(widgetSettings, action)
-        UiAction.ChooseIconsScale -> { }
-        UiAction.ChooseIconsTheme -> { }
-        UiAction.ChooseShortcutsNumber -> { }
-        UiAction.ChooseTileColor -> { }
-        UiAction.ShowMoreSettings -> { }
-        is UiAction.SwitchIconsMono -> { }
+        WidgetActions.ChooseBackgroundColor -> BackgroundColor(widgetSettings, action)
+        WidgetActions.ChooseIconsScale -> { }
+        WidgetActions.ChooseIconsTheme -> { }
+        WidgetActions.ChooseShortcutsNumber -> { }
+        WidgetActions.ChooseTileColor -> { }
+        is WidgetActions.SwitchIconsMono -> { }
         else -> {}
     }
 }
