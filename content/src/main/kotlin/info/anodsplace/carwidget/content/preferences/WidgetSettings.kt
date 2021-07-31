@@ -18,7 +18,6 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
 
     interface DefaultsProvider {
         val tileColor: Int
-        val fontColor: Int
         val backgroundColor: Int
     }
 
@@ -65,8 +64,11 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
     override val iconsScale: String
         get() = prefs.getString(ICONS_SCALE, ICONS_DEF_VALUE)!!
 
-    override var fontColor: Int
-        get() = prefs.getInt(FONT_COLOR, defaults.fontColor)
+    override var fontColor: Int?
+        get() = if (prefs.contains(FONT_COLOR))  {
+                val color = prefs.getInt(FONT_COLOR, Color.WHITE)
+                if (color == Color.WHITE) null else color
+            } else null
         set(fontColor) = applyChange(FONT_COLOR, fontColor)
 
     override var fontSize: Int
@@ -100,7 +102,7 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
 
     var paletteBackground: Boolean
         get() = prefs.getBoolean("palette-background", false)
-        set(paletteBackgroun) = applyChange("palette-background", paletteBackgroun)
+        set(paletteBackground) = applyChange("palette-background", paletteBackground)
 
     val adaptiveIconPath: Path
         get() {
@@ -134,7 +136,9 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
         writer.name(ICONS_ROTATE).value(iconsRotate.name)
 
         writer.name(FONT_SIZE).value(fontSize.toLong())
-        writer.name(FONT_COLOR).value(fontColor.toLong())
+        if (fontColor != null) {
+            writer.name(FONT_COLOR).value(fontColor!!.toLong())
+        }
 
         writer.name(TRANSPARENT_BTN_SETTINGS).value(isSettingsTransparent)
         writer.name(TRANSPARENT_BTN_INCAR).value(isIncarTransparent)

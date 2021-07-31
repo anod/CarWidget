@@ -91,6 +91,9 @@ fun WidgetLookMoreScreen(modifier: Modifier, settings: WidgetInterface) {
                         is PreferenceItem.CheckBox -> {
                             settings.applyChange(item.key, item.checked)
                         }
+                        is PreferenceItem.Switch -> {
+                            settings.applyChange(item.key, item.checked)
+                        }
                         else -> {}
                     }
                 }

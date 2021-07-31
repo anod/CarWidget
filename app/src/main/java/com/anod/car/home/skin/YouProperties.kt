@@ -24,6 +24,9 @@ class YouProperties : BaseProperties() {
     override val iconPaddingRes: Int
         get() = 0
 
+    override val fontColorRes: Int
+        get() = 0
+
     override fun getLayout(number: Int): Int {
         return when (number) {
             4 -> R.layout.sk_you_4

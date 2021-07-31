@@ -1,6 +1,5 @@
 package com.anod.car.home.skin
 
-
 import com.anod.car.home.skin.icon.BackgroundProcessor
 import info.anodsplace.carwidget.utils.IconProcessor
 
@@ -14,6 +13,7 @@ interface SkinProperties {
     val iconPaddingRes: Int
     val settingsButtonRes: Int
     val rowLayout: Int
+    val fontColorRes: Int
     fun getLayout(number: Int): Int
     fun hasWidgetButton1(): Boolean
 }

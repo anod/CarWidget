@@ -17,7 +17,7 @@ interface WidgetInterface {
     var isIconsMono: Boolean
     var iconsColor: Int?
     val iconsScale: String
-    var fontColor: Int
+    var fontColor: Int?
     var fontSize: Int
     var backgroundColor: Int
     var iconsRotate: BitmapRotateDirection
@@ -39,7 +39,7 @@ interface WidgetInterface {
         override var isIconsMono: Boolean = false,
         override var iconsColor: Int? = null,
         override val iconsScale: String = "",
-        override var fontColor: Int = 0,
+        override var fontColor: Int? = null,
         override var fontSize: Int = 0,
         override var backgroundColor: Int = 0,
         override var iconsRotate: BitmapRotateDirection = BitmapRotateDirection.NONE,

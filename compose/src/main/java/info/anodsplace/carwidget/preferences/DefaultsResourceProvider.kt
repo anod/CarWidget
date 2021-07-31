@@ -12,8 +12,6 @@ class DefaultsResourceProvider(private val resources: Resources): WidgetSettings
 
     override val tileColor: Int
         get() =  ResourcesCompat.getColor(resources, R.color.w7_tale_default_background, null)
-    override val fontColor: Int
-        get() = ResourcesCompat.getColor(resources, R.color.default_font_color, null)
     override val backgroundColor: Int
         get() = ResourcesCompat.getColor(resources, R.color.default_background, null)
 }

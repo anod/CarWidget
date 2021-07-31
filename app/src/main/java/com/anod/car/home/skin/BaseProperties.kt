@@ -24,6 +24,9 @@ abstract class BaseProperties : SkinProperties {
     override val iconPaddingRes: Int
         get() = R.dimen.icon_padding_bottom
 
+    override val fontColorRes: Int
+        get() = R.color.default_font_color
+
     override val backgroundProcessor: BackgroundProcessor?
         get() = null
 
