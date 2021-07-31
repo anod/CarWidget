@@ -75,12 +75,12 @@ fun MainScreen(
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
                 items.forEachIndexed { _, item ->
-                    val route = item.route.replace("{appWidgetId}", "$appWidgetId")
                     BottomNavigationItem(
                         icon = { Icon(item.icon, contentDescription = null) },
                         label = { Text(stringResource(id = item.resourceId)) },
                         selected = currentRoute?.startsWith(item.route) == true,
                         onClick = {
+                            val route = item.route.replace("{appWidgetId}", "$appWidgetId")
                             navController.navigate(route) {
                                 // Pop up to the start destination of the graph to
                                 // avoid building up a large stack of destinations
@@ -93,7 +93,7 @@ fun MainScreen(
                                 // reselecting the same item
                                 launchSingleTop = true
                                 // Restore state when reselecting a previously selected item
-                                restoreState = true
+                                restoreState = false
                             }
                         }
                     )
