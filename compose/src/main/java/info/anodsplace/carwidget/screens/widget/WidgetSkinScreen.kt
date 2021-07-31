@@ -16,7 +16,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun WidgetSkinPreview(skinItem: SkinList.Item, viewModel: SkinPreviewViewModel) {
-    val view: View? by viewModel.load(skinItem).collectAsState(initial = null)
+    val view: View? by produceState(initialValue = null as? View, skinItem) {
+        val view = viewModel.load(skinItem)
+        value = view
+    }
     if (view == null) {
         CircularProgressIndicator()
     } else {
