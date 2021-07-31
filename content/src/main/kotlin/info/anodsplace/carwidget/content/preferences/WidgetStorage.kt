@@ -13,9 +13,9 @@ import java.util.Locale
 object WidgetStorage {
 
     private const val LAUNCH_COMPONENT_NUMBER_MAX = 10
-    private const val LAUNCH_COMPONENT_NUMBER_DEFAULT = 6
+    internal const val LAUNCH_COMPONENT_NUMBER_DEFAULT = 6
 
-    private const val CMP_NUMBER = "cmp-number"
+    internal const val CMP_NUMBER = "cmp-number"
     private const val LAUNCH_COMPONENT = "launch-component-%d"
 
     const val PREF_NAME = "widget-%d"
@@ -49,8 +49,7 @@ object WidgetStorage {
 
     fun getLaunchComponentNumber(context: Context, appWidgetId: Int): Int {
         val prefs = getSharedPreferences(context, appWidgetId)
-        val num = prefs
-                .getInt(CMP_NUMBER, prefs.getInt("cmp-number", LAUNCH_COMPONENT_NUMBER_DEFAULT))
+        val num = prefs.getInt(CMP_NUMBER, LAUNCH_COMPONENT_NUMBER_DEFAULT)
         return if (num == 0) LAUNCH_COMPONENT_NUMBER_DEFAULT else num
     }
 

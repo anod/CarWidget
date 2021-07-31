@@ -69,7 +69,9 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
                 val color = prefs.getInt(FONT_COLOR, Color.WHITE)
                 if (color == Color.WHITE) null else color
             } else null
-        set(fontColor) = applyChange(FONT_COLOR, fontColor)
+        set(fontColor) {
+            applyChange(FONT_COLOR, fontColor)
+        }
 
     override var fontSize: Int
         get() = prefs.getInt(FONT_SIZE, WidgetInterface.FONT_SIZE_UNDEFINED)
@@ -114,6 +116,13 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
                 else -> Path()
             }
         }
+
+    override var shortcutsNumber: Int
+        get() {
+            val num = prefs.getInt(WidgetStorage.CMP_NUMBER, WidgetStorage.LAUNCH_COMPONENT_NUMBER_DEFAULT)
+            return if (num == 0) WidgetStorage.LAUNCH_COMPONENT_NUMBER_DEFAULT else num
+        }
+        set(value) = applyChange(WidgetStorage.CMP_NUMBER, value)
 
     override fun setIconsScaleString(iconsScale: String) {
         applyChange(ICONS_SCALE, iconsScale)

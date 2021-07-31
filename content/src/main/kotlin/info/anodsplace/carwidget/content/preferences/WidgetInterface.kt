@@ -24,6 +24,7 @@ interface WidgetInterface {
     var isTitlesHide: Boolean
     var widgetButton1: Int
     var widgetButton2: Int
+    var shortcutsNumber: Int
 
     fun setIconsScaleString(iconsScale: String)
     fun queueChange(key: String, value: Any?)
@@ -45,7 +46,8 @@ interface WidgetInterface {
         override var iconsRotate: BitmapRotateDirection = BitmapRotateDirection.NONE,
         override var isTitlesHide: Boolean = false,
         override var widgetButton1: Int = 0,
-        override var widgetButton2: Int = 0
+        override var widgetButton2: Int = 0,
+        override var shortcutsNumber: Int = 8
     ) : WidgetInterface {
         override fun setIconsScaleString(iconsScale: String) { }
         override fun queueChange(key: String, value: Any?) {}
