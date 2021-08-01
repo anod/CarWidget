@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.*
 import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.Picasso
-import info.anodsplace.carwidget.compose.CarWidgetTheme
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.extensions.extras

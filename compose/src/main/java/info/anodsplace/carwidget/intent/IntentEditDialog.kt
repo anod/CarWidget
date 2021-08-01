@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.R
-import info.anodsplace.carwidget.compose.CarWidgetTheme
+import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.applog.AppLog
 import info.anodsplace.framework.util.isScalar
 import info.anodsplace.framework.util.put

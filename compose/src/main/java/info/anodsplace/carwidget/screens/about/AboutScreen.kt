@@ -24,7 +24,7 @@ import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.MediaListLoader
 import info.anodsplace.compose.BackgroundSurface
-import info.anodsplace.carwidget.compose.CarWidgetTheme
+import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.compose.PreferenceCategory
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.carwidget.content.backup.Backup

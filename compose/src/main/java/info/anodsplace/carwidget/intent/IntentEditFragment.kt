@@ -11,7 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import info.anodsplace.carwidget.compose.CarWidgetTheme
+import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.compose.LocalBackPressedDispatcher
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.applog.AppLog

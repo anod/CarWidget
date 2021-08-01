@@ -21,10 +21,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.R
-import info.anodsplace.carwidget.compose.*
 import androidx.compose.material.Text
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.screens.CarWidgetToolbar
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.compose.*

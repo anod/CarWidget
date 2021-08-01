@@ -1,6 +1,5 @@
 package info.anodsplace.carwidget.screens.incar
 
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,7 +10,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,17 +24,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import info.anodsplace.carwidget.R
-import info.anodsplace.carwidget.chooser.AppsPackageLoader
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.Header
-import info.anodsplace.carwidget.chooser.MediaListLoader
 import info.anodsplace.compose.BackgroundSurface
-import info.anodsplace.carwidget.compose.CarWidgetTheme
+import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.content.db.iconUri
-import info.anodsplace.carwidget.screens.about.AboutUiAction
 import info.anodsplace.carwidget.utils.SystemIconSize
 import info.anodsplace.compose.PicassoIcon
-import info.anodsplace.framework.content.forLauncher
 
 @Composable
 fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifier) {

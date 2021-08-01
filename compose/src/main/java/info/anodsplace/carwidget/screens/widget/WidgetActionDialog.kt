@@ -23,7 +23,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
-import info.anodsplace.carwidget.compose.CarWidgetTheme
+import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.screens.WidgetActions
@@ -35,13 +35,34 @@ import kotlinx.coroutines.launch
 fun WidgetActionDialog(modifier: Modifier, current: UiAction, action: MutableSharedFlow<UiAction>, widgetSettings: WidgetInterface) {
     when (current) {
         WidgetActions.ChooseBackgroundColor -> BackgroundColor(widgetSettings, action)
-        WidgetActions.ChooseIconsScale -> { }
+        WidgetActions.ChooseIconsScale -> IconScaleDialog(widgetSettings, action)
         WidgetActions.ChooseIconsTheme -> { }
         WidgetActions.ChooseShortcutsNumber -> ShortcutNumbersDialog(modifier, widgetSettings, action)
         WidgetActions.ChooseTileColor -> { }
         is WidgetActions.SwitchIconsMono -> { }
         else -> {}
     }
+}
+
+@Composable
+fun IconScaleDialog(prefs: WidgetInterface, action: MutableSharedFlow<UiAction>) {
+    val coroutineScope = rememberCoroutineScope()
+
+    Dialog(
+            onDismissRequest = {
+                coroutineScope.launch { action.emit(UiAction.None) }
+            },
+            properties = DialogProperties()
+    ) {
+        Surface {
+            IconScale(prefs, action)
+        }
+    }
+}
+
+@Composable
+fun IconScale(prefs: WidgetInterface, action: MutableSharedFlow<UiAction>) {
+    (0..20)
 }
 
 @Composable
@@ -103,7 +124,7 @@ fun ShortcutsNumber(number: Int, current: Int, boxSize: Dp, onClick: (Int) -> Un
                         .size(size = 80.dp)
                         .border(
                             width = if (current == number) 2.dp else 0.dp,
-                            color = Color.Black,
+                            color = MaterialTheme.colors.primaryVariant,
                             shape = RoundedCornerShape(4.dp)
                         ),
                 verticalArrangement = Arrangement.Center,
@@ -113,12 +134,18 @@ fun ShortcutsNumber(number: Int, current: Int, boxSize: Dp, onClick: (Int) -> Un
                 Row(modifier = Modifier.padding(top = 1.dp)) {
                     Box(modifier = Modifier
                             .size(boxSize)
-                            .background(Color.Black, shape = RoundedCornerShape(4.dp))) {
+                            .background(
+                                    color = MaterialTheme.colors.primaryVariant,
+                                    shape = RoundedCornerShape(4.dp)
+                            )) {
                     }
                     Box(modifier = Modifier
                             .size(boxSize)
                             .padding(start = 1.dp)
-                            .background(Color.Black, shape = RoundedCornerShape(4.dp)))
+                            .background(
+                                    color = MaterialTheme.colors.primaryVariant,
+                                    shape = RoundedCornerShape(4.dp)
+                            ))
                 }
             }
         }

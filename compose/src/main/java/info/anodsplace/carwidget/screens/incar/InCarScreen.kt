@@ -10,11 +10,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import info.anodsplace.carwidget.compose.*
+import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.compose.BackgroundSurface
