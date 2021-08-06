@@ -105,10 +105,10 @@ fun ShortcutsNumbers(current: Int, onClick: (Int) -> Unit) {
             modifier = Modifier.padding(16.dp),
             mainAxisAlignment = MainAxisAlignment.Start
     ) {
-        ShortcutsNumber(number = 4, current = current, boxSize = 32.dp, onClick = onClick)
-        ShortcutsNumber(number = 6, current = current, boxSize = 20.dp, onClick = onClick)
-        ShortcutsNumber(number = 8, current = current, boxSize = 16.dp, onClick = onClick)
-        ShortcutsNumber(number = 10, current = current, boxSize = 12.dp, onClick = onClick)
+        ShortcutsNumber(number = 4, current = current, boxSize = 40.dp, onClick = onClick)
+        ShortcutsNumber(number = 6, current = current, boxSize = 28.dp, onClick = onClick)
+        ShortcutsNumber(number = 8, current = current, boxSize = 22.dp, onClick = onClick)
+        ShortcutsNumber(number = 10, current = current, boxSize = 18.dp, onClick = onClick)
      }
 }
 
@@ -120,7 +120,7 @@ fun ShortcutsNumber(number: Int, current: Int, boxSize: Dp, onClick: (Int) -> Un
             .clickable { onClick(number) }) {
         Column(
                 modifier = Modifier
-                        .size(size = 80.dp)
+                        .size(size = 96.dp)
                         .border(
                             width = if (current == number) 2.dp else 0.dp,
                             color = MaterialTheme.colors.primaryVariant,

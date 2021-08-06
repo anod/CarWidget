@@ -20,7 +20,7 @@ dependencies {
     implementation(project(":lib:framework"))
     implementation(project(":lib:colorpicker"))
 
-    implementation("io.insert-koin:koin-core:3.0.2")
+    implementation("io.insert-koin:koin-core:3.1.2")
     implementation("com.squareup.picasso:picasso:2.8")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
@@ -31,7 +31,7 @@ dependencies {
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.core:core-ktx:1.6.0")
-    implementation("androidx.activity:activity:1.3.0")
+    implementation("androidx.activity:activity:1.3.1")
     implementation("androidx.fragment:fragment:1.3.6")
     implementation("androidx.fragment:fragment-ktx:1.3.6")
     implementation("androidx.collection:collection-ktx:1.1.0")
@@ -43,15 +43,15 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-common-java8:2.3.1")
     kapt("androidx.lifecycle:lifecycle-compiler:2.3.1")
 
-    implementation("ch.acra:acra-core:5.8.3")
-    implementation("ch.acra:acra-notification:5.8.3")
-    implementation("ch.acra:acra-limiter:5.8.3")
+    implementation("ch.acra:acra-core:5.8.4")
+    implementation("ch.acra:acra-notification:5.8.4")
+    implementation("ch.acra:acra-limiter:5.8.4")
 
     compileOnly("com.google.auto.service:auto-service-annotations:1.0")
     kapt("com.google.auto.service:auto-service:1.0")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.21")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
 }
 
 android {
