@@ -113,7 +113,7 @@ class IconThemesActivity : AppsListActivity() {
         }
         if (update) {
             prefs.iconsTheme = themePackageName
-            prefs.apply()
+            prefs.applyPending()
         }
         finish()
     }

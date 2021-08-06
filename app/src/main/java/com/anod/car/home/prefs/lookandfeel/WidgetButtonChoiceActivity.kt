@@ -92,7 +92,7 @@ class WidgetButtonChoiceActivity : AppCompatGridActivity() {
         } else {
             prefs.widgetButton2 = item.value
         }
-        prefs.apply()
+        prefs.applyPending()
         finish()
     }
 

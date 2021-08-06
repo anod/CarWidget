@@ -34,7 +34,7 @@ interface InCarInterface {
 
     fun queueChange(key: String, value: Any?)
     fun applyChange(key: String, value: Any?)
-    fun apply()
+    fun applyPending()
 
     companion object {
         const val BRIGHTNESS_DISABLED = "disabled"
@@ -88,6 +88,6 @@ interface InCarInterface {
     ) : InCarInterface {
         override fun queueChange(key: String, value: Any?) {}
         override fun applyChange(key: String, value: Any?) {}
-        override fun apply() {}
+        override fun applyPending() {}
     }
 }

@@ -44,7 +44,7 @@ class MusicAppChoiceActivity : AppsListActivity() {
         if (binding.defaultApp.isChecked) {
             val appSettings = App.provide(this).appSettings
             appSettings.musicApp = musicCmp
-            appSettings.apply()
+            appSettings.applyPending()
         }
 
         finish()

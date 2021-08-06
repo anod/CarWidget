@@ -109,8 +109,7 @@ fun ShortcutsNumbers(current: Int, onClick: (Int) -> Unit) {
         ShortcutsNumber(number = 6, current = current, boxSize = 20.dp, onClick = onClick)
         ShortcutsNumber(number = 8, current = current, boxSize = 16.dp, onClick = onClick)
         ShortcutsNumber(number = 10, current = current, boxSize = 12.dp, onClick = onClick)
-        ShortcutsNumber(number = 12, current = current, boxSize = 10.dp, onClick = onClick)
-    }
+     }
 }
 
 @Composable

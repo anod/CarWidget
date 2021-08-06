@@ -19,13 +19,16 @@ class WidgetShortcutsModel(context: Context, private val defaultsProvider: Widge
     override val iconLoader: ShortcutIconLoader
         get() = ShortcutIconLoader(shortcutsDatabase, defaultsProvider, appWidgetId, context)
 
+    private val widgetSettings: WidgetSettings
+        get() = WidgetStorage.load(context, defaultsProvider, appWidgetId)
+
     public override fun loadCount() {
-        count = WidgetStorage.getLaunchComponentNumber(context, appWidgetId)
+        count = widgetSettings.shortcutsNumber
     }
 
     override fun updateCount(count: Int) {
         this.count = count
-        WidgetStorage.saveLaunchComponentNumber(count, context, appWidgetId)
+        widgetSettings.shortcutsNumber = count
     }
 
     override fun loadIds(): ArrayList<Long> {

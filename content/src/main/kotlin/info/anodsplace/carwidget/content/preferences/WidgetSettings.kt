@@ -9,6 +9,7 @@ import android.util.JsonWriter
 import androidx.collection.SimpleArrayMap
 import androidx.core.graphics.PathParser
 import java.io.IOException
+import java.lang.Integer.min
 
 /**
  * @author algavris
@@ -120,9 +121,9 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
     override var shortcutsNumber: Int
         get() {
             val num = prefs.getInt(WidgetStorage.CMP_NUMBER, WidgetStorage.LAUNCH_COMPONENT_NUMBER_DEFAULT)
-            return if (num == 0) WidgetStorage.LAUNCH_COMPONENT_NUMBER_DEFAULT else num
+            return if (num == 0) WidgetStorage.LAUNCH_COMPONENT_NUMBER_DEFAULT else min(num, WidgetStorage.LAUNCH_COMPONENT_NUMBER_MAX)
         }
-        set(value) = applyChange(WidgetStorage.CMP_NUMBER, value)
+        set(value) = applyChange(WidgetStorage.CMP_NUMBER, min(value, WidgetStorage.LAUNCH_COMPONENT_NUMBER_MAX))
 
     override fun setIconsScaleString(iconsScale: String) {
         applyChange(ICONS_SCALE, iconsScale)

@@ -100,7 +100,7 @@ class AboutViewModel(application: Application): AndroidViewModel(application), K
                     AboutUiAction.ChangeTheme -> {
                         val newThemeIdx = if (screenState.value.themeIndex == 0) 1 else 0
                         appSettings.theme = newThemeIdx
-                        appSettings.apply()
+                        appSettings.applyPending()
                         screenState.value = screenState.value.copy(themeIndex = appSettings.theme, themeName = themes[newThemeIdx])
                     }
                     is AboutUiAction.ChangeMusicApp -> {

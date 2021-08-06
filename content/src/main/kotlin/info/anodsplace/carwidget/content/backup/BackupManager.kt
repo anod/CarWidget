@@ -62,8 +62,7 @@ class BackupManager(private val context: Context, private val resourceDefaults: 
     }
 
     private fun doRestoreWidget(inputStream: InputStream?, appWidgetId: Int): Int {
-        val sharedPrefs = WidgetStorage.getSharedPreferences(context, appWidgetId)
-        val widget = WidgetSettings(sharedPrefs, resourceDefaults)
+        val widget = WidgetStorage.load(context, resourceDefaults, appWidgetId)
 
         val shortcutsJsonReader = ShortcutsJsonReader(context)
         var shortcuts = SparseArray<ShortcutsJsonReader.ShortcutWithIconAndPosition>()
@@ -97,11 +96,11 @@ class BackupManager(private val context: Context, private val resourceDefaults: 
             return Backup.ERROR_INCORRECT_FORMAT
         }
 
-        sharedPrefs.edit().clear().apply()
-        widget.apply()
+        widget.clear()
+        widget.applyPending()
         // small check
         if (shortcuts.size() % 2 == 0) {
-            WidgetStorage.saveLaunchComponentNumber(shortcuts.size(), context, appWidgetId)
+            widget.shortcutsNumber = shortcuts.size()
         }
         val model = WidgetShortcutsModel.init(context, resourceDefaults, appWidgetId)
 
@@ -209,7 +208,7 @@ class BackupManager(private val context: Context, private val resourceDefaults: 
         val model = NotificationShortcutsModel.init(context)
 
         sharedPrefs.edit().clear().apply()
-        incar.apply()
+        incar.applyPending()
         restoreShortcuts(model, shortcuts)
 
         return Backup.RESULT_DONE

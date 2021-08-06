@@ -41,7 +41,7 @@ class WidgetViewBuilder(private val context: Context,
         if (prefs.isFirstTime) {
             shortcutsModel.createDefaultShortcuts()
             prefs.isFirstTime = false
-            prefs.apply()
+            prefs.applyPending()
         }
 
         shortcutsModel.init()

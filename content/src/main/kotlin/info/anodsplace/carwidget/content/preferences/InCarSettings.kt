@@ -134,7 +134,7 @@ class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPref
             queueChange("screen-on-alert-enabled", value.enabled)
             queueChange("screen-on-alert-x", value.loc[0])
             queueChange("screen-on-alert-y", value.loc[1])
-            apply()
+            applyPending()
         }
 
     @Throws(IOException::class)

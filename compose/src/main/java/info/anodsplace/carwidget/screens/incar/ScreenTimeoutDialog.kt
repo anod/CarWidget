@@ -27,7 +27,7 @@ import info.anodsplace.framework.content.startActivitySafely
 fun InCarInterface.saveScreenTimeout(disabled: Boolean, disableCharging: Boolean) {
     isDisableScreenTimeout = disabled
     isDisableScreenTimeoutCharging = disableCharging
-    apply()
+    applyPending()
 }
 
 @Composable
@@ -78,7 +78,7 @@ fun ScreenTimeoutContent(inCar: InCarInterface) {
             } else {
                 inCar.screenOnAlert = InCarInterface.ScreenOnAlertSettings(false, inCar.screenOnAlert)
             }
-            inCar.apply()
+            inCar.applyPending()
         }
     }
 }

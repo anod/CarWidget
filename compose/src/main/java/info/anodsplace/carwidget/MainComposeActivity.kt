@@ -44,7 +44,7 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
                     is UiAction.ApplyWidget -> {
                         val prefs: WidgetInterface = get(parameters = { parametersOf(it.appWidgetId) })
                         prefs.skin = it.skinValue
-                        prefs.apply()
+                        prefs.applyPending()
                         requestWidgetUpdate(it.appWidgetId)
                         finish()
                     }

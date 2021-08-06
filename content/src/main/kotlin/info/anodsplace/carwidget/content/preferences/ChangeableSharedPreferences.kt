@@ -38,7 +38,11 @@ open class ChangeableSharedPreferences(prefs: SharedPreferences) {
         _changes.value = Pair(key, value)
     }
 
-    fun apply() {
+    fun clear() {
+        prefs.edit().clear().apply()
+    }
+
+    fun applyPending() {
         if (pendingChanges.isEmpty) {
             return
         }

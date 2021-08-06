@@ -10,7 +10,6 @@ import com.anod.car.home.databinding.ListFooterMusicAppSettingsBinding
 import info.anodsplace.carwidget.chooser.AppsListViewModel
 import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.chooser.MediaListLoader
-import java.util.*
 
 /**
  * @author alex
@@ -41,7 +40,7 @@ class MusicAppSettingsActivity : AppsListActivity() {
         } else {
             appSettings.musicApp = entry.componentName
         }
-        appSettings.apply()
+        appSettings.applyPending()
         finish()
     }
 }

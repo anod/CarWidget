@@ -29,7 +29,7 @@ interface WidgetInterface {
     fun setIconsScaleString(iconsScale: String)
     fun queueChange(key: String, value: Any?)
     fun applyChange(key: String, value: Any?)
-    fun apply()
+    fun applyPending()
 
     class NoOp(
         override var iconsTheme: String = "",
@@ -52,7 +52,7 @@ interface WidgetInterface {
         override fun setIconsScaleString(iconsScale: String) { }
         override fun queueChange(key: String, value: Any?) {}
         override fun applyChange(key: String, value: Any?) {}
-        override fun apply() {}
+        override fun applyPending() {}
     }
 
     companion object {
