@@ -1,5 +1,8 @@
 package info.anodsplace.carwidget.content.preferences
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+
 enum class BitmapRotateDirection {
     NONE, RIGHT, LEFT
 }
@@ -9,6 +12,8 @@ enum class BitmapRotateDirection {
  * @date 09/04/2016.
  */
 interface WidgetInterface {
+    val changes: Flow<Pair<String, Any?>>
+
     var iconsTheme: String
     var isSettingsTransparent: Boolean
     var isIncarTransparent: Boolean
@@ -49,6 +54,7 @@ interface WidgetInterface {
         override var widgetButton2: Int = 0,
         override var shortcutsNumber: Int = 8
     ) : WidgetInterface {
+        override val changes = emptyFlow<Pair<String, Any?>>()
         override fun setIconsScaleString(iconsScale: String) { }
         override fun queueChange(key: String, value: Any?) {}
         override fun applyChange(key: String, value: Any?) {}

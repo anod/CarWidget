@@ -21,6 +21,7 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import info.anodsplace.carwidget.screens.WidgetActions
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
@@ -54,7 +55,13 @@ class SkinPreviewViewModel(application: Application, var appWidgetId: Int): Andr
     val skinList = SkinList(widgetSettings.skin, application)
     val shortcuts: WidgetShortcutsModel by lazy { WidgetShortcutsModel(application, DefaultsResourceProvider(application), appWidgetId) }
     val currentSkin = MutableStateFlow(skinList.current)
-
+    val reload: Flow<Int> = widgetSettings.changes
+            .map { (System.currentTimeMillis() / 1000).toInt() }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = 0)
+            .filter { it > 0 }
+            .onEach {
+                delay(300)
+            }
     class Factory(private val appContext: Context, private val appWidgetId: Int): ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T = SkinPreviewViewModel(appContext as Application, appWidgetId) as T
     }
@@ -64,7 +71,7 @@ class SkinPreviewViewModel(application: Application, var appWidgetId: Int): Andr
         bitmapMemoryCache.evictAll()
     }
 
-    suspend fun load(overrideSkin: SkinList.Item): View? {
+    suspend fun load(overrideSkin: SkinList.Item): View {
         val intentFactory: PendingIntentFactory = get<PreviewPendingIntentFactory>(parameters = { parametersOf(appWidgetId, overrideSkin) })
         val widgetView: WidgetView = get(parameters = { parametersOf(appWidgetId, bitmapMemoryCache, intentFactory, true) })
         return renderPreview(widgetView, overrideSkin.value)
@@ -72,7 +79,9 @@ class SkinPreviewViewModel(application: Application, var appWidgetId: Int): Andr
 
     private suspend fun renderPreview(widgetView: WidgetView, overrideSkin: String): View = withContext(Dispatchers.Default) {
         val rv = widgetView.apply {
-            init(overrideSkin)
+            this.overrideSkin = overrideSkin
+            init()
+
         }.create()
         try {
             return@withContext rv.apply(getApplication(), null)

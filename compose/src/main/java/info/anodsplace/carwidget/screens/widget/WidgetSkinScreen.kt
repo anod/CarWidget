@@ -1,6 +1,8 @@
 package info.anodsplace.carwidget.screens.widget
 
+import android.content.Context
 import android.view.View
+import android.widget.FrameLayout
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,11 +14,13 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import info.anodsplace.applog.AppLog
 import kotlinx.coroutines.launch
 
 @Composable
 fun WidgetSkinPreview(skinItem: SkinList.Item, viewModel: SkinPreviewViewModel) {
-    val view: View? by produceState(initialValue = null as? View, skinItem) {
+    val reload by viewModel.reload.collectAsState(initial = 0)
+    val view: View? by produceState(initialValue = null as? View, skinItem, reload) {
         val view = viewModel.load(skinItem)
         value = view
     }
@@ -25,15 +29,14 @@ fun WidgetSkinPreview(skinItem: SkinList.Item, viewModel: SkinPreviewViewModel) 
     } else {
         AndroidView(
             modifier = Modifier.fillMaxSize(), // Occupy the max size in the Compose UI tree
-            factory = { view!! },
-            update = {
-                // View's been inflated or state read in this block has been updated
-                // Add logic here if necessary
-
-                // As selectedItem is read here, AndroidView will recompose
-                // whenever the state changes
-                // Example of Compose -> View communication
-                // view.coordinator.selectedItem = selectedItem.value
+            factory = { context ->
+                FrameLayout(context).apply {
+                    addView(view)
+                }
+            },
+            update = { frameLayout ->
+                frameLayout.removeAllViews()
+                frameLayout.addView(view)
             }
         )
     }

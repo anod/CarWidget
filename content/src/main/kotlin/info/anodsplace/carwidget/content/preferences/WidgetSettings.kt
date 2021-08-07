@@ -8,6 +8,7 @@ import android.util.JsonToken
 import android.util.JsonWriter
 import androidx.collection.SimpleArrayMap
 import androidx.core.graphics.PathParser
+import info.anodsplace.applog.AppLog
 import java.io.IOException
 import java.lang.Integer.min
 
@@ -121,6 +122,7 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
     override var shortcutsNumber: Int
         get() {
             val num = prefs.getInt(WidgetStorage.CMP_NUMBER, WidgetStorage.LAUNCH_COMPONENT_NUMBER_DEFAULT)
+            AppLog.d("render: shortcutsNumber $num")
             return if (num == 0) WidgetStorage.LAUNCH_COMPONENT_NUMBER_DEFAULT else min(num, WidgetStorage.LAUNCH_COMPONENT_NUMBER_MAX)
         }
         set(value) = applyChange(WidgetStorage.CMP_NUMBER, min(value, WidgetStorage.LAUNCH_COMPONENT_NUMBER_MAX))
