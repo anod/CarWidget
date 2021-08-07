@@ -2,10 +2,22 @@ package info.anodsplace.carwidget
 
 import android.appwidget.AppWidgetManager
 import android.os.Bundle
+import android.view.Window
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.Picasso
 import info.anodsplace.carwidget.content.preferences.AppSettings
@@ -14,6 +26,7 @@ import info.anodsplace.carwidget.extensions.extras
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.screens.main.MainScreen
 import info.anodsplace.compose.LocalPicasso
+import info.anodsplace.compose.toColorHex
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -22,7 +35,7 @@ import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 
-open class MainComposeActivity : AppCompatActivity(), KoinComponent {
+open class MainComposeActivity : ComponentActivity(), KoinComponent {
     private val appSettings: AppSettings by inject()
     private val picasso: Picasso by inject()
 
@@ -33,6 +46,7 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
     open fun requestWidgetUpdate(appWidgetId: Int) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
         AppCompatDelegate.setDefaultNightMode(appSettings.nightMode)
         super.onCreate(savedInstanceState)
         val appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
@@ -58,7 +72,10 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
                     AppCompatDelegate.setDefaultNightMode(appSettings.nightMode)
                 }
                 .collectAsState(initial = appSettings.isDarkTheme)
-            CarWidgetTheme(darkTheme = isDarkTheme) {
+            CarWidgetTheme(
+                    context = this@MainComposeActivity,
+                    darkTheme = isDarkTheme
+            ) {
                 CompositionLocalProvider(LocalPicasso provides picasso) {
                     MainScreen(
                         inCar = get(),
@@ -66,7 +83,31 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
                         action = action
                     )
                 }
+//                ThemeColors(listOf(
+//                        Triple("primary", MaterialTheme.colors.primary, MaterialTheme.colors.onPrimary),
+//                        Triple("secondary", MaterialTheme.colors.secondary, MaterialTheme.colors.onSecondary),
+//                        Triple("background", MaterialTheme.colors.background, MaterialTheme.colors.onBackground),
+//                ))
             }
+        }
+    }
+}
+
+@Composable
+fun ThemeColors(colors: List<Triple<String, Color, Color>>) {
+    Column(
+            modifier = Modifier.padding(64.dp)
+    ) {
+        colors.forEach { (name, color, on) ->
+            Text(
+                    modifier = Modifier
+                            .background(color)
+                            .padding(all = 4.dp)
+                            .fillMaxWidth()
+                            .height(40.dp),
+                    color = on,
+                    text = "$name ${color.toColorHex()} on ${on.toColorHex()}"
+            )
         }
     }
 }

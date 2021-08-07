@@ -71,20 +71,20 @@ class SkinPreviewViewModel(application: Application, var appWidgetId: Int): Andr
         bitmapMemoryCache.evictAll()
     }
 
-    suspend fun load(overrideSkin: SkinList.Item): View {
+    suspend fun load(overrideSkin: SkinList.Item, context: Context): View {
         val intentFactory: PendingIntentFactory = get<PreviewPendingIntentFactory>(parameters = { parametersOf(appWidgetId, overrideSkin) })
         val widgetView: WidgetView = get(parameters = { parametersOf(appWidgetId, bitmapMemoryCache, intentFactory, true) })
-        return renderPreview(widgetView, overrideSkin.value)
+        return renderPreview(widgetView, overrideSkin.value, context)
     }
 
-    private suspend fun renderPreview(widgetView: WidgetView, overrideSkin: String): View = withContext(Dispatchers.Default) {
+    private suspend fun renderPreview(widgetView: WidgetView, overrideSkin: String, context: Context): View = withContext(Dispatchers.Default) {
         val rv = widgetView.apply {
             this.overrideSkin = overrideSkin
             init()
 
         }.create()
         try {
-            return@withContext rv.apply(getApplication(), null)
+            return@withContext rv.apply(context, null)
         } catch (e: InflateException) {
             AppLog.e("Cannot generate preview for $overrideSkin", e)
             return@withContext TextView(getApplication()).apply {

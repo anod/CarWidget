@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.util.LruCache
 import android.view.View
 import android.widget.RemoteViews
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
@@ -127,7 +128,7 @@ class ShortcutViewBuilder(
             if (prefs.fontColor != null) {
                 views.setTextColor(resText, prefs.fontColor!!)
             } else if (skinProperties.fontColorRes != 0) {
-                val fontColor = ResourcesCompat.getColor(context.resources, skinProperties.fontColorRes, null)
+                val fontColor = ContextCompat.getColor(context, skinProperties.fontColorRes)
                 views.setTextColor(resText, fontColor)
             }
             if (prefs.fontSize != WidgetInterface.FONT_SIZE_UNDEFINED) {

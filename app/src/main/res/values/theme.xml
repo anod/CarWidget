@@ -9,40 +9,44 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="Base.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!--Material color attributes -->
+    <style name="Base.AppTheme" parent="@android:style/Theme.DeviceDefault.DayNight">
+<!--        parent="Theme.MaterialComponents.DayNight.NoActionBar">-->
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryVariant">@color/color_primary_variant</item>
-        <item name="colorSecondary">@color/color_secondary</item>
-        <item name="colorSecondaryVariant">@color/color_secondary_variant</item>
-        <item name="android:colorBackground">@color/color_background</item>
         <item name="colorSurface">@color/color_surface</item>
-        <item name="colorError">@color/color_error</item>
-        <item name="colorOnPrimary">@color/color_on_primary</item>
-        <item name="colorOnSecondary">@color/color_on_secondary</item>
-        <item name="colorOnBackground">@color/color_on_background</item>
-        <item name="colorOnSurface">@color/color_on_surface</item>
-        <item name="colorOnError">@color/color_on_error</item>
 
-        <item name="scrimBackground">@color/mtrl_scrim_color</item>
+        <item name="android:colorPrimary">?attr/colorPrimary</item>
+        <item name="android:colorPrimaryDark">?attr/colorPrimaryVariant</item>
 
-        <item name="android:fontFamily">@font/rubik</item>
-        <item name="fontFamily">@font/rubik</item>
+<!--        <item name="colorSecondary">@color/color_secondary</item>-->
+<!--        <item name="colorSecondaryVariant">@color/color_secondary_variant</item>-->
+<!--        <item name="android:colorBackground">@color/color_background</item>-->
+<!--        <item name="colorError">@color/color_error</item>-->
+<!--        <item name="colorOnPrimary">@color/color_on_primary</item>-->
+<!--        <item name="colorOnSecondary">@color/color_on_secondary</item>-->
+<!--        <item name="colorOnBackground">@color/color_on_background</item>-->
+<!--        <item name="colorOnSurface">@color/color_on_surface</item>-->
+<!--        <item name="colorOnError">@color/color_on_error</item>-->
 
-        <item name="android:statusBarColor" tools:ignore="NewApi">?attr/colorSurface</item>
-        <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
-        <item name="android:navigationBarColor" tools:ignore="NewApi">?attr/colorSurface</item>
-        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
-        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">?attr/colorSurface</item>
+<!--        <item name="scrimBackground">@color/mtrl_scrim_color</item>-->
 
-        <!--Component styles-->
-        <item name="android:alertDialogTheme">@style/Alert</item>
-        <item name="alertDialogTheme">@style/Alert</item>
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
-        <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>
-        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.PrimarySurface</item>
-        <item name="bottomNavigationStyle">@style/Widget.AppTheme.BottomNavigationView</item>
-        <item name="tabStyle">@style/Widget.AppTheme.TabLayout</item>
+<!--        <item name="android:fontFamily">@font/rubik</item>-->
+<!--        <item name="fontFamily">@font/rubik</item>-->
+
+        <item name="android:statusBarColor" tools:ignore="NewApi">?android:attr/colorBackground</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+        <item name="android:navigationBarColor" tools:ignore="NewApi">?android:attr/colorBackground</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
+        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">?android:attr/colorBackground</item>
+
+<!--        &lt;!&ndash;Component styles&ndash;&gt;-->
+<!--        <item name="android:alertDialogTheme">@style/Alert</item>-->
+<!--        <item name="alertDialogTheme">@style/Alert</item>-->
+<!--        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>-->
+<!--        <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>-->
+<!--        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.PrimarySurface</item>-->
+<!--        <item name="bottomNavigationStyle">@style/Widget.AppTheme.BottomNavigationView</item>-->
+<!--        <item name="tabStyle">@style/Widget.AppTheme.TabLayout</item>-->
     </style>
 
     <style name="Alert" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
