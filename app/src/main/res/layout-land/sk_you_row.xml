@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="140dp"
+    android:layout_width="140dp"
+    android:layout_height="match_parent"
     android:layout_weight="1"
     android:baselineAligned="false"
-    android:orientation="horizontal"
-    android:paddingBottom="4dp"
+    android:orientation="vertical"
+    android:paddingEnd="4dp"
     android:theme="@style/AppWidgetContainer">
 
     <FrameLayout
-        android:layout_width="0dip"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:layout_marginEnd="2dp">
+        android:layout_marginBottom="2dp">
 
         <ImageButton
             android:id="@+id/btn0"
@@ -42,11 +42,11 @@
     </FrameLayout>
 
     <FrameLayout
-        android:layout_width="0dip"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:layout_marginStart="2dp">
+        android:layout_marginTop="2dp">
 
         <ImageButton
             android:id="@+id/btn1"
