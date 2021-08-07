@@ -9,12 +9,11 @@ import info.anodsplace.carwidget.content.db.LauncherSettings
 import com.anod.car.home.skin.PropertiesFactory
 import info.anodsplace.carwidget.utils.BitmapTransform
 import info.anodsplace.carwidget.content.IconTheme
-import com.anod.car.home.utils.Utils
-import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.appwidget.WidgetView
 import info.anodsplace.carwidget.content.BitmapLruCache
 import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
@@ -179,7 +178,7 @@ class WidgetViewBuilder(
                 }
             }
 
-            val iconScale = Utils.calcIconsScale(prefs.iconsScale)
+            val iconScale = WidgetInterface.convertIconsScale(prefs.iconsScale)
             if (iconScale > 1.0f) {
                 bt.scaleSize = iconScale
             }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -14,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -24,6 +26,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
 import info.anodsplace.carwidget.CarWidgetTheme
+import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.screens.WidgetActions
@@ -48,21 +51,49 @@ fun WidgetActionDialog(modifier: Modifier, current: UiAction, action: MutableSha
 fun IconScaleDialog(prefs: WidgetInterface, action: MutableSharedFlow<UiAction>) {
     val coroutineScope = rememberCoroutineScope()
 
-    Dialog(
-            onDismissRequest = {
-                coroutineScope.launch { action.emit(UiAction.None) }
-            },
-            properties = DialogProperties()
-    ) {
-        Surface {
-            IconScale(prefs, action)
+    AlertDialog(
+        buttons = { },
+        modifier = Modifier.padding(16.dp),
+        title = { Text(
+                text = stringResource(id = R.string.pref_scale_icon)
+        ) },
+        onDismissRequest = {  coroutineScope.launch { action.emit(UiAction.None) } },
+        text = {
+            Column {
+                Spacer(modifier = Modifier.height(64.dp))
+                val current = prefs.iconsScale.toInt()
+                IconScale(current) { scale ->
+                    prefs.iconsScale = scale.toString()
+                    coroutineScope.launch { action.emit(UiAction.None) }
+                }
+            }
         }
-    }
+    )
 }
 
 @Composable
-fun IconScale(prefs: WidgetInterface, action: MutableSharedFlow<UiAction>) {
-    (0..20)
+fun IconScale(current: Int, onClick: (Int) -> Unit) {
+    FlowRow(
+            mainAxisAlignment = MainAxisAlignment.Start
+    ) {
+        repeat((0..20).count()) { scale ->
+            Box(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .clickable { onClick(scale) }
+                    .size(size = 64.dp)
+                    .border(
+                            width = if (current == scale) 2.dp else 0.dp,
+                            color = MaterialTheme.colors.primaryVariant,
+                            shape = RoundedCornerShape(4.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                val scaleText = "x%.1f".format(WidgetInterface.convertIconsScale(scale = scale))
+                Text(text = scaleText)
+            }
+        }
+    }
 }
 
 @Composable
@@ -81,35 +112,37 @@ fun BackgroundColor(prefs: WidgetInterface, action: MutableSharedFlow<UiAction>)
 fun ShortcutNumbersDialog(modifier: Modifier, widgetSettings: WidgetInterface, action: MutableSharedFlow<UiAction>) {
     val coroutineScope = rememberCoroutineScope()
 
-    Dialog(
-            onDismissRequest = {
-                coroutineScope.launch { action.emit(UiAction.None) }
-            },
-            properties = DialogProperties()
-    ) {
-        Surface {
-            val current = widgetSettings.shortcutsNumber
-            ShortcutsNumbers(current, onClick = {
-                widgetSettings.shortcutsNumber = it
-                coroutineScope.launch { action.emit(UiAction.None) }
-            })
-        }
-    }
+    AlertDialog(
+            buttons = { },
+            modifier = Modifier.padding(16.dp),
+            title = { Text(
+                    text = stringResource(id = R.string.number_shortcuts_title)
+            ) },
+            onDismissRequest = {  coroutineScope.launch { action.emit(UiAction.None) } },
+            text = {
+                val current = widgetSettings.shortcutsNumber
+                Column {
+                    Spacer(modifier = Modifier.height(64.dp))
+                    ShortcutsNumbers(current, onClick = {
+                        widgetSettings.shortcutsNumber = it
+                        coroutineScope.launch { action.emit(UiAction.None) }
+                    })
+                }
+            }
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ShortcutsNumbers(current: Int, onClick: (Int) -> Unit) {
-
     FlowRow(
-            modifier = Modifier.padding(16.dp),
             mainAxisAlignment = MainAxisAlignment.Start
     ) {
         ShortcutsNumber(number = 4, current = current, boxSize = 40.dp, onClick = onClick)
         ShortcutsNumber(number = 6, current = current, boxSize = 28.dp, onClick = onClick)
         ShortcutsNumber(number = 8, current = current, boxSize = 22.dp, onClick = onClick)
         ShortcutsNumber(number = 10, current = current, boxSize = 18.dp, onClick = onClick)
-     }
+    }
 }
 
 @Composable
@@ -122,9 +155,9 @@ fun ShortcutsNumber(number: Int, current: Int, boxSize: Dp, onClick: (Int) -> Un
                 modifier = Modifier
                         .size(size = 96.dp)
                         .border(
-                            width = if (current == number) 2.dp else 0.dp,
-                            color = MaterialTheme.colors.primaryVariant,
-                            shape = RoundedCornerShape(4.dp)
+                                width = if (current == number) 2.dp else 0.dp,
+                                color = MaterialTheme.colors.primaryVariant,
+                                shape = RoundedCornerShape(4.dp)
                         ),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally

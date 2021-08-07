@@ -21,7 +21,7 @@ interface WidgetInterface {
     var tileColor: Int? // nullable because old backups can have null value
     var isIconsMono: Boolean
     var iconsColor: Int?
-    val iconsScale: String
+    var iconsScale: String
     var fontColor: Int?
     var fontSize: Int
     var backgroundColor: Int
@@ -31,7 +31,6 @@ interface WidgetInterface {
     var widgetButton2: Int
     var shortcutsNumber: Int
 
-    fun setIconsScaleString(iconsScale: String)
     fun queueChange(key: String, value: Any?)
     fun applyChange(key: String, value: Any?)
     fun applyPending()
@@ -44,7 +43,7 @@ interface WidgetInterface {
         override var tileColor: Int? = null,
         override var isIconsMono: Boolean = false,
         override var iconsColor: Int? = null,
-        override val iconsScale: String = "",
+        override var iconsScale: String = "",
         override var fontColor: Int? = null,
         override var fontSize: Int = 0,
         override var backgroundColor: Int = 0,
@@ -55,7 +54,6 @@ interface WidgetInterface {
         override var shortcutsNumber: Int = 8
     ) : WidgetInterface {
         override val changes = emptyFlow<Pair<String, Any?>>()
-        override fun setIconsScaleString(iconsScale: String) { }
         override fun queueChange(key: String, value: Any?) {}
         override fun applyChange(key: String, value: Any?) {}
         override fun applyPending() {}
@@ -80,5 +78,12 @@ interface WidgetInterface {
             SKIN_YOU, SKIN_CARDS, SKIN_HOLO, SKIN_GLOSSY, SKIN_CARHOME, SKIN_WINDOWS7, SKIN_BBB
         )
 
+        fun convertIconsScale(scaleString: String): Float {
+            return convertIconsScale(scaleString.toInt())
+        }
+
+        fun convertIconsScale(scale: Int): Float {
+            return 1.0f + 0.1f * scale
+        }
     }
 }

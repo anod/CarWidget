@@ -49,8 +49,4 @@ object Utils {
     fun saveAppWidgetId(outState: Bundle, mAppWidgetId: Int) {
         outState.putInt(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId)
     }
-
-    fun calcIconsScale(scaleString: String): Float {
-        return 1.0f + 0.1f * Integer.valueOf(scaleString)
-    }
 }

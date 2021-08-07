@@ -63,8 +63,9 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
         get() = getColor(ICONS_COLOR, prefs)
         set(iconsColor) = applyChange(ICONS_COLOR, iconsColor)
 
-    override val iconsScale: String
+    override var iconsScale: String
         get() = prefs.getString(ICONS_SCALE, ICONS_DEF_VALUE)!!
+        set(value) { applyChange(ICONS_SCALE, value) }
 
     override var fontColor: Int?
         get() = if (prefs.contains(FONT_COLOR))  {
@@ -126,10 +127,6 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
             return if (num == 0) WidgetStorage.LAUNCH_COMPONENT_NUMBER_DEFAULT else min(num, WidgetStorage.LAUNCH_COMPONENT_NUMBER_MAX)
         }
         set(value) = applyChange(WidgetStorage.CMP_NUMBER, min(value, WidgetStorage.LAUNCH_COMPONENT_NUMBER_MAX))
-
-    override fun setIconsScaleString(iconsScale: String) {
-        applyChange(ICONS_SCALE, iconsScale)
-    }
 
     @Throws(IOException::class)
     fun writeJson(writer: JsonWriter) {
