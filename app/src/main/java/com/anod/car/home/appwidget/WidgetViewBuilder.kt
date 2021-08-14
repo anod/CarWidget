@@ -104,7 +104,7 @@ class WidgetViewBuilder(
             }
 
             val views = RemoteViews(context.packageName,
-                    skinProperties.getLayout(shortcuts.size()))
+                    skinProperties.getLayout(shortcuts.size))
 
             widgetButtonViewBuilder.setup(skinProperties, views)
 
@@ -117,7 +117,7 @@ class WidgetViewBuilder(
             shortcutViewBuilder.init(scaledDensity, skinProperties, themeIcons, prefs, shortcutsModel,
                     bitmapTransform)
 
-            val totalRows = shortcuts.size() / 2
+            val totalRows = shortcuts.size / 2
             for (rowNum in 0 until totalRows) {
                 val firstBtn = rowNum * 2
                 val secondBtn = firstBtn + 1
@@ -139,8 +139,8 @@ class WidgetViewBuilder(
                 return null
             }
 
-            val cmpMap = SimpleArrayMap<String, Int>(shortcuts.size())
-            for (cellId in 0 until shortcuts.size()) {
+            val cmpMap = SimpleArrayMap<String, Int>(shortcuts.size)
+            for (cellId in 0 until shortcuts.size) {
                 val info = shortcutsModel.get(cellId)
                 if (info == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon) {
                     continue

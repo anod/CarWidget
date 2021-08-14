@@ -32,6 +32,7 @@ android {
 dependencies {
     implementation(project(":lib:applog"))
     implementation(project(":lib:graphics"))
+    implementation(project(":lib:ktx"))
     implementation("io.insert-koin:koin-core:3.1.2")
     implementation("com.squareup.picasso:picasso:2.8")
     implementation("androidx.preference:preference-ktx:1.1.1")

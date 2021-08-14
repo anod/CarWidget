@@ -1,6 +1,5 @@
 package info.anodsplace.carwidget.screens.main
 
-import android.app.UiModeManager
 import android.content.ContentResolver
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -13,7 +12,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Widgets
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -250,7 +250,7 @@ fun PreviewWidgetsScreenLight() {
         BackgroundSurface {
             WidgetsListScreen(
                 WidgetListScreenState(
-                    items = listOf( WidgetItem.Shortcut() ),
+                    items = listOf( WidgetItem.Shortcut(appWidgetId = 0) ),
                     isServiceRunning = false,
                     isServiceRequired = true,
                     eventsState = emptyList(),

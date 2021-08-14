@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.content.backup
 
 import android.util.JsonWriter
-import android.util.SparseArray
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.Shortcuts
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
@@ -14,10 +13,9 @@ import java.io.IOException
 class ShortcutsJsonWriter {
 
     @Throws(IOException::class)
-    fun writeList(shortcutsWriter: JsonWriter, shortcuts: SparseArray<Shortcut?>, model: Shortcuts) {
-        for (idx in 0 until shortcuts.size()) {
-            val pos = shortcuts.keyAt(idx)
-            val info = shortcuts.get(pos) ?: continue
+    fun writeList(shortcutsWriter: JsonWriter, shortcuts: Map<Int, Shortcut?>, model: Shortcuts) {
+        for ((pos, value) in shortcuts) {
+            val info = value ?: continue
             shortcutsWriter.beginObject()
             val icon = model.iconLoader.loadFromDatabase(info.id)
             val values = ShortcutsDatabase.createShortcutContentValues(info, icon)

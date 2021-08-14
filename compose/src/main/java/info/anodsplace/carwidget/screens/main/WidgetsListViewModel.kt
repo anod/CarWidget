@@ -30,13 +30,15 @@ class WidgetList {
 }
 
 interface WidgetItem {
-    class Large(
+    data class Large(
         val appWidgetId: Int,
-        val shortcuts: SparseArray<info.anodsplace.carwidget.content.db.Shortcut?>,
+        val shortcuts: List<info.anodsplace.carwidget.content.db.Shortcut?>,
         val adaptiveIconStyle: String
     ) : WidgetItem
 
-    class Shortcut : WidgetItem
+    data class Shortcut(
+        val appWidgetId: Int
+    ) : WidgetItem
 }
 
 data class WidgetListScreenState(
@@ -53,44 +55,43 @@ class WidgetsListViewModel(application: Application) : AndroidViewModel(applicat
     private val context: Context
         get() = getApplication()
 
-    fun loadScreen(): Flow<ScreenLoadState<WidgetListScreenState>> = flow {
-        val list = loadWidgetList(getApplication())
-        val newItems = mutableListOf<WidgetItem>()
-        newItems.addAll(list.shortcuts.map { WidgetItem.Shortcut() })
+    private var oldItems: List<WidgetItem> = emptyList()
 
+    fun loadScreen(): Flow<ScreenLoadState<WidgetListScreenState>> = flow {
+        val newItems = loadWidgetList(context)
+        if (oldItems != newItems) {
+            oldItems = newItems
+        }
+        emit(ScreenLoadState.Ready(
+            WidgetListScreenState(
+                items = newItems,
+                isServiceRequired = inCarStatus.isServiceRequired,
+                isServiceRunning = inCarStatus.isServiceRunning,
+                statusResId = inCarStatus.resId,
+                eventsState = inCarStatus.eventsState().sortedWith(compareBy({ !it.enabled }, { !it.active }))
+            )
+        ))
+    }
+
+    private suspend fun loadWidgetList(context: Context): List<WidgetItem> = withContext(Dispatchers.Default) {
+        val newItems = mutableListOf<WidgetItem>()
         val defaultsProvider = DefaultsResourceProvider(context)
-        list.large.forEach { key, value ->
+
+        val appWidgetIds = widgetIds.getLargeWidgetIds()
+        newItems.addAll(widgetIds.getShortcutWidgetIds().map { WidgetItem.Shortcut(appWidgetId = it) })
+
+        for (appWidgetId in appWidgetIds) {
+            val model = WidgetShortcutsModel(context, defaultsProvider, appWidgetId).apply {
+                init()
+            }
+            val shortcuts = model.shortcuts
             newItems.add(
                 WidgetItem.Large(
-                    key, value, WidgetStorage.load(getApplication(), defaultsProvider, key).adaptiveIconStyle
+                    appWidgetId, shortcuts.values.toList(), WidgetStorage.load(getApplication(), defaultsProvider, appWidgetId).adaptiveIconStyle
                 )
             )
         }
 
-        emit(ScreenLoadState.Ready(
-            WidgetListScreenState(
-            items = newItems,
-            isServiceRequired = inCarStatus.isServiceRequired,
-            isServiceRunning = inCarStatus.isServiceRunning,
-            statusResId = inCarStatus.resId,
-            eventsState = inCarStatus.eventsState().sortedWith(compareBy({ !it.enabled }, { !it.active }))
-        )
-        ))
-    }
-
-    private suspend fun loadWidgetList(context: Context): WidgetList = withContext(Dispatchers.Default) {
-        val appWidgetIds = widgetIds.getLargeWidgetIds()
-        val result = WidgetList()
-
-        val defaultsProvider = DefaultsResourceProvider(context)
-        for (i in appWidgetIds.indices) {
-            val model = WidgetShortcutsModel(context, defaultsProvider, appWidgetIds[i])
-            model.init()
-
-            result.large.put(appWidgetIds[i], model.shortcuts)
-        }
-
-        result.shortcuts = widgetIds.getShortcutWidgetIds()
-        return@withContext result
+        return@withContext newItems
     }
 }

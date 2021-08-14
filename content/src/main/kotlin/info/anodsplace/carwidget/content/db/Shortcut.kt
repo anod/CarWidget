@@ -5,12 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.ktx.hashCodeOf
 
 /**
  * @author algavris
  * @date 22/08/2016.
  */
-
 class Shortcut(
         /**
          * The id in the settings database for this item
@@ -55,6 +55,14 @@ class Shortcut(
             return Shortcut(id, LauncherSettings.Favorites.ITEM_TYPE_APPLICATION, title, isCustomIcon, intent)
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        return hashCode() == other?.hashCode()
+    }
+
+    override fun hashCode(): Int = hashCodeOf(
+        id, itemType, title, isCustomIcon, intent.toUri(0)
+    )
 }
 
 fun Shortcut.iconUri(context: Context, adaptiveIconStyle: String): Uri {

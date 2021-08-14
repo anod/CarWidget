@@ -8,7 +8,7 @@ interface InCarStatus {
     val resId: Int
     fun eventsState(): List<EventState>
 
-    class EventState(
+    data class EventState(
         val id: Int,
         val enabled: Boolean,
         val active: Boolean

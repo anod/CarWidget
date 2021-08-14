@@ -5,7 +5,7 @@ import android.util.SparseArray
 
 interface Shortcuts {
     val iconLoader: ShortcutIconLoader
-    val shortcuts: SparseArray<Shortcut?>
+    val shortcuts: Map<Int, Shortcut?>
     val count: Int
 
     fun createDefaultShortcuts()

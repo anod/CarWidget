@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.content.model
 import android.content.Context
 import android.content.Intent
 import android.util.SparseArray
+import android.util.SparseIntArray
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.Shortcuts
@@ -11,7 +12,7 @@ import java.util.*
 
 abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
 
-    override val shortcuts: SparseArray<Shortcut?> = SparseArray()
+    override val shortcuts: MutableMap<Int, Shortcut?> = mutableMapOf()
 
     val shortcutsDatabase: ShortcutsDatabase = ShortcutsDatabase(context)
 
@@ -33,20 +34,20 @@ abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
             if (shortcutId != Shortcut.idUnknown) {
                 info = shortcutsDatabase.loadShortcut(shortcutId)
             }
-            shortcuts.put(cellId, info)
+            shortcuts[cellId] = info
         }
     }
 
     override fun get(position: Int): Shortcut? {
-        return shortcuts.get(position)
+        return shortcuts[position]
     }
 
     override fun reloadShortcut(position: Int, shortcutId: Long) {
         if (shortcutId == Shortcut.idUnknown) {
-            shortcuts.put(position, null)
+            shortcuts[position] = null
         } else {
             val info = shortcutsDatabase.loadShortcut(shortcutId)
-            shortcuts.put(position, info)
+            shortcuts[position] = info
         }
     }
 
@@ -66,29 +67,29 @@ abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
     override fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Pair<Shortcut?, Int> {
         val shortcut = ShortcutInfoUtils.createShortcut(context, data, isApplicationShortcut)
         save(position, shortcut.info, shortcut.icon)
-        return Pair(shortcuts.get(position), shortcut.result)
+        return Pair(shortcuts[position], shortcut.result)
     }
 
     override fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?) {
         if (shortcut == null) {
-            shortcuts.put(position, null)
+            shortcuts[position] = null
         } else {
             val id = shortcutsDatabase.addItemToDatabase(context, shortcut, icon!!)
             if (id == Shortcut.idUnknown) {
-                shortcuts.put(position, null)
+                shortcuts[position] = null
             } else {
                 val newInfo = Shortcut(id, shortcut)
-                shortcuts.put(position, newInfo)
+                shortcuts[position] = newInfo
                 saveId(position, id)
             }
         }
     }
 
     override fun drop(position: Int) {
-        val info = shortcuts.get(position)
+        val info = shortcuts[position]
         if (info != null) {
             shortcutsDatabase.deleteItemFromDatabase(info.id)
-            shortcuts.put(position, null)
+            shortcuts[position] = null
             dropId(position)
         }
     }
