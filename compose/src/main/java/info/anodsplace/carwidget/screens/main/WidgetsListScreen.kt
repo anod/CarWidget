@@ -86,7 +86,7 @@ fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit, iconModifier: M
         .clickable { onClick() }
         .cardStyle()) {
         LargeWidgetRow(item = item, indexes = listOf(1, 3, 5, 7), iconModifier = iconModifier)
-        LargeWidgetRow(item = item, indexes = listOf(0, 2, 4, 5), iconModifier = iconModifier)
+        LargeWidgetRow(item = item, indexes = listOf(0, 2, 4, 6), iconModifier = iconModifier)
     }
 }
 
