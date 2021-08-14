@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.screens.main
 
+import android.app.UiModeManager
 import android.content.ContentResolver
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -35,7 +36,7 @@ import info.anodsplace.compose.PicassoIcon
 fun Modifier.cardStyle(): Modifier = then(
     fillMaxWidth()
         .clip(shape = RoundedCornerShape(16.dp))
-        .background(MaterialTheme.colors.surface)
+        .background(MaterialTheme.colors.secondary)
         .padding(16.dp)
 )
 
@@ -106,7 +107,7 @@ fun EventStates(eventsState: List<InCarStatus.EventState>) {
             Text(
                 text = String.format("%s: %s - %s", title, enabled, active),
                 style = MaterialTheme.typography.overline,
-                color = MaterialTheme.colors.onSurface
+                color = MaterialTheme.colors.onSecondary
             )
         }
     }
@@ -120,12 +121,12 @@ fun InCarHeader(screen: WidgetListScreenState) {
     Column(modifier = Modifier.cardStyle()) {
         Text(
             text = stringResource(id = R.string.pref_incar_mode_title) + " - " + active,
-            color = MaterialTheme.colors.onSurface
+            color = MaterialTheme.colors.onSecondary
         )
         if (screen.isServiceRequired) {
             Text(
                 text = if (screen.isServiceRunning) "Detector service is running" else "Detector service is NOT running",
-                color = MaterialTheme.colors.onSurface
+                color = MaterialTheme.colors.onSecondary
             )
         }
 
@@ -135,7 +136,7 @@ fun InCarHeader(screen: WidgetListScreenState) {
             version.isFreeAndTrialExpired -> {
                 Text(
                     text = stringResource(R.string.dialog_donate_title_expired) + " " + stringResource(R.string.notif_consider),
-                    color = MaterialTheme.colors.onSurface
+                    color = MaterialTheme.colors.onSecondary
                 )
             }
             version.isFree -> {
@@ -148,7 +149,7 @@ fun InCarHeader(screen: WidgetListScreenState) {
                         )
                 Text(
                     text = stringResource(R.string.dialog_donate_title_trial) + " " + activationsLeft,
-                    color = MaterialTheme.colors.onSurface
+                    color = MaterialTheme.colors.onSecondary
                 )
             }
             else -> {
@@ -197,7 +198,7 @@ fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int)
                             contentDescription = null)
                         Text(
                             modifier = Modifier.padding(start = 16.dp),
-                            text = "InCar detector service is not running, please disable battery optimization",
+                            text = "InCar detector service is not running, disable battery optimization",
                             color = WarningColor
                         )
                     }
@@ -242,28 +243,10 @@ fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int)
     }
 }
 
-@Preview("Widgets Screen Empty dark")
-@Composable
-fun PreviewWidgetsScreenEmptyDark() {
-    CarWidgetTheme(darkTheme = true) {
-        BackgroundSurface {
-            WidgetsListScreen(
-                WidgetListScreenState(
-                items = emptyList(),
-                isServiceRunning = true,
-                isServiceRequired = true,
-                eventsState = emptyList(),
-                statusResId = R.string.enabled
-            ), onClick = { })
-        }
-    }
-}
-
-
 @Preview("Widgets Screen Light")
 @Composable
 fun PreviewWidgetsScreenLight() {
-    CarWidgetTheme(darkTheme = false) {
+    CarWidgetTheme() {
         BackgroundSurface {
             WidgetsListScreen(
                 WidgetListScreenState(

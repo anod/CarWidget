@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget
 
+import android.app.UiModeManager
 import android.content.Context
 import android.content.res.TypedArray
 import androidx.annotation.StyleRes
@@ -40,41 +41,7 @@ val CarWidgetTypography = Typography(
         overline = typography.overline.merge(TextStyle(fontFamily = Rubik))
 )
 
-private val BlueGray600 = Color(0xFF546E7A)
-private val BlueGray800 = Color(0xFF37474f)
-private val BlueGray300 = Color(0xFF90a4ae)
-private val BlueGray100 = Color(0xFFBBDEFB)
 val WarningColor = Color(0xfff4511e)
-
-private val LightThemeColors = lightColors(
-        primary = BlueGray600,
-        primaryVariant = BlueGray800,
-        secondary = BlueGray300,
-        secondaryVariant = BlueGray300,
-        background = Color.White,
-        surface = BlueGray600,
-        error = Color(0xbFF00020),
-        onPrimary = Color.White,
-        onSecondary = Color.Black,
-        onBackground = Color.Black,
-        onSurface = Color.White,
-        onError = Color.White,
-)
-
-private val DarkThemeColors = darkColors(
-        primary = BlueGray600,
-        primaryVariant = BlueGray800,
-        secondary = BlueGray300,
-        background = Color.Black,
-        surface = Color(0xFF001c26),
-        error = Color(0xFFcf6679),
-        onPrimary = Color.Black,
-        onSecondary = Color.Black,
-        onBackground = Color.White,
-        onSurface = Color.White,
-        onError = Color.Black
-)
-
 val CarWidgetShapes = Shapes(
         small = RoundedCornerShape(4.dp),
         medium = RoundedCornerShape(4.dp),
@@ -83,12 +50,15 @@ val CarWidgetShapes = Shapes(
 
 @Composable
 fun CarWidgetTheme(
-        context: Context = LocalContext.current,
-        darkTheme: Boolean = isSystemInDarkTheme(),
-        content: @Composable () -> Unit) {
-
-    val defaultColors = if (darkTheme) DarkThemeColors else LightThemeColors
-
+    context: Context = LocalContext.current,
+    nightMode: Int = UiModeManager.MODE_NIGHT_AUTO,
+    content: @Composable () -> Unit
+) {
+    val darkTheme = if (nightMode == UiModeManager.MODE_NIGHT_AUTO)
+            isSystemInDarkTheme()
+        else
+            nightMode == UiModeManager.MODE_NIGHT_YES
+    val defaultColors = if (darkTheme) darkColors() else lightColors()
     val colors = readColors(context, defaultColors)
 
     MaterialTheme(

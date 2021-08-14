@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.screens.widget
 
+import android.app.UiModeManager
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -115,7 +116,7 @@ fun WidgetLookMoreScreen(modifier: Modifier, settings: WidgetInterface) {
 @Preview("WidgetLookMoreScreen Dark")
 @Composable
 fun WidgetLookMoreScreenDark() {
-    CarWidgetTheme(darkTheme = true) {
+    CarWidgetTheme(nightMode = UiModeManager.MODE_NIGHT_YES) {
         WidgetLookMoreScreen(Modifier, WidgetInterface.NoOp())
     }
 }

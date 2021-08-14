@@ -187,17 +187,7 @@ fun AppBarWidgetAction(modifier: Modifier, current: UiAction, action: MutableSha
 @Preview("Main Screen Light")
 @Composable
 fun PreviewPreferencesScreenLight() {
-    CarWidgetTheme(darkTheme = false) {
-        BackgroundSurface {
-            MainScreen(InCarInterface.NoOp(), action = MutableSharedFlow())
-        }
-    }
-}
-
-@Preview("Main Screen Dark")
-@Composable
-fun PreviewPreferencesScreenDark() {
-    CarWidgetTheme(darkTheme = true) {
+    CarWidgetTheme() {
         BackgroundSurface {
             MainScreen(InCarInterface.NoOp(), action = MutableSharedFlow())
         }

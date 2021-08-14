@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.screens.incar
 
+import android.app.UiModeManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
@@ -88,7 +89,7 @@ fun MediaScreen(inCar: InCarInterface, modifier: Modifier) {
 @Preview("Media screen Dark")
 @Composable
 fun MediaScreenDark() {
-    CarWidgetTheme(darkTheme = true) {
+    CarWidgetTheme(nightMode = UiModeManager.MODE_NIGHT_YES) {
         BackgroundSurface {
             MediaScreen(
                 inCar = InCarInterface.NoOp(),

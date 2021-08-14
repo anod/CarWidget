@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.screens
 
+import android.app.UiModeManager
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.*
@@ -45,21 +46,8 @@ fun CarWidgetToolbar(action: MutableSharedFlow<UiAction>) {
 @Preview("Dark AppBar")
 @Composable
 fun PreviewAppBarDark() {
-    CarWidgetTheme(darkTheme = true) {
+    CarWidgetTheme(nightMode = UiModeManager.MODE_NIGHT_YES) {
         Surface(color = MaterialTheme.colors.primary) {
-            Scaffold(
-                    topBar = { CarWidgetToolbar(MutableSharedFlow()) },
-                    content = { Text(text = "Content") }
-            )
-        }
-    }
-}
-
-@Preview("Light AppBar")
-@Composable
-fun PreviewAppBarLight() {
-    CarWidgetTheme(darkTheme = false) {
-        Surface() {
             Scaffold(
                     topBar = { CarWidgetToolbar(MutableSharedFlow()) },
                     content = { Text(text = "Content") }

@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="SplashScreen" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
-        <item name="colorPrimaryDark">@color/material_bluegray_600</item>
-        <item name="android:navigationBarColor">@color/material_bluegray_600</item>
-    </style>
-
     <style name="holo_btn_text">
         <item name="android:lines">1</item>
         <item name="android:layout_width">match_parent</item>

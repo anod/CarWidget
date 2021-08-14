@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.content.preferences
 
+import android.app.UiModeManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.SharedPreferences
@@ -15,18 +16,16 @@ import kotlinx.coroutines.flow.map
  */
 class AppSettings(context: Context) : ChangeableSharedPreferences(getSharedPreferences(context)) {
 
-    val isDarkTheme: Boolean
-        get() = theme == dark
-
-    val darkTheme: Flow<Boolean> = changes
+    val nightModeChange: Flow<Int> = changes
         .filter { (key, _) -> key == APP_THEME }
-        .map { isDarkTheme }
+        .map { nightMode }
 
     val nightMode: Int
-        get() = if (isDarkTheme) {
-            AppCompatDelegate.MODE_NIGHT_YES
-        } else {
-            AppCompatDelegate.MODE_NIGHT_NO
+        get() = when (theme) {
+            system -> UiModeManager.MODE_NIGHT_AUTO
+            dark -> UiModeManager.MODE_NIGHT_YES
+            light -> UiModeManager.MODE_NIGHT_NO
+            else -> UiModeManager.MODE_NIGHT_AUTO
         }
 
     var musicApp: ComponentName?
@@ -40,12 +39,13 @@ class AppSettings(context: Context) : ChangeableSharedPreferences(getSharedPrefe
         set(musicApp) = applyChange(MUSIC_APP, musicApp)
 
     var theme: Int
-        get() = prefs.getInt(APP_THEME, gray)
+        get() = prefs.getInt(APP_THEME, system)
         set(value) = applyChange(APP_THEME, value)
 
     companion object {
-        const val gray = 0
+        const val light = 0
         const val dark = 1
+        const val system = 2
 
         const val MUSIC_APP = "music-app"
         const val APP_THEME = "app_theme"

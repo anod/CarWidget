@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.intent
 
+import android.app.UiModeManager
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
@@ -224,20 +225,9 @@ fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialVali
 @Composable
 fun PreviewIntentEditDialog() {
     val editState: IntentField.StringValue = IntentField.Action(Intent.ACTION_DIAL, "Action")
-    CarWidgetTheme(darkTheme = false) {
+    CarWidgetTheme() {
         Surface {
             FieldEditDialog("Action", editState, initialValid = false, onSuggestions = {}, onClick = { })
-        }
-    }
-}
-
-@Preview("Intent Edit Component")
-@Composable
-fun PreviewIntentEditDialogEmpty() {
-    val editState = IntentField.Component(ComponentName("com.banana", ".Kiwi"))
-    CarWidgetTheme(darkTheme = true) {
-        Surface {
-            ComponentEditDialog(editState, onClose = { })
         }
     }
 }
@@ -250,7 +240,7 @@ fun PreviewExtraAddDialogEmpty() {
         putInt("Int", 325)
         putIntArray("Array", intArrayOf(125, 67, 80))
     })
-    CarWidgetTheme(darkTheme = true) {
+    CarWidgetTheme(nightMode = UiModeManager.MODE_NIGHT_YES) {
         Surface {
             ExtraEditDialog(editState, onClose = { })
         }

@@ -48,7 +48,10 @@ fun AboutButton(
             .fillMaxWidth()
             .padding(bottom = 16.dp),
         colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = MaterialTheme.colors.onSurface
+            backgroundColor = MaterialTheme.colors.secondary,
+            contentColor = MaterialTheme.colors.onSecondary,
+            disabledContentColor = MaterialTheme.colors.onSecondary
+                .copy(alpha = ContentAlpha.disabled)
         ),
         enabled = enabled
     ) {
@@ -204,23 +207,10 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
 @Preview("About Screen Light")
 @Composable
 fun PreviewAboutScreenLight() {
-    CarWidgetTheme(darkTheme = false) {
+    CarWidgetTheme() {
         BackgroundSurface {
             AboutScreen(
                 screenState = AboutScreenState(0, 0, "Light", "CHOICE", "DUMMY"),
-                action = MutableSharedFlow()
-            )
-        }
-    }
-}
-
-@Preview("About Screen Dark")
-@Composable
-fun PreviewAboutScreenDark() {
-    CarWidgetTheme(darkTheme = true) {
-        BackgroundSurface {
-            AboutScreen(
-                screenState = AboutScreenState(1, 0, "Dark", "Yandex", "v123"),
                 action = MutableSharedFlow()
             )
         }

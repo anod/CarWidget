@@ -191,6 +191,7 @@
 	<string-array name="app_themes">
 		<item>Светлая</item>
 		<item>Темная</item>
+		<item>Системная</item>
 	</string-array>
 
 	<string name="samsung_driving_summary">Включить встроенный Samsung Car Mode</string>

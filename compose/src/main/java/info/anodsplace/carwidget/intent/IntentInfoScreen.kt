@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.intent
 
+import android.app.UiModeManager
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
@@ -376,17 +377,7 @@ fun IntentEditScreen(
 @Preview("Intent Edit Screen")
 @Composable
 fun PreviewIntentEdit() {
-    CarWidgetTheme(darkTheme = false) {
-        Surface {
-            IntentEditScreen(intent = flowOf(Intent(Intent.ACTION_ANSWER)), action = MutableSharedFlow())
-        }
-    }
-}
-
-@Preview("Intent Edit Screen Dark")
-@Composable
-fun PreviewIntentEditDark() {
-    CarWidgetTheme(darkTheme = true) {
+    CarWidgetTheme() {
         Surface {
             IntentEditScreen(intent = flowOf(Intent(Intent.ACTION_ANSWER)), action = MutableSharedFlow())
         }
@@ -396,26 +387,12 @@ fun PreviewIntentEditDark() {
 @Preview("Intent simple edit")
 @Composable
 fun PreviewIntentSimpleEdit() {
-    CarWidgetTheme(darkTheme = false) {
+    CarWidgetTheme() {
         Surface {
             IntentEditScreen(
                     intent = flowOf(Intent(Intent.ACTION_ANSWER)),
                     action = MutableSharedFlow(),
                     initialEditValue = IntentField.Action(Intent.ACTION_ANSWER, "Action")
-            )
-        }
-    }
-}
-
-@Preview("Intent checkbox edit")
-@Composable
-fun PreviewIntentCheckboxEdit() {
-    CarWidgetTheme(darkTheme = false) {
-        Surface {
-            IntentEditScreen(
-                    intent = flowOf(Intent(Intent.ACTION_ANSWER)),
-                    action = MutableSharedFlow(),
-                    initialEditValue = IntentField.Categories(setOf())
             )
         }
     }

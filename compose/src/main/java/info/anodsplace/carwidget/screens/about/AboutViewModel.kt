@@ -7,11 +7,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.runtime.DisposableEffect
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
@@ -26,12 +22,11 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
-import org.koin.core.qualifier.named
 
 sealed class AboutUiAction {
     object ChangeTheme: AboutUiAction()
     object OpenPlayStoreDetails: AboutUiAction()
-    object  OpenDefaultCarDock: AboutUiAction()
+    object OpenDefaultCarDock: AboutUiAction()
     class BackupWidget(val dstUri: Uri) : AboutUiAction()
     class BackupInCar(val dstUri: Uri) : AboutUiAction()
     class Restore(val srcUri: Uri) : AboutUiAction()
@@ -78,12 +73,12 @@ class AboutViewModel(application: Application): AndroidViewModel(application), K
         val themes = context.resources.getStringArray(R.array.app_themes)
         screenState = MutableStateFlow(
             AboutScreenState(
-            appWidgetId = appWidgetId,
-            themeIndex = themeIdx,
-            themeName = themes[themeIdx],
-            musicApp = renderMusicApp(),
-            appVersion = renderVersion(),
-        )
+                appWidgetId = appWidgetId,
+                themeIndex = themeIdx,
+                themeName = themes[themeIdx],
+                musicApp = renderMusicApp(),
+                appVersion = renderVersion(),
+            )
         )
         job?.cancel()
         job = viewModelScope.launch {
@@ -98,7 +93,12 @@ class AboutViewModel(application: Application): AndroidViewModel(application), K
                         screenState.value = screenState.value.copy(backupStatus = code)
                     }
                     AboutUiAction.ChangeTheme -> {
-                        val newThemeIdx = if (screenState.value.themeIndex == 0) 1 else 0
+                        val newThemeIdx = when (screenState.value.themeIndex) {
+                            AppSettings.system -> AppSettings.light
+                            AppSettings.light -> AppSettings.dark
+                            AppSettings.dark -> AppSettings.system
+                            else -> AppSettings.system
+                        }
                         appSettings.theme = newThemeIdx
                         appSettings.applyPending()
                         screenState.value = screenState.value.copy(themeIndex = appSettings.theme, themeName = themes[newThemeIdx])

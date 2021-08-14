@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.screens.incar
 
+import android.app.UiModeManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -105,7 +106,7 @@ fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifi
 @Preview("ShortcutsScreen Dark")
 @Composable
 fun ShortcutsScreenDark() {
-    CarWidgetTheme(darkTheme = true) {
+    CarWidgetTheme(nightMode = UiModeManager.MODE_NIGHT_YES) {
         BackgroundSurface {
             NotificationShortcuts(
                 viewModel = viewModel(),

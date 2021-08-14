@@ -136,7 +136,7 @@ fun BluetoothDeviceEmpty(btState: Int, onSwitchRequest: (newState: Boolean) -> U
 @Preview("BluetoothDeviceEmptyScreen")
 @Composable
 fun BluetoothDeviceEmptyScreen() {
-    CarWidgetTheme(darkTheme = true) {
+    CarWidgetTheme() {
         BackgroundSurface {
             BluetoothDeviceEmpty(
                 btState = BluetoothAdapter.STATE_OFF,

@@ -1,6 +1,8 @@
 package info.anodsplace.carwidget
 
+import android.app.UiModeManager
 import android.appwidget.AppWidgetManager
+import android.os.Build
 import android.os.Bundle
 import android.view.Window
 import androidx.activity.ComponentActivity
@@ -38,16 +40,17 @@ import org.koin.core.parameter.parametersOf
 open class MainComposeActivity : ComponentActivity(), KoinComponent {
     private val appSettings: AppSettings by inject()
     private val picasso: Picasso by inject()
+    private val uiModeManager: UiModeManager
+        get() = applicationContext.getSystemService(UiModeManager::class.java)
 
-    open fun startConfigActivity(appWidgetId: Int) {
-
-    }
-
+    open fun startConfigActivity(appWidgetId: Int) {}
     open fun requestWidgetUpdate(appWidgetId: Int) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-        AppCompatDelegate.setDefaultNightMode(appSettings.nightMode)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            uiModeManager.setApplicationNightMode(appSettings.nightMode)
+        }
         super.onCreate(savedInstanceState)
         val appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
         val action = MutableSharedFlow<UiAction>()
@@ -67,14 +70,16 @@ open class MainComposeActivity : ComponentActivity(), KoinComponent {
             }
         }
         setContent {
-            val isDarkTheme by appSettings.darkTheme
-                .onEach {
-                    AppCompatDelegate.setDefaultNightMode(appSettings.nightMode)
+            val nightMode by appSettings.nightModeChange
+                .onEach { newMode ->
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        uiModeManager.setApplicationNightMode(newMode)
+                    }
                 }
-                .collectAsState(initial = appSettings.isDarkTheme)
+                .collectAsState(initial = appSettings.nightMode)
             CarWidgetTheme(
-                    context = this@MainComposeActivity,
-                    darkTheme = isDarkTheme
+                context = this@MainComposeActivity,
+                nightMode = nightMode
             ) {
                 CompositionLocalProvider(LocalPicasso provides picasso) {
                     MainScreen(

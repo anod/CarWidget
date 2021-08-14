@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.screens.incar
 
+import android.app.UiModeManager
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -99,7 +100,7 @@ fun ScreenTimeoutDialog(item: PreferenceItem.Text, inCar: InCarInterface, onDism
 @Preview("ScreenTimeout Dark")
 @Composable
 fun ScreenTimeoutDark() {
-    CarWidgetTheme(darkTheme = true) {
+    CarWidgetTheme(nightMode = UiModeManager.MODE_NIGHT_YES) {
         BackgroundSurface {
             ScreenTimeoutContent(
                 inCar = InCarInterface.NoOp()

@@ -91,17 +91,7 @@ fun onPreferenceClick(
 @Preview("InCarScreen Light")
 @Composable
 fun InCarScreenLight() {
-    CarWidgetTheme(darkTheme = false) {
-        BackgroundSurface {
-            InCarMainScreen(viewModel = viewModel())
-        }
-    }
-}
-
-@Preview("InCarScreen Dark")
-@Composable
-fun InCarScreenDark() {
-    CarWidgetTheme(darkTheme = true) {
+    CarWidgetTheme() {
         BackgroundSurface {
             InCarMainScreen(viewModel = viewModel())
         }

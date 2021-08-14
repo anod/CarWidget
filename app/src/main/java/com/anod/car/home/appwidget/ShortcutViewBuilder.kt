@@ -136,18 +136,17 @@ class ShortcutViewBuilder(
                     views.setViewVisibility(resText, View.GONE)
                 } else {
                     /*
-                 * Limitation of RemoteViews to use setTextSize with only one
-                 * argument (without providing scale unit) size already in
-                 * scaled pixel format so we revert it to pixels to get properly
-                 * converted after re-applying setTextSize function
-                 */
+                     * Limitation of RemoteViews to use setTextSize with only one
+                     * argument (without providing scale unit) size already in
+                     * scaled pixel format so we revert it to pixels to get properly
+                     * converted after re-applying setTextSize function
+                     */
                     val cSize = prefs.fontSize.toFloat() / scaledDensity
 
                     views.setFloat(resText, "setTextSize", cSize)
                     views.setViewVisibility(resText, View.VISIBLE)
                 }
             }
-
         }
 
         private fun applyShortcut(res: Int, resText: Int, info: Shortcut, views: RemoteViews, cellId: Int, themeIcons: IconTheme?): Bitmap {
