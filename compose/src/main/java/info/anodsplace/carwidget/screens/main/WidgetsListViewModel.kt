@@ -55,13 +55,8 @@ class WidgetsListViewModel(application: Application) : AndroidViewModel(applicat
     private val context: Context
         get() = getApplication()
 
-    private var oldItems: List<WidgetItem> = emptyList()
-
     fun loadScreen(): Flow<ScreenLoadState<WidgetListScreenState>> = flow {
         val newItems = loadWidgetList(context)
-        if (oldItems != newItems) {
-            oldItems = newItems
-        }
         emit(ScreenLoadState.Ready(
             WidgetListScreenState(
                 items = newItems,

@@ -74,7 +74,7 @@ fun AppBarMenu(showColor: Boolean, appWidgetId: Int, currentSkinValue: String, a
             }) { Text(text = stringResource(id = R.string.pref_scale_icon)) }
             Divider()
             DropdownMenuItem(onClick = {
-                navController.navigate(NavItem.CurrentWidget.MoreSettings.forId(appWidgetId))
+                navController.navigate(NavItem.CurrentWidget.MoreSettings.route)
                 expanded = false
             }) { Text(text = stringResource(id = R.string.more)) }
         }

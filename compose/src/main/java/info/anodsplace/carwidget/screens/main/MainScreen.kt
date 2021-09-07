@@ -12,8 +12,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import androidx.navigation.navigation
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.content.preferences.InCarInterface
@@ -47,7 +49,7 @@ fun MainScreen(
     val items: List<NavItem.TabItem> = listOf(
         if (isWidget) NavItem.CurrentWidget else NavItem.Widgets,
         NavItem.InCar,
-        NavItem.Info
+        NavItem.About
     )
     var currentSkinValue by remember { mutableStateOf(WidgetInterface.SKIN_YOU) }
 
@@ -80,13 +82,11 @@ fun MainScreen(
                         label = { Text(stringResource(id = item.resourceId)) },
                         selected = currentRoute?.startsWith(item.route) == true,
                         onClick = {
-                            val route = item.route.replace("{appWidgetId}", "$appWidgetId")
-                            navController.navigate(route) {
+                            navController.navigate(item.route) {
                                 // Pop up to the start destination of the graph to
                                 // avoid building up a large stack of destinations
                                 // on the back stack as users select items
-                                val start = item.parent?.route ?: navController.graph.startDestinationRoute!!
-                                popUpTo(start) {
+                                popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
                                 // Avoid multiple copies of the same destination when
@@ -108,6 +108,7 @@ fun MainScreen(
             composable(route = NavItem.Widgets.route) {
                 val widgetsListViewModel: WidgetsListViewModel = viewModel()
                 val widgetsState by widgetsListViewModel.loadScreen().collectAsState(initial = ScreenLoadState.Loading)
+                AppLog.d(widgetsState.toString())
                 if (widgetsState is ScreenLoadState.Ready<WidgetListScreenState>) {
                     WidgetsListScreen(
                         screen = (widgetsState as ScreenLoadState.Ready<WidgetListScreenState>).value,
@@ -116,7 +117,16 @@ fun MainScreen(
                     )
                 }
             }
-            navigation(startDestination = NavItem.CurrentWidget.Skin.route, route = NavItem.CurrentWidget.route) {
+            composable(route = NavItem.About.route) {
+                val aboutViewModel: AboutViewModel = viewModel()
+                val aboutScreenState by aboutViewModel.initScreenState(appWidgetId = appWidgetId).collectAsState()
+                AboutScreen(
+                        screenState = aboutScreenState,
+                        action = aboutViewModel.uiAction,
+                        modifier = modifier
+                )
+            }
+            navigation(route = NavItem.CurrentWidget.route, startDestination = NavItem.CurrentWidget.Skin.route) {
                 composable(route = NavItem.CurrentWidget.Skin.route) {
                     val appContext = LocalContext.current.applicationContext
                     val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetId))
@@ -142,7 +152,7 @@ fun MainScreen(
                     )
                 }
             }
-            navigation(startDestination = NavItem.InCar.Main.route, route = NavItem.InCar.route) {
+            navigation(route = NavItem.InCar.route, startDestination = NavItem.InCar.Main.route) {
                 composable(route = NavItem.InCar.Main.route) {
                     val inCarViewModel: InCarViewModel = viewModel()
                     InCarMainScreen(inCarViewModel, navController = navController, modifier = modifier)
@@ -157,15 +167,6 @@ fun MainScreen(
                 composable(route = NavItem.InCar.More.route) {
                     MoreScreen(inCar = inCar, modifier = modifier)
                 }
-            }
-            composable(route = NavItem.Info.route) {
-                val aboutViewModel: AboutViewModel = viewModel()
-                val aboutScreenState by aboutViewModel.initScreenState(appWidgetId = appWidgetId).collectAsState()
-                AboutScreen(
-                    screenState = aboutScreenState,
-                    action = aboutViewModel.uiAction,
-                    modifier = modifier
-                )
             }
         }
     }

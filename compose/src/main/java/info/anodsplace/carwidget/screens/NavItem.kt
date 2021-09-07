@@ -14,13 +14,9 @@ sealed class NavItem(val route: String, val parent: NavItem? = null) {
 
     object Widgets : TabItem("widgets/list", R.string.widgets, Icons.Filled.Widgets)
 
-    object CurrentWidget : TabItem("widgets/{appWidgetId}", R.string.current_widget, Icons.Filled.Widgets) {
-        object Skin : NavItem("widgets/{appWidgetId}/skin", parent = InCar) {
-            fun forId(appWidgetId: Int) = "widgets/$appWidgetId/skin"
-        }
-        object MoreSettings: NavItem("widgets/{appWidgetId}/more", parent = CurrentWidget) {
-            fun forId(appWidgetId: Int) = "widgets/$appWidgetId/more"
-        }
+    object CurrentWidget : TabItem("widgets/current", R.string.current_widget, Icons.Filled.Widgets) {
+        object Skin : NavItem("widgets/current/skin", parent = InCar)
+        object MoreSettings: NavItem("widgets/current/more", parent = CurrentWidget)
     }
 
     object InCar : TabItem("incar", R.string.pref_incar_mode_title, Icons.Filled.DirectionsCar) {
@@ -30,13 +26,13 @@ sealed class NavItem(val route: String, val parent: NavItem? = null) {
         object More : NavItem("incar/more", parent = InCar)
     }
 
-    object Info : TabItem("info", R.string.info, Icons.Outlined.Info)
+    object About : TabItem("about", R.string.info, Icons.Outlined.Info)
 
     companion object {
         fun startDestination(appWidgetId: Int) = if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
             Widgets.route else CurrentWidget.route
 
         fun startRoute(appWidgetId: Int): String? = if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
-            null else CurrentWidget.Skin.forId(appWidgetId)
+            null else CurrentWidget.Skin.route
     }
 }
