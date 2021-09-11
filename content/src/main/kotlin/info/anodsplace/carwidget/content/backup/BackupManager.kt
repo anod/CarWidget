@@ -7,9 +7,9 @@ import android.util.JsonWriter
 import android.util.SparseArray
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.content.model.AbstractShortcuts
-import info.anodsplace.carwidget.content.model.NotificationShortcutsModel
-import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.shortcuts.AbstractShortcuts
+import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
+import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.carwidget.content.preferences.InCarStorage
 import info.anodsplace.carwidget.content.preferences.WidgetSettings

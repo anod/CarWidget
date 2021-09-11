@@ -9,7 +9,6 @@ import android.util.LruCache
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import com.anod.car.home.skin.SkinProperties
@@ -19,7 +18,7 @@ import info.anodsplace.carwidget.content.IconTheme
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
-import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 

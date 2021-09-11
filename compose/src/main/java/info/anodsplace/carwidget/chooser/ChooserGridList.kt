@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
@@ -24,6 +25,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -106,19 +108,19 @@ private fun ChooserEntry.iconUri(context: Context): Uri {
 fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit) {
     val iconModifier = Modifier
         .size(SystemIconSize)
+        .background(Color.Gray)
     val context = LocalContext.current
     Column(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(8.dp))
             .clickable { onClick(entry) }
-            .padding(8.dp)
-            ,
+            .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (entry is Header) {
             Icon(imageVector = entry.iconVector, contentDescription = null, modifier = iconModifier)
         } else {
-            PicassoIcon(entry.iconUri(context), modifier = iconModifier)
+            PicassoIcon(uri = entry.iconUri(context), modifier = iconModifier)
         }
         Text(
             modifier = Modifier

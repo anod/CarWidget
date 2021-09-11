@@ -13,9 +13,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.anod.car.home.R
-import com.anod.car.home.app.App
 import com.anod.car.home.databinding.FragmentShortcutEditBinding
-import com.anod.car.home.model.*
 import com.anod.car.home.utils.*
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIcon
@@ -24,10 +22,10 @@ import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.intent.IntentEditFragment
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.content.model.AbstractShortcuts
-import info.anodsplace.carwidget.content.model.NotificationShortcutsModel
-import info.anodsplace.carwidget.content.model.ShortcutInfoUtils
-import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.shortcuts.AbstractShortcuts
+import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
+import info.anodsplace.carwidget.content.shortcuts.ShortcutInfoUtils
+import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import info.anodsplace.framework.app.DialogItems
 import info.anodsplace.framework.app.FragmentContainerActivity

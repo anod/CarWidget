@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.content.model
+package info.anodsplace.carwidget.content.shortcuts
 
 import android.content.ComponentName
 import android.content.Context

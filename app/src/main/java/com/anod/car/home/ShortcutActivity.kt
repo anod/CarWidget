@@ -8,7 +8,6 @@ import android.view.KeyEvent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.FragmentActivity
 import com.anod.car.home.app.App
-import com.anod.car.home.app.MusicAppChoiceActivity
 import com.anod.car.home.appwidget.ShortcutPendingIntent
 import info.anodsplace.framework.permissions.AppPermissions
 import info.anodsplace.framework.permissions.CallPhone
@@ -55,7 +54,8 @@ class ShortcutActivity : FragmentActivity() {
             } else {
                 val musicCmp = App.provide(this).appSettings.musicApp
                 if (musicCmp == null) {
-                    startActivity(Intent(this, MusicAppChoiceActivity::class.java))
+                    // TODO:
+                    // startActivity(Intent(this, MusicAppChoiceActivity::class.java))
                 } else {
                     MusicUtils.sendKeyEventComponent(keyCode, this, musicCmp, false)
                 }

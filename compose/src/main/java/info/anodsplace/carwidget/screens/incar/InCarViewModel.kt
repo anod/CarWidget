@@ -6,7 +6,7 @@ import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import info.anodsplace.carwidget.chooser.AppsListLoader
 import info.anodsplace.carwidget.chooser.AppsPackageLoader
-import info.anodsplace.carwidget.content.model.NotificationShortcutsModel
+import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.framework.content.forLauncher
 import org.koin.core.component.KoinComponent

@@ -11,7 +11,7 @@ import com.anod.car.home.R
 import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.incar.ModeService
 import info.anodsplace.carwidget.content.Version
-import info.anodsplace.carwidget.content.model.NotificationShortcutsModel
+import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
 
 object InCarModeNotification {
     const val id = 1

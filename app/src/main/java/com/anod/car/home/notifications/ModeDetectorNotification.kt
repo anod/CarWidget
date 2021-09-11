@@ -4,10 +4,10 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.core.app.NotificationCompat
 import com.anod.car.home.MainActivity
 import com.anod.car.home.R
-import com.anod.car.home.main.WidgetsListActivity
 
 object ModeDetectorNotification {
     const val id = 3
@@ -18,7 +18,8 @@ object ModeDetectorNotification {
                 .setSmallIcon(R.drawable.ic_stat_mode_detector)
                 .setPriority(NotificationCompat.PRIORITY_MIN)
                 .setContentIntent(PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java).apply {
-                    putExtra(WidgetsListActivity.extraInCarTab, true)
+                    // TODO: Handle URI
+                    data = Uri.parse("carwidget://info.anodsplace.carwidget/incar/main")
                 }, PendingIntent.FLAG_IMMUTABLE))
                 .build()
     }

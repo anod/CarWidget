@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.screens.widget
 
 import android.app.Application
-import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.view.InflateException
 import android.view.View
@@ -16,10 +15,9 @@ import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
 import info.anodsplace.carwidget.appwidget.WidgetView
 import info.anodsplace.carwidget.content.BitmapLruCache
-import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
-import info.anodsplace.carwidget.screens.WidgetActions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*

@@ -4,14 +4,13 @@ import android.app.Application
 import android.content.Context
 import android.util.SparseArray
 import androidx.annotation.StringRes
-import androidx.core.util.forEach
 import androidx.core.util.isEmpty
 import androidx.lifecycle.AndroidViewModel
 import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.compose.ScreenLoadState
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.db.Shortcut
-import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import kotlinx.coroutines.Dispatchers

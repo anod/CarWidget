@@ -1,9 +1,7 @@
-package info.anodsplace.carwidget.content.model
+package info.anodsplace.carwidget.content.shortcuts
 
 import android.content.Context
 import android.content.Intent
-import android.util.SparseArray
-import android.util.SparseIntArray
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.Shortcuts

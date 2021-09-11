@@ -10,7 +10,7 @@ import info.anodsplace.carwidget.content.db.Shortcut
 import com.anod.car.home.utils.ShortcutPicker
 import com.anod.car.home.utils.Utils
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.content.model.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 
 /**

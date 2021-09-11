@@ -11,7 +11,7 @@ import com.anod.car.home.R
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.Shortcuts
 import com.anod.car.home.prefs.*
-import info.anodsplace.carwidget.content.model.ShortcutInfoUtils
+import info.anodsplace.carwidget.content.shortcuts.ShortcutInfoUtils
 import java.util.*
 
 /**
@@ -27,12 +27,6 @@ class ShortcutPicker(private val model: Shortcuts, private val handler: Handler,
         fun onEditComplete(cellId: Int)
     }
 
-    fun showEditActivity(cellId: Int, shortcutId: Long, appWidgetId: Int) {
-        val editIntent = ShortcutEditActivity.createIntent(context, cellId, shortcutId, appWidgetId)
-        startActivityForResultSafely(editIntent, REQUEST_EDIT_SHORTCUT)
-
-    }
-
     fun showActivityPicker(position: Int) {
         val pickIntent = createPickIntent(position)
         handler.startActivityForResult(pickIntent, REQUEST_PICK_SHORTCUT)
@@ -43,7 +37,6 @@ class ShortcutPicker(private val model: Shortcuts, private val handler: Handler,
             when (requestCode) {
                 REQUEST_PICK_APPLICATION -> return completeAddShortcut(data, true)
                 REQUEST_CREATE_SHORTCUT -> return completeAddShortcut(data, false)
-                REQUEST_EDIT_SHORTCUT -> return completeEditShortcut(data!!)
                 REQUEST_PICK_SHORTCUT -> return pickShortcut(data!!)
             }
         }
@@ -148,21 +141,10 @@ class ShortcutPicker(private val model: Shortcuts, private val handler: Handler,
         return true
     }
 
-    private fun completeEditShortcut(data: Intent): Boolean {
-        val cellId = data.getIntExtra(ShortcutEditFragment.extraCellId, INVALID_CELL_ID)
-        val shortcutId = data.getLongExtra(ShortcutEditFragment.extraShortcutId, Shortcut.idUnknown)
-        if (cellId != INVALID_CELL_ID) {
-            model.reloadShortcut(cellId, shortcutId)
-            handler.onEditComplete(cellId)
-        }
-        return false
-    }
-
     companion object {
         private const val REQUEST_PICK_SHORTCUT = 2
         private const val REQUEST_PICK_APPLICATION = 3
         private const val REQUEST_CREATE_SHORTCUT = 4
-        private const val REQUEST_EDIT_SHORTCUT = 5
         const val EXTRA_CELL_ID = "CarHomeWidgetCellId"
         const val INVALID_CELL_ID = -1
     }

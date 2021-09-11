@@ -15,12 +15,12 @@ import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.compose.LocalBackPressedDispatcher
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.applog.AppLog
-import info.anodsplace.framework.app.FragmentFactory
+import info.anodsplace.framework.app.FragmentContainerFactory
 import kotlinx.coroutines.flow.collect
 
 class IntentEditFragment: Fragment() {
 
-    class Factory(private val intentUri: String): FragmentFactory("IntentEditFragment") {
+    class Factory(private val intentUri: String): FragmentContainerFactory("IntentEditFragment") {
         override fun create() = IntentEditFragment().apply {
             arguments = bundleOf(extraUri to intentUri)
         }

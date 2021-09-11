@@ -5,14 +5,11 @@
     android:installLocation="internalOnly">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
     <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -75,19 +72,6 @@
         <activity
             android:name="com.anod.car.home.prefs.ShortcutEditActivity"
             android:theme="@style/Dialog" />
-        <activity
-            android:name="com.anod.car.home.prefs.AllAppsActivity"
-            android:theme="@style/AppListTheme" />
-        <activity
-            android:name=".prefs.lookandfeel.IconThemesActivity"
-            android:label="@string/icons_theme"
-            android:theme="@style/AppListTheme" />
-
-        <!--        <activity-->
-<!--            android:name="com.anod.car.home.prefs.ConfigurationActivity"-->
-<!--            android:clearTaskOnLaunch="true"-->
-<!--            android:fragment="com.anod.car.home.prefs."-->
-<!--            android:label="@string/settings" />-->
 
         <activity
             android:name="info.anodsplace.framework.app.FragmentContainerActivity"
@@ -124,11 +108,6 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name="com.anod.car.home.prefs.ActivityPicker"
-            android:finishOnCloseSystemDialogs="true"
-            android:theme="@style/AppListTheme" />
 
         <activity
             android:name="com.anod.car.home.CarHomeActivity"
@@ -179,7 +158,6 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
-        <activity android:name=".main.WidgetsListActivity" />
         <activity android:name=".main.WizardActivity" />
 
         <activity
@@ -196,15 +174,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".prefs.MusicAppSettingsActivity"
-            android:label="@string/music_app"
-            android:theme="@style/AppListTheme" />
-
-        <activity
-            android:name=".app.MusicAppChoiceActivity"
-            android:excludeFromRecents="true"
-            android:theme="@style/AppListTheme" />
 
         <activity
             android:name=".prefs.lookandfeel.WidgetButtonChoiceActivity"
