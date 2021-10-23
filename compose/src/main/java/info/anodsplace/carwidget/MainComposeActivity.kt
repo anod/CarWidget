@@ -1,7 +1,9 @@
 package info.anodsplace.carwidget
 
+import android.app.Activity
 import android.app.UiModeManager
 import android.appwidget.AppWidgetManager
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Window
@@ -59,6 +61,8 @@ open class MainComposeActivity : ComponentActivity(), KoinComponent {
                 when (it) {
                     is UiAction.OpenWidgetConfig -> startConfigActivity(it.appWidgetId)
                     is UiAction.ApplyWidget -> {
+                        val resultValue = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, it.appWidgetId)
+                        setResult(Activity.RESULT_OK, resultValue)
                         val prefs: WidgetInterface = get(parameters = { parametersOf(it.appWidgetId) })
                         prefs.skin = it.skinValue
                         prefs.applyPending()

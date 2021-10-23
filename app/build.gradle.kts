@@ -23,7 +23,7 @@ dependencies {
     implementation("io.insert-koin:koin-core:3.1.2")
     implementation("com.squareup.picasso:picasso:2.8")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1")
 
     // Activity recognition
@@ -50,8 +50,8 @@ dependencies {
     compileOnly("com.google.auto.service:auto-service-annotations:1.0")
     kapt("com.google.auto.service:auto-service:1.0")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.21")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.1")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
 }
 
 android {
