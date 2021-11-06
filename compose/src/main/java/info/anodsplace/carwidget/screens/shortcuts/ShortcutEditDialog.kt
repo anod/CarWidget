@@ -12,10 +12,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,10 +26,15 @@ import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIcon
+import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.utils.SystemMaxIconSize
+import info.anodsplace.compose.PicassoIcon
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
 
 @Composable
-fun ShortcutEditDialog(cellId: Int, shortcut: Shortcut, icon: ShortcutIcon) {
+fun ShortcutEditDialog(shortcut: Shortcut, action: MutableSharedFlow<ShortcutEditAction>) {
 
     Scaffold(
             backgroundColor = MaterialTheme.colors.background,
@@ -43,28 +50,26 @@ fun ShortcutEditDialog(cellId: Int, shortcut: Shortcut, icon: ShortcutIcon) {
                 )
             }
     ) { innerPadding ->
+        val scope = rememberCoroutineScope()
         Column(
                 modifier = Modifier
                         .padding(vertical = 8.dp, horizontal = 16.dp),
         ) {
             Row(
                 modifier = Modifier
-                        .fillMaxWidth()
-                        .defaultMinSize(minHeight = 144.dp),
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 144.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
                 IconButton(onClick = {}) {
-                    Icon(
-                            modifier = Modifier
-                                    .size(SystemMaxIconSize)
-                                    .clip(shape = RoundedCornerShape(8.dp))
-                                    .padding(4.dp)
-                                    .background(Color.Gray)
-                                    .clickable(onClick = { }),
-                            imageVector = Icons.Filled.Android,
-                            tint = MaterialTheme.colors.onBackground,
-                            contentDescription = null
+                    PicassoIcon(
+                        modifier = Modifier
+                            .size(SystemMaxIconSize)
+                            .padding(4.dp)
+                            .weight(1f)
+                            .clickable(onClick = { }),
+                        uri = shortcut.iconUri(LocalContext.current, ""),
                     )
                 }
                 TextField(
@@ -75,11 +80,19 @@ fun ShortcutEditDialog(cellId: Int, shortcut: Shortcut, icon: ShortcutIcon) {
                 )
             }
             Row {
-                Button(onClick = { }, modifier = Modifier.align(Alignment.CenterVertically)) {
+                Button(onClick = {
+                    scope.launch {
+                        action.emit(ShortcutEditAction.Drop)
+                    }
+                }, modifier = Modifier.align(Alignment.CenterVertically)) {
                     Text(text = "Delete")
                 }
                 Spacer(modifier = Modifier.weight(1.0f))
-                Button(onClick = {  }, modifier = Modifier.align(Alignment.CenterVertically)) {
+                Button(onClick = {
+                    scope.launch {
+                        action.emit(ShortcutEditAction.Ok)
+                    }
+                }, modifier = Modifier.align(Alignment.CenterVertically)) {
                     Text(text = "OK")
                 }
             }
@@ -91,7 +104,7 @@ fun ShortcutEditDialog(cellId: Int, shortcut: Shortcut, icon: ShortcutIcon) {
 @Composable
 fun PreviewEditDialog() {
     CarWidgetTheme(nightMode = UiModeManager.MODE_NIGHT_YES) {
-        ShortcutEditDialog(0,
+        ShortcutEditDialog(
                 Shortcut(
                     id = 0L,
                     itemType = LauncherSettings.Favorites.ITEM_TYPE_APPLICATION,
@@ -99,7 +112,8 @@ fun PreviewEditDialog() {
                     isCustomIcon = false,
                     intent = Intent()
                 ),
-                ShortcutIcon.forCustomIcon(0L, Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888))
+                MutableSharedFlow()
+                //ShortcutIcon.forCustomIcon(0L, Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888))
         )
     }
 }

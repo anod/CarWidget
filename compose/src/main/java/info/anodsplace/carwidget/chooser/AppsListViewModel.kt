@@ -16,7 +16,7 @@ class AppsListViewModel(application: Application, private val loader: AppsListLo
         private val application: Application,
         private val loader: AppsListLoader
     ): ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return AppsListViewModel(application, loader) as T
         }
     }

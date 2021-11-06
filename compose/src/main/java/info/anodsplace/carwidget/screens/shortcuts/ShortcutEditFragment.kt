@@ -5,15 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import info.anodsplace.carwidget.R
+import androidx.lifecycle.lifecycleScope
+import com.squareup.picasso.Picasso
+import info.anodsplace.compose.LocalPicasso
 import info.anodsplace.framework.app.FragmentContainerFactory
+import kotlinx.coroutines.flow.collect
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class ShortcutEditFragment : Fragment() {
+class ShortcutEditFragment : Fragment(), KoinComponent {
+    private val picasso: Picasso by inject()
 
     companion object {
         const val extraShortcutId = "extra_shortcut_id"
@@ -25,7 +32,7 @@ class ShortcutEditFragment : Fragment() {
             val position: Int,
             val shortcutId: Long,
             val appWidgetId: Int
-    ) : FragmentContainerFactory(fragmentTag = "shortcut-edit", themeResId = R.style.Theme_AppCompat_DayNight_Dialog) {
+    ) : FragmentContainerFactory(fragmentTag = "shortcut-edit") {
         override fun create() = ShortcutEditFragment().apply {
             arguments = bundleOf(
                     extraShortcutId to shortcutId,
@@ -43,20 +50,32 @@ class ShortcutEditFragment : Fragment() {
     ) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_compose_view, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val composeView = view as ComposeView
-        composeView.apply {
+        return ComposeView(requireContext()).apply {
             // Dispose the Composition when the view's LifecycleOwner is destroyed
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                ShortcutEditDialog(
-                        cellId = viewModel.position,
+                CompositionLocalProvider(LocalPicasso provides picasso) {
+                    ShortcutEditDialog(
                         shortcut = viewModel.shortcut,
-                        icon = viewModel.icon
-                )
+                        action = viewModel.actions
+                    )
+                }
+            }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.actions.collect {
+                when (it) {
+                    ShortcutEditAction.Drop -> {
+                        viewModel.drop()
+                        activity?.finish()
+                    }
+                    ShortcutEditAction.Ok -> {
+                        activity?.finish()
+                    }
+                }
             }
         }
     }

@@ -48,7 +48,7 @@ fun WidgetSkinPreview(skinItem: SkinList.Item, viewModel: SkinPreviewViewModel) 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun WidgetSkinScreen(skinList: SkinList, viewModel: SkinPreviewViewModel, modifier: Modifier = Modifier) {
-    val pagerState = rememberPagerState(pageCount = skinList.count, initialPage = skinList.selectedSkinPosition)
+    val pagerState = rememberPagerState(initialPage = skinList.selectedSkinPosition)
     val scope = rememberCoroutineScope()
 
     var currentPage by remember { mutableStateOf(pagerState.currentPage) }
@@ -70,12 +70,12 @@ fun WidgetSkinScreen(skinList: SkinList, viewModel: SkinPreviewViewModel, modifi
                     selected = pagerState.currentPage == index,
                     onClick = {
                         scope.launch { pagerState.scrollToPage(page = index) }
-                    },
+                    }
                 )
             }
         }
 
-        HorizontalPager(state = pagerState, modifier = Modifier.padding(16.dp)) { page ->
+        HorizontalPager(count = skinList.count, state = pagerState, modifier = Modifier.padding(16.dp)) { page ->
             WidgetSkinPreview(skinList[page], viewModel = viewModel)
         }
     }

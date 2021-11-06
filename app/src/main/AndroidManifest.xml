@@ -70,10 +70,6 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name="com.anod.car.home.prefs.ShortcutEditActivity"
-            android:theme="@style/Dialog" />
-
-        <activity
             android:name="info.anodsplace.framework.app.FragmentContainerActivity"
             android:theme="@style/AppTheme"
         />
@@ -208,7 +204,8 @@
         <!-- The settings provider contains Home's data, like the workspace favorites -->
         <provider
             android:name="com.anod.car.home.model.LauncherProvider"
-            android:authorities="${applicationId}.shortcutsprovider" />
+            android:authorities="${applicationId}.shortcutsprovider"
+            android:exported="false" />
 
         <receiver
             android:exported="true"
