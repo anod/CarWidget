@@ -16,7 +16,7 @@ import com.anod.car.home.databinding.ListFooterIconThemesBinding
 import com.anod.car.home.utils.Utils
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.chooser.AppsListViewModel
-import info.anodsplace.carwidget.chooser.AppsPackageLoader
+import info.anodsplace.carwidget.chooser.QueryIntentLoader
 import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
@@ -27,7 +27,7 @@ import info.anodsplace.framework.content.startActivitySafely
 class IconThemesActivity : AppsListActivity() {
 
     override fun viewModelFactory(): AppsListViewModel.Factory {
-        return AppsListViewModel.Factory(App.get(applicationContext), AppsPackageLoader(this, Intent().forIconTheme()))
+        return AppsListViewModel.Factory(App.get(applicationContext), QueryIntentLoader(this, Intent().forIconTheme()))
     }
 
     override val isShowTitle: Boolean

@@ -42,8 +42,7 @@ import org.koin.core.parameter.parametersOf
 open class MainComposeActivity : ComponentActivity(), KoinComponent {
     private val appSettings: AppSettings by inject()
     private val picasso: Picasso by inject()
-    private val uiModeManager: UiModeManager
-        get() = applicationContext.getSystemService(UiModeManager::class.java)
+    private val uiModeManager: UiModeManager by inject()
 
     open fun startConfigActivity(appWidgetId: Int) {}
     open fun requestWidgetUpdate(appWidgetId: Int) { }

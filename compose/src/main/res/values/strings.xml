@@ -308,6 +308,7 @@
     <string name="widget_description_large">Widget with large configurable buttons</string>
     <string name="pref_screen_orientation_summary">Force any app into orientation. Notice: not all apps can work correctly</string>
     <string name="screen_orientation">Screen Orientation</string>
+    <string name="car_widget_shortcuts">Car Widget shortcuts</string>
 
     <array name="adaptive_icon_style_names">
         <item>Default</item>

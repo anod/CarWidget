@@ -7,14 +7,14 @@ import android.content.ComponentName
 import android.content.Intent
 import com.anod.car.home.app.AppsListActivity
 import info.anodsplace.carwidget.chooser.AppsListViewModel
-import info.anodsplace.carwidget.chooser.AppsPackageLoader
+import info.anodsplace.carwidget.chooser.QueryIntentLoader
 import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.framework.content.forLauncher
 
 class AllAppsActivity : AppsListActivity() {
 
     override fun viewModelFactory(): AppsListViewModel.Factory {
-        return AppsListViewModel.Factory(App.get(applicationContext), AppsPackageLoader(this, Intent().forLauncher()))
+        return AppsListViewModel.Factory(App.get(applicationContext), QueryIntentLoader(this, Intent().forLauncher()))
     }
 
     override fun onEntryClick(position: Int, entry: ChooserEntry) {

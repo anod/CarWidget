@@ -14,7 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import info.anodsplace.carwidget.R
-import info.anodsplace.carwidget.chooser.AppsPackageLoader
+import info.anodsplace.carwidget.chooser.QueryIntentLoader
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.compose.PreferencesScreen
@@ -82,11 +82,11 @@ fun MoreScreen(inCar: InCarInterface, modifier: Modifier) {
     })
 
     if (appChooser != null) {
-        val loader by remember { mutableStateOf(AppsPackageLoader(context, Intent().forLauncher())) }
+        val loader by remember { mutableStateOf(QueryIntentLoader(context, Intent().forLauncher())) }
 
         ChooserDialog(
                 modifier = Modifier.fillMaxHeight(fraction = 0.8f),
-                appsLoader = loader,
+                loader = loader,
                 onDismissRequest = {
             items = createItems(inCar, context)
             appChooser = null

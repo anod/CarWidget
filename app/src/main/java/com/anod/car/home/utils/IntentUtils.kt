@@ -4,7 +4,6 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
@@ -12,22 +11,11 @@ import android.provider.Settings
 import android.text.TextUtils
 import android.view.KeyEvent
 import com.anod.car.home.ShortcutActivity
-import com.anod.car.home.app.NewShortcutActivity
 import com.anod.car.home.incar.SwitchInCarActivity
 import com.anod.car.home.prefs.LookAndFeelActivity
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.applog.AppLog
-
-fun Intent.forNewShortcut(context: Context, appWidgetId: Int, cellId: Int): Intent {
-    component = ComponentName(context, NewShortcutActivity::class.java)
-    putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-    putExtra(ShortcutPicker.EXTRA_CELL_ID, cellId)
-    addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION or Intent.FLAG_ACTIVITY_NEW_TASK)
-    val path = "$appWidgetId/$cellId"
-    data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"), path)
-    return this
-}
 
 fun Intent.forSettings(context: Context, appWidgetId: Int): Intent {
     component = ComponentName(context, LookAndFeelActivity::class.java)

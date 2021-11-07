@@ -85,15 +85,6 @@
             android:theme="@style/BrightnessTheme" />
 
         <activity
-            android:name="com.anod.car.home.app.NewShortcutActivity"
-            android:clearTaskOnLaunch="true"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:taskAffinity="com.anod.car.home.newshortcut"
-            android:theme="@style/BrightnessTheme" />
-
-        <activity
             android:name="com.anod.car.home.prefs.LookAndFeelActivity"
             android:clearTaskOnLaunch="true"
             android:label="@string/app_name"
@@ -145,7 +136,7 @@
             android:launchMode="singleTask"
             android:taskAffinity="com.anod.car.home.main"
             android:exported="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

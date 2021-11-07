@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.anod.car.home.BuildConfig
-import com.anod.car.home.utils.forNewShortcut
 import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
 import info.anodsplace.carwidget.screens.shortcuts.ShortcutEditFragment
+import info.anodsplace.carwidget.screens.shortcuts.ShortcutNewFragment
 import info.anodsplace.carwidget.screens.widget.SkinList
 import info.anodsplace.framework.app.FragmentContainerActivity
 
@@ -17,9 +17,15 @@ class SkinPreviewIntentFactory(
     private val context: Context
 ): PreviewPendingIntentFactory {
 
-    override fun createNew(appWidgetId: Int, cellId: Int): PendingIntent {
-        val intent = Intent().forNewShortcut(context, appWidgetId, cellId)
-        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+    override fun createNew(appWidgetId: Int, position: Int): PendingIntent {
+        val newIntent = FragmentContainerActivity.intent(
+            context = context,
+            factory = ShortcutNewFragment.Factory(position, appWidgetId)
+        )
+        newIntent.data = Uri.parse(
+            "carwidget://${BuildConfig.APPLICATION_ID}/widget/$appWidgetId/shortcut/new/position/$position"
+        )
+        return PendingIntent.getActivity(context, 0, newIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     override fun createSettings(appWidgetId: Int, buttonId: Int): PendingIntent {

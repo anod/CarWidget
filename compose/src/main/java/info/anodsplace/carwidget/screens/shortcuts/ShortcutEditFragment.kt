@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
@@ -13,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.Picasso
+import info.anodsplace.carwidget.CarWidgetTheme
+import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.compose.LocalPicasso
 import info.anodsplace.framework.app.FragmentContainerFactory
 import kotlinx.coroutines.flow.collect
@@ -20,6 +24,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class ShortcutEditFragment : Fragment(), KoinComponent {
+    private val appSettings: AppSettings by inject()
     private val picasso: Picasso by inject()
 
     companion object {
@@ -54,11 +59,17 @@ class ShortcutEditFragment : Fragment(), KoinComponent {
             // Dispose the Composition when the view's LifecycleOwner is destroyed
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                CompositionLocalProvider(LocalPicasso provides picasso) {
-                    ShortcutEditDialog(
-                        shortcut = viewModel.shortcut,
-                        action = viewModel.actions
-                    )
+                val nightMode by appSettings.nightModeChange.collectAsState(initial = appSettings.nightMode)
+                CarWidgetTheme(
+                    context = requireContext(),
+                    nightMode = nightMode
+                ) {
+                    CompositionLocalProvider(LocalPicasso provides picasso) {
+                        ShortcutEditDialog(
+                            shortcut = viewModel.shortcut,
+                            action = viewModel.actions
+                        )
+                    }
                 }
             }
         }

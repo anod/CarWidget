@@ -85,7 +85,7 @@ fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifi
                 headers = listOf(
                     Header(stringResource(R.string.none), iconVector = Icons.Filled.Cancel)
                 ),
-                appsLoader = viewModel.appsLoader,
+                loader = viewModel.appsLoader,
                 onDismissRequest = { shortcutIndex = -1 },
                 onClick = { entry ->
                     if (entry.componentName == null) {

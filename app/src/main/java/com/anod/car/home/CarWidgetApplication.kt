@@ -2,6 +2,7 @@ package com.anod.car.home
 
 import android.app.Application
 import android.app.NotificationManager
+import android.app.UiModeManager
 import android.content.Context
 import android.os.DeadSystemException
 import android.util.LruCache
@@ -118,6 +119,7 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                 }
                 factory<PreviewPendingIntentFactory> { params -> SkinPreviewIntentFactory(params.get(), params.get(), get()) }
                 factory<WidgetInterface> { params -> WidgetStorage.load(get(), DefaultsResourceProvider(get<Context>()), params.get()) }
+                factory<UiModeManager> { get<Context>().getSystemService(UiModeManager::class.java) }
             }))
             modules(modules = createAppModule())
         }

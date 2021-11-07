@@ -193,7 +193,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
             headers = listOf(
                 Header(stringResource(R.string.show_choice), iconVector = Icons.Filled.List)
             ),
-            appsLoader = loader,
+            loader = loader,
             onDismissRequest = { showMusicAppDialog = false },
             onClick = { entry ->
                 coroutinesScope.launch {
