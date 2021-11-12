@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.anod.car.home.BuildConfig
+import com.anod.car.home.R
 import com.anod.car.home.utils.forSettings
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.screens.shortcuts.ShortcutNewFragment
@@ -38,7 +39,7 @@ class ShortcutPendingIntent(private val context: Context) : PendingIntentFactory
     override fun createNew(appWidgetId: Int, position: Int): PendingIntent {
         val newIntent = FragmentContainerActivity.intent(
             context = context,
-            factory = ShortcutNewFragment.Factory(position, appWidgetId)
+            factory = ShortcutNewFragment.Factory(position, appWidgetId, R.style.Dialog)
         )
         newIntent.data = Uri.parse(
             "carwidget://${BuildConfig.APPLICATION_ID}/widget/$appWidgetId/shortcut/new/position/$position"

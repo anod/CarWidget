@@ -5,15 +5,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.annotation.StyleRes
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.chooser.ChooserDialog
@@ -31,8 +37,9 @@ class ShortcutNewFragment : Fragment(), KoinComponent {
 
     class Factory(
         val position: Int,
-        val appWidgetId: Int
-    ) : FragmentContainerFactory(fragmentTag = "shortcut-new") {
+        val appWidgetId: Int,
+        @StyleRes themeResId: Int
+    ) : FragmentContainerFactory(fragmentTag = "shortcut-new", themeResId = themeResId) {
         override fun create() = ShortcutNewFragment().apply {
             arguments = bundleOf(
                 ShortcutEditFragment.extraPosition to position,
@@ -54,6 +61,7 @@ class ShortcutNewFragment : Fragment(), KoinComponent {
                     CompositionLocalProvider(LocalPicasso provides picasso) {
                         val loader by remember { mutableStateOf(QueryIntentLoader(context, Intent(Intent.ACTION_CREATE_SHORTCUT))) }
                         ChooserDialog(
+                            modifier = Modifier.padding(horizontal = 16.dp),
                             loader = loader,
                             headers = listOf(
                                 Header(stringResource(R.string.applications), iconVector = Icons.Filled.List),

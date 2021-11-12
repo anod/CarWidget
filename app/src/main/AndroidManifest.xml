@@ -71,7 +71,7 @@
 
         <activity
             android:name="info.anodsplace.framework.app.FragmentContainerActivity"
-            android:theme="@style/AppTheme"
+            android:theme="@style/Dialog"
         />
 
         <activity

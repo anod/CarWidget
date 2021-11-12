@@ -24,9 +24,7 @@ import info.anodsplace.carwidget.utils.SystemIconSize
 
 @Composable
 fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit) {
-    val iconModifier = Modifier
-        .size(SystemIconSize)
-        .background(Color.Gray)
+    val iconModifier = Modifier.size(SystemIconSize)
     val context = LocalContext.current
     Column(
         modifier = Modifier
@@ -36,9 +34,18 @@ fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (entry is Header) {
-            Icon(imageVector = entry.iconVector, contentDescription = null, modifier = iconModifier)
+            Icon(
+                imageVector = entry.iconVector,
+                contentDescription = entry.title,
+                modifier = iconModifier,
+                tint = Color.Unspecified
+            )
         } else {
-            PicassoIcon(uri = entry.iconUri(context), modifier = iconModifier)
+            PicassoIcon(
+                uri = entry.iconUri(context),
+                contentDescription = entry.title,
+                modifier = iconModifier
+            )
         }
         Text(
             modifier = Modifier
