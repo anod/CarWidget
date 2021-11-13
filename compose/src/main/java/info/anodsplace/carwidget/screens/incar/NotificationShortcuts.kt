@@ -83,7 +83,7 @@ fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifi
             ChooserDialog(
                 modifier = Modifier.fillMaxHeight(fraction = 0.8f),
                 headers = listOf(
-                    Header(stringResource(R.string.none), iconVector = Icons.Filled.Cancel)
+                    Header(0, stringResource(R.string.none), iconVector = Icons.Filled.Cancel)
                 ),
                 loader = viewModel.appsLoader,
                 onDismissRequest = { shortcutIndex = -1 },

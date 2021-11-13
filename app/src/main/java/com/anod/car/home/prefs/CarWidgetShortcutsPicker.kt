@@ -14,8 +14,11 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.anod.car.home.R
+import com.anod.car.home.app.App
 import com.anod.car.home.prefs.ActivityPicker.PickAdapter.Item
 import com.anod.car.home.utils.*
+import info.anodsplace.carwidget.utils.forPickShortcutLocal
+import info.anodsplace.carwidget.utils.resolveDirectCall
 import info.anodsplace.framework.content.startActivityForResultSafely
 import info.anodsplace.framework.livedata.SingleLiveEvent
 import info.anodsplace.framework.permissions.AppPermissions
@@ -47,11 +50,12 @@ class CarWidgetShortcutsPicker : ActivityPicker() {
 
     override val items: List<Item>
         get() {
+            val shortcutResources = App.provide(this).shortcutResources
             val items = ArrayList<Item>()
             val r = resources
             val titles = r.getStringArray(R.array.carwidget_shortcuts)
             for (i in 0 until ITEMS_NUM) {
-                val intent = Intent().forPickShortcutLocal(i, titles[i], ICONS[i], this)
+                val intent = Intent().forPickShortcutLocal(i, titles[i], ICONS[i], this, shortcutResources)
                 val item = Item(this, titles[i], ResourcesCompat.getDrawable(r, ICONS[i], null),
                         intent)
                 items.add(item)

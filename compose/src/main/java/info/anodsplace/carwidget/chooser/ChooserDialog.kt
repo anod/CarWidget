@@ -24,7 +24,9 @@ import info.anodsplace.carwidget.utils.SystemIconSize
 
 @Composable
 fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit) {
-    val iconModifier = Modifier.size(SystemIconSize)
+    val iconModifier = Modifier
+        .size(SystemIconSize)
+        .background(MaterialTheme.colors.primary, shape = RoundedCornerShape(48.dp))
     val context = LocalContext.current
     Column(
         modifier = Modifier

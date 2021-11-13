@@ -12,15 +12,19 @@ import android.os.Bundle
 import androidx.annotation.DrawableRes
 import androidx.collection.SimpleArrayMap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.BuildConfig
 import info.anodsplace.carwidget.content.graphics.PackageIconRequestHandler
+import info.anodsplace.carwidget.content.iconUri
+import info.anodsplace.framework.content.forLauncher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 
-class Header(title: String, val iconVector: ImageVector) :
+class Header(val headerId: Int, title: String, val iconVector: ImageVector) :
     ChooserEntry(null, title)
 
 open class ChooserEntry(
@@ -84,16 +88,22 @@ open class ChooserEntry(
 internal fun ChooserEntry.iconUri(context: Context): Uri {
     return if (componentName == null ) {
         if (iconRes != 0) {
-            Uri.fromParts(ContentResolver.SCHEME_ANDROID_RESOURCE, context.packageName, iconRes.toString())
+            context.iconUri(iconRes = iconRes)
         } else Uri.EMPTY
-    } else Uri.fromParts(PackageIconRequestHandler.SCHEME, componentName.flattenToShortString(), null)
+    } else Uri.fromParts(PackageIconRequestHandler.SCHEME_APPLICATION_ICON, componentName.flattenToShortString(), null)
 }
 
 interface ChooserLoader {
     fun load(): Flow<List<ChooserEntry>>
 }
 
-class QueryIntentLoader(context: Context, private val queryIntent: Intent) : ChooserLoader {
+class StaticChooserLoader(private val list: List<ChooserEntry>) : ChooserLoader {
+    override fun load(): Flow<List<ChooserEntry>> = flowOf(list)
+}
+
+class AllAppsIntentLoader(context: Context) : QueryIntentLoader(context, Intent().forLauncher())
+
+open class QueryIntentLoader(context: Context, private val queryIntent: Intent) : ChooserLoader {
 
     private val packageManager = context.packageManager
     private val selfPackage = context.packageName

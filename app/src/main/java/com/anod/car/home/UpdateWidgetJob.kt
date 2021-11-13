@@ -9,6 +9,9 @@ import com.anod.car.home.appwidget.WidgetViewBuilder
 import com.anod.car.home.incar.BroadcastService
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * WorkManager can't be used since it causes updates loop
@@ -37,8 +40,9 @@ class UpdateWidgetJob : JobIntentService() {
         val appWidgetManager = App.provide(context).appWidgetManager
         // Perform this loop procedure for each App Widget that belongs to this
         // provider
+        val shortcutResources = App.provide(context).shortcutResources
         for (appWidgetId in appWidgetIds) {
-            val views = WidgetViewBuilder(context, appWidgetId, ShortcutPendingIntent(context)).apply {
+            val views = WidgetViewBuilder(context, appWidgetId, ShortcutPendingIntent(context, shortcutResources)).apply {
                 init()
             }.create()
             AppLog.i("Performing update for widget #$appWidgetId")

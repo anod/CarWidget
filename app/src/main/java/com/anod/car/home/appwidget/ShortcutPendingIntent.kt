@@ -9,12 +9,14 @@ import android.content.Intent
 import android.net.Uri
 import com.anod.car.home.BuildConfig
 import com.anod.car.home.R
-import com.anod.car.home.utils.forSettings
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
-import info.anodsplace.carwidget.screens.shortcuts.ShortcutNewFragment
+import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra
+import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
+import info.anodsplace.carwidget.screens.shortcuts.ShortcutPickerFragment
+import info.anodsplace.carwidget.utils.forSettings
 import info.anodsplace.framework.app.FragmentContainerActivity
 
-class ShortcutPendingIntent(private val context: Context) : PendingIntentFactory {
+class ShortcutPendingIntent(private val context: Context, private val shortcutResources: ShortcutResources) : PendingIntentFactory {
 
     private val inCarOnIntent: PendingIntent
         get() {
@@ -39,7 +41,7 @@ class ShortcutPendingIntent(private val context: Context) : PendingIntentFactory
     override fun createNew(appWidgetId: Int, position: Int): PendingIntent {
         val newIntent = FragmentContainerActivity.intent(
             context = context,
-            factory = ShortcutNewFragment.Factory(position, appWidgetId, R.style.Dialog)
+            factory = ShortcutPickerFragment.Factory(position, appWidgetId, R.style.Dialog)
         )
         newIntent.data = Uri.parse(
             "carwidget://${BuildConfig.APPLICATION_ID}/widget/$appWidgetId/shortcut/new/position/$position"
@@ -51,7 +53,7 @@ class ShortcutPendingIntent(private val context: Context) : PendingIntentFactory
      * Create an Intent to launch Configuration
      */
     override fun createSettings(appWidgetId: Int, buttonId: Int): PendingIntent {
-        val intent = Intent().forSettings(context, appWidgetId)
+        val intent = Intent().forSettings(context, appWidgetId, shortcutResources)
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
@@ -68,7 +70,7 @@ class ShortcutPendingIntent(private val context: Context) : PendingIntentFactory
         val path = "$prefix - $position"
         val data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"), path)
 
-        if (action == ShortcutActivity.ACTION_MEDIA_BUTTON) {
+        if (action == ShortcutExtra.ACTION_MEDIA_BUTTON) {
             intent.data = data
             return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }

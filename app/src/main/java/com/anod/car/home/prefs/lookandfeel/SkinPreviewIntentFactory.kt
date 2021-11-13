@@ -8,7 +8,7 @@ import com.anod.car.home.BuildConfig
 import com.anod.car.home.R
 import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
 import info.anodsplace.carwidget.screens.shortcuts.ShortcutEditFragment
-import info.anodsplace.carwidget.screens.shortcuts.ShortcutNewFragment
+import info.anodsplace.carwidget.screens.shortcuts.ShortcutPickerFragment
 import info.anodsplace.carwidget.screens.widget.SkinList
 import info.anodsplace.framework.app.FragmentContainerActivity
 
@@ -21,7 +21,7 @@ class SkinPreviewIntentFactory(
     override fun createNew(appWidgetId: Int, position: Int): PendingIntent {
         val newIntent = FragmentContainerActivity.intent(
             context = context,
-            factory = ShortcutNewFragment.Factory(position, appWidgetId, R.style.Dialog)
+            factory = ShortcutPickerFragment.Factory(position, appWidgetId, R.style.Dialog)
         )
         newIntent.data = Uri.parse(
             "carwidget://${BuildConfig.APPLICATION_ID}/widget/$appWidgetId/shortcut/new/position/$position"

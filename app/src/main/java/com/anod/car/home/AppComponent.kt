@@ -15,6 +15,7 @@ import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import com.squareup.picasso.Picasso
+import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.util.createLruCache
 import org.koin.core.component.KoinComponent
@@ -25,6 +26,9 @@ import org.koin.core.component.get
  * @date 2014-10-27
  */
 class AppComponent(val application: Application) : KoinComponent {
+    val shortcutResources: ShortcutResources
+        get() = get()
+
     val appSettings: AppSettings
         get() = get()
 

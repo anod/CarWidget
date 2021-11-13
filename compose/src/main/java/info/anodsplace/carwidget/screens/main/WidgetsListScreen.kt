@@ -1,7 +1,5 @@
 package info.anodsplace.carwidget.screens.main
 
-import android.content.ContentResolver
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,6 +26,7 @@ import info.anodsplace.carwidget.WarningColor
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.iconUri
+import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
 import info.anodsplace.compose.BackgroundSurface
 import info.anodsplace.compose.PicassoIcon
@@ -212,13 +211,9 @@ fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int)
                     is WidgetItem.Shortcut -> {
                         Box(modifier = Modifier.cardStyle()) {
                             PicassoIcon(
-                                uri = Uri.Builder()
-                                    .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
-                                    .encodedAuthority(LocalContext.current.packageName)
-                                    .appendEncodedPath("mipmap")
-                                    .appendEncodedPath("ic_launcher")
-                                    .build(),
-                                modifier = iconModifier)
+                                uri = LocalContext.current.iconUri("mipmap", "ic_launcher"),
+                                modifier = iconModifier
+                            )
                         }
                     }
                     is WidgetItem.Large -> {

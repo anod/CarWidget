@@ -18,7 +18,7 @@ class PackageIconRequestHandler(private val context: Context) : RequestHandler()
     private val packageManager: PackageManager = context.packageManager
 
     override fun canHandleRequest(data: Request): Boolean {
-        return SCHEME == data.uri.scheme
+        return SCHEME_APPLICATION_ICON == data.uri.scheme
     }
 
     @Throws(IOException::class)
@@ -50,6 +50,6 @@ class PackageIconRequestHandler(private val context: Context) : RequestHandler()
 
 
     companion object {
-        const val SCHEME = "application.icon"
+        const val SCHEME_APPLICATION_ICON = "application.icon"
     }
 }

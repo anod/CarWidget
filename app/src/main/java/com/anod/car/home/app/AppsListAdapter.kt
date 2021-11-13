@@ -58,7 +58,7 @@ class AppsListAdapter(
         } else {
             holder.icon.visibility = View.VISIBLE
             iconLoader
-                    .load(Uri.fromParts(PackageIconRequestHandler.SCHEME, entry.componentName!!.flattenToShortString(), null))
+                    .load(Uri.fromParts(PackageIconRequestHandler.SCHEME_APPLICATION_ICON, entry.componentName!!.flattenToShortString(), null))
                     .placeholder(defaultIconDrawable)
                     .into(holder.icon)
         }

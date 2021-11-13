@@ -191,7 +191,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
         ChooserDialog(
             modifier = Modifier.padding(16.dp),
             headers = listOf(
-                Header(stringResource(R.string.show_choice), iconVector = Icons.Filled.List)
+                Header(0, stringResource(R.string.show_choice), iconVector = Icons.Filled.List)
             ),
             loader = loader,
             onDismissRequest = { showMusicAppDialog = false },

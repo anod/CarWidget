@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.anod.car.home.R
+import com.anod.car.home.app.App
 import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.incar.ModeService
 import info.anodsplace.carwidget.content.Version
@@ -58,7 +59,7 @@ object InCarModeNotification {
     private fun createShortcuts(context: Context, model: NotificationShortcutsModel): RemoteViews {
         val contentView = RemoteViews(context.packageName, R.layout.notification)
 
-        val spi = ShortcutPendingIntent(context)
+        val spi = ShortcutPendingIntent(context, App.provide(context).shortcutResources)
         for (i in 0 until model.count) {
             val info = model.get(i)
             val resId = buttonIds[i]

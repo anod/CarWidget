@@ -135,9 +135,10 @@ fun readColors(
         val error = ta.getComposeColor(index = 5)
         val onError = error.calculateOnColor()
 
-        AppLog.d("primary: ${primary.toColorHex()}, " +
-                "secondary: ${secondary.toColorHex()}, " +
-                "background: ${background.toColorHex()}, "
+        AppLog.d("primary: #${primary.toColorHex()}, " +
+                "secondary: #${secondary.toColorHex()}, " +
+                "background: #${background.toColorHex()}, " +
+                "surface: #${surface.toColorHex()}, "
         )
 
         defaultColors.copy(

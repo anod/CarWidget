@@ -1,4 +1,4 @@
-package com.anod.car.home.utils
+package info.anodsplace.carwidget.utils
 
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
@@ -8,17 +8,16 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
 import android.provider.Settings
-import android.text.TextUtils
 import android.view.KeyEvent
-import com.anod.car.home.ShortcutActivity
-import com.anod.car.home.incar.SwitchInCarActivity
-import com.anod.car.home.prefs.LookAndFeelActivity
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra
+import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
+import info.anodsplace.graphics.DrawableUri
 
-fun Intent.forSettings(context: Context, appWidgetId: Int): Intent {
-    component = ComponentName(context, LookAndFeelActivity::class.java)
+fun Intent.forSettings(context: Context, appWidgetId: Int, target: ShortcutResources): Intent {
+    component = ComponentName(context, target.activity.settings)
     putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
     data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),
             appWidgetId.toString())
@@ -33,28 +32,28 @@ fun Intent.forProVersion(): Intent {
     return this
 }
 
-fun Intent.forShortcut(context: Context, i: Int): Intent {
+fun Intent.forShortcut(context: Context, i: Int, target: ShortcutResources): Intent {
     when (i) {
-        0 -> component = ComponentName(context, SwitchInCarActivity::class.java)
+        0 -> component = ComponentName(context, target.activity.switchInCar)
         1 -> {
             action = Intent.ACTION_PICK
             data = ContactsContract.Contacts.CONTENT_URI
         }
-        2 -> fillMediaButtonIntent(this, context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE)
-        3 -> fillMediaButtonIntent(this, context, KeyEvent.KEYCODE_MEDIA_NEXT)
-        4 -> fillMediaButtonIntent(this, context, KeyEvent.KEYCODE_MEDIA_PREVIOUS)
+        2 -> fillMediaButtonIntent(this, context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, target)
+        3 -> fillMediaButtonIntent(this, context, KeyEvent.KEYCODE_MEDIA_NEXT, target)
+        4 -> fillMediaButtonIntent(this, context, KeyEvent.KEYCODE_MEDIA_PREVIOUS, target)
     }
     return this
 }
 
-private fun fillMediaButtonIntent(intent: Intent, context: Context, keyCode: Int) {
-    intent.component = ComponentName(context, ShortcutActivity::class.java)
-    intent.action = ShortcutActivity.ACTION_MEDIA_BUTTON
-    intent.putExtra(ShortcutActivity.EXTRA_MEDIA_BUTTON, keyCode)
+private fun fillMediaButtonIntent(intent: Intent, context: Context, keyCode: Int, target: ShortcutResources) {
+    intent.component = ComponentName(context, target.activity.runShortcut)
+    intent.action = ShortcutExtra.ACTION_MEDIA_BUTTON
+    intent.putExtra(ShortcutExtra.EXTRA_MEDIA_BUTTON, keyCode)
 }
 
-fun Intent.forPickShortcutLocal(i: Int, title: String, icnResId: Int, ctx: Context): Intent {
-    val shortcutIntent = Intent().forShortcut(ctx, i)
+fun Intent.forPickShortcutLocal(i: Int, title: String, icnResId: Int, ctx: Context, target: ShortcutResources): Intent {
+    val shortcutIntent = Intent().forShortcut(ctx, i, target)
     shortcutIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
 
     val intent = commonPickShortcutIntent(this, title, shortcutIntent)
@@ -91,6 +90,9 @@ fun Intent.resolveDirectCall(contactUri: Uri, context: Context): Intent? {
         return null
     }
 
+    val maxIconSize = UtilitiesBitmap.getIconMaxSize(context)
+    val targetDensity = UtilitiesBitmap.getTargetDensity(context)
+
     // If the cursor returned is valid, get the phone number
     if (cursor != null) {
         if (cursor.moveToFirst()) {
@@ -106,8 +108,8 @@ fun Intent.resolveDirectCall(contactUri: Uri, context: Context): Intent? {
             callIntent.data = Uri.parse("tel:$number")
 
             val intent = commonPickShortcutIntent(this, name, callIntent)
-            if (!TextUtils.isEmpty(photoUri)) {
-                val d = DrawableUri(context).resolve(Uri.parse(photoUri))
+            if (photoUri.isNotEmpty()) {
+                val d = DrawableUri(context).resolve(Uri.parse(photoUri), maxIconSize, targetDensity)
                 if (d != null) {
                     val bitmap = UtilitiesBitmap.createHiResIconBitmap(d, context)
                     intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap)

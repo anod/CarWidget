@@ -12,6 +12,7 @@ import com.anod.car.home.appwidget.ShortcutPendingIntent
 import info.anodsplace.framework.permissions.AppPermissions
 import info.anodsplace.framework.permissions.CallPhone
 import com.anod.car.home.utils.MusicUtils
+import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra.EXTRA_MEDIA_BUTTON
 import info.anodsplace.framework.content.startActivitySafely
 
 class ShortcutActivity : FragmentActivity() {
@@ -86,7 +87,5 @@ class ShortcutActivity : FragmentActivity() {
 
     companion object {
         const val EXTRA_INTENT = "intent"
-        const val EXTRA_MEDIA_BUTTON = "media_button"
-        const val ACTION_MEDIA_BUTTON = "action_media_button"
     }
 }
