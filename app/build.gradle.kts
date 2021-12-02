@@ -20,11 +20,11 @@ dependencies {
     implementation(project(":lib:framework"))
     implementation(project(":lib:colorpicker"))
 
-    implementation("io.insert-koin:koin-core:3.1.3")
+    implementation("io.insert-koin:koin-core:3.1.4")
     implementation("com.squareup.picasso:picasso:2.8")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
 
     // Activity recognition
     implementation("com.google.android.gms:play-services-location:18.0.0")
@@ -32,9 +32,9 @@ dependencies {
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.activity:activity:1.4.0")
-    implementation("androidx.fragment:fragment:1.3.6")
-    implementation("androidx.fragment:fragment-ktx:1.3.6")
-    implementation("androidx.collection:collection-ktx:1.1.0")
+    implementation("androidx.fragment:fragment:1.4.0")
+    implementation("androidx.fragment:fragment-ktx:1.4.0")
+    implementation("androidx.collection:collection-ktx:1.2.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
     implementation("androidx.sqlite:sqlite-ktx:2.1.0")
@@ -50,8 +50,8 @@ dependencies {
     compileOnly("com.google.auto.service:auto-service-annotations:1.0.1")
     kapt("com.google.auto.service:auto-service:1.0.1")
 
-    implementation("androidx.constraintlayout:constraintlayout:2.1.1")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.0")
 }
 
 android {
