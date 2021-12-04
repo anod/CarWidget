@@ -20,6 +20,8 @@ import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.content.preferences.WidgetSettings.Companion.BUTTON_COLOR
+import info.anodsplace.carwidget.content.preferences.WidgetSettings.Companion.PALETTE_BG
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.screens.WidgetActions
@@ -36,10 +38,25 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 @Composable
+fun rememberTileColor(currentSkinValue: String, prefs: WidgetInterface): AppBarTileColor {
+    val color by prefs.observe<Int>(BUTTON_COLOR).collectAsState(initial = prefs.tileColor)
+    val palette by prefs.observe<Boolean>(PALETTE_BG).collectAsState(initial = prefs.paletteBackground)
+    return remember(currentSkinValue, color, palette) {
+        if (currentSkinValue == WidgetInterface.SKIN_WINDOWS7) {
+            if (palette) {
+                AppBarTileColor.Icon
+            }
+            AppBarTileColor.Value(color = Color(color))
+        }
+        AppBarTileColor.Hidden
+    }
+}
+
+@Composable
 fun MainScreen(
-    inCar: InCarInterface,
-    appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
-    action: MutableSharedFlow<UiAction>
+        inCar: InCarInterface,
+        appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
+        action: MutableSharedFlow<UiAction>
 ) {
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
@@ -47,59 +64,60 @@ fun MainScreen(
     val startRoute = NavItem.startRoute(appWidgetId)
     val isWidget = appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID
     val items: List<NavItem.TabItem> = listOf(
-        if (isWidget) NavItem.CurrentWidget else NavItem.Widgets,
-        NavItem.InCar,
-        NavItem.About
+            if (isWidget) NavItem.CurrentWidget else NavItem.Widgets,
+            NavItem.InCar,
+            NavItem.About
     )
     var currentSkinValue by remember { mutableStateOf(WidgetInterface.SKIN_YOU) }
+    var widgetSettings: WidgetInterface by remember { mutableStateOf(WidgetInterface.NoOp()) }
 
     Scaffold(
-        backgroundColor = if (isWidget) Color.Transparent else MaterialTheme.colors.background,
-        contentColor = MaterialTheme.colors.onBackground,
-        topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(id = R.string.app_name)) },
-                actions = {
-                    if (isWidget) {
-                        AppBarMenu(
-                            showColor = currentSkinValue == WidgetInterface.SKIN_WINDOWS7,
-                            appWidgetId = appWidgetId,
-                            currentSkinValue = currentSkinValue,
-                            action = action,
-                            navController = navController
+            backgroundColor = if (isWidget) Color.Transparent else MaterialTheme.colors.background,
+            contentColor = MaterialTheme.colors.onBackground,
+            topBar = {
+                TopAppBar(
+                        title = { Text(text = stringResource(id = R.string.app_name)) },
+                        actions = {
+                            if (isWidget) {
+                                AppBarMenu(
+                                        tileColor = rememberTileColor(currentSkinValue, widgetSettings),
+                                        appWidgetId = appWidgetId,
+                                        currentSkinValue = currentSkinValue,
+                                        action = action,
+                                        navController = navController
+                                )
+                            }
+                        }
+                )
+            },
+            bottomBar = {
+                BottomNavigation {
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    val currentRoute = navBackStackEntry?.destination?.route
+                    items.forEachIndexed { _, item ->
+                        BottomNavigationItem(
+                                icon = { Icon(item.icon, contentDescription = null) },
+                                label = { Text(stringResource(id = item.resourceId)) },
+                                selected = currentRoute?.startsWith(item.route) == true,
+                                onClick = {
+                                    navController.navigate(item.route) {
+                                        // Pop up to the start destination of the graph to
+                                        // avoid building up a large stack of destinations
+                                        // on the back stack as users select items
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        // Avoid multiple copies of the same destination when
+                                        // reselecting the same item
+                                        launchSingleTop = true
+                                        // Restore state when reselecting a previously selected item
+                                        restoreState = false
+                                    }
+                                }
                         )
                     }
                 }
-            )
-        },
-        bottomBar = {
-            BottomNavigation {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
-                items.forEachIndexed { _, item ->
-                    BottomNavigationItem(
-                        icon = { Icon(item.icon, contentDescription = null) },
-                        label = { Text(stringResource(id = item.resourceId)) },
-                        selected = currentRoute?.startsWith(item.route) == true,
-                        onClick = {
-                            navController.navigate(item.route) {
-                                // Pop up to the start destination of the graph to
-                                // avoid building up a large stack of destinations
-                                // on the back stack as users select items
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                // Avoid multiple copies of the same destination when
-                                // reselecting the same item
-                                launchSingleTop = true
-                                // Restore state when reselecting a previously selected item
-                                restoreState = false
-                            }
-                        }
-                    )
-                }
             }
-        }
     ) { innerPadding ->
         val modifier = Modifier
                 .background(MaterialTheme.colors.background)
@@ -111,9 +129,9 @@ fun MainScreen(
                 AppLog.d(widgetsState.toString())
                 if (widgetsState is ScreenLoadState.Ready<WidgetListScreenState>) {
                     WidgetsListScreen(
-                        screen = (widgetsState as ScreenLoadState.Ready<WidgetListScreenState>).value,
-                        onClick = { appWidgetId -> scope.launch { action.emit(UiAction.OpenWidgetConfig(appWidgetId)) } },
-                        modifier = modifier
+                            screen = (widgetsState as ScreenLoadState.Ready<WidgetListScreenState>).value,
+                            onClick = { appWidgetId -> scope.launch { action.emit(UiAction.OpenWidgetConfig(appWidgetId)) } },
+                            modifier = modifier
                     )
                 }
             }
@@ -132,6 +150,7 @@ fun MainScreen(
                     val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetId))
                     val currentSkin by skinViewModel.currentSkin.collectAsState(initial = skinViewModel.skinList.current)
                     currentSkinValue = currentSkin.value
+                    widgetSettings = skinViewModel.widgetSettings
                     WidgetSkinScreen(
                             skinList = skinViewModel.skinList,
                             viewModel = skinViewModel,
@@ -177,7 +196,7 @@ fun AppBarWidgetAction(modifier: Modifier, current: UiAction, action: MutableSha
     when (current) {
         WidgetActions.ChooseBackgroundColor -> WidgetActionDialog(modifier, current, action, widgetSettings)
         WidgetActions.ChooseIconsScale -> WidgetActionDialog(modifier, current, action, widgetSettings)
-        WidgetActions.ChooseIconsTheme -> WidgetActionDialog(modifier,current, action, widgetSettings)
+        WidgetActions.ChooseIconsTheme -> WidgetActionDialog(modifier, current, action, widgetSettings)
         WidgetActions.ChooseShortcutsNumber -> WidgetActionDialog(modifier, current, action, widgetSettings)
         WidgetActions.ChooseTileColor -> WidgetActionDialog(modifier, current, action, widgetSettings)
         is WidgetActions.SwitchIconsMono -> WidgetActionDialog(modifier, current, action, widgetSettings)

@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.content.preferences
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flowOf
 
 enum class BitmapRotateDirection {
     NONE, RIGHT, LEFT
@@ -18,7 +19,8 @@ interface WidgetInterface {
     var isSettingsTransparent: Boolean
     var isIncarTransparent: Boolean
     var skin: String
-    var tileColor: Int? // nullable because old backups can have null value
+    var tileColor: Int
+    var paletteBackground: Boolean
     var isIconsMono: Boolean
     var iconsColor: Int?
     var iconsScale: String
@@ -34,29 +36,32 @@ interface WidgetInterface {
     fun queueChange(key: String, value: Any?)
     fun applyChange(key: String, value: Any?)
     fun applyPending()
+    fun <T : Any?> observe(key: String): Flow<T>
 
     class NoOp(
-        override var iconsTheme: String = "",
-        override var isSettingsTransparent: Boolean = false,
-        override var isIncarTransparent: Boolean = false,
-        override var skin: String = "",
-        override var tileColor: Int? = null,
-        override var isIconsMono: Boolean = false,
-        override var iconsColor: Int? = null,
-        override var iconsScale: String = "",
-        override var fontColor: Int? = null,
-        override var fontSize: Int = 0,
-        override var backgroundColor: Int = 0,
-        override var iconsRotate: BitmapRotateDirection = BitmapRotateDirection.NONE,
-        override var isTitlesHide: Boolean = false,
-        override var widgetButton1: Int = 0,
-        override var widgetButton2: Int = 0,
-        override var shortcutsNumber: Int = 8
+            override var iconsTheme: String = "",
+            override var isSettingsTransparent: Boolean = false,
+            override var isIncarTransparent: Boolean = false,
+            override var skin: String = "",
+            override var tileColor: Int = 0,
+            override var isIconsMono: Boolean = false,
+            override var iconsColor: Int? = null,
+            override var iconsScale: String = "",
+            override var fontColor: Int? = null,
+            override var fontSize: Int = 0,
+            override var backgroundColor: Int = 0,
+            override var iconsRotate: BitmapRotateDirection = BitmapRotateDirection.NONE,
+            override var isTitlesHide: Boolean = false,
+            override var widgetButton1: Int = 0,
+            override var widgetButton2: Int = 0,
+            override var shortcutsNumber: Int = 8,
+            override var paletteBackground: Boolean = false
     ) : WidgetInterface {
         override val changes = emptyFlow<Pair<String, Any?>>()
         override fun queueChange(key: String, value: Any?) {}
         override fun applyChange(key: String, value: Any?) {}
         override fun applyPending() {}
+        override fun <T : Any?> observe(key: String): Flow<T> = flowOf()
     }
 
     companion object {

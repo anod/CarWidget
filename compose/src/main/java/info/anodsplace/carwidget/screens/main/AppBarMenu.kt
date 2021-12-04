@@ -4,14 +4,18 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.FormatColorFill
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.SmartDisplay
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -23,15 +27,29 @@ import info.anodsplace.carwidget.screens.WidgetActions
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
+sealed interface AppBarTileColor {
+    object Hidden : AppBarTileColor
+    object Icon : AppBarTileColor
+    data class Value(val color: Color) : AppBarTileColor
+}
+
 @Composable
-fun AppBarMenu(showColor: Boolean, appWidgetId: Int, currentSkinValue: String, action: MutableSharedFlow<UiAction>, navController: NavHostController) {
+fun AppBarMenu(tileColor: AppBarTileColor, appWidgetId: Int, currentSkinValue: String, action: MutableSharedFlow<UiAction>, navController: NavHostController) {
     val scope = rememberCoroutineScope()
     var expanded by remember { mutableStateOf(false) }
     val isIconsMono = false
-    if (showColor) {
-        AppBarButton(image = Icons.Filled.SmartDisplay, descRes = R.string.choose_color) {
-            scope.launch {  action.emit(WidgetActions.ChooseTileColor) }
+    when (tileColor) {
+        is AppBarTileColor.Value -> {
+            AppBarColorButton(color = tileColor.color, descRes = R.string.choose_color) {
+                scope.launch {  action.emit(WidgetActions.ChooseTileColor) }
+            }
         }
+        AppBarTileColor.Icon -> {
+            AppBarButton(image = Icons.Filled.FormatColorFill, descRes = R.string.choose_color) {
+                scope.launch {  action.emit(WidgetActions.ChooseTileColor) }
+            }
+        }
+        AppBarTileColor.Hidden -> { }
     }
     AppBarButton(image = Icons.Filled.Check, descRes = android.R.string.ok) {
         scope.launch {  action.emit(UiAction.ApplyWidget(appWidgetId, currentSkinValue)) }
@@ -85,5 +103,16 @@ fun AppBarMenu(showColor: Boolean, appWidgetId: Int, currentSkinValue: String, a
 fun AppBarButton(image: ImageVector, @StringRes descRes: Int, onClick: () -> Unit) {
     IconButton(onClick = onClick) {
         Icon(imageVector = image, contentDescription = stringResource(id = descRes))
+    }
+}
+
+@Composable
+fun AppBarColorButton(color: Color, @StringRes descRes: Int, onClick: () -> Unit) {
+    IconButton(onClick = onClick) {
+        Icon(
+                modifier = Modifier.size(48.dp),
+                painter = ColorPainter(color),
+                contentDescription = stringResource(id = descRes)
+        )
     }
 }

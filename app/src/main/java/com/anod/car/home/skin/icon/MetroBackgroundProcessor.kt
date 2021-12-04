@@ -11,7 +11,7 @@ import info.anodsplace.carwidget.content.preferences.WidgetSettings
  */
 class MetroBackgroundProcessor : BackgroundProcessor {
 
-    override fun getColor(prefs: info.anodsplace.carwidget.content.preferences.WidgetSettings, icon: Bitmap?): Int {
+    override fun getColor(prefs: WidgetSettings, icon: Bitmap?): Int {
         if (prefs.paletteBackground) {
             if (icon == null) {
                 return Color.DKGRAY
@@ -19,6 +19,6 @@ class MetroBackgroundProcessor : BackgroundProcessor {
             val palette = Palette.Builder(icon).generate()
             return palette.cardBackground
         }
-        return prefs.tileColor!!
+        return prefs.tileColor
     }
 }

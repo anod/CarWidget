@@ -9,6 +9,9 @@ import android.util.JsonWriter
 import androidx.collection.SimpleArrayMap
 import androidx.core.graphics.PathParser
 import info.anodsplace.applog.AppLog
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import java.io.IOException
 import java.lang.Integer.min
 
@@ -49,7 +52,7 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
         }
         set(skin) = applyChange(SKIN, skin)
 
-    override var tileColor: Int?
+    override var tileColor: Int
         get() {
             return prefs.getInt(BUTTON_COLOR, defaults.tileColor)
         }
@@ -105,9 +108,9 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
         get() = prefs.getString(ADAPTIVE_ICON_STYLE, "")!!
         set(style) = applyChange(ADAPTIVE_ICON_STYLE, style)
 
-    var paletteBackground: Boolean
-        get() = prefs.getBoolean("palette-background", false)
-        set(paletteBackground) = applyChange("palette-background", paletteBackground)
+    override var paletteBackground: Boolean
+        get() = prefs.getBoolean(PALETTE_BG, false)
+        set(paletteBackground) = applyChange(PALETTE_BG, paletteBackground)
 
     val adaptiveIconPath: Path
         get() {
@@ -126,6 +129,8 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
             return if (num == 0) WidgetStorage.LAUNCH_COMPONENT_NUMBER_DEFAULT else min(num, WidgetStorage.LAUNCH_COMPONENT_NUMBER_MAX)
         }
         set(value) = applyChange(WidgetStorage.CMP_NUMBER, min(value, WidgetStorage.LAUNCH_COMPONENT_NUMBER_MAX))
+
+    override fun <T : Any?> observe(key: String): Flow<T> = changes.filter { it.first == key }.map { it.second as T }
 
     @Throws(IOException::class)
     fun writeJson(writer: JsonWriter) {
@@ -157,7 +162,7 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
         writer.name(WIDGET_BUTTON_2).value(widgetButton2.toLong())
 
         writer.name(ADAPTIVE_ICON_STYLE).value(adaptiveIconStyle)
-        writer.name("palette-background").value(paletteBackground)
+        writer.name(PALETTE_BG).value(paletteBackground)
         writer.endObject()
     }
 
@@ -200,6 +205,7 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
         private const val SKIN = "skin"
         const val BG_COLOR = "bg-color"
         const val BUTTON_COLOR = "button-color"
+        const val PALETTE_BG = "palette-background"
         private const val ICONS_MONO = "icons-mono"
         const val ICONS_COLOR = "icons-color"
         private const val ICONS_SCALE = "icons-scale"

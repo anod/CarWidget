@@ -103,8 +103,7 @@ class WidgetViewBuilder(
                 bitmapTransform.paddingBottom = iconPadding
             }
 
-            val views = RemoteViews(context.packageName,
-                    skinProperties.getLayout(shortcuts.size))
+            val views = RemoteViews(context.packageName, skinProperties.getLayout(shortcuts.size))
 
             widgetButtonViewBuilder.setup(skinProperties, views)
 

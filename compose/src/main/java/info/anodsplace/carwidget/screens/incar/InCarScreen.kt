@@ -85,6 +85,7 @@ fun onPreferenceClick(
             inCar.applyChange(item.key, item.value)
         }
         is PreferenceItem.Text -> { navigate(item) }
+        is PreferenceItem.Placeholder -> { }
     }
 }
 

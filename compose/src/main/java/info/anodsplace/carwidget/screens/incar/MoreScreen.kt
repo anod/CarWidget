@@ -53,6 +53,7 @@ private fun createItems(inCar: InCarInterface, context: Context) = listOf(
         key = "autorun-app-choose"
     ))
 )
+
 @Composable
 fun MoreScreen(inCar: InCarInterface, modifier: Modifier) {
     val context = LocalContext.current

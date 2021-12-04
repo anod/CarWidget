@@ -41,7 +41,7 @@ fun WidgetActionDialog(modifier: Modifier, current: UiAction, action: MutableSha
         WidgetActions.ChooseIconsScale -> IconScaleDialog(widgetSettings, action)
         WidgetActions.ChooseIconsTheme -> { }
         WidgetActions.ChooseShortcutsNumber -> ShortcutNumbersDialog(modifier, widgetSettings, action)
-        WidgetActions.ChooseTileColor -> { }
+        WidgetActions.ChooseTileColor -> { TileColor(widgetSettings, action) }
         is WidgetActions.SwitchIconsMono -> { }
         else -> {}
     }
@@ -103,6 +103,18 @@ fun BackgroundColor(prefs: WidgetInterface, action: MutableSharedFlow<UiAction>)
     ColorDialog(selected = selected) { newColor ->
         if (newColor != null) {
             prefs.backgroundColor = newColor.value.toInt()
+        }
+        coroutineScope.launch { action.emit(UiAction.None) }
+    }
+}
+
+@Composable
+fun TileColor(prefs: WidgetInterface, action: MutableSharedFlow<UiAction>) {
+    val selected = Color(prefs.tileColor)
+    val coroutineScope = rememberCoroutineScope()
+    ColorDialog(selected = selected) { newColor ->
+        if (newColor != null) {
+            prefs.tileColor = newColor.value.toInt()
         }
         coroutineScope.launch { action.emit(UiAction.None) }
     }
