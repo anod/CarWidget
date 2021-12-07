@@ -38,6 +38,8 @@ open class ChangeableSharedPreferences(prefs: SharedPreferences) {
         _changes.value = Pair(key, value)
     }
 
+    fun <T : Any?> observe(key: String): Flow<T> = changes.filter { it.first == key }.map { it.second as T }
+
     fun clear() {
         prefs.edit().clear().apply()
     }

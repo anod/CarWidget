@@ -7,8 +7,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import androidx.lifecycle.AndroidViewModel
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.carwidget.content.preferences.InCarStorage
 import info.anodsplace.framework.bluetooth.Bluetooth
 import info.anodsplace.framework.bluetooth.BtClassType
@@ -17,9 +19,7 @@ import info.anodsplace.framework.permissions.AppPermissions
 import info.anodsplace.framework.permissions.BluetoothConnect
 import info.anodsplace.framework.permissions.BluetoothScan
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 
 class BluetoothDevice(var address: String, var name: String, var btClassName: String, var selected: Boolean) {
@@ -41,9 +41,13 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
 
     val requiresPermission = MutableStateFlow(checkPermission())
     val btState = MutableStateFlow(Bluetooth.state)
+    private val settings: InCarSettings = InCarStorage.load(context)
 
     @SuppressLint("MissingPermission")
-    fun load(): Flow<BluetoothDevicesState> = requiresPermission.map { requires ->
+    fun load(): Flow<BluetoothDevicesState> = requiresPermission.combine(
+            settings.observe<String?>(InCarSettings.BLUETOOTH_DEVICE_ADDRESSES).onStart { emit(null) },
+            transform = { requires, _ -> requires }
+    ).map { requires ->
         if (requires) {
             return@map BluetoothDevicesState.RequiresPermissions
         } else {
@@ -56,7 +60,10 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
     }
 
     private fun checkPermission(): Boolean {
-        return (!AppPermissions.isGranted(context, BluetoothScan) || !AppPermissions.isGranted(context, BluetoothConnect))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return (!AppPermissions.isGranted(context, BluetoothScan) || !AppPermissions.isGranted(context, BluetoothConnect))
+        }
+        return false
     }
 
     override fun onCleared() {
@@ -76,7 +83,7 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
                     ?: Bluetooth.state
                 btState.value = state
                 if (state == BluetoothAdapter.STATE_ON) {
-                    load()
+                    requiresPermission.value = false
                 }/* else if (state == BluetoothAdapter.STATE_OFF || state == BluetoothAdapter.ERROR) {
 
                 }*/
@@ -97,7 +104,7 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
 
         // Get a set of currently paired devices
         val pairedDevices = btAdapter!!.bondedDevices
-        val devices = InCarStorage.load(context).btDevices
+        val devices = settings.btDevices
         val pairedList = mutableListOf<BluetoothDevice>()
 
         // If there are paired devices, add each one to the ArrayAdapter
@@ -136,6 +143,16 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
         }
 
         return@withContext pairedList
+    }
+
+    fun updateDevice(device: BluetoothDevice, checked: Boolean) {
+        val devices = settings.btDevices
+        if (checked) {
+            devices[device.address] = device.address
+        } else {
+            devices.remove(device.address)
+        }
+        settings.btDevices = devices
     }
 
     companion object {

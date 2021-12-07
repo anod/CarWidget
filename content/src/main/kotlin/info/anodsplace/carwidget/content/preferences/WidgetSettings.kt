@@ -130,8 +130,6 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
         }
         set(value) = applyChange(WidgetStorage.CMP_NUMBER, min(value, WidgetStorage.LAUNCH_COMPONENT_NUMBER_MAX))
 
-    override fun <T : Any?> observe(key: String): Flow<T> = changes.filter { it.first == key }.map { it.second as T }
-
     @Throws(IOException::class)
     fun writeJson(writer: JsonWriter) {
         writer.beginObject()

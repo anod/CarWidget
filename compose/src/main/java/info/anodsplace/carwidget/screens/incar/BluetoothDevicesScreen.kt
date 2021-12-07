@@ -48,6 +48,7 @@ fun BluetoothDevicesScreen(viewModel: BluetoothDevicesViewModel, modifier: Modif
                     list = (screenState as BluetoothDevicesState.Devices).list,
                     btState = btState,
                     onSwitchRequest = { btSwitchRequest(it, viewModel) },
+                    onChecked = { device, checked -> viewModel.updateDevice(device, checked) },
                     modifier = screenModifier)
             }
             BluetoothDevicesState.SwitchedOff -> {
@@ -70,7 +71,7 @@ fun BluetoothPermissions(viewModel: BluetoothDevicesViewModel, modifier: Modifie
         Text(text = stringResource(id = R.string.bluetooth_device_category_title))
         Text(text = stringResource(id = R.string.allow_bluetooth_summary))
         Button(modifier = Modifier.padding(16.dp), onClick = {
-            bluetoothPermissions.launch(null)
+            bluetoothPermissions.launch(Unit)
         }) {
             Text(text = stringResource(id = R.string.allow_bluetooth))
         }
@@ -78,7 +79,7 @@ fun BluetoothPermissions(viewModel: BluetoothDevicesViewModel, modifier: Modifie
 }
 
 @Composable
-fun BluetoothDeviceList(list: List<BluetoothDevice>, btState: Int, onSwitchRequest: (newState: Boolean) -> Unit, modifier: Modifier = Modifier) {
+fun BluetoothDeviceList(list: List<BluetoothDevice>, btState: Int, onSwitchRequest: (newState: Boolean) -> Unit, onChecked: (device: BluetoothDevice, checked: Boolean) -> Unit, modifier: Modifier = Modifier) {
 
     if (list.isEmpty()) {
         BluetoothDeviceEmpty(btState, onSwitchRequest, modifier = modifier)
@@ -93,13 +94,13 @@ fun BluetoothDeviceList(list: List<BluetoothDevice>, btState: Int, onSwitchReque
             items(list.size) { index ->
                 val device = list[index]
                 PreferenceCheckbox(
-                    checked = device.selected, item = PreferenceItem.Text(
+                    checked = device.selected,
+                    item = PreferenceItem.Text(
                         title = if (device.name.isEmpty()) device.address else device.name,
                         summary = device.btClassName
-                    )
-                ) {
-
-                }
+                    ),
+                    onCheckedChange = { onChecked(device, it) }
+                )
             }
         }
     }
