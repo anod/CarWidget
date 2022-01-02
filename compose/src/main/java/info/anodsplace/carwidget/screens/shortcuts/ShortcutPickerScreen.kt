@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.screens.shortcuts
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.chooser.*
+import info.anodsplace.carwidget.content.shortcuts.ShortcutInfoUtils
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.utils.forPickShortcutLocal
 
@@ -27,12 +29,15 @@ sealed class ShortcutPickerState {
 
 @Composable
 fun ShortcutPickerScreen(viewModel: ShortcutPickerViewModel, onDismissRequest: () -> Unit) {
+    val context = LocalContext.current
     var screenState by remember { mutableStateOf<ShortcutPickerState>(ShortcutPickerState.Initial) }
     val activityLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult(), onResult = { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-            viewModel.save(result.data!!, false)
+            save(viewModel, result.data!!, isApp = false, context)
         }
+        onDismissRequest()
     })
+
     when (screenState) {
         ShortcutPickerState.Initial -> CreateShortcutChooser(
             onNewState = { screenState = it },
@@ -40,11 +45,17 @@ fun ShortcutPickerScreen(viewModel: ShortcutPickerViewModel, onDismissRequest: (
             onDismissRequest = onDismissRequest
         )
         ShortcutPickerState.Apps -> AppChooser(
-            onChoose = { viewModel.save(it.getIntent(baseIntent = null), true) },
+            onChoose = {
+                save(viewModel, it.getIntent(baseIntent = null), isApp = true, context = context)
+                onDismissRequest()
+            },
             onDismissRequest = { screenState = ShortcutPickerState.Initial })
         ShortcutPickerState.CarWidget -> CarWidgetChooser(
             viewModel.shortcutResources,
-            onChoose = { viewModel.save(it.getIntent(baseIntent = null), false) },
+            onChoose = {
+                save(viewModel, it.getIntent(baseIntent = null), isApp = false, context)
+                onDismissRequest()
+            },
             onDismissRequest = { screenState = ShortcutPickerState.Initial }
         )
     }
@@ -53,7 +64,8 @@ fun ShortcutPickerScreen(viewModel: ShortcutPickerViewModel, onDismissRequest: (
 @Composable
 fun CreateShortcutChooser(onNewState: (ShortcutPickerState) -> Unit, onIntent: (Intent) -> Unit, onDismissRequest: () -> Unit) {
     val context = LocalContext.current
-    val loader by remember { mutableStateOf(QueryIntentLoader(context, Intent(Intent.ACTION_CREATE_SHORTCUT))) }
+    val baseIntent = remember { Intent(Intent.ACTION_CREATE_SHORTCUT) }
+    val loader by remember { mutableStateOf(QueryIntentLoader(context, baseIntent)) }
     ChooserDialog(
         modifier = Modifier.padding(horizontal = 16.dp),
         loader = loader,
@@ -71,7 +83,7 @@ fun CreateShortcutChooser(onNewState: (ShortcutPickerState) -> Unit, onIntent: (
                         onNewState(ShortcutPickerState.CarWidget)
                     }
                 }
-                else -> onIntent(entry.getIntent(baseIntent = null))
+                else -> onIntent(entry.getIntent(baseIntent = baseIntent))
             }
         }
     )
@@ -114,11 +126,20 @@ fun IntentChooser(intent: Intent, onChoose: (ChooserEntry) -> Unit, onDismissReq
     )
 }
 
-fun createCarWidgetShortcuts(titles: Array<String>, context: Context, shortcutResources: ShortcutResources): StaticChooserLoader {
+private fun createCarWidgetShortcuts(titles: Array<String>, context: Context, shortcutResources: ShortcutResources): StaticChooserLoader {
     val icons = shortcutResources.internalShortcuts.icons
     val list = titles.mapIndexed { i, title ->
         val intent = Intent().forPickShortcutLocal(i, titles[i], icons[i], context, shortcutResources)
         ChooserEntry(componentName = null, title = title, intent = intent, iconRes = icons[i])
     }
     return StaticChooserLoader(list)
+}
+
+private fun save(viewModel: ShortcutPickerViewModel, intent: Intent, isApp: Boolean, context: Context) {
+    val resultCode = viewModel.save(intent, false)
+    if (resultCode == ShortcutInfoUtils.successAppShortcut) {
+        Toast.makeText(context, R.string.app_shortcuts_limited, Toast.LENGTH_SHORT).show()
+    } else if (resultCode == ShortcutInfoUtils.failedAppShortcut) {
+        Toast.makeText(context, R.string.app_shortcuts_limited, Toast.LENGTH_LONG).show()
+    }
 }

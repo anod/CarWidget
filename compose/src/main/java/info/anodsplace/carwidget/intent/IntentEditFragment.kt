@@ -63,6 +63,7 @@ class IntentEditFragment: Fragment() {
                     is UiAction.IntentEditAction -> {
 
                     }
+                    else -> {}
                 }
             }
         }

@@ -4,17 +4,17 @@ import com.anod.car.home.ShortcutActivity
 import com.anod.car.home.incar.ModeService
 
 import android.app.PendingIntent
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.anod.car.home.BuildConfig
-import com.anod.car.home.R
+import androidx.core.app.TaskStackBuilder
+import androidx.core.net.toUri
+import com.anod.car.home.OverlayActivity
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
-import info.anodsplace.carwidget.screens.shortcuts.ShortcutPickerFragment
 import info.anodsplace.carwidget.utils.forSettings
-import info.anodsplace.framework.app.FragmentContainerActivity
 
 class ShortcutPendingIntent(private val context: Context, private val shortcutResources: ShortcutResources) : PendingIntentFactory {
 
@@ -39,14 +39,20 @@ class ShortcutPendingIntent(private val context: Context, private val shortcutRe
         }
 
     override fun createNew(appWidgetId: Int, position: Int): PendingIntent {
-        val newIntent = FragmentContainerActivity.intent(
-            context = context,
-            factory = ShortcutPickerFragment.Factory(position, appWidgetId, R.style.Dialog)
-        )
-        newIntent.data = Uri.parse(
-            "carwidget://${BuildConfig.APPLICATION_ID}/widget/$appWidgetId/shortcut/new/position/$position"
-        )
-        return PendingIntent.getActivity(context, 0, newIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        val editIntent = Intent(
+                Intent.ACTION_VIEW,
+                "carwidget://widgets/$appWidgetId/edit/0/$position".toUri(),
+                context,
+                OverlayActivity::class.java
+        ).also {
+            it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+        }
+
+        return PendingIntent.getActivity(context, 0, editIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+//        return TaskStackBuilder.create(context).run {
+//            addNextIntent(editIntent)
+//            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)!!
+//        }
     }
 
     /**

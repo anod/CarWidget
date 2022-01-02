@@ -74,6 +74,9 @@
             android:theme="@style/Dialog"
         />
 
+        <activity android:name=".OverlayActivity"
+                  android:theme="@style/Dialog" />
+
         <activity
             android:name="com.anod.car.home.ShortcutActivity"
             android:clearTaskOnLaunch="true"

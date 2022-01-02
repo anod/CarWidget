@@ -9,8 +9,6 @@ import android.os.Bundle
 import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,7 +31,6 @@ import info.anodsplace.compose.LocalPicasso
 import info.anodsplace.compose.toColorHex
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -73,13 +70,12 @@ open class MainComposeActivity : ComponentActivity(), KoinComponent {
             }
         }
         setContent {
-            val nightMode by appSettings.nightModeChange
-                .onEach { newMode ->
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        uiModeManager.setApplicationNightMode(newMode)
-                    }
+            val nightMode by appSettings.nightModeChange.collectAsState(initial = appSettings.nightMode)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                LaunchedEffect(nightMode) {
+                    uiModeManager.setApplicationNightMode(nightMode)
                 }
-                .collectAsState(initial = appSettings.nightMode)
+            }
             CarWidgetTheme(
                 context = this@MainComposeActivity,
                 nightMode = nightMode

@@ -46,11 +46,9 @@ class ShortcutPickerViewModel(
 
     private val model = WidgetShortcutsModel.init(context, DefaultsResourceProvider(context), appWidgetId)
 
-    fun save(intent: Intent, isApplicationShortcut: Boolean) {
+    fun save(intent: Intent, isApplicationShortcut: Boolean): Int {
         val result = model.saveIntent(position, intent, isApplicationShortcut)
         update.request(intArrayOf(appWidgetId))
-        viewModelScope.launch {
-            actions.emit(ShortcutPickerAction.SavedSuccess(result.second))
-        }
+        return result.second
     }
 }

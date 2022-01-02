@@ -27,7 +27,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
 
     // Activity recognition
-    implementation("com.google.android.gms:play-services-location:18.0.0")
+    implementation("com.google.android.gms:play-services-location:19.0.0")
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.core:core-ktx:1.7.0")
@@ -37,7 +37,7 @@ dependencies {
     implementation("androidx.collection:collection-ktx:1.2.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
-    implementation("androidx.sqlite:sqlite-ktx:2.1.0")
+    implementation("androidx.sqlite:sqlite-ktx:2.2.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation("androidx.lifecycle:lifecycle-common-java8:2.4.0")
@@ -51,7 +51,7 @@ dependencies {
     kapt("com.google.auto.service:auto-service:1.0.1")
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.2")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.10")
 }
 
 android {

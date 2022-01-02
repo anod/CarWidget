@@ -31,11 +31,11 @@ fun EditDialog(confirmText: String, onClose: (Boolean) -> Unit, content: @Compos
         Spacer(modifier = Modifier.height(16.dp))
         Row {
             Button(onClick = { onClose(false) }) {
-                Text(text = stringResource(id = R.string.close).toUpperCase(Locale.getDefault()))
+                Text(text = stringResource(id = R.string.close).uppercase(Locale.getDefault()))
             }
             Spacer(modifier = Modifier.weight(1f))
             Button(onClick = { onClose(true) }) {
-                Text(text = confirmText.toUpperCase(Locale.getDefault()))
+                Text(text = confirmText.uppercase(Locale.getDefault()))
             }
         }
     }

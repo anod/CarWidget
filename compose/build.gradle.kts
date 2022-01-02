@@ -30,7 +30,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.0-beta04"
+        kotlinCompilerExtensionVersion = "1.1.0-rc02"
     }
 }
 
@@ -49,18 +49,18 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.4.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
 
-    implementation("androidx.compose.ui:ui:1.1.0-beta04")
-    implementation("androidx.compose.foundation:foundation:1.1.0-beta04")
-    implementation("androidx.compose.material:material:1.1.0-beta04")
-    implementation("androidx.compose.material:material-icons-core:1.1.0-beta04")
-    implementation("androidx.compose.material:material-icons-extended:1.1.0-beta04")
+    implementation("androidx.compose.ui:ui:1.1.0-rc01")
+    implementation("androidx.compose.foundation:foundation:1.1.0-rc01")
+    implementation("androidx.compose.material:material:1.1.0-rc01")
+    implementation("androidx.compose.material:material-icons-core:1.1.0-rc01")
+    implementation("androidx.compose.material:material-icons-extended:1.1.0-rc01")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
-    implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
+    implementation("androidx.navigation:navigation-compose:2.4.0-rc01")
     implementation("androidx.activity:activity-compose:1.4.0")
 
-    implementation("com.google.accompanist:accompanist-pager:0.20.0")
-    implementation("com.google.accompanist:accompanist-flowlayout:0.20.0")
+    implementation("com.google.accompanist:accompanist-pager:0.22.0-rc")
+    implementation("com.google.accompanist:accompanist-flowlayout:0.22.0-rc")
 
     implementation("androidx.compose.ui:ui-tooling:1.0.5")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
 }
