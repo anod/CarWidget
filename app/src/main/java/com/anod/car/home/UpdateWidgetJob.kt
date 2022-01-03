@@ -11,6 +11,7 @@ import info.anodsplace.carwidget.content.Version
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
 
 /**
@@ -18,7 +19,7 @@ import org.koin.core.component.inject
  * https://issuetracker.google.com/issues/115575872
  * https://commonsware.com/blog/2018/11/24/workmanager-app-widgets-side-effects.html
  */
-class UpdateWidgetJob : JobIntentService() {
+class UpdateWidgetJob : JobIntentService(), KoinComponent {
 
     companion object {
         private const val inputWidgetIds = "appWidgetIds"
@@ -42,7 +43,7 @@ class UpdateWidgetJob : JobIntentService() {
         // provider
         val shortcutResources = App.provide(context).shortcutResources
         for (appWidgetId in appWidgetIds) {
-            val views = WidgetViewBuilder(context, appWidgetId, ShortcutPendingIntent(context, shortcutResources)).apply {
+            val views = WidgetViewBuilder(context, get(), appWidgetId, ShortcutPendingIntent(context, shortcutResources)).apply {
                 init()
             }.create()
             AppLog.i("Performing update for widget #$appWidgetId")

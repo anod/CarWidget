@@ -1,0 +1,27 @@
+CREATE TABLE favorites (
+    _id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL DEFAULT "",
+    intent TEXT NOT NULL DEFAULT "",
+    itemType INTEGER NOT NULL,
+    iconType INTEGER NOT NULL,
+    iconPackage TEXT,
+    iconResource TEXT,
+    icon BLOB,
+    isCustomIcon INTEGER NOT NULL DEFAULT 0
+);
+
+select:
+SELECT * FROM favorites WHERE _id = ?;
+
+selectIcon:
+SELECT iconType, icon, iconPackage, iconResource, itemType, isCustomIcon FROM favorites WHERE _id = ?;
+
+insert:
+INSERT INTO favorites (itemType, title, intent, iconType, icon, iconPackage, iconResource, isCustomIcon)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+lastInsertId:
+SELECT last_insert_rowid();
+
+delete:
+DELETE FROM favorites WHERE _id = ?;

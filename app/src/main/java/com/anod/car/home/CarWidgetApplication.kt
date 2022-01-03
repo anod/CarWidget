@@ -115,6 +115,7 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                 factory<InCarStatus> { createInCarStatus() } bind info.anodsplace.carwidget.incar.InCarStatus::class
                 factory<WidgetView> { params -> WidgetViewBuilder(
                         context = get(),
+                        database = get(),
                         appWidgetId = params[0],
                         bitmapMemoryCache = params[1],
                         pendingIntentFactory = params[2],

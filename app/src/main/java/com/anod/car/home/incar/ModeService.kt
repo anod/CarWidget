@@ -13,8 +13,10 @@ import com.anod.car.home.notifications.InCarModeNotification
 import com.anod.car.home.notifications.TrialExpiredNotification
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.applog.AppLog
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-class ModeService : Service() {
+class ModeService : Service(), KoinComponent {
     private var phoneListener: ModePhoneStateListener? = null
     private val modeHandler: ModeHandler by lazy { App.provide(this).handler }
     private var forceState: Boolean = false
@@ -48,7 +50,7 @@ class ModeService : Service() {
                 + redelivered)
 
         val version = Version(this)
-        startForeground(InCarModeNotification.id, InCarModeNotification.create(version, this))
+        startForeground(InCarModeNotification.id, InCarModeNotification.create(version, this, get()))
 
         if (intent == null) {
             AppLog.e("ModeService started without intent")

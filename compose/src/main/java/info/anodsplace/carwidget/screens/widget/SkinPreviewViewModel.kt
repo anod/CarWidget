@@ -51,7 +51,7 @@ class SkinPreviewViewModel(application: Application, var appWidgetId: Int): Andr
 
     val widgetSettings: WidgetInterface by inject(parameters = { parametersOf(appWidgetId) })
     val skinList = SkinList(widgetSettings.skin, application)
-    val shortcuts: WidgetShortcutsModel by lazy { WidgetShortcutsModel(application, DefaultsResourceProvider(application), appWidgetId) }
+    val shortcuts: WidgetShortcutsModel by lazy { WidgetShortcutsModel(application, get(), DefaultsResourceProvider(application), appWidgetId) }
     val currentSkin = MutableStateFlow(skinList.current)
     val reload: Flow<Int> = widgetSettings.changes
             .map { (System.currentTimeMillis() / 1000).toInt() }

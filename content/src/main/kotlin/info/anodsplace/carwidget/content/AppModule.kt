@@ -2,7 +2,10 @@ package info.anodsplace.carwidget.content
 
 import android.appwidget.AppWidgetManager
 import com.squareup.picasso.Picasso
+import com.squareup.sqldelight.android.AndroidSqliteDriver
+import com.squareup.sqldelight.db.SqlDriver
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.graphics.PackageIconRequestHandler
 import info.anodsplace.carwidget.content.graphics.ShortcutIconRequestHandler
 import info.anodsplace.carwidget.content.preferences.AppSettings
@@ -33,10 +36,19 @@ fun createAppModule(): Module = module {
     factory { Version(get()) }
     factory {
         Picasso.Builder(get())
-            .addRequestHandler(ShortcutIconRequestHandler(get()))
+            .addRequestHandler(ShortcutIconRequestHandler(get(), get()))
             .addRequestHandler(PackageIconRequestHandler(get()))
             .build()
     }
     factory { BitmapLruCache(get()) }
+    single {
+        val driver = AndroidSqliteDriver(
+                schema = Database.Schema,
+                context = get(),
+                name = "carhomewidget.db"
+        )
+        Database(driver)
+    }
+    single { ShortcutsDatabase(get(), get()) }
     factory<InCarInterface> { InCarStorage.load(get()) }
 }

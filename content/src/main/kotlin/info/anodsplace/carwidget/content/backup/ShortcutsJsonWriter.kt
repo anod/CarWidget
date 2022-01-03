@@ -22,20 +22,20 @@ class ShortcutsJsonWriter {
             shortcutsWriter.name("pos").value(pos.toLong())
 
             for (key in values.keySet()) {
-                val value = values.get(key)
-                if (value != null) {
-                    when (value) {
-                        is String -> shortcutsWriter.name(key).value(value)
-                        is Int -> shortcutsWriter.name(key).value(value)
-                        is Boolean -> shortcutsWriter.name(key).value(value)
+                val current = values.get(key)
+                if (current != null) {
+                    when (current) {
+                        is String -> shortcutsWriter.name(key).value(current)
+                        is Int -> shortcutsWriter.name(key).value(current)
+                        is Boolean -> shortcutsWriter.name(key).value(current)
                         is ByteArray -> {
                             shortcutsWriter.name(key).beginArray()
-                            for (i in value.indices) {
-                                shortcutsWriter.value(value[i].toLong())
+                            for (i in current.indices) {
+                                shortcutsWriter.value(current[i].toLong())
                             }
                             shortcutsWriter.endArray()
                         }
-                        else -> throw RuntimeException("Not implemented: $value")
+                        else -> throw RuntimeException("Not implemented: $current")
                     }
                 }
             }

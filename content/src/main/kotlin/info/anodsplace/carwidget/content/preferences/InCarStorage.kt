@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.content.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import java.util.*
 
 /**
@@ -38,13 +39,13 @@ object InCarStorage {
         return getNotifComponents(getSharedPreferences(context))
     }
 
-    fun saveNotifShortcut(context: Context, shortcutId: Long, position: Int) {
-        saveNotifShortcut(context, getSharedPreferences(context), shortcutId, position)
+    fun saveNotifShortcut(db: ShortcutsDatabase, context: Context, shortcutId: Long, position: Int) {
+        saveNotifShortcut(db, getSharedPreferences(context), shortcutId, position)
     }
 
-    private fun saveNotifShortcut(context: Context, prefs: SharedPreferences, shortcutId: Long, position: Int) {
+    private fun saveNotifShortcut(db: ShortcutsDatabase, prefs: SharedPreferences, shortcutId: Long, position: Int) {
         val key = getNotifComponentName(position)
-        WidgetStorage.saveShortcutId(context, prefs, shortcutId, key)
+        WidgetStorage.saveShortcutId(db, prefs, shortcutId, key)
     }
 
     private fun getNotifComponents(prefs: SharedPreferences): ArrayList<Long> {

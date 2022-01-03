@@ -10,6 +10,7 @@ import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.compose.ScreenLoadState
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.db.Shortcut
+import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.java.KoinJavaComponent.inject
 
 class WidgetList {
@@ -74,8 +76,9 @@ class WidgetsListViewModel(application: Application) : AndroidViewModel(applicat
         val appWidgetIds = widgetIds.getLargeWidgetIds()
         newItems.addAll(widgetIds.getShortcutWidgetIds().map { WidgetItem.Shortcut(appWidgetId = it) })
 
+        val database: ShortcutsDatabase = get()
         for (appWidgetId in appWidgetIds) {
-            val model = WidgetShortcutsModel(context, defaultsProvider, appWidgetId).apply {
+            val model = WidgetShortcutsModel(context, database, defaultsProvider, appWidgetId).apply {
                 init()
             }
             val shortcuts = model.shortcuts

@@ -10,6 +10,7 @@ import com.squareup.picasso.RequestHandler
 import java.io.IOException
 
 import com.squareup.picasso.Picasso.LoadedFrom.DISK
+import info.anodsplace.carwidget.content.Database
 import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
@@ -20,9 +21,9 @@ import info.anodsplace.graphics.PathParser
  * @date 23/08/2016.
  */
 
-class ShortcutIconRequestHandler(private val context: Context) : RequestHandler() {
+class ShortcutIconRequestHandler(private val context: Context, database: Database) : RequestHandler() {
     private val authority: String? = LauncherSettings.Favorites.getContentUri(context.packageName).authority
-    private val db: ShortcutsDatabase = ShortcutsDatabase(context)
+    private val db: ShortcutsDatabase = ShortcutsDatabase(context, database)
 
     override fun canHandleRequest(data: Request): Boolean {
         return if (ContentResolver.SCHEME_CONTENT == data.uri.scheme) {

@@ -41,5 +41,4 @@ class ShortcutIconLoader(
         val shortcutUri = LauncherSettings.Favorites.getContentUri(context.packageName, shortcutId)
         return db.loadShortcutIcon(shortcutUri)
     }
-
 }

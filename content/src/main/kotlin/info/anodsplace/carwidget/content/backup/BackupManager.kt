@@ -7,6 +7,7 @@ import android.util.JsonWriter
 import android.util.SparseArray
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.shortcuts.AbstractShortcuts
 import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
@@ -18,11 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.*
 
-class BackupManager(private val context: Context, private val resourceDefaults: WidgetSettings.DefaultsProvider) {
-
-    interface OnRestore {
-        fun restoreCompleted()
-    }
+class BackupManager(private val context: Context, private val database: ShortcutsDatabase, private val resourceDefaults: WidgetSettings.DefaultsProvider) {
 
     suspend fun backup(type: Int, appWidgetId: Int, uri: Uri): Int = withContext(Dispatchers.IO) {
         if (type == Backup.TYPE_INCAR) {
@@ -102,7 +99,7 @@ class BackupManager(private val context: Context, private val resourceDefaults: 
         if (shortcuts.size() % 2 == 0) {
             widget.shortcutsNumber = shortcuts.size()
         }
-        val model = WidgetShortcutsModel.init(context, resourceDefaults, appWidgetId)
+        val model = WidgetShortcutsModel.init(context, database, resourceDefaults, appWidgetId)
 
         restoreShortcuts(model, shortcuts)
 
@@ -121,7 +118,7 @@ class BackupManager(private val context: Context, private val resourceDefaults: 
     }
 
     private fun doBackupWidget(outputStream: OutputStream, appWidgetId: Int): Int {
-        val model = WidgetShortcutsModel.init(context, resourceDefaults, appWidgetId)
+        val model = WidgetShortcutsModel.init(context, database, resourceDefaults, appWidgetId)
         val widget = WidgetStorage.load(context, resourceDefaults, appWidgetId)
         try {
             synchronized(sLock) {
@@ -205,7 +202,7 @@ class BackupManager(private val context: Context, private val resourceDefaults: 
             return Backup.ERROR_INCORRECT_FORMAT
         }
 
-        val model = NotificationShortcutsModel.init(context)
+        val model = NotificationShortcutsModel.init(context, database)
 
         sharedPrefs.edit().clear().apply()
         incar.applyPending()
@@ -226,7 +223,7 @@ class BackupManager(private val context: Context, private val resourceDefaults: 
     }
 
     private fun doBackupInCar(outputStream: OutputStream): Int {
-        val model = NotificationShortcutsModel.init(context)
+        val model = NotificationShortcutsModel.init(context, database)
 
         val prefs = InCarStorage.load(context)
 

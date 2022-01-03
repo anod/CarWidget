@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.content.db
 
 import android.net.Uri
 import android.provider.BaseColumns
+import info.anodsplace.carwidget.content.BuildConfig
 
 import info.anodsplace.carwidget.content.Version
 
@@ -14,92 +15,20 @@ class LauncherSettings {
         companion object {
 
             private const val CONTENT_PREFIX = "content://"
-
-            /**
-             * Descriptive name of the gesture that can be displayed to the user.
-             * <P>
-             * Type: TEXT
-            </P> *
-             */
             const val TITLE = "title"
-
-            /**
-             * The Intent URL of the gesture, describing what it points to. This
-             * value is given to
-             * [android.content.Intent.parseUri] to create an
-             * Intent that can be launched.
-             * <P>
-             * Type: TEXT
-            </P> *
-             */
             const val INTENT = "intent"
-
-            /**
-             * The type of the gesture
-             *
-             * <P>
-             * Type: INTEGER
-            </P> *
-             */
             const val ITEM_TYPE = "itemType"
+            const val ICON_TYPE = "iconType"
+            const val ICON_PACKAGE = "iconPackage"
+            const val ICON_RESOURCE = "iconResource"
+            const val ICON = "icon"
+            const val IS_CUSTOM_ICON = "isCustomIcon"
 
-            /**
-             * The gesture is an application
-             */
             const val ITEM_TYPE_APPLICATION = 0
-
-            /**
-             * The gesture is an application created shortcut
-             */
             const val ITEM_TYPE_SHORTCUT = 1
 
-            /**
-             * The icon type.
-             * <P>
-             * Type: INTEGER
-            </P> *
-             */
-            const val ICON_TYPE = "iconType"
-
-            /**
-             * The icon is a resource identified by a package name and an integer
-             * id.
-             */
             const val ICON_TYPE_RESOURCE = 0
-
-            /**
-             * The icon is a bitmap.
-             */
             const val ICON_TYPE_BITMAP = 1
-
-            /**
-             * The icon package name, if icon type is ICON_TYPE_RESOURCE.
-             * <P>
-             * Type: TEXT
-            </P> *
-             */
-            const val ICON_PACKAGE = "iconPackage"
-
-            /**
-             * The icon resource id, if icon type is ICON_TYPE_RESOURCE.
-             * <P>
-             * Type: TEXT
-            </P> *
-             */
-            const val ICON_RESOURCE = "iconResource"
-
-            /**
-             * The custom icon bitmap, if icon type is ICON_TYPE_BITMAP.
-             * <P>
-             * Type: BLOB
-            </P> *
-             */
-            const val ICON = "icon"
-
-            /**
-             * Type: BOOLEAN
-             */
-            const val IS_CUSTOM_ICON = "isCustomIcon"
 
             /**
              * The content:// style URL for this table
@@ -107,11 +36,11 @@ class LauncherSettings {
             fun getContentUri(packageName: String): Uri {
                 return if (Version.isFree(packageName)) {
                     Uri.parse(
-                        CONTENT_PREFIX + LauncherContentProvider.AUTHORITY_FREE + "/"
-                            + LauncherContentProvider.TABLE_FAVORITES)
+                        CONTENT_PREFIX + AUTHORITY_FREE + "/"
+                            + TABLE_FAVORITES)
                 } else Uri.parse(
-                    CONTENT_PREFIX + LauncherContentProvider.AUTHORITY_PRO + "/"
-                        + LauncherContentProvider.TABLE_FAVORITES)
+                    CONTENT_PREFIX + AUTHORITY_PRO + "/"
+                        + TABLE_FAVORITES)
             }
 
             /**
@@ -123,12 +52,25 @@ class LauncherSettings {
             fun getContentUri(packageName: String, id: Long): Uri {
                 return if (Version.isFree(packageName)) {
                     Uri.parse(
-                        CONTENT_PREFIX + LauncherContentProvider.AUTHORITY_FREE + "/"
-                            + LauncherContentProvider.TABLE_FAVORITES + "/" + id)
+                        CONTENT_PREFIX + AUTHORITY_FREE + "/"
+                            + TABLE_FAVORITES + "/" + id)
                 } else Uri.parse(
-                    CONTENT_PREFIX + LauncherContentProvider.AUTHORITY_PRO + "/"
-                        + LauncherContentProvider.TABLE_FAVORITES + "/" + id)
+                    CONTENT_PREFIX + AUTHORITY_PRO + "/"
+                        + TABLE_FAVORITES + "/" + id)
             }
+
+
+            private val AUTHORITY_FREE = if (BuildConfig.DEBUG)
+                "com.anod.car.home.free.debug.shortcutsprovider"
+            else
+                "com.anod.car.home.free.shortcutsprovider"
+
+            private val AUTHORITY_PRO = if (BuildConfig.DEBUG)
+                "com.anod.car.home.pro.debug.shortcutsprovider"
+            else
+                "com.anod.car.home.pro.shortcutsprovider"
+
+            private const val TABLE_FAVORITES = "favorites"
         }
 
     }

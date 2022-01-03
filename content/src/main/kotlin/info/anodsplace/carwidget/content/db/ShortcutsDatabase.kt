@@ -1,27 +1,23 @@
 package info.anodsplace.carwidget.content.db
 
-import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
 import android.content.res.Resources.NotFoundException
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.provider.BaseColumns
-import android.text.TextUtils
 import androidx.core.content.res.ResourcesCompat
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.Database
 import info.anodsplace.carwidget.content.extentions.isLowMemoryDevice
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import java.net.URISyntaxException
 
-class ShortcutsDatabase(private val context: Context) {
+class ShortcutsDatabase(private val context: Context, private val db: Database) {
 
-    private val contentResolver: ContentResolver = context.contentResolver
     private val packageManager: PackageManager = context.packageManager
     private val bitmapOptions: BitmapFactory.Options
 
@@ -42,7 +38,8 @@ class ShortcutsDatabase(private val context: Context) {
     }
 
     fun loadShortcutIcon(shortcutUri: Uri): ShortcutIcon {
-        val c = contentResolver.query(shortcutUri, null, null, null, null)
+        val id = shortcutUri.lastPathSegment!!.toLong()
+        val c = db.shortcutsQueries.selectIcon(id).executeAsOneOrNull()
 
         if (c == null) {
             val icon = UtilitiesBitmap.makeDefaultIcon(packageManager)
@@ -51,57 +48,47 @@ class ShortcutsDatabase(private val context: Context) {
 
         var shortcutIcon: ShortcutIcon? = null
         try {
-            c.moveToFirst()
-
-            val idIndex = c.getColumnIndexOrThrow(BaseColumns._ID)
-            val iconTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_TYPE)
-            val iconIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON)
-            val iconPackageIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_PACKAGE)
-            val iconResourceIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_RESOURCE)
-            val itemTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ITEM_TYPE)
-            val isCustomIconIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.IS_CUSTOM_ICON)
-
-            val id = c.getLong(idIndex)
-            val itemType = c.getInt(itemTypeIndex)
+            val itemType = c.itemType.toInt()
 
             var icon: Bitmap? = null
             if (itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
-                icon = getIconFromCursor(c, iconIndex, bitmapOptions)
-                shortcutIcon = if (c.getInt(isCustomIconIndex) == 1) {
-                    ShortcutIcon.forCustomIcon(id, icon!!)
-                } else {
-                    ShortcutIcon.forActivity(id, icon!!)
+                icon = getIconFromCursor(c.icon ?: ByteArray(0), bitmapOptions)
+                if (icon != null) {
+                    shortcutIcon = if (c.isCustomIcon == 1L) {
+                        ShortcutIcon.forCustomIcon(id, icon)
+                    } else {
+                        ShortcutIcon.forActivity(id, icon)
+                    }
                 }
             } else {
-                val iconType = c.getInt(iconTypeIndex)
+                val iconType = c.iconType.toInt()
                 if (iconType == LauncherSettings.Favorites.ICON_TYPE_RESOURCE) {
-                    val packageName = c.getString(iconPackageIndex)
-                    val resourceName = c.getString(iconResourceIndex)
-                    val iconResource = Intent.ShortcutIconResource()
-                    iconResource.packageName = packageName
-                    iconResource.resourceName = resourceName
+                    val iconResource = Intent.ShortcutIconResource().apply {
+                        packageName = c.iconPackage
+                        resourceName = c.iconResource
+                    }
                     // the resource
                     try {
-                        val resources = packageManager.getResourcesForApplication(packageName)
-                        val resId = resources.getIdentifier(resourceName, null, null)
+                        val resources = packageManager.getResourcesForApplication(iconResource.packageName)
+                        val resId = resources.getIdentifier(iconResource.resourceName, null, null)
                         if (resId > 0) {
                             val iconDrawable = ResourcesCompat.getDrawable(resources, resId, null)!!
                             icon = UtilitiesBitmap.createHiResIconBitmap(iconDrawable, context)
                         }
                     } catch (e: NameNotFoundException) {
                         // drop this. we have other places to look for icons
-                        AppLog.w("loadShortcutIcon: NameNotFoundException $packageName/$resourceName")
+                        AppLog.w("loadShortcutIcon: NameNotFoundException ${iconResource.packageName}/${iconResource.resourceName}")
                     } catch (e: NotFoundException) {
-                        AppLog.w("loadShortcutIcon: NotFoundException $packageName/$resourceName")
+                        AppLog.w("loadShortcutIcon: NotFoundException ${iconResource.packageName}/${iconResource.resourceName}")
                     }
 
                     // the db
                     if (icon == null) {
-                        icon = getIconFromCursor(c, iconIndex, bitmapOptions)
+                        icon = getIconFromCursor(c.icon ?: ByteArray(0), bitmapOptions)
                     }
                     shortcutIcon = ShortcutIcon.forIconResource(id, icon!!, iconResource)
                 } else if (iconType == LauncherSettings.Favorites.ICON_TYPE_BITMAP) {
-                    icon = getIconFromCursor(c, iconIndex, bitmapOptions)
+                    icon = getIconFromCursor(c.icon ?: ByteArray(0), bitmapOptions)
                     if (icon != null) {
                         shortcutIcon = ShortcutIcon.forCustomIcon(id, icon)
                     }
@@ -110,8 +97,6 @@ class ShortcutsDatabase(private val context: Context) {
 
         } catch (e: Exception) {
             AppLog.e(e)
-        } finally {
-            c.close()
         }
 
         if (shortcutIcon == null) {
@@ -123,42 +108,19 @@ class ShortcutsDatabase(private val context: Context) {
     }
 
     fun loadShortcut(shortcutId: Long): Shortcut? {
-        val selection = BaseColumns._ID + "=?"
-        val selectionArgs = arrayOf(shortcutId.toString())
-        var info: Shortcut?
-        val cursor = contentResolver.query(
-                LauncherSettings.Favorites.getContentUri(context.packageName), null,
-                        selection, selectionArgs, null) ?: return null
+        val c = db.shortcutsQueries.select(shortcutId).executeAsOneOrNull() ?: return null
 
-        cursor.use { c ->
-            val intentIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.INTENT)
-            c.moveToFirst()
-            val intent: Intent
-            val intentDescription = c.getString(intentIndex)
-            if (TextUtils.isEmpty(intentDescription)) {
-                return null
-            }
-            try {
-                intent = Intent.parseUri(intentDescription, 0)
-            } catch (e: URISyntaxException) {
-                c.close()
-                return null
-            }
-
-            val idIndex = c.getColumnIndexOrThrow(BaseColumns._ID)
-            val titleIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.TITLE)
-            val itemTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.ITEM_TYPE)
-            val isCustomIconIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.IS_CUSTOM_ICON)
-
-            val id = c.getLong(idIndex)
-            val title = c.getString(titleIndex) ?: ""
-            val itemType = c.getInt(itemTypeIndex)
-            val isCustomIcon = c.getInt(isCustomIconIndex) == 1
-
-            info = Shortcut(id, itemType, title, isCustomIcon, intent)
+        if (c.intent.isEmpty()) {
+            return null
         }
 
-        return info
+        val intent: Intent = try {
+            Intent.parseUri(c.intent, 0)
+        } catch (e: URISyntaxException) {
+            return null
+        }
+
+        return Shortcut(shortcutId, c.iconType.toInt(), c.title, c.isCustomIcon == 1L, intent)
     }
 
     /**
@@ -166,44 +128,34 @@ class ShortcutsDatabase(private val context: Context) {
      * screen, cellX and cellY fields of the item. Also assigns an ID to the
      * item.
      */
-    fun addItemToDatabase(context: Context, item: Shortcut, icon: ShortcutIcon): Long {
-
-        val cr = context.contentResolver
+    fun addItemToDatabase(item: Shortcut, icon: ShortcutIcon): Long {
         val values = createShortcutContentValues(item, icon)
-
-        val result = cr
-                .insert(LauncherSettings.Favorites.getContentUri(context.packageName), values)
-
-        return if (result != null) {
-            Integer.parseInt(result.pathSegments[1]).toLong()
-        } else Shortcut.idUnknown
-    }
-
-    /**
-     * Update an item to the database in a specified container.
-     */
-    fun updateItemInDatabase(context: Context, item: Shortcut, icon: ShortcutIcon) {
-        val cr = context.contentResolver
-
-        val values = createShortcutContentValues(item, icon)
-
-        cr.update(LauncherSettings.Favorites.getContentUri(context.packageName, item.id),
-                values, null, null)
+        db.shortcutsQueries.insert(
+                itemType = values.getAsLong(LauncherSettings.Favorites.ITEM_TYPE),
+                title = values.getAsString(LauncherSettings.Favorites.TITLE),
+                intent = values.getAsString(LauncherSettings.Favorites.INTENT),
+                iconType = values.getAsLong(LauncherSettings.Favorites.ICON_TYPE),
+                icon = values.getAsByteArray(LauncherSettings.Favorites.ICON),
+                iconPackage = values.getAsString(LauncherSettings.Favorites.ICON_PACKAGE),
+                iconResource = values.getAsString(LauncherSettings.Favorites.ICON_RESOURCE),
+                isCustomIcon = values.getAsLong(LauncherSettings.Favorites.IS_CUSTOM_ICON)
+        )
+        return db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: Shortcut.idUnknown
     }
 
     /**
      * Removes the specified item from the database
      */
     fun deleteItemFromDatabase(shortcutId: Long) {
-        val uriToDelete = LauncherSettings.Favorites
-                .getContentUri(context.packageName, shortcutId)
-        Runnable { contentResolver.delete(uriToDelete, null, null) }
+        db.shortcutsQueries.delete(shortcutId)
     }
 
     companion object {
 
-        private fun getIconFromCursor(c: Cursor, iconIndex: Int, opts: BitmapFactory.Options): Bitmap? {
-            val data = c.getBlob(iconIndex)
+        private fun getIconFromCursor(data: ByteArray, opts: BitmapFactory.Options): Bitmap? {
+            if (data.isEmpty()) {
+                return null
+            }
             return try {
                 BitmapFactory.decodeByteArray(data, 0, data.size, opts)
             } catch (e: Exception) {

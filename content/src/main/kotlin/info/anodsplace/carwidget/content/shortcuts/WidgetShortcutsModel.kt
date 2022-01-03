@@ -6,13 +6,14 @@ import android.content.Intent
 
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.extentions.isAvailable
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
 
 import java.util.ArrayList
 
-class WidgetShortcutsModel(context: Context, private val defaultsProvider: WidgetSettings.DefaultsProvider, private val appWidgetId: Int) : AbstractShortcuts(context) {
+class WidgetShortcutsModel(context: Context, database: ShortcutsDatabase, private val defaultsProvider: WidgetSettings.DefaultsProvider, private val appWidgetId: Int) : AbstractShortcuts(context, database) {
 
     override var count: Int = 0
 
@@ -37,7 +38,7 @@ class WidgetShortcutsModel(context: Context, private val defaultsProvider: Widge
     }
 
     override fun saveId(position: Int, shortcutId: Long) {
-        WidgetStorage.saveShortcut(context, shortcutId, position, appWidgetId)
+        WidgetStorage.saveShortcut(shortcutsDatabase, context, shortcutId, position, appWidgetId)
     }
 
     override fun dropId(position: Int) {
@@ -86,8 +87,8 @@ class WidgetShortcutsModel(context: Context, private val defaultsProvider: Widge
     }
 
     companion object {
-        fun init(context: Context, defaultsProvider: WidgetSettings.DefaultsProvider, appWidgetId: Int): WidgetShortcutsModel {
-            return WidgetShortcutsModel(context, defaultsProvider, appWidgetId).apply {
+        fun init(context: Context, db: ShortcutsDatabase, defaultsProvider: WidgetSettings.DefaultsProvider, appWidgetId: Int): WidgetShortcutsModel {
+            return WidgetShortcutsModel(context, db, defaultsProvider, appWidgetId).apply {
                 init()
             }
         }

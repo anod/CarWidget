@@ -56,8 +56,9 @@ class AboutViewModel(application: Application): AndroidViewModel(application), K
         get() = getApplication()
     private val backupManager: BackupManager by lazy {
         BackupManager(
-            getApplication(),
-            DefaultsResourceProvider(context.resources)
+            context = getApplication(),
+            database = get(),
+            resourceDefaults = DefaultsResourceProvider(context.resources)
         )
     }
 

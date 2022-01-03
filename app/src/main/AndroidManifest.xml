@@ -195,12 +195,6 @@
             </intent-filter>
         </receiver>
 
-        <!-- The settings provider contains Home's data, like the workspace favorites -->
-        <provider
-            android:name="com.anod.car.home.model.LauncherProvider"
-            android:authorities="${applicationId}.shortcutsprovider"
-            android:exported="false" />
-
         <receiver
             android:exported="true"
             android:name="com.anod.car.home.LargeProvider"

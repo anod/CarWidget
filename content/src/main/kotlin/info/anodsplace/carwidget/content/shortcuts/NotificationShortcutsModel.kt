@@ -4,11 +4,12 @@ import android.content.Context
 import android.graphics.Path
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
+import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.preferences.InCarStorage
 
 import java.util.ArrayList
 
-class NotificationShortcutsModel private constructor(context: Context) : AbstractShortcuts(context) {
+class NotificationShortcutsModel private constructor(context: Context, database: ShortcutsDatabase) : AbstractShortcuts(context, database) {
 
     override val count: Int
         get() = InCarStorage.NOTIFICATION_COMPONENT_NUMBER
@@ -39,7 +40,7 @@ class NotificationShortcutsModel private constructor(context: Context) : Abstrac
     }
 
     override fun saveId(position: Int, shortcutId: Long) {
-        InCarStorage.saveNotifShortcut(context, shortcutId, position)
+        InCarStorage.saveNotifShortcut(shortcutsDatabase, context, shortcutId, position)
 
     }
 
@@ -53,8 +54,8 @@ class NotificationShortcutsModel private constructor(context: Context) : Abstrac
 
     companion object {
 
-        fun init(context: Context): NotificationShortcutsModel {
-            val model = NotificationShortcutsModel(context)
+        fun init(context: Context, database: ShortcutsDatabase): NotificationShortcutsModel {
+            val model = NotificationShortcutsModel(context, database)
             model.init()
             return model
         }

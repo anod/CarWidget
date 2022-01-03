@@ -10,6 +10,7 @@ import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.framework.content.forLauncher
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
 
 class InCarViewModel(application: Application) : AndroidViewModel(application), KoinComponent {
@@ -20,5 +21,5 @@ class InCarViewModel(application: Application) : AndroidViewModel(application), 
 
     val inCar: InCarInterface by inject()
     val items = createCarScreenItems(inCar)
-    val notificationShortcuts = NotificationShortcutsModel.init(context)
+    val notificationShortcuts = NotificationShortcutsModel.init(context, get())
 }

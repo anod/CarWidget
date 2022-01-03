@@ -5,6 +5,7 @@ repositories {
 
 plugins {
     id("com.android.library")
+    id("com.squareup.sqldelight")
     kotlin("android")
 }
 
@@ -35,6 +36,8 @@ dependencies {
     implementation(project(":lib:ktx"))
     implementation("io.insert-koin:koin-core:3.1.4")
     implementation("com.squareup.picasso:picasso:2.8")
+    implementation("com.squareup.sqldelight:android-driver:1.5.3")
+    implementation("com.squareup.sqldelight:coroutines-extensions-jvm:1.5.3")
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.collection:collection-ktx:1.2.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")

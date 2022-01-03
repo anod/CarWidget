@@ -12,6 +12,7 @@ import info.anodsplace.carwidget.content.IconTheme
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.appwidget.WidgetView
 import info.anodsplace.carwidget.content.BitmapLruCache
+import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
@@ -20,6 +21,7 @@ import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 
 class WidgetViewBuilder(
         private val context: Context,
+        private val database: ShortcutsDatabase,
         override val appWidgetId: Int,
         private val bitmapMemoryCache: BitmapLruCache?,
         private val pendingIntentFactory: PendingIntentFactory,
@@ -27,8 +29,8 @@ class WidgetViewBuilder(
         override var overrideSkin: String? = null
 ) : WidgetView {
 
-    constructor(context: Context, appWidgetId: Int, pendingIntentFactory: PendingIntentFactory)
-            : this(context, appWidgetId, null, pendingIntentFactory, false)
+    constructor(context: Context, database: ShortcutsDatabase, appWidgetId: Int, pendingIntentFactory: PendingIntentFactory)
+            : this(context, database, appWidgetId, null, pendingIntentFactory, false)
 
     private var instance: WidgetView? = null
 
@@ -40,7 +42,7 @@ class WidgetViewBuilder(
                 overrideSkin = overrideSkin,
                 context = context,
                 prefs = prefs,
-                shortcutsModel = WidgetShortcutsModel(context, DefaultsResourceProvider(context), appWidgetId),
+                shortcutsModel = WidgetShortcutsModel(context, database, DefaultsResourceProvider(context), appWidgetId),
                 bitmapTransform = bitmapTransform,
                 shortcutViewBuilder = ShortcutViewBuilder(context, appWidgetId, pendingIntentFactory).also {
                     it.bitmapMemoryCache = bitmapMemoryCache

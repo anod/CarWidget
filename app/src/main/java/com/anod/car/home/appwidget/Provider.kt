@@ -2,7 +2,6 @@ package com.anod.car.home.appwidget
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.appwidget.AppWidgetProviderInfo
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -13,8 +12,10 @@ import com.anod.car.home.app.App
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.incar.ModeService
 import info.anodsplace.applog.AppLog
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-open class Provider : AppWidgetProvider() {
+open class Provider : AppWidgetProvider(), KoinComponent {
 
     init {
         AppLog.tag = "CarWidget"
@@ -31,7 +32,7 @@ open class Provider : AppWidgetProvider() {
         super.onDeleted(context, appWidgetIds)
         AppLog.i("appWidgetIds: ${appWidgetIds.joinToString(",")}", tag = "onDeleted")
         // Drop the settings if the widget is deleted
-        info.anodsplace.carwidget.content.preferences.WidgetStorage.dropWidgetSettings(context, appWidgetIds)
+        info.anodsplace.carwidget.content.preferences.WidgetStorage.dropWidgetSettings(get(), context, appWidgetIds)
     }
 
     override fun onDisabled(context: Context) {

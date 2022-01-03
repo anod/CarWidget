@@ -13,13 +13,14 @@ import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.incar.ModeService
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.Version
+import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
 
 object InCarModeNotification {
     const val id = 1
     private val buttonIds = intArrayOf(R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3)
 
-    fun create(version: Version, context: Context): Notification {
+    fun create(version: Version, context: Context, database: ShortcutsDatabase): Notification {
         val notificationIntent = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_OFF)
         notificationIntent.data = Deeplink.SwitchMode(false).toUri()
 
@@ -39,7 +40,7 @@ object InCarModeNotification {
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setStyle(NotificationCompat.DecoratedCustomViewStyle())
 
-        val model = NotificationShortcutsModel.init(context)
+        val model = NotificationShortcutsModel.init(context, database)
         if (model.filledCount > 0) {
             val contentView = createShortcuts(context, model)
             contentView.setTextViewText(android.R.id.text1, text)

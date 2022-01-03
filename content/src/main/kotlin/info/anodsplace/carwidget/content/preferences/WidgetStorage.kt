@@ -47,25 +47,23 @@ object WidgetStorage {
         return ids
     }
 
-    fun saveShortcut(context: Context, shortcutId: Long, cellId: Int, appWidgetId: Int) {
+    fun saveShortcut(db: ShortcutsDatabase, context: Context, shortcutId: Long, cellId: Int, appWidgetId: Int) {
         val key = getLaunchComponentKey(cellId)
         val prefs = getSharedPreferences(context, appWidgetId)
-        saveShortcutId(context, prefs, shortcutId, key)
+        saveShortcutId(db, prefs, shortcutId, key)
     }
 
-    fun saveShortcutId(context: Context, preferences: SharedPreferences, shortcutId: Long, key: String) {
+    fun saveShortcutId(db: ShortcutsDatabase, preferences: SharedPreferences, shortcutId: Long, key: String) {
         val curShortcutId = preferences.getLong(key, WidgetInterface.idUnknown)
         if (curShortcutId != WidgetInterface.idUnknown) {
-            val model = ShortcutsDatabase(context)
-            model.deleteItemFromDatabase(curShortcutId)
+            db.deleteItemFromDatabase(curShortcutId)
         }
         val editor = preferences.edit()
         editor.putLong(key, shortcutId)
         editor.apply()
     }
 
-    fun dropWidgetSettings(context: Context, appWidgetIds: IntArray) {
-        val model = ShortcutsDatabase(context)
+    fun dropWidgetSettings(db: ShortcutsDatabase, context: Context, appWidgetIds: IntArray) {
         for (appWidgetId in appWidgetIds) {
             val prefs = getSharedPreferences(context, appWidgetId)
 
@@ -73,7 +71,7 @@ object WidgetStorage {
                 val key = getLaunchComponentKey(i)
                 val curShortcutId = prefs.getLong(key, WidgetInterface.idUnknown)
                 if (curShortcutId != WidgetInterface.idUnknown) {
-                    model.deleteItemFromDatabase(curShortcutId)
+                    db.deleteItemFromDatabase(curShortcutId)
                 }
             }
 

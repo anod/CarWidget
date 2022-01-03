@@ -8,11 +8,9 @@ import info.anodsplace.carwidget.content.db.Shortcuts
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import java.util.*
 
-abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
+abstract class AbstractShortcuts(internal val context: Context, val shortcutsDatabase: ShortcutsDatabase) : Shortcuts {
 
     override val shortcuts: MutableMap<Int, Shortcut?> = mutableMapOf()
-
-    val shortcutsDatabase: ShortcutsDatabase = ShortcutsDatabase(context)
 
     protected abstract fun loadCount()
 
@@ -72,7 +70,7 @@ abstract class AbstractShortcuts(internal val context: Context) : Shortcuts {
         if (shortcut == null) {
             shortcuts[position] = null
         } else {
-            val id = shortcutsDatabase.addItemToDatabase(context, shortcut, icon!!)
+            val id = shortcutsDatabase.addItemToDatabase(shortcut, icon!!)
             if (id == Shortcut.idUnknown) {
                 shortcuts[position] = null
             } else {
