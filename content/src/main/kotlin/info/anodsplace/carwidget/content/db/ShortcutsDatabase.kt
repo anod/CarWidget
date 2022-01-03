@@ -210,7 +210,6 @@ class ShortcutsDatabase(private val context: Context) {
                 AppLog.e(e)
                 null
             }
-
         }
 
         fun createShortcutContentValues(item: Shortcut, icon: ShortcutIcon): ContentValues {

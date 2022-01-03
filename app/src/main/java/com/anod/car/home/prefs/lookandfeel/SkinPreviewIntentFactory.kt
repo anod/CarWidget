@@ -8,6 +8,7 @@ import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
 import com.anod.car.home.OverlayActivity
 import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
+import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.screens.widget.SkinList
 
 class SkinPreviewIntentFactory(
@@ -33,7 +34,7 @@ class SkinPreviewIntentFactory(
     private fun createEditIntent(appWidgetId: Int, position: Int, shortcutId: Long): PendingIntent {
         val editIntent = Intent(
             Intent.ACTION_VIEW,
-            "carwidget://widgets/$appWidgetId/edit/$shortcutId/$position".toUri(),
+            Deeplink.EditShortcut(appWidgetId, shortcutId, position).toUri(),
             context,
             OverlayActivity::class.java
         ).also {
@@ -41,10 +42,5 @@ class SkinPreviewIntentFactory(
         }
 
         return PendingIntent.getActivity(context, 0, editIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-//
-//        return TaskStackBuilder.create(context).run {
-//            addNextIntentWithParentStack(editIntent)
-//            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)!!
-//        }
     }
 }

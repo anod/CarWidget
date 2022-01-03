@@ -11,19 +11,17 @@ import com.anod.car.home.R
 import com.anod.car.home.app.App
 import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.incar.ModeService
+import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
 
 object InCarModeNotification {
     const val id = 1
-    private const val prefix = "notif"
     private val buttonIds = intArrayOf(R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3)
 
     fun create(version: Version, context: Context): Notification {
-        val notificationIntent = ModeService
-                .createStartIntent(context, ModeService.MODE_SWITCH_OFF)
-        val data = Uri.parse("com.anod.car.home.pro://mode/0/")
-        notificationIntent.data = data
+        val notificationIntent = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_OFF)
+        notificationIntent.data = Deeplink.SwitchMode(false).toUri()
 
         val r = context.resources
         val contentIntent = PendingIntent.getService(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
@@ -60,15 +58,15 @@ object InCarModeNotification {
         val contentView = RemoteViews(context.packageName, R.layout.notification)
 
         val spi = ShortcutPendingIntent(context, App.provide(context).shortcutResources)
-        for (i in 0 until model.count) {
-            val info = model.get(i)
-            val resId = buttonIds[i]
+        for (position in 0 until model.count) {
+            val info = model.get(position)
+            val resId = buttonIds[position]
             if (info == null) {
                 contentView.setViewVisibility(resId, View.GONE)
             } else {
                 val icon = model.iconLoader.load(info)
                 contentView.setImageViewBitmap(resId, icon.bitmap)
-                spi.createShortcut(info.intent, prefix, i)?.let {
+                spi.createShortcut(info.intent, uri = { Deeplink.OpenNotificationShortcut(position).toUri() })?.let {
                     contentView.setOnClickPendingIntent(resId, it)
                 }
             }

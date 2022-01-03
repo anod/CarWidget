@@ -142,11 +142,12 @@ fun NavHost(
     inCar: InCarInterface,
     innerPadding: PaddingValues,
     currentSkin: MutableState<String>,
-    widgetSettings: MutableState<WidgetInterface>
+    widgetSettings: MutableState<WidgetInterface>,
+    startDestination: String = NavItem.startDestination(appWidgetId),
+    startRoute: String? = NavItem.startRoute(appWidgetId),
+    currentWidgetStartDestination: String = NavItem.CurrentWidget.Skin.route
 ) {
     val scope = rememberCoroutineScope()
-    val startDestination = NavItem.startDestination(appWidgetId)
-    val startRoute = NavItem.startRoute(appWidgetId)
 
     val modifier = Modifier
         .background(MaterialTheme.colors.background)
@@ -174,11 +175,10 @@ fun NavHost(
                 modifier = modifier
             )
         }
-        navigation(route = NavItem.CurrentWidget.route, startDestination = NavItem.CurrentWidget.Skin.route) {
+        navigation(route = NavItem.CurrentWidget.route, startDestination = currentWidgetStartDestination) {
             composable(route = NavItem.CurrentWidget.Skin.route) {
                 val appContext = LocalContext.current.applicationContext
-                val skinViewModel: SkinPreviewViewModel =
-                    viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetId))
+                val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetId))
                 val currentSkinValue by skinViewModel.currentSkin.collectAsState(initial = skinViewModel.skinList.current)
                 currentSkin.value = currentSkinValue.value
                 widgetSettings.value = skinViewModel.widgetSettings
@@ -198,32 +198,11 @@ fun NavHost(
                 arguments = NavItem.CurrentWidget.EditShortcut.arguments,
                 deepLinks = NavItem.CurrentWidget.EditShortcut.deepLinks
             ) {
-                val args = NavItem.CurrentWidget.EditShortcut.Args(it.arguments)
-                val appContext = LocalContext.current.applicationContext as Application
-                if (args.shortcutId > 0) {
-                    val viewModel: ShortcutEditViewModel = viewModel(
-                            factory = ShortcutEditViewModel.Factory(
-                                    args.position,
-                                    args.shortcutId,
-                                    appWidgetId,
-                                    appContext
-                            )
-                    )
-                    ShortcutEditDialog(viewModel) {
-                        scope.launch { action.emit(UiAction.OnBackNav) }
-                    }
-                } else {
-                    val viewModel: ShortcutPickerViewModel = viewModel(
-                            factory = ShortcutPickerViewModel.Factory(
-                                    args.position,
-                                    appWidgetId,
-                                    appContext
-                            )
-                    )
-                    ShortcutPickerScreen(viewModel) {
-                        scope.launch { action.emit(UiAction.OnBackNav) }
-                    }
-                }
+                EditShortcut(
+                        appWidgetId = appWidgetId,
+                        args = NavItem.CurrentWidget.EditShortcut.Args(it.arguments),
+                        action = action
+                )
             }
             composable(route = NavItem.CurrentWidget.MoreSettings.route) {
                 val appContext = LocalContext.current.applicationContext
@@ -250,6 +229,37 @@ fun NavHost(
             composable(route = NavItem.InCar.More.route) {
                 MoreScreen(inCar = inCar, modifier = modifier)
             }
+        }
+    }
+}
+
+@Composable
+fun EditShortcut(appWidgetId: Int, args: NavItem.CurrentWidget.EditShortcut.Args, action: MutableSharedFlow<UiAction>,) {
+    val appContext = LocalContext.current.applicationContext as Application
+    val scope = rememberCoroutineScope()
+
+    if (args.shortcutId > 0) {
+        val viewModel: ShortcutEditViewModel = viewModel(
+                factory = ShortcutEditViewModel.Factory(
+                        args.position,
+                        args.shortcutId,
+                        appWidgetId,
+                        appContext
+                )
+        )
+        ShortcutEditDialog(viewModel) {
+            scope.launch { action.emit(UiAction.OnBackNav) }
+        }
+    } else {
+        val viewModel: ShortcutPickerViewModel = viewModel(
+                factory = ShortcutPickerViewModel.Factory(
+                        args.position,
+                        appWidgetId,
+                        appContext
+                )
+        )
+        ShortcutPickerScreen(viewModel) {
+            scope.launch { action.emit(UiAction.OnBackNav) }
         }
     }
 }

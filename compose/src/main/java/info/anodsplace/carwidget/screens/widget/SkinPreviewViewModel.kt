@@ -60,6 +60,7 @@ class SkinPreviewViewModel(application: Application, var appWidgetId: Int): Andr
             .onEach {
                 delay(300)
             }
+
     class Factory(private val appContext: Context, private val appWidgetId: Int): ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T = SkinPreviewViewModel(appContext as Application, appWidgetId) as T
     }

@@ -7,22 +7,18 @@ import android.os.Bundle
 import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.*
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.compose.rememberNavController
 import com.squareup.picasso.Picasso
 import info.anodsplace.carwidget.content.preferences.AppSettings
-import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.extensions.extras
+import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
-import info.anodsplace.carwidget.screens.main.NavHost
+import info.anodsplace.carwidget.screens.main.EditShortcut
 import info.anodsplace.compose.LocalPicasso
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
 import org.koin.core.component.inject
 
 open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
@@ -45,6 +41,7 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
                 }
             }
         }
+
         setContent {
             val nightMode by appSettings.nightModeChange.collectAsState(initial = appSettings.nightMode)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -52,23 +49,18 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
                     uiModeManager.setApplicationNightMode(nightMode)
                 }
             }
-            val navController = rememberNavController()
-            val currentSkin = remember { mutableStateOf(WidgetInterface.SKIN_YOU) }
-            val widgetSettings: MutableState<WidgetInterface> = remember { mutableStateOf(WidgetInterface.NoOp()) }
+            val pathSegments = intent.data!!.pathSegments
+            val args = NavItem.CurrentWidget.EditShortcut.Args(shortcutId = pathSegments[2].toLong(), position = pathSegments[3].toInt())
 
             CarWidgetTheme(
-                context = this@OverlayComposeActivity,
-                nightMode = nightMode
+                    context = this@OverlayComposeActivity,
+                    nightMode = nightMode
             ) {
                 CompositionLocalProvider(LocalPicasso provides picasso) {
-                    NavHost(
-                        navController = navController,
-                        action = action,
-                        appWidgetId = appWidgetId,
-                        inCar = get(),
-                        innerPadding = PaddingValues(0.dp),
-                        currentSkin = currentSkin,
-                        widgetSettings = widgetSettings
+                    EditShortcut(
+                            appWidgetId = appWidgetId,
+                            args = args,
+                            action = action
                     )
                 }
             }
