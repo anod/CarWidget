@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.intent
+package info.anodsplace.carwidget.screens.shortcuts.intent
 
 import android.content.ComponentName
 import android.content.Intent

@@ -20,6 +20,11 @@ insert:
 INSERT INTO favorites (itemType, title, intent, iconType, icon, iconPackage, iconResource, isCustomIcon)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 
+updateIntent:
+UPDATE favorites
+SET intent = ?
+WHERE _id = ?;
+
 lastInsertId:
 SELECT last_insert_rowid();
 

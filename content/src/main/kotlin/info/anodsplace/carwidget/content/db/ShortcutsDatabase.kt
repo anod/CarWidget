@@ -10,10 +10,16 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.core.content.res.ResourcesCompat
+import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToOne
+import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Database
 import info.anodsplace.carwidget.content.extentions.isLowMemoryDevice
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import java.net.URISyntaxException
 
 class ShortcutsDatabase(private val context: Context, private val db: Database) {
@@ -107,9 +113,18 @@ class ShortcutsDatabase(private val context: Context, private val db: Database) 
         return shortcutIcon
     }
 
+    fun observeShortcut(shortcutId: Long): Flow<Shortcut> {
+        return db.shortcutsQueries.select(shortcutId).asFlow()
+                .mapToOne()
+                .mapNotNull { mapShortcut(shortcutId, it) }
+    }
+
     fun loadShortcut(shortcutId: Long): Shortcut? {
         val c = db.shortcutsQueries.select(shortcutId).executeAsOneOrNull() ?: return null
+        return mapShortcut(shortcutId, c)
+    }
 
+    private fun mapShortcut(shortcutId: Long, c: Favorites): Shortcut? {
         if (c.intent.isEmpty()) {
             return null
         }
@@ -122,7 +137,6 @@ class ShortcutsDatabase(private val context: Context, private val db: Database) 
 
         return Shortcut(shortcutId, c.iconType.toInt(), c.title, c.isCustomIcon == 1L, intent)
     }
-
     /**
      * Add an item to the database in a specified container. Sets the container,
      * screen, cellX and cellY fields of the item. Also assigns an ID to the
@@ -148,6 +162,13 @@ class ShortcutsDatabase(private val context: Context, private val db: Database) 
      */
     fun deleteItemFromDatabase(shortcutId: Long) {
         db.shortcutsQueries.delete(shortcutId)
+    }
+
+    fun updateIntent(shortcutId: Long, intent: Intent) {
+        db.shortcutsQueries.updateIntent(
+                intent = intent.toUri(0),
+                _id = shortcutId
+        )
     }
 
     companion object {

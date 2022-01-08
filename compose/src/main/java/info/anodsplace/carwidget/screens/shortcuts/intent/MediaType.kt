@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget.intent
+package info.anodsplace.carwidget.screens.shortcuts.intent
 
 import java.util.*
 import java.util.regex.Pattern

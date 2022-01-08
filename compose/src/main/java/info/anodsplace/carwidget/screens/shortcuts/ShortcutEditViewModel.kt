@@ -5,17 +5,22 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
+import info.anodsplace.carwidget.screens.shortcuts.intent.IntentField
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
-import info.anodsplace.carwidget.screens.UiAction
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
-sealed class ShortcutEditAction {
-    object Drop: ShortcutEditAction()
-    object Ok: ShortcutEditAction()
+interface ShortcutEditDelegate {
+    fun drop()
+    fun updateField(field: IntentField)
+
+    class NoOp: ShortcutEditDelegate {
+        override fun drop() { }
+        override fun updateField(field: IntentField) { }
+    }
 }
 
 class ShortcutEditViewModel(
@@ -23,7 +28,7 @@ class ShortcutEditViewModel(
         val shortcutId: Long,
         val appWidgetId: Int,
         application: Application
-) : AndroidViewModel(application), KoinComponent {
+) : AndroidViewModel(application), KoinComponent, ShortcutEditDelegate {
 
     class Factory(
             private val position: Int,
@@ -39,13 +44,55 @@ class ShortcutEditViewModel(
     private val context: Context
         get() = getApplication()
 
-    val model = WidgetShortcutsModel.init(context, get(), DefaultsResourceProvider(context), appWidgetId)
-    val shortcut = model.shortcutsDatabase.loadShortcut(shortcutId)!!
-    val icon = model.iconLoader.load(shortcut)
-    val actions = MutableSharedFlow<ShortcutEditAction>()
+    private val model = WidgetShortcutsModel.init(context, get(), DefaultsResourceProvider(context), appWidgetId)
+    val shortcut = model.shortcutsDatabase.observeShortcut(shortcutId).stateIn(
+            viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = null
+    )
+    val icon = shortcut.filterNotNull().map { sh -> model.iconLoader.load(sh) }
 
-    fun drop() {
+    override fun drop() {
         model.drop(position)
     }
 
+    override fun updateField(field: IntentField) {
+        val shortcut = shortcut.value ?: return
+        val intent = shortcut.intent
+        when (field) {
+            is IntentField.Action -> {
+                intent.action = field.value
+            }
+            is IntentField.Data -> {
+                intent.data = field.uri
+            }
+            is IntentField.Categories -> {
+                val existing = intent.categories ?: emptySet()
+                val new = field.value ?: emptySet()
+                (existing - new).forEach { intent.removeCategory(it) }
+                new.forEach {
+                    if (!intent.hasCategory(it)) {
+                        intent.addCategory(it)
+                    }
+                }
+            }
+            is IntentField.Component -> {
+                val comp = field.value
+                if (comp == null || (comp.packageName.isBlank() && comp.className.isBlank())) {
+                    intent.component = null
+                } else if (comp.packageName.isNotBlank() || comp.className.isNotBlank()) {
+                    intent.component = comp
+                }
+            }
+            is IntentField.Extras -> {
+                intent.putExtras(field.bundle)
+            }
+            is IntentField.Flags -> {
+                intent.flags = field.value
+            }
+            is IntentField.MimeType -> {
+                intent.type = field.value
+            }
+        }
+
+        model.shortcutsDatabase.updateIntent(shortcut.id, intent)
+    }
 }

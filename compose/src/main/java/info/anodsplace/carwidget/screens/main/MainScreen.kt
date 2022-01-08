@@ -30,7 +30,7 @@ import info.anodsplace.carwidget.screens.WidgetActions
 import info.anodsplace.carwidget.screens.about.AboutScreen
 import info.anodsplace.carwidget.screens.about.AboutViewModel
 import info.anodsplace.carwidget.screens.incar.*
-import info.anodsplace.carwidget.screens.shortcuts.ShortcutEditDialog
+import info.anodsplace.carwidget.screens.shortcuts.ShortcutEditScreen
 import info.anodsplace.carwidget.screens.shortcuts.ShortcutEditViewModel
 import info.anodsplace.carwidget.screens.shortcuts.ShortcutPickerScreen
 import info.anodsplace.carwidget.screens.shortcuts.ShortcutPickerViewModel
@@ -247,7 +247,7 @@ fun EditShortcut(appWidgetId: Int, args: NavItem.CurrentWidget.EditShortcut.Args
                         appContext
                 )
         )
-        ShortcutEditDialog(viewModel) {
+        ShortcutEditScreen(viewModel) {
             scope.launch { action.emit(UiAction.OnBackNav) }
         }
     } else {

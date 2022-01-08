@@ -1,6 +1,5 @@
-package info.anodsplace.carwidget.intent
+package info.anodsplace.carwidget.screens.shortcuts.intent
 
-import android.app.UiModeManager
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
@@ -26,15 +25,9 @@ import androidx.compose.material.Text
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.screens.CarWidgetToolbar
-import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.compose.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
 
-class UpdateField(val field: IntentField) : UiAction.IntentEditAction()
+class UpdateField(val field: IntentField)
 
 private val DefaultFrontLayerShape: Shape
     @Composable
@@ -211,19 +204,16 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
 }
 
 @Composable
-fun EditSection(intent: Intent, editState: IntentField, action: MutableSharedFlow<UiAction>, onSuggestions: (IntentField.Suggestions) -> Unit, onClose: () -> Unit) {
+fun EditSection(intent: Intent, editState: IntentField, updateField: (UpdateField) -> Unit, onSuggestions: (IntentField.Suggestions) -> Unit, onClose: () -> Unit) {
     val flagsState = remember(intent.flags) { mutableStateListOf(*intent.flagNames.toTypedArray()) }
     val categoriesState = remember(intent.categories) { mutableStateListOf(*intent.categoryNames.toTypedArray()) }
-    val scope = rememberCoroutineScope()
     when (editState) {
         is IntentField.StringValue -> {
             FieldEditDialog(editState.title, editState,
                 onSuggestions = { onSuggestions(editState.suggestions) },
                 onClick = { newState ->
                     if (newState != null) {
-                        scope.launch {
-                            action.emit(UpdateField(newState))
-                        }
+                        updateField(UpdateField(newState))
                     }
                     onClose()
                 })
@@ -231,9 +221,7 @@ fun EditSection(intent: Intent, editState: IntentField, action: MutableSharedFlo
         is IntentField.Component -> {
             ComponentEditDialog(editState, onClose = { newComponent ->
                 if (newComponent != null) {
-                    scope.launch {
-                        action.emit(UpdateField(IntentField.Component(newComponent)))
-                    }
+                    updateField(UpdateField(IntentField.Component(newComponent)))
                 }
                 onClose()
             })
@@ -241,9 +229,7 @@ fun EditSection(intent: Intent, editState: IntentField, action: MutableSharedFlo
         is IntentField.Extras -> {
             ExtraEditDialog(editState, onClose = { newBundle ->
                 if (newBundle != null) {
-                    scope.launch {
-                        action.emit(UpdateField(IntentField.Extras(newBundle)))
-                    }
+                    updateField(UpdateField(IntentField.Extras(newBundle)))
                 }
                 onClose()
             })
@@ -254,9 +240,7 @@ fun EditSection(intent: Intent, editState: IntentField, action: MutableSharedFlo
                     flagsText, IntentFlags, flagsState
             )
             CheckBoxScreen(saveText = stringResource(id = R.string.save), stateValue, onDismissRequest = {
-                scope.launch {
-                    action.emit(UpdateField(IntentField.Flags(flagNamesToInt(flagsState))))
-                }
+                updateField(UpdateField(IntentField.Flags(flagNamesToInt(flagsState))))
                 onClose()
             })
         }
@@ -266,9 +250,7 @@ fun EditSection(intent: Intent, editState: IntentField, action: MutableSharedFlo
                     categoriesText, IntentCategories, categoriesState
             )
             CheckBoxScreen(stringResource(id = R.string.save), stateValue, onDismissRequest = {
-                scope.launch {
-                    action.emit(UpdateField(IntentField.Categories(categoriesState.mapNotNull { IntentCategories[it] }.toSet())))
-                }
+                updateField(UpdateField(IntentField.Categories(categoriesState.mapNotNull { IntentCategories[it] }.toSet())))
                 onClose()
             })
         }
@@ -279,99 +261,74 @@ fun EditSection(intent: Intent, editState: IntentField, action: MutableSharedFlo
 
 @Composable
 fun IntentEditScreen(
-    intent: Flow<Intent>,
-    action: MutableSharedFlow<UiAction>,
-    addBackPressHandler: Boolean = false,
-    initialEditValue: IntentField = IntentField.None,
+        intent: Intent,
+        updateField: (UpdateField) -> Unit,
+        modifier: Modifier = Modifier,
+        initialEditValue: IntentField = IntentField.None,
 ) {
-    val intentState = intent.collectAsState(initial = Intent())
     var editState by remember { mutableStateOf(initialEditValue) }
     val editVisible: Boolean = editState !is IntentField.None
     var suggestionsState by remember { mutableStateOf(IntentField.Suggestions.None) }
-    val scope = rememberCoroutineScope()
 
-    if (addBackPressHandler) {
-        BackPressHandler(
-                onBackPressed = {
-                    if (suggestionsState == IntentField.Suggestions.None) {
-                        editState = IntentField.None
-                    } else {
-                        suggestionsState = IntentField.Suggestions.None
-                    }
-                },
-                enabled = editVisible || suggestionsState != IntentField.Suggestions.None
-        )
-    }
-
-    Scaffold(
-            topBar = { CarWidgetToolbar(action) },
-            backgroundColor = MaterialTheme.colors.surface,
-            content = {
-                Column {
-                    if (editVisible) {
-                        Surface {
-                            EditSection(intentState.value, editState, action, onSuggestions = {
-                                suggestionsState = it
-                            }) {
-                                editState = IntentField.None
-                            }
-                        }
-                    }
-
-                    Surface(
-                            shape = DefaultFrontLayerShape,
-                            elevation = DefaultFrontLayerElevation,
-                            color = MaterialTheme.colors.background,
-                    ) {
-                        Box {
-                            IntentDetailsView(intentState.value, modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxSize()) {
-                                editState = it
-                            }
-                            OverlayScrim(
-                                    color = DefaultFrontLayerScrimColor,
-                                    onDismiss = { editState = IntentField.None },
-                                    visible = editVisible
-                            )
-                        }
-                    }
-                }
-
-                when (suggestionsState) {
-                    IntentField.Suggestions.Action -> {
-                        SingleListScreen(
-                                state = SingleScreenState(
-                                        title = stringResource(id = R.string.action),
-                                        items = IntentActions
-                                ),
-                        ) { _, value ->
-                            scope.launch {
-                                action.emit(UpdateField(IntentField.Action(value, "")))
-                            }
-                            suggestionsState = IntentField.Suggestions.None
-                        }
-                    }
-                    IntentField.Suggestions.MimeType -> {
-                        SingleListScreen(
-                                state = SingleScreenState(
-                                        title = stringResource(id = R.string.mime_type),
-                                        items = MediaTypes
-                                ),
-                        ) { _, value ->
-                            scope.launch {
-                                action.emit(UpdateField(IntentField.MimeType(value, "")))
-                            }
-                            suggestionsState = IntentField.Suggestions.None
-                        }
-                    }
-                    IntentField.Suggestions.Component -> {
-
-                    }
-                    IntentField.Suggestions.None -> { }
+    Column(modifier = modifier) {
+        if (editVisible) {
+            Surface {
+                EditSection(intent, editState, updateField, onSuggestions = {
+                    suggestionsState = it
+                }) {
+                    editState = IntentField.None
                 }
             }
-    )
+        }
+
+        Surface(
+                shape = DefaultFrontLayerShape,
+                elevation = DefaultFrontLayerElevation,
+                color = MaterialTheme.colors.background,
+        ) {
+            Box {
+                IntentDetailsView(intent, modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxSize()) {
+                    editState = it
+                }
+                OverlayScrim(
+                        color = DefaultFrontLayerScrimColor,
+                        onDismiss = { editState = IntentField.None },
+                        visible = editVisible
+                )
+            }
+        }
+    }
+
+    when (suggestionsState) {
+        IntentField.Suggestions.Action -> {
+            SingleListScreen(
+                    state = SingleScreenState(
+                            title = stringResource(id = R.string.action),
+                            items = IntentActions
+                    ),
+            ) { _, value ->
+                updateField(UpdateField(IntentField.Action(value, "")))
+                suggestionsState = IntentField.Suggestions.None
+            }
+        }
+        IntentField.Suggestions.MimeType -> {
+            SingleListScreen(
+                    state = SingleScreenState(
+                            title = stringResource(id = R.string.mime_type),
+                            items = MediaTypes
+                    ),
+            ) { _, value ->
+                updateField(UpdateField(IntentField.MimeType(value, "")))
+                suggestionsState = IntentField.Suggestions.None
+            }
+        }
+        IntentField.Suggestions.Component -> {
+
+        }
+        IntentField.Suggestions.None -> { }
+    }
 }
 
 @Preview("Intent Edit Screen")
@@ -379,7 +336,7 @@ fun IntentEditScreen(
 fun PreviewIntentEdit() {
     CarWidgetTheme() {
         Surface {
-            IntentEditScreen(intent = flowOf(Intent(Intent.ACTION_ANSWER)), action = MutableSharedFlow())
+            IntentEditScreen(intent = Intent(Intent.ACTION_ANSWER), updateField = {})
         }
     }
 }
@@ -390,8 +347,8 @@ fun PreviewIntentSimpleEdit() {
     CarWidgetTheme() {
         Surface {
             IntentEditScreen(
-                    intent = flowOf(Intent(Intent.ACTION_ANSWER)),
-                    action = MutableSharedFlow(),
+                    intent = Intent(Intent.ACTION_ANSWER),
+                    updateField = {},
                     initialEditValue = IntentField.Action(Intent.ACTION_ANSWER, "Action")
             )
         }
