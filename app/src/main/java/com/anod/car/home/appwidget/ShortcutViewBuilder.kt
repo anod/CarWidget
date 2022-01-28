@@ -18,13 +18,14 @@ import info.anodsplace.carwidget.content.IconTheme
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
+import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 
 interface ShortcutViewBuilderInstance {
     var bitmapMemoryCache: LruCache<String, Bitmap>?
-    fun fill(views: RemoteViews, position: Int, resBtn: Int, resText: Int)
+    suspend fun fill(views: RemoteViews, position: Int, resBtn: Int, resText: Int)
 }
 
 /**
@@ -32,9 +33,10 @@ interface ShortcutViewBuilderInstance {
  * @date 1/4/14
  */
 class ShortcutViewBuilder(
-    private val context: Context,
-    private val appWidgetId: Int,
-    private val pendingIntentFactory: PendingIntentFactory
+        private val context: Context,
+        private val appWidgetId: Int,
+        private val pendingIntentFactory: PendingIntentFactory,
+        private val iconLoader: ShortcutIconLoader,
 ): ShortcutViewBuilderInstance {
     private var intance: Instance? = null
 
@@ -51,7 +53,8 @@ class ShortcutViewBuilder(
              iconTheme = iconTheme,
              prefs = prefs,
              shortcuts = shortcuts,
-             bitmapTransform = bitmapTransform
+             bitmapTransform = bitmapTransform,
+             iconLoader = iconLoader,
         )
     }
 
@@ -61,7 +64,7 @@ class ShortcutViewBuilder(
             this.intance?.bitmapMemoryCache = value
         }
 
-    override fun fill(views: RemoteViews, position: Int, resBtn: Int, resText: Int) {
+    override suspend fun fill(views: RemoteViews, position: Int, resBtn: Int, resText: Int) {
         this.intance!!.fill(views, position, resBtn, resText)
     }
 
@@ -75,6 +78,7 @@ class ShortcutViewBuilder(
             private val shortcuts: WidgetShortcutsModel,
             private val bitmapTransform: BitmapTransform,
             private val scaledDensity: Float,
+            private val iconLoader: ShortcutIconLoader,
     ) : ShortcutViewBuilderInstance {
 
         override var bitmapMemoryCache: LruCache<String, Bitmap>? = null
@@ -82,7 +86,7 @@ class ShortcutViewBuilder(
         private val backgroundProcessor: BackgroundProcessor? = skinProperties.backgroundProcessor
         private val adaptiveIconPath: Path = prefs.adaptiveIconPath
 
-        override fun fill(views: RemoteViews, position: Int, resBtn: Int, resText: Int) {
+        override suspend fun fill(views: RemoteViews, position: Int, resBtn: Int, resText: Int) {
             val info = shortcuts.get(position)
 
             var icon: Bitmap? = null
@@ -148,7 +152,7 @@ class ShortcutViewBuilder(
             }
         }
 
-        private fun applyShortcut(res: Int, resText: Int, info: Shortcut, views: RemoteViews, cellId: Int, themeIcons: IconTheme?): Bitmap {
+        private suspend fun applyShortcut(res: Int, resText: Int, info: Shortcut, views: RemoteViews, cellId: Int, themeIcons: IconTheme?): Bitmap {
 
             val themePackage = themeIcons?.packageName ?: "null"
             val transformKey = bitmapTransform.cacheKey
@@ -194,9 +198,9 @@ class ShortcutViewBuilder(
             }
         }
 
-        private fun shortcutBitmap(info: Shortcut, themeIcons: IconTheme?): Bitmap {
+        private suspend fun shortcutBitmap(info: Shortcut, themeIcons: IconTheme?): Bitmap {
             if (themeIcons == null || !info.isApp || info.isCustomIcon) {
-                val icon = ShortcutIconLoader(shortcuts.shortcutsDatabase, adaptiveIconPath, context).load(info)
+                val icon = iconLoader.load(info, adaptiveIconPath)
                 return icon.bitmap
             }
 
@@ -211,7 +215,7 @@ class ShortcutViewBuilder(
             if (iconDrawable != null) {
                 return UtilitiesBitmap.createHiResIconBitmap(iconDrawable, context)
             }
-            val icon = ShortcutIconLoader(shortcuts.shortcutsDatabase, adaptiveIconPath, context).load(info)
+            val icon = iconLoader.load(info, adaptiveIconPath)
             return icon.bitmap
         }
     }

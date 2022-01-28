@@ -11,8 +11,10 @@ import info.anodsplace.carwidget.appwidget.WidgetUpdate
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -45,11 +47,11 @@ class ShortcutPickerViewModel(
     private val context: Context
         get() = getApplication()
 
-    private val model = WidgetShortcutsModel.init(context, get(), DefaultsResourceProvider(context), appWidgetId)
+    private val model = WidgetShortcutsModel(context, get(), DefaultsResourceProvider(context), appWidgetId)
 
-    fun save(intent: Intent, isApplicationShortcut: Boolean): Int {
+    suspend fun save(intent: Intent, isApplicationShortcut: Boolean): Int = withContext(Dispatchers.IO) {
         val result = model.saveIntent(position, intent, isApplicationShortcut)
         update.request(intArrayOf(appWidgetId))
-        return result.second
+        return@withContext result.second
     }
 }

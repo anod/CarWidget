@@ -2,30 +2,36 @@ package info.anodsplace.carwidget.screens.shortcuts
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import info.anodsplace.carwidget.content.db.ShortcutIconLoader
+import info.anodsplace.carwidget.content.db.ShortcutsDatabase
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.screens.shortcuts.intent.IntentField
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import kotlinx.coroutines.flow.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
 
 interface ShortcutEditDelegate {
-    fun drop()
-    fun updateField(field: IntentField)
+    suspend fun drop()
+    suspend fun updateField(field: IntentField)
 
     class NoOp: ShortcutEditDelegate {
-        override fun drop() { }
-        override fun updateField(field: IntentField) { }
+        override suspend fun drop() { }
+        override suspend fun updateField(field: IntentField) { }
     }
 }
 
 class ShortcutEditViewModel(
         val position: Int,
-        val shortcutId: Long,
+        shortcutId: Long,
         val appWidgetId: Int,
         application: Application
 ) : AndroidViewModel(application), KoinComponent, ShortcutEditDelegate {
@@ -44,19 +50,27 @@ class ShortcutEditViewModel(
     private val context: Context
         get() = getApplication()
 
-    private val model = WidgetShortcutsModel.init(context, get(), DefaultsResourceProvider(context), appWidgetId)
-    val shortcut = model.shortcutsDatabase.observeShortcut(shortcutId).stateIn(
+    private val shortcutsDatabase: ShortcutsDatabase = get()
+    private val iconLoader: ShortcutIconLoader = get()
+    private val widgetSettings: WidgetInterface by inject(parameters = { parametersOf(appWidgetId) })
+
+    private val model = WidgetShortcutsModel(context, shortcutsDatabase, DefaultsResourceProvider(context), appWidgetId)
+    val shortcut = shortcutsDatabase.observeShortcut(shortcutId).stateIn(
             viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = null
     )
-    val icon = shortcut.filterNotNull().map { sh -> model.iconLoader.load(sh) }
+    val icon = shortcut.filterNotNull().map { sh -> iconLoader.load(sh, widgetSettings.adaptiveIconPath) }
 
-    override fun drop() {
+    override suspend fun drop() {
         model.drop(position)
     }
 
-    override fun updateField(field: IntentField) {
+    override suspend fun updateField(field: IntentField) {
         val shortcut = shortcut.value ?: return
-        val intent = shortcut.intent
+        val intent = updateIntentField(field, shortcut.intent)
+        shortcutsDatabase.updateIntent(shortcut.id, intent)
+    }
+
+    private fun updateIntentField(field: IntentField, intent: Intent): Intent {
         when (field) {
             is IntentField.Action -> {
                 intent.action = field.value
@@ -93,6 +107,6 @@ class ShortcutEditViewModel(
             }
         }
 
-        model.shortcutsDatabase.updateIntent(shortcut.id, intent)
+        return intent
     }
 }

@@ -116,6 +116,7 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                 factory<WidgetView> { params -> WidgetViewBuilder(
                         context = get(),
                         database = get(),
+                        iconLoader = get(),
                         appWidgetId = params[0],
                         bitmapMemoryCache = params[1],
                         pendingIntentFactory = params[2],

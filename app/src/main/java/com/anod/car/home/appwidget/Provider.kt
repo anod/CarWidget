@@ -12,6 +12,9 @@ import com.anod.car.home.app.App
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.incar.ModeService
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.AppCoroutineScope
+import info.anodsplace.carwidget.content.preferences.WidgetStorage
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
@@ -31,8 +34,11 @@ open class Provider : AppWidgetProvider(), KoinComponent {
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         super.onDeleted(context, appWidgetIds)
         AppLog.i("appWidgetIds: ${appWidgetIds.joinToString(",")}", tag = "onDeleted")
-        // Drop the settings if the widget is deleted
-        info.anodsplace.carwidget.content.preferences.WidgetStorage.dropWidgetSettings(get(), context, appWidgetIds)
+        val scope: AppCoroutineScope = get()
+        scope.launch {
+            // Drop the settings if the widget is deleted
+            WidgetStorage.dropWidgetSettings(get(), context, appWidgetIds)
+        }
     }
 
     override fun onDisabled(context: Context) {
@@ -43,8 +49,7 @@ open class Provider : AppWidgetProvider(), KoinComponent {
         BroadcastService.stopService(context)
 
         if (ModeService.sInCarMode) {
-            val modeIntent = ModeService
-                    .createStartIntent(context, ModeService.MODE_SWITCH_OFF)
+            val modeIntent = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_OFF)
             context.stopService(modeIntent)
         }
     }

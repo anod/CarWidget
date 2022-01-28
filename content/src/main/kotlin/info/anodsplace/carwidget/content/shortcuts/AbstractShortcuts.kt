@@ -8,21 +8,43 @@ import info.anodsplace.carwidget.content.db.Shortcuts
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import java.util.*
 
-abstract class AbstractShortcuts(internal val context: Context, val shortcutsDatabase: ShortcutsDatabase) : Shortcuts {
+abstract class AbstractShortcuts(internal val context: Context, protected val shortcutsDatabase: ShortcutsDatabase) : Shortcuts {
+    private var isInitialized = false
+    protected var _count: Int = 0
+    private var _shortcuts: MutableMap<Int, Shortcut?> = mutableMapOf()
 
-    override val shortcuts: MutableMap<Int, Shortcut?> = mutableMapOf()
+    override val shortcuts: Map<Int, Shortcut?>
+        get() {
+            require(isInitialized)
+            return _shortcuts
+        }
 
-    protected abstract fun loadCount()
+    override val count: Int
+        get() {
+            require(isInitialized)
+            return _count
+        }
 
-    protected abstract fun saveId(position: Int, shortcutId: Long)
+    protected abstract fun loadCount(): Int
+
+    protected abstract suspend fun saveId(position: Int, shortcutId: Long)
 
     protected abstract fun dropId(position: Int)
 
     protected abstract fun loadIds(): ArrayList<Long>
 
-    override fun init() {
-        loadCount()
-        shortcuts.clear()
+    protected abstract fun countUpdated(count: Int)
+
+    private suspend fun lazyInit() {
+        if (!isInitialized) {
+            init()
+        }
+    }
+
+    override suspend fun init() {
+        isInitialized = true
+        _count = loadCount()
+        _shortcuts.clear()
         val currentShortcutIds = loadIds()
         for (cellId in 0 until count) {
             val shortcutId = currentShortcutIds[cellId]
@@ -30,24 +52,33 @@ abstract class AbstractShortcuts(internal val context: Context, val shortcutsDat
             if (shortcutId != Shortcut.idUnknown) {
                 info = shortcutsDatabase.loadShortcut(shortcutId)
             }
-            shortcuts[cellId] = info
+            _shortcuts[cellId] = info
         }
+    }
+
+    override fun updateCount(count: Int) {
+        require(isInitialized)
+        this._count = count
+        countUpdated(count)
     }
 
     override fun get(position: Int): Shortcut? {
+        require(isInitialized)
         return shortcuts[position]
     }
 
-    override fun reloadShortcut(position: Int, shortcutId: Long) {
+    override suspend fun reloadShortcut(position: Int, shortcutId: Long) {
+        lazyInit()
         if (shortcutId == Shortcut.idUnknown) {
-            shortcuts[position] = null
+            _shortcuts[position] = null
         } else {
             val info = shortcutsDatabase.loadShortcut(shortcutId)
-            shortcuts[position] = info
+            _shortcuts[position] = info
         }
     }
 
-    override fun move(from: Int, to: Int) {
+    override suspend fun move(from: Int, to: Int) {
+        lazyInit()
         if (from == to) {
             return
         }
@@ -60,32 +91,35 @@ abstract class AbstractShortcuts(internal val context: Context, val shortcutsDat
 
     }
 
-    override fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Pair<Shortcut?, Int> {
+    override suspend fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Pair<Shortcut?, Int> {
+        lazyInit()
         val shortcut = ShortcutInfoUtils.createShortcut(context, data, isApplicationShortcut)
         save(position, shortcut.info, shortcut.icon)
         return Pair(shortcuts[position], shortcut.result)
     }
 
-    override fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?) {
+    override suspend fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?) {
+        lazyInit()
         if (shortcut == null) {
-            shortcuts[position] = null
+            _shortcuts[position] = null
         } else {
             val id = shortcutsDatabase.addItemToDatabase(shortcut, icon!!)
             if (id == Shortcut.idUnknown) {
-                shortcuts[position] = null
+                _shortcuts[position] = null
             } else {
                 val newInfo = Shortcut(id, shortcut)
-                shortcuts[position] = newInfo
+                _shortcuts[position] = newInfo
                 saveId(position, id)
             }
         }
     }
 
-    override fun drop(position: Int) {
-        val info = shortcuts[position]
+    override suspend fun drop(position: Int) {
+        lazyInit()
+        val info = _shortcuts[position]
         if (info != null) {
             shortcutsDatabase.deleteItemFromDatabase(info.id)
-            shortcuts[position] = null
+            _shortcuts[position] = null
             dropId(position)
         }
     }

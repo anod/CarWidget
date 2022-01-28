@@ -1,18 +1,17 @@
 package com.anod.car.home
 
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
 import com.anod.car.home.app.App
 import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.appwidget.WidgetViewBuilder
-import com.anod.car.home.incar.BroadcastService
-import info.anodsplace.carwidget.content.Version
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
+import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
-import org.koin.core.component.inject
 
 /**
  * WorkManager can't be used since it causes updates loop
@@ -34,16 +33,16 @@ class UpdateWidgetJob : JobIntentService(), KoinComponent {
 
     override fun onHandleWork(intent: Intent) {
         val appWidgetIds = intent.extras!!.getIntArray(inputWidgetIds) ?: intArrayOf()
-        performUpdate(applicationContext, appWidgetIds)
+        val appWidgetManager = App.provide(applicationContext).appWidgetManager
+        val shortcutResources = App.provide(applicationContext).shortcutResources
+        performUpdate(applicationContext, appWidgetManager, shortcutResources, appWidgetIds)
     }
 
-    private fun performUpdate(context: Context, appWidgetIds: IntArray) {
-        val appWidgetManager = App.provide(context).appWidgetManager
+    private fun performUpdate(context: Context, appWidgetManager: AppWidgetManager, shortcutResources: ShortcutResources, appWidgetIds: IntArray) = runBlocking {
         // Perform this loop procedure for each App Widget that belongs to this
         // provider
-        val shortcutResources = App.provide(context).shortcutResources
         for (appWidgetId in appWidgetIds) {
-            val views = WidgetViewBuilder(context, get(), appWidgetId, ShortcutPendingIntent(context, shortcutResources)).apply {
+            val views = WidgetViewBuilder(context, get(), get(), appWidgetId, ShortcutPendingIntent(context, shortcutResources)).apply {
                 init()
             }.create()
             AppLog.i("Performing update for widget #$appWidgetId")

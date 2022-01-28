@@ -12,6 +12,7 @@ import info.anodsplace.carwidget.content.IconTheme
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.appwidget.WidgetView
 import info.anodsplace.carwidget.content.BitmapLruCache
+import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
@@ -22,6 +23,7 @@ import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 class WidgetViewBuilder(
         private val context: Context,
         private val database: ShortcutsDatabase,
+        private val iconLoader: ShortcutIconLoader,
         override val appWidgetId: Int,
         private val bitmapMemoryCache: BitmapLruCache?,
         private val pendingIntentFactory: PendingIntentFactory,
@@ -29,12 +31,12 @@ class WidgetViewBuilder(
         override var overrideSkin: String? = null
 ) : WidgetView {
 
-    constructor(context: Context, database: ShortcutsDatabase, appWidgetId: Int, pendingIntentFactory: PendingIntentFactory)
-            : this(context, database, appWidgetId, null, pendingIntentFactory, false)
+    constructor(context: Context, database: ShortcutsDatabase, iconLoader: ShortcutIconLoader, appWidgetId: Int, pendingIntentFactory: PendingIntentFactory)
+            : this(context, database, iconLoader, appWidgetId, null, pendingIntentFactory, false)
 
     private var instance: WidgetView? = null
 
-    override fun init() {
+    override suspend fun init() {
         val bitmapTransform = BitmapTransform(context)
         val prefs = WidgetStorage.load(context, DefaultsResourceProvider(context), appWidgetId)
         this.instance = Instance(
@@ -44,7 +46,7 @@ class WidgetViewBuilder(
                 prefs = prefs,
                 shortcutsModel = WidgetShortcutsModel(context, database, DefaultsResourceProvider(context), appWidgetId),
                 bitmapTransform = bitmapTransform,
-                shortcutViewBuilder = ShortcutViewBuilder(context, appWidgetId, pendingIntentFactory).also {
+                shortcutViewBuilder = ShortcutViewBuilder(context, appWidgetId, pendingIntentFactory, iconLoader).also {
                     it.bitmapMemoryCache = bitmapMemoryCache
                 },
                 widgetButtonViewBuilder = WidgetButtonViewBuilder(context, prefs, pendingIntentFactory, appWidgetId).also {
@@ -59,7 +61,7 @@ class WidgetViewBuilder(
         instance?.refreshIconTransform()
     }
 
-    override fun create(): RemoteViews {
+    override suspend fun create(): RemoteViews {
         return instance!!.create()
     }
 
@@ -77,7 +79,7 @@ class WidgetViewBuilder(
             private var bitmapTransform: BitmapTransform,
             private var widgetButtonViewBuilder: WidgetButtonViewBuilder,
     ): WidgetView {
-        override fun init() {
+        override suspend fun init() {
             if (prefs.isFirstTime) {
                 shortcutsModel.createDefaultShortcuts()
                 prefs.isFirstTime = false
@@ -92,7 +94,7 @@ class WidgetViewBuilder(
             applyIconTransform(bitmapTransform, prefs)
         }
 
-        override fun create(): RemoteViews {
+        override suspend fun create(): RemoteViews {
             val shortcuts = shortcutsModel.shortcuts
             val r = context.resources
             val skinName = overrideSkin ?: prefs.skin

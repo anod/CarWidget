@@ -16,6 +16,8 @@ import info.anodsplace.carwidget.content.preferences.InCarStorage
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.io.*
 
@@ -46,7 +48,7 @@ class BackupManager(private val context: Context, private val database: Shortcut
         return@withContext code
     }
 
-    private fun doRestoreWidgetUri(uri: Uri, appWidgetId: Int): Int {
+    private suspend fun doRestoreWidgetUri(uri: Uri, appWidgetId: Int): Int {
         val inputStream: InputStream?
         try {
             inputStream = context.contentResolver.openInputStream(uri)
@@ -58,7 +60,7 @@ class BackupManager(private val context: Context, private val database: Shortcut
         return doRestoreWidget(inputStream, appWidgetId)
     }
 
-    private fun doRestoreWidget(inputStream: InputStream?, appWidgetId: Int): Int {
+    private suspend fun doRestoreWidget(inputStream: InputStream?, appWidgetId: Int): Int {
         val widget = WidgetStorage.load(context, resourceDefaults, appWidgetId)
 
         val shortcutsJsonReader = ShortcutsJsonReader(context)
@@ -66,7 +68,7 @@ class BackupManager(private val context: Context, private val database: Shortcut
         var found = 0
 
         try {
-            synchronized(sLock) {
+            mutex.withLock {
                 val reader = JsonReader(InputStreamReader(BufferedInputStream(inputStream!!)))
                 reader.beginObject()
                 while (reader.hasNext()) {
@@ -99,14 +101,15 @@ class BackupManager(private val context: Context, private val database: Shortcut
         if (shortcuts.size() % 2 == 0) {
             widget.shortcutsNumber = shortcuts.size()
         }
-        val model = WidgetShortcutsModel.init(context, database, resourceDefaults, appWidgetId)
+        val model = WidgetShortcutsModel(context, database, resourceDefaults, appWidgetId)
+        model.init()
 
         restoreShortcuts(model, shortcuts)
 
         return Backup.RESULT_DONE
     }
 
-    private fun doBackupWidgetUri(uri: Uri, appWidgetId: Int): Int {
+    private suspend fun doBackupWidgetUri(uri: Uri, appWidgetId: Int): Int {
         val outputStream: OutputStream?
         return try {
             outputStream = context.contentResolver.openOutputStream(uri) ?: return Backup.ERROR_UNEXPECTED
@@ -117,11 +120,12 @@ class BackupManager(private val context: Context, private val database: Shortcut
         }
     }
 
-    private fun doBackupWidget(outputStream: OutputStream, appWidgetId: Int): Int {
-        val model = WidgetShortcutsModel.init(context, database, resourceDefaults, appWidgetId)
+    private suspend fun doBackupWidget(outputStream: OutputStream, appWidgetId: Int): Int {
+        val model = WidgetShortcutsModel(context, database, resourceDefaults, appWidgetId)
+        model.init()
         val widget = WidgetStorage.load(context, resourceDefaults, appWidgetId)
         try {
-            synchronized(sLock) {
+            mutex.withLock {
                 val writer = JsonWriter(OutputStreamWriter(outputStream))
 
                 writer.beginObject()
@@ -131,7 +135,7 @@ class BackupManager(private val context: Context, private val database: Shortcut
 
                 val arrayWriter = writer.name("shortcuts").beginArray()
                 val shortcutsJsonWriter = ShortcutsJsonWriter()
-                shortcutsJsonWriter.writeList(arrayWriter, model.shortcuts, model)
+                shortcutsJsonWriter.writeList(arrayWriter, model.shortcuts, database, context)
                 arrayWriter.endArray()
 
                 writer.endObject()
@@ -144,7 +148,7 @@ class BackupManager(private val context: Context, private val database: Shortcut
         return Backup.RESULT_DONE
     }
 
-    private fun restoreShortcuts(model: AbstractShortcuts, shortcuts: SparseArray<ShortcutsJsonReader.ShortcutWithIconAndPosition>) {
+    private suspend fun restoreShortcuts(model: AbstractShortcuts, shortcuts: SparseArray<ShortcutsJsonReader.ShortcutWithIconAndPosition>) {
         for (pos in 0 until model.count) {
             model.drop(pos)
             val shortcut = shortcuts.get(pos)
@@ -155,7 +159,7 @@ class BackupManager(private val context: Context, private val database: Shortcut
         }
     }
 
-    private fun doRestoreInCarUri(uri: Uri): Int {
+    private suspend fun doRestoreInCarUri(uri: Uri): Int {
         val inputStream: InputStream?
         try {
             inputStream = context.contentResolver.openInputStream(uri)
@@ -167,7 +171,7 @@ class BackupManager(private val context: Context, private val database: Shortcut
         return doRestoreInCar(inputStream)
     }
 
-    private fun doRestoreInCar(inputStream: InputStream?): Int {
+    private suspend fun doRestoreInCar(inputStream: InputStream?): Int {
         val sharedPrefs = InCarStorage.getSharedPreferences(context)
         val incar = InCarSettings(sharedPrefs)
 
@@ -175,7 +179,7 @@ class BackupManager(private val context: Context, private val database: Shortcut
         var shortcuts = SparseArray<ShortcutsJsonReader.ShortcutWithIconAndPosition>()
         var found = 0
         try {
-            synchronized(sLock) {
+            mutex.withLock {
                 val reader = JsonReader(InputStreamReader(BufferedInputStream(inputStream!!)))
                 reader.beginObject()
                 while (reader.hasNext()) {
@@ -211,7 +215,7 @@ class BackupManager(private val context: Context, private val database: Shortcut
         return Backup.RESULT_DONE
     }
 
-    private fun doBackupInCarUri(uri: Uri): Int {
+    private suspend fun doBackupInCarUri(uri: Uri): Int {
         val outputStream: OutputStream?
         return try {
             outputStream = context.contentResolver.openOutputStream(uri) ?: return Backup.ERROR_UNEXPECTED
@@ -222,13 +226,13 @@ class BackupManager(private val context: Context, private val database: Shortcut
         }
     }
 
-    private fun doBackupInCar(outputStream: OutputStream): Int {
+    private suspend fun doBackupInCar(outputStream: OutputStream): Int {
         val model = NotificationShortcutsModel.init(context, database)
 
         val prefs = InCarStorage.load(context)
 
         try {
-            synchronized(sLock) {
+            mutex.withLock {
                 val writer = JsonWriter(OutputStreamWriter(outputStream))
                 writer.beginObject()
 
@@ -237,7 +241,7 @@ class BackupManager(private val context: Context, private val database: Shortcut
 
                 val arrayWriter = writer.name("shortcuts").beginArray()
                 val shortcutsJsonWriter = ShortcutsJsonWriter()
-                shortcutsJsonWriter.writeList(arrayWriter, model.shortcuts, model)
+                shortcutsJsonWriter.writeList(arrayWriter, model.shortcuts, database, context)
                 arrayWriter.endArray()
 
                 writer.endObject()
@@ -252,6 +256,6 @@ class BackupManager(private val context: Context, private val database: Shortcut
     }
 
     companion object {
-        internal val sLock = arrayOfNulls<Any>(0)
+        internal val mutex = Mutex()
     }
 }

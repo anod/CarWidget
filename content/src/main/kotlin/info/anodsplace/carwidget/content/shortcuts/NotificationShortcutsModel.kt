@@ -6,16 +6,12 @@ import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.preferences.InCarStorage
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 import java.util.ArrayList
 
 class NotificationShortcutsModel private constructor(context: Context, database: ShortcutsDatabase) : AbstractShortcuts(context, database) {
-
-    override val count: Int
-        get() = InCarStorage.NOTIFICATION_COMPONENT_NUMBER
-
-    override val iconLoader: ShortcutIconLoader
-        get() = ShortcutIconLoader(shortcutsDatabase, Path(), context)
 
     val filledCount: Int
         get() {
@@ -27,21 +23,16 @@ class NotificationShortcutsModel private constructor(context: Context, database:
             return count
         }
 
-    override fun createDefaultShortcuts() {
+    override suspend fun createDefaultShortcuts() {
         // Nothing
     }
 
-    override fun loadCount() {
-        //nothing
+    override fun loadCount(): Int {
+        return InCarStorage.NOTIFICATION_COMPONENT_NUMBER
     }
 
-    override fun updateCount(count: Int) {
-        // :( Exception
-    }
-
-    override fun saveId(position: Int, shortcutId: Long) {
+    override suspend fun saveId(position: Int, shortcutId: Long) {
         InCarStorage.saveNotifShortcut(shortcutsDatabase, context, shortcutId, position)
-
     }
 
     override fun dropId(position: Int) {
@@ -52,9 +43,17 @@ class NotificationShortcutsModel private constructor(context: Context, database:
         return InCarStorage.getNotifComponents(context)
     }
 
+    override fun countUpdated(count: Int) {
+
+    }
+
     companion object {
 
-        fun init(context: Context, database: ShortcutsDatabase): NotificationShortcutsModel {
+        fun request(context: Context, database: ShortcutsDatabase): Flow<NotificationShortcutsModel> = flow {
+            emit(init(context, database))
+        }
+
+        suspend fun init(context: Context, database: ShortcutsDatabase): NotificationShortcutsModel {
             val model = NotificationShortcutsModel(context, database)
             model.init()
             return model

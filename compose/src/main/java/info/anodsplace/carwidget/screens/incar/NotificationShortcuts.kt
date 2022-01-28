@@ -11,11 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +28,7 @@ import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
 import info.anodsplace.compose.PicassoIcon
+import kotlinx.coroutines.launch
 
 @Composable
 fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifier) {
@@ -39,9 +36,9 @@ fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifi
     var shortcutIndex: Int by remember { mutableStateOf(-1) }
     Row(
         modifier = modifier
-            .clip(shape = RoundedCornerShape(16.dp))
-            .background(color = MaterialTheme.colors.surface)
-            .padding(16.dp)
+                .clip(shape = RoundedCornerShape(16.dp))
+                .background(color = MaterialTheme.colors.surface)
+                .padding(16.dp)
         ,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -59,26 +56,34 @@ fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifi
                 style = MaterialTheme.typography.body2
             )
         }
-        for (i in 0 until viewModel.notificationShortcuts.count) {
-            val shortcut = viewModel.notificationShortcuts.get(i)
-            val iconModifier = Modifier
-                .size(SystemIconSize)
-                .padding(4.dp)
-            if (shortcut == null) {
-                Icon(
-                    modifier = iconModifier.weight(1f).clickable(onClick = { shortcutIndex = i }),
-                    imageVector = Icons.Filled.Add,
-                    tint = MaterialTheme.colors.onSurface,
-                    contentDescription = null
-                )
-            } else {
-                PicassoIcon(
-                    modifier = iconModifier.weight(1f).clickable(onClick = { shortcutIndex = i }),
-                    uri = shortcut.iconUri(context, ""),
-                )
+        val shortcutsModel by viewModel.notificationShortcuts.collectAsState(initial = null)
+        if (shortcutsModel != null) {
+            for (i in 0 until shortcutsModel!!.count) {
+                val shortcut = shortcutsModel!!.get(i)
+                val iconModifier = Modifier
+                        .size(SystemIconSize)
+                        .padding(4.dp)
+                if (shortcut == null) {
+                    Icon(
+                            modifier = iconModifier
+                                    .weight(1f)
+                                    .clickable(onClick = { shortcutIndex = i }),
+                            imageVector = Icons.Filled.Add,
+                            tint = MaterialTheme.colors.onSurface,
+                            contentDescription = null
+                    )
+                } else {
+                    PicassoIcon(
+                            modifier = iconModifier
+                                    .weight(1f)
+                                    .clickable(onClick = { shortcutIndex = i }),
+                            uri = shortcut.iconUri(context, ""),
+                    )
+                }
             }
         }
 
+        val scope = rememberCoroutineScope()
         if (shortcutIndex >= 0) {
             ChooserDialog(
                 modifier = Modifier.fillMaxHeight(fraction = 0.8f),
@@ -88,16 +93,18 @@ fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifi
                 loader = viewModel.appsLoader,
                 onDismissRequest = { shortcutIndex = -1 },
                 onClick = { entry ->
-                    if (entry.componentName == null) {
-                        viewModel.notificationShortcuts.drop(shortcutIndex)
-                    } else {
-                        viewModel.notificationShortcuts.saveIntent(
-                                shortcutIndex,
-                                entry.getIntent(baseIntent = null),
-                                isApplicationShortcut = true
-                        )
+                    scope.launch {
+                        if (entry.componentName == null) {
+                            shortcutsModel?.drop(shortcutIndex)
+                        } else {
+                            shortcutsModel?.saveIntent(
+                                    shortcutIndex,
+                                    entry.getIntent(baseIntent = null),
+                                    isApplicationShortcut = true
+                            )
+                        }
+                        shortcutIndex = -1
                     }
-                    shortcutIndex = -1
                 })
         }
     }

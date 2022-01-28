@@ -6,8 +6,8 @@ import info.anodsplace.carwidget.content.IconTheme
 interface WidgetView {
     var overrideSkin: String?
     val appWidgetId: Int
-    fun init()
+    suspend fun init()
     fun refreshIconTransform()
-    fun create(): RemoteViews
+    suspend fun create(): RemoteViews
     fun loadThemeIcons(themePackage: String): IconTheme?
 }

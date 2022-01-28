@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.applog.AppLog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 import java.io.File
 import java.util.ArrayList
@@ -47,13 +49,13 @@ object WidgetStorage {
         return ids
     }
 
-    fun saveShortcut(db: ShortcutsDatabase, context: Context, shortcutId: Long, cellId: Int, appWidgetId: Int) {
+    suspend fun saveShortcut(db: ShortcutsDatabase, context: Context, shortcutId: Long, cellId: Int, appWidgetId: Int) {
         val key = getLaunchComponentKey(cellId)
         val prefs = getSharedPreferences(context, appWidgetId)
         saveShortcutId(db, prefs, shortcutId, key)
     }
 
-    fun saveShortcutId(db: ShortcutsDatabase, preferences: SharedPreferences, shortcutId: Long, key: String) {
+    suspend fun saveShortcutId(db: ShortcutsDatabase, preferences: SharedPreferences, shortcutId: Long, key: String) {
         val curShortcutId = preferences.getLong(key, WidgetInterface.idUnknown)
         if (curShortcutId != WidgetInterface.idUnknown) {
             db.deleteItemFromDatabase(curShortcutId)
@@ -63,7 +65,7 @@ object WidgetStorage {
         editor.apply()
     }
 
-    fun dropWidgetSettings(db: ShortcutsDatabase, context: Context, appWidgetIds: IntArray) {
+    suspend fun dropWidgetSettings(db: ShortcutsDatabase, context: Context, appWidgetIds: IntArray) = withContext(Dispatchers.IO) {
         for (appWidgetId in appWidgetIds) {
             val prefs = getSharedPreferences(context, appWidgetId)
 

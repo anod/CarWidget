@@ -4,7 +4,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 
-import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.extentions.isAvailable
@@ -15,29 +14,22 @@ import java.util.ArrayList
 
 class WidgetShortcutsModel(context: Context, database: ShortcutsDatabase, private val defaultsProvider: WidgetSettings.DefaultsProvider, private val appWidgetId: Int) : AbstractShortcuts(context, database) {
 
-    override var count: Int = 0
-
-    override val iconLoader: ShortcutIconLoader
-        get() = ShortcutIconLoader(shortcutsDatabase, defaultsProvider, appWidgetId, context)
-
     private val widgetSettings: WidgetSettings
         get() = WidgetStorage.load(context, defaultsProvider, appWidgetId)
 
-    public override fun loadCount() {
-        count = widgetSettings.shortcutsNumber
+    public override fun loadCount(): Int {
+        return widgetSettings.shortcutsNumber
     }
 
-    override fun updateCount(count: Int) {
-        this.count = count
+    override fun countUpdated(count: Int) {
         widgetSettings.shortcutsNumber = count
     }
 
     override fun loadIds(): ArrayList<Long> {
-        loadCount()
         return WidgetStorage.getLauncherComponents(context, appWidgetId, count)
     }
 
-    override fun saveId(position: Int, shortcutId: Long) {
+    override suspend fun saveId(position: Int, shortcutId: Long) {
         WidgetStorage.saveShortcut(shortcutsDatabase, context, shortcutId, position, appWidgetId)
     }
 
@@ -45,12 +37,12 @@ class WidgetShortcutsModel(context: Context, database: ShortcutsDatabase, privat
         WidgetStorage.dropShortcutPreference(position, appWidgetId, context)
     }
 
-    override fun createDefaultShortcuts() {
+    override suspend fun createDefaultShortcuts() {
         init()
-        initShortcuts(appWidgetId)
+        preloadDefaultShortcuts(appWidgetId)
     }
 
-    private fun initShortcuts(appWidgetId: Int) {
+    private suspend fun preloadDefaultShortcuts(appWidgetId: Int) {
         val list = arrayOf(
                 ComponentName("com.google.android.dialer", "com.google.android.dialer.extensions.GoogleDialtactsActivity"),
                 ComponentName("com.android.contacts", "com.android.contacts.DialtactsActivity"),
@@ -85,13 +77,4 @@ class WidgetShortcutsModel(context: Context, database: ShortcutsDatabase, privat
         }
 
     }
-
-    companion object {
-        fun init(context: Context, db: ShortcutsDatabase, defaultsProvider: WidgetSettings.DefaultsProvider, appWidgetId: Int): WidgetShortcutsModel {
-            return WidgetShortcutsModel(context, db, defaultsProvider, appWidgetId).apply {
-                init()
-            }
-        }
-    }
-
 }

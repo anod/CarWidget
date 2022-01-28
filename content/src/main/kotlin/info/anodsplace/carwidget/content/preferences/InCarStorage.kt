@@ -39,11 +39,11 @@ object InCarStorage {
         return getNotifComponents(getSharedPreferences(context))
     }
 
-    fun saveNotifShortcut(db: ShortcutsDatabase, context: Context, shortcutId: Long, position: Int) {
+    suspend fun saveNotifShortcut(db: ShortcutsDatabase, context: Context, shortcutId: Long, position: Int) {
         saveNotifShortcut(db, getSharedPreferences(context), shortcutId, position)
     }
 
-    private fun saveNotifShortcut(db: ShortcutsDatabase, prefs: SharedPreferences, shortcutId: Long, position: Int) {
+    private suspend fun saveNotifShortcut(db: ShortcutsDatabase, prefs: SharedPreferences, shortcutId: Long, position: Int) {
         val key = getNotifComponentName(position)
         WidgetStorage.saveShortcutId(db, prefs, shortcutId, key)
     }

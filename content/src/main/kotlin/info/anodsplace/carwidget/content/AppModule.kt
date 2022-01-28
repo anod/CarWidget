@@ -3,8 +3,8 @@ package info.anodsplace.carwidget.content
 import android.appwidget.AppWidgetManager
 import com.squareup.picasso.Picasso
 import com.squareup.sqldelight.android.AndroidSqliteDriver
-import com.squareup.sqldelight.db.SqlDriver
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.graphics.PackageIconRequestHandler
 import info.anodsplace.carwidget.content.graphics.ShortcutIconRequestHandler
@@ -15,6 +15,7 @@ import org.koin.core.logger.Level
 import org.koin.core.logger.Logger
 import org.koin.core.logger.MESSAGE
 import org.koin.core.module.Module
+import org.koin.core.scope.get
 import org.koin.dsl.module
 
 class AndroidLogger : Logger(Level.DEBUG) {
@@ -33,10 +34,11 @@ fun createAppModule(): Module = module {
     factory<AppWidgetManager> { AppWidgetManager.getInstance(get()) }
     single<Logger> { AndroidLogger() }
     single { AppSettings(get()) }
+    single { AppCoroutineScope() }
     factory { Version(get()) }
     factory {
         Picasso.Builder(get())
-            .addRequestHandler(ShortcutIconRequestHandler(get(), get()))
+            .addRequestHandler(ShortcutIconRequestHandler(get(), get(), get()))
             .addRequestHandler(PackageIconRequestHandler(get()))
             .build()
     }
@@ -50,5 +52,6 @@ fun createAppModule(): Module = module {
         Database(driver)
     }
     single { ShortcutsDatabase(get(), get()) }
+    single { ShortcutIconLoader(get(), get()) }
     factory<InCarInterface> { InCarStorage.load(get()) }
 }

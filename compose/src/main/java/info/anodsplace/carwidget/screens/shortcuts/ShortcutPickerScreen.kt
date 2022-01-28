@@ -20,6 +20,8 @@ import info.anodsplace.carwidget.chooser.*
 import info.anodsplace.carwidget.content.shortcuts.ShortcutInfoUtils
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.utils.forPickShortcutLocal
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 sealed class ShortcutPickerState {
     object Initial: ShortcutPickerState()
@@ -30,12 +32,15 @@ sealed class ShortcutPickerState {
 @Composable
 fun ShortcutPickerScreen(viewModel: ShortcutPickerViewModel, onDismissRequest: () -> Unit) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     var screenState by remember { mutableStateOf<ShortcutPickerState>(ShortcutPickerState.Initial) }
     val activityLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult(), onResult = { result ->
-        if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-            save(viewModel, result.data!!, isApp = false, context)
+        scope.launch {
+            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                save(viewModel, result.data!!, isApp = false, context)
+            }
+            onDismissRequest()
         }
-        onDismissRequest()
     })
 
     when (screenState) {
@@ -46,15 +51,19 @@ fun ShortcutPickerScreen(viewModel: ShortcutPickerViewModel, onDismissRequest: (
         )
         ShortcutPickerState.Apps -> AppChooser(
             onChoose = {
-                save(viewModel, it.getIntent(baseIntent = null), isApp = true, context = context)
-                onDismissRequest()
+                scope.launch {
+                    save(viewModel, it.getIntent(baseIntent = null), isApp = true, context = context)
+                    onDismissRequest()
+                }
             },
             onDismissRequest = { screenState = ShortcutPickerState.Initial })
         ShortcutPickerState.CarWidget -> CarWidgetChooser(
             viewModel.shortcutResources,
             onChoose = {
-                save(viewModel, it.getIntent(baseIntent = null), isApp = false, context)
-                onDismissRequest()
+                scope.launch {
+                    save(viewModel, it.getIntent(baseIntent = null), isApp = false, context)
+                    onDismissRequest()
+                }
             },
             onDismissRequest = { screenState = ShortcutPickerState.Initial }
         )
@@ -135,8 +144,8 @@ private fun createCarWidgetShortcuts(titles: Array<String>, context: Context, sh
     return StaticChooserLoader(list)
 }
 
-private fun save(viewModel: ShortcutPickerViewModel, intent: Intent, isApp: Boolean, context: Context) {
-    val resultCode = viewModel.save(intent, false)
+private suspend fun save(viewModel: ShortcutPickerViewModel, intent: Intent, isApp: Boolean, context: Context) {
+    val resultCode = viewModel.save(intent, isApp)
     if (resultCode == ShortcutInfoUtils.successAppShortcut) {
         Toast.makeText(context, R.string.app_shortcuts_limited, Toast.LENGTH_SHORT).show()
     } else if (resultCode == ShortcutInfoUtils.failedAppShortcut) {

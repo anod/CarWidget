@@ -112,7 +112,7 @@ class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsPro
         get() = prefs.getBoolean(PALETTE_BG, false)
         set(paletteBackground) = applyChange(PALETTE_BG, paletteBackground)
 
-    val adaptiveIconPath: Path
+   override val adaptiveIconPath: Path
         get() {
             val pathData = adaptiveIconStyle
             return when {

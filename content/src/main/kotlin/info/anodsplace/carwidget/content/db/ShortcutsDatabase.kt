@@ -12,14 +12,14 @@ import android.net.Uri
 import androidx.core.content.res.ResourcesCompat
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToOne
-import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Database
 import info.anodsplace.carwidget.content.extentions.isLowMemoryDevice
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.withContext
 import java.net.URISyntaxException
 
 class ShortcutsDatabase(private val context: Context, private val db: Database) {
@@ -43,13 +43,13 @@ class ShortcutsDatabase(private val context: Context, private val db: Database) 
         }
     }
 
-    fun loadShortcutIcon(shortcutUri: Uri): ShortcutIcon {
+    suspend fun loadShortcutIcon(shortcutUri: Uri): ShortcutIcon = withContext(Dispatchers.IO) {
         val id = shortcutUri.lastPathSegment!!.toLong()
         val c = db.shortcutsQueries.selectIcon(id).executeAsOneOrNull()
 
         if (c == null) {
             val icon = UtilitiesBitmap.makeDefaultIcon(packageManager)
-            return ShortcutIcon.forFallbackIcon(shortcutUri.lastPathSegment!!.toLong(), icon)
+            return@withContext ShortcutIcon.forFallbackIcon(shortcutUri.lastPathSegment!!.toLong(), icon)
         }
 
         var shortcutIcon: ShortcutIcon? = null
@@ -107,10 +107,10 @@ class ShortcutsDatabase(private val context: Context, private val db: Database) 
 
         if (shortcutIcon == null) {
             val icon = UtilitiesBitmap.makeDefaultIcon(packageManager)
-            return ShortcutIcon.forFallbackIcon(shortcutUri.lastPathSegment!!.toLong(), icon)
+            return@withContext ShortcutIcon.forFallbackIcon(shortcutUri.lastPathSegment!!.toLong(), icon)
         }
 
-        return shortcutIcon
+        return@withContext shortcutIcon
     }
 
     fun observeShortcut(shortcutId: Long): Flow<Shortcut> {
@@ -119,9 +119,9 @@ class ShortcutsDatabase(private val context: Context, private val db: Database) 
                 .mapNotNull { mapShortcut(shortcutId, it) }
     }
 
-    fun loadShortcut(shortcutId: Long): Shortcut? {
-        val c = db.shortcutsQueries.select(shortcutId).executeAsOneOrNull() ?: return null
-        return mapShortcut(shortcutId, c)
+    suspend fun loadShortcut(shortcutId: Long): Shortcut? = withContext(Dispatchers.IO) {
+        val c = db.shortcutsQueries.select(shortcutId).executeAsOneOrNull() ?: return@withContext null
+        return@withContext mapShortcut(shortcutId, c)
     }
 
     private fun mapShortcut(shortcutId: Long, c: Favorites): Shortcut? {
@@ -142,29 +142,31 @@ class ShortcutsDatabase(private val context: Context, private val db: Database) 
      * screen, cellX and cellY fields of the item. Also assigns an ID to the
      * item.
      */
-    fun addItemToDatabase(item: Shortcut, icon: ShortcutIcon): Long {
+    suspend fun addItemToDatabase(item: Shortcut, icon: ShortcutIcon): Long = withContext(Dispatchers.IO) {
         val values = createShortcutContentValues(item, icon)
-        db.shortcutsQueries.insert(
-                itemType = values.getAsLong(LauncherSettings.Favorites.ITEM_TYPE),
-                title = values.getAsString(LauncherSettings.Favorites.TITLE),
-                intent = values.getAsString(LauncherSettings.Favorites.INTENT),
-                iconType = values.getAsLong(LauncherSettings.Favorites.ICON_TYPE),
-                icon = values.getAsByteArray(LauncherSettings.Favorites.ICON),
-                iconPackage = values.getAsString(LauncherSettings.Favorites.ICON_PACKAGE),
-                iconResource = values.getAsString(LauncherSettings.Favorites.ICON_RESOURCE),
-                isCustomIcon = values.getAsLong(LauncherSettings.Favorites.IS_CUSTOM_ICON)
-        )
-        return db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: Shortcut.idUnknown
+        return@withContext db.transactionWithResult {
+            db.shortcutsQueries.insert(
+                    itemType = values.getAsLong(LauncherSettings.Favorites.ITEM_TYPE),
+                    title = values.getAsString(LauncherSettings.Favorites.TITLE),
+                    intent = values.getAsString(LauncherSettings.Favorites.INTENT),
+                    iconType = values.getAsLong(LauncherSettings.Favorites.ICON_TYPE),
+                    icon = values.getAsByteArray(LauncherSettings.Favorites.ICON),
+                    iconPackage = values.getAsString(LauncherSettings.Favorites.ICON_PACKAGE),
+                    iconResource = values.getAsString(LauncherSettings.Favorites.ICON_RESOURCE),
+                    isCustomIcon = values.getAsLong(LauncherSettings.Favorites.IS_CUSTOM_ICON)
+            )
+            return@transactionWithResult db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: Shortcut.idUnknown
+        }
     }
 
     /**
      * Removes the specified item from the database
      */
-    fun deleteItemFromDatabase(shortcutId: Long) {
+    suspend fun deleteItemFromDatabase(shortcutId: Long) = withContext(Dispatchers.IO) {
         db.shortcutsQueries.delete(shortcutId)
     }
 
-    fun updateIntent(shortcutId: Long, intent: Intent) {
+    suspend fun updateIntent(shortcutId: Long, intent: Intent) = withContext(Dispatchers.IO) {
         db.shortcutsQueries.updateIntent(
                 intent = intent.toUri(0),
                 _id = shortcutId
@@ -212,6 +214,11 @@ class ShortcutsDatabase(private val context: Context, private val db: Database) 
             }
             values.put(LauncherSettings.Favorites.IS_CUSTOM_ICON, if (icon.isCustom) 1 else 0)
             return values
+        }
+
+        suspend fun loadIconFromDatabase(shortcutId: Long, context: Context, db: ShortcutsDatabase): ShortcutIcon {
+            val shortcutUri = LauncherSettings.Favorites.getContentUri(context.packageName, shortcutId)
+            return db.loadShortcutIcon(shortcutUri)
         }
 
         private fun writeBitmap(values: ContentValues, bitmap: Bitmap?) {

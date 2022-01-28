@@ -11,16 +11,12 @@ import java.lang.Exception
 
 class ShortcutIconLoader(
     private val db: ShortcutsDatabase,
-    private val adaptiveIconPath: Path,
-    private val context: Context) {
-
-    constructor(db: ShortcutsDatabase, defaultsProvider: WidgetSettings.DefaultsProvider, appWidgetId: Int, context: Context)
-        : this(db, WidgetStorage.load(context, defaultsProvider, appWidgetId).adaptiveIconPath, context)
-
-    fun load(shortcut: Shortcut): ShortcutIcon {
+    private val context: Context
+) {
+    suspend fun load(shortcut: Shortcut, adaptiveIconPath: Path): ShortcutIcon {
         if (shortcut.isApp && !shortcut.isCustomIcon) {
             if (adaptiveIconPath.isEmpty) {
-                return loadFromDatabase(shortcut.id)
+                return ShortcutsDatabase.loadIconFromDatabase(shortcut.id, context, db)
             }
 
             try {
@@ -34,11 +30,6 @@ class ShortcutIconLoader(
             }
         }
 
-        return loadFromDatabase(shortcut.id)
-    }
-
-    fun loadFromDatabase(shortcutId: Long): ShortcutIcon {
-        val shortcutUri = LauncherSettings.Favorites.getContentUri(context.packageName, shortcutId)
-        return db.loadShortcutIcon(shortcutUri)
+        return ShortcutsDatabase.loadIconFromDatabase(shortcut.id, context, db)
     }
 }

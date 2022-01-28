@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.content.preferences
 
+import android.graphics.Path
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
@@ -32,6 +33,7 @@ interface WidgetInterface {
     var widgetButton1: Int
     var widgetButton2: Int
     var shortcutsNumber: Int
+    val adaptiveIconPath: Path
 
     fun queueChange(key: String, value: Any?)
     fun applyChange(key: String, value: Any?)
@@ -55,7 +57,8 @@ interface WidgetInterface {
             override var widgetButton1: Int = 0,
             override var widgetButton2: Int = 0,
             override var shortcutsNumber: Int = 8,
-            override var paletteBackground: Boolean = false
+            override var paletteBackground: Boolean = false,
+            override var adaptiveIconPath: Path = Path()
     ) : WidgetInterface {
         override val changes = emptyFlow<Pair<String, Any?>>()
         override fun queueChange(key: String, value: Any?) {}

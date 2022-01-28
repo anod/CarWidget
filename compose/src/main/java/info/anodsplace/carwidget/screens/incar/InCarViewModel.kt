@@ -21,5 +21,5 @@ class InCarViewModel(application: Application) : AndroidViewModel(application), 
 
     val inCar: InCarInterface by inject()
     val items = createCarScreenItems(inCar)
-    val notificationShortcuts = NotificationShortcutsModel.init(context, get())
+    val notificationShortcuts = NotificationShortcutsModel.request(context, get())
 }

@@ -4,8 +4,6 @@ import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
-import androidx.core.app.TaskStackBuilder
-import androidx.core.net.toUri
 import com.anod.car.home.OverlayActivity
 import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
 import info.anodsplace.carwidget.content.Deeplink

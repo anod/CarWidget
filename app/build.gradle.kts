@@ -23,8 +23,8 @@ dependencies {
     implementation("io.insert-koin:koin-core:3.1.4")
     implementation("com.squareup.picasso:picasso:2.8")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
 
     // Activity recognition
     implementation("com.google.android.gms:play-services-location:19.0.0")
@@ -117,7 +117,7 @@ android {
     }
 
     lint {
-        warning("InvalidFragmentVersionForActivityResult")
+        warning.add("InvalidFragmentVersionForActivityResult")
     }
 }
 

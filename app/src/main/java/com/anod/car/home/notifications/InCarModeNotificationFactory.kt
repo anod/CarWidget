@@ -3,6 +3,7 @@ package com.anod.car.home.notifications
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
+import android.graphics.Path
 import android.net.Uri
 import android.view.View
 import android.widget.RemoteViews
@@ -13,14 +14,22 @@ import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.incar.ModeService
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.Version
+import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
 
-object InCarModeNotification {
-    const val id = 1
-    private val buttonIds = intArrayOf(R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3)
+class InCarModeNotificationFactory(
+        private val version: Version,
+        private val context: Context,
+        private val database: ShortcutsDatabase,
+        private val iconLoader: ShortcutIconLoader
+) {
+    companion object {
+        const val id = 1
+        private val buttonIds = intArrayOf(R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3)
+    }
 
-    fun create(version: Version, context: Context, database: ShortcutsDatabase): Notification {
+    suspend fun create(): Notification {
         val notificationIntent = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_OFF)
         notificationIntent.data = Deeplink.SwitchMode(false).toUri()
 
@@ -42,7 +51,7 @@ object InCarModeNotification {
 
         val model = NotificationShortcutsModel.init(context, database)
         if (model.filledCount > 0) {
-            val contentView = createShortcuts(context, model)
+            val contentView = createShortcuts(context, model, iconLoader)
             contentView.setTextViewText(android.R.id.text1, text)
             notification.setContent(contentView)
         } else {
@@ -55,17 +64,18 @@ object InCarModeNotification {
         return notification.build()
     }
 
-    private fun createShortcuts(context: Context, model: NotificationShortcutsModel): RemoteViews {
+    private suspend fun createShortcuts(context: Context, model: NotificationShortcutsModel, iconLoader: ShortcutIconLoader): RemoteViews {
         val contentView = RemoteViews(context.packageName, R.layout.notification)
 
         val spi = ShortcutPendingIntent(context, App.provide(context).shortcutResources)
+        val emptyPath = Path()
         for (position in 0 until model.count) {
             val info = model.get(position)
             val resId = buttonIds[position]
             if (info == null) {
                 contentView.setViewVisibility(resId, View.GONE)
             } else {
-                val icon = model.iconLoader.load(info)
+                val icon = iconLoader.load(info, emptyPath)
                 contentView.setImageViewBitmap(resId, icon.bitmap)
                 spi.createShortcut(info.intent, uri = { Deeplink.OpenNotificationShortcut(position).toUri() })?.let {
                     contentView.setOnClickPendingIntent(resId, it)

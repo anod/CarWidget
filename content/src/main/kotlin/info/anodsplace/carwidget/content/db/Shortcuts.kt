@@ -4,25 +4,24 @@ import android.content.Intent
 import android.util.SparseArray
 
 interface Shortcuts {
-    val iconLoader: ShortcutIconLoader
     val shortcuts: Map<Int, Shortcut?>
     val count: Int
 
-    fun createDefaultShortcuts()
+    suspend fun createDefaultShortcuts()
 
-    fun init()
+    suspend fun init()
 
-    fun reloadShortcut(position: Int, shortcutId: Long)
+    suspend fun reloadShortcut(position: Int, shortcutId: Long)
 
     fun get(position: Int): Shortcut?
 
-    fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Pair<Shortcut?, Int>
+    suspend fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Pair<Shortcut?, Int>
 
-    fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?)
+    suspend fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?)
 
-    fun drop(position: Int)
+    suspend fun drop(position: Int)
 
-    fun move(from: Int, to: Int)
+    suspend fun move(from: Int, to: Int)
 
     fun updateCount(count: Int)
 }

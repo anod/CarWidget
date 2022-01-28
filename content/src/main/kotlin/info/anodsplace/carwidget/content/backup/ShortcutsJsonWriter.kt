@@ -1,9 +1,12 @@
 package info.anodsplace.carwidget.content.backup
 
+import android.content.Context
 import android.util.JsonWriter
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.Shortcuts
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
 /**
@@ -12,12 +15,12 @@ import java.io.IOException
  */
 class ShortcutsJsonWriter {
 
-    @Throws(IOException::class)
-    fun writeList(shortcutsWriter: JsonWriter, shortcuts: Map<Int, Shortcut?>, model: Shortcuts) {
+    @Suppress("BlockingMethodInNonBlockingContext")
+    suspend fun writeList(shortcutsWriter: JsonWriter, shortcuts: Map<Int, Shortcut?>, db: ShortcutsDatabase, context: Context) {
         for ((pos, value) in shortcuts) {
             val info = value ?: continue
             shortcutsWriter.beginObject()
-            val icon = model.iconLoader.loadFromDatabase(info.id)
+            val icon = ShortcutsDatabase.loadIconFromDatabase(info.id, context, db)
             val values = ShortcutsDatabase.createShortcutContentValues(info, icon)
             shortcutsWriter.name("pos").value(pos.toLong())
 

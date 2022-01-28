@@ -9,10 +9,13 @@ import android.os.PowerManager
 import android.telephony.PhoneStateListener
 import com.anod.car.home.app.App
 import com.anod.car.home.appwidget.Provider
-import com.anod.car.home.notifications.InCarModeNotification
+import com.anod.car.home.notifications.InCarModeNotificationFactory
 import com.anod.car.home.notifications.TrialExpiredNotification
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.AppCoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
@@ -50,7 +53,9 @@ class ModeService : Service(), KoinComponent {
                 + redelivered)
 
         val version = Version(this)
-        startForeground(InCarModeNotification.id, InCarModeNotification.create(version, this, get()))
+        val notificationFactory = InCarModeNotificationFactory(version, this, get(), get())
+        val notification = runBlocking { notificationFactory.create() }
+        startForeground(InCarModeNotificationFactory.id, notification)
 
         if (intent == null) {
             AppLog.e("ModeService started without intent")

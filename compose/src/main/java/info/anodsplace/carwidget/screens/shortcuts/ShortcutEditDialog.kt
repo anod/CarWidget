@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.screens.shortcuts
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
@@ -29,12 +30,15 @@ import info.anodsplace.carwidget.screens.shortcuts.intent.UpdateField
 import info.anodsplace.compose.BackgroundSurface
 import info.anodsplace.compose.LocalPicasso
 import info.anodsplace.compose.PicassoIcon
+import kotlinx.coroutines.launch
 
 @Composable
 fun ShortcutEditScreen(viewModel: ShortcutEditViewModel, onDismissRequest: () -> Unit) {
     val expanded = remember { mutableStateOf(false) }
     BackgroundSurface(
-            modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 352.dp),
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 352.dp),
             shape = MaterialTheme.shapes.medium,
     ) {
         val shortcut by viewModel.shortcut.collectAsState(null)
@@ -51,8 +55,8 @@ fun ShortcutEditScreen(viewModel: ShortcutEditViewModel, onDismissRequest: () ->
 
 @Composable
 fun ShortcutEditContent(shortcut: Shortcut, delegate: ShortcutEditDelegate, onDismissRequest: () -> Unit, expanded: MutableState<Boolean>) {
-    Column(
-    ) {
+    val scope = rememberCoroutineScope()
+    Column {
         TopAppBar {
             Text(text = stringResource(id = R.string.shortcut_edit_title))
         }
@@ -63,7 +67,7 @@ fun ShortcutEditContent(shortcut: Shortcut, delegate: ShortcutEditDelegate, onDi
             AdvancedButton(expanded)
             IntentEditScreen(
                     intent = shortcut.intent,
-                    updateField = { delegate.updateField(it.field) },
+                    updateField = { scope.launch { delegate.updateField(it.field) } },
                     modifier = Modifier
             )
         }
@@ -90,6 +94,7 @@ fun AdvancedButton(expanded: MutableState<Boolean>) {
 
 @Composable
 fun ShortcutInfo(shortcut: Shortcut, delegate: ShortcutEditDelegate, onDismissRequest: () -> Unit) {
+    val scope = rememberCoroutineScope()
     Column (
             modifier = Modifier
                     .fillMaxWidth()
@@ -119,8 +124,10 @@ fun ShortcutInfo(shortcut: Shortcut, delegate: ShortcutEditDelegate, onDismissRe
                     .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Button(onClick = {
-            delegate.drop()
-            onDismissRequest()
+            scope.launch {
+                delegate.drop()
+                onDismissRequest()
+            }
         }, modifier = Modifier.align(Alignment.CenterVertically)) {
             Text(text = "Delete")
         }
@@ -134,10 +141,11 @@ fun ShortcutInfo(shortcut: Shortcut, delegate: ShortcutEditDelegate, onDismissRe
 }
 
 
+@SuppressLint("UnrememberedMutableState")
 @Preview("Preview Shortcut Edit")
 @Composable
 fun PreviewShortcutEditContent() {
-    CarWidgetTheme() {
+    CarWidgetTheme {
         BackgroundSurface {
             CompositionLocalProvider(LocalPicasso provides Picasso.get()) {
                 ShortcutEditContent(
