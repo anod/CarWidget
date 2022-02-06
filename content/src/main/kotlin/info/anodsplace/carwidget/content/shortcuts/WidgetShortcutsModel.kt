@@ -17,7 +17,7 @@ class WidgetShortcutsModel(context: Context, database: ShortcutsDatabase, privat
     private val widgetSettings: WidgetSettings
         get() = WidgetStorage.load(context, defaultsProvider, appWidgetId)
 
-    public override fun loadCount(): Int {
+    override fun loadCount(): Int {
         return widgetSettings.shortcutsNumber
     }
 
@@ -30,7 +30,7 @@ class WidgetShortcutsModel(context: Context, database: ShortcutsDatabase, privat
     }
 
     override suspend fun saveId(position: Int, shortcutId: Long) {
-        WidgetStorage.saveShortcut(shortcutsDatabase, context, shortcutId, position, appWidgetId)
+        WidgetStorage.saveShortcut(context, shortcutId, position, appWidgetId)
     }
 
     override fun dropId(position: Int) {

@@ -6,11 +6,13 @@ import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.Shortcuts
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.*
 
 abstract class AbstractShortcuts(internal val context: Context, protected val shortcutsDatabase: ShortcutsDatabase) : Shortcuts {
     private var isInitialized = false
-    protected var _count: Int = 0
+    private var _count: Int = 0
     private var _shortcuts: MutableMap<Int, Shortcut?> = mutableMapOf()
 
     override val shortcuts: Map<Int, Shortcut?>
@@ -91,11 +93,11 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
 
     }
 
-    override suspend fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Pair<Shortcut?, Int> {
+    override suspend fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Pair<Shortcut?, CreateShortcutResult> = withContext(Dispatchers.IO) {
         lazyInit()
         val shortcut = ShortcutInfoUtils.createShortcut(context, data, isApplicationShortcut)
         save(position, shortcut.info, shortcut.icon)
-        return Pair(shortcuts[position], shortcut.result)
+        return@withContext Pair(shortcuts[position], shortcut.result)
     }
 
     override suspend fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?) {

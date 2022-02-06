@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
@@ -14,18 +15,19 @@ import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.screens.shortcuts.intent.IntentField
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 
 interface ShortcutEditDelegate {
-    suspend fun drop()
-    suspend fun updateField(field: IntentField)
+    fun drop()
+    fun updateField(field: IntentField)
 
     class NoOp: ShortcutEditDelegate {
-        override suspend fun drop() { }
-        override suspend fun updateField(field: IntentField) { }
+        override fun drop() { }
+        override fun updateField(field: IntentField) { }
     }
 }
 
@@ -50,6 +52,7 @@ class ShortcutEditViewModel(
     private val context: Context
         get() = getApplication()
 
+    private val appScope: AppCoroutineScope by inject()
     private val shortcutsDatabase: ShortcutsDatabase = get()
     private val iconLoader: ShortcutIconLoader = get()
     private val widgetSettings: WidgetInterface by inject(parameters = { parametersOf(appWidgetId) })
@@ -60,14 +63,18 @@ class ShortcutEditViewModel(
     )
     val icon = shortcut.filterNotNull().map { sh -> iconLoader.load(sh, widgetSettings.adaptiveIconPath) }
 
-    override suspend fun drop() {
-        model.drop(position)
+    override fun drop() {
+        appScope.launch {
+            model.drop(position)
+        }
     }
 
-    override suspend fun updateField(field: IntentField) {
+    override fun updateField(field: IntentField) {
         val shortcut = shortcut.value ?: return
-        val intent = updateIntentField(field, shortcut.intent)
-        shortcutsDatabase.updateIntent(shortcut.id, intent)
+        appScope.launch {
+            val intent = updateIntentField(field, shortcut.intent)
+            shortcutsDatabase.updateIntent(shortcut.id, intent)
+        }
     }
 
     private fun updateIntentField(field: IntentField, intent: Intent): Intent {

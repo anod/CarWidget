@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.content.db
 
 import android.content.Intent
 import android.util.SparseArray
+import info.anodsplace.carwidget.content.shortcuts.CreateShortcutResult
 
 interface Shortcuts {
     val shortcuts: Map<Int, Shortcut?>
@@ -15,7 +16,7 @@ interface Shortcuts {
 
     fun get(position: Int): Shortcut?
 
-    suspend fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Pair<Shortcut?, Int>
+    suspend fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Pair<Shortcut?, CreateShortcutResult>
 
     suspend fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?)
 

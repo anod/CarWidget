@@ -17,11 +17,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.chooser.*
-import info.anodsplace.carwidget.content.shortcuts.ShortcutInfoUtils
+import info.anodsplace.carwidget.content.shortcuts.CreateShortcutResult
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.utils.forPickShortcutLocal
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 sealed class ShortcutPickerState {
     object Initial: ShortcutPickerState()
@@ -31,17 +29,21 @@ sealed class ShortcutPickerState {
 
 @Composable
 fun ShortcutPickerScreen(viewModel: ShortcutPickerViewModel, onDismissRequest: () -> Unit) {
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
+    var context = LocalContext.current
     var screenState by remember { mutableStateOf<ShortcutPickerState>(ShortcutPickerState.Initial) }
     val activityLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult(), onResult = { result ->
-        scope.launch {
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                save(viewModel, result.data!!, isApp = false, context)
+                viewModel.save(result.data!!, isApp = false)
             }
             onDismissRequest()
-        }
     })
+
+    val saveResult by viewModel.saveResult.collectAsState(initial = CreateShortcutResult.None)
+    if (saveResult != CreateShortcutResult.None) {
+        LaunchedEffect(key1 = saveResult) {
+            makeToast(saveResult, context)
+        }
+    }
 
     when (screenState) {
         ShortcutPickerState.Initial -> CreateShortcutChooser(
@@ -51,19 +53,15 @@ fun ShortcutPickerScreen(viewModel: ShortcutPickerViewModel, onDismissRequest: (
         )
         ShortcutPickerState.Apps -> AppChooser(
             onChoose = {
-                scope.launch {
-                    save(viewModel, it.getIntent(baseIntent = null), isApp = true, context = context)
-                    onDismissRequest()
-                }
+                viewModel.save(it.getIntent(baseIntent = null), isApp = true)
+                onDismissRequest()
             },
             onDismissRequest = { screenState = ShortcutPickerState.Initial })
         ShortcutPickerState.CarWidget -> CarWidgetChooser(
             viewModel.shortcutResources,
             onChoose = {
-                scope.launch {
-                    save(viewModel, it.getIntent(baseIntent = null), isApp = false, context)
-                    onDismissRequest()
-                }
+                viewModel.save(it.getIntent(baseIntent = null), isApp = false)
+                onDismissRequest()
             },
             onDismissRequest = { screenState = ShortcutPickerState.Initial }
         )
@@ -144,11 +142,10 @@ private fun createCarWidgetShortcuts(titles: Array<String>, context: Context, sh
     return StaticChooserLoader(list)
 }
 
-private suspend fun save(viewModel: ShortcutPickerViewModel, intent: Intent, isApp: Boolean, context: Context) {
-    val resultCode = viewModel.save(intent, isApp)
-    if (resultCode == ShortcutInfoUtils.successAppShortcut) {
+private fun makeToast(resultCode: CreateShortcutResult, context: Context) {
+    if (resultCode == CreateShortcutResult.SuccessAppShortcut) {
         Toast.makeText(context, R.string.app_shortcuts_limited, Toast.LENGTH_SHORT).show()
-    } else if (resultCode == ShortcutInfoUtils.failedAppShortcut) {
+    } else if (resultCode == CreateShortcutResult.FailedAppShortcut) {
         Toast.makeText(context, R.string.app_shortcuts_limited, Toast.LENGTH_LONG).show()
     }
 }
