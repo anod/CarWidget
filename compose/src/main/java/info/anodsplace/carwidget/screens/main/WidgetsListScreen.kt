@@ -67,7 +67,7 @@ fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, iconModifier: Mod
     val context = LocalContext.current
     Row {
         for (idx in indexes) {
-            val shortcut = item.shortcuts.get(idx)
+            val shortcut = item.shortcuts.getOrNull(idx)
             if (shortcut != null) {
                 PicassoIcon(shortcut.iconUri(context, item.adaptiveIconStyle), modifier = iconModifier)
             } else {

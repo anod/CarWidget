@@ -11,6 +11,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.carwidget.content.backup.BackupManager
 import info.anodsplace.carwidget.content.preferences.AppSettings
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import org.koin.core.component.inject
 
 sealed class AboutUiAction {
     object ChangeTheme: AboutUiAction()
@@ -50,6 +52,7 @@ data class AboutScreenState(
 class AboutViewModel(application: Application): AndroidViewModel(application), KoinComponent {
 
     var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
+    val appScope: AppCoroutineScope by inject()
     val uiAction = MutableSharedFlow<AboutUiAction>()
 
     private val context: Context
@@ -86,12 +89,16 @@ class AboutViewModel(application: Application): AndroidViewModel(application), K
             uiAction.collect {
                 when (it) {
                     is AboutUiAction.BackupInCar -> {
-                        val code = backupManager.backup(Backup.TYPE_INCAR, appWidgetId, it.dstUri)
-                        screenState.value = screenState.value.copy(backupStatus = code)
+                        appScope.launch {
+                            val code = backupManager.backup(Backup.TYPE_INCAR, appWidgetId, it.dstUri)
+                            screenState.value = screenState.value.copy(backupStatus = code)
+                        }
                     }
                     is AboutUiAction.BackupWidget -> {
-                        val code = backupManager.backup(Backup.TYPE_MAIN, appWidgetId, it.dstUri)
-                        screenState.value = screenState.value.copy(backupStatus = code)
+                        appScope.launch {
+                            val code = backupManager.backup(Backup.TYPE_MAIN, appWidgetId, it.dstUri)
+                            screenState.value = screenState.value.copy(backupStatus = code)
+                        }
                     }
                     AboutUiAction.ChangeTheme -> {
                         val newThemeIdx = when (screenState.value.themeIndex) {
@@ -109,8 +116,10 @@ class AboutViewModel(application: Application): AndroidViewModel(application), K
                         screenState.value = screenState.value.copy(musicApp = renderMusicApp())
                     }
                     is AboutUiAction.Restore -> {
-                        val code = backupManager.restore(appWidgetId, it.srcUri)
-                        screenState.value = screenState.value.copy(restoreStatus = code)
+                        appScope.launch {
+                            val code = backupManager.restore(appWidgetId, it.srcUri)
+                            screenState.value = screenState.value.copy(restoreStatus = code)
+                        }
                     }
                     AboutUiAction.OpenPlayStoreDetails -> {
                         context.openPlayStoreDetails(context.packageName)

@@ -16,6 +16,7 @@ import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.db.ShortcutWithIcon
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.os.SoftReferenceThreadLocal
 import java.io.ByteArrayOutputStream
@@ -46,8 +47,8 @@ class ShortcutsJsonReader(private val context: Context) {
     }
 
     @Throws(IOException::class)
-    fun readList(reader: JsonReader): SparseArray<ShortcutWithIconAndPosition> {
-        val shortcuts = SparseArray<ShortcutWithIconAndPosition>()
+    fun readList(reader: JsonReader): SparseArray<ShortcutWithIcon> {
+        val shortcuts = SparseArray<ShortcutWithIcon>()
         reader.beginArray()
 
         while (reader.hasNext()) {
@@ -71,8 +72,8 @@ class ShortcutsJsonReader(private val context: Context) {
                 }
             }
 
-            val shortcut = readShortcut(reader, unusedBitmap!!)
-            shortcuts.put(shortcut.pos, shortcut)
+            val shortcutWithIcon = readShortcut(reader, unusedBitmap!!)
+            shortcuts.put(shortcutWithIcon.first.position, shortcutWithIcon)
         }
 
         reader.endArray()
@@ -80,7 +81,7 @@ class ShortcutsJsonReader(private val context: Context) {
     }
 
     @Throws(IOException::class)
-    private fun readShortcut(reader: JsonReader, unusedBitmap: Bitmap): ShortcutWithIconAndPosition {
+    private fun readShortcut(reader: JsonReader, unusedBitmap: Bitmap): ShortcutWithIcon {
         reader.beginObject()
 
         var pos = -1
@@ -130,7 +131,7 @@ class ShortcutsJsonReader(private val context: Context) {
             }
         }
 
-        val info = Shortcut(Shortcut.idUnknown, itemType, title, isCustomIcon, intent ?: Intent())
+        val info = Shortcut(Shortcut.idUnknown, pos, itemType, title, isCustomIcon, intent ?: Intent())
 
         var bitmap: Bitmap? = null
         var icon: ShortcutIcon? = null
@@ -181,10 +182,9 @@ class ShortcutsJsonReader(private val context: Context) {
         }
 
         reader.endObject()
-        return ShortcutWithIconAndPosition(info, icon, pos)
+        return ShortcutWithIcon(info, icon)
     }
 
-    class ShortcutWithIconAndPosition(var info: Shortcut, var icon: ShortcutIcon?, var pos: Int)
 
     private fun decodeIcon(data: ByteArray?, unusedBitmap: Bitmap): Bitmap? {
         if (data == null || data.isEmpty()) {

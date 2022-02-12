@@ -7,6 +7,7 @@ import android.util.JsonWriter
 import android.util.SparseArray
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.db.ShortcutWithIcon
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.shortcuts.AbstractShortcuts
 import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
@@ -64,7 +65,7 @@ class BackupManager(private val context: Context, private val database: Shortcut
         val widget = WidgetStorage.load(context, resourceDefaults, appWidgetId)
 
         val shortcutsJsonReader = ShortcutsJsonReader(context)
-        var shortcuts = SparseArray<ShortcutsJsonReader.ShortcutWithIconAndPosition>()
+        var shortcuts = SparseArray<ShortcutWithIcon>()
         var found = 0
 
         try {
@@ -101,10 +102,8 @@ class BackupManager(private val context: Context, private val database: Shortcut
         if (shortcuts.size() % 2 == 0) {
             widget.shortcutsNumber = shortcuts.size()
         }
-        val model = WidgetShortcutsModel(context, database, resourceDefaults, appWidgetId)
-        model.init()
 
-        restoreShortcuts(model, shortcuts)
+        database.restoreTarget(appWidgetId, shortcuts)
 
         return Backup.RESULT_DONE
     }
@@ -148,17 +147,6 @@ class BackupManager(private val context: Context, private val database: Shortcut
         return Backup.RESULT_DONE
     }
 
-    private suspend fun restoreShortcuts(model: AbstractShortcuts, shortcuts: SparseArray<ShortcutsJsonReader.ShortcutWithIconAndPosition>) {
-        for (pos in 0 until model.count) {
-            model.drop(pos)
-            val shortcut = shortcuts.get(pos)
-            if (shortcut?.icon != null) {
-                val info = Shortcut(Shortcut.idUnknown, shortcut.info)
-                model.save(pos, info, shortcut.icon)
-            }
-        }
-    }
-
     private suspend fun doRestoreInCarUri(uri: Uri): Int {
         val inputStream: InputStream?
         try {
@@ -176,7 +164,7 @@ class BackupManager(private val context: Context, private val database: Shortcut
         val incar = InCarSettings(sharedPrefs)
 
         val shortcutsJsonReader = ShortcutsJsonReader(context)
-        var shortcuts = SparseArray<ShortcutsJsonReader.ShortcutWithIconAndPosition>()
+        var shortcuts = SparseArray<ShortcutWithIcon>()
         var found = 0
         try {
             mutex.withLock {
@@ -206,11 +194,10 @@ class BackupManager(private val context: Context, private val database: Shortcut
             return Backup.ERROR_INCORRECT_FORMAT
         }
 
-        val model = NotificationShortcutsModel.init(context, database)
+        database.restoreTarget(NotificationShortcutsModel.notificationTargetId, shortcuts)
 
         sharedPrefs.edit().clear().apply()
         incar.applyPending()
-        restoreShortcuts(model, shortcuts)
 
         return Backup.RESULT_DONE
     }

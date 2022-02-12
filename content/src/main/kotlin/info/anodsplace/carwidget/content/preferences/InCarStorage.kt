@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.content.preferences
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
@@ -23,33 +24,39 @@ object InCarStorage {
         return InCarSettings(prefs)
     }
 
-    fun getNotifComponentName(position: Int): String {
+    private fun getNotifComponentName(position: Int): String {
         return String.format(Locale.US, NOTIF_COMPONENT, position)
     }
 
-    fun dropNotifShortcut(position: Int, context: Context) {
-        val key = getNotifComponentName(position)
+    fun isDbMigrated(context: Context): Boolean {
         val prefs = getSharedPreferences(context)
-        val editor = prefs.edit()
-        editor.remove(key)
-        editor.apply()
-    }
-
-    fun getNotifComponents(context: Context): ArrayList<Long> {
-        return getNotifComponents(getSharedPreferences(context))
-    }
-
-    suspend fun saveNotifShortcut(db: ShortcutsDatabase, context: Context, shortcutId: Long, position: Int) {
-        val prefs = getSharedPreferences(context)
-        val key = getNotifComponentName(position)
-        val existingId = prefs.getLong(key, WidgetInterface.idUnknown)
-        if (existingId != WidgetInterface.idUnknown) {
-            db.deleteItemFromDatabase(existingId)
+        if (prefs.contains("db_migrated")) {
+            return true
         }
-        WidgetStorage.saveShortcutId(prefs, shortcutId, key)
+        for (i in 0 until NOTIFICATION_COMPONENT_NUMBER) {
+            val key = getNotifComponentName(i)
+            val id = prefs.getLong(key, WidgetInterface.idUnknown)
+            if (id != WidgetInterface.idUnknown) {
+                return false
+            }
+        }
+        return true
     }
 
-    private fun getNotifComponents(prefs: SharedPreferences): ArrayList<Long> {
+    @SuppressLint("ApplySharedPref")
+    fun launcherComponentsMigrated(context: Context) {
+        val prefs = getSharedPreferences(context)
+        val edit = prefs.edit()
+        for (i in 0 until NOTIFICATION_COMPONENT_NUMBER) {
+            val key = getNotifComponentName(i)
+            edit.remove(key)
+        }
+        edit.putBoolean("db_migrated", true)
+        edit.commit()
+    }
+
+    fun getMigrateIds(context: Context): ArrayList<Long> {
+        val prefs = getSharedPreferences(context)
         val ids = ArrayList<Long>(NOTIFICATION_COMPONENT_NUMBER)
         for (i in 0 until NOTIFICATION_COMPONENT_NUMBER) {
             val key = getNotifComponentName(i)
@@ -58,5 +65,4 @@ object InCarStorage {
         }
         return ids
     }
-
 }

@@ -1,11 +1,11 @@
 package info.anodsplace.carwidget.content.shortcuts
 
 import android.content.Context
-import android.graphics.Path
 import info.anodsplace.carwidget.content.db.Shortcut
-import info.anodsplace.carwidget.content.db.ShortcutIconLoader
+import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.preferences.InCarStorage
+import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -15,12 +15,13 @@ class NotificationShortcutsModel private constructor(context: Context, database:
 
     val filledCount: Int
         get() {
-            val ids = this.loadIds()
-            var count = 0
+            var result = 0
             for (i in 0 until InCarStorage.NOTIFICATION_COMPONENT_NUMBER) {
-                count += if (ids[i] == Shortcut.idUnknown) 0 else 1
+                if (get(i) != null) {
+                    result++
+                }
             }
-            return count
+            return result
         }
 
     override suspend fun createDefaultShortcuts() {
@@ -31,24 +32,36 @@ class NotificationShortcutsModel private constructor(context: Context, database:
         return InCarStorage.NOTIFICATION_COMPONENT_NUMBER
     }
 
-    override suspend fun saveId(position: Int, shortcutId: Long) {
-        InCarStorage.saveNotifShortcut(shortcutsDatabase, context, shortcutId, position)
+    override suspend fun loadShortcuts(): Map<Int, Shortcut?> {
+        return shortcutsDatabase.loadTarget(notificationTargetId)
     }
 
-    override fun dropId(position: Int) {
-        InCarStorage.dropNotifShortcut(position, context)
+    override suspend fun dropShortcut(position: Int) {
+        shortcutsDatabase.deleteTargetPosition(notificationTargetId, position)
     }
 
-    override fun loadIds(): ArrayList<Long> {
-        return InCarStorage.getNotifComponents(context)
+    override suspend fun saveShortcut(position: Int, shortcut: Shortcut, icon: ShortcutIcon) {
+        shortcutsDatabase.addItem(notificationTargetId, position, shortcut, icon)
     }
+
+    override suspend fun moveShortcut(from: Int, to: Int) {
+        shortcutsDatabase.moveShortcut(notificationTargetId, from, to)
+    }
+
+    override suspend fun runDbMigration() {
+        val ids = InCarStorage.getMigrateIds(context)
+        shortcutsDatabase.migrateShortcutPosition(notificationTargetId, ids)
+        InCarStorage.launcherComponentsMigrated(context)
+    }
+
+    override fun isMigrated(): Boolean = InCarStorage.isDbMigrated(context)
 
     override fun countUpdated(count: Int) {
 
     }
 
     companion object {
-
+        const val notificationTargetId = -1
         fun request(context: Context, database: ShortcutsDatabase): Flow<NotificationShortcutsModel> = flow {
             emit(init(context, database))
         }

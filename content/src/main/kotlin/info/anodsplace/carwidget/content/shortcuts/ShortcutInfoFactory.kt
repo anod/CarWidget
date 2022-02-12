@@ -33,29 +33,29 @@ sealed interface CreateShortcutResult {
     object FailedAppShortcut : CreateShortcutResult
 }
 
-object ShortcutInfoUtils {
+object ShortcutInfoFactory {
 
-    class ShortcutWithIcon(
+    class Result(
         val result: CreateShortcutResult,
         val info: Shortcut?,
         val icon: ShortcutIcon?
     )
 
-    internal fun createShortcut(context: Context, data: Intent, isAppShortcut: Boolean): ShortcutWithIcon {
+    internal fun createShortcut(context: Context, position: Int, data: Intent, isAppShortcut: Boolean): Result {
         return if (isAppShortcut) {
-            infoFromApplicationIntent(context, data)
+            infoFromApplicationIntent(context, position, data)
         } else {
-            infoFromShortcutIntent(context, data)
+            infoFromShortcutIntent(context, position, data)
         }
     }
 
-    private fun infoFromShortcutIntent(context: Context, data: Intent): ShortcutWithIcon {
+    private fun infoFromShortcutIntent(context: Context, position: Int, data: Intent): Result {
 
         // Use fully supported EXTRA_SHORTCUT_INTENT when available
         if (!data.hasExtra(Intent.EXTRA_SHORTCUT_INTENT) && data.hasExtra(LauncherApps.EXTRA_PIN_ITEM_REQUEST)) {
             val item = data.getParcelableExtra<LauncherApps.PinItemRequest>(LauncherApps.EXTRA_PIN_ITEM_REQUEST)
-                    ?: return ShortcutWithIcon(CreateShortcutResult.FailedAppShortcut, null, null)
-            return shortcutFromPinItemRequest(item, context)
+                    ?: return Result(CreateShortcutResult.FailedAppShortcut, null, null)
+            return shortcutFromPinItemRequest(item, context, position)
         }
 
         val intent = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT) ?: Intent()
@@ -90,17 +90,17 @@ object ShortcutInfoUtils {
             icon = ShortcutIcon.forFallbackIcon(Shortcut.idUnknown, bitmap)
         }
 
-        return ShortcutWithIcon(
+        return Result(
                 result = CreateShortcutResult.SuccessCustom,
                 icon = icon,
-                info = Shortcut(0, LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT, name, icon!!.isCustom, intent)
+                info = Shortcut(0, position, LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT, name, icon!!.isCustom, intent)
         )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun shortcutFromPinItemRequest(pinItem: LauncherApps.PinItemRequest, context: Context): ShortcutWithIcon {
+    private fun shortcutFromPinItemRequest(pinItem: LauncherApps.PinItemRequest, context: Context, position: Int): Result {
         val shortcutInfo = pinItem.shortcutInfo
-                ?: return ShortcutWithIcon(CreateShortcutResult.FailedAppShortcut, null, null)
+                ?: return Result(CreateShortcutResult.FailedAppShortcut, null, null)
 
         val launcherApps = context.getSystemService(LauncherApps::class.java)
         var bitmap: Bitmap? = null
@@ -128,10 +128,10 @@ object ShortcutInfoUtils {
         else
             ShortcutIcon.forCustomIcon(Shortcut.idUnknown, bitmap)
 
-        return ShortcutWithIcon(
+        return Result(
                 result = CreateShortcutResult.SuccessAppShortcut,
                 icon = icon,
-                info = Shortcut(0, LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT, label, icon.isCustom, intent)
+                info = Shortcut(0, position, LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT, label, icon.isCustom, intent)
         )
     }
 
@@ -150,9 +150,9 @@ object ShortcutInfoUtils {
      *
      * If c is not null, then it will be used to fill in missing data like the title and icon.
      */
-    fun infoFromApplicationIntent(context: Context, intent: Intent): ShortcutWithIcon {
+    fun infoFromApplicationIntent(context: Context, position: Int, intent: Intent): Result {
         val componentName = intent.component
-                ?: return ShortcutWithIcon(CreateShortcutResult.FailedAppShortcut, null, null)
+                ?: return Result(CreateShortcutResult.FailedAppShortcut, null, null)
         AppLog.d("Component Name - $componentName")
 
         val manager = context.packageManager
@@ -176,10 +176,10 @@ object ShortcutInfoUtils {
         }
 
         val icon = resolveAppIcon(resolveInfo, componentName, context)
-        return ShortcutWithIcon(
+        return Result(
                 result = CreateShortcutResult.SuccessApp,
                 icon = icon,
-                info = Shortcut.forActivity(Shortcut.idUnknown, title, icon.isCustom, componentName, Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
+                info = Shortcut.forActivity(Shortcut.idUnknown, position, title, icon.isCustom, componentName, Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
         )
     }
 
@@ -196,8 +196,8 @@ object ShortcutInfoUtils {
         return ShortcutIcon.forFallbackIcon(Shortcut.idUnknown, bitmap)
     }
 
-    fun getIcon(component: ComponentName?, resolveInfo: ResolveInfo?,
-                manager: PackageManager, context: Context): Bitmap? {
+    private fun getIcon(component: ComponentName?, resolveInfo: ResolveInfo?,
+                        manager: PackageManager, context: Context): Bitmap? {
 
         if (resolveInfo == null || component == null) {
             return null

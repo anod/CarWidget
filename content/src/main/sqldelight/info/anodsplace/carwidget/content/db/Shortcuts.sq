@@ -1,32 +1,54 @@
 CREATE TABLE favorites (
     _id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    targetId INTEGER AS Int NOT NULL DEFAULT 0, -- "-1" - notification
+    position INTEGER AS Int NOT NULL DEFAULT 0,
     title TEXT NOT NULL DEFAULT "",
     intent TEXT NOT NULL DEFAULT "",
-    itemType INTEGER NOT NULL,
-    iconType INTEGER NOT NULL,
+    itemType INTEGER AS Int NOT NULL,
+    iconType INTEGER AS Int NOT NULL,
     iconPackage TEXT,
     iconResource TEXT,
     icon BLOB,
-    isCustomIcon INTEGER NOT NULL DEFAULT 0
+    isCustomIcon INTEGER AS Boolean NOT NULL DEFAULT 0,
+    UNIQUE(targetId, position)
 );
 
-select:
-SELECT * FROM favorites WHERE _id = ?;
+selectShortcut:
+SELECT _id AS shortcutId, position, title, itemType, intent, isCustomIcon FROM favorites WHERE _id = :shortcutId;
 
-selectIcon:
-SELECT iconType, icon, iconPackage, iconResource, itemType, isCustomIcon FROM favorites WHERE _id = ?;
+selectTarget:
+SELECT _id AS shortcutId, position, title, itemType, intent, isCustomIcon FROM favorites WHERE targetId = ?;
+
+selectTargetPosition:
+SELECT _id AS shortcutId, position, title, itemType, intent, isCustomIcon FROM favorites WHERE targetId = ? AND position = ?;
+
+selectShortcutIcon:
+SELECT iconType, icon, iconPackage, iconResource, itemType, isCustomIcon FROM favorites WHERE _id = :shortcutId;
 
 insert:
-INSERT INTO favorites (itemType, title, intent, iconType, icon, iconPackage, iconResource, isCustomIcon)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO favorites (targetId, position, itemType, title, intent, iconType, icon, iconPackage, iconResource, isCustomIcon)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
-updateIntent:
-UPDATE favorites
-SET intent = ?
-WHERE _id = ?;
+updateTargetPosition:
+UPDATE favorites SET position = :newPosition WHERE targetId = :targetId AND position = :position;
+
+migrateShortcutPosition:
+UPDATE favorites SET position = :position, targetId = :targetId WHERE _id = :shortcutId;
+
+updateShortcutIntent:
+UPDATE favorites SET intent = ? WHERE _id = :shortcutId;
 
 lastInsertId:
 SELECT last_insert_rowid();
 
-delete:
-DELETE FROM favorites WHERE _id = ?;
+deleteShortcut:
+DELETE FROM favorites WHERE _id = :shortcutId;
+
+deleteTarget:
+DELETE FROM favorites WHERE targetId = ?;
+
+deleteTargets:
+DELETE FROM favorites WHERE targetId IN ?;
+
+deleteTargetPosition:
+DELETE FROM favorites WHERE targetId = ? AND position = ?;

@@ -5,12 +5,12 @@ import android.content.Context
 import android.content.Intent
 
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.db.Shortcut
+import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.extentions.isAvailable
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
-
-import java.util.ArrayList
 
 class WidgetShortcutsModel(context: Context, database: ShortcutsDatabase, private val defaultsProvider: WidgetSettings.DefaultsProvider, private val appWidgetId: Int) : AbstractShortcuts(context, database) {
 
@@ -21,20 +21,34 @@ class WidgetShortcutsModel(context: Context, database: ShortcutsDatabase, privat
         return widgetSettings.shortcutsNumber
     }
 
+    override suspend fun loadShortcuts(): Map<Int, Shortcut?> {
+        return shortcutsDatabase.loadTarget(appWidgetId)
+    }
+
+    override suspend fun dropShortcut(position: Int) {
+        shortcutsDatabase.deleteTargetPosition(appWidgetId, position)
+    }
+
+    override suspend fun saveShortcut(position: Int, shortcut: Shortcut, icon: ShortcutIcon) {
+        shortcutsDatabase.addItem(appWidgetId, position, shortcut, icon)
+    }
+
+    override suspend fun moveShortcut(from: Int, to: Int) {
+        shortcutsDatabase.moveShortcut(appWidgetId, from, to)
+    }
+
+    override suspend fun runDbMigration() {
+        val ids = WidgetStorage.getMigrateIds(context, appWidgetId)
+        shortcutsDatabase.migrateShortcutPosition(appWidgetId, ids)
+        WidgetStorage.launcherComponentsMigrated(context, appWidgetId)
+    }
+
+    override fun isMigrated(): Boolean {
+        return WidgetStorage.isDbMigrated(context, appWidgetId)
+    }
+
     override fun countUpdated(count: Int) {
         widgetSettings.shortcutsNumber = count
-    }
-
-    override fun loadIds(): ArrayList<Long> {
-        return WidgetStorage.getLauncherComponents(context, appWidgetId, count)
-    }
-
-    override suspend fun saveId(position: Int, shortcutId: Long) {
-        WidgetStorage.saveShortcut(context, shortcutId, position, appWidgetId)
-    }
-
-    override fun dropId(position: Int) {
-        WidgetStorage.dropShortcutPreference(position, appWidgetId, context)
     }
 
     override suspend fun createDefaultShortcuts() {
@@ -58,20 +72,20 @@ class WidgetShortcutsModel(context: Context, database: ShortcutsDatabase, privat
 
                 ComponentName("com.google.android.googlequicksearchbox", "com.google.android.googlequicksearchbox.VoiceSearchActivity"))
 
-        var cellId = 0
+        var position = 0
         val data = Intent()
         for (i in list.indices) {
             data.component = list[i]
             if (!data.isAvailable(context)) {
                 continue
             }
-            val shortcut = ShortcutInfoUtils.infoFromApplicationIntent(context, data)
+            val shortcut = ShortcutInfoFactory.infoFromApplicationIntent(context, position, data)
             if (shortcut.info != null) {
                 AppLog.i("Init shortcut - " + shortcut.info + " for #$appWidgetId")
-                save(cellId, shortcut.info, shortcut.icon)
-                cellId++
+                save(position, shortcut.info, shortcut.icon)
+                position++
             }
-            if (cellId == 5) {
+            if (position == 5) {
                 break
             }
         }

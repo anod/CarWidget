@@ -140,7 +140,7 @@ fun PreviewShortcutEditContent() {
         BackgroundSurface {
             CompositionLocalProvider(LocalPicasso provides Picasso.get()) {
                 ShortcutEditContent(
-                        shortcut = Shortcut(0, 0, "Title", false, Intent()),
+                        shortcut = Shortcut(0,0, 0, "Title", false, Intent()),
                         delegate = ShortcutEditDelegate.NoOp(),
                         onDismissRequest = { },
                         expanded = mutableStateOf(true)

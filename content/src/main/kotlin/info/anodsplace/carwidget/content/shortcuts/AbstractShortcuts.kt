@@ -8,7 +8,6 @@ import info.anodsplace.carwidget.content.db.Shortcuts
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.*
 
 abstract class AbstractShortcuts(internal val context: Context, protected val shortcutsDatabase: ShortcutsDatabase) : Shortcuts {
     private var isInitialized = false
@@ -29,11 +28,17 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
 
     protected abstract fun loadCount(): Int
 
-    protected abstract suspend fun saveId(position: Int, shortcutId: Long)
+    abstract suspend fun loadShortcuts(): Map<Int, Shortcut?>
 
-    protected abstract fun dropId(position: Int)
+    abstract suspend fun dropShortcut(position: Int)
 
-    protected abstract fun loadIds(): ArrayList<Long>
+    abstract suspend fun saveShortcut(position: Int, shortcut: Shortcut, icon: ShortcutIcon)
+
+    abstract suspend fun moveShortcut(from: Int, to: Int)
+
+    abstract suspend fun runDbMigration()
+
+    abstract fun isMigrated(): Boolean
 
     protected abstract fun countUpdated(count: Int)
 
@@ -47,15 +52,10 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
         isInitialized = true
         _count = loadCount()
         _shortcuts.clear()
-        val currentShortcutIds = loadIds()
-        for (cellId in 0 until count) {
-            val shortcutId = currentShortcutIds[cellId]
-            var info: Shortcut? = null
-            if (shortcutId != Shortcut.idUnknown) {
-                info = shortcutsDatabase.loadShortcut(shortcutId)
-            }
-            _shortcuts[cellId] = info
+        if (!isMigrated()) {
+            runDbMigration()
         }
+        _shortcuts = loadShortcuts().toMutableMap()
     }
 
     override fun updateCount(count: Int) {
@@ -84,18 +84,12 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
         if (from == to) {
             return
         }
-        val currentShortcutIds = loadIds()
-        val srcShortcutId = currentShortcutIds[from]
-        val dstShortcutId = currentShortcutIds[to]
-
-        saveId(from, dstShortcutId)
-        saveId(to, srcShortcutId)
-
+        moveShortcut(from, to)
     }
 
     override suspend fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Pair<Shortcut?, CreateShortcutResult> = withContext(Dispatchers.IO) {
         lazyInit()
-        val shortcut = ShortcutInfoUtils.createShortcut(context, data, isApplicationShortcut)
+        val shortcut = ShortcutInfoFactory.createShortcut(context, position, data, isApplicationShortcut)
         save(position, shortcut.info, shortcut.icon)
         return@withContext Pair(shortcuts[position], shortcut.result)
     }
@@ -104,25 +98,14 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
         lazyInit()
         if (shortcut == null) {
             _shortcuts[position] = null
+            dropShortcut(position)
         } else {
-            val id = shortcutsDatabase.addItemToDatabase(shortcut, icon!!)
-            if (id == Shortcut.idUnknown) {
-                _shortcuts[position] = null
-            } else {
-                val newInfo = Shortcut(id, shortcut)
-                _shortcuts[position] = newInfo
-                saveId(position, id)
-            }
+            saveShortcut(position, shortcut, icon!!)
         }
     }
 
     override suspend fun drop(position: Int) {
         lazyInit()
-        val info = _shortcuts[position]
-        if (info != null) {
-            shortcutsDatabase.deleteItemFromDatabase(info.id)
-            _shortcuts[position] = null
-            dropId(position)
-        }
+        dropShortcut(position)
     }
 }

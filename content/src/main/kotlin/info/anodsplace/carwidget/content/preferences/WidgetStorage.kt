@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.content.preferences
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 
@@ -13,7 +14,6 @@ import java.util.ArrayList
 import java.util.Locale
 
 object WidgetStorage {
-
     const val LAUNCH_COMPONENT_NUMBER_MAX = 10
     const val LAUNCH_COMPONENT_NUMBER_DEFAULT = 6
 
@@ -37,42 +37,12 @@ object WidgetStorage {
         return String.format(Locale.US, LAUNCH_COMPONENT, position)
     }
 
-    fun getLauncherComponents(context: Context, appWidgetId: Int,
-                              count: Int): ArrayList<Long> {
-        val prefs = getSharedPreferences(context, appWidgetId)
-        val ids = ArrayList<Long>(count)
-        for (i in 0 until count) {
-            val key = getLaunchComponentKey(i)
-            val id = prefs.getLong(key, WidgetInterface.idUnknown)
-            ids.add(i, id)
-        }
-        return ids
-    }
-
-    fun saveShortcut(context: Context, shortcutId: Long, cellId: Int, appWidgetId: Int) {
-        val key = getLaunchComponentKey(cellId)
-        val prefs = getSharedPreferences(context, appWidgetId)
-        saveShortcutId(prefs, shortcutId, key)
-    }
-
-    fun saveShortcutId(preferences: SharedPreferences, shortcutId: Long, key: String) {
-        val editor = preferences.edit()
-        editor.putLong(key, shortcutId)
-        editor.apply()
-    }
-
     suspend fun dropWidgetSettings(db: ShortcutsDatabase, context: Context, appWidgetIds: IntArray) = withContext(Dispatchers.IO) {
+        if (appWidgetIds.isNotEmpty()) {
+            db.deleteTargets(appWidgetIds.asList())
+        }
+
         for (appWidgetId in appWidgetIds) {
-            val prefs = getSharedPreferences(context, appWidgetId)
-
-            for (i in 0 until LAUNCH_COMPONENT_NUMBER_MAX) {
-                val key = getLaunchComponentKey(i)
-                val curShortcutId = prefs.getLong(key, WidgetInterface.idUnknown)
-                if (curShortcutId != WidgetInterface.idUnknown) {
-                    db.deleteItemFromDatabase(curShortcutId)
-                }
-            }
-
             val prefName = String.format(Locale.US, PREF_NAME, appWidgetId)
             val filePath = context.filesDir?.parent + String.format(Locale.US, SHARED_PREFS_PATH, prefName)
             AppLog.i("Drop widget file: $filePath")
@@ -81,11 +51,41 @@ object WidgetStorage {
         }
     }
 
-    fun dropShortcutPreference(cellId: Int, appWidgetId: Int, context: Context) {
+    fun isDbMigrated(context: Context, appWidgetId: Int): Boolean {
+        val prefs = getSharedPreferences(context, appWidgetId)
+        if (prefs.contains("db_migrated")) {
+            return true
+        }
+        for (i in 0 until LAUNCH_COMPONENT_NUMBER_MAX) {
+            val key = getLaunchComponentKey(i)
+            val id = prefs.getLong(key, WidgetInterface.idUnknown)
+            if (id != WidgetInterface.idUnknown) {
+                return false
+            }
+        }
+        return true
+    }
+
+    @SuppressLint("ApplySharedPref")
+    fun launcherComponentsMigrated(context: Context, appWidgetId: Int) {
         val prefs = getSharedPreferences(context, appWidgetId)
         val edit = prefs.edit()
-        val key = getLaunchComponentKey(cellId)
-        edit.remove(key)
-        edit.apply()
+        for (i in 0 until LAUNCH_COMPONENT_NUMBER_MAX) {
+            val key = getLaunchComponentKey(i)
+            edit.remove(key)
+        }
+        edit.putBoolean("db_migrated", true)
+        edit.commit()
+    }
+
+    fun getMigrateIds(context: Context, appWidgetId: Int): ArrayList<Long> {
+        val prefs = getSharedPreferences(context, appWidgetId)
+        val ids = ArrayList<Long>(LAUNCH_COMPONENT_NUMBER_MAX)
+        for (i in 0 until LAUNCH_COMPONENT_NUMBER_MAX) {
+            val key = getLaunchComponentKey(i)
+            val id = prefs.getLong(key, WidgetInterface.idUnknown)
+            ids.add(i, id)
+        }
+        return ids
     }
 }

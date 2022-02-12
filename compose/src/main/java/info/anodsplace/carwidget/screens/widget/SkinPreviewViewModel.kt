@@ -15,6 +15,7 @@ import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
 import info.anodsplace.carwidget.appwidget.WidgetView
 import info.anodsplace.carwidget.content.BitmapLruCache
+import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
@@ -48,6 +49,7 @@ data class SkinList(
 
 class SkinPreviewViewModel(application: Application, var appWidgetId: Int): AndroidViewModel(application), KoinComponent {
     private val bitmapMemoryCache: BitmapLruCache by inject()
+    private val db: ShortcutsDatabase by inject()
 
     val widgetSettings: WidgetInterface by inject(parameters = { parametersOf(appWidgetId) })
     val skinList = SkinList(widgetSettings.skin, application)

@@ -9,18 +9,22 @@ import android.content.res.Resources.NotFoundException
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.SparseArray
 import androidx.core.content.res.ResourcesCompat
 import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOne
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Database
 import info.anodsplace.carwidget.content.extentions.isLowMemoryDevice
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import java.net.URISyntaxException
+import java.util.ArrayList
+
+typealias ShortcutWithIcon = Pair<Shortcut, ShortcutIcon?>
 
 class ShortcutsDatabase(private val context: Context, private val db: Database) {
 
@@ -45,7 +49,7 @@ class ShortcutsDatabase(private val context: Context, private val db: Database) 
 
     suspend fun loadShortcutIcon(shortcutUri: Uri): ShortcutIcon = withContext(Dispatchers.IO) {
         val id = shortcutUri.lastPathSegment!!.toLong()
-        val c = db.shortcutsQueries.selectIcon(id).executeAsOneOrNull()
+        val c = db.shortcutsQueries.selectShortcutIcon(id).executeAsOneOrNull()
 
         if (c == null) {
             val icon = UtilitiesBitmap.makeDefaultIcon(packageManager)
@@ -54,20 +58,20 @@ class ShortcutsDatabase(private val context: Context, private val db: Database) 
 
         var shortcutIcon: ShortcutIcon? = null
         try {
-            val itemType = c.itemType.toInt()
+            val itemType = c.itemType
 
             var icon: Bitmap? = null
             if (itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
                 icon = getIconFromCursor(c.icon ?: ByteArray(0), bitmapOptions)
                 if (icon != null) {
-                    shortcutIcon = if (c.isCustomIcon == 1L) {
+                    shortcutIcon = if (c.isCustomIcon) {
                         ShortcutIcon.forCustomIcon(id, icon)
                     } else {
                         ShortcutIcon.forActivity(id, icon)
                     }
                 }
             } else {
-                val iconType = c.iconType.toInt()
+                val iconType = c.iconType
                 if (iconType == LauncherSettings.Favorites.ICON_TYPE_RESOURCE) {
                     val iconResource = Intent.ShortcutIconResource().apply {
                         packageName = c.iconPackage
@@ -113,64 +117,124 @@ class ShortcutsDatabase(private val context: Context, private val db: Database) 
         return@withContext shortcutIcon
     }
 
-    fun observeShortcut(shortcutId: Long): Flow<Shortcut> {
-        return db.shortcutsQueries.select(shortcutId).asFlow()
+    fun observeShortcut(shortcutId: Long): Flow<Shortcut?> {
+        return db.shortcutsQueries.selectShortcut(shortcutId, mapper = ::mapShortcut).asFlow()
                 .mapToOne()
-                .mapNotNull { mapShortcut(shortcutId, it) }
+                .filter { it.isValid }
+    }
+
+    fun observeTarget(targetId: Int): Flow<Map<Int, Shortcut?>> {
+        return db.shortcutsQueries.selectTarget(targetId, mapper = ::mapShortcut).asFlow()
+                .mapToList()
+                .map { list ->
+                    list.associate { sh -> sh.position to if (sh.isValid) sh else null }
+                }
     }
 
     suspend fun loadShortcut(shortcutId: Long): Shortcut? = withContext(Dispatchers.IO) {
-        val c = db.shortcutsQueries.select(shortcutId).executeAsOneOrNull() ?: return@withContext null
-        return@withContext mapShortcut(shortcutId, c)
+        val shortcut = db.shortcutsQueries.selectShortcut(shortcutId, mapper = ::mapShortcut).executeAsOneOrNull()
+        if (shortcut?.isValid == true) {
+            return@withContext shortcut
+        }
+        return@withContext null
     }
 
-    private fun mapShortcut(shortcutId: Long, c: Favorites): Shortcut? {
-        if (c.intent.isEmpty()) {
-            return null
-        }
-
-        val intent: Intent = try {
-            Intent.parseUri(c.intent, 0)
-        } catch (e: URISyntaxException) {
-            return null
-        }
-
-        return Shortcut(shortcutId, c.iconType.toInt(), c.title, c.isCustomIcon == 1L, intent)
+    suspend fun loadTarget(targetId: Int): Map<Int, Shortcut?> = withContext(Dispatchers.IO) {
+        val list = db.shortcutsQueries.selectTarget(targetId, mapper = ::mapShortcut).executeAsList()
+        return@withContext list.associate { sh -> sh.position to if (sh.isValid) sh else null }
     }
+
     /**
      * Add an item to the database in a specified container. Sets the container,
      * screen, cellX and cellY fields of the item. Also assigns an ID to the
      * item.
      */
-    suspend fun addItemToDatabase(item: Shortcut, icon: ShortcutIcon): Long = withContext(Dispatchers.IO) {
-        val values = createShortcutContentValues(item, icon)
-        return@withContext db.transactionWithResult {
-            db.shortcutsQueries.insert(
-                    itemType = values.getAsLong(LauncherSettings.Favorites.ITEM_TYPE),
-                    title = values.getAsString(LauncherSettings.Favorites.TITLE),
-                    intent = values.getAsString(LauncherSettings.Favorites.INTENT),
-                    iconType = values.getAsLong(LauncherSettings.Favorites.ICON_TYPE),
-                    icon = values.getAsByteArray(LauncherSettings.Favorites.ICON),
-                    iconPackage = values.getAsString(LauncherSettings.Favorites.ICON_PACKAGE),
-                    iconResource = values.getAsString(LauncherSettings.Favorites.ICON_RESOURCE),
-                    isCustomIcon = values.getAsLong(LauncherSettings.Favorites.IS_CUSTOM_ICON)
-            )
-            return@transactionWithResult db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: Shortcut.idUnknown
-        }
+    suspend fun addItem(targetId: Int, position: Int, item: Shortcut, icon: ShortcutIcon): Long = withContext(Dispatchers.IO) {
+        insert(targetId, position, item, icon)
+        return@withContext db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: Shortcut.idUnknown
     }
 
     /**
      * Removes the specified item from the database
      */
-    suspend fun deleteItemFromDatabase(shortcutId: Long) = withContext(Dispatchers.IO) {
-        db.shortcutsQueries.delete(shortcutId)
+    suspend fun deleteShortcut(shortcutId: Long) = withContext(Dispatchers.IO) {
+        db.shortcutsQueries.deleteShortcut(shortcutId)
+    }
+
+    suspend fun deleteTargets(targetIds: List<Int>) = withContext(Dispatchers.IO) {
+        db.shortcutsQueries.deleteTargets(targetIds)
     }
 
     suspend fun updateIntent(shortcutId: Long, intent: Intent) = withContext(Dispatchers.IO) {
-        db.shortcutsQueries.updateIntent(
+        db.shortcutsQueries.updateShortcutIntent(
                 intent = intent.toUri(0),
-                _id = shortcutId
+                shortcutId = shortcutId
         )
+    }
+
+    suspend fun restoreTarget(targetId: Int, items: SparseArray<ShortcutWithIcon>) = withContext(Dispatchers.IO) {
+        db.transaction {
+            db.shortcutsQueries.deleteTarget(targetId)
+
+            for (position in 0 until items.size()) {
+                val item = items.get(position)
+                if (item?.first != null) {
+                    insert(targetId, position, item.first, item.second!!)
+                }
+            }
+        }
+    }
+
+    private fun insert(targetId: Int, position: Int, item: Shortcut, icon: ShortcutIcon)  {
+        val values = createShortcutContentValues(item, icon)
+        db.shortcutsQueries.insert(
+                targetId = targetId,
+                position = position,
+                itemType = values.getAsInteger(LauncherSettings.Favorites.ITEM_TYPE),
+                title = values.getAsString(LauncherSettings.Favorites.TITLE),
+                intent = values.getAsString(LauncherSettings.Favorites.INTENT),
+                iconType = values.getAsInteger(LauncherSettings.Favorites.ICON_TYPE),
+                icon = values.getAsByteArray(LauncherSettings.Favorites.ICON),
+                iconPackage = values.getAsString(LauncherSettings.Favorites.ICON_PACKAGE),
+                iconResource = values.getAsString(LauncherSettings.Favorites.ICON_RESOURCE),
+                isCustomIcon = values.getAsBoolean(LauncherSettings.Favorites.IS_CUSTOM_ICON)
+        )
+    }
+
+    suspend fun deleteTargetPosition(targetId: Int, position: Int) = withContext(Dispatchers.IO) {
+        db.shortcutsQueries.deleteTargetPosition(targetId, position)
+    }
+
+    suspend fun moveShortcut(targetId: Int, from: Int, to: Int) = withContext(Dispatchers.IO) {
+        db.transaction {
+            db.shortcutsQueries.updateTargetPosition(targetId = targetId, position = from, newPosition = -1)
+            db.shortcutsQueries.updateTargetPosition(targetId = targetId, position = to, newPosition = from)
+            db.shortcutsQueries.updateTargetPosition(targetId = targetId, position = -1, newPosition = to)
+        }
+    }
+
+    suspend fun migrateShortcutPosition(targetId: Int, positionIds: ArrayList<Long>) = withContext(Dispatchers.IO) {
+        db.transaction {
+            positionIds.forEachIndexed { index, shortcutId ->
+                if (shortcutId != Shortcut.idUnknown) {
+                    db.shortcutsQueries.migrateShortcutPosition(shortcutId = shortcutId, targetId = targetId, position = index)
+                }
+            }
+        }
+    }
+
+    private fun mapShortcut(shortcutId: Long, position: Int, title: String, itemType: Int, intent: String, isCustomIcon: Boolean): Shortcut {
+        if (intent.isEmpty()) {
+            return Shortcut.unknown
+        }
+
+        val parsedIntent: Intent = try {
+            Intent.parseUri(intent, 0)
+        } catch (e: URISyntaxException) {
+            return Shortcut.unknown
+        }
+
+        return Shortcut(shortcutId, position, itemType, title, isCustomIcon, parsedIntent)
     }
 
     companion object {
