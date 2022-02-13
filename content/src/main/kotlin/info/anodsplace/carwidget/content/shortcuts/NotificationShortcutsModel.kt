@@ -56,10 +56,6 @@ class NotificationShortcutsModel private constructor(context: Context, database:
 
     override fun isMigrated(): Boolean = InCarStorage.isDbMigrated(context)
 
-    override fun countUpdated(count: Int) {
-
-    }
-
     companion object {
         const val notificationTargetId = -1
         fun request(context: Context, database: ShortcutsDatabase): Flow<NotificationShortcutsModel> = flow {

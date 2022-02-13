@@ -11,7 +11,6 @@ import kotlinx.coroutines.withContext
 
 abstract class AbstractShortcuts(internal val context: Context, protected val shortcutsDatabase: ShortcutsDatabase) : Shortcuts {
     private var isInitialized = false
-    private var _count: Int = 0
     private var _shortcuts: MutableMap<Int, Shortcut?> = mutableMapOf()
 
     override val shortcuts: Map<Int, Shortcut?>
@@ -23,7 +22,7 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
     override val count: Int
         get() {
             require(isInitialized)
-            return _count
+            return _shortcuts.size
         }
 
     protected abstract fun loadCount(): Int
@@ -40,8 +39,6 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
 
     abstract fun isMigrated(): Boolean
 
-    protected abstract fun countUpdated(count: Int)
-
     private suspend fun lazyInit() {
         if (!isInitialized) {
             init()
@@ -50,23 +47,22 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
 
     override suspend fun init() {
         isInitialized = true
-        _count = loadCount()
+        val count = loadCount()
         _shortcuts.clear()
         if (!isMigrated()) {
             runDbMigration()
         }
         _shortcuts = loadShortcuts().toMutableMap()
-    }
-
-    override fun updateCount(count: Int) {
-        require(isInitialized)
-        this._count = count
-        countUpdated(count)
+        for (i in 0 until count) {
+            if (!_shortcuts.containsKey(i)) {
+                _shortcuts[i] = null
+            }
+        }
     }
 
     override fun get(position: Int): Shortcut? {
         require(isInitialized)
-        return shortcuts[position]
+        return shortcuts.getOrDefault(position, null)
     }
 
     override suspend fun reloadShortcut(position: Int, shortcutId: Long) {

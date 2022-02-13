@@ -8,9 +8,13 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.chooser.AppsListViewModel
+import info.anodsplace.carwidget.chooser.ChooserLoader
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.carwidget.content.backup.BackupManager
@@ -49,43 +53,44 @@ data class AboutScreenState(
         get() = appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID
 }
 
-class AboutViewModel(application: Application): AndroidViewModel(application), KoinComponent {
+class AboutViewModel(application: Application, private val appWidgetId: Int): AndroidViewModel(application), KoinComponent {
 
-    var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
-    val appScope: AppCoroutineScope by inject()
-    val uiAction = MutableSharedFlow<AboutUiAction>()
+    class Factory(
+            private val application: Context,
+            private val appWidgetId: Int
+    ): ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return AboutViewModel(application as Application, appWidgetId) as T
+        }
+    }
 
     private val context: Context
         get() = getApplication()
     private val backupManager: BackupManager by lazy {
         BackupManager(
-            context = getApplication(),
-            database = get(),
-            resourceDefaults = DefaultsResourceProvider(context.resources)
+                context = getApplication(),
+                database = get(),
+                resourceDefaults = DefaultsResourceProvider(context.resources)
         )
     }
-
-    private lateinit var screenState: MutableStateFlow<AboutScreenState>
-
+    private val themes = context.resources.getStringArray(R.array.app_themes)
     private val appSettings: AppSettings
         get() = get()
 
-    private var job: Job? = null
-
-    fun initScreenState(appWidgetId: Int): StateFlow<AboutScreenState> {
-        val themeIdx = appSettings.theme
-        val themes = context.resources.getStringArray(R.array.app_themes)
-        screenState = MutableStateFlow(
+    val appScope: AppCoroutineScope by inject()
+    val uiAction = MutableSharedFlow<AboutUiAction>()
+    val screenState: MutableStateFlow<AboutScreenState> = MutableStateFlow(
             AboutScreenState(
-                appWidgetId = appWidgetId,
-                themeIndex = themeIdx,
-                themeName = themes[themeIdx],
-                musicApp = renderMusicApp(),
-                appVersion = renderVersion(),
+                    appWidgetId = appWidgetId,
+                    themeIndex = appSettings.theme,
+                    themeName = themes[appSettings.theme],
+                    musicApp = renderMusicApp(),
+                    appVersion = renderVersion(),
             )
-        )
-        job?.cancel()
-        job = viewModelScope.launch {
+    )
+
+    init {
+        viewModelScope.launch {
             uiAction.collect {
                 when (it) {
                     is AboutUiAction.BackupInCar -> {
@@ -133,7 +138,6 @@ class AboutViewModel(application: Application): AndroidViewModel(application), K
                 }
             }
         }
-        return screenState
     }
 
     private fun renderMusicApp(): String {

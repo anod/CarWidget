@@ -23,6 +23,4 @@ interface Shortcuts {
     suspend fun drop(position: Int)
 
     suspend fun move(from: Int, to: Int)
-
-    fun updateCount(count: Int)
 }

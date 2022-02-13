@@ -47,10 +47,6 @@ class WidgetShortcutsModel(context: Context, database: ShortcutsDatabase, privat
         return WidgetStorage.isDbMigrated(context, appWidgetId)
     }
 
-    override fun countUpdated(count: Int) {
-        widgetSettings.shortcutsNumber = count
-    }
-
     override suspend fun createDefaultShortcuts() {
         init()
         preloadDefaultShortcuts(appWidgetId)

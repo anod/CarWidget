@@ -150,8 +150,8 @@ fun NavHost(
     val scope = rememberCoroutineScope()
 
     val modifier = Modifier
-        .background(MaterialTheme.colors.background)
-        .padding(innerPadding)
+            .background(MaterialTheme.colors.background)
+            .padding(innerPadding)
 
     NavHost(navController, startDestination = startDestination, route = startRoute) {
         composable(route = NavItem.Widgets.route) {
@@ -167,13 +167,16 @@ fun NavHost(
             }
         }
         composable(route = NavItem.About.route) {
-            val aboutViewModel: AboutViewModel = viewModel()
-            val aboutScreenState by aboutViewModel.initScreenState(appWidgetId = appWidgetId).collectAsState()
-            AboutScreen(
-                screenState = aboutScreenState,
-                action = aboutViewModel.uiAction,
-                modifier = modifier
-            )
+            val appContext = LocalContext.current.applicationContext
+            val aboutViewModel: AboutViewModel = viewModel(factory = AboutViewModel.Factory(appContext, appWidgetId))
+            val aboutScreenState by aboutViewModel.screenState.collectAsState(initial = null)
+            if (aboutScreenState != null) {
+                AboutScreen(
+                        screenState = aboutScreenState!!,
+                        action = aboutViewModel.uiAction,
+                        modifier = modifier
+                )
+            }
         }
         navigation(route = NavItem.CurrentWidget.route, startDestination = currentWidgetStartDestination) {
             composable(route = NavItem.CurrentWidget.Skin.route) {

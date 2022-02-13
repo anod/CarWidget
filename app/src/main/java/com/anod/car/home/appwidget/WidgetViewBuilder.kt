@@ -95,7 +95,6 @@ class WidgetViewBuilder(
         }
 
         override suspend fun create(): RemoteViews {
-            val shortcuts = shortcutsModel.shortcuts
             val r = context.resources
             val skinName = overrideSkin ?: prefs.skin
             val scaledDensity = r.displayMetrics.scaledDensity
@@ -107,7 +106,7 @@ class WidgetViewBuilder(
                 bitmapTransform.paddingBottom = iconPadding
             }
 
-            val views = RemoteViews(context.packageName, skinProperties.getLayout(shortcuts.size))
+            val views = RemoteViews(context.packageName, skinProperties.getLayout(shortcutsModel.count))
 
             widgetButtonViewBuilder.setup(skinProperties, views)
 
@@ -120,7 +119,7 @@ class WidgetViewBuilder(
             shortcutViewBuilder.init(scaledDensity, skinProperties, themeIcons, prefs, shortcutsModel,
                     bitmapTransform)
 
-            val totalRows = shortcuts.size / 2
+            val totalRows = shortcutsModel.count / 2
             for (rowNum in 0 until totalRows) {
                 val firstBtn = rowNum * 2
                 val secondBtn = firstBtn + 1
