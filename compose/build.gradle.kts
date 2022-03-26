@@ -30,7 +30,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.0-rc03"
+        kotlinCompilerExtensionVersion = "1.2.0-alpha06"
     }
 }
 
@@ -47,20 +47,20 @@ dependencies {
 
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.fragment:fragment-ktx:1.4.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
 
-    implementation("androidx.compose.ui:ui:1.1.0-rc03")
-    implementation("androidx.compose.foundation:foundation:1.1.0-rc03")
-    implementation("androidx.compose.material:material:1.1.0-rc03")
-    implementation("androidx.compose.material:material-icons-core:1.1.0-rc03")
-    implementation("androidx.compose.material:material-icons-extended:1.1.0-rc03")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
-    implementation("androidx.navigation:navigation-compose:2.4.0")
+    implementation("androidx.compose.ui:ui:1.2.0-alpha06")
+    implementation("androidx.compose.foundation:foundation:1.2.0-alpha06")
+    implementation("androidx.compose.material:material:1.2.0-alpha06")
+    implementation("androidx.compose.material:material-icons-core:1.2.0-alpha06")
+    implementation("androidx.compose.material:material-icons-extended:1.2.0-alpha06")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
+    implementation("androidx.navigation:navigation-compose:2.4.1")
     implementation("androidx.activity:activity-compose:1.4.0")
 
-    implementation("com.google.accompanist:accompanist-pager:0.22.0-rc")
-    implementation("com.google.accompanist:accompanist-flowlayout:0.22.0-rc")
+    implementation("com.google.accompanist:accompanist-pager:0.24.5-alpha")
+    implementation("com.google.accompanist:accompanist-flowlayout:0.24.5-alpha")
 
-    implementation("androidx.compose.ui:ui-tooling:1.0.5")
+    implementation("androidx.compose.ui:ui-tooling:1.1.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
 }

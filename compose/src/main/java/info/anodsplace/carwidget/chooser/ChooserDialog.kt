@@ -1,12 +1,11 @@
 package info.anodsplace.carwidget.chooser
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -61,14 +60,13 @@ fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ChooserGridList(headers: List<ChooserEntry>, list: List<ChooserEntry>, onClick: (ChooserEntry) -> Unit) {
 
     LazyVerticalGrid(
         modifier = Modifier.padding(16.dp),
-        cells = GridCells.Adaptive(64.dp),
-        state = rememberLazyListState()
+        columns = GridCells.Adaptive(64.dp),
+        state = rememberLazyGridState()
     ) {
         items(headers.size) { index ->
             val entry = headers[index]
