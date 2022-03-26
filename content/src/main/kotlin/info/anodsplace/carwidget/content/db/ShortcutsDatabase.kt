@@ -13,16 +13,17 @@ import android.util.SparseArray
 import androidx.core.content.res.ResourcesCompat
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
-import com.squareup.sqldelight.runtime.coroutines.mapToOne
+import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Database
 import info.anodsplace.carwidget.content.extentions.isLowMemoryDevice
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.net.URISyntaxException
-import java.util.ArrayList
 
 typealias ShortcutWithIcon = Pair<Shortcut, ShortcutIcon?>
 
@@ -119,8 +120,8 @@ class ShortcutsDatabase(private val context: Context, private val db: Database) 
 
     fun observeShortcut(shortcutId: Long): Flow<Shortcut?> {
         return db.shortcutsQueries.selectShortcut(shortcutId, mapper = ::mapShortcut).asFlow()
-                .mapToOne()
-                .filter { it.isValid }
+                .mapToOneOrNull()
+                .filter { it?.isValid == true }
     }
 
     fun observeTarget(targetId: Int): Flow<Map<Int, Shortcut?>> {
