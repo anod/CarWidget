@@ -138,11 +138,6 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
         Channels.register(this)
     }
 
-    override fun onTrimMemory(level: Int) {
-        super.onTrimMemory(level)
-        AppLog.w("Level: $level", tag = "onTrimMemory")
-    }
-
     private fun createInCarStatus(): info.anodsplace.carwidget.incar.InCarStatus {
         val prefs: InCarInterface = get()
         val context: Context = get()

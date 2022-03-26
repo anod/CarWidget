@@ -20,16 +20,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.WarningColor
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.iconUri
+import info.anodsplace.carwidget.content.graphics.imageLoader
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
 import info.anodsplace.compose.BackgroundSurface
-import info.anodsplace.compose.PicassoIcon
 
 @Composable
 fun Modifier.cardStyle(): Modifier = then(
@@ -69,7 +70,12 @@ fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, iconModifier: Mod
         for (idx in indexes) {
             val shortcut = item.shortcuts.getOrNull(idx)
             if (shortcut != null) {
-                PicassoIcon(shortcut.iconUri(context, item.adaptiveIconStyle), modifier = iconModifier)
+                AsyncImage(
+                    model = shortcut.iconUri(context, item.adaptiveIconStyle),
+                    contentDescription = shortcut.title.toString(),
+                    imageLoader = context.imageLoader,
+                    modifier = iconModifier.border(1.dp, MaterialTheme.colors.onSurface, shape = RoundedCornerShape(8.dp))
+                )
             } else {
                 Box(modifier = iconModifier.border(1.dp, MaterialTheme.colors.onSurface, shape = RoundedCornerShape(8.dp))) {
 
@@ -170,6 +176,7 @@ fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int)
             InCarHeader(screen)
         }
     } else {
+        val imageLoader = LocalContext.current.imageLoader
         val iconModifier = Modifier
             .size(SystemIconSize)
             .padding(4.dp)
@@ -210,9 +217,11 @@ fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int)
                 when (item) {
                     is WidgetItem.Shortcut -> {
                         Box(modifier = Modifier.cardStyle()) {
-                            PicassoIcon(
-                                uri = LocalContext.current.iconUri("mipmap", "ic_launcher"),
-                                modifier = iconModifier
+                            AsyncImage(
+                                model = LocalContext.current.iconUri("mipmap", "ic_launcher"),
+                                contentDescription = "",
+                                imageLoader = imageLoader,
+                                modifier = iconModifier.border(1.dp, MaterialTheme.colors.onSurface, shape = RoundedCornerShape(8.dp))
                             )
                         }
                     }

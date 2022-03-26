@@ -9,21 +9,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
 import androidx.lifecycle.lifecycleScope
-import com.squareup.picasso.Picasso
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.extensions.extras
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.screens.main.EditShortcut
-import info.anodsplace.compose.LocalPicasso
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collect
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
     private val appSettings: AppSettings by inject()
-    private val picasso: Picasso by inject()
     private val uiModeManager: UiModeManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,13 +52,11 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
                     context = this@OverlayComposeActivity,
                     nightMode = nightMode
             ) {
-                CompositionLocalProvider(LocalPicasso provides picasso) {
-                    EditShortcut(
-                            appWidgetId = appWidgetId,
-                            args = args,
-                            action = action
-                    )
-                }
+                EditShortcut(
+                        appWidgetId = appWidgetId,
+                        args = args,
+                        action = action
+                )
             }
         }
     }

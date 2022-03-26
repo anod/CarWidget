@@ -21,7 +21,7 @@ dependencies {
     implementation(project(":lib:colorpicker"))
 
     implementation("io.insert-koin:koin-core:3.1.4")
-    implementation("com.squareup.picasso:picasso:2.8")
+    implementation("io.coil-kt:coil-base:2.0.0-rc02")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")

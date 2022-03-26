@@ -5,27 +5,31 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import androidx.core.graphics.drawable.toDrawable
+import coil.ImageLoader
+import coil.decode.DataSource
+import coil.fetch.DrawableResult
+import coil.fetch.FetchResult
+import coil.fetch.Fetcher
+import coil.request.Options
 
 import info.anodsplace.applog.AppLog
-import com.squareup.picasso.Request
-import com.squareup.picasso.RequestHandler
 
-import java.io.IOException
+class AppIconFetcher(private val context: Context, private val data: Uri, private val options: Options) : Fetcher {
 
-import com.squareup.picasso.Picasso.LoadedFrom.DISK
-
-class PackageIconRequestHandler(private val context: Context) : RequestHandler() {
-    private val packageManager: PackageManager = context.packageManager
-
-    override fun canHandleRequest(data: Request): Boolean {
-        return SCHEME_APPLICATION_ICON == data.uri.scheme
+    class Factory(private val context: Context) : Fetcher.Factory<Uri> {
+        override fun create(data: Uri, options: Options, imageLoader: ImageLoader): Fetcher? {
+            return if (data.scheme == SCHEME_APPLICATION_ICON) AppIconFetcher(context, data, options) else null
+        }
     }
 
-    @Throws(IOException::class)
-    override fun load(request: Request, networkPolicy: Int): Result? {
+    private val packageManager: PackageManager = context.packageManager
+
+    override suspend fun fetch(): FetchResult? {
         var d: Drawable? = null
 
-        val part = request.uri.schemeSpecificPart
+        val part = data.schemeSpecificPart
         AppLog.d("Get Activity Info: $part")
         val cmp = ComponentName.unflattenFromString(part)
         try {
@@ -45,11 +49,15 @@ class PackageIconRequestHandler(private val context: Context) : RequestHandler()
 
         }
         val icon: Bitmap = UtilitiesBitmap.createSystemIconBitmap(d, context)
-        return Result(icon, DISK)
+        return DrawableResult(
+            drawable = icon.toDrawable(options.context.resources),
+            isSampled = false,
+            dataSource = DataSource.DISK
+        )
     }
-
 
     companion object {
         const val SCHEME_APPLICATION_ICON = "application.icon"
     }
+
 }

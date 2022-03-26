@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import coil.request.ImageRequest
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.ktx.hashCodeOf
 

@@ -15,15 +15,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.squareup.picasso.Picasso
+import coil.compose.AsyncImage
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.iconUri
+import info.anodsplace.carwidget.content.graphics.imageLoader
 import info.anodsplace.carwidget.screens.shortcuts.intent.IntentEditScreen
 import info.anodsplace.compose.BackgroundSurface
-import info.anodsplace.compose.LocalPicasso
-import info.anodsplace.compose.PicassoIcon
 import kotlinx.coroutines.launch
 
 @Composable
@@ -95,13 +94,15 @@ fun ShortcutInfo(shortcut: Shortcut, delegate: ShortcutEditDelegate, onDismissRe
             horizontalAlignment = Alignment.CenterHorizontally
     ) {
         IconButton(onClick = {}) {
-            PicassoIcon(
-                    modifier = Modifier
-                            .size(96.dp)
-                            .padding(4.dp)
-                            .weight(1f)
-                            .clickable(onClick = { }),
-                    uri = shortcut.iconUri(LocalContext.current, ""),
+            AsyncImage(
+                model = shortcut.iconUri(LocalContext.current, ""),
+                contentDescription = shortcut.title.toString(),
+                imageLoader = LocalContext.current.imageLoader,
+                modifier = Modifier
+                    .size(96.dp)
+                    .padding(4.dp)
+                    .weight(1f)
+                    .clickable(onClick = { })
             )
         }
         TextField(
@@ -138,14 +139,12 @@ fun ShortcutInfo(shortcut: Shortcut, delegate: ShortcutEditDelegate, onDismissRe
 fun PreviewShortcutEditContent() {
     CarWidgetTheme {
         BackgroundSurface {
-            CompositionLocalProvider(LocalPicasso provides Picasso.get()) {
-                ShortcutEditContent(
-                        shortcut = Shortcut(0,0, 0, "Title", false, Intent()),
-                        delegate = ShortcutEditDelegate.NoOp(),
-                        onDismissRequest = { },
-                        expanded = mutableStateOf(true)
-                )
-            }
+            ShortcutEditContent(
+                    shortcut = Shortcut(0,0, 0, "Title", false, Intent()),
+                    delegate = ShortcutEditDelegate.NoOp(),
+                    onDismissRequest = { },
+                    expanded = mutableStateOf(true)
+            )
         }
     }
 }

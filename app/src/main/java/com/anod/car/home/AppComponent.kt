@@ -9,12 +9,12 @@ import android.media.AudioManager
 import android.telephony.TelephonyManager
 import android.util.LruCache
 import android.view.WindowManager
+import coil.ImageLoader
 import com.anod.car.home.incar.ModeHandler
 import com.anod.car.home.incar.ModePhoneStateListener
 import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
 import info.anodsplace.carwidget.content.preferences.AppSettings
-import com.squareup.picasso.Picasso
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.util.createLruCache
@@ -25,7 +25,7 @@ import org.koin.core.component.get
  * @author alex
  * @date 2014-10-27
  */
-class AppComponent(val application: Application) : KoinComponent {
+class AppComponent(private val application: Application) : KoinComponent {
     val shortcutResources: ShortcutResources
         get() = get()
 
@@ -62,7 +62,7 @@ class AppComponent(val application: Application) : KoinComponent {
     val packageManager: PackageManager
         get() = application.packageManager
 
-    val appIconLoader: Picasso
+    val appIconLoader: ImageLoader
         get() = get()
 
     val memoryCache: LruCache<String, Any?> by lazy {

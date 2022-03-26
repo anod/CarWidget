@@ -14,23 +14,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
-import com.squareup.picasso.Picasso
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.extensions.extras
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.screens.main.MainScreen
-import info.anodsplace.compose.LocalPicasso
 import info.anodsplace.compose.toColorHex
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collect
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -38,7 +34,6 @@ import org.koin.core.parameter.parametersOf
 
 open class MainComposeActivity : ComponentActivity(), KoinComponent {
     private val appSettings: AppSettings by inject()
-    private val picasso: Picasso by inject()
     private val uiModeManager: UiModeManager by inject()
 
     open fun startConfigActivity(appWidgetId: Int) {}
@@ -80,13 +75,11 @@ open class MainComposeActivity : ComponentActivity(), KoinComponent {
                 context = this@MainComposeActivity,
                 nightMode = nightMode
             ) {
-                CompositionLocalProvider(LocalPicasso provides picasso) {
-                    MainScreen(
-                        inCar = get(),
-                        appWidgetId = appWidgetId,
-                        action = action
-                    )
-                }
+                MainScreen(
+                    inCar = get(),
+                    appWidgetId = appWidgetId,
+                    action = action
+                )
 //                ThemeColors(listOf(
 //                        Triple("primary", MaterialTheme.colors.primary, MaterialTheme.colors.onPrimary),
 //                        Triple("secondary", MaterialTheme.colors.secondary, MaterialTheme.colors.onSecondary),

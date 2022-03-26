@@ -3,41 +3,55 @@ package info.anodsplace.carwidget.content.graphics
 import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Path
+import android.net.Uri
+import androidx.core.graphics.drawable.toDrawable
+import coil.ImageLoader
+import coil.decode.DataSource
+import coil.fetch.DrawableResult
+import coil.fetch.FetchResult
+import coil.fetch.Fetcher
+import coil.request.Options
 
-import com.squareup.picasso.Request
-import com.squareup.picasso.RequestHandler
-
-import java.io.IOException
-
-import com.squareup.picasso.Picasso.LoadedFrom.DISK
 import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.graphics.PathParser
-import kotlinx.coroutines.runBlocking
 
 /**
  * @author algavris
  * @date 23/08/2016.
  */
 
-class ShortcutIconRequestHandler(context: Context, private val db: ShortcutsDatabase, private val iconLoader: ShortcutIconLoader) : RequestHandler() {
-    private val authority: String? = LauncherSettings.Favorites.getContentUri(context.packageName).authority
+class ShortcutIconRequestHandler(
+    private val db: ShortcutsDatabase,
+    private val iconLoader: ShortcutIconLoader,
+    private val data: Uri,
+    private val options: Options
+) : Fetcher {
 
-    override fun canHandleRequest(data: Request): Boolean {
-        return if (ContentResolver.SCHEME_CONTENT == data.uri.scheme) {
-            data.uri.authority == authority
-        } else false
+    class Factory(
+        private val context: Context,
+        private val db: ShortcutsDatabase,
+        private val iconLoader: ShortcutIconLoader
+    ) : Fetcher.Factory<Uri> {
+        private val authority: String? = LauncherSettings.Favorites.getContentUri(context.packageName).authority
+
+        override fun create(data: Uri, options: Options, imageLoader: ImageLoader): Fetcher? {
+            return if (data.scheme == ContentResolver.SCHEME_CONTENT && data.authority == authority) ShortcutIconRequestHandler(db, iconLoader, data, options) else null
+        }
     }
 
-    @Throws(IOException::class)
-    override fun load(request: Request, networkPolicy: Int): Result? = runBlocking {
-        val shortcutId = request.uri.lastPathSegment?.toLong() ?: return@runBlocking null
-        val shortcut = db.loadShortcut(shortcutId) ?: return@runBlocking null
-        val adaptiveIconStyle = request.uri.getQueryParameter("adaptiveIconStyle") ?: ""
+    override suspend fun fetch(): FetchResult? {
+        val shortcutId = data.lastPathSegment?.toLong() ?: return null
+        val shortcut = db.loadShortcut(shortcutId) ?: return null
+        val adaptiveIconStyle = data.getQueryParameter("adaptiveIconStyle") ?: ""
         val adaptiveIconPath = if (adaptiveIconStyle.isNotBlank()) PathParser.createPathFromPathData(adaptiveIconStyle) else Path()
         val icon = iconLoader.load(shortcut, adaptiveIconPath)
-        return@runBlocking Result(icon.bitmap, DISK)
+        return DrawableResult(
+            drawable = icon.bitmap.toDrawable(options.context.resources),
+            isSampled = false,
+            dataSource = DataSource.DISK
+        )
     }
 
 }

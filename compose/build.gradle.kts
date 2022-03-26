@@ -43,7 +43,7 @@ dependencies {
     implementation(project(":content"))
 
     implementation("io.insert-koin:koin-core:3.1.5")
-    implementation("com.squareup.picasso:picasso:2.8")
+    implementation("io.coil-kt:coil-compose-base:2.0.0-rc02")
 
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.fragment:fragment-ktx:1.4.1")

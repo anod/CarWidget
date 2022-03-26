@@ -7,8 +7,13 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,7 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import info.anodsplace.compose.PicassoIcon
+import coil.compose.AsyncImage
+import info.anodsplace.carwidget.content.graphics.imageLoader
 import info.anodsplace.carwidget.utils.SystemIconSize
 
 @Composable
@@ -42,9 +48,10 @@ fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit) {
                 tint = Color.Unspecified
             )
         } else {
-            PicassoIcon(
-                uri = entry.iconUri(context),
+            AsyncImage(
+                model = entry.iconUri(context),
                 contentDescription = entry.title,
+                imageLoader = context.imageLoader,
                 modifier = iconModifier
             )
         }
@@ -93,7 +100,9 @@ fun ChooserDialog(
         properties = DialogProperties()
     ) {
         Surface(
-            modifier = modifier.fillMaxWidth().defaultMinSize(minHeight = 352.dp),
+            modifier = modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 352.dp),
             shape = MaterialTheme.shapes.medium,
             color = MaterialTheme.colors.surface,
             contentColor = MaterialTheme.colors.onSurface

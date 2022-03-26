@@ -1,12 +1,13 @@
 package info.anodsplace.carwidget.content
 
 import android.appwidget.AppWidgetManager
-import com.squareup.picasso.Picasso
+import android.content.Context
+import coil.ImageLoader
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
-import info.anodsplace.carwidget.content.graphics.PackageIconRequestHandler
+import info.anodsplace.carwidget.content.graphics.AppIconFetcher
 import info.anodsplace.carwidget.content.graphics.ShortcutIconRequestHandler
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.InCarInterface
@@ -15,7 +16,6 @@ import org.koin.core.logger.Level
 import org.koin.core.logger.Logger
 import org.koin.core.logger.MESSAGE
 import org.koin.core.module.Module
-import org.koin.core.scope.get
 import org.koin.dsl.module
 
 class AndroidLogger : Logger(Level.DEBUG) {
@@ -37,9 +37,12 @@ fun createAppModule(): Module = module {
     single { AppCoroutineScope() }
     factory { Version(get()) }
     factory {
-        Picasso.Builder(get())
-            .addRequestHandler(ShortcutIconRequestHandler(get(), get(), get()))
-            .addRequestHandler(PackageIconRequestHandler(get()))
+        val context: Context = get()
+        ImageLoader.Builder(context)
+            .components {
+                add(AppIconFetcher.Factory(context))
+                add(ShortcutIconRequestHandler.Factory(context, get(), get()))
+            }
             .build()
     }
     factory { BitmapLruCache(get()) }

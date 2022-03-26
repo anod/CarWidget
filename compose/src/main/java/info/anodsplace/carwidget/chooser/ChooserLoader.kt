@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.chooser
 
 import android.content.ComponentName
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,10 +11,9 @@ import android.os.Bundle
 import androidx.annotation.DrawableRes
 import androidx.collection.SimpleArrayMap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.BuildConfig
-import info.anodsplace.carwidget.content.graphics.PackageIconRequestHandler
+import info.anodsplace.carwidget.content.graphics.AppIconFetcher
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.framework.content.forLauncher
 import kotlinx.coroutines.Dispatchers
@@ -90,7 +88,7 @@ internal fun ChooserEntry.iconUri(context: Context): Uri {
         if (iconRes != 0) {
             context.iconUri(iconRes = iconRes)
         } else Uri.EMPTY
-    } else Uri.fromParts(PackageIconRequestHandler.SCHEME_APPLICATION_ICON, componentName.flattenToShortString(), null)
+    } else Uri.fromParts(AppIconFetcher.SCHEME_APPLICATION_ICON, componentName.flattenToShortString(), null)
 }
 
 interface ChooserLoader {
