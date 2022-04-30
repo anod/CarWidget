@@ -20,11 +20,11 @@ dependencies {
     implementation(project(":lib:framework"))
     implementation(project(":lib:colorpicker"))
 
-    implementation("io.insert-koin:koin-core:3.1.4")
-    implementation("io.coil-kt:coil-base:2.0.0-rc02")
+    implementation("io.insert-koin:koin-core:3.1.6")
+    implementation("io.coil-kt:coil-base:2.0.0-rc03")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
 
     // Activity recognition
     implementation("com.google.android.gms:play-services-location:19.0.1")
@@ -51,7 +51,7 @@ dependencies {
     kapt("com.google.auto.service:auto-service:1.0.1")
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.20")
 }
 
 android {
@@ -93,8 +93,7 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
-
-    flavorDimensions("tier")
+    flavorDimensions += listOf("tier")
 
     productFlavors {
         create("pro") {
