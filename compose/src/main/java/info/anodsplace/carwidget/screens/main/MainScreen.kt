@@ -2,9 +2,9 @@ package info.anodsplace.carwidget.screens.main
 
 import android.app.Application
 import android.appwidget.AppWidgetManager
-import androidx.compose.runtime.getValue
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -15,11 +15,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.CarWidgetTheme
+import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings.Companion.BUTTON_COLOR
@@ -42,6 +45,7 @@ import info.anodsplace.compose.BackgroundSurface
 import info.anodsplace.compose.ScreenLoadState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.getKoin
 
 @Composable
 fun rememberTileColor(currentSkinValue: String, prefs: WidgetInterface): AppBarTileColor {
@@ -223,7 +227,12 @@ fun NavHost(
                 InCarMainScreen(inCarViewModel, navController = navController, modifier = modifier)
             }
             composable(route = NavItem.InCar.Bluetooth.route) {
-                val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel()
+                val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel(factory =
+                    BluetoothDevicesViewModel.Factory(
+                        application = getKoin().get(),
+                        bluetoothManager = getKoin().get()
+                    )
+                )
                 BluetoothDevicesScreen(viewModel = bluetoothDevicesViewModel, modifier = modifier)
             }
             composable(route = NavItem.InCar.Media.route) {

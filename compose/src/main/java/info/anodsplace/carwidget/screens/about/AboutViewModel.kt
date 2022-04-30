@@ -13,8 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
-import info.anodsplace.carwidget.chooser.AppsListViewModel
-import info.anodsplace.carwidget.chooser.ChooserLoader
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.carwidget.content.backup.BackupManager
@@ -22,8 +20,8 @@ import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.extensions.openDefaultCarDock
 import info.anodsplace.carwidget.extensions.openPlayStoreDetails
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get

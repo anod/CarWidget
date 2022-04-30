@@ -3,12 +3,16 @@ package info.anodsplace.carwidget.screens.incar
 import android.annotation.SuppressLint
 import android.app.Application
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.carwidget.content.preferences.InCarStorage
@@ -33,8 +37,17 @@ sealed class BluetoothDevicesState {
     class Devices(val list: List<BluetoothDevice>): BluetoothDevicesState()
 }
 
-class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(application) {
-    private val btAdapter: BluetoothAdapter? by lazy { BluetoothAdapter.getDefaultAdapter() }
+class BluetoothDevicesViewModel(application: Application, private val bluetoothManager: BluetoothManager) : AndroidViewModel(application) {
+
+    class Factory(
+        private val application: Application,
+        private val bluetoothManager: BluetoothManager
+    ): ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+            return BluetoothDevicesViewModel(application, bluetoothManager) as T
+        }
+    }
+
     private var bluetoothReceiver: BroadcastReceiver? = null
     private val context: Context
         get() = getApplication()
@@ -51,7 +64,7 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
         if (requires) {
             return@map BluetoothDevicesState.RequiresPermissions
         } else {
-            if (btAdapter?.isEnabled == true) {
+            if (bluetoothManager.adapter?.isEnabled == true) {
                 val list = loadDevices()
                 return@map BluetoothDevicesState.Devices(list)
             }
@@ -97,13 +110,10 @@ class BluetoothDevicesViewModel(application: Application) : AndroidViewModel(app
 
     @SuppressLint("MissingPermission")
     private suspend fun loadDevices(): List<BluetoothDevice> = withContext(Dispatchers.Default) {
-
-        if (btAdapter == null) {
-            return@withContext emptyList<BluetoothDevice>()
-        }
+        val btAdapter = bluetoothManager.adapter ?: return@withContext emptyList<BluetoothDevice>()
 
         // Get a set of currently paired devices
-        val pairedDevices = btAdapter!!.bondedDevices
+        val pairedDevices = btAdapter.bondedDevices
         val devices = settings.btDevices
         val pairedList = mutableListOf<BluetoothDevice>()
 

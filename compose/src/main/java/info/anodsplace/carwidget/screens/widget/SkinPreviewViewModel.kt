@@ -16,9 +16,10 @@ import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
 import info.anodsplace.carwidget.appwidget.WidgetView
 import info.anodsplace.carwidget.content.BitmapLruCache
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
-import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
+import info.anodsplace.ktx.hashCodeOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -48,24 +49,31 @@ data class SkinList(
 }
 
 class SkinPreviewViewModel(application: Application, var appWidgetId: Int): AndroidViewModel(application), KoinComponent {
+
+    class Factory(private val appContext: Context, private val appWidgetId: Int): ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = SkinPreviewViewModel(appContext as Application, appWidgetId) as T
+    }
+
     private val bitmapMemoryCache: BitmapLruCache by inject()
     private val db: ShortcutsDatabase by inject()
 
     val widgetSettings: WidgetInterface by inject(parameters = { parametersOf(appWidgetId) })
     val skinList = SkinList(widgetSettings.skin, application)
-    val shortcuts: WidgetShortcutsModel by lazy { WidgetShortcutsModel(application, get(), DefaultsResourceProvider(application), appWidgetId) }
+    val shortcuts = WidgetShortcutsModel(application, db, DefaultsResourceProvider(application), appWidgetId)
     val currentSkin = MutableStateFlow(skinList.current)
-    val reload: Flow<Int> = widgetSettings.changes
-            .map { (System.currentTimeMillis() / 1000).toInt() }
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = 0)
-            .filter { it > 0 }
-            .onEach {
-                delay(300)
+    val reload: Flow<Int> = widgetSettings.changes.onStart { emit(Pair("", null)) }
+        .combine(db.observeTarget(appWidgetId).onStart { emit(emptyMap()) }) { s, t ->
+            if (s.first.isEmpty() && t.isEmpty()) {
+                0
+            } else {
+                hashCodeOf(s, t)
             }
-
-    class Factory(private val appContext: Context, private val appWidgetId: Int): ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T = SkinPreviewViewModel(appContext as Application, appWidgetId) as T
-    }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = 0)
+        .filter { it != 0 }
+        .onEach {
+            delay(300)
+        }
 
     override fun onCleared() {
         super.onCleared()
@@ -82,8 +90,8 @@ class SkinPreviewViewModel(application: Application, var appWidgetId: Int): Andr
         val rv = widgetView.apply {
             this.overrideSkin = overrideSkin
             init()
-
         }.create()
+
         try {
             return@withContext rv.apply(context, null)
         } catch (e: InflateException) {

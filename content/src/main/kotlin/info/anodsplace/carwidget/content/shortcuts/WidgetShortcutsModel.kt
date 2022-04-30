@@ -12,7 +12,12 @@ import info.anodsplace.carwidget.content.extentions.isAvailable
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
 
-class WidgetShortcutsModel(context: Context, database: ShortcutsDatabase, private val defaultsProvider: WidgetSettings.DefaultsProvider, private val appWidgetId: Int) : AbstractShortcuts(context, database) {
+class WidgetShortcutsModel(
+    context: Context,
+    database: ShortcutsDatabase,
+    private val defaultsProvider: WidgetSettings.DefaultsProvider,
+    private val appWidgetId: Int
+) : AbstractShortcuts(context, database) {
 
     private val widgetSettings: WidgetSettings
         get() = WidgetStorage.load(context, defaultsProvider, appWidgetId)
@@ -85,6 +90,5 @@ class WidgetShortcutsModel(context: Context, database: ShortcutsDatabase, privat
                 break
             }
         }
-
     }
 }
