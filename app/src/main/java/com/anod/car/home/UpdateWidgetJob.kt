@@ -4,7 +4,6 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
-import com.anod.car.home.app.App
 import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.appwidget.WidgetViewBuilder
 import info.anodsplace.applog.AppLog
@@ -33,8 +32,8 @@ class UpdateWidgetJob : JobIntentService(), KoinComponent {
 
     override fun onHandleWork(intent: Intent) {
         val appWidgetIds = intent.extras!!.getIntArray(inputWidgetIds) ?: intArrayOf()
-        val appWidgetManager = App.provide(applicationContext).appWidgetManager
-        val shortcutResources = App.provide(applicationContext).shortcutResources
+        val appWidgetManager = get<AppWidgetManager>()
+        val shortcutResources = get<ShortcutResources>()
         performUpdate(applicationContext, appWidgetManager, shortcutResources, appWidgetIds)
     }
 
@@ -42,7 +41,17 @@ class UpdateWidgetJob : JobIntentService(), KoinComponent {
         // Perform this loop procedure for each App Widget that belongs to this
         // provider
         for (appWidgetId in appWidgetIds) {
-            val views = WidgetViewBuilder(context, get(), get(), appWidgetId, ShortcutPendingIntent(context, shortcutResources)).apply {
+            val views = WidgetViewBuilder(
+                context = context,
+                database = get(),
+                iconLoader = get(),
+                appWidgetId = appWidgetId,
+                bitmapMemoryCache = null,
+                pendingIntentFactory = ShortcutPendingIntent(context, shortcutResources),
+                widgetButtonAlternativeHidden = false,
+                overrideSkin = null,
+                koin = getKoin()
+            ).apply {
                 init()
             }.create()
             AppLog.i("Performing update for widget #$appWidgetId")

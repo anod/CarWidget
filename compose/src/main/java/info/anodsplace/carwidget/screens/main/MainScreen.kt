@@ -1,6 +1,5 @@
 package info.anodsplace.carwidget.screens.main
 
-import android.app.Application
 import android.appwidget.AppWidgetManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,10 +32,7 @@ import info.anodsplace.carwidget.screens.WidgetActions
 import info.anodsplace.carwidget.screens.about.AboutScreen
 import info.anodsplace.carwidget.screens.about.AboutViewModel
 import info.anodsplace.carwidget.screens.incar.*
-import info.anodsplace.carwidget.screens.shortcuts.ShortcutEditScreen
-import info.anodsplace.carwidget.screens.shortcuts.ShortcutEditViewModel
-import info.anodsplace.carwidget.screens.shortcuts.ShortcutPickerScreen
-import info.anodsplace.carwidget.screens.shortcuts.ShortcutPickerViewModel
+import info.anodsplace.carwidget.screens.shortcuts.EditShortcut
 import info.anodsplace.carwidget.screens.widget.SkinPreviewViewModel
 import info.anodsplace.carwidget.screens.widget.WidgetActionDialog
 import info.anodsplace.carwidget.screens.widget.WidgetLookMoreScreen
@@ -241,37 +237,6 @@ fun NavHost(
             composable(route = NavItem.InCar.More.route) {
                 MoreScreen(inCar = inCar, modifier = modifier)
             }
-        }
-    }
-}
-
-@Composable
-fun EditShortcut(appWidgetId: Int, args: NavItem.CurrentWidget.EditShortcut.Args, action: MutableSharedFlow<UiAction>,) {
-    val appContext = LocalContext.current.applicationContext as Application
-    val scope = rememberCoroutineScope()
-
-    if (args.shortcutId > 0) {
-        val viewModel: ShortcutEditViewModel = viewModel(
-                factory = ShortcutEditViewModel.Factory(
-                        args.position,
-                        args.shortcutId,
-                        appWidgetId,
-                        appContext
-                )
-        )
-        ShortcutEditScreen(viewModel) {
-            scope.launch { action.emit(UiAction.OnBackNav) }
-        }
-    } else {
-        val viewModel: ShortcutPickerViewModel = viewModel(
-                factory = ShortcutPickerViewModel.Factory(
-                        args.position,
-                        appWidgetId,
-                        appContext
-                )
-        )
-        ShortcutPickerScreen(viewModel) {
-            scope.launch { action.emit(UiAction.OnBackNav) }
         }
     }
 }

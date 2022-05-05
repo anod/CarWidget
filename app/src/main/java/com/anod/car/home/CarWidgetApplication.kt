@@ -5,23 +5,26 @@ import android.app.NotificationManager
 import android.app.UiModeManager
 import android.bluetooth.BluetoothManager
 import android.content.Context
+import android.media.AudioManager
 import android.os.DeadSystemException
 import android.util.LruCache
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
 import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.appwidget.WidgetUpdateProvider
 import com.anod.car.home.appwidget.WidgetViewBuilder
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.incar.ModeDetector
+import com.anod.car.home.incar.ModeHandler
+import com.anod.car.home.incar.ModePhoneStateListener
 import com.anod.car.home.notifications.Channels
 import com.anod.car.home.prefs.lookandfeel.SkinPreviewIntentFactory
+import com.anod.car.home.skin.SkinPropertiesFactory
 import com.anod.car.home.utils.AppUpgrade
 import com.anod.car.home.utils.WidgetShortcutResource
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
-import info.anodsplace.carwidget.appwidget.WidgetIds
-import info.anodsplace.carwidget.appwidget.WidgetUpdate
-import info.anodsplace.carwidget.appwidget.WidgetView
+import info.anodsplace.carwidget.appwidget.*
+import info.anodsplace.carwidget.content.BitmapLruCache
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.createAppModule
 import info.anodsplace.carwidget.content.extentions.isServiceRunning
@@ -29,7 +32,10 @@ import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
+import info.anodsplace.carwidget.incar.ScreenOnAlert
+import info.anodsplace.carwidget.incar.ScreenOrientation
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
+import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.app.ApplicationInstance
 import org.acra.ReportField
 import org.acra.config.limiter
@@ -38,19 +44,18 @@ import org.acra.ktx.initAcra
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.context.startKoin
+import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
 
-    lateinit var appComponent: AppComponent
     override val notificationManager: NotificationManager
-        get() = appComponent.notificationManager
+        get() = get()
     override val memoryCache: LruCache<String, Any?>
-        get() = appComponent.memoryCache
-
+        get() = get(named("memoryCache"))
     override val nightMode: Int
-        get() = appComponent.appSettings.nightMode
+        get() = get(named("nightMode"))
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
@@ -112,29 +117,43 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
         startKoin {
             koin.loadModules(modules = listOf(module {
                 single<Context> { this@CarWidgetApplication } bind Application::class
-                single<WidgetIds> { WidgetHelper(get()) }
+                single<WidgetIds> { WidgetHelper(context = get()) }
                 factory<InCarStatus> { createInCarStatus() } bind info.anodsplace.carwidget.incar.InCarStatus::class
-                factory<WidgetView> { params -> WidgetViewBuilder(
-                        context = get(),
-                        database = get(),
-                        iconLoader = get(),
-                        appWidgetId = params[0],
-                        bitmapMemoryCache = params[1],
-                        pendingIntentFactory = params[2],
-                        widgetButtonAlternativeHidden = params[3]
-                    )
-                }
-                factory<PreviewPendingIntentFactory> { params -> SkinPreviewIntentFactory(params.get(), params.get(), get()) }
-                factory<WidgetInterface> { params -> WidgetStorage.load(get(), DefaultsResourceProvider(get<Context>()), params.get()) }
-                factory<UiModeManager> { get<Context>().getSystemService(UiModeManager::class.java) }
-                factory<BluetoothManager> { get<Context>().getSystemService(BluetoothManager::class.java) }
+                factory<WidgetView> { (
+                      appWidgetId: Int,
+                      bitmapMemoryCache: BitmapLruCache?,
+                      pendingIntentFactory: PendingIntentFactory,
+                      widgetButtonAlternativeHidden: Boolean
+                ) -> WidgetViewBuilder(
+                    context = get(),
+                    database = get(),
+                    iconLoader = get(),
+                    appWidgetId = appWidgetId,
+                    bitmapMemoryCache = bitmapMemoryCache,
+                    pendingIntentFactory = pendingIntentFactory,
+                    widgetButtonAlternativeHidden = widgetButtonAlternativeHidden,
+                    overrideSkin = null,
+                    koin = getKoin()
+                )}
+
+                factory { get<Context>().getSystemService(UiModeManager::class.java) }
+                factory { get<Context>().getSystemService(BluetoothManager::class.java) }
+                factory { get<Context>().getSystemService(AudioManager::class.java) }
+                factory { get<Context>().getSystemService(WindowManager::class.java) }
+
+                factory<PreviewPendingIntentFactory> { (appWidgetId: Int) -> SkinPreviewIntentFactory(appWidgetId, context = get()) }
+                factory<WidgetInterface> { (appWidgetId: Int) -> WidgetStorage.load(get(), DefaultsResourceProvider(get<Context>()), appWidgetId) }
                 factory<ShortcutResources> { WidgetShortcutResource() }
-                factory<WidgetUpdate> { WidgetUpdateProvider(get()) }
+                factory<WidgetUpdate> { WidgetUpdateProvider(context = get(), appWidgetManager = get()) }
+                factory { (skinName: String)-> SkinPropertiesFactory.create(skinName) }
+                factory { ScreenOrientation(context = get(), windowManager = get()) }
+                factory { ScreenOnAlert(context = get(), prefs = get(), alertWindow = AlertWindow(context = get())) }
+                factory { ModeHandler(context = get(), screenOrientation = get(), koin = getKoin()) }
+                factory { ModePhoneStateListener(context = get(), audioManager = get()) }
             }))
             modules(modules = createAppModule())
         }
 
-        appComponent = AppComponent(this)
         AppCompatDelegate.setDefaultNightMode(nightMode)
 
         Channels.register(this)

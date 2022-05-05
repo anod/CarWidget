@@ -1,8 +1,8 @@
 package com.anod.car.home.skin
 
 import com.anod.car.home.R
-import com.anod.car.home.skin.icon.BackgroundProcessor
 import com.anod.car.home.skin.icon.CardsBackgroundProcessor
+import info.anodsplace.carwidget.content.IconBackgroundProcessor
 
 class CardsProperties : BaseProperties() {
 
@@ -24,7 +24,7 @@ class CardsProperties : BaseProperties() {
     override val iconPaddingRes: Int
         get() = 0
 
-    override val backgroundProcessor: BackgroundProcessor
+    override val backgroundProcessor: IconBackgroundProcessor
         get() = CardsBackgroundProcessor()
 
     override fun getLayout(number: Int): Int {

@@ -3,22 +3,23 @@ package com.anod.car.home.appwidget
 import android.content.Context
 import android.widget.RemoteViews
 import androidx.collection.SimpleArrayMap
-
 import com.anod.car.home.R
-import info.anodsplace.carwidget.content.db.LauncherSettings
-import com.anod.car.home.skin.PropertiesFactory
-import info.anodsplace.carwidget.utils.BitmapTransform
-import info.anodsplace.carwidget.content.IconTheme
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.appwidget.WidgetView
 import info.anodsplace.carwidget.content.BitmapLruCache
+import info.anodsplace.carwidget.content.IconTheme
+import info.anodsplace.carwidget.content.SkinProperties
+import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
-import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.graphics.BitmapTransform
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
+import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
+import org.koin.core.Koin
+import org.koin.core.parameter.parametersOf
 
 class WidgetViewBuilder(
         private val context: Context,
@@ -28,11 +29,9 @@ class WidgetViewBuilder(
         private val bitmapMemoryCache: BitmapLruCache?,
         private val pendingIntentFactory: PendingIntentFactory,
         private val widgetButtonAlternativeHidden: Boolean,
-        override var overrideSkin: String? = null
+        override var overrideSkin: String?,
+        private val koin: Koin
 ) : WidgetView {
-
-    constructor(context: Context, database: ShortcutsDatabase, iconLoader: ShortcutIconLoader, appWidgetId: Int, pendingIntentFactory: PendingIntentFactory)
-            : this(context, database, iconLoader, appWidgetId, null, pendingIntentFactory, false)
 
     private var instance: WidgetView? = null
 
@@ -40,18 +39,19 @@ class WidgetViewBuilder(
         val bitmapTransform = BitmapTransform(context)
         val prefs = WidgetStorage.load(context, DefaultsResourceProvider(context), appWidgetId)
         this.instance = Instance(
-                appWidgetId = appWidgetId,
-                overrideSkin = overrideSkin,
-                context = context,
-                prefs = prefs,
-                shortcutsModel = WidgetShortcutsModel(context, database, DefaultsResourceProvider(context), appWidgetId),
-                bitmapTransform = bitmapTransform,
-                shortcutViewBuilder = ShortcutViewBuilder(context, appWidgetId, pendingIntentFactory, iconLoader).also {
-                    it.bitmapMemoryCache = bitmapMemoryCache
-                },
-                widgetButtonViewBuilder = WidgetButtonViewBuilder(context, prefs, pendingIntentFactory, appWidgetId).also {
-                    it.alternativeHidden = widgetButtonAlternativeHidden
-                }
+            appWidgetId = appWidgetId,
+            overrideSkin = overrideSkin,
+            context = context,
+            prefs = prefs,
+            shortcutsModel = WidgetShortcutsModel(context, database, DefaultsResourceProvider(context), appWidgetId),
+            bitmapTransform = bitmapTransform,
+            shortcutViewBuilder = ShortcutViewBuilder(context, appWidgetId, pendingIntentFactory, iconLoader).also {
+                it.bitmapMemoryCache = bitmapMemoryCache
+            },
+            widgetButtonViewBuilder = WidgetButtonViewBuilder(context, prefs, pendingIntentFactory, appWidgetId).also {
+                it.alternativeHidden = widgetButtonAlternativeHidden
+            },
+            koin = koin
         ).apply {
             init()
         }
@@ -70,14 +70,15 @@ class WidgetViewBuilder(
     }
 
     class Instance(
-            override val appWidgetId: Int,
-            override var overrideSkin: String?,
-            private val context: Context,
-            private val prefs: WidgetSettings,
-            private val shortcutsModel: WidgetShortcutsModel,
-            private var shortcutViewBuilder: ShortcutViewBuilder,
-            private var bitmapTransform: BitmapTransform,
-            private var widgetButtonViewBuilder: WidgetButtonViewBuilder,
+        override val appWidgetId: Int,
+        override var overrideSkin: String?,
+        private val context: Context,
+        private val prefs: WidgetSettings,
+        private val shortcutsModel: WidgetShortcutsModel,
+        private var shortcutViewBuilder: ShortcutViewBuilder,
+        private var bitmapTransform: BitmapTransform,
+        private var widgetButtonViewBuilder: WidgetButtonViewBuilder,
+        private val koin: Koin
     ): WidgetView {
         override suspend fun init() {
             if (prefs.isFirstTime) {
@@ -99,7 +100,7 @@ class WidgetViewBuilder(
             val skinName = overrideSkin ?: prefs.skin
             val scaledDensity = r.displayMetrics.scaledDensity
 
-            val skinProperties = PropertiesFactory.create(skinName)
+            val skinProperties: SkinProperties = koin.get { parametersOf(skinName) }
             val iconPaddingRes = skinProperties.iconPaddingRes
             if (iconPaddingRes > 0 && !prefs.isTitlesHide) {
                 val iconPadding = r.getDimension(iconPaddingRes).toInt()
@@ -188,4 +189,3 @@ class WidgetViewBuilder(
         }
     }
 }
-

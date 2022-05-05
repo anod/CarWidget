@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.incar
 
 import android.content.Context
-import android.content.pm.ActivityInfo
 import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
@@ -13,7 +12,7 @@ import info.anodsplace.carwidget.content.preferences.InCarInterface
  * @author alex
  * @date 2014-10-11
  */
-class ScreenOrientation(private val mContext: Context, private val windowManager: WindowManager) {
+class ScreenOrientation(private val context: Context, private val windowManager: WindowManager) {
 
     private var layoutParams: WindowManager.LayoutParams? = null
     private var overlayView: View? = null
@@ -30,12 +29,12 @@ class ScreenOrientation(private val mContext: Context, private val windowManager
             return
         }
 
-        if (!Settings.canDrawOverlays(mContext)) {
-            Toast.makeText(mContext, R.string.allow_permission_overlay, Toast.LENGTH_LONG).show()
+        if (!Settings.canDrawOverlays(context)) {
+            Toast.makeText(context, R.string.allow_permission_overlay, Toast.LENGTH_LONG).show()
             return
         }
 
-        overlayView = View(mContext)
+        overlayView = View(context)
         layoutParams = createLayoutParams()
 
         layoutParams!!.screenOrientation = orientation

@@ -7,15 +7,17 @@ import android.os.Bundle
 import android.view.KeyEvent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.FragmentActivity
-import com.anod.car.home.app.App
 import com.anod.car.home.appwidget.ShortcutPendingIntent
-import info.anodsplace.framework.permissions.AppPermissions
-import info.anodsplace.framework.permissions.CallPhone
 import com.anod.car.home.utils.MusicUtils
+import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra.EXTRA_MEDIA_BUTTON
 import info.anodsplace.framework.content.startActivitySafely
+import info.anodsplace.framework.permissions.AppPermissions
+import info.anodsplace.framework.permissions.CallPhone
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-class ShortcutActivity : FragmentActivity() {
+class ShortcutActivity : FragmentActivity(), KoinComponent {
 
     private lateinit var callPhonePermission: ActivityResultLauncher<Void>
 
@@ -53,7 +55,7 @@ class ShortcutActivity : FragmentActivity() {
             if (audio.isMusicActive) {
                 MusicUtils.sendKeyEvent(keyCode, this)
             } else {
-                val musicCmp = App.provide(this).appSettings.musicApp
+                val musicCmp = get<AppSettings>().musicApp
                 if (musicCmp == null) {
                     // TODO:
                     // startActivity(Intent(this, MusicAppChoiceActivity::class.java))

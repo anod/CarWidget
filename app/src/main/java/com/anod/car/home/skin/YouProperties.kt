@@ -1,8 +1,6 @@
 package com.anod.car.home.skin
 
 import com.anod.car.home.R
-import com.anod.car.home.skin.icon.BackgroundProcessor
-import com.anod.car.home.skin.icon.CardsBackgroundProcessor
 
 class YouProperties : BaseProperties() {
 

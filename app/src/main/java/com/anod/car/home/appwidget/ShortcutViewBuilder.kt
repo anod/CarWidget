@@ -9,19 +9,18 @@ import android.util.LruCache
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.content.ContextCompat
-import info.anodsplace.carwidget.content.db.Shortcut
-import info.anodsplace.carwidget.content.db.ShortcutIconLoader
-import com.anod.car.home.skin.SkinProperties
-import com.anod.car.home.skin.icon.BackgroundProcessor
-import info.anodsplace.carwidget.utils.BitmapTransform
-import info.anodsplace.carwidget.content.IconTheme
-import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
-import info.anodsplace.carwidget.content.db.ShortcutsDatabase
-import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.IconBackgroundProcessor
+import info.anodsplace.carwidget.content.IconTheme
+import info.anodsplace.carwidget.content.SkinProperties
+import info.anodsplace.carwidget.content.db.Shortcut
+import info.anodsplace.carwidget.content.db.ShortcutIconLoader
+import info.anodsplace.carwidget.content.graphics.BitmapTransform
+import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
+import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 
 interface ShortcutViewBuilderInstance {
     var bitmapMemoryCache: LruCache<String, Bitmap>?
@@ -69,21 +68,21 @@ class ShortcutViewBuilder(
     }
 
     class Instance(
-            private val context: Context,
-            private val appWidgetId: Int,
-            private val pendingIntentFactory: PendingIntentFactory,
-            private val skinProperties: SkinProperties,
-            private val iconTheme: IconTheme?,
-            private val prefs: WidgetSettings,
-            private val shortcuts: WidgetShortcutsModel,
-            private val bitmapTransform: BitmapTransform,
-            private val scaledDensity: Float,
-            private val iconLoader: ShortcutIconLoader,
+        private val context: Context,
+        private val appWidgetId: Int,
+        private val pendingIntentFactory: PendingIntentFactory,
+        private val skinProperties: SkinProperties,
+        private val iconTheme: IconTheme?,
+        private val prefs: WidgetSettings,
+        private val shortcuts: WidgetShortcutsModel,
+        private val bitmapTransform: BitmapTransform,
+        private val scaledDensity: Float,
+        private val iconLoader: ShortcutIconLoader,
     ) : ShortcutViewBuilderInstance {
 
         override var bitmapMemoryCache: LruCache<String, Bitmap>? = null
 
-        private val backgroundProcessor: BackgroundProcessor? = skinProperties.backgroundProcessor
+        private val backgroundProcessor: IconBackgroundProcessor? = skinProperties.backgroundProcessor
         private val adaptiveIconPath: Path = prefs.adaptiveIconPath
 
         override suspend fun fill(views: RemoteViews, position: Int, resBtn: Int, resText: Int) {

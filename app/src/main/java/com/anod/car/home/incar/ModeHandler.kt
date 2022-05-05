@@ -10,16 +10,20 @@ import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
 import com.anod.car.home.R
-import com.anod.car.home.app.App
 import com.anod.car.home.utils.Power
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
-import info.anodsplace.applog.AppLog
 import info.anodsplace.framework.bluetooth.Bluetooth
 import info.anodsplace.framework.content.startActivitySafely
+import org.koin.core.Koin
 
-class ModeHandler(private val context: Context, private val screenOrientation: ScreenOrientation) {
-    private val alertWindow: ScreenOnAlert by lazy { App.provide(context).alertWindow }
+class ModeHandler(
+    private val context: Context,
+    private val screenOrientation: ScreenOrientation,
+    private val koin: Koin
+) {
+    private val alertWindow: ScreenOnAlert by lazy { koin.get() }
 
     fun enable(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface) {
         if (prefs.isDisableScreenTimeout) {

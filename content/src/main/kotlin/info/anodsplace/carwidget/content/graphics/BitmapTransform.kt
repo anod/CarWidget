@@ -1,15 +1,7 @@
-package info.anodsplace.carwidget.utils
+package info.anodsplace.carwidget.content.graphics
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
-import android.graphics.Matrix
-import android.graphics.Paint
-import android.graphics.PaintFlagsDrawFilter
-import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
+import android.graphics.*
 import info.anodsplace.carwidget.content.preferences.BitmapRotateDirection
 
 interface IconProcessor {

@@ -1,8 +1,9 @@
 package com.anod.car.home.skin
 
 import com.anod.car.home.R
-import com.anod.car.home.skin.icon.BackgroundProcessor
-import info.anodsplace.carwidget.utils.IconProcessor
+import info.anodsplace.carwidget.content.IconBackgroundProcessor
+import info.anodsplace.carwidget.content.SkinProperties
+import info.anodsplace.carwidget.content.graphics.IconProcessor
 
 abstract class BaseProperties : SkinProperties {
 
@@ -27,11 +28,10 @@ abstract class BaseProperties : SkinProperties {
     override val fontColorRes: Int
         get() = R.color.default_font_color
 
-    override val backgroundProcessor: BackgroundProcessor?
+    override val backgroundProcessor: IconBackgroundProcessor?
         get() = null
 
     override fun hasWidgetButton1(): Boolean {
         return true
     }
-
 }

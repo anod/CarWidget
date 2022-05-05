@@ -6,11 +6,11 @@ import android.widget.RemoteViews
 import androidx.annotation.IdRes
 import com.anod.car.home.R
 import com.anod.car.home.incar.ModeService
-import info.anodsplace.carwidget.content.preferences.InCarStorage
-import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import info.anodsplace.carwidget.content.preferences.WidgetSettings
-import com.anod.car.home.skin.SkinProperties
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
+import info.anodsplace.carwidget.content.SkinProperties
+import info.anodsplace.carwidget.content.preferences.WidgetInterface.Companion.BUTTON_ID_1
+import info.anodsplace.carwidget.content.preferences.WidgetInterface.Companion.BUTTON_ID_2
+import info.anodsplace.carwidget.content.preferences.WidgetSettings
 
 /**
  * @author alex
@@ -26,9 +26,9 @@ class WidgetButtonViewBuilder(
 
     fun setup(skinProperties: SkinProperties, views: RemoteViews) {
         if (skinProperties.hasWidgetButton1()) {
-            setup(R.id.widget_btn1, prefs.widgetButton1, skinProperties, views, BUTTON_1)
+            setup(R.id.widget_btn1, prefs.widgetButton1, skinProperties, views, BUTTON_ID_1)
         }
-        setup(R.id.widget_btn2, prefs.widgetButton2, skinProperties, views, BUTTON_2)
+        setup(R.id.widget_btn2, prefs.widgetButton2, skinProperties, views, BUTTON_ID_2)
     }
 
     private fun setup(@IdRes btnResId: Int, widgetButtonPref: Int, skinProperties: SkinProperties,
@@ -91,10 +91,5 @@ class WidgetButtonViewBuilder(
         val switchOn = !ModeService.sInCarMode
         val contentIntent = pendingIntentFactory.createInCar(switchOn, buttonId)
         views.setOnClickPendingIntent(btnId, contentIntent)
-    }
-
-    companion object {
-        const val BUTTON_1 = 1
-        const val BUTTON_2 = 2
     }
 }

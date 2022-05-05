@@ -1,9 +1,9 @@
 package com.anod.car.home.skin
 
+import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 
-object PropertiesFactory {
-
+object SkinPropertiesFactory {
     fun create(skinName: String): SkinProperties {
         return when (skinName) {
             WidgetInterface.SKIN_WINDOWS7 -> MetroProperties()
@@ -15,5 +15,4 @@ object PropertiesFactory {
             else -> CarHomeProperties()
         }
     }
-
 }

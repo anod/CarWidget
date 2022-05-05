@@ -5,7 +5,6 @@ import android.content.ComponentName
 import android.content.Context
 
 import com.anod.car.home.LargeProvider
-import com.anod.car.home.app.App
 import info.anodsplace.carwidget.appwidget.WidgetIds
 
 /**

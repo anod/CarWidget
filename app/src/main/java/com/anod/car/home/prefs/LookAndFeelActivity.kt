@@ -7,6 +7,7 @@ import com.anod.car.home.R
 import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.incar.BroadcastService
 import info.anodsplace.carwidget.MainComposeActivity
+import org.koin.core.component.get
 
 class LookAndFeelActivity : MainComposeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +28,6 @@ class LookAndFeelActivity : MainComposeActivity() {
     }
 
     override fun requestWidgetUpdate(appWidgetId: Int) {
-        Provider.requestUpdate(this, intArrayOf(appWidgetId))
+        Provider.requestUpdate(this, intArrayOf(appWidgetId), appWidgetManager = get())
     }
 }

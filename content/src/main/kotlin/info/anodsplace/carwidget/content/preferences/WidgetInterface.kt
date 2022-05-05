@@ -70,6 +70,13 @@ interface WidgetInterface {
     companion object {
         const val idUnknown: Long = -1
 
+        const val BUTTON_ID_1 = 1
+        const val BUTTON_ID_2 = 2
+
+        const val WIDGET_BUTTON_INCAR = 1
+        const val WIDGET_BUTTON_SETTINGS = 2
+        const val WIDGET_BUTTON_HIDDEN = 3
+
         const val SKIN_GLOSSY = "glossy"
         const val SKIN_CARHOME = "carhome"
         const val SKIN_WINDOWS7 = "windows7"
@@ -78,9 +85,6 @@ interface WidgetInterface {
         const val SKIN_CARDS = "cards"
         const val SKIN_YOU = "you"
         const val FONT_SIZE_UNDEFINED = -1
-        const val WIDGET_BUTTON_INCAR = 1
-        const val WIDGET_BUTTON_SETTINGS = 2
-        const val WIDGET_BUTTON_HIDDEN = 3
 
         val skins = listOf(
             SKIN_YOU, SKIN_CARDS, SKIN_HOLO, SKIN_GLOSSY, SKIN_CARHOME, SKIN_WINDOWS7, SKIN_BBB

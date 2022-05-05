@@ -1,14 +1,13 @@
-package com.anod.car.home.skin
+package info.anodsplace.carwidget.content
 
-import com.anod.car.home.skin.icon.BackgroundProcessor
-import info.anodsplace.carwidget.utils.IconProcessor
+import info.anodsplace.carwidget.content.graphics.IconProcessor
 
 interface SkinProperties {
     val inCarButtonExitRes: Int
     val inCarButtonEnterRes: Int
     val setShortcutRes: Int
     val iconProcessor: IconProcessor?
-    val backgroundProcessor: BackgroundProcessor?
+    val backgroundProcessor: IconBackgroundProcessor?
     val setShortcutText: Int
     val iconPaddingRes: Int
     val settingsButtonRes: Int

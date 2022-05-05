@@ -3,7 +3,6 @@ package com.anod.car.home.app
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.FragmentActivity
 import com.anod.car.home.CarWidgetApplication
 import com.anod.car.home.R
 
@@ -14,7 +13,7 @@ import com.anod.car.home.R
 abstract class CarWidgetActivity : AppCompatActivity() {
 
     val app: CarWidgetApplication
-        get() = App.get(this)
+        get() = applicationContext as CarWidgetApplication
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(appThemeRes)

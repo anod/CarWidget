@@ -4,12 +4,10 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Path
-import android.net.Uri
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.anod.car.home.R
-import com.anod.car.home.app.App
 import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.incar.ModeService
 import info.anodsplace.carwidget.content.Deeplink
@@ -17,12 +15,14 @@ import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
+import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 
 class InCarModeNotificationFactory(
         private val version: Version,
         private val context: Context,
         private val database: ShortcutsDatabase,
-        private val iconLoader: ShortcutIconLoader
+        private val iconLoader: ShortcutIconLoader,
+        private val shortcutResources: ShortcutResources
 ) {
     companion object {
         const val id = 1
@@ -67,7 +67,7 @@ class InCarModeNotificationFactory(
     private suspend fun createShortcuts(context: Context, model: NotificationShortcutsModel, iconLoader: ShortcutIconLoader): RemoteViews {
         val contentView = RemoteViews(context.packageName, R.layout.notification)
 
-        val spi = ShortcutPendingIntent(context, App.provide(context).shortcutResources)
+        val spi = ShortcutPendingIntent(context, shortcutResources)
         val emptyPath = Path()
         for (position in 0 until model.count) {
             val info = model.get(position)

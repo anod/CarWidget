@@ -1,8 +1,8 @@
 package com.anod.car.home.skin
 
 import com.anod.car.home.R
-import com.anod.car.home.skin.icon.BackgroundProcessor
 import com.anod.car.home.skin.icon.MetroBackgroundProcessor
+import info.anodsplace.carwidget.content.IconBackgroundProcessor
 
 class MetroProperties : BaseProperties() {
 
@@ -21,7 +21,7 @@ class MetroProperties : BaseProperties() {
     override val rowLayout: Int
         get() = R.layout.sk_windows7_row
 
-    override val backgroundProcessor: BackgroundProcessor
+    override val backgroundProcessor: IconBackgroundProcessor
         get() = MetroBackgroundProcessor()
 
     override fun getLayout(number: Int): Int {

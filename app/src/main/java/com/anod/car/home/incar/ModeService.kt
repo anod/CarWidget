@@ -7,21 +7,20 @@ import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
 import android.telephony.PhoneStateListener
-import com.anod.car.home.app.App
+import android.telephony.TelephonyManager
 import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.notifications.InCarModeNotificationFactory
 import com.anod.car.home.notifications.TrialExpiredNotification
-import info.anodsplace.carwidget.content.Version
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.content.AppCoroutineScope
-import kotlinx.coroutines.async
+import info.anodsplace.carwidget.content.Version
 import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import org.koin.core.component.inject
 
 class ModeService : Service(), KoinComponent {
     private var phoneListener: ModePhoneStateListener? = null
-    private val modeHandler: ModeHandler by lazy { App.provide(this).handler }
+    private val modeHandler: ModeHandler by inject()
     private var forceState: Boolean = false
 
     override fun onDestroy() {
@@ -43,7 +42,7 @@ class ModeService : Service(), KoinComponent {
     }
 
     private fun requestWidgetsUpdate() {
-        Provider.requestUpdate(this, intArrayOf())
+        Provider.requestUpdate(this, intArrayOf(), appWidgetManager = get())
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -53,7 +52,13 @@ class ModeService : Service(), KoinComponent {
                 + redelivered)
 
         val version = Version(this)
-        val notificationFactory = InCarModeNotificationFactory(version, this, get(), get())
+        val notificationFactory = InCarModeNotificationFactory(
+            version = version,
+            context = this,
+            database = get(),
+            iconLoader = get(),
+            shortcutResources = get()
+        )
         val notification = runBlocking { notificationFactory.create() }
         startForeground(InCarModeNotificationFactory.id, notification)
 
@@ -116,15 +121,13 @@ class ModeService : Service(), KoinComponent {
 
     private fun attachPhoneListener() {
         AppLog.i("Attach phone listener")
-        val provider = App.provide(this)
-        phoneListener = provider.modePhoneStateListener
-        provider.telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE)
+        phoneListener = get()
+        get<TelephonyManager>().listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE)
     }
 
     private fun detachPhoneListener() {
         AppLog.i("Detach phone listener")
-        val tm = App.provide(this).telephonyManager
-        tm.listen(phoneListener, PhoneStateListener.LISTEN_NONE)
+        get<TelephonyManager>().listen(phoneListener, PhoneStateListener.LISTEN_NONE)
         phoneListener!!.cancelActions()
         phoneListener = null
     }

@@ -48,7 +48,7 @@ data class SkinList(
     operator fun get(position: Int): Item = Item(titles[position], values[position])
 }
 
-class SkinPreviewViewModel(application: Application, var appWidgetId: Int): AndroidViewModel(application), KoinComponent {
+class SkinPreviewViewModel(application: Application, private val appWidgetId: Int): AndroidViewModel(application), KoinComponent {
 
     class Factory(private val appContext: Context, private val appWidgetId: Int): ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T = SkinPreviewViewModel(appContext as Application, appWidgetId) as T
@@ -81,7 +81,8 @@ class SkinPreviewViewModel(application: Application, var appWidgetId: Int): Andr
     }
 
     suspend fun load(overrideSkin: SkinList.Item, context: Context): View {
-        val intentFactory: PendingIntentFactory = get<PreviewPendingIntentFactory>(parameters = { parametersOf(appWidgetId, overrideSkin) })
+        // overrideSkin
+        val intentFactory: PendingIntentFactory = get<PreviewPendingIntentFactory>(parameters = { parametersOf(appWidgetId) })
         val widgetView: WidgetView = get(parameters = { parametersOf(appWidgetId, bitmapMemoryCache, intentFactory, true) })
         return renderPreview(widgetView, overrideSkin.value, context)
     }

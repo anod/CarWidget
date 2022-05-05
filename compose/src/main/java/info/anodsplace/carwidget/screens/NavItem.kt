@@ -10,6 +10,7 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.*
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.content.Deeplink
 
 sealed class NavItem(val route: String, val parent: NavItem? = null) {
     abstract class TabItem(route: String, @StringRes val resourceId: Int, val icon: ImageVector) : NavItem(route)
@@ -25,12 +26,25 @@ sealed class NavItem(val route: String, val parent: NavItem? = null) {
                     navArgument("pos_id") { type = NavType.IntType },
             )
             val deepLinks: List<NavDeepLink> = listOf(
-                navDeepLink { uriPattern = "carwidget://widgets/{app_widget_id}/edit/{shortcut_id}/{pos_id}" }
+                navDeepLink { uriPattern = Deeplink.EditShortcut.uriPattern }
             )
             class Args(val shortcutId: Long, val position: Int) {
                 constructor(bundle: Bundle?) : this(
                         shortcutId = bundle?.getLong("shortcut_id") ?: 0,
                         position = bundle?.getInt("pos_id") ?: 0
+                )
+            }
+        }
+        object EditWidgetButton : NavItem("widgets/current/edit-button/{btn_id}", parent = CurrentWidget) {
+            val arguments: List<NamedNavArgument> = listOf(
+                navArgument("btn_id") { type = NavType.IntType },
+            )
+            val deepLinks: List<NavDeepLink> = listOf(
+                navDeepLink { uriPattern = Deeplink.EditWidgetButton.uriPattern }
+            )
+            class Args(val buttonId: Int) {
+                constructor(bundle: Bundle?) : this(
+                    buttonId = bundle?.getInt("btn_id") ?: 0
                 )
             }
         }

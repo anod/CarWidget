@@ -8,7 +8,6 @@ import android.content.Intent
 import android.os.Bundle
 import com.anod.car.home.LargeProvider
 import com.anod.car.home.UpdateWidgetJob
-import com.anod.car.home.app.App
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.incar.ModeService
 import info.anodsplace.applog.AppLog
@@ -25,7 +24,7 @@ open class Provider : AppWidgetProvider(), KoinComponent {
     }
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        requestUpdate(context, appWidgetIds)
+        requestUpdate(context, appWidgetIds, appWidgetManager)
     }
 
     /**
@@ -62,10 +61,9 @@ open class Provider : AppWidgetProvider(), KoinComponent {
 
     companion object {
 
-        fun requestUpdate(context: Context, appWidgetIds: IntArray) {
+        fun requestUpdate(context: Context, appWidgetIds: IntArray, appWidgetManager: AppWidgetManager) {
             AppLog.i("appWidgetIds: ${appWidgetIds.joinToString(",")}", tag = "requestUpdate")
             if (appWidgetIds.isEmpty()) {
-                val appWidgetManager = App.provide(context).appWidgetManager
                 val thisAppWidget = getComponentName(context)
                 val allAppWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget)
                 enqueue(allAppWidgetIds, context)

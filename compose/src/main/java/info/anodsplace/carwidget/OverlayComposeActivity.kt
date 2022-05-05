@@ -7,13 +7,18 @@ import android.os.Bundle
 import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.*
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.lifecycleScope
+import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.extensions.extras
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
-import info.anodsplace.carwidget.screens.main.EditShortcut
+import info.anodsplace.carwidget.screens.shortcuts.EditShortcut
+import info.anodsplace.carwidget.screens.widget.EditWidgetButton
 import kotlinx.coroutines.flow.MutableSharedFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -38,6 +43,13 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
             }
         }
 
+        val deeplink = Deeplink.match(intent.data!!)
+        if (deeplink == null) {
+            AppLog.e("Not recognized ${intent.data.toString()}")
+            finish()
+            return
+        }
+
         setContent {
             val nightMode by appSettings.nightModeChange.collectAsState(initial = appSettings.nightMode)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -45,18 +57,24 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
                     uiModeManager.setApplicationNightMode(nightMode)
                 }
             }
-            val pathSegments = intent.data!!.pathSegments
-            val args = NavItem.CurrentWidget.EditShortcut.Args(shortcutId = pathSegments[2].toLong(), position = pathSegments[3].toInt())
 
             CarWidgetTheme(
                     context = this@OverlayComposeActivity,
                     nightMode = nightMode
             ) {
-                EditShortcut(
+                when (deeplink) {
+                    is Deeplink.EditShortcut -> EditShortcut(
                         appWidgetId = appWidgetId,
-                        args = args,
+                        args = NavItem.CurrentWidget.EditShortcut.Args(shortcutId = deeplink.shortcutId, position = deeplink.position),
                         action = action
-                )
+                    )
+                    is Deeplink.EditWidgetButton -> EditWidgetButton(
+                        appWidgetId = appWidgetId,
+                        args = NavItem.CurrentWidget.EditWidgetButton.Args(buttonId = deeplink.buttonId),
+                        action = action
+                    )
+                    else -> throw IllegalArgumentException("Unknown deeplink $deeplink")
+                }
             }
         }
     }
