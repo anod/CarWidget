@@ -20,12 +20,10 @@ import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.ktx.hashCodeOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.KoinScopeComponent
@@ -87,41 +85,18 @@ class DummySkinPreviewViewModel(application: Application): AndroidViewModel(appl
     }
 }
 
-class RealSkinPreviewViewModel(application: Application, private val appWidgetIdScope: AppWidgetIdScope): AndroidViewModel(application), KoinScopeComponent {
+class RealSkinPreviewViewModel(application: Application, appWidgetIdScope: AppWidgetIdScope): AndroidViewModel(application), SkinPreviewViewModel, KoinScopeComponent {
 
     override val scope: Scope = appWidgetIdScope.scope
 
     private val bitmapMemoryCache: BitmapLruCache by inject()
     private val db: ShortcutsDatabase by inject()
-    private val widgetSettings: WidgetInterface by inject()
-    private val shortcuts: WidgetShortcutsModel by inject()
+    override val widgetSettings: WidgetInterface by inject()
 
-    private val skinList = SkinList(widgetSettings.skin, application)
-    private val currentSkin = MutableStateFlow(skinList.current)
+    override val skinList = SkinList(widgetSettings.skin, application)
+    override val currentSkin = MutableStateFlow(skinList.current)
 
-    init {
-        viewModelScope.launch {
-            widgetSettings.changes
-                .onStart {
-                    AppLog.d("[CHANGE] widgetSettings: Start")
-                }
-                .onCompletion {
-                    AppLog.d("[CHANGE] widgetSettings: Completed")
-                }
-                .onEach {
-                    AppLog.d("[CHANGE] widgetSettings ${it.first} = ${it.second}")
-                }
-                .collect { }
-        }
-
-        viewModelScope.launch {
-            db.observeTarget(+appWidgetIdScope).collect {
-                AppLog.d("[CHANGE] widgetDB ${it.count()} ")
-            }
-        }
-    }
-
-    val reload: Flow<Int> = widgetSettings.changes.onStart { emit(Pair("", null)) }
+    override val reload: Flow<Int> = widgetSettings.changes.onStart { emit(Pair("", null)) }
         .combine(db.observeTarget(+appWidgetIdScope).onStart { emit(emptyMap()) }) { s, t ->
             if (s.first.isEmpty() && t.isEmpty()) {
                 0
@@ -140,7 +115,7 @@ class RealSkinPreviewViewModel(application: Application, private val appWidgetId
         bitmapMemoryCache.evictAll()
     }
 
-    suspend fun load(overrideSkin: SkinList.Item, context: Context): View {
+    override suspend fun load(overrideSkin: SkinList.Item, context: Context): View {
         val intentFactory: PendingIntentFactory = get<PreviewPendingIntentFactory>()
         val widgetView: WidgetView = get(parameters = { parametersOf(bitmapMemoryCache, intentFactory, true, overrideSkin.value) })
         val remoteViews = widgetView.create()

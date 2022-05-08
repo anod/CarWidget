@@ -10,29 +10,23 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
 import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.appwidget.WidgetUpdateProvider
-import com.anod.car.home.appwidget.WidgetViewBuilder
 import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.incar.ModeDetector
 import com.anod.car.home.incar.ModeHandler
 import com.anod.car.home.incar.ModePhoneStateListener
 import com.anod.car.home.notifications.Channels
-import com.anod.car.home.prefs.lookandfeel.SkinPreviewIntentFactory
 import com.anod.car.home.skin.SkinPropertiesFactory
 import com.anod.car.home.utils.AppUpgrade
 import com.anod.car.home.utils.WidgetShortcutResource
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.appwidget.*
-import info.anodsplace.carwidget.content.BitmapLruCache
+import info.anodsplace.carwidget.appwidget.WidgetIds
+import info.anodsplace.carwidget.appwidget.WidgetUpdate
 import info.anodsplace.carwidget.content.InCarStatus
-import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.createAppModule
-import info.anodsplace.carwidget.content.di.createWidgetInstanceModule
 import info.anodsplace.carwidget.content.extentions.isServiceRunning
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.InCarInterface
-import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
-import info.anodsplace.carwidget.content.shortcuts.DummyWidgetShortcutsModel
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
@@ -126,59 +120,11 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
             koin.loadModules(
                 modules = listOf(
                     createAppModule(),
-                    createWidgetInstanceModule(),
-
                     module {
                         single<Context> { this@CarWidgetApplication }
                         single<Application> { this@CarWidgetApplication }
                         single<WidgetIds> { WidgetHelper(context = get()) }
                         factory { createInCarStatus() } bind InCarStatus::class
-
-                        scope<AppWidgetIdScope> {
-                            factory<WidgetView> { (
-                                                      bitmapMemoryCache: BitmapLruCache?,
-                                                      pendingIntentFactory: PendingIntentFactory,
-                                                      widgetButtonAlternativeHidden: Boolean,
-                                                      overrideSkin: String?
-                                                  ) ->
-                                WidgetViewBuilder(
-                                    context = get(),
-                                    iconLoader = get(),
-                                    appWidgetId = get(),
-                                    bitmapMemoryCache = bitmapMemoryCache,
-                                    pendingIntentFactory = pendingIntentFactory,
-                                    widgetButtonAlternativeHidden = widgetButtonAlternativeHidden,
-                                    overrideSkin = overrideSkin,
-                                    widgetSettings = get(),
-                                    inCarSettings = get(),
-                                    shortcutsModel = get(),
-                                    koin = getKoin()
-                                )
-                            }
-                            factory<DummyWidgetView> {
-                                    (
-                                        bitmapMemoryCache: BitmapLruCache?,
-                                        pendingIntentFactory: PendingIntentFactory,
-                                        widgetButtonAlternativeHidden: Boolean,
-                                        overrideSkin: String?
-                                    ) ->
-                                WidgetViewBuilder(
-                                    context = get(),
-                                    iconLoader = get(),
-                                    appWidgetId = AppWidgetIdScope.previewId,
-                                    widgetSettings = WidgetInterface.NoOp(),
-                                    inCarSettings = InCarInterface.NoOp(),
-                                    koin = getKoin(),
-                                    shortcutsModel = DummyWidgetShortcutsModel(context = get()),
-                                    bitmapMemoryCache = bitmapMemoryCache,
-                                    pendingIntentFactory = pendingIntentFactory,
-                                    widgetButtonAlternativeHidden = widgetButtonAlternativeHidden,
-                                    overrideSkin = overrideSkin,
-                                )
-                            }
-                            factoryOf(::SkinPreviewIntentFactory) bind PreviewPendingIntentFactory::class
-                        }
-
 
                         factory { get<Context>().getSystemService(UiModeManager::class.java) }
                         factory { get<Context>().getSystemService(BluetoothManager::class.java) }
@@ -200,7 +146,9 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                             )
                         }
                         factoryOf(::ModePhoneStateListener)
-                    }),
+                    },
+                    createWidgetInstanceModule(),
+                ),
             )
         }
 
