@@ -1,6 +1,5 @@
 package info.anodsplace.carwidget.screens
 
-import android.appwidget.AppWidgetManager
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -11,6 +10,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.*
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.Deeplink
+import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.content.di.isValid
 
 sealed class NavItem(val route: String, val parent: NavItem? = null) {
     abstract class TabItem(route: String, @StringRes val resourceId: Int, val icon: ImageVector) : NavItem(route)
@@ -60,10 +61,10 @@ sealed class NavItem(val route: String, val parent: NavItem? = null) {
     object About : TabItem("about", R.string.info, Icons.Outlined.Info)
 
     companion object {
-        fun startDestination(appWidgetId: Int) = if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
-            Widgets.route else CurrentWidget.route
+        fun startDestination(appWidgetIdScope: AppWidgetIdScope?) = if (appWidgetIdScope.isValid)
+            CurrentWidget.route else Widgets.route
 
-        fun startRoute(appWidgetId: Int): String? = if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
-            null else CurrentWidget.Skin.route
+        fun startRoute(appWidgetIdScope: AppWidgetIdScope?): String? = if (appWidgetIdScope.isValid)
+            CurrentWidget.Skin.route else null
     }
 }

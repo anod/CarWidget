@@ -11,76 +11,73 @@ import info.anodsplace.carwidget.content.IconTheme
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
-import info.anodsplace.carwidget.content.db.ShortcutsDatabase
+import info.anodsplace.carwidget.content.db.Shortcuts
 import info.anodsplace.carwidget.content.graphics.BitmapTransform
+import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import info.anodsplace.carwidget.content.preferences.WidgetSettings
-import info.anodsplace.carwidget.content.preferences.WidgetStorage
-import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
-import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.core.Koin
 import org.koin.core.parameter.parametersOf
 
 class WidgetViewBuilder(
-        private val context: Context,
-        private val database: ShortcutsDatabase,
-        private val iconLoader: ShortcutIconLoader,
-        override val appWidgetId: Int,
-        private val bitmapMemoryCache: BitmapLruCache?,
-        private val pendingIntentFactory: PendingIntentFactory,
-        private val widgetButtonAlternativeHidden: Boolean,
-        override var overrideSkin: String?,
-        private val koin: Koin
+    context: Context,
+    iconLoader: ShortcutIconLoader,
+    appWidgetId: Int,
+    widgetSettings: WidgetInterface,
+    inCarSettings: InCarInterface,
+    koin: Koin,
+    shortcutsModel: Shortcuts,
+    private val bitmapMemoryCache: BitmapLruCache?,
+    pendingIntentFactory: PendingIntentFactory,
+    private val widgetButtonAlternativeHidden: Boolean,
+    override var overrideSkin: String?,
 ) : WidgetView {
 
-    private var instance: WidgetView? = null
-
-    override suspend fun init() {
-        val bitmapTransform = BitmapTransform(context)
-        val prefs = WidgetStorage.load(context, DefaultsResourceProvider(context), appWidgetId)
-        this.instance = Instance(
-            appWidgetId = appWidgetId,
-            overrideSkin = overrideSkin,
-            context = context,
-            prefs = prefs,
-            shortcutsModel = WidgetShortcutsModel(context, database, DefaultsResourceProvider(context), appWidgetId),
-            bitmapTransform = bitmapTransform,
-            shortcutViewBuilder = ShortcutViewBuilder(context, appWidgetId, pendingIntentFactory, iconLoader).also {
-                it.bitmapMemoryCache = bitmapMemoryCache
-            },
-            widgetButtonViewBuilder = WidgetButtonViewBuilder(context, prefs, pendingIntentFactory, appWidgetId).also {
-                it.alternativeHidden = widgetButtonAlternativeHidden
-            },
-            koin = koin
-        ).apply {
-            init()
-        }
-    }
+    private val bitmapTransform = BitmapTransform(context)
+    private var instance: WidgetView = Instance(
+        overrideSkin = overrideSkin,
+        context = context,
+        prefs = widgetSettings,
+        shortcutsModel = shortcutsModel,
+        bitmapTransform = bitmapTransform,
+        shortcutViewBuilder = ShortcutViewBuilder(context, appWidgetId, pendingIntentFactory, iconLoader).also {
+            it.bitmapMemoryCache = bitmapMemoryCache
+        },
+        widgetButtonViewBuilder = WidgetButtonViewBuilder(widgetSettings, pendingIntentFactory, inCarSettings, appWidgetId).also {
+            it.alternativeHidden = widgetButtonAlternativeHidden
+        },
+        koin = koin
+    )
 
     override fun refreshIconTransform() {
-        instance?.refreshIconTransform()
+        instance.refreshIconTransform()
     }
 
     override suspend fun create(): RemoteViews {
-        return instance!!.create()
+        return instance.create()
     }
 
     override fun loadThemeIcons(themePackage: String): IconTheme? {
-        return instance?.loadThemeIcons(themePackage)
+        return instance.loadThemeIcons(themePackage)
     }
 
     class Instance(
-        override val appWidgetId: Int,
         override var overrideSkin: String?,
         private val context: Context,
-        private val prefs: WidgetSettings,
-        private val shortcutsModel: WidgetShortcutsModel,
+        private val prefs: WidgetInterface,
+        private val shortcutsModel: Shortcuts,
         private var shortcutViewBuilder: ShortcutViewBuilder,
         private var bitmapTransform: BitmapTransform,
         private var widgetButtonViewBuilder: WidgetButtonViewBuilder,
         private val koin: Koin
     ): WidgetView {
-        override suspend fun init() {
+
+        override fun refreshIconTransform() {
+            applyIconTransform(bitmapTransform, prefs)
+        }
+
+        override suspend fun create(): RemoteViews = withContext(Dispatchers.Default) {
             if (prefs.isFirstTime) {
                 shortcutsModel.createDefaultShortcuts()
                 prefs.isFirstTime = false
@@ -89,13 +86,7 @@ class WidgetViewBuilder(
 
             shortcutsModel.init()
             refreshIconTransform()
-        }
 
-        override fun refreshIconTransform() {
-            applyIconTransform(bitmapTransform, prefs)
-        }
-
-        override suspend fun create(): RemoteViews {
             val r = context.resources
             val skinName = overrideSkin ?: prefs.skin
             val scaledDensity = r.displayMetrics.scaledDensity
@@ -131,7 +122,7 @@ class WidgetViewBuilder(
                 }
             }
 
-            return views
+            return@withContext views
         }
 
         override fun loadThemeIcons(themePackage: String): IconTheme? {
@@ -173,7 +164,7 @@ class WidgetViewBuilder(
             R.id.btn8, R.id.btn9  //10
         )
 
-        private fun applyIconTransform(bt: BitmapTransform, prefs: WidgetSettings) {
+        private fun applyIconTransform(bt: BitmapTransform, prefs: WidgetInterface) {
             if (prefs.isIconsMono) {
                 bt.applyGrayFilter = true
                 if (prefs.iconsColor != null) {

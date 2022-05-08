@@ -12,20 +12,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import info.anodsplace.carwidget.chooser.ChooserGridList
+import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 @Composable
-fun EditWidgetButton(appWidgetId: Int, args: NavItem.CurrentWidget.EditWidgetButton.Args, action: MutableSharedFlow<UiAction>) {
+fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: NavItem.CurrentWidget.EditWidgetButton.Args, action: MutableSharedFlow<UiAction>) {
     val appContext = LocalContext.current.applicationContext as Application
     val scope = rememberCoroutineScope()
 
     val viewModel: EditWidgetViewModel = viewModel(
         factory = EditWidgetViewModel.Factory(
             appContext,
-            appWidgetId,
+            appWidgetIdScope,
             args.buttonId
         )
     )

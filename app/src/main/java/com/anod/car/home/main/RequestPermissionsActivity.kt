@@ -119,7 +119,6 @@ class RequestPermissionsActivity : CarWidgetActivity() {
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
         class Item(@DrawableRes val icon: Int, @StringRes val title: Int, @StringRes val description: Int)
 
-        val settings: info.anodsplace.carwidget.content.preferences.InCarSettings by lazy { info.anodsplace.carwidget.content.preferences.InCarStorage.load(context) }
         val items: List<Item> = permissions.map {
             when (it) {
                 WriteSettings.value -> {

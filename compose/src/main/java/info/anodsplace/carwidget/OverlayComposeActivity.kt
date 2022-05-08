@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.lifecycleScope
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Deeplink
+import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.extensions.extras
 import info.anodsplace.carwidget.screens.NavItem
@@ -26,6 +27,7 @@ import org.koin.core.component.inject
 open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
     private val appSettings: AppSettings by inject()
     private val uiModeManager: UiModeManager by inject()
+    private var appWidgetIdScope: AppWidgetIdScope? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -50,6 +52,8 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
             return
         }
 
+        appWidgetIdScope = if (deeplink is Deeplink.AppWidgetIdAware) AppWidgetIdScope(deeplink.appWidgetId) else null
+
         setContent {
             val nightMode by appSettings.nightModeChange.collectAsState(initial = appSettings.nightMode)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -64,12 +68,12 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
             ) {
                 when (deeplink) {
                     is Deeplink.EditShortcut -> EditShortcut(
-                        appWidgetId = appWidgetId,
+                        appWidgetIdScope = appWidgetIdScope!!,
                         args = NavItem.CurrentWidget.EditShortcut.Args(shortcutId = deeplink.shortcutId, position = deeplink.position),
                         action = action
                     )
                     is Deeplink.EditWidgetButton -> EditWidgetButton(
-                        appWidgetId = appWidgetId,
+                        appWidgetIdScope = appWidgetIdScope!!,
                         args = NavItem.CurrentWidget.EditWidgetButton.Args(buttonId = deeplink.buttonId),
                         action = action
                     )
@@ -77,5 +81,10 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        appWidgetIdScope?.close()
     }
 }

@@ -43,7 +43,7 @@ dependencies {
     implementation(project(":lib:ktx"))
     implementation(project(":content"))
 
-    implementation("io.insert-koin:koin-core:3.1.6")
+    implementation("io.insert-koin:koin-core:3.2.0-beta-1")
     implementation("io.coil-kt:coil-compose-base:2.0.0-rc03")
 
     implementation("androidx.appcompat:appcompat:1.4.1")

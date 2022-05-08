@@ -1,6 +1,5 @@
 package info.anodsplace.carwidget.screens.main
 
-import android.appwidget.AppWidgetManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -22,6 +21,9 @@ import androidx.navigation.navigation
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.content.di.isValid
+import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings.Companion.BUTTON_COLOR
@@ -61,11 +63,11 @@ fun rememberTileColor(currentSkinValue: String, prefs: WidgetInterface): AppBarT
 @Composable
 fun MainScreen(
     inCar: InCarInterface,
-    appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
+    appWidgetIdScope: AppWidgetIdScope? = null,
     action: MutableSharedFlow<UiAction>
 ) {
     val navController = rememberNavController()
-    val isWidget = appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID
+    val isWidget = appWidgetIdScope.isValid
     val items: List<NavItem.TabItem> = listOf(
         if (isWidget) NavItem.CurrentWidget else NavItem.Widgets,
         NavItem.InCar,
@@ -84,7 +86,7 @@ fun MainScreen(
                     if (isWidget) {
                         AppBarMenu(
                             tileColor = rememberTileColor(currentSkin.value, widgetSettings.value),
-                            appWidgetId = appWidgetId,
+                            appWidgetId = +appWidgetIdScope,
                             currentSkinValue = currentSkin.value,
                             action = action,
                             navController = navController
@@ -124,7 +126,7 @@ fun MainScreen(
             NavHost(
                 navController = navController,
                 action = action,
-                appWidgetId = appWidgetId,
+                appWidgetIdScope = appWidgetIdScope,
                 inCar = inCar,
                 innerPadding = innerPadding,
                 currentSkin = currentSkin,
@@ -138,20 +140,20 @@ fun MainScreen(
 fun NavHost(
     navController: NavHostController,
     action: MutableSharedFlow<UiAction>,
-    appWidgetId: Int,
+    appWidgetIdScope: AppWidgetIdScope? = null,
     inCar: InCarInterface,
     innerPadding: PaddingValues,
     currentSkin: MutableState<String>,
     widgetSettings: MutableState<WidgetInterface>,
-    startDestination: String = NavItem.startDestination(appWidgetId),
-    startRoute: String? = NavItem.startRoute(appWidgetId),
+    startDestination: String = NavItem.startDestination(appWidgetIdScope),
+    startRoute: String? = NavItem.startRoute(appWidgetIdScope),
     currentWidgetStartDestination: String = NavItem.CurrentWidget.Skin.route
 ) {
     val scope = rememberCoroutineScope()
 
     val modifier = Modifier
-            .background(MaterialTheme.colors.background)
-            .padding(innerPadding)
+        .background(MaterialTheme.colors.background)
+        .padding(innerPadding)
 
     NavHost(navController, startDestination = startDestination, route = startRoute) {
         composable(route = NavItem.Widgets.route) {
@@ -168,7 +170,7 @@ fun NavHost(
         }
         composable(route = NavItem.About.route) {
             val appContext = LocalContext.current.applicationContext
-            val aboutViewModel: AboutViewModel = viewModel(factory = AboutViewModel.Factory(appContext, appWidgetId))
+            val aboutViewModel: AboutViewModel = viewModel(factory = AboutViewModel.Factory(appContext, appWidgetIdScope))
             val aboutScreenState by aboutViewModel.screenState.collectAsState(initial = null)
             if (aboutScreenState != null) {
                 AboutScreen(
@@ -181,7 +183,7 @@ fun NavHost(
         navigation(route = NavItem.CurrentWidget.route, startDestination = currentWidgetStartDestination) {
             composable(route = NavItem.CurrentWidget.Skin.route) {
                 val appContext = LocalContext.current.applicationContext
-                val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetId))
+                val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetIdScope!!))
                 val currentSkinValue by skinViewModel.currentSkin.collectAsState(initial = skinViewModel.skinList.current)
                 currentSkin.value = currentSkinValue.value
                 widgetSettings.value = skinViewModel.widgetSettings
@@ -202,7 +204,7 @@ fun NavHost(
                 deepLinks = NavItem.CurrentWidget.EditShortcut.deepLinks
             ) {
                 EditShortcut(
-                        appWidgetId = appWidgetId,
+                        appWidgetIdScope = appWidgetIdScope!!,
                         args = NavItem.CurrentWidget.EditShortcut.Args(it.arguments),
                         action = action
                 )
@@ -210,7 +212,7 @@ fun NavHost(
             composable(route = NavItem.CurrentWidget.MoreSettings.route) {
                 val appContext = LocalContext.current.applicationContext
                 val skinViewModel: SkinPreviewViewModel =
-                    viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetId))
+                    viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetIdScope!!))
                 WidgetLookMoreScreen(
                     settings = skinViewModel.widgetSettings,
                     modifier = Modifier.padding(innerPadding)
@@ -226,7 +228,8 @@ fun NavHost(
                 val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel(factory =
                     BluetoothDevicesViewModel.Factory(
                         application = getKoin().get(),
-                        bluetoothManager = getKoin().get()
+                        bluetoothManager = getKoin().get(),
+                        settings = getKoin().get(),
                     )
                 )
                 BluetoothDevicesScreen(viewModel = bluetoothDevicesViewModel, modifier = modifier)

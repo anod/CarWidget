@@ -1,21 +1,29 @@
-package info.anodsplace.carwidget.content
+package info.anodsplace.carwidget.content.di
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import coil.ImageLoader
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.AppCoroutineScope
+import info.anodsplace.carwidget.content.BitmapLruCache
+import info.anodsplace.carwidget.content.Database
+import info.anodsplace.carwidget.content.Version
+import info.anodsplace.carwidget.content.backup.BackupManager
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.graphics.AppIconFetcher
 import info.anodsplace.carwidget.content.graphics.ShortcutIconRequestHandler
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.InCarInterface
-import info.anodsplace.carwidget.content.preferences.InCarStorage
+import info.anodsplace.carwidget.content.preferences.InCarSettings
 import org.koin.core.logger.Level
 import org.koin.core.logger.Logger
 import org.koin.core.logger.MESSAGE
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 class AndroidLogger : Logger(Level.DEBUG) {
@@ -33,9 +41,9 @@ class AndroidLogger : Logger(Level.DEBUG) {
 fun createAppModule(): Module = module {
     factory<AppWidgetManager> { AppWidgetManager.getInstance(get()) }
     single<Logger> { AndroidLogger() }
-    single { AppSettings(get()) }
+    singleOf(::AppSettings)
     single { AppCoroutineScope() }
-    factory { Version(get()) }
+    factoryOf(::Version)
     factory {
         val context: Context = get()
         ImageLoader.Builder(context)
@@ -45,7 +53,8 @@ fun createAppModule(): Module = module {
             }
             .build()
     }
-    factory { BitmapLruCache(get()) }
+    factoryOf(::BackupManager)
+    factoryOf(::BitmapLruCache)
     single {
         val driver = AndroidSqliteDriver(
                 schema = Database.Schema,
@@ -54,7 +63,7 @@ fun createAppModule(): Module = module {
         )
         Database(driver)
     }
-    single { ShortcutsDatabase(get(), get()) }
-    single { ShortcutIconLoader(get(), get()) }
-    factory<InCarInterface> { InCarStorage.load(get()) }
+    singleOf(::ShortcutsDatabase)
+    singleOf(::ShortcutIconLoader)
+    singleOf(::InCarSettings) bind InCarInterface::class
 }

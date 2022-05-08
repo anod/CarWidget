@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import androidx.palette.graphics.Palette
 import info.anodsplace.carwidget.content.IconBackgroundProcessor
-import info.anodsplace.carwidget.content.preferences.WidgetSettings
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
 
 /**
  * @author alex
@@ -12,7 +12,7 @@ import info.anodsplace.carwidget.content.preferences.WidgetSettings
  */
 class MetroBackgroundProcessor : IconBackgroundProcessor {
 
-    override fun getColor(prefs: WidgetSettings, icon: Bitmap?): Int {
+    override fun getColor(prefs: WidgetInterface, icon: Bitmap?): Int {
         if (prefs.paletteBackground) {
             if (icon == null) {
                 return Color.DKGRAY

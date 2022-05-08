@@ -16,10 +16,11 @@ import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.carwidget.content.backup.BackupManager
+import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.extensions.openDefaultCarDock
 import info.anodsplace.carwidget.extensions.openPlayStoreDetails
-import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -51,39 +52,33 @@ data class AboutScreenState(
         get() = appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID
 }
 
-class AboutViewModel(application: Application, private val appWidgetId: Int): AndroidViewModel(application), KoinComponent {
+class AboutViewModel(application: Application, private val appWidgetIdScope: AppWidgetIdScope?): AndroidViewModel(application), KoinComponent {
 
     class Factory(
             private val application: Context,
-            private val appWidgetId: Int
+            private val appWidgetIdScope: AppWidgetIdScope?
     ): ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return AboutViewModel(application as Application, appWidgetId) as T
+            return AboutViewModel(application as Application, appWidgetIdScope) as T
         }
     }
 
     private val context: Context
         get() = getApplication()
-    private val backupManager: BackupManager by lazy {
-        BackupManager(
-                context = getApplication(),
-                database = get(),
-                resourceDefaults = DefaultsResourceProvider(context.resources)
-        )
-    }
+    private val backupManager: BackupManager by inject()
     private val themes = context.resources.getStringArray(R.array.app_themes)
     private val appSettings: AppSettings
         get() = get()
 
-    val appScope: AppCoroutineScope by inject()
+    private val appScope: AppCoroutineScope by inject()
     val uiAction = MutableSharedFlow<AboutUiAction>()
     val screenState: MutableStateFlow<AboutScreenState> = MutableStateFlow(
             AboutScreenState(
-                    appWidgetId = appWidgetId,
-                    themeIndex = appSettings.theme,
-                    themeName = themes[appSettings.theme],
-                    musicApp = renderMusicApp(),
-                    appVersion = renderVersion(),
+                appWidgetId = +appWidgetIdScope,
+                themeIndex = appSettings.theme,
+                themeName = themes[appSettings.theme],
+                musicApp = renderMusicApp(),
+                appVersion = renderVersion(),
             )
     )
 
@@ -93,13 +88,13 @@ class AboutViewModel(application: Application, private val appWidgetId: Int): An
                 when (it) {
                     is AboutUiAction.BackupInCar -> {
                         appScope.launch {
-                            val code = backupManager.backup(Backup.TYPE_INCAR, appWidgetId, it.dstUri)
+                            val code = backupManager.backup(null, it.dstUri)
                             screenState.value = screenState.value.copy(backupStatus = code)
                         }
                     }
                     is AboutUiAction.BackupWidget -> {
                         appScope.launch {
-                            val code = backupManager.backup(Backup.TYPE_MAIN, appWidgetId, it.dstUri)
+                            val code = backupManager.backup(appWidgetIdScope, it.dstUri)
                             screenState.value = screenState.value.copy(backupStatus = code)
                         }
                     }
@@ -120,7 +115,7 @@ class AboutViewModel(application: Application, private val appWidgetId: Int): An
                     }
                     is AboutUiAction.Restore -> {
                         appScope.launch {
-                            val code = backupManager.restore(appWidgetId, it.srcUri)
+                            val code = backupManager.restore(appWidgetIdScope, it.srcUri)
                             screenState.value = screenState.value.copy(restoreStatus = code)
                         }
                     }

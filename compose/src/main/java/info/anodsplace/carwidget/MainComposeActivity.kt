@@ -15,11 +15,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
+import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.extensions.extras
@@ -30,11 +34,11 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
-import org.koin.core.parameter.parametersOf
 
 open class MainComposeActivity : ComponentActivity(), KoinComponent {
     private val appSettings: AppSettings by inject()
     private val uiModeManager: UiModeManager by inject()
+    private var appWidgetIdScope: AppWidgetIdScope? = null
 
     open fun startConfigActivity(appWidgetId: Int) {}
     open fun requestWidgetUpdate(appWidgetId: Int) { }
@@ -46,18 +50,22 @@ open class MainComposeActivity : ComponentActivity(), KoinComponent {
         }
         super.onCreate(savedInstanceState)
         val appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
+        appWidgetIdScope = if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) AppWidgetIdScope(appWidgetId) else null
+
         val action = MutableSharedFlow<UiAction>()
         lifecycleScope.launchWhenResumed {
-            action.collect {
-                when (it) {
-                    is UiAction.OpenWidgetConfig -> startConfigActivity(it.appWidgetId)
+            action.collect { action ->
+                when (action) {
+                    is UiAction.OpenWidgetConfig -> startConfigActivity(action.appWidgetId)
                     is UiAction.ApplyWidget -> {
-                        val resultValue = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, it.appWidgetId)
+                        val resultValue = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, action.appWidgetId)
                         setResult(Activity.RESULT_OK, resultValue)
-                        val prefs: WidgetInterface = get(parameters = { parametersOf(it.appWidgetId) })
-                        prefs.skin = it.skinValue
-                        prefs.applyPending()
-                        requestWidgetUpdate(it.appWidgetId)
+                        AppWidgetIdScope(action.appWidgetId).use {
+                            val prefs: WidgetInterface = it.scope.get()
+                            prefs.skin = action.skinValue
+                            prefs.applyPending()
+                        }
+                        requestWidgetUpdate(action.appWidgetId)
                         finish()
                     }
                     else -> { }
@@ -77,7 +85,7 @@ open class MainComposeActivity : ComponentActivity(), KoinComponent {
             ) {
                 MainScreen(
                     inCar = get(),
-                    appWidgetId = appWidgetId,
+                    appWidgetIdScope = appWidgetIdScope,
                     action = action
                 )
 //                ThemeColors(listOf(
@@ -87,6 +95,11 @@ open class MainComposeActivity : ComponentActivity(), KoinComponent {
 //                ))
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        appWidgetIdScope?.close()
     }
 }
 

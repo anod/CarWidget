@@ -1,6 +1,5 @@
 package com.anod.car.home.appwidget
 
-import android.content.Context
 import android.view.View
 import android.widget.RemoteViews
 import androidx.annotation.IdRes
@@ -8,19 +7,21 @@ import com.anod.car.home.R
 import com.anod.car.home.incar.ModeService
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.content.SkinProperties
+import info.anodsplace.carwidget.content.preferences.InCarInterface
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface.Companion.BUTTON_ID_1
 import info.anodsplace.carwidget.content.preferences.WidgetInterface.Companion.BUTTON_ID_2
-import info.anodsplace.carwidget.content.preferences.WidgetSettings
 
 /**
  * @author alex
  * @date 2015-01-31
  */
 class WidgetButtonViewBuilder(
-    private val context: Context,
-    private val prefs: WidgetSettings,
+    private val prefs: WidgetInterface,
     private val pendingIntentFactory: PendingIntentFactory,
-    private val appWidgetId: Int) {
+    private val inCarSettings: InCarInterface,
+    private val appWidgetId: Int
+) {
 
     var alternativeHidden = false
 
@@ -33,7 +34,7 @@ class WidgetButtonViewBuilder(
 
     private fun setup(@IdRes btnResId: Int, widgetButtonPref: Int, skinProperties: SkinProperties,
                       views: RemoteViews, buttonId: Int) {
-        if (widgetButtonPref == info.anodsplace.carwidget.content.preferences.WidgetInterface.WIDGET_BUTTON_HIDDEN) {
+        if (widgetButtonPref == WidgetInterface.WIDGET_BUTTON_HIDDEN) {
             if (alternativeHidden) {
                 views.setImageViewResource(btnResId, R.drawable.ic_action_cancel)
                 val configIntent = pendingIntentFactory
@@ -42,8 +43,8 @@ class WidgetButtonViewBuilder(
             } else {
                 views.setViewVisibility(btnResId, View.GONE)
             }
-        } else if (widgetButtonPref == info.anodsplace.carwidget.content.preferences.WidgetInterface.WIDGET_BUTTON_INCAR) {
-            if (info.anodsplace.carwidget.content.preferences.InCarStorage.load(context).isInCarEnabled) {
+        } else if (widgetButtonPref == WidgetInterface.WIDGET_BUTTON_INCAR) {
+            if (inCarSettings.isInCarEnabled) {
                 setInCarButton(btnResId, prefs.isIncarTransparent, skinProperties, views,
                         buttonId)
             } else {
@@ -54,7 +55,7 @@ class WidgetButtonViewBuilder(
                     views.setViewVisibility(btnResId, View.GONE)
                 }
             }
-        } else if (widgetButtonPref == info.anodsplace.carwidget.content.preferences.WidgetInterface.WIDGET_BUTTON_SETTINGS) {
+        } else if (widgetButtonPref == WidgetInterface.WIDGET_BUTTON_SETTINGS) {
             setSettingsButton(btnResId, skinProperties, views, buttonId)
         }
     }

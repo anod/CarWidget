@@ -20,7 +20,7 @@ dependencies {
     implementation(project(":lib:framework"))
     implementation(project(":lib:colorpicker"))
 
-    implementation("io.insert-koin:koin-core:3.1.6")
+    implementation("io.insert-koin:koin-core:3.2.0-beta-1")
     implementation("io.coil-kt:coil-base:2.0.0-rc03")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")

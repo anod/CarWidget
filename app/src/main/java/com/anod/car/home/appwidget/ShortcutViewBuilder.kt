@@ -16,11 +16,10 @@ import info.anodsplace.carwidget.content.IconTheme
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
+import info.anodsplace.carwidget.content.db.Shortcuts
 import info.anodsplace.carwidget.content.graphics.BitmapTransform
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import info.anodsplace.carwidget.content.preferences.WidgetSettings
-import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 
 interface ShortcutViewBuilderInstance {
     var bitmapMemoryCache: LruCache<String, Bitmap>?
@@ -40,7 +39,7 @@ class ShortcutViewBuilder(
     private var intance: Instance? = null
 
     fun init(scaledDensity: Float, skinProperties: SkinProperties,
-             iconTheme: IconTheme?, prefs: WidgetSettings, shortcuts: WidgetShortcutsModel,
+             iconTheme: IconTheme?, prefs: WidgetInterface, shortcuts: Shortcuts,
              bitmapTransform: BitmapTransform
     ) {
         this.intance = Instance(
@@ -73,8 +72,8 @@ class ShortcutViewBuilder(
         private val pendingIntentFactory: PendingIntentFactory,
         private val skinProperties: SkinProperties,
         private val iconTheme: IconTheme?,
-        private val prefs: WidgetSettings,
-        private val shortcuts: WidgetShortcutsModel,
+        private val prefs: WidgetInterface,
+        private val shortcuts: Shortcuts,
         private val bitmapTransform: BitmapTransform,
         private val scaledDensity: Float,
         private val iconLoader: ShortcutIconLoader,

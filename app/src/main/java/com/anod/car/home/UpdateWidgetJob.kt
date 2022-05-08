@@ -7,6 +7,7 @@ import androidx.core.app.JobIntentService
 import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.appwidget.WidgetViewBuilder
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
@@ -41,21 +42,23 @@ class UpdateWidgetJob : JobIntentService(), KoinComponent {
         // Perform this loop procedure for each App Widget that belongs to this
         // provider
         for (appWidgetId in appWidgetIds) {
-            val views = WidgetViewBuilder(
-                context = context,
-                database = get(),
-                iconLoader = get(),
-                appWidgetId = appWidgetId,
-                bitmapMemoryCache = null,
-                pendingIntentFactory = ShortcutPendingIntent(context, shortcutResources),
-                widgetButtonAlternativeHidden = false,
-                overrideSkin = null,
-                koin = getKoin()
-            ).apply {
-                init()
-            }.create()
-            AppLog.i("Performing update for widget #$appWidgetId")
-            appWidgetManager.updateAppWidget(appWidgetId, views)
+            AppWidgetIdScope(appWidgetId).use {
+                val view = WidgetViewBuilder(
+                    context = context,
+                    iconLoader = get(),
+                    appWidgetId = appWidgetId,
+                    bitmapMemoryCache = null,
+                    pendingIntentFactory = ShortcutPendingIntent(context, shortcutResources),
+                    widgetButtonAlternativeHidden = false,
+                    overrideSkin = null,
+                    widgetSettings = it.scope.get(),
+                    inCarSettings = get(),
+                    shortcutsModel = it.scope.get(),
+                    koin = getKoin()
+                ).create()
+                AppLog.i("Performing update for widget #$appWidgetId")
+                appWidgetManager.updateAppWidget(appWidgetId, view)
+            }
         }
     }
 }

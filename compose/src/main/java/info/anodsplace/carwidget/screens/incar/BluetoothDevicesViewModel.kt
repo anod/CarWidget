@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.InCarSettings
-import info.anodsplace.carwidget.content.preferences.InCarStorage
 import info.anodsplace.framework.bluetooth.Bluetooth
 import info.anodsplace.framework.bluetooth.BtClassType
 import info.anodsplace.framework.bluetooth.classType
@@ -37,14 +36,19 @@ sealed class BluetoothDevicesState {
     class Devices(val list: List<BluetoothDevice>): BluetoothDevicesState()
 }
 
-class BluetoothDevicesViewModel(application: Application, private val bluetoothManager: BluetoothManager) : AndroidViewModel(application) {
+class BluetoothDevicesViewModel(
+    application: Application,
+    private val bluetoothManager: BluetoothManager,
+    private val settings: InCarSettings
+) : AndroidViewModel(application) {
 
     class Factory(
         private val application: Application,
-        private val bluetoothManager: BluetoothManager
+        private val bluetoothManager: BluetoothManager,
+        private val settings: InCarSettings
     ): ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-            return BluetoothDevicesViewModel(application, bluetoothManager) as T
+            return BluetoothDevicesViewModel(application, bluetoothManager, settings) as T
         }
     }
 
@@ -54,7 +58,6 @@ class BluetoothDevicesViewModel(application: Application, private val bluetoothM
 
     val requiresPermission = MutableStateFlow(checkPermission())
     val btState = MutableStateFlow(Bluetooth.state)
-    private val settings: InCarSettings = InCarStorage.load(context)
 
     @SuppressLint("MissingPermission")
     fun load(): Flow<BluetoothDevicesState> = requiresPermission.combine(

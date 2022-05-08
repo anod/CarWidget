@@ -9,17 +9,27 @@ import androidx.lifecycle.ViewModelProvider
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.content.SkinProperties
+import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import org.koin.core.component.KoinComponent
+import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
+import org.koin.core.scope.Scope
 
-class EditWidgetViewModel(application: Application, private val appWidgetId: Int, private val buttonId: Any?) : AndroidViewModel(application), KoinComponent {
-    class Factory(private val appContext: Context, private val appWidgetId: Int, private val buttonId: Int): ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T = EditWidgetViewModel(appContext as Application, appWidgetId, buttonId) as T
+class EditWidgetViewModel(
+    application: Application,
+    appWidgetIdScope: AppWidgetIdScope,
+    private val buttonId: Any?
+) : AndroidViewModel(application), KoinScopeComponent {
+
+    class Factory(private val appContext: Context, private val appWidgetIdScope: AppWidgetIdScope, private val buttonId: Int): ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T
+            = EditWidgetViewModel(appContext as Application, appWidgetIdScope, buttonId) as T
     }
 
-    private val widgetSettings: WidgetInterface by inject(parameters = { parametersOf(appWidgetId) })
+    override val scope: Scope = appWidgetIdScope.scope
+
+    private val widgetSettings: WidgetInterface by inject()
     private val skinProperties: SkinProperties by inject(parameters = { parametersOf(widgetSettings.skin) })
 
     val items = listOf(
@@ -47,11 +57,13 @@ class EditWidgetViewModel(application: Application, private val appWidgetId: Int
     )
 
     fun onSelect(item: ChooserEntry) {
+        val newValue = item.extras!!.getInt("button")
         if (buttonId == WidgetInterface.BUTTON_ID_1) {
-            widgetSettings.widgetButton1 = item.extras!!.getInt("button")
+            widgetSettings.widgetButton1 = newValue
         } else {
-            widgetSettings.widgetButton2 = item.extras!!.getInt("button")
+            widgetSettings.widgetButton2 = newValue
         }
         widgetSettings.applyPending()
     }
+
 }

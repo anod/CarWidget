@@ -1,13 +1,14 @@
 package info.anodsplace.carwidget.content.preferences
 
 import android.content.ComponentName
-import android.content.SharedPreferences
+import android.content.Context
 import android.text.TextUtils
 import android.util.JsonReader
 import android.util.JsonToken
 import android.util.JsonWriter
 import androidx.collection.ArrayMap
 import androidx.collection.SimpleArrayMap
+import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.extentions.toComponentName
 import info.anodsplace.carwidget.content.preferences.InCarInterface.Companion.SCREEN_ORIENTATION_DISABLED
 import java.io.IOException
@@ -16,7 +17,8 @@ import java.io.IOException
  * @author algavris
  * @date 08/04/2016.
  */
-class InCarSettings(sharedPreferences: SharedPreferences) : ChangeableSharedPreferences(sharedPreferences), InCarInterface {
+class InCarSettings(context: Context, appScope: AppCoroutineScope)
+    : ChangeableSharedPreferences(InCarStorage.getSharedPreferences(context), appScope), InCarInterface {
 
     override var isInCarEnabled: Boolean
         get() = prefs.getBoolean(INCAR_MODE_ENABLED, false)

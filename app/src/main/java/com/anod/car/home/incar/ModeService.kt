@@ -13,6 +13,7 @@ import com.anod.car.home.notifications.InCarModeNotificationFactory
 import com.anod.car.home.notifications.TrialExpiredNotification
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Version
+import info.anodsplace.carwidget.content.preferences.InCarSettings
 import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -26,7 +27,7 @@ class ModeService : Service(), KoinComponent {
     override fun onDestroy() {
         stopForeground(true)
 
-        val prefs = info.anodsplace.carwidget.content.preferences.InCarStorage.load(this)
+        val prefs = get<InCarSettings>()
         if (forceState) {
             ModeDetector.forceState(prefs, false)
         }
@@ -87,7 +88,7 @@ class ModeService : Service(), KoinComponent {
             return START_NOT_STICKY
         }
 
-        val prefs = info.anodsplace.carwidget.content.preferences.InCarStorage.load(this)
+        val prefs = get<InCarSettings>()
         sInCarMode = true
         if (forceState) {
             ModeDetector.forceState(prefs, true)

@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.content.preferences
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Path
@@ -8,10 +9,9 @@ import android.util.JsonToken
 import android.util.JsonWriter
 import androidx.collection.SimpleArrayMap
 import androidx.core.graphics.PathParser
-import info.anodsplace.applog.AppLog
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
+import info.anodsplace.carwidget.content.AppCoroutineScope
+import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.content.di.unaryPlus
 import java.io.IOException
 import java.lang.Integer.min
 
@@ -19,14 +19,15 @@ import java.lang.Integer.min
  * @author algavris
  * @date 09/04/2016.
  */
-class WidgetSettings(prefs: SharedPreferences, private val defaults: DefaultsProvider) : ChangeableSharedPreferences(prefs), WidgetInterface {
+class WidgetSettings(context: Context, appWidgetIdScope: AppWidgetIdScope, private val defaults: DefaultsProvider, appScope: AppCoroutineScope)
+    : ChangeableSharedPreferences(WidgetStorage.getSharedPreferences(context, +appWidgetIdScope), appScope), WidgetInterface {
 
     interface DefaultsProvider {
         val tileColor: Int
         val backgroundColor: Int
     }
 
-    var isFirstTime: Boolean
+    override var isFirstTime: Boolean
         get() = prefs.getBoolean(FIRST_TIME, true)
         set(value) = applyChange(FIRST_TIME, value)
 

@@ -5,15 +5,16 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
-
 import com.anod.car.home.R
-import info.anodsplace.carwidget.content.preferences.InCarStorage
+import info.anodsplace.carwidget.content.preferences.InCarSettings
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-class SwitchInCarActivity : Activity() {
+class SwitchInCarActivity : Activity(), KoinComponent {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val isInCarEnabled = InCarStorage.load(this).isInCarEnabled
+        val isInCarEnabled = get<InCarSettings>().isInCarEnabled
         if (isInCarEnabled) {
             val service = Intent(this, ModeService::class.java)
             val data: Uri = if (ModeService.sInCarMode) {

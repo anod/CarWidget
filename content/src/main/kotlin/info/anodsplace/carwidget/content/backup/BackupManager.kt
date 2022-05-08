@@ -5,64 +5,61 @@ import android.net.Uri
 import android.util.JsonReader
 import android.util.JsonWriter
 import android.util.SparseArray
-import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.db.ShortcutWithIcon
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
-import info.anodsplace.carwidget.content.shortcuts.AbstractShortcuts
-import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
-import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
+import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.carwidget.content.preferences.InCarStorage
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
-import info.anodsplace.carwidget.content.preferences.WidgetStorage
-import kotlinx.coroutines.Dispatchers
+import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
+import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.io.*
 
-class BackupManager(private val context: Context, private val database: ShortcutsDatabase, private val resourceDefaults: WidgetSettings.DefaultsProvider) {
+class BackupManager(
+    private val context: Context,
+    private val database: ShortcutsDatabase,
+    private val inCarSettings: InCarSettings
+) {
 
-    suspend fun backup(type: Int, appWidgetId: Int, uri: Uri): Int = withContext(Dispatchers.IO) {
-        if (type == Backup.TYPE_INCAR) {
-            return@withContext doBackupInCarUri(uri)
+    suspend fun backup(appWidgetIdScope: AppWidgetIdScope?, uri: Uri): Int {
+        if (appWidgetIdScope == null) {
+            return doBackupInCarUri(uri)
         }
-        return@withContext doBackupWidgetUri(uri, appWidgetId)
+        return doBackupWidgetUri(uri, appWidgetIdScope)
     }
 
-    suspend fun restore(type: Int, appWidgetId: Int, uri: Uri): Int = withContext(Dispatchers.IO) {
-        if (type == Backup.TYPE_INCAR) {
-            return@withContext doRestoreInCarUri(uri)
-        }
-
-        return@withContext doRestoreWidgetUri(uri, appWidgetId)
-    }
-
-    suspend fun restore(appWidgetId: Int, uri: Uri): Int = withContext(Dispatchers.IO) {
-        val code = if (appWidgetId > 0)
-            doRestoreWidgetUri(uri, appWidgetId)
+    suspend fun restore(appWidgetIdScope: AppWidgetIdScope?, uri: Uri): Int {
+        val code = if (appWidgetIdScope != null)
+            doRestoreWidgetUri(uri, appWidgetIdScope)
         else Backup.ERROR_INCORRECT_FORMAT
         if (code != Backup.RESULT_DONE) {
-            return@withContext doRestoreInCarUri(uri)
+            return doRestoreInCarUri(uri)
         }
-        return@withContext code
+        return code
     }
 
-    private suspend fun doRestoreWidgetUri(uri: Uri, appWidgetId: Int): Int {
+    @OptIn(DelicateCoroutinesApi::class)
+    private suspend fun doRestoreWidgetUri(uri: Uri, appWidgetIdScope: AppWidgetIdScope): Int = withContext(newSingleThreadContext("RestoreWidget")) {
         val inputStream: InputStream?
         try {
             inputStream = context.contentResolver.openInputStream(uri)
         } catch (e: FileNotFoundException) {
             AppLog.e(e)
-            return Backup.ERROR_FILE_READ
+            return@withContext Backup.ERROR_FILE_READ
         }
 
-        return doRestoreWidget(inputStream, appWidgetId)
+        return@withContext doRestoreWidget(inputStream!!, appWidgetIdScope)
     }
 
-    private suspend fun doRestoreWidget(inputStream: InputStream?, appWidgetId: Int): Int {
-        val widget = WidgetStorage.load(context, resourceDefaults, appWidgetId)
+    private suspend fun doRestoreWidget(inputStream: InputStream, appWidgetIdScope: AppWidgetIdScope): Int {
+        val widget = appWidgetIdScope.scope.get<WidgetSettings>()
 
         val shortcutsJsonReader = ShortcutsJsonReader(context)
         var shortcuts = SparseArray<ShortcutWithIcon>()
@@ -70,7 +67,7 @@ class BackupManager(private val context: Context, private val database: Shortcut
 
         try {
             mutex.withLock {
-                val reader = JsonReader(InputStreamReader(BufferedInputStream(inputStream!!)))
+                val reader = JsonReader(inputStream.bufferedReader())
                 reader.beginObject()
                 while (reader.hasNext()) {
                     when (reader.nextName()) {
@@ -103,26 +100,29 @@ class BackupManager(private val context: Context, private val database: Shortcut
             widget.shortcutsNumber = shortcuts.size()
         }
 
-        database.restoreTarget(appWidgetId, shortcuts)
+        database.restoreTarget(+appWidgetIdScope, shortcuts)
 
         return Backup.RESULT_DONE
     }
 
-    private suspend fun doBackupWidgetUri(uri: Uri, appWidgetId: Int): Int {
+    private suspend fun doBackupWidgetUri(uri: Uri, appWidgetIdScope: AppWidgetIdScope): Int = withContext(newSingleThreadContext("BackupWidget")) {
         val outputStream: OutputStream?
-        return try {
-            outputStream = context.contentResolver.openOutputStream(uri) ?: return Backup.ERROR_UNEXPECTED
-            doBackupWidget(outputStream, appWidgetId)
+        return@withContext try {
+            outputStream = context.contentResolver.openOutputStream(uri)
+                ?: return@withContext Backup.ERROR_UNEXPECTED
+            doBackupWidget(outputStream, appWidgetIdScope)
         } catch (e: FileNotFoundException) {
             AppLog.e(e)
             Backup.ERROR_FILE_READ
         }
     }
 
-    private suspend fun doBackupWidget(outputStream: OutputStream, appWidgetId: Int): Int {
-        val model = WidgetShortcutsModel(context, database, resourceDefaults, appWidgetId)
-        model.init()
-        val widget = WidgetStorage.load(context, resourceDefaults, appWidgetId)
+    private suspend fun doBackupWidget(outputStream: OutputStream, appWidgetIdScope: AppWidgetIdScope): Int {
+        val model = appWidgetIdScope.scope.get<WidgetShortcutsModel>().apply {
+            init()
+        }
+        val widget = appWidgetIdScope.scope.get<WidgetSettings>()
+
         try {
             mutex.withLock {
                 val writer = JsonWriter(OutputStreamWriter(outputStream))
@@ -147,33 +147,32 @@ class BackupManager(private val context: Context, private val database: Shortcut
         return Backup.RESULT_DONE
     }
 
-    private suspend fun doRestoreInCarUri(uri: Uri): Int {
+    private suspend fun doRestoreInCarUri(uri: Uri): Int = withContext(newSingleThreadContext("RestoreInCar")) {
         val inputStream: InputStream?
         try {
             inputStream = context.contentResolver.openInputStream(uri)
         } catch (e: FileNotFoundException) {
             AppLog.e(e)
-            return Backup.ERROR_FILE_READ
+            return@withContext Backup.ERROR_FILE_READ
         }
 
-        return doRestoreInCar(inputStream)
+        return@withContext doRestoreInCar(inputStream!!)
     }
 
-    private suspend fun doRestoreInCar(inputStream: InputStream?): Int {
+    private suspend fun doRestoreInCar(inputStream: InputStream): Int {
         val sharedPrefs = InCarStorage.getSharedPreferences(context)
-        val incar = InCarSettings(sharedPrefs)
 
         val shortcutsJsonReader = ShortcutsJsonReader(context)
         var shortcuts = SparseArray<ShortcutWithIcon>()
         var found = 0
         try {
             mutex.withLock {
-                val reader = JsonReader(InputStreamReader(BufferedInputStream(inputStream!!)))
+                val reader = JsonReader(inputStream.bufferedReader())
                 reader.beginObject()
                 while (reader.hasNext()) {
                     when (reader.nextName()) {
                         "settings" -> {
-                            found = incar.readJson(reader)
+                            found = inCarSettings.readJson(reader)
                         }
                         "shortcuts" -> shortcuts = shortcutsJsonReader.readList(reader)
                         else -> reader.skipValue()
@@ -197,15 +196,16 @@ class BackupManager(private val context: Context, private val database: Shortcut
         database.restoreTarget(NotificationShortcutsModel.notificationTargetId, shortcuts)
 
         sharedPrefs.edit().clear().apply()
-        incar.applyPending()
+        inCarSettings.applyPending()
 
         return Backup.RESULT_DONE
     }
 
-    private suspend fun doBackupInCarUri(uri: Uri): Int {
+    private suspend fun doBackupInCarUri(uri: Uri): Int = withContext(newSingleThreadContext("BackupInCar")) {
         val outputStream: OutputStream?
-        return try {
-            outputStream = context.contentResolver.openOutputStream(uri) ?: return Backup.ERROR_UNEXPECTED
+        return@withContext try {
+            outputStream = context.contentResolver.openOutputStream(uri)
+                ?: return@withContext Backup.ERROR_UNEXPECTED
             doBackupInCar(outputStream)
         } catch (e: FileNotFoundException) {
             AppLog.e(e)
@@ -216,19 +216,16 @@ class BackupManager(private val context: Context, private val database: Shortcut
     private suspend fun doBackupInCar(outputStream: OutputStream): Int {
         val model = NotificationShortcutsModel.init(context, database)
 
-        val prefs = InCarStorage.load(context)
-
         try {
             mutex.withLock {
-                val writer = JsonWriter(OutputStreamWriter(outputStream))
+                val writer = JsonWriter(outputStream.writer())
                 writer.beginObject()
 
                 val settingsWriter = writer.name("settings")
-                prefs.writeJson(settingsWriter)
+                inCarSettings.writeJson(settingsWriter)
 
                 val arrayWriter = writer.name("shortcuts").beginArray()
-                val shortcutsJsonWriter = ShortcutsJsonWriter()
-                shortcutsJsonWriter.writeList(arrayWriter, model.shortcuts, database, context)
+                ShortcutsJsonWriter().writeList(arrayWriter, model.shortcuts, database, context)
                 arrayWriter.endArray()
 
                 writer.endObject()

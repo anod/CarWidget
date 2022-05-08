@@ -7,9 +7,11 @@ import android.content.Intent
 import com.anod.car.home.OverlayActivity
 import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
 import info.anodsplace.carwidget.content.Deeplink
+import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.content.di.unaryPlus
 
 class SkinPreviewIntentFactory(
-    private val appWidgetId: Int,
+    private val appWidgetIdScope: AppWidgetIdScope,
     private val context: Context
 ): PreviewPendingIntentFactory {
 
@@ -21,7 +23,7 @@ class SkinPreviewIntentFactory(
     private fun createEditIntent(appWidgetId: Int, position: Int, shortcutId: Long)
         = createIntent(Deeplink.EditShortcut(appWidgetId, shortcutId, position))
     private fun createEditWidgetButtonIntent(buttonId: Int)
-        = createIntent(Deeplink.EditWidgetButton(appWidgetId, buttonId))
+        = createIntent(Deeplink.EditWidgetButton(+appWidgetIdScope, buttonId))
 
     private fun createIntent(deeplink: Deeplink): PendingIntent {
         val buttonChoiceIntent = Intent(
@@ -30,7 +32,7 @@ class SkinPreviewIntentFactory(
             context,
             OverlayActivity::class.java
         ).also {
-            it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, +appWidgetIdScope)
         }
 
         return PendingIntent.getActivity(context, 0, buttonChoiceIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)

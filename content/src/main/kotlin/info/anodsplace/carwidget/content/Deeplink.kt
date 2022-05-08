@@ -6,6 +6,10 @@ import androidx.core.net.toUri
 sealed interface Deeplink {
     fun toUri(): Uri
 
+    interface AppWidgetIdAware {
+        val appWidgetId: Int
+    }
+
     data class SwitchMode(val enable: Boolean) : Deeplink {
         companion object {
             const val uriPattern = "carwidget://mode/switch/{enable}"
@@ -13,21 +17,21 @@ sealed interface Deeplink {
         override fun toUri(): Uri = build("mode", listOf("switch", if (enable) 1 else 0)).toUri()
     }
 
-    data class EditShortcut(val appWidgetId: Int, val shortcutId: Long, val position: Int) : Deeplink {
+    data class EditShortcut(override val appWidgetId: Int, val shortcutId: Long, val position: Int) : Deeplink, AppWidgetIdAware {
         companion object {
             const val uriPattern = "carwidget://widgets/{app_widget_id}/edit/{shortcut_id}/{pos_id}"
         }
         override fun toUri(): Uri = build("widgets", listOf(appWidgetId, "edit", shortcutId, position)).toUri()
     }
 
-    data class EditWidgetButton(val appWidgetId: Int, val buttonId: Int) : Deeplink {
+    data class EditWidgetButton(override val appWidgetId: Int, val buttonId: Int) : Deeplink, AppWidgetIdAware {
         companion object {
             const val uriPattern = "carwidget://widgets/{app_widget_id}/button/{btn_id}/edit"
         }
         override fun toUri(): Uri = build("widgets", listOf(appWidgetId, "button", buttonId, "edit")).toUri()
     }
 
-    data class OpenWidgetShortcut(val appWidgetId: Int, val position: Int) : Deeplink {
+    data class OpenWidgetShortcut(override val appWidgetId: Int, val position: Int) : Deeplink, AppWidgetIdAware {
         companion object {
             const val uriPattern = "carwidget://widgets/{app_widget_id}/open/{pos_id}"
         }
@@ -50,7 +54,7 @@ sealed interface Deeplink {
                 return null
             }
             if (uri.authority == "widgets") {
-                if (uri.pathSegments.size <= 4) {
+                if (uri.pathSegments.size < 4) {
                     return null
                 }
                 val appWidgetId = uri.pathSegments[0].toInt()

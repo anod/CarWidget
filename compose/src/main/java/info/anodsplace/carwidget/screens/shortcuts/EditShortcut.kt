@@ -5,13 +5,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 @Composable
-fun EditShortcut(appWidgetId: Int, args: NavItem.CurrentWidget.EditShortcut.Args, action: MutableSharedFlow<UiAction>) {
+fun EditShortcut(appWidgetIdScope: AppWidgetIdScope, args: NavItem.CurrentWidget.EditShortcut.Args, action: MutableSharedFlow<UiAction>) {
     val appContext = LocalContext.current.applicationContext as Application
     val scope = rememberCoroutineScope()
 
@@ -20,7 +21,7 @@ fun EditShortcut(appWidgetId: Int, args: NavItem.CurrentWidget.EditShortcut.Args
             factory = ShortcutEditViewModel.Factory(
                 args.position,
                 args.shortcutId,
-                appWidgetId,
+                appWidgetIdScope,
                 appContext
             )
         )
@@ -31,7 +32,7 @@ fun EditShortcut(appWidgetId: Int, args: NavItem.CurrentWidget.EditShortcut.Args
         val viewModel: ShortcutPickerViewModel = viewModel(
             factory = ShortcutPickerViewModel.Factory(
                 args.position,
-                appWidgetId,
+                appWidgetIdScope,
                 appContext
             )
         )

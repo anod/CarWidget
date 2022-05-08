@@ -6,12 +6,13 @@ import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.Intent
 import com.anod.car.home.BuildConfig
+import com.anod.car.home.getKoin
 import com.anod.car.home.utils.Power
 import com.google.android.gms.location.ActivityTransitionResult
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.preferences.InCarInterface
-import info.anodsplace.carwidget.content.preferences.InCarStorage
+import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.framework.bluetooth.Bluetooth
 
 /**
@@ -20,11 +21,11 @@ import info.anodsplace.framework.bluetooth.Bluetooth
  */
 
 object ModeDetector {
-    internal const val FLAG_POWER = 0
-    internal const val FLAG_HEADSET = 1
-    internal const val FLAG_BLUETOOTH = 2
-    const val FLAG_ACTIVITY = 3
-    internal const val FLAG_CAR_DOCK = 4
+    private const val FLAG_POWER = 0
+    private const val FLAG_HEADSET = 1
+    private const val FLAG_BLUETOOTH = 2
+    private const val FLAG_ACTIVITY = 3
+    private const val FLAG_CAR_DOCK = 4
 
     private val sPrefState = booleanArrayOf(false, false, false, false, false)
     private val sEventState = booleanArrayOf(false, false, false, false, false)
@@ -86,7 +87,7 @@ object ModeDetector {
     }
 
     fun onBroadcastReceive(context: Context, intent: Intent) {
-        val prefs = InCarStorage.load(context)
+        val prefs = context.getKoin().get<InCarSettings>()
         if (!prefs.isInCarEnabled) {
             return
         }

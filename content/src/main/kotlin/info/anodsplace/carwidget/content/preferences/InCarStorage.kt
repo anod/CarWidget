@@ -3,7 +3,6 @@ package info.anodsplace.carwidget.content.preferences
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import java.util.*
 
 /**
@@ -17,11 +16,6 @@ object InCarStorage {
 
     fun getSharedPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-    }
-
-    fun load(context: Context): InCarSettings {
-        val prefs = getSharedPreferences(context)
-        return InCarSettings(prefs)
     }
 
     private fun getNotifComponentName(position: Int): String {

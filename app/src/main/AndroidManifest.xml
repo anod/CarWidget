@@ -150,12 +150,6 @@
         </activity>
         <activity android:name=".main.WizardActivity" />
 
-        <activity
-            android:name=".prefs.lookandfeel.WidgetButtonChoiceActivity"
-            android:excludeFromRecents="true"
-            android:label="@string/choose"
-            android:theme="@style/AppListTheme" />
-
         <service android:name="com.anod.car.home.incar.ModeService" />
         <service android:name="com.anod.car.home.incar.BroadcastService" />
 

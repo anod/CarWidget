@@ -7,14 +7,17 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.IBinder
 import androidx.core.content.ContextCompat
+import com.anod.car.home.getKoin
 import com.anod.car.home.notifications.ModeDetectorNotification
-
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.preferences.InCarInterface
-import info.anodsplace.carwidget.content.preferences.InCarStorage
+import info.anodsplace.carwidget.content.preferences.InCarSettings
+import org.koin.core.Koin
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-class BroadcastService : Service() {
+class BroadcastService : Service(), KoinComponent {
 
     private var receiver: ModeBroadcastReceiver? = null
 
@@ -47,7 +50,7 @@ class BroadcastService : Service() {
     private fun register(context: Context): Boolean {
         AppLog.i("Register BroadcastService")
         ModeDetector.onRegister(context)
-        val prefs = InCarStorage.load(context)
+        val prefs = get<InCarSettings>()
         if (prefs.isActivityRequired) {
             AppLog.i("Start activity transition tracking")
             ActivityTransitionTracker(context).track()
@@ -77,7 +80,7 @@ class BroadcastService : Service() {
             context.unregisterReceiver(receiver)
             receiver = null
         }
-        val prefs = InCarStorage.load(context)
+        val prefs = get<InCarSettings>()
 
         if (!prefs.isActivityRequired) {
             ActivityTransitionTracker(context).stop()
@@ -86,17 +89,17 @@ class BroadcastService : Service() {
 
     companion object {
 
-        private fun shouldStart(context: Context): Boolean {
-            val isProOrTrial = Version(context).isProOrTrial
+        private fun shouldStart(koin: Koin): Boolean {
+            val isProOrTrial = koin.get<Version>().isProOrTrial
             return if (isProOrTrial) {
-                val inCar = InCarStorage.load(context)
+                val inCar = koin.get<InCarSettings>()
                 inCar.isInCarEnabled && isServiceRequired(inCar)
             } else
                 false
         }
 
         fun registerBroadcastService(context: Context) {
-            if (shouldStart(context)) {
+            if (shouldStart(context.getKoin())) {
                 startService(context)
             } else {
                 stopService(context)

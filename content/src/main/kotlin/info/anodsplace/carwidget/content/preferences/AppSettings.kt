@@ -4,8 +4,8 @@ import android.app.UiModeManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import info.anodsplace.carwidget.content.AppCoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.map
  * @author algavris
  * @date 19/03/2016.
  */
-class AppSettings(context: Context) : ChangeableSharedPreferences(getSharedPreferences(context)) {
+class AppSettings(context: Context, appScope: AppCoroutineScope) : ChangeableSharedPreferences(getSharedPreferences(context), appScope = appScope) {
 
     val nightModeChange: Flow<Int> = changes
         .filter { (key, _) -> key == APP_THEME }

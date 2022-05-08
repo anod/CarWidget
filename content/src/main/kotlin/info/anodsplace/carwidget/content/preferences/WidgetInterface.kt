@@ -16,6 +16,7 @@ enum class BitmapRotateDirection {
 interface WidgetInterface {
     val changes: Flow<Pair<String, Any?>>
 
+    var isFirstTime: Boolean
     var iconsTheme: String
     var isSettingsTransparent: Boolean
     var isIncarTransparent: Boolean
@@ -41,24 +42,25 @@ interface WidgetInterface {
     fun <T : Any?> observe(key: String): Flow<T>
 
     class NoOp(
-            override var iconsTheme: String = "",
-            override var isSettingsTransparent: Boolean = false,
-            override var isIncarTransparent: Boolean = false,
-            override var skin: String = "",
-            override var tileColor: Int = 0,
-            override var isIconsMono: Boolean = false,
-            override var iconsColor: Int? = null,
-            override var iconsScale: String = "",
-            override var fontColor: Int? = null,
-            override var fontSize: Int = 0,
-            override var backgroundColor: Int = 0,
-            override var iconsRotate: BitmapRotateDirection = BitmapRotateDirection.NONE,
-            override var isTitlesHide: Boolean = false,
-            override var widgetButton1: Int = 0,
-            override var widgetButton2: Int = 0,
-            override var shortcutsNumber: Int = 8,
-            override var paletteBackground: Boolean = false,
-            override var adaptiveIconPath: Path = Path()
+        override var isFirstTime: Boolean = true,
+        override var iconsTheme: String = "",
+        override var isSettingsTransparent: Boolean = false,
+        override var isIncarTransparent: Boolean = false,
+        override var skin: String = "",
+        override var tileColor: Int = 0,
+        override var isIconsMono: Boolean = false,
+        override var iconsColor: Int? = null,
+        override var iconsScale: String = "",
+        override var fontColor: Int? = null,
+        override var fontSize: Int = 0,
+        override var backgroundColor: Int = 0,
+        override var iconsRotate: BitmapRotateDirection = BitmapRotateDirection.NONE,
+        override var isTitlesHide: Boolean = false,
+        override var widgetButton1: Int = 0,
+        override var widgetButton2: Int = 0,
+        override var shortcutsNumber: Int = 8,
+        override var paletteBackground: Boolean = false,
+        override var adaptiveIconPath: Path = Path()
     ) : WidgetInterface {
         override val changes = emptyFlow<Pair<String, Any?>>()
         override fun queueChange(key: String, value: Any?) {}

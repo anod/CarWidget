@@ -2,22 +2,23 @@ package info.anodsplace.carwidget.content.preferences
 
 import android.content.ComponentName
 import android.content.SharedPreferences
-
 import androidx.collection.SimpleArrayMap
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-
 import info.anodsplace.applog.AppLog
-import kotlinx.coroutines.flow.*
+import info.anodsplace.carwidget.content.AppCoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 /**
  * @author algavris
  * @date 09/04/2016.
  */
-open class ChangeableSharedPreferences(prefs: SharedPreferences) {
+open class ChangeableSharedPreferences(prefs: SharedPreferences, private val appScope: AppCoroutineScope) {
 
-    private val _changes = MutableStateFlow<Pair<String, Any?>?>(null)
-    val changes: Flow<Pair<String, Any?>> = _changes.filterNotNull()
+    private val _changes = MutableSharedFlow<Pair<String, Any?>>()
+    val changes: Flow<Pair<String, Any?>> = _changes
     private var pendingChanges = SimpleArrayMap<String, Any?>()
     var prefs: SharedPreferences
         protected set
@@ -28,14 +29,14 @@ open class ChangeableSharedPreferences(prefs: SharedPreferences) {
 
     fun queueChange(key: String, value: Any?) {
         pendingChanges.put(key, value)
-        _changes.value = Pair(key, value)
+        appScope.launch {  _changes.emit(Pair(key, value)) }
     }
 
     fun applyChange(key: String, value: Any?) {
         val edit = prefs.edit()
         putChange(edit, key, value)
         edit.apply()
-        _changes.value = Pair(key, value)
+        appScope.launch {  _changes.emit(Pair(key, value)) }
     }
 
     fun <T : Any?> observe(key: String): Flow<T> = changes.filter { it.first == key }.map { it.second as T }
