@@ -67,7 +67,7 @@ class WidgetsListViewModel(application: Application) : AndroidViewModel(applicat
     private suspend fun loadWidgetList(): List<WidgetItem> = withContext(Dispatchers.Default) {
         val newItems = mutableListOf<WidgetItem>()
 
-        val appWidgetIds = widgetIds.getLargeWidgetIds()
+        val appWidgetIds = widgetIds.getLargeWidgetIds().sorted()
         newItems.addAll(widgetIds.getShortcutWidgetIds().map { WidgetItem.Shortcut(appWidgetId = it) })
 
         for (appWidgetId in appWidgetIds) {

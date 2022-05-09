@@ -5,8 +5,9 @@ import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.createScope
 import org.koin.core.scope.Scope
 import java.io.Closeable
+import kotlin.random.Random
 
-data class AppWidgetIdScope(val value: Int) : KoinScopeComponent, Closeable {
+data class AppWidgetIdScope(val value: Int, val instance: Int = Random.nextInt()) : KoinScopeComponent, Closeable {
     override val scope: Scope by lazy { createScope(this) }
 
     // operator fun unaryPlus() = value
