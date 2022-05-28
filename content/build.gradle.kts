@@ -34,8 +34,8 @@ dependencies {
     implementation(project(":lib:applog"))
     implementation(project(":lib:graphics"))
     implementation(project(":lib:ktx"))
-    implementation("io.insert-koin:koin-core:3.2.0-beta-1")
-    implementation("io.coil-kt:coil-base:2.0.0-rc03")
+    implementation("io.insert-koin:koin-core:3.2.0")
+    implementation("io.coil-kt:coil-base:2.1.0")
 
     implementation("com.squareup.sqldelight:android-driver:1.5.3")
     implementation("com.squareup.sqldelight:coroutines-extensions-jvm:1.5.3")
@@ -43,5 +43,5 @@ dependencies {
     implementation("androidx.collection:collection-ktx:1.2.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.20")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")
 }

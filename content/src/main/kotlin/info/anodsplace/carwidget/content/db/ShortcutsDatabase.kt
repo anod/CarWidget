@@ -54,7 +54,7 @@ class ShortcutsDatabase(private val context: Context, private val db: Database) 
 
         if (c == null) {
             val icon = UtilitiesBitmap.makeDefaultIcon(packageManager)
-            return@withContext ShortcutIcon.forFallbackIcon(shortcutUri.lastPathSegment!!.toLong(), icon)
+            return@withContext ShortcutIcon.forFallbackIcon(id, icon)
         }
 
         var shortcutIcon: ShortcutIcon? = null

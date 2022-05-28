@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 @Composable
-fun EditShortcut(appWidgetIdScope: AppWidgetIdScope, args: NavItem.CurrentWidget.EditShortcut.Args, action: MutableSharedFlow<UiAction>) {
+fun EditShortcut(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWidget.EditShortcut.Args, action: MutableSharedFlow<UiAction>) {
     val appContext = LocalContext.current.applicationContext as Application
     val scope = rememberCoroutineScope()
 

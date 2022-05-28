@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.screens.main
 
+import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -18,16 +19,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
-import info.anodsplace.carwidget.content.di.isValid
 import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import info.anodsplace.carwidget.content.preferences.WidgetSettings.Companion.BUTTON_COLOR
-import info.anodsplace.carwidget.content.preferences.WidgetSettings.Companion.PALETTE_BG
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.screens.WidgetActions
@@ -39,56 +36,70 @@ import info.anodsplace.carwidget.screens.widget.SkinPreviewViewModel
 import info.anodsplace.carwidget.screens.widget.WidgetActionDialog
 import info.anodsplace.carwidget.screens.widget.WidgetLookMoreScreen
 import info.anodsplace.carwidget.screens.widget.WidgetSkinScreen
+import info.anodsplace.carwidget.screens.wizard.WizardScreen
 import info.anodsplace.compose.BackgroundSurface
+import info.anodsplace.compose.RequestPermissionsScreen
 import info.anodsplace.compose.ScreenLoadState
+import info.anodsplace.compose.findActivity
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.getKoin
 
 @Composable
-fun rememberTileColor(currentSkinValue: String, prefs: WidgetInterface): AppBarTileColor {
-    val color by prefs.observe<Int>(BUTTON_COLOR).collectAsState(initial = prefs.tileColor)
-    val palette by prefs.observe<Boolean>(PALETTE_BG).collectAsState(initial = prefs.paletteBackground)
-    return remember(currentSkinValue, color, palette) {
-        if (currentSkinValue == WidgetInterface.SKIN_WINDOWS7) {
-            if (palette) {
-                AppBarTileColor.Icon
-            }
-            AppBarTileColor.Value(color = Color(color))
+fun MainScreen(
+    mainViewModel: MainViewModel
+) {
+    when (mainViewModel.topDestination.value) {
+        NavItem.Wizard -> {
+            WizardScreen()
         }
-        AppBarTileColor.Hidden
+        NavItem.PermissionsRequest -> {
+            val context = LocalContext.current
+            val permissionsViewModel: PermissionsViewModel = viewModel(factory = PermissionsViewModel.Factory(
+                requiredPermissions = mainViewModel.requiredPermissions,
+                activity = context.findActivity()
+            ))
+            RequestPermissionsScreen(
+                input = permissionsViewModel.missingPermissions,
+                screenDescription = permissionsViewModel.screenDescription) {
+                if (permissionsViewModel.updatePermissions(context.findActivity())) {
+                    mainViewModel.onPermissionsAcquired()
+                }
+            }
+        }
+        else -> {
+            Tabs(mainViewModel = mainViewModel)
+        }
+    }
+
+    if (mainViewModel.showProDialog.value) {
+        AlertDialog(
+            onDismissRequest = { mainViewModel.showProDialog.value = false },
+            buttons = { },
+            title = { Text(text = stringResource(id = R.string.dialog_donate_title_install)) },
+            text = { Text(text = stringResource(id = R.string.dialog_donate_message_installed)) },
+        )
     }
 }
 
 @Composable
-fun MainScreen(
-    inCar: InCarInterface,
-    appWidgetIdScope: AppWidgetIdScope? = null,
-    action: MutableSharedFlow<UiAction>
-) {
+fun Tabs(mainViewModel: MainViewModel) {
     val navController = rememberNavController()
-    val isWidget = appWidgetIdScope.isValid
-    val items: List<NavItem.TabItem> = listOf(
-        if (isWidget) NavItem.CurrentWidget else NavItem.Widgets,
-        NavItem.InCar,
-        NavItem.About
-    )
     val currentSkin = remember { mutableStateOf(WidgetInterface.SKIN_YOU) }
-    val widgetSettings: MutableState<WidgetInterface> = remember { mutableStateOf(WidgetInterface.NoOp()) }
 
     Scaffold(
-        backgroundColor = if (isWidget) Color.Transparent else MaterialTheme.colors.background,
+        backgroundColor = if (mainViewModel.isWidget) Color.Transparent else MaterialTheme.colors.background,
         contentColor = MaterialTheme.colors.onBackground,
         topBar = {
             TopAppBar(
                 title = { Text(text = stringResource(id = R.string.app_name)) },
                 actions = {
-                    if (isWidget) {
+                    if (mainViewModel.isWidget) {
                         AppBarMenu(
-                            tileColor = rememberTileColor(currentSkin.value, widgetSettings.value),
-                            appWidgetId = +appWidgetIdScope,
+                            tileColor = rememberTileColor(currentSkin.value, mainViewModel.widgetSettings),
+                            appWidgetId = +mainViewModel.appWidgetIdScope,
                             currentSkinValue = currentSkin.value,
-                            action = action,
+                            action = mainViewModel.action,
                             navController = navController
                         )
                     }
@@ -96,44 +107,51 @@ fun MainScreen(
             )
         },
         bottomBar = {
-            BottomNavigation {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
-                items.forEachIndexed { _, item ->
-                    BottomNavigationItem(
-                        icon = { Icon(item.icon, contentDescription = null) },
-                        label = { Text(stringResource(id = item.resourceId)) },
-                        selected = currentRoute?.startsWith(item.route) == true,
-                        onClick = {
-                            navController.navigate(item.route) {
-                                // Pop up to the start destination of the graph to
-                                // avoid building up a large stack of destinations
-                                // on the back stack as users select items
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                // Avoid multiple copies of the same destination when
-                                // reselecting the same item
-                                launchSingleTop = true
-                                // Restore state when reselecting a previously selected item
-                                restoreState = false
-                            }
-                        }
-                    )
-                }
-            }
-        }, content = { innerPadding ->
+            BottomTabs(mainViewModel.tabs, navController)
+        },
+        content = { innerPadding ->
             NavHost(
                 navController = navController,
-                action = action,
-                appWidgetIdScope = appWidgetIdScope,
-                inCar = inCar,
+                action = mainViewModel.action,
+                appWidgetIdScope = mainViewModel.appWidgetIdScope,
+                inCar = mainViewModel.inCarSettings,
                 innerPadding = innerPadding,
                 currentSkin = currentSkin,
-                widgetSettings = widgetSettings
+                startDestination = mainViewModel.topDestination.value.route,
+                startRoute = mainViewModel.startRoute
             )
         }
     )
+}
+
+@Composable
+fun BottomTabs(items: List<NavItem.Tab>, navController: NavHostController) {
+    BottomNavigation {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+        items.forEachIndexed { _, item ->
+            BottomNavigationItem(
+                icon = { Icon(item.icon, contentDescription = null) },
+                label = { Text(stringResource(id = item.resourceId)) },
+                selected = currentRoute?.startsWith(item.route) == true,
+                onClick = {
+                    navController.navigate(item.route) {
+                        // Pop up to the start destination of the graph to
+                        // avoid building up a large stack of destinations
+                        // on the back stack as users select items
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        // Avoid multiple copies of the same destination when
+                        // reselecting the same item
+                        launchSingleTop = true
+                        // Restore state when reselecting a previously selected item
+                        restoreState = false
+                    }
+                }
+            )
+        }
+    }
 }
 
 @Composable
@@ -144,10 +162,9 @@ fun NavHost(
     inCar: InCarInterface,
     innerPadding: PaddingValues,
     currentSkin: MutableState<String>,
-    widgetSettings: MutableState<WidgetInterface>,
-    startDestination: String = NavItem.startDestination(appWidgetIdScope),
-    startRoute: String? = NavItem.startRoute(appWidgetIdScope),
-    currentWidgetStartDestination: String = NavItem.CurrentWidget.Skin.route
+    startDestination: String,
+    startRoute: String?,
+    currentWidgetStartDestination: String = NavItem.Tab.CurrentWidget.Skin.route
 ) {
     val scope = rememberCoroutineScope()
 
@@ -156,10 +173,9 @@ fun NavHost(
         .padding(innerPadding)
 
     NavHost(navController, startDestination = startDestination, route = startRoute) {
-        composable(route = NavItem.Widgets.route) {
+        composable(route = NavItem.Tab.Widgets.route) {
             val widgetsListViewModel: WidgetsListViewModel = viewModel()
             val widgetsState by widgetsListViewModel.loadScreen().collectAsState(initial = ScreenLoadState.Loading)
-            AppLog.d(widgetsState.toString())
             if (widgetsState is ScreenLoadState.Ready<WidgetListScreenState>) {
                 WidgetsListScreen(
                     screen = (widgetsState as ScreenLoadState.Ready<WidgetListScreenState>).value,
@@ -168,7 +184,7 @@ fun NavHost(
                 )
             }
         }
-        composable(route = NavItem.About.route) {
+        composable(route = NavItem.Tab.About.route) {
             val appContext = LocalContext.current.applicationContext
             val aboutViewModel: AboutViewModel = viewModel(factory = AboutViewModel.Factory(appContext, appWidgetIdScope))
             val aboutScreenState by aboutViewModel.screenState.collectAsState(initial = null)
@@ -180,13 +196,11 @@ fun NavHost(
                 )
             }
         }
-        navigation(route = NavItem.CurrentWidget.route, startDestination = currentWidgetStartDestination) {
-            composable(route = NavItem.CurrentWidget.Skin.route) {
-                val appContext = LocalContext.current.applicationContext
-                val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetIdScope!!))
+        navigation(route = NavItem.Tab.CurrentWidget.route, startDestination = currentWidgetStartDestination) {
+            composable(route = NavItem.Tab.CurrentWidget.Skin.route) {
+                val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(LocalContext.current, appWidgetIdScope!!))
                 val currentSkinValue by skinViewModel.currentSkin.collectAsState(initial = skinViewModel.skinList.current)
                 currentSkin.value = currentSkinValue.value
-                widgetSettings.value = skinViewModel.widgetSettings
                 WidgetSkinScreen(
                     skinList = skinViewModel.skinList,
                     viewModel = skinViewModel,
@@ -199,17 +213,17 @@ fun NavHost(
                 }
             }
             composable(
-                route = NavItem.CurrentWidget.EditShortcut.route,
-                arguments = NavItem.CurrentWidget.EditShortcut.arguments,
-                deepLinks = NavItem.CurrentWidget.EditShortcut.deepLinks
+                route = NavItem.Tab.CurrentWidget.EditShortcut.route,
+                arguments = NavItem.Tab.CurrentWidget.EditShortcut.arguments,
+                deepLinks = NavItem.Tab.CurrentWidget.EditShortcut.deepLinks
             ) {
                 EditShortcut(
                         appWidgetIdScope = appWidgetIdScope!!,
-                        args = NavItem.CurrentWidget.EditShortcut.Args(it.arguments),
+                        args = NavItem.Tab.CurrentWidget.EditShortcut.Args(it.arguments),
                         action = action
                 )
             }
-            composable(route = NavItem.CurrentWidget.MoreSettings.route) {
+            composable(route = NavItem.Tab.CurrentWidget.MoreSettings.route) {
                 val appContext = LocalContext.current.applicationContext
                 val skinViewModel: SkinPreviewViewModel =
                     viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetIdScope!!))
@@ -219,12 +233,12 @@ fun NavHost(
                 )
             }
         }
-        navigation(route = NavItem.InCar.route, startDestination = NavItem.InCar.Main.route) {
-            composable(route = NavItem.InCar.Main.route) {
+        navigation(route = NavItem.Tab.InCar.route, startDestination = NavItem.Tab.InCar.Main.route) {
+            composable(route = NavItem.Tab.InCar.Main.route) {
                 val inCarViewModel: InCarViewModel = viewModel()
                 InCarMainScreen(inCarViewModel, navController = navController, modifier = modifier)
             }
-            composable(route = NavItem.InCar.Bluetooth.route) {
+            composable(route = NavItem.Tab.InCar.Bluetooth.route) {
                 val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel(factory =
                     BluetoothDevicesViewModel.Factory(
                         application = getKoin().get(),
@@ -234,10 +248,10 @@ fun NavHost(
                 )
                 BluetoothDevicesScreen(viewModel = bluetoothDevicesViewModel, modifier = modifier)
             }
-            composable(route = NavItem.InCar.Media.route) {
+            composable(route = NavItem.Tab.InCar.Media.route) {
                 MediaScreen(inCar = inCar, modifier = modifier)
             }
-            composable(route = NavItem.InCar.More.route) {
+            composable(route = NavItem.Tab.InCar.More.route) {
                 MoreScreen(inCar = inCar, modifier = modifier)
             }
         }
@@ -265,9 +279,13 @@ fun AppBarWidgetAction(
 @Preview("Main Screen Light")
 @Composable
 fun PreviewPreferencesScreenLight() {
-    CarWidgetTheme() {
+    CarWidgetTheme {
         BackgroundSurface {
-            MainScreen(InCarInterface.NoOp(), action = MutableSharedFlow())
+            MainScreen(MainViewModel(
+                emptyList(),
+                null,
+                LocalContext.current.applicationContext as Application
+            ))
         }
     }
 }

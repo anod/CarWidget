@@ -19,16 +19,17 @@ dependencies {
     implementation(project(":lib:graphics"))
     implementation(project(":lib:framework"))
     implementation(project(":lib:colorpicker"))
+    implementation(project(":lib:permissions"))
 
-    implementation("io.insert-koin:koin-core:3.2.0-beta-1")
-    implementation("io.coil-kt:coil-base:2.0.0-rc03")
+    implementation("io.insert-koin:koin-core:3.2.0")
+    implementation("io.coil-kt:coil-base:2.1.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
 
     // Activity recognition
     implementation("com.google.android.gms:play-services-location:19.0.1")
-    implementation("com.google.android.material:material:1.5.0")
+    implementation("com.google.android.material:material:1.6.0")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.activity:activity:1.4.0")
@@ -43,15 +44,15 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-common-java8:2.4.1")
     kapt("androidx.lifecycle:lifecycle-common-java8:2.4.1")
 
-    implementation("ch.acra:acra-core:5.8.4")
-    implementation("ch.acra:acra-notification:5.8.4")
-    implementation("ch.acra:acra-limiter:5.8.4")
+    implementation("ch.acra:acra-core:5.9.3")
+    implementation("ch.acra:acra-notification:5.9.3")
+    implementation("ch.acra:acra-limiter:5.9.3")
 
     compileOnly("com.google.auto.service:auto-service-annotations:1.0.1")
     kapt("com.google.auto.service:auto-service:1.0.1")
 
-    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.20")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")
 }
 
 android {

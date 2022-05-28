@@ -10,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.FormatColorFill
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.SmartDisplay
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +20,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.screens.WidgetActions
@@ -31,6 +32,21 @@ sealed interface AppBarTileColor {
     object Hidden : AppBarTileColor
     object Icon : AppBarTileColor
     data class Value(val color: Color) : AppBarTileColor
+}
+
+@Composable
+fun rememberTileColor(currentSkinValue: String, prefs: WidgetInterface): AppBarTileColor {
+    val color by prefs.observe<Int>(WidgetSettings.BUTTON_COLOR).collectAsState(initial = prefs.tileColor)
+    val palette by prefs.observe<Boolean>(WidgetSettings.PALETTE_BG).collectAsState(initial = prefs.paletteBackground)
+    return remember(currentSkinValue, color, palette) {
+        if (currentSkinValue == WidgetInterface.SKIN_WINDOWS7) {
+            if (palette) {
+                AppBarTileColor.Icon
+            }
+            AppBarTileColor.Value(color = Color(color))
+        }
+        AppBarTileColor.Hidden
+    }
 }
 
 @Composable
@@ -92,7 +108,7 @@ fun AppBarMenu(tileColor: AppBarTileColor, appWidgetId: Int, currentSkinValue: S
             }) { Text(text = stringResource(id = R.string.pref_scale_icon)) }
             Divider()
             DropdownMenuItem(onClick = {
-                navController.navigate(NavItem.CurrentWidget.MoreSettings.route)
+                navController.navigate(NavItem.Tab.CurrentWidget.MoreSettings.route)
                 expanded = false
             }) { Text(text = stringResource(id = R.string.more)) }
         }

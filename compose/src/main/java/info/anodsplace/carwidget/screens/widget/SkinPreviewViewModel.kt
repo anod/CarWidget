@@ -56,9 +56,9 @@ interface SkinPreviewViewModel {
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T  {
             return if (appWidgetIdScope == null)
-                DummySkinPreviewViewModel(appContext as Application) as T
+                DummySkinPreviewViewModel(appContext.applicationContext as Application) as T
             else
-                RealSkinPreviewViewModel(appContext as Application, appWidgetIdScope) as T
+                RealSkinPreviewViewModel(appContext.applicationContext as Application, appWidgetIdScope) as T
         }
     }
 

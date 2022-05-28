@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 @Composable
-fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: NavItem.CurrentWidget.EditWidgetButton.Args, action: MutableSharedFlow<UiAction>) {
+fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWidget.EditWidgetButton.Args, action: MutableSharedFlow<UiAction>) {
     val appContext = LocalContext.current.applicationContext as Application
     val scope = rememberCoroutineScope()
 

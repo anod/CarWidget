@@ -11,13 +11,6 @@ import info.anodsplace.framework.content.startActivitySafely
 
 object TrialDialogs {
 
-    fun buildProInstalledDialog(context: Context): Dialog = DialogMessage(
-            context,
-            R.style.Alert,
-            R.string.dialog_donate_title_install,
-            R.string.dialog_donate_message_installed
-    ) {}.create()
-
     fun buildTrialDialog(trialsLeft: Int, context: Context): Dialog {
         val message = if (trialsLeft > 0) {
             val activationsLeftText = context.resources

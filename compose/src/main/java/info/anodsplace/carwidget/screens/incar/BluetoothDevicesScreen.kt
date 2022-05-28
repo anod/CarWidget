@@ -2,24 +2,31 @@ package info.anodsplace.carwidget.screens.incar
 
 import android.bluetooth.BluetoothAdapter
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.compose.foundation.layout.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Switch
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.compose.BackgroundSurface
-import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.compose.PreferenceCheckbox
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.framework.bluetooth.Bluetooth
-import info.anodsplace.framework.permissions.BluetoothConnect
-import info.anodsplace.framework.permissions.BluetoothScan
-import info.anodsplace.framework.permissions.RequestMultiplePermissions
+import info.anodsplace.permissions.AppPermission
 
 private fun btSwitchRequest(newState: Boolean, viewModel: BluetoothDevicesViewModel) {
     if (newState) {
@@ -64,14 +71,14 @@ fun BluetoothDevicesScreen(viewModel: BluetoothDevicesViewModel, modifier: Modif
 
 @Composable
 fun BluetoothPermissions(viewModel: BluetoothDevicesViewModel, modifier: Modifier = Modifier) {
-    val bluetoothPermissions = rememberLauncherForActivityResult(contract = RequestMultiplePermissions(listOf(BluetoothScan, BluetoothConnect))) { (allGranted, _) ->
-        viewModel.requiresPermission.value = allGranted
+    val bluetoothPermissions = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestMultiplePermissions()) { results ->
+        viewModel.requiresPermission.value = results.values.any { !it } == false
     }
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = stringResource(id = R.string.bluetooth_device_category_title))
         Text(text = stringResource(id = R.string.allow_bluetooth_summary))
         Button(modifier = Modifier.padding(16.dp), onClick = {
-            bluetoothPermissions.launch(Unit)
+            bluetoothPermissions.launch(arrayOf(AppPermission.BluetoothScan.value, AppPermission.BluetoothConnect.value))
         }) {
             Text(text = stringResource(id = R.string.allow_bluetooth))
         }
@@ -125,7 +132,7 @@ fun BluetoothDeviceEmpty(btState: Int, onSwitchRequest: (newState: Boolean) -> U
                 )
                 Switch(
                     modifier = Modifier.padding(start = 16.dp),
-                    checked = btState == BluetoothAdapter.STATE_ON,
+                    checked = false,
                     onCheckedChange = { onSwitchRequest(it) },
                     enabled = btState == BluetoothAdapter.STATE_OFF
                 )

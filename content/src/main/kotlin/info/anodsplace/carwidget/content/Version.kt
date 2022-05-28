@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.content
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import androidx.preference.PreferenceManager
 
 class Version(private val context: Context) {
@@ -32,6 +33,21 @@ class Version(private val context: Context) {
             true
         } else !isTrialExpired
 
+    val isProInstalled: Boolean
+        get() = try {
+            context.packageManager.getApplicationInfo("com.anod.car.home.pro", 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+
+    val isFreeInstalled: Boolean
+        get() = try {
+            context.packageManager.getApplicationInfo("com.anod.car.home.free", 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
 
     fun increaseTrialCounter() {
         initTrialCounter()

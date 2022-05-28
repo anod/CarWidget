@@ -18,6 +18,7 @@ import com.anod.car.home.notifications.Channels
 import com.anod.car.home.skin.SkinPropertiesFactory
 import com.anod.car.home.utils.AppUpgrade
 import com.anod.car.home.utils.WidgetShortcutResource
+import com.anod.car.home.utils.permissionDescriptions
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.carwidget.appwidget.WidgetUpdate
@@ -30,6 +31,7 @@ import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
+import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
 import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.app.ApplicationInstance
@@ -42,6 +44,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -63,7 +66,7 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
         initAcra {
             buildConfigClass = BuildConfig::class.java
             reportSendSuccessToast = getString(R.string.crash_dialog_toast)
-            reportContent = arrayOf(
+            reportContent = listOf(
                 ReportField.APP_VERSION_NAME,
                 ReportField.APP_VERSION_CODE,
                 ReportField.ANDROID_VERSION,
@@ -75,7 +78,7 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                 ReportField.STACK_TRACE,
                 ReportField.LOGCAT
             )
-            logcatArguments = arrayOf("-t", "100", "-v", "brief", "CarWidget:D", "*:S")
+            logcatArguments = listOf("-t", "100", "-v", "brief", "CarWidget:D", "*:S")
             notification {
                 channelName = getString(R.string.channel_crash_reports)
                 text = getString(R.string.crash_dialog_text)
@@ -146,6 +149,8 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                             )
                         }
                         factoryOf(::ModePhoneStateListener)
+                        factoryOf(::PermissionChecker)
+                        factory(named("permissionDescriptions")) { permissionDescriptions }
                     },
                     createWidgetInstanceModule(),
                 ),

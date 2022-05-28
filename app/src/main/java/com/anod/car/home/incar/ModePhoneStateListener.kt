@@ -10,10 +10,9 @@ import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import android.widget.Toast
 import com.anod.car.home.R
-import info.anodsplace.framework.permissions.AnswerPhoneCalls
-import info.anodsplace.framework.permissions.AppPermissions
-import info.anodsplace.framework.permissions.ModifyPhoneState
 import info.anodsplace.applog.AppLog
+import info.anodsplace.permissions.AppPermission
+import info.anodsplace.permissions.AppPermissions
 import java.util.*
 
 class ModePhoneStateListener(private val context: Context, private val audioManager: AudioManager) : PhoneStateListener() {
@@ -108,7 +107,7 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
 
     @SuppressLint("MissingPermission")
     private fun answerPhoneHeadsethook(context: Context) {
-        if (AppPermissions.isGranted(context, AnswerPhoneCalls) || AppPermissions.isGranted(context, ModifyPhoneState)) {
+        if (AppPermissions.isGranted(context, AppPermission.AnswerPhoneCalls) || AppPermissions.isGranted(context, AppPermission.ModifyPhoneState)) {
             val telecomManager = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
             telecomManager.acceptRingingCall()
             if (autoSpeaker && !audioManager.isSpeakerphoneOn) {

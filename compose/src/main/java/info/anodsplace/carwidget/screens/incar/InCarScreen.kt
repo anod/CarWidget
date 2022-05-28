@@ -3,11 +3,7 @@ package info.anodsplace.carwidget.screens.incar
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -36,16 +32,16 @@ fun InCarMainScreen(
         onClick = { item -> onPreferenceClick(item, viewModel.inCar) { textItem ->
             when (textItem.key) {
                 "bt-device-screen" -> {
-                    navController.navigate(NavItem.InCar.Bluetooth.route) { }
+                    navController.navigate(NavItem.Tab.InCar.Bluetooth.route) { }
                 }
                 "screen-timeout-list" -> {
                     screenTimeout = textItem
                 }
                 "media-screen" -> {
-                    navController.navigate(NavItem.InCar.Media.route) { }
+                    navController.navigate(NavItem.Tab.InCar.Media.route) { }
                 }
                 "more-screen" -> {
-                    navController.navigate(NavItem.InCar.More.route) { }
+                    navController.navigate(NavItem.Tab.InCar.More.route) { }
                 }
             }
         } },
@@ -86,13 +82,14 @@ fun onPreferenceClick(
         }
         is PreferenceItem.Text -> { navigate(item) }
         is PreferenceItem.Placeholder -> { }
+        is PreferenceItem.Pick -> { }
     }
 }
 
 @Preview("InCarScreen Light")
 @Composable
 fun InCarScreenLight() {
-    CarWidgetTheme() {
+    CarWidgetTheme {
         BackgroundSurface {
             InCarMainScreen(viewModel = viewModel())
         }

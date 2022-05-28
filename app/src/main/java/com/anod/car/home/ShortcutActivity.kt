@@ -12,18 +12,18 @@ import com.anod.car.home.utils.MusicUtils
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra.EXTRA_MEDIA_BUTTON
 import info.anodsplace.framework.content.startActivitySafely
-import info.anodsplace.framework.permissions.AppPermissions
-import info.anodsplace.framework.permissions.CallPhone
+import info.anodsplace.permissions.AppPermission
+import info.anodsplace.permissions.AppPermissions
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
 class ShortcutActivity : FragmentActivity(), KoinComponent {
 
-    private lateinit var callPhonePermission: ActivityResultLauncher<Void>
+    private lateinit var callPhonePermission: ActivityResultLauncher<AppPermissions.Request.Input>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        callPhonePermission = AppPermissions.register(this, CallPhone) {
+        callPhonePermission = registerForActivityResult(AppPermissions.Request()) {
 
         }
         execute(intent)
@@ -75,8 +75,8 @@ class ShortcutActivity : FragmentActivity(), KoinComponent {
             intent.action = Intent.ACTION_CALL
         }
         if (Intent.ACTION_CALL == action) {
-            if (!AppPermissions.isGranted(this, CallPhone)) {
-                callPhonePermission.launch(null)
+            if (!AppPermissions.isGranted(this, AppPermission.CallPhone)) {
+                callPhonePermission.launch(AppPermissions.Request.Input.Permissions(arrayOf(AppPermission.CallPhone.value)))
             }
         }
 

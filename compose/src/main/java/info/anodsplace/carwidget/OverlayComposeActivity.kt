@@ -69,12 +69,12 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
                 when (deeplink) {
                     is Deeplink.EditShortcut -> EditShortcut(
                         appWidgetIdScope = appWidgetIdScope!!,
-                        args = NavItem.CurrentWidget.EditShortcut.Args(shortcutId = deeplink.shortcutId, position = deeplink.position),
+                        args = NavItem.Tab.CurrentWidget.EditShortcut.Args(shortcutId = deeplink.shortcutId, position = deeplink.position),
                         action = action
                     )
                     is Deeplink.EditWidgetButton -> EditWidgetButton(
                         appWidgetIdScope = appWidgetIdScope!!,
-                        args = NavItem.CurrentWidget.EditWidgetButton.Args(buttonId = deeplink.buttonId),
+                        args = NavItem.Tab.CurrentWidget.EditWidgetButton.Args(buttonId = deeplink.buttonId),
                         action = action
                     )
                     else -> throw IllegalArgumentException("Unknown deeplink $deeplink")

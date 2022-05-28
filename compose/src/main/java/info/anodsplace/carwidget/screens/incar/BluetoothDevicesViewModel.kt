@@ -18,9 +18,8 @@ import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.framework.bluetooth.Bluetooth
 import info.anodsplace.framework.bluetooth.BtClassType
 import info.anodsplace.framework.bluetooth.classType
-import info.anodsplace.framework.permissions.AppPermissions
-import info.anodsplace.framework.permissions.BluetoothConnect
-import info.anodsplace.framework.permissions.BluetoothScan
+import info.anodsplace.permissions.AppPermission
+import info.anodsplace.permissions.AppPermissions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
@@ -77,7 +76,9 @@ class BluetoothDevicesViewModel(
 
     private fun checkPermission(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            return (!AppPermissions.isGranted(context, BluetoothScan) || !AppPermissions.isGranted(context, BluetoothConnect))
+            return (
+                    !AppPermissions.isGranted(context, AppPermission.BluetoothScan)
+                    || !AppPermissions.isGranted(context, AppPermission.BluetoothConnect))
         }
         return false
     }
@@ -106,9 +107,7 @@ class BluetoothDevicesViewModel(
             }
         }
 
-        if (bluetoothReceiver != null) {
-            context.registerReceiver(bluetoothReceiver, INTENT_FILTER)
-        }
+        context.registerReceiver(bluetoothReceiver, INTENT_FILTER)
     }
 
     @SuppressLint("MissingPermission")
