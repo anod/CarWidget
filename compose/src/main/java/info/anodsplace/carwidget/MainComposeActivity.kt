@@ -58,7 +58,7 @@ open class MainComposeActivity : ComponentActivity(), KoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            uiModeManager.setApplicationNightMode(appSettings.nightMode)
+            uiModeManager.setApplicationNightMode(appSettings.uiMode)
         }
         super.onCreate(savedInstanceState)
         val appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
@@ -88,15 +88,15 @@ open class MainComposeActivity : ComponentActivity(), KoinComponent {
             }
         }
         setContent {
-            val nightMode by appSettings.nightModeChange.collectAsState(initial = appSettings.nightMode)
+            val uiMode by appSettings.uiModeChange.collectAsState(initial = appSettings.uiMode)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                LaunchedEffect(nightMode) {
-                    uiModeManager.setApplicationNightMode(nightMode)
+                LaunchedEffect(uiMode) {
+                    uiModeManager.setApplicationNightMode(uiMode)
                 }
             }
             CarWidgetTheme(
                 context = this@MainComposeActivity,
-                nightMode = nightMode
+                uiMode = uiMode
             ) {
                 MainScreen(mainViewModel = mainViewModel)
 //                ThemeColors(listOf(

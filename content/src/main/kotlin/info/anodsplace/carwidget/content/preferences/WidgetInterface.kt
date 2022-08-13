@@ -46,7 +46,7 @@ interface WidgetInterface {
         override var iconsTheme: String = "",
         override var isSettingsTransparent: Boolean = false,
         override var isIncarTransparent: Boolean = false,
-        override var skin: String = "",
+        override var skin: String = SKIN_YOU,
         override var tileColor: Int = 0,
         override var isIconsMono: Boolean = false,
         override var iconsColor: Int? = null,

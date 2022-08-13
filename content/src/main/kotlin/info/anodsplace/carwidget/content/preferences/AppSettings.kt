@@ -4,6 +4,7 @@ import android.app.UiModeManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -16,17 +17,20 @@ import kotlinx.coroutines.flow.map
  */
 class AppSettings(context: Context, appScope: AppCoroutineScope) : ChangeableSharedPreferences(getSharedPreferences(context), appScope = appScope) {
 
-    val nightModeChange: Flow<Int> = changes
+    val uiModeChange: Flow<Int> = changes
         .filter { (key, _) -> key == APP_THEME }
-        .map { nightMode }
+        .map { uiMode }
 
-    val nightMode: Int
+    val uiMode: Int
         get() = when (theme) {
             system -> UiModeManager.MODE_NIGHT_AUTO
             dark -> UiModeManager.MODE_NIGHT_YES
             light -> UiModeManager.MODE_NIGHT_NO
             else -> UiModeManager.MODE_NIGHT_AUTO
         }
+
+    val appCompatNightMode: Int
+        get() = uiModeMap[uiMode] ?: AppCompatDelegate.MODE_NIGHT_NO
 
     var musicApp: ComponentName?
         get() {
@@ -53,6 +57,12 @@ class AppSettings(context: Context, appScope: AppCoroutineScope) : ChangeableSha
         private fun getSharedPreferences(context: Context): SharedPreferences {
             return PreferenceManager.getDefaultSharedPreferences(context)
         }
+
+        private val uiModeMap = mapOf(
+            UiModeManager.MODE_NIGHT_AUTO to AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
+            UiModeManager.MODE_NIGHT_NO to AppCompatDelegate.MODE_NIGHT_NO,
+            UiModeManager.MODE_NIGHT_YES to AppCompatDelegate.MODE_NIGHT_YES
+        )
     }
 
 }

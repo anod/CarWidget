@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    compileSdk = 30
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 29
@@ -41,7 +41,7 @@ dependencies {
     implementation("com.squareup.sqldelight:coroutines-extensions-jvm:1.5.3")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.collection:collection-ktx:1.2.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.10")
 }

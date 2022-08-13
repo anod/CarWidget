@@ -89,7 +89,7 @@ fun MediaScreen(inCar: InCarInterface, modifier: Modifier) {
 @Preview("Media screen Dark")
 @Composable
 fun MediaScreenDark() {
-    CarWidgetTheme(nightMode = UiModeManager.MODE_NIGHT_YES) {
+    CarWidgetTheme(uiMode = UiModeManager.MODE_NIGHT_YES) {
         BackgroundSurface {
             MediaScreen(
                 inCar = InCarInterface.NoOp(),

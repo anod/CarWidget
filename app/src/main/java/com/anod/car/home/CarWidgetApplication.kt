@@ -50,8 +50,8 @@ import org.koin.dsl.module
 
 class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
 
-    override val nightMode: Int
-        get() = get<AppSettings>().nightMode
+    override val appCompatNightMode: Int
+        get() =  get<AppSettings>().appCompatNightMode
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
@@ -157,7 +157,7 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
             )
         }
 
-        AppCompatDelegate.setDefaultNightMode(nightMode)
+        AppCompatDelegate.setDefaultNightMode(appCompatNightMode)
         Channels.register(this)
     }
 

@@ -17,7 +17,7 @@ abstract class CarWidgetActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(appThemeRes)
-        AppCompatDelegate.setDefaultNightMode(app.nightMode)
+        AppCompatDelegate.setDefaultNightMode(app.appCompatNightMode)
         super.onCreate(savedInstanceState)
     }
 

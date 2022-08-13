@@ -78,10 +78,11 @@ class DummySkinPreviewViewModel(application: Application): AndroidViewModel(appl
     override val reload: Flow<Int> = flowOf()
 
     override suspend fun load(overrideSkin: SkinList.Item, context: Context): View {
-        val intentFactory: PendingIntentFactory = get()
-        val widgetView: WidgetView = get(parameters = { parametersOf(bitmapMemoryCache, intentFactory, true, overrideSkin.value) })
-        val remoteViews = widgetView.create()
-        return renderPreview(remoteViews, context)
+//        val intentFactory: PendingIntentFactory = PendingIntentFactory.NoOp(context)
+//        val widgetView: WidgetView = get(parameters = { parametersOf(bitmapMemoryCache, intentFactory, true, overrideSkin.value) })
+//        val remoteViews = widgetView.create()
+//        return renderPreview(remoteViews, context)
+        return View(context)
     }
 }
 

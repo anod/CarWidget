@@ -4,16 +4,17 @@ import android.app.UiModeManager
 import android.content.Context
 import android.content.res.TypedArray
 import androidx.annotation.StyleRes
-import androidx.compose.runtime.Composable
-
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.*
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.res.getColorOrThrow
 import androidx.core.content.res.use
@@ -51,13 +52,13 @@ val CarWidgetShapes = Shapes(
 @Composable
 fun CarWidgetTheme(
     context: Context = LocalContext.current,
-    nightMode: Int = UiModeManager.MODE_NIGHT_AUTO,
+    uiMode: Int = UiModeManager.MODE_NIGHT_AUTO,
     content: @Composable () -> Unit
 ) {
-    val darkTheme = if (nightMode == UiModeManager.MODE_NIGHT_AUTO)
+    val darkTheme = if (uiMode == UiModeManager.MODE_NIGHT_AUTO)
             isSystemInDarkTheme()
         else
-            nightMode == UiModeManager.MODE_NIGHT_YES
+        uiMode == UiModeManager.MODE_NIGHT_YES
     val defaultColors = if (darkTheme) darkColors() else lightColors()
     val colors = readColors(context, defaultColors)
 

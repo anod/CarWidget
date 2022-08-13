@@ -32,7 +32,7 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            uiModeManager.setApplicationNightMode(appSettings.nightMode)
+            uiModeManager.setApplicationNightMode(appSettings.uiMode)
         }
         super.onCreate(savedInstanceState)
         val appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
@@ -55,16 +55,16 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
         appWidgetIdScope = if (deeplink is Deeplink.AppWidgetIdAware) AppWidgetIdScope(deeplink.appWidgetId) else null
 
         setContent {
-            val nightMode by appSettings.nightModeChange.collectAsState(initial = appSettings.nightMode)
+            val uiMode by appSettings.uiModeChange.collectAsState(initial = appSettings.uiMode)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                LaunchedEffect(nightMode) {
-                    uiModeManager.setApplicationNightMode(nightMode)
+                LaunchedEffect(uiMode) {
+                    uiModeManager.setApplicationNightMode(uiMode)
                 }
             }
 
             CarWidgetTheme(
                     context = this@OverlayComposeActivity,
-                    nightMode = nightMode
+                uiMode = uiMode
             ) {
                 when (deeplink) {
                     is Deeplink.EditShortcut -> EditShortcut(

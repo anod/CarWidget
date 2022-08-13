@@ -100,7 +100,7 @@ fun ScreenTimeoutDialog(item: PreferenceItem.Text, inCar: InCarInterface, onDism
 @Preview("ScreenTimeout Dark")
 @Composable
 fun ScreenTimeoutDark() {
-    CarWidgetTheme(nightMode = UiModeManager.MODE_NIGHT_YES) {
+    CarWidgetTheme(uiMode = UiModeManager.MODE_NIGHT_YES) {
         BackgroundSurface {
             ScreenTimeoutContent(
                 inCar = InCarInterface.NoOp()

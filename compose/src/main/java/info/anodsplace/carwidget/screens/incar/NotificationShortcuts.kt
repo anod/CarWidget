@@ -116,7 +116,7 @@ fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifi
 @Preview("ShortcutsScreen Dark")
 @Composable
 fun ShortcutsScreenDark() {
-    CarWidgetTheme(nightMode = UiModeManager.MODE_NIGHT_YES) {
+    CarWidgetTheme(uiMode = UiModeManager.MODE_NIGHT_YES) {
         BackgroundSurface {
             NotificationShortcuts(
                 viewModel = viewModel(),

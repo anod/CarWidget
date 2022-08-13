@@ -12,17 +12,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import info.anodsplace.carwidget.R
-import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.CarWidgetTheme
+import info.anodsplace.carwidget.R
 import info.anodsplace.framework.util.isScalar
 import info.anodsplace.framework.util.put
 import info.anodsplace.framework.util.putAny
 import java.util.*
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun EditDialog(confirmText: String, onClose: (Boolean) -> Unit, content: @Composable () -> Unit) {
@@ -240,7 +238,7 @@ fun PreviewExtraAddDialogEmpty() {
         putInt("Int", 325)
         putIntArray("Array", intArrayOf(125, 67, 80))
     })
-    CarWidgetTheme(nightMode = UiModeManager.MODE_NIGHT_YES) {
+    CarWidgetTheme(uiMode = UiModeManager.MODE_NIGHT_YES) {
         Surface {
             ExtraEditDialog(editState, onClose = { })
         }

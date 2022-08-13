@@ -116,7 +116,7 @@ fun WidgetLookMoreScreen(modifier: Modifier, settings: WidgetInterface) {
 @Preview("WidgetLookMoreScreen Dark")
 @Composable
 fun WidgetLookMoreScreenDark() {
-    CarWidgetTheme(nightMode = UiModeManager.MODE_NIGHT_YES) {
+    CarWidgetTheme(uiMode = UiModeManager.MODE_NIGHT_YES) {
         WidgetLookMoreScreen(Modifier, WidgetInterface.NoOp())
     }
 }

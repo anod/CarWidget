@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.screens
 
 import android.app.UiModeManager
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -12,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.CarWidgetTheme
+import info.anodsplace.carwidget.R
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
@@ -46,11 +47,11 @@ fun CarWidgetToolbar(action: MutableSharedFlow<UiAction>) {
 @Preview("Dark AppBar")
 @Composable
 fun PreviewAppBarDark() {
-    CarWidgetTheme(nightMode = UiModeManager.MODE_NIGHT_YES) {
+    CarWidgetTheme(uiMode = UiModeManager.MODE_NIGHT_YES) {
         Surface(color = MaterialTheme.colors.primary) {
             Scaffold(
                     topBar = { CarWidgetToolbar(MutableSharedFlow()) },
-                    content = { Text(text = "Content") }
+                    content = { paddingValues -> Text(text = "Content", modifier = Modifier.padding(paddingValues)) }
             )
         }
     }
