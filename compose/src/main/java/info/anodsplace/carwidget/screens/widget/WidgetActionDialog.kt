@@ -11,7 +11,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,50 +20,44 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.screens.UiAction
-import info.anodsplace.carwidget.screens.WidgetActions
+import info.anodsplace.carwidget.screens.WidgetDialog
 import info.anodsplace.compose.ColorDialog
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.launch
 
 @Composable
-fun WidgetActionDialog(modifier: Modifier, current: UiAction, action: MutableSharedFlow<UiAction>, widgetSettings: WidgetInterface) {
+fun WidgetActionDialog(modifier: Modifier, current: WidgetDialog, action: (UiAction) -> Unit, widgetSettings: WidgetInterface) {
     when (current) {
-        WidgetActions.ChooseBackgroundColor -> BackgroundColor(widgetSettings, action)
-        WidgetActions.ChooseIconsScale -> IconScaleDialog(widgetSettings, action)
-        WidgetActions.ChooseIconsTheme -> { }
-        WidgetActions.ChooseShortcutsNumber -> ShortcutNumbersDialog(modifier, widgetSettings, action)
-        WidgetActions.ChooseTileColor -> { TileColor(widgetSettings, action) }
-        is WidgetActions.SwitchIconsMono -> { }
+        WidgetDialog.ChooseBackgroundColor -> BackgroundColor(widgetSettings, action)
+        WidgetDialog.ChooseIconsScale -> IconScaleDialog(widgetSettings, action)
+        WidgetDialog.ChooseIconsTheme -> { }
+        WidgetDialog.ChooseShortcutsNumber -> ShortcutNumbersDialog(modifier, widgetSettings, action)
+        WidgetDialog.ChooseTileColor -> { TileColor(widgetSettings, action) }
+        is WidgetDialog.SwitchIconsMono -> { }
         else -> {}
     }
 }
 
 @Composable
-fun IconScaleDialog(prefs: WidgetInterface, action: MutableSharedFlow<UiAction>) {
-    val coroutineScope = rememberCoroutineScope()
-
+fun IconScaleDialog(prefs: WidgetInterface, action: (UiAction) -> Unit) {
     AlertDialog(
         buttons = { },
         modifier = Modifier.padding(16.dp),
         title = { Text(
                 text = stringResource(id = R.string.pref_scale_icon)
         ) },
-        onDismissRequest = {  coroutineScope.launch { action.emit(UiAction.None) } },
+        onDismissRequest = {  action(UiAction.None) },
         text = {
             Column {
                 Spacer(modifier = Modifier.height(64.dp))
                 val current = prefs.iconsScale.toInt()
                 IconScale(current) { scale ->
                     prefs.iconsScale = scale.toString()
-                    coroutineScope.launch { action.emit(UiAction.None) }
+                    action(UiAction.None)
                 }
             }
         }
@@ -97,47 +90,43 @@ fun IconScale(current: Int, onClick: (Int) -> Unit) {
 }
 
 @Composable
-fun BackgroundColor(prefs: WidgetInterface, action: MutableSharedFlow<UiAction>) {
+fun BackgroundColor(prefs: WidgetInterface, action: (UiAction) -> Unit) {
     val selected = Color(prefs.backgroundColor)
-    val coroutineScope = rememberCoroutineScope()
     ColorDialog(selected = selected) { newColor ->
         if (newColor != null) {
             prefs.backgroundColor = newColor.value.toInt()
         }
-        coroutineScope.launch { action.emit(UiAction.None) }
+        action(UiAction.None)
     }
 }
 
 @Composable
-fun TileColor(prefs: WidgetInterface, action: MutableSharedFlow<UiAction>) {
+fun TileColor(prefs: WidgetInterface, action: (UiAction) -> Unit) {
     val selected = Color(prefs.tileColor)
-    val coroutineScope = rememberCoroutineScope()
     ColorDialog(selected = selected) { newColor ->
         if (newColor != null) {
             prefs.tileColor = newColor.value.toInt()
         }
-        coroutineScope.launch { action.emit(UiAction.None) }
+        action(UiAction.None)
     }
 }
 
 @Composable
-fun ShortcutNumbersDialog(modifier: Modifier, widgetSettings: WidgetInterface, action: MutableSharedFlow<UiAction>) {
-    val coroutineScope = rememberCoroutineScope()
-
+fun ShortcutNumbersDialog(modifier: Modifier, widgetSettings: WidgetInterface, action: (UiAction) -> Unit) {
     AlertDialog(
             buttons = { },
             modifier = Modifier.padding(16.dp),
             title = { Text(
                     text = stringResource(id = R.string.number_shortcuts_title)
             ) },
-            onDismissRequest = {  coroutineScope.launch { action.emit(UiAction.None) } },
+            onDismissRequest = {  action(UiAction.None) },
             text = {
                 val current = widgetSettings.shortcutsNumber
                 Column {
                     Spacer(modifier = Modifier.height(64.dp))
                     ShortcutsNumbers(current, onClick = {
                         widgetSettings.shortcutsNumber = it
-                        coroutineScope.launch { action.emit(UiAction.None) }
+                        action(UiAction.None)
                     })
                 }
             }

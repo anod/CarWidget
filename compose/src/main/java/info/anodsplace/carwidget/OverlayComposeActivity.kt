@@ -10,7 +10,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.lifecycleScope
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
@@ -20,7 +19,6 @@ import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.screens.shortcuts.EditShortcut
 import info.anodsplace.carwidget.screens.widget.EditWidgetButton
-import kotlinx.coroutines.flow.MutableSharedFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -36,12 +34,9 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
         }
         super.onCreate(savedInstanceState)
         val appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
-        val action = MutableSharedFlow<UiAction>()
-        lifecycleScope.launchWhenResumed {
-            action.collect {
-                if (it is UiAction.OnBackNav) {
-                    finish()
-                }
+        val action: (UiAction) -> Unit = {
+            if (it is UiAction.OnBackNav) {
+                finish()
             }
         }
 

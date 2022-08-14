@@ -32,6 +32,7 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.extensions.extras
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.screens.main.MainScreen
+import info.anodsplace.carwidget.screens.main.MainViewAction
 import info.anodsplace.carwidget.screens.main.MainViewModel
 import info.anodsplace.compose.toColorHex
 import kotlinx.coroutines.launch
@@ -65,24 +66,29 @@ open class MainComposeActivity : ComponentActivity(), KoinComponent {
         appWidgetIdScope = if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) AppWidgetIdScope(appWidgetId) else null
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.action.collect { action ->
+                mainViewModel.viewActions.collect { action ->
                     when (action) {
-                        is UiAction.OpenWidgetConfig -> startConfigActivity(action.appWidgetId)
-                        is UiAction.ApplyWidget -> {
-                            val resultValue = Intent().putExtra(
-                                AppWidgetManager.EXTRA_APPWIDGET_ID,
-                                action.appWidgetId
-                            )
-                            setResult(Activity.RESULT_OK, resultValue)
-                            AppWidgetIdScope(action.appWidgetId).use {
-                                val prefs: WidgetInterface = it.scope.get()
-                                prefs.skin = action.skinValue
-                                prefs.applyPending()
+                        is MainViewAction.AppAction -> {
+                            when (val uiAction = action.action) {
+                                is UiAction.OpenWidgetConfig -> startConfigActivity(uiAction.appWidgetId)
+                                is UiAction.ApplyWidget -> {
+                                    val resultValue = Intent().putExtra(
+                                        AppWidgetManager.EXTRA_APPWIDGET_ID,
+                                        uiAction.appWidgetId
+                                    )
+                                    setResult(Activity.RESULT_OK, resultValue)
+                                    AppWidgetIdScope(uiAction.appWidgetId).use {
+                                        val prefs: WidgetInterface = it.scope.get()
+                                        prefs.skin = uiAction.skinValue
+                                        prefs.applyPending()
+                                    }
+                                    requestWidgetUpdate(uiAction.appWidgetId)
+                                    finish()
+                                }
+                                else -> {}
                             }
-                            requestWidgetUpdate(action.appWidgetId)
-                            finish()
                         }
-                        else -> {}
+
                     }
                 }
             }

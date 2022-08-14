@@ -1,10 +1,6 @@
 package info.anodsplace.carwidget.screens.main
 
-import android.app.Application
 import androidx.activity.ComponentActivity
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
@@ -18,18 +14,37 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
+import info.anodsplace.carwidget.screens.WidgetDialog
 import info.anodsplace.permissions.AppPermission
-import kotlinx.coroutines.flow.MutableSharedFlow
+import info.anodsplace.viewmodel.BaseFlowViewModel
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.scope.Scope
 
+data class MainViewState(
+    val isWidget: Boolean,
+    val tabs: List<NavItem.Tab>,
+    val startRoute: String?,
+    val showProDialog: Boolean,
+    val topDestination: NavItem,
+    val dialogState: WidgetDialog = WidgetDialog.None
+)
+
+sealed interface MainViewAction {
+    class AppAction(val action: UiAction) : MainViewAction
+}
+
+sealed interface MainViewEvent {
+    object PermissionAcquired : MainViewEvent
+    object HideProDialog : MainViewEvent
+    class AppAction(val action: UiAction) : MainViewEvent
+}
+
 class MainViewModel(
     val requiredPermissions: List<AppPermission>,
     val appWidgetIdScope: AppWidgetIdScope?,
-    application: Application
-) : AndroidViewModel(application), KoinScopeComponent {
+) : BaseFlowViewModel<MainViewState, MainViewEvent, MainViewAction>(), KoinScopeComponent {
     class Factory(
         private val appWidgetIdScope: AppWidgetIdScope?,
         private val activity: ComponentActivity,
@@ -39,8 +54,7 @@ class MainViewModel(
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
             return MainViewModel(
                 if (inCarStatus.isEnabled) permissionChecker.check(activity) else emptyList(),
-                appWidgetIdScope,
-                activity.applicationContext as Application
+                appWidgetIdScope
             ) as T
         }
     }
@@ -51,32 +65,58 @@ class MainViewModel(
     private val version: Version by inject()
     private val widgetIds: WidgetIds by inject()
     val inCarSettings: InCarInterface by inject()
+    val widgetSettings: WidgetInterface
 
-    val isWidget = appWidgetIdScope.isValid
-    val tabs: List<NavItem.Tab> = listOf(
-        if (isWidget) NavItem.Tab.CurrentWidget else NavItem.Tab.Widgets,
-        NavItem.Tab.InCar,
-        NavItem.Tab.About
-    )
-    val widgetSettings: WidgetInterface = if (isWidget) get() else WidgetInterface.NoOp()
-    val startRoute: String? = if (appWidgetIdScope.isValid) NavItem.Tab.CurrentWidget.Skin.route else null
-    val action = MutableSharedFlow<UiAction>()
-    val showProDialog = mutableStateOf(version.isFree && version.isProInstalled)
-    val topDestination: MutableState<NavItem> = mutableStateOf(startDestination())
+    init {
+        val isWidget = appWidgetIdScope.isValid
+        val showProDialog = version.isFree && version.isProInstalled
+        viewState = MainViewState(
+            isWidget = isWidget,
+            tabs = listOf(
+                if (isWidget) NavItem.Tab.CurrentWidget else NavItem.Tab.Widgets,
+                NavItem.Tab.InCar,
+                NavItem.Tab.About
+            ),
+            startRoute = if (appWidgetIdScope.isValid) NavItem.Tab.CurrentWidget.Skin.route else null,
+            showProDialog = showProDialog,
+            topDestination = startDestination(showProDialog)
+        )
+        widgetSettings = if (isWidget) get() else WidgetInterface.NoOp()
+    }
 
-    private fun startDestination(): NavItem {
+    override fun handleEvent(event: MainViewEvent) {
+        when (event) {
+            MainViewEvent.PermissionAcquired -> {
+                viewState = viewState.copy(topDestination = if (appWidgetIdScope.isValid) NavItem.Tab.CurrentWidget else NavItem.Tab.Widgets)
+            }
+            MainViewEvent.HideProDialog -> {
+                viewState = viewState.copy(showProDialog = false)
+            }
+            is MainViewEvent.AppAction -> {
+                when (val uiAction = event.action) {
+                    is UiAction.ShowDialog -> {
+                        viewState = viewState.copy(dialogState = uiAction.type)
+                    }
+                    is UiAction.OnBackNav -> {
+                        if (viewState.dialogState != WidgetDialog.None) {
+                            viewState = viewState.copy(dialogState = WidgetDialog.None)
+                        } else emitAction(MainViewAction.AppAction(UiAction.OnBackNav))
+                    }
+                    else -> emitAction(MainViewAction.AppAction(event.action))
+                }
+            }
+        }
+    }
+
+    private fun startDestination(showProDialog: Boolean): NavItem {
         val isFreeInstalled = !version.isFree && version.isFreeInstalled
         val appWidgetIds = widgetIds.getAllWidgetIds()
         return when {
             appWidgetIds.isEmpty() && !isFreeInstalled -> NavItem.Wizard
-            !showProDialog.value && requiredPermissions.isNotEmpty() -> NavItem.PermissionsRequest
+            !showProDialog && requiredPermissions.isNotEmpty() -> NavItem.PermissionsRequest
             appWidgetIdScope.isValid -> NavItem.Tab.CurrentWidget
             else -> NavItem.Tab.Widgets
         }
-    }
-
-    fun onPermissionsAcquired() {
-        topDestination.value = if (appWidgetIdScope.isValid) NavItem.Tab.CurrentWidget else NavItem.Tab.Widgets
     }
 
     companion object {

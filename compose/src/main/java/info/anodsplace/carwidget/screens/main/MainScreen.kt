@@ -1,6 +1,5 @@
 package info.anodsplace.carwidget.screens.main
 
-import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -27,7 +26,7 @@ import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
-import info.anodsplace.carwidget.screens.WidgetActions
+import info.anodsplace.carwidget.screens.WidgetDialog
 import info.anodsplace.carwidget.screens.about.AboutScreen
 import info.anodsplace.carwidget.screens.about.AboutViewModel
 import info.anodsplace.carwidget.screens.incar.*
@@ -41,15 +40,13 @@ import info.anodsplace.compose.BackgroundSurface
 import info.anodsplace.compose.RequestPermissionsScreen
 import info.anodsplace.compose.ScreenLoadState
 import info.anodsplace.compose.findActivity
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.getKoin
 
 @Composable
 fun MainScreen(
     mainViewModel: MainViewModel
 ) {
-    when (mainViewModel.topDestination.value) {
+    when (mainViewModel.viewState.topDestination) {
         NavItem.Wizard -> {
             WizardScreen()
         }
@@ -63,7 +60,7 @@ fun MainScreen(
                 input = permissionsViewModel.missingPermissions,
                 screenDescription = permissionsViewModel.screenDescription) {
                 if (permissionsViewModel.updatePermissions(context.findActivity())) {
-                    mainViewModel.onPermissionsAcquired()
+                    mainViewModel.handleEvent(MainViewEvent.PermissionAcquired)
                 }
             }
         }
@@ -72,9 +69,9 @@ fun MainScreen(
         }
     }
 
-    if (mainViewModel.showProDialog.value) {
+    if (mainViewModel.viewState.showProDialog) {
         AlertDialog(
-            onDismissRequest = { mainViewModel.showProDialog.value = false },
+            onDismissRequest = { mainViewModel.handleEvent(MainViewEvent.HideProDialog) },
             buttons = { },
             title = { Text(text = stringResource(id = R.string.dialog_donate_title_install)) },
             text = { Text(text = stringResource(id = R.string.dialog_donate_message_installed)) },
@@ -88,18 +85,18 @@ fun Tabs(mainViewModel: MainViewModel) {
     val currentSkin = remember { mutableStateOf(WidgetInterface.SKIN_YOU) }
 
     Scaffold(
-        backgroundColor = if (mainViewModel.isWidget) Color.Transparent else MaterialTheme.colors.background,
+        backgroundColor = if (mainViewModel.viewState.isWidget) Color.Transparent else MaterialTheme.colors.background,
         contentColor = MaterialTheme.colors.onBackground,
         topBar = {
             TopAppBar(
                 title = { Text(text = stringResource(id = R.string.app_name)) },
                 actions = {
-                    if (mainViewModel.isWidget) {
+                    if (mainViewModel.viewState.isWidget) {
                         AppBarMenu(
                             tileColor = rememberTileColor(currentSkin.value, mainViewModel.widgetSettings),
                             appWidgetId = +mainViewModel.appWidgetIdScope,
                             currentSkinValue = currentSkin.value,
-                            action = mainViewModel.action,
+                            action = { action -> mainViewModel.handleEvent(MainViewEvent.AppAction(action))},
                             navController = navController
                         )
                     }
@@ -107,18 +104,19 @@ fun Tabs(mainViewModel: MainViewModel) {
             )
         },
         bottomBar = {
-            BottomTabs(mainViewModel.tabs, navController)
+            BottomTabs(mainViewModel.viewState.tabs, navController)
         },
         content = { innerPadding ->
             NavHost(
                 navController = navController,
-                action = mainViewModel.action,
+                action = { action -> mainViewModel.handleEvent(MainViewEvent.AppAction(action))},
+                dialogState = mainViewModel.viewState.dialogState,
                 appWidgetIdScope = mainViewModel.appWidgetIdScope,
                 inCar = mainViewModel.inCarSettings,
                 innerPadding = innerPadding,
                 currentSkin = currentSkin,
-                startDestination = mainViewModel.topDestination.value.route,
-                startRoute = mainViewModel.startRoute
+                startDestination = mainViewModel.viewState.topDestination.route,
+                startRoute = mainViewModel.viewState.startRoute
             )
         }
     )
@@ -157,7 +155,8 @@ fun BottomTabs(items: List<NavItem.Tab>, navController: NavHostController) {
 @Composable
 fun NavHost(
     navController: NavHostController,
-    action: MutableSharedFlow<UiAction>,
+    action: (UiAction) -> Unit,
+    dialogState: WidgetDialog,
     appWidgetIdScope: AppWidgetIdScope? = null,
     inCar: InCarInterface,
     innerPadding: PaddingValues,
@@ -179,7 +178,7 @@ fun NavHost(
             if (widgetsState is ScreenLoadState.Ready<WidgetListScreenState>) {
                 WidgetsListScreen(
                     screen = (widgetsState as ScreenLoadState.Ready<WidgetListScreenState>).value,
-                    onClick = { appWidgetId -> scope.launch { action.emit(UiAction.OpenWidgetConfig(appWidgetId)) } },
+                    onClick = { appWidgetId -> action(UiAction.OpenWidgetConfig(appWidgetId)) },
                     modifier = modifier
                 )
             }
@@ -207,9 +206,8 @@ fun NavHost(
                     modifier = Modifier.padding(innerPadding)
                 )
 
-                val widgetAction by action.collectAsState(initial = UiAction.None)
-                if (widgetAction != UiAction.None) {
-                    AppBarWidgetAction(modifier, widgetAction, action, skinViewModel.widgetSettings)
+                if (dialogState != WidgetDialog.None) {
+                    AppBarWidgetAction(modifier, dialogState, action, skinViewModel.widgetSettings)
                 }
             }
             composable(
@@ -261,17 +259,17 @@ fun NavHost(
 @Composable
 fun AppBarWidgetAction(
     modifier: Modifier,
-    current: UiAction,
-    action: MutableSharedFlow<UiAction>,
+    current: WidgetDialog,
+    action: (UiAction) -> Unit,
     widgetSettings: WidgetInterface
 ) {
     when (current) {
-        WidgetActions.ChooseBackgroundColor -> WidgetActionDialog(modifier, current, action, widgetSettings)
-        WidgetActions.ChooseIconsScale -> WidgetActionDialog(modifier, current, action, widgetSettings)
-        WidgetActions.ChooseIconsTheme -> WidgetActionDialog(modifier, current, action, widgetSettings)
-        WidgetActions.ChooseShortcutsNumber -> WidgetActionDialog(modifier, current, action, widgetSettings)
-        WidgetActions.ChooseTileColor -> WidgetActionDialog(modifier, current, action, widgetSettings)
-        is WidgetActions.SwitchIconsMono -> WidgetActionDialog(modifier, current, action, widgetSettings)
+        WidgetDialog.ChooseBackgroundColor -> WidgetActionDialog(modifier, current, action, widgetSettings)
+        WidgetDialog.ChooseIconsScale -> WidgetActionDialog(modifier, current, action, widgetSettings)
+        WidgetDialog.ChooseIconsTheme -> WidgetActionDialog(modifier, current, action, widgetSettings)
+        WidgetDialog.ChooseShortcutsNumber -> WidgetActionDialog(modifier, current, action, widgetSettings)
+        WidgetDialog.ChooseTileColor -> WidgetActionDialog(modifier, current, action, widgetSettings)
+        is WidgetDialog.SwitchIconsMono -> WidgetActionDialog(modifier, current, action, widgetSettings)
         else -> {}
     }
 }
@@ -284,7 +282,6 @@ fun PreviewPreferencesScreenLight() {
             MainScreen(MainViewModel(
                 emptyList(),
                 null,
-                LocalContext.current.applicationContext as Application
             ))
         }
     }

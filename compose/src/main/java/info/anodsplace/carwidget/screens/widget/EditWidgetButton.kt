@@ -15,11 +15,9 @@ import info.anodsplace.carwidget.chooser.ChooserGridList
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.launch
 
 @Composable
-fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWidget.EditWidgetButton.Args, action: MutableSharedFlow<UiAction>) {
+fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWidget.EditWidgetButton.Args, action: (UiAction) -> Unit) {
     val appContext = LocalContext.current.applicationContext as Application
     val scope = rememberCoroutineScope()
 
@@ -41,9 +39,7 @@ fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.Curre
     ) {
         ChooserGridList(emptyList(), viewModel.items, onClick = { entry ->
             viewModel.onSelect(entry)
-            scope.launch {
-                action.emit(UiAction.OnBackNav)
-            }
+            action(UiAction.OnBackNav)
         })
     }
 }
