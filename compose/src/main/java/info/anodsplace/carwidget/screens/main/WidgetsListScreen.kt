@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import coil.compose.AsyncImage
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
@@ -163,27 +164,26 @@ fun InCarHeader(screen: WidgetListScreenState) {
 }
 
 @Composable
-fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier) {
+fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier, imageLoader: ImageLoader = LocalContext.current.imageLoader) {
     if (screen.items.isEmpty()) {
         Column(
             modifier = modifier
-                .padding(16.dp)
                 .fillMaxSize()
+                .padding(16.dp)
         ) {
             WidgetsEmptyScreen()
             Spacer(modifier = Modifier.height(16.dp))
             InCarHeader(screen)
         }
     } else {
-        val imageLoader = LocalContext.current.imageLoader
         val iconModifier = Modifier
             .size(SystemIconSize)
             .padding(4.dp)
 
         LazyColumn(
             modifier = Modifier
-                .padding(16.dp)
                 .fillMaxSize()
+                .padding(16.dp)
         ) {
             var hasLargeItem = false
 
@@ -259,7 +259,8 @@ fun PreviewWidgetsScreenLight() {
                     eventsState = emptyList(),
                     statusResId = R.string.enabled
                 ),
-                onClick = { }
+                onClick = { },
+                imageLoader = ImageLoader.Builder(LocalContext.current).build()
             )
         }
     }

@@ -50,7 +50,8 @@ fun AboutButton(
             containerColor = MaterialTheme.colorScheme.secondary,
             contentColor = MaterialTheme.colorScheme.onSecondary,
             disabledContentColor = MaterialTheme.colorScheme.onSecondary
-                .copy(alpha = 0.38f)
+                .copy(alpha = 0.38f),
+            disabledContainerColor =  MaterialTheme.colorScheme.secondary,
         ),
         enabled = enabled
     ) {

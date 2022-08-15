@@ -1,6 +1,6 @@
 package info.anodsplace.carwidget.screens.main
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
@@ -166,10 +166,7 @@ fun NavHost(
     startRoute: String?,
     currentWidgetStartDestination: String = NavItem.Tab.CurrentWidget.Skin.route
 ) {
-    val scope = rememberCoroutineScope()
-
     val modifier = Modifier
-        .background(MaterialTheme.colorScheme.background)
         .padding(innerPadding)
 
     NavHost(navController, startDestination = startDestination, route = startRoute) {
@@ -177,11 +174,13 @@ fun NavHost(
             val widgetsListViewModel: WidgetsListViewModel = viewModel()
             val widgetsState by widgetsListViewModel.loadScreen().collectAsState(initial = ScreenLoadState.Loading)
             if (widgetsState is ScreenLoadState.Ready<WidgetListScreenState>) {
-                WidgetsListScreen(
-                    screen = (widgetsState as ScreenLoadState.Ready<WidgetListScreenState>).value,
-                    onClick = { appWidgetId -> action(UiAction.OpenWidgetConfig(appWidgetId)) },
-                    modifier = modifier
-                )
+                Box(modifier = modifier) {
+                    WidgetsListScreen(
+                        screen = (widgetsState as ScreenLoadState.Ready<WidgetListScreenState>).value,
+                        onClick = { appWidgetId -> action(UiAction.OpenWidgetConfig(appWidgetId)) },
+                        modifier = Modifier
+                    )
+                }
             }
         }
         composable(route = NavItem.Tab.About.route) {

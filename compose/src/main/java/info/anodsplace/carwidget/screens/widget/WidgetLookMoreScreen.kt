@@ -105,7 +105,7 @@ fun WidgetLookMoreScreen(modifier: Modifier, settings: WidgetInterface) {
                             paddingValues = paddingValues,
                             initialValue = settings.fontSize,
                             onValueChanged = { settings.fontSize = it },
-                            placeholder = placeholder
+                            placeholder = placeholder as PreferenceItem.Placeholder
                     )
                 }
             }

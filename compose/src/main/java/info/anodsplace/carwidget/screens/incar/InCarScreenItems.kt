@@ -1,8 +1,8 @@
 package info.anodsplace.carwidget.screens.incar
 
 import info.anodsplace.carwidget.R
-import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.carwidget.content.preferences.InCarInterface
+import info.anodsplace.compose.PreferenceItem
 
 fun createCarScreenItems(inCar: InCarInterface): List<PreferenceItem> {
     return listOf(
@@ -14,30 +14,34 @@ fun createCarScreenItems(inCar: InCarInterface): List<PreferenceItem> {
         PreferenceItem.CheckBox(checked = inCar.isActivityRequired, key = "activity-recognition", summaryRes = R.string.gms_service_missing, titleRes = R.string.activity_recognition),
         PreferenceItem.CheckBox(checked = inCar.isCarDockRequired, key = "car-dock", summaryRes = R.string.car_dock_summary, titleRes = R.string.car_dock),
         PreferenceItem.Category(titleRes = R.string.pref_actions),
-        PreferenceItem.Text(
-            key = "screen-timeout-list", summaryRes = R.string.pref_screen_timeout_summary, titleRes = R.string.pref_screen_timeout),
-        PreferenceItem.List(
+        PreferenceItem.Switch(
+            checked = inCar.isDisableScreenTimeout,
+            key = "screen-timeout-list",
+            summaryRes = R.string.pref_screen_timeout_summary,
+            titleRes = R.string.pref_screen_timeout
+        ),
+        PreferenceItem.Pick(
             value = inCar.brightness,
-            entries = R.array.brightness_mode_titles,
-            entryValues = R.array.brightness_mode_values,
+            entriesRes = R.array.brightness_mode_titles,
+            entryValuesRes = R.array.brightness_mode_values,
             key = "brightness",
             summaryRes = R.string.pref_brightness_mode_summary,
             titleRes = R.string.pref_brightness_mode
         ),
-        PreferenceItem.List(
+        PreferenceItem.Pick(
             value = inCar.screenOrientation.toString(),
-            entries = R.array.orientation_titles,
-            entryValues = R.array.orientation_values,
+            entriesRes = R.array.orientation_titles,
+            entryValuesRes = R.array.orientation_values,
             key = "screen-orientation",
             summaryRes = R.string.pref_screen_orientation_summary,
             titleRes = R.string.screen_orientation
         ),
         PreferenceItem.CheckBox(checked = inCar.isEnableBluetooth, key = "bluetooth", titleRes = R.string.turn_on_bluetooth_summary),
         PreferenceItem.CheckBox(checked = inCar.isAutoSpeaker, key = "auto_speaker", summaryRes = R.string.pref_route_to_speaker_summary, titleRes = R.string.pref_route_to_speaker),
-        PreferenceItem.List(
+        PreferenceItem.Pick(
             value = inCar.autoAnswer,
-            entries = R.array.autoanswer_titles,
-            entryValues = R.array.autoanswer_values,
+            entriesRes = R.array.autoanswer_titles,
+            entryValuesRes = R.array.autoanswer_values,
             key = "auto_answer",
             summaryRes = R.string.pref_auto_answer_summary,
             titleRes = R.string.pref_auto_answer
@@ -51,4 +55,3 @@ fun createCarScreenItems(inCar: InCarInterface): List<PreferenceItem> {
         PreferenceItem.Placeholder(key = "notif-shortcuts", summaryRes = R.string.shortcuts_summary, titleRes = R.string.shortcuts)
     )
 }
-
