@@ -10,6 +10,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.google.android.material.color.DynamicColors
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
@@ -33,6 +34,7 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
             uiModeManager.setApplicationNightMode(appSettings.uiMode)
         }
         super.onCreate(savedInstanceState)
+        DynamicColors.applyToActivityIfAvailable(this)
         val appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
         val action: (UiAction) -> Unit = {
             if (it is UiAction.OnBackNav) {
@@ -58,7 +60,6 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
             }
 
             CarWidgetTheme(
-                    context = this@OverlayComposeActivity,
                 uiMode = uiMode
             ) {
                 when (deeplink) {

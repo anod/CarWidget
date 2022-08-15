@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package info.anodsplace.carwidget.screens.shortcuts.intent
 
 import android.app.UiModeManager
@@ -5,9 +7,9 @@ import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +41,7 @@ fun EditDialog(confirmText: String, onClose: (Boolean) -> Unit, content: @Compos
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExtraKeyValue(initialKey: String, value: Any?, onValueChange: (String, String, Any?) -> Unit) {
     val (newExtra, setNewExtra) = remember { mutableStateOf(Pair(initialKey, value ?: "")) }
@@ -46,7 +49,7 @@ fun ExtraKeyValue(initialKey: String, value: Any?, onValueChange: (String, Strin
 
     Row {
         OutlinedTextField(
-                colors = TextFieldDefaults.outlinedTextFieldColors( textColor = MaterialTheme.colors.onSurface),
+                colors = TextFieldDefaults.outlinedTextFieldColors( textColor = MaterialTheme.colorScheme.onSurface),
                 modifier = Modifier.weight(0.5f),
                 value = newExtra.first,
                 onValueChange = { value ->
@@ -54,7 +57,7 @@ fun ExtraKeyValue(initialKey: String, value: Any?, onValueChange: (String, Strin
                     onValueChange(initialKey, value, newExtra.second)
                 },
                 label = {
-                    Text(text = stringResource(id = R.string.key), style = MaterialTheme.typography.subtitle1)
+                    Text(text = stringResource(id = R.string.key), style = MaterialTheme.typography.titleMedium)
                 },
                 isError = newExtra.first.isBlank() && newExtra.second.toString().isNotBlank()
         )
@@ -62,7 +65,7 @@ fun ExtraKeyValue(initialKey: String, value: Any?, onValueChange: (String, Strin
         Spacer(modifier = Modifier.width(8.dp))
 
         OutlinedTextField(
-                colors = TextFieldDefaults.outlinedTextFieldColors( textColor = MaterialTheme.colors.onSurface),
+                colors = TextFieldDefaults.outlinedTextFieldColors( textColor = MaterialTheme.colorScheme.onSurface),
                 modifier = Modifier.weight(0.5f),
                 value = newExtra.second.toString(),
                 onValueChange = { value ->
@@ -72,7 +75,7 @@ fun ExtraKeyValue(initialKey: String, value: Any?, onValueChange: (String, Strin
                     }
                 },
                 label = {
-                    Text(text = stringResource(id = R.string.value), style = MaterialTheme.typography.subtitle1)
+                    Text(text = stringResource(id = R.string.value), style = MaterialTheme.typography.titleMedium)
                 },
                 isError = newExtra.first.isBlank() && newExtra.second.toString().isNotBlank()
         )
@@ -96,7 +99,7 @@ fun ExtraEditDialog(initial: IntentField.Extras, onClose: (newExtra: Bundle?) ->
                 setNewExtra(Bundle())
             }
     ) {
-        Text(text = stringResource(id = R.string.extras), style = MaterialTheme.typography.subtitle2)
+        Text(text = stringResource(id = R.string.extras), style = MaterialTheme.typography.titleSmall)
         Spacer(modifier = Modifier.height(8.dp))
 
         for (key in newExtra.keySet()) {
@@ -136,18 +139,18 @@ fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: Co
             confirmText = stringResource(id = R.string.save),
             onClose = { onClose(if (it) newComponent else null) }
     ) {
-        Text(text = stringResource(id = R.string.component), style = MaterialTheme.typography.subtitle2)
+        Text(text = stringResource(id = R.string.component), style = MaterialTheme.typography.titleSmall)
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-                colors = TextFieldDefaults.outlinedTextFieldColors( textColor = MaterialTheme.colors.onSurface),
+                colors = TextFieldDefaults.outlinedTextFieldColors( textColor = MaterialTheme.colorScheme.onSurface),
                 modifier = Modifier.fillMaxWidth(),
                 value = newComponent?.packageName ?: "",
                 onValueChange = { value ->
                     setNewComponent(ComponentName(value, newComponent?.className ?: ""))
                 },
                 label = {
-                    Text(text = stringResource(id = R.string.package_name), style = MaterialTheme.typography.subtitle1)
+                    Text(text = stringResource(id = R.string.package_name), style = MaterialTheme.typography.titleMedium)
                 },
                 isError = newComponent?.packageName.isNullOrBlank() && (newComponent?.className?.isNotBlank() == true)
         )
@@ -155,14 +158,14 @@ fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: Co
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-                colors = TextFieldDefaults.outlinedTextFieldColors( textColor = MaterialTheme.colors.onSurface),
+                colors = TextFieldDefaults.outlinedTextFieldColors( textColor = MaterialTheme.colorScheme.onSurface),
                 modifier = Modifier.fillMaxWidth(),
                 value = newComponent?.className ?: "",
                 onValueChange = {
                     setNewComponent(ComponentName(newComponent?.packageName ?: "", it))
                 },
                 label = {
-                    Text(text = stringResource(id = R.string.class_name), style = MaterialTheme.typography.subtitle1)
+                    Text(text = stringResource(id = R.string.class_name), style = MaterialTheme.typography.titleMedium)
                 },
                 isError = newComponent?.packageName.isNullOrBlank() && (newComponent?.className?.isNotBlank() == true)
         )
@@ -180,7 +183,7 @@ fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialVali
         val isEmpty = field.value.isNullOrEmpty()
         Box {
             OutlinedTextField(
-                    colors = TextFieldDefaults.outlinedTextFieldColors( textColor = MaterialTheme.colors.onSurface),
+                    colors = TextFieldDefaults.outlinedTextFieldColors( textColor = MaterialTheme.colorScheme.onSurface),
                     modifier = Modifier.fillMaxWidth().padding(end = 48.dp),
                     value = field.value ?: "",
                     onValueChange = { value ->
@@ -189,11 +192,11 @@ fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialVali
                         }
                     },
                     label = {
-                        Text(text = title, style = MaterialTheme.typography.subtitle1)
+                        Text(text = title, style = MaterialTheme.typography.titleMedium)
                     },
                     placeholder = {
                         if (field.value.isNullOrEmpty()) {
-                            Text(text = stringResource(id = R.string.none), style = MaterialTheme.typography.subtitle1)
+                            Text(text = stringResource(id = R.string.none), style = MaterialTheme.typography.titleMedium)
                         }
                     },
                     isError = !isEmpty && !isValid.value
@@ -210,7 +213,7 @@ fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialVali
         if (!isEmpty && !isValid.value) {
             Text(
                     text = stringResource(R.string.value_might_be_not_valid),
-                    color = MaterialTheme.colors.error,
+                    color = MaterialTheme.colorScheme.error,
                     modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 4.dp)

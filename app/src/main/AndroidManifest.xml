@@ -148,7 +148,6 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
-        <activity android:name=".main.WizardActivity" />
 
         <service android:name="com.anod.car.home.incar.ModeService" />
         <service android:name="com.anod.car.home.incar.BroadcastService" />
@@ -228,8 +227,6 @@
             android:launchMode="singleTop"
             android:taskAffinity=""
             android:theme="@style/BrightnessTheme" />
-
-        <activity android:name=".main.RequestPermissionsActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

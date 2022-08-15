@@ -5,9 +5,9 @@ import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -54,7 +54,7 @@ fun ScreenTimeoutContent(inCar: InCarInterface) {
         PreferenceCheckbox(
             checked = isDisableScreenTimeoutCharging,
             item = PreferenceItem.Text(titleRes = R.string.while_charging),
-            checkBoxColor = MaterialTheme.colors.onSurface,
+            checkBoxColor = MaterialTheme.colorScheme.onSurface,
             ) {
             inCar.saveScreenTimeout(
                 disabled = inCar.isDisableScreenTimeout,
@@ -68,7 +68,7 @@ fun ScreenTimeoutContent(inCar: InCarInterface) {
                 titleRes = R.string.screen_on_alternative,
                 summaryRes = R.string.screen_on_alternative_text
             ),
-            checkBoxColor = MaterialTheme.colors.onSurface,
+            checkBoxColor = MaterialTheme.colorScheme.onSurface,
         ) { useAlert ->
             screenOnAlertEnabled = useAlert
             if (useAlert) {
@@ -90,10 +90,10 @@ fun ScreenTimeoutDialog(item: PreferenceItem.Text, inCar: InCarInterface, onDism
         modifier = Modifier.padding(16.dp),
         title = { Text(text = if (item.titleRes != 0) stringResource(id = item.titleRes) else item.title) },
         text = { ScreenTimeoutContent(inCar) },
-        buttons = { },
         onDismissRequest = {
             onDismiss()
-        }
+        },
+        confirmButton = { }
     )
 }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme.SplashScreen" parent="Base.AppTheme">
-        <item name="android:windowSplashScreenBackground">@color/color_primary</item>
+        <item name="android:windowSplashScreenBackground">?attr/colorSurface</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_steering_wheel</item>
     </style>
 

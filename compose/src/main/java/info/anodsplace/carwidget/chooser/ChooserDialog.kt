@@ -7,10 +7,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,7 +31,7 @@ import info.anodsplace.carwidget.utils.SystemIconSize
 fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit) {
     val iconModifier = Modifier
         .size(SystemIconSize)
-        .background(MaterialTheme.colors.primary, shape = RoundedCornerShape(48.dp))
+        .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(48.dp))
     val context = LocalContext.current
     Column(
         modifier = Modifier
@@ -60,7 +60,7 @@ fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit) {
                 .fillMaxWidth()
                 .padding(top = 8.dp),
             text = entry.title,
-            style = MaterialTheme.typography.caption,
+            style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center,
             maxLines = 2
         )
@@ -104,8 +104,8 @@ fun ChooserDialog(
                 .fillMaxWidth()
                 .defaultMinSize(minHeight = 352.dp),
             shape = MaterialTheme.shapes.medium,
-            color = MaterialTheme.colors.surface,
-            contentColor = MaterialTheme.colors.onSurface
+            color = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
         ) {
             ChooserGridList(headers, appsList, onClick = onClick)
         }

@@ -4,9 +4,9 @@ import android.app.UiModeManager
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -18,11 +18,12 @@ import info.anodsplace.carwidget.R
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CarWidgetToolbar(action: MutableSharedFlow<UiAction>) {
     val scope = rememberCoroutineScope()
 
-    TopAppBar(
+    SmallTopAppBar(
             title = {
                 Text(text = stringResource(id = R.string.edit_intent))
             },
@@ -38,17 +39,16 @@ fun CarWidgetToolbar(action: MutableSharedFlow<UiAction>) {
             // We need to balance the navigation icon, so we add a spacer.
             actions = {
                 Spacer(modifier = Modifier.width(68.dp))
-            },
-            backgroundColor = MaterialTheme.colors.surface,
-            elevation = 0.dp
+            }
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview("Dark AppBar")
 @Composable
 fun PreviewAppBarDark() {
     CarWidgetTheme(uiMode = UiModeManager.MODE_NIGHT_YES) {
-        Surface(color = MaterialTheme.colors.primary) {
+        Surface(color = MaterialTheme.colorScheme.primary) {
             Scaffold(
                     topBar = { CarWidgetToolbar(MutableSharedFlow()) },
                     content = { paddingValues -> Text(text = "Content", modifier = Modifier.padding(paddingValues)) }

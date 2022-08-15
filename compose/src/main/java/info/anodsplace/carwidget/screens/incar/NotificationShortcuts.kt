@@ -5,12 +5,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +38,7 @@ fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifi
     Row(
         modifier = modifier
             .clip(shape = RoundedCornerShape(16.dp))
-            .background(color = MaterialTheme.colors.surface)
+            .background(color = MaterialTheme.colorScheme.surface)
             .padding(16.dp)
         ,
         verticalAlignment = Alignment.CenterVertically
@@ -48,13 +48,13 @@ fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifi
         ) {
             Text(
                 text = stringResource(id = R.string.shortcuts),
-                color = MaterialTheme.colors.onSurface,
-                style = MaterialTheme.typography.body2
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyMedium
             )
             Text(
                 text = stringResource(id = R.string.shortcuts_summary),
-                color = MaterialTheme.colors.onSurface,
-                style = MaterialTheme.typography.body2
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
         val shortcutsModel by viewModel.notificationShortcuts.collectAsState(initial = null)
@@ -70,7 +70,7 @@ fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifi
                                 .weight(1f)
                                 .clickable(onClick = { shortcutIndex = i }),
                             imageVector = Icons.Filled.Add,
-                            tint = MaterialTheme.colors.onSurface,
+                            tint = MaterialTheme.colorScheme.onSurface,
                             contentDescription = null
                     )
                 } else {

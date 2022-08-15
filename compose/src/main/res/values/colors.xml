@@ -8,14 +8,6 @@
 
 	<color name="drag_item_bg">#90a4ae</color>
 
-	<color name="panel_bg_normal">#546e7a</color>
-	<color name="panel_bg_focused">#90a4ae</color>
-	<color name="panel_bg_pressed">#37474f</color>
-
-	<color name="panel_bg_dark_normal">#212121</color>
-	<color name="panel_bg_dark_focused">#616161</color>
-	<color name="panel_bg_dark_pressed">#424242</color>
-
 	<color name="step_pager_previous_tab_color">#4490a4ae</color>
 	<color name="step_pager_selected_tab_color">#ff37474f</color>
 	<color name="step_pager_selected_last_tab_color">#5b5b5b</color>
@@ -23,40 +15,41 @@
 
 	<color name="background_holo_light">#fff3f3f3</color>
 	<color name="bright_foreground_holo_dark">@color/background_holo_light</color>
-
 	<color name="bright_foreground_disabled_grey">#bdbdbd</color>
 
 	<color name="material_bluegray_600">#546E7A</color>
 	<color name="material_bluegray_800">#37474f</color>
 	<color name="material_bluegray_300">#90a4ae</color>
-	<color name="material_bluegray_100">#FFBBDEFB</color>
+	<color name="material_bluegray_100">#BBDEFB</color>
 	<color name="material_grey_400">#BDBDBD</color>
 
-	<!--colorPrimary colors map to components and elements, such as app bars and buttons. -->
-	<!--colorSecondary colors are most often used as accents on components, such as FABs and -->
-	<!--selection controls.-->
-	<color name="color_primary">@color/material_bluegray_600</color>
-	<color name="color_primary_variant">@color/material_bluegray_800</color>
-	<color name="color_secondary">@color/material_bluegray_300</color>
-	<color name="color_secondary_variant">@color/material_bluegray_100</color>
-
-	<!--colorBackground appears behind scrollable content and is used for the default window-->
-	<!--background. colorSurface is mapped to the surface of components such as cards, sheets-->
-	<!--and menus. colorError is used to indicate an error state for components such as-->
-	<!--text fields.-->
-	<color name="color_background">#ffffff</color>
-	<color name="color_surface">#546E7A</color>
-	<color name="color_error">#b00020</color>
-	<color name="color_navigation">#546E7A</color>
-
-	<!--"On" colors define how text, icons and strokes are colored in relation to the surface-->
-	<!--on which they appear.-->
-	<color name="color_on_primary">#ffffff</color>
-	<color name="color_on_secondary">#000000</color>
-	<color name="color_on_background">#000000</color>
-	<color name="color_on_surface">#000000</color>
-	<color name="color_on_error">#ffffff</color>
-
-	<color name="dialog_background">#ffffff</color>
-
+	<color name="md_primary">#006782</color>
+	<color name="md_onPrimary">#FFFFFF</color>
+	<color name="md_primaryContainer">#BBE9FF</color>
+	<color name="md_onPrimaryContainer">#001F29</color>
+	<color name="md_secondary">#006684</color>
+	<color name="md_onSecondary">#FFFFFF</color>
+	<color name="md_secondaryContainer">#BDE9FF</color>
+	<color name="md_onSecondaryContainer">#001F2A</color>
+	<color name="md_tertiary">#006782</color>
+	<color name="md_onTertiary">#FFFFFF</color>
+	<color name="md_tertiaryContainer">#BBE9FF</color>
+	<color name="md_onTertiaryContainer">#001F29</color>
+	<color name="md_error">#BA1A1A</color>
+	<color name="md_errorContainer">#FFDAD6</color>
+	<color name="md_onError">#FFFFFF</color>
+	<color name="md_onErrorContainer">#410002</color>
+	<color name="md_background">#FCFCFF</color>
+	<color name="md_onBackground">#001E2F</color>
+	<color name="md_surface">#FCFCFF</color>
+	<color name="md_onSurface">#001E2F</color>
+	<color name="md_surfaceVariant">#DCE4E9</color>
+	<color name="md_onSurfaceVariant">#40484C</color>
+	<color name="md_outline">#70787D</color>
+	<color name="md_inverseOnSurface">#E6F2FF</color>
+	<color name="md_inverseSurface">#00344E</color>
+	<color name="md_inversePrimary">#61D4FF</color>
+	<color name="md_shadow">#000000</color>
+	<color name="md_surfaceTint">#006782</color>
+	<color name="md_surfaceTintColor">#006782</color>
 </resources>

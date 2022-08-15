@@ -3,10 +3,10 @@ package info.anodsplace.carwidget.screens.wizard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ScrollableTabRow
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -98,9 +98,9 @@ fun WizardWelcome() {
             .fillMaxSize(),
         verticalArrangement = Arrangement.Top
     ) {
-        Text(text = stringResource(id = R.string.welcome), style = MaterialTheme.typography.h3)
-        Text(text = stringResource(id = R.string.welcome_text), style = MaterialTheme.typography.body1)
-        Text(text = stringResource(id = R.string.swipe_continue), style = MaterialTheme.typography.caption)
+        Text(text = stringResource(id = R.string.welcome), style = MaterialTheme.typography.headlineMedium)
+        Text(text = stringResource(id = R.string.welcome_text), style = MaterialTheme.typography.bodyLarge)
+        Text(text = stringResource(id = R.string.swipe_continue), style = MaterialTheme.typography.bodySmall)
 
         val appContext = LocalContext.current.applicationContext
         val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, null))

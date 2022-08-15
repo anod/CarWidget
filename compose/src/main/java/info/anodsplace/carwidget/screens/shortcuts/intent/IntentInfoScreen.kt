@@ -3,28 +3,31 @@ package info.anodsplace.carwidget.screens.shortcuts.intent
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material.Icon
+import androidx.compose.material.icons.outlined.PlayForWork
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import info.anodsplace.carwidget.R
-import androidx.compose.material.Text
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.CarWidgetTheme
+import info.anodsplace.carwidget.R
 import info.anodsplace.compose.*
 
 class UpdateField(val field: IntentField)
@@ -39,23 +42,21 @@ private val DefaultFrontLayerElevation = 1.dp
 private val DefaultFrontLayerScrimColor: Color
     @Composable
     @ReadOnlyComposable
-    get() = MaterialTheme.colors.surface.copy(alpha = 0.60f)
+    get() = MaterialTheme.colorScheme.surface.copy(alpha = 0.60f)
 
 @Composable
-fun IntentFieldTitle(text: String) = Text(text = text, style = MaterialTheme.typography.subtitle1)
+fun IntentFieldTitle(text: String) = Text(text = text, style = MaterialTheme.typography.titleMedium)
 
 @Composable
 fun IntentFieldValue(value: String?, modifier: Modifier = Modifier) {
     val text = if (value.isNullOrBlank()) stringResource(id = R.string.none) else value
-    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-        Text(
-                text = text,
-                style = MaterialTheme.typography.body2,
-                modifier = modifier,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis
-        )
-    }
+    Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = modifier,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis
+    )
 }
 
 @Composable
@@ -188,13 +189,13 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
             Spacer(modifier = Modifier.height(16.dp))
             Surface(
                     modifier = Modifier.fillMaxWidth(), //.align(Alignment.CenterHorizontally),
-                    color = MaterialTheme.colors.surface.copy(alpha = 0.4f),
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f),
                     shape = RoundedCornerShape(8.dp),
-                    border = BorderStroke(1.dp, MaterialTheme.colors.onBackground.copy(0.2f))
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground.copy(0.2f))
             ) {
                 Text(
                         text = intent.toUri(0).toString(),
-                        style = MaterialTheme.typography.overline,
+                        style = MaterialTheme.typography.labelMedium,
                         modifier = Modifier.padding(16.dp),
                         softWrap = true
                 )
@@ -283,8 +284,7 @@ fun IntentEditScreen(
 
         Surface(
                 shape = DefaultFrontLayerShape,
-                elevation = DefaultFrontLayerElevation,
-                color = MaterialTheme.colors.background,
+                color = MaterialTheme.colorScheme.background,
         ) {
             Box {
                 IntentDetailsView(intent, modifier = Modifier

@@ -2,8 +2,8 @@ package info.anodsplace.carwidget.screens.widget
 
 import android.app.UiModeManager
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -85,8 +85,8 @@ fun WidgetLookMoreScreen(modifier: Modifier, settings: WidgetInterface) {
         PreferencesScreen(
                 modifier = modifier,
                 preferences = createItems(settings),
-                categoryColor = MaterialTheme.colors.secondary,
-                descriptionColor = MaterialTheme.colors.onBackground,
+                categoryColor = MaterialTheme.colorScheme.secondary,
+                descriptionColor = MaterialTheme.colorScheme.onBackground,
                 onClick = { item ->
                     when (item) {
                         is PreferenceItem.CheckBox -> {

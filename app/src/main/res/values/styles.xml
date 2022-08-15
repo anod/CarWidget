@@ -96,17 +96,14 @@
         <item name="android:background">@drawable/notification_custom_button_background</item>
     </style>
 
-    <style name="AboutButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="AboutButton" parent="Widget.Material3.Button.OutlinedButton">
         <!--        <item name="iconTint">?attr/colorOnSurface</item>-->
     </style>
 
-    <style name="Widget.AppTheme.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="itemIconTint">@color/on_surface_secondary</item>
-        <item name="itemTextColor">@color/on_surface_secondary</item>
+    <style name="Widget.AppTheme.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
     </style>
 
-    <style name="Widget.AppTheme.TabLayout" parent="Widget.MaterialComponents.TabLayout">
-        <item name="tabIconTint">@color/on_surface_secondary</item>
-        <item name="tabTextColor">@color/on_surface_secondary</item>
+    <style name="Widget.AppTheme.TabLayout" parent="Widget.Material3.TabLayout">
+
     </style>
 </resources>

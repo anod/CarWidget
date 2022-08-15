@@ -5,20 +5,20 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import info.anodsplace.carwidget.R
-import info.anodsplace.carwidget.chooser.QueryIntentLoader
 import info.anodsplace.carwidget.chooser.ChooserDialog
+import info.anodsplace.carwidget.chooser.QueryIntentLoader
+import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.compose.PreferencesScreen
-import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.framework.content.forLauncher
 
 private fun autorunItem(context: Context, componentName: ComponentName?, listItem: PreferenceItem.List): PreferenceItem.List {
@@ -63,8 +63,8 @@ fun MoreScreen(inCar: InCarInterface, modifier: Modifier) {
     PreferencesScreen(
         modifier = modifier.fillMaxSize(),
         preferences = items,
-        categoryColor = MaterialTheme.colors.secondary,
-        descriptionColor = MaterialTheme.colors.onBackground,
+        categoryColor = MaterialTheme.colorScheme.secondary,
+        descriptionColor = MaterialTheme.colorScheme.onBackground,
         onClick = { item ->
         when (item) {
             is PreferenceItem.CheckBox -> {

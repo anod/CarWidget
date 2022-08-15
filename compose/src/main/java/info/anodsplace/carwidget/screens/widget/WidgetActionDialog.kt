@@ -6,10 +6,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,7 +45,6 @@ fun WidgetActionDialog(modifier: Modifier, current: WidgetDialog, action: (UiAct
 @Composable
 fun IconScaleDialog(prefs: WidgetInterface, action: (UiAction) -> Unit) {
     AlertDialog(
-        buttons = { },
         modifier = Modifier.padding(16.dp),
         title = { Text(
                 text = stringResource(id = R.string.pref_scale_icon)
@@ -60,7 +59,8 @@ fun IconScaleDialog(prefs: WidgetInterface, action: (UiAction) -> Unit) {
                     action(UiAction.None)
                 }
             }
-        }
+        },
+        confirmButton = {}
     )
 }
 
@@ -77,7 +77,7 @@ fun IconScale(current: Int, onClick: (Int) -> Unit) {
                     .size(size = 64.dp)
                     .border(
                             width = if (current == scale) 2.dp else 0.dp,
-                            color = MaterialTheme.colors.primaryVariant,
+                            color = MaterialTheme.colorScheme.secondary,
                             shape = RoundedCornerShape(4.dp)
                     ),
                 contentAlignment = Alignment.Center
@@ -114,7 +114,7 @@ fun TileColor(prefs: WidgetInterface, action: (UiAction) -> Unit) {
 @Composable
 fun ShortcutNumbersDialog(modifier: Modifier, widgetSettings: WidgetInterface, action: (UiAction) -> Unit) {
     AlertDialog(
-            buttons = { },
+            confirmButton = { },
             modifier = Modifier.padding(16.dp),
             title = { Text(
                     text = stringResource(id = R.string.number_shortcuts_title)
@@ -157,7 +157,7 @@ fun ShortcutsNumber(number: Int, current: Int, boxSize: Dp, onClick: (Int) -> Un
                         .size(size = 96.dp)
                         .border(
                                 width = if (current == number) 2.dp else 0.dp,
-                                color = MaterialTheme.colors.primaryVariant,
+                                color = MaterialTheme.colorScheme.secondary,
                                 shape = RoundedCornerShape(4.dp)
                         ),
                 verticalArrangement = Arrangement.Center,
@@ -168,7 +168,7 @@ fun ShortcutsNumber(number: Int, current: Int, boxSize: Dp, onClick: (Int) -> Un
                     Box(modifier = Modifier
                             .size(boxSize)
                             .background(
-                                    color = MaterialTheme.colors.primaryVariant,
+                                    color = MaterialTheme.colorScheme.secondary,
                                     shape = RoundedCornerShape(4.dp)
                             )) {
                     }
@@ -176,7 +176,7 @@ fun ShortcutsNumber(number: Int, current: Int, boxSize: Dp, onClick: (Int) -> Un
                             .size(boxSize)
                             .padding(start = 1.dp)
                             .background(
-                                    color = MaterialTheme.colors.primaryVariant,
+                                    color = MaterialTheme.colorScheme.secondary,
                                     shape = RoundedCornerShape(4.dp)
                             ))
                 }

@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,8 +30,8 @@ fun ShortcutEditScreen(viewModel: ShortcutEditViewModel, onDismissRequest: () ->
     val expanded = remember { mutableStateOf(false) }
     BackgroundSurface(
             modifier = Modifier
-                    .fillMaxWidth()
-                    .defaultMinSize(minHeight = 352.dp),
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 352.dp),
             shape = MaterialTheme.shapes.medium,
     ) {
         val shortcut by viewModel.shortcut.collectAsState(null)
@@ -46,13 +46,14 @@ fun ShortcutEditScreen(viewModel: ShortcutEditViewModel, onDismissRequest: () ->
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShortcutEditContent(shortcut: Shortcut, delegate: ShortcutEditDelegate, onDismissRequest: () -> Unit, expanded: MutableState<Boolean>) {
     val scope = rememberCoroutineScope()
     Column {
-        TopAppBar {
-            Text(text = stringResource(id = R.string.shortcut_edit_title))
-        }
+        SmallTopAppBar(
+            title = { Text(text = stringResource(id = R.string.shortcut_edit_title)) }
+        )
         if (!expanded.value) {
             ShortcutInfo(shortcut, delegate, onDismissRequest)
             AdvancedButton(expanded)
@@ -85,6 +86,7 @@ fun AdvancedButton(expanded: MutableState<Boolean>) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShortcutInfo(shortcut: Shortcut, delegate: ShortcutEditDelegate, onDismissRequest: () -> Unit) {
     Column (

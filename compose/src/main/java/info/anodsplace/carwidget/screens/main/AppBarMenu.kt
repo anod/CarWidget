@@ -5,11 +5,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.FormatColorFill
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,8 +35,10 @@ sealed interface AppBarTileColor {
 
 @Composable
 fun rememberTileColor(currentSkinValue: String, prefs: WidgetInterface): AppBarTileColor {
-    val color by prefs.observe<Int>(WidgetSettings.BUTTON_COLOR).collectAsState(initial = prefs.tileColor)
-    val palette by prefs.observe<Boolean>(WidgetSettings.PALETTE_BG).collectAsState(initial = prefs.paletteBackground)
+    val color by prefs.observe<Int>(WidgetSettings.BUTTON_COLOR)
+        .collectAsState(initial = prefs.tileColor)
+    val palette by prefs.observe<Boolean>(WidgetSettings.PALETTE_BG)
+        .collectAsState(initial = prefs.paletteBackground)
     return remember(currentSkinValue, color, palette) {
         if (currentSkinValue == WidgetInterface.SKIN_WINDOWS7) {
             if (palette) {
@@ -49,7 +51,13 @@ fun rememberTileColor(currentSkinValue: String, prefs: WidgetInterface): AppBarT
 }
 
 @Composable
-fun AppBarMenu(tileColor: AppBarTileColor, appWidgetId: Int, currentSkinValue: String, action: (UiAction) -> Unit, navController: NavHostController) {
+fun AppBarMenu(
+    tileColor: AppBarTileColor,
+    appWidgetId: Int,
+    currentSkinValue: String,
+    action: (UiAction) -> Unit,
+    navController: NavHostController
+) {
     val scope = rememberCoroutineScope()
     var expanded by remember { mutableStateOf(false) }
     val isIconsMono = false
@@ -64,10 +72,10 @@ fun AppBarMenu(tileColor: AppBarTileColor, appWidgetId: Int, currentSkinValue: S
                 action(UiAction.ShowDialog(WidgetDialog.ChooseTileColor))
             }
         }
-        AppBarTileColor.Hidden -> { }
+        AppBarTileColor.Hidden -> {}
     }
     AppBarButton(image = Icons.Filled.Check, descRes = android.R.string.ok) {
-        scope.launch {  action(UiAction.ApplyWidget(appWidgetId, currentSkinValue)) }
+        scope.launch { action(UiAction.ApplyWidget(appWidgetId, currentSkinValue)) }
     }
     Box {
         IconButton(onClick = { expanded = true }) {
@@ -77,39 +85,48 @@ fun AppBarMenu(tileColor: AppBarTileColor, appWidgetId: Int, currentSkinValue: S
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            DropdownMenuItem(onClick = {
-                action(UiAction.ShowDialog(WidgetDialog.ChooseShortcutsNumber))
-                expanded = false
-            }) { Text(text = stringResource(id = R.string.number)) }
-            DropdownMenuItem(onClick = {
-                action(UiAction.ShowDialog(WidgetDialog.ChooseBackgroundColor))
-                expanded = false
-            }) { Text(text = stringResource(id = R.string.pref_bg_color_title)) }
-            DropdownMenuItem(onClick = {
-                action(UiAction.ShowDialog(WidgetDialog.ChooseIconsTheme))
-                expanded = false
-            }) { Text(text = stringResource(id = R.string.icons_theme)) }
-            DropdownMenuItem(onClick = {
-                action(UiAction.ShowDialog(WidgetDialog.SwitchIconsMono(!isIconsMono)))
-                expanded = false
-            }) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = stringResource(id = R.string.pref_icons_mono_title))
-                    Checkbox(checked = isIconsMono, onCheckedChange = {
-                        action(UiAction.ShowDialog(WidgetDialog.SwitchIconsMono(!isIconsMono)))
-                        expanded = false
-                    }, modifier = Modifier.padding(start = 8.dp))
-                }
-            }
+            DropdownMenuItem(
+                onClick = {
+                    action(UiAction.ShowDialog(WidgetDialog.ChooseShortcutsNumber))
+                    expanded = false
+                },
+                text = { Text(text = stringResource(id = R.string.number)) }
+            )
+            DropdownMenuItem(
+                onClick = {
+                    action(UiAction.ShowDialog(WidgetDialog.ChooseBackgroundColor))
+                    expanded = false
+                },
+                text = { Text(text = stringResource(id = R.string.pref_bg_color_title)) })
+            DropdownMenuItem(
+                onClick = {
+                    action(UiAction.ShowDialog(WidgetDialog.ChooseIconsTheme))
+                    expanded = false
+                },
+                text = { Text(text = stringResource(id = R.string.icons_theme)) })
+            DropdownMenuItem(
+                onClick = {
+                    action(UiAction.ShowDialog(WidgetDialog.SwitchIconsMono(!isIconsMono)))
+                    expanded = false
+                },
+                text = {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = stringResource(id = R.string.pref_icons_mono_title))
+                        Checkbox(checked = isIconsMono, onCheckedChange = {
+                            action(UiAction.ShowDialog(WidgetDialog.SwitchIconsMono(!isIconsMono)))
+                            expanded = false
+                        }, modifier = Modifier.padding(start = 8.dp))
+                    }
+                })
             DropdownMenuItem(onClick = {
                 action(UiAction.ShowDialog(WidgetDialog.ChooseIconsScale))
                 expanded = false
-            }) { Text(text = stringResource(id = R.string.pref_scale_icon)) }
+            }, text = { Text(text = stringResource(id = R.string.pref_scale_icon)) })
             Divider()
             DropdownMenuItem(onClick = {
                 navController.navigate(NavItem.Tab.CurrentWidget.MoreSettings.route)
                 expanded = false
-            }) { Text(text = stringResource(id = R.string.more)) }
+            }, text = { Text(text = stringResource(id = R.string.more)) })
         }
     }
 }
@@ -125,9 +142,9 @@ fun AppBarButton(image: ImageVector, @StringRes descRes: Int, onClick: () -> Uni
 fun AppBarColorButton(color: Color, @StringRes descRes: Int, onClick: () -> Unit) {
     IconButton(onClick = onClick) {
         Icon(
-                modifier = Modifier.size(48.dp),
-                painter = ColorPainter(color),
-                contentDescription = stringResource(id = descRes)
+            modifier = Modifier.size(48.dp),
+            painter = ColorPainter(color),
+            contentDescription = stringResource(id = descRes)
         )
     }
 }

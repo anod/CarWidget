@@ -3,7 +3,7 @@ package info.anodsplace.carwidget.screens.main
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -72,23 +72,23 @@ fun MainScreen(
     if (mainViewModel.viewState.showProDialog) {
         AlertDialog(
             onDismissRequest = { mainViewModel.handleEvent(MainViewEvent.HideProDialog) },
-            buttons = { },
             title = { Text(text = stringResource(id = R.string.dialog_donate_title_install)) },
             text = { Text(text = stringResource(id = R.string.dialog_donate_message_installed)) },
+            confirmButton = { }
         )
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Tabs(mainViewModel: MainViewModel) {
     val navController = rememberNavController()
     val currentSkin = remember { mutableStateOf(WidgetInterface.SKIN_YOU) }
 
     Scaffold(
-        backgroundColor = if (mainViewModel.viewState.isWidget) Color.Transparent else MaterialTheme.colors.background,
-        contentColor = MaterialTheme.colors.onBackground,
+        containerColor = if (mainViewModel.viewState.isWidget) Color.Transparent else MaterialTheme.colorScheme.background,
         topBar = {
-            TopAppBar(
+            SmallTopAppBar(
                 title = { Text(text = stringResource(id = R.string.app_name)) },
                 actions = {
                     if (mainViewModel.viewState.isWidget) {
@@ -124,11 +124,12 @@ fun Tabs(mainViewModel: MainViewModel) {
 
 @Composable
 fun BottomTabs(items: List<NavItem.Tab>, navController: NavHostController) {
-    BottomNavigation {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    NavigationBar {
         items.forEachIndexed { _, item ->
-            BottomNavigationItem(
+            NavigationBarItem(
                 icon = { Icon(item.icon, contentDescription = null) },
                 label = { Text(stringResource(id = item.resourceId)) },
                 selected = currentRoute?.startsWith(item.route) == true,
@@ -168,7 +169,7 @@ fun NavHost(
     val scope = rememberCoroutineScope()
 
     val modifier = Modifier
-        .background(MaterialTheme.colors.background)
+        .background(MaterialTheme.colorScheme.background)
         .padding(innerPadding)
 
     NavHost(navController, startDestination = startDestination, route = startRoute) {

@@ -3,8 +3,8 @@ package info.anodsplace.carwidget.screens.widget
 import android.app.Application
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -34,8 +34,8 @@ fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.Curre
             .fillMaxWidth()
             .defaultMinSize(minHeight = 352.dp),
         shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colors.surface,
-        contentColor = MaterialTheme.colors.onSurface
+        color = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface
     ) {
         ChooserGridList(emptyList(), viewModel.items, onClick = { entry ->
             viewModel.onSelect(entry)

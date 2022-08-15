@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--colorPrimary colors map to components and elements, such as app bars and buttons. -->
-    <!--colorSecondary colors are most often used as accents on components, such as FABs and -->
-    <!--selection controls.-->
-    <color name="color_primary">@color/material_bluegray_600</color>
-    <color name="color_primary_variant">@color/material_bluegray_800</color>
-    <color name="color_secondary">@color/material_bluegray_300</color>
-    <color name="color_secondary_variant">@color/material_bluegray_100</color>
-
-    <!--colorBackground appears behind scrollable content and is used for the default window-->
-    <!--background. colorSurface is mapped to the surface of components such as cards, sheets-->
-    <!--and menus. colorError is used to indicate an error state for components such as-->
-    <!--text fields.-->
-    <color name="color_background">#000000</color>
-    <color name="color_surface">#001c26</color>
-    <color name="color_error">#cf6679</color>
-
-    <color name="color_navigation">#23353E</color>
-    <!--"On" colors define how text, icons and strokes are colored in relation to the surface-->
-    <!--on which they appear.-->
-    <color name="color_on_primary">#000000</color>
-    <color name="color_on_secondary">#000000</color>
-    <color name="color_on_background">#ffffff</color>
-    <color name="color_on_surface">#ffffff</color>
-    <color name="color_on_error">#000000</color>
-
-    <color name="dialog_background">#001c26</color>
+    <color name="md_onPrimary">#003545</color>
+    <color name="md_primaryContainer">#004D63</color>
+    <color name="md_onPrimaryContainer">#BBE9FF</color>
+    <color name="md_secondary">#67D3FF</color>
+    <color name="md_onSecondary">#003546</color>
+    <color name="md_secondaryContainer">#004D64</color>
+    <color name="md_onSecondaryContainer">#BDE9FF</color>
+    <color name="md_tertiary">#61D4FF</color>
+    <color name="md_onTertiary">#003545</color>
+    <color name="md_tertiaryContainer">#004D63</color>
+    <color name="md_onTertiaryContainer">#BBE9FF</color>
+    <color name="md_error">#FFB4AB</color>
+    <color name="md_errorContainer">#93000A</color>
+    <color name="md_onError">#690005</color>
+    <color name="md_onErrorContainer">#FFDAD6</color>
+    <color name="md_background">#001E2F</color>
+    <color name="md_onBackground">#C9E6FF</color>
+    <color name="md_surface">#001E2F</color>
+    <color name="md_onSurface">#C9E6FF</color>
+    <color name="md_surfaceVariant">#40484C</color>
+    <color name="md_onSurfaceVariant">#C0C8CC</color>
+    <color name="md_outline">#8A9296</color>
+    <color name="md_inverseOnSurface">#001E2F</color>
+    <color name="md_inverseSurface">#C9E6FF</color>
+    <color name="md_inversePrimary">#006782</color>
+    <color name="md_shadow">#000000</color>
+    <color name="md_surfaceTint">#61D4FF</color>
+    <color name="md_surfaceTintColor">#61D4FF</color>
 </resources>

@@ -6,12 +6,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Widgets
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,7 +37,7 @@ import info.anodsplace.compose.BackgroundSurface
 fun Modifier.cardStyle(): Modifier = then(
     fillMaxWidth()
         .clip(shape = RoundedCornerShape(16.dp))
-        .background(MaterialTheme.colors.secondary)
+        .background(MaterialTheme.colorScheme.secondary)
         .padding(16.dp)
 )
 
@@ -51,15 +52,13 @@ fun WidgetsEmptyScreen() {
             .clip(MaterialTheme.shapes.medium)
     ) {
         Text(text = stringResource(id = R.string.no_active_widget))
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-            Icon(
-                imageVector = Icons.Filled.Widgets,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(4.dp)
-                    .size(36.dp)
-            )
-        }
+        Icon(
+            imageVector = Icons.Filled.Widgets,
+            contentDescription = null,
+            modifier = Modifier
+                .padding(4.dp)
+                .size(36.dp)
+        )
     }
 }
 
@@ -74,10 +73,10 @@ fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, iconModifier: Mod
                     model = shortcut.iconUri(context, item.adaptiveIconStyle),
                     contentDescription = shortcut.title.toString(),
                     imageLoader = context.imageLoader,
-                    modifier = iconModifier.border(1.dp, MaterialTheme.colors.onSurface, shape = RoundedCornerShape(8.dp))
+                    modifier = iconModifier.border(1.dp, MaterialTheme.colorScheme.onSurface, shape = RoundedCornerShape(8.dp))
                 )
             } else {
-                Box(modifier = iconModifier.border(1.dp, MaterialTheme.colors.onSurface, shape = RoundedCornerShape(8.dp))) {
+                Box(modifier = iconModifier.border(1.dp, MaterialTheme.colorScheme.onSurface, shape = RoundedCornerShape(8.dp))) {
 
                 }
             }
@@ -111,8 +110,8 @@ fun EventStates(eventsState: List<InCarStatus.EventState>) {
             val active = if (event.active) stringResource(R.string.active) else stringResource(R.string.not_active)
             Text(
                 text = String.format("%s: %s - %s", title, enabled, active),
-                style = MaterialTheme.typography.overline,
-                color = MaterialTheme.colors.onSecondary
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSecondary
             )
         }
     }
@@ -126,12 +125,12 @@ fun InCarHeader(screen: WidgetListScreenState) {
     Column(modifier = Modifier.cardStyle()) {
         Text(
             text = stringResource(id = R.string.pref_incar_mode_title) + " - " + active,
-            color = MaterialTheme.colors.onSecondary
+            color = MaterialTheme.colorScheme.onSecondary
         )
         if (screen.isServiceRequired) {
             Text(
                 text = if (screen.isServiceRunning) "Detector service is running" else "Detector service is NOT running",
-                color = MaterialTheme.colors.onSecondary
+                color = MaterialTheme.colorScheme.onSecondary
             )
         }
 
@@ -141,7 +140,7 @@ fun InCarHeader(screen: WidgetListScreenState) {
             version.isFreeAndTrialExpired -> {
                 Text(
                     text = stringResource(R.string.dialog_donate_title_expired) + " " + stringResource(R.string.notif_consider),
-                    color = MaterialTheme.colors.onSecondary
+                    color = MaterialTheme.colorScheme.onSecondary
                 )
             }
             version.isFree -> {
@@ -154,7 +153,7 @@ fun InCarHeader(screen: WidgetListScreenState) {
                         )
                 Text(
                     text = stringResource(R.string.dialog_donate_title_trial) + " " + activationsLeft,
-                    color = MaterialTheme.colors.onSecondary
+                    color = MaterialTheme.colorScheme.onSecondary
                 )
             }
             else -> {
@@ -221,7 +220,7 @@ fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int)
                                 model = LocalContext.current.iconUri("mipmap", "ic_launcher"),
                                 contentDescription = "",
                                 imageLoader = imageLoader,
-                                modifier = iconModifier.border(1.dp, MaterialTheme.colors.onSurface, shape = RoundedCornerShape(8.dp))
+                                modifier = iconModifier.border(1.dp, MaterialTheme.colorScheme.onSurface, shape = RoundedCornerShape(8.dp))
                             )
                         }
                     }

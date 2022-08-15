@@ -67,7 +67,7 @@ interface SkinPreviewViewModel {
     val widgetSettings: WidgetInterface
     val reload: Flow<Int>
 
-    suspend fun load(overrideSkin: SkinList.Item, context: Context): View
+    suspend fun load(overrideSkin: SkinList.Item): View
 }
 
 class DummySkinPreviewViewModel(application: Application): AndroidViewModel(application), SkinPreviewViewModel, KoinComponent {
@@ -77,12 +77,12 @@ class DummySkinPreviewViewModel(application: Application): AndroidViewModel(appl
     override val currentSkin = MutableStateFlow(skinList.current)
     override val reload: Flow<Int> = flowOf()
 
-    override suspend fun load(overrideSkin: SkinList.Item, context: Context): View {
+    override suspend fun load(overrideSkin: SkinList.Item): View {
 //        val intentFactory: PendingIntentFactory = PendingIntentFactory.NoOp(context)
 //        val widgetView: WidgetView = get(parameters = { parametersOf(bitmapMemoryCache, intentFactory, true, overrideSkin.value) })
 //        val remoteViews = widgetView.create()
 //        return renderPreview(remoteViews, context)
-        return View(context)
+        return View(getApplication())
     }
 }
 
@@ -116,11 +116,11 @@ class RealSkinPreviewViewModel(application: Application, appWidgetIdScope: AppWi
         bitmapMemoryCache.evictAll()
     }
 
-    override suspend fun load(overrideSkin: SkinList.Item, context: Context): View {
+    override suspend fun load(overrideSkin: SkinList.Item): View {
         val intentFactory: PendingIntentFactory = get<PreviewPendingIntentFactory>()
         val widgetView: WidgetView = get(parameters = { parametersOf(bitmapMemoryCache, intentFactory, true, overrideSkin.value) })
         val remoteViews = widgetView.create()
-        return renderPreview(remoteViews, context)
+        return renderPreview(remoteViews, getApplication())
     }
 }
 

@@ -6,11 +6,10 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,15 +18,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.MediaListLoader
+import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.compose.BackgroundSurface
-import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.compose.PreferenceCategory
 import info.anodsplace.compose.PreferenceItem
-import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.framework.content.CreateDocument
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
@@ -48,10 +47,10 @@ fun AboutButton(
             .fillMaxWidth()
             .padding(bottom = 16.dp),
         colors = ButtonDefaults.outlinedButtonColors(
-            backgroundColor = MaterialTheme.colors.secondary,
-            contentColor = MaterialTheme.colors.onSecondary,
-            disabledContentColor = MaterialTheme.colors.onSecondary
-                .copy(alpha = ContentAlpha.disabled)
+            containerColor = MaterialTheme.colorScheme.secondary,
+            contentColor = MaterialTheme.colorScheme.onSecondary,
+            disabledContentColor = MaterialTheme.colorScheme.onSecondary
+                .copy(alpha = 0.38f)
         ),
         enabled = enabled
     ) {
@@ -67,7 +66,7 @@ fun AboutButton(
 
             if (subtitle.isNotEmpty()) {
                 Text(text = subtitle.uppercase(Locale.getDefault()),
-                    style = MaterialTheme.typography.caption.copy(
+                    style = MaterialTheme.typography.bodySmall.copy(
                         fontSize = 8.sp
                     ))
             }
@@ -181,7 +180,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
                     Text(text = stringResource(id = R.string.cardock_text2))
                 }
             },
-            buttons = { },
+            confirmButton = { },
             onDismissRequest = { showOpenCarDock = false })
     }
 

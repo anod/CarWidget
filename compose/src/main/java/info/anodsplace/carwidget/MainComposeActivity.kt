@@ -6,16 +6,16 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.Window
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.color.DynamicColors
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
@@ -40,7 +41,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 
-open class MainComposeActivity : ComponentActivity(), KoinComponent {
+open class MainComposeActivity : AppCompatActivity(), KoinComponent {
     private val appSettings: AppSettings by inject()
     private val uiModeManager: UiModeManager by inject()
     private var appWidgetIdScope: AppWidgetIdScope? = null
@@ -57,11 +58,9 @@ open class MainComposeActivity : ComponentActivity(), KoinComponent {
     open fun requestWidgetUpdate(appWidgetId: Int) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            uiModeManager.setApplicationNightMode(appSettings.uiMode)
-        }
+        AppCompatDelegate.setDefaultNightMode(appSettings.appCompatNightMode)
         super.onCreate(savedInstanceState)
+        DynamicColors.applyToActivityIfAvailable(this)
         val appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
         appWidgetIdScope = if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) AppWidgetIdScope(appWidgetId) else null
         lifecycleScope.launch {
@@ -101,14 +100,13 @@ open class MainComposeActivity : ComponentActivity(), KoinComponent {
                 }
             }
             CarWidgetTheme(
-                context = this@MainComposeActivity,
                 uiMode = uiMode
             ) {
                 MainScreen(mainViewModel = mainViewModel)
 //                ThemeColors(listOf(
-//                        Triple("primary", MaterialTheme.colors.primary, MaterialTheme.colors.onPrimary),
-//                        Triple("secondary", MaterialTheme.colors.secondary, MaterialTheme.colors.onSecondary),
-//                        Triple("background", MaterialTheme.colors.background, MaterialTheme.colors.onBackground),
+//                        Triple("primary", MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary),
+//                        Triple("secondary", MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.onSecondary),
+//                        Triple("background", MaterialTheme.colorScheme.background, MaterialTheme.colorScheme.onBackground),
 //                ))
             }
         }
