@@ -1,6 +1,5 @@
 package info.anodsplace.carwidget.screens.widget
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,38 +24,43 @@ import com.google.accompanist.flowlayout.MainAxisAlignment
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.screens.WidgetDialog
 import info.anodsplace.compose.ColorDialog
 
 @Composable
-fun WidgetActionDialog(modifier: Modifier, current: WidgetDialog, action: (UiAction) -> Unit, widgetSettings: WidgetInterface) {
+fun WidgetActionDialog(current: WidgetDialog, onEvent: (event: SkinPreviewViewEvent) -> Unit, dismiss: () -> Unit, widgetSettings: WidgetInterface.NoOp) {
     when (current) {
-        WidgetDialog.ChooseBackgroundColor -> BackgroundColor(widgetSettings, action)
-        WidgetDialog.ChooseIconsScale -> IconScaleDialog(widgetSettings, action)
+        WidgetDialog.ChooseBackgroundColor ->  ColorDialog(selected = Color(widgetSettings.backgroundColor)) {
+            onEvent(SkinPreviewViewEvent.UpdateBackgroundColor(it))
+            dismiss()
+        }
+        WidgetDialog.ChooseIconsScale -> IconScaleDialog(widgetSettings, dismiss = dismiss, onEvent = onEvent)
         WidgetDialog.ChooseIconsTheme -> { }
-        WidgetDialog.ChooseShortcutsNumber -> ShortcutNumbersDialog(modifier, widgetSettings, action)
-        WidgetDialog.ChooseTileColor -> { TileColor(widgetSettings, action) }
+        WidgetDialog.ChooseShortcutsNumber -> ShortcutNumbersDialog(widgetSettings, dismiss = dismiss, onEvent = onEvent)
+        WidgetDialog.ChooseTileColor -> ColorDialog(selected = Color(widgetSettings.tileColor)) { newColor ->
+            onEvent(SkinPreviewViewEvent.UpdateTileColor(newColor))
+            dismiss()
+        }
         is WidgetDialog.SwitchIconsMono -> { }
         else -> {}
     }
 }
 
 @Composable
-fun IconScaleDialog(prefs: WidgetInterface, action: (UiAction) -> Unit) {
+fun IconScaleDialog(prefs: WidgetInterface.NoOp, dismiss: () -> Unit, onEvent: (event: SkinPreviewViewEvent) -> Unit) {
     AlertDialog(
         modifier = Modifier.padding(16.dp),
         title = { Text(
                 text = stringResource(id = R.string.pref_scale_icon)
         ) },
-        onDismissRequest = {  action(UiAction.None) },
+        onDismissRequest = {  dismiss() },
         text = {
             Column {
                 Spacer(modifier = Modifier.height(64.dp))
                 val current = prefs.iconsScale.toInt()
                 IconScale(current) { scale ->
-                    prefs.iconsScale = scale.toString()
-                    action(UiAction.None)
+                    onEvent(SkinPreviewViewEvent.UpdateIconScale(scale.toString()))
+                    dismiss()
                 }
             }
         },
@@ -90,50 +94,27 @@ fun IconScale(current: Int, onClick: (Int) -> Unit) {
 }
 
 @Composable
-fun BackgroundColor(prefs: WidgetInterface, action: (UiAction) -> Unit) {
-    val selected = Color(prefs.backgroundColor)
-    ColorDialog(selected = selected) { newColor ->
-        if (newColor != null) {
-            prefs.backgroundColor = newColor.value.toInt()
-        }
-        action(UiAction.None)
-    }
-}
-
-@Composable
-fun TileColor(prefs: WidgetInterface, action: (UiAction) -> Unit) {
-    val selected = Color(prefs.tileColor)
-    ColorDialog(selected = selected) { newColor ->
-        if (newColor != null) {
-            prefs.tileColor = newColor.value.toInt()
-        }
-        action(UiAction.None)
-    }
-}
-
-@Composable
-fun ShortcutNumbersDialog(modifier: Modifier, widgetSettings: WidgetInterface, action: (UiAction) -> Unit) {
+fun ShortcutNumbersDialog(widgetSettings: WidgetInterface.NoOp, dismiss: () -> Unit, onEvent: (event: SkinPreviewViewEvent) -> Unit) {
     AlertDialog(
             confirmButton = { },
             modifier = Modifier.padding(16.dp),
             title = { Text(
                     text = stringResource(id = R.string.number_shortcuts_title)
             ) },
-            onDismissRequest = {  action(UiAction.None) },
+            onDismissRequest = { dismiss() },
             text = {
                 val current = widgetSettings.shortcutsNumber
                 Column {
                     Spacer(modifier = Modifier.height(64.dp))
                     ShortcutsNumbers(current, onClick = {
-                        widgetSettings.shortcutsNumber = it
-                        action(UiAction.None)
+                        onEvent(SkinPreviewViewEvent.UpdateShortcutsNumber(it))
+                        dismiss()
                     })
                 }
             }
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ShortcutsNumbers(current: Int, onClick: (Int) -> Unit) {
     FlowRow(
@@ -195,7 +176,7 @@ fun ShortcutsNumber(number: Int, current: Int, boxSize: Dp, onClick: (Int) -> Un
 @Preview
 @Composable
 fun ShortcutNumbersPreview() {
-    CarWidgetTheme() {
+    CarWidgetTheme {
         Surface(modifier = Modifier.width(256.dp)) {
             ShortcutsNumbers(8, onClick = { })
         }

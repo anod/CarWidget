@@ -33,10 +33,7 @@ import info.anodsplace.carwidget.screens.incar.BluetoothDevicesViewModel
 import info.anodsplace.carwidget.screens.incar.InCarMainScreen
 import info.anodsplace.carwidget.screens.incar.InCarViewModel
 import info.anodsplace.carwidget.screens.shortcuts.EditShortcut
-import info.anodsplace.carwidget.screens.widget.SkinPreviewViewModel
-import info.anodsplace.carwidget.screens.widget.WidgetActionDialog
-import info.anodsplace.carwidget.screens.widget.WidgetLookMoreScreen
-import info.anodsplace.carwidget.screens.widget.WidgetSkinScreen
+import info.anodsplace.carwidget.screens.widget.*
 import info.anodsplace.carwidget.screens.wizard.WizardScreen
 import info.anodsplace.compose.RequestPermissionsScreen
 import info.anodsplace.compose.ScreenLoadState
@@ -198,16 +195,22 @@ fun NavHost(
         navigation(route = NavItem.Tab.CurrentWidget.route, startDestination = currentWidgetStartDestination) {
             composable(route = NavItem.Tab.CurrentWidget.Skin.route) {
                 val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(LocalContext.current, appWidgetIdScope!!))
-                val currentSkinValue by skinViewModel.currentSkin.collectAsState(initial = skinViewModel.skinList.current)
-                currentSkin.value = currentSkinValue.value
+                val screenState by skinViewModel.viewStates.collectAsState(initial = skinViewModel.viewState)
+                currentSkin.value = screenState.currentSkin.value
                 WidgetSkinScreen(
-                    skinList = skinViewModel.skinList,
-                    viewModel = skinViewModel,
-                    modifier = Modifier.padding(innerPadding)
+                    screenState = screenState,
+                    modifier = Modifier.padding(innerPadding),
+                    skinViewFactory = skinViewModel,
+                    onEvent = { skinViewModel.handleEvent(it) }
                 )
 
                 if (dialogState != WidgetDialog.None) {
-                    AppBarWidgetAction(modifier, dialogState, action, skinViewModel.widgetSettings)
+                    AppBarWidgetAction(
+                        dialogState,
+                        onEvent = { skinViewModel.handleEvent(it) },
+                        dismiss = { action(UiAction.None) },
+                        widgetSettings = screenState.widgetSettings
+                    )
                 }
             }
             composable(
@@ -222,11 +225,11 @@ fun NavHost(
                 )
             }
             composable(route = NavItem.Tab.CurrentWidget.MoreSettings.route) {
-                val appContext = LocalContext.current.applicationContext
-                val skinViewModel: SkinPreviewViewModel =
-                    viewModel(factory = SkinPreviewViewModel.Factory(appContext, appWidgetIdScope!!))
+                val lookMoreViewModel: WidgetLookMoreViewModel = viewModel(factory = WidgetLookMoreViewModel.Factory(appWidgetIdScope!!))
+                val screenState by lookMoreViewModel.viewStates.collectAsState(initial = lookMoreViewModel.viewState)
                 WidgetLookMoreScreen(
-                    settings = skinViewModel.widgetSettings,
+                    screenState = screenState,
+                    onEvent = { lookMoreViewModel.handleEvent(it) },
                     modifier = Modifier.padding(innerPadding)
                 )
             }
@@ -263,18 +266,18 @@ fun NavHost(
 
 @Composable
 fun AppBarWidgetAction(
-    modifier: Modifier,
     current: WidgetDialog,
-    action: (UiAction) -> Unit,
-    widgetSettings: WidgetInterface
+    onEvent: (event: SkinPreviewViewEvent) -> Unit,
+    dismiss: () -> Unit,
+    widgetSettings: WidgetInterface.NoOp
 ) {
     when (current) {
-        WidgetDialog.ChooseBackgroundColor -> WidgetActionDialog(modifier, current, action, widgetSettings)
-        WidgetDialog.ChooseIconsScale -> WidgetActionDialog(modifier, current, action, widgetSettings)
-        WidgetDialog.ChooseIconsTheme -> WidgetActionDialog(modifier, current, action, widgetSettings)
-        WidgetDialog.ChooseShortcutsNumber -> WidgetActionDialog(modifier, current, action, widgetSettings)
-        WidgetDialog.ChooseTileColor -> WidgetActionDialog(modifier, current, action, widgetSettings)
-        is WidgetDialog.SwitchIconsMono -> WidgetActionDialog(modifier, current, action, widgetSettings)
+        WidgetDialog.ChooseBackgroundColor -> WidgetActionDialog(current, onEvent = onEvent, dismiss = dismiss, widgetSettings = widgetSettings)
+        WidgetDialog.ChooseIconsScale -> WidgetActionDialog(current, onEvent = onEvent, dismiss = dismiss, widgetSettings = widgetSettings)
+        WidgetDialog.ChooseIconsTheme -> WidgetActionDialog(current, onEvent = onEvent, dismiss = dismiss, widgetSettings = widgetSettings)
+        WidgetDialog.ChooseShortcutsNumber -> WidgetActionDialog(current, onEvent = onEvent, dismiss = dismiss, widgetSettings = widgetSettings)
+        WidgetDialog.ChooseTileColor -> WidgetActionDialog(current, onEvent = onEvent, dismiss = dismiss, widgetSettings = widgetSettings)
+        is WidgetDialog.SwitchIconsMono -> WidgetActionDialog(current, onEvent = onEvent, dismiss = dismiss, widgetSettings = widgetSettings)
         else -> {}
     }
 }

@@ -41,7 +41,7 @@ interface WidgetInterface {
     fun applyPending()
     fun <T : Any?> observe(key: String): Flow<T>
 
-    class NoOp(
+    data class NoOp(
         override var isFirstTime: Boolean = true,
         override var iconsTheme: String = "",
         override var isSettingsTransparent: Boolean = false,
@@ -62,6 +62,29 @@ interface WidgetInterface {
         override var paletteBackground: Boolean = false,
         override var adaptiveIconPath: Path = Path()
     ) : WidgetInterface {
+
+        constructor(other: WidgetInterface) : this(
+              isFirstTime = other.isFirstTime,
+               iconsTheme = other.iconsTheme,
+               isSettingsTransparent = other.isSettingsTransparent,
+               isIncarTransparent = other.isIncarTransparent,
+               skin = other.skin,
+               tileColor = other.tileColor,
+               isIconsMono = other.isIconsMono,
+               iconsColor = other.iconsColor,
+               iconsScale = other.iconsScale,
+               fontColor = other.fontColor,
+               fontSize = other.fontSize,
+               backgroundColor = other.backgroundColor,
+               iconsRotate = other.iconsRotate,
+               isTitlesHide = other.isTitlesHide,
+               widgetButton1 = other.widgetButton1,
+               widgetButton2 = other.widgetButton2,
+               shortcutsNumber = other.shortcutsNumber,
+               paletteBackground = other.paletteBackground,
+               adaptiveIconPath = other.adaptiveIconPath,
+        )
+
         override val changes = emptyFlow<Pair<String, Any?>>()
         override fun queueChange(key: String, value: Any?) {}
         override fun applyChange(key: String, value: Any?) {}

@@ -6,6 +6,7 @@ import android.view.InflateException
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.TextView
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -16,14 +17,17 @@ import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
 import info.anodsplace.carwidget.appwidget.WidgetView
 import info.anodsplace.carwidget.content.BitmapLruCache
+import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import info.anodsplace.ktx.hashCodeOf
+import info.anodsplace.carwidget.content.preferences.WidgetSettings
+import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.KoinScopeComponent
@@ -51,7 +55,31 @@ data class SkinList(
     operator fun get(position: Int): Item = Item(titles[position], values[position])
 }
 
-interface SkinPreviewViewModel {
+data class SkinPreviewViewState(
+    val skinList: SkinList,
+    val currentSkin: SkinList.Item,
+    val widgetSettings: WidgetInterface.NoOp = WidgetInterface.NoOp(),
+    val widgetShortcuts: Map<Int, Shortcut?>? = null,
+    val reload: Int = 0
+)
+
+sealed interface SkinPreviewViewEvent {
+    class UpdateCurrentSkin(val index: Int) : SkinPreviewViewEvent
+    class UpdateBackgroundColor(val newColor: Color?) : SkinPreviewViewEvent
+    class UpdateIconScale(val iconScale: String) : SkinPreviewViewEvent
+    class UpdateTileColor(val newColor: Color?) : SkinPreviewViewEvent
+    class UpdateShortcutsNumber(val size: Int) : SkinPreviewViewEvent
+
+    object Reload : SkinPreviewViewEvent
+}
+
+sealed interface SkinPreviewViewAction
+
+interface SkinViewFactory {
+    suspend fun create(overrideSkin: SkinList.Item): View
+}
+
+interface SkinPreviewViewModel : SkinViewFactory {
     class Factory(private val appContext: Context, private val appWidgetIdScope: AppWidgetIdScope?):
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T  {
@@ -62,65 +90,111 @@ interface SkinPreviewViewModel {
         }
     }
 
-    val skinList: SkinList
-    val currentSkin: MutableStateFlow<SkinList.Item>
-    val widgetSettings: WidgetInterface
-    val reload: Flow<Int>
+    val viewStates: Flow<SkinPreviewViewState>
+    val viewState: SkinPreviewViewState
 
-    suspend fun load(overrideSkin: SkinList.Item): View
+    fun handleEvent(event: SkinPreviewViewEvent)
 }
 
 class DummySkinPreviewViewModel(application: Application): AndroidViewModel(application), SkinPreviewViewModel, KoinComponent {
-    private val bitmapMemoryCache: BitmapLruCache by inject()
-    override val widgetSettings: WidgetInterface = WidgetInterface.NoOp()
-    override val skinList = SkinList(widgetSettings.skin, application)
-    override val currentSkin = MutableStateFlow(skinList.current)
-    override val reload: Flow<Int> = flowOf()
+    private val widgetSettings: WidgetInterface = WidgetInterface.NoOp()
 
-    override suspend fun load(overrideSkin: SkinList.Item): View {
+    override val viewState : SkinPreviewViewState
+    override val viewStates: Flow<SkinPreviewViewState>
+
+    init {
+        val skinList = SkinList(widgetSettings.skin, application)
+        viewState = SkinPreviewViewState(
+            skinList = skinList,
+            currentSkin = skinList.current
+        )
+        viewStates = flowOf(viewState)
+    }
+
+    override suspend fun create(overrideSkin: SkinList.Item): View {
 //        val intentFactory: PendingIntentFactory = PendingIntentFactory.NoOp(context)
 //        val widgetView: WidgetView = get(parameters = { parametersOf(bitmapMemoryCache, intentFactory, true, overrideSkin.value) })
 //        val remoteViews = widgetView.create()
 //        return renderPreview(remoteViews, context)
         return View(getApplication())
     }
+
+    override fun handleEvent(event: SkinPreviewViewEvent) {
+
+    }
 }
 
-class RealSkinPreviewViewModel(application: Application, appWidgetIdScope: AppWidgetIdScope): AndroidViewModel(application), SkinPreviewViewModel, KoinScopeComponent {
+class RealSkinPreviewViewModel(application: Application, appWidgetIdScope: AppWidgetIdScope): BaseFlowViewModel<SkinPreviewViewState, SkinPreviewViewEvent, SkinPreviewViewAction>(), SkinPreviewViewModel, KoinScopeComponent {
 
     override val scope: Scope = appWidgetIdScope.scope
 
+    private val context: Context by inject()
     private val bitmapMemoryCache: BitmapLruCache by inject()
     private val db: ShortcutsDatabase by inject()
-    override val widgetSettings: WidgetInterface by inject()
+    private val widgetSettings: WidgetSettings by inject()
 
-    override val skinList = SkinList(widgetSettings.skin, application)
-    override val currentSkin = MutableStateFlow(skinList.current)
+    init {
+        val skinList = SkinList(widgetSettings.skin, application)
+        viewState = SkinPreviewViewState(
+            skinList = skinList,
+            currentSkin = skinList.current,
+            widgetSettings = WidgetInterface.NoOp(widgetSettings)
+        )
 
-    override val reload: Flow<Int> = widgetSettings.changes.onStart { emit(Pair("", null)) }
-        .combine(db.observeTarget(+appWidgetIdScope).onStart { emit(emptyMap()) }) { s, t ->
-            if (s.first.isEmpty() && t.isEmpty()) {
-                0
-            } else {
-                hashCodeOf(s, t)
+        viewModelScope.launch {
+            widgetSettings.changes.collect {
+                viewState = viewState.copy(
+                    widgetSettings = WidgetInterface.NoOp(widgetSettings),
+                    reload = viewState.reload + 1
+                )
             }
         }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = 0)
-        .filter { it != 0 }
-        .onEach {
-            delay(300)
+
+        viewModelScope.launch {
+            db.observeTarget(+appWidgetIdScope).collect {
+                viewState = viewState.copy(
+                    widgetShortcuts = it,
+                    reload = viewState.reload + 1
+                )
+            }
         }
+    }
 
     override fun onCleared() {
         super.onCleared()
         bitmapMemoryCache.evictAll()
     }
 
-    override suspend fun load(overrideSkin: SkinList.Item): View {
+    override fun handleEvent(event: SkinPreviewViewEvent) {
+        when (event) {
+            SkinPreviewViewEvent.Reload -> {
+
+            }
+            is SkinPreviewViewEvent.UpdateCurrentSkin -> TODO()
+            is SkinPreviewViewEvent.UpdateBackgroundColor -> {
+                if (event.newColor != null) {
+                    widgetSettings.backgroundColor = event.newColor.value.toInt()
+                }
+            }
+            is SkinPreviewViewEvent.UpdateIconScale -> {
+                widgetSettings.iconsScale = event.iconScale
+            }
+            is SkinPreviewViewEvent.UpdateTileColor -> {
+                if (event.newColor != null) {
+                    widgetSettings.tileColor = event.newColor.value.toInt()
+                }
+            }
+            is SkinPreviewViewEvent.UpdateShortcutsNumber -> {
+                widgetSettings.shortcutsNumber = event.size
+            }
+        }
+    }
+
+    override suspend fun create(overrideSkin: SkinList.Item): View {
         val intentFactory: PendingIntentFactory = get<PreviewPendingIntentFactory>()
         val widgetView: WidgetView = get(parameters = { parametersOf(bitmapMemoryCache, intentFactory, true, overrideSkin.value) })
         val remoteViews = widgetView.create()
-        return renderPreview(remoteViews, getApplication())
+        return renderPreview(remoteViews, context)
     }
 }
 

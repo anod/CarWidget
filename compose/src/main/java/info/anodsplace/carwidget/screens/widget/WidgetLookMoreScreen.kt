@@ -2,7 +2,7 @@ package info.anodsplace.carwidget.screens.widget
 
 import android.app.UiModeManager
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -83,32 +83,32 @@ private fun createItems(settings: WidgetInterface) = listOf(
 )
 
 @Composable
-fun WidgetLookMoreScreen(modifier: Modifier, settings: WidgetInterface) {
-    PreferencesScreen(
+fun WidgetLookMoreScreen(screenState: WidgetLookMoreState, onEvent: (WidgetLookMoreEvent) -> Unit, modifier: Modifier = Modifier) {
+    Surface {
+        PreferencesScreen(
             modifier = modifier,
-            preferences = createItems(settings),
-            categoryColor = MaterialTheme.colorScheme.secondary,
-            descriptionColor = MaterialTheme.colorScheme.onBackground,
+            preferences = createItems(screenState.widgetSettings),
             onClick = { item ->
                 when (item) {
                     is PreferenceItem.CheckBox -> {
-                        settings.applyChange(item.key, item.checked)
+                        onEvent(WidgetLookMoreEvent.ApplyChange(item.key, item.checked))
                     }
                     is PreferenceItem.Switch -> {
-                        settings.applyChange(item.key, item.checked)
+                        onEvent(WidgetLookMoreEvent.ApplyChange(item.key, item.checked))
                     }
                     else -> {}
                 }
             }
-    ) { placeholder, paddingValues ->
-        when (placeholder.key) {
-            "font-size" -> {
-                FontSize(
+        ) { placeholder, paddingValues ->
+            when (placeholder.key) {
+                "font-size" -> {
+                    FontSize(
                         paddingValues = paddingValues,
-                        initialValue = settings.fontSize,
-                        onValueChanged = { settings.fontSize = it },
+                        initialValue = screenState.widgetSettings.fontSize,
+                        onValueChanged = { onEvent(WidgetLookMoreEvent.ApplyChange("font-size", it)) },
                         placeholder = placeholder as PreferenceItem.Placeholder
-                )
+                    )
+                }
             }
         }
     }
@@ -118,6 +118,9 @@ fun WidgetLookMoreScreen(modifier: Modifier, settings: WidgetInterface) {
 @Composable
 fun WidgetLookMoreScreenDark() {
     CarWidgetTheme(uiMode = UiModeManager.MODE_NIGHT_YES) {
-        WidgetLookMoreScreen(Modifier, WidgetInterface.NoOp())
+        WidgetLookMoreScreen(
+            screenState = WidgetLookMoreState(widgetSettings = WidgetInterface.NoOp()),
+            onEvent = { }
+        )
     }
 }

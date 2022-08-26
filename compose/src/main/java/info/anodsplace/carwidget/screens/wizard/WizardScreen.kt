@@ -103,7 +103,7 @@ fun WizardWelcome() {
 
         val appContext = LocalContext.current.applicationContext
         val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, null))
-        WidgetSkinPreview(skinViewModel.skinList.current, skinViewModel)
+        WidgetSkinPreview(skinViewModel.viewState.currentSkin, skinViewModel.viewState.reload, skinViewFactory = skinViewModel)
     }
 }
 

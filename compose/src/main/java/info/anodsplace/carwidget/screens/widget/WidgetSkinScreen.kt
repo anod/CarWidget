@@ -19,10 +19,9 @@ import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
 @Composable
-fun WidgetSkinPreview(skinItem: SkinList.Item, viewModel: SkinPreviewViewModel) {
-    val reload by viewModel.reload.collectAsState(initial = 0)
+fun WidgetSkinPreview(skinItem: SkinList.Item, reload: Int, skinViewFactory: SkinViewFactory) {
     val view: View? by produceState<View?>(initialValue = null, skinItem, reload) {
-        val view = viewModel.load(skinItem)
+        val view = skinViewFactory.create(skinItem)
         value = view
     }
     if (view == null) {
@@ -45,15 +44,15 @@ fun WidgetSkinPreview(skinItem: SkinList.Item, viewModel: SkinPreviewViewModel) 
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun WidgetSkinScreen(skinList: SkinList, viewModel: SkinPreviewViewModel, modifier: Modifier = Modifier) {
-    val pagerState = rememberPagerState(initialPage = skinList.selectedSkinPosition)
+fun WidgetSkinScreen(screenState: SkinPreviewViewState, modifier: Modifier = Modifier, skinViewFactory: SkinViewFactory, onEvent: (SkinPreviewViewEvent) -> Unit = { }) {
+    val pagerState = rememberPagerState(initialPage = screenState.skinList.selectedSkinPosition)
     val scope = rememberCoroutineScope()
 
     var currentPage by remember { mutableStateOf(pagerState.currentPage) }
 
     if (currentPage != pagerState.currentPage) {
         SideEffect {
-            viewModel.currentSkin.value = skinList[currentPage]
+            onEvent(SkinPreviewViewEvent.UpdateCurrentSkin(index = currentPage))
         }
         currentPage = pagerState.currentPage
     }
@@ -62,7 +61,7 @@ fun WidgetSkinScreen(skinList: SkinList, viewModel: SkinPreviewViewModel, modifi
         ScrollableTabRow(
             selectedTabIndex = pagerState.currentPage
         ) {
-            skinList.titles.forEachIndexed { index, title ->
+            screenState.skinList.titles.forEachIndexed { index, title ->
                 Tab(
                     text = { Text(title) },
                     selected = pagerState.currentPage == index,
@@ -73,8 +72,8 @@ fun WidgetSkinScreen(skinList: SkinList, viewModel: SkinPreviewViewModel, modifi
             }
         }
 
-        HorizontalPager(count = skinList.count, state = pagerState, modifier = Modifier.padding(16.dp)) { page ->
-            WidgetSkinPreview(skinList[page], viewModel = viewModel)
+        HorizontalPager(count = screenState.skinList.count, state = pagerState, modifier = Modifier.padding(16.dp)) { page ->
+            WidgetSkinPreview(skinItem = screenState.skinList[page], reload = screenState.reload, skinViewFactory = skinViewFactory)
         }
     }
 }
