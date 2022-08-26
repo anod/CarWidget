@@ -1,6 +1,5 @@
 package info.anodsplace.carwidget.content.preferences
 
-import android.graphics.Path
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
@@ -34,7 +33,7 @@ interface WidgetInterface {
     var widgetButton1: Int
     var widgetButton2: Int
     var shortcutsNumber: Int
-    val adaptiveIconPath: Path
+    val adaptiveIconStyle: String
 
     fun queueChange(key: String, value: Any?)
     fun applyChange(key: String, value: Any?)
@@ -60,29 +59,29 @@ interface WidgetInterface {
         override var widgetButton2: Int = 0,
         override var shortcutsNumber: Int = 8,
         override var paletteBackground: Boolean = false,
-        override var adaptiveIconPath: Path = Path()
+        override var adaptiveIconStyle: String = ""
     ) : WidgetInterface {
 
         constructor(other: WidgetInterface) : this(
-              isFirstTime = other.isFirstTime,
-               iconsTheme = other.iconsTheme,
-               isSettingsTransparent = other.isSettingsTransparent,
-               isIncarTransparent = other.isIncarTransparent,
-               skin = other.skin,
-               tileColor = other.tileColor,
-               isIconsMono = other.isIconsMono,
-               iconsColor = other.iconsColor,
-               iconsScale = other.iconsScale,
-               fontColor = other.fontColor,
-               fontSize = other.fontSize,
-               backgroundColor = other.backgroundColor,
-               iconsRotate = other.iconsRotate,
-               isTitlesHide = other.isTitlesHide,
-               widgetButton1 = other.widgetButton1,
-               widgetButton2 = other.widgetButton2,
-               shortcutsNumber = other.shortcutsNumber,
-               paletteBackground = other.paletteBackground,
-               adaptiveIconPath = other.adaptiveIconPath,
+            isFirstTime = other.isFirstTime,
+            iconsTheme = other.iconsTheme,
+            isSettingsTransparent = other.isSettingsTransparent,
+            isIncarTransparent = other.isIncarTransparent,
+            skin = other.skin,
+            tileColor = other.tileColor,
+            isIconsMono = other.isIconsMono,
+            iconsColor = other.iconsColor,
+            iconsScale = other.iconsScale,
+            fontColor = other.fontColor,
+            fontSize = other.fontSize,
+            backgroundColor = other.backgroundColor,
+            iconsRotate = other.iconsRotate,
+            isTitlesHide = other.isTitlesHide,
+            widgetButton1 = other.widgetButton1,
+            widgetButton2 = other.widgetButton2,
+            shortcutsNumber = other.shortcutsNumber,
+            paletteBackground = other.paletteBackground,
+            adaptiveIconStyle = other.adaptiveIconStyle,
         )
 
         override val changes = emptyFlow<Pair<String, Any?>>()

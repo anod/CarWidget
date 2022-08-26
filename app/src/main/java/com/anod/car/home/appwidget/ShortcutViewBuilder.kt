@@ -2,7 +2,6 @@ package com.anod.car.home.appwidget
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Path
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.LruCache
@@ -82,7 +81,6 @@ class ShortcutViewBuilder(
         override var bitmapMemoryCache: LruCache<String, Bitmap>? = null
 
         private val backgroundProcessor: IconBackgroundProcessor? = skinProperties.backgroundProcessor
-        private val adaptiveIconPath: Path = prefs.adaptiveIconPath
 
         override suspend fun fill(views: RemoteViews, position: Int, resBtn: Int, resText: Int) {
             val info = shortcuts.get(position)
@@ -198,7 +196,7 @@ class ShortcutViewBuilder(
 
         private suspend fun shortcutBitmap(info: Shortcut, themeIcons: IconTheme?): Bitmap {
             if (themeIcons == null || !info.isApp || info.isCustomIcon) {
-                val icon = iconLoader.load(info, adaptiveIconPath)
+                val icon = iconLoader.load(info, prefs.adaptiveIconStyle)
                 return icon.bitmap
             }
 
@@ -213,7 +211,7 @@ class ShortcutViewBuilder(
             if (iconDrawable != null) {
                 return UtilitiesBitmap.createHiResIconBitmap(iconDrawable, context)
             }
-            val icon = iconLoader.load(info, adaptiveIconPath)
+            val icon = iconLoader.load(info, prefs.adaptiveIconStyle)
             return icon.bitmap
         }
     }

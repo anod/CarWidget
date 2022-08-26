@@ -3,7 +3,6 @@ package com.anod.car.home.notifications
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
-import android.graphics.Path
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
@@ -68,14 +67,13 @@ class InCarModeNotificationFactory(
         val contentView = RemoteViews(context.packageName, R.layout.notification)
 
         val spi = ShortcutPendingIntent(context, shortcutResources)
-        val emptyPath = Path()
         for (position in 0 until model.count) {
             val info = model.get(position)
             val resId = buttonIds[position]
             if (info == null) {
                 contentView.setViewVisibility(resId, View.GONE)
             } else {
-                val icon = iconLoader.load(info, emptyPath)
+                val icon = iconLoader.load(info, "")
                 contentView.setImageViewBitmap(resId, icon.bitmap)
                 spi.createShortcut(info.intent, uri = { Deeplink.OpenNotificationShortcut(position).toUri() })?.let {
                     contentView.setOnClickPendingIntent(resId, it)

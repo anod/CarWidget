@@ -1,19 +1,21 @@
 package info.anodsplace.carwidget.screens.widget
 
 import android.app.UiModeManager
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import info.anodsplace.compose.PreferenceItem
-import info.anodsplace.compose.PreferenceSlider
-import info.anodsplace.compose.PreferencesScreen
-import info.anodsplace.compose.toTextItem
+import info.anodsplace.compose.*
 
 @Composable
 fun FontSize(
@@ -47,17 +49,15 @@ private fun createItems(settings: WidgetInterface) = listOf(
         summaryRes = R.string.pref_font_color_summary,
         key = "font-color"
     ),
-    PreferenceItem.List(
+    PreferenceItem.Pick(
         titleRes = R.string.pref_rotate_icon_title,
         key = "icons-rotate",
-        entries = R.array.icon_rotate_titles,
-        entryValues = R.array.icon_rotate_values
+        entriesRes = R.array.icon_rotate_titles,
+        entryValuesRes = R.array.icon_rotate_values
     ),
-    PreferenceItem.List(
+    PreferenceItem.Placeholder(
         titleRes = R.string.adaptive_icon_style,
         key = "adaptive-icon-style",
-        entries = R.array.adaptive_icon_style_names,
-        entryValues = R.array.adaptive_icon_style_paths_values
     ),
     PreferenceItem.Switch(
         checked = settings.isTitlesHide,
@@ -99,16 +99,32 @@ fun WidgetLookMoreScreen(screenState: WidgetLookMoreState, onEvent: (WidgetLookM
                     else -> {}
                 }
             }
-        ) { placeholder, paddingValues ->
-            when (placeholder.key) {
+        ) { item, paddingValues ->
+            when (item.key) {
                 "font-size" -> {
                     FontSize(
                         paddingValues = paddingValues,
                         initialValue = screenState.widgetSettings.fontSize,
                         onValueChanged = { onEvent(WidgetLookMoreEvent.ApplyChange("font-size", it)) },
-                        placeholder = placeholder as PreferenceItem.Placeholder
+                        placeholder = item as PreferenceItem.Placeholder
                     )
                 }
+                "adaptive-icon-style" -> Preference(
+                    item,
+                    secondary = {
+                        Column {
+                            IconShapeSelector(
+                                names =  stringArrayResource(id = R.array.adaptive_icon_style_names),
+                                pathMasks = stringArrayResource(id = R.array.adaptive_icon_style_paths_values),
+                                selected = screenState.widgetSettings.adaptiveIconStyle,
+                                modifier = Modifier
+                                    .padding(top = 8.dp)
+                                    .fillMaxWidth(),
+                                onPathChange = { newPath -> onEvent(WidgetLookMoreEvent.ApplyChange("adaptive-icon-style", newPath)) }
+                            )
+                        }
+                    },
+                    onClick = { })
             }
         }
     }

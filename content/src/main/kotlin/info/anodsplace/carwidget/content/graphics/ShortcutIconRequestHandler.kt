@@ -2,7 +2,6 @@ package info.anodsplace.carwidget.content.graphics
 
 import android.content.ContentResolver
 import android.content.Context
-import android.graphics.Path
 import android.net.Uri
 import androidx.core.graphics.drawable.toDrawable
 import coil.ImageLoader
@@ -11,11 +10,9 @@ import coil.fetch.DrawableResult
 import coil.fetch.FetchResult
 import coil.fetch.Fetcher
 import coil.request.Options
-
 import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
-import info.anodsplace.graphics.PathParser
 
 /**
  * @author algavris
@@ -45,13 +42,11 @@ class ShortcutIconRequestHandler(
         val shortcutId = data.lastPathSegment?.toLong() ?: return null
         val shortcut = db.loadShortcut(shortcutId) ?: return null
         val adaptiveIconStyle = data.getQueryParameter("adaptiveIconStyle") ?: ""
-        val adaptiveIconPath = if (adaptiveIconStyle.isNotBlank()) PathParser.createPathFromPathData(adaptiveIconStyle) else Path()
-        val icon = iconLoader.load(shortcut, adaptiveIconPath)
+        val icon = iconLoader.load(shortcut, adaptiveIconStyle)
         return DrawableResult(
             drawable = icon.bitmap.toDrawable(options.context.resources),
             isSampled = false,
             dataSource = DataSource.DISK
         )
     }
-
 }

@@ -61,7 +61,7 @@ class ShortcutEditViewModel(
     val shortcut = shortcutsDatabase.observeShortcut(shortcutId).stateIn(
             viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = null
     )
-    val icon = shortcut.filterNotNull().map { sh -> iconLoader.load(sh, widgetSettings.adaptiveIconPath) }
+    val icon = shortcut.filterNotNull().map { sh -> iconLoader.load(sh, widgetSettings.adaptiveIconStyle) }
 
     override fun drop() {
         appScope.launch {

@@ -3,12 +3,10 @@ package info.anodsplace.carwidget.content.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
-import android.graphics.Path
 import android.util.JsonReader
 import android.util.JsonToken
 import android.util.JsonWriter
 import androidx.collection.SimpleArrayMap
-import androidx.core.graphics.PathParser
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.unaryPlus
@@ -105,24 +103,13 @@ class WidgetSettings(context: Context, appWidgetIdScope: AppWidgetIdScope, priva
         get() = prefs.getInt(WIDGET_BUTTON_2, WidgetInterface.WIDGET_BUTTON_SETTINGS)
         set(widgetButton2) = applyChange(WIDGET_BUTTON_2, widgetButton2)
 
-    var adaptiveIconStyle: String
+    override var adaptiveIconStyle: String
         get() = prefs.getString(ADAPTIVE_ICON_STYLE, "")!!
         set(style) = applyChange(ADAPTIVE_ICON_STYLE, style)
 
     override var paletteBackground: Boolean
         get() = prefs.getBoolean(PALETTE_BG, false)
         set(paletteBackground) = applyChange(PALETTE_BG, paletteBackground)
-
-   override val adaptiveIconPath: Path
-        get() {
-            val pathData = adaptiveIconStyle
-            return when {
-                pathData.isNotBlank() -> {
-                    PathParser.createPathFromPathData(pathData)
-                }
-                else -> Path()
-            }
-        }
 
     override var shortcutsNumber: Int
         get() {
