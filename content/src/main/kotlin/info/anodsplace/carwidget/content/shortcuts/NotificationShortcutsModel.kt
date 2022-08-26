@@ -5,13 +5,10 @@ import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.preferences.InCarStorage
-import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-import java.util.ArrayList
-
-class NotificationShortcutsModel private constructor(context: Context, database: ShortcutsDatabase) : AbstractShortcuts(context, database) {
+class NotificationShortcutsModel(context: Context, database: ShortcutsDatabase) : AbstractShortcuts(context, database) {
 
     val filledCount: Int
         get() {

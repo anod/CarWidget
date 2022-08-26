@@ -3,6 +3,8 @@ package info.anodsplace.carwidget.content.preferences
 import android.content.ComponentName
 import android.content.pm.ActivityInfo
 import androidx.collection.ArrayMap
+import info.anodsplace.ktx.equalsHash
+import info.anodsplace.ktx.hashCodeOf
 
 /**
  * @author algavris
@@ -51,10 +53,15 @@ interface InCarInterface {
         const val SCREEN_ORIENTATION_LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         const val SCREEN_ORIENTATION_LANDSCAPE_REVERSE = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
     }
-    class ScreenOnAlertSettings(val enabled: Boolean, val loc: Array<Int>) {
+
+    data class ScreenOnAlertSettings(val enabled: Boolean, val loc: Array<Int>) {
         constructor(enabled: Boolean, settings: ScreenOnAlertSettings) : this(enabled, settings.loc)
 
         fun withLocation(lastX: Int, lastY: Int) = ScreenOnAlertSettings(enabled, arrayOf(lastX, lastY))
+
+        override fun equals(other: Any?): Boolean = equalsHash(this, other)
+
+        override fun hashCode(): Int = hashCodeOf(enabled, loc)
 
         companion object {
             const val defaultX = 25
@@ -62,7 +69,7 @@ interface InCarInterface {
         }
     }
 
-    class NoOp(
+    data class NoOp(
         override var isInCarEnabled: Boolean = false,
         override var isAutoSpeaker: Boolean = false,
         override var btDevices: ArrayMap<String, String> = ArrayMap(),
@@ -86,8 +93,35 @@ interface InCarInterface {
         override var screenOrientation: Int = SCREEN_ORIENTATION_DISABLED,
         override var screenOnAlert: ScreenOnAlertSettings = ScreenOnAlertSettings(false, arrayOf())
     ) : InCarInterface {
-        override fun queueChange(key: String, value: Any?) {}
-        override fun applyChange(key: String, value: Any?) {}
-        override fun applyPending() {}
+
+        constructor(other: InCarInterface) : this(
+               isInCarEnabled = other.isInCarEnabled,
+               isAutoSpeaker = other.isAutoSpeaker,
+               btDevices = other.btDevices,
+               isPowerRequired = other.isPowerRequired,
+               isHeadsetRequired = other.isHeadsetRequired,
+               isBluetoothRequired = other.isBluetoothRequired,
+               isDisableBluetoothOnPower = other.isDisableBluetoothOnPower,
+               isEnableBluetoothOnPower = other.isEnableBluetoothOnPower,
+               isDisableScreenTimeout = other.isDisableScreenTimeout,
+               isAdjustVolumeLevel = other.isAdjustVolumeLevel,
+               isActivityRequired = other.isActivityRequired,
+               mediaVolumeLevel = other.mediaVolumeLevel,
+               callVolumeLevel = other.callVolumeLevel,
+               isEnableBluetooth = other.isEnableBluetooth,
+               brightness = other.brightness,
+               isCarDockRequired = other.isCarDockRequired,
+               isActivateCarMode = other.isActivateCarMode,
+               autoAnswer = other.autoAnswer,
+               autorunApp = other.autorunApp,
+               isDisableScreenTimeoutCharging = other.isDisableScreenTimeoutCharging,
+               screenOrientation = other.screenOrientation,
+               screenOnAlert = other.screenOnAlert,
+        )
+
+
+        override fun queueChange(key: String, value: Any?) { throw IllegalAccessError("Not implemented") }
+        override fun applyChange(key: String, value: Any?) { throw IllegalAccessError("Not implemented")  }
+        override fun applyPending() { throw IllegalAccessError("Not implemented")  }
     }
 }

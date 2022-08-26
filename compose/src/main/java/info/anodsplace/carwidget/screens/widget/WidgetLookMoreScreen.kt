@@ -10,7 +10,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import info.anodsplace.compose.*
+import info.anodsplace.compose.PreferenceItem
+import info.anodsplace.compose.PreferenceSlider
+import info.anodsplace.compose.PreferencesScreen
+import info.anodsplace.compose.toTextItem
 
 @Composable
 fun FontSize(
@@ -81,33 +84,31 @@ private fun createItems(settings: WidgetInterface) = listOf(
 
 @Composable
 fun WidgetLookMoreScreen(modifier: Modifier, settings: WidgetInterface) {
-    BackgroundSurface {
-        PreferencesScreen(
-                modifier = modifier,
-                preferences = createItems(settings),
-                categoryColor = MaterialTheme.colorScheme.secondary,
-                descriptionColor = MaterialTheme.colorScheme.onBackground,
-                onClick = { item ->
-                    when (item) {
-                        is PreferenceItem.CheckBox -> {
-                            settings.applyChange(item.key, item.checked)
-                        }
-                        is PreferenceItem.Switch -> {
-                            settings.applyChange(item.key, item.checked)
-                        }
-                        else -> {}
+    PreferencesScreen(
+            modifier = modifier,
+            preferences = createItems(settings),
+            categoryColor = MaterialTheme.colorScheme.secondary,
+            descriptionColor = MaterialTheme.colorScheme.onBackground,
+            onClick = { item ->
+                when (item) {
+                    is PreferenceItem.CheckBox -> {
+                        settings.applyChange(item.key, item.checked)
                     }
+                    is PreferenceItem.Switch -> {
+                        settings.applyChange(item.key, item.checked)
+                    }
+                    else -> {}
                 }
-        ) { placeholder, paddingValues ->
-            when (placeholder.key) {
-                "font-size" -> {
-                    FontSize(
-                            paddingValues = paddingValues,
-                            initialValue = settings.fontSize,
-                            onValueChanged = { settings.fontSize = it },
-                            placeholder = placeholder as PreferenceItem.Placeholder
-                    )
-                }
+            }
+    ) { placeholder, paddingValues ->
+        when (placeholder.key) {
+            "font-size" -> {
+                FontSize(
+                        paddingValues = paddingValues,
+                        initialValue = settings.fontSize,
+                        onValueChanged = { settings.fontSize = it },
+                        placeholder = placeholder as PreferenceItem.Placeholder
+                )
             }
         }
     }

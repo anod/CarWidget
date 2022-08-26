@@ -24,7 +24,6 @@ import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.screens.widget.SkinPreviewViewModel
 import info.anodsplace.carwidget.screens.widget.WidgetSkinPreview
-import info.anodsplace.compose.BackgroundSurface
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
@@ -112,8 +111,6 @@ fun WizardWelcome() {
 @Composable
 fun PreviewWizard() {
     CarWidgetTheme {
-        BackgroundSurface {
-            WizardScreen()
-        }
+        WizardScreen()
     }
 }

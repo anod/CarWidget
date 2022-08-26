@@ -22,13 +22,12 @@ import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.content.graphics.imageLoader
 import info.anodsplace.carwidget.screens.shortcuts.intent.IntentEditScreen
-import info.anodsplace.compose.BackgroundSurface
 import kotlinx.coroutines.launch
 
 @Composable
 fun ShortcutEditScreen(viewModel: ShortcutEditViewModel, onDismissRequest: () -> Unit) {
     val expanded = remember { mutableStateOf(false) }
-    BackgroundSurface(
+    Surface(
             modifier = Modifier
                 .fillMaxWidth()
                 .defaultMinSize(minHeight = 352.dp),
@@ -72,9 +71,9 @@ fun ShortcutEditContent(shortcut: Shortcut, delegate: ShortcutEditDelegate, onDi
 fun AdvancedButton(expanded: MutableState<Boolean>) {
     OutlinedButton(
             modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .fillMaxWidth()
-                    .defaultMinSize(minHeight = 48.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 48.dp),
             onClick = { expanded.value = !expanded.value }
     ) {
         Text(text = stringResource(id = R.string.advanced))
@@ -140,7 +139,7 @@ fun ShortcutInfo(shortcut: Shortcut, delegate: ShortcutEditDelegate, onDismissRe
 @Composable
 fun PreviewShortcutEditContent() {
     CarWidgetTheme {
-        BackgroundSurface {
+        Surface {
             ShortcutEditContent(
                     shortcut = Shortcut(0,0, 0, "Title", false, Intent()),
                     delegate = ShortcutEditDelegate.NoOp(),

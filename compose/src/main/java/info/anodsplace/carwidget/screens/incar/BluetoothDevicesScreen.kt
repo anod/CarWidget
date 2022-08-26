@@ -8,13 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,47 +17,34 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
-import info.anodsplace.compose.BackgroundSurface
 import info.anodsplace.compose.PreferenceCheckbox
 import info.anodsplace.compose.PreferenceItem
-import info.anodsplace.framework.bluetooth.Bluetooth
 import info.anodsplace.permissions.AppPermission
 
-private fun btSwitchRequest(newState: Boolean, viewModel: BluetoothDevicesViewModel) {
-    if (newState) {
-        viewModel.registerBroadcastReceiver()
-        Bluetooth.switchOn()
-    } else {
-        Bluetooth.switchOff()
-    }
-}
-
 @Composable
-fun BluetoothDevicesScreen(viewModel: BluetoothDevicesViewModel, modifier: Modifier) {
-    val screenState by viewModel.load().collectAsState(initial = BluetoothDevicesState.Initial)
-    val btState by viewModel.btState.collectAsState(initial = Bluetooth.state)
+fun BluetoothDevicesScreen(screenState: BluetoothDevicesViewState, onEvent: (BluetoothDevicesViewEvent) -> Unit, modifier: Modifier = Modifier) {
     val screenModifier = modifier.padding(16.dp)
-    BackgroundSurface(modifier = modifier.fillMaxSize()) {
-        when (screenState) {
-            BluetoothDevicesState.Initial -> {
+    Surface {
+        when (val listState = screenState.listState) {
+            BluetoothDevicesListState.Initial -> {
                 CircularProgressIndicator()
             }
-            BluetoothDevicesState.RequiresPermissions -> {
-                BluetoothPermissions(viewModel, modifier = screenModifier)
+            BluetoothDevicesListState.RequiresPermissions -> {
+                BluetoothPermissions(onEvent = onEvent, modifier = screenModifier)
             }
-            is BluetoothDevicesState.Devices -> {
+            is BluetoothDevicesListState.Devices -> {
                 BluetoothDeviceList(
-                    list = (screenState as BluetoothDevicesState.Devices).list,
-                    btState = btState,
-                    onSwitchRequest = { btSwitchRequest(it, viewModel) },
-                    onChecked = { device, checked -> viewModel.updateDevice(device, checked) },
+                    list = listState.list,
+                    btState = screenState.btAdapterState,
+                    onSwitchRequest = { onEvent(BluetoothDevicesViewEvent.SwitchAdapter(enable = it)) },
+                    onChecked = { device, checked -> onEvent(BluetoothDevicesViewEvent.UpdateDevice(device, checked)) },
                     modifier = screenModifier)
             }
-            BluetoothDevicesState.SwitchedOff -> {
+            BluetoothDevicesListState.SwitchedOff -> {
                 BluetoothDeviceEmpty(
-                    btState = btState,
+                    btState = screenState.btAdapterState,
                     modifier = screenModifier,
-                    onSwitchRequest = { btSwitchRequest(it, viewModel) }
+                    onSwitchRequest = { onEvent(BluetoothDevicesViewEvent.SwitchAdapter(enable = it)) },
                 )
             }
         }
@@ -70,9 +52,10 @@ fun BluetoothDevicesScreen(viewModel: BluetoothDevicesViewModel, modifier: Modif
 }
 
 @Composable
-fun BluetoothPermissions(viewModel: BluetoothDevicesViewModel, modifier: Modifier = Modifier) {
+fun BluetoothPermissions(onEvent: (BluetoothDevicesViewEvent) -> Unit, modifier: Modifier = Modifier) {
     val bluetoothPermissions = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestMultiplePermissions()) { results ->
-        viewModel.requiresPermission.value = results.values.any { !it } == false
+        val requiresPermission = !results.values.any { !it }
+        onEvent(BluetoothDevicesViewEvent.PermissionResult(requires = requiresPermission))
     }
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = stringResource(id = R.string.bluetooth_device_category_title))
@@ -91,7 +74,7 @@ fun BluetoothDeviceList(list: List<BluetoothDevice>, btState: Int, onSwitchReque
     if (list.isEmpty()) {
         BluetoothDeviceEmpty(btState, onSwitchRequest, modifier = modifier)
     } else {
-        LazyColumn(modifier = modifier) {
+        LazyColumn(modifier = modifier.fillMaxSize()) {
             item {
                 Text(
                     modifier = Modifier.padding(vertical = 16.dp),
@@ -141,16 +124,46 @@ fun BluetoothDeviceEmpty(btState: Int, onSwitchRequest: (newState: Boolean) -> U
     }
 }
 
-@Preview("BluetoothDeviceEmptyScreen")
+@Preview(showSystemUi = true)
 @Composable
 fun BluetoothDeviceEmptyScreen() {
-    CarWidgetTheme() {
-        BackgroundSurface {
-            BluetoothDeviceEmpty(
-                btState = BluetoothAdapter.STATE_OFF,
-                onSwitchRequest = { },
-                modifier = Modifier.padding(16.dp)
-            )
-        }
+    CarWidgetTheme {
+        BluetoothDevicesScreen(
+            screenState = BluetoothDevicesViewState(
+                listState = BluetoothDevicesListState.SwitchedOff,
+                btAdapterState = BluetoothAdapter.STATE_OFF,
+            ),
+            onEvent = { }
+        )
+    }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun BluetoothDevicesListScreen() {
+    CarWidgetTheme {
+        BluetoothDevicesScreen(
+            screenState = BluetoothDevicesViewState(
+                listState = BluetoothDevicesListState.Devices(listOf(
+                    BluetoothDevice("banana", name = "Headphones", "headphones", selected = true)
+                )),
+                btAdapterState = BluetoothAdapter.STATE_ON,
+            ),
+            onEvent = { }
+        )
+    }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun BluetoothDevicesListOffScreen() {
+    CarWidgetTheme {
+        BluetoothDevicesScreen(
+            screenState = BluetoothDevicesViewState(
+                listState = BluetoothDevicesListState.Devices(listOf()),
+                btAdapterState = BluetoothAdapter.STATE_OFF,
+            ),
+            onEvent = { }
+        )
     }
 }

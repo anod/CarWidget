@@ -22,21 +22,22 @@ import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.unaryPlus
-import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.screens.WidgetDialog
 import info.anodsplace.carwidget.screens.about.AboutScreen
 import info.anodsplace.carwidget.screens.about.AboutViewModel
-import info.anodsplace.carwidget.screens.incar.*
+import info.anodsplace.carwidget.screens.incar.BluetoothDevicesScreen
+import info.anodsplace.carwidget.screens.incar.BluetoothDevicesViewModel
+import info.anodsplace.carwidget.screens.incar.InCarMainScreen
+import info.anodsplace.carwidget.screens.incar.InCarViewModel
 import info.anodsplace.carwidget.screens.shortcuts.EditShortcut
 import info.anodsplace.carwidget.screens.widget.SkinPreviewViewModel
 import info.anodsplace.carwidget.screens.widget.WidgetActionDialog
 import info.anodsplace.carwidget.screens.widget.WidgetLookMoreScreen
 import info.anodsplace.carwidget.screens.widget.WidgetSkinScreen
 import info.anodsplace.carwidget.screens.wizard.WizardScreen
-import info.anodsplace.compose.BackgroundSurface
 import info.anodsplace.compose.RequestPermissionsScreen
 import info.anodsplace.compose.ScreenLoadState
 import info.anodsplace.compose.findActivity
@@ -112,7 +113,6 @@ fun Tabs(mainViewModel: MainViewModel) {
                 action = { action -> mainViewModel.handleEvent(MainViewEvent.AppAction(action))},
                 dialogState = mainViewModel.viewState.dialogState,
                 appWidgetIdScope = mainViewModel.appWidgetIdScope,
-                inCar = mainViewModel.inCarSettings,
                 innerPadding = innerPadding,
                 currentSkin = currentSkin,
                 startDestination = mainViewModel.viewState.topDestination.route,
@@ -159,13 +159,13 @@ fun NavHost(
     action: (UiAction) -> Unit,
     dialogState: WidgetDialog,
     appWidgetIdScope: AppWidgetIdScope? = null,
-    inCar: InCarInterface,
     innerPadding: PaddingValues,
     currentSkin: MutableState<String>,
     startDestination: String,
     startRoute: String?,
     currentWidgetStartDestination: String = NavItem.Tab.CurrentWidget.Skin.route
 ) {
+    val context = LocalContext.current
     val modifier = Modifier
         .padding(innerPadding)
 
@@ -234,23 +234,28 @@ fun NavHost(
         navigation(route = NavItem.Tab.InCar.route, startDestination = NavItem.Tab.InCar.Main.route) {
             composable(route = NavItem.Tab.InCar.Main.route) {
                 val inCarViewModel: InCarViewModel = viewModel()
-                InCarMainScreen(inCarViewModel, navController = navController, modifier = modifier)
+                val screenState by inCarViewModel.viewStates.collectAsState(initial = inCarViewModel.viewState)
+                InCarMainScreen(
+                    screenState = screenState,
+                    onEvent = { inCarViewModel.handleEvent(it) },
+                    modifier = modifier,
+                    appsLoader = inCarViewModel.appsLoader
+                )
+                LaunchedEffect(true) {
+                    inCarViewModel.viewActions.collect {
+                        inCarViewModel.handleAction(it, navController, activityContext = context)
+                    }
+                }
             }
             composable(route = NavItem.Tab.InCar.Bluetooth.route) {
                 val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel(factory =
                     BluetoothDevicesViewModel.Factory(
-                        application = getKoin().get(),
                         bluetoothManager = getKoin().get(),
                         settings = getKoin().get(),
                     )
                 )
-                BluetoothDevicesScreen(viewModel = bluetoothDevicesViewModel, modifier = modifier)
-            }
-            composable(route = NavItem.Tab.InCar.Media.route) {
-                MediaScreen(inCar = inCar, modifier = modifier)
-            }
-            composable(route = NavItem.Tab.InCar.More.route) {
-                MoreScreen(inCar = inCar, modifier = modifier)
+                val screenState by bluetoothDevicesViewModel.viewStates.collectAsState(initial = bluetoothDevicesViewModel.viewState)
+                BluetoothDevicesScreen(screenState = screenState, onEvent = { bluetoothDevicesViewModel.handleEvent(it) }, modifier = modifier)
             }
         }
     }
@@ -278,7 +283,7 @@ fun AppBarWidgetAction(
 @Composable
 fun PreviewPreferencesScreenLight() {
     CarWidgetTheme {
-        BackgroundSurface {
+        Surface {
             MainScreen(MainViewModel(
                 emptyList(),
                 null,

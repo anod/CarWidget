@@ -1,10 +1,42 @@
 package info.anodsplace.carwidget.screens.incar
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.compose.PreferenceItem
 
-fun createCarScreenItems(inCar: InCarInterface): List<PreferenceItem> {
+private fun autorunItem(context: Context, componentName: ComponentName?, item: PreferenceItem.Pick): PreferenceItem.Pick {
+    val entries = context.resources.getStringArray(R.array.autorun_app_titles)
+    val entryValues = context.resources.getStringArray(R.array.autorun_app_values)
+    return if (componentName == null) {
+        item.copy(
+            entries = entries,
+            entryValues = entryValues,
+            value = "disabled"
+        )
+    } else {
+        val resolveInfo = context.packageManager.resolveActivity(Intent(Intent.ACTION_MAIN).apply {
+            component = componentName
+        }, 0)
+        val appTitle = if (resolveInfo != null) {
+            resolveInfo.activityInfo.loadLabel(context.packageManager) as String
+        } else componentName.packageName
+
+        item.copy(
+            entries = entries.toMutableList().apply {
+                add(appTitle)
+            }.toTypedArray(),
+            entryValues = entryValues.toMutableList().apply {
+                add(appTitle)
+            }.toTypedArray(),
+            value = appTitle
+        )
+    }
+}
+
+fun createCarScreenItems(inCar: InCarInterface, context: Context): List<PreferenceItem> {
     return listOf(
         PreferenceItem.Switch(checked = inCar.isInCarEnabled, titleRes = R.string.pref_incar_mode_enabled, key = "incar-mode-enabled"),
         PreferenceItem.Category(titleRes = R.string.pref_detection),
@@ -36,8 +68,8 @@ fun createCarScreenItems(inCar: InCarInterface): List<PreferenceItem> {
             summaryRes = R.string.pref_screen_orientation_summary,
             titleRes = R.string.screen_orientation
         ),
-        PreferenceItem.CheckBox(checked = inCar.isEnableBluetooth, key = "bluetooth", titleRes = R.string.turn_on_bluetooth_summary),
-        PreferenceItem.CheckBox(checked = inCar.isAutoSpeaker, key = "auto_speaker", summaryRes = R.string.pref_route_to_speaker_summary, titleRes = R.string.pref_route_to_speaker),
+        PreferenceItem.Switch(checked = inCar.isEnableBluetooth, key = "bluetooth", titleRes = R.string.turn_on_bluetooth_summary),
+        PreferenceItem.Switch(checked = inCar.isAutoSpeaker, key = "auto_speaker", summaryRes = R.string.pref_route_to_speaker_summary, titleRes = R.string.pref_route_to_speaker),
         PreferenceItem.Pick(
             value = inCar.autoAnswer,
             entriesRes = R.array.autoanswer_titles,
@@ -46,8 +78,21 @@ fun createCarScreenItems(inCar: InCarInterface): List<PreferenceItem> {
             summaryRes = R.string.pref_auto_answer_summary,
             titleRes = R.string.pref_auto_answer
         ),
-        PreferenceItem.Text(key = "media-screen", summaryRes = R.string.pref_change_media_volume_summary, titleRes = R.string.pref_change_media_volume),
-        PreferenceItem.Text(key = "more-screen", titleRes = R.string.more),
+        PreferenceItem.Switch(
+            checked = inCar.isAdjustVolumeLevel,
+            key = "adjust-volume-level",
+            summaryRes = R.string.pref_change_media_volume_summary,
+            titleRes = R.string.pref_change_media_volume
+        ),
+        PreferenceItem.Switch(
+            checked = inCar.isActivateCarMode,
+            titleRes = R.string.pref_activate_car_mode,
+            summaryRes = R.string.pref_activate_car_mode_summary,
+            key = "activate-car-mode"),
+        autorunItem(context, inCar.autorunApp, item = PreferenceItem.Pick(
+            titleRes = R.string.pref_autorun_app_title,
+            key = "autorun-app-choose"
+        )),
         PreferenceItem.Category(titleRes = R.string.pref_power_contorl_bt),
         PreferenceItem.CheckBox(checked = inCar.isInCarEnabled, key = "power-bt-enable", summaryRes = R.string.pref_power_plugged_bt_on_summary, titleRes = R.string.pref_power_plugged_bt_on_title),
         PreferenceItem.CheckBox(checked = inCar.isInCarEnabled, key = "power-bt-disable", summaryRes = R.string.pref_power_unplugged_bt_off_summary, titleRes = R.string.pref_power_unplugged_bt_off_title),

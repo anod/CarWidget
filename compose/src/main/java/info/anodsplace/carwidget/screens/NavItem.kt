@@ -10,15 +10,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.*
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.Deeplink
+import info.anodsplace.ktx.equalsHash
 import info.anodsplace.ktx.hashCodeOf
 
 sealed class NavItem(val route: String, val parent: NavItem? = null) {
     override fun hashCode(): Int = hashCodeOf(route, parent)
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        return (other as NavItem).hashCode() == hashCode()
-    }
+    override fun equals(other: Any?): Boolean = equalsHash(this, other)
 
     object Wizard : NavItem(route = "wizard", parent = null)
 
@@ -64,8 +61,6 @@ sealed class NavItem(val route: String, val parent: NavItem? = null) {
         object InCar : Tab(route = "incar", resourceId = R.string.pref_incar_mode_title, Icons.Filled.DirectionsCar) {
             object Main : NavItem(route = "incar/main", parent = InCar)
             object Bluetooth : NavItem(route = "incar/bluetooh", parent = InCar)
-            object Media : NavItem(route = "incar/media", parent = InCar)
-            object More : NavItem(route = "incar/more", parent = InCar)
         }
 
         object About : Tab(route = "about", resourceId = R.string.info, Icons.Outlined.Info)

@@ -24,7 +24,6 @@ import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.MediaListLoader
 import info.anodsplace.carwidget.content.backup.Backup
-import info.anodsplace.compose.BackgroundSurface
 import info.anodsplace.compose.PreferenceCategory
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.framework.content.CreateDocument
@@ -124,47 +123,58 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
         backupWidgetAnimation = false
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-        AboutTitle(titleRes = R.string.app_preferences)
-        AboutButton(titleRes = R.string.app_theme, subtitle = screenState.themeName, onClick = {
-            coroutinesScope.launch { action.emit(AboutUiAction.ChangeTheme) }
-        })
-        AboutButton(titleRes = R.string.music_app, subtitle = screenState.musicApp, onClick = {
-            showMusicAppDialog = true
-        })
-        AboutButton(titleRes = R.string.default_car_dock_app, onClick = { showOpenCarDock = true })
-        AboutTitle(titleRes = R.string.pref_backup_title)
-        AboutButton(titleRes = R.string.backup_current_widget, loader = backupWidgetAnimation, enabled = screenState.isValidWidget, onClick = {
-            try {
-                backupWidgetAnimation = true
-                createDocumentLauncherWidget.launch(CreateDocument.Args( "application/json", "carwidget-${screenState.appWidgetId}" + Backup.FILE_EXT_JSON))
-            } catch (e: Exception) {
-                AppLog.e(e)
-                coroutinesScope.launch { action.emit(AboutUiAction.ShowToast("Cannot start activity: ACTION_CREATE_DOCUMENT")) }
-            }
-        })
-        AboutButton(titleRes = R.string.backup_incar_settings, loader = backupInCarAnimation, onClick = {
-            try {
-                backupInCarAnimation = true
-                createDocumentLauncherInCar.launch(CreateDocument.Args( "application/json", Backup.FILE_INCAR_JSON))
-            } catch (e: Exception) {
-                AppLog.e(e)
-                coroutinesScope.launch { action.emit(AboutUiAction.ShowToast("Cannot start activity: ACTION_CREATE_DOCUMENT")) }
-            }
-        })
-        AboutButton(titleRes = R.string.restore, loader = restoreAnimation, onClick = {
-            restoreAnimation = true
-            openDocumentLauncher.launch(arrayOf("application/json", "text/plain", "*/*"))
-        })
-        AboutTitle(titleRes = R.string.information_title)
-        AboutButton(title = screenState.appVersion, subtitle = stringResource(id = R.string.version_summary), onClick = {
-            coroutinesScope.launch { action.emit(AboutUiAction.OpenPlayStoreDetails) }
-        })
+    Surface {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            AboutTitle(titleRes = R.string.app_preferences)
+            AboutButton(titleRes = R.string.app_theme, subtitle = screenState.themeName, onClick = {
+                coroutinesScope.launch { action.emit(AboutUiAction.ChangeTheme) }
+            })
+            AboutButton(titleRes = R.string.music_app, subtitle = screenState.musicApp, onClick = {
+                showMusicAppDialog = true
+            })
+            AboutButton(titleRes = R.string.default_car_dock_app, onClick = { showOpenCarDock = true })
+            AboutTitle(titleRes = R.string.pref_backup_title)
+            AboutButton(
+                titleRes = R.string.backup_current_widget,
+                loader = backupWidgetAnimation,
+                enabled = screenState.isValidWidget,
+                onClick = {
+                    try {
+                        backupWidgetAnimation = true
+                        createDocumentLauncherWidget.launch(
+                            CreateDocument.Args(
+                                "application/json",
+                                "carwidget-${screenState.appWidgetId}" + Backup.FILE_EXT_JSON
+                            )
+                        )
+                    } catch (e: Exception) {
+                        AppLog.e(e)
+                        coroutinesScope.launch { action.emit(AboutUiAction.ShowToast("Cannot start activity: ACTION_CREATE_DOCUMENT")) }
+                    }
+                })
+            AboutButton(titleRes = R.string.backup_incar_settings, loader = backupInCarAnimation, onClick = {
+                try {
+                    backupInCarAnimation = true
+                    createDocumentLauncherInCar.launch(CreateDocument.Args("application/json", Backup.FILE_INCAR_JSON))
+                } catch (e: Exception) {
+                    AppLog.e(e)
+                    coroutinesScope.launch { action.emit(AboutUiAction.ShowToast("Cannot start activity: ACTION_CREATE_DOCUMENT")) }
+                }
+            })
+            AboutButton(titleRes = R.string.restore, loader = restoreAnimation, onClick = {
+                restoreAnimation = true
+                openDocumentLauncher.launch(arrayOf("application/json", "text/plain", "*/*"))
+            })
+            AboutTitle(titleRes = R.string.information_title)
+            AboutButton(title = screenState.appVersion, subtitle = stringResource(id = R.string.version_summary), onClick = {
+                coroutinesScope.launch { action.emit(AboutUiAction.OpenPlayStoreDetails) }
+            })
+        }
     }
 
     if (showOpenCarDock) {
@@ -207,12 +217,10 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
 @Preview("About Screen Light")
 @Composable
 fun PreviewAboutScreenLight() {
-    CarWidgetTheme() {
-        BackgroundSurface {
+    CarWidgetTheme {
             AboutScreen(
                 screenState = AboutScreenState(0, 0, "Light", "CHOICE", "DUMMY"),
                 action = MutableSharedFlow()
             )
-        }
     }
 }

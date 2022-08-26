@@ -4,15 +4,15 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import coil.request.ImageRequest
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.ktx.equalsHash
 import info.anodsplace.ktx.hashCodeOf
 
 /**
  * @author algavris
  * @date 22/08/2016.
  */
-class Shortcut(
+data class Shortcut(
         val id: Long,
         val position: Int,
         val itemType: Int,
@@ -50,9 +50,7 @@ class Shortcut(
         }
     }
 
-    override fun equals(other: Any?): Boolean {
-        return hashCode() == other?.hashCode()
-    }
+    override fun equals(other: Any?): Boolean = equalsHash(this, other)
 
     override fun hashCode(): Int = hashCodeOf(
         id, position, itemType, title, isCustomIcon, intent.toUri(0)

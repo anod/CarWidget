@@ -2,27 +2,19 @@ package info.anodsplace.carwidget.screens.incar
 
 import android.app.UiModeManager
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.VolumeDown
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.InCarInterface
-import info.anodsplace.compose.BackgroundSurface
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.compose.PreferenceSlider
-import info.anodsplace.compose.PreferenceSwitch
 
 @Composable
 fun VolumeSlider(
@@ -48,26 +40,17 @@ fun VolumeSlider(
 }
 
 @Composable
-fun MediaScreen(inCar: InCarInterface, modifier: Modifier) {
-    var isAdjustVolumeLevel by remember { mutableStateOf(inCar.isAdjustVolumeLevel) }
-
+fun MediaSettings(
+    screenState: InCarViewState,
+    modifier: Modifier = Modifier,
+    onEvent: (InCarViewEvent) -> Unit = { },
+) {
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(state = rememberScrollState())
     ) {
-        PreferenceSwitch(checked = isAdjustVolumeLevel, item = PreferenceItem.Switch(
-            checked = isAdjustVolumeLevel,
-            key = "adjust-volume-level",
-            titleRes = R.string.pref_change_media_volume,
-            summaryRes = R.string.pref_change_media_volume_summary
-        )) {
-            inCar.isAdjustVolumeLevel = it
-            isAdjustVolumeLevel = it
-        }
         VolumeSlider(
-            initialValue = inCar.mediaVolumeLevel,
-            onValueChanged = { inCar.mediaVolumeLevel = it },
+            initialValue = screenState.inCar.mediaVolumeLevel,
+            onValueChanged = { onEvent(InCarViewEvent.ApplyChange("volume-level", it)) },
             item = PreferenceItem.Text(
                 key = "volume-level",
                 titleRes = R.string.pref_media_volume_level,
@@ -75,8 +58,8 @@ fun MediaScreen(inCar: InCarInterface, modifier: Modifier) {
             ),
         )
         VolumeSlider(
-            initialValue = inCar.callVolumeLevel,
-            onValueChanged = { inCar.callVolumeLevel = it },
+            initialValue = screenState.inCar.callVolumeLevel,
+            onValueChanged = { onEvent(InCarViewEvent.ApplyChange("call-volume-level", it)) },
             item = PreferenceItem.Text(
                 key = "call-volume-level",
                 titleRes = R.string.pref_phone_volume_level,
@@ -90,10 +73,14 @@ fun MediaScreen(inCar: InCarInterface, modifier: Modifier) {
 @Composable
 fun MediaScreenDark() {
     CarWidgetTheme(uiMode = UiModeManager.MODE_NIGHT_YES) {
-        BackgroundSurface {
-            MediaScreen(
-                inCar = InCarInterface.NoOp(),
-                modifier = Modifier
+        Surface {
+            MediaSettings(
+                screenState = InCarViewState(
+                    inCar = InCarInterface.NoOp(
+                        mediaVolumeLevel = 100,
+                        callVolumeLevel = 100
+                    )
+                )
             )
         }
     }

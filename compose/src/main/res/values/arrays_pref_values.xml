@@ -79,7 +79,7 @@
 		<item>immediately</item>
 		<item>delay-5</item>
     </string-array>
-    
+
 	<string-array name="autorun_app_values" tools:ignore="MissingTranslation" translatable="false">
 		<item>disabled</item>
 		<item>custom</item>

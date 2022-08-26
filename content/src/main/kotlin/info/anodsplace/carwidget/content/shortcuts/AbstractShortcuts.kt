@@ -6,6 +6,8 @@ import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.Shortcuts
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
+import info.anodsplace.ktx.equalsHash
+import info.anodsplace.ktx.hashCodeOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -24,6 +26,10 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
             require(isInitialized)
             return _shortcuts.size
         }
+
+    override fun equals(other: Any?): Boolean = equalsHash(this, other)
+
+    override fun hashCode(): Int = hashCodeOf(_shortcuts.hashCode())
 
     protected abstract fun loadCount(): Int
 

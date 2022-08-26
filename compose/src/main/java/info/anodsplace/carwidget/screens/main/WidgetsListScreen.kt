@@ -32,7 +32,6 @@ import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.content.graphics.imageLoader
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
-import info.anodsplace.compose.BackgroundSurface
 
 @Composable
 fun Modifier.cardStyle(): Modifier = then(
@@ -250,7 +249,6 @@ fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int)
 @Composable
 fun PreviewWidgetsScreenLight() {
     CarWidgetTheme() {
-        BackgroundSurface {
             WidgetsListScreen(
                 WidgetListScreenState(
                     items = listOf( WidgetItem.Shortcut(appWidgetId = 0) ),
@@ -262,6 +260,5 @@ fun PreviewWidgetsScreenLight() {
                 onClick = { },
                 imageLoader = ImageLoader.Builder(LocalContext.current).build()
             )
-        }
     }
 }

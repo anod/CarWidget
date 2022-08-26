@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,20 +20,24 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.chooser.ChooserDialog
+import info.anodsplace.carwidget.chooser.ChooserLoader
 import info.anodsplace.carwidget.chooser.Header
+import info.anodsplace.carwidget.chooser.StaticChooserLoader
 import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.content.graphics.imageLoader
 import info.anodsplace.carwidget.utils.SystemIconSize
-import info.anodsplace.compose.BackgroundSurface
-import kotlinx.coroutines.launch
 
 @Composable
-fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifier) {
+fun NotificationShortcuts(
+    screenState: InCarViewState,
+    modifier: Modifier = Modifier,
+    onEvent: (InCarViewEvent) -> Unit = { },
+    appsLoader: ChooserLoader = StaticChooserLoader(emptyList()),
+) {
     val context = LocalContext.current
     var shortcutIndex: Int by remember { mutableStateOf(-1) }
     Row(
@@ -57,10 +62,10 @@ fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifi
                 style = MaterialTheme.typography.bodyMedium
             )
         }
-        val shortcutsModel by viewModel.notificationShortcuts.collectAsState(initial = null)
+        val shortcutsModel = screenState.notificationShortcuts
         if (shortcutsModel != null) {
-            for (i in 0 until shortcutsModel!!.count) {
-                val shortcut = shortcutsModel!!.get(i)
+            for (i in 0 until shortcutsModel.count()) {
+                val shortcut = shortcutsModel.get(i)
                 val iconModifier = Modifier
                     .size(SystemIconSize)
                     .padding(4.dp)
@@ -86,28 +91,17 @@ fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifi
             }
         }
 
-        val scope = rememberCoroutineScope()
         if (shortcutIndex >= 0) {
             ChooserDialog(
                 modifier = Modifier.fillMaxHeight(fraction = 0.8f),
                 headers = listOf(
                     Header(0, stringResource(R.string.none), iconVector = Icons.Filled.Cancel)
                 ),
-                loader = viewModel.appsLoader,
+                loader = appsLoader,
                 onDismissRequest = { shortcutIndex = -1 },
                 onClick = { entry ->
-                    scope.launch {
-                        if (entry.componentName == null) {
-                            shortcutsModel?.drop(shortcutIndex)
-                        } else {
-                            shortcutsModel?.saveIntent(
-                                    shortcutIndex,
-                                    entry.getIntent(baseIntent = null),
-                                    isApplicationShortcut = true
-                            )
-                        }
-                        shortcutIndex = -1
-                    }
+                    onEvent(InCarViewEvent.NotificationShortcutUpdate(shortcutIndex, entry))
+                    shortcutIndex = -1
                 })
         }
     }
@@ -117,10 +111,9 @@ fun NotificationShortcuts(viewModel: InCarViewModel, modifier: Modifier = Modifi
 @Composable
 fun ShortcutsScreenDark() {
     CarWidgetTheme(uiMode = UiModeManager.MODE_NIGHT_YES) {
-        BackgroundSurface {
+        Surface {
             NotificationShortcuts(
-                viewModel = viewModel(),
-                modifier = Modifier
+                screenState = InCarViewState(items = emptyList())
             )
         }
     }
