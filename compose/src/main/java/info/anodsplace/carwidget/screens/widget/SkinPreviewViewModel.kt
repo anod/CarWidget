@@ -173,7 +173,11 @@ class RealSkinPreviewViewModel(application: Application, appWidgetIdScope: AppWi
             SkinPreviewViewEvent.Reload -> {
 
             }
-            is SkinPreviewViewEvent.UpdateCurrentSkin -> TODO()
+            is SkinPreviewViewEvent.UpdateCurrentSkin -> {
+                viewState = viewState.copy(
+                    currentSkin = viewState.skinList[event.index]
+                )
+            }
             is SkinPreviewViewEvent.UpdateBackgroundColor -> {
                 if (event.newColor != null) {
                     widgetSettings.backgroundColor = event.newColor.value.toInt()

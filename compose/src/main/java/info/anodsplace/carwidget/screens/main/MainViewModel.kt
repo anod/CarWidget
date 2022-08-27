@@ -10,6 +10,7 @@ import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.isValid
+import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.permissions.PermissionChecker
@@ -79,6 +80,7 @@ class MainViewModel(
         val showProDialog = version.isFree && version.isProInstalled
         viewState = MainViewState(
             isWidget = isWidget,
+            appWidgetId = +appWidgetIdScope,
             tabs = listOf(
                 if (isWidget) NavItem.Tab.CurrentWidget else NavItem.Tab.Widgets,
                 NavItem.Tab.InCar,
