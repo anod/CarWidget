@@ -309,6 +309,9 @@
     <string name="pref_screen_orientation_summary">Force any app into orientation. Notice: not all apps can work correctly</string>
     <string name="screen_orientation">Screen Orientation</string>
     <string name="car_widget_shortcuts">Car Widget shortcuts</string>
+    <string name="color_picker_default_title">Pick a color</string>
+    <string name="color_swatch_description">Color %1$d</string>
+    <string name="color_swatch_description_selected">Color %1$d selected</string>
 
     <array name="adaptive_icon_style_names">
         <item>Default</item>

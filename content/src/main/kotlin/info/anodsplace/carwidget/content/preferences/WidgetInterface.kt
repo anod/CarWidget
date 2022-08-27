@@ -49,7 +49,7 @@ interface WidgetInterface {
         override var tileColor: Int = 0,
         override var isIconsMono: Boolean = false,
         override var iconsColor: Int? = null,
-        override var iconsScale: String = "",
+        override var iconsScale: String = "5",
         override var fontColor: Int? = null,
         override var fontSize: Int = 0,
         override var backgroundColor: Int = 0,

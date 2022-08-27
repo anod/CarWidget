@@ -236,11 +236,14 @@ fun NavHost(
                 dialogProperties = DialogProperties()
             ) { entry ->
                 val args = NavItem.Tab.CurrentWidget.Skin.Dialog.Args(entry.arguments)
-                WidgetActionDialog(
+                val skinViewModel: SkinPreviewViewModel =
+                    viewModel(factory = SkinPreviewViewModel.Factory(LocalContext.current, appWidgetIdScope!!))
+                val screenState by skinViewModel.viewStates.collectAsState(initial = skinViewModel.viewState)
+                WidgetActionDialogContent(
                     args.dialogType,
-                    onEvent = {  },
-                    dismiss = {  },
-                    widgetSettings = WidgetInterface.NoOp()
+                    onEvent = { skinViewModel.handleEvent(it) },
+                    dismiss = { navController.popBackStack() },
+                    widgetSettings = screenState.widgetSettings
                 )
             }
             composable(
@@ -304,7 +307,7 @@ fun NavHost(
 fun PreviewPreferencesScreenLight() {
     CarWidgetTheme {
         Surface {
-            MainScreen(screenState = MainViewState(), onEvent = { })
+            MainScreen(screenState = MainViewState())
         }
     }
 }
