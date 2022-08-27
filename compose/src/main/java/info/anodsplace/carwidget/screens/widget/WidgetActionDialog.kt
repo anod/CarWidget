@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -13,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -22,50 +20,38 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import info.anodsplace.carwidget.screens.WidgetDialog
+import info.anodsplace.carwidget.screens.WidgetDialogType
 import info.anodsplace.compose.ColorDialog
 
 @Composable
-fun WidgetActionDialog(current: WidgetDialog, onEvent: (event: SkinPreviewViewEvent) -> Unit, dismiss: () -> Unit, widgetSettings: WidgetInterface.NoOp) {
+fun WidgetActionDialog(current: WidgetDialogType, onEvent: (event: SkinPreviewViewEvent) -> Unit, dismiss: () -> Unit, widgetSettings: WidgetInterface.NoOp) {
     when (current) {
-        WidgetDialog.ChooseBackgroundColor ->  ColorDialog(selected = Color(widgetSettings.backgroundColor)) {
+        WidgetDialogType.ChooseBackgroundColor ->  ColorDialog(selected = Color(widgetSettings.backgroundColor)) {
             onEvent(SkinPreviewViewEvent.UpdateBackgroundColor(it))
             dismiss()
         }
-        WidgetDialog.ChooseIconsScale -> IconScaleDialog(widgetSettings, dismiss = dismiss, onEvent = onEvent)
-        WidgetDialog.ChooseIconsTheme -> { }
-        WidgetDialog.ChooseShortcutsNumber -> ShortcutNumbersDialog(widgetSettings, dismiss = dismiss, onEvent = onEvent)
-        WidgetDialog.ChooseTileColor -> ColorDialog(selected = Color(widgetSettings.tileColor)) { newColor ->
+        WidgetDialogType.ChooseIconsScale -> IconScaleDialog(widgetSettings, dismiss = dismiss, onEvent = onEvent)
+        WidgetDialogType.ChooseIconsTheme -> { }
+        WidgetDialogType.ChooseShortcutsNumber -> ShortcutNumbersDialog(widgetSettings, dismiss = dismiss, onEvent = onEvent)
+        WidgetDialogType.ChooseTileColor -> ColorDialog(selected = Color(widgetSettings.tileColor)) { newColor ->
             onEvent(SkinPreviewViewEvent.UpdateTileColor(newColor))
             dismiss()
         }
-        is WidgetDialog.SwitchIconsMono -> { }
         else -> {}
     }
 }
 
 @Composable
 fun IconScaleDialog(prefs: WidgetInterface.NoOp, dismiss: () -> Unit, onEvent: (event: SkinPreviewViewEvent) -> Unit) {
-    AlertDialog(
-        modifier = Modifier.padding(16.dp),
-        title = { Text(
-                text = stringResource(id = R.string.pref_scale_icon)
-        ) },
-        onDismissRequest = {  dismiss() },
-        text = {
-            Column {
-                Spacer(modifier = Modifier.height(64.dp))
-                val current = prefs.iconsScale.toInt()
-                IconScale(current) { scale ->
-                    onEvent(SkinPreviewViewEvent.UpdateIconScale(scale.toString()))
-                    dismiss()
-                }
-            }
-        },
-        confirmButton = {}
-    )
+    Column {
+        Spacer(modifier = Modifier.height(64.dp))
+        val current = prefs.iconsScale.toInt()
+        IconScale(current) { scale ->
+            onEvent(SkinPreviewViewEvent.UpdateIconScale(scale.toString()))
+            dismiss()
+        }
+    }
 }
 
 @Composable
@@ -80,9 +66,9 @@ fun IconScale(current: Int, onClick: (Int) -> Unit) {
                     .clickable { onClick(scale) }
                     .size(size = 64.dp)
                     .border(
-                            width = if (current == scale) 2.dp else 0.dp,
-                            color = MaterialTheme.colorScheme.secondary,
-                            shape = RoundedCornerShape(4.dp)
+                        width = if (current == scale) 2.dp else 0.dp,
+                        color = MaterialTheme.colorScheme.secondary,
+                        shape = RoundedCornerShape(4.dp)
                     ),
                 contentAlignment = Alignment.Center
             ) {
@@ -95,24 +81,17 @@ fun IconScale(current: Int, onClick: (Int) -> Unit) {
 
 @Composable
 fun ShortcutNumbersDialog(widgetSettings: WidgetInterface.NoOp, dismiss: () -> Unit, onEvent: (event: SkinPreviewViewEvent) -> Unit) {
-    AlertDialog(
-            confirmButton = { },
-            modifier = Modifier.padding(16.dp),
-            title = { Text(
-                    text = stringResource(id = R.string.number_shortcuts_title)
-            ) },
-            onDismissRequest = { dismiss() },
-            text = {
-                val current = widgetSettings.shortcutsNumber
-                Column {
-                    Spacer(modifier = Modifier.height(64.dp))
-                    ShortcutsNumbers(current, onClick = {
-                        onEvent(SkinPreviewViewEvent.UpdateShortcutsNumber(it))
-                        dismiss()
-                    })
-                }
-            }
-    )
+    val current = widgetSettings.shortcutsNumber
+    Surface {
+        Column {
+            Spacer(modifier = Modifier.height(64.dp))
+            ShortcutsNumbers(current, onClick = {
+                onEvent(SkinPreviewViewEvent.UpdateShortcutsNumber(it))
+                dismiss()
+            })
+        }
+
+    }
 }
 
 @Composable
@@ -131,16 +110,16 @@ fun ShortcutsNumbers(current: Int, onClick: (Int) -> Unit) {
 fun ShortcutsNumber(number: Int, current: Int, boxSize: Dp, onClick: (Int) -> Unit) {
     val rowsNumber = number / 2
     Box(modifier = Modifier
-            .padding(4.dp)
-            .clickable { onClick(number) }) {
+        .padding(4.dp)
+        .clickable { onClick(number) }) {
         Column(
                 modifier = Modifier
-                        .size(size = 96.dp)
-                        .border(
-                                width = if (current == number) 2.dp else 0.dp,
-                                color = MaterialTheme.colorScheme.secondary,
-                                shape = RoundedCornerShape(4.dp)
-                        ),
+                    .size(size = 96.dp)
+                    .border(
+                        width = if (current == number) 2.dp else 0.dp,
+                        color = MaterialTheme.colorScheme.secondary,
+                        shape = RoundedCornerShape(4.dp)
+                    ),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
         ) {

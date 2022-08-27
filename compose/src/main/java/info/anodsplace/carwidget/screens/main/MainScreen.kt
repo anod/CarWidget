@@ -10,22 +10,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.*
 import androidx.navigation.navigation
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
-import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.screens.NavItem
-import info.anodsplace.carwidget.screens.UiAction
-import info.anodsplace.carwidget.screens.WidgetDialog
 import info.anodsplace.carwidget.screens.about.AboutScreen
 import info.anodsplace.carwidget.screens.about.AboutViewModel
 import info.anodsplace.carwidget.screens.incar.BluetoothDevicesScreen
@@ -38,38 +33,52 @@ import info.anodsplace.carwidget.screens.wizard.WizardScreen
 import info.anodsplace.compose.RequestPermissionsScreen
 import info.anodsplace.compose.ScreenLoadState
 import info.anodsplace.compose.findActivity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import org.koin.java.KoinJavaComponent.getKoin
 
 @Composable
 fun MainScreen(
-    mainViewModel: MainViewModel
-) {
-    when (mainViewModel.viewState.topDestination) {
+    screenState: MainViewState,
+    onEvent: (event: MainViewEvent) -> Unit = { },
+    onViewAction: (action: MainViewAction) -> Unit = { },
+    viewActions: Flow<MainViewAction> = emptyFlow(),
+    appWidgetIdScope: AppWidgetIdScope? = null) {
+    when (screenState.topDestination) {
         NavItem.Wizard -> {
             WizardScreen()
         }
         NavItem.PermissionsRequest -> {
             val context = LocalContext.current
-            val permissionsViewModel: PermissionsViewModel = viewModel(factory = PermissionsViewModel.Factory(
-                requiredPermissions = mainViewModel.requiredPermissions,
-                activity = context.findActivity()
-            ))
+            val permissionsViewModel: PermissionsViewModel = viewModel(
+                factory = PermissionsViewModel.Factory(
+                    requiredPermissions = screenState.requiredPermissions,
+                    activity = context.findActivity()
+                )
+            )
             RequestPermissionsScreen(
                 input = permissionsViewModel.missingPermissions,
-                screenDescription = permissionsViewModel.screenDescription) {
+                screenDescription = permissionsViewModel.screenDescription
+            ) {
                 if (permissionsViewModel.updatePermissions(context.findActivity())) {
-                    mainViewModel.handleEvent(MainViewEvent.PermissionAcquired)
+                    onEvent(MainViewEvent.PermissionAcquired)
                 }
             }
         }
         else -> {
-            Tabs(mainViewModel = mainViewModel)
+            Tabs(
+                screenState = screenState,
+                onEvent = onEvent,
+                viewActions = viewActions,
+                onViewAction = onViewAction,
+                appWidgetIdScope = appWidgetIdScope
+            )
         }
     }
 
-    if (mainViewModel.viewState.showProDialog) {
+    if (screenState.showProDialog) {
         AlertDialog(
-            onDismissRequest = { mainViewModel.handleEvent(MainViewEvent.HideProDialog) },
+            onDismissRequest = { onEvent(MainViewEvent.HideProDialog) },
             title = { Text(text = stringResource(id = R.string.dialog_donate_title_install)) },
             text = { Text(text = stringResource(id = R.string.dialog_donate_message_installed)) },
             confirmButton = { }
@@ -79,22 +88,29 @@ fun MainScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Tabs(mainViewModel: MainViewModel) {
+fun Tabs(
+    screenState: MainViewState,
+    onEvent: (event: MainViewEvent) -> Unit,
+    viewActions: Flow<MainViewAction> = emptyFlow(),
+    onViewAction: (action: MainViewAction) -> Unit = { },
+    appWidgetIdScope: AppWidgetIdScope? = null,
+) {
     val navController = rememberNavController()
     val currentSkin = remember { mutableStateOf(WidgetInterface.SKIN_YOU) }
 
     Scaffold(
-        containerColor = if (mainViewModel.viewState.isWidget) Color.Transparent else MaterialTheme.colorScheme.background,
+        containerColor = if (screenState.isWidget) Color.Transparent else MaterialTheme.colorScheme.background,
         topBar = {
             SmallTopAppBar(
                 title = { Text(text = stringResource(id = R.string.app_name)) },
                 actions = {
-                    if (mainViewModel.viewState.isWidget) {
-                        AppBarMenu(
-                            tileColor = rememberTileColor(currentSkin.value, mainViewModel.widgetSettings),
-                            appWidgetId = +mainViewModel.appWidgetIdScope,
+                    if (screenState.isWidget) {
+                        AppBarActions(
+                            isIconsMono = screenState.widgetSettings.isIconsMono,
+                            tileColor = rememberTileColor(currentSkin.value, screenState.widgetSettings),
+                            appWidgetId = screenState.appWidgetId,
                             currentSkinValue = currentSkin.value,
-                            action = { action -> mainViewModel.handleEvent(MainViewEvent.AppAction(action))},
+                            onEvent = onEvent,
                             navController = navController
                         )
                     }
@@ -102,21 +118,31 @@ fun Tabs(mainViewModel: MainViewModel) {
             )
         },
         bottomBar = {
-            BottomTabs(mainViewModel.viewState.tabs, navController)
+            BottomTabs(screenState.tabs, navController)
         },
         content = { innerPadding ->
             NavHost(
                 navController = navController,
-                action = { action -> mainViewModel.handleEvent(MainViewEvent.AppAction(action))},
-                dialogState = mainViewModel.viewState.dialogState,
-                appWidgetIdScope = mainViewModel.appWidgetIdScope,
+                onEvent = onEvent,
+                appWidgetIdScope = appWidgetIdScope,
                 innerPadding = innerPadding,
                 currentSkin = currentSkin,
-                startDestination = mainViewModel.viewState.topDestination.route,
-                startRoute = mainViewModel.viewState.startRoute
+                startDestination = screenState.topDestination.route,
+                startRoute = screenState.startRoute
             )
         }
     )
+
+    LaunchedEffect(key1 = true) {
+        viewActions.collect { action ->
+            when (action) {
+                is MainViewAction.ShowDialog -> {
+                    navController.navigate(action.route)
+                }
+                else -> onViewAction(action)
+            }
+        }
+    }
 }
 
 @Composable
@@ -153,8 +179,7 @@ fun BottomTabs(items: List<NavItem.Tab>, navController: NavHostController) {
 @Composable
 fun NavHost(
     navController: NavHostController,
-    action: (UiAction) -> Unit,
-    dialogState: WidgetDialog,
+    onEvent: (MainViewEvent) -> Unit,
     appWidgetIdScope: AppWidgetIdScope? = null,
     innerPadding: PaddingValues,
     currentSkin: MutableState<String>,
@@ -174,7 +199,7 @@ fun NavHost(
                 Box(modifier = modifier) {
                     WidgetsListScreen(
                         screen = (widgetsState as ScreenLoadState.Ready<WidgetListScreenState>).value,
-                        onClick = { appWidgetId -> action(UiAction.OpenWidgetConfig(appWidgetId)) },
+                        onClick = { appWidgetId -> onEvent(MainViewEvent.OpenWidgetConfig(appWidgetId)) },
                         modifier = Modifier
                     )
                 }
@@ -186,15 +211,16 @@ fun NavHost(
             val aboutScreenState by aboutViewModel.screenState.collectAsState(initial = null)
             if (aboutScreenState != null) {
                 AboutScreen(
-                        screenState = aboutScreenState!!,
-                        action = aboutViewModel.uiAction,
-                        modifier = modifier
+                    screenState = aboutScreenState!!,
+                    action = aboutViewModel.uiAction,
+                    modifier = modifier
                 )
             }
         }
         navigation(route = NavItem.Tab.CurrentWidget.route, startDestination = currentWidgetStartDestination) {
             composable(route = NavItem.Tab.CurrentWidget.Skin.route) {
-                val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(LocalContext.current, appWidgetIdScope!!))
+                val skinViewModel: SkinPreviewViewModel =
+                    viewModel(factory = SkinPreviewViewModel.Factory(LocalContext.current, appWidgetIdScope!!))
                 val screenState by skinViewModel.viewStates.collectAsState(initial = skinViewModel.viewState)
                 currentSkin.value = screenState.currentSkin.value
                 WidgetSkinScreen(
@@ -203,15 +229,19 @@ fun NavHost(
                     skinViewFactory = skinViewModel,
                     onEvent = { skinViewModel.handleEvent(it) }
                 )
-
-                if (dialogState != WidgetDialog.None) {
-                    AppBarWidgetAction(
-                        dialogState,
-                        onEvent = { skinViewModel.handleEvent(it) },
-                        dismiss = { action(UiAction.None) },
-                        widgetSettings = screenState.widgetSettings
-                    )
-                }
+            }
+            dialog(
+                route = NavItem.Tab.CurrentWidget.Skin.Dialog.route,
+                arguments = NavItem.Tab.CurrentWidget.Skin.Dialog.arguments,
+                dialogProperties = DialogProperties()
+            ) { entry ->
+                val args = NavItem.Tab.CurrentWidget.Skin.Dialog.Args(entry.arguments)
+                WidgetActionDialog(
+                    args.dialogType,
+                    onEvent = {  },
+                    dismiss = {  },
+                    widgetSettings = WidgetInterface.NoOp()
+                )
             }
             composable(
                 route = NavItem.Tab.CurrentWidget.EditShortcut.route,
@@ -219,9 +249,9 @@ fun NavHost(
                 deepLinks = NavItem.Tab.CurrentWidget.EditShortcut.deepLinks
             ) {
                 EditShortcut(
-                        appWidgetIdScope = appWidgetIdScope!!,
-                        args = NavItem.Tab.CurrentWidget.EditShortcut.Args(it.arguments),
-                        action = action
+                    appWidgetIdScope = appWidgetIdScope!!,
+                    args = NavItem.Tab.CurrentWidget.EditShortcut.Args(it.arguments),
+                    onDismissRequest = { onEvent(MainViewEvent.OnBackNav) }
                 )
             }
             composable(route = NavItem.Tab.CurrentWidget.MoreSettings.route) {
@@ -251,34 +281,21 @@ fun NavHost(
                 }
             }
             composable(route = NavItem.Tab.InCar.Bluetooth.route) {
-                val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel(factory =
+                val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel(
+                    factory =
                     BluetoothDevicesViewModel.Factory(
                         bluetoothManager = getKoin().get(),
                         settings = getKoin().get(),
                     )
                 )
                 val screenState by bluetoothDevicesViewModel.viewStates.collectAsState(initial = bluetoothDevicesViewModel.viewState)
-                BluetoothDevicesScreen(screenState = screenState, onEvent = { bluetoothDevicesViewModel.handleEvent(it) }, modifier = modifier)
+                BluetoothDevicesScreen(
+                    screenState = screenState,
+                    onEvent = { bluetoothDevicesViewModel.handleEvent(it) },
+                    modifier = modifier
+                )
             }
         }
-    }
-}
-
-@Composable
-fun AppBarWidgetAction(
-    current: WidgetDialog,
-    onEvent: (event: SkinPreviewViewEvent) -> Unit,
-    dismiss: () -> Unit,
-    widgetSettings: WidgetInterface.NoOp
-) {
-    when (current) {
-        WidgetDialog.ChooseBackgroundColor -> WidgetActionDialog(current, onEvent = onEvent, dismiss = dismiss, widgetSettings = widgetSettings)
-        WidgetDialog.ChooseIconsScale -> WidgetActionDialog(current, onEvent = onEvent, dismiss = dismiss, widgetSettings = widgetSettings)
-        WidgetDialog.ChooseIconsTheme -> WidgetActionDialog(current, onEvent = onEvent, dismiss = dismiss, widgetSettings = widgetSettings)
-        WidgetDialog.ChooseShortcutsNumber -> WidgetActionDialog(current, onEvent = onEvent, dismiss = dismiss, widgetSettings = widgetSettings)
-        WidgetDialog.ChooseTileColor -> WidgetActionDialog(current, onEvent = onEvent, dismiss = dismiss, widgetSettings = widgetSettings)
-        is WidgetDialog.SwitchIconsMono -> WidgetActionDialog(current, onEvent = onEvent, dismiss = dismiss, widgetSettings = widgetSettings)
-        else -> {}
     }
 }
 
@@ -287,10 +304,7 @@ fun AppBarWidgetAction(
 fun PreviewPreferencesScreenLight() {
     CarWidgetTheme {
         Surface {
-            MainScreen(MainViewModel(
-                emptyList(),
-                null,
-            ))
+            MainScreen(screenState = MainViewState(), onEvent = { })
         }
     }
 }

@@ -23,9 +23,7 @@ import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.screens.NavItem
-import info.anodsplace.carwidget.screens.UiAction
-import info.anodsplace.carwidget.screens.WidgetDialog
-import kotlinx.coroutines.launch
+import info.anodsplace.carwidget.screens.WidgetDialogType
 
 sealed interface AppBarTileColor {
     object Hidden : AppBarTileColor
@@ -51,31 +49,30 @@ fun rememberTileColor(currentSkinValue: String, prefs: WidgetInterface): AppBarT
 }
 
 @Composable
-fun AppBarMenu(
+fun AppBarActions(
+    isIconsMono: Boolean,
     tileColor: AppBarTileColor,
     appWidgetId: Int,
     currentSkinValue: String,
-    action: (UiAction) -> Unit,
+    onEvent: (MainViewEvent) -> Unit,
     navController: NavHostController
 ) {
-    val scope = rememberCoroutineScope()
     var expanded by remember { mutableStateOf(false) }
-    val isIconsMono = false
     when (tileColor) {
         is AppBarTileColor.Value -> {
             AppBarColorButton(color = tileColor.color, descRes = R.string.choose_color) {
-                action(UiAction.ShowDialog(WidgetDialog.ChooseTileColor))
+                onEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseTileColor))
             }
         }
         AppBarTileColor.Icon -> {
             AppBarButton(image = Icons.Filled.FormatColorFill, descRes = R.string.choose_color) {
-                action(UiAction.ShowDialog(WidgetDialog.ChooseTileColor))
+                onEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseTileColor))
             }
         }
         AppBarTileColor.Hidden -> {}
     }
     AppBarButton(image = Icons.Filled.Check, descRes = android.R.string.ok) {
-        scope.launch { action(UiAction.ApplyWidget(appWidgetId, currentSkinValue)) }
+        onEvent(MainViewEvent.ApplyWidget(appWidgetId, currentSkinValue))
     }
     Box {
         IconButton(onClick = { expanded = true }) {
@@ -87,39 +84,39 @@ fun AppBarMenu(
         ) {
             DropdownMenuItem(
                 onClick = {
-                    action(UiAction.ShowDialog(WidgetDialog.ChooseShortcutsNumber))
+                    onEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseShortcutsNumber))
                     expanded = false
                 },
                 text = { Text(text = stringResource(id = R.string.number)) }
             )
             DropdownMenuItem(
                 onClick = {
-                    action(UiAction.ShowDialog(WidgetDialog.ChooseBackgroundColor))
+                    onEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseBackgroundColor))
                     expanded = false
                 },
                 text = { Text(text = stringResource(id = R.string.pref_bg_color_title)) })
             DropdownMenuItem(
                 onClick = {
-                    action(UiAction.ShowDialog(WidgetDialog.ChooseIconsTheme))
+                    onEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseIconsTheme))
                     expanded = false
                 },
                 text = { Text(text = stringResource(id = R.string.icons_theme)) })
             DropdownMenuItem(
                 onClick = {
-                    action(UiAction.ShowDialog(WidgetDialog.SwitchIconsMono(!isIconsMono)))
+                    onEvent(MainViewEvent.SwitchIconsMono(!isIconsMono))
                     expanded = false
                 },
                 text = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(text = stringResource(id = R.string.pref_icons_mono_title))
                         Checkbox(checked = isIconsMono, onCheckedChange = {
-                            action(UiAction.ShowDialog(WidgetDialog.SwitchIconsMono(!isIconsMono)))
+                            onEvent(MainViewEvent.SwitchIconsMono(!isIconsMono))
                             expanded = false
                         }, modifier = Modifier.padding(start = 8.dp))
                     }
                 })
             DropdownMenuItem(onClick = {
-                action(UiAction.ShowDialog(WidgetDialog.ChooseIconsScale))
+                onEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseIconsScale))
                 expanded = false
             }, text = { Text(text = stringResource(id = R.string.pref_scale_icon)) })
             Divider()

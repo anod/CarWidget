@@ -6,10 +6,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.screens.NavItem
-import info.anodsplace.carwidget.screens.UiAction
 
 @Composable
-fun EditShortcut(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWidget.EditShortcut.Args, action: (UiAction) -> Unit) {
+fun EditShortcut(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWidget.EditShortcut.Args, onDismissRequest: () -> Unit) {
     val appContext = LocalContext.current.applicationContext as Application
 
     if (args.shortcutId > 0) {
@@ -21,9 +20,7 @@ fun EditShortcut(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWi
                 appContext
             )
         )
-        ShortcutEditScreen(viewModel) {
-            action(UiAction.OnBackNav)
-        }
+        ShortcutEditScreen(viewModel, onDismissRequest = onDismissRequest)
     } else {
         val viewModel: ShortcutPickerViewModel = viewModel(
             factory = ShortcutPickerViewModel.Factory(
@@ -32,8 +29,6 @@ fun EditShortcut(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWi
                 appContext
             )
         )
-        ShortcutPickerScreen(viewModel) {
-            action(UiAction.OnBackNav)
-        }
+        ShortcutPickerScreen(viewModel, onDismissRequest = onDismissRequest)
     }
 }

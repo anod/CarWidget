@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -14,12 +13,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import info.anodsplace.carwidget.chooser.ChooserGridList
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.screens.NavItem
-import info.anodsplace.carwidget.screens.UiAction
 
 @Composable
-fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWidget.EditWidgetButton.Args, action: (UiAction) -> Unit) {
+fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWidget.EditWidgetButton.Args, onDismissRequest: () -> Unit) {
     val appContext = LocalContext.current.applicationContext as Application
-    val scope = rememberCoroutineScope()
 
     val viewModel: EditWidgetViewModel = viewModel(
         factory = EditWidgetViewModel.Factory(
@@ -39,7 +36,7 @@ fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.Curre
     ) {
         ChooserGridList(emptyList(), viewModel.items, onClick = { entry ->
             viewModel.onSelect(entry)
-            action(UiAction.OnBackNav)
+            onDismissRequest()
         })
     }
 }

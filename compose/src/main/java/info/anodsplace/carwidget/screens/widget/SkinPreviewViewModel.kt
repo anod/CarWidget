@@ -26,6 +26,7 @@ import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -90,6 +91,7 @@ interface SkinPreviewViewModel : SkinViewFactory {
         }
     }
 
+    val viewActions: Flow<SkinPreviewViewAction>
     val viewStates: Flow<SkinPreviewViewState>
     val viewState: SkinPreviewViewState
 
@@ -99,6 +101,7 @@ interface SkinPreviewViewModel : SkinViewFactory {
 class DummySkinPreviewViewModel(application: Application): AndroidViewModel(application), SkinPreviewViewModel, KoinComponent {
     private val widgetSettings: WidgetInterface = WidgetInterface.NoOp()
 
+    override val viewActions: Flow<SkinPreviewViewAction> = emptyFlow()
     override val viewState : SkinPreviewViewState
     override val viewStates: Flow<SkinPreviewViewState>
 

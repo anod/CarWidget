@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.screens.main
 
+import android.appwidget.AppWidgetManager
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,12 +10,11 @@ import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.isValid
-import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.screens.NavItem
-import info.anodsplace.carwidget.screens.UiAction
-import info.anodsplace.carwidget.screens.WidgetDialog
+import info.anodsplace.carwidget.screens.WidgetDialogType
 import info.anodsplace.permissions.AppPermission
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import org.koin.core.component.KoinScopeComponent
@@ -23,26 +23,35 @@ import org.koin.core.component.inject
 import org.koin.core.scope.Scope
 
 data class MainViewState(
-    val isWidget: Boolean,
-    val tabs: List<NavItem.Tab>,
-    val startRoute: String?,
-    val showProDialog: Boolean,
-    val topDestination: NavItem,
-    val dialogState: WidgetDialog = WidgetDialog.None
+    val isWidget: Boolean = false,
+    val appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
+    val tabs: List<NavItem.Tab> = emptyList(),
+    val startRoute: String? = null,
+    val showProDialog: Boolean = false,
+    val topDestination: NavItem = NavItem.Tab.About,
+    val requiredPermissions: List<AppPermission> = emptyList(),
+    val widgetSettings: WidgetInterface.NoOp = WidgetInterface.NoOp(),
 )
 
 sealed interface MainViewAction {
-    class AppAction(val action: UiAction) : MainViewAction
+    object OnBackNav : MainViewAction
+    class ApplyWidget(val appWidgetId: Int, val currentSkinValue: String) : MainViewAction
+    class OpenWidgetConfig(val appWidgetId: Int) : MainViewAction
+    class ShowDialog(val route: String) : MainViewAction
 }
 
 sealed interface MainViewEvent {
     object PermissionAcquired : MainViewEvent
     object HideProDialog : MainViewEvent
-    class AppAction(val action: UiAction) : MainViewEvent
+    class ShowDialog(val dialogType: WidgetDialogType) : MainViewEvent
+    class ApplyWidget(val appWidgetId: Int, val currentSkinValue: String) : MainViewEvent
+    class OpenWidgetConfig(val appWidgetId: Int) : MainViewEvent
+    class SwitchIconsMono(val isIconsMono: Boolean) : MainViewEvent
+    object OnBackNav : MainViewEvent
 }
 
 class MainViewModel(
-    val requiredPermissions: List<AppPermission>,
+    requiredPermissions: List<AppPermission>,
     val appWidgetIdScope: AppWidgetIdScope?,
 ) : BaseFlowViewModel<MainViewState, MainViewEvent, MainViewAction>(), KoinScopeComponent {
     class Factory(
@@ -64,8 +73,6 @@ class MainViewModel(
 
     private val version: Version by inject()
     private val widgetIds: WidgetIds by inject()
-    val inCarSettings: InCarInterface by inject()
-    val widgetSettings: WidgetInterface
 
     init {
         val isWidget = appWidgetIdScope.isValid
@@ -79,9 +86,10 @@ class MainViewModel(
             ),
             startRoute = if (appWidgetIdScope.isValid) NavItem.Tab.CurrentWidget.Skin.route else null,
             showProDialog = showProDialog,
-            topDestination = startDestination(showProDialog)
+            topDestination = startDestination(showProDialog, requiredPermissions),
+            requiredPermissions = requiredPermissions,
+            widgetSettings =  if (isWidget) WidgetInterface.NoOp(get<WidgetSettings>()) else WidgetInterface.NoOp()
         )
-        widgetSettings = if (isWidget) get() else WidgetInterface.NoOp()
     }
 
     override fun handleEvent(event: MainViewEvent) {
@@ -92,23 +100,21 @@ class MainViewModel(
             MainViewEvent.HideProDialog -> {
                 viewState = viewState.copy(showProDialog = false)
             }
-            is MainViewEvent.AppAction -> {
-                when (val uiAction = event.action) {
-                    is UiAction.ShowDialog -> {
-                        viewState = viewState.copy(dialogState = uiAction.type)
-                    }
-                    is UiAction.OnBackNav -> {
-                        if (viewState.dialogState != WidgetDialog.None) {
-                            viewState = viewState.copy(dialogState = WidgetDialog.None)
-                        } else emitAction(MainViewAction.AppAction(UiAction.OnBackNav))
-                    }
-                    else -> emitAction(MainViewAction.AppAction(event.action))
-                }
+            is MainViewEvent.ShowDialog -> {
+                emitAction(MainViewAction.ShowDialog(NavItem.Tab.CurrentWidget.Skin.Dialog.routeForDialogType(event.dialogType)))
+            }
+            is MainViewEvent.OnBackNav -> emitAction(MainViewAction.OnBackNav)
+            is MainViewEvent.ApplyWidget -> emitAction(MainViewAction.ApplyWidget(event.appWidgetId, event.currentSkinValue))
+            is MainViewEvent.OpenWidgetConfig -> emitAction(MainViewAction.OpenWidgetConfig(event.appWidgetId))
+            is MainViewEvent.SwitchIconsMono -> {
+                val settings = get<WidgetSettings>()
+                settings.isIconsMono = event.isIconsMono
+                viewState = viewState.copy(widgetSettings = WidgetInterface.NoOp(settings))
             }
         }
     }
 
-    private fun startDestination(showProDialog: Boolean): NavItem {
+    private fun startDestination(showProDialog: Boolean, requiredPermissions: List<AppPermission>): NavItem {
         val isFreeInstalled = !version.isFree && version.isFreeInstalled
         val appWidgetIds = widgetIds.getAllWidgetIds()
         return when {

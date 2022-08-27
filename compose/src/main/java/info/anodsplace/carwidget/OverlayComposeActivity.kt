@@ -17,7 +17,6 @@ import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.extensions.extras
 import info.anodsplace.carwidget.screens.NavItem
-import info.anodsplace.carwidget.screens.UiAction
 import info.anodsplace.carwidget.screens.shortcuts.EditShortcut
 import info.anodsplace.carwidget.screens.widget.EditWidgetButton
 import org.koin.core.component.KoinComponent
@@ -36,11 +35,6 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
         super.onCreate(savedInstanceState)
         DynamicColors.applyToActivityIfAvailable(this)
         val appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
-        val action: (UiAction) -> Unit = {
-            if (it is UiAction.OnBackNav) {
-                finish()
-            }
-        }
 
         val deeplink = Deeplink.match(intent.data!!)
         if (deeplink == null) {
@@ -66,12 +60,12 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
                     is Deeplink.EditShortcut -> EditShortcut(
                         appWidgetIdScope = appWidgetIdScope!!,
                         args = NavItem.Tab.CurrentWidget.EditShortcut.Args(shortcutId = deeplink.shortcutId, position = deeplink.position),
-                        action = action
+                        onDismissRequest = { finish() }
                     )
                     is Deeplink.EditWidgetButton -> EditWidgetButton(
                         appWidgetIdScope = appWidgetIdScope!!,
                         args = NavItem.Tab.CurrentWidget.EditWidgetButton.Args(buttonId = deeplink.buttonId),
-                        action = action
+                        onDismissRequest = { finish() }
                     )
                     else -> throw IllegalArgumentException("Unknown deeplink $deeplink")
                 }
