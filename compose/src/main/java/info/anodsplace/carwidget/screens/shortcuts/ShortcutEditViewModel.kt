@@ -1,53 +1,54 @@
 package info.anodsplace.carwidget.screens.shortcuts
 
-import android.app.Application
 import android.content.Intent
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import info.anodsplace.carwidget.content.AppCoroutineScope
+import info.anodsplace.carwidget.content.db.Shortcut
+import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.screens.shortcuts.intent.IntentField
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.scope.Scope
 
-interface ShortcutEditDelegate {
-    fun drop()
-    fun updateField(field: IntentField)
+data class ShortcutEditViewState(
+    val shortcut: Shortcut? = null,
+    val icon: ShortcutIcon? = null,
+    val position: Int = -1,
+    val shortcutId: Long = -1,
+    val expanded: Boolean = false
+)
 
-    class NoOp: ShortcutEditDelegate {
-        override fun drop() { }
-        override fun updateField(field: IntentField) { }
-    }
+sealed interface ShortcutEditViewEvent {
+    class UpdateField(val field: IntentField) : ShortcutEditViewEvent
+    class ToggleAdvanced(val expanded: Boolean) : ShortcutEditViewEvent
+    object Drop : ShortcutEditViewEvent
 }
 
+sealed interface ShortcutEditViewAction
+
 class ShortcutEditViewModel(
-        val position: Int,
+        position: Int,
         shortcutId: Long,
         appWidgetIdScope: AppWidgetIdScope,
-        application: Application
-) : AndroidViewModel(application), KoinScopeComponent, ShortcutEditDelegate {
+) : BaseFlowViewModel<ShortcutEditViewState, ShortcutEditViewEvent, ShortcutEditViewAction>(), KoinScopeComponent {
 
     class Factory(
             private val position: Int,
             private val shortcutId: Long,
-            private val appWidgetIdScope: AppWidgetIdScope,
-            private val application: Application
+            private val appWidgetIdScope: AppWidgetIdScope
     ): ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return ShortcutEditViewModel(position, shortcutId, appWidgetIdScope, application) as T
+            return ShortcutEditViewModel(position, shortcutId, appWidgetIdScope) as T
         }
     }
 
@@ -58,22 +59,41 @@ class ShortcutEditViewModel(
     private val widgetSettings: WidgetInterface by inject()
     private val model: WidgetShortcutsModel by inject()
 
-    val shortcut = shortcutsDatabase.observeShortcut(shortcutId).stateIn(
-            viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = null
-    )
-    val icon = shortcut.filterNotNull().map { sh -> iconLoader.load(sh, widgetSettings.adaptiveIconStyle) }
+    init {
+        viewState = ShortcutEditViewState(
+            position = position,
+            shortcutId = shortcutId,
+        )
+        viewModelScope.launch {
+            shortcutsDatabase.observeShortcut(shortcutId).collect { shortcut ->
 
-    override fun drop() {
-        appScope.launch {
-            model.drop(position)
+                if (shortcut != null) {
+                    val icon = iconLoader.load(shortcut, widgetSettings.adaptiveIconStyle)
+                    viewState = viewState.copy(shortcut = shortcut, icon = icon)
+                } else {
+                    viewState = viewState.copy(shortcut = null, icon = null)
+                }
+            }
         }
     }
 
-    override fun updateField(field: IntentField) {
-        val shortcut = shortcut.value ?: return
-        appScope.launch {
-            val intent = updateIntentField(field, shortcut.intent)
-            shortcutsDatabase.updateIntent(shortcut.id, intent)
+    override fun handleEvent(event: ShortcutEditViewEvent) {
+        when (event) {
+            ShortcutEditViewEvent.Drop -> {
+                appScope.launch {
+                    model.drop(viewState.position)
+                }
+            }
+            is ShortcutEditViewEvent.ToggleAdvanced -> {
+                viewState = viewState.copy(expanded = event.expanded)
+            }
+            is ShortcutEditViewEvent.UpdateField -> {
+                val shortcut = viewState.shortcut ?: return
+                appScope.launch {
+                    val intent = updateIntentField(event.field, shortcut.intent)
+                    shortcutsDatabase.updateIntent(shortcut.id, intent)
+                }
+            }
         }
     }
 

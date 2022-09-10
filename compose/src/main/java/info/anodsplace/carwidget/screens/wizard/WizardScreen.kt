@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -101,8 +100,7 @@ fun WizardWelcome() {
         Text(text = stringResource(id = R.string.welcome_text), style = MaterialTheme.typography.bodyLarge)
         Text(text = stringResource(id = R.string.swipe_continue), style = MaterialTheme.typography.bodySmall)
 
-        val appContext = LocalContext.current.applicationContext
-        val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appContext, null))
+        val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(null))
         WidgetSkinPreview(skinViewModel.viewState.currentSkin, skinViewModel.viewState.reload, skinViewFactory = skinViewModel)
     }
 }

@@ -91,8 +91,8 @@ fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit, iconModifier: M
     Column(modifier = Modifier
         .clickable { onClick() }
         .cardStyle()) {
-        LargeWidgetRow(item = item, indexes = listOf(1, 3, 5, 7), iconModifier = iconModifier)
-        LargeWidgetRow(item = item, indexes = listOf(0, 2, 4, 6), iconModifier = iconModifier)
+        LargeWidgetRow(item = item, indexes = listOf(1, 3, 5, 7, 9), iconModifier = iconModifier)
+        LargeWidgetRow(item = item, indexes = listOf(0, 2, 4, 6, 8), iconModifier = iconModifier)
     }
 }
 

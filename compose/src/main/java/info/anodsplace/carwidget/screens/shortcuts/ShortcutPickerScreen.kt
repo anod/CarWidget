@@ -20,6 +20,8 @@ import info.anodsplace.carwidget.chooser.*
 import info.anodsplace.carwidget.content.shortcuts.CreateShortcutResult
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.utils.forPickShortcutLocal
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 sealed class ShortcutPickerState {
     object Initial: ShortcutPickerState()
@@ -28,20 +30,23 @@ sealed class ShortcutPickerState {
 }
 
 @Composable
-fun ShortcutPickerScreen(viewModel: ShortcutPickerViewModel, onDismissRequest: () -> Unit) {
-    var context = LocalContext.current
+fun ShortcutPickerScreen(viewActions: Flow<ShortcutPickerViewAction> = emptyFlow(), onEvent: (ShortcutPickerViewEvent) -> Unit, onDismissRequest: () -> Unit, shortcutResources: ShortcutResources) {
+    val context = LocalContext.current
     var screenState by remember { mutableStateOf<ShortcutPickerState>(ShortcutPickerState.Initial) }
     val activityLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult(), onResult = { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                viewModel.save(result.data!!, isApp = false)
+                onEvent(ShortcutPickerViewEvent.Save(result.data!!, isApp = false))
             }
             onDismissRequest()
     })
 
-    val saveResult by viewModel.saveResult.collectAsState(initial = CreateShortcutResult.None)
-    if (saveResult != CreateShortcutResult.None) {
-        LaunchedEffect(key1 = saveResult) {
-            makeToast(saveResult, context)
+    LaunchedEffect(true) {
+        viewActions.collect { action ->
+            when (action) {
+                is ShortcutPickerViewAction.CreateResult -> {
+                    makeToast(action.result, context)
+                }
+            }
         }
     }
 
@@ -52,15 +57,15 @@ fun ShortcutPickerScreen(viewModel: ShortcutPickerViewModel, onDismissRequest: (
             onDismissRequest = onDismissRequest
         )
         ShortcutPickerState.Apps -> AppChooser(
-            onChoose = {
-                viewModel.save(it.getIntent(baseIntent = null), isApp = true)
+            onChoose = { entry ->
+                onEvent(ShortcutPickerViewEvent.Save(entry.getIntent(baseIntent = null), isApp = false))
                 onDismissRequest()
             },
             onDismissRequest = { screenState = ShortcutPickerState.Initial })
         ShortcutPickerState.CarWidget -> CarWidgetChooser(
-            viewModel.shortcutResources,
-            onChoose = {
-                viewModel.save(it.getIntent(baseIntent = null), isApp = false)
+            shortcutResources,
+            onChoose = { entry ->
+                onEvent(ShortcutPickerViewEvent.Save(entry.getIntent(baseIntent = null), isApp = false))
                 onDismissRequest()
             },
             onDismissRequest = { screenState = ShortcutPickerState.Initial }

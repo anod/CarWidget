@@ -214,7 +214,7 @@ fun NavHost(
         navigation(route = NavItem.Tab.CurrentWidget.route, startDestination = currentWidgetStartDestination) {
             composable(route = NavItem.Tab.CurrentWidget.Skin.route) {
                 val skinViewModel: SkinPreviewViewModel =
-                    viewModel(factory = SkinPreviewViewModel.Factory(LocalContext.current, appWidgetIdScope!!))
+                    viewModel(factory = SkinPreviewViewModel.Factory(appWidgetIdScope!!))
                 val screenState by skinViewModel.viewStates.collectAsState(initial = skinViewModel.viewState)
                 currentSkin.value = screenState.currentSkin.value
                 WidgetSkinScreen(
@@ -231,7 +231,7 @@ fun NavHost(
             ) { entry ->
                 val args = NavItem.Tab.CurrentWidget.Skin.Dialog.Args(entry.arguments)
                 val skinViewModel: SkinPreviewViewModel =
-                    viewModel(factory = SkinPreviewViewModel.Factory(LocalContext.current, appWidgetIdScope!!))
+                    viewModel(factory = SkinPreviewViewModel.Factory(appWidgetIdScope!!))
                 val screenState by skinViewModel.viewStates.collectAsState(initial = skinViewModel.viewState)
                 WidgetActionDialogContent(
                     args.dialogType,

@@ -1,13 +1,11 @@
 package info.anodsplace.carwidget.screens.widget
 
-import android.app.Application
 import android.content.Context
 import android.view.InflateException
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.TextView
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -81,13 +79,13 @@ interface SkinViewFactory {
 }
 
 interface SkinPreviewViewModel : SkinViewFactory {
-    class Factory(private val appContext: Context, private val appWidgetIdScope: AppWidgetIdScope?):
+    class Factory(private val appWidgetIdScope: AppWidgetIdScope?):
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T  {
             return if (appWidgetIdScope == null)
-                DummySkinPreviewViewModel(appContext.applicationContext as Application) as T
+                DummySkinPreviewViewModel() as T
             else
-                RealSkinPreviewViewModel(appContext.applicationContext as Application, appWidgetIdScope) as T
+                RealSkinPreviewViewModel(appWidgetIdScope) as T
         }
     }
 
@@ -98,15 +96,16 @@ interface SkinPreviewViewModel : SkinViewFactory {
     fun handleEvent(event: SkinPreviewViewEvent)
 }
 
-class DummySkinPreviewViewModel(application: Application): AndroidViewModel(application), SkinPreviewViewModel, KoinComponent {
+class DummySkinPreviewViewModel: ViewModel(), SkinPreviewViewModel, KoinComponent {
     private val widgetSettings: WidgetInterface = WidgetInterface.NoOp()
+    private val context: Context by inject()
 
     override val viewActions: Flow<SkinPreviewViewAction> = emptyFlow()
     override val viewState : SkinPreviewViewState
     override val viewStates: Flow<SkinPreviewViewState>
 
     init {
-        val skinList = SkinList(widgetSettings.skin, application)
+        val skinList = SkinList(widgetSettings.skin, context)
         viewState = SkinPreviewViewState(
             skinList = skinList,
             currentSkin = skinList.current
@@ -119,7 +118,7 @@ class DummySkinPreviewViewModel(application: Application): AndroidViewModel(appl
 //        val widgetView: WidgetView = get(parameters = { parametersOf(bitmapMemoryCache, intentFactory, true, overrideSkin.value) })
 //        val remoteViews = widgetView.create()
 //        return renderPreview(remoteViews, context)
-        return View(getApplication())
+        return View(context)
     }
 
     override fun handleEvent(event: SkinPreviewViewEvent) {
@@ -127,7 +126,7 @@ class DummySkinPreviewViewModel(application: Application): AndroidViewModel(appl
     }
 }
 
-class RealSkinPreviewViewModel(application: Application, appWidgetIdScope: AppWidgetIdScope): BaseFlowViewModel<SkinPreviewViewState, SkinPreviewViewEvent, SkinPreviewViewAction>(), SkinPreviewViewModel, KoinScopeComponent {
+class RealSkinPreviewViewModel(appWidgetIdScope: AppWidgetIdScope): BaseFlowViewModel<SkinPreviewViewState, SkinPreviewViewEvent, SkinPreviewViewAction>(), SkinPreviewViewModel, KoinScopeComponent {
 
     override val scope: Scope = appWidgetIdScope.scope
 
@@ -137,7 +136,7 @@ class RealSkinPreviewViewModel(application: Application, appWidgetIdScope: AppWi
     private val widgetSettings: WidgetSettings by inject()
 
     init {
-        val skinList = SkinList(widgetSettings.skin, application)
+        val skinList = SkinList(widgetSettings.skin, context)
         viewState = SkinPreviewViewState(
             skinList = skinList,
             currentSkin = skinList.current,
