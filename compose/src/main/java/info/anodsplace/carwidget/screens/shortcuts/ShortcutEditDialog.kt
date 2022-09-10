@@ -2,7 +2,6 @@ package info.anodsplace.carwidget.screens.shortcuts
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -15,16 +14,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import coil.compose.AsyncImage
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.iconUri
-import info.anodsplace.carwidget.content.graphics.imageLoader
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.screens.shortcuts.intent.IntentEditScreen
 
 @Composable
-fun ShortcutEditScreen(state: ShortcutEditViewState, onEvent: (ShortcutEditViewEvent) -> Unit, onDismissRequest: () -> Unit) {
+fun ShortcutEditScreen(state: ShortcutEditViewState, onEvent: (ShortcutEditViewEvent) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader, widgetSettings: WidgetInterface = WidgetInterface.NoOp()) {
     Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -33,10 +33,12 @@ fun ShortcutEditScreen(state: ShortcutEditViewState, onEvent: (ShortcutEditViewE
     ) {
         if (state.shortcut != null) {
             ShortcutEditContent(
-                    shortcut = state.shortcut,
-                    onEvent = onEvent,
-                    onDismissRequest = onDismissRequest,
-                    expanded = state.expanded
+                shortcut = state.shortcut,
+                onEvent = onEvent,
+                onDismissRequest = onDismissRequest,
+                expanded = state.expanded,
+                imageLoader = imageLoader,
+                widgetSettings = widgetSettings
             )
         }
     }
@@ -44,13 +46,19 @@ fun ShortcutEditScreen(state: ShortcutEditViewState, onEvent: (ShortcutEditViewE
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (ShortcutEditViewEvent) -> Unit, onDismissRequest: () -> Unit) {
+fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (ShortcutEditViewEvent) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader, widgetSettings: WidgetInterface = WidgetInterface.NoOp()) {
     Column {
         SmallTopAppBar(
             title = { Text(text = stringResource(id = R.string.shortcut_edit_title)) }
         )
         if (!expanded) {
-            ShortcutInfo(shortcut, onEvent, onDismissRequest)
+            ShortcutInfo(
+                shortcut,
+                onEvent,
+                onDismissRequest,
+                imageLoader = imageLoader,
+                widgetSettings = widgetSettings
+            )
             AdvancedButton(expanded, onEvent)
         } else {
             AdvancedButton(expanded, onEvent)
@@ -83,25 +91,21 @@ fun AdvancedButton(expanded: Boolean, onEvent: (ShortcutEditViewEvent) -> Unit) 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShortcutInfo(shortcut: Shortcut, onEvent: (ShortcutEditViewEvent) -> Unit, onDismissRequest: () -> Unit) {
+fun ShortcutInfo(shortcut: Shortcut, onEvent: (ShortcutEditViewEvent) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader, widgetSettings: WidgetInterface = WidgetInterface.NoOp()) {
     Column (
             modifier = Modifier
                 .fillMaxWidth()
                 .defaultMinSize(minHeight = 144.dp),
             horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        IconButton(onClick = {}) {
-            AsyncImage(
-                model = shortcut.iconUri(LocalContext.current, ""),
-                contentDescription = shortcut.title.toString(),
-                imageLoader = LocalContext.current.imageLoader,
-                modifier = Modifier
-                    .size(96.dp)
-                    .padding(4.dp)
-                    .weight(1f)
-                    .clickable(onClick = { })
-            )
-        }
+        AsyncImage(
+            model = shortcut.iconUri(LocalContext.current, widgetSettings.adaptiveIconStyle),
+            contentDescription = shortcut.title.toString(),
+            imageLoader = imageLoader,
+            modifier = Modifier
+                .size(96.dp)
+                .padding(4.dp)
+        )
         TextField(
                 modifier = Modifier.padding(vertical = 8.dp),
                 label = { Text("Title") },
@@ -136,11 +140,12 @@ fun ShortcutInfo(shortcut: Shortcut, onEvent: (ShortcutEditViewEvent) -> Unit, o
 fun PreviewShortcutEditContent() {
     CarWidgetTheme {
         ShortcutEditScreen(
-                state = ShortcutEditViewState(
-                    shortcut = Shortcut(0,0, 0, "Title", false, Intent())
-                ),
-                onEvent = { },
-                onDismissRequest = { },
+            state = ShortcutEditViewState(
+                shortcut = Shortcut(0,0, 0, "Title", false, Intent())
+            ),
+            onEvent = { },
+            onDismissRequest = { },
+            imageLoader = ImageLoader.Builder(LocalContext.current).build()
         )
     }
 }

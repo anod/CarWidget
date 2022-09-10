@@ -6,6 +6,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import coil.ImageLoader
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.content.SkinProperties
@@ -31,6 +32,7 @@ class EditWidgetViewModel(
 
     private val widgetSettings: WidgetInterface by inject()
     private val skinProperties: SkinProperties by inject(parameters = { parametersOf(widgetSettings.skin) })
+    val imageLoader: ImageLoader by inject()
 
     val items = listOf(
         ChooserEntry(

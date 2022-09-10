@@ -23,12 +23,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import coil.ImageLoader
 import coil.compose.AsyncImage
-import info.anodsplace.carwidget.content.graphics.imageLoader
 import info.anodsplace.carwidget.utils.SystemIconSize
 
 @Composable
-fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit) {
+fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit, imageLoader: ImageLoader) {
     val iconModifier = Modifier
         .size(SystemIconSize)
         .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(48.dp))
@@ -51,7 +51,7 @@ fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit) {
             AsyncImage(
                 model = entry.iconUri(context),
                 contentDescription = entry.title,
-                imageLoader = context.imageLoader,
+                imageLoader = imageLoader,
                 modifier = iconModifier
             )
         }
@@ -68,7 +68,7 @@ fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit) {
 }
 
 @Composable
-fun ChooserGridList(headers: List<ChooserEntry>, list: List<ChooserEntry>, onClick: (ChooserEntry) -> Unit) {
+fun ChooserGridList(headers: List<ChooserEntry>, list: List<ChooserEntry>, onClick: (ChooserEntry) -> Unit, imageLoader: ImageLoader) {
 
     LazyVerticalGrid(
         modifier = Modifier.padding(16.dp),
@@ -77,11 +77,11 @@ fun ChooserGridList(headers: List<ChooserEntry>, list: List<ChooserEntry>, onCli
     ) {
         items(headers.size) { index ->
             val entry = headers[index]
-            EntryIcon(entry, onClick)
+            EntryIcon(entry, onClick, imageLoader = imageLoader)
         }
         items(list.size) { index ->
             val entry = list[index]
-            EntryIcon(entry, onClick)
+            EntryIcon(entry, onClick, imageLoader = imageLoader)
         }
     }
 }
@@ -92,7 +92,8 @@ fun ChooserDialog(
     modifier: Modifier = Modifier,
     headers: List<ChooserEntry> = listOf(),
     onDismissRequest: () -> Unit,
-    onClick: (ChooserEntry) -> Unit
+    onClick: (ChooserEntry) -> Unit,
+    imageLoader: ImageLoader
 ) {
     val appsList by loader.load().collectAsState(initial = emptyList())
     Dialog(
@@ -107,7 +108,7 @@ fun ChooserDialog(
             color = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface
         ) {
-            ChooserGridList(headers, appsList, onClick = onClick)
+            ChooserGridList(headers, appsList, onClick = onClick, imageLoader = imageLoader)
         }
     }
 }

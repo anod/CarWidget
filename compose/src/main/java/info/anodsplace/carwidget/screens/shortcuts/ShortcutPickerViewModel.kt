@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.screens.shortcuts
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import coil.ImageLoader
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.WidgetUpdate
 import info.anodsplace.carwidget.content.AppCoroutineScope
@@ -49,6 +50,7 @@ class ShortcutPickerViewModel(
     private val update: WidgetUpdate by inject()
     private val model by inject<WidgetShortcutsModel>()
     val shortcutResources: ShortcutResources by inject()
+    val imageLoader: ImageLoader by inject()
 
     init {
         viewState = ShortcutPickerViewState(

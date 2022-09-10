@@ -7,7 +7,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import coil.ImageLoader
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.ChooserLoader
@@ -24,6 +26,7 @@ fun InCarMainScreen(
     modifier: Modifier = Modifier,
     onEvent: (InCarViewEvent) -> Unit = { },
     appsLoader: ChooserLoader = StaticChooserLoader(emptyList()),
+    imageLoader: ImageLoader
 ) {
     var appChooser: PreferenceItem? by remember { mutableStateOf(null) }
 
@@ -58,7 +61,7 @@ fun InCarMainScreen(
                 when (item.key) {
                     "notif-shortcuts" -> {
                         Box(modifier = Modifier.padding(paddingValues)) {
-                            NotificationShortcuts(screenState = screenState, appsLoader = appsLoader)
+                            NotificationShortcuts(screenState = screenState, appsLoader = appsLoader, imageLoader = imageLoader)
                         }
                     }
                     "screen-timeout-list" -> {
@@ -87,7 +90,8 @@ fun InCarMainScreen(
             onClick = {
                 onEvent(InCarViewEvent.SetAutorunApp(componentName = it.componentName))
                 appChooser = null
-            }
+            },
+            imageLoader = imageLoader
         )
     }
 }
@@ -118,7 +122,8 @@ fun onPreferenceClick(
 fun InCarScreenLight() {
     CarWidgetTheme {
         InCarMainScreen(
-            screenState = InCarViewState()
+            screenState = InCarViewState(),
+            imageLoader = ImageLoader.Builder(LocalContext.current).build()
         )
     }
 }

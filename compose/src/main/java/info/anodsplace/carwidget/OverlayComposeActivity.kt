@@ -65,7 +65,7 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
                     is Deeplink.EditWidgetButton -> EditWidgetButton(
                         appWidgetIdScope = appWidgetIdScope!!,
                         args = NavItem.Tab.CurrentWidget.EditWidgetButton.Args(buttonId = deeplink.buttonId),
-                        onDismissRequest = { finish() }
+                        onDismissRequest = { finish() },
                     )
                     else -> throw IllegalArgumentException("Unknown deeplink $deeplink")
                 }

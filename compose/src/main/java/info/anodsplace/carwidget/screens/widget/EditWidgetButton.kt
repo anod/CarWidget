@@ -34,9 +34,14 @@ fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.Curre
         color = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface
     ) {
-        ChooserGridList(emptyList(), viewModel.items, onClick = { entry ->
-            viewModel.onSelect(entry)
-            onDismissRequest()
-        })
+        ChooserGridList(
+            emptyList(),
+            viewModel.items,
+            onClick = { entry ->
+                viewModel.onSelect(entry)
+                onDismissRequest()
+            },
+            imageLoader = viewModel.imageLoader
+        )
     }
 }

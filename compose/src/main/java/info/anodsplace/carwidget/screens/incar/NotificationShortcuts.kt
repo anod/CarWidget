@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import coil.compose.AsyncImage
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
@@ -28,7 +29,6 @@ import info.anodsplace.carwidget.chooser.ChooserLoader
 import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.StaticChooserLoader
 import info.anodsplace.carwidget.content.db.iconUri
-import info.anodsplace.carwidget.content.graphics.imageLoader
 import info.anodsplace.carwidget.utils.SystemIconSize
 
 @Composable
@@ -36,6 +36,7 @@ fun NotificationShortcuts(
     screenState: InCarViewState,
     modifier: Modifier = Modifier,
     onEvent: (InCarViewEvent) -> Unit = { },
+    imageLoader: ImageLoader,
     appsLoader: ChooserLoader = StaticChooserLoader(emptyList()),
 ) {
     val context = LocalContext.current
@@ -82,7 +83,7 @@ fun NotificationShortcuts(
                     AsyncImage(
                         model = shortcut.iconUri(context, ""),
                         contentDescription = shortcut.title.toString(),
-                        imageLoader = context.imageLoader,
+                        imageLoader = imageLoader,
                         modifier = iconModifier
                             .weight(1f)
                             .clickable(onClick = { shortcutIndex = i })
@@ -102,7 +103,9 @@ fun NotificationShortcuts(
                 onClick = { entry ->
                     onEvent(InCarViewEvent.NotificationShortcutUpdate(shortcutIndex, entry))
                     shortcutIndex = -1
-                })
+                },
+                imageLoader = imageLoader
+            )
         }
     }
 }
@@ -113,7 +116,8 @@ fun ShortcutsScreenDark() {
     CarWidgetTheme(uiMode = UiModeManager.MODE_NIGHT_YES) {
         Surface {
             NotificationShortcuts(
-                screenState = InCarViewState(items = emptyList())
+                screenState = InCarViewState(items = emptyList()),
+                imageLoader = ImageLoader.Builder(LocalContext.current).build()
             )
         }
     }

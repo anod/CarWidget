@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
+import coil.ImageLoader
 import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.Version
@@ -74,6 +75,7 @@ class MainViewModel(
 
     private val version: Version by inject()
     private val widgetIds: WidgetIds by inject()
+    val imageLoader: ImageLoader by inject()
 
     init {
         val isWidget = appWidgetIdScope.isValid

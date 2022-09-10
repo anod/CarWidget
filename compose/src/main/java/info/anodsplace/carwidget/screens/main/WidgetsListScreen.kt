@@ -30,7 +30,6 @@ import info.anodsplace.carwidget.WarningColor
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.iconUri
-import info.anodsplace.carwidget.content.graphics.imageLoader
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
 import info.anodsplace.compose.ScreenLoadState
@@ -65,7 +64,7 @@ fun WidgetsEmptyScreen() {
 }
 
 @Composable
-fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, iconModifier: Modifier = Modifier) {
+fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, imageLoader: ImageLoader, iconModifier: Modifier = Modifier) {
     val context = LocalContext.current
     Row {
         for (idx in indexes) {
@@ -74,7 +73,7 @@ fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, iconModifier: Mod
                 AsyncImage(
                     model = shortcut.iconUri(context, item.adaptiveIconStyle),
                     contentDescription = shortcut.title.toString(),
-                    imageLoader = context.imageLoader,
+                    imageLoader = imageLoader,
                     modifier = iconModifier.border(1.dp, MaterialTheme.colorScheme.onSurface, shape = RoundedCornerShape(8.dp))
                 )
             } else {
@@ -87,12 +86,12 @@ fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, iconModifier: Mod
 }
 
 @Composable
-fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit, iconModifier: Modifier = Modifier) {
+fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit, imageLoader: ImageLoader, iconModifier: Modifier = Modifier) {
     Column(modifier = Modifier
         .clickable { onClick() }
         .cardStyle()) {
-        LargeWidgetRow(item = item, indexes = listOf(1, 3, 5, 7, 9), iconModifier = iconModifier)
-        LargeWidgetRow(item = item, indexes = listOf(0, 2, 4, 6, 8), iconModifier = iconModifier)
+        LargeWidgetRow(item = item, indexes = listOf(1, 3, 5, 7, 9), iconModifier = iconModifier, imageLoader = imageLoader)
+        LargeWidgetRow(item = item, indexes = listOf(0, 2, 4, 6, 8), iconModifier = iconModifier, imageLoader = imageLoader)
     }
 }
 
@@ -165,7 +164,7 @@ fun InCarHeader(screen: WidgetListScreenState) {
 }
 
 @Composable
-fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier, imageLoader: ImageLoader = LocalContext.current.imageLoader) {
+fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier, imageLoader: ImageLoader) {
     when (val loadState = screen.loadState) {
         is ScreenLoadState.Ready -> {
             WidgetsLisItems(
@@ -181,7 +180,7 @@ fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int)
 }
 
 @Composable
-fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier, imageLoader: ImageLoader = LocalContext.current.imageLoader) {
+fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier, imageLoader: ImageLoader) {
     if (screen.items.isEmpty()) {
         Column(
             modifier = modifier
@@ -243,7 +242,7 @@ fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -
                     }
                     is WidgetItem.Large -> {
                         hasLargeItem = true
-                        LargeWidgetItem(item, onClick = { onClick(item.appWidgetId) }, iconModifier = iconModifier)
+                        LargeWidgetItem(item, onClick = { onClick(item.appWidgetId) }, iconModifier = iconModifier, imageLoader = imageLoader)
                     }
                 }
             }

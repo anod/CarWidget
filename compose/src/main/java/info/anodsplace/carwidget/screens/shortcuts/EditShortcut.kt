@@ -18,7 +18,13 @@ fun EditShortcut(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWi
             )
         )
         val state by viewModel.viewStates.collectAsState(initial = viewModel.viewState)
-        ShortcutEditScreen(state, onEvent = { viewModel.handleEvent(it) } , onDismissRequest = onDismissRequest)
+        ShortcutEditScreen(
+            state = state,
+            onEvent = { viewModel.handleEvent(it) } ,
+            onDismissRequest = onDismissRequest,
+            widgetSettings = viewModel.widgetSettings,
+            imageLoader = viewModel.imageLoader
+        )
     } else {
         val viewModel: ShortcutPickerViewModel = viewModel(
             factory = ShortcutPickerViewModel.Factory(
@@ -26,6 +32,12 @@ fun EditShortcut(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWi
                 appWidgetIdScope,
             )
         )
-        ShortcutPickerScreen(viewModel.viewActions, onEvent = { viewModel.handleEvent(it) }, onDismissRequest = onDismissRequest, shortcutResources = viewModel.shortcutResources)
+        ShortcutPickerScreen(
+            viewModel.viewActions,
+            onEvent = { viewModel.handleEvent(it) },
+            onDismissRequest = onDismissRequest,
+            shortcutResources = viewModel.shortcutResources,
+            imageLoader = viewModel.imageLoader
+        )
     }
 }

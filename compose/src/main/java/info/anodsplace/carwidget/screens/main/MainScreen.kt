@@ -16,6 +16,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import androidx.navigation.navigation
+import coil.ImageLoader
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
@@ -42,7 +43,9 @@ fun MainScreen(
     onEvent: (event: MainViewEvent) -> Unit = { },
     onViewAction: (action: MainViewAction) -> Unit = { },
     viewActions: Flow<MainViewAction> = emptyFlow(),
-    appWidgetIdScope: AppWidgetIdScope? = null) {
+    appWidgetIdScope: AppWidgetIdScope? = null,
+    imageLoader: ImageLoader
+) {
     when (screenState.topDestination) {
         NavItem.Wizard -> {
             WizardScreen()
@@ -70,7 +73,8 @@ fun MainScreen(
                 onEvent = onEvent,
                 viewActions = viewActions,
                 onViewAction = onViewAction,
-                appWidgetIdScope = appWidgetIdScope
+                appWidgetIdScope = appWidgetIdScope,
+                imageLoader = imageLoader
             )
         }
     }
@@ -93,6 +97,7 @@ fun Tabs(
     viewActions: Flow<MainViewAction> = emptyFlow(),
     onViewAction: (action: MainViewAction) -> Unit = { },
     appWidgetIdScope: AppWidgetIdScope? = null,
+    imageLoader: ImageLoader
 ) {
     val navController = rememberNavController()
     val currentSkin = remember { mutableStateOf(WidgetInterface.SKIN_YOU) }
@@ -127,7 +132,8 @@ fun Tabs(
                 innerPadding = innerPadding,
                 currentSkin = currentSkin,
                 startDestination = screenState.topDestination.route,
-                startRoute = screenState.startRoute
+                startRoute = screenState.startRoute,
+                imageLoader = imageLoader
             )
         }
     )
@@ -184,7 +190,8 @@ fun NavHost(
     currentSkin: MutableState<String>,
     startDestination: String,
     startRoute: String?,
-    currentWidgetStartDestination: String = NavItem.Tab.CurrentWidget.Skin.route
+    currentWidgetStartDestination: String = NavItem.Tab.CurrentWidget.Skin.route,
+    imageLoader: ImageLoader
 ) {
     val context = LocalContext.current
     val modifier = Modifier
@@ -198,7 +205,8 @@ fun NavHost(
                 WidgetsListScreen(
                     screen = widgetsState,
                     onClick = { appWidgetId -> onEvent(MainViewEvent.OpenWidgetConfig(appWidgetId)) },
-                    modifier = Modifier
+                    modifier = Modifier,
+                    imageLoader = imageLoader
                 )
             }
         }
@@ -208,7 +216,8 @@ fun NavHost(
             AboutScreen(
                 screenState = aboutScreenState,
                 onEvent = { aboutViewModel.handleEvent(it) },
-                modifier = modifier
+                modifier = modifier,
+                imageLoader = imageLoader
             )
         }
         navigation(route = NavItem.Tab.CurrentWidget.route, startDestination = currentWidgetStartDestination) {
@@ -269,7 +278,8 @@ fun NavHost(
                     screenState = screenState,
                     onEvent = { inCarViewModel.handleEvent(it) },
                     modifier = modifier,
-                    appsLoader = inCarViewModel.appsLoader
+                    appsLoader = inCarViewModel.appsLoader,
+                    imageLoader = imageLoader
                 )
                 LaunchedEffect(true) {
                     inCarViewModel.viewActions.collect {
@@ -301,7 +311,10 @@ fun NavHost(
 fun PreviewPreferencesScreenLight() {
     CarWidgetTheme {
         Surface {
-            MainScreen(screenState = MainViewState())
+            MainScreen(
+                screenState = MainViewState(),
+                imageLoader = ImageLoader.Builder(LocalContext.current).build()
+            )
         }
     }
 }

@@ -4,10 +4,9 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import coil.ImageLoader
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.db.Shortcut
-import info.anodsplace.carwidget.content.db.ShortcutIcon
-import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
@@ -22,7 +21,6 @@ import org.koin.core.scope.Scope
 
 data class ShortcutEditViewState(
     val shortcut: Shortcut? = null,
-    val icon: ShortcutIcon? = null,
     val position: Int = -1,
     val shortcutId: Long = -1,
     val expanded: Boolean = false
@@ -55,9 +53,9 @@ class ShortcutEditViewModel(
     override val scope: Scope = appWidgetIdScope.scope
     private val appScope: AppCoroutineScope by inject()
     private val shortcutsDatabase: ShortcutsDatabase = get()
-    private val iconLoader: ShortcutIconLoader = get()
-    private val widgetSettings: WidgetInterface by inject()
     private val model: WidgetShortcutsModel by inject()
+    val widgetSettings: WidgetInterface by inject()
+    val imageLoader: ImageLoader by inject()
 
     init {
         viewState = ShortcutEditViewState(
@@ -66,13 +64,7 @@ class ShortcutEditViewModel(
         )
         viewModelScope.launch {
             shortcutsDatabase.observeShortcut(shortcutId).collect { shortcut ->
-
-                if (shortcut != null) {
-                    val icon = iconLoader.load(shortcut, widgetSettings.adaptiveIconStyle)
-                    viewState = viewState.copy(shortcut = shortcut, icon = icon)
-                } else {
-                    viewState = viewState.copy(shortcut = null, icon = null)
-                }
+                viewState = viewState.copy(shortcut = shortcut)
             }
         }
     }

@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.ImageLoader
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
@@ -80,7 +81,7 @@ fun AboutTitle(@StringRes titleRes: Int) {
 }
 
 @Composable
-fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) -> Unit, modifier: Modifier = Modifier) {
+fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) -> Unit, imageLoader: ImageLoader, modifier: Modifier = Modifier) {
     var restoreAnimation by remember { mutableStateOf(false) }
     var backupInCarAnimation by remember { mutableStateOf(false) }
     var backupWidgetAnimation by remember { mutableStateOf(false) }
@@ -205,7 +206,9 @@ fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) 
             onClick = { entry ->
                 onEvent(AboutScreenStateEvent.ChangeMusicApp(entry.componentName))
                 showMusicAppDialog = false
-            })
+            },
+            imageLoader = imageLoader
+        )
     }
 }
 
@@ -215,7 +218,8 @@ fun PreviewAboutScreenLight() {
     CarWidgetTheme {
             AboutScreen(
                 screenState = AboutScreenState(0, 0, "Light", "CHOICE", "DUMMY"),
-                onEvent = { }
+                onEvent = { },
+                imageLoader = ImageLoader.Builder(LocalContext.current).build()
             )
     }
 }

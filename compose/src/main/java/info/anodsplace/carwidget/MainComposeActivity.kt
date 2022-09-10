@@ -63,7 +63,8 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
                     viewActions = mainViewModel.viewActions,
                     onViewAction = { onViewAction(it) },
                     onEvent = { mainViewModel.handleEvent(it) },
-                    appWidgetIdScope = mainViewModel.appWidgetIdScope
+                    appWidgetIdScope = mainViewModel.appWidgetIdScope,
+                    imageLoader = mainViewModel.imageLoader
                 )
             }
         }
