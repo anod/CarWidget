@@ -27,8 +27,6 @@ import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.compose.PreferenceCategory
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.framework.content.CreateDocument
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.launch
 import java.util.*
 
 @Composable
@@ -82,8 +80,7 @@ fun AboutTitle(@StringRes titleRes: Int) {
 }
 
 @Composable
-fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUiAction>, modifier: Modifier = Modifier) {
-    val coroutinesScope = rememberCoroutineScope()
+fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) -> Unit, modifier: Modifier = Modifier) {
     var restoreAnimation by remember { mutableStateOf(false) }
     var backupInCarAnimation by remember { mutableStateOf(false) }
     var backupWidgetAnimation by remember { mutableStateOf(false) }
@@ -94,7 +91,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
         if (destUri == null) {
             restoreAnimation = false
         } else {
-            coroutinesScope.launch { action.emit(AboutUiAction.Restore(destUri)) }
+            onEvent(AboutScreenStateEvent.Restore(destUri))
         }
     }
 
@@ -102,7 +99,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
         if (destUri == null) {
             backupInCarAnimation = false
         } else {
-            coroutinesScope.launch { action.emit(AboutUiAction.BackupInCar(destUri)) }
+            onEvent(AboutScreenStateEvent.BackupInCar(destUri))
         }
     }
 
@@ -110,7 +107,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
         if (destUri == null) {
             backupWidgetAnimation = false
         } else {
-            coroutinesScope.launch { action.emit(AboutUiAction.BackupWidget(destUri)) }
+            onEvent(AboutScreenStateEvent.BackupWidget(destUri))
         }
     }
 
@@ -132,7 +129,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
         ) {
             AboutTitle(titleRes = R.string.app_preferences)
             AboutButton(titleRes = R.string.app_theme, subtitle = screenState.themeName, onClick = {
-                coroutinesScope.launch { action.emit(AboutUiAction.ChangeTheme) }
+                onEvent(AboutScreenStateEvent.ChangeTheme)
             })
             AboutButton(titleRes = R.string.music_app, subtitle = screenState.musicApp, onClick = {
                 showMusicAppDialog = true
@@ -154,7 +151,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
                         )
                     } catch (e: Exception) {
                         AppLog.e(e)
-                        coroutinesScope.launch { action.emit(AboutUiAction.ShowToast("Cannot start activity: ACTION_CREATE_DOCUMENT")) }
+                        onEvent(AboutScreenStateEvent.ShowToast("Cannot start activity: ACTION_CREATE_DOCUMENT"))
                     }
                 })
             AboutButton(titleRes = R.string.backup_incar_settings, loader = backupInCarAnimation, onClick = {
@@ -163,7 +160,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
                     createDocumentLauncherInCar.launch(CreateDocument.Args("application/json", Backup.FILE_INCAR_JSON))
                 } catch (e: Exception) {
                     AppLog.e(e)
-                    coroutinesScope.launch { action.emit(AboutUiAction.ShowToast("Cannot start activity: ACTION_CREATE_DOCUMENT")) }
+                    onEvent(AboutScreenStateEvent.ShowToast("Cannot start activity: ACTION_CREATE_DOCUMENT"))
                 }
             })
             AboutButton(titleRes = R.string.restore, loader = restoreAnimation, onClick = {
@@ -172,7 +169,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
             })
             AboutTitle(titleRes = R.string.information_title)
             AboutButton(title = screenState.appVersion, subtitle = stringResource(id = R.string.version_summary), onClick = {
-                coroutinesScope.launch { action.emit(AboutUiAction.OpenPlayStoreDetails) }
+                onEvent(AboutScreenStateEvent.OpenPlayStoreDetails)
             })
         }
     }
@@ -186,7 +183,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
                     Text(text = stringResource(id = R.string.cardock_text1))
                     Button(
                         modifier = Modifier.padding(16.dp),
-                        onClick = { coroutinesScope.launch { action.emit(AboutUiAction.OpenDefaultCarDock) } }
+                        onClick = { onEvent(AboutScreenStateEvent.OpenDefaultCarDock) }
                     ) { Text(text = stringResource(id = R.string.cardock_btn_1)) }
                     Text(text = stringResource(id = R.string.cardock_text2))
                 }
@@ -206,9 +203,7 @@ fun AboutScreen(screenState: AboutScreenState, action: MutableSharedFlow<AboutUi
             loader = loader,
             onDismissRequest = { showMusicAppDialog = false },
             onClick = { entry ->
-                coroutinesScope.launch {
-                    action.emit(AboutUiAction.ChangeMusicApp(entry.componentName))
-                }
+                onEvent(AboutScreenStateEvent.ChangeMusicApp(entry.componentName))
                 showMusicAppDialog = false
             })
     }
@@ -220,7 +215,7 @@ fun PreviewAboutScreenLight() {
     CarWidgetTheme {
             AboutScreen(
                 screenState = AboutScreenState(0, 0, "Light", "CHOICE", "DUMMY"),
-                action = MutableSharedFlow()
+                onEvent = { }
             )
     }
 }

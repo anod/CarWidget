@@ -31,7 +31,6 @@ import info.anodsplace.carwidget.screens.shortcuts.EditShortcut
 import info.anodsplace.carwidget.screens.widget.*
 import info.anodsplace.carwidget.screens.wizard.WizardScreen
 import info.anodsplace.compose.RequestPermissionsScreen
-import info.anodsplace.compose.ScreenLoadState
 import info.anodsplace.compose.findActivity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -194,28 +193,23 @@ fun NavHost(
     NavHost(navController, startDestination = startDestination, route = startRoute) {
         composable(route = NavItem.Tab.Widgets.route) {
             val widgetsListViewModel: WidgetsListViewModel = viewModel()
-            val widgetsState by widgetsListViewModel.loadScreen().collectAsState(initial = ScreenLoadState.Loading)
-            if (widgetsState is ScreenLoadState.Ready<WidgetListScreenState>) {
-                Box(modifier = modifier) {
-                    WidgetsListScreen(
-                        screen = (widgetsState as ScreenLoadState.Ready<WidgetListScreenState>).value,
-                        onClick = { appWidgetId -> onEvent(MainViewEvent.OpenWidgetConfig(appWidgetId)) },
-                        modifier = Modifier
-                    )
-                }
+            val widgetsState by widgetsListViewModel.viewStates.collectAsState(initial = widgetsListViewModel.viewState)
+            Box(modifier = modifier) {
+                WidgetsListScreen(
+                    screen = widgetsState,
+                    onClick = { appWidgetId -> onEvent(MainViewEvent.OpenWidgetConfig(appWidgetId)) },
+                    modifier = Modifier
+                )
             }
         }
         composable(route = NavItem.Tab.About.route) {
-            val appContext = LocalContext.current.applicationContext
-            val aboutViewModel: AboutViewModel = viewModel(factory = AboutViewModel.Factory(appContext, appWidgetIdScope))
-            val aboutScreenState by aboutViewModel.screenState.collectAsState(initial = null)
-            if (aboutScreenState != null) {
-                AboutScreen(
-                    screenState = aboutScreenState!!,
-                    action = aboutViewModel.uiAction,
-                    modifier = modifier
-                )
-            }
+            val aboutViewModel: AboutViewModel = viewModel(factory = AboutViewModel.Factory(appWidgetIdScope))
+            val aboutScreenState by aboutViewModel.viewStates.collectAsState(initial = aboutViewModel.viewState)
+            AboutScreen(
+                screenState = aboutScreenState,
+                onEvent = { aboutViewModel.handleEvent(it) },
+                modifier = modifier
+            )
         }
         navigation(route = NavItem.Tab.CurrentWidget.route, startDestination = currentWidgetStartDestination) {
             composable(route = NavItem.Tab.CurrentWidget.Skin.route) {

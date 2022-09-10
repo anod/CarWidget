@@ -1,7 +1,7 @@
 package com.anod.car.home
 
 import com.anod.car.home.appwidget.WidgetViewBuilder
-import com.anod.car.home.prefs.lookandfeel.SkinPreviewIntentFactory
+import com.anod.car.home.prefs.SkinPreviewIntentFactory
 import info.anodsplace.carwidget.appwidget.DummyWidgetView
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory

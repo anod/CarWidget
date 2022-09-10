@@ -1,4 +1,4 @@
-package com.anod.car.home.prefs.lookandfeel
+package com.anod.car.home.prefs
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager

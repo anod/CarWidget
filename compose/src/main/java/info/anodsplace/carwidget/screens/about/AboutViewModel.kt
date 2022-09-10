@@ -1,16 +1,13 @@
 package info.anodsplace.carwidget.screens.about
 
-import android.app.Application
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.AppCoroutineScope
@@ -21,23 +18,11 @@ import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.extensions.openDefaultCarDock
 import info.anodsplace.carwidget.extensions.openPlayStoreDetails
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
+import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
-
-sealed class AboutUiAction {
-    object ChangeTheme: AboutUiAction()
-    object OpenPlayStoreDetails: AboutUiAction()
-    object OpenDefaultCarDock: AboutUiAction()
-    class BackupWidget(val dstUri: Uri) : AboutUiAction()
-    class BackupInCar(val dstUri: Uri) : AboutUiAction()
-    class Restore(val srcUri: Uri) : AboutUiAction()
-    class ShowToast(val text: String) : AboutUiAction()
-    class ChangeMusicApp(val component: ComponentName?) : AboutUiAction()
-}
 
 data class AboutScreenState(
     val appWidgetId: Int,
@@ -52,83 +37,85 @@ data class AboutScreenState(
         get() = appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID
 }
 
-class AboutViewModel(application: Application, private val appWidgetIdScope: AppWidgetIdScope?): AndroidViewModel(application), KoinComponent {
+sealed interface AboutScreenStateEvent {
+    object ChangeTheme: AboutScreenStateEvent
+    object OpenPlayStoreDetails: AboutScreenStateEvent
+    object OpenDefaultCarDock: AboutScreenStateEvent
+    class BackupWidget(val dstUri: Uri) : AboutScreenStateEvent
+    class BackupInCar(val dstUri: Uri) : AboutScreenStateEvent
+    class Restore(val srcUri: Uri) : AboutScreenStateEvent
+    class ShowToast(val text: String) : AboutScreenStateEvent
+    class ChangeMusicApp(val component: ComponentName?) : AboutScreenStateEvent
+}
 
-    class Factory(
-            private val application: Context,
-            private val appWidgetIdScope: AppWidgetIdScope?
-    ): ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return AboutViewModel(application as Application, appWidgetIdScope) as T
-        }
+sealed interface AboutScreenStateAction
+
+class AboutViewModel(private val appWidgetIdScope: AppWidgetIdScope?): BaseFlowViewModel<AboutScreenState, AboutScreenStateEvent, AboutScreenStateAction>(), KoinComponent {
+
+    class Factory(private val appWidgetIdScope: AppWidgetIdScope?): ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = AboutViewModel(appWidgetIdScope) as T
     }
 
-    private val context: Context
-        get() = getApplication()
+    private val context: Context by inject()
     private val backupManager: BackupManager by inject()
     private val themes = context.resources.getStringArray(R.array.app_themes)
     private val appSettings: AppSettings
         get() = get()
 
     private val appScope: AppCoroutineScope by inject()
-    val uiAction = MutableSharedFlow<AboutUiAction>()
-    val screenState: MutableStateFlow<AboutScreenState> = MutableStateFlow(
-            AboutScreenState(
-                appWidgetId = +appWidgetIdScope,
-                themeIndex = appSettings.theme,
-                themeName = themes[appSettings.theme],
-                musicApp = renderMusicApp(),
-                appVersion = renderVersion(),
-            )
-    )
-
     init {
-        viewModelScope.launch {
-            uiAction.collect {
-                when (it) {
-                    is AboutUiAction.BackupInCar -> {
-                        appScope.launch {
-                            val code = backupManager.backup(null, it.dstUri)
-                            screenState.value = screenState.value.copy(backupStatus = code)
-                        }
-                    }
-                    is AboutUiAction.BackupWidget -> {
-                        appScope.launch {
-                            val code = backupManager.backup(appWidgetIdScope, it.dstUri)
-                            screenState.value = screenState.value.copy(backupStatus = code)
-                        }
-                    }
-                    AboutUiAction.ChangeTheme -> {
-                        val newThemeIdx = when (screenState.value.themeIndex) {
-                            AppSettings.system -> AppSettings.light
-                            AppSettings.light -> AppSettings.dark
-                            AppSettings.dark -> AppSettings.system
-                            else -> AppSettings.system
-                        }
-                        appSettings.theme = newThemeIdx
-                        appSettings.applyPending()
-                        screenState.value = screenState.value.copy(themeIndex = appSettings.theme, themeName = themes[newThemeIdx])
-                    }
-                    is AboutUiAction.ChangeMusicApp -> {
-                        appSettings.musicApp = it.component
-                        screenState.value = screenState.value.copy(musicApp = renderMusicApp())
-                    }
-                    is AboutUiAction.Restore -> {
-                        appScope.launch {
-                            val code = backupManager.restore(appWidgetIdScope, it.srcUri)
-                            screenState.value = screenState.value.copy(restoreStatus = code)
-                        }
-                    }
-                    AboutUiAction.OpenPlayStoreDetails -> {
-                        context.openPlayStoreDetails(context.packageName)
-                    }
-                    AboutUiAction.OpenDefaultCarDock -> {
-                        context.openDefaultCarDock()
-                    }
-                    is AboutUiAction.ShowToast -> {
-                        Toast.makeText(context, it.text, Toast.LENGTH_SHORT).show()
-                    }
+        viewState =  AboutScreenState(
+            appWidgetId = +appWidgetIdScope,
+            themeIndex = appSettings.theme,
+            themeName = themes[appSettings.theme],
+            musicApp = renderMusicApp(),
+            appVersion = renderVersion(),
+        )
+    }
+
+    override fun handleEvent(event: AboutScreenStateEvent) {
+        when (event) {
+            is AboutScreenStateEvent.BackupInCar -> {
+                appScope.launch {
+                    val code = backupManager.backup(null, event.dstUri)
+                    viewState = viewState.copy(backupStatus = code)
                 }
+            }
+            is AboutScreenStateEvent.BackupWidget -> {
+                appScope.launch {
+                    val code = backupManager.backup(appWidgetIdScope, event.dstUri)
+                    viewState = viewState.copy(backupStatus = code)
+                }
+            }
+            AboutScreenStateEvent.ChangeTheme -> {
+                val newThemeIdx = when (viewState.themeIndex) {
+                    AppSettings.system -> AppSettings.light
+                    AppSettings.light -> AppSettings.dark
+                    AppSettings.dark -> AppSettings.system
+                    else -> AppSettings.system
+                }
+                appSettings.theme = newThemeIdx
+                appSettings.applyPending()
+                viewState = viewState.copy(themeIndex = appSettings.theme, themeName = themes[newThemeIdx])
+            }
+            is AboutScreenStateEvent.ChangeMusicApp -> {
+                appSettings.musicApp = event.component
+                viewState = viewState.copy(musicApp = renderMusicApp())
+            }
+            is AboutScreenStateEvent.Restore -> {
+                appScope.launch {
+                    val code = backupManager.restore(appWidgetIdScope, event.srcUri)
+                    viewState = viewState.copy(restoreStatus = code)
+                }
+            }
+            AboutScreenStateEvent.OpenPlayStoreDetails -> {
+                context.openPlayStoreDetails(context.packageName)
+            }
+            AboutScreenStateEvent.OpenDefaultCarDock -> {
+                context.openDefaultCarDock()
+            }
+            is AboutScreenStateEvent.ShowToast -> {
+                Toast.makeText(context, event.text, Toast.LENGTH_SHORT).show()
             }
         }
     }

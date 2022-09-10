@@ -1,10 +1,9 @@
 package info.anodsplace.carwidget.screens.main
 
-import android.app.Application
 import android.util.SparseArray
 import androidx.annotation.StringRes
 import androidx.core.util.isEmpty
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.db.Shortcut
@@ -12,9 +11,9 @@ import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.compose.ScreenLoadState
+import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.java.KoinJavaComponent.inject
@@ -40,28 +39,59 @@ interface WidgetItem {
 }
 
 data class WidgetListScreenState(
-    val items: List<WidgetItem>,
-    val isServiceRequired: Boolean,
-    val isServiceRunning: Boolean,
-    val eventsState: List<InCarStatus.EventState>,
-    @StringRes val statusResId: Int
+    val loadState: ScreenLoadState<Unit> = ScreenLoadState.Loading,
+    val items: List<WidgetItem> = emptyList(),
+    val isServiceRequired: Boolean = false,
+    val isServiceRunning: Boolean = false,
+    val eventsState: List<InCarStatus.EventState> = emptyList(),
+    @StringRes val statusResId: Int = 0
 )
 
-class WidgetsListViewModel(application: Application) : AndroidViewModel(application), KoinComponent {
+sealed interface WidgetListScreenEvent {
+    object LoadWidgetList : WidgetListScreenEvent
+}
+
+sealed interface WidgetListScreenAction
+
+class WidgetsListViewModel : BaseFlowViewModel<WidgetListScreenState, WidgetListScreenEvent, WidgetListScreenAction>(), KoinComponent {
     private val widgetIds: WidgetIds by inject(WidgetIds::class.java)
     private val inCarStatus: InCarStatus by inject(InCarStatus::class.java)
 
-    fun loadScreen(): Flow<ScreenLoadState<WidgetListScreenState>> = flow {
-        val newItems = loadWidgetList()
-        emit(ScreenLoadState.Ready(
-            WidgetListScreenState(
-                items = newItems,
-                isServiceRequired = inCarStatus.isServiceRequired,
-                isServiceRunning = inCarStatus.isServiceRunning,
-                statusResId = inCarStatus.resId,
-                eventsState = inCarStatus.eventsState().sortedWith(compareBy({ !it.enabled }, { !it.active }))
-            )
-        ))
+    init {
+        viewState = WidgetListScreenState(
+            items = emptyList(),
+            isServiceRequired = inCarStatus.isServiceRequired,
+            isServiceRunning = inCarStatus.isServiceRunning,
+            statusResId = inCarStatus.resId,
+            eventsState = inCarStatus.eventsState().sortedWith(compareBy({ !it.enabled }, { !it.active }))
+        )
+        handleEvent(WidgetListScreenEvent.LoadWidgetList)
+    }
+
+    override fun handleEvent(event: WidgetListScreenEvent) {
+        when (event) {
+            WidgetListScreenEvent.LoadWidgetList -> {
+                viewModelScope.launch {
+                    try {
+                        val newItems = loadWidgetList()
+                        updateState(loadState = ScreenLoadState.Ready(Unit), items = newItems)
+                    } catch (e: Exception) {
+                        updateState(loadState = ScreenLoadState.Error(e.message ?: "Loading error", e), items = emptyList())
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateState(loadState: ScreenLoadState<Unit>, items: List<WidgetItem>) {
+        viewState = viewState.copy(
+            loadState = loadState,
+            items = items,
+            isServiceRequired = inCarStatus.isServiceRequired,
+            isServiceRunning = inCarStatus.isServiceRunning,
+            statusResId = inCarStatus.resId,
+            eventsState = inCarStatus.eventsState().sortedWith(compareBy({ !it.enabled }, { !it.active }))
+        )
     }
 
     private suspend fun loadWidgetList(): List<WidgetItem> = withContext(Dispatchers.Default) {
@@ -87,4 +117,5 @@ class WidgetsListViewModel(application: Application) : AndroidViewModel(applicat
 
         return@withContext newItems
     }
+
 }

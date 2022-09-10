@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Widgets
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,6 +33,7 @@ import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.content.graphics.imageLoader
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
+import info.anodsplace.compose.ScreenLoadState
 
 @Composable
 fun Modifier.cardStyle(): Modifier = then(
@@ -164,6 +166,22 @@ fun InCarHeader(screen: WidgetListScreenState) {
 
 @Composable
 fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier, imageLoader: ImageLoader = LocalContext.current.imageLoader) {
+    when (val loadState = screen.loadState) {
+        is ScreenLoadState.Ready -> {
+            WidgetsLisItems(
+                screen = screen,
+                onClick = onClick,
+                modifier = modifier,
+                imageLoader = imageLoader
+            )
+        }
+        is ScreenLoadState.Error -> Text(text = loadState.message, color = MaterialTheme.colorScheme.error)
+        ScreenLoadState.Loading -> CircularProgressIndicator()
+    }
+}
+
+@Composable
+fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier, imageLoader: ImageLoader = LocalContext.current.imageLoader) {
     if (screen.items.isEmpty()) {
         Column(
             modifier = modifier
@@ -248,9 +266,10 @@ fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int)
 @Preview("Widgets Screen Light")
 @Composable
 fun PreviewWidgetsScreenLight() {
-    CarWidgetTheme() {
+    CarWidgetTheme {
             WidgetsListScreen(
                 WidgetListScreenState(
+                    loadState = ScreenLoadState.Ready(Unit),
                     items = listOf( WidgetItem.Shortcut(appWidgetId = 0) ),
                     isServiceRunning = false,
                     isServiceRequired = true,
