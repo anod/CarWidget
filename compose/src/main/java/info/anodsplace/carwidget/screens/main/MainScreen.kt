@@ -58,9 +58,10 @@ fun MainScreen(
                     activity = context.findActivity()
                 )
             )
+            val viewState by permissionsViewModel.viewStates.collectAsState(initial = permissionsViewModel.viewState)
             RequestPermissionsScreen(
-                input = permissionsViewModel.missingPermissions,
-                screenDescription = permissionsViewModel.screenDescription
+                input = viewState.missingPermissions,
+                screenDescription = viewState.screenDescription
             ) {
                 if (permissionsViewModel.updatePermissions(context.findActivity())) {
                     onEvent(MainViewEvent.PermissionAcquired)

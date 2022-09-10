@@ -36,9 +36,9 @@ fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.Curre
     ) {
         ChooserGridList(
             emptyList(),
-            viewModel.items,
+            viewModel.viewState.items,
             onClick = { entry ->
-                viewModel.onSelect(entry)
+                viewModel.handleEvent(EditWidgetViewEvent.Select(entry))
                 onDismissRequest()
             },
             imageLoader = viewModel.imageLoader
