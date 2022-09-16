@@ -25,25 +25,27 @@ class WidgetSettings(context: Context, appWidgetIdScope: AppWidgetIdScope, priva
         val backgroundColor: Int
     }
 
+    private val defaultValues = WidgetInterface.NoOp()
+
     override var isFirstTime: Boolean
         get() = prefs.getBoolean(FIRST_TIME, true)
         set(value) = applyChange(FIRST_TIME, value)
 
     override var iconsTheme: String
-        get() = prefs.getString(ICONS_THEME, "")!!
+        get() = prefs.getString(ICONS_THEME, defaultValues.iconsTheme)!!
         set(iconsTheme) = applyChange(ICONS_THEME, iconsTheme)
 
     override var isSettingsTransparent: Boolean
-        get() = prefs.getBoolean(TRANSPARENT_BTN_SETTINGS, false)
+        get() = prefs.getBoolean(TRANSPARENT_BTN_SETTINGS, defaultValues.isSettingsTransparent)
         set(settingsTransparent) = applyChange(TRANSPARENT_BTN_SETTINGS, settingsTransparent)
 
     override var isIncarTransparent: Boolean
-        get() = prefs.getBoolean(TRANSPARENT_BTN_INCAR, false)
+        get() = prefs.getBoolean(TRANSPARENT_BTN_INCAR, defaultValues.isIncarTransparent)
         set(incarTransparent) = applyChange(TRANSPARENT_BTN_INCAR, incarTransparent)
 
     override var skin: String
         get() {
-            val value = prefs.getString(SKIN, WidgetInterface.SKIN_YOU)!!
+            val value = prefs.getString(SKIN, defaultValues.skin)!!
             if (value.isEmpty()) {
                 return WidgetInterface.SKIN_YOU
             }
@@ -58,7 +60,7 @@ class WidgetSettings(context: Context, appWidgetIdScope: AppWidgetIdScope, priva
         set(tileColor) = applyChange(BUTTON_COLOR, tileColor)
 
     override var isIconsMono: Boolean
-        get() = prefs.getBoolean(ICONS_MONO, false)
+        get() = prefs.getBoolean(ICONS_MONO, defaultValues.isIconsMono)
         set(iconsMono) = applyChange(ICONS_MONO, iconsMono)
 
     override var iconsColor: Int?
@@ -66,7 +68,7 @@ class WidgetSettings(context: Context, appWidgetIdScope: AppWidgetIdScope, priva
         set(iconsColor) = applyChange(ICONS_COLOR, iconsColor)
 
     override var iconsScale: String
-        get() = prefs.getString(ICONS_SCALE, ICONS_DEF_VALUE)!!
+        get() = prefs.getString(ICONS_SCALE, defaultValues.iconsScale)!!
         set(value) { applyChange(ICONS_SCALE, value) }
 
     override var fontColor: Int?
@@ -79,7 +81,7 @@ class WidgetSettings(context: Context, appWidgetIdScope: AppWidgetIdScope, priva
         }
 
     override var fontSize: Int
-        get() = prefs.getInt(FONT_SIZE, WidgetInterface.FONT_SIZE_UNDEFINED)
+        get() = prefs.getInt(FONT_SIZE, defaultValues.fontSize)
         set(fontSize) = applyChange(FONT_SIZE, fontSize)
 
     override var backgroundColor: Int
@@ -88,32 +90,32 @@ class WidgetSettings(context: Context, appWidgetIdScope: AppWidgetIdScope, priva
 
     override var iconsRotate: BitmapRotateDirection
         get() = BitmapRotateDirection
-                .valueOf(prefs.getString(ICONS_ROTATE, BitmapRotateDirection.NONE.name)!!)
+                .valueOf(prefs.getString(ICONS_ROTATE, defaultValues.iconsRotate.name)!!)
         set(iconsRotate) = applyChange(ICONS_ROTATE, iconsRotate.name)
 
     override var isTitlesHide: Boolean
-        get() = prefs.getBoolean(TITLES_HIDE, false)
+        get() = prefs.getBoolean(TITLES_HIDE, defaultValues.isTitlesHide)
         set(titlesHide) = applyChange(TITLES_HIDE, titlesHide)
 
     override var widgetButton1: Int
-        get() = prefs.getInt(WIDGET_BUTTON_1, WidgetInterface.WIDGET_BUTTON_INCAR)
+        get() = prefs.getInt(WIDGET_BUTTON_1, defaultValues.widgetButton1)
         set(widgetButton1) = applyChange(WIDGET_BUTTON_1, widgetButton1)
 
     override var widgetButton2: Int
-        get() = prefs.getInt(WIDGET_BUTTON_2, WidgetInterface.WIDGET_BUTTON_SETTINGS)
+        get() = prefs.getInt(WIDGET_BUTTON_2, defaultValues.widgetButton2)
         set(widgetButton2) = applyChange(WIDGET_BUTTON_2, widgetButton2)
 
     override var adaptiveIconStyle: String
-        get() = prefs.getString(ADAPTIVE_ICON_STYLE, "")!!
+        get() = prefs.getString(ADAPTIVE_ICON_STYLE, defaultValues.adaptiveIconStyle)!!
         set(style) = applyChange(ADAPTIVE_ICON_STYLE, style)
 
     override var paletteBackground: Boolean
-        get() = prefs.getBoolean(PALETTE_BG, false)
+        get() = prefs.getBoolean(PALETTE_BG, defaultValues.paletteBackground)
         set(paletteBackground) = applyChange(PALETTE_BG, paletteBackground)
 
     override var shortcutsNumber: Int
         get() {
-            val num = prefs.getInt(WidgetStorage.CMP_NUMBER, WidgetStorage.LAUNCH_COMPONENT_NUMBER_DEFAULT)
+            val num = prefs.getInt(WidgetStorage.CMP_NUMBER, defaultValues.shortcutsNumber)
             return if (num == 0) WidgetStorage.LAUNCH_COMPONENT_NUMBER_DEFAULT else min(num, WidgetStorage.LAUNCH_COMPONENT_NUMBER_MAX)
         }
         set(value) = applyChange(WidgetStorage.CMP_NUMBER, min(value, WidgetStorage.LAUNCH_COMPONENT_NUMBER_MAX))
@@ -205,7 +207,6 @@ class WidgetSettings(context: Context, appWidgetIdScope: AppWidgetIdScope, priva
         const val TITLES_HIDE = "titles-hide"
         private const val WIDGET_BUTTON_1 = "widget-button-1"
         private const val WIDGET_BUTTON_2 = "widget-button-2"
-        private const val ICONS_DEF_VALUE = "5"
         const val ADAPTIVE_ICON_STYLE = "adaptive-icon-style"
 
         private fun getColor(key: String, prefs: SharedPreferences): Int? {

@@ -49,15 +49,15 @@ interface WidgetInterface {
         override var tileColor: Int = 0,
         override var isIconsMono: Boolean = false,
         override var iconsColor: Int? = null,
-        override var iconsScale: String = "5",
+        override var iconsScale: String = ICONS_DEF_SCALE,
         override var fontColor: Int? = null,
-        override var fontSize: Int = 0,
+        override var fontSize: Int = FONT_SIZE_UNDEFINED,
         override var backgroundColor: Int = 0,
         override var iconsRotate: BitmapRotateDirection = BitmapRotateDirection.NONE,
         override var isTitlesHide: Boolean = false,
-        override var widgetButton1: Int = 0,
-        override var widgetButton2: Int = 0,
-        override var shortcutsNumber: Int = 8,
+        override var widgetButton1: Int = WIDGET_BUTTON_INCAR,
+        override var widgetButton2: Int = WIDGET_BUTTON_SETTINGS,
+        override var shortcutsNumber: Int = WidgetStorage.LAUNCH_COMPONENT_NUMBER_DEFAULT,
         override var paletteBackground: Boolean = false,
         override var adaptiveIconStyle: String = ""
     ) : WidgetInterface {
@@ -100,6 +100,8 @@ interface WidgetInterface {
         const val WIDGET_BUTTON_INCAR = 1
         const val WIDGET_BUTTON_SETTINGS = 2
         const val WIDGET_BUTTON_HIDDEN = 3
+
+        private const val ICONS_DEF_SCALE = "5"
 
         const val SKIN_GLOSSY = "glossy"
         const val SKIN_CARHOME = "carhome"

@@ -25,7 +25,7 @@ interface PendingIntentFactory {
             appWidgetId: Int,
             position: Int,
             shortcutId: Long
-        ) = null
+        ): PendingIntent? = null
         override fun createInCar(on: Boolean, buttonId: Int): PendingIntent = intent
     }
 }

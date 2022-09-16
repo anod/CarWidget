@@ -27,6 +27,7 @@ import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.shortcuts.DummyWidgetShortcutsModel
+import info.anodsplace.carwidget.skin.SkinPropertiesFactory
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -95,8 +96,9 @@ interface SkinPreviewViewModel : SkinViewFactory {
     fun handleEvent(event: SkinPreviewViewEvent)
 }
 
-class DummySkinPreviewViewModel(private val context: Context, private val skinProperties: SkinProperties): ViewModel(), SkinPreviewViewModel {
+class DummySkinPreviewViewModel(private val context: Context): ViewModel(), SkinPreviewViewModel {
     private val widgetSettings: WidgetInterface = WidgetInterface.NoOp()
+    private val skinProperties: SkinProperties = SkinPropertiesFactory.create(widgetSettings.skin)
 
     override val viewActions: Flow<SkinPreviewViewAction> = emptyFlow()
     override val viewState : SkinPreviewViewState
@@ -114,6 +116,7 @@ class DummySkinPreviewViewModel(private val context: Context, private val skinPr
     override suspend fun create(overrideSkin: SkinList.Item): View {
         val intentFactory: PendingIntentFactory = PendingIntentFactory.NoOp(context)
         val shortcuts = DummyWidgetShortcutsModel(context)
+        shortcuts.init()
         val widgetView: WidgetView = SkinWidgetView(
             skinProperties = skinProperties,
             shortcuts = shortcuts,

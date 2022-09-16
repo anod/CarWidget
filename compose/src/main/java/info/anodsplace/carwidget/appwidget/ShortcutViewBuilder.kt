@@ -60,7 +60,6 @@ class ShortcutViewBuilder(
         if (backgroundProcessor != null) {
             setIconBackground(icon, resBtn, views)
         }
-
     }
 
     private fun setIconBackground(icon: Bitmap?, res: Int, views: RemoteViews) {
