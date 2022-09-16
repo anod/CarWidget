@@ -120,4 +120,5 @@ android {
     lint {
         warning.add("InvalidFragmentVersionForActivityResult")
     }
+    namespace = "com.anod.car.home"
 }

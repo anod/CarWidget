@@ -23,6 +23,7 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    namespace = "info.anodsplace.carwidget.skin"
 }
 
 dependencies {

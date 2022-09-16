@@ -32,6 +32,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.3.1"
     }
+    namespace = "info.anodsplace.carwidget"
 }
 
 dependencies {

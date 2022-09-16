@@ -10,6 +10,7 @@ plugins {
 }
 
 android {
+    namespace = "info.anodsplace.carwidget.content"
     compileSdk = 33
 
     defaultConfig {
