@@ -7,9 +7,9 @@ $opts = getopt("an:");
 
 $files = [];
 if (isset($opts['a'])) {
-	$files = glob("app/src/main/res/layout*/sk_[a-z]*_[0-9]*.xml");
+	$files = glob("skins/src/main/res/layout*/sk_[a-z]*_[0-9]*.xml");
 } else if (isset($opts['n'])) {
-	$files = glob("app/src/main/res/layout*/sk_".$opts['n']."_[0-9]*.xml");
+	$files = glob("skins/src/main/res/layout*/sk_".$opts['n']."_[0-9]*.xml");
 	if (!$files) {
 		echo "Theme '".$opts['n']."' not found. \n";
 		exit(1);

@@ -35,7 +35,7 @@ dependencies {
     implementation(project(":lib:graphics"))
     implementation(project(":lib:ktx"))
     implementation("io.insert-koin:koin-core:3.2.0")
-    implementation("io.coil-kt:coil-base:2.1.0")
+    implementation("io.coil-kt:coil-base:2.2.0")
 
     implementation("com.squareup.sqldelight:android-driver:1.5.3")
     implementation("com.squareup.sqldelight:coroutines-extensions-jvm:1.5.3")

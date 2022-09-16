@@ -3,6 +3,11 @@ package info.anodsplace.carwidget.content
 import info.anodsplace.carwidget.content.graphics.IconProcessor
 
 interface SkinProperties {
+    val buttonTransparentResId: Int
+    val buttonAlternativeHiddenResId: Int
+    val widgetButton1Id: Int
+    val widgetButton2Id: Int
+    val containerId: Int
     val inCarButtonExitRes: Int
     val inCarButtonEnterRes: Int
     val setShortcutRes: Int
@@ -15,4 +20,6 @@ interface SkinProperties {
     val fontColorRes: Int
     fun getLayout(number: Int): Int
     fun hasWidgetButton1(): Boolean
+    fun shortcutIdAt(position: Int): Int
+    fun shortcutTextIdAt(position: Int): Int
 }

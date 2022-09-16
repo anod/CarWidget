@@ -56,6 +56,7 @@ class MainViewModel(
     requiredPermissions: List<AppPermission>,
     val appWidgetIdScope: AppWidgetIdScope?,
 ) : BaseFlowViewModel<MainViewState, MainViewEvent, MainViewAction>(), KoinScopeComponent {
+
     class Factory(
         private val appWidgetIdScope: AppWidgetIdScope?,
         private val activity: ComponentActivity,

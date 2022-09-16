@@ -15,6 +15,7 @@ plugins {
 dependencies {
     implementation(project(":content"))
     implementation(project(":compose"))
+    implementation(project(":skins"))
     implementation(project(":lib:applog"))
     implementation(project(":lib:graphics"))
     implementation(project(":lib:framework"))
@@ -22,7 +23,7 @@ dependencies {
     implementation(project(":lib:permissions"))
 
     implementation("io.insert-koin:koin-core:3.2.0")
-    implementation("io.coil-kt:coil-base:2.1.0")
+    implementation("io.coil-kt:coil-base:2.2.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
@@ -31,7 +32,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:20.0.0")
     implementation("com.google.android.material:material:1.6.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
-    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.activity:activity:1.5.1")
     implementation("androidx.fragment:fragment:1.5.2")
     implementation("androidx.fragment:fragment-ktx:1.5.2")

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="default_background">#00000000</color>
+    <color name="w7_tale_default_background">#881AA1E3</color>
+    <color name="w7_tale_default_background_highlight">#884AB0E2</color>
+    <color name="default_font_color">#ffffffff</color>
+    <color name="holo_text_bg">#33000000</color>
+</resources>

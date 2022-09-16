@@ -37,7 +37,7 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
         )
     }
 
-    open fun startConfigActivity(appWidgetId: Int) {}
+    open fun startConfigActivity(appWidgetId: Int) { }
     open fun requestWidgetUpdate(appWidgetId: Int) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {

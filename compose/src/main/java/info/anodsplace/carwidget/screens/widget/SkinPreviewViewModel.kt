@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.screens.widget
 
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.view.InflateException
 import android.view.View
@@ -13,14 +14,19 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
+import info.anodsplace.carwidget.appwidget.SkinWidgetView
 import info.anodsplace.carwidget.appwidget.WidgetView
 import info.anodsplace.carwidget.content.BitmapLruCache
+import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.db.Shortcut
+import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.unaryPlus
+import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
+import info.anodsplace.carwidget.content.shortcuts.DummyWidgetShortcutsModel
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -28,7 +34,6 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.core.component.KoinComponent
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -79,14 +84,8 @@ interface SkinViewFactory {
 }
 
 interface SkinPreviewViewModel : SkinViewFactory {
-    class Factory(private val appWidgetIdScope: AppWidgetIdScope?):
-        ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T  {
-            return if (appWidgetIdScope == null)
-                DummySkinPreviewViewModel() as T
-            else
-                RealSkinPreviewViewModel(appWidgetIdScope) as T
-        }
+    class Factory(private val appWidgetIdScope: AppWidgetIdScope): ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>) = RealSkinPreviewViewModel(appWidgetIdScope) as T
     }
 
     val viewActions: Flow<SkinPreviewViewAction>
@@ -96,9 +95,8 @@ interface SkinPreviewViewModel : SkinViewFactory {
     fun handleEvent(event: SkinPreviewViewEvent)
 }
 
-class DummySkinPreviewViewModel: ViewModel(), SkinPreviewViewModel, KoinComponent {
+class DummySkinPreviewViewModel(private val context: Context, private val skinProperties: SkinProperties): ViewModel(), SkinPreviewViewModel {
     private val widgetSettings: WidgetInterface = WidgetInterface.NoOp()
-    private val context: Context by inject()
 
     override val viewActions: Flow<SkinPreviewViewAction> = emptyFlow()
     override val viewState : SkinPreviewViewState
@@ -114,11 +112,21 @@ class DummySkinPreviewViewModel: ViewModel(), SkinPreviewViewModel, KoinComponen
     }
 
     override suspend fun create(overrideSkin: SkinList.Item): View {
-//        val intentFactory: PendingIntentFactory = PendingIntentFactory.NoOp(context)
-//        val widgetView: WidgetView = get(parameters = { parametersOf(bitmapMemoryCache, intentFactory, true, overrideSkin.value) })
-//        val remoteViews = widgetView.create()
-//        return renderPreview(remoteViews, context)
-        return View(context)
+        val intentFactory: PendingIntentFactory = PendingIntentFactory.NoOp(context)
+        val shortcuts = DummyWidgetShortcutsModel(context)
+        val widgetView: WidgetView = SkinWidgetView(
+            skinProperties = skinProperties,
+            shortcuts = shortcuts,
+            context = context,
+            widgetSettings = widgetSettings,
+            appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID,
+            pendingIntentFactory = intentFactory,
+            inCarMode = false,
+            inCarSettings = InCarInterface.NoOp(),
+            iconLoader = ShortcutIconLoader.AppOnly(context)
+        )
+        val remoteViews = widgetView.create()
+        return renderPreview(remoteViews, context)
     }
 
     override fun handleEvent(event: SkinPreviewViewEvent) {

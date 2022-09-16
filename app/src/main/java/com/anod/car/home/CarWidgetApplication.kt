@@ -15,7 +15,7 @@ import com.anod.car.home.incar.ModeDetector
 import com.anod.car.home.incar.ModeHandler
 import com.anod.car.home.incar.ModePhoneStateListener
 import com.anod.car.home.notifications.Channels
-import com.anod.car.home.skin.SkinPropertiesFactory
+import info.anodsplace.carwidget.skin.SkinPropertiesFactory
 import com.anod.car.home.utils.AppUpgrade
 import com.anod.car.home.utils.WidgetShortcutResource
 import com.anod.car.home.utils.permissionDescriptions
@@ -137,7 +137,7 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                         factory<WidgetSettings.DefaultsProvider> { DefaultsResourceProvider(get<Context>()) }
                         factory<ShortcutResources> { WidgetShortcutResource() }
                         factoryOf(::WidgetUpdateProvider) bind WidgetUpdate::class
-                        factory { (skinName: String) -> SkinPropertiesFactory.create(skinName) }
+                        factory { (skinName: String) -> info.anodsplace.carwidget.skin.SkinPropertiesFactory.create(skinName) }
                         factoryOf(::ScreenOrientation)
                         factoryOf(::AlertWindow)
                         factoryOf(::ScreenOnAlert)

@@ -48,7 +48,7 @@ fun MainScreen(
 ) {
     when (screenState.topDestination) {
         NavItem.Wizard -> {
-            WizardScreen()
+            WizardScreen(onEvent = onEvent)
         }
         NavItem.PermissionsRequest -> {
             val context = LocalContext.current
