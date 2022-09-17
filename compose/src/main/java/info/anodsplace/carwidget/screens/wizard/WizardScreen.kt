@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.screens.wizard
 import android.text.Html
 import android.text.Spanned
 import android.text.style.StyleSpan
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
@@ -79,6 +81,7 @@ fun WizardScreen(initialPage: Int = 0, modifier: Modifier = Modifier, onEvent: (
                         skinViewModel = DummySkinPreviewViewModel(LocalContext.current.applicationContext)
                     )
                     1 -> InstallPage()
+                    2 -> ConfigPage()
                     else -> { }
                 }
             }
@@ -140,6 +143,34 @@ fun InstallPage() {
 }
 
 @Composable
+fun ConfigPage() {
+    WizardPage(
+        title = stringResource(id = R.string.configure),
+        description = stringResource(id = R.string.configure_text)
+    ) {
+        Image(
+            modifier = Modifier.padding(top = 16.dp).fillMaxWidth(),
+            painter = painterResource(id = R.drawable.settings_preview),
+            contentDescription =  stringResource(id = R.string.configure),
+            alignment = Alignment.Center
+        )
+        Button(
+            modifier = Modifier.padding(top = 16.dp),
+            onClick = {  }) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_holo_settings),
+                contentDescription = null
+            )
+            val buttonText = stringResource(id = R.string.open_settings_description)
+            val buttonTextAnnotated = remember(buttonText) {
+                Html.fromHtml(buttonText, Html.FROM_HTML_MODE_COMPACT).toAnnotatedString()
+            }
+            Text(text = buttonTextAnnotated, modifier = Modifier.padding(start = 8.dp))
+        }
+    }
+}
+
+@Composable
 fun WizardPage(
     title: String,
     description: String,
@@ -181,5 +212,13 @@ fun PreviewScreen1() {
 fun PreviewScreen2() {
     CarWidgetTheme {
         WizardScreen(initialPage = 1, onEvent = { })
+    }
+}
+
+@Preview
+@Composable
+fun PreviewScreen3() {
+    CarWidgetTheme {
+        WizardScreen(initialPage = 2, onEvent = { })
     }
 }
