@@ -16,5 +16,5 @@
 	<dimen name="notification_button">56.0dip</dimen>
 
 	<dimen name="settings_icon_margin">2.0dip</dimen>
-	<dimen name="notification_padding">16dp</dimen>
+	<dimen name="notification_padding">0dp</dimen>
 </resources>

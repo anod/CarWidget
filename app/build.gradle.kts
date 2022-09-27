@@ -22,7 +22,7 @@ dependencies {
     implementation(project(":lib:colorpicker"))
     implementation(project(":lib:permissions"))
 
-    implementation("io.insert-koin:koin-core:3.2.0")
+    implementation("io.insert-koin:koin-core:3.2.1")
     implementation("io.coil-kt:coil-base:2.2.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
@@ -33,9 +33,10 @@ dependencies {
     implementation("com.google.android.material:material:1.6.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.activity:activity:1.5.1")
-    implementation("androidx.fragment:fragment:1.5.2")
-    implementation("androidx.fragment:fragment-ktx:1.5.2")
+    implementation("androidx.activity:activity:1.6.0")
+    implementation("androidx.fragment:fragment:1.5.3")
+    implementation("androidx.fragment:fragment-ktx:1.5.3")
+    implementation("androidx.core:core-splashscreen:1.0.0")
     implementation("androidx.collection:collection-ktx:1.2.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")

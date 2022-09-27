@@ -14,6 +14,7 @@ import info.anodsplace.carwidget.MainComposeActivity
  */
 class MainActivity : MainComposeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         BroadcastService.registerBroadcastService(applicationContext)
     }
