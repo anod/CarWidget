@@ -4,7 +4,7 @@
     <foreground>
         <inset
             android:width="108dp"
-            android:drawable="@drawable/ic_wheel"
+            android:drawable="@drawable/ic_splash_foreground"
             android:height="108dp"
             android:inset="14.8%" />
     </foreground>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<color name="ic_launcher_background">#EEEEEE</color>
 	<color name="background_holo_light">#fff3f3f3</color>
 	<color name="bright_foreground_holo_dark">@color/background_holo_light</color>
 	<color name="bright_foreground_disabled_grey">#bdbdbd</color>
