@@ -15,7 +15,6 @@ import com.anod.car.home.incar.ModeDetector
 import com.anod.car.home.incar.ModeHandler
 import com.anod.car.home.incar.ModePhoneStateListener
 import com.anod.car.home.notifications.Channels
-import info.anodsplace.carwidget.skin.SkinPropertiesFactory
 import com.anod.car.home.utils.AppUpgrade
 import com.anod.car.home.utils.WidgetShortcutResource
 import com.anod.car.home.utils.permissionDescriptions

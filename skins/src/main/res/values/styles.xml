@@ -85,25 +85,4 @@
         <item name="android:paddingRight">5.0dp</item>
         <item name="android:paddingLeft">5.0dp</item>
     </style>
-
-    <style name="Notification" parent="TextAppearance.Compat.Notification" />
-
-    <style name="Notification.Title" parent="TextAppearance.Compat.Notification.Title" />
-
-    <style name="Notification.Line2" parent="TextAppearance.Compat.Notification.Line2" />
-
-    <style name="Notification.Button">
-        <item name="android:background">@drawable/notification_custom_button_background</item>
-    </style>
-
-    <style name="AboutButton" parent="Widget.Material3.Button.OutlinedButton">
-        <!--        <item name="iconTint">?attr/colorOnSurface</item>-->
-    </style>
-
-    <style name="Widget.AppTheme.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
-    </style>
-
-    <style name="Widget.AppTheme.TabLayout" parent="Widget.Material3.TabLayout">
-
-    </style>
 </resources>

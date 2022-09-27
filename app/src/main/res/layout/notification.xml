@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -46,7 +47,7 @@
         android:layout_width="@dimen/notification_button"
         android:layout_height="@dimen/notification_button"
         android:scaleType="centerInside"
-        app:srcCompat="@drawable/ic_launcher_application" />
+        tools:src="@tools:sample/avatars"/>
 
     <ImageButton
         android:id="@+id/btn1"
