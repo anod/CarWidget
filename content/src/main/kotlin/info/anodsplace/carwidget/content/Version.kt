@@ -13,13 +13,10 @@ class Version(private val context: Context) {
 
     private var prefs: SharedPreferences? = null
 
-    val maxTrialTimes: Int
-        get() = MAX_TRIAL_TIMES
-
     val trialTimesLeft: Int
         get() {
             initTrialCounter()
-            return MAX_TRIAL_TIMES - trialCounterCache
+            return maxTrialTimes - trialCounterCache
         }
 
     private val isTrialExpired: Boolean
@@ -63,7 +60,7 @@ class Version(private val context: Context) {
     }
 
     companion object {
-        private const val MAX_TRIAL_TIMES = 30
+        const val maxTrialTimes = 30
         private const val PREF_TRIAL_TIMES = "trial-times"
         private const val FREE_PACKAGE_NAME = "com.anod.car.home.free"
         const val PRO_PACKAGE_NAME = "com.anod.car.home.pro"

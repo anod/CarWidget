@@ -25,6 +25,7 @@ import org.koin.core.component.inject
 import org.koin.core.scope.Scope
 
 data class MainViewState(
+    val isFreeVersion: Boolean = true,
     val isWidget: Boolean = false,
     val appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
     val tabs: List<NavItem.Tab> = emptyList(),
@@ -50,6 +51,7 @@ sealed interface MainViewEvent {
     class OpenWidgetConfig(val appWidgetId: Int) : MainViewEvent
     class SwitchIconsMono(val isIconsMono: Boolean) : MainViewEvent
     object OnBackNav : MainViewEvent
+    object CloseWizard : MainViewEvent
 }
 
 class MainViewModel(
@@ -82,6 +84,7 @@ class MainViewModel(
         val isWidget = appWidgetIdScope.isValid
         val showProDialog = version.isFree && version.isProInstalled
         viewState = MainViewState(
+            isFreeVersion = version.isFree,
             isWidget = isWidget,
             appWidgetId = +appWidgetIdScope,
             tabs = listOf(
@@ -91,7 +94,7 @@ class MainViewModel(
             ),
             startRoute = if (appWidgetIdScope.isValid) NavItem.Tab.CurrentWidget.Skin.route else null,
             showProDialog = showProDialog,
-            topDestination = startDestination(showProDialog, requiredPermissions),
+            topDestination = startDestination(showProDialog, requiredPermissions, allowWizard = true),
             requiredPermissions = requiredPermissions,
             widgetSettings =  if (isWidget) WidgetInterface.NoOp(get<WidgetSettings>()) else WidgetInterface.NoOp()
         )
@@ -116,14 +119,17 @@ class MainViewModel(
                 settings.isIconsMono = event.isIconsMono
                 viewState = viewState.copy(widgetSettings = WidgetInterface.NoOp(settings))
             }
+            MainViewEvent.CloseWizard -> {
+                viewState = viewState.copy(topDestination = startDestination(viewState.showProDialog, viewState.requiredPermissions, allowWizard = false),)
+            }
         }
     }
 
-    private fun startDestination(showProDialog: Boolean, requiredPermissions: List<AppPermission>): NavItem {
+    private fun startDestination(showProDialog: Boolean, requiredPermissions: List<AppPermission>, allowWizard: Boolean): NavItem {
         val isFreeInstalled = !version.isFree && version.isFreeInstalled
         val appWidgetIds = widgetIds.getAllWidgetIds()
         return when {
-            appWidgetIds.isEmpty() && !isFreeInstalled -> NavItem.Wizard
+            appWidgetIds.isEmpty() && !isFreeInstalled &&  allowWizard -> NavItem.Wizard
             !showProDialog && requiredPermissions.isNotEmpty() -> NavItem.PermissionsRequest
             appWidgetIdScope.isValid -> NavItem.Tab.CurrentWidget
             else -> NavItem.Tab.Widgets

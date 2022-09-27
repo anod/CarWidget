@@ -1,8 +1,8 @@
 package info.anodsplace.carwidget.screens.wizard
 
 import android.text.Html
-import android.text.Spanned
-import android.text.style.StyleSpan
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,8 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -26,20 +24,24 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.screens.main.MainViewEvent
+import info.anodsplace.carwidget.screens.main.MainViewState
 import info.anodsplace.carwidget.screens.widget.DummySkinPreviewViewModel
 import info.anodsplace.carwidget.screens.widget.SkinPreviewViewModel
 import info.anodsplace.carwidget.screens.widget.WidgetSkinPreview
 import info.anodsplace.compose.toAnnotatedString
+import info.anodsplace.compose.toHtmlAnnotatedString
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun WizardScreen(initialPage: Int = 0, modifier: Modifier = Modifier, onEvent: (event: MainViewEvent) -> Unit) {
+fun WizardScreen(screenState: MainViewState, modifier: Modifier = Modifier, initialPage: Int = 0, onEvent: (event: MainViewEvent) -> Unit = { }) {
     val pagesCount = 4
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = initialPage)
     val currentPage = pagerState.currentPage
+    val isLast = currentPage == 3
 
     Surface {
         Column(modifier = modifier) {
@@ -74,29 +76,39 @@ fun WizardScreen(initialPage: Int = 0, modifier: Modifier = Modifier, onEvent: (
                 state = pagerState,
                 modifier = Modifier
                     .padding(16.dp)
-                    .fillMaxSize()
+                    .fillMaxWidth()
+                    .fillMaxHeight(fraction = 0.8f)
             ) { page ->
                 when (page) {
-                    0 -> WelcomePage(
-                        skinViewModel = DummySkinPreviewViewModel(LocalContext.current.applicationContext)
-                    )
+                    0 -> WelcomePage(skinViewModel = DummySkinPreviewViewModel(LocalContext.current.applicationContext))
                     1 -> InstallPage()
                     2 -> ConfigPage()
+                    3 -> InCarModePage(screenState)
                     else -> { }
                 }
             }
 
-            Row {
-                Button(onClick = { /*TODO*/ }) {
-                    Text(text = "Skip")
+            Spacer(modifier = Modifier.weight(1.0f))
+
+            Row(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                if (!isLast) {
+                    OutlinedButton(
+                        onClick = { onEvent(MainViewEvent.CloseWizard) },
+                    ) {
+                        Text(text = stringResource(id = R.string.skip))
+                    }
                 }
-                Spacer(modifier = Modifier.fillMaxWidth())
+                Spacer(modifier = Modifier.weight(1.0f))
                 Button(onClick = {
-                    scope.launch {
-                        pagerState.scrollToPage(currentPage + 1)
+                    if (isLast) {
+                        onEvent(MainViewEvent.CloseWizard)
+                    } else {
+                        scope.launch { pagerState.animateScrollToPage(currentPage + 1) }
                     }
                 }) {
-                    Text(text = "Next")
+                    Text(text = if (isLast) stringResource(id = R.string.finish) else stringResource(id = R.string.next))
                 }
             }
         }
@@ -104,10 +116,12 @@ fun WizardScreen(initialPage: Int = 0, modifier: Modifier = Modifier, onEvent: (
 }
 
 @Composable
-fun WelcomePage(skinViewModel: SkinPreviewViewModel) {
+fun WelcomePage(
+    skinViewModel: SkinPreviewViewModel
+) {
     WizardPage(
         title = stringResource(id = R.string.welcome),
-        description = stringResource(id = R.string.welcome_text)
+        description = stringResource(id = R.string.welcome_text),
     ) {
         Text(
             text = stringResource(id = R.string.swipe_continue),
@@ -131,14 +145,14 @@ fun InstallPage() {
         title = stringResource(id = R.string.install_a_widget),
         description = stringResource(id = R.string.install_widget)
     ) {
-        Box(
+        Image(
             modifier = Modifier
                 .padding(top = 32.dp)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-
-        }
+                .fillMaxWidth(),
+            painter = painterResource(id = R.drawable.install_widget),
+            contentDescription =  stringResource(id = R.string.install_widget),
+            alignment = Alignment.Center
+        )
     }
 }
 
@@ -149,7 +163,9 @@ fun ConfigPage() {
         description = stringResource(id = R.string.configure_text)
     ) {
         Image(
-            modifier = Modifier.padding(top = 16.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(top = 32.dp)
+                .fillMaxWidth(),
             painter = painterResource(id = R.drawable.settings_preview),
             contentDescription =  stringResource(id = R.string.configure),
             alignment = Alignment.Center
@@ -171,15 +187,96 @@ fun ConfigPage() {
 }
 
 @Composable
+fun InCarModePage(
+    screenState: MainViewState,
+) {
+    WizardPage(
+        title = stringResource(id = R.string.incar_mode),
+        description = stringResource(id = R.string.detect_incar_description),
+    ) {
+        Text(
+            text = stringResource(id = R.string.enable_incar_description).toHtmlAnnotatedString(),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(top = 32.dp)
+        )
+        Row(modifier = Modifier
+            .padding(top = 8.dp)
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            ActionIcon(
+                iconRes = R.drawable.ic_action_bluetooth_connected,
+                iconDescRes = R.string.bluetooth
+            )
+            ActionIcon(
+                iconRes = R.drawable.ic_action_usb,
+                iconDescRes = R.string.pref_power_connected_title
+            )
+            ActionIcon(
+                iconRes = R.drawable.ic_action_headphones,
+                iconDescRes = R.string.pref_headset_connected_title
+            )
+        }
+        Text(
+            text = stringResource(id = R.string.adjust_incar_description).toHtmlAnnotatedString(),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+        Row(modifier = Modifier
+            .padding(top = 8.dp)
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            ActionIcon(
+                iconRes = R.drawable.ic_action_brightness_medium,
+                iconDescRes = R.string.adjust_brightness
+            )
+            ActionIcon(
+                iconRes = R.drawable.ic_action_bulb,
+                iconDescRes = R.string.pref_screen_timeout
+            )
+            ActionIcon(
+                iconRes = R.drawable.ic_action_ring_volume,
+                iconDescRes = R.string.pref_auto_answer
+            )
+            ActionIcon(
+                iconRes = R.drawable.ic_action_volume_up,
+                iconDescRes = R.string.pref_volume_level_summary
+            )
+            ActionIcon(
+                iconRes = R.drawable.ic_action_bluetooth,
+                iconDescRes = R.string.pref_blutooth_device_title
+            )
+        }
+        if (screenState.isFreeVersion) {
+            Text(
+                text = stringResource(id = R.string.trial_description, Version.maxTrialTimes),
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.padding(top = 16.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun ActionIcon(@DrawableRes iconRes: Int, @StringRes iconDescRes: Int) {
+    Icon(
+        modifier = Modifier
+            .size(48.dp)
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .padding(4.dp),
+        painter = painterResource(id = iconRes),
+        contentDescription = stringResource(id = iconDescRes),
+        tint = MaterialTheme.colorScheme.onPrimaryContainer
+    )
+}
+
+@Composable
 fun WizardPage(
     title: String,
     description: String,
     content: @Composable () -> Unit
 ) {
-    val descAnnotated = remember(description) {
-        Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT).toAnnotatedString()
-    }
-
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -190,7 +287,7 @@ fun WizardPage(
             style = MaterialTheme.typography.headlineLarge
         )
         Text(
-            text = descAnnotated,
+            text = description.toHtmlAnnotatedString(),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(top = 16.dp)
         )
@@ -203,7 +300,10 @@ fun WizardPage(
 @Composable
 fun PreviewScreen1() {
     CarWidgetTheme {
-        WizardScreen(initialPage = 0, onEvent = { })
+        WizardScreen(
+            screenState = MainViewState(),
+            initialPage = 0,
+            onEvent = { })
     }
 }
 
@@ -211,7 +311,10 @@ fun PreviewScreen1() {
 @Composable
 fun PreviewScreen2() {
     CarWidgetTheme {
-        WizardScreen(initialPage = 1, onEvent = { })
+        WizardScreen(
+            screenState = MainViewState(),
+            initialPage = 1,
+            onEvent = { })
     }
 }
 
@@ -219,6 +322,21 @@ fun PreviewScreen2() {
 @Composable
 fun PreviewScreen3() {
     CarWidgetTheme {
-        WizardScreen(initialPage = 2, onEvent = { })
+        WizardScreen(
+            screenState = MainViewState(),
+            initialPage = 2,
+            onEvent = { })
+    }
+}
+
+
+@Preview
+@Composable
+fun PreviewScreen4() {
+    CarWidgetTheme {
+        WizardScreen(
+            screenState = MainViewState(isFreeVersion = true),
+            initialPage = 3,
+            onEvent = { })
     }
 }
