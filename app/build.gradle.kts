@@ -22,8 +22,8 @@ dependencies {
     implementation(project(":lib:colorpicker"))
     implementation(project(":lib:permissions"))
 
-    implementation("io.insert-koin:koin-core:3.2.1")
-    implementation("io.coil-kt:coil-base:2.2.0")
+    implementation("io.insert-koin:koin-core:3.2.2")
+    implementation("io.coil-kt:coil-base:2.2.2")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")

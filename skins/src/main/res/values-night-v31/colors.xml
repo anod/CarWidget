@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="systemColorPrimary">@android:color/system_accent1_200</color>
+    <color name="systemColorOnPrimary">@android:color/system_accent1_800</color>
+    <color name="systemColorPrimaryContainer">@android:color/system_accent1_700</color>
+    <color name="systemColorOnPrimaryContainer">@android:color/system_accent1_100</color>
+
+    <color name="systemColorPrimaryInverse">@android:color/system_accent1_600</color>
+
+    <color name="systemColorSecondary">@android:color/system_accent2_200</color>
+    <color name="systemColorOnSecondary">@android:color/system_accent2_800</color>
+    <color name="systemColorSecondaryContainer">@android:color/system_accent2_700</color>
+    <color name="systemColorOnSecondaryContainer">@android:color/system_accent2_100</color>
+
+    <color name="systemColorTertiary">@android:color/system_accent3_200</color>
+    <color name="systemColorOnTertiary">@android:color/system_accent3_800</color>
+    <color name="systemColorTertiaryContainer">@android:color/system_accent3_700</color>
+    <color name="systemColorOnTertiaryContainer">@android:color/system_accent3_100</color>
+</resources>

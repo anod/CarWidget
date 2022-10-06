@@ -5,4 +5,71 @@
     <color name="w7_tale_default_background_highlight">#884AB0E2</color>
     <color name="default_font_color">#ffffffff</color>
     <color name="holo_text_bg">#33000000</color>
+
+    <color name="md_primary">#006782</color>
+    <color name="md_onPrimary">#FFFFFF</color>
+    <color name="md_primaryContainer">#BBE9FF</color>
+    <color name="md_onPrimaryContainer">#001F29</color>
+    <color name="md_secondary">#006684</color>
+    <color name="md_onSecondary">#FFFFFF</color>
+    <color name="md_secondaryContainer">#BDE9FF</color>
+    <color name="md_onSecondaryContainer">#001F2A</color>
+    <color name="md_tertiary">#006782</color>
+    <color name="md_onTertiary">#FFFFFF</color>
+    <color name="md_tertiaryContainer">#BBE9FF</color>
+    <color name="md_onTertiaryContainer">#001F29</color>
+    <color name="md_error">#BA1A1A</color>
+    <color name="md_errorContainer">#FFDAD6</color>
+    <color name="md_onError">#FFFFFF</color>
+    <color name="md_onErrorContainer">#410002</color>
+    <color name="md_background">#FCFCFF</color>
+    <color name="md_onBackground">#001E2F</color>
+    <color name="md_surface">#FCFCFF</color>
+    <color name="md_onSurface">#001E2F</color>
+    <color name="md_surfaceVariant">#DCE4E9</color>
+    <color name="md_onSurfaceVariant">#40484C</color>
+    <color name="md_outline">#70787D</color>
+    <color name="md_inverseOnSurface">#E6F2FF</color>
+    <color name="md_inverseSurface">#00344E</color>
+    <color name="md_inversePrimary">#61D4FF</color>
+    <color name="md_shadow">#000000</color>
+    <color name="md_surfaceTint">#006782</color>
+    <color name="md_surfaceTintColor">#006782</color>
+
+    <color name="systemColorPrimary">@color/md_primary</color>
+    <color name="systemColorOnPrimary">@color/md_onPrimary</color>
+    <color name="systemColorPrimaryContainer">@color/md_primary</color>
+    <color name="systemColorOnPrimaryContainer">@color/md_onPrimaryContainer</color>
+
+    <color name="systemColorPrimaryInverse">@color/md_inversePrimary</color>
+
+    <color name="systemColorSecondary">@color/md_secondary</color>
+    <color name="systemColorOnSecondary">@color/md_onSecondary</color>
+    <color name="systemColorSecondaryContainer">@color/md_secondaryContainer</color>
+    <color name="systemColorOnSecondaryContainer">@color/md_onSecondaryContainer</color>
+
+    <color name="systemColorTertiary">@color/md_tertiary</color>
+    <color name="systemColorOnTertiary">@color/md_onTertiary</color>
+    <color name="systemColorTertiaryContainer">@color/md_tertiaryContainer</color>
+    <color name="systemColorOnTertiaryContainer">@color/md_onTertiaryContainer</color>
+
+    <color name="colorDynamicWidgetBackground">@color/systemColorSecondaryContainer</color>
+    <color name="colorDynamicWidgetOnBackground">@color/systemColorOnSecondaryContainer</color>
+    <color name="colorDynamicWidgetPrimary">@color/systemColorPrimary</color>
+    <color name="colorDynamicWidgetPrimaryInverse">@color/systemColorPrimaryInverse</color>
+
 </resources>
+
+    <!--    Primary                | systemColorPrimary              | #ff6750a4</br>(system_accent1_600)   | #ffd0bcff</br>(system_accent1_200)-->
+    <!--    On Primary             | systemColorOnPrimary            | white</br>(system_accent1_0)         | #ff381e72</br>(system_accent1_800)-->
+    <!--    Primary Container      | systemColorPrimaryContainer     | #ffeaddff</br>(system_accent1_100)   | #ff4f378b</br>(system_accent1_700)-->
+    <!--    On Primary Container   | systemColorOnPrimaryContainer   | #ff21005d</br>(system_accent1_900)   | #ffeaddff</br>(system_accent1_100)-->
+    <!--    Inverse Primary        | systemColorPrimaryInverse       | #ffd0bcff</br>(system_accent1_200)   | #ff6750a4</br>(system_accent1_600)-->
+    <!--    Secondary              | systemColorSecondary            | #ff625b71</br>(system_accent2_600)   | #ffccc2dc</br>(system_accent2_200)-->
+    <!--    On Secondary           | systemColorOnSecondary          | white</br>(system_accent2_0)         | #ff332d41</br>(system_accent2_800)-->
+    <!--    Secondary Container    | systemColorSecondaryContainer   | #ffe8def8</br>(system_accent2_100)   | #ff4a4458</br>(system_accent2_700)-->
+    <!--    On Secondary Container | systemColorOnSecondaryContainer | #ff1d192b</br>(system_accent2_900)   | #ffe8def8</br>(system_accent2_100)-->
+    <!--    Tertiary               | systemColorTertiary             | #ff7d5260</br>(system_accent3_600)   | #ffefb8c8</br>(system_accent3_200)-->
+    <!--    On Tertiary            | systemColorOnTertiary           | white</br>(system_accent3_0)         | #ff492532</br>(system_accent3_800)-->
+    <!--    Tertiary Container     | systemColorTertiaryContainer    | #ffffd8e4</br>(system_accent3_100)   | #ff633b48</br>(system_accent3_700)-->
+    <!--    On Tertiary Container  | systemColorOnTertiaryContainer  | #ff31111d</br>(system_accent3_900)   | #ffffd8e4</br>(system_accent3_100)-->

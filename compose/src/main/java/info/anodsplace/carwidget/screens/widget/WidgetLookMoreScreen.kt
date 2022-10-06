@@ -117,6 +117,8 @@ fun WidgetLookMoreScreen(screenState: WidgetLookMoreState, onEvent: (WidgetLookM
                                 names =  stringArrayResource(id = R.array.adaptive_icon_style_names),
                                 pathMasks = stringArrayResource(id = R.array.adaptive_icon_style_paths_values),
                                 selected = screenState.widgetSettings.adaptiveIconStyle,
+                                defaultSystemMask = "",
+                                systemMaskName = "",
                                 modifier = Modifier
                                     .padding(top = 8.dp)
                                     .fillMaxWidth(),

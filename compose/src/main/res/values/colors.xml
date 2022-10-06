@@ -10,34 +10,4 @@
 	<color name="material_bluegray_300">#90a4ae</color>
 	<color name="material_bluegray_100">#BBDEFB</color>
 	<color name="material_grey_400">#BDBDBD</color>
-
-	<color name="md_primary">#006782</color>
-	<color name="md_onPrimary">#FFFFFF</color>
-	<color name="md_primaryContainer">#BBE9FF</color>
-	<color name="md_onPrimaryContainer">#001F29</color>
-	<color name="md_secondary">#006684</color>
-	<color name="md_onSecondary">#FFFFFF</color>
-	<color name="md_secondaryContainer">#BDE9FF</color>
-	<color name="md_onSecondaryContainer">#001F2A</color>
-	<color name="md_tertiary">#006782</color>
-	<color name="md_onTertiary">#FFFFFF</color>
-	<color name="md_tertiaryContainer">#BBE9FF</color>
-	<color name="md_onTertiaryContainer">#001F29</color>
-	<color name="md_error">#BA1A1A</color>
-	<color name="md_errorContainer">#FFDAD6</color>
-	<color name="md_onError">#FFFFFF</color>
-	<color name="md_onErrorContainer">#410002</color>
-	<color name="md_background">#FCFCFF</color>
-	<color name="md_onBackground">#001E2F</color>
-	<color name="md_surface">#FCFCFF</color>
-	<color name="md_onSurface">#001E2F</color>
-	<color name="md_surfaceVariant">#DCE4E9</color>
-	<color name="md_onSurfaceVariant">#40484C</color>
-	<color name="md_outline">#70787D</color>
-	<color name="md_inverseOnSurface">#E6F2FF</color>
-	<color name="md_inverseSurface">#00344E</color>
-	<color name="md_inversePrimary">#61D4FF</color>
-	<color name="md_shadow">#000000</color>
-	<color name="md_surfaceTint">#006782</color>
-	<color name="md_surfaceTintColor">#006782</color>
 </resources>

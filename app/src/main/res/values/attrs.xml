@@ -1,5 +1,3 @@
 <resources>
     <attr name="textAppearanceMediumBackgroundInverse" format="reference" />
-    <attr name="appWidgetRadius" format="dimension" />
-    <attr name="appWidgetInnerRadius" format="dimension" />
 </resources>
