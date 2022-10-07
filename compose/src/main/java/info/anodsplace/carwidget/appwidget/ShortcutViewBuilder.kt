@@ -35,6 +35,7 @@ class ShortcutViewBuilder(
     private val bitmapMemoryCache: LruCache<String, Bitmap>? = null
 ) : ShortcutViewBuilderInstance {
     private val backgroundProcessor: IconBackgroundProcessor? = skinProperties.backgroundProcessor
+    private val iconConverter = skinProperties.iconConverter
 
     override var scaledDensity: Float = 1.0f
     override var iconTheme: IconTheme? = null
@@ -108,15 +109,15 @@ class ShortcutViewBuilder(
         }
     }
 
-    private suspend fun applyShortcut(res: Int, resText: Int, info: Shortcut, views: RemoteViews, cellId: Int, themeIcons: IconTheme?): Bitmap {
+    private suspend fun applyShortcut(res: Int, resText: Int, shortcut: Shortcut, views: RemoteViews, cellId: Int, themeIcons: IconTheme?): Bitmap {
 
         val themePackage = themeIcons?.packageName ?: "null"
         val transformKey = bitmapTransform.cacheKey
-        val imageKey = info.id.toString() + ":" + themePackage + ":" + transformKey
+        val imageKey = shortcut.id.toString() + ":" + themePackage + ":" + transformKey
 
         var icon = getBitmapFromMemCache(imageKey)
         if (icon == null) {
-            icon = shortcutBitmap(info, themeIcons)
+            icon = shortcutBitmap(shortcut, themeIcons)
             icon = bitmapTransform.transform(icon)
             addBitmapToMemCache(imageKey, icon)
         }
@@ -124,10 +125,10 @@ class ShortcutViewBuilder(
         views.setImageViewBitmap(res, icon)
 
         if (!prefs.isTitlesHide) {
-            val title = info.title.toString()
+            val title = shortcut.title.toString()
             views.setTextViewText(resText, title)
         }
-        pendingIntentFactory.createShortcut(info.intent, appWidgetId, cellId, info.id)?.let {
+        pendingIntentFactory.createShortcut(shortcut.intent, appWidgetId, cellId, shortcut.id)?.let {
             views.setOnClickPendingIntent(res, it)
             views.setOnClickPendingIntent(resText, it)
         }
@@ -135,32 +136,22 @@ class ShortcutViewBuilder(
     }
 
     private fun addBitmapToMemCache(key: String, bitmap: Bitmap?) {
-        if (bitmapMemoryCache == null) {
-            return
-        }
-        synchronized(sBitmapCacheLock) {
-            if (getBitmapFromMemCache(key) == null) {
-                bitmapMemoryCache.put(key, bitmap)
-            }
+        if (bitmapMemoryCache != null && bitmapMemoryCache[key] != null) {
+            bitmapMemoryCache.put(key, bitmap)
         }
     }
 
     private fun getBitmapFromMemCache(key: String): Bitmap? {
-        if (bitmapMemoryCache == null) {
-            return null
-        }
-        synchronized(sBitmapCacheLock) {
-            return bitmapMemoryCache.get(key)
-        }
+        return bitmapMemoryCache?.get(key)
     }
 
-    private suspend fun shortcutBitmap(info: Shortcut, themeIcons: IconTheme?): Bitmap {
-        if (themeIcons == null || !info.isApp || info.isCustomIcon) {
-            val icon = iconLoader.load(info, prefs.adaptiveIconStyle)
+    private suspend fun shortcutBitmap(shortcut: Shortcut, themeIcons: IconTheme?): Bitmap {
+        if (themeIcons == null || !shortcut.isApp || shortcut.isCustomIcon) {
+            val icon = iconLoader.load(shortcut, prefs.adaptiveIconStyle, iconConverter)
             return icon.bitmap
         }
 
-        val resourceId = themeIcons.getIcon(info.intent.component!!.className)
+        val resourceId = themeIcons.getIcon(shortcut.intent.component!!.className)
         var iconDrawable: Drawable? = null
         if (resourceId != 0) {
             iconDrawable = themeIcons.getDrawable(resourceId)
@@ -171,12 +162,7 @@ class ShortcutViewBuilder(
         if (iconDrawable != null) {
             return UtilitiesBitmap.createHiResIconBitmap(iconDrawable, context)
         }
-        val icon = iconLoader.load(info, prefs.adaptiveIconStyle)
+        val icon = iconLoader.load(shortcut, prefs.adaptiveIconStyle, iconConverter)
         return icon.bitmap
     }
-
-    companion object {
-        private val sBitmapCacheLock = Any()
-    }
-
 }

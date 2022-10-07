@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.content.db
 
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.util.SparseArray
@@ -19,12 +18,10 @@ import java.net.URISyntaxException
 
 typealias ShortcutWithIcon = Pair<Shortcut, ShortcutIcon?>
 
-class ShortcutsDatabase(context: Context, private val db: Database) {
-    private val defaultConverter: ShortcutIconConverter = ShortcutIconConverter.Default(context)
+class ShortcutsDatabase(private val db: Database) {
 
-    suspend fun loadByShortcutId(shortcutId: Long, converter: ShortcutIconConverter = defaultConverter): ShortcutIcon = withContext(Dispatchers.IO) {
-        val row = db.shortcutsQueries.selectShortcutIcon(shortcutId).executeAsOneOrNull()
-        return@withContext converter.convert(shortcutId, row)
+    suspend fun loadByShortcutId(shortcutId: Long): SelectShortcutIcon? = withContext(Dispatchers.IO) {
+        return@withContext db.shortcutsQueries.selectShortcutIcon(shortcutId).executeAsOneOrNull()
     }
 
     fun observeShortcut(shortcutId: Long): Flow<Shortcut?> {

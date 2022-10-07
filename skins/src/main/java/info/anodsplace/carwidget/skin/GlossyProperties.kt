@@ -1,6 +1,9 @@
 package info.anodsplace.carwidget.skin
 
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
+
 class GlossyProperties : BaseProperties() {
+    override val name: String = WidgetInterface.SKIN_GLOSSY
 
     override val settingsButtonRes: Int
         get() = R.drawable.ic_settings

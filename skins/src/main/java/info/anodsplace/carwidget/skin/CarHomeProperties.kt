@@ -1,6 +1,9 @@
 package info.anodsplace.carwidget.skin
 
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
+
 class CarHomeProperties : BaseProperties() {
+    override val name: String = WidgetInterface.SKIN_CARHOME
 
     override val settingsButtonRes: Int
         get() = R.drawable.ic_settings

@@ -1,18 +1,30 @@
 package info.anodsplace.carwidget.skin
 
-import info.anodsplace.carwidget.content.InternalShortcutResources
+import android.content.Context
+import info.anodsplace.carwidget.content.db.ShortcutIconConverter
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
 
-class YouProperties : BaseProperties() {
+class YouProperties(private val context: Context) : BaseProperties() {
+    override val name: String = WidgetInterface.SKIN_YOU
 
-    override val internalShortcuts = InternalShortcutResources(
-            icons = intArrayOf(
-                    R.drawable.ic_launcher_carwidget,
-                    R.drawable.ic_shortcut_call_primary,
-                    R.drawable.ic_shortcut_play_primary,
-                    R.drawable.ic_shortcut_next_primary,
-                    R.drawable.ic_shortcut_previous_primary
+    override val iconConverter: ShortcutIconConverter
+        get() {
+            val replaceResources = mapOf(
+                    R.drawable.ic_shortcut_call to R.drawable.ic_shortcut_call_primary,
+                    R.drawable.ic_shortcut_play to R.drawable.ic_shortcut_play_primary,
+                    R.drawable.ic_shortcut_next to R.drawable.ic_shortcut_next_primary,
+                    R.drawable.ic_shortcut_previous to R.drawable.ic_shortcut_previous_primary
+            ).entries.associate { entry ->
+                Pair(
+                        context.resources.getResourceName(entry.key),
+                        context.resources.getResourceName(entry.value)
+                )
+            }
+            return ShortcutIconConverter.Default(
+                    context = context,
+                    replaceResources = replaceResources
             )
-    )
+        }
 
     override val inCarButtonExitRes: Int
         get() = R.drawable.you_wheel_exit

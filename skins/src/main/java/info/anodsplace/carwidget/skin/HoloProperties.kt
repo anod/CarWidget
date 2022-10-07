@@ -1,6 +1,9 @@
 package info.anodsplace.carwidget.skin
 
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
+
 class HoloProperties : BaseProperties() {
+    override val name: String = WidgetInterface.SKIN_HOLO
 
     override val inCarButtonExitRes: Int
         get() = R.drawable.ic_incar_exit_holo

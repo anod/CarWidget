@@ -27,7 +27,7 @@ class ShortcutIconRequestHandler(
 ) : Fetcher {
 
     class Factory(
-        private val context: Context,
+        context: Context,
         private val db: ShortcutsDatabase,
         private val iconLoader: ShortcutIconLoader
     ) : Fetcher.Factory<Uri> {

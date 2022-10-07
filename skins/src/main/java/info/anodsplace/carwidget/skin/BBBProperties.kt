@@ -1,9 +1,11 @@
 package info.anodsplace.carwidget.skin
 
-import info.anodsplace.carwidget.skin.icon.BBBIconProcessor
 import info.anodsplace.carwidget.content.graphics.IconProcessor
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.skin.icon.BBBIconProcessor
 
 class BBBProperties : BaseProperties() {
+    override val name: String = WidgetInterface.SKIN_BBB
 
     override val inCarButtonExitRes: Int
         get() = R.drawable.ic_incar_exit_bbb

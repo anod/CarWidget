@@ -1,13 +1,15 @@
 package info.anodsplace.carwidget.content
 
+import info.anodsplace.carwidget.content.db.ShortcutIconConverter
 import info.anodsplace.carwidget.content.graphics.IconProcessor
 
-class InternalShortcutResources(
-        val icons: IntArray
+data class InternalShortcutResources(
+        val icons: List<Int>
 )
 
 interface SkinProperties {
-    val internalShortcuts: InternalShortcutResources
+    val name: String
+    val iconConverter: ShortcutIconConverter?
     val buttonTransparentResId: Int
     val buttonAlternativeHiddenResId: Int
     val widgetButton1Id: Int

@@ -7,14 +7,14 @@ import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.graphics.AdaptiveIcon
 
 interface ShortcutIconLoader {
-    suspend fun load(shortcut: Shortcut, adaptiveIconStyle: String): ShortcutIcon
+    suspend fun load(shortcut: Shortcut, adaptiveIconStyle: String, converter: ShortcutIconConverter? = null): ShortcutIcon
 
-    class AppOnly(
+    class Activity(
             private val context: Context,
             private val allowEmptyMask: Boolean = true,
             private val throwOnError: Boolean = false
     ) : ShortcutIconLoader {
-        override suspend fun load(shortcut: Shortcut, adaptiveIconStyle: String): ShortcutIcon {
+        override suspend fun load(shortcut: Shortcut, adaptiveIconStyle: String, converter: ShortcutIconConverter?): ShortcutIcon {
             if (shortcut.isApp) {
                 if (!allowEmptyMask && adaptiveIconStyle.isEmpty()) {
                     throw IllegalStateException("Empty mask")
@@ -51,23 +51,27 @@ class DbShortcutIconLoader(
         private val db: ShortcutsDatabase,
         context: Context
 ) : ShortcutIconLoader {
-    private val activityIconLoader: ShortcutIconLoader = ShortcutIconLoader.AppOnly(
+    private val iconConverter: ShortcutIconConverter by lazy { ShortcutIconConverter.Default(context) }
+
+    private val activityIconLoader: ShortcutIconLoader = ShortcutIconLoader.Activity(
             context = context,
             allowEmptyMask = false,
             throwOnError = true
     )
 
-    override suspend fun load(shortcut: Shortcut, adaptiveIconStyle: String): ShortcutIcon {
+    override suspend fun load(shortcut: Shortcut, adaptiveIconStyle: String, converter: ShortcutIconConverter?): ShortcutIcon {
         if (shortcut.isApp && !shortcut.isCustomIcon) {
             try {
-                return activityIconLoader.load(shortcut, adaptiveIconStyle)
+                return activityIconLoader.load(shortcut, adaptiveIconStyle, converter)
             } catch (_: IllegalStateException) {
-
+                // Fallback to DB
             } catch (e: Exception) {
                 AppLog.e(e)
             }
         }
 
-        return db.loadByShortcutId(shortcut.id)
+        val dbShortcut = db.loadByShortcutId(shortcut.id)
+        val actualConverter = converter ?: iconConverter
+        return actualConverter.convert(shortcut.id, dbShortcut)
     }
 }

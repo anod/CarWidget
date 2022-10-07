@@ -1,9 +1,11 @@
 package info.anodsplace.carwidget.skin
 
-import info.anodsplace.carwidget.skin.icon.MetroBackgroundProcessor
 import info.anodsplace.carwidget.content.IconBackgroundProcessor
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.skin.icon.MetroBackgroundProcessor
 
 class MetroProperties : BaseProperties() {
+    override val name: String = WidgetInterface.SKIN_WINDOWS7
 
     override val inCarButtonExitRes: Int
         get() = R.drawable.ic_incar_exit_win7

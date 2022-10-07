@@ -98,7 +98,7 @@ interface SkinPreviewViewModel : SkinViewFactory {
 
 class DummySkinPreviewViewModel(private val context: Context): ViewModel(), SkinPreviewViewModel {
     private val widgetSettings: WidgetInterface = WidgetInterface.NoOp()
-    private val skinProperties: SkinProperties = SkinPropertiesFactory.create(widgetSettings.skin)
+    private val skinProperties: SkinProperties = SkinPropertiesFactory.create(widgetSettings.skin, context)
 
     override val viewActions: Flow<SkinPreviewViewAction> = emptyFlow()
     override val viewState : SkinPreviewViewState
@@ -126,7 +126,7 @@ class DummySkinPreviewViewModel(private val context: Context): ViewModel(), Skin
             pendingIntentFactory = intentFactory,
             inCarMode = false,
             inCarSettings = InCarInterface.NoOp(),
-            iconLoader = ShortcutIconLoader.AppOnly(context)
+            iconLoader = ShortcutIconLoader.Activity(context)
         )
         val remoteViews = widgetView.create()
         return renderPreview(remoteViews, context)

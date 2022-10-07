@@ -32,6 +32,7 @@ import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
 import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
+import info.anodsplace.carwidget.skin.SkinPropertiesFactory
 import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.app.ApplicationInstance
 import org.acra.ReportField
@@ -136,7 +137,7 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                         factory<WidgetSettings.DefaultsProvider> { DefaultsResourceProvider(get<Context>()) }
                         factory<ShortcutResources> { WidgetShortcutResource() }
                         factoryOf(::WidgetUpdateProvider) bind WidgetUpdate::class
-                        factory { (skinName: String) -> info.anodsplace.carwidget.skin.SkinPropertiesFactory.create(skinName) }
+                        factory { (skinName: String) -> SkinPropertiesFactory.create(skinName, get()) }
                         factoryOf(::ScreenOrientation)
                         factoryOf(::AlertWindow)
                         factoryOf(::ScreenOnAlert)
