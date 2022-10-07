@@ -12,13 +12,13 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.chooser.*
 import info.anodsplace.carwidget.content.shortcuts.CreateShortcutResult
+import info.anodsplace.carwidget.content.shortcuts.InternalShortcut
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.utils.forPickShortcutLocal
 import kotlinx.coroutines.flow.Flow
@@ -123,8 +123,8 @@ fun AppChooser(onChoose: (ChooserEntry) -> Unit, onDismissRequest: () -> Unit, i
 @Composable
 fun CarWidgetChooser(shortcutResources: ShortcutResources, onChoose: (ChooserEntry) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
     val context = LocalContext.current
-    val titles = stringArrayResource(id = R.array.carwidget_shortcuts)
-    val loader = remember { createCarWidgetShortcuts(titles, context, shortcutResources) }
+
+    val loader = remember { createCarWidgetShortcuts(context, shortcutResources) }
     ChooserDialog(
         modifier = Modifier.padding(horizontal = 16.dp),
         loader = loader,
@@ -147,11 +147,14 @@ fun IntentChooser(intent: Intent, onChoose: (ChooserEntry) -> Unit, onDismissReq
     )
 }
 
-private fun createCarWidgetShortcuts(titles: Array<String>, context: Context, shortcutResources: ShortcutResources): StaticChooserLoader {
-    val icons = shortcutResources.internalShortcuts.icons
-    val list = titles.mapIndexed { i, title ->
-        val intent = Intent().forPickShortcutLocal(i, titles[i], icons[i], context, shortcutResources)
-        ChooserEntry(componentName = null, title = title, intent = intent, iconRes = icons[i])
+private fun createCarWidgetShortcuts(context: Context, shortcutResources: ShortcutResources): StaticChooserLoader {
+    val shortcuts = InternalShortcut.all
+    val titles = InternalShortcut.titles(context)
+    val list = shortcuts.map { shortcut ->
+        val title = titles[shortcut.index]
+        val icon = shortcutResources.internalShortcuts.icons[shortcut.index]
+        val intent = Intent().forPickShortcutLocal(shortcut, title, icon, context, shortcutResources)
+        ChooserEntry(componentName = null, title = title, intent = intent, iconRes = icon)
     }
     return StaticChooserLoader(list)
 }

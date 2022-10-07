@@ -8,12 +8,12 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
 import android.provider.Settings
-import android.view.KeyEvent
-import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
-import info.anodsplace.carwidget.content.Version
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra
+import info.anodsplace.carwidget.content.Version
+import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
+import info.anodsplace.carwidget.content.shortcuts.InternalShortcut
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
+import info.anodsplace.carwidget.content.shortcuts.fillIntent
 import info.anodsplace.graphics.DrawableUri
 
 fun Intent.forSettings(context: Context, appWidgetId: Int, target: ShortcutResources): Intent {
@@ -32,28 +32,8 @@ fun Intent.forProVersion(): Intent {
     return this
 }
 
-fun Intent.forShortcut(context: Context, i: Int, target: ShortcutResources): Intent {
-    when (i) {
-        0 -> component = ComponentName(context, target.activity.switchInCar)
-        1 -> {
-            action = Intent.ACTION_PICK
-            data = ContactsContract.Contacts.CONTENT_URI
-        }
-        2 -> fillMediaButtonIntent(this, context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, target)
-        3 -> fillMediaButtonIntent(this, context, KeyEvent.KEYCODE_MEDIA_NEXT, target)
-        4 -> fillMediaButtonIntent(this, context, KeyEvent.KEYCODE_MEDIA_PREVIOUS, target)
-    }
-    return this
-}
-
-private fun fillMediaButtonIntent(intent: Intent, context: Context, keyCode: Int, target: ShortcutResources) {
-    intent.component = ComponentName(context, target.activity.runShortcut)
-    intent.action = ShortcutExtra.ACTION_MEDIA_BUTTON
-    intent.putExtra(ShortcutExtra.EXTRA_MEDIA_BUTTON, keyCode)
-}
-
-fun Intent.forPickShortcutLocal(i: Int, title: String, icnResId: Int, ctx: Context, target: ShortcutResources): Intent {
-    val shortcutIntent = Intent().forShortcut(ctx, i, target)
+fun Intent.forPickShortcutLocal(shortcut: InternalShortcut, title: String, icnResId: Int, ctx: Context, target: ShortcutResources): Intent {
+    val shortcutIntent = shortcut.fillIntent(Intent(), ctx, target)
     shortcutIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
 
     val intent = commonPickShortcutIntent(this, title, shortcutIntent)

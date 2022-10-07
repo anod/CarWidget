@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.content.db
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.drawable.AdaptiveIconDrawable
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
@@ -10,19 +9,36 @@ import info.anodsplace.graphics.AdaptiveIcon
 interface ShortcutIconLoader {
     suspend fun load(shortcut: Shortcut, adaptiveIconStyle: String): ShortcutIcon
 
-    class AppOnly(private val context: Context) : ShortcutIconLoader {
+    class AppOnly(
+            private val context: Context,
+            private val allowEmptyMask: Boolean = true,
+            private val throwOnError: Boolean = false
+    ) : ShortcutIconLoader {
         override suspend fun load(shortcut: Shortcut, adaptiveIconStyle: String): ShortcutIcon {
             if (shortcut.isApp) {
-               val maskPath = AdaptiveIcon.maskToPath(adaptiveIconStyle)
-               try {
-                   val activityIcon = context.packageManager.getActivityIcon(shortcut.intent)
-                   if (activityIcon is AdaptiveIconDrawable) {
-                       val bitmap = AdaptiveIcon(context, maskPath).fromDrawable(activityIcon)
-                       return ShortcutIcon.forActivity(shortcut.id, bitmap)
-                   }
-               } catch (e: Exception) {
-                   AppLog.e(e)
-               }
+                if (!allowEmptyMask && adaptiveIconStyle.isEmpty()) {
+                    throw IllegalStateException("Empty mask")
+                }
+                val maskPath = AdaptiveIcon.maskToPath(adaptiveIconStyle)
+                if (!allowEmptyMask && maskPath.isEmpty) {
+                    throw IllegalStateException("Empty mask")
+                }
+                try {
+                    val activityIcon = context.packageManager.getActivityIcon(shortcut.intent)
+                    if (activityIcon is AdaptiveIconDrawable) {
+                        val bitmap = AdaptiveIcon(context, maskPath).fromDrawable(activityIcon)
+                        return ShortcutIcon.forActivity(shortcut.id, bitmap)
+                    }
+                } catch (e: Exception) {
+                    AppLog.e(e)
+                    if (throwOnError) {
+                        throw e
+                    }
+                }
+            }
+
+            if (throwOnError) {
+                throw IllegalStateException("No icon found")
             }
 
             val bitmap = UtilitiesBitmap.makeDefaultIcon(context.packageManager)
@@ -32,32 +48,26 @@ interface ShortcutIconLoader {
 }
 
 class DbShortcutIconLoader(
-    private val db: ShortcutsDatabase,
-    private val context: Context
+        private val db: ShortcutsDatabase,
+        context: Context
 ) : ShortcutIconLoader {
+    private val activityIconLoader: ShortcutIconLoader = ShortcutIconLoader.AppOnly(
+            context = context,
+            allowEmptyMask = false,
+            throwOnError = true
+    )
+
     override suspend fun load(shortcut: Shortcut, adaptiveIconStyle: String): ShortcutIcon {
         if (shortcut.isApp && !shortcut.isCustomIcon) {
-
-            if (adaptiveIconStyle.isEmpty()) {
-                return ShortcutsDatabase.loadIconFromDatabase(shortcut.id, context, db)
-            }
-
-            val maskPath = AdaptiveIcon.maskToPath(adaptiveIconStyle)
-            if (maskPath.isEmpty) {
-                return ShortcutsDatabase.loadIconFromDatabase(shortcut.id, context, db)
-            }
-
             try {
-                val activityIcon = context.packageManager.getActivityIcon(shortcut.intent)
-                if (activityIcon is AdaptiveIconDrawable) {
-                    val bitmap = AdaptiveIcon(context, maskPath).fromDrawable(activityIcon)
-                    return ShortcutIcon.forActivity(shortcut.id, bitmap)
-                }
+                return activityIconLoader.load(shortcut, adaptiveIconStyle)
+            } catch (_: IllegalStateException) {
+
             } catch (e: Exception) {
                 AppLog.e(e)
             }
         }
 
-        return ShortcutsDatabase.loadIconFromDatabase(shortcut.id, context, db)
+        return db.loadByShortcutId(shortcut.id)
     }
 }

@@ -1,10 +1,13 @@
 package info.anodsplace.carwidget.skin
 
 import info.anodsplace.carwidget.content.IconBackgroundProcessor
+import info.anodsplace.carwidget.content.InternalShortcutResources
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.graphics.IconProcessor
 
 abstract class BaseProperties : SkinProperties {
+
+    override val internalShortcuts = internalShortcutResourcesDefault
 
     override val inCarButtonExitRes: Int
         get() = R.drawable.ic_incar_exit
@@ -68,6 +71,16 @@ abstract class BaseProperties : SkinProperties {
             R.id.btn4, R.id.btn5, //6
             R.id.btn6, R.id.btn7, //8
             R.id.btn8, R.id.btn9  //10
+        )
+
+        val internalShortcutResourcesDefault = InternalShortcutResources(
+                icons = intArrayOf(
+                        R.drawable.ic_launcher_carwidget,
+                        R.drawable.ic_shortcut_call,
+                        R.drawable.ic_shortcut_play,
+                        R.drawable.ic_shortcut_next,
+                        R.drawable.ic_shortcut_previous
+                )
         )
     }
 }

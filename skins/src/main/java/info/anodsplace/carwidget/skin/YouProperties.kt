@@ -1,6 +1,18 @@
 package info.anodsplace.carwidget.skin
 
+import info.anodsplace.carwidget.content.InternalShortcutResources
+
 class YouProperties : BaseProperties() {
+
+    override val internalShortcuts = InternalShortcutResources(
+            icons = intArrayOf(
+                    R.drawable.ic_launcher_carwidget,
+                    R.drawable.ic_shortcut_call_primary,
+                    R.drawable.ic_shortcut_play_primary,
+                    R.drawable.ic_shortcut_next_primary,
+                    R.drawable.ic_shortcut_previous_primary
+            )
+    )
 
     override val inCarButtonExitRes: Int
         get() = R.drawable.you_wheel_exit
