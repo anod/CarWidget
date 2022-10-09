@@ -13,13 +13,11 @@ import info.anodsplace.graphics.toBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+
 interface ShortcutIconConverter {
     suspend fun convert(shortcutId: Long, row: SelectShortcutIcon?) : ShortcutIcon
 
-    class Default(
-            private val context: Context,
-            private val replaceResources: Map<String, String> = emptyMap()
-    ) : ShortcutIconConverter {
+    class Default(private val context: Context) : ShortcutIconConverter {
         private val packageManager: PackageManager = context.packageManager
         private val bitmapOptions: BitmapFactory.Options
 
@@ -60,9 +58,7 @@ interface ShortcutIconConverter {
                             }
                     }
                     row.iconType == LauncherSettings.Favorites.ICON_TYPE_RESOURCE -> {
-                        val iconResource = replaceResources[row.iconResource]?.let {
-                            row.copy(iconResource = replaceResources[row.iconResource]).shortcutIconResource
-                        } ?: row.shortcutIconResource
+                        val iconResource = row.shortcutIconResource
                         var icon: Bitmap? = null
                         // the resource
                         try {
@@ -104,4 +100,6 @@ interface ShortcutIconConverter {
             return@withContext shortcutIcon
         }
     }
+
+
 }

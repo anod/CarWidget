@@ -31,4 +31,5 @@ dependencies {
     implementation(project(":content"))
     implementation(project(":lib:applog"))
     implementation("androidx.palette:palette-ktx:1.0.0")
+    implementation("com.google.android.material:material:1.6.1")
 }

@@ -18,12 +18,12 @@ class ShortcutIcon(
         * Indicates whether we're using the default fallback icon instead of something from the
         * app.
         */
-       internal val isFallback: Boolean,
+       val isFallback: Boolean,
        /**
         * If isShortcut=true and customIcon=false, this contains a reference to the
         * shortcut icon as an application's resource.
         */
-       internal val resource: Intent.ShortcutIconResource?,
+       val resource: Intent.ShortcutIconResource?,
        /**
         * The application icon.
         */

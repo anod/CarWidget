@@ -1,18 +1,23 @@
 package info.anodsplace.carwidget.appwidget
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.LruCache
+import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.content.ContextCompat
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.IconBackgroundProcessor
 import info.anodsplace.carwidget.content.IconTheme
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.db.Shortcut
+import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.Shortcuts
 import info.anodsplace.carwidget.content.graphics.BitmapTransform
@@ -115,14 +120,24 @@ class ShortcutViewBuilder(
         val transformKey = bitmapTransform.cacheKey
         val imageKey = shortcut.id.toString() + ":" + themePackage + ":" + transformKey
 
-        var icon = getBitmapFromMemCache(imageKey)
-        if (icon == null) {
-            icon = shortcutBitmap(shortcut, themeIcons)
-            icon = bitmapTransform.transform(icon)
-            addBitmapToMemCache(imageKey, icon)
+        var iconBitmap = getBitmapFromMemCache(imageKey)
+        var colorStateList: ColorStateList? = null
+        if (iconBitmap == null) {
+            val icon = shortcutIcon(shortcut, themeIcons)
+            colorStateList = skinProperties.iconResourceTint(icon.resource)
+            iconBitmap = bitmapTransform.transform(icon.bitmap)
+            if (colorStateList != null) { // TODO: Cache colorStateList
+                addBitmapToMemCache(imageKey, icon.bitmap)
+            }
         }
 
-        views.setImageViewBitmap(res, icon)
+        views.setImageViewBitmap(res, iconBitmap)
+
+        if (colorStateList != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                views.setColorStateList(res, "setImageTintList", colorStateList)
+            }
+        }
 
         if (!prefs.isTitlesHide) {
             val title = shortcut.title.toString()
@@ -132,7 +147,7 @@ class ShortcutViewBuilder(
             views.setOnClickPendingIntent(res, it)
             views.setOnClickPendingIntent(resText, it)
         }
-        return icon
+        return iconBitmap
     }
 
     private fun addBitmapToMemCache(key: String, bitmap: Bitmap?) {
@@ -145,10 +160,9 @@ class ShortcutViewBuilder(
         return bitmapMemoryCache?.get(key)
     }
 
-    private suspend fun shortcutBitmap(shortcut: Shortcut, themeIcons: IconTheme?): Bitmap {
+    private suspend fun shortcutIcon(shortcut: Shortcut, themeIcons: IconTheme?): ShortcutIcon {
         if (themeIcons == null || !shortcut.isApp || shortcut.isCustomIcon) {
-            val icon = iconLoader.load(shortcut, prefs.adaptiveIconStyle, iconConverter)
-            return icon.bitmap
+            return iconLoader.load(shortcut, prefs.adaptiveIconStyle)
         }
 
         val resourceId = themeIcons.getIcon(shortcut.intent.component!!.className)
@@ -157,12 +171,12 @@ class ShortcutViewBuilder(
             iconDrawable = themeIcons.getDrawable(resourceId)
         }
         if (iconDrawable is BitmapDrawable) {
-            return iconDrawable.bitmap
+            return ShortcutIcon.forCustomIcon(shortcut.id, iconDrawable.bitmap)
         }
         if (iconDrawable != null) {
-            return UtilitiesBitmap.createHiResIconBitmap(iconDrawable, context)
+            val bitmap = UtilitiesBitmap.createHiResIconBitmap(iconDrawable, context)
+            return ShortcutIcon.forCustomIcon(shortcut.id, bitmap)
         }
-        val icon = iconLoader.load(shortcut, prefs.adaptiveIconStyle, iconConverter)
-        return icon.bitmap
+        return iconLoader.load(shortcut, prefs.adaptiveIconStyle)
     }
 }

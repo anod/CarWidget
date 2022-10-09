@@ -1,30 +1,31 @@
 package info.anodsplace.carwidget.skin
 
 import android.content.Context
+import android.content.Intent
+import android.content.res.ColorStateList
+import android.view.ContextThemeWrapper
 import info.anodsplace.carwidget.content.db.ShortcutIconConverter
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 
-class YouProperties(private val context: Context) : BaseProperties() {
+class YouProperties(context: Context) : BaseProperties() {
+    private val widgetContext = ContextThemeWrapper(context, R.style.AppWidgetContainer)
+
     override val name: String = WidgetInterface.SKIN_YOU
 
-    override val iconConverter: ShortcutIconConverter
-        get() {
-            val replaceResources = mapOf(
-                    R.drawable.ic_shortcut_call to R.drawable.ic_shortcut_call_primary,
-                    R.drawable.ic_shortcut_play to R.drawable.ic_shortcut_play_primary,
-                    R.drawable.ic_shortcut_next to R.drawable.ic_shortcut_next_primary,
-                    R.drawable.ic_shortcut_previous to R.drawable.ic_shortcut_previous_primary
-            ).entries.associate { entry ->
-                Pair(
-                        context.resources.getResourceName(entry.key),
-                        context.resources.getResourceName(entry.value)
-                )
-            }
-            return ShortcutIconConverter.Default(
-                    context = context,
-                    replaceResources = replaceResources
+    private val primaryColorIcons by lazy {
+            listOf(
+                R.drawable.ic_shortcut_call,
+                R.drawable.ic_shortcut_play,
+                R.drawable.ic_shortcut_next,
+                R.drawable.ic_shortcut_previous,
             )
-        }
+            .map { resId -> context.resources.getResourceName(resId) }
+            .associateWith { true }
+    }
+
+    private val primaryColorStateList: ColorStateList by lazy {
+        widgetContext.resources.getColorStateList(R.color.button_tint_primary, widgetContext.theme)
+    }
 
     override val inCarButtonExitRes: Int
         get() = R.drawable.you_wheel_exit
@@ -54,6 +55,14 @@ class YouProperties(private val context: Context) : BaseProperties() {
             10 -> R.layout.sk_you_10
             else -> R.layout.sk_you_6
         }
+    }
+
+    override fun iconResourceTint(iconResource: Intent.ShortcutIconResource?): ColorStateList? {
+        iconResource ?: return null
+        if (primaryColorIcons.containsKey(iconResource.resourceName)) {
+            return primaryColorStateList
+        }
+        return null
     }
 
     override fun hasWidgetButton1(): Boolean {
