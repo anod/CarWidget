@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.skin
 
 import android.content.Intent
-import android.content.res.ColorStateList
 import info.anodsplace.carwidget.content.IconBackgroundProcessor
 import info.anodsplace.carwidget.content.InternalShortcutResources
 import info.anodsplace.carwidget.content.SkinProperties
@@ -9,8 +8,6 @@ import info.anodsplace.carwidget.content.db.ShortcutIconConverter
 import info.anodsplace.carwidget.content.graphics.IconProcessor
 
 abstract class BaseProperties : SkinProperties {
-
-    override val iconConverter: ShortcutIconConverter? = null
 
     override val inCarButtonExitRes: Int
         get() = R.drawable.ic_incar_exit
@@ -59,7 +56,7 @@ abstract class BaseProperties : SkinProperties {
 
     override fun shortcutTextIdAt(position: Int): Int = textIds[position]
 
-    override fun iconResourceTint(iconResource: Intent.ShortcutIconResource?): ColorStateList? = null
+    override fun iconResourceTint(iconResource: Intent.ShortcutIconResource?): Int = 0
 
     companion object {
         private val textIds = intArrayOf(

@@ -23,5 +23,6 @@
     <color name="colorDynamicWidgetOnBackground">@color/systemColorOnSecondaryContainer</color>
     <color name="colorDynamicWidgetPrimary">@color/systemColorPrimary</color>
     <color name="colorDynamicWidgetPrimaryInverse">@color/systemColorPrimaryInverse</color>
+    <color name="colorDynamicWidgetOnWallpaper">@color/systemColorSecondaryContainerAlt</color>
 
 </resources>

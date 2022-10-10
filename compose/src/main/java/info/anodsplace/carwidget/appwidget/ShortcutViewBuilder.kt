@@ -1,18 +1,15 @@
 package info.anodsplace.carwidget.appwidget
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.LruCache
-import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.content.ContextCompat
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.IconBackgroundProcessor
 import info.anodsplace.carwidget.content.IconTheme
 import info.anodsplace.carwidget.content.SkinProperties
@@ -40,7 +37,6 @@ class ShortcutViewBuilder(
     private val bitmapMemoryCache: LruCache<String, Bitmap>? = null
 ) : ShortcutViewBuilderInstance {
     private val backgroundProcessor: IconBackgroundProcessor? = skinProperties.backgroundProcessor
-    private val iconConverter = skinProperties.iconConverter
 
     override var scaledDensity: Float = 1.0f
     override var iconTheme: IconTheme? = null
@@ -52,10 +48,7 @@ class ShortcutViewBuilder(
         if (info == null) {
             setNoShortcut(resBtn, resText, views, position, skinProperties)
         } else {
-            AppLog.i(
-                "Shortcut: " + (info.intent.component?.toShortString()
-                    ?: info.intent.toString())
-            )
+            AppLog.i("Shortcut: " + (info.intent.component?.toShortString() ?: info.intent.toString()))
             icon = applyShortcut(resBtn, resText, info, views, position, iconTheme)
         }
         if (prefs.isTitlesHide) {
@@ -121,21 +114,21 @@ class ShortcutViewBuilder(
         val imageKey = shortcut.id.toString() + ":" + themePackage + ":" + transformKey
 
         var iconBitmap = getBitmapFromMemCache(imageKey)
-        var colorStateList: ColorStateList? = null
+        var iconResource = 0
         if (iconBitmap == null) {
             val icon = shortcutIcon(shortcut, themeIcons)
-            colorStateList = skinProperties.iconResourceTint(icon.resource)
+            iconResource = skinProperties.iconResourceTint(icon.resource)
             iconBitmap = bitmapTransform.transform(icon.bitmap)
-            if (colorStateList != null) { // TODO: Cache colorStateList
-                addBitmapToMemCache(imageKey, icon.bitmap)
+            if (iconResource != 0) { // TODO: Cache colorStateList
+                addBitmapToMemCache(imageKey, iconBitmap)
             }
         }
 
         views.setImageViewBitmap(res, iconBitmap)
 
-        if (colorStateList != null) {
+        if (iconResource != 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                views.setColorStateList(res, "setImageTintList", colorStateList)
+                views.setColorStateList(res, "setImageTintList", iconResource)
             }
         }
 

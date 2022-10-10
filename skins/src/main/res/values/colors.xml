@@ -57,7 +57,7 @@
     <color name="colorDynamicWidgetOnBackground">@color/systemColorOnSecondaryContainer</color>
     <color name="colorDynamicWidgetPrimary">@color/systemColorPrimary</color>
     <color name="colorDynamicWidgetPrimaryInverse">@color/systemColorPrimaryInverse</color>
-
+    <color name="colorDynamicWidgetOnWallpaper">@color/systemColorSecondaryContainer</color>
 </resources>
 
     <!--    Primary                | systemColorPrimary              | #ff6750a4</br>(system_accent1_600)   | #ffd0bcff</br>(system_accent1_200)-->
