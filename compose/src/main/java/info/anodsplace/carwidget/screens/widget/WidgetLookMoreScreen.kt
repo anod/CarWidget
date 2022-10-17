@@ -83,10 +83,10 @@ private fun createItems(settings: WidgetInterface) = listOf(
 )
 
 @Composable
-fun WidgetLookMoreScreen(screenState: WidgetLookMoreState, onEvent: (WidgetLookMoreEvent) -> Unit, modifier: Modifier = Modifier) {
+fun WidgetLookMoreScreen(screenState: WidgetLookMoreState, onEvent: (WidgetLookMoreEvent) -> Unit, innerPadding: PaddingValues = PaddingValues(0.dp)) {
     Surface {
         PreferencesScreen(
-            modifier = modifier,
+            modifier = Modifier.padding(innerPadding),
             preferences = createItems(screenState.widgetSettings),
             onClick = { item ->
                 when (item) {

@@ -33,7 +33,6 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
             uiModeManager.setApplicationNightMode(appSettings.uiMode)
         }
         super.onCreate(savedInstanceState)
-        DynamicColors.applyToActivityIfAvailable(this)
         val appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
 
         val deeplink = Deeplink.match(intent.data!!)

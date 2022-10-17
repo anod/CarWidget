@@ -1,6 +1,7 @@
 package info.anodsplace.carwidget.screens.incar
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -9,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.chooser.ChooserDialog
@@ -23,7 +25,7 @@ import info.anodsplace.compose.value
 @Composable
 fun InCarMainScreen(
     screenState: InCarViewState,
-    modifier: Modifier = Modifier,
+    innerPadding: PaddingValues = PaddingValues(0.dp),
     onEvent: (InCarViewEvent) -> Unit = { },
     appsLoader: ChooserLoader = StaticChooserLoader(emptyList()),
     imageLoader: ImageLoader
@@ -33,7 +35,7 @@ fun InCarMainScreen(
     Surface {
         PreferencesScreen(
             preferences = screenState.items,
-            modifier = modifier,
+            modifier = Modifier.padding(innerPadding),
             categoryColor = MaterialTheme.colorScheme.secondary,
             descriptionColor = MaterialTheme.colorScheme.onBackground,
             onClick = { item ->

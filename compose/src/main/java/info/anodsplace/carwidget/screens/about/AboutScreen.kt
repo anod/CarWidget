@@ -81,7 +81,7 @@ fun AboutTitle(@StringRes titleRes: Int) {
 }
 
 @Composable
-fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) -> Unit, imageLoader: ImageLoader, modifier: Modifier = Modifier) {
+fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) -> Unit, imageLoader: ImageLoader, innerPadding: PaddingValues = PaddingValues(0.dp)) {
     var restoreAnimation by remember { mutableStateOf(false) }
     var backupInCarAnimation by remember { mutableStateOf(false) }
     var backupWidgetAnimation by remember { mutableStateOf(false) }
@@ -123,7 +123,8 @@ fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) 
 
     Surface {
         Column(
-            modifier = modifier
+            modifier = Modifier
+                .padding(innerPadding)
                 .fillMaxSize()
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())

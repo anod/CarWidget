@@ -53,6 +53,103 @@ private fun Modifier.iconContainer(): Modifier = composed {
 
     ) }
 
+
+@Composable
+fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, imageLoader: ImageLoader, innerPadding: PaddingValues = PaddingValues(0.dp)) {
+    when (val loadState = screen.loadState) {
+        is ScreenLoadState.Ready -> {
+            WidgetsLisItems(
+                screen = screen,
+                onClick = onClick,
+                modifier = Modifier.padding(innerPadding).fillMaxSize().padding(16.dp),
+                imageLoader = imageLoader
+            )
+        }
+        is ScreenLoadState.Error -> Text(text = loadState.message, color = MaterialTheme.colorScheme.error)
+        ScreenLoadState.Loading -> CircularProgressIndicator()
+    }
+}
+
+@Composable
+fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier, imageLoader: ImageLoader) {
+    if (screen.items.isEmpty()) {
+        Column(
+            modifier = modifier
+        ) {
+            WidgetsEmptyScreen()
+            Spacer(modifier = Modifier.height(16.dp))
+            InCarHeader(screen)
+        }
+    } else {
+        LazyColumn(
+            modifier = modifier
+        ) {
+            var hasLargeItem = false
+
+            item {
+                InCarHeader(screen)
+            }
+
+            if (screen.isServiceRequired && !screen.isServiceRunning) {
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row(modifier = Modifier
+                        .cardStyle()) {
+                        Icon(
+                            imageVector = Icons.Filled.Warning,
+                            modifier = Modifier.size(SystemIconSize),
+                            tint = WarningColor,
+                            contentDescription = null)
+                        Text(
+                            modifier = Modifier.padding(start = 16.dp),
+                            text = "InCar detector service is not running, disable battery optimization",
+                            color = WarningColor
+                        )
+                    }
+                }
+            }
+
+            items(screen.items.size) { idx ->
+                val item = screen.items[idx]
+                Spacer(modifier = Modifier.height(16.dp))
+                when (item) {
+                    is WidgetItem.Shortcut -> {
+                        Box(modifier = Modifier.cardStyle()) {
+                            AsyncImage(
+                                model = LocalContext.current.iconUri("mipmap", "ic_launcher"),
+                                contentDescription = "",
+                                imageLoader = imageLoader,
+                                modifier = Modifier
+                                    .iconContainer()
+                            )
+                        }
+                    }
+                    is WidgetItem.Large -> {
+                        hasLargeItem = true
+                        LargeWidgetItem(
+                            item = item,
+                            onClick = { onClick(item.appWidgetId) },
+                            imageLoader = imageLoader,
+                        )
+                    }
+                }
+            }
+
+            if (hasLargeItem) {
+                item {
+                    Text(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        text = stringResource(id = R.string.widgets_hint)
+                    )
+                }
+            }
+        }
+    }
+}
+
 @Composable
 fun WidgetsEmptyScreen() {
     Row(
@@ -175,126 +272,29 @@ fun InCarHeader(screen: WidgetListScreenState) {
     }
 }
 
-@Composable
-fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier, imageLoader: ImageLoader) {
-    when (val loadState = screen.loadState) {
-        is ScreenLoadState.Ready -> {
-            WidgetsLisItems(
-                screen = screen,
-                onClick = onClick,
-                modifier = modifier,
-                imageLoader = imageLoader
-            )
-        }
-        is ScreenLoadState.Error -> Text(text = loadState.message, color = MaterialTheme.colorScheme.error)
-        ScreenLoadState.Loading -> CircularProgressIndicator()
-    }
-}
-
-@Composable
-fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier, imageLoader: ImageLoader) {
-    if (screen.items.isEmpty()) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            WidgetsEmptyScreen()
-            Spacer(modifier = Modifier.height(16.dp))
-            InCarHeader(screen)
-        }
-    } else {
-        val widgetSystemTheme = LocalWidgetSystemTheme.current
-        LazyColumn(
-            modifier = Modifier
-        ) {
-            var hasLargeItem = false
-
-            item {
-                InCarHeader(screen)
-            }
-
-            if (screen.isServiceRequired && !screen.isServiceRunning) {
-                item {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row(modifier = Modifier
-                        .cardStyle()) {
-                        Icon(
-                            imageVector = Icons.Filled.Warning,
-                            modifier = Modifier.size(SystemIconSize),
-                            tint = WarningColor,
-                            contentDescription = null)
-                        Text(
-                            modifier = Modifier.padding(start = 16.dp),
-                            text = "InCar detector service is not running, disable battery optimization",
-                            color = WarningColor
-                        )
-                    }
-                }
-            }
-
-            items(screen.items.size) { idx ->
-                val item = screen.items[idx]
-                Spacer(modifier = Modifier.height(16.dp))
-                when (item) {
-                    is WidgetItem.Shortcut -> {
-                        Box(modifier = Modifier.cardStyle()) {
-                            AsyncImage(
-                                model = LocalContext.current.iconUri("mipmap", "ic_launcher"),
-                                contentDescription = "",
-                                imageLoader = imageLoader,
-                                modifier = Modifier
-                                    .iconContainer()
-                            )
-                        }
-                    }
-                    is WidgetItem.Large -> {
-                        hasLargeItem = true
-                        LargeWidgetItem(
-                            item = item,
-                            onClick = { onClick(item.appWidgetId) },
-                            imageLoader = imageLoader,
-                        )
-                    }
-                }
-            }
-
-            if (hasLargeItem) {
-                item {
-                    Text(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        text = stringResource(id = R.string.widgets_hint)
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Preview("Widgets Screen Light")
+@Preview("Widgets Screen Light", showSystemUi = true)
 @Composable
 fun PreviewWidgetsScreenLight() {
     CarWidgetTheme {
-            WidgetsListScreen(
-                WidgetListScreenState(
-                    loadState = ScreenLoadState.Ready(Unit),
-                    items = listOf(
-                        WidgetItem.Shortcut(appWidgetId = 0),
-                        WidgetItem.Shortcut(appWidgetId = 0),
-                        WidgetItem.Large(appWidgetId = 0, shortcuts = listOf(
+        WidgetsListScreen(
+            screen = WidgetListScreenState(
+                loadState = ScreenLoadState.Ready(Unit),
+                items = listOf(
+                    WidgetItem.Shortcut(appWidgetId = 0),
+                    WidgetItem.Shortcut(appWidgetId = 0),
+                    WidgetItem.Large(
+                        appWidgetId = 0, shortcuts = listOf(
 
-                        ), adaptiveIconStyle = "")
-                    ),
-                    isServiceRunning = false,
-                    isServiceRequired = true,
-                    eventsState = emptyList(),
-                    statusResId = R.string.enabled
+                        ), adaptiveIconStyle = ""
+                    )
                 ),
-                onClick = { },
-                imageLoader = ImageLoader.Builder(LocalContext.current).build()
-            )
+                isServiceRunning = false,
+                isServiceRequired = true,
+                eventsState = emptyList(),
+                statusResId = R.string.enabled
+            ),
+            onClick = { },
+            imageLoader = ImageLoader.Builder(LocalContext.current).build()
+        )
     }
 }

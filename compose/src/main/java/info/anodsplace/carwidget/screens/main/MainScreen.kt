@@ -195,21 +195,17 @@ fun NavHost(
     imageLoader: ImageLoader
 ) {
     val context = LocalContext.current
-    val modifier = Modifier
-        .padding(innerPadding)
 
     NavHost(navController, startDestination = startDestination, route = startRoute) {
         composable(route = NavItem.Tab.Widgets.route) {
             val widgetsListViewModel: WidgetsListViewModel = viewModel()
             val widgetsState by widgetsListViewModel.viewStates.collectAsState(initial = widgetsListViewModel.viewState)
-            Box(modifier = modifier) {
-                WidgetsListScreen(
-                    screen = widgetsState,
-                    onClick = { appWidgetId -> onEvent(MainViewEvent.OpenWidgetConfig(appWidgetId)) },
-                    modifier = Modifier,
-                    imageLoader = imageLoader
-                )
-            }
+            WidgetsListScreen(
+                screen = widgetsState,
+                onClick = { appWidgetId -> onEvent(MainViewEvent.OpenWidgetConfig(appWidgetId)) },
+                innerPadding = innerPadding,
+                imageLoader = imageLoader
+            )
         }
         composable(route = NavItem.Tab.About.route) {
             val aboutViewModel: AboutViewModel = viewModel(factory = AboutViewModel.Factory(appWidgetIdScope))
@@ -217,7 +213,7 @@ fun NavHost(
             AboutScreen(
                 screenState = aboutScreenState,
                 onEvent = { aboutViewModel.handleEvent(it) },
-                modifier = modifier,
+                innerPadding = innerPadding,
                 imageLoader = imageLoader
             )
         }
@@ -229,7 +225,7 @@ fun NavHost(
                 currentSkin.value = screenState.currentSkin.value
                 WidgetSkinScreen(
                     screenState = screenState,
-                    modifier = Modifier.padding(innerPadding),
+                    innerPadding = innerPadding,
                     skinViewFactory = skinViewModel,
                     onEvent = { skinViewModel.handleEvent(it) }
                 )
@@ -267,7 +263,7 @@ fun NavHost(
                 WidgetLookMoreScreen(
                     screenState = screenState,
                     onEvent = { lookMoreViewModel.handleEvent(it) },
-                    modifier = Modifier.padding(innerPadding)
+                    innerPadding = innerPadding
                 )
             }
         }
@@ -278,7 +274,7 @@ fun NavHost(
                 InCarMainScreen(
                     screenState = screenState,
                     onEvent = { inCarViewModel.handleEvent(it) },
-                    modifier = modifier,
+                    innerPadding = innerPadding,
                     appsLoader = inCarViewModel.appsLoader,
                     imageLoader = imageLoader
                 )
@@ -300,7 +296,7 @@ fun NavHost(
                 BluetoothDevicesScreen(
                     screenState = screenState,
                     onEvent = { bluetoothDevicesViewModel.handleEvent(it) },
-                    modifier = modifier
+                    innerPadding = innerPadding
                 )
             }
         }

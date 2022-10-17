@@ -19,8 +19,7 @@ import info.anodsplace.graphics.DrawableUri
 fun Intent.forSettings(context: Context, appWidgetId: Int, target: ShortcutResources): Intent {
     component = ComponentName(context, target.activity.settings)
     putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-    data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"),
-            appWidgetId.toString())
+    data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"), appWidgetId.toString())
     action = AppWidgetManager.ACTION_APPWIDGET_CONFIGURE
     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     return this

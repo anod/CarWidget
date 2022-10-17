@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.screens.widget
 import android.view.View
 import android.widget.FrameLayout
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
@@ -44,7 +45,7 @@ fun WidgetSkinPreview(skinItem: SkinList.Item, reload: Int, skinViewFactory: Ski
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun WidgetSkinScreen(screenState: SkinPreviewViewState, modifier: Modifier = Modifier, skinViewFactory: SkinViewFactory, onEvent: (SkinPreviewViewEvent) -> Unit = { }) {
+fun WidgetSkinScreen(screenState: SkinPreviewViewState, innerPadding: PaddingValues = PaddingValues(0.dp), skinViewFactory: SkinViewFactory, onEvent: (SkinPreviewViewEvent) -> Unit = { }) {
     val pagerState = rememberPagerState(initialPage = screenState.skinList.selectedSkinPosition)
     val scope = rememberCoroutineScope()
 
@@ -57,7 +58,7 @@ fun WidgetSkinScreen(screenState: SkinPreviewViewState, modifier: Modifier = Mod
         currentPage = pagerState.currentPage
     }
 
-    Column(modifier = modifier) {
+    Column(modifier = Modifier.padding(innerPadding)) {
         ScrollableTabRow(
             selectedTabIndex = pagerState.currentPage
         ) {

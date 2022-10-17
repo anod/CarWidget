@@ -3,10 +3,7 @@ package info.anodsplace.carwidget.screens.incar
 import android.bluetooth.BluetoothAdapter
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -22,8 +19,8 @@ import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.permissions.AppPermission
 
 @Composable
-fun BluetoothDevicesScreen(screenState: BluetoothDevicesViewState, onEvent: (BluetoothDevicesViewEvent) -> Unit, modifier: Modifier = Modifier) {
-    val screenModifier = modifier.padding(16.dp)
+fun BluetoothDevicesScreen(screenState: BluetoothDevicesViewState, onEvent: (BluetoothDevicesViewEvent) -> Unit, innerPadding: PaddingValues = PaddingValues(0.dp),) {
+    val screenModifier = Modifier.padding(innerPadding).padding(16.dp)
     Surface {
         when (val listState = screenState.listState) {
             BluetoothDevicesListState.Initial -> {
