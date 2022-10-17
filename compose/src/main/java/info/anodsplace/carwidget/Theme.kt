@@ -1,12 +1,16 @@
 package info.anodsplace.carwidget
 
 import android.app.UiModeManager
+import android.content.Context
 import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast
+import androidx.annotation.ColorRes
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -176,8 +180,7 @@ fun CarWidgetTheme(
 ) {
     val darkTheme = if (uiMode == UiModeManager.MODE_NIGHT_AUTO)
             isSystemInDarkTheme()
-        else
-        uiMode == UiModeManager.MODE_NIGHT_YES
+        else uiMode == UiModeManager.MODE_NIGHT_YES
     val colorScheme = if (supportsDynamic()) {
         if (darkTheme) dynamicDarkColorScheme(LocalContext.current) else dynamicLightColorScheme(LocalContext.current)
     } else {
@@ -187,7 +190,12 @@ fun CarWidgetTheme(
     MaterialTheme(
             colorScheme = colorScheme,
             typography = CarWidgetTypography,
-            shapes = CarWidgetShapes,
-            content = content
-    )
+            shapes = CarWidgetShapes
+    ) {
+        WidgetSystemTheme { widgetSystemTheme ->
+            CompositionLocalProvider(LocalWidgetSystemTheme provides widgetSystemTheme) {
+                content()
+            }
+        }
+    }
 }

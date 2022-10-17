@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -24,9 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
-import info.anodsplace.carwidget.CarWidgetTheme
+import info.anodsplace.carwidget.*
 import info.anodsplace.carwidget.R
-import info.anodsplace.carwidget.WarningColor
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.iconUri
@@ -34,13 +34,24 @@ import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
 import info.anodsplace.compose.ScreenLoadState
 
-@Composable
-fun Modifier.cardStyle(): Modifier = then(
+private fun Modifier.cardStyle(): Modifier = composed { then(
     fillMaxWidth()
         .clip(shape = RoundedCornerShape(16.dp))
         .background(MaterialTheme.colorScheme.secondary)
         .padding(16.dp)
-)
+) }
+
+private fun Modifier.iconContainer(): Modifier = composed {
+    val widgetSystemTheme = LocalWidgetSystemTheme.current
+    val shape = RoundedCornerShape(widgetSystemTheme.radius.background)
+    then(
+        padding(2.dp)
+        .clip(shape = shape)
+        .background(widgetSystemTheme.colorScheme.colorDynamicWidgetBackground)
+        .border(1.dp, widgetSystemTheme.colorScheme.colorDynamicWidgetPrimary, shape = shape)
+        .size(48.dp)
+
+    ) }
 
 @Composable
 fun WidgetsEmptyScreen() {
@@ -64,21 +75,22 @@ fun WidgetsEmptyScreen() {
 }
 
 @Composable
-fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, imageLoader: ImageLoader, iconModifier: Modifier = Modifier) {
+fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, imageLoader: ImageLoader) {
     val context = LocalContext.current
     Row {
         for (idx in indexes) {
             val shortcut = item.shortcuts.getOrNull(idx)
-            if (shortcut != null) {
-                AsyncImage(
-                    model = shortcut.iconUri(context, item.adaptiveIconStyle),
-                    contentDescription = shortcut.title.toString(),
-                    imageLoader = imageLoader,
-                    modifier = iconModifier.border(1.dp, MaterialTheme.colorScheme.onSurface, shape = RoundedCornerShape(8.dp))
-                )
-            } else {
-                Box(modifier = iconModifier.border(1.dp, MaterialTheme.colorScheme.onSurface, shape = RoundedCornerShape(8.dp))) {
-
+            Box(
+                modifier = Modifier
+                    .iconContainer()
+            ) {
+                if (shortcut != null) {
+                    AsyncImage(
+                        model = shortcut.iconUri(context, item.adaptiveIconStyle),
+                        contentDescription = shortcut.title.toString(),
+                        imageLoader = imageLoader,
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
             }
         }
@@ -86,12 +98,12 @@ fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, imageLoader: Imag
 }
 
 @Composable
-fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit, imageLoader: ImageLoader, iconModifier: Modifier = Modifier) {
+fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit, imageLoader: ImageLoader) {
     Column(modifier = Modifier
         .clickable { onClick() }
         .cardStyle()) {
-        LargeWidgetRow(item = item, indexes = listOf(1, 3, 5, 7, 9), iconModifier = iconModifier, imageLoader = imageLoader)
-        LargeWidgetRow(item = item, indexes = listOf(0, 2, 4, 6, 8), iconModifier = iconModifier, imageLoader = imageLoader)
+        LargeWidgetRow(item = item, indexes = listOf(1, 3, 5, 7, 9), imageLoader = imageLoader)
+        LargeWidgetRow(item = item, indexes = listOf(0, 2, 4, 6, 8), imageLoader = imageLoader)
     }
 }
 
@@ -192,14 +204,9 @@ fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -
             InCarHeader(screen)
         }
     } else {
-        val iconModifier = Modifier
-            .size(SystemIconSize)
-            .padding(4.dp)
-
+        val widgetSystemTheme = LocalWidgetSystemTheme.current
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
         ) {
             var hasLargeItem = false
 
@@ -236,13 +243,18 @@ fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -
                                 model = LocalContext.current.iconUri("mipmap", "ic_launcher"),
                                 contentDescription = "",
                                 imageLoader = imageLoader,
-                                modifier = iconModifier.border(1.dp, MaterialTheme.colorScheme.onSurface, shape = RoundedCornerShape(8.dp))
+                                modifier = Modifier
+                                    .iconContainer()
                             )
                         }
                     }
                     is WidgetItem.Large -> {
                         hasLargeItem = true
-                        LargeWidgetItem(item, onClick = { onClick(item.appWidgetId) }, iconModifier = iconModifier, imageLoader = imageLoader)
+                        LargeWidgetItem(
+                            item = item,
+                            onClick = { onClick(item.appWidgetId) },
+                            imageLoader = imageLoader,
+                        )
                     }
                 }
             }
@@ -269,7 +281,13 @@ fun PreviewWidgetsScreenLight() {
             WidgetsListScreen(
                 WidgetListScreenState(
                     loadState = ScreenLoadState.Ready(Unit),
-                    items = listOf( WidgetItem.Shortcut(appWidgetId = 0) ),
+                    items = listOf(
+                        WidgetItem.Shortcut(appWidgetId = 0),
+                        WidgetItem.Shortcut(appWidgetId = 0),
+                        WidgetItem.Large(appWidgetId = 0, shortcuts = listOf(
+
+                        ), adaptiveIconStyle = "")
+                    ),
                     isServiceRunning = false,
                     isServiceRequired = true,
                     eventsState = emptyList(),

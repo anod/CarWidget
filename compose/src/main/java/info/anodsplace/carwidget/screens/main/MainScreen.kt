@@ -106,7 +106,7 @@ fun Tabs(
     Scaffold(
         containerColor = if (screenState.isWidget) Color.Transparent else MaterialTheme.colorScheme.background,
         topBar = {
-            SmallTopAppBar(
+            TopAppBar(
                 title = { Text(text = stringResource(id = R.string.app_name)) },
                 actions = {
                     if (screenState.isWidget) {
