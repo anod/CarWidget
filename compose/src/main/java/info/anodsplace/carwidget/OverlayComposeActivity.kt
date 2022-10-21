@@ -4,14 +4,23 @@ import android.app.UiModeManager
 import android.appwidget.AppWidgetManager
 import android.os.Build
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import com.google.android.material.color.DynamicColors
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.chooser.ChooserScreen
+import info.anodsplace.carwidget.chooser.Header
+import info.anodsplace.carwidget.chooser.MediaListLoader
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
@@ -19,12 +28,14 @@ import info.anodsplace.carwidget.extensions.extras
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.shortcuts.EditShortcut
 import info.anodsplace.carwidget.screens.widget.EditWidgetButton
+import info.anodsplace.framework.media.MediaKeyEvent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
     private val appSettings: AppSettings by inject()
     private val uiModeManager: UiModeManager by inject()
+    private val imageLoader: ImageLoader by inject()
     private var appWidgetIdScope: AppWidgetIdScope? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,13 +69,20 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
                 when (deeplink) {
                     is Deeplink.EditShortcut -> EditShortcut(
                         appWidgetIdScope = appWidgetIdScope!!,
-                        args = NavItem.Tab.CurrentWidget.EditShortcut.Args(shortcutId = deeplink.shortcutId, position = deeplink.position),
+                        args = NavItem.Tab.CurrentWidget.EditShortcut.Args(
+                            shortcutId = deeplink.shortcutId,
+                            position = deeplink.position
+                        ),
                         onDismissRequest = { finish() }
                     )
                     is Deeplink.EditWidgetButton -> EditWidgetButton(
                         appWidgetIdScope = appWidgetIdScope!!,
                         args = NavItem.Tab.CurrentWidget.EditWidgetButton.Args(buttonId = deeplink.buttonId),
                         onDismissRequest = { finish() },
+                    )
+                    is Deeplink.PlayMediaButton -> PlayMediaButton(
+                        onDismissRequest = { finish() },
+                        imageLoader = imageLoader
                     )
                     else -> throw IllegalArgumentException("Unknown deeplink $deeplink")
                 }
@@ -76,4 +94,28 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
         super.onDestroy()
         appWidgetIdScope?.close()
     }
+}
+
+@Composable
+fun PlayMediaButton(onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
+    val context = LocalContext.current
+    val loader = remember { MediaListLoader(context) }
+    ChooserScreen(
+        modifier = Modifier.padding(16.dp),
+        headers = listOf(
+            Header(0, stringResource(R.string.show_choice), iconVector = Icons.Filled.List)
+        ),
+        loader = loader,
+        onClick = { entry ->
+            if (entry.componentName != null) {
+                MediaKeyEvent(context).sendToComponent(
+                    KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE,
+                    entry.componentName,
+                    false
+                )
+            }
+            onDismissRequest()
+        },
+        imageLoader = imageLoader
+    )
 }

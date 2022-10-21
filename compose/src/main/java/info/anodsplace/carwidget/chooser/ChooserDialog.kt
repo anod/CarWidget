@@ -95,20 +95,38 @@ fun ChooserDialog(
     onClick: (ChooserEntry) -> Unit,
     imageLoader: ImageLoader
 ) {
-    val appsList by loader.load().collectAsState(initial = emptyList())
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties()
     ) {
-        Surface(
-            modifier = modifier
-                .fillMaxWidth()
-                .defaultMinSize(minHeight = 352.dp),
-            shape = MaterialTheme.shapes.medium,
-            color = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface
-        ) {
-            ChooserGridList(headers, appsList, onClick = onClick, imageLoader = imageLoader)
-        }
+        ChooserScreen(
+            loader,
+            modifier,
+            headers,
+            onClick,
+            imageLoader
+        )
+    }
+}
+
+@Composable
+fun ChooserScreen(
+    loader: ChooserLoader,
+    modifier: Modifier = Modifier,
+    headers: List<ChooserEntry> = listOf(),
+    onClick: (ChooserEntry) -> Unit,
+    imageLoader: ImageLoader
+) {
+    val appsList by loader.load().collectAsState(initial = emptyList())
+
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 352.dp),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface
+    ) {
+        ChooserGridList(headers, appsList, onClick = onClick, imageLoader = imageLoader)
     }
 }

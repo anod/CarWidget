@@ -31,6 +31,11 @@ sealed interface Deeplink {
         override fun toUri(): Uri = build("widgets", listOf(appWidgetId, "button", buttonId, "edit")).toUri()
     }
 
+    object PlayMediaButton : Deeplink {
+        const val uriPattern = "carwidget://music/play"
+        override fun toUri(): Uri = build("music", listOf("play")).toUri()
+    }
+
     data class OpenWidgetShortcut(override val appWidgetId: Int, val position: Int) : Deeplink, AppWidgetIdAware {
         companion object {
             const val uriPattern = "carwidget://widgets/{app_widget_id}/open/{pos_id}"
@@ -68,6 +73,11 @@ sealed interface Deeplink {
                 if (uri.pathSegments[1] == "button") {
                     val buttonId = uri.pathSegments[2].toInt()
                     return EditWidgetButton(appWidgetId, buttonId)
+                }
+            }
+            if (uri.authority == "music") {
+                if (uri.pathSegments[0] == "play") {
+                    return PlayMediaButton
                 }
             }
             return null

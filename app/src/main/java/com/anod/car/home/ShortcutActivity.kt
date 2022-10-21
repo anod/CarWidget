@@ -8,7 +8,9 @@ import android.view.KeyEvent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.FragmentActivity
 import com.anod.car.home.appwidget.ShortcutPendingIntent
-import com.anod.car.home.utils.MusicUtils
+import info.anodsplace.framework.media.MediaKeyEvent
+import info.anodsplace.carwidget.OverlayComposeActivity
+import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra.EXTRA_MEDIA_BUTTON
 import info.anodsplace.framework.content.startActivitySafely
@@ -48,23 +50,25 @@ class ShortcutActivity : FragmentActivity(), KoinComponent {
         finish()
     }
 
-    private fun handleKeyCode(keyCode: Int?) {
+    private fun handleKeyCode(keyCode: Int) {
+        val mediaKeyEvent = MediaKeyEvent(this)
         if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
             val audio = getSystemService(Context.AUDIO_SERVICE) as AudioManager
             // pause
             if (audio.isMusicActive) {
-                MusicUtils.sendKeyEvent(keyCode, this)
+                mediaKeyEvent.send(keyCode)
             } else {
                 val musicCmp = get<AppSettings>().musicApp
                 if (musicCmp == null) {
-                    // TODO:
-                    // startActivity(Intent(this, MusicAppChoiceActivity::class.java))
+                    startActivity(Intent(this, OverlayActivity::class.java).apply {
+                        data = Deeplink.PlayMediaButton.toUri()
+                    })
                 } else {
-                    MusicUtils.sendKeyEventComponent(keyCode, this, musicCmp, false)
+                    mediaKeyEvent.sendToComponent(keyCode, musicCmp, false)
                 }
             }
         } else {
-            MusicUtils.sendKeyEvent(keyCode!!, this)
+            mediaKeyEvent.send(keyCode)
         }
     }
 

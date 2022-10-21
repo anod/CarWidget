@@ -7,6 +7,8 @@ import com.anod.car.home.incar.BroadcastService
 
 class BootCompleted : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
-        BroadcastService.registerBroadcastService(context)
+        if (intent?.action == Intent.ACTION_LOCKED_BOOT_COMPLETED) {
+            BroadcastService.registerBroadcastService(context)
+        }
     }
 }

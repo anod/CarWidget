@@ -196,7 +196,7 @@ fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) 
 
     if (showMusicAppDialog) {
         val context = LocalContext.current
-        val loader by remember { mutableStateOf(MediaListLoader(context)) }
+        val loader = remember { MediaListLoader(context) }
         ChooserDialog(
             modifier = Modifier.padding(16.dp),
             headers = listOf(
