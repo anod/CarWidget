@@ -2,8 +2,6 @@ package info.anodsplace.carwidget.skin
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.view.ContextThemeWrapper
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 
 class YouProperties(context: Context) : BaseProperties() {

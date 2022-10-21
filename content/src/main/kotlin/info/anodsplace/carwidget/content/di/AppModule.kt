@@ -50,7 +50,7 @@ fun createAppModule(): Module = module {
         ImageLoader.Builder(context)
             .components {
                 add(AppIconFetcher.Factory(context))
-                add(ShortcutIconRequestHandler.Factory(context, get(), get()))
+                add(ShortcutIconRequestHandler.Factory(context, get(), get(), get()))
             }
             .build()
     }

@@ -22,6 +22,7 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.carwidget.appwidget.WidgetUpdate
 import info.anodsplace.carwidget.content.InCarStatus
+import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.di.createAppModule
 import info.anodsplace.carwidget.content.extentions.isServiceRunning
 import info.anodsplace.carwidget.content.preferences.AppSettings
@@ -137,7 +138,8 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                         factory<WidgetSettings.DefaultsProvider> { DefaultsResourceProvider(get<Context>()) }
                         factory<ShortcutResources> { WidgetShortcutResource() }
                         factoryOf(::WidgetUpdateProvider) bind WidgetUpdate::class
-                        factory { (skinName: String) -> SkinPropertiesFactory.create(skinName, get()) }
+                        factoryOf(::SkinPropertiesFactory) bind SkinProperties.Factory::class
+                        factory { (skinName: String) -> get<SkinPropertiesFactory>().create(skinName) }
                         factoryOf(::ScreenOrientation)
                         factoryOf(::AlertWindow)
                         factoryOf(::ScreenOnAlert)

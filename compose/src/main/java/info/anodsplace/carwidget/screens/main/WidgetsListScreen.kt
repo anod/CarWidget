@@ -25,8 +25,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
-import info.anodsplace.carwidget.*
+import coil.compose.AsyncImagePainter
+import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.CarWidgetTheme
+import info.anodsplace.carwidget.LocalWidgetSystemTheme
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.WarningColor
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.iconUri
@@ -183,10 +187,16 @@ fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, imageLoader: Imag
             ) {
                 if (shortcut != null) {
                     AsyncImage(
-                        model = shortcut.iconUri(context, item.adaptiveIconStyle),
+                        model = shortcut.iconUri(context, item.adaptiveIconStyle, item.skinName),
                         contentDescription = shortcut.title.toString(),
                         imageLoader = imageLoader,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
+                        transform = {
+                            if (it is AsyncImagePainter.State.Success) {
+                                AppLog.d("AsyncImage ${it.result.dataSource}")
+                            }
+                            it
+                        }
                     )
                 }
             }
@@ -285,7 +295,9 @@ fun PreviewWidgetsScreenLight() {
                     WidgetItem.Large(
                         appWidgetId = 0, shortcuts = listOf(
 
-                        ), adaptiveIconStyle = ""
+                        ),
+                        adaptiveIconStyle = "",
+                        skinName = ""
                     )
                 ),
                 isServiceRunning = false,

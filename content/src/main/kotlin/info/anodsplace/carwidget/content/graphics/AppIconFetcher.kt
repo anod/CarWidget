@@ -6,15 +6,16 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import androidx.core.graphics.drawable.toDrawable
 import coil.ImageLoader
 import coil.decode.DataSource
-import coil.fetch.DrawableResult
+import coil.decode.ImageSource
 import coil.fetch.FetchResult
 import coil.fetch.Fetcher
+import coil.fetch.SourceResult
 import coil.request.Options
-
 import info.anodsplace.applog.AppLog
+import info.anodsplace.graphics.toByteArray
+import okio.Buffer
 
 class AppIconFetcher(private val context: Context, private val data: Uri, private val options: Options) : Fetcher {
 
@@ -49,9 +50,10 @@ class AppIconFetcher(private val context: Context, private val data: Uri, privat
 
         }
         val icon: Bitmap = UtilitiesBitmap.createSystemIconBitmap(d, context)
-        return DrawableResult(
-            drawable = icon.toDrawable(options.context.resources),
-            isSampled = false,
+        val source = icon.toByteArray() ?: return null
+        return SourceResult(
+            source = ImageSource(Buffer().apply { write(source) }, options.context),
+            mimeType = null,
             dataSource = DataSource.DISK
         )
     }

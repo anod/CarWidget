@@ -48,9 +48,7 @@ fun ShortcutEditScreen(state: ShortcutEditViewState, onEvent: (ShortcutEditViewE
 @Composable
 fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (ShortcutEditViewEvent) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader, widgetSettings: WidgetInterface = WidgetInterface.NoOp()) {
     Column {
-        SmallTopAppBar(
-            title = { Text(text = stringResource(id = R.string.shortcut_edit_title)) }
-        )
+        TopAppBar(title = { Text(text = stringResource(id = R.string.shortcut_edit_title)) })
         if (!expanded) {
             ShortcutInfo(
                 shortcut,

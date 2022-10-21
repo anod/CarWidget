@@ -57,8 +57,9 @@ data class Shortcut(
     )
 }
 
-fun Shortcut.iconUri(context: Context, adaptiveIconStyle: String): Uri {
+fun Shortcut.iconUri(context: Context, adaptiveIconStyle: String, skinName: String = ""): Uri {
     return LauncherSettings.Favorites.getContentUri(context.packageName, id).buildUpon()
-    .appendQueryParameter("adaptiveIconStyle", adaptiveIconStyle)
-    .build()
+        .appendQueryParameter("skin", skinName)
+        .appendQueryParameter("adaptiveIconStyle", adaptiveIconStyle)
+        .build()
 }

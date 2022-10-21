@@ -30,7 +30,8 @@ interface WidgetItem {
     data class Large(
         val appWidgetId: Int,
         val shortcuts: List<info.anodsplace.carwidget.content.db.Shortcut?>,
-        val adaptiveIconStyle: String
+        val adaptiveIconStyle: String,
+        val skinName: String
     ) : WidgetItem
 
     data class Shortcut(
@@ -105,11 +106,14 @@ class WidgetsListViewModel : BaseFlowViewModel<WidgetListScreenState, WidgetList
                 val model = it.scope.get<WidgetShortcutsModel>().apply {
                     init()
                 }
-                val adaptiveIconStyle = it.scope.get<WidgetSettings>().adaptiveIconStyle
+                val widgetSettings = it.scope.get<WidgetSettings>()
                 val shortcuts = model.shortcuts
                 newItems.add(
                     WidgetItem.Large(
-                        appWidgetId, shortcuts.values.toList(), adaptiveIconStyle
+                        appWidgetId = appWidgetId,
+                        shortcuts = shortcuts.values.toList(),
+                        adaptiveIconStyle = widgetSettings.adaptiveIconStyle,
+                        skinName = widgetSettings.skin
                     )
                 )
             }

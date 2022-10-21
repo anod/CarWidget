@@ -28,7 +28,7 @@ import coil.compose.AsyncImage
 import info.anodsplace.carwidget.utils.SystemIconSize
 
 @Composable
-fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit, imageLoader: ImageLoader) {
+private fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit, imageLoader: ImageLoader) {
     val iconModifier = Modifier
         .size(SystemIconSize)
         .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(48.dp))
@@ -45,7 +45,7 @@ fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit, imageLoader:
                 imageVector = entry.iconVector,
                 contentDescription = entry.title,
                 modifier = iconModifier,
-                tint = Color.Unspecified
+                tint = MaterialTheme.colorScheme.onPrimary
             )
         } else {
             AsyncImage(

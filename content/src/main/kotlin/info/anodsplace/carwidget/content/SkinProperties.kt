@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.content
 
 import android.content.Intent
-import info.anodsplace.carwidget.content.db.ShortcutIconConverter
 import info.anodsplace.carwidget.content.graphics.IconProcessor
 
 data class InternalShortcutResources(
@@ -9,6 +8,11 @@ data class InternalShortcutResources(
 )
 
 interface SkinProperties {
+
+    interface Factory {
+        fun create(skinName: String): SkinProperties
+    }
+
     val name: String
     val buttonTransparentResId: Int
     val buttonAlternativeHiddenResId: Int

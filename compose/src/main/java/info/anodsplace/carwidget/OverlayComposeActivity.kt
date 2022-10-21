@@ -102,9 +102,7 @@ fun PlayMediaButton(onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
     val loader = remember { MediaListLoader(context) }
     ChooserScreen(
         modifier = Modifier.padding(16.dp),
-        headers = listOf(
-            Header(0, stringResource(R.string.show_choice), iconVector = Icons.Filled.List)
-        ),
+        headers = listOf(),
         loader = loader,
         onClick = { entry ->
             if (entry.componentName != null) {

@@ -98,7 +98,7 @@ interface SkinPreviewViewModel : SkinViewFactory {
 
 class DummySkinPreviewViewModel(private val context: Context): ViewModel(), SkinPreviewViewModel {
     private val widgetSettings: WidgetInterface = WidgetInterface.NoOp()
-    private val skinProperties: SkinProperties = SkinPropertiesFactory.create(widgetSettings.skin, context)
+    private val skinProperties: SkinProperties = SkinPropertiesFactory(context).create(widgetSettings.skin)
 
     override val viewActions: Flow<SkinPreviewViewAction> = emptyFlow()
     override val viewState : SkinPreviewViewState
