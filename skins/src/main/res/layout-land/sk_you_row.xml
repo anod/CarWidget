@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="140dp"
     android:layout_height="match_parent"
     android:layout_weight="1"
@@ -36,9 +37,11 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/you_title_background"
-            android:textColor="?android:attr/colorPrimary"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             android:textSize="@dimen/text_size"
-            android:text="@string/set_shortcut" />
+            android:text="@string/set_shortcut"
+            tools:ignore="SpUsage"
+            />
     </FrameLayout>
 
     <FrameLayout
@@ -69,8 +72,10 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/you_title_background"
-            android:textColor="?android:attr/colorPrimary"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             android:textSize="@dimen/text_size"
-            android:text="@string/set_shortcut" />
+            android:text="@string/set_shortcut"
+            tools:ignore="SpUsage"
+            />
     </FrameLayout>
 </LinearLayout>
