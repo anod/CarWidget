@@ -1,8 +1,3 @@
-repositories {
-    mavenCentral()
-    google()
-}
-
 plugins {
     id("com.android.library")
     id("com.squareup.sqldelight")
@@ -10,7 +5,6 @@ plugins {
 }
 
 android {
-    namespace = "info.anodsplace.carwidget.content"
     compileSdk = 33
 
     defaultConfig {
@@ -21,13 +15,21 @@ android {
         getByName("main").java.srcDirs("src/main/kotlin")
     }
 
+    kotlinOptions {
+        jvmTarget = "11"
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    namespace = "info.anodsplace.carwidget.content"
+}
 
-    kotlinOptions {
-        jvmTarget = "11"
+sqldelight {
+    database("Database") {
+        packageName = "info.anodsplace.carwidget.content.db"
+        sourceFolders = listOf("sqldelight")
+        schemaOutputDirectory = file("src/main/sqldelight/schema")
     }
 }
 
@@ -38,11 +40,10 @@ dependencies {
     implementation("io.insert-koin:koin-core:3.2.2")
     implementation("io.coil-kt:coil-base:2.2.2")
 
-    implementation("com.squareup.sqldelight:android-driver:1.5.3")
-    implementation("com.squareup.sqldelight:coroutines-extensions-jvm:1.5.3")
+    implementation(libs.sqldelight.driver.android)
+    implementation(libs.sqldelight.coroutines.extensions.jvm)
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.collection:collection-ktx:1.2.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.10")
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
 }

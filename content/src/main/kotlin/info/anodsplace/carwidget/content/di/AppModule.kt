@@ -7,9 +7,9 @@ import com.squareup.sqldelight.android.AndroidSqliteDriver
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.BitmapLruCache
-import info.anodsplace.carwidget.content.Database
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.backup.BackupManager
+import info.anodsplace.carwidget.content.db.Database
 import info.anodsplace.carwidget.content.db.DbShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase

@@ -7,7 +7,6 @@ import android.util.SparseArray
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
-import info.anodsplace.carwidget.content.Database
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

@@ -1,11 +1,3 @@
-
-repositories {
-    mavenCentral()
-    maven(url = "https://jitpack.io" )
-    maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
-    google()
-}
-
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -29,8 +21,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
     // Activity recognition
-    implementation("com.google.android.gms:play-services-location:20.0.0")
-    implementation("com.google.android.material:material:1.6.1")
+    implementation("com.google.android.gms:play-services-location:21.0.0")
+    implementation("com.google.android.material:material:1.7.0")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.activity:activity:1.6.0")
@@ -46,15 +38,15 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-common-java8:2.5.1")
     kapt("androidx.lifecycle:lifecycle-common-java8:2.5.1")
 
-    implementation("ch.acra:acra-core:5.9.3")
-    implementation("ch.acra:acra-notification:5.9.3")
-    implementation("ch.acra:acra-limiter:5.9.3")
+    implementation("ch.acra:acra-core:5.9.6")
+    implementation("ch.acra:acra-notification:5.9.6")
+    implementation("ch.acra:acra-limiter:5.9.6")
 
     compileOnly("com.google.auto.service:auto-service-annotations:1.0.1")
     kapt("com.google.auto.service:auto-service:1.0.1")
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.20")
 }
 
 android {
@@ -62,6 +54,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        aidl = true
     }
 
     defaultConfig {
