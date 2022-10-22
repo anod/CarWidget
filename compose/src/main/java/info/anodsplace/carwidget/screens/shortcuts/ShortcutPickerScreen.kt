@@ -9,14 +9,24 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import info.anodsplace.carwidget.R
-import info.anodsplace.carwidget.chooser.*
+import info.anodsplace.carwidget.chooser.AllAppsIntentLoader
+import info.anodsplace.carwidget.chooser.ChooserDialog
+import info.anodsplace.carwidget.chooser.ChooserEntry
+import info.anodsplace.carwidget.chooser.Header
+import info.anodsplace.carwidget.chooser.QueryIntentLoader
+import info.anodsplace.carwidget.chooser.StaticChooserLoader
 import info.anodsplace.carwidget.content.shortcuts.CreateShortcutResult
 import info.anodsplace.carwidget.content.shortcuts.InternalShortcut
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
@@ -60,7 +70,7 @@ fun ShortcutPickerScreen(viewActions: Flow<ShortcutPickerViewAction> = emptyFlow
         )
         ShortcutPickerState.Apps -> AppChooser(
             onChoose = { entry ->
-                onEvent(ShortcutPickerViewEvent.Save(entry.getIntent(baseIntent = null), isApp = false))
+                onEvent(ShortcutPickerViewEvent.Save(entry.getIntent(baseIntent = null), isApp = true))
                 onDismissRequest()
             },
             onDismissRequest = { screenState = ShortcutPickerState.Initial },

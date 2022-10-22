@@ -7,6 +7,7 @@ import android.util.SparseArray
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -131,13 +132,15 @@ class ShortcutsDatabase(private val db: Database) {
 
     private fun mapShortcut(shortcutId: Long, position: Int, title: String, itemType: Int, intent: String, isCustomIcon: Boolean): Shortcut {
         if (intent.isEmpty()) {
-            return Shortcut.unknown
+            AppLog.e("Intent is empty for id:${shortcutId} title:${title}")
+            Shortcut(shortcutId, position, itemType, title, isCustomIcon, Intent())
         }
 
         val parsedIntent: Intent = try {
             Intent.parseUri(intent, 0)
         } catch (e: URISyntaxException) {
-            return Shortcut.unknown
+            AppLog.e(e)
+            Intent()
         }
 
         return Shortcut(shortcutId, position, itemType, title, isCustomIcon, parsedIntent)
