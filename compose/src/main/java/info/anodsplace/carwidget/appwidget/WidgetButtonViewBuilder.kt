@@ -24,7 +24,7 @@ class WidgetButtonViewBuilder(
 ) {
 
     fun apply(views: RemoteViews) {
-        if (skinProperties.hasWidgetButton1()) {
+        if (skinProperties.supportsWidgetButton1()) {
             apply(skinProperties.widgetButton1Id, prefs.widgetButton1, skinProperties, views, BUTTON_ID_1)
         }
         apply(skinProperties.widgetButton2Id, prefs.widgetButton2, skinProperties, views, BUTTON_ID_2)

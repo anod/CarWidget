@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+    android:id="@android:id/background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_vertical"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:gravity="top"
     android:theme="@style/AppWidgetContainer"
     android:orientation="vertical"
     tools:ignore="NestedWeights,NestedWeights">
@@ -48,12 +49,16 @@
                     android:ellipsize="end"
                     android:gravity="center_horizontal"
                     android:maxLines="1"
-                    android:paddingBottom="8dp"
                     android:paddingEnd="4dp"
                     android:paddingStart="4dp"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textSize="@dimen/text_size"
-                    android:text="@string/set_shortcut" />
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
             </FrameLayout>
 
             <FrameLayout
@@ -78,12 +83,16 @@
                     android:ellipsize="end"
                     android:gravity="center_horizontal"
                     android:maxLines="1"
-                    android:paddingBottom="8dp"
                     android:paddingEnd="4dp"
                     android:paddingStart="4dp"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textSize="@dimen/text_size"
-                    android:text="@string/set_shortcut" />
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
             </FrameLayout>
         </LinearLayout>
 
@@ -118,12 +127,16 @@
                     android:ellipsize="end"
                     android:gravity="center_horizontal"
                     android:maxLines="1"
-                    android:paddingBottom="8dp"
                     android:paddingEnd="4dp"
                     android:paddingStart="4dp"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textSize="@dimen/text_size"
-                    android:text="@string/set_shortcut" />
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
             </FrameLayout>
 
             <FrameLayout
@@ -148,12 +161,16 @@
                     android:ellipsize="end"
                     android:gravity="center_horizontal"
                     android:maxLines="1"
-                    android:paddingBottom="8dp"
                     android:paddingEnd="4dp"
                     android:paddingStart="4dp"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textSize="@dimen/text_size"
-                    android:text="@string/set_shortcut" />
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
             </FrameLayout>
         </LinearLayout>
 
@@ -188,12 +205,16 @@
                     android:ellipsize="end"
                     android:gravity="center_horizontal"
                     android:maxLines="1"
-                    android:paddingBottom="8dp"
                     android:paddingEnd="4dp"
                     android:paddingStart="4dp"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textSize="@dimen/text_size"
-                    android:text="@string/set_shortcut" />
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
             </FrameLayout>
 
             <FrameLayout
@@ -218,12 +239,16 @@
                     android:ellipsize="end"
                     android:gravity="center_horizontal"
                     android:maxLines="1"
-                    android:paddingBottom="8dp"
                     android:paddingEnd="4dp"
                     android:paddingStart="4dp"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textSize="@dimen/text_size"
-                    android:text="@string/set_shortcut" />
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>

@@ -17,14 +17,14 @@
         android:layout_marginBottom="2dp">
 
         <ImageButton
-            android:id="@+id/btn0"
+            android:id="@+id/btn1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/you_background"
             android:src="@drawable/you_add_24" />
 
         <TextView
-            android:id="@+id/btn_text0"
+            android:id="@+id/btn_text1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
@@ -52,14 +52,14 @@
         android:layout_marginTop="2dp">
 
         <ImageButton
-            android:id="@+id/btn1"
+            android:id="@+id/btn0"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/you_background"
             android:src="@drawable/you_add_24" />
 
         <TextView
-            android:id="@+id/btn_text1"
+            android:id="@+id/btn_text0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"

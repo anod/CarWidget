@@ -4,7 +4,6 @@ import android.content.Intent
 import info.anodsplace.carwidget.content.IconBackgroundProcessor
 import info.anodsplace.carwidget.content.InternalShortcutResources
 import info.anodsplace.carwidget.content.SkinProperties
-import info.anodsplace.carwidget.content.db.ShortcutIconConverter
 import info.anodsplace.carwidget.content.graphics.IconProcessor
 
 abstract class BaseProperties : SkinProperties {
@@ -33,7 +32,7 @@ abstract class BaseProperties : SkinProperties {
     override val backgroundProcessor: IconBackgroundProcessor?
         get() = null
 
-    override fun hasWidgetButton1(): Boolean {
+    override fun supportsWidgetButton1(): Boolean {
         return true
     }
 

@@ -30,7 +30,7 @@ interface SkinProperties {
     val rowLayout: Int
     val fontColorRes: Int
     fun getLayout(number: Int): Int
-    fun hasWidgetButton1(): Boolean
+    fun supportsWidgetButton1(): Boolean
     fun shortcutIdAt(position: Int): Int
     fun shortcutTextIdAt(position: Int): Int
     fun iconResourceTint(iconResource: Intent.ShortcutIconResource?): Int

@@ -59,7 +59,7 @@ class YouProperties(context: Context) : BaseProperties() {
         return 0
     }
 
-    override fun hasWidgetButton1(): Boolean {
+    override fun supportsWidgetButton1(): Boolean {
         return true
     }
 }

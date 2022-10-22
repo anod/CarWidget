@@ -40,7 +40,7 @@ import info.anodsplace.compose.ScreenLoadState
 
 private fun Modifier.cardStyle(): Modifier = composed { then(
     fillMaxWidth()
-        .clip(shape = RoundedCornerShape(16.dp))
+        .clip(shape = MaterialTheme.shapes.large)
         .background(MaterialTheme.colorScheme.secondary)
         .padding(16.dp)
 ) }
@@ -75,7 +75,7 @@ fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int)
 }
 
 @Composable
-fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier, imageLoader: ImageLoader) {
+private fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier, imageLoader: ImageLoader) {
     if (screen.items.isEmpty()) {
         Column(
             modifier = modifier
@@ -155,14 +155,14 @@ fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -
 }
 
 @Composable
-fun WidgetsEmptyScreen() {
+private fun WidgetsEmptyScreen() {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
+            .clip(MaterialTheme.shapes.large)
             .background(WarningColor)
             .padding(16.dp)
-            .clip(MaterialTheme.shapes.medium)
     ) {
         Text(text = stringResource(id = R.string.no_active_widget))
         Icon(
@@ -176,11 +176,15 @@ fun WidgetsEmptyScreen() {
 }
 
 @Composable
-fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, imageLoader: ImageLoader) {
+private fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, imageLoader: ImageLoader) {
     val context = LocalContext.current
+    val count = item.shortcuts.size
     Row {
         for (idx in indexes) {
-            val shortcut = item.shortcuts.getOrNull(idx)
+            if (idx >= count) {
+                break
+            }
+            val shortcut = item.shortcuts.getOrDefault(idx, null)
             Box(
                 modifier = Modifier
                     .iconContainer()
@@ -293,8 +297,11 @@ fun PreviewWidgetsScreenLight() {
                     WidgetItem.Shortcut(appWidgetId = 0),
                     WidgetItem.Shortcut(appWidgetId = 0),
                     WidgetItem.Large(
-                        appWidgetId = 0, shortcuts = listOf(
-
+                        appWidgetId = 0, shortcuts = mapOf(
+                            0 to null,
+                            1 to null,
+                            2 to null,
+                            3 to null
                         ),
                         adaptiveIconStyle = "",
                         skinName = ""

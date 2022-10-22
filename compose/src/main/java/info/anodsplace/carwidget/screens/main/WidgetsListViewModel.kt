@@ -1,12 +1,9 @@
 package info.anodsplace.carwidget.screens.main
 
-import android.util.SparseArray
 import androidx.annotation.StringRes
-import androidx.core.util.isEmpty
 import androidx.lifecycle.viewModelScope
 import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.carwidget.content.InCarStatus
-import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
@@ -18,18 +15,10 @@ import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.java.KoinJavaComponent.inject
 
-class WidgetList {
-    var large: SparseArray<SparseArray<Shortcut?>> = SparseArray()
-    var shortcuts: IntArray = intArrayOf()
-
-    val isEmpty: Boolean
-        get() = large.isEmpty() && shortcuts.isEmpty()
-}
-
 interface WidgetItem {
     data class Large(
         val appWidgetId: Int,
-        val shortcuts: List<info.anodsplace.carwidget.content.db.Shortcut?>,
+        val shortcuts: Map<Int, info.anodsplace.carwidget.content.db.Shortcut?>,
         val adaptiveIconStyle: String,
         val skinName: String
     ) : WidgetItem
@@ -111,7 +100,7 @@ class WidgetsListViewModel : BaseFlowViewModel<WidgetListScreenState, WidgetList
                 newItems.add(
                     WidgetItem.Large(
                         appWidgetId = appWidgetId,
-                        shortcuts = shortcuts.values.toList(),
+                        shortcuts = shortcuts,
                         adaptiveIconStyle = widgetSettings.adaptiveIconStyle,
                         skinName = widgetSettings.skin
                     )

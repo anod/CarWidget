@@ -56,7 +56,7 @@ interface WidgetInterface {
         override var iconsRotate: BitmapRotateDirection = BitmapRotateDirection.NONE,
         override var isTitlesHide: Boolean = false,
         override var widgetButton1: Int = WIDGET_BUTTON_INCAR,
-        override var widgetButton2: Int = WIDGET_BUTTON_SETTINGS,
+        override var widgetButton2: Int = WIDGET_BUTTON_HIDDEN,
         override var shortcutsNumber: Int = WidgetStorage.LAUNCH_COMPONENT_NUMBER_DEFAULT,
         override var paletteBackground: Boolean = false,
         override var adaptiveIconStyle: String = ""

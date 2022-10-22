@@ -37,7 +37,7 @@ class CardsProperties : BaseProperties() {
         }
     }
 
-    override fun hasWidgetButton1(): Boolean {
+    override fun supportsWidgetButton1(): Boolean {
         return false
     }
 }

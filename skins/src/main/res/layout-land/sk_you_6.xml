@@ -34,14 +34,14 @@
                 android:layout_marginBottom="2dp">
 
                 <ImageButton
-                    android:id="@+id/btn0"
+                    android:id="@+id/btn1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/you_background"
                     android:src="@drawable/you_add_24" />
 
                 <TextView
-                    android:id="@+id/btn_text0"
+                    android:id="@+id/btn_text1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
@@ -68,14 +68,14 @@
                 android:layout_marginTop="2dp">
 
                 <ImageButton
-                    android:id="@+id/btn1"
+                    android:id="@+id/btn0"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/you_background"
                     android:src="@drawable/you_add_24" />
 
                 <TextView
-                    android:id="@+id/btn_text1"
+                    android:id="@+id/btn_text0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
@@ -110,40 +110,6 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:layout_marginBottom="2dp">
-
-                <ImageButton
-                    android:id="@+id/btn2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/you_background"
-                    android:src="@drawable/you_add_24" />
-
-                <TextView
-                    android:id="@+id/btn_text2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:ellipsize="end"
-                    android:gravity="center_horizontal"
-                    android:maxLines="1"
-                    android:paddingEnd="4dp"
-                    android:paddingStart="4dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/you_title_background"
-                    android:textColor="?android:attr/textColorPrimaryInverse"
-                    android:textSize="@dimen/text_size"
-                    android:text="@string/set_shortcut"
-                    tools:ignore="SpUsage" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:layout_marginTop="2dp">
 
                 <ImageButton
                     android:id="@+id/btn3"
@@ -171,6 +137,40 @@
                     android:text="@string/set_shortcut"
                     tools:ignore="SpUsage" />
             </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginTop="2dp">
+
+                <ImageButton
+                    android:id="@+id/btn2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/you_background"
+                    android:src="@drawable/you_add_24" />
+
+                <TextView
+                    android:id="@+id/btn_text2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textSize="@dimen/text_size"
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
+            </FrameLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -190,14 +190,14 @@
                 android:layout_marginBottom="2dp">
 
                 <ImageButton
-                    android:id="@+id/btn4"
+                    android:id="@+id/btn5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/you_background"
                     android:src="@drawable/you_add_24" />
 
                 <TextView
-                    android:id="@+id/btn_text4"
+                    android:id="@+id/btn_text5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
@@ -224,14 +224,14 @@
                 android:layout_marginTop="2dp">
 
                 <ImageButton
-                    android:id="@+id/btn5"
+                    android:id="@+id/btn4"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/you_background"
                     android:src="@drawable/you_add_24" />
 
                 <TextView
-                    android:id="@+id/btn_text5"
+                    android:id="@+id/btn_text4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
