@@ -16,13 +16,12 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.screens.NavItem
+import info.anodsplace.carwidget.screens.WidgetAwareViewModel
 import info.anodsplace.carwidget.screens.WidgetDialogType
 import info.anodsplace.permissions.AppPermission
-import info.anodsplace.viewmodel.BaseFlowViewModel
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
-import org.koin.core.scope.Scope
 
 data class MainViewState(
     val isFreeVersion: Boolean = true,
@@ -56,25 +55,22 @@ sealed interface MainViewEvent {
 
 class MainViewModel(
     requiredPermissions: List<AppPermission>,
-    val appWidgetIdScope: AppWidgetIdScope?,
-) : BaseFlowViewModel<MainViewState, MainViewEvent, MainViewAction>(), KoinScopeComponent {
+    appWidgetIdScope: AppWidgetIdScope?,
+) : WidgetAwareViewModel<MainViewState, MainViewEvent, MainViewAction>(appWidgetIdScope), KoinScopeComponent {
 
     class Factory(
-        private val appWidgetIdScope: AppWidgetIdScope?,
+        private val appWidgetId: Int,
         private val activity: ComponentActivity,
         private val permissionChecker: PermissionChecker,
         private val inCarStatus: InCarStatus
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
             return MainViewModel(
-                if (inCarStatus.isEnabled) permissionChecker.check(activity) else emptyList(),
-                appWidgetIdScope
+                requiredPermissions = if (inCarStatus.isEnabled) permissionChecker.check(activity) else emptyList(),
+                appWidgetIdScope = if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) AppWidgetIdScope(appWidgetId) else null
             ) as T
         }
     }
-
-    override val scope: Scope
-        get() = appWidgetIdScope?.scope ?: getKoin().getScope(ROOT_SCOPE_ID)
 
     private val version: Version by inject()
     private val widgetIds: WidgetIds by inject()

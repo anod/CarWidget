@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.google.android.material.color.DynamicColors
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
@@ -25,12 +24,12 @@ import org.koin.core.component.get
 import org.koin.core.component.inject
 
 open class MainComposeActivity : AppCompatActivity(), KoinComponent {
+    private var appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID
     private val appSettings: AppSettings by inject()
     private val uiModeManager: UiModeManager by inject()
-    private var appWidgetIdScope: AppWidgetIdScope? = null
     private val mainViewModel: MainViewModel by viewModels {
         MainViewModel.Factory(
-            appWidgetIdScope = appWidgetIdScope,
+            appWidgetId = appWidgetId,
             activity = this@MainComposeActivity,
             permissionChecker = get(),
             inCarStatus = get()
@@ -43,8 +42,7 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(appSettings.appCompatNightMode)
         super.onCreate(savedInstanceState)
-        val appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
-        appWidgetIdScope = if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) AppWidgetIdScope(appWidgetId) else null
+        appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
 
         setContent {
             val uiMode by appSettings.uiModeChange.collectAsState(initial = appSettings.uiMode)
@@ -89,10 +87,5 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
             MainViewAction.OnBackNav -> onBackPressed()
             is MainViewAction.ShowDialog -> { }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        appWidgetIdScope?.close()
     }
 }
