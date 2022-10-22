@@ -1,11 +1,8 @@
 package info.anodsplace.carwidget.screens.main
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -133,7 +130,7 @@ fun Tabs(
                 innerPadding = innerPadding,
                 currentSkin = currentSkin,
                 startDestination = screenState.topDestination.route,
-                startRoute = screenState.startRoute,
+                routeNS = screenState.routeNS,
                 imageLoader = imageLoader
             )
         }
@@ -190,13 +187,13 @@ fun NavHost(
     innerPadding: PaddingValues,
     currentSkin: MutableState<String>,
     startDestination: String,
-    startRoute: String?,
+    routeNS: String,
     currentWidgetStartDestination: String = NavItem.Tab.CurrentWidget.Skin.route,
     imageLoader: ImageLoader
 ) {
     val context = LocalContext.current
 
-    NavHost(navController, startDestination = startDestination, route = startRoute) {
+    NavHost(navController, startDestination = startDestination, route = routeNS) {
         composable(route = NavItem.Tab.Widgets.route) {
             val widgetsListViewModel: WidgetsListViewModel = viewModel()
             val widgetsState by widgetsListViewModel.viewStates.collectAsState(initial = widgetsListViewModel.viewState)

@@ -28,7 +28,7 @@ data class MainViewState(
     val isWidget: Boolean = false,
     val appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
     val tabs: List<NavItem.Tab> = emptyList(),
-    val startRoute: String? = null,
+    val routeNS: String = "default",
     val showProDialog: Boolean = false,
     val topDestination: NavItem = NavItem.Tab.About,
     val requiredPermissions: List<AppPermission> = emptyList(),
@@ -88,7 +88,7 @@ class MainViewModel(
                 NavItem.Tab.InCar,
                 NavItem.Tab.About
             ),
-            startRoute = if (appWidgetIdScope.isValid) NavItem.Tab.CurrentWidget.Skin.route else null,
+            routeNS = if (appWidgetIdScope.isValid) "carwidget/current" else "carwidget/main",
             showProDialog = showProDialog,
             topDestination = startDestination(showProDialog, requiredPermissions, allowWizard = true),
             requiredPermissions = requiredPermissions,
