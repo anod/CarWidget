@@ -15,7 +15,7 @@ buildscript {
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.0.0-alpha05")
+        classpath("com.android.tools.build:gradle:8.0.0-alpha08")
         classpath(libs.kotlin.gradle.plugin)
         classpath(libs.sqldelight.gradle.plugin)
     }
