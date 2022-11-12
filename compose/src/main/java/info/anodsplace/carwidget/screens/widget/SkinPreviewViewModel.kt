@@ -6,7 +6,6 @@ import android.view.InflateException
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.TextView
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -70,11 +69,6 @@ data class SkinPreviewViewState(
 
 sealed interface SkinPreviewViewEvent {
     class UpdateCurrentSkin(val index: Int) : SkinPreviewViewEvent
-    class UpdateBackgroundColor(val newColor: Color?) : SkinPreviewViewEvent
-    class UpdateIconScale(val iconScale: String) : SkinPreviewViewEvent
-    class UpdateTileColor(val newColor: Color?) : SkinPreviewViewEvent
-    class UpdateShortcutsNumber(val size: Int) : SkinPreviewViewEvent
-
     object Reload : SkinPreviewViewEvent
 }
 
@@ -187,22 +181,6 @@ class RealSkinPreviewViewModel(appWidgetIdScope: AppWidgetIdScope): BaseFlowView
                 viewState = viewState.copy(
                     currentSkin = viewState.skinList[event.index]
                 )
-            }
-            is SkinPreviewViewEvent.UpdateBackgroundColor -> {
-                if (event.newColor != null) {
-                    widgetSettings.backgroundColor = event.newColor.value.toInt()
-                }
-            }
-            is SkinPreviewViewEvent.UpdateIconScale -> {
-                widgetSettings.iconsScale = event.iconScale
-            }
-            is SkinPreviewViewEvent.UpdateTileColor -> {
-                if (event.newColor != null) {
-                    widgetSettings.tileColor = event.newColor.value.toInt()
-                }
-            }
-            is SkinPreviewViewEvent.UpdateShortcutsNumber -> {
-                widgetSettings.shortcutsNumber = event.size
             }
         }
     }

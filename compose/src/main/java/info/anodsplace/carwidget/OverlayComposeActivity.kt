@@ -31,7 +31,6 @@ import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.extensions.extras
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.WidgetAwareViewModel
-import info.anodsplace.carwidget.screens.main.MainViewModel
 import info.anodsplace.carwidget.screens.shortcuts.EditShortcut
 import info.anodsplace.carwidget.screens.widget.EditWidgetButton
 import info.anodsplace.framework.media.MediaKeyEvent
@@ -61,7 +60,7 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
     private val uiModeManager: UiModeManager by inject()
     private val imageLoader: ImageLoader by inject()
     private var appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID
-    private val overlayViewModel: MainViewModel by viewModels {
+    private val overlayViewModel: OverlayViewModel by viewModels {
         OverlayViewModel.Factory(
             appWidgetId = appWidgetId
         )

@@ -1,28 +1,25 @@
 package info.anodsplace.carwidget.screens.main
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.FormatColorFill
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
-import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.WidgetDialogType
 
 sealed interface AppBarTileColor {
@@ -50,14 +47,11 @@ fun rememberTileColor(currentSkinValue: String, prefs: WidgetInterface): AppBarT
 
 @Composable
 fun AppBarActions(
-    isIconsMono: Boolean,
     tileColor: AppBarTileColor,
     appWidgetId: Int,
     currentSkinValue: String,
     onEvent: (MainViewEvent) -> Unit,
-    navController: NavHostController
 ) {
-    var expanded by remember { mutableStateOf(false) }
     when (tileColor) {
         is AppBarTileColor.Value -> {
             AppBarColorButton(color = tileColor.color, descRes = R.string.choose_color) {
@@ -73,58 +67,6 @@ fun AppBarActions(
     }
     AppBarButton(image = Icons.Filled.Check, descRes = android.R.string.ok) {
         onEvent(MainViewEvent.ApplyWidget(appWidgetId, currentSkinValue))
-    }
-    Box {
-        IconButton(onClick = { expanded = true }) {
-            Icon(Icons.Default.MoreVert, contentDescription = stringResource(id = R.string.more))
-        }
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            DropdownMenuItem(
-                onClick = {
-                    onEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseShortcutsNumber))
-                    expanded = false
-                },
-                text = { Text(text = stringResource(id = R.string.number)) }
-            )
-            DropdownMenuItem(
-                onClick = {
-                    onEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseBackgroundColor))
-                    expanded = false
-                },
-                text = { Text(text = stringResource(id = R.string.pref_bg_color_title)) })
-            DropdownMenuItem(
-                onClick = {
-                    onEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseIconsTheme))
-                    expanded = false
-                },
-                text = { Text(text = stringResource(id = R.string.icons_theme)) })
-            DropdownMenuItem(
-                onClick = {
-                    onEvent(MainViewEvent.SwitchIconsMono(!isIconsMono))
-                    expanded = false
-                },
-                text = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = stringResource(id = R.string.pref_icons_mono_title))
-                        Checkbox(checked = isIconsMono, onCheckedChange = {
-                            onEvent(MainViewEvent.SwitchIconsMono(!isIconsMono))
-                            expanded = false
-                        }, modifier = Modifier.padding(start = 8.dp))
-                    }
-                })
-            DropdownMenuItem(onClick = {
-                onEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseIconsScale))
-                expanded = false
-            }, text = { Text(text = stringResource(id = R.string.pref_scale_icon)) })
-            Divider()
-            DropdownMenuItem(onClick = {
-                navController.navigate(NavItem.Tab.CurrentWidget.MoreSettings.route)
-                expanded = false
-            }, text = { Text(text = stringResource(id = R.string.more)) })
-        }
     }
 }
 

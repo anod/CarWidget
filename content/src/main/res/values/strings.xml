@@ -45,6 +45,7 @@
     <string name="dialog_donate_btn_yes">Yes, please!</string>
     <string name="dialog_donate_btn_no">No, thanks</string>
     <string name="set_shortcut">Set shortcut</string>
+    <string name="customize">Customize</string>
     <string name="pref_look_and_feel_title">Look &amp; Feel</string>
     <string name="pref_look_and_feel_summary">Customize skin, colors and font size</string>
     <string name="pref_incar_mode_title">InCar mode</string>
@@ -119,6 +120,7 @@
     <string name="notification">Notification</string>
     <string name="shortcuts_summary">Set up to 3 shortcuts</string>
     <string name="icons_theme">Icons Theme</string>
+    <string name="icon_style">Icon style</string>
     <string name="default_car_dock_app">Default Car Dock app</string>
     <string name="cardock_btn_1">Open App Info</string>
     <string name="cardock_text1">To clear current default application:\n1. Open default App Info\n2. Click on \"Clear defaults\" button</string>

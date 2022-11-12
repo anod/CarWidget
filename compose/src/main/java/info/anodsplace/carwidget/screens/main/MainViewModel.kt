@@ -83,8 +83,14 @@ class MainViewModel(
             isFreeVersion = version.isFree,
             isWidget = isWidget,
             appWidgetId = +appWidgetIdScope,
-            tabs = listOf(
-                if (isWidget) NavItem.Tab.CurrentWidget else NavItem.Tab.Widgets,
+            tabs = if (isWidget)
+                listOf(
+                NavItem.Tab.CurrentWidget,
+                NavItem.Tab.WidgetCustomize,
+                NavItem.Tab.InCar,
+                NavItem.Tab.About
+            ) else listOf(
+                NavItem.Tab.Widgets,
                 NavItem.Tab.InCar,
                 NavItem.Tab.About
             ),

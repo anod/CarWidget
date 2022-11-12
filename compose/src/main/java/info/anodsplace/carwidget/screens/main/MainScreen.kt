@@ -6,6 +6,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -108,12 +110,10 @@ fun Tabs(
                 actions = {
                     if (screenState.isWidget) {
                         AppBarActions(
-                            isIconsMono = screenState.widgetSettings.isIconsMono,
                             tileColor = rememberTileColor(currentSkin.value, screenState.widgetSettings),
                             appWidgetId = screenState.appWidgetId,
                             currentSkinValue = currentSkin.value,
                             onEvent = onEvent,
-                            navController = navController
                         )
                     }
                 }
@@ -157,7 +157,13 @@ fun BottomTabs(items: List<NavItem.Tab>, navController: NavHostController) {
         items.forEachIndexed { _, item ->
             NavigationBarItem(
                 icon = { Icon(item.icon, contentDescription = null) },
-                label = { Text(stringResource(id = item.resourceId)) },
+                label = { Text(
+                    text = stringResource(id = item.resourceId),
+                    overflow = TextOverflow.Ellipsis,
+                    softWrap = true,
+                    maxLines = 1,
+                    textAlign = TextAlign.Center
+                ) },
                 selected = currentRoute?.startsWith(item.route) == true,
                 onClick = {
                     navController.navigate(item.route) {
@@ -227,22 +233,6 @@ fun NavHost(
                     onEvent = { skinViewModel.handleEvent(it) }
                 )
             }
-            dialog(
-                route = NavItem.Tab.CurrentWidget.Skin.Dialog.route,
-                arguments = NavItem.Tab.CurrentWidget.Skin.Dialog.arguments,
-                dialogProperties = DialogProperties()
-            ) { entry ->
-                val args = NavItem.Tab.CurrentWidget.Skin.Dialog.Args(entry.arguments)
-                val skinViewModel: SkinPreviewViewModel =
-                    viewModel(factory = SkinPreviewViewModel.Factory(appWidgetIdScope!!))
-                val screenState by skinViewModel.viewStates.collectAsState(initial = skinViewModel.viewState)
-                WidgetActionDialogContent(
-                    args.dialogType,
-                    onEvent = { skinViewModel.handleEvent(it) },
-                    dismiss = { navController.popBackStack() },
-                    widgetSettings = screenState.widgetSettings
-                )
-            }
             composable(
                 route = NavItem.Tab.CurrentWidget.EditShortcut.route,
                 arguments = NavItem.Tab.CurrentWidget.EditShortcut.arguments,
@@ -254,13 +244,30 @@ fun NavHost(
                     onDismissRequest = { onEvent(MainViewEvent.OnBackNav) }
                 )
             }
-            composable(route = NavItem.Tab.CurrentWidget.MoreSettings.route) {
-                val lookMoreViewModel: WidgetLookMoreViewModel = viewModel(factory = WidgetLookMoreViewModel.Factory(appWidgetIdScope!!))
-                val screenState by lookMoreViewModel.viewStates.collectAsState(initial = lookMoreViewModel.viewState)
-                WidgetLookMoreScreen(
+            composable(route = NavItem.Tab.WidgetCustomize.route) {
+                val customizeViewModel: WidgetCustomizeViewModel = viewModel(factory = WidgetCustomizeViewModel.Factory(appWidgetIdScope!!))
+                val screenState by customizeViewModel.viewStates.collectAsState(initial = customizeViewModel.viewState)
+                WidgetCustomizeScreen(
                     screenState = screenState,
-                    onEvent = { lookMoreViewModel.handleEvent(it) },
+                    onEvent = { customizeViewModel.handleEvent(it) },
+                    onMainViewEvent = onEvent,
                     innerPadding = innerPadding
+                )
+            }
+            dialog(
+                route = NavItem.Tab.CurrentWidget.Skin.Dialog.route,
+                arguments = NavItem.Tab.CurrentWidget.Skin.Dialog.arguments,
+                dialogProperties = DialogProperties()
+            ) { entry ->
+                val args = NavItem.Tab.CurrentWidget.Skin.Dialog.Args(entry.arguments)
+                val customizeViewModel: WidgetCustomizeViewModel =
+                    viewModel(factory = WidgetCustomizeViewModel.Factory(appWidgetIdScope!!))
+                val screenState by customizeViewModel.viewStates.collectAsState(initial = customizeViewModel.viewState)
+                WidgetActionDialogContent(
+                    args.dialogType,
+                    onEvent = { customizeViewModel.handleEvent(WidgetCustomizeEvent.DialogEvent(dialogEvent = it)) },
+                    dismiss = { navController.popBackStack() },
+                    widgetSettings = screenState.widgetSettings
                 )
             }
         }
