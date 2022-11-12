@@ -13,6 +13,9 @@ CREATE TABLE favorites (
     UNIQUE(targetId, position)
 );
 
+changes:
+SELECT _id AS shortcutId FROM favorites LIMIT 1;
+
 selectShortcut:
 SELECT _id AS shortcutId, position, title, itemType, intent, isCustomIcon FROM favorites WHERE _id = :shortcutId;
 

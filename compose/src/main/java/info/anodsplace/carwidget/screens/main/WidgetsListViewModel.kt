@@ -2,8 +2,10 @@ package info.anodsplace.carwidget.screens.main
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.carwidget.content.InCarStatus
+import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
@@ -46,6 +48,7 @@ sealed interface WidgetListScreenAction
 class WidgetsListViewModel : BaseFlowViewModel<WidgetListScreenState, WidgetListScreenEvent, WidgetListScreenAction>(), KoinComponent {
     private val widgetIds: WidgetIds by inject(WidgetIds::class.java)
     private val inCarStatus: InCarStatus by inject(InCarStatus::class.java)
+    private val db: ShortcutsDatabase by inject(ShortcutsDatabase::class.java)
 
     init {
         viewState = WidgetListScreenState(
@@ -55,7 +58,12 @@ class WidgetsListViewModel : BaseFlowViewModel<WidgetListScreenState, WidgetList
             statusResId = inCarStatus.resId,
             eventsState = inCarStatus.eventsState().sortedWith(compareBy({ !it.enabled }, { !it.active }))
         )
-        handleEvent(WidgetListScreenEvent.LoadWidgetList)
+        viewModelScope.launch {
+            db.observeChanges().collect {
+                AppLog.d("LoadWidgetList $it")
+                handleEvent(WidgetListScreenEvent.LoadWidgetList)
+            }
+        }
     }
 
     override fun handleEvent(event: WidgetListScreenEvent) {

@@ -12,6 +12,7 @@ import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.net.URISyntaxException
@@ -19,6 +20,10 @@ import java.net.URISyntaxException
 typealias ShortcutWithIcon = Pair<Shortcut, ShortcutIcon?>
 
 class ShortcutsDatabase(private val db: Database) {
+
+    fun observeChanges(): Flow<Long> {
+        return db.shortcutsQueries.changes().asFlow().mapToOneOrNull().filterNotNull()
+    }
 
     suspend fun loadByShortcutId(shortcutId: Long): SelectShortcutIcon? = withContext(Dispatchers.IO) {
         return@withContext db.shortcutsQueries.selectShortcutIcon(shortcutId).executeAsOneOrNull()
