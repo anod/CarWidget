@@ -126,9 +126,11 @@ class ShortcutViewBuilder(
 
         views.setImageViewBitmap(res, iconBitmap)
 
-        if (iconResource != 0) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (iconResource != 0) {
                 views.setColorStateList(res, "setImageTintList", iconResource)
+            } else {
+                views.setColorStateList(res, "setImageTintList", null)
             }
         }
 

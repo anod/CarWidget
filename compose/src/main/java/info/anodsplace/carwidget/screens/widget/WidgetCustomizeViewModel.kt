@@ -28,9 +28,12 @@ sealed interface WidgetCustomizeEvent {
 sealed interface WidgetCustomizeAction
 
 fun createItems(settings: WidgetInterface) = listOf(
-    PreferenceItem.Placeholder(
+    PreferenceItem.Pick(
         titleRes = R.string.number,
-        key = "cmp-number"
+        key = "cmp-number",
+        entries = arrayOf("4","6","8","10"),
+        entryValues = arrayOf("4","6","8","10"),
+        value = settings.shortcutsNumber.toString()
     ),
     PreferenceItem.Text(
         titleRes = R.string.pref_bg_color_title,
@@ -71,7 +74,8 @@ fun createItems(settings: WidgetInterface) = listOf(
         titleRes = R.string.pref_rotate_icon_title,
         key = "icons-rotate",
         entriesRes = R.array.icon_rotate_titles,
-        entryValuesRes = R.array.icon_rotate_values
+        entryValuesRes = R.array.icon_rotate_values,
+        value = settings.iconsRotate.name
     ),
     PreferenceItem.Placeholder(
         titleRes = R.string.adaptive_icon_style,
