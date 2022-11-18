@@ -18,6 +18,7 @@ import info.anodsplace.carwidget.chooser.ChooserLoader
 import info.anodsplace.carwidget.chooser.StaticChooserLoader
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.compose.PreferenceItem
+import info.anodsplace.compose.PreferencesDefaults
 import info.anodsplace.compose.PreferencesScreen
 import info.anodsplace.compose.checked
 import info.anodsplace.compose.value
@@ -36,8 +37,9 @@ fun InCarMainScreen(
         PreferencesScreen(
             preferences = screenState.items,
             modifier = Modifier.padding(innerPadding),
-            categoryColor = MaterialTheme.colorScheme.secondary,
-            descriptionColor = MaterialTheme.colorScheme.onBackground,
+            colors = PreferencesDefaults.colors(
+                descriptionColor = MaterialTheme.colorScheme.onBackground,
+            ),
             onClick = { item ->
                 when (item.key) {
                     "bt-device-screen" -> {
@@ -116,6 +118,7 @@ fun onPreferenceClick(
         is PreferenceItem.Text -> { }
         is PreferenceItem.Placeholder -> { }
         is PreferenceItem.Pick -> { }
+        is PreferenceItem.Color -> onEvent(InCarViewEvent.ApplyChange(item.key, item.color))
     }
 }
 

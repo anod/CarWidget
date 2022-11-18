@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.screens.widget
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
@@ -10,6 +11,7 @@ import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.screens.WidgetDialogEvent
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.viewmodel.BaseFlowViewModel
+import okhttp3.internal.toHexString
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.inject
 import org.koin.core.scope.Scope
@@ -35,9 +37,11 @@ fun createItems(settings: WidgetInterface) = listOf(
         entryValues = arrayOf("4","6","8","10"),
         value = settings.shortcutsNumber.toString()
     ),
-    PreferenceItem.Text(
+    PreferenceItem.Color(
         titleRes = R.string.pref_bg_color_title,
-        key = "bg-color"
+        summary = "${settings.backgroundColor} - #${settings.backgroundColor.toHexString()}",
+        key = "bg-color",
+        color = Color(settings.backgroundColor)
     ),
     PreferenceItem.Category(
         titleRes = R.string.icon_style,
@@ -51,10 +55,11 @@ fun createItems(settings: WidgetInterface) = listOf(
         titleRes = R.string.pref_icons_mono_title,
         key = "icons-mono"
     ),
-    PreferenceItem.Text(
+    PreferenceItem.Color(
         titleRes = R.string.pref_tint_color_title,
         summaryRes = R.string.pref_tint_color_summary,
-        key = "icons-color"
+        key = "icons-color",
+        color = settings.iconsColor?.let { Color(it) }
     ),
     PreferenceItem.Text(
         titleRes = R.string.pref_scale_icon,
@@ -65,10 +70,11 @@ fun createItems(settings: WidgetInterface) = listOf(
         summaryRes = R.string.pref_font_size_summary,
         key = "font-size"
     ),
-    PreferenceItem.Text(
+    PreferenceItem.Color(
         titleRes = R.string.pref_font_color_title,
         summaryRes = R.string.pref_font_color_summary,
-        key = "font-color"
+        key = "font-color",
+        color = settings.fontColor?.let { Color(it) }
     ),
     PreferenceItem.Pick(
         titleRes = R.string.pref_rotate_icon_title,
@@ -107,6 +113,7 @@ fun createItems(settings: WidgetInterface) = listOf(
 class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowViewModel<WidgetCustomizeState, WidgetCustomizeEvent, WidgetCustomizeAction>(), KoinScopeComponent {
 
     class Factory(private val appWidgetIdScope: AppWidgetIdScope) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
             return WidgetCustomizeViewModel(appWidgetIdScope) as T
         }
