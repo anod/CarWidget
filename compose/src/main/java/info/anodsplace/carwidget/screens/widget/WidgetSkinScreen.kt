@@ -10,6 +10,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,6 +19,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import info.anodsplace.carwidget.screens.main.MainViewEvent
 import kotlinx.coroutines.launch
 
 @Composable
@@ -45,36 +48,55 @@ fun WidgetSkinPreview(skinItem: SkinList.Item, reload: Int, skinViewFactory: Ski
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun WidgetSkinScreen(screenState: SkinPreviewViewState, innerPadding: PaddingValues = PaddingValues(0.dp), skinViewFactory: SkinViewFactory, onEvent: (SkinPreviewViewEvent) -> Unit = { }) {
-    val pagerState = rememberPagerState(initialPage = screenState.skinList.selectedSkinPosition)
+fun WidgetSkinScreen(
+    screenState: SkinPreviewViewState,
+    skinList: SkinList,
+    innerPadding: PaddingValues = PaddingValues(0.dp),
+    skinViewFactory: SkinViewFactory,
+    onMainEvent: (MainViewEvent) -> Unit = { },
+    windowSizeClass: WindowSizeClass
+) {
+    val pagerState = rememberPagerState(initialPage = skinList.selectedSkinPosition)
     val scope = rememberCoroutineScope()
 
     var currentPage by remember { mutableStateOf(pagerState.currentPage) }
 
     if (currentPage != pagerState.currentPage) {
         SideEffect {
-            onEvent(SkinPreviewViewEvent.UpdateCurrentSkin(index = currentPage))
+            onMainEvent(MainViewEvent.WidgetUpdateSkin(skinIdx = currentPage))
         }
         currentPage = pagerState.currentPage
     }
 
+    if (currentPage != skinList.selectedSkinPosition) {
+        SideEffect {
+            scope.launch {
+                pagerState.scrollToPage(skinList.selectedSkinPosition)
+            }
+        }
+        currentPage = skinList.selectedSkinPosition
+    }
+
+    val hideTabs = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
     Column(modifier = Modifier.padding(innerPadding)) {
-        ScrollableTabRow(
-            selectedTabIndex = pagerState.currentPage
-        ) {
-            screenState.skinList.titles.forEachIndexed { index, title ->
-                Tab(
-                    text = { Text(title) },
-                    selected = pagerState.currentPage == index,
-                    onClick = {
-                        scope.launch { pagerState.scrollToPage(page = index) }
-                    }
-                )
+        if (!hideTabs) {
+            ScrollableTabRow(
+                selectedTabIndex = pagerState.currentPage
+            ) {
+                skinList.titles.forEachIndexed { index, title ->
+                    Tab(
+                        text = { Text(title) },
+                        selected = pagerState.currentPage == index,
+                        onClick = {
+                            scope.launch { pagerState.scrollToPage(page = index) }
+                        }
+                    )
+                }
             }
         }
 
-        HorizontalPager(count = screenState.skinList.count, state = pagerState, modifier = Modifier.padding(16.dp)) { page ->
-            WidgetSkinPreview(skinItem = screenState.skinList[page], reload = screenState.reload, skinViewFactory = skinViewFactory)
+        HorizontalPager(count = skinList.count, state = pagerState, modifier = Modifier.padding(16.dp)) { page ->
+            WidgetSkinPreview(skinItem = skinList[page], reload = screenState.reload, skinViewFactory = skinViewFactory)
         }
     }
 }

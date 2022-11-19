@@ -40,37 +40,13 @@ import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
 
-data class SkinList(
-        val values: List<String>,
-        val titles: List<String>,
-        val selectedSkinPosition: Int
-) {
-    data class Item(val title: String, val value: String)
-
-    val count = values.size
-    val current: Item = Item(titles[selectedSkinPosition], values[selectedSkinPosition])
-
-    constructor(skin: String, context: Context) : this(
-            values = WidgetInterface.skins,
-            titles = context.resources.getStringArray(R.array.skin_titles).toList(),
-            selectedSkinPosition = WidgetInterface.skins.indexOf(skin)
-    )
-
-    operator fun get(position: Int): Item = Item(titles[position], values[position])
-}
-
 data class SkinPreviewViewState(
-    val skinList: SkinList,
-    val currentSkin: SkinList.Item,
     val widgetSettings: WidgetInterface.NoOp = WidgetInterface.NoOp(),
     val widgetShortcuts: Map<Int, Shortcut?>? = null,
     val reload: Int = 0
 )
 
-sealed interface SkinPreviewViewEvent {
-    class UpdateCurrentSkin(val index: Int) : SkinPreviewViewEvent
-    object Reload : SkinPreviewViewEvent
-}
+sealed interface SkinPreviewViewEvent
 
 sealed interface SkinPreviewViewAction
 
@@ -80,6 +56,7 @@ interface SkinViewFactory {
 
 interface SkinPreviewViewModel : SkinViewFactory {
     class Factory(private val appWidgetIdScope: AppWidgetIdScope): ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>) = RealSkinPreviewViewModel(appWidgetIdScope) as T
     }
 
@@ -95,17 +72,8 @@ class DummySkinPreviewViewModel(private val context: Context): ViewModel(), Skin
     private val skinProperties: SkinProperties = SkinPropertiesFactory(context).create(widgetSettings.skin)
 
     override val viewActions: Flow<SkinPreviewViewAction> = emptyFlow()
-    override val viewState : SkinPreviewViewState
-    override val viewStates: Flow<SkinPreviewViewState>
-
-    init {
-        val skinList = SkinList(widgetSettings.skin, context)
-        viewState = SkinPreviewViewState(
-            skinList = skinList,
-            currentSkin = skinList.current
-        )
-        viewStates = flowOf(viewState)
-    }
+    override val viewState : SkinPreviewViewState = SkinPreviewViewState()
+    override val viewStates: Flow<SkinPreviewViewState> = flowOf(viewState)
 
     override suspend fun create(overrideSkin: SkinList.Item): View {
         val intentFactory: PendingIntentFactory = PendingIntentFactory.NoOp(context)
@@ -131,7 +99,9 @@ class DummySkinPreviewViewModel(private val context: Context): ViewModel(), Skin
     }
 }
 
-class RealSkinPreviewViewModel(appWidgetIdScope: AppWidgetIdScope): BaseFlowViewModel<SkinPreviewViewState, SkinPreviewViewEvent, SkinPreviewViewAction>(), SkinPreviewViewModel, KoinScopeComponent {
+class RealSkinPreviewViewModel(
+    appWidgetIdScope: AppWidgetIdScope
+): BaseFlowViewModel<SkinPreviewViewState, SkinPreviewViewEvent, SkinPreviewViewAction>(), SkinPreviewViewModel, KoinScopeComponent {
 
     override val scope: Scope = appWidgetIdScope.scope
 
@@ -141,10 +111,7 @@ class RealSkinPreviewViewModel(appWidgetIdScope: AppWidgetIdScope): BaseFlowView
     private val widgetSettings: WidgetSettings by inject()
 
     init {
-        val skinList = SkinList(widgetSettings.skin, context)
         viewState = SkinPreviewViewState(
-            skinList = skinList,
-            currentSkin = skinList.current,
             widgetSettings = WidgetInterface.NoOp(widgetSettings)
         )
 
@@ -173,16 +140,7 @@ class RealSkinPreviewViewModel(appWidgetIdScope: AppWidgetIdScope): BaseFlowView
     }
 
     override fun handleEvent(event: SkinPreviewViewEvent) {
-        when (event) {
-            SkinPreviewViewEvent.Reload -> {
 
-            }
-            is SkinPreviewViewEvent.UpdateCurrentSkin -> {
-                viewState = viewState.copy(
-                    currentSkin = viewState.skinList[event.index]
-                )
-            }
-        }
     }
 
     override suspend fun create(overrideSkin: SkinList.Item): View {

@@ -9,6 +9,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,11 +41,11 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
     open fun startConfigActivity(appWidgetId: Int) { }
     open fun requestWidgetUpdate(appWidgetId: Int) { }
 
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(appSettings.appCompatNightMode)
         super.onCreate(savedInstanceState)
         appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
-
         setContent {
             val uiMode by appSettings.uiModeChange.collectAsState(initial = appSettings.uiMode)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -54,9 +56,11 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
             CarWidgetTheme(
                 uiMode = uiMode
             ) {
+                val windowSizeClass = calculateWindowSizeClass(this)
                 val screenState by mainViewModel.viewStates.collectAsState(initial = mainViewModel.viewState)
                 MainScreen(
                     screenState = screenState,
+                    windowSizeClass = windowSizeClass,
                     viewActions = mainViewModel.viewActions,
                     onViewAction = { onViewAction(it) },
                     onEvent = { mainViewModel.handleEvent(it) },

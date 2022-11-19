@@ -6,15 +6,19 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.FormatColorFill
+import androidx.compose.material.icons.filled.RadioButtonChecked
+import androidx.compose.material.icons.filled.RadioButtonUnchecked
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -35,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,6 +50,7 @@ import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.screens.WidgetDialogType
+import info.anodsplace.carwidget.screens.widget.SkinList
 
 sealed interface AppBarTileColor {
     object Hidden : AppBarTileColor
@@ -73,9 +80,27 @@ fun AppBarActions(
     shortcutNumber: Int,
     tileColor: AppBarTileColor,
     appWidgetId: Int,
-    currentSkinValue: String,
-    onEvent: (MainViewEvent) -> Unit
+    skinList: SkinList,
+    onEvent: (MainViewEvent) -> Unit,
+    showSkinSelector: Boolean = true
 ) {
+    var pickNumber by remember { mutableStateOf(false) }
+    var pickSkin by remember { mutableStateOf(false) }
+
+    if (showSkinSelector) {
+        OutlinedButton(
+            onClick = { pickSkin = true },
+            modifier = Modifier.padding(horizontal = 4.dp),
+            contentPadding = PaddingValues(4.dp)
+        ) {
+            Text(
+                text = skinList.current.title,
+                style = MaterialTheme.typography.labelSmall,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+
     when (tileColor) {
         is AppBarTileColor.Value -> {
             AppBarColorButton(color = tileColor.color, descRes = R.string.choose_color) {
@@ -90,33 +115,25 @@ fun AppBarActions(
         AppBarTileColor.Hidden -> {}
     }
 
-    var pickNumber by remember { mutableStateOf(false) }
-    IconButton(onClick = { pickNumber = true }) {
-        Box(
-            modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = LocalContentColor.current,
-                    shape = MaterialTheme.shapes.medium
-                )
-                .padding(8.dp)
-        ) {
-            Text(
-                text = shortcutNumber.toString(),
-                modifier = Modifier.defaultMinSize(minWidth = 16.dp),
-                style = MaterialTheme.typography.labelLarge,
-                textAlign = TextAlign.Center
-            )
-        }
+    OutlinedButton(
+        onClick = { pickNumber = true },
+        modifier = Modifier.width(56.dp),
+        contentPadding = PaddingValues(4.dp)
+    ) {
+        Text(
+            text = shortcutNumber.toString(),
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Center
+        )
     }
     AppBarButton(image = Icons.Filled.Check, descRes = android.R.string.ok) {
-        onEvent(MainViewEvent.ApplyWidget(appWidgetId, currentSkinValue))
+        onEvent(MainViewEvent.ApplyWidget(appWidgetId, skinList.current.value))
     }
 
     DropdownMenu(expanded = pickNumber, onDismissRequest = { pickNumber = false }) {
         Text(
             text = stringResource(id = R.string.number_shortcuts_title),
-            modifier = Modifier.padding(2.dp).fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 2.dp),
             textAlign = TextAlign.Center
         )
         val boxSize = mapOf(4 to 12.dp, 6 to 10.dp, 8 to 8.dp,10 to 6.dp)
@@ -127,6 +144,26 @@ fun AppBarActions(
                 onClick = {
                     onEvent(MainViewEvent.WidgetUpdateShortcuts(number))
                     pickNumber = false
+                }
+            )
+        }
+    }
+
+    DropdownMenu(expanded = pickSkin, onDismissRequest = { pickSkin = false }) {
+        (0 until skinList.count).forEach { skinPosition ->
+            val skinItem = skinList[skinPosition]
+            DropdownMenuItem(
+                text = { Text(text = skinItem.title, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
+                leadingIcon = { Icon(
+                    imageVector = if (skinList.selectedSkinPosition == skinPosition)
+                        Icons.Default.RadioButtonChecked
+                    else
+                        Icons.Default.RadioButtonUnchecked,
+                    contentDescription = null
+                ) },
+                onClick = {
+                    onEvent(MainViewEvent.WidgetUpdateSkin(skinPosition))
+                    pickSkin = false
                 }
             )
         }
@@ -195,6 +232,7 @@ fun ShortcutsNumber(number: Int, current: Int, boxSize: Dp) {
 @Composable
 fun AppBarActionsPreview() {
     val currentSkin = "windows7"
+    val context = LocalContext.current
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
         actions = {
@@ -202,7 +240,7 @@ fun AppBarActionsPreview() {
                 shortcutNumber = 10,
                 tileColor = rememberTileColor(currentSkin, WidgetInterface.NoOp()),
                 appWidgetId = 1,
-                currentSkinValue = currentSkin,
+                skinList = SkinList(WidgetInterface.SKIN_YOU, context),
                 onEvent = { },
             )
         }

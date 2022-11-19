@@ -1,14 +1,29 @@
 package info.anodsplace.carwidget.screens.main
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.*
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -39,11 +54,12 @@ import org.koin.java.KoinJavaComponent.getKoin
 @Composable
 fun MainScreen(
     screenState: MainViewState,
+    windowSizeClass: WindowSizeClass,
     onEvent: (event: MainViewEvent) -> Unit = { },
     onViewAction: (action: MainViewAction) -> Unit = { },
     viewActions: Flow<MainViewAction> = emptyFlow(),
     appWidgetIdScope: AppWidgetIdScope? = null,
-    imageLoader: ImageLoader
+    imageLoader: ImageLoader,
 ) {
     when (screenState.topDestination) {
         NavItem.Wizard -> {
@@ -70,6 +86,7 @@ fun MainScreen(
         else -> {
             Tabs(
                 screenState = screenState,
+                windowSizeClass = windowSizeClass,
                 onEvent = onEvent,
                 viewActions = viewActions,
                 onViewAction = onViewAction,
@@ -93,6 +110,7 @@ fun MainScreen(
 @Composable
 fun Tabs(
     screenState: MainViewState,
+    windowSizeClass: WindowSizeClass,
     onEvent: (event: MainViewEvent) -> Unit,
     viewActions: Flow<MainViewAction> = emptyFlow(),
     onViewAction: (action: MainViewAction) -> Unit = { },
@@ -100,7 +118,6 @@ fun Tabs(
     imageLoader: ImageLoader
 ) {
     val navController = rememberNavController()
-    val currentSkin = remember { mutableStateOf(WidgetInterface.SKIN_YOU) }
 
     Scaffold(
         containerColor = if (screenState.isWidget) Color.Transparent else MaterialTheme.colorScheme.background,
@@ -109,11 +126,14 @@ fun Tabs(
                 title = { Text(text = stringResource(id = R.string.app_name)) },
                 actions = {
                     if (screenState.isWidget) {
+                        val showSkinSelector = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+
                         AppBarActions(
                             shortcutNumber = screenState.widgetSettings.shortcutsNumber,
-                            tileColor = rememberTileColor(currentSkin.value, screenState.widgetSettings),
+                            showSkinSelector = showSkinSelector,
+                            tileColor = rememberTileColor(screenState.currentSkin.value, screenState.widgetSettings),
                             appWidgetId = screenState.appWidgetId,
-                            currentSkinValue = currentSkin.value,
+                            skinList = screenState.skinList,
                             onEvent = onEvent,
                         )
                     }
@@ -121,7 +141,7 @@ fun Tabs(
             )
         },
         bottomBar = {
-            BottomTabs(screenState.tabs, navController)
+            BottomTabs(screenState.tabs, windowSizeClass = windowSizeClass, navController = navController)
         },
         content = { innerPadding ->
             NavHost(
@@ -129,8 +149,9 @@ fun Tabs(
                 onEvent = onEvent,
                 appWidgetIdScope = appWidgetIdScope,
                 innerPadding = innerPadding,
-                currentSkin = currentSkin,
+                skinList = screenState.skinList,
                 startDestination = screenState.topDestination.route,
+                windowSizeClass = windowSizeClass,
                 routeNS = screenState.routeNS,
                 imageLoader = imageLoader
             )
@@ -150,21 +171,24 @@ fun Tabs(
 }
 
 @Composable
-fun BottomTabs(items: List<NavItem.Tab>, navController: NavHostController) {
+fun BottomTabs(items: List<NavItem.Tab>, windowSizeClass: WindowSizeClass, navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val hideLabel = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
 
-    NavigationBar {
+    NavigationBarWithHeight(
+        height = if (hideLabel) 48.dp else 80.dp
+    ) {
         items.forEachIndexed { _, item ->
             NavigationBarItem(
                 icon = { Icon(item.icon, contentDescription = null) },
-                label = { Text(
+                label = if (hideLabel) null else ({ Text(
                     text = stringResource(id = item.resourceId),
                     overflow = TextOverflow.Ellipsis,
                     softWrap = true,
                     maxLines = 1,
                     textAlign = TextAlign.Center
-                ) },
+                ) }),
                 selected = currentRoute?.startsWith(item.route) == true,
                 onClick = {
                     navController.navigate(item.route) {
@@ -187,16 +211,45 @@ fun BottomTabs(items: List<NavItem.Tab>, navController: NavHostController) {
 }
 
 @Composable
+fun NavigationBarWithHeight(
+    modifier: Modifier = Modifier,
+    containerColor: Color = NavigationBarDefaults.containerColor,
+    contentColor: Color = MaterialTheme.colorScheme.contentColorFor(containerColor),
+    tonalElevation: Dp = NavigationBarDefaults.Elevation,
+    height: Dp = 80.dp,
+    windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
+    content: @Composable RowScope.() -> Unit
+) {
+    Surface(
+        color = containerColor,
+        contentColor = contentColor,
+        tonalElevation = tonalElevation,
+        modifier = modifier
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .windowInsetsPadding(windowInsets)
+                .height(height)
+                .selectableGroup(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            content = content
+        )
+    }
+}
+
+@Composable
 fun NavHost(
     navController: NavHostController,
     onEvent: (MainViewEvent) -> Unit,
     appWidgetIdScope: AppWidgetIdScope? = null,
     innerPadding: PaddingValues,
-    currentSkin: MutableState<String>,
+    skinList: SkinList,
     startDestination: String,
     routeNS: String,
     currentWidgetStartDestination: String = NavItem.Tab.CurrentWidget.Skin.route,
-    imageLoader: ImageLoader
+    imageLoader: ImageLoader,
+    windowSizeClass: WindowSizeClass
 ) {
     val context = LocalContext.current
 
@@ -223,15 +276,15 @@ fun NavHost(
         }
         navigation(route = NavItem.Tab.CurrentWidget.route, startDestination = currentWidgetStartDestination) {
             composable(route = NavItem.Tab.CurrentWidget.Skin.route) {
-                val skinViewModel: SkinPreviewViewModel =
-                    viewModel(factory = SkinPreviewViewModel.Factory(appWidgetIdScope!!))
+                val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appWidgetIdScope!!))
                 val screenState by skinViewModel.viewStates.collectAsState(initial = skinViewModel.viewState)
-                currentSkin.value = screenState.currentSkin.value
                 WidgetSkinScreen(
                     screenState = screenState,
+                    skinList = skinList,
+                    windowSizeClass = windowSizeClass,
                     innerPadding = innerPadding,
                     skinViewFactory = skinViewModel,
-                    onEvent = { skinViewModel.handleEvent(it) }
+                    onMainEvent = onEvent
                 )
             }
             composable(
@@ -308,14 +361,16 @@ fun NavHost(
     }
 }
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Preview("Main Screen Light")
 @Composable
 fun PreviewPreferencesScreenLight() {
     CarWidgetTheme {
         Surface {
             MainScreen(
-                screenState = MainViewState(),
-                imageLoader = ImageLoader.Builder(LocalContext.current).build()
+                screenState = MainViewState(skinList = SkinList(WidgetInterface.SKIN_YOU, LocalContext.current)),
+                imageLoader = ImageLoader.Builder(LocalContext.current).build(),
+                windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(600.dp, 480.dp))
             )
         }
     }

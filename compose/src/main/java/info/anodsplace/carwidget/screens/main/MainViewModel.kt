@@ -20,6 +20,7 @@ import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.WidgetAwareViewModel
 import info.anodsplace.carwidget.screens.WidgetDialogType
+import info.anodsplace.carwidget.screens.widget.SkinList
 import info.anodsplace.permissions.AppPermission
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinScopeComponent
@@ -36,7 +37,11 @@ data class MainViewState(
     val topDestination: NavItem = NavItem.Tab.About,
     val requiredPermissions: List<AppPermission> = emptyList(),
     val widgetSettings: WidgetInterface.NoOp = WidgetInterface.NoOp(),
-)
+    val skinList: SkinList = SkinList(values = WidgetInterface.skins, titles = WidgetInterface.skins, 0)
+) {
+    val currentSkin: SkinList.Item
+        get() = skinList.current
+}
 
 sealed interface MainViewAction {
     object OnBackNav : MainViewAction
@@ -52,6 +57,7 @@ sealed interface MainViewEvent {
     class ApplyWidget(val appWidgetId: Int, val currentSkinValue: String) : MainViewEvent
     class OpenWidgetConfig(val appWidgetId: Int) : MainViewEvent
     class WidgetUpdateShortcuts(val number: Int) : MainViewEvent
+    class WidgetUpdateSkin(val skinIdx: Int) : MainViewEvent
 
     object OnBackNav : MainViewEvent
     object CloseWizard : MainViewEvent
@@ -68,6 +74,7 @@ class MainViewModel(
         private val permissionChecker: PermissionChecker,
         private val inCarStatus: InCarStatus
     ) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
             return MainViewModel(
                 requiredPermissions = if (inCarStatus.isEnabled) permissionChecker.check(activity) else emptyList(),
@@ -83,6 +90,7 @@ class MainViewModel(
     init {
         val isWidget = appWidgetIdScope.isValid
         val showProDialog = version.isFree && version.isProInstalled
+        val widgetSettings = if (isWidget) WidgetInterface.NoOp(get<WidgetSettings>()) else WidgetInterface.NoOp()
         viewState = MainViewState(
             isFreeVersion = version.isFree,
             isWidget = isWidget,
@@ -102,7 +110,8 @@ class MainViewModel(
             showProDialog = showProDialog,
             topDestination = startDestination(showProDialog, requiredPermissions, allowWizard = true),
             requiredPermissions = requiredPermissions,
-            widgetSettings =  if (isWidget) WidgetInterface.NoOp(get<WidgetSettings>()) else WidgetInterface.NoOp()
+            widgetSettings = widgetSettings,
+            skinList = SkinList(widgetSettings.skin, get())
         )
     }
 
@@ -121,7 +130,7 @@ class MainViewModel(
             is MainViewEvent.ApplyWidget -> emitAction(MainViewAction.ApplyWidget(event.appWidgetId, event.currentSkinValue))
             is MainViewEvent.OpenWidgetConfig -> emitAction(MainViewAction.OpenWidgetConfig(event.appWidgetId))
             MainViewEvent.CloseWizard -> {
-                viewState = viewState.copy(topDestination = startDestination(viewState.showProDialog, viewState.requiredPermissions, allowWizard = false),)
+                viewState = viewState.copy(topDestination = startDestination(viewState.showProDialog, viewState.requiredPermissions, allowWizard = false))
             }
             is MainViewEvent.WidgetUpdateShortcuts -> {
                 val settings = get<WidgetSettings>()
@@ -131,6 +140,12 @@ class MainViewModel(
                     shortcutsModel.init()
                     viewState = viewState.copy(widgetSettings = WidgetInterface.NoOp(settings))
                 }
+            }
+            is MainViewEvent.WidgetUpdateSkin -> {
+                val newList = SkinList(event.skinIdx, viewState.skinList)
+                val settings = get<WidgetSettings>()
+                settings.skin = newList.current.value
+                viewState = viewState.copy(skinList = newList)
             }
         }
     }

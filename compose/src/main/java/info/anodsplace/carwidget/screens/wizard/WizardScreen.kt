@@ -28,6 +28,7 @@ import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.screens.main.MainViewEvent
 import info.anodsplace.carwidget.screens.main.MainViewState
 import info.anodsplace.carwidget.screens.widget.DummySkinPreviewViewModel
+import info.anodsplace.carwidget.screens.widget.SkinList
 import info.anodsplace.carwidget.screens.widget.SkinPreviewViewModel
 import info.anodsplace.carwidget.screens.widget.WidgetSkinPreview
 import info.anodsplace.compose.toAnnotatedString
@@ -119,6 +120,7 @@ fun WizardScreen(screenState: MainViewState, modifier: Modifier = Modifier, init
 fun WelcomePage(
     skinViewModel: SkinPreviewViewModel
 ) {
+    val skinList = SkinList(skinViewModel.viewState.widgetSettings.skin, LocalContext.current)
     WizardPage(
         title = stringResource(id = R.string.welcome),
         description = stringResource(id = R.string.welcome_text),
@@ -134,7 +136,7 @@ fun WelcomePage(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            WidgetSkinPreview(skinViewModel.viewState.currentSkin, skinViewModel.viewState.reload, skinViewFactory = skinViewModel)
+            WidgetSkinPreview(skinList.current, skinViewModel.viewState.reload, skinViewFactory = skinViewModel)
         }
     }
 }
