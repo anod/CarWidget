@@ -41,7 +41,7 @@ class WidgetViewBuilder(
             widgetSettings.applyPending()
         }
 
-        shortcutsModel.lazyInit()
+        shortcutsModel.init()
 
         val skinName = overrideSkin ?: widgetSettings.skin
         val skinProperties: SkinProperties = koin.get { parametersOf(skinName) }

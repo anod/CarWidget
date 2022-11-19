@@ -19,12 +19,13 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.screens.main.MainViewEvent
 import kotlinx.coroutines.launch
 
 @Composable
-fun WidgetSkinPreview(skinItem: SkinList.Item, reload: Int, skinViewFactory: SkinViewFactory) {
-    val view: View? by produceState<View?>(initialValue = null, skinItem, reload) {
+fun WidgetSkinPreview(skinItem: SkinList.Item, shortcuts: Map<Int, Shortcut?>, skinViewFactory: SkinViewFactory) {
+    val view: View? by produceState<View?>(initialValue = null, skinItem, shortcuts) {
         val view = skinViewFactory.create(skinItem)
         value = view
     }
@@ -93,7 +94,7 @@ fun WidgetSkinScreen(
         }
 
         HorizontalPager(count = skinList.count, state = pagerState, modifier = Modifier.padding(16.dp)) { page ->
-            WidgetSkinPreview(skinItem = skinList[page], reload = screenState.reload, skinViewFactory = skinViewFactory)
+            WidgetSkinPreview(skinItem = skinList[page], shortcuts = screenState.widgetShortcuts, skinViewFactory = skinViewFactory)
         }
     }
 }
