@@ -142,7 +142,7 @@ class MainViewModel(
                 }
             }
             is MainViewEvent.WidgetUpdateSkin -> {
-                val newList = SkinList(event.skinIdx, viewState.skinList)
+                val newList = viewState.skinList.copy(selectedSkinPosition = event.skinIdx)
                 val settings = get<WidgetSettings>()
                 settings.skin = newList.current.value
                 viewState = viewState.copy(skinList = newList)

@@ -59,22 +59,19 @@ fun WidgetSkinScreen(
     val pagerState = rememberPagerState(initialPage = skinList.selectedSkinPosition)
     val scope = rememberCoroutineScope()
 
-    var currentPage by remember { mutableStateOf(pagerState.currentPage) }
-
-    if (currentPage != pagerState.currentPage) {
-        SideEffect {
-            onMainEvent(MainViewEvent.WidgetUpdateSkin(skinIdx = currentPage))
-        }
-        currentPage = pagerState.currentPage
-    }
-
-    if (currentPage != skinList.selectedSkinPosition) {
-        SideEffect {
-            scope.launch {
-                pagerState.scrollToPage(skinList.selectedSkinPosition)
+    LaunchedEffect(pagerState) {
+        // Collect from the pager state a snapshotFlow reading the currentPage
+        snapshotFlow { pagerState.currentPage }.collect { currentPage ->
+            if (currentPage != skinList.selectedSkinPosition) {
+                onMainEvent(MainViewEvent.WidgetUpdateSkin(skinIdx = currentPage))
             }
         }
-        currentPage = skinList.selectedSkinPosition
+    }
+
+    LaunchedEffect(skinList) {
+        if (pagerState.currentPage != skinList.selectedSkinPosition) {
+            pagerState.scrollToPage(skinList.selectedSkinPosition)
+        }
     }
 
     val hideTabs = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact

@@ -7,18 +7,13 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 data class SkinList(
         val values: List<String>,
         val titles: List<String>,
-        val selectedSkinPosition: Int,
-        val current: Item = Item(titles[selectedSkinPosition], values[selectedSkinPosition])
+        val selectedSkinPosition: Int
 ) {
     data class Item(val title: String, val value: String)
 
     val count = values.size
-
-    constructor(newPosition: Int, list: SkinList) : this(
-        values = list.values,
-        titles = list.titles,
-        selectedSkinPosition = newPosition
-    )
+    val current: Item
+        get() = Item(titles[selectedSkinPosition], values[selectedSkinPosition])
 
     constructor(skin: String, context: Context) : this(
             values = WidgetInterface.skins,

@@ -149,7 +149,6 @@ fun Tabs(
                 onEvent = onEvent,
                 appWidgetIdScope = appWidgetIdScope,
                 innerPadding = innerPadding,
-                skinList = screenState.skinList,
                 startDestination = screenState.topDestination.route,
                 windowSizeClass = windowSizeClass,
                 routeNS = screenState.routeNS,
@@ -244,7 +243,6 @@ fun NavHost(
     onEvent: (MainViewEvent) -> Unit,
     appWidgetIdScope: AppWidgetIdScope? = null,
     innerPadding: PaddingValues,
-    skinList: SkinList,
     startDestination: String,
     routeNS: String,
     currentWidgetStartDestination: String = NavItem.Tab.CurrentWidget.Skin.route,
@@ -280,7 +278,7 @@ fun NavHost(
                 val screenState by skinViewModel.viewStates.collectAsState(initial = skinViewModel.viewState)
                 WidgetSkinScreen(
                     screenState = screenState,
-                    skinList = skinList,
+                    skinList = screenState.skinList,
                     windowSizeClass = windowSizeClass,
                     innerPadding = innerPadding,
                     skinViewFactory = skinViewModel,

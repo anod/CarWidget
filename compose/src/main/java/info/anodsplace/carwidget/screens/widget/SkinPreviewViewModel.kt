@@ -41,6 +41,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
 
 data class SkinPreviewViewState(
+    val skinList: SkinList = SkinList(WidgetInterface.skins, WidgetInterface.skins, 0),
     val widgetSettings: WidgetInterface.NoOp = WidgetInterface.NoOp(),
     val widgetShortcuts: Map<Int, Shortcut?>? = null,
     val reload: Int = 0
@@ -112,12 +113,18 @@ class RealSkinPreviewViewModel(
 
     init {
         viewState = SkinPreviewViewState(
+            skinList = SkinList(widgetSettings.skin, context),
             widgetSettings = WidgetInterface.NoOp(widgetSettings)
         )
 
         viewModelScope.launch {
             widgetSettings.changes.collect {
+                val skinList = if (viewState.skinList.current.value != widgetSettings.skin)
+                    viewState.skinList.copy(selectedSkinPosition = WidgetInterface.skins.indexOf(widgetSettings.skin))
+                else
+                    viewState.skinList
                 viewState = viewState.copy(
+                    skinList = skinList,
                     widgetSettings = WidgetInterface.NoOp(widgetSettings),
                     reload = viewState.reload + 1
                 )
