@@ -127,7 +127,7 @@
 	<string name="gms_service_disabled">Установленная версия Google Play services была отключена на этом устройства.</string>
 	<string name="gms_service_invalid">Версия Google Play services установленная на этом устройстве не подлинная.</string>
 	<string name="activity_recognition">Распознавание активности</string>
-	<string name="shortcuts">Ярлыки</string>
+	<string name="notification_shortcuts">Ярлыки</string>
 	<string name="pref_actions">Действия</string>
 	<string name="bluetooth_device_laptop">Компьютер</string>
 	<string name="bluetooth_device_cellphone">Телефон</string>

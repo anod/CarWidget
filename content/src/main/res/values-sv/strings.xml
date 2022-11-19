@@ -125,7 +125,7 @@
     <string name="gms_service_disabled">Den installerade versionen av Google Play tjänster har inaktiverats på den här enheten.</string>
     <string name="gms_service_invalid">Den installerade versionen av Google Play tjänster på den här enheten är inte autentisk.</string>
     <string name="activity_recognition">Aktivitet erkännande</string>
-    <string name="shortcuts">Genvägar anmälan</string>
+    <string name="notification_shortcuts">Genvägar anmälan</string>
     <string name="pref_actions">Handlingar</string>
     <string name="bluetooth_device_laptop">Dator</string>
     <string name="bluetooth_device_cellphone">Telefon</string>

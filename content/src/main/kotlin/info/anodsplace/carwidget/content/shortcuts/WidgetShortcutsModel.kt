@@ -18,9 +18,8 @@ class WidgetShortcutsModel(
 
     private val appWidgetId = +appWidgetIdScope
 
-    override fun loadCount(): Int {
-        return widgetSettings.shortcutsNumber
-    }
+    override val count: Int
+        get() = widgetSettings.shortcutsNumber
 
     override suspend fun loadShortcuts(): Map<Int, Shortcut?> {
         return shortcutsDatabase.loadTarget(appWidgetId)

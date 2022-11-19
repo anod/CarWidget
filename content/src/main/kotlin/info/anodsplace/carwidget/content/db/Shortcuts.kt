@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.content.db
 
 import android.content.Intent
-import android.util.SparseArray
 import info.anodsplace.carwidget.content.shortcuts.CreateShortcutResult
 
 interface Shortcuts {
@@ -11,6 +10,8 @@ interface Shortcuts {
     suspend fun createDefaultShortcuts()
 
     suspend fun init()
+
+    suspend fun lazyInit()
 
     suspend fun reloadShortcut(position: Int, shortcutId: Long)
 

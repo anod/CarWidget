@@ -10,8 +10,10 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.screens.WidgetDialogEvent
 import info.anodsplace.compose.PreferenceItem
+import info.anodsplace.compose.isNotVisible
+import info.anodsplace.compose.isVisible
+import info.anodsplace.compose.toColorHex
 import info.anodsplace.viewmodel.BaseFlowViewModel
-import okhttp3.internal.toHexString
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.inject
 import org.koin.core.scope.Scope
@@ -30,19 +32,15 @@ sealed interface WidgetCustomizeEvent {
 sealed interface WidgetCustomizeAction
 
 fun createItems(settings: WidgetInterface) = listOf(
-    PreferenceItem.Pick(
-        titleRes = R.string.number,
-        key = "cmp-number",
-        entries = arrayOf("4","6","8","10"),
-        entryValues = arrayOf("4","6","8","10"),
-        value = settings.shortcutsNumber.toString()
-    ),
-    PreferenceItem.Color(
-        titleRes = R.string.pref_bg_color_title,
-        summary = "${settings.backgroundColor} - #${settings.backgroundColor.toHexString()}",
-        key = "bg-color",
-        color = Color(settings.backgroundColor)
-    ),
+    Color(settings.backgroundColor).let { backgroundColor ->
+        PreferenceItem.Color(
+            titleRes = R.string.pref_bg_color_title,
+            summary = if (backgroundColor.isVisible) "#${backgroundColor.toColorHex()}" else "",
+            summaryRes = if (backgroundColor.isNotVisible) R.string.pref_bg_color_summary else 0,
+            key = "bg-color",
+            color = backgroundColor
+        )
+    },
     PreferenceItem.Category(
         titleRes = R.string.icon_style,
     ),
@@ -92,22 +90,7 @@ fun createItems(settings: WidgetInterface) = listOf(
         titleRes = R.string.pref_titles_hide_title,
         summaryRes = R.string.pref_titles_hide_summary,
         key = "titles-hide"
-    ),
-    PreferenceItem.Category(
-        titleRes = R.string.transparent,
-    ),
-    PreferenceItem.CheckBox(
-        checked = settings.isSettingsTransparent,
-        titleRes = R.string.pref_settings_transparent,
-        summaryRes = R.string.pref_settings_transparent_summary,
-        key = "transparent-btn-settings"
-    ),
-    PreferenceItem.CheckBox(
-        checked = settings.isIncarTransparent,
-        titleRes = R.string.pref_incar_transparent,
-        summaryRes = R.string.pref_incar_transparent_summary,
-        key = "transparent-btn-incar"
-    ),
+    )
 )
 
 class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowViewModel<WidgetCustomizeState, WidgetCustomizeEvent, WidgetCustomizeAction>(), KoinScopeComponent {

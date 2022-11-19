@@ -24,6 +24,10 @@ class DummyWidgetShortcutsModel(private val context: Context) : Shortcuts {
         }
     }
 
+    override suspend fun lazyInit() {
+        init()
+    }
+
     override suspend fun reloadShortcut(position: Int, shortcutId: Long) {
 
     }

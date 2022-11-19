@@ -21,17 +21,9 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
             return _shortcuts
         }
 
-    override val count: Int
-        get() {
-            require(isInitialized)
-            return _shortcuts.size
-        }
-
     override fun equals(other: Any?): Boolean = equalsHash(this, other)
 
     override fun hashCode(): Int = hashCodeOf(_shortcuts.hashCode())
-
-    protected abstract fun loadCount(): Int
 
     abstract suspend fun loadShortcuts(): Map<Int, Shortcut?>
 
@@ -45,7 +37,7 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
 
     abstract fun isMigrated(): Boolean
 
-    private suspend fun lazyInit() {
+    override suspend fun lazyInit() {
         if (!isInitialized) {
             init()
         }
@@ -53,7 +45,6 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
 
     override suspend fun init() {
         isInitialized = true
-        val count = loadCount()
         _shortcuts.clear()
         if (!isMigrated()) {
             runDbMigration()

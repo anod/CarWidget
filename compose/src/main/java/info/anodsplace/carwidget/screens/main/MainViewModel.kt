@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import coil.ImageLoader
 import info.anodsplace.carwidget.appwidget.WidgetIds
@@ -14,11 +15,13 @@ import info.anodsplace.carwidget.content.di.isValid
 import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
+import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.WidgetAwareViewModel
 import info.anodsplace.carwidget.screens.WidgetDialogType
 import info.anodsplace.permissions.AppPermission
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -48,7 +51,8 @@ sealed interface MainViewEvent {
     class ShowDialog(val dialogType: WidgetDialogType) : MainViewEvent
     class ApplyWidget(val appWidgetId: Int, val currentSkinValue: String) : MainViewEvent
     class OpenWidgetConfig(val appWidgetId: Int) : MainViewEvent
-    class SwitchIconsMono(val isIconsMono: Boolean) : MainViewEvent
+    class WidgetUpdateShortcuts(val number: Int) : MainViewEvent
+
     object OnBackNav : MainViewEvent
     object CloseWizard : MainViewEvent
 }
@@ -116,13 +120,17 @@ class MainViewModel(
             is MainViewEvent.OnBackNav -> emitAction(MainViewAction.OnBackNav)
             is MainViewEvent.ApplyWidget -> emitAction(MainViewAction.ApplyWidget(event.appWidgetId, event.currentSkinValue))
             is MainViewEvent.OpenWidgetConfig -> emitAction(MainViewAction.OpenWidgetConfig(event.appWidgetId))
-            is MainViewEvent.SwitchIconsMono -> {
-                val settings = get<WidgetSettings>()
-                settings.isIconsMono = event.isIconsMono
-                viewState = viewState.copy(widgetSettings = WidgetInterface.NoOp(settings))
-            }
             MainViewEvent.CloseWizard -> {
                 viewState = viewState.copy(topDestination = startDestination(viewState.showProDialog, viewState.requiredPermissions, allowWizard = false),)
+            }
+            is MainViewEvent.WidgetUpdateShortcuts -> {
+                val settings = get<WidgetSettings>()
+                settings.shortcutsNumber = event.number
+                val shortcutsModel = get<WidgetShortcutsModel>()
+                viewModelScope.launch {
+                    shortcutsModel.init()
+                    viewState = viewState.copy(widgetSettings = WidgetInterface.NoOp(settings))
+                }
             }
         }
     }

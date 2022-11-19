@@ -3,7 +3,9 @@ package com.anod.car.home.appwidget
 import android.content.Context
 import android.widget.RemoteViews
 import com.anod.car.home.incar.ModeService
-import info.anodsplace.carwidget.appwidget.*
+import info.anodsplace.carwidget.appwidget.PendingIntentFactory
+import info.anodsplace.carwidget.appwidget.SkinWidgetView
+import info.anodsplace.carwidget.appwidget.WidgetView
 import info.anodsplace.carwidget.content.BitmapLruCache
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
@@ -39,7 +41,7 @@ class WidgetViewBuilder(
             widgetSettings.applyPending()
         }
 
-        shortcutsModel.init()
+        shortcutsModel.lazyInit()
 
         val skinName = overrideSkin ?: widgetSettings.skin
         val skinProperties: SkinProperties = koin.get { parametersOf(skinName) }

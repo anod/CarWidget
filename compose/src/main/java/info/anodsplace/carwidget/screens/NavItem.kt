@@ -45,7 +45,7 @@ sealed class NavItem(val route: String, val parent: NavItem? = null) {
 
         object Widgets : Tab(route = "widgets/list", resourceId = R.string.widgets, icon = Icons.Filled.Widgets)
 
-        object CurrentWidget : Tab(route = "widgets/current", resourceId = R.string.current_widget, icon = Icons.Filled.Widgets) {
+        object CurrentWidget : Tab(route = "widgets/current", resourceId = R.string.shortcuts, icon = Icons.Filled.Widgets) {
             object Skin : NavItem(route = "widgets/current/skin", parent = CurrentWidget) {
                 object Dialog : NavItem(route = "widgets/current/skin/dialog/{dialog_type}", parent = Skin) {
                     val arguments: List<NamedNavArgument> = listOf(

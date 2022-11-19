@@ -97,6 +97,6 @@ fun createCarScreenItems(inCar: InCarInterface, context: Context): List<Preferen
         PreferenceItem.CheckBox(checked = inCar.isInCarEnabled, key = "power-bt-enable", summaryRes = R.string.pref_power_plugged_bt_on_summary, titleRes = R.string.pref_power_plugged_bt_on_title),
         PreferenceItem.CheckBox(checked = inCar.isInCarEnabled, key = "power-bt-disable", summaryRes = R.string.pref_power_unplugged_bt_off_summary, titleRes = R.string.pref_power_unplugged_bt_off_title),
         PreferenceItem.Category(titleRes = R.string.notification),
-        PreferenceItem.Placeholder(key = "notif-shortcuts", summaryRes = R.string.shortcuts_summary, titleRes = R.string.shortcuts)
+        PreferenceItem.Placeholder(key = "notif-shortcuts", summaryRes = R.string.shortcuts_summary, titleRes = R.string.notification_shortcuts)
     )
 }

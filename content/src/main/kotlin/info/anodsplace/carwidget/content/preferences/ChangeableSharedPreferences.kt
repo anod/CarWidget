@@ -36,7 +36,7 @@ open class ChangeableSharedPreferences(prefs: SharedPreferences, private val app
         val edit = prefs.edit()
         putChange(edit, key, value)
         edit.apply()
-        appScope.launch {  _changes.emit(Pair(key, value)) }
+        appScope.launch { _changes.emit(Pair(key, value)) }
     }
 
     fun <T : Any?> observe(key: String): Flow<T> = changes.filter { it.first == key }.map { it.second as T }

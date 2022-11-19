@@ -110,6 +110,7 @@ fun Tabs(
                 actions = {
                     if (screenState.isWidget) {
                         AppBarActions(
+                            shortcutNumber = screenState.widgetSettings.shortcutsNumber,
                             tileColor = rememberTileColor(currentSkin.value, screenState.widgetSettings),
                             appWidgetId = screenState.appWidgetId,
                             currentSkinValue = currentSkin.value,

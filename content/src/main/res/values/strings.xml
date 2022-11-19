@@ -28,6 +28,7 @@
     <string name="color_dialog_title">Pick a color</string>
     <string name="pref_tile_color_title">Tile color</string>
     <string name="pref_bg_color_title">Background color</string>
+    <string name="pref_bg_color_summary">Widget background color</string>
     <string name="pref_icons_mono_title">Monochrome icons</string>
     <string name="pref_tint_color_title">Tint color</string>
     <string name="pref_tint_color_summary">Select tint color of icons</string>
@@ -151,7 +152,8 @@
     <string name="gms_service_disabled">The installed version of Google Play services has been disabled on this device.</string>
     <string name="gms_service_invalid">The version of the Google Play services installed on this device is not authentic.</string>
     <string name="activity_recognition">Activity recognition</string>
-    <string name="shortcuts">Notification shortcuts</string>
+    <string name="shortcuts">Shortcuts</string>
+    <string name="notification_shortcuts">Notification shortcuts</string>
     <string name="pref_actions">Actions</string>
     <string name="bluetooth_device_laptop">Computer</string>
     <string name="bluetooth_device_cellphone">Phone</string>

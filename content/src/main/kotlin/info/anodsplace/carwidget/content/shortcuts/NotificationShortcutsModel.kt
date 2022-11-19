@@ -21,12 +21,10 @@ class NotificationShortcutsModel(context: Context, database: ShortcutsDatabase) 
             return result
         }
 
+    override val count: Int = InCarStorage.NOTIFICATION_COMPONENT_NUMBER
+
     override suspend fun createDefaultShortcuts() {
         // Nothing
-    }
-
-    override fun loadCount(): Int {
-        return InCarStorage.NOTIFICATION_COMPONENT_NUMBER
     }
 
     override suspend fun loadShortcuts(): Map<Int, Shortcut?> {

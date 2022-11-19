@@ -129,7 +129,7 @@
     <string name="gms_service_disabled">הגרסה המותקנת שירותים של Google Play services הושבת במכשיר זה.</string>
     <string name="gms_service_invalid">הגרסה של Google Play services המותקת במכשיר זה לא אותנטית.</string>
     <string name="activity_recognition">זיהוי פעילות</string>
-    <string name="shortcuts">קיצורי דרך </string>
+    <string name="notification_shortcuts">קיצורי דרך </string>
     <string name="pref_actions">פעולות</string>
     <string name="bluetooth_device_laptop">מחשב</string>
     <string name="bluetooth_device_cellphone">טלפון</string>

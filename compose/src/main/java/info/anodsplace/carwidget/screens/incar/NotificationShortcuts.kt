@@ -53,7 +53,7 @@ fun NotificationShortcuts(
             modifier = Modifier.weight(4f)
         ) {
             Text(
-                text = stringResource(id = R.string.shortcuts),
+                text = stringResource(id = R.string.notification_shortcuts),
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodyMedium
             )

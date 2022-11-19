@@ -125,7 +125,7 @@
     <string name="gms_service_disabled">La versión instalada de los servicios de Google Play ha sido deshabilitada en este dispositivo.</string>
     <string name="gms_service_invalid">La versión de los servicios de Google Play instalada en este dispositivo no es auténtica.</string>
     <string name="activity_recognition">Reconocimiento de actividad</string>
-    <string name="shortcuts">Accesos directos de notificación</string>
+    <string name="notification_shortcuts">Accesos directos de notificación</string>
     <string name="pref_actions">Acciones</string>
     <string name="bluetooth_device_laptop">Ordenador</string>
     <string name="bluetooth_device_cellphone">Teléfono</string>
