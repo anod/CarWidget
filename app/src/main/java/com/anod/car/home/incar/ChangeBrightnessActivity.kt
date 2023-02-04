@@ -3,6 +3,7 @@ package com.anod.car.home.incar
 import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 
 class ChangeBrightnessActivity : Activity() {
 
@@ -17,7 +18,7 @@ class ChangeBrightnessActivity : Activity() {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({ this@ChangeBrightnessActivity.finish() }, 500)
     }
 

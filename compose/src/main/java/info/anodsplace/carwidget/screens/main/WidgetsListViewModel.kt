@@ -64,6 +64,7 @@ class WidgetsListViewModel : BaseFlowViewModel<WidgetListScreenState, WidgetList
                 handleEvent(WidgetListScreenEvent.LoadWidgetList)
             }
         }
+        handleEvent(WidgetListScreenEvent.LoadWidgetList)
     }
 
     override fun handleEvent(event: WidgetListScreenEvent) {

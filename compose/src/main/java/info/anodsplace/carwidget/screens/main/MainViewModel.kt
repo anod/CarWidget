@@ -95,8 +95,7 @@ class MainViewModel(
             isFreeVersion = version.isFree,
             isWidget = isWidget,
             appWidgetId = +appWidgetIdScope,
-            tabs = if (isWidget)
-                listOf(
+            tabs = if (isWidget) listOf(
                 NavItem.Tab.CurrentWidget,
                 NavItem.Tab.WidgetCustomize,
                 NavItem.Tab.InCar,
@@ -154,7 +153,7 @@ class MainViewModel(
         val isFreeInstalled = !version.isFree && version.isFreeInstalled
         val appWidgetIds = widgetIds.getAllWidgetIds()
         return when {
-            appWidgetIds.isEmpty() && !isFreeInstalled &&  allowWizard -> NavItem.Wizard
+            appWidgetIds.isEmpty() && !isFreeInstalled && allowWizard -> NavItem.Wizard
             !showProDialog && requiredPermissions.isNotEmpty() -> NavItem.PermissionsRequest
             appWidgetIdScope.isValid -> NavItem.Tab.CurrentWidget
             else -> NavItem.Tab.Widgets

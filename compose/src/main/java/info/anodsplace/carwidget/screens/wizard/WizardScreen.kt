@@ -15,8 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.toSpanned
@@ -179,12 +181,13 @@ fun ConfigPage() {
                 painter = painterResource(id = R.drawable.ic_holo_settings),
                 contentDescription = null
             )
-            val buttonText = stringResource(id = R.string.open_settings_description)
-            val linkColor = MaterialTheme.colorScheme.primary
-            val buttonTextAnnotated = remember(buttonText) {
-                Html.fromHtml(buttonText, Html.FROM_HTML_MODE_COMPACT).toAnnotatedString(linkColor = linkColor)
-            }
-            Text(text = buttonTextAnnotated, modifier = Modifier.padding(start = 8.dp))
+            Text(
+                text = stringResource(id = R.string.open_settings_description).fromHtml(
+                    isEditMode = LocalView.current.isInEditMode,
+                    linkColor = MaterialTheme.colorScheme.primary
+                ),
+                modifier = Modifier.padding(start = 8.dp)
+            )
         }
     }
 }
@@ -297,6 +300,13 @@ fun WizardPage(
 
         content()
     }
+}
+
+private fun String.fromHtml(isEditMode: Boolean, linkColor: Color): AnnotatedString {
+    if (isEditMode) {
+        return AnnotatedString(this)
+    }
+    return Html.fromHtml(this, Html.FROM_HTML_MODE_COMPACT).toAnnotatedString(linkColor = linkColor)
 }
 
 @Preview
