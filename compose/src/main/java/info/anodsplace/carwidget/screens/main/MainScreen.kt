@@ -1,32 +1,32 @@
 package info.anodsplace.carwidget.screens.main
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.add
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.displayCutout
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import androidx.navigation.navigation
@@ -84,15 +84,38 @@ fun MainScreen(
             }
         }
         else -> {
-            Tabs(
-                screenState = screenState,
-                windowSizeClass = windowSizeClass,
-                onEvent = onEvent,
-                viewActions = viewActions,
-                onViewAction = onViewAction,
-                appWidgetIdScope = appWidgetIdScope,
-                imageLoader = imageLoader
-            )
+            val navController = rememberNavController()
+            val isCompact =  windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+            if (isCompact) {
+                NavRail(
+                    navController = navController,
+                    screenState = screenState,
+                    windowSizeClass = windowSizeClass,
+                    onEvent = onEvent,
+                    appWidgetIdScope = appWidgetIdScope,
+                    imageLoader = imageLoader
+                )
+            } else {
+                Tabs(
+                    navController = navController,
+                    screenState = screenState,
+                    windowSizeClass = windowSizeClass,
+                    onEvent = onEvent,
+                    appWidgetIdScope = appWidgetIdScope,
+                    imageLoader = imageLoader
+                )
+            }
+
+            LaunchedEffect(key1 = true) {
+                viewActions.collect { action ->
+                    when (action) {
+                        is MainViewAction.ShowDialog -> {
+                            navController.navigate(action.route)
+                        }
+                        else -> onViewAction(action)
+                    }
+                }
+            }
         }
     }
 
@@ -106,19 +129,53 @@ fun MainScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Tabs(
+fun NavRail(
+    navController: NavHostController,
     screenState: MainViewState,
     windowSizeClass: WindowSizeClass,
     onEvent: (event: MainViewEvent) -> Unit,
-    viewActions: Flow<MainViewAction> = emptyFlow(),
-    onViewAction: (action: MainViewAction) -> Unit = { },
+    appWidgetIdScope: AppWidgetIdScope?,
+    imageLoader: ImageLoader
+) {
+    val navRailInset = WindowInsets(0.dp, 0.dp, 80.dp, 0.dp)
+    Box {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+        NavHost(
+            navController = navController,
+            onEvent = onEvent,
+            appWidgetIdScope = appWidgetIdScope,
+            innerPadding = WindowInsets.displayCutout.only(WindowInsetsSides.Start)
+                .add(WindowInsets.statusBars.only(WindowInsetsSides.Vertical))
+                .add(WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal))
+                .add(navRailInset).asPaddingValues(),
+            startDestination = screenState.topDestination.route,
+            windowSizeClass = windowSizeClass,
+            routeNS = screenState.routeNS,
+            imageLoader = imageLoader
+        )
+        NavRailMenu(
+            modifier = Modifier.align(Alignment.CenterEnd),
+            items = screenState.tabs,
+            currentRoute = currentRoute,
+            onClick = { item -> navController.navigate(item) },
+            showApply = screenState.isWidget,
+            onApply = { onEvent(MainViewEvent.ApplyWidget(screenState.appWidgetId, screenState.skinList.current.value)) },
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Tabs(
+    navController: NavHostController,
+    screenState: MainViewState,
+    windowSizeClass: WindowSizeClass,
+    onEvent: (event: MainViewEvent) -> Unit,
     appWidgetIdScope: AppWidgetIdScope? = null,
     imageLoader: ImageLoader
 ) {
-    val navController = rememberNavController()
-
     Scaffold(
         containerColor = if (screenState.isWidget) Color.Transparent else MaterialTheme.colorScheme.background,
         topBar = {
@@ -126,22 +183,21 @@ fun Tabs(
                 title = { Text(text = stringResource(id = R.string.app_name)) },
                 actions = {
                     if (screenState.isWidget) {
-                        val showSkinSelector = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-
-                        AppBarActions(
-                            shortcutNumber = screenState.widgetSettings.shortcutsNumber,
-                            showSkinSelector = showSkinSelector,
-                            tileColor = rememberTileColor(screenState.currentSkin.value, screenState.widgetSettings),
-                            appWidgetId = screenState.appWidgetId,
-                            skinList = screenState.skinList,
-                            onEvent = onEvent,
-                        )
+                        AppBarButton(image = Icons.Filled.Check, descRes = android.R.string.ok) {
+                            onEvent(MainViewEvent.ApplyWidget(screenState.appWidgetId, screenState.skinList.current.value))
+                        }
                     }
                 }
             )
         },
         bottomBar = {
-            BottomTabs(screenState.tabs, windowSizeClass = windowSizeClass, navController = navController)
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
+            BottomTabsMenu(
+                items = screenState.tabs,
+                currentRoute = currentRoute,
+                onClick = { item -> navController.navigate(item) }
+            )
         },
         content = { innerPadding ->
             NavHost(
@@ -156,85 +212,6 @@ fun Tabs(
             )
         }
     )
-
-    LaunchedEffect(key1 = true) {
-        viewActions.collect { action ->
-            when (action) {
-                is MainViewAction.ShowDialog -> {
-                    navController.navigate(action.route)
-                }
-                else -> onViewAction(action)
-            }
-        }
-    }
-}
-
-@Composable
-fun BottomTabs(items: List<NavItem.Tab>, windowSizeClass: WindowSizeClass, navController: NavHostController) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-    val hideLabel = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-
-    NavigationBarWithHeight(
-        height = if (hideLabel) 48.dp else 80.dp
-    ) {
-        items.forEachIndexed { _, item ->
-            NavigationBarItem(
-                icon = { Icon(item.icon, contentDescription = null) },
-                label = if (hideLabel) null else ({ Text(
-                    text = stringResource(id = item.resourceId),
-                    overflow = TextOverflow.Ellipsis,
-                    softWrap = true,
-                    maxLines = 1,
-                    textAlign = TextAlign.Center
-                ) }),
-                selected = currentRoute?.startsWith(item.route) == true,
-                onClick = {
-                    navController.navigate(item.route) {
-                        // Pop up to the start destination of the graph to
-                        // avoid building up a large stack of destinations
-                        // on the back stack as users select items
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same item
-                        launchSingleTop = true
-                        // Restore state when reselecting a previously selected item
-                        restoreState = false
-                    }
-                }
-            )
-        }
-    }
-}
-
-@Composable
-fun NavigationBarWithHeight(
-    modifier: Modifier = Modifier,
-    containerColor: Color = NavigationBarDefaults.containerColor,
-    contentColor: Color = MaterialTheme.colorScheme.contentColorFor(containerColor),
-    tonalElevation: Dp = NavigationBarDefaults.Elevation,
-    height: Dp = 80.dp,
-    windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
-    content: @Composable RowScope.() -> Unit
-) {
-    Surface(
-        color = containerColor,
-        contentColor = contentColor,
-        tonalElevation = tonalElevation,
-        modifier = modifier
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .windowInsetsPadding(windowInsets)
-                .height(height)
-                .selectableGroup(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            content = content
-        )
-    }
 }
 
 @Composable
@@ -278,7 +255,6 @@ fun NavHost(
                 val screenState by skinViewModel.viewStates.collectAsState(initial = skinViewModel.viewState)
                 WidgetSkinScreen(
                     screenState = screenState,
-                    skinList = screenState.skinList,
                     windowSizeClass = windowSizeClass,
                     innerPadding = innerPadding,
                     skinViewFactory = skinViewModel,
@@ -362,13 +338,28 @@ fun NavHost(
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Preview("Main Screen Light")
 @Composable
-fun PreviewPreferencesScreenLight() {
+fun PreviewMainScreenLight() {
     CarWidgetTheme {
         Surface {
             MainScreen(
                 screenState = MainViewState(skinList = SkinList(WidgetInterface.SKIN_YOU, LocalContext.current)),
                 imageLoader = ImageLoader.Builder(LocalContext.current).build(),
                 windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(600.dp, 480.dp))
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@Preview("Main Screen Compact")
+@Composable
+fun PreviewMainScreenCompact() {
+    CarWidgetTheme {
+        Surface {
+            MainScreen(
+                screenState = MainViewState(skinList = SkinList(WidgetInterface.SKIN_YOU, LocalContext.current)),
+                imageLoader = ImageLoader.Builder(LocalContext.current).build(),
+                windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(480.dp, 600.dp))
             )
         }
     }

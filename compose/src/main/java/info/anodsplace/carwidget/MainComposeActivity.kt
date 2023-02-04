@@ -14,6 +14,7 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.core.view.WindowCompat
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
@@ -45,6 +46,7 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(appSettings.appCompatNightMode)
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
         setContent {
             val uiMode by appSettings.uiModeChange.collectAsState(initial = appSettings.uiMode)
