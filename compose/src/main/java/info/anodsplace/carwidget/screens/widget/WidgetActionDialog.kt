@@ -34,7 +34,7 @@ fun WidgetActionDialogContent(current: WidgetDialogType, onEvent: (event: Widget
     when (current) {
         WidgetDialogType.ChooseBackgroundColor -> ColorDialogContent(
             color = Color(widgetSettings.backgroundColor),
-            title = stringResource(id = R.string.color_picker_default_title),
+            //title = stringResource(id = R.string.color_picker_default_title),
             onColorChange = {
                 onEvent(WidgetDialogEvent.UpdateBackgroundColor(it))
                 dismiss()
@@ -44,7 +44,7 @@ fun WidgetActionDialogContent(current: WidgetDialogType, onEvent: (event: Widget
         WidgetDialogType.ChooseIconsTheme -> { }
         WidgetDialogType.ChooseTileColor -> ColorDialogContent(
             color = Color(widgetSettings.tileColor),
-            title = stringResource(id = R.string.color_picker_default_title),
+            //title = stringResource(id = R.string.color_picker_default_title),
             onColorChange = {
                 onEvent(WidgetDialogEvent.UpdateTileColor(it))
                 dismiss()

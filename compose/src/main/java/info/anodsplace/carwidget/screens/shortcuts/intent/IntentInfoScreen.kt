@@ -37,8 +37,6 @@ private val DefaultFrontLayerShape: Shape
     @ReadOnlyComposable
     get() = MaterialTheme.shapes.large.copy(topStart = CornerSize(16.dp), topEnd = CornerSize(16.dp))
 
-private val DefaultFrontLayerElevation = 1.dp
-
 private val DefaultFrontLayerScrimColor: Color
     @Composable
     @ReadOnlyComposable
@@ -206,8 +204,6 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
 
 @Composable
 fun EditSection(intent: Intent, editState: IntentField, updateField: (UpdateField) -> Unit, onSuggestions: (IntentField.Suggestions) -> Unit, onClose: () -> Unit) {
-    val flagsState = remember(intent.flags) { mutableStateListOf(*intent.flagNames.toTypedArray()) }
-    val categoriesState = remember(intent.categories) { mutableStateListOf(*intent.categoryNames.toTypedArray()) }
     when (editState) {
         is IntentField.StringValue -> {
             FieldEditDialog(editState.title, editState,
@@ -236,24 +232,64 @@ fun EditSection(intent: Intent, editState: IntentField, updateField: (UpdateFiel
             })
         }
         is IntentField.Flags -> {
-            val flagsText = stringResource(id = R.string.flags)
-            val stateValue = CheckBoxScreenState(
-                    flagsText, IntentFlags, flagsState
+            val flagsItems = remember(intent.flags) {
+                val selected = intent.flagNames.toSet()
+                IntentFlags.map {
+                    CheckBoxItem(
+                        key = it.key,
+                        checked = selected.contains(it.key),
+                        title = it.key,
+                    )
+                }
+            }
+
+            CheckBoxScreen(
+                titleText = stringResource(id = R.string.flags),
+                saveText = stringResource(id = R.string.save),
+                items = flagsItems,
+                onCheckedChange = { item ->
+                    val newFlags = intent.flagNames.toMutableList()
+                    if (item.checked) {
+                        newFlags.add(item.key)
+                    } else {
+                        newFlags.remove(item.key)
+                    }
+                    updateField(UpdateField(IntentField.Flags(flagNamesToInt(newFlags))))
+                },
+                onDismissRequest = {
+                    onClose()
+                }
             )
-            CheckBoxScreen(saveText = stringResource(id = R.string.save), stateValue, onDismissRequest = {
-                updateField(UpdateField(IntentField.Flags(flagNamesToInt(flagsState))))
-                onClose()
-            })
         }
         is IntentField.Categories -> {
-            val categoriesText = stringResource(id = R.string.categories)
-            val stateValue = CheckBoxScreenState(
-                    categoriesText, IntentCategories, categoriesState
+            val categoriesItems = remember(intent.categories) {
+                val selected = intent.categoryNames.toSet()
+                IntentCategories.map {
+                    CheckBoxItem(
+                        key = it.key,
+                        checked = selected.contains(it.key),
+                        title = it.key,
+                    )
+                }
+            }
+
+            CheckBoxScreen(
+                titleText = stringResource(id = R.string.categories),
+                saveText = stringResource(id = R.string.save),
+                items = categoriesItems,
+                onCheckedChange = { item ->
+                    val newCategories = intent.categoryNames.toMutableSet()
+                    if (item.checked) {
+                        newCategories.add(item.key)
+                    } else {
+                        newCategories.remove(item.key)
+                    }
+                    updateField(UpdateField(IntentField.Categories(newCategories)))
+                },
+                onDismissRequest = {
+                    onClose()
+                }
             )
-            CheckBoxScreen(stringResource(id = R.string.save), stateValue, onDismissRequest = {
-                updateField(UpdateField(IntentField.Categories(categoriesState.mapNotNull { IntentCategories[it] }.toSet())))
-                onClose()
-            })
         }
         is IntentField.None -> { }
         else -> throw RuntimeException("Unknown field")
@@ -334,7 +370,7 @@ fun IntentEditScreen(
 @Preview("Intent Edit Screen")
 @Composable
 fun PreviewIntentEdit() {
-    CarWidgetTheme() {
+    CarWidgetTheme {
         Surface {
             IntentEditScreen(intent = Intent(Intent.ACTION_ANSWER), updateField = {})
         }
@@ -344,7 +380,7 @@ fun PreviewIntentEdit() {
 @Preview("Intent simple edit")
 @Composable
 fun PreviewIntentSimpleEdit() {
-    CarWidgetTheme() {
+    CarWidgetTheme {
         Surface {
             IntentEditScreen(
                     intent = Intent(Intent.ACTION_ANSWER),

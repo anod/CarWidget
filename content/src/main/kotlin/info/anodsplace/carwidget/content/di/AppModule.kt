@@ -28,13 +28,13 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 class AndroidLogger : Logger(Level.DEBUG) {
-    override fun log(level: Level, msg: MESSAGE) {
+    override fun display(level: Level, msg: MESSAGE) {
         when (level) {
             Level.DEBUG -> AppLog.d(msg)
             Level.INFO -> AppLog.i(msg)
             Level.ERROR -> AppLog.e(msg)
-            Level.NONE -> {
-            }
+            Level.WARNING -> AppLog.w(msg)
+            Level.NONE -> {}
         }
     }
 }

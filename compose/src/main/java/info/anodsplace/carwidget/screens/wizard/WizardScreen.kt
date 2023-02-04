@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.text.toSpanned
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -32,7 +33,6 @@ import info.anodsplace.carwidget.screens.widget.SkinList
 import info.anodsplace.carwidget.screens.widget.SkinPreviewViewModel
 import info.anodsplace.carwidget.screens.widget.WidgetSkinPreview
 import info.anodsplace.compose.toAnnotatedString
-import info.anodsplace.compose.toHtmlAnnotatedString
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
@@ -180,8 +180,9 @@ fun ConfigPage() {
                 contentDescription = null
             )
             val buttonText = stringResource(id = R.string.open_settings_description)
+            val linkColor = MaterialTheme.colorScheme.primary
             val buttonTextAnnotated = remember(buttonText) {
-                Html.fromHtml(buttonText, Html.FROM_HTML_MODE_COMPACT).toAnnotatedString()
+                Html.fromHtml(buttonText, Html.FROM_HTML_MODE_COMPACT).toAnnotatedString(linkColor = linkColor)
             }
             Text(text = buttonTextAnnotated, modifier = Modifier.padding(start = 8.dp))
         }
@@ -197,7 +198,7 @@ fun InCarModePage(
         description = stringResource(id = R.string.detect_incar_description),
     ) {
         Text(
-            text = stringResource(id = R.string.enable_incar_description).toHtmlAnnotatedString(),
+            text = stringResource(id = R.string.enable_incar_description).toSpanned().toAnnotatedString(linkColor =  MaterialTheme.colorScheme.primary),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(top = 32.dp)
         )
@@ -220,7 +221,7 @@ fun InCarModePage(
             )
         }
         Text(
-            text = stringResource(id = R.string.adjust_incar_description).toHtmlAnnotatedString(),
+            text = stringResource(id = R.string.adjust_incar_description).toSpanned().toAnnotatedString(linkColor =  MaterialTheme.colorScheme.primary),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(top = 8.dp)
         )
@@ -289,7 +290,7 @@ fun WizardPage(
             style = MaterialTheme.typography.headlineLarge
         )
         Text(
-            text = description.toHtmlAnnotatedString(),
+            text = description.toSpanned().toAnnotatedString(linkColor =  MaterialTheme.colorScheme.primary),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(top = 16.dp)
         )

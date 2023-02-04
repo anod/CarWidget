@@ -96,7 +96,7 @@ fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) 
         }
     }
 
-    val createDocumentLauncherInCar = rememberLauncherForActivityResult(contract = CreateDocument()) { destUri ->
+    val createDocumentLauncherInCar = rememberLauncherForActivityResult(contract = CreateDocument("application/json")) { destUri ->
         if (destUri == null) {
             backupInCarAnimation = false
         } else {
@@ -104,7 +104,7 @@ fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) 
         }
     }
 
-    val createDocumentLauncherWidget = rememberLauncherForActivityResult(contract = CreateDocument()) { destUri ->
+    val createDocumentLauncherWidget = rememberLauncherForActivityResult(contract = CreateDocument("application/json")) { destUri ->
         if (destUri == null) {
             backupWidgetAnimation = false
         } else {
@@ -146,10 +146,7 @@ fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) 
                     try {
                         backupWidgetAnimation = true
                         createDocumentLauncherWidget.launch(
-                            CreateDocument.Args(
-                                "application/json",
-                                "carwidget-${screenState.appWidgetId}" + Backup.FILE_EXT_JSON
-                            )
+                            CreateDocument.Args("carwidget-${screenState.appWidgetId}" + Backup.FILE_EXT_JSON)
                         )
                     } catch (e: Exception) {
                         AppLog.e(e)
@@ -159,7 +156,7 @@ fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) 
             AboutButton(titleRes = R.string.backup_incar_settings, loader = backupInCarAnimation, onClick = {
                 try {
                     backupInCarAnimation = true
-                    createDocumentLauncherInCar.launch(CreateDocument.Args("application/json", Backup.FILE_INCAR_JSON))
+                    createDocumentLauncherInCar.launch(CreateDocument.Args(Backup.FILE_INCAR_JSON))
                 } catch (e: Exception) {
                     AppLog.e(e)
                     onEvent(AboutScreenStateEvent.ShowToast("Cannot start activity: ACTION_CREATE_DOCUMENT"))

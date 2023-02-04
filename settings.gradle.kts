@@ -9,7 +9,7 @@ dependencyResolutionManagement {
             library("coroutines-core", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").versionRef("coroutines")
             library("coroutines-android", "org.jetbrains.kotlinx", "kotlinx-coroutines-android").versionRef("coroutines")
 
-            version("sqldelight", "1.5.4")
+            version("sqldelight", "1.5.5")
             library("sqldelight-driver-android", "com.squareup.sqldelight", "android-driver").versionRef("sqldelight")
             library("sqldelight-coroutines-extensions-jvm", "com.squareup.sqldelight", "coroutines-extensions-jvm").versionRef("sqldelight")
             library("sqldelight-gradle-plugin", "com.squareup.sqldelight", "gradle-plugin").versionRef("sqldelight")
@@ -18,5 +18,16 @@ dependencyResolutionManagement {
     }
 }
 
-include(":app", ":compose", ":content", ":skins")
-include(":lib:applog", ":lib:compose", ":lib:graphics", ":lib:framework", ":lib:colorpicker", ":lib:ktx", ":lib:permissions", ":lib:viewmodel")
+include(
+    ":app",
+    ":compose",
+    ":content",
+    ":skins",
+    ":lib:applog",
+    ":lib:compose",
+    ":lib:graphics",
+    ":lib:framework",
+    ":lib:ktx",
+    ":lib:permissions",
+    ":lib:viewmodel"
+)

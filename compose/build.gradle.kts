@@ -1,8 +1,3 @@
-repositories {
-    mavenCentral()
-    google()
-}
-
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -47,27 +42,18 @@ dependencies {
     implementation(project(":content"))
     implementation(project(":skins"))
 
-    implementation("io.insert-koin:koin-core:3.2.2")
+    implementation("io.insert-koin:koin-core:3.3.2")
     implementation("io.coil-kt:coil-compose-base:2.2.2")
 
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("androidx.fragment:fragment-ktx:1.5.4")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha03")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0-alpha03")
+    implementation("androidx.appcompat:appcompat:1.6.0")
 
-    implementation("com.google.android.material:material:1.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha04")
 
-    implementation("androidx.compose.ui:ui:1.3.1")
-    implementation("androidx.compose.foundation:foundation:1.3.1")
-    implementation("androidx.compose.material:material-icons-core:1.3.1")
-    implementation("androidx.compose.material:material-icons-extended:1.3.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha03")
     implementation("androidx.navigation:navigation-compose:2.5.3")
     implementation("androidx.activity:activity-compose:1.6.1")
 
-    implementation("com.google.accompanist:accompanist-pager:0.27.0")
-    implementation("com.google.accompanist:accompanist-flowlayout:0.27.0")
+    implementation("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation("com.google.accompanist:accompanist-flowlayout:0.28.0")
 
-    implementation("androidx.compose.ui:ui-tooling:1.3.1")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.20")
+    implementation(libs.kotlin.stdlib)
 }
