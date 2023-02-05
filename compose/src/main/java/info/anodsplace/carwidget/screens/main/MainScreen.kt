@@ -146,9 +146,9 @@ fun NavRail(
             navController = navController,
             onEvent = onEvent,
             appWidgetIdScope = appWidgetIdScope,
-            innerPadding = WindowInsets.displayCutout.only(WindowInsetsSides.Start)
+            innerPadding = WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal)
                 .add(WindowInsets.statusBars.only(WindowInsetsSides.Vertical))
-                .add(WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal))
+                .add(WindowInsets.navigationBars)
                 .add(navRailInset).asPaddingValues(),
             startDestination = screenState.topDestination.route,
             windowSizeClass = windowSizeClass,
@@ -162,6 +162,9 @@ fun NavRail(
             onClick = { item -> navController.navigate(item) },
             showApply = screenState.isWidget,
             onApply = { onEvent(MainViewEvent.ApplyWidget(screenState.appWidgetId, screenState.skinList.current.value)) },
+            windowInsets = WindowInsets.statusBars.only(WindowInsetsSides.Vertical)
+                .add(WindowInsets.displayCutout.only(WindowInsetsSides.End))
+                .add(WindowInsets.navigationBars.only(WindowInsetsSides.End)),
         )
     }
 }

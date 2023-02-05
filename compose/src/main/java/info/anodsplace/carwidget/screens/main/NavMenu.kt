@@ -2,11 +2,6 @@ package info.anodsplace.carwidget.screens.main
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.add
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
@@ -67,7 +62,15 @@ fun BottomTabsMenu(items: List<NavItem.Tab>, currentRoute: String?, onClick: (Na
 }
 
 @Composable
-fun NavRailMenu(items: List<NavItem.Tab>, showApply: Boolean, currentRoute: String?, onClick: (NavItem.Tab) -> Unit, onApply: () -> Unit, modifier: Modifier = Modifier) {
+fun NavRailMenu(
+    items: List<NavItem.Tab>,
+    showApply: Boolean,
+    currentRoute: String?,
+    onClick: (NavItem.Tab) -> Unit,
+    onApply: () -> Unit,
+    windowInsets: WindowInsets,
+    modifier: Modifier = Modifier
+) {
     Surface(
         modifier = modifier,
         tonalElevation = 3.0.dp
@@ -78,9 +81,7 @@ fun NavRailMenu(items: List<NavItem.Tab>, showApply: Boolean, currentRoute: Stri
                     AppBarButton(image = Icons.Filled.Check, descRes = android.R.string.ok, onClick = onApply)
                 }
             },
-            windowInsets = WindowInsets.statusBars.only(WindowInsetsSides.Vertical)
-                            .add(WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal)),
-
+            windowInsets = windowInsets
         ) {
 
             Spacer(Modifier.weight(1f))
