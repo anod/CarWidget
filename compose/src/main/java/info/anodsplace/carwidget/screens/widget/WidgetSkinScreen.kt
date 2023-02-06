@@ -123,21 +123,15 @@ fun WidgetSkinScreen(
             }
         }
 
-        SmallFloatingActionButton(
-            modifier = Modifier.let {
-                if (isCompact) {
-                    it
-                        .align(Alignment.CenterEnd)
-                        .padding(end = 16.dp)
-                } else {
-                    it
-                        .align(Alignment.BottomCenter)
-                        .padding(bottom = 16.dp)
-                }
-            },
-            onClick = {  }
-        ) {
-            Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
+        if (!isCompact) {
+            SmallFloatingActionButton(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 16.dp),
+                onClick = { }
+            ) {
+                Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
+            }
         }
     }
 

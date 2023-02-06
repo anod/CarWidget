@@ -9,6 +9,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -68,6 +69,8 @@ fun NavRailMenu(
     currentRoute: String?,
     onClick: (NavItem.Tab) -> Unit,
     onApply: () -> Unit,
+    actionIcon: @Composable (() -> Unit)? = null,
+    actionClick: () -> Unit,
     windowInsets: WindowInsets,
     modifier: Modifier = Modifier
 ) {
@@ -80,10 +83,17 @@ fun NavRailMenu(
                 if (showApply) {
                     AppBarButton(image = Icons.Filled.Check, descRes = android.R.string.ok, onClick = onApply)
                 }
+                if (actionIcon != null) {
+                    SmallFloatingActionButton(
+                        modifier = Modifier,
+                        onClick = actionClick
+                    ) {
+                        actionIcon()
+                    }
+                }
             },
             windowInsets = windowInsets
         ) {
-
             Spacer(Modifier.weight(1f))
             items.forEachIndexed { _, item ->
                 NavigationRailItem(

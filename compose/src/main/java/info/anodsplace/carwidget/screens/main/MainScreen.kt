@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
@@ -162,6 +163,8 @@ fun NavRail(
             onClick = { item -> navController.navigate(item) },
             showApply = screenState.isWidget,
             onApply = { onEvent(MainViewEvent.ApplyWidget(screenState.appWidgetId, screenState.skinList.current.value)) },
+            actionIcon = appWidgetIdScope?.let { { Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit") } },
+            actionClick = { },
             windowInsets = WindowInsets.statusBars.only(WindowInsetsSides.Vertical)
                 .add(WindowInsets.displayCutout.only(WindowInsetsSides.End))
                 .add(WindowInsets.navigationBars.only(WindowInsetsSides.End)),
