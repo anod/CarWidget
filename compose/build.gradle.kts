@@ -42,7 +42,7 @@ dependencies {
     implementation(project(":content"))
     implementation(project(":skins"))
 
-    implementation("io.insert-koin:koin-core:3.3.2")
+    implementation("io.insert-koin:koin-core:3.3.3")
     implementation("io.coil-kt:coil-compose-base:2.2.2")
 
     implementation("androidx.appcompat:appcompat:1.6.0")

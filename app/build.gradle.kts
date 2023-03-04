@@ -13,7 +13,7 @@ dependencies {
     implementation(project(":lib:framework"))
     implementation(project(":lib:permissions"))
 
-    implementation("io.insert-koin:koin-core:3.3.2")
+    implementation("io.insert-koin:koin-core:3.3.3")
     implementation("io.coil-kt:coil-base:2.2.2")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
@@ -34,9 +34,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
     kapt("androidx.lifecycle:lifecycle-compiler:2.5.1")
 
-    implementation("ch.acra:acra-core:5.9.6")
-    implementation("ch.acra:acra-notification:5.9.6")
-    implementation("ch.acra:acra-limiter:5.9.6")
+    implementation("ch.acra:acra-core:5.9.7")
+    implementation("ch.acra:acra-notification:5.9.7")
+    implementation("ch.acra:acra-limiter:5.9.7")
 
     compileOnly("com.google.auto.service:auto-service-annotations:1.0.1")
     kapt("com.google.auto.service:auto-service:1.0.1")
@@ -105,7 +105,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-
 
     lint {
         warning.add("InvalidFragmentVersionForActivityResult")
