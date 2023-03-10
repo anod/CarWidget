@@ -54,7 +54,6 @@ private fun Modifier.iconContainer(): Modifier = composed {
         .background(widgetSystemTheme.colorScheme.colorDynamicWidgetBackground)
         .border(1.dp, widgetSystemTheme.colorScheme.colorDynamicWidgetPrimary, shape = shape)
         .size(48.dp)
-
     ) }
 
 
@@ -161,13 +160,18 @@ private fun NoWidgetsItem() {
             .background(WarningColor)
             .padding(16.dp)
     ) {
-        Text(text = stringResource(id = R.string.no_active_widget))
+        Text(
+            modifier = Modifier.weight(1f),
+            text = stringResource(id = R.string.no_active_widget),
+            color = MaterialTheme.colorScheme.onError
+        )
         Icon(
             imageVector = Icons.Filled.Widgets,
             contentDescription = null,
             modifier = Modifier
                 .padding(4.dp)
-                .size(36.dp)
+                .size(36.dp),
+            tint = MaterialTheme.colorScheme.onError.copy(alpha = 0.6f)
         )
     }
 }

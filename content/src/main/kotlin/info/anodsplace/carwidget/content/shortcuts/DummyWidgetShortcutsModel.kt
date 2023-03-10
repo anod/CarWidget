@@ -6,26 +6,27 @@ import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.Shortcuts
 
-class DummyWidgetShortcutsModel(private val context: Context) : Shortcuts {
-    private var _shortcuts = mutableMapOf<Int, Shortcut?>()
+class DummyWidgetShortcutsModel(private val context: Context, size: Int) : Shortcuts {
+    private var _shortcuts = mutableMapOf<Int, Shortcut?>().also { map ->
+        (0 until size).forEach { index ->
+            map[index] = null
+        }
+    }
     override val shortcuts: Map<Int, Shortcut?> = _shortcuts
-    override val count: Int
-        get() = _shortcuts.count()
+    override val count: Int = size
 
     override suspend fun createDefaultShortcuts() {
-
-    }
-
-    override suspend fun init() {
-        if (_shortcuts.isEmpty()) {
-            DefaultShortcuts.load(context).forEachIndexed { index, result ->
-                _shortcuts[index] = result.info
-            }
+        DefaultShortcuts.load(context).forEachIndexed { index, result ->
+            _shortcuts[index] = result.info
         }
     }
 
+    override suspend fun init() {
+
+    }
+
     override suspend fun lazyInit() {
-        init()
+
     }
 
     override suspend fun reloadShortcut(position: Int, shortcutId: Long) {

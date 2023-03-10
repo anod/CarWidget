@@ -9,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.text.toSpanned
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -47,7 +45,7 @@ fun WizardScreen(screenState: MainViewState, modifier: Modifier = Modifier, init
     val isLast = currentPage == 3
 
     Surface {
-        Column(modifier = modifier) {
+        Column(modifier = modifier.windowInsetsPadding(WindowInsets.systemBars)) {
             ScrollableTabRow(
                 modifier = Modifier.fillMaxWidth(),
                 selectedTabIndex = currentPage,
@@ -125,7 +123,10 @@ fun WelcomePage(
     val skinList = SkinList(skinViewModel.viewState.widgetSettings.skin, LocalContext.current)
     WizardPage(
         title = stringResource(id = R.string.welcome),
-        description = stringResource(id = R.string.welcome_text),
+        description = stringResource(id = R.string.welcome_text).fromHtml(
+            isEditMode = LocalView.current.isInEditMode,
+            linkColor = MaterialTheme.colorScheme.primary
+        ),
     ) {
         Text(
             text = stringResource(id = R.string.swipe_continue),
@@ -147,7 +148,10 @@ fun WelcomePage(
 fun InstallPage() {
     WizardPage(
         title = stringResource(id = R.string.install_a_widget),
-        description = stringResource(id = R.string.install_widget)
+        description = stringResource(id = R.string.install_widget).fromHtml(
+            isEditMode = LocalView.current.isInEditMode,
+            linkColor = MaterialTheme.colorScheme.primary
+        )
     ) {
         Image(
             modifier = Modifier
@@ -164,7 +168,10 @@ fun InstallPage() {
 fun ConfigPage() {
     WizardPage(
         title = stringResource(id = R.string.configure),
-        description = stringResource(id = R.string.configure_text)
+        description = stringResource(id = R.string.configure_text).fromHtml(
+            isEditMode = LocalView.current.isInEditMode,
+            linkColor = MaterialTheme.colorScheme.primary
+        )
     ) {
         Image(
             modifier = Modifier
@@ -198,10 +205,16 @@ fun InCarModePage(
 ) {
     WizardPage(
         title = stringResource(id = R.string.incar_mode),
-        description = stringResource(id = R.string.detect_incar_description),
+        description = stringResource(id = R.string.detect_incar_description).fromHtml(
+            isEditMode = LocalView.current.isInEditMode,
+            linkColor = MaterialTheme.colorScheme.primary
+        ),
     ) {
         Text(
-            text = stringResource(id = R.string.enable_incar_description).toSpanned().toAnnotatedString(linkColor =  MaterialTheme.colorScheme.primary),
+            text = stringResource(id = R.string.enable_incar_description).fromHtml(
+                isEditMode = LocalView.current.isInEditMode,
+                linkColor = MaterialTheme.colorScheme.primary
+            ),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(top = 32.dp)
         )
@@ -224,7 +237,10 @@ fun InCarModePage(
             )
         }
         Text(
-            text = stringResource(id = R.string.adjust_incar_description).toSpanned().toAnnotatedString(linkColor =  MaterialTheme.colorScheme.primary),
+            text = stringResource(id = R.string.adjust_incar_description).fromHtml(
+                isEditMode = LocalView.current.isInEditMode,
+                linkColor = MaterialTheme.colorScheme.primary
+            ),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(top = 8.dp)
         )
@@ -280,7 +296,7 @@ private fun ActionIcon(@DrawableRes iconRes: Int, @StringRes iconDescRes: Int) {
 @Composable
 fun WizardPage(
     title: String,
-    description: String,
+    description: AnnotatedString,
     content: @Composable () -> Unit
 ) {
     Column(
@@ -293,7 +309,7 @@ fun WizardPage(
             style = MaterialTheme.typography.headlineLarge
         )
         Text(
-            text = description.toSpanned().toAnnotatedString(linkColor =  MaterialTheme.colorScheme.primary),
+            text = description,
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(top = 16.dp)
         )

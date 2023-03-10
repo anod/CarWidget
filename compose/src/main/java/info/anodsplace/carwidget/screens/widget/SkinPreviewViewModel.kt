@@ -70,8 +70,8 @@ class DummySkinPreviewViewModel(private val context: Context): ViewModel(), Skin
 
     override suspend fun create(overrideSkin: SkinList.Item): View {
         val intentFactory: PendingIntentFactory = PendingIntentFactory.NoOp(context)
-        val shortcuts = DummyWidgetShortcutsModel(context)
-        shortcuts.init()
+        val shortcuts = DummyWidgetShortcutsModel(context, size = 4)
+        shortcuts.createDefaultShortcuts()
         val widgetView: WidgetView = SkinWidgetView(
             skinProperties = skinProperties,
             shortcuts = shortcuts.shortcuts,

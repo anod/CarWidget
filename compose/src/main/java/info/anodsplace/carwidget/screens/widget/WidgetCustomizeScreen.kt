@@ -66,20 +66,26 @@ fun WidgetCustomizeScreen(
             PreferencesScreen(
                 preferences = screenState.items,
                 onClick = { item ->
-                    when (item) {
-                        is PreferenceItem.CheckBox -> {
-                            onEvent(WidgetCustomizeEvent.ApplyChange(item.key, item.checked))
-                        }
-
-                        is PreferenceItem.Switch -> {
-                            onEvent(WidgetCustomizeEvent.ApplyChange(item.key, item.checked))
-                        }
-
+                    when (item.key) {
+                        "bg-color" -> onMainViewEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseBackgroundColor))
+                        "icons-theme" -> onMainViewEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseIconsTheme))
+                        "icons-scale" -> onMainViewEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseIconsScale))
+                        "cmp-number" -> onEvent(WidgetCustomizeEvent.ApplyChange(item.key, item.value.toInt()))
                         else -> {
-                            when (item.key) {
-                                "bg-color" -> onMainViewEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseBackgroundColor))
-                                "icons-theme" -> onMainViewEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseIconsTheme))
-                                "icons-scale" -> onMainViewEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseIconsScale))
+                            when (item) {
+                                is PreferenceItem.CheckBox -> {
+                                    onEvent(WidgetCustomizeEvent.ApplyChange(item.key, item.checked))
+                                }
+
+                                is PreferenceItem.Switch -> {
+                                    onEvent(WidgetCustomizeEvent.ApplyChange(item.key, item.checked))
+                                }
+
+                                is PreferenceItem.Pick -> {
+                                    onEvent(WidgetCustomizeEvent.ApplyChange(item.key, item.value))
+                                }
+
+                                else -> { }
                             }
                         }
                     }

@@ -64,7 +64,7 @@ fun createWidgetInstanceModule(): Module = module {
             widgetSettings = WidgetInterface.NoOp(),
             inCarSettings = InCarInterface.NoOp(),
             koin = getKoin(),
-            shortcutsModel = DummyWidgetShortcutsModel(context = get()),
+            shortcutsModel = DummyWidgetShortcutsModel(context = get(), size = overrideCount ?: 4),
             bitmapMemoryCache = bitmapMemoryCache,
             pendingIntentFactory = pendingIntentFactory,
             widgetButtonAlternativeHidden = widgetButtonAlternativeHidden,
