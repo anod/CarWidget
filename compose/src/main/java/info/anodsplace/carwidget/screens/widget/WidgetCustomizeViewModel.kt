@@ -1,26 +1,40 @@
 package info.anodsplace.carwidget.screens.widget
 
+import android.content.Context
+import android.view.View
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.appwidget.PendingIntentFactory
+import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
+import info.anodsplace.carwidget.appwidget.WidgetView
+import info.anodsplace.carwidget.content.BitmapLruCache
+import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.screens.WidgetDialogEvent
+import info.anodsplace.carwidget.utils.render
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.compose.isNotVisible
 import info.anodsplace.compose.isVisible
 import info.anodsplace.compose.toColorHex
 import info.anodsplace.viewmodel.BaseFlowViewModel
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
 
 data class WidgetCustomizeState(
     val items: List<PreferenceItem> = listOf(),
     val widgetSettings: WidgetInterface.NoOp = WidgetInterface.NoOp(),
+    val skinList: SkinList = SkinList(WidgetInterface.skins, WidgetInterface.skins, 0),
+    val previewVersion: Int = 0,
 )
 
 sealed interface WidgetCustomizeEvent {
@@ -31,7 +45,21 @@ sealed interface WidgetCustomizeEvent {
 
 sealed interface WidgetCustomizeAction
 
-fun createItems(settings: WidgetInterface) = listOf(
+fun createItems(settings: WidgetInterface, skinList: SkinList) = listOf(
+    PreferenceItem.Pick(
+        titleRes = R.string.skin,
+        key = "skin",
+        entries = skinList.titles.toTypedArray(),
+        entryValues = skinList.values.toTypedArray(),
+        value = skinList.current.value
+    ),
+    PreferenceItem.Pick(
+        titleRes = R.string.number_shortcuts_title,
+        key = "cmp-number",
+        entries = arrayOf("4","6","8","10"),
+        entryValues = arrayOf("4","6","8","10"),
+        value = settings.shortcutsNumber.toString()
+    ),
     Color(settings.backgroundColor).let { backgroundColor ->
         PreferenceItem.Color(
             titleRes = R.string.pref_bg_color_title,
@@ -93,7 +121,7 @@ fun createItems(settings: WidgetInterface) = listOf(
     )
 )
 
-class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowViewModel<WidgetCustomizeState, WidgetCustomizeEvent, WidgetCustomizeAction>(), KoinScopeComponent {
+class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowViewModel<WidgetCustomizeState, WidgetCustomizeEvent, WidgetCustomizeAction>(), KoinScopeComponent, SkinViewFactory {
 
     class Factory(private val appWidgetIdScope: AppWidgetIdScope) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
@@ -105,12 +133,32 @@ class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowVie
     override val scope: Scope = appWidgetIdScope.scope
 
     private val widgetSettings: WidgetSettings by inject()
+    private val context: Context by inject()
+    private val db: ShortcutsDatabase by inject()
+    private val bitmapMemoryCache: BitmapLruCache by inject()
 
     init {
+        val skinList = SkinList(widgetSettings.skin, context)
         viewState = WidgetCustomizeState(
-            items = createItems(widgetSettings),
-            widgetSettings = WidgetInterface.NoOp(widgetSettings)
+            items = createItems(widgetSettings, skinList),
+            widgetSettings = WidgetInterface.NoOp(widgetSettings),
+            skinList = skinList,
         )
+
+        viewModelScope.launch {
+            widgetSettings.changes.collect {
+                val skinList = if (viewState.skinList.current.value != widgetSettings.skin)
+                    viewState.skinList.copy(selectedSkinPosition = WidgetInterface.skins.indexOf(widgetSettings.skin))
+                else
+                    viewState.skinList
+                viewState = viewState.copy(
+                    skinList = skinList,
+                    widgetSettings = WidgetInterface.NoOp(widgetSettings),
+                    items = createItems(widgetSettings, skinList),
+                    previewVersion = viewState.previewVersion + 1
+                )
+            }
+        }
     }
 
     override fun handleEvent(event: WidgetCustomizeEvent) {
@@ -137,6 +185,18 @@ class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowVie
                 widgetSettings.shortcutsNumber = event.size
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        bitmapMemoryCache.evictAll()
+    }
+
+    override suspend fun create(overrideSkin: SkinList.Item): View {
+        val intentFactory: PendingIntentFactory = get<PreviewPendingIntentFactory>()
+        val widgetView: WidgetView = get(parameters = { parametersOf(bitmapMemoryCache, intentFactory, true, overrideSkin.value, 2) })
+        return widgetView.create().render(context)
+
     }
 
 }

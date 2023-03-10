@@ -42,7 +42,6 @@ sealed interface AboutScreenStateEvent {
     object OpenPlayStoreDetails: AboutScreenStateEvent
     object OpenDefaultCarDock: AboutScreenStateEvent
     class BackupWidget(val dstUri: Uri) : AboutScreenStateEvent
-    class BackupInCar(val dstUri: Uri) : AboutScreenStateEvent
     class Restore(val srcUri: Uri) : AboutScreenStateEvent
     class ShowToast(val text: String) : AboutScreenStateEvent
     class ChangeMusicApp(val component: ComponentName?) : AboutScreenStateEvent
@@ -75,12 +74,6 @@ class AboutViewModel(private val appWidgetIdScope: AppWidgetIdScope?): BaseFlowV
 
     override fun handleEvent(event: AboutScreenStateEvent) {
         when (event) {
-            is AboutScreenStateEvent.BackupInCar -> {
-                appScope.launch {
-                    val code = backupManager.backup(null, event.dstUri)
-                    viewState = viewState.copy(backupStatus = code)
-                }
-            }
             is AboutScreenStateEvent.BackupWidget -> {
                 appScope.launch {
                     val code = backupManager.backup(appWidgetIdScope, event.dstUri)

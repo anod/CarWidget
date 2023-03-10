@@ -16,7 +16,6 @@ import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
-import info.anodsplace.carwidget.content.db.Shortcuts
 import info.anodsplace.carwidget.content.graphics.BitmapTransform
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
@@ -32,7 +31,7 @@ class ShortcutViewBuilder(
     private val pendingIntentFactory: PendingIntentFactory,
     private val iconLoader: ShortcutIconLoader,
     private val prefs: WidgetInterface,
-    private val shortcuts: Shortcuts,
+    private val shortcuts: Map<Int, Shortcut?>,
     private val bitmapTransform: BitmapTransform,
     private val bitmapMemoryCache: LruCache<String, Bitmap>? = null
 ) : ShortcutViewBuilderInstance {
@@ -42,7 +41,7 @@ class ShortcutViewBuilder(
     override var iconTheme: IconTheme? = null
 
     override suspend fun fill(views: RemoteViews, position: Int, resBtn: Int, resText: Int) {
-        val info = shortcuts.get(position)
+        val info = shortcuts.getOrDefault(position, null)
 
         var icon: Bitmap? = null
         if (info == null) {

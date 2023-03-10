@@ -30,6 +30,7 @@ class CardsProperties : BaseProperties() {
 
     override fun getLayout(number: Int): Int {
         return when (number) {
+            2 -> R.layout.sk_material_2
             4 -> R.layout.sk_material_4
             8 -> R.layout.sk_material_8
             10 -> R.layout.sk_material_10

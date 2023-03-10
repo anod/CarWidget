@@ -29,7 +29,8 @@ class WidgetViewBuilder(
     private val bitmapMemoryCache: BitmapLruCache?,
     private val pendingIntentFactory: PendingIntentFactory,
     private val widgetButtonAlternativeHidden: Boolean,
-    var overrideSkin: String?,
+    private val overrideSkin: String?,
+    private val overrideCount: Int?
 ) : WidgetView {
 
     private val bitmapTransform = BitmapTransform(context)
@@ -45,7 +46,7 @@ class WidgetViewBuilder(
 
         val skinName = overrideSkin ?: widgetSettings.skin
         val skinProperties: SkinProperties = koin.get { parametersOf(skinName) }
-
+        val shortcuts = if (overrideCount == null) shortcutsModel.shortcuts else shortcutsModel.shortcuts.filterKeys { it < overrideCount }
         val skinWidgetView = SkinWidgetView(
             appWidgetId = appWidgetId,
             inCarMode = ModeService.sInCarMode,
@@ -55,7 +56,7 @@ class WidgetViewBuilder(
             iconLoader = iconLoader,
             bitmapMemoryCache = bitmapMemoryCache,
             skinProperties = skinProperties,
-            shortcuts = shortcutsModel,
+            shortcuts = shortcuts,
             widgetSettings = widgetSettings,
             bitmapTransform = bitmapTransform,
             context = context

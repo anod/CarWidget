@@ -28,11 +28,12 @@ fun createWidgetInstanceModule(): Module = module {
         }
 
         factory<WidgetView> { (
-                                  bitmapMemoryCache: BitmapLruCache?,
-                                  pendingIntentFactory: PendingIntentFactory,
-                                  widgetButtonAlternativeHidden: Boolean,
-                                  overrideSkin: String?
-                              ) ->
+            bitmapMemoryCache: BitmapLruCache?,
+            pendingIntentFactory: PendingIntentFactory,
+            widgetButtonAlternativeHidden: Boolean,
+            overrideSkin: String?,
+            overrideCount: Int?
+        ) ->
             WidgetViewBuilder(
                 context = get(),
                 iconLoader = get(),
@@ -41,6 +42,7 @@ fun createWidgetInstanceModule(): Module = module {
                 pendingIntentFactory = pendingIntentFactory,
                 widgetButtonAlternativeHidden = widgetButtonAlternativeHidden,
                 overrideSkin = overrideSkin,
+                overrideCount = overrideCount,
                 widgetSettings = get(),
                 inCarSettings = get(),
                 shortcutsModel = get(),
@@ -52,7 +54,8 @@ fun createWidgetInstanceModule(): Module = module {
                                    bitmapMemoryCache: BitmapLruCache?,
                                    pendingIntentFactory: PendingIntentFactory,
                                    widgetButtonAlternativeHidden: Boolean,
-                                   overrideSkin: String?
+                                   overrideSkin: String?,
+                                   overrideCount: Int?
                                ) ->
         WidgetViewBuilder(
             context = get(),
@@ -66,6 +69,7 @@ fun createWidgetInstanceModule(): Module = module {
             pendingIntentFactory = pendingIntentFactory,
             widgetButtonAlternativeHidden = widgetButtonAlternativeHidden,
             overrideSkin = overrideSkin,
+            overrideCount = overrideCount
         )
     }
 }

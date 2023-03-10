@@ -10,17 +10,7 @@ import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.framework.app.AlertWindow
 
-class ScreenOnAlert(private val context: Context, private val prefs: info.anodsplace.carwidget.content.preferences.InCarInterface, private val alertWindow: AlertWindow) : View.OnTouchListener {
-    class Settings(val enabled: Boolean, val loc: Array<Int>) {
-        constructor(enabled: Boolean, settings: Settings) : this(enabled, settings.loc)
-
-        fun withLocation(lastX: Int, lastY: Int) = Settings(enabled, arrayOf(lastX, lastY))
-
-        companion object {
-            const val defaultX = 25
-            const val defaultY = 100
-        }
-    }
+class ScreenOnAlert(private val context: Context, private val prefs: InCarInterface, private val alertWindow: AlertWindow) : View.OnTouchListener {
 
     private var initialX = 0
     private var initialY = 0
@@ -49,8 +39,7 @@ class ScreenOnAlert(private val context: Context, private val prefs: info.anodsp
 
     fun hide() {
         alertWindow.hide()
-        val settings = prefs.screenOnAlert.withLocation(lastX, lastY)
-        prefs.screenOnAlert = settings
+        prefs.screenOnAlert = prefs.screenOnAlert.withLocation(lastX, lastY)
     }
 
     @SuppressLint("ClickableViewAccessibility")

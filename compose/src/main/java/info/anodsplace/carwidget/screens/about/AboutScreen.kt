@@ -83,7 +83,6 @@ fun AboutTitle(@StringRes titleRes: Int) {
 @Composable
 fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) -> Unit, imageLoader: ImageLoader, innerPadding: PaddingValues = PaddingValues(0.dp)) {
     var restoreAnimation by remember { mutableStateOf(false) }
-    var backupInCarAnimation by remember { mutableStateOf(false) }
     var backupWidgetAnimation by remember { mutableStateOf(false) }
     var showOpenCarDock by remember { mutableStateOf(false) }
     var showMusicAppDialog by remember { mutableStateOf(false) }
@@ -93,14 +92,6 @@ fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) 
             restoreAnimation = false
         } else {
             onEvent(AboutScreenStateEvent.Restore(destUri))
-        }
-    }
-
-    val createDocumentLauncherInCar = rememberLauncherForActivityResult(contract = CreateDocument("application/json")) { destUri ->
-        if (destUri == null) {
-            backupInCarAnimation = false
-        } else {
-            onEvent(AboutScreenStateEvent.BackupInCar(destUri))
         }
     }
 
@@ -117,7 +108,6 @@ fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) 
     }
 
     if (screenState.backupStatus != Backup.NO_RESULT) {
-        backupInCarAnimation = false
         backupWidgetAnimation = false
     }
 
@@ -153,15 +143,6 @@ fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) 
                         onEvent(AboutScreenStateEvent.ShowToast("Cannot start activity: ACTION_CREATE_DOCUMENT"))
                     }
                 })
-            AboutButton(titleRes = R.string.backup_incar_settings, loader = backupInCarAnimation, onClick = {
-                try {
-                    backupInCarAnimation = true
-                    createDocumentLauncherInCar.launch(CreateDocument.Args(Backup.FILE_INCAR_JSON))
-                } catch (e: Exception) {
-                    AppLog.e(e)
-                    onEvent(AboutScreenStateEvent.ShowToast("Cannot start activity: ACTION_CREATE_DOCUMENT"))
-                }
-            })
             AboutButton(titleRes = R.string.restore, loader = restoreAnimation, onClick = {
                 restoreAnimation = true
                 openDocumentLauncher.launch(arrayOf("application/json", "text/plain", "*/*"))

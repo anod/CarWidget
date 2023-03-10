@@ -1,15 +1,16 @@
 package info.anodsplace.carwidget.screens.main
 
+import android.R
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -69,8 +70,6 @@ fun NavRailMenu(
     currentRoute: String?,
     onClick: (NavItem.Tab) -> Unit,
     onApply: () -> Unit,
-    actionIcon: @Composable (() -> Unit)? = null,
-    actionClick: () -> Unit,
     windowInsets: WindowInsets,
     modifier: Modifier = Modifier
 ) {
@@ -81,14 +80,8 @@ fun NavRailMenu(
         NavigationRail(
             header = {
                 if (showApply) {
-                    AppBarButton(image = Icons.Filled.Check, descRes = android.R.string.ok, onClick = onApply)
-                }
-                if (actionIcon != null) {
-                    SmallFloatingActionButton(
-                        modifier = Modifier,
-                        onClick = actionClick
-                    ) {
-                        actionIcon()
+                    IconButton(onClick = onApply) {
+                        Icon(imageVector = Icons.Filled.Check, contentDescription = stringResource(id = R.string.ok))
                     }
                 }
             },

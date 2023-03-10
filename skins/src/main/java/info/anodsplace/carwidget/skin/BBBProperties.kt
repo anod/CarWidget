@@ -33,6 +33,7 @@ class BBBProperties : BaseProperties() {
 
     override fun getLayout(number: Int): Int {
         return when (number) {
+            2 -> R.layout.sk_blackbearblanc_2
             4 -> R.layout.sk_blackbearblanc_4
             8 -> R.layout.sk_blackbearblanc_8
             10 -> R.layout.sk_blackbearblanc_10

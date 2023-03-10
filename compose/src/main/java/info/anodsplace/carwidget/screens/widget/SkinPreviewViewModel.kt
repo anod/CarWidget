@@ -2,22 +2,16 @@ package info.anodsplace.carwidget.screens.widget
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
-import android.view.InflateException
 import android.view.View
-import android.widget.RemoteViews
-import android.widget.TextView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
 import info.anodsplace.carwidget.appwidget.SkinWidgetView
 import info.anodsplace.carwidget.appwidget.WidgetView
 import info.anodsplace.carwidget.content.BitmapLruCache
 import info.anodsplace.carwidget.content.SkinProperties
-import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
@@ -27,13 +21,12 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.shortcuts.DummyWidgetShortcutsModel
 import info.anodsplace.carwidget.skin.SkinPropertiesFactory
+import info.anodsplace.carwidget.utils.render
 import info.anodsplace.viewmodel.BaseFlowViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -43,7 +36,7 @@ import org.koin.core.scope.Scope
 data class SkinPreviewViewState(
     val skinList: SkinList = SkinList(WidgetInterface.skins, WidgetInterface.skins, 0),
     val widgetSettings: WidgetInterface.NoOp = WidgetInterface.NoOp(),
-    val widgetShortcuts: Map<Int, Shortcut?> = mapOf(),
+    val previewVersion: Int = 0
 )
 
 sealed interface SkinPreviewViewEvent
@@ -81,7 +74,7 @@ class DummySkinPreviewViewModel(private val context: Context): ViewModel(), Skin
         shortcuts.init()
         val widgetView: WidgetView = SkinWidgetView(
             skinProperties = skinProperties,
-            shortcuts = shortcuts,
+            shortcuts = shortcuts.shortcuts,
             context = context,
             widgetSettings = widgetSettings,
             appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID,
@@ -90,8 +83,7 @@ class DummySkinPreviewViewModel(private val context: Context): ViewModel(), Skin
             inCarSettings = InCarInterface.NoOp(),
             iconLoader = ShortcutIconLoader.Activity(context)
         )
-        val remoteViews = widgetView.create()
-        return renderPreview(remoteViews, context)
+        return widgetView.create().render(context)
     }
 
     override fun handleEvent(event: SkinPreviewViewEvent) {
@@ -131,9 +123,7 @@ class RealSkinPreviewViewModel(
 
         viewModelScope.launch {
             db.observeTarget(+appWidgetIdScope).collect {
-                viewState = viewState.copy(
-                    widgetShortcuts = it,
-                )
+                viewState = viewState.copy(previewVersion = viewState.previewVersion + 1)
             }
         }
     }
@@ -149,19 +139,7 @@ class RealSkinPreviewViewModel(
 
     override suspend fun create(overrideSkin: SkinList.Item): View {
         val intentFactory: PendingIntentFactory = get<PreviewPendingIntentFactory>()
-        val widgetView: WidgetView = get(parameters = { parametersOf(bitmapMemoryCache, intentFactory, true, overrideSkin.value) })
-        val remoteViews = widgetView.create()
-        return renderPreview(remoteViews, context)
-    }
-}
-
-private suspend fun renderPreview(remoteViews: RemoteViews, context: Context): View = withContext(Dispatchers.Default) {
-    try {
-        return@withContext remoteViews.apply(context, null)
-    } catch (e: InflateException) {
-        AppLog.e("Cannot generate preview", e)
-        return@withContext TextView(context).apply {
-            text = context.getString(R.string.cannot_generate_preview)
-        }
+        val widgetView: WidgetView = get(parameters = { parametersOf(bitmapMemoryCache, intentFactory, true, overrideSkin.value, null) })
+        return widgetView.create().render(context)
     }
 }

@@ -51,10 +51,11 @@ class UpdateWidgetJob : JobIntentService(), KoinComponent {
                     pendingIntentFactory = ShortcutPendingIntent(context, shortcutResources),
                     widgetButtonAlternativeHidden = false,
                     overrideSkin = null,
+                    overrideCount = null,
                     widgetSettings = it.scope.get(),
                     inCarSettings = get(),
                     shortcutsModel = it.scope.get(),
-                    koin = getKoin()
+                    koin = getKoin(),
                 ).create()
                 AppLog.i("Performing update for widget #$appWidgetId")
                 appWidgetManager.updateAppWidget(appWidgetId, view)

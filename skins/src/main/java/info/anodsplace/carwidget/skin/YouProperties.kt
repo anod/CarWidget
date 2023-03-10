@@ -43,6 +43,7 @@ class YouProperties(context: Context) : BaseProperties() {
 
     override fun getLayout(number: Int): Int {
         return when (number) {
+            2 -> R.layout.sk_you_2
             4 -> R.layout.sk_you_4
             8 -> R.layout.sk_you_8
             10 -> R.layout.sk_you_10

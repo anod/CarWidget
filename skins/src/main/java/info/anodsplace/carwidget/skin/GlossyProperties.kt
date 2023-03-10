@@ -13,6 +13,7 @@ class GlossyProperties : BaseProperties() {
 
     override fun getLayout(number: Int): Int {
         return when (number) {
+            2 -> R.layout.sk_glass_2
             4 -> R.layout.sk_glass_4
             8 -> R.layout.sk_glass_8
             10 -> R.layout.sk_glass_10

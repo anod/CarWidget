@@ -7,8 +7,8 @@ import info.anodsplace.carwidget.content.BitmapLruCache
 import info.anodsplace.carwidget.content.IconTheme
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.db.LauncherSettings
+import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
-import info.anodsplace.carwidget.content.db.Shortcuts
 import info.anodsplace.carwidget.content.graphics.BitmapTransform
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
@@ -29,7 +29,7 @@ interface ShortcutViewBuilderInstance {
 
 class SkinWidgetView(
     private val skinProperties: SkinProperties,
-    private val shortcuts: Shortcuts,
+    private val shortcuts: Map<Int, Shortcut?>,
     private val context: Context,
     private val widgetSettings: WidgetInterface,
     appWidgetId: Int,
@@ -77,7 +77,7 @@ class SkinWidgetView(
             bitmapTransform.paddingBottom = iconPadding
         }
 
-        val views = RemoteViews(context.packageName, skinProperties.getLayout(shortcuts.count))
+        val views = RemoteViews(context.packageName, skinProperties.getLayout(shortcuts.size))
 
         widgetButtonViewBuilder.apply(views)
 
@@ -90,7 +90,7 @@ class SkinWidgetView(
         shortcutViewBuilder.scaledDensity = scaledDensity
         shortcutViewBuilder.iconTheme = themeIcons
 
-        val totalRows = shortcuts.count / 2
+        val totalRows = shortcuts.size / 2
         for (rowNum in 0 until totalRows) {
             val firstBtn = rowNum * 2
             val secondBtn = firstBtn + 1
@@ -105,17 +105,15 @@ class SkinWidgetView(
     }
 
     companion object {
-        private fun loadThemeIcons(themePackage: String, shortcuts: Shortcuts, context: Context): IconTheme? {
+        private fun loadThemeIcons(themePackage: String, shortcuts: Map<Int, Shortcut?>, context: Context): IconTheme? {
             val theme = IconTheme(context, themePackage)
             if (!theme.loadThemeResources()) {
                 return null
             }
 
-            val list = shortcuts.shortcuts
-
-            val cmpMap = SimpleArrayMap<String, Int>(list.size)
-            for (cellId in 0 until list.size) {
-                val info = shortcuts.get(cellId)
+            val cmpMap = SimpleArrayMap<String, Int>(shortcuts.size)
+            for (cellId in 0 until shortcuts.size) {
+                val info = shortcuts.getOrDefault(cellId, null)
                 if (info == null || info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || info.isCustomIcon) {
                     continue
                 }

@@ -27,6 +27,7 @@ class MetroProperties : BaseProperties() {
 
     override fun getLayout(number: Int): Int {
         return when (number) {
+            2 -> R.layout.sk_windows7_2
             4 -> R.layout.sk_windows7_4
             8 -> R.layout.sk_windows7_8
             10 -> R.layout.sk_windows7_10

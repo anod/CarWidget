@@ -7,12 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -31,18 +27,19 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.screens.main.MainViewEvent
 import kotlinx.coroutines.launch
 
 @Composable
-fun WidgetSkinPreview(skinItem: SkinList.Item, shortcuts: Map<Int, Shortcut?>, skinViewFactory: SkinViewFactory) {
-    val view: View? by produceState<View?>(initialValue = null, skinItem, shortcuts) {
+fun WidgetSkinPreview(skinItem: SkinList.Item, skinViewFactory: SkinViewFactory, reload: Int = 0) {
+    val view: View? by produceState<View?>(initialValue = null, skinItem, reload) {
         val view = skinViewFactory.create(skinItem)
         value = view
     }
     if (view == null) {
-        CircularProgressIndicator()
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
     } else {
         AndroidView(
             modifier = Modifier.fillMaxSize(), // Occupy the max size in the Compose UI tree
@@ -117,24 +114,12 @@ fun WidgetSkinScreen(
             ) { page ->
                 WidgetSkinPreview(
                     skinItem = skinList[page],
-                    shortcuts = screenState.widgetShortcuts,
+                    reload = screenState.previewVersion,
                     skinViewFactory = skinViewFactory
                 )
             }
         }
-
-        if (!isCompact) {
-            SmallFloatingActionButton(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 16.dp),
-                onClick = { }
-            ) {
-                Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
-            }
-        }
     }
-
 }
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)

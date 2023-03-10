@@ -138,7 +138,7 @@ fun WelcomePage(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            WidgetSkinPreview(skinList.current, skinViewModel.viewState.widgetShortcuts, skinViewFactory = skinViewModel)
+            WidgetSkinPreview(skinList.current, skinViewFactory = skinViewModel)
         }
     }
 }

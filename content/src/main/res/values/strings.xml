@@ -49,6 +49,7 @@
     <string name="customize">Customize</string>
     <string name="pref_look_and_feel_title">Look &amp; Feel</string>
     <string name="pref_look_and_feel_summary">Customize skin, colors and font size</string>
+    <string name="skin">Skin</string>
     <string name="pref_incar_mode_title">InCar mode</string>
     <string name="pref_incar_mode_summary">Choose how to detect when you in car, and settings that will be adjusted</string>
     <string name="pref_incar_mode_enabled">Enable InCar mode</string>

@@ -86,7 +86,7 @@ fun MainScreen(
         }
         else -> {
             val navController = rememberNavController()
-            val isCompact =  windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+            val isCompact = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
             if (isCompact) {
                 NavRail(
                     navController = navController,
@@ -163,8 +163,6 @@ fun NavRail(
             onClick = { item -> navController.navigate(item) },
             showApply = screenState.isWidget,
             onApply = { onEvent(MainViewEvent.ApplyWidget(screenState.appWidgetId, screenState.skinList.current.value)) },
-            actionIcon = appWidgetIdScope?.let { { Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit") } },
-            actionClick = { },
             windowInsets = WindowInsets.statusBars.only(WindowInsetsSides.Vertical)
                 .add(WindowInsets.displayCutout.only(WindowInsetsSides.End))
                 .add(WindowInsets.navigationBars.only(WindowInsetsSides.End)),
@@ -189,8 +187,8 @@ fun Tabs(
                 title = { Text(text = stringResource(id = R.string.app_name)) },
                 actions = {
                     if (screenState.isWidget) {
-                        AppBarButton(image = Icons.Filled.Check, descRes = android.R.string.ok) {
-                            onEvent(MainViewEvent.ApplyWidget(screenState.appWidgetId, screenState.skinList.current.value))
+                        IconButton(onClick = { onEvent(MainViewEvent.ApplyWidget(screenState.appWidgetId, screenState.skinList.current.value)) }) {
+                            Icon(imageVector = Icons.Filled.Check, contentDescription = stringResource(id = android.R.string.ok))
                         }
                     }
                 }
@@ -285,7 +283,9 @@ fun NavHost(
                     screenState = screenState,
                     onEvent = { customizeViewModel.handleEvent(it) },
                     onMainViewEvent = onEvent,
-                    innerPadding = innerPadding
+                    innerPadding = innerPadding,
+                    isCompact = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact,
+                    skinViewFactory = customizeViewModel
                 )
             }
             dialog(
