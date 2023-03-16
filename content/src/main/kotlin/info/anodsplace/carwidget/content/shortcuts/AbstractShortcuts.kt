@@ -49,8 +49,9 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
         if (!isMigrated()) {
             runDbMigration()
         }
-        _shortcuts = loadShortcuts().toMutableMap()
-        for (i in 0 until count) {
+        val size = count
+        _shortcuts = loadShortcuts().filterKeys { it < size }.toMutableMap()
+        for (i in 0 until size) {
             if (!_shortcuts.containsKey(i)) {
                 _shortcuts[i] = null
             }
