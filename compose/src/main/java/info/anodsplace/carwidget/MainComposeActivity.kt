@@ -22,6 +22,7 @@ import info.anodsplace.carwidget.extensions.extras
 import info.anodsplace.carwidget.screens.main.MainScreen
 import info.anodsplace.carwidget.screens.main.MainViewAction
 import info.anodsplace.carwidget.screens.main.MainViewModel
+import info.anodsplace.framework.content.onCommonActivityAction
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -63,11 +64,12 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
                 MainScreen(
                     screenState = screenState,
                     windowSizeClass = windowSizeClass,
-                    viewActions = mainViewModel.viewActions,
-                    onViewAction = { onViewAction(it) },
                     onEvent = { mainViewModel.handleEvent(it) },
+                    onViewAction = { onViewAction(it) },
+                    viewActions = mainViewModel.viewActions,
                     appWidgetIdScope = mainViewModel.appWidgetIdScope,
-                    imageLoader = mainViewModel.imageLoader
+                    imageLoader = mainViewModel.imageLoader,
+                    onActivityAction = { onCommonActivityAction(it) }
                 )
             }
         }

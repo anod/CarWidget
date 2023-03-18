@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
@@ -48,6 +47,7 @@ import info.anodsplace.carwidget.screens.widget.*
 import info.anodsplace.carwidget.screens.wizard.WizardScreen
 import info.anodsplace.compose.RequestPermissionsScreen
 import info.anodsplace.compose.findActivity
+import info.anodsplace.framework.content.CommonActivityAction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import org.koin.java.KoinJavaComponent.getKoin
@@ -61,6 +61,7 @@ fun MainScreen(
     viewActions: Flow<MainViewAction> = emptyFlow(),
     appWidgetIdScope: AppWidgetIdScope? = null,
     imageLoader: ImageLoader,
+    onActivityAction: (CommonActivityAction) -> Unit = { },
 ) {
     when (screenState.topDestination) {
         NavItem.Wizard -> {
@@ -94,7 +95,8 @@ fun MainScreen(
                     windowSizeClass = windowSizeClass,
                     onEvent = onEvent,
                     appWidgetIdScope = appWidgetIdScope,
-                    imageLoader = imageLoader
+                    imageLoader = imageLoader,
+                    onActivityAction = onActivityAction
                 )
             } else {
                 Tabs(
@@ -103,7 +105,8 @@ fun MainScreen(
                     windowSizeClass = windowSizeClass,
                     onEvent = onEvent,
                     appWidgetIdScope = appWidgetIdScope,
-                    imageLoader = imageLoader
+                    imageLoader = imageLoader,
+                    onActivityAction = onActivityAction
                 )
             }
 
@@ -137,7 +140,8 @@ fun NavRail(
     windowSizeClass: WindowSizeClass,
     onEvent: (event: MainViewEvent) -> Unit,
     appWidgetIdScope: AppWidgetIdScope?,
-    imageLoader: ImageLoader
+    imageLoader: ImageLoader,
+    onActivityAction: (CommonActivityAction) -> Unit
 ) {
     val navRailInset = WindowInsets(0.dp, 0.dp, 80.dp, 0.dp)
     Box {
@@ -152,9 +156,10 @@ fun NavRail(
                 .add(WindowInsets.navigationBars)
                 .add(navRailInset).asPaddingValues(),
             startDestination = screenState.topDestination.route,
-            windowSizeClass = windowSizeClass,
             routeNS = screenState.routeNS,
-            imageLoader = imageLoader
+            imageLoader = imageLoader,
+            windowSizeClass = windowSizeClass,
+            onActivityAction = onActivityAction
         )
         NavRailMenu(
             modifier = Modifier.align(Alignment.CenterEnd),
@@ -178,7 +183,8 @@ fun Tabs(
     windowSizeClass: WindowSizeClass,
     onEvent: (event: MainViewEvent) -> Unit,
     appWidgetIdScope: AppWidgetIdScope? = null,
-    imageLoader: ImageLoader
+    imageLoader: ImageLoader,
+    onActivityAction: (CommonActivityAction) -> Unit
 ) {
     Scaffold(
         containerColor = if (screenState.isWidget) Color.Transparent else MaterialTheme.colorScheme.background,
@@ -210,9 +216,10 @@ fun Tabs(
                 appWidgetIdScope = appWidgetIdScope,
                 innerPadding = innerPadding,
                 startDestination = screenState.topDestination.route,
-                windowSizeClass = windowSizeClass,
                 routeNS = screenState.routeNS,
-                imageLoader = imageLoader
+                imageLoader = imageLoader,
+                windowSizeClass = windowSizeClass,
+                onActivityAction = onActivityAction
             )
         }
     )
@@ -228,7 +235,8 @@ fun NavHost(
     routeNS: String,
     currentWidgetStartDestination: String = NavItem.Tab.CurrentWidget.Skin.route,
     imageLoader: ImageLoader,
-    windowSizeClass: WindowSizeClass
+    windowSizeClass: WindowSizeClass,
+    onActivityAction: (CommonActivityAction) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -249,6 +257,8 @@ fun NavHost(
             AboutScreen(
                 screenState = aboutScreenState,
                 onEvent = { aboutViewModel.handleEvent(it) },
+                actions = aboutViewModel.viewActions,
+                onActivityAction = onActivityAction,
                 innerPadding = innerPadding,
                 imageLoader = imageLoader
             )
@@ -349,8 +359,8 @@ fun PreviewMainScreenLight() {
         Surface {
             MainScreen(
                 screenState = MainViewState(skinList = SkinList(WidgetInterface.SKIN_YOU, LocalContext.current)),
+                windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(600.dp, 480.dp)),
                 imageLoader = ImageLoader.Builder(LocalContext.current).build(),
-                windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(600.dp, 480.dp))
             )
         }
     }
@@ -364,8 +374,8 @@ fun PreviewMainScreenCompact() {
         Surface {
             MainScreen(
                 screenState = MainViewState(skinList = SkinList(WidgetInterface.SKIN_YOU, LocalContext.current)),
+                windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(480.dp, 600.dp)),
                 imageLoader = ImageLoader.Builder(LocalContext.current).build(),
-                windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(480.dp, 600.dp))
             )
         }
     }

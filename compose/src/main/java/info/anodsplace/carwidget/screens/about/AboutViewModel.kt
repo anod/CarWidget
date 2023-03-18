@@ -12,12 +12,14 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.backup.Backup
+import info.anodsplace.carwidget.content.backup.BackupCheckResult
 import info.anodsplace.carwidget.content.backup.BackupManager
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.extensions.openDefaultCarDock
 import info.anodsplace.carwidget.extensions.openPlayStoreDetails
+import info.anodsplace.framework.content.CommonActivityAction
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -30,8 +32,9 @@ data class AboutScreenState(
     val themeName: String,
     val musicApp: String,
     val appVersion: String,
-    val backupStatus: Int = Backup.NO_RESULT,
-    val restoreStatus: Int = Backup.NO_RESULT,
+    val backupProgress: Boolean = false,
+    val restoreProgress: Boolean = false,
+    val restoreInCarDialog: Uri? = null
 ) {
     val isValidWidget: Boolean
         get() = appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID
@@ -41,15 +44,13 @@ sealed interface AboutScreenStateEvent {
     object ChangeTheme: AboutScreenStateEvent
     object OpenPlayStoreDetails: AboutScreenStateEvent
     object OpenDefaultCarDock: AboutScreenStateEvent
-    class BackupWidget(val dstUri: Uri) : AboutScreenStateEvent
+    class Backup(val dstUri: Uri) : AboutScreenStateEvent
     class Restore(val srcUri: Uri) : AboutScreenStateEvent
-    class ShowToast(val text: String) : AboutScreenStateEvent
     class ChangeMusicApp(val component: ComponentName?) : AboutScreenStateEvent
+    class RestoreInCar(val srcUri: Uri, val restoreInCar: Boolean) : AboutScreenStateEvent
 }
 
-sealed interface AboutScreenStateAction
-
-class AboutViewModel(private val appWidgetIdScope: AppWidgetIdScope?): BaseFlowViewModel<AboutScreenState, AboutScreenStateEvent, AboutScreenStateAction>(), KoinComponent {
+class AboutViewModel(private val appWidgetIdScope: AppWidgetIdScope?): BaseFlowViewModel<AboutScreenState, AboutScreenStateEvent, CommonActivityAction>(), KoinComponent {
 
     class Factory(private val appWidgetIdScope: AppWidgetIdScope?): ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T = AboutViewModel(appWidgetIdScope) as T
@@ -74,10 +75,14 @@ class AboutViewModel(private val appWidgetIdScope: AppWidgetIdScope?): BaseFlowV
 
     override fun handleEvent(event: AboutScreenStateEvent) {
         when (event) {
-            is AboutScreenStateEvent.BackupWidget -> {
+            is AboutScreenStateEvent.Backup -> {
+                viewState = viewState.copy(backupProgress = true)
                 appScope.launch {
-                    val code = backupManager.backup(appWidgetIdScope, event.dstUri)
-                    viewState = viewState.copy(backupStatus = code)
+                    val code = backupManager.backup(appWidgetIdScope!!, event.dstUri)
+                    viewState = viewState.copy(backupProgress = false)
+                    if (code != Backup.RESULT_DONE) {
+                        emitAction(CommonActivityAction.ShowToast(resId = renderBackupCode(code), length = Toast.LENGTH_LONG))
+                    }
                 }
             }
             AboutScreenStateEvent.ChangeTheme -> {
@@ -96,9 +101,31 @@ class AboutViewModel(private val appWidgetIdScope: AppWidgetIdScope?): BaseFlowV
                 viewState = viewState.copy(musicApp = renderMusicApp())
             }
             is AboutScreenStateEvent.Restore -> {
+                viewState = viewState.copy(restoreProgress = true)
                 appScope.launch {
-                    val code = backupManager.restore(appWidgetIdScope, event.srcUri)
-                    viewState = viewState.copy(restoreStatus = code)
+                    when (val checkResult = backupManager.checkSrcUri(event.srcUri)) {
+                        is BackupCheckResult.Error -> {
+                            viewState = viewState.copy(restoreProgress = false)
+                            emitAction(CommonActivityAction.ShowToast(resId = renderRestoreCode(checkResult.errorCode), length = Toast.LENGTH_LONG))
+                        }
+                        is BackupCheckResult.Success -> {
+                            if (checkResult.hasInCar) {
+                                viewState = viewState.copy(restoreInCarDialog = event.srcUri, restoreProgress = false)
+                            } else {
+                                val code = backupManager.restore(appWidgetIdScope!!, event.srcUri, restoreInCar = false)
+                                viewState = viewState.copy(restoreProgress = false)
+                                emitAction(CommonActivityAction.ShowToast(resId = renderRestoreCode(code), length = Toast.LENGTH_LONG))
+                            }
+                        }
+                    }
+                }
+            }
+            is AboutScreenStateEvent.RestoreInCar -> {
+                viewState = viewState.copy(restoreInCarDialog = null, restoreProgress = true)
+                appScope.launch {
+                    val code = backupManager.restore(appWidgetIdScope!!, event.srcUri, restoreInCar = event.restoreInCar)
+                    viewState = viewState.copy(restoreProgress = false)
+                    emitAction(CommonActivityAction.ShowToast(resId = renderRestoreCode(code), length = Toast.LENGTH_LONG))
                 }
             }
             AboutScreenStateEvent.OpenPlayStoreDetails -> {
@@ -106,9 +133,6 @@ class AboutViewModel(private val appWidgetIdScope: AppWidgetIdScope?): BaseFlowV
             }
             AboutScreenStateEvent.OpenDefaultCarDock -> {
                 context.openDefaultCarDock()
-            }
-            is AboutScreenStateEvent.ShowToast -> {
-                Toast.makeText(context, event.text, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -142,4 +166,25 @@ class AboutViewModel(private val appWidgetIdScope: AppWidgetIdScope?): BaseFlowV
         return context.getString(R.string.version_title, appName, versionName)
     }
 
+    private fun renderBackupCode(code: Int): Int {
+        if (code == Backup.RESULT_DONE) {
+            return R.string.backup_done
+        }
+        return if (code == Backup.ERROR_FILE_WRITE) {
+            R.string.failed_to_write_file
+        } else R.string.unexpected_error
+    }
+
+    private fun renderRestoreCode(code: Int): Int {
+        if (code == Backup.RESULT_DONE) {
+            return R.string.restore_done
+        }
+        return when (code) {
+            Backup.ERROR_DESERIALIZE -> R.string.restore_deserialize_failed
+            Backup.ERROR_FILE_READ -> R.string.failed_to_read_file
+            Backup.ERROR_UNEXPECTED -> R.string.unexpected_error
+            Backup.ERROR_INCORRECT_FORMAT -> R.string.backup_unknown_format
+            else -> R.string.unexpected_error
+        }
+    }
 }

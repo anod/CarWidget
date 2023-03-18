@@ -27,11 +27,150 @@ import info.anodsplace.carwidget.chooser.MediaListLoader
 import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.compose.PreferenceCategory
 import info.anodsplace.compose.PreferenceItem
+import info.anodsplace.framework.content.CommonActivityAction
 import info.anodsplace.framework.content.CreateDocument
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import java.util.*
 
 @Composable
-fun AboutButton(
+fun AboutScreen(
+    screenState: AboutScreenState,
+    onEvent: (AboutScreenStateEvent) -> Unit,
+    actions: Flow<CommonActivityAction> = flowOf(),
+    onActivityAction: (CommonActivityAction) -> Unit = {},
+    imageLoader: ImageLoader,
+    innerPadding: PaddingValues = PaddingValues(0.dp)
+) {
+    var showOpenCarDock by remember { mutableStateOf(false) }
+    var showMusicAppDialog by remember { mutableStateOf(false) }
+
+    val openDocumentLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocument()) { destUri ->
+        if (destUri != null) {
+            onEvent(AboutScreenStateEvent.Restore(destUri))
+        }
+    }
+
+    val createDocumentLauncherWidget = rememberLauncherForActivityResult(contract = CreateDocument("application/json")) { destUri ->
+        if (destUri != null) {
+            onEvent(AboutScreenStateEvent.Backup(destUri))
+        }
+    }
+
+    Surface {
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            AboutTitle(titleRes = R.string.app_preferences)
+            AboutButton(titleRes = R.string.app_theme, subtitle = screenState.themeName, onClick = {
+                onEvent(AboutScreenStateEvent.ChangeTheme)
+            })
+            AboutButton(titleRes = R.string.music_app, subtitle = screenState.musicApp, onClick = {
+                showMusicAppDialog = true
+            })
+            AboutButton(titleRes = R.string.default_car_dock_app, onClick = { showOpenCarDock = true })
+            if (screenState.isValidWidget) {
+                AboutTitle(titleRes = R.string.pref_backup_title)
+                AboutButton(
+                    titleRes = R.string.backup_current_widget,
+                    loader = screenState.backupProgress,
+                    enabled = screenState.isValidWidget,
+                    onClick = {
+                        try {
+                            createDocumentLauncherWidget.launch(
+                                CreateDocument.Args("carwidget-${screenState.appWidgetId}" + Backup.FILE_EXT_JSON)
+                            )
+                        } catch (e: Exception) {
+                            AppLog.e(e)
+                            onActivityAction(CommonActivityAction.ShowToast(text = "Error - cannot perform ACTION_CREATE_DOCUMENT"))
+                        }
+                    })
+                AboutButton(
+                    titleRes = R.string.restore,
+                    loader = screenState.restoreProgress,
+                    enabled = screenState.isValidWidget,
+                    onClick = {
+                        openDocumentLauncher.launch(arrayOf("application/json", "text/plain", "*/*"))
+                    }
+                )
+            }
+            AboutTitle(titleRes = R.string.information_title)
+            AboutButton(title = screenState.appVersion, subtitle = stringResource(id = R.string.version_summary), onClick = {
+                onEvent(AboutScreenStateEvent.OpenPlayStoreDetails)
+            })
+        }
+    }
+
+    LaunchedEffect(key1 = true) {
+        actions.collect {
+            onActivityAction(it)
+        }
+    }
+
+    if (screenState.restoreInCarDialog != null) {
+        AlertDialog(
+            modifier = Modifier.padding(16.dp),
+            title = { Text(text = stringResource(id = R.string.update_incar_settings)) },
+            text = {
+                Text(text = stringResource(id = R.string.incar_backup_question))
+            },
+            confirmButton = {
+                Button(
+                    onClick = { onEvent(AboutScreenStateEvent.RestoreInCar(srcUri = screenState.restoreInCarDialog, restoreInCar = true)) }
+                ) { Text(text = stringResource(id = R.string.update)) }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { onEvent(AboutScreenStateEvent.RestoreInCar(srcUri = screenState.restoreInCarDialog, restoreInCar = false)) }
+                ) { Text(text = stringResource(id = R.string.skip)) }
+            },
+            onDismissRequest = { })
+    }
+
+    if (showOpenCarDock) {
+        AlertDialog(
+            modifier = Modifier.padding(16.dp),
+            title = { Text(text = stringResource(id = R.string.default_car_dock_app)) },
+            text = {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = stringResource(id = R.string.cardock_text1))
+                    Button(
+                        modifier = Modifier.padding(16.dp),
+                        onClick = { onEvent(AboutScreenStateEvent.OpenDefaultCarDock) }
+                    ) { Text(text = stringResource(id = R.string.cardock_btn_1)) }
+                    Text(text = stringResource(id = R.string.cardock_text2))
+                }
+            },
+            confirmButton = { },
+            onDismissRequest = { showOpenCarDock = false })
+    }
+
+    if (showMusicAppDialog) {
+        val context = LocalContext.current
+        val loader = remember { MediaListLoader(context) }
+        ChooserDialog(
+            modifier = Modifier.padding(16.dp),
+            headers = listOf(
+                Header(0, stringResource(R.string.show_choice), iconVector = Icons.Filled.List)
+            ),
+            loader = loader,
+            onDismissRequest = { showMusicAppDialog = false },
+            onClick = { entry ->
+                onEvent(AboutScreenStateEvent.ChangeMusicApp(entry.componentName))
+                showMusicAppDialog = false
+            },
+            imageLoader = imageLoader
+        )
+    }
+}
+
+
+@Composable
+private fun AboutButton(
     @StringRes titleRes: Int = 0,
     title: String = "",
     subtitle: String = "",
@@ -74,121 +213,10 @@ fun AboutButton(
 }
 
 @Composable
-fun AboutTitle(@StringRes titleRes: Int) {
+private fun AboutTitle(@StringRes titleRes: Int) {
     PreferenceCategory(
         PreferenceItem.Category(titleRes = titleRes)
     )
-}
-
-@Composable
-fun AboutScreen(screenState: AboutScreenState, onEvent: (AboutScreenStateEvent) -> Unit, imageLoader: ImageLoader, innerPadding: PaddingValues = PaddingValues(0.dp)) {
-    var restoreAnimation by remember { mutableStateOf(false) }
-    var backupWidgetAnimation by remember { mutableStateOf(false) }
-    var showOpenCarDock by remember { mutableStateOf(false) }
-    var showMusicAppDialog by remember { mutableStateOf(false) }
-
-    val openDocumentLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocument()) { destUri ->
-        if (destUri == null) {
-            restoreAnimation = false
-        } else {
-            onEvent(AboutScreenStateEvent.Restore(destUri))
-        }
-    }
-
-    val createDocumentLauncherWidget = rememberLauncherForActivityResult(contract = CreateDocument("application/json")) { destUri ->
-        if (destUri == null) {
-            backupWidgetAnimation = false
-        } else {
-            onEvent(AboutScreenStateEvent.BackupWidget(destUri))
-        }
-    }
-
-    if (screenState.restoreStatus != Backup.NO_RESULT) {
-        restoreAnimation = false
-    }
-
-    if (screenState.backupStatus != Backup.NO_RESULT) {
-        backupWidgetAnimation = false
-    }
-
-    Surface {
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            AboutTitle(titleRes = R.string.app_preferences)
-            AboutButton(titleRes = R.string.app_theme, subtitle = screenState.themeName, onClick = {
-                onEvent(AboutScreenStateEvent.ChangeTheme)
-            })
-            AboutButton(titleRes = R.string.music_app, subtitle = screenState.musicApp, onClick = {
-                showMusicAppDialog = true
-            })
-            AboutButton(titleRes = R.string.default_car_dock_app, onClick = { showOpenCarDock = true })
-            AboutTitle(titleRes = R.string.pref_backup_title)
-            AboutButton(
-                titleRes = R.string.backup_current_widget,
-                loader = backupWidgetAnimation,
-                enabled = screenState.isValidWidget,
-                onClick = {
-                    try {
-                        backupWidgetAnimation = true
-                        createDocumentLauncherWidget.launch(
-                            CreateDocument.Args("carwidget-${screenState.appWidgetId}" + Backup.FILE_EXT_JSON)
-                        )
-                    } catch (e: Exception) {
-                        AppLog.e(e)
-                        onEvent(AboutScreenStateEvent.ShowToast("Cannot start activity: ACTION_CREATE_DOCUMENT"))
-                    }
-                })
-            AboutButton(titleRes = R.string.restore, loader = restoreAnimation, onClick = {
-                restoreAnimation = true
-                openDocumentLauncher.launch(arrayOf("application/json", "text/plain", "*/*"))
-            })
-            AboutTitle(titleRes = R.string.information_title)
-            AboutButton(title = screenState.appVersion, subtitle = stringResource(id = R.string.version_summary), onClick = {
-                onEvent(AboutScreenStateEvent.OpenPlayStoreDetails)
-            })
-        }
-    }
-
-    if (showOpenCarDock) {
-        AlertDialog(
-            modifier = Modifier.padding(16.dp),
-            title = { Text(text = stringResource(id = R.string.default_car_dock_app)) },
-            text = {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = stringResource(id = R.string.cardock_text1))
-                    Button(
-                        modifier = Modifier.padding(16.dp),
-                        onClick = { onEvent(AboutScreenStateEvent.OpenDefaultCarDock) }
-                    ) { Text(text = stringResource(id = R.string.cardock_btn_1)) }
-                    Text(text = stringResource(id = R.string.cardock_text2))
-                }
-            },
-            confirmButton = { },
-            onDismissRequest = { showOpenCarDock = false })
-    }
-
-    if (showMusicAppDialog) {
-        val context = LocalContext.current
-        val loader = remember { MediaListLoader(context) }
-        ChooserDialog(
-            modifier = Modifier.padding(16.dp),
-            headers = listOf(
-                Header(0, stringResource(R.string.show_choice), iconVector = Icons.Filled.List)
-            ),
-            loader = loader,
-            onDismissRequest = { showMusicAppDialog = false },
-            onClick = { entry ->
-                onEvent(AboutScreenStateEvent.ChangeMusicApp(entry.componentName))
-                showMusicAppDialog = false
-            },
-            imageLoader = imageLoader
-        )
-    }
 }
 
 @Preview("About Screen Light")

@@ -36,7 +36,6 @@ import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
-import info.anodsplace.compose.ScreenLoadState
 
 private fun Modifier.cardStyle(): Modifier = composed { then(
     fillMaxWidth()
@@ -60,7 +59,7 @@ private fun Modifier.iconContainer(): Modifier = composed {
 @Composable
 fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, imageLoader: ImageLoader, innerPadding: PaddingValues = PaddingValues(0.dp)) {
     when (val loadState = screen.loadState) {
-        is ScreenLoadState.Ready -> {
+        is WidgetListLoadState.Ready -> {
             WidgetsLisItems(
                 screen = screen,
                 onClick = onClick,
@@ -68,8 +67,8 @@ fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int)
                 imageLoader = imageLoader
             )
         }
-        is ScreenLoadState.Error -> Text(text = loadState.message, color = MaterialTheme.colorScheme.error)
-        ScreenLoadState.Loading -> CircularProgressIndicator()
+        is WidgetListLoadState.Error -> Text(text = loadState.message, color = MaterialTheme.colorScheme.error)
+        WidgetListLoadState.Loading -> CircularProgressIndicator()
     }
 }
 
@@ -293,7 +292,7 @@ fun PreviewWidgetsScreen() {
     CarWidgetTheme {
         WidgetsListScreen(
             screen = WidgetListScreenState(
-                loadState = ScreenLoadState.Ready(Unit),
+                loadState = WidgetListLoadState.Ready,
                 items = listOf(
                     WidgetItem.Shortcut(appWidgetId = 0),
                     WidgetItem.Shortcut(appWidgetId = 0),
@@ -325,7 +324,7 @@ fun PreviewWidgetsEmptyScreen() {
     CarWidgetTheme {
         WidgetsListScreen(
             screen = WidgetListScreenState(
-                loadState = ScreenLoadState.Ready(Unit),
+                loadState = WidgetListLoadState.Ready,
                 items = listOf(),
                 isServiceRunning = false,
                 isServiceRequired = true,

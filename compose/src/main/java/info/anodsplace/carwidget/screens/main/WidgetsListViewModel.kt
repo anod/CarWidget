@@ -9,7 +9,6 @@ import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
-import info.anodsplace.compose.ScreenLoadState
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,8 +29,14 @@ interface WidgetItem {
     ) : WidgetItem
 }
 
+sealed interface WidgetListLoadState {
+    object Loading: WidgetListLoadState
+    object Ready: WidgetListLoadState
+    data class Error(val message: String, val cause: Exception? = null): WidgetListLoadState
+}
+
 data class WidgetListScreenState(
-    val loadState: ScreenLoadState<Unit> = ScreenLoadState.Loading,
+    val loadState: WidgetListLoadState = WidgetListLoadState.Loading,
     val items: List<WidgetItem> = emptyList(),
     val isServiceRequired: Boolean = false,
     val isServiceRunning: Boolean = false,
@@ -73,16 +78,16 @@ class WidgetsListViewModel : BaseFlowViewModel<WidgetListScreenState, WidgetList
                 viewModelScope.launch {
                     try {
                         val newItems = loadWidgetList()
-                        updateState(loadState = ScreenLoadState.Ready(Unit), items = newItems)
+                        updateState(loadState = WidgetListLoadState.Ready, items = newItems)
                     } catch (e: Exception) {
-                        updateState(loadState = ScreenLoadState.Error(e.message ?: "Loading error", e), items = emptyList())
+                        updateState(loadState = WidgetListLoadState.Error(e.message ?: "Loading error", e), items = emptyList())
                     }
                 }
             }
         }
     }
 
-    private fun updateState(loadState: ScreenLoadState<Unit>, items: List<WidgetItem>) {
+    private fun updateState(loadState: WidgetListLoadState, items: List<WidgetItem>) {
         viewState = viewState.copy(
             loadState = loadState,
             items = items,
