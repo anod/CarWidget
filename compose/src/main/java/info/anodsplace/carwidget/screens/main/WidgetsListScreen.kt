@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -37,10 +38,10 @@ import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
 
-private fun Modifier.cardStyle(): Modifier = composed { then(
+private fun Modifier.cardStyle(backgroundColor: Color? = null): Modifier = composed { then(
     fillMaxWidth()
         .clip(shape = MaterialTheme.shapes.large)
-        .background(MaterialTheme.colorScheme.secondary)
+        .background(backgroundColor ?: MaterialTheme.colorScheme.secondary)
         .padding(16.dp)
 ) }
 
@@ -87,16 +88,16 @@ private fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId
             item {
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(modifier = Modifier
-                    .cardStyle()) {
+                    .cardStyle(backgroundColor = MaterialTheme.colorScheme.errorContainer)) {
                     Icon(
                         imageVector = Icons.Filled.Warning,
                         modifier = Modifier.size(SystemIconSize),
-                        tint = WarningColor,
+                        tint = MaterialTheme.colorScheme.error,
                         contentDescription = null)
                     Text(
                         modifier = Modifier.padding(start = 16.dp),
                         text = "InCar detector service is not running, disable battery optimization",
-                        color = WarningColor
+                        color = MaterialTheme.colorScheme.error
                     )
                 }
             }

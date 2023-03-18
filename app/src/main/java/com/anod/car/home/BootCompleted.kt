@@ -3,12 +3,13 @@ package com.anod.car.home
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.anod.car.home.incar.BroadcastService
+import info.anodsplace.carwidget.content.BroadcastServiceManager
+import org.koin.core.component.KoinComponent
 
-class BootCompleted : BroadcastReceiver() {
+class BootCompleted : BroadcastReceiver(), KoinComponent {
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent?.action == Intent.ACTION_LOCKED_BOOT_COMPLETED) {
-            BroadcastService.registerBroadcastService(context)
+            getKoin().get<BroadcastServiceManager>().registerBroadcastService()
         }
     }
 }

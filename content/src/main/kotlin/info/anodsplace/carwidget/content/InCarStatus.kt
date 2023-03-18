@@ -3,8 +3,6 @@ package info.anodsplace.carwidget.content
 interface InCarStatus {
     val value: Int
     val isEnabled: Boolean
-    val isServiceRequired: Boolean
-    val isServiceRunning: Boolean
     val resId: Int
     fun eventsState(): List<EventState>
 

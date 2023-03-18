@@ -8,10 +8,10 @@ import android.content.Intent
 import android.os.Bundle
 import com.anod.car.home.LargeProvider
 import com.anod.car.home.UpdateWidgetJob
-import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.incar.ModeService
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.AppCoroutineScope
+import info.anodsplace.carwidget.content.BroadcastServiceManager
 import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -45,7 +45,7 @@ open class Provider : AppWidgetProvider(), KoinComponent {
         val updateIntent = Intent(context, UpdateWidgetJob::class.java)
         context.stopService(updateIntent)
 
-        BroadcastService.stopService(context)
+        getKoin().get<BroadcastServiceManager>().stopService()
 
         if (ModeService.sInCarMode) {
             val modeIntent = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_OFF)

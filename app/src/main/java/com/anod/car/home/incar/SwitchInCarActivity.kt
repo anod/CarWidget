@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import com.anod.car.home.R
+import info.anodsplace.carwidget.content.BroadcastServiceManager
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -34,7 +35,7 @@ class SwitchInCarActivity : Activity(), KoinComponent {
 //            val intent = ConfigurationActivity.createFragmentIntent(this, ConfigurationInCar::class.java)
 //            startActivity(intent)
         }
-        BroadcastService.registerBroadcastService(applicationContext)
+        getKoin().get<BroadcastServiceManager>().registerBroadcastService()
         finish()
     }
 }

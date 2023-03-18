@@ -11,7 +11,6 @@ import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.InCarSettings
-import info.anodsplace.carwidget.content.preferences.InCarStorage
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
@@ -114,8 +113,7 @@ class BackupManager(
         database.restoreTarget(+appWidgetIdScope, shortcuts)
 
         if (restoreInCar) {
-            val sharedPrefs = InCarStorage.getSharedPreferences(context)
-            sharedPrefs.edit().clear().apply()
+            inCarSettings.clear()
             inCarSettings.applyPending()
 
             database.restoreTarget(NotificationShortcutsModel.notificationTargetId, notificationShortcuts)

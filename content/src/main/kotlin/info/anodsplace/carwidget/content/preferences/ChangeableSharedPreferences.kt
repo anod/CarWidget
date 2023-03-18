@@ -29,7 +29,6 @@ open class ChangeableSharedPreferences(prefs: SharedPreferences, private val app
 
     fun queueChange(key: String, value: Any?) {
         pendingChanges.put(key, value)
-        appScope.launch {  _changes.emit(Pair(key, value)) }
     }
 
     fun applyChange(key: String, value: Any?) {
@@ -53,6 +52,7 @@ open class ChangeableSharedPreferences(prefs: SharedPreferences, private val app
         for (i in 0 until pendingChanges.size()) {
             val key = pendingChanges.keyAt(i)
             putChange(edit, key, pendingChanges.get(key))
+            appScope.launch {  _changes.emit(Pair(key, pendingChanges.get(key))) }
         }
         edit.putBoolean("migrated", true)
         edit.apply()

@@ -4,17 +4,22 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.WidgetIds
+import info.anodsplace.carwidget.content.BroadcastServiceManager
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
-import org.koin.java.KoinJavaComponent.inject
+import org.koin.core.component.get
+import org.koin.core.component.inject
 
 interface WidgetItem {
     data class Large(
@@ -51,15 +56,17 @@ sealed interface WidgetListScreenEvent {
 sealed interface WidgetListScreenAction
 
 class WidgetsListViewModel : BaseFlowViewModel<WidgetListScreenState, WidgetListScreenEvent, WidgetListScreenAction>(), KoinComponent {
-    private val widgetIds: WidgetIds by inject(WidgetIds::class.java)
-    private val inCarStatus: InCarStatus by inject(InCarStatus::class.java)
-    private val db: ShortcutsDatabase by inject(ShortcutsDatabase::class.java)
+    private val widgetIds: WidgetIds by inject()
+    private val db: ShortcutsDatabase by inject()
+    private val inCarSettings: InCarSettings by inject()
+    private val broadcastServiceManager: BroadcastServiceManager by inject()
 
     init {
+        val inCarStatus: InCarStatus = get()
         viewState = WidgetListScreenState(
             items = emptyList(),
-            isServiceRequired = inCarStatus.isServiceRequired,
-            isServiceRunning = inCarStatus.isServiceRunning,
+            isServiceRequired = broadcastServiceManager.isServiceRequired,
+            isServiceRunning = broadcastServiceManager.isServiceRunning,
             statusResId = inCarStatus.resId,
             eventsState = inCarStatus.eventsState().sortedWith(compareBy({ !it.enabled }, { !it.active }))
         )
@@ -68,6 +75,19 @@ class WidgetsListViewModel : BaseFlowViewModel<WidgetListScreenState, WidgetList
                 AppLog.d("LoadWidgetList $it")
                 handleEvent(WidgetListScreenEvent.LoadWidgetList)
             }
+        }
+        viewModelScope.launch {
+            inCarSettings
+                .changes
+                .filter { it.first == InCarSettings.INCAR_MODE_ENABLED }
+                .distinctUntilChanged()
+                .collect {
+                    broadcastServiceManager.registerBroadcastService()
+                    updateState(
+                        loadState = viewState.loadState,
+                        items = viewState.items
+                    )
+                }
         }
         handleEvent(WidgetListScreenEvent.LoadWidgetList)
     }
@@ -88,11 +108,12 @@ class WidgetsListViewModel : BaseFlowViewModel<WidgetListScreenState, WidgetList
     }
 
     private fun updateState(loadState: WidgetListLoadState, items: List<WidgetItem>) {
+        val inCarStatus: InCarStatus = get()
         viewState = viewState.copy(
             loadState = loadState,
             items = items,
-            isServiceRequired = inCarStatus.isServiceRequired,
-            isServiceRunning = inCarStatus.isServiceRunning,
+            isServiceRequired = broadcastServiceManager.isServiceRequired,
+            isServiceRunning = broadcastServiceManager.isServiceRunning,
             statusResId = inCarStatus.resId,
             eventsState = inCarStatus.eventsState().sortedWith(compareBy({ !it.enabled }, { !it.active }))
         )

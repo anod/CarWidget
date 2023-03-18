@@ -7,17 +7,31 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.IBinder
 import androidx.core.content.ContextCompat
-import com.anod.car.home.getKoin
 import com.anod.car.home.notifications.ModeDetectorNotification
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.BroadcastServiceManager
 import info.anodsplace.carwidget.content.Version
+import info.anodsplace.carwidget.content.extentions.isServiceRunning
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.InCarSettings
-import org.koin.core.Koin
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
 class BroadcastService : Service(), KoinComponent {
+
+    class Manager(private val applicationContext: Context, private val inCarSettings: InCarSettings, private val version: Version) : BroadcastServiceManager {
+        override val isServiceRequired
+            get() = Companion.isServiceRequired(inCarSettings)
+
+        override val isServiceRunning: Boolean
+            get() = applicationContext.isServiceRunning(BroadcastService::class.java)
+
+        override fun registerBroadcastService() = Companion.registerBroadcastService(applicationContext, version, inCarSettings)
+
+        override fun startService() = Companion.startService(applicationContext)
+
+        override fun stopService() = Companion.stopService(applicationContext)
+    }
 
     private var receiver: ModeBroadcastReceiver? = null
 
@@ -89,35 +103,37 @@ class BroadcastService : Service(), KoinComponent {
 
     companion object {
 
-        private fun shouldStart(koin: Koin): Boolean {
-            val isProOrTrial = koin.get<Version>().isProOrTrial
-            return if (isProOrTrial) {
-                val inCar = koin.get<InCarSettings>()
-                inCar.isInCarEnabled && isServiceRequired(inCar)
+        private fun shouldStart(version: Version, inCar: InCarInterface): Boolean {
+            return if (version.isProOrTrial) {
+                isServiceRequired(inCar)
             } else
                 false
         }
 
-        fun registerBroadcastService(context: Context) {
-            if (shouldStart(context.getKoin())) {
+        private fun registerBroadcastService(context: Context, version: Version, inCar: InCarInterface) {
+            if (shouldStart(version, inCar)) {
                 startService(context)
             } else {
                 stopService(context)
             }
         }
 
-        fun startService(context: Context) {
+        private fun startService(context: Context) {
             val service = Intent(context.applicationContext, BroadcastService::class.java)
             ContextCompat.startForegroundService(context, service)
         }
 
-        fun stopService(context: Context) {
+        private fun stopService(context: Context) {
             val service = Intent(context.applicationContext, BroadcastService::class.java)
             context.stopService(service)
         }
 
-        fun isServiceRequired(prefs: InCarInterface): Boolean {
-            ModeDetector.updatePrefState(prefs)
+        private fun isServiceRequired(inCar: InCarInterface): Boolean {
+            if (!inCar.isInCarEnabled) {
+                return false
+            }
+
+            ModeDetector.updatePrefState(inCar)
             val states = ModeDetector.prefState
 
             for (i in states.indices) {
@@ -126,7 +142,7 @@ class BroadcastService : Service(), KoinComponent {
                 }
             }
 
-            if (prefs.isEnableBluetoothOnPower || prefs.isDisableBluetoothOnPower) {
+            if (inCar.isEnableBluetoothOnPower || inCar.isDisableBluetoothOnPower) {
                 return true
             }
             return false

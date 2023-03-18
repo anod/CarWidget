@@ -12,8 +12,6 @@ import info.anodsplace.carwidget.content.preferences.InCarInterface
 class InCarStatus(
     private val widgetIds: WidgetIds,
     private val version: Version,
-    private val serviceRequired: () -> Boolean,
-    private val serviceRunning: () -> Boolean,
     private val modeEventsState: () -> List<InCarStatus.EventState>,
     private val settings: InCarInterface
 ) : InCarStatus {
@@ -21,10 +19,6 @@ class InCarStatus(
     override val value: Int by lazy { calc(widgetIds.getAllWidgetIds().size, version, settings) }
     override val isEnabled: Boolean
         get() = value == ENABLED
-    override val isServiceRequired: Boolean
-        get() = serviceRequired()
-    override val isServiceRunning: Boolean
-        get() = serviceRunning()
 
     override fun eventsState(): List<InCarStatus.EventState> {
         return modeEventsState()

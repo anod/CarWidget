@@ -222,7 +222,10 @@ class InCarSettings(context: Context, appScope: AppCoroutineScope)
         val found = JsonReaderHelper.readValues(reader, types, this) { name, r ->
             when (name) {
                 "screen-on-alert" -> {
-                    this.screenOnAlert = readScreenAlert(r)
+                    val screenOnAlert = readScreenAlert(r)
+                    queueChange("screen-on-alert-enabled", screenOnAlert.enabled)
+                    queueChange("screen-on-alert-x", screenOnAlert.loc[0])
+                    queueChange("screen-on-alert-y", screenOnAlert.loc[1])
                     true
                 }
                 else -> false

@@ -21,10 +21,10 @@ import com.anod.car.home.utils.permissionDescriptions
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.carwidget.appwidget.WidgetUpdate
+import info.anodsplace.carwidget.content.BroadcastServiceManager
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.di.createAppModule
-import info.anodsplace.carwidget.content.extentions.isServiceRunning
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
@@ -144,6 +144,9 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                         factoryOf(::AlertWindow)
                         factoryOf(::ScreenOnAlert)
                         factory {
+                            BroadcastService.Manager(applicationContext = get(), inCarSettings = get(), version = get())
+                        } bind BroadcastServiceManager::class
+                        factory {
                             ModeHandler(
                                 context = get(),
                                 screenOrientation = get(),
@@ -165,12 +168,9 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
 
     private fun createInCarStatus(): InCarStatus {
         val prefs: InCarInterface = get()
-        val context: Context = get()
         return info.anodsplace.carwidget.incar.InCarStatus(
             widgetIds = get(),
             version = get(),
-            serviceRequired = { BroadcastService.isServiceRequired(prefs) },
-            serviceRunning = { context.isServiceRunning(BroadcastService::class.java) },
             modeEventsState = { ModeDetector.eventsState() },
             settings = prefs
         )

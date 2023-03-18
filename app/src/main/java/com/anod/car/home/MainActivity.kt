@@ -3,10 +3,9 @@ package com.anod.car.home
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatDelegate
-import com.anod.car.home.incar.BroadcastService
 import com.anod.car.home.prefs.LookAndFeelActivity
 import info.anodsplace.carwidget.MainComposeActivity
+import info.anodsplace.carwidget.content.BroadcastServiceManager
 
 /**
  * @author alex
@@ -16,12 +15,12 @@ class MainActivity : MainComposeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        BroadcastService.registerBroadcastService(applicationContext)
+        getKoin().get<BroadcastServiceManager>().registerBroadcastService()
     }
 
     override fun onPause() {
         super.onPause()
-        BroadcastService.registerBroadcastService(applicationContext)
+        getKoin().get<BroadcastServiceManager>().registerBroadcastService()
     }
 
     override fun startConfigActivity(appWidgetId: Int) {
