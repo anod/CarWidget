@@ -41,6 +41,7 @@ class BackupManager(
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     suspend fun checkSrcUri(srcUri: Uri): BackupCheckResult = withContext(newSingleThreadContext("RestoreWidget")) {
         return@withContext try {
             val inputStream: InputStream = context.contentResolver.openInputStream(srcUri) ?: return@withContext BackupCheckResult.Error(errorCode = Backup.ERROR_FILE_READ)

@@ -22,17 +22,17 @@ dependencies {
     // Activity recognition
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
-    implementation("androidx.appcompat:appcompat:1.6.0") // AppCompatActivity
+    implementation("androidx.appcompat:appcompat:1.6.1") // AppCompatActivity
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.activity:activity:1.6.1")
+    implementation("androidx.activity:activity:1.7.0")
     implementation("androidx.core:core-splashscreen:1.0.0")
     implementation("androidx.collection:collection-ktx:1.2.0")
-    implementation("androidx.sqlite:sqlite-ktx:2.3.0")
+    implementation("androidx.sqlite:sqlite-ktx:2.3.1")
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
-    kapt("androidx.lifecycle:lifecycle-compiler:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    kapt("androidx.lifecycle:lifecycle-compiler:2.6.1")
 
     implementation("ch.acra:acra-core:5.9.7")
     implementation("ch.acra:acra-notification:5.9.7")
@@ -110,4 +110,13 @@ android {
         warning.add("InvalidFragmentVersionForActivityResult")
     }
     namespace = "com.anod.car.home"
+}
+
+// https://youtrack.jetbrains.com/issue/KT-55947
+kotlin {
+    jvmToolchain(17)
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java) {
+    kotlinOptions.jvmTarget = "11"
 }
