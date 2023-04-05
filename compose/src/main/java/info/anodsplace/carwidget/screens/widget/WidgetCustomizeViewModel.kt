@@ -92,17 +92,6 @@ fun createItems(settings: WidgetInterface, skinList: SkinList) = listOf(
         entries = arrayOf("x1.0","x1.1","x1.2","x1.3","x1.4","x1.5","x1.6","x1.7","x1.8","x1.9","x2.0","x2.1","x2.2","x2.3","x2.4","x2.5","x2.6","x2.7","x2.8","x2.9","x3.0"),
         value = settings.iconsScale
     ),
-    PreferenceItem.Placeholder(
-        titleRes = R.string.pref_font_size_title,
-        summaryRes = R.string.pref_font_size_summary,
-        key = "font-size"
-    ),
-    PreferenceItem.Color(
-        titleRes = R.string.pref_font_color_title,
-        summaryRes = R.string.pref_font_color_summary,
-        key = "font-color",
-        color = settings.fontColor?.let { Color(it) }
-    ),
     PreferenceItem.Pick(
         titleRes = R.string.pref_rotate_icon_title,
         key = "icons-rotate",
@@ -114,12 +103,26 @@ fun createItems(settings: WidgetInterface, skinList: SkinList) = listOf(
         titleRes = R.string.adaptive_icon_style,
         key = "adaptive-icon-style",
     ),
+    PreferenceItem.Category(
+        titleRes = R.string.title,
+    ),
     PreferenceItem.Switch(
         checked = settings.isTitlesHide,
         titleRes = R.string.pref_titles_hide_title,
         summaryRes = R.string.pref_titles_hide_summary,
         key = "titles-hide"
-    )
+    ),
+    PreferenceItem.Placeholder(
+        titleRes = R.string.pref_font_size_title,
+        summaryRes = R.string.pref_font_size_summary,
+        key = "font-size"
+    ),
+    PreferenceItem.Color(
+        titleRes = R.string.pref_font_color_title,
+        summaryRes = R.string.pref_font_color_summary,
+        key = "font-color",
+        color = settings.fontColor?.let { Color(it) }
+    ),
 )
 
 class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowViewModel<WidgetCustomizeState, WidgetCustomizeEvent, WidgetCustomizeAction>(), KoinScopeComponent, SkinViewFactory {
@@ -147,14 +150,14 @@ class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowVie
 
         viewModelScope.launch {
             widgetSettings.changes.collect {
-                val skinList = if (viewState.skinList.current.value != widgetSettings.skin)
+                val newSkinList = if (viewState.skinList.current.value != widgetSettings.skin)
                     viewState.skinList.copy(selectedSkinPosition = WidgetInterface.skins.indexOf(widgetSettings.skin))
                 else
                     viewState.skinList
                 viewState = viewState.copy(
-                    skinList = skinList,
+                    skinList = newSkinList,
                     widgetSettings = WidgetInterface.NoOp(widgetSettings),
-                    items = createItems(widgetSettings, skinList),
+                    items = createItems(widgetSettings, newSkinList),
                     previewVersion = viewState.previewVersion + 1
                 )
             }

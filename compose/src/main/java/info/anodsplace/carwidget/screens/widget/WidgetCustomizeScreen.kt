@@ -70,6 +70,12 @@ fun WidgetCustomizeScreen(
                         "bg-color" -> onMainViewEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseBackgroundColor))
                         "icons-theme" -> onMainViewEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseIconsTheme))
                         "cmp-number" -> onEvent(WidgetCustomizeEvent.ApplyChange(item.key, item.value.toInt()))
+                        "titles-hide" -> {
+                            if (screenState.widgetSettings.fontSize == 0 && !item.checked) {
+                                onEvent(WidgetCustomizeEvent.ApplyChange("font-size", WidgetInterface.FONT_SIZE_UNDEFINED))
+                            }
+                            onEvent(WidgetCustomizeEvent.ApplyChange(item.key, item.checked))
+                        }
                         else -> {
                             when (item) {
                                 is PreferenceItem.CheckBox -> {
