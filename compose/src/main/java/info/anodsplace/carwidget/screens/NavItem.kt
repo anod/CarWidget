@@ -23,8 +23,7 @@ enum class WidgetDialogType {
     None,
     ChooseTileColor,
     ChooseBackgroundColor,
-    ChooseIconsTheme,
-    ChooseIconsScale
+    ChooseIconsTheme
 }
 
 sealed interface WidgetDialogEvent {

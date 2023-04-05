@@ -69,7 +69,6 @@ fun WidgetCustomizeScreen(
                     when (item.key) {
                         "bg-color" -> onMainViewEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseBackgroundColor))
                         "icons-theme" -> onMainViewEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseIconsTheme))
-                        "icons-scale" -> onMainViewEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseIconsScale))
                         "cmp-number" -> onEvent(WidgetCustomizeEvent.ApplyChange(item.key, item.value.toInt()))
                         else -> {
                             when (item) {

@@ -9,10 +9,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
-import info.anodsplace.carwidget.appwidget.PreviewPendingIntentFactory
 import info.anodsplace.carwidget.appwidget.WidgetView
 import info.anodsplace.carwidget.content.BitmapLruCache
-import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
@@ -87,9 +85,12 @@ fun createItems(settings: WidgetInterface, skinList: SkinList) = listOf(
         key = "icons-color",
         color = settings.iconsColor?.let { Color(it) }
     ),
-    PreferenceItem.Text(
+    PreferenceItem.Pick(
         titleRes = R.string.pref_scale_icon,
-        key = "icons-scale"
+        key = "icons-scale",
+        entryValues = arrayOf("0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"),
+        entries = arrayOf("x1.0","x1.1","x1.2","x1.3","x1.4","x1.5","x1.6","x1.7","x1.8","x1.9","x2.0","x2.1","x2.2","x2.3","x2.4","x2.5","x2.6","x2.7","x2.8","x2.9","x3.0"),
+        value = settings.iconsScale
     ),
     PreferenceItem.Placeholder(
         titleRes = R.string.pref_font_size_title,
@@ -134,7 +135,6 @@ class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowVie
 
     private val widgetSettings: WidgetSettings by inject()
     private val context: Context by inject()
-    private val db: ShortcutsDatabase by inject()
     private val bitmapMemoryCache: BitmapLruCache by inject()
 
     init {
@@ -193,10 +193,8 @@ class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowVie
     }
 
     override suspend fun create(overrideSkin: SkinList.Item): View {
-        val intentFactory: PendingIntentFactory = get<PreviewPendingIntentFactory>()
+        val intentFactory: PendingIntentFactory = PendingIntentFactory.NoOp(context)
         val widgetView: WidgetView = get(parameters = { parametersOf(bitmapMemoryCache, intentFactory, true, overrideSkin.value, 2) })
         return widgetView.create().render(context)
-
     }
-
 }
