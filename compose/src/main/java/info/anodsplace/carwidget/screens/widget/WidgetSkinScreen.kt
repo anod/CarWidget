@@ -2,11 +2,14 @@ package info.anodsplace.carwidget.screens.widget
 
 import android.view.View
 import android.widget.FrameLayout
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Surface
@@ -23,9 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.screens.main.MainViewEvent
 import kotlinx.coroutines.launch
@@ -56,7 +56,7 @@ fun WidgetSkinPreview(skinItem: SkinList.Item, skinViewFactory: SkinViewFactory,
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun WidgetSkinScreen(
     screenState: SkinPreviewViewState,
@@ -108,7 +108,7 @@ fun WidgetSkinScreen(
             }
 
             HorizontalPager(
-                count = skinList.count,
+                pageCount = skinList.count,
                 state = pagerState,
                 modifier = Modifier.padding(16.dp)
             ) { page ->
