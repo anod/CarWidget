@@ -67,6 +67,7 @@ fun createItems(settings: WidgetInterface, skinList: SkinList) = listOf(
             color = backgroundColor
         )
     },
+    PreferenceItem.Spacer(),
     PreferenceItem.Category(
         titleRes = R.string.icon_style,
     ),
@@ -103,6 +104,7 @@ fun createItems(settings: WidgetInterface, skinList: SkinList) = listOf(
         titleRes = R.string.adaptive_icon_style,
         key = "adaptive-icon-style",
     ),
+    PreferenceItem.Spacer(),
     PreferenceItem.Category(
         titleRes = R.string.title,
     ),

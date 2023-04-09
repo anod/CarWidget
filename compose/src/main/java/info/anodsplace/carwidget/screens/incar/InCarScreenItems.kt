@@ -39,12 +39,14 @@ private fun autorunItem(context: Context, componentName: ComponentName?, item: P
 fun createCarScreenItems(inCar: InCarInterface, context: Context): List<PreferenceItem> {
     return listOf(
         PreferenceItem.Switch(checked = inCar.isInCarEnabled, titleRes = R.string.pref_incar_mode_enabled, key = "incar-mode-enabled"),
+        PreferenceItem.Spacer(),
         PreferenceItem.Category(titleRes = R.string.pref_detection),
         PreferenceItem.Text(titleRes = R.string.pref_blutooth_device_title, summaryRes = R.string.pref_blutooth_device_summary, key = "bt-device-screen"),
         PreferenceItem.CheckBox(checked = inCar.isHeadsetRequired, key = "headset-required", summaryRes = R.string.pref_headset_connected_summary, titleRes = R.string.pref_headset_connected_title),
         PreferenceItem.CheckBox(checked = inCar.isPowerRequired, key = "power-required", summaryRes = R.string.pref_power_connected_summary, titleRes = R.string.pref_power_connected_title),
         PreferenceItem.CheckBox(checked = inCar.isActivityRequired, key = "activity-recognition", summaryRes = R.string.gms_service_missing, titleRes = R.string.activity_recognition),
         PreferenceItem.CheckBox(checked = inCar.isCarDockRequired, key = "car-dock", summaryRes = R.string.car_dock_summary, titleRes = R.string.car_dock),
+        PreferenceItem.Spacer(),
         PreferenceItem.Category(titleRes = R.string.pref_actions),
         PreferenceItem.Switch(
             checked = inCar.isDisableScreenTimeout,
@@ -93,9 +95,11 @@ fun createCarScreenItems(inCar: InCarInterface, context: Context): List<Preferen
             titleRes = R.string.pref_autorun_app_title,
             key = "autorun-app-choose"
         )),
+        PreferenceItem.Spacer(),
         PreferenceItem.Category(titleRes = R.string.pref_power_contorl_bt),
         PreferenceItem.CheckBox(checked = inCar.isInCarEnabled, key = "power-bt-enable", summaryRes = R.string.pref_power_plugged_bt_on_summary, titleRes = R.string.pref_power_plugged_bt_on_title),
         PreferenceItem.CheckBox(checked = inCar.isInCarEnabled, key = "power-bt-disable", summaryRes = R.string.pref_power_unplugged_bt_off_summary, titleRes = R.string.pref_power_unplugged_bt_off_title),
+        PreferenceItem.Spacer(),
         PreferenceItem.Category(titleRes = R.string.notification),
         PreferenceItem.Placeholder(key = "notif-shortcuts", summaryRes = R.string.shortcuts_summary, titleRes = R.string.notification_shortcuts)
     )

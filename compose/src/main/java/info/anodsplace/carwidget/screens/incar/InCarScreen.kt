@@ -21,6 +21,7 @@ import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.compose.PreferencesDefaults
 import info.anodsplace.compose.PreferencesScreen
 import info.anodsplace.compose.checked
+import info.anodsplace.compose.key
 import info.anodsplace.compose.value
 
 @Composable
@@ -119,6 +120,7 @@ fun onPreferenceClick(
         is PreferenceItem.Placeholder -> { }
         is PreferenceItem.Pick -> { }
         is PreferenceItem.Color -> onEvent(InCarViewEvent.ApplyChange(item.key, item.color))
+        is PreferenceItem.Spacer -> {}
     }
 }
 
