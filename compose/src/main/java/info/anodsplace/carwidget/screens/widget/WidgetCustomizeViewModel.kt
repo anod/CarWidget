@@ -74,13 +74,19 @@ fun createItems(settings: WidgetInterface, skinList: SkinList) = listOf(
             color = backgroundColor
         )
     },
+    PreferenceItem.Switch(
+        checked = settings.paletteBackground,
+        titleRes = info.anodsplace.carwidget.content.R.string.auto_color,
+        key = "palette-background",
+        enabled = skinList.current.value == WidgetInterface.SKIN_WINDOWS7
+    ),
     Color(settings.tileColor).let { tileColor ->
         PreferenceItem.Color(
             titleRes = info.anodsplace.carwidget.content.R.string.pref_tile_color_title,
             summary = if (tileColor.isVisible) "#${tileColor.toColorHex()}" else "",
             key = "button-color",
             color = tileColor,
-            enabled = skinList.current.value == WidgetInterface.SKIN_WINDOWS7
+            enabled = skinList.current.value == WidgetInterface.SKIN_WINDOWS7 && !settings.paletteBackground
         )
     },
     PreferenceItem.Spacer(),
