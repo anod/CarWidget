@@ -13,7 +13,6 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.InCarSettings
-import info.anodsplace.framework.bluetooth.Bluetooth
 
 /**
  * @author alex
@@ -215,9 +214,6 @@ object ModeDetector {
     }
 
     private fun onPowerConnected(prefs: InCarInterface, context: Context) {
-        if (prefs.isEnableBluetoothOnPower && Bluetooth.state != BluetoothAdapter.STATE_ON) {
-            Bluetooth.switchOn()
-        }
         if (ModeService.sInCarMode) {
             if (prefs.isDisableScreenTimeoutCharging) {
                 ModeService.acquireWakeLock(context)
@@ -226,9 +222,6 @@ object ModeDetector {
     }
 
     private fun onPowerDisconnected(prefs: InCarInterface, context: Context) {
-        if (prefs.isDisableBluetoothOnPower && Bluetooth.state != BluetoothAdapter.STATE_OFF) {
-            Bluetooth.switchOff()
-        }
         if (ModeService.sInCarMode) {
             if (prefs.isDisableScreenTimeoutCharging) {
                 ModeService.releaseWakeLock(context)

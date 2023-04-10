@@ -3,9 +3,7 @@ package info.anodsplace.carwidget.screens.incar
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import androidx.collection.ArrayMap
@@ -14,9 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import info.anodsplace.carwidget.content.preferences.InCarSettings
-import info.anodsplace.framework.bluetooth.Bluetooth
 import info.anodsplace.framework.bluetooth.BtClassType
 import info.anodsplace.framework.bluetooth.classType
+import info.anodsplace.ktx.broadcastReceiver
 import info.anodsplace.permissions.AppPermission
 import info.anodsplace.permissions.AppPermissions
 import info.anodsplace.viewmodel.BaseFlowViewModel
@@ -45,7 +43,6 @@ data class BluetoothDevicesViewState(
 sealed interface BluetoothDevicesViewEvent {
     class UpdateDevice(val device: BluetoothDevice, val checked: Boolean) : BluetoothDevicesViewEvent
     class PermissionResult(val requires: Boolean) : BluetoothDevicesViewEvent
-    class SwitchAdapter(val enable: Boolean) : BluetoothDevicesViewEvent
 
     object LoadDevices : BluetoothDevicesViewEvent
 }
@@ -66,14 +63,13 @@ class BluetoothDevicesViewModel(
         }
     }
 
-    private var bluetoothReceiver: BroadcastReceiver? = null
     private val context: Context by inject()
     private val isBluetoothEnabled: Boolean
         get() = bluetoothManager.adapter?.isEnabled == true
 
     init {
         viewState = BluetoothDevicesViewState(
-            btAdapterState = Bluetooth.state,
+            btAdapterState = bluetoothManager.adapter?.state ?: BluetoothAdapter.STATE_OFF,
             listState = if (checkPermission()) {
                 BluetoothDevicesListState.RequiresPermissions
             } else {
@@ -82,6 +78,17 @@ class BluetoothDevicesViewModel(
         )
         if (viewState.listState is BluetoothDevicesListState.Initial) {
             handleEvent(BluetoothDevicesViewEvent.LoadDevices)
+        }
+
+        viewModelScope.launch {
+            context.broadcastReceiver(filter = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED))
+                .collect { intent ->
+                    val state = intent?.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR) ?: BluetoothAdapter.ERROR
+                    viewState = viewState.copy(btAdapterState = state)
+                    if (state == BluetoothAdapter.STATE_ON) {
+                        handleEvent(BluetoothDevicesViewEvent.LoadDevices)
+                    }
+                }
         }
     }
 
@@ -94,7 +101,6 @@ class BluetoothDevicesViewModel(
                 }
             }
             is BluetoothDevicesViewEvent.UpdateDevice -> updateDevice(event.device, event.checked)
-            is BluetoothDevicesViewEvent.SwitchAdapter -> btSwitchRequest(event.enable)
             is BluetoothDevicesViewEvent.PermissionResult -> {
                 if (event.requires) {
                     viewState = viewState.copy(listState = BluetoothDevicesListState.RequiresPermissions)
@@ -105,45 +111,12 @@ class BluetoothDevicesViewModel(
         }
     }
 
-    private fun btSwitchRequest(newState: Boolean) {
-        if (newState) {
-            registerBroadcastReceiver()
-            Bluetooth.switchOn()
-        } else {
-            Bluetooth.switchOff()
-        }
-    }
-
     private fun checkPermission(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return (!AppPermissions.isGranted(context, AppPermission.BluetoothScan)
                     || !AppPermissions.isGranted(context, AppPermission.BluetoothConnect))
         }
         return false
-    }
-
-    override fun onCleared() {
-        if (bluetoothReceiver != null) {
-            context.unregisterReceiver(bluetoothReceiver)
-        }
-    }
-
-    private fun registerBroadcastReceiver() {
-        if (bluetoothReceiver != null) {
-            context.unregisterReceiver(bluetoothReceiver)
-            bluetoothReceiver = null
-        }
-        bluetoothReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                val state = intent?.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR) ?: Bluetooth.state
-                viewState = viewState.copy(btAdapterState = state)
-                if (state == BluetoothAdapter.STATE_ON) {
-                    handleEvent(BluetoothDevicesViewEvent.LoadDevices)
-                }
-            }
-        }
-
-        context.registerReceiver(bluetoothReceiver, INTENT_FILTER)
     }
 
     @SuppressLint("MissingPermission")
@@ -202,9 +175,4 @@ class BluetoothDevicesViewModel(
         settings.btDevices = devices
         handleEvent(BluetoothDevicesViewEvent.LoadDevices)
     }
-
-    companion object {
-        private val INTENT_FILTER = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
-    }
-
 }

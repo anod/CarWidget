@@ -142,9 +142,6 @@ class BroadcastService : Service(), KoinComponent {
                 }
             }
 
-            if (inCar.isEnableBluetoothOnPower || inCar.isDisableBluetoothOnPower) {
-                return true
-            }
             return false
         }
     }

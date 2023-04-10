@@ -17,14 +17,11 @@ interface InCarInterface {
     var isPowerRequired: Boolean
     var isHeadsetRequired: Boolean
     val isBluetoothRequired: Boolean
-    var isDisableBluetoothOnPower: Boolean
-    var isEnableBluetoothOnPower: Boolean
     var isDisableScreenTimeout: Boolean
     var isAdjustVolumeLevel: Boolean
     var isActivityRequired: Boolean
     var mediaVolumeLevel: Int
     var callVolumeLevel: Int
-    var isEnableBluetooth: Boolean
     var brightness: String
     var isCarDockRequired: Boolean
     var isActivateCarMode: Boolean
@@ -76,14 +73,11 @@ interface InCarInterface {
         override var isPowerRequired: Boolean = false,
         override var isHeadsetRequired: Boolean = false,
         override val isBluetoothRequired: Boolean = false,
-        override var isDisableBluetoothOnPower: Boolean = false,
-        override var isEnableBluetoothOnPower: Boolean = false,
         override var isDisableScreenTimeout: Boolean = false,
         override var isAdjustVolumeLevel: Boolean = false,
         override var isActivityRequired: Boolean = false,
         override var mediaVolumeLevel: Int = 0,
         override var callVolumeLevel: Int = 0,
-        override var isEnableBluetooth: Boolean = false,
         override var brightness: String = BRIGHTNESS_DISABLED,
         override var isCarDockRequired: Boolean = false,
         override var isActivateCarMode: Boolean = false,
@@ -101,14 +95,11 @@ interface InCarInterface {
                isPowerRequired = other.isPowerRequired,
                isHeadsetRequired = other.isHeadsetRequired,
                isBluetoothRequired = other.isBluetoothRequired,
-               isDisableBluetoothOnPower = other.isDisableBluetoothOnPower,
-               isEnableBluetoothOnPower = other.isEnableBluetoothOnPower,
                isDisableScreenTimeout = other.isDisableScreenTimeout,
                isAdjustVolumeLevel = other.isAdjustVolumeLevel,
                isActivityRequired = other.isActivityRequired,
                mediaVolumeLevel = other.mediaVolumeLevel,
                callVolumeLevel = other.callVolumeLevel,
-               isEnableBluetooth = other.isEnableBluetooth,
                brightness = other.brightness,
                isCarDockRequired = other.isCarDockRequired,
                isActivateCarMode = other.isActivateCarMode,

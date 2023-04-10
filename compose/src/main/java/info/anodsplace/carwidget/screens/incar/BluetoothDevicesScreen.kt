@@ -1,6 +1,7 @@
 package info.anodsplace.carwidget.screens.incar
 
 import android.bluetooth.BluetoothAdapter
+import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.compose.PreferenceCheckbox
 import info.anodsplace.compose.PreferenceItem
@@ -28,7 +30,9 @@ import info.anodsplace.permissions.AppPermission
 @Composable
 fun BluetoothDevicesScreen(screenState: BluetoothDevicesViewState, onEvent: (BluetoothDevicesViewEvent) -> Unit, innerPadding: PaddingValues = PaddingValues(0.dp),) {
     val screenModifier = Modifier.padding(innerPadding).padding(16.dp)
-    Surface {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+    ) {
         when (val listState = screenState.listState) {
             BluetoothDevicesListState.Initial -> {
                 CircularProgressIndicator()
@@ -40,7 +44,6 @@ fun BluetoothDevicesScreen(screenState: BluetoothDevicesViewState, onEvent: (Blu
                 BluetoothDeviceList(
                     list = listState.list,
                     btState = screenState.btAdapterState,
-                    onSwitchRequest = { onEvent(BluetoothDevicesViewEvent.SwitchAdapter(enable = it)) },
                     onChecked = { device, checked -> onEvent(BluetoothDevicesViewEvent.UpdateDevice(device, checked)) },
                     modifier = screenModifier)
             }
@@ -48,7 +51,6 @@ fun BluetoothDevicesScreen(screenState: BluetoothDevicesViewState, onEvent: (Blu
                 BluetoothDeviceEmpty(
                     btState = screenState.btAdapterState,
                     modifier = screenModifier,
-                    onSwitchRequest = { onEvent(BluetoothDevicesViewEvent.SwitchAdapter(enable = it)) },
                 )
             }
         }
@@ -58,7 +60,7 @@ fun BluetoothDevicesScreen(screenState: BluetoothDevicesViewState, onEvent: (Blu
 @Composable
 fun BluetoothPermissions(onEvent: (BluetoothDevicesViewEvent) -> Unit, modifier: Modifier = Modifier) {
     val bluetoothPermissions = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestMultiplePermissions()) { results ->
-        val requiresPermission = !results.values.any { !it }
+        val requiresPermission = results.values.any { !it }
         onEvent(BluetoothDevicesViewEvent.PermissionResult(requires = requiresPermission))
     }
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -73,10 +75,10 @@ fun BluetoothPermissions(onEvent: (BluetoothDevicesViewEvent) -> Unit, modifier:
 }
 
 @Composable
-fun BluetoothDeviceList(list: List<BluetoothDevice>, btState: Int, onSwitchRequest: (newState: Boolean) -> Unit, onChecked: (device: BluetoothDevice, checked: Boolean) -> Unit, modifier: Modifier = Modifier) {
+fun BluetoothDeviceList(list: List<BluetoothDevice>, btState: Int, onChecked: (device: BluetoothDevice, checked: Boolean) -> Unit, modifier: Modifier = Modifier) {
 
     if (list.isEmpty()) {
-        BluetoothDeviceEmpty(btState, onSwitchRequest, modifier = modifier)
+        BluetoothDeviceEmpty(btState, modifier = modifier)
     } else {
         LazyColumn(modifier = modifier.fillMaxSize()) {
             item {
@@ -101,7 +103,10 @@ fun BluetoothDeviceList(list: List<BluetoothDevice>, btState: Int, onSwitchReque
 }
 
 @Composable
-fun BluetoothDeviceEmpty(btState: Int, onSwitchRequest: (newState: Boolean) -> Unit, modifier: Modifier = Modifier) {
+fun BluetoothDeviceEmpty(btState: Int, modifier: Modifier = Modifier) {
+    val turnOnBluetooth = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
+        AppLog.d("Bluetooth turned on: ${result.resultCode}")
+    }
     Column(modifier = modifier) {
         Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.bluetooth_device_category_title))
         Text(
@@ -120,7 +125,9 @@ fun BluetoothDeviceEmpty(btState: Int, onSwitchRequest: (newState: Boolean) -> U
                 Switch(
                     modifier = Modifier.padding(start = 16.dp),
                     checked = false,
-                    onCheckedChange = { onSwitchRequest(it) },
+                    onCheckedChange = {
+                        turnOnBluetooth.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
+                    },
                     enabled = btState == BluetoothAdapter.STATE_OFF
                 )
             }

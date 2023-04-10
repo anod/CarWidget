@@ -53,11 +53,6 @@
     <string name="pref_incar_mode_title">InCar mode</string>
     <string name="pref_incar_mode_summary">Choose how to detect when you in car, and settings that will be adjusted</string>
     <string name="pref_incar_mode_enabled">Enable InCar mode</string>
-    <string name="pref_power_contorl_bt">Power control Bluetooth</string>
-    <string name="pref_power_plugged_bt_on_title">On when plugged</string>
-    <string name="pref_power_plugged_bt_on_summary">Switch Bluetooth On when power cable plugged in</string>
-    <string name="pref_power_unplugged_bt_off_title">Off when unplugged</string>
-    <string name="pref_power_unplugged_bt_off_summary">Switch Bluetooth Off when power cable unplugged in</string>
     <string name="pref_detection">Trigger</string>
     <string name="pref_blutooth_device_title">Bluetooth device</string>
     <string name="pref_blutooth_device_summary">Choose bluetooth device which enable InCar mode</string>

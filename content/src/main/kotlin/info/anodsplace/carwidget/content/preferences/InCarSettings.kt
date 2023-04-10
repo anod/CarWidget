@@ -60,14 +60,6 @@ class InCarSettings(context: Context, appScope: AppCoroutineScope)
     override val isBluetoothRequired: Boolean
         get() = prefs.getString(BLUETOOTH_DEVICE_ADDRESSES, null) != null
 
-    override var isDisableBluetoothOnPower: Boolean
-        get() = prefs.getBoolean(POWER_BT_DISABLE, false)
-        set(disableBluetoothOnPower) = applyChange(POWER_BT_DISABLE, disableBluetoothOnPower)
-
-    override var isEnableBluetoothOnPower: Boolean
-        get() = prefs.getBoolean(POWER_BT_ENABLE, false)
-        set(enableBluetoothOnPower) = applyChange(POWER_BT_ENABLE, enableBluetoothOnPower)
-
     override var isDisableScreenTimeout: Boolean
         get() = prefs.getBoolean(SCREEN_TIMEOUT, true)
         set(screenTimeout) = applyChange(SCREEN_TIMEOUT, screenTimeout)
@@ -87,10 +79,6 @@ class InCarSettings(context: Context, appScope: AppCoroutineScope)
     override var callVolumeLevel: Int
         get() = prefs.getInt(CALL_VOLUME_LEVEL, InCarInterface.DEFAULT_VOLUME_LEVEL)
         set(level) = applyChange(CALL_VOLUME_LEVEL, level)
-
-    override var isEnableBluetooth: Boolean
-        get() = prefs.getBoolean(BLUETOOTH, false)
-        set(bluetooth) = applyChange(BLUETOOTH, bluetooth)
 
     override var brightness: String
         get() = prefs.getString(BRIGHTNESS, InCarInterface.BRIGHTNESS_DISABLED)!!
@@ -149,9 +137,6 @@ class InCarSettings(context: Context, appScope: AppCoroutineScope)
         writer.name(CAR_DOCK_REQUIRED).value(isCarDockRequired)
         writer.name(ACTIVITY_RECOGNITION).value(isActivityRequired)
 
-        writer.name(POWER_BT_ENABLE).value(isEnableBluetoothOnPower)
-        writer.name(POWER_BT_DISABLE).value(isDisableBluetoothOnPower)
-
         val addressStr = prefs.getString(BLUETOOTH_DEVICE_ADDRESSES, null)
         if (addressStr != null) {
             writer.name(BLUETOOTH_DEVICE_ADDRESSES).value(addressStr)
@@ -159,7 +144,6 @@ class InCarSettings(context: Context, appScope: AppCoroutineScope)
         writer.name(SCREEN_TIMEOUT).value(isDisableScreenTimeout)
         writer.name(SCREEN_TIMEOUT_CHARGING).value(isDisableScreenTimeoutCharging)
         writer.name(BRIGHTNESS).value(brightness)
-        writer.name(BLUETOOTH).value(isEnableBluetooth)
         writer.name(ADJUST_VOLUME_LEVEL).value(isAdjustVolumeLevel)
         writer.name(MEDIA_VOLUME_LEVEL).value(mediaVolumeLevel.toLong())
         writer.name(CALL_VOLUME_LEVEL).value(callVolumeLevel.toLong())
@@ -198,16 +182,12 @@ class InCarSettings(context: Context, appScope: AppCoroutineScope)
         types.put(CAR_DOCK_REQUIRED, JsonToken.BOOLEAN)
         types.put(ACTIVITY_RECOGNITION, JsonToken.BOOLEAN)
 
-        types.put(POWER_BT_ENABLE, JsonToken.BOOLEAN)
-        types.put(POWER_BT_DISABLE, JsonToken.BOOLEAN)
-
         types.put(BLUETOOTH_DEVICE_ADDRESSES, JsonToken.STRING)
 
         types.put(SCREEN_TIMEOUT, JsonToken.BOOLEAN)
         types.put(SCREEN_TIMEOUT_CHARGING, JsonToken.BOOLEAN)
 
         types.put(BRIGHTNESS, JsonToken.STRING)
-        types.put(BLUETOOTH, JsonToken.BOOLEAN)
         types.put(ADJUST_VOLUME_LEVEL, JsonToken.BOOLEAN)
         types.put(MEDIA_VOLUME_LEVEL, JsonToken.NUMBER)
         types.put(CALL_VOLUME_LEVEL, JsonToken.NUMBER)
@@ -262,15 +242,12 @@ class InCarSettings(context: Context, appScope: AppCoroutineScope)
 
     companion object {
         const val INCAR_MODE_ENABLED = "incar-mode-enabled"
-        const val POWER_BT_ENABLE = "power-bt-enable"
-        const val POWER_BT_DISABLE = "power-bt-disable"
         const val HEADSET_REQUIRED = "headset-required"
         const val POWER_REQUIRED = "power-required"
         const val BLUETOOTH_DEVICE_ADDRESSES = "bt-device-addresses"
         const val SCREEN_TIMEOUT = "screen-timeout"
         const val SCREEN_TIMEOUT_CHARGING = "screen-timeout-charging"
         const val BRIGHTNESS = "brightness"
-        const val BLUETOOTH = "bluetooth"
         const val ADJUST_VOLUME_LEVEL = "adjust-volume-level"
         const val MEDIA_VOLUME_LEVEL = "volume-level"
         const val AUTO_SPEAKER = "auto_speaker"

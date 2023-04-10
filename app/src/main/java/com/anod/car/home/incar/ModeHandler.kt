@@ -1,7 +1,6 @@
 package com.anod.car.home.incar
 
 import android.app.UiModeManager
-import android.bluetooth.BluetoothAdapter
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -13,7 +12,6 @@ import com.anod.car.home.utils.Power
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
-import info.anodsplace.framework.bluetooth.Bluetooth
 import info.anodsplace.framework.content.startActivitySafely
 import org.koin.core.Koin
 
@@ -43,9 +41,6 @@ class ModeHandler(
         if (prefs.isAdjustVolumeLevel) {
             adjustVolume(prefs, context)
         }
-        if (prefs.isEnableBluetooth) {
-            enableBluetooth()
-        }
         if (prefs.isActivateCarMode) {
             activateCarMode(context)
         }
@@ -72,9 +67,6 @@ class ModeHandler(
         if (prefs.isAdjustVolumeLevel) {
             restoreVolume(context)
         }
-        if (prefs.isEnableBluetooth) {
-            restoreBluetooth()
-        }
         if (prefs.isActivateCarMode) {
             deactivateCarMode(context)
         }
@@ -93,7 +85,6 @@ class ModeHandler(
         private const val BRIGHTNESS_NIGHT = 30
         private const val BRIGHTNESS_DAY = BRIGHTNESS_MAX
 
-        private var sCurrentBtState: Int = 0
         private var sCurrentMediaVolume = VOLUME_NOT_SET
         private var sCurrentCallVolume = VOLUME_NOT_SET
         private var sCurrentBrightness: Int = 0
@@ -114,19 +105,6 @@ class ModeHandler(
         private fun deactivateCarMode(context: Context) {
             val ui = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
             ui.disableCarMode(0)
-        }
-
-        private fun enableBluetooth() {
-            sCurrentBtState = Bluetooth.state
-            if (sCurrentBtState != BluetoothAdapter.STATE_ON) {
-                Bluetooth.switchOn()
-            }
-        }
-
-        private fun restoreBluetooth() {
-            if (sCurrentBtState != BluetoothAdapter.STATE_ON) {
-                Bluetooth.switchOff()
-            }
         }
 
         private fun adjustBrightness(brightSetting: String, context: Context) {

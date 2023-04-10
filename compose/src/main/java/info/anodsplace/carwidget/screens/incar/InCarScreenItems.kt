@@ -69,7 +69,6 @@ fun createCarScreenItems(inCar: InCarInterface, context: Context): List<Preferen
             summaryRes = info.anodsplace.carwidget.content.R.string.pref_screen_orientation_summary,
             titleRes = info.anodsplace.carwidget.content.R.string.screen_orientation
         ),
-        PreferenceItem.Switch(checked = inCar.isEnableBluetooth, key = "bluetooth", titleRes = info.anodsplace.carwidget.content.R.string.turn_on_bluetooth_summary),
         PreferenceItem.Switch(checked = inCar.isAutoSpeaker, key = "auto_speaker", summaryRes = info.anodsplace.carwidget.content.R.string.pref_route_to_speaker_summary, titleRes = info.anodsplace.carwidget.content.R.string.pref_route_to_speaker),
         PreferenceItem.Pick(
             value = inCar.autoAnswer,
@@ -94,10 +93,6 @@ fun createCarScreenItems(inCar: InCarInterface, context: Context): List<Preferen
             titleRes = info.anodsplace.carwidget.content.R.string.pref_autorun_app_title,
             key = "autorun-app-choose"
         )),
-        PreferenceItem.Spacer(),
-        PreferenceItem.Category(titleRes = info.anodsplace.carwidget.content.R.string.pref_power_contorl_bt),
-        PreferenceItem.CheckBox(checked = inCar.isInCarEnabled, key = "power-bt-enable", summaryRes = info.anodsplace.carwidget.content.R.string.pref_power_plugged_bt_on_summary, titleRes = info.anodsplace.carwidget.content.R.string.pref_power_plugged_bt_on_title),
-        PreferenceItem.CheckBox(checked = inCar.isInCarEnabled, key = "power-bt-disable", summaryRes = info.anodsplace.carwidget.content.R.string.pref_power_unplugged_bt_off_summary, titleRes = info.anodsplace.carwidget.content.R.string.pref_power_unplugged_bt_off_title),
         PreferenceItem.Spacer(),
         PreferenceItem.Category(titleRes = info.anodsplace.carwidget.content.R.string.notification),
         PreferenceItem.Placeholder(key = "notif-shortcuts", summaryRes = info.anodsplace.carwidget.content.R.string.shortcuts_summary, titleRes = info.anodsplace.carwidget.content.R.string.notification_shortcuts)
