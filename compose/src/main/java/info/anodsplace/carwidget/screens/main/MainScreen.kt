@@ -23,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
@@ -290,26 +289,9 @@ fun NavHost(
                 WidgetCustomizeScreen(
                     screenState = screenState,
                     onEvent = { customizeViewModel.handleEvent(it) },
-                    onMainViewEvent = onEvent,
                     innerPadding = innerPadding,
                     isCompact = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact,
                     skinViewFactory = customizeViewModel
-                )
-            }
-            dialog(
-                route = NavItem.Tab.CurrentWidget.Skin.Dialog.route,
-                arguments = NavItem.Tab.CurrentWidget.Skin.Dialog.arguments,
-                dialogProperties = DialogProperties()
-            ) { entry ->
-                val args = NavItem.Tab.CurrentWidget.Skin.Dialog.Args(entry.arguments)
-                val customizeViewModel: WidgetCustomizeViewModel =
-                    viewModel(factory = WidgetCustomizeViewModel.Factory(appWidgetIdScope!!))
-                val screenState by customizeViewModel.viewStates.collectAsState(initial = customizeViewModel.viewState)
-                WidgetActionDialogContent(
-                    args.dialogType,
-                    onEvent = { customizeViewModel.handleEvent(WidgetCustomizeEvent.DialogEvent(dialogEvent = it)) },
-                    dismiss = { navController.popBackStack() },
-                    widgetSettings = screenState.widgetSettings
                 )
             }
         }

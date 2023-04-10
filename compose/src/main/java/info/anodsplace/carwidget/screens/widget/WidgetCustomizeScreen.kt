@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,8 +20,6 @@ import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.TextDecreaseIcon
 import info.anodsplace.carwidget.TextIncreaseIcon
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import info.anodsplace.carwidget.screens.WidgetDialogType
-import info.anodsplace.carwidget.screens.main.MainViewEvent
 import info.anodsplace.compose.*
 
 @Composable
@@ -45,7 +44,6 @@ fun FontSize(
 fun WidgetCustomizeScreen(
     screenState: WidgetCustomizeState,
     onEvent: (WidgetCustomizeEvent) -> Unit,
-    onMainViewEvent: (MainViewEvent) -> Unit,
     innerPadding: PaddingValues = PaddingValues(0.dp),
     isCompact: Boolean = false,
     skinViewFactory: SkinViewFactory
@@ -70,8 +68,10 @@ fun WidgetCustomizeScreen(
                 preferences = screenState.items,
                 onClick = { item ->
                     when (item.key) {
-                        "bg-color" -> onMainViewEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseBackgroundColor))
-                        "icons-theme" -> onMainViewEvent(MainViewEvent.ShowDialog(WidgetDialogType.ChooseIconsTheme))
+                        "bg-color" -> onEvent(WidgetCustomizeEvent.ShowBackgroundColorPicker(show = true))
+                        "icons-theme" -> onEvent(WidgetCustomizeEvent.ShowIconsThemePicker(show = true))
+                        "font-color" -> onEvent(WidgetCustomizeEvent.ShowFontColorPicker(show = true))
+                        "button-color" -> onEvent(WidgetCustomizeEvent.ShowTileColorPicker(show = true))
                         "cmp-number" -> onEvent(WidgetCustomizeEvent.ApplyChange(item.key, item.value.toInt()))
                         "titles-hide" -> {
                             if (screenState.widgetSettings.fontSize == 0 && !item.checked) {
@@ -131,6 +131,54 @@ fun WidgetCustomizeScreen(
             }
         }
     }
+
+    if (screenState.showBackgroundColorPicker) {
+        ColorPickerSheet(
+            color = Color(screenState.widgetSettings.backgroundColor),
+            onColorChange = { onEvent(WidgetCustomizeEvent.ApplyChange("bg-color", it)) },
+            onDismissRequest = { onEvent(WidgetCustomizeEvent.ShowBackgroundColorPicker(show = false)) }
+        )
+    }
+
+    if (screenState.showTileColorPicker) {
+        ColorPickerSheet(
+            color = Color(screenState.widgetSettings.tileColor),
+            onColorChange = { onEvent(WidgetCustomizeEvent.ApplyChange("button-color", it)) },
+            onDismissRequest = { onEvent(WidgetCustomizeEvent.ShowTileColorPicker(show = false)) }
+        )
+    }
+
+    if (screenState.showFontColorPicker) {
+        ColorPickerSheet(
+            color = screenState.widgetSettings.fontColor?.let { Color(it) },
+            onColorChange = { onEvent(WidgetCustomizeEvent.ApplyChange("font-color", it)) },
+            onDismissRequest = { onEvent(WidgetCustomizeEvent.ShowFontColorPicker(show = false)) }
+        )
+    }
+}
+
+@Composable
+private fun ColorPickerSheet(color: Color?, onColorChange: (Color?) -> Unit, onDismissRequest: () -> Unit) {
+    BottomSheet(
+        onDismissRequest = onDismissRequest
+    ) {
+        ColorChooser(
+            color = color,
+            onColorChange = { onColorChange(it) },
+        )
+    }
+}
+
+@Composable
+private fun ColorChooser(color: Color?, onColorChange: (Color?) -> Unit) {
+    Surface(modifier = Modifier.fillMaxWidth()) {
+        ColorDialogContent(
+            color = color,
+            onColorChange = onColorChange,
+            showNone = true,
+            showAlpha = true
+        )
+    }
 }
 
 @Preview("WidgetLookMoreScreen Dark")
@@ -147,7 +195,6 @@ fun WidgetLookMoreScreenDark() {
                 skinList = skinViewFactory.viewState.skinList,
             ),
             onEvent = { },
-            onMainViewEvent = { },
             skinViewFactory = skinViewFactory
         )
     }

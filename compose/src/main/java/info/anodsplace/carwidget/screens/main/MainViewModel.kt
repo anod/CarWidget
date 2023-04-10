@@ -19,7 +19,6 @@ import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.WidgetAwareViewModel
-import info.anodsplace.carwidget.screens.WidgetDialogType
 import info.anodsplace.carwidget.screens.widget.SkinList
 import info.anodsplace.permissions.AppPermission
 import kotlinx.coroutines.launch
@@ -53,7 +52,6 @@ sealed interface MainViewAction {
 sealed interface MainViewEvent {
     object PermissionAcquired : MainViewEvent
     object HideProDialog : MainViewEvent
-    class ShowDialog(val dialogType: WidgetDialogType) : MainViewEvent
     class ApplyWidget(val appWidgetId: Int, val currentSkinValue: String) : MainViewEvent
     class OpenWidgetConfig(val appWidgetId: Int) : MainViewEvent
     class WidgetUpdateShortcuts(val number: Int) : MainViewEvent
@@ -121,9 +119,6 @@ class MainViewModel(
             }
             MainViewEvent.HideProDialog -> {
                 viewState = viewState.copy(showProDialog = false)
-            }
-            is MainViewEvent.ShowDialog -> {
-                emitAction(MainViewAction.ShowDialog(NavItem.Tab.CurrentWidget.Skin.Dialog.routeForDialogType(event.dialogType)))
             }
             is MainViewEvent.OnBackNav -> emitAction(MainViewAction.OnBackNav)
             is MainViewEvent.ApplyWidget -> emitAction(MainViewAction.ApplyWidget(event.appWidgetId, event.currentSkinValue))

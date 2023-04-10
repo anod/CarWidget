@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavDeepLink
@@ -17,19 +16,6 @@ import androidx.navigation.navDeepLink
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.ktx.equalsHash
 import info.anodsplace.ktx.hashCodeOf
-
-enum class WidgetDialogType {
-    None,
-    ChooseTileColor,
-    ChooseBackgroundColor,
-    ChooseIconsTheme
-}
-
-sealed interface WidgetDialogEvent {
-    class UpdateBackgroundColor(val newColor: Color?) : WidgetDialogEvent
-    class UpdateTileColor(val newColor: Color?) : WidgetDialogEvent
-    class UpdateIconScale(val iconScale: String) : WidgetDialogEvent
-}
 
 sealed class NavItem(val route: String, val parent: NavItem? = null) {
     override fun hashCode(): Int = hashCodeOf(route, parent)
@@ -44,19 +30,7 @@ sealed class NavItem(val route: String, val parent: NavItem? = null) {
         object Widgets : Tab(route = "widgets/list", resourceId = info.anodsplace.carwidget.content.R.string.widgets, icon = Icons.Filled.Widgets)
 
         object CurrentWidget : Tab(route = "widgets/current", resourceId = info.anodsplace.carwidget.content.R.string.shortcuts, icon = Icons.Filled.Widgets) {
-            object Skin : NavItem(route = "widgets/current/skin", parent = CurrentWidget) {
-                object Dialog : NavItem(route = "widgets/current/skin/dialog/{dialog_type}", parent = Skin) {
-                    val arguments: List<NamedNavArgument> = listOf(
-                        navArgument("dialog_type") { type = NavType.IntType }
-                    )
-                    class Args(val dialogType: WidgetDialogType) {
-                        constructor(bundle: Bundle?) : this(
-                            dialogType = WidgetDialogType.values()[bundle?.getInt("dialog_type") ?: 0]
-                        )
-                    }
-                    fun routeForDialogType(dialogType: WidgetDialogType) = "widgets/current/skin/dialog/${dialogType.ordinal}"
-                }
-            }
+            object Skin : NavItem(route = "widgets/current/skin", parent = CurrentWidget)
 
             object EditShortcut : NavItem(route = "widgets/current/edit/{shortcut_id}/{pos_id}", parent = CurrentWidget) {
                 val arguments: List<NamedNavArgument> = listOf(

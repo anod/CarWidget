@@ -13,7 +13,6 @@ import info.anodsplace.carwidget.content.BitmapLruCache
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
-import info.anodsplace.carwidget.screens.WidgetDialogEvent
 import info.anodsplace.carwidget.utils.render
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.compose.isNotVisible
@@ -32,12 +31,19 @@ data class WidgetCustomizeState(
     val widgetSettings: WidgetInterface.NoOp = WidgetInterface.NoOp(),
     val skinList: SkinList = SkinList(WidgetInterface.skins, WidgetInterface.skins, 0),
     val previewVersion: Int = 0,
+    val showBackgroundColorPicker: Boolean = false,
+    val showFontColorPicker: Boolean = false,
+    val showTileColorPicker: Boolean = false,
+    val showIconsThemePicker: Boolean = false,
 )
 
 sealed interface WidgetCustomizeEvent {
     class UpdateShortcutsNumber(val size: Int) : WidgetCustomizeEvent
     class ApplyChange(val key: String, val value: Any?) : WidgetCustomizeEvent
-    class DialogEvent(val dialogEvent: WidgetDialogEvent) : WidgetCustomizeEvent
+    class ShowBackgroundColorPicker(val show: Boolean) : WidgetCustomizeEvent
+    class ShowIconsThemePicker(val show: Boolean) : WidgetCustomizeEvent
+    class ShowFontColorPicker(val show: Boolean) : WidgetCustomizeEvent
+    class ShowTileColorPicker(val show: Boolean) : WidgetCustomizeEvent
 }
 
 sealed interface WidgetCustomizeAction
@@ -64,6 +70,15 @@ fun createItems(settings: WidgetInterface, skinList: SkinList) = listOf(
             summaryRes = if (backgroundColor.isNotVisible) info.anodsplace.carwidget.content.R.string.pref_bg_color_summary else 0,
             key = "bg-color",
             color = backgroundColor
+        )
+    },
+    Color(settings.tileColor).let { tileColor ->
+        PreferenceItem.Color(
+            titleRes = info.anodsplace.carwidget.content.R.string.pref_tile_color_title,
+            summary = if (tileColor.isVisible) "#${tileColor.toColorHex()}" else "",
+            key = "button-color",
+            color = tileColor,
+            enabled = skinList.current.value == WidgetInterface.SKIN_WINDOWS7
         )
     },
     PreferenceItem.Spacer(),
@@ -168,25 +183,20 @@ class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowVie
     override fun handleEvent(event: WidgetCustomizeEvent) {
         when (event) {
             is WidgetCustomizeEvent.ApplyChange -> widgetSettings.applyChange(event.key, event.value)
-            is WidgetCustomizeEvent.DialogEvent -> {
-                when (val dialogEvent = event.dialogEvent) {
-                    is WidgetDialogEvent.UpdateBackgroundColor -> {
-                        if (dialogEvent.newColor != null) {
-                            widgetSettings.backgroundColor = dialogEvent.newColor.value.toInt()
-                        }
-                    }
-                    is WidgetDialogEvent.UpdateIconScale -> {
-                        widgetSettings.iconsScale = dialogEvent.iconScale
-                    }
-                    is WidgetDialogEvent.UpdateTileColor -> {
-                        if (dialogEvent.newColor != null) {
-                            widgetSettings.tileColor = dialogEvent.newColor.value.toInt()
-                        }
-                    }
-                }
-            }
             is WidgetCustomizeEvent.UpdateShortcutsNumber -> {
                 widgetSettings.shortcutsNumber = event.size
+            }
+            is WidgetCustomizeEvent.ShowBackgroundColorPicker -> {
+                viewState = viewState.copy(showBackgroundColorPicker = event.show)
+            }
+            is WidgetCustomizeEvent.ShowFontColorPicker -> {
+                viewState = viewState.copy(showFontColorPicker = event.show)
+            }
+            is WidgetCustomizeEvent.ShowIconsThemePicker -> {
+                viewState = viewState.copy(showIconsThemePicker = event.show)
+            }
+            is WidgetCustomizeEvent.ShowTileColorPicker -> {
+                viewState = viewState.copy(showTileColorPicker = event.show)
             }
         }
     }
