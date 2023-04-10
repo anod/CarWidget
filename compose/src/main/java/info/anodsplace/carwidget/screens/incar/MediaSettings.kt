@@ -2,16 +2,13 @@ package info.anodsplace.carwidget.screens.incar
 
 import android.app.UiModeManager
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.VolumeDown
-import androidx.compose.material.icons.filled.VolumeUp
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.VolumeDecreaseIcon
+import info.anodsplace.carwidget.VolumeIncreaseIcon
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.compose.PreferenceSlider
@@ -26,16 +23,8 @@ fun VolumeSlider(
         initialValue = initialValue,
         onValueChanged = onValueChanged,
         item = item,
-        startIcon = { Icon(
-            modifier = it,
-            imageVector = Icons.Filled.VolumeDown,
-            contentDescription = null
-        ) },
-        endIcon = { Icon(
-            modifier = it,
-            imageVector = Icons.Filled.VolumeUp,
-            contentDescription = null
-        ) }
+        startIcon = { VolumeDecreaseIcon() },
+        endIcon = { VolumeIncreaseIcon() }
     )
 }
 
@@ -53,8 +42,8 @@ fun MediaSettings(
             onValueChanged = { onEvent(InCarViewEvent.ApplyChange("volume-level", it)) },
             item = PreferenceItem.Text(
                 key = "volume-level",
-                titleRes = R.string.pref_media_volume_level,
-                summaryRes = R.string.pref_volume_level_summary
+                titleRes = info.anodsplace.carwidget.content.R.string.pref_media_volume_level,
+                summaryRes = info.anodsplace.carwidget.content.R.string.pref_volume_level_summary
             ),
         )
         VolumeSlider(
@@ -62,8 +51,8 @@ fun MediaSettings(
             onValueChanged = { onEvent(InCarViewEvent.ApplyChange("call-volume-level", it)) },
             item = PreferenceItem.Text(
                 key = "call-volume-level",
-                titleRes = R.string.pref_phone_volume_level,
-                summaryRes = R.string.pref_volume_level_summary
+                titleRes = info.anodsplace.carwidget.content.R.string.pref_phone_volume_level,
+                summaryRes = info.anodsplace.carwidget.content.R.string.pref_volume_level_summary
             ),
         )
     }

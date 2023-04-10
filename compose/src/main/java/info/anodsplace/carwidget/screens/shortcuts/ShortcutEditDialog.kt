@@ -3,9 +3,6 @@ package info.anodsplace.carwidget.screens.shortcuts
 import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,7 +14,8 @@ import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.CollapseIcon
+import info.anodsplace.carwidget.ExpandIcon
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
@@ -48,7 +46,7 @@ fun ShortcutEditScreen(state: ShortcutEditViewState, onEvent: (ShortcutEditViewE
 @Composable
 fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (ShortcutEditViewEvent) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader, widgetSettings: WidgetInterface = WidgetInterface.NoOp()) {
     Column {
-        TopAppBar(title = { Text(text = stringResource(id = R.string.shortcut_edit_title)) })
+        TopAppBar(title = { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.shortcut_edit_title)) })
         if (!expanded) {
             ShortcutInfo(
                 shortcut,
@@ -78,11 +76,11 @@ fun AdvancedButton(expanded: Boolean, onEvent: (ShortcutEditViewEvent) -> Unit) 
                 .defaultMinSize(minHeight = 48.dp),
             onClick = { onEvent(ShortcutEditViewEvent.ToggleAdvanced(expanded = !expanded)) }
     ) {
-        Text(text = stringResource(id = R.string.advanced))
+        Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.advanced))
         if (expanded) {
-            Icon(Icons.Filled.ArrowDropUp, contentDescription = "Expand")
+            ExpandIcon()
         } else {
-            Icon(Icons.Filled.ArrowDropDown, contentDescription = "Collapse")
+            CollapseIcon()
         }
     }
 }

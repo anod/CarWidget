@@ -66,7 +66,7 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
         val androidCrashHandler = Thread.getDefaultUncaughtExceptionHandler() ?: return
         initAcra {
             buildConfigClass = BuildConfig::class.java
-            reportSendSuccessToast = getString(R.string.crash_dialog_toast)
+            reportSendSuccessToast = getString(info.anodsplace.carwidget.content.R.string.crash_dialog_toast)
             reportContent = listOf(
                 ReportField.APP_VERSION_NAME,
                 ReportField.APP_VERSION_CODE,
@@ -81,10 +81,10 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
             )
             logcatArguments = listOf("-t", "100", "-v", "brief", "CarWidget:D", "*:S")
             notification {
-                channelName = getString(R.string.channel_crash_reports)
-                text = getString(R.string.crash_dialog_text)
-                title = getString(R.string.crash_dialog_title)
-                sendButtonText = getString(R.string.crash_dialog_report_button)
+                channelName = getString(info.anodsplace.carwidget.content.R.string.channel_crash_reports)
+                text = getString(info.anodsplace.carwidget.content.R.string.crash_dialog_text)
+                title = getString(info.anodsplace.carwidget.content.R.string.crash_dialog_title)
+                sendButtonText = getString(info.anodsplace.carwidget.content.R.string.crash_dialog_report_button)
             }
             limiter {
                 overallLimit = 3

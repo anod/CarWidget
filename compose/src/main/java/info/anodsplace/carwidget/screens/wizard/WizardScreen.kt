@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.SettingsIcon
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.screens.main.MainViewEvent
 import info.anodsplace.carwidget.screens.main.MainViewState
@@ -98,7 +99,7 @@ fun WizardScreen(screenState: MainViewState, modifier: Modifier = Modifier, init
                     OutlinedButton(
                         onClick = { onEvent(MainViewEvent.CloseWizard) },
                     ) {
-                        Text(text = stringResource(id = R.string.skip))
+                        Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.skip))
                     }
                 }
                 Spacer(modifier = Modifier.weight(1.0f))
@@ -109,7 +110,7 @@ fun WizardScreen(screenState: MainViewState, modifier: Modifier = Modifier, init
                         scope.launch { pagerState.animateScrollToPage(currentPage + 1) }
                     }
                 }) {
-                    Text(text = if (isLast) stringResource(id = R.string.finish) else stringResource(id = R.string.next))
+                    Text(text = if (isLast) stringResource(id = info.anodsplace.carwidget.content.R.string.finish) else stringResource(id = info.anodsplace.carwidget.content.R.string.next))
                 }
             }
         }
@@ -122,14 +123,14 @@ fun WelcomePage(
 ) {
     val skinList = SkinList(skinViewModel.viewState.widgetSettings.skin, LocalContext.current)
     WizardPage(
-        title = stringResource(id = R.string.welcome),
-        description = stringResource(id = R.string.welcome_text).fromHtml(
+        title = stringResource(id = info.anodsplace.carwidget.content.R.string.welcome),
+        description = stringResource(id = info.anodsplace.carwidget.content.R.string.welcome_text).fromHtml(
             isEditMode = LocalView.current.isInEditMode,
             linkColor = MaterialTheme.colorScheme.primary
         ),
     ) {
         Text(
-            text = stringResource(id = R.string.swipe_continue),
+            text = stringResource(id = info.anodsplace.carwidget.content.R.string.swipe_continue),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(top = 32.dp)
         )
@@ -147,8 +148,8 @@ fun WelcomePage(
 @Composable
 fun InstallPage() {
     WizardPage(
-        title = stringResource(id = R.string.install_a_widget),
-        description = stringResource(id = R.string.install_widget).fromHtml(
+        title = stringResource(id = info.anodsplace.carwidget.content.R.string.install_a_widget),
+        description = stringResource(id = info.anodsplace.carwidget.content.R.string.install_widget).fromHtml(
             isEditMode = LocalView.current.isInEditMode,
             linkColor = MaterialTheme.colorScheme.primary
         )
@@ -157,8 +158,8 @@ fun InstallPage() {
             modifier = Modifier
                 .padding(top = 32.dp)
                 .fillMaxWidth(),
-            painter = painterResource(id = R.drawable.install_widget),
-            contentDescription =  stringResource(id = R.string.install_widget),
+            painter = painterResource(id = info.anodsplace.carwidget.skin.R.drawable.install_widget),
+            contentDescription =  stringResource(id = info.anodsplace.carwidget.content.R.string.install_widget),
             alignment = Alignment.Center
         )
     }
@@ -167,8 +168,8 @@ fun InstallPage() {
 @Composable
 fun ConfigPage() {
     WizardPage(
-        title = stringResource(id = R.string.configure),
-        description = stringResource(id = R.string.configure_text).fromHtml(
+        title = stringResource(id = info.anodsplace.carwidget.content.R.string.configure),
+        description = stringResource(id = info.anodsplace.carwidget.content.R.string.configure_text).fromHtml(
             isEditMode = LocalView.current.isInEditMode,
             linkColor = MaterialTheme.colorScheme.primary
         )
@@ -177,19 +178,17 @@ fun ConfigPage() {
             modifier = Modifier
                 .padding(top = 32.dp)
                 .fillMaxWidth(),
-            painter = painterResource(id = R.drawable.settings_preview),
-            contentDescription =  stringResource(id = R.string.configure),
+            painter = painterResource(id = info.anodsplace.carwidget.skin.R.drawable.settings_preview),
+            contentDescription =  stringResource(id = info.anodsplace.carwidget.content.R.string.configure),
             alignment = Alignment.Center
         )
         Button(
             modifier = Modifier.padding(top = 16.dp),
-            onClick = {  }) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_holo_settings),
-                contentDescription = null
-            )
+            onClick = {  }
+        ) {
+            SettingsIcon()
             Text(
-                text = stringResource(id = R.string.open_settings_description).fromHtml(
+                text = stringResource(id = info.anodsplace.carwidget.content.R.string.open_settings_description).fromHtml(
                     isEditMode = LocalView.current.isInEditMode,
                     linkColor = MaterialTheme.colorScheme.primary
                 ),
@@ -204,14 +203,14 @@ fun InCarModePage(
     screenState: MainViewState,
 ) {
     WizardPage(
-        title = stringResource(id = R.string.incar_mode),
-        description = stringResource(id = R.string.detect_incar_description).fromHtml(
+        title = stringResource(id = info.anodsplace.carwidget.content.R.string.incar_mode),
+        description = stringResource(id = info.anodsplace.carwidget.content.R.string.detect_incar_description).fromHtml(
             isEditMode = LocalView.current.isInEditMode,
             linkColor = MaterialTheme.colorScheme.primary
         ),
     ) {
         Text(
-            text = stringResource(id = R.string.enable_incar_description).fromHtml(
+            text = stringResource(id = info.anodsplace.carwidget.content.R.string.enable_incar_description).fromHtml(
                 isEditMode = LocalView.current.isInEditMode,
                 linkColor = MaterialTheme.colorScheme.primary
             ),
@@ -225,19 +224,19 @@ fun InCarModePage(
         ) {
             ActionIcon(
                 iconRes = R.drawable.ic_action_bluetooth_connected,
-                iconDescRes = R.string.bluetooth
+                iconDescRes = info.anodsplace.carwidget.content.R.string.bluetooth
             )
             ActionIcon(
                 iconRes = R.drawable.ic_action_usb,
-                iconDescRes = R.string.pref_power_connected_title
+                iconDescRes = info.anodsplace.carwidget.content.R.string.pref_power_connected_title
             )
             ActionIcon(
                 iconRes = R.drawable.ic_action_headphones,
-                iconDescRes = R.string.pref_headset_connected_title
+                iconDescRes = info.anodsplace.carwidget.content.R.string.pref_headset_connected_title
             )
         }
         Text(
-            text = stringResource(id = R.string.adjust_incar_description).fromHtml(
+            text = stringResource(id = info.anodsplace.carwidget.content.R.string.adjust_incar_description).fromHtml(
                 isEditMode = LocalView.current.isInEditMode,
                 linkColor = MaterialTheme.colorScheme.primary
             ),
@@ -251,28 +250,28 @@ fun InCarModePage(
         ) {
             ActionIcon(
                 iconRes = R.drawable.ic_action_brightness_medium,
-                iconDescRes = R.string.adjust_brightness
+                iconDescRes = info.anodsplace.carwidget.content.R.string.adjust_brightness
             )
             ActionIcon(
                 iconRes = R.drawable.ic_action_bulb,
-                iconDescRes = R.string.pref_screen_timeout
+                iconDescRes = info.anodsplace.carwidget.content.R.string.pref_screen_timeout
             )
             ActionIcon(
                 iconRes = R.drawable.ic_action_ring_volume,
-                iconDescRes = R.string.pref_auto_answer
+                iconDescRes = info.anodsplace.carwidget.content.R.string.pref_auto_answer
             )
             ActionIcon(
                 iconRes = R.drawable.ic_action_volume_up,
-                iconDescRes = R.string.pref_volume_level_summary
+                iconDescRes = info.anodsplace.carwidget.content.R.string.pref_volume_level_summary
             )
             ActionIcon(
                 iconRes = R.drawable.ic_action_bluetooth,
-                iconDescRes = R.string.pref_blutooth_device_title
+                iconDescRes = info.anodsplace.carwidget.content.R.string.pref_blutooth_device_title
             )
         }
         if (screenState.isFreeVersion) {
             Text(
-                text = stringResource(id = R.string.trial_description, Version.maxTrialTimes),
+                text = stringResource(id = info.anodsplace.carwidget.content.R.string.trial_description, Version.maxTrialTimes),
                 style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier.padding(top = 16.dp)
             )

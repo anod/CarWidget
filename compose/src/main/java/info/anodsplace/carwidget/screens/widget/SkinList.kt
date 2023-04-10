@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.screens.widget
 
 import android.content.Context
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 
 data class SkinList(
@@ -17,7 +16,7 @@ data class SkinList(
 
     constructor(skin: String, context: Context) : this(
             values = WidgetInterface.skins,
-            titles = context.resources.getStringArray(R.array.skin_titles).toList(),
+            titles = context.resources.getStringArray(info.anodsplace.carwidget.content.R.array.skin_titles).toList(),
             selectedSkinPosition = WidgetInterface.skins.indexOf(skin)
     )
 

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
-import com.anod.car.home.R
 import info.anodsplace.carwidget.content.BroadcastServiceManager
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import org.koin.core.component.KoinComponent
@@ -30,7 +29,7 @@ class SwitchInCarActivity : Activity(), KoinComponent {
             service.data = data
             startService(service)
         } else {
-            Toast.makeText(this, R.string.incar_mode_disabled, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, info.anodsplace.carwidget.content.R.string.incar_mode_disabled, Toast.LENGTH_LONG).show()
 //
 //            val intent = ConfigurationActivity.createFragmentIntent(this, ConfigurationInCar::class.java)
 //            startActivity(intent)

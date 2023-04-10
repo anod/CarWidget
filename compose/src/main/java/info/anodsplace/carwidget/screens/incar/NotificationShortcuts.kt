@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.ChooserLoader
 import info.anodsplace.carwidget.chooser.Header
@@ -53,12 +52,12 @@ fun NotificationShortcuts(
             modifier = Modifier.weight(4f)
         ) {
             Text(
-                text = stringResource(id = R.string.notification_shortcuts),
+                text = stringResource(id = info.anodsplace.carwidget.content.R.string.notification_shortcuts),
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodyMedium
             )
             Text(
-                text = stringResource(id = R.string.shortcuts_summary),
+                text = stringResource(id = info.anodsplace.carwidget.content.R.string.shortcuts_summary),
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -96,7 +95,7 @@ fun NotificationShortcuts(
             ChooserDialog(
                 modifier = Modifier.fillMaxHeight(fraction = 0.8f),
                 headers = listOf(
-                    Header(0, stringResource(R.string.none), iconVector = Icons.Filled.Cancel)
+                    Header(0, stringResource(info.anodsplace.carwidget.content.R.string.none), iconVector = Icons.Filled.Cancel)
                 ),
                 loader = appsLoader,
                 onDismissRequest = { shortcutIndex = -1 },

@@ -9,7 +9,6 @@ import android.telecom.TelecomManager
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import android.widget.Toast
-import com.anod.car.home.R
 import info.anodsplace.applog.AppLog
 import info.anodsplace.permissions.AppPermission
 import info.anodsplace.permissions.AppPermissions
@@ -116,7 +115,7 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
             }
         } else {
             Handler(Looper.getMainLooper()).post {
-                Toast.makeText(context, R.string.answer_error_oreo, Toast.LENGTH_LONG).show()
+                Toast.makeText(context, info.anodsplace.carwidget.content.R.string.answer_error_oreo, Toast.LENGTH_LONG).show()
             }
         }
     }

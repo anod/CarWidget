@@ -27,7 +27,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.R
 import info.anodsplace.compose.*
 
 class UpdateField(val field: IntentField)
@@ -47,7 +46,7 @@ fun IntentFieldTitle(text: String) = Text(text = text, style = MaterialTheme.typ
 
 @Composable
 fun IntentFieldValue(value: String?, modifier: Modifier = Modifier) {
-    val text = if (value.isNullOrBlank()) stringResource(id = R.string.none) else value
+    val text = if (value.isNullOrBlank()) stringResource(id = info.anodsplace.carwidget.content.R.string.none) else value
     Text(
             text = text,
             style = MaterialTheme.typography.bodyMedium,
@@ -90,7 +89,7 @@ fun IntentInfoField(icon: ImageVector, field: IntentField.StringValue, modifier:
 fun IntentExtrasField(intent: Intent, onClick: (IntentField) -> Unit) {
     val items = intent.extras ?: Bundle()
     val extraKeys = items.keySet() ?: emptySet()
-    val title = stringResource(id = R.string.extras)
+    val title = stringResource(id = info.anodsplace.carwidget.content.R.string.extras)
     IntentInfoRow(
             icon = Icons.Filled.FormatListBulleted,
             title = title,
@@ -112,7 +111,7 @@ fun IntentExtrasField(intent: Intent, onClick: (IntentField) -> Unit) {
 @Composable
 fun IntentComponentField(component: ComponentName?, onClick: (IntentField) -> Unit) {
     IntentInfoRow(
-            title = stringResource(id = R.string.component),
+            title = stringResource(id = info.anodsplace.carwidget.content.R.string.component),
             icon = Icons.Filled.LibraryBooks,
             onClick = { onClick(IntentField.Component(component)) }
     ) {
@@ -130,7 +129,7 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
 
             IntentInfoField(
                     icon = Icons.Outlined.PlayForWork,
-                    field = IntentField.Action(intent.action, stringResource(id = R.string.action)),
+                    field = IntentField.Action(intent.action, stringResource(id = info.anodsplace.carwidget.content.R.string.action)),
                     onClick = onItemClick
             )
 
@@ -141,19 +140,19 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
 
             IntentInfoField(
                     icon = Icons.Filled.OpenWith,
-                    field = IntentField.Data(intent.data, stringResource(id = R.string.data)),
+                    field = IntentField.Data(intent.data, stringResource(id = info.anodsplace.carwidget.content.R.string.data)),
                     onClick = onItemClick
             )
 
             IntentInfoField(
                     icon = Icons.Filled.Description,
-                    field = IntentField.MimeType(intent.type, stringResource(id = R.string.mime_type)),
+                    field = IntentField.MimeType(intent.type, stringResource(id = info.anodsplace.carwidget.content.R.string.mime_type)),
                     onClick = onItemClick
             )
 
             IntentInfoRow(
                     icon = Icons.Filled.Flag,
-                    title = stringResource(id = R.string.flags),
+                    title = stringResource(id = info.anodsplace.carwidget.content.R.string.flags),
                     onClick = { onItemClick(IntentField.Flags(intent.flags)) }
             ) {
                 val flagNames = intent.flagNames
@@ -170,7 +169,7 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
 
             IntentInfoRow(
                     icon = Icons.Filled.Category,
-                    title = stringResource(id = R.string.categories),
+                    title = stringResource(id = info.anodsplace.carwidget.content.R.string.categories),
                     onClick = { onItemClick(IntentField.Categories(intent.categories)) }
             ) {
                 val categoryNames = intent.categoryNames
@@ -244,8 +243,8 @@ fun EditSection(intent: Intent, editState: IntentField, updateField: (UpdateFiel
             }
 
             CheckBoxScreen(
-                titleText = stringResource(id = R.string.flags),
-                saveText = stringResource(id = R.string.save),
+                titleText = stringResource(id = info.anodsplace.carwidget.content.R.string.flags),
+                saveText = stringResource(id = info.anodsplace.carwidget.content.R.string.save),
                 items = flagsItems,
                 onCheckedChange = { item ->
                     val newFlags = intent.flagNames.toMutableList()
@@ -274,8 +273,8 @@ fun EditSection(intent: Intent, editState: IntentField, updateField: (UpdateFiel
             }
 
             CheckBoxScreen(
-                titleText = stringResource(id = R.string.categories),
-                saveText = stringResource(id = R.string.save),
+                titleText = stringResource(id = info.anodsplace.carwidget.content.R.string.categories),
+                saveText = stringResource(id = info.anodsplace.carwidget.content.R.string.save),
                 items = categoriesItems,
                 onCheckedChange = { item ->
                     val newCategories = intent.categoryNames.toMutableSet()
@@ -341,7 +340,7 @@ fun IntentEditScreen(
         IntentField.Suggestions.Action -> {
             SingleListScreen(
                     state = SingleScreenState(
-                            title = stringResource(id = R.string.action),
+                            title = stringResource(id = info.anodsplace.carwidget.content.R.string.action),
                             items = IntentActions
                     ),
             ) { _, value ->
@@ -352,7 +351,7 @@ fun IntentEditScreen(
         IntentField.Suggestions.MimeType -> {
             SingleListScreen(
                     state = SingleScreenState(
-                            title = stringResource(id = R.string.mime_type),
+                            title = stringResource(id = info.anodsplace.carwidget.content.R.string.mime_type),
                             items = MediaTypes
                     ),
             ) { _, value ->

@@ -5,7 +5,6 @@ import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 
 /**
@@ -30,7 +29,7 @@ class ScreenOrientation(private val context: Context, private val windowManager:
         }
 
         if (!Settings.canDrawOverlays(context)) {
-            Toast.makeText(context, R.string.allow_permission_overlay, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, info.anodsplace.carwidget.content.R.string.allow_permission_overlay, Toast.LENGTH_LONG).show()
             return
         }
 

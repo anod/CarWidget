@@ -14,7 +14,6 @@ import androidx.navigation.NavDeepLink
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.ktx.equalsHash
 import info.anodsplace.ktx.hashCodeOf
@@ -42,9 +41,9 @@ sealed class NavItem(val route: String, val parent: NavItem? = null) {
 
     abstract class Tab(route: String, @StringRes val resourceId: Int, val icon: ImageVector) : NavItem(route) {
 
-        object Widgets : Tab(route = "widgets/list", resourceId = R.string.widgets, icon = Icons.Filled.Widgets)
+        object Widgets : Tab(route = "widgets/list", resourceId = info.anodsplace.carwidget.content.R.string.widgets, icon = Icons.Filled.Widgets)
 
-        object CurrentWidget : Tab(route = "widgets/current", resourceId = R.string.shortcuts, icon = Icons.Filled.Widgets) {
+        object CurrentWidget : Tab(route = "widgets/current", resourceId = info.anodsplace.carwidget.content.R.string.shortcuts, icon = Icons.Filled.Widgets) {
             object Skin : NavItem(route = "widgets/current/skin", parent = CurrentWidget) {
                 object Dialog : NavItem(route = "widgets/current/skin/dialog/{dialog_type}", parent = Skin) {
                     val arguments: List<NamedNavArgument> = listOf(
@@ -89,13 +88,13 @@ sealed class NavItem(val route: String, val parent: NavItem? = null) {
             }
         }
 
-        object WidgetCustomize: Tab(route = "customize/widgets/current", resourceId = R.string.customize, icon = Icons.Filled.Palette )
+        object WidgetCustomize: Tab(route = "customize/widgets/current", resourceId = info.anodsplace.carwidget.content.R.string.customize, icon = Icons.Filled.Palette )
 
-        object InCar : Tab(route = "incar", resourceId = R.string.pref_incar_mode_title, Icons.Filled.DirectionsCar) {
+        object InCar : Tab(route = "incar", resourceId = info.anodsplace.carwidget.content.R.string.pref_incar_mode_title, Icons.Filled.DirectionsCar) {
             object Main : NavItem(route = "incar/main", parent = InCar)
             object Bluetooth : NavItem(route = "incar/bluetooh", parent = InCar)
         }
 
-        object About : Tab(route = "about", resourceId = R.string.info, Icons.Outlined.Info)
+        object About : Tab(route = "about", resourceId = info.anodsplace.carwidget.content.R.string.info, Icons.Outlined.Info)
     }
 }

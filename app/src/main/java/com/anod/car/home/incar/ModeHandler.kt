@@ -9,7 +9,6 @@ import android.media.AudioManager
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
-import com.anod.car.home.R
 import com.anod.car.home.utils.Power
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.incar.ScreenOnAlert
@@ -187,7 +186,7 @@ class ModeHandler(
                     Settings.System.putInt(cr, Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode)
                     Settings.System.putInt(cr, Settings.System.SCREEN_BRIGHTNESS, newBrightLevel)
                 } else {
-                    Toast.makeText(context, R.string.allow_permissions_brightness, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, info.anodsplace.carwidget.content.R.string.allow_permissions_brightness, Toast.LENGTH_LONG).show()
                 }
             } else {
                 Settings.System.putInt(cr, Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode)

@@ -20,7 +20,7 @@ class BBBProperties : BaseProperties() {
         get() = R.drawable.ic_add_shortcut_holo
 
     override val setShortcutText: Int
-        get() = R.string.set_shortcut_short
+        get() = info.anodsplace.carwidget.content.R.string.set_shortcut_short
 
     override val iconPaddingRes: Int
         get() = 0

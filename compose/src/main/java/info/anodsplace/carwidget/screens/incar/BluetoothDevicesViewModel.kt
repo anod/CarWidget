@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.framework.bluetooth.Bluetooth
 import info.anodsplace.framework.bluetooth.BtClassType
@@ -164,10 +163,10 @@ class BluetoothDevicesViewModel(
                     selectedDevices.remove(addr)
                 }
                 val res = when (device.bluetoothClass?.classType) {
-                        BtClassType.COMPUTER -> R.string.bluetooth_device_laptop
-                        BtClassType.PHONE -> R.string.bluetooth_device_cellphone
-                        BtClassType.HEADPHONES -> R.string.bluetooth_device_headphones
-                        BtClassType.HEADSET -> R.string.bluetooth_device_headset
+                        BtClassType.COMPUTER -> info.anodsplace.carwidget.content.R.string.bluetooth_device_laptop
+                        BtClassType.PHONE -> info.anodsplace.carwidget.content.R.string.bluetooth_device_cellphone
+                        BtClassType.HEADPHONES -> info.anodsplace.carwidget.content.R.string.bluetooth_device_headphones
+                        BtClassType.HEADSET -> info.anodsplace.carwidget.content.R.string.bluetooth_device_headset
                         null -> 0
                 }
                 var btClassName = ""
@@ -185,7 +184,7 @@ class BluetoothDevicesViewModel(
 
         if (selectedDevices.isNotEmpty()) {
             for (addr in selectedDevices.keys) {
-                val d = BluetoothDevice(addr, addr, context.getString(R.string.unavailable_bt_device), true)
+                val d = BluetoothDevice(addr, addr, context.getString(info.anodsplace.carwidget.content.R.string.unavailable_bt_device), true)
                 pairedList.add(d)
             }
         }

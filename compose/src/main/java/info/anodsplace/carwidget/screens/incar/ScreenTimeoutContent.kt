@@ -8,7 +8,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.R
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.compose.PreferenceSwitch
 
@@ -25,7 +24,7 @@ fun ScreenTimeoutContent(
 
         PreferenceSwitch(
             checked = isDisableScreenTimeoutCharging,
-            item = PreferenceItem.Text(titleRes = R.string.while_charging)) {
+            item = PreferenceItem.Text(titleRes = info.anodsplace.carwidget.content.R.string.while_charging)) {
             onEvent(InCarViewEvent.SaveScreenTimeout(
                 disabled = screenState.inCar.isDisableScreenTimeout,
                 disableCharging = it
@@ -35,8 +34,8 @@ fun ScreenTimeoutContent(
         PreferenceSwitch(
             checked = screenOnAlertEnabled,
             item = PreferenceItem.Text(
-                titleRes = R.string.screen_on_alternative,
-                summaryRes = R.string.screen_on_alternative_text
+                titleRes = info.anodsplace.carwidget.content.R.string.screen_on_alternative,
+                summaryRes = info.anodsplace.carwidget.content.R.string.screen_on_alternative_text
             ),
         ) { useAlert ->
             screenOnAlertEnabled = useAlert

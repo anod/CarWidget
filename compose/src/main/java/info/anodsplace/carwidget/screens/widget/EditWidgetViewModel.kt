@@ -6,7 +6,6 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
@@ -51,21 +50,21 @@ class EditWidgetViewModel(
             items = listOf(
                 ChooserEntry(
                     componentName = null,
-                    title = application.getString(R.string.pref_settings_transparent),
+                    title = application.getString(info.anodsplace.carwidget.content.R.string.pref_settings_transparent),
                     intent = null,
                     iconRes = skinProperties.settingsButtonRes,
                     extras = bundleOf("button" to WidgetInterface.WIDGET_BUTTON_SETTINGS)
                 ),
                 ChooserEntry(
                     componentName = null,
-                    title = application.getString(R.string.pref_incar_transparent),
+                    title = application.getString(info.anodsplace.carwidget.content.R.string.pref_incar_transparent),
                     intent = null,
                     iconRes = skinProperties.inCarButtonEnterRes,
                     extras = bundleOf("button" to WidgetInterface.WIDGET_BUTTON_INCAR)
                 ),
                 ChooserEntry(
                     componentName = null,
-                    title = application.getString(R.string.hidden),
+                    title = application.getString(info.anodsplace.carwidget.content.R.string.hidden),
                     intent = null,
                     iconRes = 0,
                     extras = bundleOf("button" to WidgetInterface.WIDGET_BUTTON_HIDDEN)

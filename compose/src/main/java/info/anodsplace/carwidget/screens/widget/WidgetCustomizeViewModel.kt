@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.appwidget.WidgetView
 import info.anodsplace.carwidget.content.BitmapLruCache
@@ -45,14 +44,14 @@ sealed interface WidgetCustomizeAction
 
 fun createItems(settings: WidgetInterface, skinList: SkinList) = listOf(
     PreferenceItem.Pick(
-        titleRes = R.string.skin,
+        titleRes = info.anodsplace.carwidget.content.R.string.skin,
         key = "skin",
         entries = skinList.titles.toTypedArray(),
         entryValues = skinList.values.toTypedArray(),
         value = skinList.current.value
     ),
     PreferenceItem.Pick(
-        titleRes = R.string.number_shortcuts_title,
+        titleRes = info.anodsplace.carwidget.content.R.string.number_shortcuts_title,
         key = "cmp-number",
         entries = arrayOf("4","6","8","10"),
         entryValues = arrayOf("4","6","8","10"),
@@ -60,68 +59,68 @@ fun createItems(settings: WidgetInterface, skinList: SkinList) = listOf(
     ),
     Color(settings.backgroundColor).let { backgroundColor ->
         PreferenceItem.Color(
-            titleRes = R.string.pref_bg_color_title,
+            titleRes = info.anodsplace.carwidget.content.R.string.pref_bg_color_title,
             summary = if (backgroundColor.isVisible) "#${backgroundColor.toColorHex()}" else "",
-            summaryRes = if (backgroundColor.isNotVisible) R.string.pref_bg_color_summary else 0,
+            summaryRes = if (backgroundColor.isNotVisible) info.anodsplace.carwidget.content.R.string.pref_bg_color_summary else 0,
             key = "bg-color",
             color = backgroundColor
         )
     },
     PreferenceItem.Spacer(),
     PreferenceItem.Category(
-        titleRes = R.string.icon_style,
+        titleRes = info.anodsplace.carwidget.content.R.string.icon_style,
     ),
     PreferenceItem.Text(
-        titleRes = R.string.icons_theme,
+        titleRes = info.anodsplace.carwidget.content.R.string.icons_theme,
         key = "icons-theme"
     ),
     PreferenceItem.Switch(
         checked = settings.isIconsMono,
-        titleRes = R.string.pref_icons_mono_title,
+        titleRes = info.anodsplace.carwidget.content.R.string.pref_icons_mono_title,
         key = "icons-mono"
     ),
     PreferenceItem.Color(
-        titleRes = R.string.pref_tint_color_title,
-        summaryRes = R.string.pref_tint_color_summary,
+        titleRes = info.anodsplace.carwidget.content.R.string.pref_tint_color_title,
+        summaryRes = info.anodsplace.carwidget.content.R.string.pref_tint_color_summary,
         key = "icons-color",
         color = settings.iconsColor?.let { Color(it) }
     ),
     PreferenceItem.Pick(
-        titleRes = R.string.pref_scale_icon,
+        titleRes = info.anodsplace.carwidget.content.R.string.pref_scale_icon,
         key = "icons-scale",
         entryValues = arrayOf("0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"),
         entries = arrayOf("x1.0","x1.1","x1.2","x1.3","x1.4","x1.5","x1.6","x1.7","x1.8","x1.9","x2.0","x2.1","x2.2","x2.3","x2.4","x2.5","x2.6","x2.7","x2.8","x2.9","x3.0"),
         value = settings.iconsScale
     ),
     PreferenceItem.Pick(
-        titleRes = R.string.pref_rotate_icon_title,
+        titleRes = info.anodsplace.carwidget.content.R.string.pref_rotate_icon_title,
         key = "icons-rotate",
-        entriesRes = R.array.icon_rotate_titles,
-        entryValuesRes = R.array.icon_rotate_values,
+        entriesRes = info.anodsplace.carwidget.content.R.array.icon_rotate_titles,
+        entryValuesRes = info.anodsplace.carwidget.content.R.array.icon_rotate_values,
         value = settings.iconsRotate.name
     ),
     PreferenceItem.Placeholder(
-        titleRes = R.string.adaptive_icon_style,
+        titleRes = info.anodsplace.carwidget.content.R.string.adaptive_icon_style,
         key = "adaptive-icon-style",
     ),
     PreferenceItem.Spacer(),
     PreferenceItem.Category(
-        titleRes = R.string.title,
+        titleRes = info.anodsplace.carwidget.content.R.string.title,
     ),
     PreferenceItem.Switch(
         checked = settings.isTitlesHide,
-        titleRes = R.string.pref_titles_hide_title,
-        summaryRes = R.string.pref_titles_hide_summary,
+        titleRes = info.anodsplace.carwidget.content.R.string.pref_titles_hide_title,
+        summaryRes = info.anodsplace.carwidget.content.R.string.pref_titles_hide_summary,
         key = "titles-hide"
     ),
     PreferenceItem.Placeholder(
-        titleRes = R.string.pref_font_size_title,
-        summaryRes = R.string.pref_font_size_summary,
+        titleRes = info.anodsplace.carwidget.content.R.string.pref_font_size_title,
+        summaryRes = info.anodsplace.carwidget.content.R.string.pref_font_size_summary,
         key = "font-size"
     ),
     PreferenceItem.Color(
-        titleRes = R.string.pref_font_color_title,
-        summaryRes = R.string.pref_font_color_summary,
+        titleRes = info.anodsplace.carwidget.content.R.string.pref_font_color_title,
+        summaryRes = info.anodsplace.carwidget.content.R.string.pref_font_color_summary,
         key = "font-color",
         color = settings.fontColor?.let { Color(it) }
     ),

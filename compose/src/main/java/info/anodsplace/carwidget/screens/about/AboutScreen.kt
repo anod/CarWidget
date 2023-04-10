@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.sp
 import coil.ImageLoader
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.MediaListLoader
@@ -65,18 +64,18 @@ fun AboutScreen(
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            AboutTitle(titleRes = R.string.app_preferences)
-            AboutButton(titleRes = R.string.app_theme, subtitle = screenState.themeName, onClick = {
+            AboutTitle(titleRes = info.anodsplace.carwidget.content.R.string.app_preferences)
+            AboutButton(titleRes = info.anodsplace.carwidget.content.R.string.app_theme, subtitle = screenState.themeName, onClick = {
                 onEvent(AboutScreenStateEvent.ChangeTheme)
             })
-            AboutButton(titleRes = R.string.music_app, subtitle = screenState.musicApp, onClick = {
+            AboutButton(titleRes = info.anodsplace.carwidget.content.R.string.music_app, subtitle = screenState.musicApp, onClick = {
                 showMusicAppDialog = true
             })
-            AboutButton(titleRes = R.string.default_car_dock_app, onClick = { showOpenCarDock = true })
+            AboutButton(titleRes = info.anodsplace.carwidget.content.R.string.default_car_dock_app, onClick = { showOpenCarDock = true })
             if (screenState.isValidWidget) {
-                AboutTitle(titleRes = R.string.pref_backup_title)
+                AboutTitle(titleRes = info.anodsplace.carwidget.content.R.string.pref_backup_title)
                 AboutButton(
-                    titleRes = R.string.backup_current_widget,
+                    titleRes = info.anodsplace.carwidget.content.R.string.backup_current_widget,
                     loader = screenState.backupProgress,
                     enabled = screenState.isValidWidget,
                     onClick = {
@@ -90,7 +89,7 @@ fun AboutScreen(
                         }
                     })
                 AboutButton(
-                    titleRes = R.string.restore,
+                    titleRes = info.anodsplace.carwidget.content.R.string.restore,
                     loader = screenState.restoreProgress,
                     enabled = screenState.isValidWidget,
                     onClick = {
@@ -98,8 +97,8 @@ fun AboutScreen(
                     }
                 )
             }
-            AboutTitle(titleRes = R.string.information_title)
-            AboutButton(title = screenState.appVersion, subtitle = stringResource(id = R.string.version_summary), onClick = {
+            AboutTitle(titleRes = info.anodsplace.carwidget.content.R.string.information_title)
+            AboutButton(title = screenState.appVersion, subtitle = stringResource(id = info.anodsplace.carwidget.content.R.string.version_summary), onClick = {
                 onEvent(AboutScreenStateEvent.OpenPlayStoreDetails)
             })
         }
@@ -114,19 +113,19 @@ fun AboutScreen(
     if (screenState.restoreInCarDialog != null) {
         AlertDialog(
             modifier = Modifier.padding(16.dp),
-            title = { Text(text = stringResource(id = R.string.update_incar_settings)) },
+            title = { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.update_incar_settings)) },
             text = {
-                Text(text = stringResource(id = R.string.incar_backup_question))
+                Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.incar_backup_question))
             },
             confirmButton = {
                 Button(
                     onClick = { onEvent(AboutScreenStateEvent.RestoreInCar(srcUri = screenState.restoreInCarDialog, restoreInCar = true)) }
-                ) { Text(text = stringResource(id = R.string.update)) }
+                ) { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.update)) }
             },
             dismissButton = {
                 Button(
                     onClick = { onEvent(AboutScreenStateEvent.RestoreInCar(srcUri = screenState.restoreInCarDialog, restoreInCar = false)) }
-                ) { Text(text = stringResource(id = R.string.skip)) }
+                ) { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.skip)) }
             },
             onDismissRequest = { })
     }
@@ -134,15 +133,15 @@ fun AboutScreen(
     if (showOpenCarDock) {
         AlertDialog(
             modifier = Modifier.padding(16.dp),
-            title = { Text(text = stringResource(id = R.string.default_car_dock_app)) },
+            title = { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.default_car_dock_app)) },
             text = {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = stringResource(id = R.string.cardock_text1))
+                    Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.cardock_text1))
                     Button(
                         modifier = Modifier.padding(16.dp),
                         onClick = { onEvent(AboutScreenStateEvent.OpenDefaultCarDock) }
-                    ) { Text(text = stringResource(id = R.string.cardock_btn_1)) }
-                    Text(text = stringResource(id = R.string.cardock_text2))
+                    ) { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.cardock_btn_1)) }
+                    Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.cardock_text2))
                 }
             },
             confirmButton = { },
@@ -155,7 +154,7 @@ fun AboutScreen(
         ChooserDialog(
             modifier = Modifier.padding(16.dp),
             headers = listOf(
-                Header(0, stringResource(R.string.show_choice), iconVector = Icons.Filled.List)
+                Header(0, stringResource(info.anodsplace.carwidget.content.R.string.show_choice), iconVector = Icons.Filled.List)
             ),
             loader = loader,
             onDismissRequest = { showMusicAppDialog = false },

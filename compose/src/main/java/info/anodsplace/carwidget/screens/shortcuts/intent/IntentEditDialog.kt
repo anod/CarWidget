@@ -7,8 +7,6 @@ import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.ExpandMoreIcon
 import info.anodsplace.framework.util.isScalar
 import info.anodsplace.framework.util.put
 import info.anodsplace.framework.util.putAny
@@ -31,7 +29,7 @@ fun EditDialog(confirmText: String, onClose: (Boolean) -> Unit, content: @Compos
         Spacer(modifier = Modifier.height(16.dp))
         Row {
             Button(onClick = { onClose(false) }) {
-                Text(text = stringResource(id = R.string.close).uppercase(Locale.getDefault()))
+                Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.close).uppercase(Locale.getDefault()))
             }
             Spacer(modifier = Modifier.weight(1f))
             Button(onClick = { onClose(true) }) {
@@ -57,7 +55,7 @@ fun ExtraKeyValue(initialKey: String, value: Any?, onValueChange: (String, Strin
                     onValueChange(initialKey, value, newExtra.second)
                 },
                 label = {
-                    Text(text = stringResource(id = R.string.key), style = MaterialTheme.typography.titleMedium)
+                    Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.key), style = MaterialTheme.typography.titleMedium)
                 },
                 isError = newExtra.first.isBlank() && newExtra.second.toString().isNotBlank()
         )
@@ -75,7 +73,7 @@ fun ExtraKeyValue(initialKey: String, value: Any?, onValueChange: (String, Strin
                     }
                 },
                 label = {
-                    Text(text = stringResource(id = R.string.value), style = MaterialTheme.typography.titleMedium)
+                    Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.value), style = MaterialTheme.typography.titleMedium)
                 },
                 isError = newExtra.first.isBlank() && newExtra.second.toString().isNotBlank()
         )
@@ -93,13 +91,13 @@ fun ExtraEditDialog(initial: IntentField.Extras, onClose: (newExtra: Bundle?) ->
     AppLog.d("ExtraEditDialog $newExtra")
 
     EditDialog(
-            confirmText = stringResource(id = R.string.add),
+            confirmText = stringResource(id = info.anodsplace.carwidget.content.R.string.add),
             onClose = {
                 onClose(if (it) newExtra else null)
                 setNewExtra(Bundle())
             }
     ) {
-        Text(text = stringResource(id = R.string.extras), style = MaterialTheme.typography.titleSmall)
+        Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.extras), style = MaterialTheme.typography.titleSmall)
         Spacer(modifier = Modifier.height(8.dp))
 
         for (key in newExtra.keySet()) {
@@ -136,10 +134,10 @@ fun ExtraEditDialog(initial: IntentField.Extras, onClose: (newExtra: Bundle?) ->
 fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: ComponentName?) -> Unit) {
     val (newComponent, setNewComponent) = remember { mutableStateOf(field.value) }
     EditDialog(
-            confirmText = stringResource(id = R.string.save),
+            confirmText = stringResource(id = info.anodsplace.carwidget.content.R.string.save),
             onClose = { onClose(if (it) newComponent else null) }
     ) {
-        Text(text = stringResource(id = R.string.component), style = MaterialTheme.typography.titleSmall)
+        Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.component), style = MaterialTheme.typography.titleSmall)
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
@@ -150,7 +148,7 @@ fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: Co
                     setNewComponent(ComponentName(value, newComponent?.className ?: ""))
                 },
                 label = {
-                    Text(text = stringResource(id = R.string.package_name), style = MaterialTheme.typography.titleMedium)
+                    Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.package_name), style = MaterialTheme.typography.titleMedium)
                 },
                 isError = newComponent?.packageName.isNullOrBlank() && (newComponent?.className?.isNotBlank() == true)
         )
@@ -165,7 +163,7 @@ fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: Co
                     setNewComponent(ComponentName(newComponent?.packageName ?: "", it))
                 },
                 label = {
-                    Text(text = stringResource(id = R.string.class_name), style = MaterialTheme.typography.titleMedium)
+                    Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.class_name), style = MaterialTheme.typography.titleMedium)
                 },
                 isError = newComponent?.packageName.isNullOrBlank() && (newComponent?.className?.isNotBlank() == true)
         )
@@ -176,7 +174,7 @@ fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: Co
 fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialValid: Boolean = true, onSuggestions: () -> Unit, onClick: (IntentField.StringValue?) -> Unit) {
     var field by remember { mutableStateOf(initial) }
     EditDialog(
-            confirmText = stringResource(id = R.string.save),
+            confirmText = stringResource(id = info.anodsplace.carwidget.content.R.string.save),
             onClose = { apply -> onClick(if (apply) field else null) }
     ) {
         val isValid = field.isValid.collectAsState(initial = initialValid)
@@ -196,7 +194,7 @@ fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialVali
                     },
                     placeholder = {
                         if (field.value.isNullOrEmpty()) {
-                            Text(text = stringResource(id = R.string.none), style = MaterialTheme.typography.titleMedium)
+                            Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.none), style = MaterialTheme.typography.titleMedium)
                         }
                     },
                     isError = !isEmpty && !isValid.value
@@ -204,15 +202,16 @@ fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialVali
             if (initial.suggestions != IntentField.Suggestions.None) {
                 IconButton(
                         modifier = Modifier.align(Alignment.CenterEnd),
-                        onClick = onSuggestions) {
-                    Icon(imageVector = Icons.Filled.ExpandMore, "More")
+                        onClick = onSuggestions
+                ) {
+                    ExpandMoreIcon()
                 }
             }
         }
 
         if (!isEmpty && !isValid.value) {
             Text(
-                    text = stringResource(R.string.value_might_be_not_valid),
+                    text = stringResource(info.anodsplace.carwidget.content.R.string.value_might_be_not_valid),
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier
                             .fillMaxWidth()

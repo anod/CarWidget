@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.carwidget.content.backup.BackupCheckResult
@@ -58,7 +57,7 @@ class AboutViewModel(private val appWidgetIdScope: AppWidgetIdScope?): BaseFlowV
 
     private val context: Context by inject()
     private val backupManager: BackupManager by inject()
-    private val themes = context.resources.getStringArray(R.array.app_themes)
+    private val themes = context.resources.getStringArray(info.anodsplace.carwidget.content.R.array.app_themes)
     private val appSettings: AppSettings
         get() = get()
 
@@ -140,7 +139,7 @@ class AboutViewModel(private val appWidgetIdScope: AppWidgetIdScope?): BaseFlowV
     private fun renderMusicApp(): String {
         val musicAppCmp = appSettings.musicApp
         return if (musicAppCmp == null) {
-            context.getString(R.string.show_choice)
+            context.getString(info.anodsplace.carwidget.content.R.string.show_choice)
         } else {
             try {
                 val info = context.packageManager
@@ -154,7 +153,7 @@ class AboutViewModel(private val appWidgetIdScope: AppWidgetIdScope?): BaseFlowV
     }
 
     private fun renderVersion(): String {
-        val appName = context.getString(R.string.app_name)
+        val appName = context.getString(info.anodsplace.carwidget.content.R.string.app_name)
         var versionName = ""
         try {
             versionName = context.packageManager
@@ -163,28 +162,28 @@ class AboutViewModel(private val appWidgetIdScope: AppWidgetIdScope?): BaseFlowV
             AppLog.e(e)
         }
 
-        return context.getString(R.string.version_title, appName, versionName)
+        return context.getString(info.anodsplace.carwidget.content.R.string.version_title, appName, versionName)
     }
 
     private fun renderBackupCode(code: Int): Int {
         if (code == Backup.RESULT_DONE) {
-            return R.string.backup_done
+            return info.anodsplace.carwidget.content.R.string.backup_done
         }
         return if (code == Backup.ERROR_FILE_WRITE) {
-            R.string.failed_to_write_file
-        } else R.string.unexpected_error
+            info.anodsplace.carwidget.content.R.string.failed_to_write_file
+        } else info.anodsplace.carwidget.content.R.string.unexpected_error
     }
 
     private fun renderRestoreCode(code: Int): Int {
         if (code == Backup.RESULT_DONE) {
-            return R.string.restore_done
+            return info.anodsplace.carwidget.content.R.string.restore_done
         }
         return when (code) {
-            Backup.ERROR_DESERIALIZE -> R.string.restore_deserialize_failed
-            Backup.ERROR_FILE_READ -> R.string.failed_to_read_file
-            Backup.ERROR_UNEXPECTED -> R.string.unexpected_error
-            Backup.ERROR_INCORRECT_FORMAT -> R.string.backup_unknown_format
-            else -> R.string.unexpected_error
+            Backup.ERROR_DESERIALIZE -> info.anodsplace.carwidget.content.R.string.restore_deserialize_failed
+            Backup.ERROR_FILE_READ -> info.anodsplace.carwidget.content.R.string.failed_to_read_file
+            Backup.ERROR_UNEXPECTED -> info.anodsplace.carwidget.content.R.string.unexpected_error
+            Backup.ERROR_INCORRECT_FORMAT -> info.anodsplace.carwidget.content.R.string.backup_unknown_format
+            else -> info.anodsplace.carwidget.content.R.string.unexpected_error
         }
     }
 }

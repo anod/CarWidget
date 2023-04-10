@@ -1,6 +1,5 @@
 package info.anodsplace.carwidget.incar
 
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.InCarStatus.Companion.DISABLED
@@ -42,12 +41,12 @@ class InCarStatus(
     override val resId: Int
         get() {
             if (value == NOT_ACTIVE) {
-                return R.string.not_active
+                return info.anodsplace.carwidget.content.R.string.not_active
             }
             return if (value == ENABLED) {
-                R.string.enabled
+                info.anodsplace.carwidget.content.R.string.enabled
             } else {
-                R.string.disabled
+                info.anodsplace.carwidget.content.R.string.disabled
             }
         }
 }

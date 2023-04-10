@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
@@ -32,7 +30,7 @@ import androidx.navigation.compose.*
 import androidx.navigation.navigation
 import coil.ImageLoader
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.CheckIcon
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.screens.NavItem
@@ -126,8 +124,8 @@ fun MainScreen(
     if (screenState.showProDialog) {
         AlertDialog(
             onDismissRequest = { onEvent(MainViewEvent.HideProDialog) },
-            title = { Text(text = stringResource(id = R.string.dialog_donate_title_install)) },
-            text = { Text(text = stringResource(id = R.string.dialog_donate_message_installed)) },
+            title = { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.dialog_donate_title_install)) },
+            text = { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.dialog_donate_message_installed)) },
             confirmButton = { }
         )
     }
@@ -190,11 +188,11 @@ fun Tabs(
         containerColor = if (screenState.isWidget) Color.Transparent else MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text(text = stringResource(id = R.string.app_name)) },
+                title = { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.app_name)) },
                 actions = {
                     if (screenState.isWidget) {
                         IconButton(onClick = { onEvent(MainViewEvent.ApplyWidget(screenState.appWidgetId, screenState.skinList.current.value)) }) {
-                            Icon(imageVector = Icons.Filled.Check, contentDescription = stringResource(id = android.R.string.ok))
+                            CheckIcon()
                         }
                     }
                 }

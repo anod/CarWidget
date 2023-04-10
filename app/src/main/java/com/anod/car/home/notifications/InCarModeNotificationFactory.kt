@@ -35,15 +35,15 @@ class InCarModeNotificationFactory(
         val r = context.resources
         val contentIntent = PendingIntent.getService(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
         val text = if (version.isFree) {
-            context.getString(R.string.trial_left, version.trialTimesLeft)
+            context.getString(info.anodsplace.carwidget.content.R.string.trial_left, version.trialTimesLeft)
         } else {
             ""
         }
 
         val notification = NotificationCompat.Builder(context, Channels.inCarMode)
-                .setSmallIcon(R.drawable.ic_stat_incar)
+                .setSmallIcon(info.anodsplace.carwidget.skin.R.drawable.ic_stat_incar)
                 .setOngoing(true)
-                .addAction(0, context.getString(R.string.disable), contentIntent)
+                .addAction(0, context.getString(info.anodsplace.carwidget.content.R.string.disable), contentIntent)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setStyle(NotificationCompat.DecoratedCustomViewStyle())
@@ -54,7 +54,7 @@ class InCarModeNotificationFactory(
             contentView.setTextViewText(android.R.id.text1, text)
             notification.setContent(contentView)
         } else {
-            notification.setContentTitle(r.getString(R.string.incar_mode_enabled))
+            notification.setContentTitle(r.getString(info.anodsplace.carwidget.content.R.string.incar_mode_enabled))
             if (text.isNotEmpty()) {
                 notification.setContentText(text)
             }

@@ -20,7 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.chooser.AllAppsIntentLoader
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.ChooserEntry
@@ -97,8 +96,8 @@ fun CreateShortcutChooser(onNewState: (ShortcutPickerState) -> Unit, onIntent: (
         modifier = Modifier.padding(horizontal = 16.dp),
         loader = loader,
         headers = listOf(
-            Header(0, stringResource(R.string.applications), iconVector = Icons.Filled.List),
-            Header(1, stringResource(R.string.car_widget_shortcuts), iconVector = Icons.Filled.List),
+            Header(0, stringResource(info.anodsplace.carwidget.content.R.string.applications), iconVector = Icons.Filled.List),
+            Header(1, stringResource(info.anodsplace.carwidget.content.R.string.car_widget_shortcuts), iconVector = Icons.Filled.List),
         ),
         onDismissRequest = onDismissRequest,
         onClick = { entry ->
@@ -171,8 +170,8 @@ private fun createCarWidgetShortcuts(context: Context, shortcutResources: Shortc
 
 private fun makeToast(resultCode: CreateShortcutResult, context: Context) {
     if (resultCode == CreateShortcutResult.SuccessAppShortcut) {
-        Toast.makeText(context, R.string.app_shortcuts_limited, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, info.anodsplace.carwidget.content.R.string.app_shortcuts_limited, Toast.LENGTH_SHORT).show()
     } else if (resultCode == CreateShortcutResult.FailedAppShortcut) {
-        Toast.makeText(context, R.string.app_shortcuts_limited, Toast.LENGTH_LONG).show()
+        Toast.makeText(context, info.anodsplace.carwidget.content.R.string.app_shortcuts_limited, Toast.LENGTH_LONG).show()
     }
 }

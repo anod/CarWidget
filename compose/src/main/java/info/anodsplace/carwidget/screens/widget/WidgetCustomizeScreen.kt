@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,7 +16,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.R
+import info.anodsplace.carwidget.TextDecreaseIcon
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.screens.WidgetDialogType
 import info.anodsplace.carwidget.screens.main.MainViewEvent
@@ -35,7 +34,9 @@ fun FontSize(
         initialValue = initialValue,
         onValueChanged = onValueChanged,
         item = placeholder.toTextItem(),
-        suffixText = { Text(text = "px") }
+        suffixText = { Text(text = "px") },
+        startIcon = { TextDecreaseIcon() },
+        endIcon = { TextDecreaseIcon() },
     )
 }
 
@@ -112,8 +113,8 @@ fun WidgetCustomizeScreen(
                         secondary = {
                             Column {
                                 IconShapeSelector(
-                                    names = stringArrayResource(id = R.array.adaptive_icon_style_names),
-                                    pathMasks = stringArrayResource(id = R.array.adaptive_icon_style_paths_values),
+                                    names = stringArrayResource(id = info.anodsplace.carwidget.content.R.array.adaptive_icon_style_names),
+                                    pathMasks = stringArrayResource(id = info.anodsplace.carwidget.content.R.array.adaptive_icon_style_paths_values),
                                     selected = screenState.widgetSettings.adaptiveIconStyle,
                                     defaultSystemMask = "",
                                     systemMaskName = "",

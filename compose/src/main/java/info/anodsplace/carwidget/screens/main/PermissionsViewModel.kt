@@ -4,7 +4,6 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.PermissionDescriptionItem
 import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.compose.PermissionDescription
@@ -60,9 +59,9 @@ class PermissionsViewModel(
     init {
         viewState = PermissionsViewState(
             screenDescription = RequestPermissionsScreenDescription(
-                descRes = R.string.needs_permissions_to_work,
-                titleRes = R.string.app_name,
-                allowAccessRes = R.string.allow_access
+                descRes = info.anodsplace.carwidget.content.R.string.needs_permissions_to_work,
+                titleRes = info.anodsplace.carwidget.content.R.string.app_name,
+                allowAccessRes = info.anodsplace.carwidget.content.R.string.allow_access
             ),
             missingPermissions = initialPermission
                 .mapNotNull { permissionDescriptionsMap[it] }

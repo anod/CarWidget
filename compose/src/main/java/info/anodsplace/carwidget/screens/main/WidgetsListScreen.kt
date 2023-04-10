@@ -6,11 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,8 +26,9 @@ import coil.compose.AsyncImagePainter
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.LocalWidgetSystemTheme
-import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.WarningColor
+import info.anodsplace.carwidget.WarningIcon
+import info.anodsplace.carwidget.WidgetsIcon
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.iconUri
@@ -89,11 +86,9 @@ private fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(modifier = Modifier
                     .cardStyle(backgroundColor = MaterialTheme.colorScheme.errorContainer)) {
-                    Icon(
-                        imageVector = Icons.Filled.Warning,
+                    WarningIcon(
                         modifier = Modifier.size(SystemIconSize),
-                        tint = MaterialTheme.colorScheme.error,
-                        contentDescription = null)
+                        tint = MaterialTheme.colorScheme.error)
                     Text(
                         modifier = Modifier.padding(start = 16.dp),
                         text = "InCar detector service is not running, disable battery optimization",
@@ -143,7 +138,7 @@ private fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId
                         .padding(16.dp)
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center,
-                    text = stringResource(id = R.string.widgets_hint)
+                    text = stringResource(id = info.anodsplace.carwidget.content.R.string.widgets_hint)
                 )
             }
         }
@@ -162,12 +157,10 @@ private fun NoWidgetsItem() {
     ) {
         Text(
             modifier = Modifier.weight(1f),
-            text = stringResource(id = R.string.no_active_widget),
+            text = stringResource(id = info.anodsplace.carwidget.content.R.string.no_active_widget),
             color = MaterialTheme.colorScheme.onError
         )
-        Icon(
-            imageVector = Icons.Filled.Widgets,
-            contentDescription = null,
+        WidgetsIcon(
             modifier = Modifier
                 .padding(4.dp)
                 .size(36.dp),
@@ -222,17 +215,17 @@ fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit, imageLoader: Im
 @Composable
 fun EventStates(eventsState: List<InCarStatus.EventState>) {
     val titles = listOf(
-            R.string.pref_power_connected_title,
-            R.string.pref_headset_connected_title,
-            R.string.pref_blutooth_device_title,
-            R.string.activity_recognition,
-            R.string.car_dock
+            info.anodsplace.carwidget.content.R.string.pref_power_connected_title,
+            info.anodsplace.carwidget.content.R.string.pref_headset_connected_title,
+            info.anodsplace.carwidget.content.R.string.pref_blutooth_device_title,
+            info.anodsplace.carwidget.content.R.string.activity_recognition,
+            info.anodsplace.carwidget.content.R.string.car_dock
     )
     Column(modifier = Modifier.padding(top = 16.dp)) {
         for (event in eventsState) {
             val title = stringResource(titles[event.id])
-            val enabled = if (event.enabled) stringResource(R.string.enabled) else stringResource(R.string.disabled)
-            val active = if (event.active) stringResource(R.string.active) else stringResource(R.string.not_active)
+            val enabled = if (event.enabled) stringResource(info.anodsplace.carwidget.content.R.string.enabled) else stringResource(info.anodsplace.carwidget.content.R.string.disabled)
+            val active = if (event.active) stringResource(info.anodsplace.carwidget.content.R.string.active) else stringResource(info.anodsplace.carwidget.content.R.string.not_active)
             Text(
                 text = String.format("%s: %s - %s", title, enabled, active),
                 style = MaterialTheme.typography.labelMedium,
@@ -249,7 +242,7 @@ fun InCarHeader(screen: WidgetListScreenState) {
 
     Column(modifier = Modifier.cardStyle()) {
         Text(
-            text = stringResource(id = R.string.pref_incar_mode_title) + " - " + active,
+            text = stringResource(id = info.anodsplace.carwidget.content.R.string.pref_incar_mode_title) + " - " + active,
             color = MaterialTheme.colorScheme.onSecondary
         )
         if (screen.isServiceRequired) {
@@ -264,7 +257,7 @@ fun InCarHeader(screen: WidgetListScreenState) {
         when {
             version.isFreeAndTrialExpired -> {
                 Text(
-                    text = stringResource(R.string.dialog_donate_title_expired) + " " + stringResource(R.string.notif_consider),
+                    text = stringResource(info.anodsplace.carwidget.content.R.string.dialog_donate_title_expired) + " " + stringResource(info.anodsplace.carwidget.content.R.string.notif_consider),
                     color = MaterialTheme.colorScheme.onSecondary
                 )
             }
@@ -273,11 +266,11 @@ fun InCarHeader(screen: WidgetListScreenState) {
                 val activationsLeft =
                     resources
                         .getQuantityString(
-                            R.plurals.notif_activations_left,
+                            info.anodsplace.carwidget.content.R.plurals.notif_activations_left,
                             version.trialTimesLeft, version.trialTimesLeft
                         )
                 Text(
-                    text = stringResource(R.string.dialog_donate_title_trial) + " " + activationsLeft,
+                    text = stringResource(info.anodsplace.carwidget.content.R.string.dialog_donate_title_trial) + " " + activationsLeft,
                     color = MaterialTheme.colorScheme.onSecondary
                 )
             }
@@ -311,7 +304,7 @@ fun PreviewWidgetsScreen() {
                 isServiceRunning = false,
                 isServiceRequired = true,
                 eventsState = emptyList(),
-                statusResId = R.string.enabled
+                statusResId = info.anodsplace.carwidget.content.R.string.enabled
             ),
             onClick = { },
             imageLoader = ImageLoader.Builder(LocalContext.current).build()
@@ -330,7 +323,7 @@ fun PreviewWidgetsEmptyScreen() {
                 isServiceRunning = false,
                 isServiceRequired = true,
                 eventsState = emptyList(),
-                statusResId = R.string.enabled
+                statusResId = info.anodsplace.carwidget.content.R.string.enabled
             ),
             onClick = { },
             imageLoader = ImageLoader.Builder(LocalContext.current).build()

@@ -21,7 +21,7 @@ abstract class BaseProperties : SkinProperties {
         get() = null
 
     override val setShortcutText: Int
-        get() = R.string.set_shortcut
+        get() = info.anodsplace.carwidget.content.R.string.set_shortcut
 
     override val iconPaddingRes: Int
         get() = R.dimen.icon_padding_bottom

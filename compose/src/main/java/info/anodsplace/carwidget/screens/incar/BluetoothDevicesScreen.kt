@@ -3,9 +3,17 @@ package info.anodsplace.carwidget.screens.incar
 import android.bluetooth.BluetoothAdapter
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.R
 import info.anodsplace.compose.PreferenceCheckbox
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.permissions.AppPermission
@@ -55,12 +62,12 @@ fun BluetoothPermissions(onEvent: (BluetoothDevicesViewEvent) -> Unit, modifier:
         onEvent(BluetoothDevicesViewEvent.PermissionResult(requires = requiresPermission))
     }
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = stringResource(id = R.string.bluetooth_device_category_title))
-        Text(text = stringResource(id = R.string.allow_bluetooth_summary))
+        Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.bluetooth_device_category_title))
+        Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.allow_bluetooth_summary))
         Button(modifier = Modifier.padding(16.dp), onClick = {
             bluetoothPermissions.launch(arrayOf(AppPermission.BluetoothScan.value, AppPermission.BluetoothConnect.value))
         }) {
-            Text(text = stringResource(id = R.string.allow_bluetooth))
+            Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.allow_bluetooth))
         }
     }
 }
@@ -75,7 +82,7 @@ fun BluetoothDeviceList(list: List<BluetoothDevice>, btState: Int, onSwitchReque
             item {
                 Text(
                     modifier = Modifier.padding(vertical = 16.dp),
-                    text = stringResource(id = R.string.bluetooth_device_category_title)
+                    text = stringResource(id = info.anodsplace.carwidget.content.R.string.bluetooth_device_category_title)
                 )
             }
             items(list.size) { index ->
@@ -96,9 +103,9 @@ fun BluetoothDeviceList(list: List<BluetoothDevice>, btState: Int, onSwitchReque
 @Composable
 fun BluetoothDeviceEmpty(btState: Int, onSwitchRequest: (newState: Boolean) -> Unit, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
-        Text(text = stringResource(id = R.string.bluetooth_device_category_title))
+        Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.bluetooth_device_category_title))
         Text(
-            text = stringResource(id = R.string.no_paired_devices_found_summary),
+            text = stringResource(id = info.anodsplace.carwidget.content.R.string.no_paired_devices_found_summary),
             modifier = Modifier.padding(top = 16.dp)
         )
         if (btState != BluetoothAdapter.STATE_ON) {
@@ -108,7 +115,7 @@ fun BluetoothDeviceEmpty(btState: Int, onSwitchRequest: (newState: Boolean) -> U
                     .padding(top = 16.dp)
             ) {
                 Text(
-                    text = stringResource(id = R.string.turn_on_bluetooth_summary),
+                    text = stringResource(id = info.anodsplace.carwidget.content.R.string.turn_on_bluetooth_summary),
                 )
                 Switch(
                     modifier = Modifier.padding(start = 16.dp),

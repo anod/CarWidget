@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import info.anodsplace.carwidget.CheckIcon
 import info.anodsplace.carwidget.screens.NavItem
 
 fun NavHostController.navigate(item: NavItem.Tab) {
@@ -81,7 +82,7 @@ fun NavRailMenu(
             header = {
                 if (showApply) {
                     IconButton(onClick = onApply) {
-                        Icon(imageVector = Icons.Filled.Check, contentDescription = stringResource(id = R.string.ok))
+                        CheckIcon()
                     }
                 }
             },

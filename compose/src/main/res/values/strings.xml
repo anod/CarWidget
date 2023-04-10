@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="increase">Increase\n</string>
+    <string name="decrease">Decrease\n</string>
+    <string name="expand">Expand</string>
+    <string name="collapse">Collapse</string>
+</resources>
