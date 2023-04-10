@@ -8,12 +8,11 @@ import android.view.KeyEvent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.FragmentActivity
 import com.anod.car.home.appwidget.ShortcutPendingIntent
-import info.anodsplace.framework.media.MediaKeyEvent
-import info.anodsplace.carwidget.OverlayComposeActivity
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra.EXTRA_MEDIA_BUTTON
 import info.anodsplace.framework.content.startActivitySafely
+import info.anodsplace.framework.media.MediaKeyEvent
 import info.anodsplace.permissions.AppPermission
 import info.anodsplace.permissions.AppPermissions
 import org.koin.core.component.KoinComponent
@@ -34,6 +33,8 @@ class ShortcutActivity : FragmentActivity(), KoinComponent {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         execute(intent)
+
+
     }
 
     private fun execute(intent: Intent) {

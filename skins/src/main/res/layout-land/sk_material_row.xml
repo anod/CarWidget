@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="140dp"
     android:layout_height="match_parent"
     android:layout_weight="1"
@@ -34,15 +33,14 @@
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray"
             android:src="@drawable/ic_add_shortcut_holo"
-            android:paddingBottom="8dp"
-            />
+            android:paddingBottom="8dp" />
 
         <TextView
             android:id="@+id/btn_text1"
             style="@style/cardsBtnText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/set_shortcut"/>
+            android:text="@string/set_shortcut" />
     </FrameLayout>
 
     <FrameLayout
@@ -60,22 +58,20 @@
         android:paddingTop="4dp"
         android:paddingLeft="4dp"
         android:paddingRight="6dp"
-        android:paddingBottom="8dp"
-        >
+        android:paddingBottom="8dp">
 
         <ImageButton
             android:id="@+id/btn0"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray"
-            android:src="@drawable/ic_add_shortcut_holo"
-            />
+            android:src="@drawable/ic_add_shortcut_holo" />
 
         <TextView
             android:id="@+id/btn_text0"
             style="@style/cardsBtnText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/set_shortcut"/>
+            android:text="@string/set_shortcut" />
     </FrameLayout>
 </LinearLayout>

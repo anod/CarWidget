@@ -5,7 +5,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
-import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
 import com.anod.car.home.utils.Power
@@ -159,16 +158,11 @@ class ModeHandler(
 
         private fun writeBrightness(context: Context, newBrightMode: Int, newBrightLevel: Int) {
             val cr = context.contentResolver
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (Settings.System.canWrite(context)) {
-                    Settings.System.putInt(cr, Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode)
-                    Settings.System.putInt(cr, Settings.System.SCREEN_BRIGHTNESS, newBrightLevel)
-                } else {
-                    Toast.makeText(context, info.anodsplace.carwidget.content.R.string.allow_permissions_brightness, Toast.LENGTH_LONG).show()
-                }
-            } else {
+            if (Settings.System.canWrite(context)) {
                 Settings.System.putInt(cr, Settings.System.SCREEN_BRIGHTNESS_MODE, newBrightMode)
                 Settings.System.putInt(cr, Settings.System.SCREEN_BRIGHTNESS, newBrightLevel)
+            } else {
+                Toast.makeText(context, info.anodsplace.carwidget.content.R.string.allow_permissions_brightness, Toast.LENGTH_LONG).show()
             }
         }
 

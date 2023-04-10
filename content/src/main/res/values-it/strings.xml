@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="permlab_read_settings">Leggi impostazioni widget auto e scorciatoie</string>
-    <string name="permdesc_read_settings">Consente a un\'applicazione di leggere le impostazioni e le scorciatoie su Car Widget.</string>
-    <string name="permlab_write_settings">scrivi le impostazioni e le scorciatoie di Car Widget</string>
-    <string name="permdesc_write_settings">Consente a un\'applicazione di modificare le impostazioni e le scorciatoie su Car Widget.</string>
-    <string name="color_dialog_title">Scegli un colore</string>
     <string name="pref_tile_color_title">Colore delle mattonelle</string>
     <string name="pref_bg_color_title">Colore di sfondo</string>
     <string name="pref_icons_mono_title">Icone monocromatiche</string>
@@ -14,26 +9,9 @@
     <string name="pref_font_color_summary">Seleziona il colore del titolo</string>
     <string name="pref_font_size_title">Dimensioni carattere</string>
     <string name="pref_font_size_summary">Scegli le dimensioni del titolo</string>
-    <string name="dialog_donate_title_expired">Prova scaduta,</string>
-    <string name="dialog_donate_message_expired">Questa funzione è disponibile solo nella versione Pro Widget Car.\n\n Vuoi averla ora?</string>
-    <string name="dialog_donate_title_trial">Prova,</string>
-    <string name="dialog_donate_message_trial">\n\nLa modalità \"alla guida\" illimitata è disponibile solo nella versione Pro Widget Car.\n\n Vuoi averla ora?</string>
-    <string name="dialog_donate_title_install">Versione Pro rilevata</string>
-    <string name="dialog_donate_message_installed">Aggiungi i nuovi widget installati alla schermata iniziale per ottenere l\'accesso alle funzioni della versione Pro.\n\nImpostazioni di copia:\nÈ possibile copiare le impostazioni utilizzando l\'opzione \"Copia/Ripristina\". La versione gratuita del widget non è più richiesta.\n\nGrazie.</string>
-    <string name="dialog_donate_btn_trial">Continua la prova</string>
-    <string name="dialog_donate_btn_yes">Sì, grazie!</string>
-    <string name="dialog_donate_btn_no">No, grazie!</string>
     <string name="set_shortcut">Imposta scorciatoia</string>
-    <string name="pref_look_and_feel_title">Look &amp; Feel</string>
-    <string name="pref_look_and_feel_summary">Personalizza lo skin, i colori e le dimensioni del testo</string>
     <string name="pref_incar_mode_title">Modalità \"alla guida\"</string>
-    <string name="pref_incar_mode_summary">Scegli come rilevare quando ti trovi in auto e le impostazioni che verranno regolate</string>
     <string name="pref_incar_mode_enabled">Attiva modalità \"alla guida\"</string>
-    <string name="pref_power_contorl_bt">Controllo bluetooth con alimentazione</string>
-    <string name="pref_power_plugged_bt_on_title">Acceso quando collegato</string>
-    <string name="pref_power_plugged_bt_on_summary">Attiva Bluetooth quando il cavo di alimentazione è collegato</string>
-    <string name="pref_power_unplugged_bt_off_title">Spento quando scollegato</string>
-    <string name="pref_power_unplugged_bt_off_summary">Disattiva Bluetooth quando il cavo di alimentazione è scollegato</string>
     <string name="pref_detection">Attivazione</string>
     <string name="pref_blutooth_device_title">Dispositivo Bluetooth</string>
     <string name="pref_blutooth_device_summary">Scegli un dispositivo bluetooth che abiliti la modalità \"alla guida\"</string>
@@ -57,31 +35,18 @@
     <string name="notif_expired">Prova scaduta</string>
     <string name="notif_consider">Decidi se installare la versione Pro</string>
     <string name="incar_mode_enabled">Modalità \"alla guida\" abilitata</string>
-    <string name="click_to_disable">Clicca per disattivare</string>
-    <string name="click_to_disable_trial">Clicca per disattivare, Prova: %d volte rimaste</string>
-    <plurals name="notif_activations_left">
-        <item quantity="one">%1$d attivazione rimasta</item>
-        <item quantity="other">%1$d attivazioni rimaste</item>
-    </plurals>
     <string name="version_title">%1$s ver. %2$s</string>
     <string name="version_summary">Vota questo widget nel Play Store</string>
     <string name="shortcut_edit_title">Modifica scorciatoia</string>
-    <string name="shortcut_edit_hint">Tocca l\'icona per cambiare</string>
-    <string name="photo_picker_not_found">Non ci sono foto disponibili sul telefono.</string>
-    <string name="error_text">Errore: %1$s</string>
     <string name="pref_route_to_speaker">Inoltra all\'altoparlante</string>
     <string name="pref_route_to_speaker_summary">Inoltra tutte le chiamate in arrivo agli altoparlanti del telefono</string>
     <string name="pref_scale_icon">Ridimensiona icone</string>
-    <string name="pref_wifi_summary">Se il Wi-Fi è attivo, puoi spegnerlo temporaneamente o permanentemente</string>
     <string name="pref_settings_transparent">Pulsante Impostazioni</string>
-    <string name="pref_settings_transparent_summary">Il Pulsante Impostazioni rimane nello stesso punto, ma diventa trasparente</string>
     <string name="pref_incar_transparent">Pulsante \"alla guida\"</string>
-    <string name="pref_incar_transparent_summary">Quando la modalità InCar abilitato, il pulsante rimarrà nello stesso luogo, ma sarà trasparente</string>
     <string name="pref_activate_car_mode">Modalità \"alla guida\" incorporata</string>
     <string name="pref_activate_car_mode_summary">Sarà attivata la modalità \"alla guida\" di Android e verrà visualizzata un\'icona di notifica supplementare.</string>
     <string name="pref_backup_title">Copia / Ripristina</string>
     <string name="backup_current_widget">Widget attuale</string>
-    <string name="backup_incar_settings">Impostazioni \"alla guida\"</string>
     <string name="backup_done">Copia eseguita.</string>
     <string name="failed_to_write_file">Impossibile scrivere il file.</string>
     <string name="restore_done">Ripristino effettuato.</string>
@@ -100,9 +65,6 @@
     <string name="cardock_btn_1">Apri Informazioni applicazione</string>
     <string name="cardock_text1">Per cancellare l\'applicazione predefinita:\n1. Aprire le informazioni sulle applicazioni predefinite\n2. Cliccare sul pulsante \"Cancella predefinite\"</string>
     <string name="cardock_text2">La prossima volta che Car Dock verrà abilitato, scegliere \"Widget Car\" come applicazione predefinita.</string>
-    <string name="select_shortcut_title">Seleziona scorciatoia</string>
-    <string name="select_icon_pack">Seleziona un pacchetto di icone</string>
-    <string name="custom_image_error">Si è verificato un errore durante il tentativo di aprire l\'immagine selezionata</string>
     <string name="pref_rotate_icon_title">Ruota le icone</string>
     <string name="pref_titles_hide_title">Nascondi i titoli</string>
     <string name="pref_titles_hide_summary">Non visualizzare i titoli per le scorciatoie</string>
@@ -117,7 +79,6 @@
     <string name="detect_incar_description">&lt;b&gt;Rileva&lt;/b&gt; quando ti trovi all\'interno della vettura</string>
     <string name="adjust_incar_description">&lt;b&gt;Regola&lt;/b&gt; impostazioni comuni</string>
     <string name="enable_incar_description">&lt;b&gt;Abilita&lt;/​​b&gt; la modalità \"alla guida\" nella finestra di dialogo delle impostazioni.</string>
-    <string name="trial_description">Versione di prova gratuita per %d attivazioni.</string>
     <string name="swipe_continue">Scorri per continuare →</string>
     <string name="use_gms_for_activity">Utilizza i servizi di Google Play per rilevare l\'attività</string>
     <string name="gms_service_missing">I servizi di Google Play sono assenti su questo dispositivo.</string>
@@ -133,39 +94,20 @@
     <string name="bluetooth_device_headset">Auricolare</string>
     <string name="information_title">Informazione</string>
     <string name="applications">Applicazioni</string>
-    <string name="pref_wifi">Wi-Fi</string>
-    <string name="transparent">Trasparente</string>
-    <string name="dialog_choose_icon">Seleziona</string>
-    <string name="icon_custom">Personalizza</string>
-    <string name="icon_adw_icon_pack">Pacchetto icone</string>
     <string name="restore">Ripristina</string>
-    <string name="settings">Impostazioni</string>
     <string name="more">Di più…</string>
     <string name="none">Nessuno</string>
-    <string name="download">Scarica…</string>
     <string name="enabled">Attivato</string>
     <string name="disabled">Disattivato</string>
     <string name="configure">Configura</string>
     <string name="finish">Finito</string>
     <string name="skip">Ignora</string>
     <string name="next">Avanti</string>
-    <string name="choose_a_theme">Scegli un tema</string>
-    <string name="icon_default">Predefinito</string>
-    <string name="failed_fetch_icon">Impossibile recuperare l\'icona predefinita.</string>
-    <string name="please_add_widget">Aggiungi il widget alla schermata iniziale</string>
-    <string name="samsung_driving_summary">Attiva la modalità auto Samsung integrata</string>
-    <string name="samsung_driving_title">Modalità auto Samsung</string>
     <string-array name="brightness_mode_titles">
         <item>Sistema</item>
         <item>Automatico</item>
         <item>Giorno</item>
         <item>Notte</item>
-    </string-array>
-
-    <string-array name="wifi_action_titles">
-        <item>Nessuna azione</item>
-        <item>Temporaneo</item>
-        <item>Permanentemente</item>
     </string-array>
 
     <string-array name="autoanswer_titles">
@@ -193,20 +135,14 @@
         <item>90º a destra</item>
     </string-array>
 
-    <string name="delete">Elimina</string>
-    <string name="number">Numero di collegamenti</string>
     <string name="number_shortcuts_title">Numero di collegamenti</string>
     <string name="car_dock">Car Dock</string>
     <string name="car_dock_summary">Attiva la modalità Alla guida quando il telefono è inserito in una Car Dock</string>
     <string name="widgets">Widget</string>
     <string name="show_choice">Mostra scelta</string>
     <string name="music_app">App musica</string>
-    <string name="use_as_default_music_app">Utilizza l\'app musica come impostazione predefinita</string>
-    <string name="choose_music_app_explanation">Scegli l\'app musica utilizzata per il collegamento Riproduci/Pausa</string>
     <string name="app_theme">Tema App</string>
     <string name="widgets_hint">Seleziona un elemento per configurare il widget</string>
-    <string name="list_of_active_widgets">Elenco dei widget attivi</string>
-    <string name="current_widget">Widget attuale</string>
     <string name="no_active_widget">Non sono stati trovati widget attivi. Assicurati di aggiungere un widget nella schermata iniziale.</string>
 
     <string-array name="orientation_titles">
@@ -216,18 +152,12 @@
         <item>Panorama (inverso)</item>
     </string-array>
 
-    <string name="keep_on">Tieni lo schermo acceso</string>
     <string name="while_charging">während des Ladevorgangs</string>
     <string name="screen_on_alternative">sempre in cima</string>
     <string name="screen_on_alternative_text">Abilita modo alternativo per mantenere schermo acceso (questo richiede il permesso aggiunta)</string>
-    <string name="color_picker_default_title">Selezionare un colore</string>
-    <string name="color_swatch_description">Colore %1$d</string>
-    <string name="color_swatch_description_selected">Colore %1$d selezionata</string>
     <string name="app_shortcuts_limited">supporto App scorciatoie è limitato da Android</string>
     <string name="unavailable_bt_device">Non disponibile</string>
     <string name="hidden">Nascosto</string>
-    <string name="choose">Scegliere</string>
-    <string name="permission_denied">Permesso negato</string>
     <string name="mode_detector_channel">Rilevamento di modalità InCar</string>
     <string name="notification_mode_detector_title">Rilevamento di modalità InCar</string>
     <string name="notification_mode_detector_content">Può essere nascosto in impostazioni di notifica</string>

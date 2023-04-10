@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string-array name="disable_screen_timeout_values" tools:ignore="MissingTranslation" translatable="false">
-        <item>disabled-charging</item>
-        <item>disabled</item>
-        <item>enabled</item>
-    </string-array>
     <string-array name="skin_titles" tools:ignore="MissingTranslation" translatable="false">
 		<item>You</item>
         <item>Cards</item>
@@ -20,61 +15,8 @@
 		<item>day</item>
 		<item>night</item>
     </string-array>
-    <string-array name="icon_scale_values" tools:ignore="MissingTranslation" translatable="false">
-        <item>0</item>
-		<item>1</item>
-		<item>2</item>
-		<item>3</item>
-		<item>4</item>
-		<item>5</item>
-		<item>6</item>
-		<item>7</item>
-		<item>8</item>
-		<item>9</item>
-		<item>10</item>
-		<item>11</item>
-		<item>12</item>
-		<item>13</item>
-		<item>14</item>
-		<item>15</item>
-		<item>16</item>
-		<item>17</item>
-		<item>18</item>
-		<item>19</item>
-		<item>20</item>
-    </string-array>
-    
-	<string-array name="wifi_action_values" tools:ignore="MissingTranslation" translatable="false">
-		<item>no_action</item>
-		<item>turn_off_wifi</item>
-		<item>disable_wi_fi</item>
-    </string-array>
-    
-    <string-array name="icon_scale_titles" tools:ignore="MissingTranslation" translatable="false">
-        <item>x1.0</item>
-        <item>x1.1</item>
-        <item>x1.2</item>
-        <item>x1.3</item>
-        <item>x1.4</item>
-        <item>x1.5</item>
-        <item>x1.6</item>
-        <item>x1.7</item>
-        <item>x1.8</item>
-        <item>x1.9</item>
-        <item>x2.0</item>
-		<item>x2.1</item>
-		<item>x2.2</item>
-		<item>x2.3</item>
-		<item>x2.4</item>
-		<item>x2.5</item>
-		<item>x2.6</item>
-		<item>x2.7</item>
-		<item>x2.8</item>
-		<item>x2.9</item>
-		<item>x3.0</item>
-    </string-array>    
-    
-	<string-array name="autoanswer_values" tools:ignore="MissingTranslation" translatable="false">
+
+    <string-array name="autoanswer_values" tools:ignore="MissingTranslation" translatable="false">
 		<item>disabled</item>
 		<item>immediately</item>
 		<item>delay-5</item>
@@ -95,13 +37,6 @@
 		<item>Light</item>
 		<item>Dark</item>
 		<item>System</item>
-	</string-array>
-
-	<string-array name="shortcut_numbers" tools:ignore="MissingTranslation">
-		<item>4</item>
-		<item>6</item>
-		<item>8</item>
-		<item>10</item>
 	</string-array>
 
     <string-array name="orientation_values" tools:ignore="MissingTranslation">

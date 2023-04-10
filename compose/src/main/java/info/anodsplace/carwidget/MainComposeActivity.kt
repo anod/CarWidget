@@ -53,7 +53,8 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
             val uiMode by appSettings.uiModeChange.collectAsState(initial = appSettings.uiMode)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 LaunchedEffect(uiMode) {
-                    uiModeManager.setApplicationNightMode(uiMode)
+                    uiModeManager.nightMode = uiMode
+//                    uiModeManager.setApplicationNightMode(uiMode)
                 }
             }
             CarWidgetTheme(

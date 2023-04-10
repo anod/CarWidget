@@ -1,8 +1,11 @@
 package com.anod.car.home.incar
 
+import android.Manifest
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 import info.anodsplace.applog.AppLog
 
@@ -23,6 +26,11 @@ class ActivityTransitionTracker(private val context: Context) {
 
         val request = ActivityTransitionRequest(transitions)
 
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
+            AppLog.e("Activity recognition permission is not granted")
+            return
+        }
+
         val task = ActivityRecognition.getClient(context).requestActivityTransitionUpdates(request, broadcastIntent)
         task.addOnSuccessListener {
             AppLog.i("Activity is tracking")
@@ -34,6 +42,11 @@ class ActivityTransitionTracker(private val context: Context) {
     }
 
     fun stop() {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
+            AppLog.e("Activity recognition permission is not granted")
+            return
+        }
+
         ActivityRecognition.getClient(context).removeActivityTransitionUpdates(broadcastIntent)
     }
 

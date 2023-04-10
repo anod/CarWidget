@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/generate"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
@@ -25,15 +26,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="2dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_marginBottom="2dp"
+                android:clickable="true"
                 android:layout_weight="1"
                 android:background="@drawable/card_background"
-                android:clickable="true"
-                android:paddingLeft="4dp"
                 android:paddingTop="4dp"
+                android:paddingLeft="4dp"
                 android:paddingRight="6dp"
                 android:paddingBottom="8dp">
 
@@ -43,8 +44,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/darker_gray"
-                    android:paddingBottom="8dp"
-                    android:src="@drawable/ic_add_shortcut_holo" />
+                    android:src="@drawable/ic_add_shortcut_holo"
+                    android:paddingBottom="8dp" />
 
                 <TextView
                     android:id="@+id/btn_text1"
@@ -58,15 +59,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="0dip"
                 android:layout_gravity="center"
-                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
                 android:layout_marginTop="2dp"
+                android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_marginBottom="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/card_background"
                 android:clickable="true"
-                android:paddingLeft="4dp"
+                android:background="@drawable/card_background"
                 android:paddingTop="4dp"
+                android:paddingLeft="4dp"
                 android:paddingRight="6dp"
                 android:paddingBottom="8dp">
 
@@ -85,7 +86,6 @@
                     android:text="@string/set_shortcut" />
             </FrameLayout>
         </LinearLayout>
-
     </LinearLayout>
 
     <include layout="@layout/sk_material_buttons" />

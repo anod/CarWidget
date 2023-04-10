@@ -10,7 +10,6 @@ import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.notifications.InCarModeNotificationFactory
-import com.anod.car.home.notifications.TrialExpiredNotification
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import kotlinx.coroutines.runBlocking

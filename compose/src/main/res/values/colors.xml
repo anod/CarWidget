@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<color name="ic_launcher_background">#EEEEEE</color>
-	<color name="background_holo_light">#fff3f3f3</color>
-	<color name="bright_foreground_holo_dark">@color/background_holo_light</color>
-	<color name="bright_foreground_disabled_grey">#bdbdbd</color>
 
-	<color name="material_bluegray_600">#546E7A</color>
-	<color name="material_bluegray_800">#37474f</color>
-	<color name="material_bluegray_300">#90a4ae</color>
-	<color name="material_bluegray_100">#BBDEFB</color>
-	<color name="material_grey_400">#BDBDBD</color>
+    <color name="material_grey_400">#BDBDBD</color>
 </resources>

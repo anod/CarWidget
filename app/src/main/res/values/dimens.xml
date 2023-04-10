@@ -1,20 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <!-- Skin Chooser -->
-	<dimen name="color_preview_size">20dp</dimen>
-
-	<dimen name="skin_padding_horiz">0dp</dimen>
-	<dimen name="skin_padding_vert">0dp</dimen>
-
-	<!-- wizard -->
-	<dimen name="step_pager_tab_width">32dp</dimen>
-	<dimen name="step_pager_tab_height">3dp</dimen>
-	<dimen name="step_pager_tab_spacing">4dp</dimen>
-
-	<dimen name="preference_item_margin">1dp</dimen>
-
 	<dimen name="notification_button">56.0dip</dimen>
-
-	<dimen name="settings_icon_margin">2.0dip</dimen>
 	<dimen name="notification_padding">0dp</dimen>
 </resources>

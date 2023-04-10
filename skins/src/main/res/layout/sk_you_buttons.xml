@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="end"
-    >
+    android:gravity="end">
 
     <ImageButton
         android:id="@+id/widget_btn2"
@@ -11,8 +10,7 @@
         android:background="@drawable/you_button_background"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginTop="2dp"
-        />
+        android:layout_marginTop="2dp" />
 
     <ImageButton
         android:id="@+id/widget_btn1"
@@ -22,6 +20,6 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="2dp"/>
+        android:layout_marginTop="2dp" />
 
 </LinearLayout>

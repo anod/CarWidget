@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="permlab_read_settings">Читать настройки и ярлыки Авто Виджета</string>
-	<string name="permdesc_read_settings">Позволяет приложениям читать настройки и ярлыки авто виджета.</string>
-	<string name="permlab_write_settings">запись настроек и ярлыков Авто Виджета</string>
-	<string name="permdesc_write_settings">Позволяет приложениям менять настройки и ярлыки авто виджета.</string>
-	<string name="color_dialog_title">Выберите цвет</string>
-	<string name="pref_tile_color_title">Цвет плитки</string>
+    <string name="pref_tile_color_title">Цвет плитки</string>
 	<string name="pref_bg_color_title">Цвет фона</string>
 	<string name="pref_icons_mono_title">Монохромные иконки</string>
 	<string name="pref_tint_color_title">Цвет оттенка</string>
@@ -14,26 +9,9 @@
 	<string name="pref_font_color_summary">Выберите цвет названия ярлыка</string>
 	<string name="pref_font_size_title">Размер шрифта</string>
 	<string name="pref_font_size_summary">Выберите размер названия ярлыка</string>
-	<string name="dialog_donate_title_expired">Истек срок пробной версии,</string>
-	<string name="dialog_donate_message_expired">Эта функция доступна только в Pro версии Авто Виджета\n\n Хотели бы вы получить ее прямо сейчас?</string>
-	<string name="dialog_donate_title_trial">Пробная версия,</string>
-	<string name="dialog_donate_message_trial">\n\nНеограниченный режим «В автомобиле» доступен только в Pro версии Авто Виджета.\n\n Хотели бы вы получить ее прямо сейчас?</string>
-	<string name="dialog_donate_title_install">Pro версия обнаружена,</string>
-	<string name="dialog_donate_message_installed">Добавьте новый установленный виджет на рабочий стол, чтобы получить доступ к функциям Pro версии\n\nКопирование настроек:\nВы может перенести настройки, используя опцию \"Резервная копия\". Бесплатная версия виджета больше не требуется\n\nСпасибо.</string>
-	<string name="dialog_donate_btn_trial">Продолжить</string>
-	<string name="dialog_donate_btn_yes">Да, пожалуйста!</string>
-	<string name="dialog_donate_btn_no">Нет, спасибо</string>
 	<string name="set_shortcut">Выбрать ярлык</string>
-	<string name="pref_look_and_feel_title">Внешний вид и интеграция</string>
-	<string name="pref_look_and_feel_summary">Настройки скина, цвета и размера шрифта</string>
-	<string name="pref_incar_mode_title">«В автомобиле»</string>
-	<string name="pref_incar_mode_summary">Выберите способ определить, когда вы в машине, и параметры, которые будут скорректированы</string>
-	<string name="pref_incar_mode_enabled">Разрешить режим</string>
-	<string name="pref_power_contorl_bt">Питание контролирует Bluetooth</string>
-	<string name="pref_power_plugged_bt_on_title">Вкл, когда подключено</string>
-	<string name="pref_power_plugged_bt_on_summary">Включить Bluetooth при подключении кабеля питания</string>
-	<string name="pref_power_unplugged_bt_off_title">Выкл, когда отключено</string>
-	<string name="pref_power_unplugged_bt_off_summary">Выключить Bluetooth при отключении кабеля питания</string>
+    <string name="pref_incar_mode_title">«В автомобиле»</string>
+    <string name="pref_incar_mode_enabled">Разрешить режим</string>
 	<string name="pref_detection">Активация</string>
 	<string name="pref_blutooth_device_title">Устройство Bluetooth</string>
 	<string name="pref_blutooth_device_summary">Выбрать устройство Bluetooth,которое включает режим «В автомобиле»</string>
@@ -57,33 +35,18 @@
 	<string name="notif_expired">Истек срок пробной версии</string>
 	<string name="notif_consider">Рассмотрите возможность установки Pro версии</string>
 	<string name="incar_mode_enabled">Режим «В автомобиле» включен</string>
-	<string name="click_to_disable">Нажмите, чтобы отключить</string>
-	<string name="click_to_disable_trial">Нажмите, чтобы отключить, Пробная версия: %d раз осталось</string>
-	<plurals name="notif_activations_left">
-		<item quantity="one">%1$d активация осталась</item>
-		<item quantity="other">%1$d активаций осталось</item>
-		<item quantity="few">%1$d активаций осталось</item>
-		<item quantity="many">%1$d активаций осталось</item>
-	</plurals>
-	<string name="version_title">%1$s %2$s</string>
+    <string name="version_title">%1$s %2$s</string>
 	<string name="version_summary">Пожалуйста, оцените этот виджет на маркете</string>
 	<string name="shortcut_edit_title">Изменить ярлык</string>
-	<string name="shortcut_edit_hint">Нажмите на икону, чтобы изменить его</string>
-	<string name="photo_picker_not_found">Нет доступных изображений на телефоне.</string>
-	<string name="error_text">Ошибка: %1$s</string>
-	<string name="pref_route_to_speaker">Направлять на динамик</string>
+    <string name="pref_route_to_speaker">Направлять на динамик</string>
 	<string name="pref_route_to_speaker_summary">Перенаправлять все звонки на громкоговоритель телефона</string>
 	<string name="pref_scale_icon">Увеличить иконки</string>
-	<string name="pref_wifi_summary">Если Wi-Fi включен, вы можете отключить его временно или постоянно</string>
-	<string name="pref_settings_transparent">Кнопка настройки</string>
-	<string name="pref_settings_transparent_summary">Кнопка настройки останется в том же месте, но станет прозрачная</string>
-	<string name="pref_incar_transparent">Кнопка «В автомобиле»</string>
-	<string name="pref_incar_transparent_summary">Когда режим «В автомобиле» включен, кнопка останется в том же месте, но станет прозрачная</string>
-	<string name="pref_activate_car_mode">Режим \"Штурман\"</string>
+    <string name="pref_settings_transparent">Кнопка настройки</string>
+    <string name="pref_incar_transparent">Кнопка «В автомобиле»</string>
+    <string name="pref_activate_car_mode">Режим \"Штурман\"</string>
 	<string name="pref_activate_car_mode_summary">Включить встроенный в Андройд автомобильный режим, дополнительный значок будет отображен на панели уведомлений</string>
 	<string name="pref_backup_title">Резервная копия</string>
     <string name="backup_current_widget">Сохранить текущий виджет</string>
-	<string name="backup_incar_settings">Сохранить режим «В автомобиле»</string>
     <string name="backup_done">Резервная копия создана.</string>
     <string name="failed_to_write_file">Ошибка записи в файл.</string>
 	<string name="restore_done">Восстановление завершено.</string>
@@ -102,10 +65,7 @@
 	<string name="cardock_btn_1">Открыть \"О приложении\"</string>
 	<string name="cardock_text1">Чтобы очистить текущее приложение запускаемое по умолчанию:\n1. Откройте \"О приложении\"\n2. Нажмите на кнопку \"Удалить настройки по умолчанию\"</string>
 	<string name="cardock_text2">В следующий раз при подключении Car Dock выберите \"Авто Виджет\" приложением по умолчанию.</string>
-	<string name="select_shortcut_title">Выберите ярлык</string>
-	<string name="select_icon_pack">Выберите набор иконок</string>
-	<string name="custom_image_error">Произошла ошибка при попытке открыть выбранное изображение</string>
-	<string name="pref_rotate_icon_title">Повернуть иконки</string>
+    <string name="pref_rotate_icon_title">Повернуть иконки</string>
 	<string name="pref_titles_hide_title">Скрыть названия</string>
 	<string name="pref_titles_hide_summary">Не отображать названия ярлыков</string>
 	<string name="not_active">Не активен</string>
@@ -119,7 +79,6 @@
 	<string name="detect_incar_description"><![CDATA[<b>Определяет</b>, когда вы внутри автомобиля]]></string>
 	<string name="adjust_incar_description"><![CDATA[<b>Регулирует</b> общие параметры]]></string>
 	<string name="enable_incar_description"><![CDATA[<b>Включите</b> режим \"В автомобиле\" в настройках]]></string>
-	<string name="trial_description">%d активаций в пробной версии.</string>
 	<string name="swipe_continue">Продолжение →</string>
 	<string name="use_gms_for_activity">Использовать сенсоры для определения движения</string>
 	<string name="gms_service_missing">Google Play services отсутствует на этом устройстве.</string>
@@ -135,18 +94,10 @@
 	<string name="bluetooth_device_headset">Гарнитура</string>
 	<string name="information_title">Информация</string>
 	<string name="applications">Приложения</string>
-	<string name="pref_wifi">Wi-Fi</string>
-	<string name="transparent">Прозрачные</string>
-	<string name="dialog_choose_icon">Выбрать</string>
-	<string name="icon_default">По-умолчанию</string>
-	<string name="icon_custom">Пользовательский</string>
-	<string name="icon_adw_icon_pack">Набор иконок </string>
-	<string name="restore">Восстановить</string>
-	<string name="settings">Настройки</string>
-	<string name="more">Еще&#8230;</string>
+    <string name="restore">Восстановить</string>
+    <string name="more">Еще&#8230;</string>
 	<string name="none">Нет</string>
-	<string name="download">Скачать&#8230;</string>
-	<string name="enabled">Включен</string>
+    <string name="enabled">Включен</string>
 	<string name="disabled">Отключен</string>
 	<string name="configure">Настройка</string>
 	<string name="finish">Конец</string>
@@ -158,12 +109,7 @@
 		<item>День</item>
 		<item>Ночь</item>
 	</string-array>
-	<string-array name="wifi_action_titles">
-		<item>Нет действия</item>
-		<item>Временно</item>
-		<item>Постоянно</item>
-	</string-array>
-	<string-array name="autoanswer_titles">
+    <string-array name="autoanswer_titles">
 		<item>Отключено</item>
 		<item>Немедленно</item>
 		<item>5 сек. задержка</item>
@@ -194,31 +140,16 @@
 		<item>Системная</item>
 	</string-array>
 
-	<string name="samsung_driving_summary">Включить встроенный Samsung Car Mode</string>
-    <string name="delete">Удалить</string>
-	<string name="number">Количество</string>
-	<string name="choose_a_theme">Выбрать тему</string>
     <string name="number_shortcuts_title">Количество ярлыков</string>
     <string name="car_dock">Авто Док</string>
     <string name="car_dock_summary">Включить при подключении к док-станции</string>
-    <string name="failed_fetch_icon">Поблема при получении стандарной иконки</string>
-    <string name="please_add_widget">Пожалуйста добавте виджет на домашний экран</string>
     <string name="widgets">Виджеты</string>
-    <string name="use_as_default_music_app">Проигрыватель по умолчанию</string>
     <string name="show_choice">Показывать выбор</string>
     <string name="music_app">Аудиоплеер</string>
-    <string name="choose_music_app_explanation">Выбирите приложение для ярылка Играть/Пауза</string>
-    <string name="current_widget">Выбранный виджет</string>
-	<string name="list_of_active_widgets">Список активных виджетов</string>
-	<string name="widgets_hint">Выберите виджет из списка для настойки</string>
+    <string name="widgets_hint">Выберите виджет из списка для настойки</string>
     <string name="app_theme">Тема приложения</string>
     <string name="no_active_widget">Активные виджеты не найдены. Убедитесь что виджет добавлент на домашний экран.</string>
-	<string name="color_picker_default_title">Выберите цвет</string>
-    <string name="color_swatch_description">Цвет %1$d</string>
-    <string name="color_swatch_description_selected">Цвет %1$d выбран</string>
-	<string name="pref_hotspot_title">Включить WiFi Hotspot</string>
-	<string name="pref_hotspot_summary">Автоматически включать режим модема на устройстве</string>
-	<string name="allow_permission_overlay">Разрешите отображение поверх для поворота экрана</string>
+    <string name="allow_permission_overlay">Разрешите отображение поверх для поворота экрана</string>
 	<string name="needs_permissions_to_work">Нет разрешений для работы</string>
 	<string name="allow_access">Разрешить доступ</string>
 	<string name="permission_write_settings">Изменение системных настроек</string>
@@ -227,35 +158,26 @@
 	<string name="change_screen_orientation">Поворот экрана</string>
 	<string name="permission_answer_calls">Ответ на звонки</string>
 	<string name="allow_answer_phone_calls">Разрешить отвечать на звонки</string>
-	<string name="permissions_denied_open_settings">Нет разрешения, включите в настройках аппликации</string>
-	<string name="unavailable_bt_device">Недоступен</string>
-	<string name="choose">Выбирите</string>
-	<string name="crash_dialog_report_button">Отчет</string>
+    <string name="unavailable_bt_device">Недоступен</string>
+    <string name="crash_dialog_report_button">Отчет</string>
 	<string name="crash_dialog_title">Авто Виджет остановлен</string>
 	<string name="crash_dialog_toast">Браузер будет открыт</string>
 	<string name="crash_dialog_text">Пожалуста отошлите отчет об ошибке</string>
 	<string name="in_car_mode_switch">Переключение \"В автомобиле\"</string>
-	<string name="permission_denied">Нет разрешения</string>
-	<string name="general">Общие</string>
+    <string name="general">Общие</string>
 	<string name="mode_detector_channel">Отслежевание режима \"В Автомобиле\"</string>
 	<string name="app_preferences">Настройки аппликации</string>
 	<string name="title">Название</string>
 	<string name="info">Информация</string>
 	<string name="allow_permissions_brightness">Резрешите изменять системны настройки для изменения яркости</string>
 	<string name="notification_mode_detector_title">Отслежевание режима \"В Автомобиле\"</string>
-	<string name="samsung_driving_title">Автомобильный режим Samsung</string>
-	<string name="adaptive_icon_style">Адаптивная иконка</string>
-	<string name="answer_error_marshmallow">Авто Виджет: Разрешите доступ к уведомлениям для ответа</string>
-	<string name="answer_error_oreo">Авто Виджет: Нужно разрешение для ответа</string>
-	<string name="permission_notification_listener">Доступ к уведомлениям</string>
-	<string name="choose_color">Выбрать цвет</string>
-	<string name="auto_color">Авто-цвет</string>
+    <string name="adaptive_icon_style">Адаптивная иконка</string>
+    <string name="answer_error_oreo">Авто Виджет: Нужно разрешение для ответа</string>
+    <string name="auto_color">Авто-цвет</string>
 	<string name="hidden">Скрыт</string>
-	<string name="keep_on">Оставьте экран включенным</string>
-	<string name="while_charging">Во время зарядки</string>
+    <string name="while_charging">Во время зарядки</string>
 	<string name="screen_on_alternative">Всегда сверху</string>
 	<string name="screen_on_alternative_text">Включить альтернативный способ держать экран включенным (требует дополнительного разрешения)</string>
 	<string name="app_shortcuts_limited">Поддержка App ярлыков ограничена Android</string>
 	<string name="notification_mode_detector_content">Может быть скрыто в настройках уведомлений</string>
-	<string name="allow_permissions_samsung_mode">Разрешить запись настроек системы, чтобы изменять режим вождения</string>
 </resources>

@@ -1,5 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<resources>
-	<dimen name="skin_padding_horiz">10dp</dimen>
-	<dimen name="skin_padding_vert">10dp</dimen>
-</resources>
+<resources></resources>

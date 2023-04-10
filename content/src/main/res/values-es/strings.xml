@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="permlab_read_settings">Leer información de configuración y acceso directo de Car Witget</string>
-    <string name="permdesc_read_settings">Permite que la aplicación lea la información de configuración y acceso directo de Car Widget.</string>
-    <string name="permlab_write_settings">escribir información de configuración y acceso directo de Car Widget</string>
-    <string name="permdesc_write_settings">Permite que la aplicación cambie la información de configuración y acceso directo de Car Widget.</string>
-    <string name="color_dialog_title">Elegir un color</string>
     <string name="pref_tile_color_title">Color de mosaico</string>
     <string name="pref_bg_color_title">Color de fondo</string>
     <string name="pref_icons_mono_title">Iconos monocromáticos</string>
@@ -14,26 +9,9 @@
     <string name="pref_font_color_summary">Seleccionar color de título</string>
     <string name="pref_font_size_title">Tamaño de fuente</string>
     <string name="pref_font_size_summary">Seleccionar tamaño de título</string>
-    <string name="dialog_donate_title_expired">El periodo de prueba ha expirado,</string>
-    <string name="dialog_donate_message_expired">Esta característica únicamente está disponible en la versión Car Widget Pro.                                                ¿Le gustaría descargarla?</string>
-    <string name="dialog_donate_title_trial">Periodo de prueba,</string>
-    <string name="dialog_donate_message_trial">El modo Unlimited InCar únicamente está disponible en la versión Car Widget Pro.                                ¿Le gustaría descargarla ahora?</string>
-    <string name="dialog_donate_title_install">Se ha detectado la versión Pro,</string>
-    <string name="dialog_donate_message_installed">Por favor, agregue el dispositivo instalado en la pantalla de inicio para configurar la versión Pro.                                                                                                           Configuración de copia:                                                                                                             Puede copiar la configuración mediante \"Copia de seguridad/Restaurar\".                                         La versión gratuita ya no es necesaria.                                                                                                    Gracias.</string>
-    <string name="dialog_donate_btn_trial">Continuar con la versión de prueba</string>
-    <string name="dialog_donate_btn_yes">Sí, ¡por favor!</string>
-    <string name="dialog_donate_btn_no">No, gracias</string>
     <string name="set_shortcut">Ajustar accesos directos</string>
-    <string name="pref_look_and_feel_title">Ver y sentir</string>
-    <string name="pref_look_and_feel_summary">Personalizar la textura, los colores y el tamaño de fuente</string>
     <string name="pref_incar_mode_title">Modo InCar</string>
-    <string name="pref_incar_mode_summary">Elija cómo debe efectuarse la detección cuando esté en el coche y la configuración se ajustará</string>
     <string name="pref_incar_mode_enabled">Activar modo InCar</string>
-    <string name="pref_power_contorl_bt">Control de potencia del Bluetooth</string>
-    <string name="pref_power_plugged_bt_on_title">Se activa cuando está enchufado</string>
-    <string name="pref_power_plugged_bt_on_summary">Activar el Bluetooth cuando el cable de alimentación esté enchufado</string>
-    <string name="pref_power_unplugged_bt_off_title">Se desactiva cuando está desenchufado</string>
-    <string name="pref_power_unplugged_bt_off_summary">Desactivar el Bluetooth cuando el cable de alimentación esté desenchufado</string>
     <string name="pref_detection">Disparador</string>
     <string name="pref_blutooth_device_title">Dispositivo de Bluetooth</string>
     <string name="pref_blutooth_device_summary">Elegir el dispositivo de Bluetooth que permita el modo InCar</string>
@@ -57,31 +35,18 @@
     <string name="notif_expired">El periodo de prueba ha terminado</string>
     <string name="notif_consider">Considere instalar la versión Pro</string>
     <string name="incar_mode_enabled">Modo InCar habilitado</string>
-    <string name="click_to_disable">Haga clic para desactivar</string>
-    <string name="click_to_disable_trial">Haga clic para desactivar la versión de prueba: quedan %d veces</string>
-    <plurals name="notif_activations_left">
-        <item quantity="one">queda %1$d activación</item>
-        <item quantity="other">quedan %1$d activaciones</item>
-    </plurals>
     <string name="version_title">%1$s ver. %2$s</string>
     <string name="version_summary">Valorar este reproductor en el Play Store</string>
     <string name="shortcut_edit_title">Editar acceso directo</string>
-    <string name="shortcut_edit_hint">Toque el icono para cambiarlo</string>
-    <string name="photo_picker_not_found">No hay fotos disponibles en este teléfono.</string>
-    <string name="error_text">Error: %1$s</string>
     <string name="pref_route_to_speaker">Ruta al altavoz</string>
     <string name="pref_route_to_speaker_summary">Ruta para todas las llamadas entrantes a los altavoces del teléfono</string>
     <string name="pref_scale_icon">Escala de icono</string>
-    <string name="pref_wifi_summary">Si la función Wi-Fi está activada puede apagarse temporal o permanentemente</string>
     <string name="pref_settings_transparent">Botón de configuración</string>
-    <string name="pref_settings_transparent_summary">El botón de configuración permanecerá en el mismo lugar, pero se volverá transparente</string>
     <string name="pref_incar_transparent">Botón InCar</string>
-    <string name="pref_incar_transparent_summary">Cuando el modo InCar esté activado el botón permanecerá en el mismo lugar, pero será transparente</string>
     <string name="pref_activate_car_mode">Modo Built-in Car</string>
     <string name="pref_activate_car_mode_summary">El modo Built-in Car Android se activará y se mostrará un icono de notificación adicional.</string>
     <string name="pref_backup_title">Copia de seguridad / Restaurar</string>
     <string name="backup_current_widget">Reproductor actual</string>
-    <string name="backup_incar_settings">Configuración InCar</string>
     <string name="backup_done">Se ha efectuado una copia de seguridad.</string>
     <string name="failed_to_write_file">Se ha producido un error al escribir el archivo.</string>
     <string name="restore_done">Los datos se han restaurado con éxito.</string>
@@ -100,9 +65,6 @@
     <string name="cardock_btn_1">Abrir la información de la aplicación</string>
     <string name="cardock_text1">Para borrar la aplicación actual por defecto:\n1. Abra la información de la aplicación actual\n2. Haga clic en la tecla  \"Borrar configuraciones predeterminadas\"</string>
     <string name="cardock_text2">La próxima vez que active Car Dock, seleccione \"Widget Car\" como aplicación por defecto.</string>
-    <string name="select_shortcut_title">Seleccionar acceso directo</string>
-    <string name="select_icon_pack">Seleccionar paquete de iconos</string>
-    <string name="custom_image_error">Se ha producido un error al intentar abrir la imagen seleccionada</string>
     <string name="pref_rotate_icon_title">Girar iconos</string>
     <string name="pref_titles_hide_title">Ocultar títulos</string>
     <string name="pref_titles_hide_summary">No mostrar títulos para los accesos directos</string>
@@ -117,7 +79,6 @@
     <string name="detect_incar_description">&lt;B&gt; Detecta &lt;/ ​​b&gt; cuando está dentro del coche</string>
     <string name="adjust_incar_description">&lt;B&gt; Ajustar &lt;/ b&gt; configuración común</string>
     <string name="enable_incar_description">&lt;B&gt; Activar &lt;/ b&gt; Modo InCar en el diálogo de configuración.</string>
-    <string name="trial_description">Versión de prueba gratuita con %d activaciones.</string>
     <string name="swipe_continue">Pase para continuar →</string>
     <string name="use_gms_for_activity">Utilice los servicios de Google Play para detectar actividad</string>
     <string name="gms_service_missing">Faltan servicios de Google Play en este dispositivo.</string>
@@ -133,39 +94,20 @@
     <string name="bluetooth_device_headset">Auriculares</string>
     <string name="information_title">Información</string>
     <string name="applications">Aplicaciones</string>
-    <string name="pref_wifi">Wi-Fi</string>
-    <string name="transparent">Transparente</string>
-    <string name="dialog_choose_icon">Seleccionar</string>
-    <string name="icon_custom">Costumbre</string>
-    <string name="icon_adw_icon_pack">Paquete de iconos</string>
     <string name="restore">Restaurar</string>
-    <string name="settings">Configuración</string>
     <string name="more">Más …</string>
     <string name="none">Ninguno</string>
-    <string name="download">Descargar …</string>
     <string name="enabled">Activado</string>
     <string name="disabled">Desactivado</string>
     <string name="configure">Configurar</string>
     <string name="finish">Finalizar</string>
     <string name="skip">Omitir</string>
     <string name="next">Siguiente</string>
-    <string name="choose_a_theme">Elegir un tema</string>
-    <string name="icon_default">Por defecto</string>
-    <string name="failed_fetch_icon">Se ha producido un error al buscar el icono por defecto.</string>
-    <string name="please_add_widget">Por favor, añada un reproductor para la pantalla de inicio</string>
-    <string name="samsung_driving_summary">Activar el modo Samsung Car incorporado</string>
-    <string name="samsung_driving_title">Modo Samsung Car</string>
     <string-array name="brightness_mode_titles">
         <item>Sistema</item>
         <item>Automático</item>
         <item>Día</item>
         <item>Noche</item>
-    </string-array>
-
-    <string-array name="wifi_action_titles">
-        <item>No realizar ninguna acción</item>
-        <item>Temporal</item>
-        <item>Permanente</item>
     </string-array>
 
     <string-array name="autoanswer_titles">
@@ -193,20 +135,14 @@
         <item>90º a la derecha</item>
     </string-array>
 
-    <string name="delete">Borrar</string>
-    <string name="number">Número de accesos directos</string>
     <string name="number_shortcuts_title">Número de accesos directos</string>
     <string name="car_dock">Car Dock</string>
     <string name="car_dock_summary">Activar el modo InCar cuando el teléfono esté conectado en el puerto de conexión del coche</string>
     <string name="widgets">Reproductores</string>
     <string name="show_choice">Mostrar elección</string>
     <string name="music_app">Aplicación de música</string>
-    <string name="use_as_default_music_app">Utilice la aplicación de música por defecto</string>
-    <string name="choose_music_app_explanation">Elija la aplicación de música que se utilizará para el acceso directo Reproducir / Pausa</string>
     <string name="app_theme">Tema de aplicación</string>
     <string name="widgets_hint">Seleccione un elemento para configurar el reproductor</string>
-    <string name="list_of_active_widgets">Lista de reproductores activos</string>
-    <string name="current_widget">Reproductor actual</string>
     <string name="no_active_widget">No se han encontrado reproductores activos. Asegúrese de añadir un reproductor a su pantalla de inicio.</string>
 
     <string-array name="orientation_titles">
@@ -216,18 +152,12 @@
         <item>Paisaje (por detrás)</item>
     </string-array>
 
-    <string name="keep_on">Mantenga la pantalla en</string>
     <string name="while_charging">Durante la carga</string>
     <string name="screen_on_alternative">siempre en la cima</string>
     <string name="screen_on_alternative_text">Habilitar forma alternativa para mantener la pantalla encendida (esto requiere el permiso adición)</string>
-    <string name="color_picker_default_title">Elija un color</string>
-    <string name="color_swatch_description">Color de %1$d</string>
-    <string name="color_swatch_description_selected">Color de %1$d seleccionado</string>
     <string name="app_shortcuts_limited">apoyo atajos aplicación está limitada por Android</string>
     <string name="unavailable_bt_device">No disponible</string>
     <string name="hidden">Oculto</string>
-    <string name="choose">Escoger</string>
-    <string name="permission_denied">Permiso denegado</string>
     <string name="mode_detector_channel">Detección de modo InCar</string>
     <string name="notification_mode_detector_title">Detección de modo InCar</string>
     <string name="notification_mode_detector_content">Pueden estar escondidos en la configuración de notificaciones</string>

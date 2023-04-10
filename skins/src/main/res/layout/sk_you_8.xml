@@ -1,68 +1,338 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center_vertical" android:orientation="vertical" android:theme="@style/AppWidgetContainer" tools:ignore="NestedWeights,NestedWeights">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:theme="@style/AppWidgetContainer"
+    tools:ignore="NestedWeights,NestedWeights">
 
-    <LinearLayout android:id="@+id/generate" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:baselineAligned="false" android:orientation="vertical"><LinearLayout android:layout_width="match_parent" android:layout_height="140dp" android:layout_weight="1" android:baselineAligned="false" android:orientation="horizontal" android:paddingBottom="4dp" android:theme="@style/AppWidgetContainer">
+    <LinearLayout
+        android:id="@+id/generate"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:baselineAligned="false"
+        android:orientation="vertical">
 
-    <FrameLayout android:layout_width="0dip" android:layout_height="match_parent" android:layout_gravity="center" android:layout_weight="1" android:layout_marginEnd="2dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingBottom="4dp"
+            android:theme="@style/AppWidgetContainer">
 
-        <ImageButton android:id="@+id/btn0" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/you_background" android:src="@drawable/you_add_24"/>
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginEnd="2dp">
 
-        <TextView android:id="@+id/btn_text0" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal|bottom" android:ellipsize="end" android:gravity="center_horizontal" android:maxLines="1" android:paddingEnd="4dp" android:paddingStart="4dp" android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginBottom="8dp" android:background="@drawable/you_title_background" android:textColor="?android:attr/textColorPrimaryInverse" android:textSize="@dimen/text_size" android:text="@string/set_shortcut" tools:ignore="SpUsage"/>
-    </FrameLayout>
+                <ImageButton
+                    android:id="@+id/btn0"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/you_background"
+                    android:src="@drawable/you_add_24" />
 
-    <FrameLayout android:layout_width="0dip" android:layout_height="match_parent" android:layout_gravity="center" android:layout_weight="1" android:layout_marginStart="2dp">
+                <TextView
+                    android:id="@+id/btn_text0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textSize="@dimen/text_size"
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
+            </FrameLayout>
 
-        <ImageButton android:id="@+id/btn1" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/you_background" android:src="@drawable/you_add_24"/>
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginStart="2dp">
 
-        <TextView android:id="@+id/btn_text1" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal|bottom" android:ellipsize="end" android:gravity="center_horizontal" android:maxLines="1" android:paddingEnd="4dp" android:paddingStart="4dp" android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginBottom="8dp" android:background="@drawable/you_title_background" android:textColor="?android:attr/textColorPrimaryInverse" android:textSize="@dimen/text_size" android:text="@string/set_shortcut" tools:ignore="SpUsage"/>
-    </FrameLayout>
-</LinearLayout><LinearLayout android:layout_width="match_parent" android:layout_height="140dp" android:layout_weight="1" android:baselineAligned="false" android:orientation="horizontal" android:paddingBottom="4dp" android:theme="@style/AppWidgetContainer">
+                <ImageButton
+                    android:id="@+id/btn1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/you_background"
+                    android:src="@drawable/you_add_24" />
 
-    <FrameLayout android:layout_width="0dip" android:layout_height="match_parent" android:layout_gravity="center" android:layout_weight="1" android:layout_marginEnd="2dp">
+                <TextView
+                    android:id="@+id/btn_text1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textSize="@dimen/text_size"
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
+            </FrameLayout>
+        </LinearLayout>
 
-        <ImageButton android:id="@+id/btn2" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/you_background" android:src="@drawable/you_add_24"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingBottom="4dp"
+            android:theme="@style/AppWidgetContainer">
 
-        <TextView android:id="@+id/btn_text2" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal|bottom" android:ellipsize="end" android:gravity="center_horizontal" android:maxLines="1" android:paddingEnd="4dp" android:paddingStart="4dp" android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginBottom="8dp" android:background="@drawable/you_title_background" android:textColor="?android:attr/textColorPrimaryInverse" android:textSize="@dimen/text_size" android:text="@string/set_shortcut" tools:ignore="SpUsage"/>
-    </FrameLayout>
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginEnd="2dp">
 
-    <FrameLayout android:layout_width="0dip" android:layout_height="match_parent" android:layout_gravity="center" android:layout_weight="1" android:layout_marginStart="2dp">
+                <ImageButton
+                    android:id="@+id/btn2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/you_background"
+                    android:src="@drawable/you_add_24" />
 
-        <ImageButton android:id="@+id/btn3" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/you_background" android:src="@drawable/you_add_24"/>
+                <TextView
+                    android:id="@+id/btn_text2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textSize="@dimen/text_size"
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
+            </FrameLayout>
 
-        <TextView android:id="@+id/btn_text3" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal|bottom" android:ellipsize="end" android:gravity="center_horizontal" android:maxLines="1" android:paddingEnd="4dp" android:paddingStart="4dp" android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginBottom="8dp" android:background="@drawable/you_title_background" android:textColor="?android:attr/textColorPrimaryInverse" android:textSize="@dimen/text_size" android:text="@string/set_shortcut" tools:ignore="SpUsage"/>
-    </FrameLayout>
-</LinearLayout><LinearLayout android:layout_width="match_parent" android:layout_height="140dp" android:layout_weight="1" android:baselineAligned="false" android:orientation="horizontal" android:paddingBottom="4dp" android:theme="@style/AppWidgetContainer">
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginStart="2dp">
 
-    <FrameLayout android:layout_width="0dip" android:layout_height="match_parent" android:layout_gravity="center" android:layout_weight="1" android:layout_marginEnd="2dp">
+                <ImageButton
+                    android:id="@+id/btn3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/you_background"
+                    android:src="@drawable/you_add_24" />
 
-        <ImageButton android:id="@+id/btn4" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/you_background" android:src="@drawable/you_add_24"/>
+                <TextView
+                    android:id="@+id/btn_text3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textSize="@dimen/text_size"
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
+            </FrameLayout>
+        </LinearLayout>
 
-        <TextView android:id="@+id/btn_text4" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal|bottom" android:ellipsize="end" android:gravity="center_horizontal" android:maxLines="1" android:paddingEnd="4dp" android:paddingStart="4dp" android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginBottom="8dp" android:background="@drawable/you_title_background" android:textColor="?android:attr/textColorPrimaryInverse" android:textSize="@dimen/text_size" android:text="@string/set_shortcut" tools:ignore="SpUsage"/>
-    </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingBottom="4dp"
+            android:theme="@style/AppWidgetContainer">
 
-    <FrameLayout android:layout_width="0dip" android:layout_height="match_parent" android:layout_gravity="center" android:layout_weight="1" android:layout_marginStart="2dp">
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginEnd="2dp">
 
-        <ImageButton android:id="@+id/btn5" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/you_background" android:src="@drawable/you_add_24"/>
+                <ImageButton
+                    android:id="@+id/btn4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/you_background"
+                    android:src="@drawable/you_add_24" />
 
-        <TextView android:id="@+id/btn_text5" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal|bottom" android:ellipsize="end" android:gravity="center_horizontal" android:maxLines="1" android:paddingEnd="4dp" android:paddingStart="4dp" android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginBottom="8dp" android:background="@drawable/you_title_background" android:textColor="?android:attr/textColorPrimaryInverse" android:textSize="@dimen/text_size" android:text="@string/set_shortcut" tools:ignore="SpUsage"/>
-    </FrameLayout>
-</LinearLayout><LinearLayout android:layout_width="match_parent" android:layout_height="140dp" android:layout_weight="1" android:baselineAligned="false" android:orientation="horizontal" android:paddingBottom="4dp" android:theme="@style/AppWidgetContainer">
+                <TextView
+                    android:id="@+id/btn_text4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textSize="@dimen/text_size"
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
+            </FrameLayout>
 
-    <FrameLayout android:layout_width="0dip" android:layout_height="match_parent" android:layout_gravity="center" android:layout_weight="1" android:layout_marginEnd="2dp">
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginStart="2dp">
 
-        <ImageButton android:id="@+id/btn6" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/you_background" android:src="@drawable/you_add_24"/>
+                <ImageButton
+                    android:id="@+id/btn5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/you_background"
+                    android:src="@drawable/you_add_24" />
 
-        <TextView android:id="@+id/btn_text6" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal|bottom" android:ellipsize="end" android:gravity="center_horizontal" android:maxLines="1" android:paddingEnd="4dp" android:paddingStart="4dp" android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginBottom="8dp" android:background="@drawable/you_title_background" android:textColor="?android:attr/textColorPrimaryInverse" android:textSize="@dimen/text_size" android:text="@string/set_shortcut" tools:ignore="SpUsage"/>
-    </FrameLayout>
+                <TextView
+                    android:id="@+id/btn_text5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textSize="@dimen/text_size"
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
+            </FrameLayout>
+        </LinearLayout>
 
-    <FrameLayout android:layout_width="0dip" android:layout_height="match_parent" android:layout_gravity="center" android:layout_weight="1" android:layout_marginStart="2dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingBottom="4dp"
+            android:theme="@style/AppWidgetContainer">
 
-        <ImageButton android:id="@+id/btn7" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/you_background" android:src="@drawable/you_add_24"/>
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginEnd="2dp">
 
-        <TextView android:id="@+id/btn_text7" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal|bottom" android:ellipsize="end" android:gravity="center_horizontal" android:maxLines="1" android:paddingEnd="4dp" android:paddingStart="4dp" android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginBottom="8dp" android:background="@drawable/you_title_background" android:textColor="?android:attr/textColorPrimaryInverse" android:textSize="@dimen/text_size" android:text="@string/set_shortcut" tools:ignore="SpUsage"/>
-    </FrameLayout>
-</LinearLayout></LinearLayout>
+                <ImageButton
+                    android:id="@+id/btn6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/you_background"
+                    android:src="@drawable/you_add_24" />
 
-    <include layout="@layout/sk_you_buttons" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/btn_text6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textSize="@dimen/text_size"
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginStart="2dp">
+
+                <ImageButton
+                    android:id="@+id/btn7"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/you_background"
+                    android:src="@drawable/you_add_24" />
+
+                <TextView
+                    android:id="@+id/btn_text7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/you_title_background"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textSize="@dimen/text_size"
+                    android:text="@string/set_shortcut"
+                    tools:ignore="SpUsage" />
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <include
+        layout="@layout/sk_you_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

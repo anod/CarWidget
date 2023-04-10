@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="permlab_read_settings">Car Widget Einstellungen und Verknüpfungen lesen</string>
-    <string name="permdesc_read_settings">Ermöglicht einer Anwendung, die Einstellungen und Verknüpfungen im Car Widget zu lesen.</string>
-    <string name="permlab_write_settings">Car Widget-Einstellungen und Verknüpfungen festlegen</string>
-    <string name="permdesc_write_settings">Ermöglicht einer Anwendung, die Einstellungen und Verknüpfungen im Car Widget zu ändern.</string>
-    <string name="color_dialog_title">Wählen Sie eine Farbe</string>
     <string name="pref_tile_color_title">Titelfarbe</string>
     <string name="pref_bg_color_title">Hintergrundfarbe</string>
     <string name="pref_icons_mono_title">Einfarbige Symbole</string>
@@ -14,26 +9,9 @@
     <string name="pref_font_color_summary">Titelfarbe wählen</string>
     <string name="pref_font_size_title">Schriftgröße</string>
     <string name="pref_font_size_summary">Wählen Sie eine Titelgröße</string>
-    <string name="dialog_donate_title_expired">Testversion abgelaufen,</string>
-    <string name="dialog_donate_message_expired">Diese Funktion steht nur in der Pro Version von Car Widget zur Verfügung.\n\n Möchten Sie sie jetzt erwerben?</string>
-    <string name="dialog_donate_title_trial">Testversion,</string>
-    <string name="dialog_donate_message_trial">\n\nUnbegrenzter InCar-Modus ist nur in Car Widget Pro verfügbar.\n\n Möchten Sie es jetzt erwerben?</string>
-    <string name="dialog_donate_title_install">Pro-Version erkannt,</string>
-    <string name="dialog_donate_message_installed">Bitte legen Sie das neu installierte Widget auf den Startbildschirm, um Zugriff auf die Funktionen der Pro-Version zu bekommen.\n\nEinstellungen kopieren:\nSie können Einstellungen über die  \"Backup / Restore\"-Option kopieren. Kostenlose Version des Widgets wird nicht mehr benötigt.\n\nVielen Dank.</string>
-    <string name="dialog_donate_btn_trial">Weiter mit Probeversion</string>
-    <string name="dialog_donate_btn_yes">Ja, bitte!</string>
-    <string name="dialog_donate_btn_no">Kein Interesse</string>
     <string name="set_shortcut">Verknüpfung einstellen</string>
-    <string name="pref_look_and_feel_title">Aussehen &amp; Haptik</string>
-    <string name="pref_look_and_feel_summary">Skin, Farben und Schriftgröße einstellen</string>
     <string name="pref_incar_mode_title">InCar-Modus</string>
-    <string name="pref_incar_mode_summary">Wählen Sie, wie erkannt wird, wenn Sie sich im Auto befinden und welche Einstellungen angepasst werden</string>
     <string name="pref_incar_mode_enabled">InCar-Modus aktivieren</string>
-    <string name="pref_power_contorl_bt">Stomkontrolle Bluetooth</string>
-    <string name="pref_power_plugged_bt_on_title">An wenn eingesteckt</string>
-    <string name="pref_power_plugged_bt_on_summary">Schalten Sie Bluetooth an, wenn der Netzstecker eingesteckt ist</string>
-    <string name="pref_power_unplugged_bt_off_title">Aus wenn ausgesteckt</string>
-    <string name="pref_power_unplugged_bt_off_summary">Schalten Sie Bluetooth aus, wenn der Netzstecker gezogen ist</string>
     <string name="pref_detection">Auslöser</string>
     <string name="pref_blutooth_device_title">Bluetooth-Gerät</string>
     <string name="pref_blutooth_device_summary">Wählen Sie das Bluetooth-Gerät, das den InCar-Modus aktiviert</string>
@@ -57,31 +35,18 @@
     <string name="notif_expired">Testversion abgelaufen</string>
     <string name="notif_consider">Sie sollten die Pro-Version installieren</string>
     <string name="incar_mode_enabled">InCar-Modus aktiviert.</string>
-    <string name="click_to_disable">Klicken Sie zum Deaktivieren</string>
-    <string name="click_to_disable_trial">Klicken Sie zum deaktivieren, Probeversion: noch %d mal</string>
-    <plurals name="notif_activations_left">
-        <item quantity="one">%1$d Aktivierung übrig</item>
-        <item quantity="other">%1$d Aktivierungen übrig</item>
-    </plurals>
     <string name="version_title">%1$s ver. %2$s</string>
     <string name="version_summary">Bewerten Sie das Widget im Play Store</string>
     <string name="shortcut_edit_title">Verknüpfung bearbeiten</string>
-    <string name="shortcut_edit_hint">Tippen Sie auf das Symbol, um es zu ändern</string>
-    <string name="photo_picker_not_found">Auf dem Telefon sind keine Bilder vorhanden.</string>
-    <string name="error_text">Fehler: %1$s</string>
     <string name="pref_route_to_speaker">Auf Lautsprecher weiterleiten</string>
     <string name="pref_route_to_speaker_summary">Alle eingehenden Anrufe auf Handylautsprecher weiterleiten</string>
     <string name="pref_scale_icon">Symbol skalieren</string>
-    <string name="pref_wifi_summary">Wenn das WLAN eingeschaltet ist, können Sie es vorübergehend oder dauerhaft deaktivieren</string>
     <string name="pref_settings_transparent">Schaltfläche Einstellungen</string>
-    <string name="pref_settings_transparent_summary">Schaltfläche Einstellungen wird auf der gleichen Stelle bleiben, aber transparent gemacht</string>
     <string name="pref_incar_transparent">InCar-Taste</string>
-    <string name="pref_incar_transparent_summary">Wenn InCar-Modus aktiviert ist, wird die Taste auf der gleichen Stelle bleiben, aber transparent gemacht</string>
     <string name="pref_activate_car_mode">Eingebauter Auto-Modus</string>
     <string name="pref_activate_car_mode_summary">Eingebauter Android Auto-Modus wird aktiviert, zusätzliches Symbol für Benachrichtigungen wird angezeigt.</string>
     <string name="pref_backup_title">Bachup/Wiederherstellen</string>
     <string name="backup_current_widget">Aktuelles Widget</string>
-    <string name="backup_incar_settings">InCar-Einstellungen</string>
     <string name="backup_done">Backup fertig.</string>
     <string name="failed_to_write_file">Fehler beim Schreiben der Datei.</string>
     <string name="restore_done">Wiederherstellung wird durchgeführt.</string>
@@ -100,9 +65,6 @@
     <string name="cardock_btn_1">App-Info öffnen</string>
     <string name="cardock_text1">Um die aktuellen Standard-Anwendung zu löschen:\n1. Standard App-Info öffnen\n2. \"Clear Defaults\" drücken</string>
     <string name="cardock_text2">Wählen Sie bei der nächsten Car Dock-Aktivierung \"Car Widget\" als Standard-Anwendung.</string>
-    <string name="select_shortcut_title">Wählen Sie eine Verknüpfung</string>
-    <string name="select_icon_pack">Symbolpaket wählen</string>
-    <string name="custom_image_error">Beim Versuch das ausgewählte Bild zu öffnen, ist ein Fehler aufgetreten</string>
     <string name="pref_rotate_icon_title">Symbole drehen</string>
     <string name="pref_titles_hide_title">Titel verbergen</string>
     <string name="pref_titles_hide_summary">Keine Titel für die Verknüpfungen anzeigen</string>
@@ -117,7 +79,6 @@
     <string name="detect_incar_description">&lt;b&gt; Erkennt &lt;/ b&gt;, wenn Sie sich im Auto befinden</string>
     <string name="adjust_incar_description">allgemeine Einstellungen &lt;b&gt; vornehmen &lt;/ b&gt;</string>
     <string name="enable_incar_description"> InCar-Modus im Einstellungsdialog &lt;b&gt; aktivieren &lt;/ b&gt;.</string>
-    <string name="trial_description">Kostenlose Testversion für %d Aktivierungen.</string>
     <string name="swipe_continue">Streichen um weiterzumachen→</string>
     <string name="use_gms_for_activity">Verwenden Sie Google Play, um die Aktivität zu erkennen</string>
     <string name="gms_service_missing">Google Play-Dienste auf diesem Gerät nicht vorhanden.</string>
@@ -133,39 +94,20 @@
     <string name="bluetooth_device_headset">Headset</string>
     <string name="information_title">Information</string>
     <string name="applications">Anwendungen</string>
-    <string name="pref_wifi">Wi-Fi</string>
-    <string name="transparent">Transparent</string>
-    <string name="dialog_choose_icon">Wählen</string>
-    <string name="icon_custom">Benutzerdefiniert</string>
-    <string name="icon_adw_icon_pack">Icon-Pack</string>
     <string name="restore">Wiederherstellen</string>
-    <string name="settings">Einstellungen</string>
     <string name="more">Mehr …</string>
     <string name="none">Keine</string>
-    <string name="download">Herunterladen …</string>
     <string name="enabled">Aktiviert</string>
     <string name="disabled">Deaktiviert</string>
     <string name="configure">Konfigurieren</string>
     <string name="finish">Beenden</string>
     <string name="skip">Überspringen</string>
     <string name="next">Nächste</string>
-    <string name="choose_a_theme">Wählen Sie ein Thema</string>
-    <string name="icon_default">Standard</string>
-    <string name="failed_fetch_icon">Fehler beim Laden des Standardsymbols.</string>
-    <string name="please_add_widget">Bitte fügen Sie das Widget auf dem Start-Bildschirm hinzu</string>
-    <string name="samsung_driving_summary">Aktivieren Sie den eingebauten Samsung Auto-Modus</string>
-    <string name="samsung_driving_title">Samsung Auto-Modus</string>
     <string-array name="brightness_mode_titles">
         <item>System</item>
         <item>Auto</item>
         <item>Tag</item>
         <item>Nacht</item>
-    </string-array>
-
-    <string-array name="wifi_action_titles">
-        <item>Keine Aktion</item>
-        <item>Vorübergehend</item>
-        <item>Dauerhaft</item>
     </string-array>
 
     <string-array name="autoanswer_titles">
@@ -193,20 +135,14 @@
         <item>90 ° rechts</item>
     </string-array>
 
-    <string name="delete">Löschen</string>
-    <string name="number">Anzahl der Verknüpfungen</string>
     <string name="number_shortcuts_title">Anzahl der Verknüpfungen</string>
     <string name="car_dock">Auto-Dockingstation</string>
     <string name="car_dock_summary">InCar-Modus aktivieren, wenn das Telefon an die Auto-Dockingstation angedockt wird</string>
     <string name="widgets">Widgets</string>
     <string name="show_choice">Auswahl anzeigen</string>
     <string name="music_app">Musik-Anwendung</string>
-    <string name="use_as_default_music_app">Als Standard-Musik-Anwendung verwenden</string>
-    <string name="choose_music_app_explanation">Wählen Sie Musik-Anwendung, die für die Wiedergabe/Pause-Verknüpfung verwendet werden soll</string>
     <string name="app_theme">Anwendungs-Thema</string>
     <string name="widgets_hint">Wählen Sie ein Element, um das Widget zu konfigurieren</string>
-    <string name="list_of_active_widgets">Liste der aktiven Widgets</string>
-    <string name="current_widget">Aktuelles Widget</string>
     <string name="no_active_widget">Es wurden keine aktiven Widgets gefunden. Bitte überprüfen Sie, ob Sie Ihrem Startbildschirm ein Widget hinzugefügt haben.</string>
 
     <string-array name="orientation_titles">
@@ -216,18 +152,12 @@
         <item>Querformat (invers)</item>
     </string-array>
 
-    <string name="keep_on">Halten Bildschirm auf</string>
     <string name="while_charging">während des Aufladens</string>
     <string name="screen_on_alternative">immer oben auf</string>
     <string name="screen_on_alternative_text">Aktivieren alternative Art und Weise Bildschirm eingeschaltet zu halten (dies erfordert zusätzlich die Erlaubnis)</string>
-    <string name="color_picker_default_title">Wählen Sie eine Farbe</string>
-    <string name="color_swatch_description">Farbe %1$d</string>
-    <string name="color_swatch_description_selected">Farbe %1$d ausgewählt</string>
     <string name="app_shortcuts_limited">App-Verknüpfungen Unterstützung ist begrenzt durch Android</string>
     <string name="unavailable_bt_device">Nicht verfügbar</string>
     <string name="hidden">Versteckt</string>
-    <string name="choose">Wählen</string>
-    <string name="permission_denied">Zugang verweigert</string>
     <string name="mode_detector_channel">Detektion von InCar Modus</string>
     <string name="notification_mode_detector_title">Detektion von InCar Modus</string>
     <string name="notification_mode_detector_content">Kann in den Benachrichtigungseinstellungen ausgeblendet werden</string>

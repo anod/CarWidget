@@ -97,7 +97,6 @@ object ShortcutInfoFactory {
         )
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun shortcutFromPinItemRequest(pinItem: LauncherApps.PinItemRequest, context: Context, position: Int): Result {
         val shortcutInfo = pinItem.shortcutInfo
                 ?: return Result(CreateShortcutResult.FailedAppShortcut, null, null)

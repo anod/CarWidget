@@ -32,7 +32,7 @@ dependencies {
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
-    kapt("androidx.lifecycle:lifecycle-compiler:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.6.1")
 
     implementation("ch.acra:acra-core:5.9.7")
     implementation("ch.acra:acra-notification:5.9.7")

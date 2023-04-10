@@ -58,3 +58,11 @@
 #Picasso
 -dontwarn com.squareup.okhttp.**
 -dontwarn okhttp3.internal.platform.*
+
+# This is generated automatically by the Android Gradle plugin
+-dontwarn javax.lang.model.element.Element
+-dontwarn javax.lang.model.element.ElementKind
+-dontwarn javax.lang.model.element.Modifier
+-dontwarn org.bouncycastle.jsse.BCSSLParameters
+-dontwarn org.bouncycastle.jsse.BCSSLSocket
+-dontwarn org.conscrypt.Conscrypt

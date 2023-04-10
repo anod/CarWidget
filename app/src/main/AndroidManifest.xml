@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="internalOnly">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
@@ -67,11 +66,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity
-            android:name="info.anodsplace.framework.app.FragmentContainerActivity"
-            android:theme="@style/Dialog"
-        />
 
         <activity android:name=".OverlayActivity"
                   android:theme="@style/Dialog" />

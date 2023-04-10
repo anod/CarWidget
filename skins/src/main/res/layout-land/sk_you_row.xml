@@ -40,8 +40,7 @@
             android:textColor="?android:attr/textColorPrimaryInverse"
             android:textSize="@dimen/text_size"
             android:text="@string/set_shortcut"
-            tools:ignore="SpUsage"
-            />
+            tools:ignore="SpUsage" />
     </FrameLayout>
 
     <FrameLayout
@@ -75,7 +74,6 @@
             android:textColor="?android:attr/textColorPrimaryInverse"
             android:textSize="@dimen/text_size"
             android:text="@string/set_shortcut"
-            tools:ignore="SpUsage"
-            />
+            tools:ignore="SpUsage" />
     </FrameLayout>
 </LinearLayout>
