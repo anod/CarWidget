@@ -10,14 +10,12 @@ import com.anod.car.home.R
 import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.incar.ModeService
 import info.anodsplace.carwidget.content.Deeplink
-import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 
 class InCarModeNotificationFactory(
-        private val version: Version,
         private val context: Context,
         private val database: ShortcutsDatabase,
         private val iconLoader: ShortcutIconLoader,
@@ -34,11 +32,6 @@ class InCarModeNotificationFactory(
 
         val r = context.resources
         val contentIntent = PendingIntent.getService(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
-        val text = if (version.isFree) {
-            context.getString(info.anodsplace.carwidget.content.R.string.trial_left, version.trialTimesLeft)
-        } else {
-            ""
-        }
 
         val notification = NotificationCompat.Builder(context, Channels.inCarMode)
                 .setSmallIcon(info.anodsplace.carwidget.skin.R.drawable.ic_stat_incar)
@@ -51,13 +44,10 @@ class InCarModeNotificationFactory(
         val model = NotificationShortcutsModel.init(context, database)
         if (model.filledCount > 0) {
             val contentView = createShortcuts(context, model, iconLoader)
-            contentView.setTextViewText(android.R.id.text1, text)
+            contentView.setTextViewText(android.R.id.text1, "")
             notification.setContent(contentView)
         } else {
             notification.setContentTitle(r.getString(info.anodsplace.carwidget.content.R.string.incar_mode_enabled))
-            if (text.isNotEmpty()) {
-                notification.setContentText(text)
-            }
         }
 
         return notification.build()

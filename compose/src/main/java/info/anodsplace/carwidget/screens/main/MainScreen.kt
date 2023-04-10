@@ -119,15 +119,6 @@ fun MainScreen(
             }
         }
     }
-
-    if (screenState.showProDialog) {
-        AlertDialog(
-            onDismissRequest = { onEvent(MainViewEvent.HideProDialog) },
-            title = { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.dialog_donate_title_install)) },
-            text = { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.dialog_donate_message_installed)) },
-            confirmButton = { }
-        )
-    }
 }
 
 @Composable

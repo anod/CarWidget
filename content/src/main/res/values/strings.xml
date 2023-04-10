@@ -36,15 +36,6 @@
     <string name="pref_font_color_summary">Select color of title</string>
     <string name="pref_font_size_title">Font size</string>
     <string name="pref_font_size_summary">Select size of title</string>
-    <string name="dialog_donate_title_expired">Trial expired,</string>
-    <string name="dialog_donate_message_expired">This feature is available only in Car Widget Pro version.\n\n Would you like to get it now?</string>
-    <string name="dialog_donate_title_trial">Trial,</string>
-    <string name="dialog_donate_message_trial">\n\nUnlimited InCar mode is available only in Car Widget Pro version.\n\n Would you like to get it now?</string>
-    <string name="dialog_donate_title_install">Pro version detected,</string>
-    <string name="dialog_donate_message_installed">Please add the new installed widget to the home screen in order to get access to the features of Pro version.\n\nCopy settings:\nYou can copy settings using \"Backup/Restore\" option. Free version of the widget is not required anymore.\n\nThank you.</string>
-    <string name="dialog_donate_btn_trial">Continue trial</string>
-    <string name="dialog_donate_btn_yes">Yes, please!</string>
-    <string name="dialog_donate_btn_no">No, thanks</string>
     <string name="set_shortcut">Set shortcut</string>
     <string name="customize">Customize</string>
     <string name="pref_look_and_feel_title">Look &amp; Feel</string>
@@ -77,11 +68,6 @@
     <string name="notif_consider">Consider to install Pro version</string>
     <string name="incar_mode_enabled">InCar mode enabled</string>
     <string name="disable">Disable</string>
-    <string name="trial_left">Trial: %d times left</string>
-    <plurals name="notif_activations_left">
-        <item quantity="one">%1$d activation left</item>
-        <item quantity="other">%1$d activations left</item>
-    </plurals>
     <string name="version_title">%1$s ver. %2$s</string>
     <string name="version_summary">Rate this widget in the Play Store</string>
     <string name="shortcut_edit_title">Edit shortcut</string>
@@ -140,7 +126,6 @@
     <string name="detect_incar_description"><![CDATA[<b>Detects</b> when you\'re inside the car]]></string>
     <string name="adjust_incar_description"><![CDATA[<b>Adjust</b> common settings]]></string>
     <string name="enable_incar_description"><![CDATA[<b>Enable</b> InCar mode in the settings dialog.]]></string>
-    <string name="trial_description">Free version trial for %d activations.</string>
     <string name="swipe_continue">Swipe to continue →</string>
     <string name="use_gms_for_activity">Use Google Play services to detect activity</string>
     <string name="gms_service_missing">Google Play services is missing on this device.</string>

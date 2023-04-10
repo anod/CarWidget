@@ -7,7 +7,6 @@ import com.squareup.sqldelight.android.AndroidSqliteDriver
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.BitmapLruCache
-import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.backup.BackupManager
 import info.anodsplace.carwidget.content.db.Database
 import info.anodsplace.carwidget.content.db.DbShortcutIconLoader
@@ -44,13 +43,12 @@ fun createAppModule(): Module = module {
     single<Logger> { AndroidLogger() }
     singleOf(::AppSettings)
     single { AppCoroutineScope() }
-    factoryOf(::Version)
     factory {
         val context: Context = get()
         ImageLoader.Builder(context)
             .components {
                 add(AppIconFetcher.Factory(context))
-                add(ShortcutIconRequestHandler.Factory(context, get(), get(), get()))
+                add(ShortcutIconRequestHandler.Factory(get(), get(), get()))
             }
             .build()
     }

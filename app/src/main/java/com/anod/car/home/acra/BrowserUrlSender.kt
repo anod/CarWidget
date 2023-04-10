@@ -19,7 +19,7 @@ class BrowserUrlSender {
     }
 
     fun send(context: Context, errorContent: CrashReportData) {
-        var appId = if (BuildConfig.FLAVOR == "pro") 0x01 else 0x00
+        var appId = 0x00
         if (BuildConfig.DEBUG) {
             appId = appId or 0x10
         }

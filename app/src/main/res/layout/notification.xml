@@ -38,7 +38,7 @@
             android:ellipsize="end"
             android:fadingEdge="horizontal"
             android:maxLines="1"
-            android:text="@string/trial_left" />
+            android:text="" />
     </LinearLayout>
 
     <ImageButton

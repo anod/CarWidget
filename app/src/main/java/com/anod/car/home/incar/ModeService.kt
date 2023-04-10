@@ -12,7 +12,6 @@ import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.notifications.InCarModeNotificationFactory
 import com.anod.car.home.notifications.TrialExpiredNotification
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
@@ -52,9 +51,7 @@ class ModeService : Service(), KoinComponent {
         AppLog.i("Start InCar Mode service, sInCarMode = " + sInCarMode + ", redelivered = "
                 + redelivered)
 
-        val version = Version(this)
         val notificationFactory = InCarModeNotificationFactory(
-            version = version,
             context = this,
             database = get(),
             iconLoader = get(),
@@ -82,12 +79,6 @@ class ModeService : Service(), KoinComponent {
         // mode == MODE_SWITCH_ON
         forceState = intent.getBooleanExtra(EXTRA_FORCE_STATE, false)
 
-        if (version.isFreeAndTrialExpired) {
-            TrialExpiredNotification.show(this)
-            stopSelf()
-            return START_NOT_STICKY
-        }
-
         val prefs = get<InCarSettings>()
         sInCarMode = true
         if (forceState) {
@@ -97,10 +88,6 @@ class ModeService : Service(), KoinComponent {
         ModeDetector.switchOn(prefs, modeHandler)
         initPhoneListener(prefs)
         requestWidgetsUpdate()
-
-        if (version.isFree) {
-            version.increaseTrialCounter()
-        }
 
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.

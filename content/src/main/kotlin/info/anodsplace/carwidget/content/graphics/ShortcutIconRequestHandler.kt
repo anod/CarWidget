@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.content.graphics
 
 import android.content.ContentResolver
-import android.content.Context
 import android.net.Uri
 import coil.ImageLoader
 import coil.decode.DataSource
@@ -31,15 +30,13 @@ class ShortcutIconRequestHandler(
 ) : Fetcher {
 
     class Factory(
-        context: Context,
         private val db: ShortcutsDatabase,
         private val iconLoader: ShortcutIconLoader,
         private val skinPropertiesFactory: SkinProperties.Factory,
     ) : Fetcher.Factory<Uri> {
-        private val authority: String? = LauncherSettings.Favorites.getContentUri(context.packageName).authority
 
         override fun create(data: Uri, options: Options, imageLoader: ImageLoader): Fetcher? {
-            return if (data.scheme == ContentResolver.SCHEME_CONTENT && data.authority == authority)
+            return if (data.scheme == ContentResolver.SCHEME_CONTENT && data.authority == LauncherSettings.Favorites.AUTHORITY)
                 ShortcutIconRequestHandler(db, iconLoader, skinPropertiesFactory, data, options)
             else null
         }

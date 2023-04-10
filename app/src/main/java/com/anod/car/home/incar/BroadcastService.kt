@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import com.anod.car.home.notifications.ModeDetectorNotification
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.BroadcastServiceManager
-import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.extentions.isServiceRunning
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.InCarSettings
@@ -19,14 +18,14 @@ import org.koin.core.component.get
 
 class BroadcastService : Service(), KoinComponent {
 
-    class Manager(private val applicationContext: Context, private val inCarSettings: InCarSettings, private val version: Version) : BroadcastServiceManager {
+    class Manager(private val applicationContext: Context, private val inCarSettings: InCarSettings) : BroadcastServiceManager {
         override val isServiceRequired
             get() = Companion.isServiceRequired(inCarSettings)
 
         override val isServiceRunning: Boolean
             get() = applicationContext.isServiceRunning(BroadcastService::class.java)
 
-        override fun registerBroadcastService() = Companion.registerBroadcastService(applicationContext, version, inCarSettings)
+        override fun registerBroadcastService() = Companion.registerBroadcastService(applicationContext, inCarSettings)
 
         override fun startService() = Companion.startService(applicationContext)
 
@@ -103,15 +102,8 @@ class BroadcastService : Service(), KoinComponent {
 
     companion object {
 
-        private fun shouldStart(version: Version, inCar: InCarInterface): Boolean {
-            return if (version.isProOrTrial) {
-                isServiceRequired(inCar)
-            } else
-                false
-        }
-
-        private fun registerBroadcastService(context: Context, version: Version, inCar: InCarInterface) {
-            if (shouldStart(version, inCar)) {
+        private fun registerBroadcastService(context: Context, inCar: InCarInterface) {
+            if (isServiceRequired(inCar)) {
                 startService(context)
             } else {
                 stopService(context)

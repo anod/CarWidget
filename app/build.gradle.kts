@@ -23,7 +23,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
     implementation("androidx.appcompat:appcompat:1.6.1") // AppCompatActivity
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.10.0")
     implementation("androidx.activity:activity:1.7.0")
     implementation("androidx.core:core-splashscreen:1.0.0")
     implementation("androidx.collection:collection-ktx:1.2.0")
@@ -55,6 +55,7 @@ android {
     defaultConfig {
         minSdk = 29
         targetSdk = 33 // 29 wifi switch not working
+        applicationId = "com.anod.car.home.free"
 
         versionCode = 22000
         versionName = "2.2.0"
@@ -66,10 +67,10 @@ android {
             storeFile = file("../debug.keystore")
         }
         create("release") {
-            storeFile = file(***REMOVED***)
-            storePassword = ***REMOVED***
-            keyAlias  = ***REMOVED***
-            keyPassword = ***REMOVED***
+            storeFile = file(findProperty("CARWIDGET_KEYSTORE_FILE") ?: ".")
+            storePassword = findProperty("CARWIDGET_KEYSTORE_PASSWORD") as? String
+            keyAlias = findProperty("CARWIDGET_KEY_ALIAS") as? String
+            keyPassword = findProperty("CARWIDGET_KEY_PASSWORD") as? String
         }
     }
 
@@ -84,18 +85,7 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
-    flavorDimensions += listOf("tier")
 
-    productFlavors {
-        create("pro") {
-            applicationId = "com.anod.car.home.pro"
-            dimension = "tier"
-        }
-        create("free") {
-            applicationId = "com.anod.car.home.free"
-            dimension = "tier"
-        }
-    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

@@ -9,7 +9,6 @@ import android.net.Uri
 import android.provider.ContactsContract
 import android.provider.Settings
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.shortcuts.InternalShortcut
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
@@ -22,12 +21,6 @@ fun Intent.forSettings(context: Context, appWidgetId: Int, target: ShortcutResou
     data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"), appWidgetId.toString())
     action = AppWidgetManager.ACTION_APPWIDGET_CONFIGURE
     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    return this
-}
-
-fun Intent.forProVersion(): Intent {
-    action = Intent.ACTION_VIEW
-    data = Uri.parse(String.format("market://details?id=%s", Version.PRO_PACKAGE_NAME))
     return this
 }
 

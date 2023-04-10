@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.SettingsIcon
-import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.screens.main.MainViewEvent
 import info.anodsplace.carwidget.screens.main.MainViewState
 import info.anodsplace.carwidget.screens.widget.DummySkinPreviewViewModel
@@ -269,13 +268,6 @@ fun InCarModePage(
                 iconDescRes = info.anodsplace.carwidget.content.R.string.pref_blutooth_device_title
             )
         }
-        if (screenState.isFreeVersion) {
-            Text(
-                text = stringResource(id = info.anodsplace.carwidget.content.R.string.trial_description, Version.maxTrialTimes),
-                style = MaterialTheme.typography.labelLarge,
-                modifier = Modifier.padding(top = 16.dp)
-            )
-        }
     }
 }
 
@@ -363,7 +355,7 @@ fun PreviewScreen3() {
 fun PreviewScreen4() {
     CarWidgetTheme {
         WizardScreen(
-            screenState = MainViewState(isFreeVersion = true),
+            screenState = MainViewState(),
             initialPage = 3,
             onEvent = { })
     }

@@ -9,7 +9,6 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import coil.ImageLoader
 import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.carwidget.content.InCarStatus
-import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.isValid
 import info.anodsplace.carwidget.content.di.unaryPlus
@@ -27,12 +26,10 @@ import org.koin.core.component.get
 import org.koin.core.component.inject
 
 data class MainViewState(
-    val isFreeVersion: Boolean = true,
     val isWidget: Boolean = false,
     val appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
     val tabs: List<NavItem.Tab> = emptyList(),
     val routeNS: String = "default",
-    val showProDialog: Boolean = false,
     val topDestination: NavItem = NavItem.Tab.About,
     val requiredPermissions: List<AppPermission> = emptyList(),
     val widgetSettings: WidgetInterface.NoOp = WidgetInterface.NoOp(),
@@ -51,7 +48,6 @@ sealed interface MainViewAction {
 
 sealed interface MainViewEvent {
     object PermissionAcquired : MainViewEvent
-    object HideProDialog : MainViewEvent
     class ApplyWidget(val appWidgetId: Int, val currentSkinValue: String) : MainViewEvent
     class OpenWidgetConfig(val appWidgetId: Int) : MainViewEvent
     class WidgetUpdateShortcuts(val number: Int) : MainViewEvent
@@ -81,16 +77,13 @@ class MainViewModel(
         }
     }
 
-    private val version: Version by inject()
     private val widgetIds: WidgetIds by inject()
     val imageLoader: ImageLoader by inject()
 
     init {
         val isWidget = appWidgetIdScope.isValid
-        val showProDialog = version.isFree && version.isProInstalled
         val widgetSettings = if (isWidget) WidgetInterface.NoOp(get<WidgetSettings>()) else WidgetInterface.NoOp()
         viewState = MainViewState(
-            isFreeVersion = version.isFree,
             isWidget = isWidget,
             appWidgetId = +appWidgetIdScope,
             tabs = if (isWidget) listOf(
@@ -104,8 +97,7 @@ class MainViewModel(
                 NavItem.Tab.About
             ),
             routeNS = if (appWidgetIdScope.isValid) "carwidget/current" else "carwidget/main",
-            showProDialog = showProDialog,
-            topDestination = startDestination(showProDialog, requiredPermissions, allowWizard = true),
+            topDestination = startDestination(requiredPermissions, allowWizard = true),
             requiredPermissions = requiredPermissions,
             widgetSettings = widgetSettings,
             skinList = SkinList(widgetSettings.skin, get())
@@ -117,14 +109,11 @@ class MainViewModel(
             MainViewEvent.PermissionAcquired -> {
                 viewState = viewState.copy(topDestination = if (appWidgetIdScope.isValid) NavItem.Tab.CurrentWidget else NavItem.Tab.Widgets)
             }
-            MainViewEvent.HideProDialog -> {
-                viewState = viewState.copy(showProDialog = false)
-            }
             is MainViewEvent.OnBackNav -> emitAction(MainViewAction.OnBackNav)
             is MainViewEvent.ApplyWidget -> emitAction(MainViewAction.ApplyWidget(event.appWidgetId, event.currentSkinValue))
             is MainViewEvent.OpenWidgetConfig -> emitAction(MainViewAction.OpenWidgetConfig(event.appWidgetId))
             MainViewEvent.CloseWizard -> {
-                viewState = viewState.copy(topDestination = startDestination(viewState.showProDialog, viewState.requiredPermissions, allowWizard = false))
+                viewState = viewState.copy(topDestination = startDestination(viewState.requiredPermissions, allowWizard = false))
             }
             is MainViewEvent.WidgetUpdateShortcuts -> {
                 val settings = get<WidgetSettings>()
@@ -144,12 +133,11 @@ class MainViewModel(
         }
     }
 
-    private fun startDestination(showProDialog: Boolean, requiredPermissions: List<AppPermission>, allowWizard: Boolean): NavItem {
-        val isFreeInstalled = !version.isFree && version.isFreeInstalled
+    private fun startDestination(requiredPermissions: List<AppPermission>, allowWizard: Boolean): NavItem {
         val appWidgetIds = widgetIds.getAllWidgetIds()
         return when {
-            appWidgetIds.isEmpty() && !isFreeInstalled && allowWizard -> NavItem.Wizard
-            !showProDialog && requiredPermissions.isNotEmpty() -> NavItem.PermissionsRequest
+            appWidgetIds.isEmpty() && allowWizard -> NavItem.Wizard
+            requiredPermissions.isNotEmpty() -> NavItem.PermissionsRequest
             appWidgetIdScope.isValid -> NavItem.Tab.CurrentWidget
             else -> NavItem.Tab.Widgets
         }

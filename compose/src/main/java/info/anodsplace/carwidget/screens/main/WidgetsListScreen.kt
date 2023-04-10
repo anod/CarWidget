@@ -30,7 +30,6 @@ import info.anodsplace.carwidget.WarningColor
 import info.anodsplace.carwidget.WarningIcon
 import info.anodsplace.carwidget.WidgetsIcon
 import info.anodsplace.carwidget.content.InCarStatus
-import info.anodsplace.carwidget.content.Version
 import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
@@ -237,7 +236,6 @@ fun EventStates(eventsState: List<InCarStatus.EventState>) {
 
 @Composable
 fun InCarHeader(screen: WidgetListScreenState) {
-    val version = Version(LocalContext.current)
     val active = stringResource(screen.statusResId)
 
     Column(modifier = Modifier.cardStyle()) {
@@ -253,30 +251,6 @@ fun InCarHeader(screen: WidgetListScreenState) {
         }
 
         EventStates(screen.eventsState)
-
-        when {
-            version.isFreeAndTrialExpired -> {
-                Text(
-                    text = stringResource(info.anodsplace.carwidget.content.R.string.dialog_donate_title_expired) + " " + stringResource(info.anodsplace.carwidget.content.R.string.notif_consider),
-                    color = MaterialTheme.colorScheme.onSecondary
-                )
-            }
-            version.isFree -> {
-                val resources = LocalContext.current.resources
-                val activationsLeft =
-                    resources
-                        .getQuantityString(
-                            info.anodsplace.carwidget.content.R.plurals.notif_activations_left,
-                            version.trialTimesLeft, version.trialTimesLeft
-                        )
-                Text(
-                    text = stringResource(info.anodsplace.carwidget.content.R.string.dialog_donate_title_trial) + " " + activationsLeft,
-                    color = MaterialTheme.colorScheme.onSecondary
-                )
-            }
-            else -> {
-            }
-        }
     }
 }
 

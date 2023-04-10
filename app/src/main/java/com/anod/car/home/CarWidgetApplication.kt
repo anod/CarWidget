@@ -144,7 +144,7 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                         factoryOf(::AlertWindow)
                         factoryOf(::ScreenOnAlert)
                         factory {
-                            BroadcastService.Manager(applicationContext = get(), inCarSettings = get(), version = get())
+                            BroadcastService.Manager(applicationContext = get(), inCarSettings = get())
                         } bind BroadcastServiceManager::class
                         factory {
                             ModeHandler(
@@ -170,7 +170,6 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
         val prefs: InCarInterface = get()
         return info.anodsplace.carwidget.incar.InCarStatus(
             widgetIds = get(),
-            version = get(),
             modeEventsState = { ModeDetector.eventsState() },
             settings = prefs
         )
