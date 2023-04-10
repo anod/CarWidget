@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.TextDecreaseIcon
+import info.anodsplace.carwidget.TextIncreaseIcon
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.screens.WidgetDialogType
 import info.anodsplace.carwidget.screens.main.MainViewEvent
@@ -36,7 +37,7 @@ fun FontSize(
         item = placeholder.toTextItem(),
         suffixText = { Text(text = "px") },
         startIcon = { TextDecreaseIcon() },
-        endIcon = { TextDecreaseIcon() },
+        endIcon = { TextIncreaseIcon() },
     )
 }
 
