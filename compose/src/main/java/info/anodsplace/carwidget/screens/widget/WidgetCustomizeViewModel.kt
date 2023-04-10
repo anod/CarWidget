@@ -35,6 +35,7 @@ data class WidgetCustomizeState(
     val showFontColorPicker: Boolean = false,
     val showTileColorPicker: Boolean = false,
     val showIconsThemePicker: Boolean = false,
+    val showIconsColorPicker: Boolean = false,
 )
 
 sealed interface WidgetCustomizeEvent {
@@ -44,6 +45,7 @@ sealed interface WidgetCustomizeEvent {
     class ShowIconsThemePicker(val show: Boolean) : WidgetCustomizeEvent
     class ShowFontColorPicker(val show: Boolean) : WidgetCustomizeEvent
     class ShowTileColorPicker(val show: Boolean) : WidgetCustomizeEvent
+    class ShowIconsColorPicker(val show: Boolean) : WidgetCustomizeEvent
 }
 
 sealed interface WidgetCustomizeAction
@@ -197,6 +199,9 @@ class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowVie
             }
             is WidgetCustomizeEvent.ShowTileColorPicker -> {
                 viewState = viewState.copy(showTileColorPicker = event.show)
+            }
+            is WidgetCustomizeEvent.ShowIconsColorPicker -> {
+                viewState = viewState.copy(showIconsColorPicker = event.show)
             }
         }
     }

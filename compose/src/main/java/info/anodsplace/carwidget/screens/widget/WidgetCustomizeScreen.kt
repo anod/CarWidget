@@ -7,18 +7,23 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.TextDecreaseIcon
 import info.anodsplace.carwidget.TextIncreaseIcon
+import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.compose.*
 
@@ -72,6 +77,7 @@ fun WidgetCustomizeScreen(
                         "icons-theme" -> onEvent(WidgetCustomizeEvent.ShowIconsThemePicker(show = true))
                         "font-color" -> onEvent(WidgetCustomizeEvent.ShowFontColorPicker(show = true))
                         "button-color" -> onEvent(WidgetCustomizeEvent.ShowTileColorPicker(show = true))
+                        "icons-color" -> onEvent(WidgetCustomizeEvent.ShowIconsColorPicker(show = true))
                         "cmp-number" -> onEvent(WidgetCustomizeEvent.ApplyChange(item.key, item.value.toInt()))
                         "titles-hide" -> {
                             if (screenState.widgetSettings.fontSize == 0 && !item.checked) {
@@ -134,50 +140,72 @@ fun WidgetCustomizeScreen(
 
     if (screenState.showBackgroundColorPicker) {
         ColorPickerSheet(
+            title = stringResource(id = R.string.pref_bg_color_title),
             color = Color(screenState.widgetSettings.backgroundColor),
-            onColorChange = { onEvent(WidgetCustomizeEvent.ApplyChange("bg-color", it)) },
+            showAlpha = true,
+            onColorChange = { onEvent(WidgetCustomizeEvent.ApplyChange("bg-color", it?.toArgb() ?: 0)) },
             onDismissRequest = { onEvent(WidgetCustomizeEvent.ShowBackgroundColorPicker(show = false)) }
         )
     }
 
     if (screenState.showTileColorPicker) {
         ColorPickerSheet(
+            title = stringResource(id = R.string.pref_tile_color_title),
             color = Color(screenState.widgetSettings.tileColor),
-            onColorChange = { onEvent(WidgetCustomizeEvent.ApplyChange("button-color", it)) },
+            showAlpha = true,
+            onColorChange = { onEvent(WidgetCustomizeEvent.ApplyChange("button-color", it?.toArgb() ?: 0)) },
             onDismissRequest = { onEvent(WidgetCustomizeEvent.ShowTileColorPicker(show = false)) }
+        )
+    }
+
+    if (screenState.showIconsColorPicker) {
+        ColorPickerSheet(
+            title = stringResource(id = R.string.pref_tint_color_title),
+            color = screenState.widgetSettings.iconsColor?.let { Color(it) },
+            showAlpha = false,
+            onColorChange = { onEvent(WidgetCustomizeEvent.ApplyChange("icons-color", it?.toArgb() ?: 0)) },
+            onDismissRequest = { onEvent(WidgetCustomizeEvent.ShowIconsColorPicker(show = false)) }
         )
     }
 
     if (screenState.showFontColorPicker) {
         ColorPickerSheet(
+            title = stringResource(id = R.string.pref_font_color_title),
             color = screenState.widgetSettings.fontColor?.let { Color(it) },
-            onColorChange = { onEvent(WidgetCustomizeEvent.ApplyChange("font-color", it)) },
+            showAlpha = false,
+            onColorChange = { onEvent(WidgetCustomizeEvent.ApplyChange("font-color", it?.toArgb())) },
             onDismissRequest = { onEvent(WidgetCustomizeEvent.ShowFontColorPicker(show = false)) }
         )
     }
 }
 
 @Composable
-private fun ColorPickerSheet(color: Color?, onColorChange: (Color?) -> Unit, onDismissRequest: () -> Unit) {
+private fun ColorPickerSheet(title: String, color: Color?, showAlpha: Boolean, onColorChange: (Color?) -> Unit, onDismissRequest: () -> Unit) {
     BottomSheet(
         onDismissRequest = onDismissRequest
     ) {
         ColorChooser(
+            title = title,
             color = color,
+            showAlpha = showAlpha,
             onColorChange = { onColorChange(it) },
         )
     }
 }
 
 @Composable
-private fun ColorChooser(color: Color?, onColorChange: (Color?) -> Unit) {
+private fun ColorChooser(title: String, color: Color?, showAlpha: Boolean, onColorChange: (Color?) -> Unit) {
     Surface(modifier = Modifier.fillMaxWidth()) {
-        ColorDialogContent(
-            color = color,
-            onColorChange = onColorChange,
-            showNone = true,
-            showAlpha = true
-        )
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(16.dp).align(Alignment.Start))
+            ColorDialogContent(
+                color = color,
+                onColorChange = onColorChange,
+                showNone = true,
+                showAlpha = showAlpha,
+                showSystemColors = true
+            )
+        }
     }
 }
 
@@ -196,6 +224,19 @@ fun WidgetLookMoreScreenDark() {
             ),
             onEvent = { },
             skinViewFactory = skinViewFactory
+        )
+    }
+}
+
+@Preview
+@Composable
+fun ColorChooserPreview() {
+    CarWidgetTheme(uiMode = UiModeManager.MODE_NIGHT_YES) {
+        ColorChooser(
+            title = stringResource(id = R.string.pref_bg_color_title),
+            color = null,
+            showAlpha = true,
+            onColorChange = {  },
         )
     }
 }
