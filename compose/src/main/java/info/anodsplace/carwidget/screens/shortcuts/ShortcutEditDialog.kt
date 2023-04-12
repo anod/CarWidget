@@ -59,9 +59,9 @@ fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (Shortcu
         } else {
             AdvancedButton(expanded, onEvent)
             IntentEditScreen(
-                    intent = shortcut.intent,
-                    updateField = { onEvent(ShortcutEditViewEvent.UpdateField(it.field)) },
-                    modifier = Modifier
+                intent = shortcut.intent,
+                updateField = { onEvent(ShortcutEditViewEvent.UpdateField(it.field)) },
+                modifier = Modifier
             )
         }
     }
@@ -70,11 +70,11 @@ fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (Shortcu
 @Composable
 fun AdvancedButton(expanded: Boolean, onEvent: (ShortcutEditViewEvent) -> Unit) {
     OutlinedButton(
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .fillMaxWidth()
-                .defaultMinSize(minHeight = 48.dp),
-            onClick = { onEvent(ShortcutEditViewEvent.ToggleAdvanced(expanded = !expanded)) }
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 48.dp),
+        onClick = { onEvent(ShortcutEditViewEvent.ToggleAdvanced(expanded = !expanded)) }
     ) {
         Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.advanced))
         if (expanded) {
@@ -89,10 +89,10 @@ fun AdvancedButton(expanded: Boolean, onEvent: (ShortcutEditViewEvent) -> Unit) 
 @Composable
 fun ShortcutInfo(shortcut: Shortcut, onEvent: (ShortcutEditViewEvent) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader, widgetSettings: WidgetInterface = WidgetInterface.NoOp()) {
     Column (
-            modifier = Modifier
-                .fillMaxWidth()
-                .defaultMinSize(minHeight = 144.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 144.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(
             model = shortcut.iconUri(LocalContext.current, widgetSettings.adaptiveIconStyle),
@@ -103,16 +103,16 @@ fun ShortcutInfo(shortcut: Shortcut, onEvent: (ShortcutEditViewEvent) -> Unit, o
                 .padding(4.dp)
         )
         TextField(
-                modifier = Modifier.padding(vertical = 8.dp),
-                label = { Text("Title") },
-                value = shortcut.title.toString(),
-                onValueChange = {},
-                singleLine = true
+            modifier = Modifier.padding(vertical = 8.dp),
+            label = { Text("Title") },
+            value = shortcut.title.toString(),
+            onValueChange = {},
+            singleLine = true
         )
     }
     Row(
-            modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Button(onClick = {
             onEvent(ShortcutEditViewEvent.Drop)

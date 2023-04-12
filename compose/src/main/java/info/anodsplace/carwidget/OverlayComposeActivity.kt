@@ -44,6 +44,7 @@ class OverlayViewModel(
     class Factory(
         private val appWidgetId: Int,
     ) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
             return OverlayViewModel(
                 appWidgetIdScope = if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) AppWidgetIdScope(appWidgetId) else null
@@ -53,7 +54,6 @@ class OverlayViewModel(
 
     override fun handleEvent(event: Unit) {}
 }
-
 
 open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
     private val appSettings: AppSettings by inject()
@@ -86,7 +86,7 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
             val uiMode by appSettings.uiModeChange.collectAsState(initial = appSettings.uiMode)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 LaunchedEffect(uiMode) {
-                    uiModeManager.setApplicationNightMode(uiMode)
+                    uiModeManager.nightMode = uiMode
                 }
             }
 

@@ -49,7 +49,7 @@ class AppIconFetcher(private val context: Context, private val data: Uri, privat
             }
 
         }
-        val icon: Bitmap = UtilitiesBitmap.createSystemIconBitmap(d, context)
+        val icon: Bitmap = UtilitiesBitmap.createHiResIconBitmap(d, context)
         val source = icon.toByteArray() ?: return null
         return SourceResult(
             source = ImageSource(Buffer().apply { write(source) }, options.context),

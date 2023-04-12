@@ -120,8 +120,8 @@ fun WidgetCustomizeScreen(
                         secondary = {
                             Column {
                                 IconShapeSelector(
-                                    names = stringArrayResource(id = info.anodsplace.carwidget.content.R.array.adaptive_icon_style_names),
-                                    pathMasks = stringArrayResource(id = info.anodsplace.carwidget.content.R.array.adaptive_icon_style_paths_values),
+                                    names = stringArrayResource(id = R.array.adaptive_icon_style_names),
+                                    pathMasks = stringArrayResource(id = R.array.adaptive_icon_style_paths_values),
                                     selected = screenState.widgetSettings.adaptiveIconStyle,
                                     defaultSystemMask = "",
                                     systemMaskName = "",

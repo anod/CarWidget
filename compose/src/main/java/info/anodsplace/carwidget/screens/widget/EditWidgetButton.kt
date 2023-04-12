@@ -35,8 +35,8 @@ fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.Curre
         contentColor = MaterialTheme.colorScheme.onSurface
     ) {
         ChooserGridList(
-            emptyList(),
-            viewModel.viewState.items,
+            headers = emptyList(),
+            list = viewModel.viewState.items,
             onClick = { entry ->
                 viewModel.handleEvent(EditWidgetViewEvent.Select(entry))
                 onDismissRequest()

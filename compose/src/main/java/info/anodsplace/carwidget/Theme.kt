@@ -1,14 +1,17 @@
 package info.anodsplace.carwidget
 
 import android.app.UiModeManager
-import android.content.Context
 import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast
-import androidx.annotation.ColorRes
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Typography
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
@@ -25,8 +28,8 @@ private val Rubik = FontFamily(
         // Font(R.font.rubik_medium, FontWeight.W500)
 )
 
-val typography = Typography()
-val CarWidgetTypography = Typography(
+private val typography = Typography()
+private val CarWidgetTypography = Typography(
     displayLarge = typography.displayLarge.merge(TextStyle(fontFamily = Rubik)),
     displayMedium = typography.displayMedium.merge(TextStyle(fontFamily = Rubik)),
     displaySmall = typography.displaySmall.merge(TextStyle(fontFamily = Rubik)),
@@ -45,7 +48,7 @@ val CarWidgetTypography = Typography(
 )
 
 val WarningColor = Color(0xfff4511e)
-val CarWidgetShapes = Shapes(
+private val CarWidgetShapes = Shapes(
         small = RoundedCornerShape(4.dp),
         medium = RoundedCornerShape(4.dp),
         large = RoundedCornerShape(8.dp)
@@ -190,7 +193,7 @@ fun CarWidgetTheme(
     MaterialTheme(
             colorScheme = colorScheme,
             typography = CarWidgetTypography,
-            shapes = CarWidgetShapes
+            //shapes = CarWidgetShapes
     ) {
         WidgetSystemTheme { widgetSystemTheme ->
             CompositionLocalProvider(LocalWidgetSystemTheme provides widgetSystemTheme) {

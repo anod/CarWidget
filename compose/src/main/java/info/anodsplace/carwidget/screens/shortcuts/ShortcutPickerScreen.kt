@@ -91,7 +91,7 @@ fun ShortcutPickerScreen(viewActions: Flow<ShortcutPickerViewAction> = emptyFlow
 fun CreateShortcutChooser(onNewState: (ShortcutPickerState) -> Unit, onIntent: (Intent) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
     val context = LocalContext.current
     val baseIntent = remember { Intent(Intent.ACTION_CREATE_SHORTCUT) }
-    val loader by remember { mutableStateOf(QueryIntentLoader(context, baseIntent)) }
+    val loader = remember { QueryIntentLoader(context, baseIntent) }
     ChooserDialog(
         modifier = Modifier.padding(horizontal = 16.dp),
         loader = loader,
@@ -132,7 +132,6 @@ fun AppChooser(onChoose: (ChooserEntry) -> Unit, onDismissRequest: () -> Unit, i
 @Composable
 fun CarWidgetChooser(shortcutResources: ShortcutResources, onChoose: (ChooserEntry) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
     val context = LocalContext.current
-
     val loader = remember { createCarWidgetShortcuts(context, shortcutResources) }
     ChooserDialog(
         modifier = Modifier.padding(horizontal = 16.dp),

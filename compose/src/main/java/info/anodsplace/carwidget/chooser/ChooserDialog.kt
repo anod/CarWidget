@@ -2,11 +2,19 @@ package info.anodsplace.carwidget.chooser
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Alarm
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -17,44 +25,30 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.ImageLoader
 import coil.compose.AsyncImage
-import info.anodsplace.carwidget.utils.SystemIconSize
+import info.anodsplace.compose.SystemIconShape
+
+private val IconSize = 56.dp
 
 @Composable
-private fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit, imageLoader: ImageLoader) {
-    val iconModifier = Modifier
-        .size(SystemIconSize)
-        .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(48.dp))
-    val context = LocalContext.current
+private fun EntryItem(entry: ChooserEntry, icon: @Composable () -> Unit, onClick: (ChooserEntry) -> Unit = { }) {
     Column(
         modifier = Modifier
-            .clip(shape = RoundedCornerShape(8.dp))
+            .clip(shape = MaterialTheme.shapes.medium)
             .clickable { onClick(entry) }
-            .padding(8.dp),
+            .padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (entry is Header) {
-            Icon(
-                imageVector = entry.iconVector,
-                contentDescription = entry.title,
-                modifier = iconModifier,
-                tint = MaterialTheme.colorScheme.onPrimary
-            )
-        } else {
-            AsyncImage(
-                model = entry.iconUri(context),
-                contentDescription = entry.title,
-                imageLoader = imageLoader,
-                modifier = iconModifier
-            )
-        }
+        icon()
         Text(
             modifier = Modifier
                 .fillMaxWidth()
@@ -68,20 +62,53 @@ private fun EntryIcon(entry: ChooserEntry, onClick: (ChooserEntry) -> Unit, imag
 }
 
 @Composable
-fun ChooserGridList(headers: List<ChooserEntry>, list: List<ChooserEntry>, onClick: (ChooserEntry) -> Unit, imageLoader: ImageLoader) {
-
+fun ChooserGridList(
+    headers: List<ChooserEntry>,
+    list: List<ChooserEntry>,
+    onClick: (ChooserEntry) -> Unit,
+    imageLoader: ImageLoader,
+    headerShape: Shape = MaterialTheme.shapes.medium
+) {
+    val context = LocalContext.current
     LazyVerticalGrid(
-        modifier = Modifier.padding(16.dp),
+        contentPadding = PaddingValues(16.dp),
         columns = GridCells.Adaptive(64.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         state = rememberLazyGridState()
     ) {
         items(headers.size) { index ->
-            val entry = headers[index]
-            EntryIcon(entry, onClick, imageLoader = imageLoader)
+            val entry = headers[index] as Header
+            EntryItem(
+                entry,
+                onClick = onClick,
+                icon = {
+                    Icon(
+                        imageVector = entry.iconVector,
+                        contentDescription = entry.title,
+                        modifier = Modifier
+                            .size(IconSize)
+                            .background(MaterialTheme.colorScheme.primary, shape = headerShape)
+                        ,
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            )
         }
         items(list.size) { index ->
             val entry = list[index]
-            EntryIcon(entry, onClick, imageLoader = imageLoader)
+            EntryItem(
+                entry,
+                onClick = onClick,
+                icon = {
+                    AsyncImage(
+                        model = entry.iconUri(context),
+                        contentDescription = entry.title,
+                        imageLoader = imageLoader,
+                        modifier = Modifier.size(IconSize)
+                    )
+                }
+            )
         }
     }
 }
@@ -97,7 +124,9 @@ fun ChooserDialog(
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
-        properties = DialogProperties()
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false
+        )
     ) {
         ChooserScreen(
             loader,
@@ -115,10 +144,12 @@ fun ChooserScreen(
     modifier: Modifier = Modifier,
     headers: List<ChooserEntry> = listOf(),
     onClick: (ChooserEntry) -> Unit,
-    imageLoader: ImageLoader
+    imageLoader: ImageLoader,
+
 ) {
     val appsList by loader.load().collectAsState(initial = emptyList())
-
+    val iconSizePx = with(LocalDensity.current) { IconSize.roundToPx() }
+    val headerShape = SystemIconShape(iconSizePx)
     Surface(
         modifier = modifier
             .fillMaxWidth()
@@ -127,6 +158,28 @@ fun ChooserScreen(
         color = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface
     ) {
-        ChooserGridList(headers, appsList, onClick = onClick, imageLoader = imageLoader)
+        ChooserGridList(
+            headers,
+            appsList,
+            onClick = onClick,
+            imageLoader = imageLoader,
+            headerShape = headerShape
+        )
     }
+}
+
+@Preview
+@Composable
+fun ChooserScreenPreview() {
+    ChooserScreen(
+        StaticChooserLoader(listOf(
+            ChooserEntry(componentName = null, title = "Very long name title of entry"),
+        )),
+        headers = listOf(
+            Header(0, "Show choice", Icons.Filled.List),
+            Header(0, "Very long name title of entry", Icons.Filled.Alarm)
+        ),
+        onClick = {  },
+        imageLoader = ImageLoader(LocalContext.current)
+    )
 }

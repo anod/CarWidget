@@ -157,7 +157,9 @@ fun AboutScreen(
                 Header(0, stringResource(info.anodsplace.carwidget.content.R.string.show_choice), iconVector = Icons.Filled.List)
             ),
             loader = loader,
-            onDismissRequest = { showMusicAppDialog = false },
+            onDismissRequest = {
+                showMusicAppDialog = false
+            },
             onClick = { entry ->
                 onEvent(AboutScreenStateEvent.ChangeMusicApp(entry.componentName))
                 showMusicAppDialog = false

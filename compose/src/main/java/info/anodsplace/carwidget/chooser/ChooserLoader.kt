@@ -145,13 +145,14 @@ class MediaListLoader(context: Context) : ChooserLoader {
             if (sExcludePackages.contains(pkg) || receivers.containsKey(pkg)) {
                 continue
             }
-            val title = appInfo.activityInfo.applicationInfo.loadLabel(packageManager).toString()
+
+            var title = appInfo.activityInfo.applicationInfo.loadLabel(packageManager)
             if (BuildConfig.DEBUG) {
                 AppLog.d(appInfo.activityInfo.packageName + "/"
                         + appInfo.activityInfo.applicationInfo.className)
             }
             receivers.put(pkg, true)
-            list.add(ChooserEntry(appInfo, title))
+            list.add(ChooserEntry(appInfo, title.toString()))
         }
         list.sortBy { it.title }
         return@withContext list
@@ -167,7 +168,9 @@ class MediaListLoader(context: Context) : ChooserLoader {
             "com.sec.android.mmapp",
             "com.sec.android.automotive.drivelink",
             "com.sec.android.app.mv.player",
-            "com.sec.android.app.voicenote"
+            "com.sec.android.app.voicenote",
+            "com.sec.android.app.vepreload",
+            "com.sec.android.app.ve.vebgm"
         )
     }
 }
