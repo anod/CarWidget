@@ -18,6 +18,6 @@ class WidgetShortcutResource(
             switchInCar = SwitchInCarActivity::class.java,
             runShortcut = ShortcutActivity::class.java
         ),
-        internalShortcuts = BaseProperties.internalShortcutResourcesDefault
+        internalShortcuts = BaseProperties.internalShortcutResourcesPrimary
     )
 }

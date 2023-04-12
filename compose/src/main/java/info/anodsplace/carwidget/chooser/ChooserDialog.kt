@@ -155,8 +155,8 @@ fun ChooserScreen(
             .fillMaxWidth()
             .defaultMinSize(minHeight = 352.dp),
         shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
     ) {
         ChooserGridList(
             headers,

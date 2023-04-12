@@ -74,13 +74,13 @@ abstract class BaseProperties : SkinProperties {
             R.id.btn8, R.id.btn9  //10
         )
 
-        val internalShortcutResourcesDefault = InternalShortcutResources(
+        val internalShortcutResourcesPrimary = InternalShortcutResources(
                 icons = listOf(
                         R.drawable.ic_launcher_carwidget,
-                        R.drawable.ic_shortcut_call,
-                        R.drawable.ic_shortcut_play,
-                        R.drawable.ic_shortcut_next,
-                        R.drawable.ic_shortcut_previous
+                        R.drawable.ic_shortcut_call_primary,
+                        R.drawable.ic_shortcut_play_primary,
+                        R.drawable.ic_shortcut_next_primary,
+                        R.drawable.ic_shortcut_previous_primary
                 )
         )
     }

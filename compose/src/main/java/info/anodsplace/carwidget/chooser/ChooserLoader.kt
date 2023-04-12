@@ -146,7 +146,7 @@ class MediaListLoader(context: Context) : ChooserLoader {
                 continue
             }
 
-            var title = appInfo.activityInfo.applicationInfo.loadLabel(packageManager)
+            val title = appInfo.activityInfo.applicationInfo.loadLabel(packageManager)
             if (BuildConfig.DEBUG) {
                 AppLog.d(appInfo.activityInfo.packageName + "/"
                         + appInfo.activityInfo.applicationInfo.className)
