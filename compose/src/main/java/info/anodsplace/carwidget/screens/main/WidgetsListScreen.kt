@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,7 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +34,9 @@ import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
+import info.anodsplace.compose.SystemIconShape
+
+private val IconSize = 52.dp
 
 private fun Modifier.cardStyle(backgroundColor: Color? = null): Modifier = composed { then(
     fillMaxWidth()
@@ -41,15 +45,14 @@ private fun Modifier.cardStyle(backgroundColor: Color? = null): Modifier = compo
         .padding(16.dp)
 ) }
 
-private fun Modifier.iconContainer(): Modifier = composed {
+private fun Modifier.iconContainer(iconShape: Shape): Modifier = composed {
     val widgetSystemTheme = LocalWidgetSystemTheme.current
-    val shape = RoundedCornerShape(widgetSystemTheme.radius.background)
     then(
         padding(2.dp)
-        .clip(shape = shape)
+        .clip(shape = iconShape)
         .background(widgetSystemTheme.colorScheme.colorDynamicWidgetBackground)
-        .border(1.dp, widgetSystemTheme.colorScheme.colorDynamicWidgetPrimary, shape = shape)
-        .size(48.dp)
+        .border(1.dp, widgetSystemTheme.colorScheme.colorDynamicWidgetPrimary, shape = iconShape)
+        .size(IconSize)
     ) }
 
 
@@ -71,6 +74,9 @@ fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int)
 
 @Composable
 private fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier, imageLoader: ImageLoader) {
+    val iconSizePx = with(LocalDensity.current) { IconSize.roundToPx() }
+    val iconShape = SystemIconShape(iconSizePx)
+
     LazyColumn(
         modifier = modifier
     ) {
@@ -115,7 +121,7 @@ private fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId
                             contentDescription = "",
                             imageLoader = imageLoader,
                             modifier = Modifier
-                                .iconContainer()
+                                .iconContainer(iconShape)
                         )
                     }
                 }
@@ -124,6 +130,7 @@ private fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId
                     LargeWidgetItem(
                         item = item,
                         onClick = { onClick(item.appWidgetId) },
+                        iconShape = iconShape,
                         imageLoader = imageLoader,
                     )
                 }
@@ -169,7 +176,7 @@ private fun NoWidgetsItem() {
 }
 
 @Composable
-private fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, imageLoader: ImageLoader) {
+private fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, iconShape: Shape, imageLoader: ImageLoader) {
     val context = LocalContext.current
     val count = item.shortcuts.size
     Row {
@@ -180,7 +187,7 @@ private fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, imageLoad
             val shortcut = item.shortcuts.getOrDefault(idx, null)
             Box(
                 modifier = Modifier
-                    .iconContainer()
+                    .iconContainer(iconShape)
             ) {
                 if (shortcut != null) {
                     AsyncImage(
@@ -202,12 +209,12 @@ private fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, imageLoad
 }
 
 @Composable
-fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit, imageLoader: ImageLoader) {
+fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit, iconShape: Shape, imageLoader: ImageLoader) {
     Column(modifier = Modifier
         .clickable { onClick() }
         .cardStyle()) {
-        LargeWidgetRow(item = item, indexes = listOf(1, 3, 5, 7, 9), imageLoader = imageLoader)
-        LargeWidgetRow(item = item, indexes = listOf(0, 2, 4, 6, 8), imageLoader = imageLoader)
+        LargeWidgetRow(item = item, indexes = listOf(1, 3, 5, 7, 9), iconShape = iconShape, imageLoader = imageLoader)
+        LargeWidgetRow(item = item, indexes = listOf(0, 2, 4, 6, 8), iconShape = iconShape, imageLoader = imageLoader)
     }
 }
 
