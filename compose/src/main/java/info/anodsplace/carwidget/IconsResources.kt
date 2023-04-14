@@ -57,12 +57,12 @@ fun ExpandMenuIcon() {
 
 @Composable
 fun ExpandIcon() {
-    Icon(imageVector = Icons.Default.ArrowDropUp, contentDescription = stringResource(id = R.string.expand))
+    Icon(imageVector = Icons.Default.ArrowDropUp, contentDescription = stringResource(id = info.anodsplace.carwidget.content.R.string.expand))
 }
 
 @Composable
 fun CollapseIcon() {
-    Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = stringResource(id = R.string.collapse))
+    Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = stringResource(id = info.anodsplace.carwidget.content.R.string.collapse))
 }
 
 @Composable
@@ -80,22 +80,22 @@ fun BackArrowIcon() {
 
 @Composable
 fun TextIncreaseIcon() {
-    Icon(imageVector = Icons.Default.TextIncrease, contentDescription = stringResource(id = R.string.increase))
+    Icon(imageVector = Icons.Default.TextIncrease, contentDescription = stringResource(id = info.anodsplace.carwidget.content.R.string.increase))
 }
 
 @Composable
 fun TextDecreaseIcon() {
-    Icon(imageVector = Icons.Default.TextDecrease, contentDescription = stringResource(id = R.string.decrease))
+    Icon(imageVector = Icons.Default.TextDecrease, contentDescription = stringResource(id = info.anodsplace.carwidget.content.R.string.decrease))
 }
 
 @Composable
 fun VolumeIncreaseIcon() {
-    Icon(imageVector = Icons.Filled.VolumeUp, contentDescription = stringResource(id = R.string.increase))
+    Icon(imageVector = Icons.Filled.VolumeUp, contentDescription = stringResource(id = info.anodsplace.carwidget.content.R.string.increase))
 }
 
 @Composable
 fun VolumeDecreaseIcon() {
-    Icon(imageVector = Icons.Default.VolumeDown, contentDescription = stringResource(id = R.string.decrease))
+    Icon(imageVector = Icons.Default.VolumeDown, contentDescription = stringResource(id = info.anodsplace.carwidget.content.R.string.decrease))
 }
 
 @Composable

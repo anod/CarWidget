@@ -282,8 +282,14 @@ fun NavHost(
                     onEvent = { customizeViewModel.handleEvent(it) },
                     innerPadding = innerPadding,
                     isCompact = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact,
-                    skinViewFactory = customizeViewModel
+                    skinViewFactory = customizeViewModel,
+                    imageLoader = imageLoader
                 )
+                LaunchedEffect(true) {
+                    customizeViewModel.viewActions.collect { activityAction ->
+                        onActivityAction(activityAction)
+                    }
+                }
             }
         }
         navigation(route = NavItem.Tab.InCar.route, startDestination = NavItem.Tab.InCar.Main.route) {

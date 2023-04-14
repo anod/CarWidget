@@ -1,31 +1,54 @@
 package info.anodsplace.carwidget.screens.widget
 
 import android.app.UiModeManager
+import android.content.Intent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import coil.ImageLoader
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.TextDecreaseIcon
 import info.anodsplace.carwidget.TextIncreaseIcon
+import info.anodsplace.carwidget.chooser.ChooserDialog
+import info.anodsplace.carwidget.chooser.Header
+import info.anodsplace.carwidget.chooser.MediaListLoader
+import info.anodsplace.carwidget.chooser.QueryIntentLoader
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.screens.about.AboutScreenStateEvent
 import info.anodsplace.compose.*
+import info.anodsplace.framework.content.forIconTheme
+import info.anodsplace.framework.content.forLauncher
 
 @Composable
 fun FontSize(
@@ -51,7 +74,8 @@ fun WidgetCustomizeScreen(
     onEvent: (WidgetCustomizeEvent) -> Unit,
     innerPadding: PaddingValues = PaddingValues(0.dp),
     isCompact: Boolean = false,
-    skinViewFactory: SkinViewFactory
+    skinViewFactory: SkinViewFactory,
+    imageLoader: ImageLoader
 ) {
     Column(modifier = Modifier.padding(innerPadding)) {
         if (!isCompact) {
@@ -177,6 +201,67 @@ fun WidgetCustomizeScreen(
             onDismissRequest = { onEvent(WidgetCustomizeEvent.ShowFontColorPicker(show = false)) }
         )
     }
+
+    if (screenState.showIconsThemePicker) {
+        IconsThemePicker(
+            onDismissRequest = { onEvent(WidgetCustomizeEvent.ShowIconsThemePicker(show = false)) },
+            onThemeSelected = {
+                onEvent(WidgetCustomizeEvent.ApplyChange("icons-theme", it))
+                onEvent(WidgetCustomizeEvent.ShowIconsThemePicker(show = false))
+            },
+            onDownloadRequest = { onEvent(WidgetCustomizeEvent.DownloadIconsTheme) },
+            imageLoader = imageLoader
+        )
+    }
+}
+
+@Composable
+private fun IconsThemePicker(
+    imageLoader: ImageLoader,
+    onDismissRequest: () -> Unit,
+    onThemeSelected: (themePackage: String) -> Unit,
+    onDownloadRequest: () -> Unit
+) {
+    val context = LocalContext.current
+    // TODO: Replace with lifecycle.currentStateFlow
+    // https://android-review.googlesource.com/c/platform/frameworks/support/+/2472957/3/lifecycle/lifecycle-runtime/src/main/java/androidx/lifecycle/LifecycleRegistry.kt#113
+    val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+    var onResume by remember { mutableStateOf(0) }
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_START) {
+                onResume++
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    val loader = remember(onResume) { QueryIntentLoader(context, Intent().forIconTheme()) }
+    ChooserDialog(
+        modifier = Modifier.padding(16.dp),
+        headers = listOf(
+            Header(0, stringResource(R.string.none), iconVector = Icons.Filled.Cancel),
+            Header(1, stringResource(R.string.download), iconVector = Icons.Filled.Download)
+        ),
+        loader = loader,
+        onDismissRequest = onDismissRequest,
+        onClick = { entry ->
+            when (entry) {
+                is Header -> {
+                    if (entry.headerId == 0) {
+                        onThemeSelected("")
+                    } else {
+                        onDownloadRequest()
+                    }
+                }
+                else -> onThemeSelected(entry.componentName?.packageName ?: "")
+            }
+        },
+        imageLoader = imageLoader
+    )
 }
 
 @Composable
@@ -218,12 +303,13 @@ fun WidgetLookMoreScreenDark() {
     CarWidgetTheme(uiMode = UiModeManager.MODE_NIGHT_YES) {
         WidgetCustomizeScreen(
             screenState = WidgetCustomizeState(
-                items = createItems(widgetSettings, skinViewFactory.viewState.skinList),
+                items = createItems(widgetSettings, skinViewFactory.viewState.skinList, ""),
                 widgetSettings = widgetSettings,
                 skinList = skinViewFactory.viewState.skinList,
             ),
             onEvent = { },
-            skinViewFactory = skinViewFactory
+            skinViewFactory = skinViewFactory,
+            imageLoader = ImageLoader(LocalContext.current)
         )
     }
 }

@@ -1,6 +1,8 @@
 package info.anodsplace.carwidget.screens.widget
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.view.View
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -18,6 +20,11 @@ import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.compose.isNotVisible
 import info.anodsplace.compose.isVisible
 import info.anodsplace.compose.toColorHex
+import info.anodsplace.framework.content.CommonActivityAction
+import info.anodsplace.framework.content.InstalledApps
+import info.anodsplace.framework.content.forStoreSearch
+import info.anodsplace.framework.content.getAppTitle
+import info.anodsplace.framework.content.getPackageInfoOrNull
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinScopeComponent
@@ -39,6 +46,7 @@ data class WidgetCustomizeState(
 )
 
 sealed interface WidgetCustomizeEvent {
+    object DownloadIconsTheme : WidgetCustomizeEvent
     class UpdateShortcutsNumber(val size: Int) : WidgetCustomizeEvent
     class ApplyChange(val key: String, val value: Any?) : WidgetCustomizeEvent
     class ShowBackgroundColorPicker(val show: Boolean) : WidgetCustomizeEvent
@@ -48,9 +56,7 @@ sealed interface WidgetCustomizeEvent {
     class ShowIconsColorPicker(val show: Boolean) : WidgetCustomizeEvent
 }
 
-sealed interface WidgetCustomizeAction
-
-fun createItems(settings: WidgetInterface, skinList: SkinList) = listOf(
+fun createItems(settings: WidgetInterface, skinList: SkinList, iconsThemeAppName: String) = listOf(
     PreferenceItem.Pick(
         titleRes = info.anodsplace.carwidget.content.R.string.skin,
         key = "skin",
@@ -95,7 +101,9 @@ fun createItems(settings: WidgetInterface, skinList: SkinList) = listOf(
     ),
     PreferenceItem.Text(
         titleRes = info.anodsplace.carwidget.content.R.string.icons_theme,
-        key = "icons-theme"
+        key = "icons-theme",
+        summaryRes = if (settings.iconsTheme.isEmpty()) info.anodsplace.carwidget.content.R.string.none else 0,
+        summary =  if (settings.iconsTheme.isEmpty()) "" else iconsThemeAppName
     ),
     PreferenceItem.Switch(
         checked = settings.isIconsMono,
@@ -149,7 +157,7 @@ fun createItems(settings: WidgetInterface, skinList: SkinList) = listOf(
     ),
 )
 
-class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowViewModel<WidgetCustomizeState, WidgetCustomizeEvent, WidgetCustomizeAction>(), KoinScopeComponent, SkinViewFactory {
+class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowViewModel<WidgetCustomizeState, WidgetCustomizeEvent, CommonActivityAction>(), KoinScopeComponent, SkinViewFactory {
 
     class Factory(private val appWidgetIdScope: AppWidgetIdScope) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
@@ -163,11 +171,12 @@ class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowVie
     private val widgetSettings: WidgetSettings by inject()
     private val context: Context by inject()
     private val bitmapMemoryCache: BitmapLruCache by inject()
+    private val packageManager = context.packageManager
 
     init {
         val skinList = SkinList(widgetSettings.skin, context)
         viewState = WidgetCustomizeState(
-            items = createItems(widgetSettings, skinList),
+            items = createItems(widgetSettings, skinList, if (widgetSettings.iconsTheme.isEmpty()) "" else packageManager.getAppTitle(widgetSettings.iconsTheme)),
             widgetSettings = WidgetInterface.NoOp(widgetSettings),
             skinList = skinList,
         )
@@ -181,7 +190,7 @@ class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowVie
                 viewState = viewState.copy(
                     skinList = newSkinList,
                     widgetSettings = WidgetInterface.NoOp(widgetSettings),
-                    items = createItems(widgetSettings, newSkinList),
+                    items = createItems(widgetSettings, newSkinList, if (widgetSettings.iconsTheme.isEmpty()) "" else packageManager.getAppTitle(widgetSettings.iconsTheme)),
                     previewVersion = viewState.previewVersion + 1
                 )
             }
@@ -208,6 +217,10 @@ class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowVie
             }
             is WidgetCustomizeEvent.ShowIconsColorPicker -> {
                 viewState = viewState.copy(showIconsColorPicker = event.show)
+            }
+
+            WidgetCustomizeEvent.DownloadIconsTheme -> {
+                emitAction(CommonActivityAction.StartActivity(Intent().forStoreSearch(query = "Icons Pack")))
             }
         }
     }

@@ -16,6 +16,7 @@ import coil.compose.AsyncImage
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.CollapseIcon
 import info.anodsplace.carwidget.ExpandIcon
+import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
@@ -46,7 +47,7 @@ fun ShortcutEditScreen(state: ShortcutEditViewState, onEvent: (ShortcutEditViewE
 @Composable
 fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (ShortcutEditViewEvent) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader, widgetSettings: WidgetInterface = WidgetInterface.NoOp()) {
     Column {
-        TopAppBar(title = { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.shortcut_edit_title)) })
+        TopAppBar(title = { Text(text = stringResource(id = R.string.shortcut_edit_title)) })
         if (!expanded) {
             ShortcutInfo(
                 shortcut,
@@ -76,7 +77,7 @@ fun AdvancedButton(expanded: Boolean, onEvent: (ShortcutEditViewEvent) -> Unit) 
             .defaultMinSize(minHeight = 48.dp),
         onClick = { onEvent(ShortcutEditViewEvent.ToggleAdvanced(expanded = !expanded)) }
     ) {
-        Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.advanced))
+        Text(text = stringResource(id = R.string.advanced))
         if (expanded) {
             ExpandIcon()
         } else {
@@ -104,7 +105,7 @@ fun ShortcutInfo(shortcut: Shortcut, onEvent: (ShortcutEditViewEvent) -> Unit, o
         )
         TextField(
             modifier = Modifier.padding(vertical = 8.dp),
-            label = { Text("Title") },
+            label = { Text(stringResource(id = R.string.title)) },
             value = shortcut.title.toString(),
             onValueChange = {},
             singleLine = true

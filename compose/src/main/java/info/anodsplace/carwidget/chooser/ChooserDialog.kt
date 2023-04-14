@@ -37,7 +37,7 @@ import coil.ImageLoader
 import coil.compose.AsyncImage
 import info.anodsplace.compose.SystemIconShape
 
-private val IconSize = 56.dp
+private val iconSize = 56.dp
 
 @Composable
 private fun EntryItem(entry: ChooserEntry, icon: @Composable () -> Unit, onClick: (ChooserEntry) -> Unit = { }) {
@@ -87,7 +87,7 @@ fun ChooserGridList(
                         imageVector = entry.iconVector,
                         contentDescription = entry.title,
                         modifier = Modifier
-                            .size(IconSize)
+                            .size(iconSize)
                             .background(MaterialTheme.colorScheme.primary, shape = headerShape)
                         ,
                         tint = MaterialTheme.colorScheme.onPrimary
@@ -105,7 +105,7 @@ fun ChooserGridList(
                         model = entry.iconUri(context),
                         contentDescription = entry.title,
                         imageLoader = imageLoader,
-                        modifier = Modifier.size(IconSize)
+                        modifier = Modifier.size(iconSize)
                     )
                 }
             )
@@ -148,7 +148,7 @@ fun ChooserScreen(
 
 ) {
     val appsList by loader.load().collectAsState(initial = emptyList())
-    val iconSizePx = with(LocalDensity.current) { IconSize.roundToPx() }
+    val iconSizePx = with(LocalDensity.current) { iconSize.roundToPx() }
     val headerShape = SystemIconShape(iconSizePx)
     Surface(
         modifier = modifier
