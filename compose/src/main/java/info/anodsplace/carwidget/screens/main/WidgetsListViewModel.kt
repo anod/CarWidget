@@ -1,5 +1,7 @@
 package info.anodsplace.carwidget.screens.main
 
+import android.content.Context
+import android.os.PowerManager
 import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
 import info.anodsplace.applog.AppLog
@@ -46,7 +48,8 @@ data class WidgetListScreenState(
     val isServiceRequired: Boolean = false,
     val isServiceRunning: Boolean = false,
     val eventsState: List<InCarStatus.EventState> = emptyList(),
-    @StringRes val statusResId: Int = 0
+    @StringRes val statusResId: Int = 0,
+    val ignoringBatteryOptimization: Boolean = false
 )
 
 sealed interface WidgetListScreenEvent {
@@ -57,9 +60,11 @@ sealed interface WidgetListScreenAction
 
 class WidgetsListViewModel : BaseFlowViewModel<WidgetListScreenState, WidgetListScreenEvent, WidgetListScreenAction>(), KoinComponent {
     private val widgetIds: WidgetIds by inject()
+    private val context: Context by inject()
     private val db: ShortcutsDatabase by inject()
     private val inCarSettings: InCarSettings by inject()
     private val broadcastServiceManager: BroadcastServiceManager by inject()
+    private val powerManager: PowerManager? = context.getSystemService(Context.POWER_SERVICE) as? PowerManager
 
     init {
         val inCarStatus: InCarStatus = get()
@@ -67,6 +72,7 @@ class WidgetsListViewModel : BaseFlowViewModel<WidgetListScreenState, WidgetList
             items = emptyList(),
             isServiceRequired = broadcastServiceManager.isServiceRequired,
             isServiceRunning = broadcastServiceManager.isServiceRunning,
+            ignoringBatteryOptimization = powerManager?.isIgnoringBatteryOptimizations(context.packageName) == true,
             statusResId = inCarStatus.resId,
             eventsState = inCarStatus.eventsState().sortedWith(compareBy({ !it.enabled }, { !it.active }))
         )

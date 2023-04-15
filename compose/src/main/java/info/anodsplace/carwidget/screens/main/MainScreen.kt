@@ -236,6 +236,7 @@ fun NavHost(
                 screen = widgetsState,
                 onClick = { appWidgetId -> onEvent(MainViewEvent.OpenWidgetConfig(appWidgetId)) },
                 innerPadding = innerPadding,
+                onActivityAction = onActivityAction,
                 imageLoader = imageLoader
             )
         }

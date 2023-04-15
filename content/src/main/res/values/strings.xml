@@ -231,6 +231,8 @@
     <string name="expand">Expand</string>
     <string name="collapse">Collapse</string>
     <string name="download">Download</string>
+    <string name="incar_service_is_not_running">InCar detector service is not running.</string>
+    <string name="disable_battery_optimization_warning">Disable battery optimization</string>
 
     <array name="adaptive_icon_style_names">
         <item>Default</item>

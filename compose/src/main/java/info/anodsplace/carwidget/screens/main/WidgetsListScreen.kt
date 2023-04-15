@@ -1,5 +1,7 @@
 package info.anodsplace.carwidget.screens.main
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -35,6 +37,8 @@ import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
 import info.anodsplace.compose.SystemIconShape
+import info.anodsplace.framework.content.CommonActivityAction
+import info.anodsplace.framework.content.forRequestIgnoreBatteryOptimization
 
 private val IconSize = 52.dp
 
@@ -49,21 +53,35 @@ private fun Modifier.iconContainer(iconShape: Shape): Modifier = composed {
     val widgetSystemTheme = LocalWidgetSystemTheme.current
     then(
         padding(2.dp)
-        .clip(shape = iconShape)
-        .background(widgetSystemTheme.colorScheme.colorDynamicWidgetBackground)
-        .border(1.dp, widgetSystemTheme.colorScheme.colorDynamicWidgetPrimary, shape = iconShape)
-        .size(IconSize)
+            .clip(shape = iconShape)
+            .background(widgetSystemTheme.colorScheme.colorDynamicWidgetBackground)
+            .border(
+                1.dp,
+                widgetSystemTheme.colorScheme.colorDynamicWidgetPrimary,
+                shape = iconShape
+            )
+            .size(IconSize)
     ) }
 
 
 @Composable
-fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, imageLoader: ImageLoader, innerPadding: PaddingValues = PaddingValues(0.dp)) {
+fun WidgetsListScreen(
+    screen: WidgetListScreenState,
+    onClick: (appWidgetId: Int) -> Unit,
+    imageLoader: ImageLoader,
+    innerPadding: PaddingValues = PaddingValues(0.dp),
+    onActivityAction: (CommonActivityAction) -> Unit = { }
+) {
     when (val loadState = screen.loadState) {
         is WidgetListLoadState.Ready -> {
             WidgetsLisItems(
                 screen = screen,
                 onClick = onClick,
-                modifier = Modifier.padding(innerPadding).fillMaxSize().padding(16.dp),
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+                    .padding(16.dp),
+                onActivityAction = onActivityAction,
                 imageLoader = imageLoader
             )
         }
@@ -72,10 +90,18 @@ fun WidgetsListScreen(screen: WidgetListScreenState, onClick: (appWidgetId: Int)
     }
 }
 
+@SuppressLint("MissingPermission")
 @Composable
-private fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId: Int) -> Unit, modifier: Modifier = Modifier, imageLoader: ImageLoader) {
+private fun WidgetsLisItems(
+    screen: WidgetListScreenState,
+    onClick: (appWidgetId: Int) -> Unit,
+    modifier: Modifier = Modifier,
+    imageLoader: ImageLoader,
+    onActivityAction: (CommonActivityAction) -> Unit
+) {
     val iconSizePx = with(LocalDensity.current) { IconSize.roundToPx() }
     val iconShape = SystemIconShape(iconSizePx)
+    val context = LocalContext.current
 
     LazyColumn(
         modifier = modifier
@@ -90,15 +116,34 @@ private fun WidgetsLisItems(screen: WidgetListScreenState, onClick: (appWidgetId
             item {
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(modifier = Modifier
-                    .cardStyle(backgroundColor = MaterialTheme.colorScheme.errorContainer)) {
+                    .clickable {
+                        if (!screen.ignoringBatteryOptimization) {
+                            onActivityAction(
+                                CommonActivityAction.StartActivity(
+                                    Intent().forRequestIgnoreBatteryOptimization(context.packageName)
+                                )
+                            )
+                        }
+                    }
+                    .cardStyle(backgroundColor = MaterialTheme.colorScheme.errorContainer)
+                ) {
                     WarningIcon(
                         modifier = Modifier.size(SystemIconSize),
                         tint = MaterialTheme.colorScheme.error)
-                    Text(
+                    Column(
                         modifier = Modifier.padding(start = 16.dp),
-                        text = "InCar detector service is not running, disable battery optimization",
-                        color = MaterialTheme.colorScheme.error
-                    )
+                    ) {
+                        Text(
+                            text = stringResource(info.anodsplace.carwidget.content.R.string.incar_service_is_not_running),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                        if (!screen.ignoringBatteryOptimization) {
+                            Text(
+                                text = stringResource(info.anodsplace.carwidget.content.R.string.disable_battery_optimization_warning),
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -282,13 +327,15 @@ fun PreviewWidgetsScreen() {
                         skinName = ""
                     )
                 ),
-                isServiceRunning = false,
                 isServiceRequired = true,
+                isServiceRunning = false,
                 eventsState = emptyList(),
-                statusResId = info.anodsplace.carwidget.content.R.string.enabled
+                statusResId = info.anodsplace.carwidget.content.R.string.enabled,
+                ignoringBatteryOptimization = true
             ),
             onClick = { },
-            imageLoader = ImageLoader.Builder(LocalContext.current).build()
+            imageLoader = ImageLoader.Builder(LocalContext.current).build(),
+            onActivityAction =  {  }
         )
     }
 }
@@ -301,13 +348,15 @@ fun PreviewWidgetsEmptyScreen() {
             screen = WidgetListScreenState(
                 loadState = WidgetListLoadState.Ready,
                 items = listOf(),
-                isServiceRunning = false,
                 isServiceRequired = true,
+                isServiceRunning = false,
                 eventsState = emptyList(),
-                statusResId = info.anodsplace.carwidget.content.R.string.enabled
+                statusResId = info.anodsplace.carwidget.content.R.string.enabled,
+                ignoringBatteryOptimization = false
             ),
             onClick = { },
-            imageLoader = ImageLoader.Builder(LocalContext.current).build()
+            imageLoader = ImageLoader.Builder(LocalContext.current).build(),
+            onActivityAction = {  }
         )
     }
 }
