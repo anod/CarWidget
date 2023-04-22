@@ -63,6 +63,17 @@ fun MainScreen(
     when (screenState.topDestination) {
         NavItem.Wizard -> {
             WizardScreen(onEvent = onEvent)
+            LaunchedEffect(key1 = true) {
+                viewActions.collect { action ->
+                    when (action) {
+                        is MainViewAction.ActivityAction -> {
+                            onActivityAction(action.action)
+                        }
+
+                        else -> onViewAction(action)
+                    }
+                }
+            }
         }
         NavItem.PermissionsRequest -> {
             val context = LocalContext.current
@@ -112,6 +123,9 @@ fun MainScreen(
                     when (action) {
                         is MainViewAction.ShowDialog -> {
                             navController.navigate(action.route)
+                        }
+                        is MainViewAction.ActivityAction -> {
+                            onActivityAction(action.action)
                         }
                         else -> onViewAction(action)
                     }
@@ -234,7 +248,7 @@ fun NavHost(
             val widgetsState by widgetsListViewModel.viewStates.collectAsState(initial = widgetsListViewModel.viewState)
             WidgetsListScreen(
                 screen = widgetsState,
-                onClick = { appWidgetId -> onEvent(MainViewEvent.OpenWidgetConfig(appWidgetId)) },
+                onEvent = onEvent,
                 innerPadding = innerPadding,
                 onActivityAction = onActivityAction,
                 imageLoader = imageLoader

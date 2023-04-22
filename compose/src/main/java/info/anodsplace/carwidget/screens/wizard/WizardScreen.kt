@@ -50,7 +50,8 @@ fun WizardScreen(onEvent: (event: MainViewEvent) -> Unit = { }) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
+                modifier = Modifier.padding(horizontal = 8.dp),
                 title = { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.app_name)) },
                 navigationIcon = {
                     Icon(
@@ -115,11 +116,18 @@ fun WizardScreen(onEvent: (event: MainViewEvent) -> Unit = { }) {
                 )
                 Spacer(modifier = Modifier.weight(1.0f))
 
-                Button(
-                    modifier = Modifier.align(Alignment.End),
-                    onClick = { onEvent(MainViewEvent.CloseWizard) }
-                ) {
-                    Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.close))
+                Row {
+                    FilledTonalButton(
+                        onClick = { onEvent(MainViewEvent.GotToHomeScreen) },
+                    ) {
+                        Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.go_to_homescreen))
+                    }
+                    Spacer(modifier = Modifier.weight(1.0f))
+                    Button(
+                        onClick = { onEvent(MainViewEvent.CloseWizard) }
+                    ) {
+                        Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.close))
+                    }
                 }
             }
         }

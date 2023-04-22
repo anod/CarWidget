@@ -67,7 +67,7 @@ private fun Modifier.iconContainer(iconShape: Shape): Modifier = composed {
 @Composable
 fun WidgetsListScreen(
     screen: WidgetListScreenState,
-    onClick: (appWidgetId: Int) -> Unit,
+    onEvent: (MainViewEvent) -> Unit,
     imageLoader: ImageLoader,
     innerPadding: PaddingValues = PaddingValues(0.dp),
     onActivityAction: (CommonActivityAction) -> Unit = { }
@@ -76,7 +76,7 @@ fun WidgetsListScreen(
         is WidgetListLoadState.Ready -> {
             WidgetsLisItems(
                 screen = screen,
-                onClick = onClick,
+                onEvent = onEvent,
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize()
@@ -94,7 +94,7 @@ fun WidgetsListScreen(
 @Composable
 private fun WidgetsLisItems(
     screen: WidgetListScreenState,
-    onClick: (appWidgetId: Int) -> Unit,
+    onEvent: (MainViewEvent) -> Unit,
     modifier: Modifier = Modifier,
     imageLoader: ImageLoader,
     onActivityAction: (CommonActivityAction) -> Unit
@@ -151,7 +151,7 @@ private fun WidgetsLisItems(
         if (screen.items.isEmpty()) {
             item {
                 Spacer(modifier = Modifier.height(16.dp))
-                NoWidgetsItem()
+                NoWidgetsItem(onClick = { onEvent(MainViewEvent.ShowWizard) })
             }
         }
 
@@ -174,7 +174,7 @@ private fun WidgetsLisItems(
                     hasLargeItem = true
                     LargeWidgetItem(
                         item = item,
-                        onClick = { onClick(item.appWidgetId) },
+                        onClick = { onEvent(MainViewEvent.OpenWidgetConfig(item.appWidgetId)) },
                         iconShape = iconShape,
                         imageLoader = imageLoader,
                     )
@@ -197,7 +197,7 @@ private fun WidgetsLisItems(
 }
 
 @Composable
-private fun NoWidgetsItem() {
+private fun NoWidgetsItem(onClick: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -205,6 +205,7 @@ private fun NoWidgetsItem() {
             .clip(MaterialTheme.shapes.large)
             .background(WarningColor)
             .padding(16.dp)
+            .clickable(onClick = onClick)
     ) {
         Text(
             modifier = Modifier.weight(1f),
@@ -300,9 +301,9 @@ fun InCarHeader(screen: WidgetListScreenState) {
                 text = if (screen.isServiceRunning) "Detector service is running" else "Detector service is NOT running",
                 color = MaterialTheme.colorScheme.onSecondary
             )
-        }
 
-        EventStates(screen.eventsState)
+            EventStates(screen.eventsState)
+        }
     }
 }
 
@@ -333,7 +334,7 @@ fun PreviewWidgetsScreen() {
                 statusResId = info.anodsplace.carwidget.content.R.string.enabled,
                 ignoringBatteryOptimization = true
             ),
-            onClick = { },
+            onEvent = { },
             imageLoader = ImageLoader.Builder(LocalContext.current).build(),
             onActivityAction =  {  }
         )
@@ -354,7 +355,7 @@ fun PreviewWidgetsEmptyScreen() {
                 statusResId = info.anodsplace.carwidget.content.R.string.enabled,
                 ignoringBatteryOptimization = false
             ),
-            onClick = { },
+            onEvent = { },
             imageLoader = ImageLoader.Builder(LocalContext.current).build(),
             onActivityAction = {  }
         )

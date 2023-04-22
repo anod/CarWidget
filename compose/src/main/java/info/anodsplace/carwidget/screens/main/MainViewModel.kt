@@ -1,6 +1,7 @@
 package info.anodsplace.carwidget.screens.main
 
 import android.appwidget.AppWidgetManager
+import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +20,9 @@ import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.screens.NavItem
 import info.anodsplace.carwidget.screens.WidgetAwareViewModel
 import info.anodsplace.carwidget.screens.widget.SkinList
+import info.anodsplace.framework.content.CommonActivityAction
+import info.anodsplace.framework.content.forHomeScreen
+import info.anodsplace.framework.content.forLauncher
 import info.anodsplace.permissions.AppPermission
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinScopeComponent
@@ -41,6 +45,7 @@ sealed interface MainViewAction {
     class ApplyWidget(val appWidgetId: Int, val currentSkinValue: String) : MainViewAction
     class OpenWidgetConfig(val appWidgetId: Int) : MainViewAction
     class ShowDialog(val route: String) : MainViewAction
+    class ActivityAction(val action: CommonActivityAction) : MainViewAction
 }
 
 sealed interface MainViewEvent {
@@ -52,6 +57,8 @@ sealed interface MainViewEvent {
 
     object OnBackNav : MainViewEvent
     object CloseWizard : MainViewEvent
+    object ShowWizard : MainViewEvent
+    object GotToHomeScreen : MainViewEvent
 }
 
 class MainViewModel(
@@ -103,14 +110,22 @@ class MainViewModel(
 
     override fun handleEvent(event: MainViewEvent) {
         when (event) {
-            MainViewEvent.PermissionAcquired -> {
+            is MainViewEvent.PermissionAcquired -> {
                 viewState = viewState.copy(topDestination = if (appWidgetIdScope.isValid) NavItem.Tab.CurrentWidget else NavItem.Tab.Widgets)
             }
             is MainViewEvent.OnBackNav -> emitAction(MainViewAction.OnBackNav)
             is MainViewEvent.ApplyWidget -> emitAction(MainViewAction.ApplyWidget(event.appWidgetId, event.currentSkinValue))
             is MainViewEvent.OpenWidgetConfig -> emitAction(MainViewAction.OpenWidgetConfig(event.appWidgetId))
-            MainViewEvent.CloseWizard -> {
+            is MainViewEvent.ShowWizard -> {
+                viewState = viewState.copy(topDestination = NavItem.Wizard)
+            }
+            is MainViewEvent.CloseWizard -> {
                 viewState = viewState.copy(topDestination = startDestination(viewState.requiredPermissions, allowWizard = false))
+            }
+            is MainViewEvent.GotToHomeScreen -> {
+                emitAction(MainViewAction.ActivityAction(
+                    action = CommonActivityAction.StartActivity(Intent().forHomeScreen().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                ))
             }
             is MainViewEvent.WidgetUpdateShortcuts -> {
                 val settings = get<WidgetSettings>()

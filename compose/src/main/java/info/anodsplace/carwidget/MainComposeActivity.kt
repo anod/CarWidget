@@ -92,8 +92,9 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
                 requestWidgetUpdate(action.appWidgetId)
                 finish()
             }
-            MainViewAction.OnBackNav -> onBackPressed()
+            is MainViewAction.OnBackNav -> onBackPressed()
             is MainViewAction.ShowDialog -> { }
+            is MainViewAction.ActivityAction -> { }
         }
     }
 }
