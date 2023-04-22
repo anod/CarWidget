@@ -6,7 +6,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            version("kotlin", "1.8.10")
+            version("kotlin", "1.8.20")
             library("kotlin-gradle-plugin", "org.jetbrains.kotlin", "kotlin-gradle-plugin").versionRef("kotlin")
             library("kotlin-stdlib", "org.jetbrains.kotlin", "kotlin-stdlib").versionRef("kotlin")
             plugin("kotlin-plugin","org.jetbrains.kotlin.android").versionRef("kotlin")
@@ -21,6 +21,8 @@ dependencyResolutionManagement {
             library("sqldelight-gradle-plugin", "com.squareup.sqldelight", "gradle-plugin").versionRef("sqldelight")
             plugin("sqldelight-plugin","com.squareup.sqldelight").versionRef("sqldelight")
 
+            library("koin-core", "io.insert-koin", "koin-core").version("3.4.0")
+            library("coil-compose-base", "io.coil-kt", "coil-compose-base").version("2.3.0")
         }
     }
 }

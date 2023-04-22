@@ -13,19 +13,19 @@ dependencies {
     implementation(project(":lib:framework"))
     implementation(project(":lib:permissions"))
 
-    implementation("io.insert-koin:koin-core:3.3.3")
-    implementation("io.coil-kt:coil-base:2.2.2")
+    implementation(libs.koin.core)
+    implementation(libs.coil.compose.base)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
 
     // Activity recognition
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
     implementation("androidx.appcompat:appcompat:1.6.1") // AppCompatActivity
     implementation("androidx.core:core-ktx:1.10.0")
-    implementation("androidx.activity:activity:1.7.0")
-    implementation("androidx.core:core-splashscreen:1.0.0")
+    implementation("androidx.activity:activity:1.7.1")
+    implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.collection:collection-ktx:1.2.0")
     implementation("androidx.sqlite:sqlite-ktx:2.3.1")
 

@@ -4,12 +4,18 @@ import android.app.UiModeManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
+
+// copied from androidx.appcompat.app.AppCompatDelegate
+object AppCompatDelegate {
+    const val MODE_NIGHT_FOLLOW_SYSTEM = -1
+    const val MODE_NIGHT_NO = 1
+    const val MODE_NIGHT_YES = 2
+}
 
 /**
  * @author algavris

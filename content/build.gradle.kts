@@ -37,12 +37,14 @@ dependencies {
     implementation(project(":lib:applog"))
     implementation(project(":lib:graphics"))
     implementation(project(":lib:ktx"))
-    implementation("io.insert-koin:koin-core:3.3.3")
-    implementation("io.coil-kt:coil-base:2.2.2")
+
+    implementation(libs.koin.core)
+    implementation(libs.coil.compose.base)
 
     implementation(libs.sqldelight.driver.android)
     implementation(libs.sqldelight.coroutines.extensions.jvm)
-    implementation("androidx.preference:preference-ktx:1.2.0")
+    implementation("androidx.preference:preference-ktx:1.2.0") // for androidx.preference.PreferenceManager
+    implementation("androidx.core:core-ktx:1.10.0")
     implementation("androidx.collection:collection-ktx:1.2.0")
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)

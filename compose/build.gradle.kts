@@ -25,7 +25,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.4"
+        kotlinCompilerExtensionVersion = "1.4.6"
     }
     namespace = "info.anodsplace.carwidget"
 }
@@ -42,15 +42,15 @@ dependencies {
     implementation(project(":content"))
     implementation(project(":skins"))
 
-    implementation("io.insert-koin:koin-core:3.3.3")
-    implementation("io.coil-kt:coil-compose-base:2.2.2")
+    implementation(libs.koin.core)
+    implementation(libs.coil.compose.base)
 
     implementation("androidx.appcompat:appcompat:1.6.1")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
 
     implementation("androidx.navigation:navigation-compose:2.5.3")
-    implementation("androidx.activity:activity-compose:1.7.0")
+    implementation("androidx.activity:activity-compose:1.7.1")
 
     implementation(libs.kotlin.stdlib)
 }
