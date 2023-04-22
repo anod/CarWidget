@@ -43,7 +43,7 @@ class UpdateWidgetJob : JobIntentService(), KoinComponent {
         // provider
         for (appWidgetId in appWidgetIds) {
             AppWidgetIdScope(appWidgetId).use {
-                val view = WidgetViewBuilder(
+                val viewBuilder = WidgetViewBuilder(
                     context = context,
                     iconLoader = get(),
                     appWidgetId = appWidgetId,
@@ -56,7 +56,9 @@ class UpdateWidgetJob : JobIntentService(), KoinComponent {
                     inCarSettings = get(),
                     shortcutsModel = it.scope.get(),
                     koin = getKoin(),
-                ).create()
+                )
+                viewBuilder.firstTimeInit()
+                val view = viewBuilder.create()
                 AppLog.i("Performing update for widget #$appWidgetId")
                 appWidgetManager.updateAppWidget(appWidgetId, view)
             }

@@ -35,13 +35,15 @@ class WidgetViewBuilder(
 
     private val bitmapTransform = BitmapTransform(context)
 
-    override suspend fun create(): RemoteViews = withContext(Dispatchers.Default) {
+    suspend fun firstTimeInit() {
         if (widgetSettings.isFirstTime) { // TODO: race condition between multiple views in preview
             widgetSettings.isFirstTime = false
             shortcutsModel.createDefaultShortcuts()
             widgetSettings.applyPending()
         }
+    }
 
+    override suspend fun create(): RemoteViews = withContext(Dispatchers.Default) {
         shortcutsModel.init()
 
         val skinName = overrideSkin ?: widgetSettings.skin
