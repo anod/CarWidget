@@ -5,4 +5,6 @@
     <dimen name="title_padding_bottom">13.0dip</dimen>
     <dimen name="title_padding_bottom_win7">15.0dip</dimen>
     <dimen name="text_size">18.0dp</dimen>
+    <dimen name="widget_preview_text_size">14.0sp</dimen>
+
 </resources>

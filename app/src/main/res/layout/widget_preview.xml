@@ -56,7 +56,7 @@
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/you_title_background"
                     android:textColor="?android:attr/textColorPrimaryInverse"
-                    android:textSize="@dimen/text_size"
+                    android:textSize="@dimen/widget_preview_text_size"
                     android:text="@string/maps"
                     tools:ignore="SpUsage" />
             </FrameLayout>
@@ -90,7 +90,7 @@
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/you_title_background"
                     android:textColor="?android:attr/textColorPrimaryInverse"
-                    android:textSize="@dimen/text_size"
+                    android:textSize="@dimen/widget_preview_text_size"
                     android:text="@string/call"
                     tools:ignore="SpUsage" />
             </FrameLayout>
@@ -134,7 +134,7 @@
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/you_title_background"
                     android:textColor="?android:attr/textColorPrimaryInverse"
-                    android:textSize="@dimen/text_size"
+                    android:textSize="@dimen/widget_preview_text_size"
                     android:text="@string/music"
                     tools:ignore="SpUsage" />
             </FrameLayout>
@@ -168,7 +168,7 @@
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/you_title_background"
                     android:textColor="?android:attr/textColorPrimaryInverse"
-                    android:textSize="@dimen/text_size"
+                    android:textSize="@dimen/widget_preview_text_size"
                     android:text="@string/set_shortcut"
                     tools:ignore="SpUsage" />
             </FrameLayout>
@@ -212,7 +212,7 @@
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/you_title_background"
                     android:textColor="?android:attr/textColorPrimaryInverse"
-                    android:textSize="@dimen/text_size"
+                    android:textSize="@dimen/widget_preview_text_size"
                     android:text="@string/set_shortcut"
                     tools:ignore="SpUsage" />
             </FrameLayout>
@@ -246,16 +246,11 @@
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/you_title_background"
                     android:textColor="?android:attr/textColorPrimaryInverse"
-                    android:textSize="@dimen/text_size"
+                    android:textSize="@dimen/widget_preview_text_size"
                     android:text="@string/set_shortcut"
                     tools:ignore="SpUsage" />
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>
-
-    <include
-        layout="@layout/sk_you_buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>
