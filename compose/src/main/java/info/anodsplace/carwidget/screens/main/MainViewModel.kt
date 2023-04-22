@@ -34,10 +34,7 @@ data class MainViewState(
     val requiredPermissions: List<AppPermission> = emptyList(),
     val widgetSettings: WidgetInterface.NoOp = WidgetInterface.NoOp(),
     val skinList: SkinList = SkinList(values = WidgetInterface.skins, titles = WidgetInterface.skins, 0)
-) {
-    val currentSkin: SkinList.Item
-        get() = skinList.current
-}
+)
 
 sealed interface MainViewAction {
     object OnBackNav : MainViewAction

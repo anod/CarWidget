@@ -39,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/you_background"
-                    android:src="@drawable/you_add_24" />
+                    android:src="@drawable/preview_map" />
 
                 <TextView
                     android:id="@+id/btn_text0"
@@ -57,7 +57,7 @@
                     android:background="@drawable/you_title_background"
                     android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textSize="@dimen/text_size"
-                    android:text="@string/set_shortcut"
+                    android:text="@string/maps"
                     tools:ignore="SpUsage" />
             </FrameLayout>
 
@@ -73,7 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/you_background"
-                    android:src="@drawable/you_add_24" />
+                    android:src="@drawable/preview_call" />
 
                 <TextView
                     android:id="@+id/btn_text1"
@@ -91,7 +91,7 @@
                     android:background="@drawable/you_title_background"
                     android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textSize="@dimen/text_size"
-                    android:text="@string/set_shortcut"
+                    android:text="@string/call"
                     tools:ignore="SpUsage" />
             </FrameLayout>
         </LinearLayout>
@@ -117,7 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/you_background"
-                    android:src="@drawable/you_add_24" />
+                    android:src="@drawable/preview_music" />
 
                 <TextView
                     android:id="@+id/btn_text2"
@@ -135,7 +135,7 @@
                     android:background="@drawable/you_title_background"
                     android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textSize="@dimen/text_size"
-                    android:text="@string/set_shortcut"
+                    android:text="@string/music"
                     tools:ignore="SpUsage" />
             </FrameLayout>
 

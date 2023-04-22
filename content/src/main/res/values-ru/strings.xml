@@ -15,8 +15,7 @@
 	<string name="pref_detection">Активация</string>
 	<string name="pref_blutooth_device_title">Устройство Bluetooth</string>
 	<string name="pref_blutooth_device_summary">Выбрать устройство Bluetooth,которое включает режим «В автомобиле»</string>
-	<string name="bluetooth">Bluetooth</string>
-	<string name="turn_on_bluetooth_summary">Включить Bluetooth</string>
+    <string name="turn_on_bluetooth_summary">Включить Bluetooth</string>
 	<string name="bluetooth_device_category_title">Включить при подключении с:</string>
 	<string name="no_paired_devices_found_summary">Прежде чем устройство может быть выбрано, оно должно быть сопряженно и Bluetooth должен быть включен</string>
 	<string name="pref_headset_connected_title">Гарнитура подключена</string>
@@ -32,9 +31,7 @@
 	<string name="pref_media_volume_level">Уровень громкости</string>
 	<string name="pref_volume_level_summary">Установить желаемый уровень громкости</string>
 	<string name="pref_phone_volume_level">Уровень звонка</string>
-	<string name="notif_expired">Истек срок пробной версии</string>
-	<string name="notif_consider">Рассмотрите возможность установки Pro версии</string>
-	<string name="incar_mode_enabled">Режим «В автомобиле» включен</string>
+    <string name="incar_mode_enabled">Режим «В автомобиле» включен</string>
     <string name="version_title">%1$s %2$s</string>
 	<string name="version_summary">Пожалуйста, оцените этот виджет на маркете</string>
 	<string name="shortcut_edit_title">Изменить ярлык</string>
@@ -69,18 +66,10 @@
 	<string name="pref_titles_hide_title">Скрыть названия</string>
 	<string name="pref_titles_hide_summary">Не отображать названия ярлыков</string>
 	<string name="not_active">Не активен</string>
-	<string name="welcome">Здравствуйте</string>
-	<string name="welcome_text"><![CDATA[<b>Авто Виджет</b> упрощает и ускоряет доступ к функциям телефона в автомобиле]]></string>
-	<string name="install_a_widget">Установка</string>
+    <string name="install_a_widget">Установка</string>
 	<string name="install_widget"><![CDATA[Перейдите на <b>домашний экран</b> &gt; <b>длинное нажатие</b> &gt; выберите <b>виджеты</b>, затем выберите <b>Авто Виджет</b> и поместите его на свободном экране.]]></string>
-	<string name="configure_text"><![CDATA[В настройках виджета вы можете определить <b>ярлыки</b>, настроить внешний вид путем изменения <b>скина</b> или применения <b>эффектов</b>]]></string>
-	<string name="open_settings_description"><![CDATA[Нажмите кнопку <b>Настройки</b>, чтобы открыть экран конфигурации]]></string>
-	<string name="incar_mode">Режим\n\"В автомобиле\"</string>
-	<string name="detect_incar_description"><![CDATA[<b>Определяет</b>, когда вы внутри автомобиля]]></string>
-	<string name="adjust_incar_description"><![CDATA[<b>Регулирует</b> общие параметры]]></string>
-	<string name="enable_incar_description"><![CDATA[<b>Включите</b> режим \"В автомобиле\" в настройках]]></string>
-	<string name="swipe_continue">Продолжение →</string>
-	<string name="use_gms_for_activity">Использовать сенсоры для определения движения</string>
+    <string name="incar_mode">Режим\n\"В автомобиле\"</string>
+    <string name="use_gms_for_activity">Использовать сенсоры для определения движения</string>
 	<string name="gms_service_missing">Google Play services отсутствует на этом устройстве.</string>
 	<string name="gms_service_update_required">Установленная версия Google Play services устарела.</string>
 	<string name="gms_service_disabled">Установленная версия Google Play services была отключена на этом устройства.</string>
@@ -99,11 +88,8 @@
 	<string name="none">Нет</string>
     <string name="enabled">Включен</string>
 	<string name="disabled">Отключен</string>
-	<string name="configure">Настройка</string>
-	<string name="finish">Конец</string>
-	<string name="skip">Пропустить</string>
-	<string name="next">Следующий</string>
-	<string-array name="brightness_mode_titles">
+    <string name="skip">Пропустить</string>
+    <string-array name="brightness_mode_titles">
 		<item>Системный</item>
 		<item>Автоматически</item>
 		<item>День</item>

@@ -15,7 +15,6 @@
     <string name="pref_detection">Attivazione</string>
     <string name="pref_blutooth_device_title">Dispositivo Bluetooth</string>
     <string name="pref_blutooth_device_summary">Scegli un dispositivo bluetooth che abiliti la modalità \"alla guida\"</string>
-    <string name="bluetooth">Bluetooth</string>
     <string name="turn_on_bluetooth_summary">Attiva Bluetooth</string>
     <string name="bluetooth_device_category_title">Attiva modalità \"alla guida\" durante la connessione a:</string>
     <string name="no_paired_devices_found_summary">Prima che un dispositivo possa essere selezionato deve essere associato e il Bluetooth deve essere attivato</string>
@@ -32,8 +31,6 @@
     <string name="pref_media_volume_level">Volume dei media</string>
     <string name="pref_volume_level_summary">Imposta il livello del volume</string>
     <string name="pref_phone_volume_level">Volume chiamata</string>
-    <string name="notif_expired">Prova scaduta</string>
-    <string name="notif_consider">Decidi se installare la versione Pro</string>
     <string name="incar_mode_enabled">Modalità \"alla guida\" abilitata</string>
     <string name="version_title">%1$s ver. %2$s</string>
     <string name="version_summary">Vota questo widget nel Play Store</string>
@@ -69,17 +66,9 @@
     <string name="pref_titles_hide_title">Nascondi i titoli</string>
     <string name="pref_titles_hide_summary">Non visualizzare i titoli per le scorciatoie</string>
     <string name="not_active">Non attivo</string>
-    <string name="welcome">Benvenuti</string>
-    <string name="welcome_text">&lt;b&gt;Car Widget&lt;/b&gt; rende più facile e veloce l\'accesso alle funzioni del telefono quando si è in macchina.</string>
     <string name="install_a_widget">Installa un widget</string>
     <string name="install_widget">Vai alla &lt;b&gt;schermata iniziale&lt;/b&gt; e apri la &lt;b&gt;lista delle applicazioni&lt;/b&gt;. Scegliere la &lt;b&gt;scheda widget&lt;/b&gt;, quindi scegliere &lt;b&gt;Car Widget&lt;/b&gt; e inserirlo in una schermata disponibile.</string>
-    <string name="configure_text">All\'interno della finestra di dialogo delle impostazioni del widget puoi definire le &lt;b&gt;scorciatoie&lt;/b&gt;, configurare il suo aspetto cambiando lo &lt;b&gt;skin&lt;/b&gt; o applicando gli &lt;b&gt;effetti&lt;/b&gt;</string>
-    <string name="open_settings_description">Premi il pulsante &lt;b&gt;Impostazioni&lt;/b&gt; per aprire la schermata di configurazione</string>
     <string name="incar_mode">Modalità \"alla guida\"</string>
-    <string name="detect_incar_description">&lt;b&gt;Rileva&lt;/b&gt; quando ti trovi all\'interno della vettura</string>
-    <string name="adjust_incar_description">&lt;b&gt;Regola&lt;/b&gt; impostazioni comuni</string>
-    <string name="enable_incar_description">&lt;b&gt;Abilita&lt;/​​b&gt; la modalità \"alla guida\" nella finestra di dialogo delle impostazioni.</string>
-    <string name="swipe_continue">Scorri per continuare →</string>
     <string name="use_gms_for_activity">Utilizza i servizi di Google Play per rilevare l\'attività</string>
     <string name="gms_service_missing">I servizi di Google Play sono assenti su questo dispositivo.</string>
     <string name="gms_service_update_required">La versione installata dei servizi di Google Play non è aggiornata.</string>
@@ -99,10 +88,7 @@
     <string name="none">Nessuno</string>
     <string name="enabled">Attivato</string>
     <string name="disabled">Disattivato</string>
-    <string name="configure">Configura</string>
-    <string name="finish">Finito</string>
     <string name="skip">Ignora</string>
-    <string name="next">Avanti</string>
     <string-array name="brightness_mode_titles">
         <item>Sistema</item>
         <item>Automatico</item>

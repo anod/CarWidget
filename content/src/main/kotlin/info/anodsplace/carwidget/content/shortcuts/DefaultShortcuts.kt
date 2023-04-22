@@ -11,6 +11,7 @@ object DefaultShortcuts {
             ComponentName("com.google.android.dialer", "com.google.android.dialer.extensions.GoogleDialtactsActivity"),
             ComponentName("com.android.contacts", "com.android.contacts.DialtactsActivity"),
             ComponentName("com.android.htccontacts", "com.android.htccontacts.DialerTabActivity"), //HTC CallPhone
+            ComponentName("com.samsung.android.dialer", "com.samsung.android.dialer.DialtactsActivity"), //Samsung CallPhone
             //
             ComponentName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity"),
             //
@@ -19,8 +20,10 @@ object DefaultShortcuts {
             ComponentName("com.sec.android.app.music", "com.sec.android.app.music.MusicActionTabActivity"),
             ComponentName("com.spotify.music", "com.spotify.music.MainActivity"),
             ComponentName("tunein.player", "tunein.ui.actvities.TuneInHomeActivity"),
+            ComponentName("com.google.android.apps.youtube.music", "com.google.android.apps.youtube.music.activities.MusicActivity"),
 
-            ComponentName("com.google.android.googlequicksearchbox", "com.google.android.googlequicksearchbox.VoiceSearchActivity")
+            ComponentName("com.google.android.googlequicksearchbox", "com.google.android.googlequicksearchbox.VoiceSearchActivity"),
+            ComponentName("com.google.android.googlequicksearchbox", "com.google.android.googlequicksearchbox.ImplicitSearchLongPressEndpointInternal"),
         )
 
         var position = 0

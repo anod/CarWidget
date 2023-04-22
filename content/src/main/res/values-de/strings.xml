@@ -15,7 +15,6 @@
     <string name="pref_detection">Auslöser</string>
     <string name="pref_blutooth_device_title">Bluetooth-Gerät</string>
     <string name="pref_blutooth_device_summary">Wählen Sie das Bluetooth-Gerät, das den InCar-Modus aktiviert</string>
-    <string name="bluetooth">Bluetooth</string>
     <string name="turn_on_bluetooth_summary">Bluetooth einschalten</string>
     <string name="bluetooth_device_category_title">InCar-Modus aktivieren bei Anschluss von:</string>
     <string name="no_paired_devices_found_summary">Bevor ein Gerät ausgewählt werden kann, muss es verknüpft und Bluetooth aktiviert werden,</string>
@@ -32,8 +31,6 @@
     <string name="pref_media_volume_level">Medienlautstärke</string>
     <string name="pref_volume_level_summary">Gewünschte Lautstärke anpassen</string>
     <string name="pref_phone_volume_level">Ruflautstärke</string>
-    <string name="notif_expired">Testversion abgelaufen</string>
-    <string name="notif_consider">Sie sollten die Pro-Version installieren</string>
     <string name="incar_mode_enabled">InCar-Modus aktiviert.</string>
     <string name="version_title">%1$s ver. %2$s</string>
     <string name="version_summary">Bewerten Sie das Widget im Play Store</string>
@@ -69,17 +66,9 @@
     <string name="pref_titles_hide_title">Titel verbergen</string>
     <string name="pref_titles_hide_summary">Keine Titel für die Verknüpfungen anzeigen</string>
     <string name="not_active">Inaktiv</string>
-    <string name="welcome">Willkommen</string>
-    <string name="welcome_text">&lt;b&gt; Car Widget &lt;/ b&gt; ermöglicht einen einfacheren und schnelleren Zugang zu Telefon-Funktionen, während Sie im Auto sind.</string>
     <string name="install_a_widget">Ein Widget installieren</string>
     <string name="install_widget">Zum &lt;b&gt; Startbildschirm &lt;/ b&gt; gehen und &lt;b&gt; App Schublade &lt;/ b&gt; öffnen. &lt;b&gt; Widget-Registierkarte &lt;/ b&gt; wählen, dann &lt;b&gt; Car Widget &lt;/ b&gt; wählen und auf verfügbaren Bildschirm legen.</string>
-    <string name="configure_text">Im Einstellungsdialog des Widgets können Sie &lt;b&gt; Verknüpfungen definieren &lt;/ b&gt;, Aussehen durch Änderung der &lt;b&gt; Skin &lt;/ b&gt; verändern oder &lt;b&gt; Effekte &lt;/ b&gt; aktivieren</string>
-    <string name="open_settings_description">Drücken Sie die Taste &lt;b&gt; Einstellungen &lt;/ b&gt;, um Konfigurationsfenster zu öffnen</string>
     <string name="incar_mode">InCar-Modus</string>
-    <string name="detect_incar_description">&lt;b&gt; Erkennt &lt;/ b&gt;, wenn Sie sich im Auto befinden</string>
-    <string name="adjust_incar_description">allgemeine Einstellungen &lt;b&gt; vornehmen &lt;/ b&gt;</string>
-    <string name="enable_incar_description"> InCar-Modus im Einstellungsdialog &lt;b&gt; aktivieren &lt;/ b&gt;.</string>
-    <string name="swipe_continue">Streichen um weiterzumachen→</string>
     <string name="use_gms_for_activity">Verwenden Sie Google Play, um die Aktivität zu erkennen</string>
     <string name="gms_service_missing">Google Play-Dienste auf diesem Gerät nicht vorhanden.</string>
     <string name="gms_service_update_required">Die installierte Version von Google Play ist nicht mehr aktuell.</string>
@@ -99,10 +88,7 @@
     <string name="none">Keine</string>
     <string name="enabled">Aktiviert</string>
     <string name="disabled">Deaktiviert</string>
-    <string name="configure">Konfigurieren</string>
-    <string name="finish">Beenden</string>
     <string name="skip">Überspringen</string>
-    <string name="next">Nächste</string>
     <string-array name="brightness_mode_titles">
         <item>System</item>
         <item>Auto</item>

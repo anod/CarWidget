@@ -15,7 +15,6 @@
     <string name="pref_detection">Gâchette</string>
     <string name="pref_blutooth_device_title">Périphérique Bluetooth</string>
     <string name="pref_blutooth_device_summary">Choisir un périphérique Bluetooth qui permette le mode voiture</string>
-    <string name="bluetooth">Bluetooth</string>
     <string name="turn_on_bluetooth_summary">Activer le Bluetooth</string>
     <string name="bluetooth_device_category_title">Activer le mode Voiture lors de la connexion à :</string>
     <string name="no_paired_devices_found_summary">Avant de pouvoir sélectionner un périphérique, il doit être couplé et le Bluetooth doit être activé</string>
@@ -32,8 +31,6 @@
     <string name="pref_media_volume_level">Niveau de milieu</string>
     <string name="pref_volume_level_summary">Modifier le niveau du volume désiré</string>
     <string name="pref_phone_volume_level">Niveau d\'appel</string>
-    <string name="notif_expired">Période d\'essai expirée</string>
-    <string name="notif_consider">Pensez à installer la version Pro</string>
     <string name="incar_mode_enabled">Mode Voiture activé</string>
     <string name="version_title">%1$s vers. %2$s</string>
     <string name="version_summary">Évaluer ce widget dans le Play Store</string>
@@ -69,17 +66,9 @@
     <string name="pref_titles_hide_title">Masquer les titres</string>
     <string name="pref_titles_hide_summary">Ne pas afficher de titres pour les raccourcis</string>
     <string name="not_active">Inactif</string>
-    <string name="welcome">Bienvenue</string>
-    <string name="welcome_text">&lt;b&gt; Le widget Voiture &lt;/ b&gt; facilite et accélère l\'accès aux fonctions du téléphone lorsque vous êtes en voiture.</string>
     <string name="install_a_widget">Installer un widget</string>
     <string name="install_widget">Allez à &lt;b&gt;l\'écran d\'accueil&lt;/ b&gt; et ouvrez votre &lt;b&gt;tiroir d\'application&lt;/ b&gt;. Sélectionnez &lt;b&gt;l\'onglet du widget&lt;/ b&gt;, puis choisissez &lt;b&gt;widget Voiture&lt;/ b&gt; et affichez-le sur l\'écran disponible.</string>
-    <string name="configure_text">Dans la boîte de dialogue Paramètres du widget, vous pouvez définir des &lt;b&gt;raccourcis&lt;/ b&gt;, configurer leur apparence en changeant &lt;b&gt;l\'habillage&lt;/ b&gt; ou appliquer des &lt;b&gt;effets&lt;/ b&gt;</string>
-    <string name="open_settings_description">Appuyez sur la touche &lt;b&gt;Paramètres&lt;/ b&gt; pour ouvrir l\'écran de configuration</string>
     <string name="incar_mode">Mode  Voiture</string>
-    <string name="detect_incar_description">&lt;b&gt; Il détecte &lt;/ b&gt; lorsque vous êtes à l\'intérieur de la voiture</string>
-    <string name="adjust_incar_description">&lt;b&gt; Régler &lt;/ b&gt; les paramètres communs</string>
-    <string name="enable_incar_description">&lt;b&gt; Activer &lt;/ b&gt; le mode Voiture dans la boîte de dialogue des paramètres.</string>
-    <string name="swipe_continue">Faîtes glisser pour continuer →</string>
     <string name="use_gms_for_activity">Utiliser les services Google Play pour détecter l\'activité</string>
     <string name="gms_service_missing">Les services Google Play ne sont pas disponibles sur cet appareil.</string>
     <string name="gms_service_update_required">La version installée des services Google Play n\'est pas à jour.</string>
@@ -99,10 +88,7 @@
     <string name="none">Aucun</string>
     <string name="enabled">Activé</string>
     <string name="disabled">Désactivé</string>
-    <string name="configure">Enregister</string>
-    <string name="finish">Terminer</string>
     <string name="skip">Ignorer</string>
-    <string name="next">Suivant</string>
     <string-array name="brightness_mode_titles">
         <item>Système</item>
         <item>Automatique</item>

@@ -15,7 +15,6 @@
     <string name="pref_detection">Disparador</string>
     <string name="pref_blutooth_device_title">Dispositivo de Bluetooth</string>
     <string name="pref_blutooth_device_summary">Elegir el dispositivo de Bluetooth que permita el modo InCar</string>
-    <string name="bluetooth">Bluetooth</string>
     <string name="turn_on_bluetooth_summary">Activar el Bluetooth</string>
     <string name="bluetooth_device_category_title">Activar el modo InCar cuando se conecte a:</string>
     <string name="no_paired_devices_found_summary">Cuando se seleccione un dispositivo será necesario que esté vinculado y que el Bluetooth esté activado</string>
@@ -32,8 +31,6 @@
     <string name="pref_media_volume_level">Nivel de reproducción</string>
     <string name="pref_volume_level_summary">Cambio al nivel de volumen deseado</string>
     <string name="pref_phone_volume_level">Nivel de llamada</string>
-    <string name="notif_expired">El periodo de prueba ha terminado</string>
-    <string name="notif_consider">Considere instalar la versión Pro</string>
     <string name="incar_mode_enabled">Modo InCar habilitado</string>
     <string name="version_title">%1$s ver. %2$s</string>
     <string name="version_summary">Valorar este reproductor en el Play Store</string>
@@ -69,17 +66,9 @@
     <string name="pref_titles_hide_title">Ocultar títulos</string>
     <string name="pref_titles_hide_summary">No mostrar títulos para los accesos directos</string>
     <string name="not_active">No está activo</string>
-    <string name="welcome">Bienvenido</string>
-    <string name="welcome_text">&lt;B&gt; Car Widget &lt;/ b&gt; facilita el acceso fácil y rápido a las funciones del teléfono cuando esté en el coche.</string>
     <string name="install_a_widget">Instale un reproductor</string>
     <string name="install_widget">Vaya a la &lt;b&gt; pantalla de inicio &lt;/ b&gt; y abra su &lt;b&gt; cajón de aplicaciones &lt;/ b&gt;. Elija a continuación &lt;b&gt; ficha de reproductor &lt;/ b&gt; escoja &lt;b&gt; Car Widget &lt;/ b&gt; y sitúelo en la pantalla disponible.</string>
-    <string name="configure_text">En el diálogo de configuración del reproductor puede definir &lt;b&gt; accesos directos &lt;/ b&gt;, configurar su aspecto cambiando &lt;b&gt; textura &lt;/ b&gt; o aplicando &lt;b&gt; efectos &lt;/ b&gt;</string>
-    <string name="open_settings_description">Pulse el botón &lt;b&gt;Configuración&lt;/ b&gt; para abrir la pantalla de configuración</string>
     <string name="incar_mode">Modo InCar</string>
-    <string name="detect_incar_description">&lt;B&gt; Detecta &lt;/ ​​b&gt; cuando está dentro del coche</string>
-    <string name="adjust_incar_description">&lt;B&gt; Ajustar &lt;/ b&gt; configuración común</string>
-    <string name="enable_incar_description">&lt;B&gt; Activar &lt;/ b&gt; Modo InCar en el diálogo de configuración.</string>
-    <string name="swipe_continue">Pase para continuar →</string>
     <string name="use_gms_for_activity">Utilice los servicios de Google Play para detectar actividad</string>
     <string name="gms_service_missing">Faltan servicios de Google Play en este dispositivo.</string>
     <string name="gms_service_update_required">La versión instalada de los servicios de Google Play no está actualizada.</string>
@@ -99,10 +88,7 @@
     <string name="none">Ninguno</string>
     <string name="enabled">Activado</string>
     <string name="disabled">Desactivado</string>
-    <string name="configure">Configurar</string>
-    <string name="finish">Finalizar</string>
     <string name="skip">Omitir</string>
-    <string name="next">Siguiente</string>
     <string-array name="brightness_mode_titles">
         <item>Sistema</item>
         <item>Automático</item>

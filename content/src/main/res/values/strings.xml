@@ -38,7 +38,6 @@
     <string name="pref_detection">Trigger</string>
     <string name="pref_blutooth_device_title">Bluetooth device</string>
     <string name="pref_blutooth_device_summary">Choose bluetooth device which enable InCar mode</string>
-    <string name="bluetooth">Bluetooth</string>
     <string name="turn_on_bluetooth_summary">Turn on Bluetooth</string>
     <string name="bluetooth_device_category_title">Enable InCar mode when connecting to:</string>
     <string name="no_paired_devices_found_summary">Before a device can be selected, it needs to be paired and Bluetooth has to be enabled</string>
@@ -55,8 +54,6 @@
     <string name="pref_media_volume_level">Media level</string>
     <string name="pref_volume_level_summary">Change desired level of volume</string>
     <string name="pref_phone_volume_level">Call level</string>
-    <string name="notif_expired">Trial expired</string>
-    <string name="notif_consider">Consider to install Pro version</string>
     <string name="incar_mode_enabled">InCar mode enabled</string>
     <string name="disable">Disable</string>
     <string name="version_title">%1$s ver. %2$s</string>
@@ -97,17 +94,9 @@
     <string name="pref_titles_hide_summary">Do not display titles for the shortcuts</string>
     <string name="not_active">Not active</string>
     <string name="active" tools:ignore="MissingTranslation">Active</string>
-    <string name="welcome">Welcome</string>
-    <string name="welcome_text"><![CDATA[<b>Car Widget</b> makes easier and quicker access to phone features when you\'re in the car.]]></string>
-    <string name="install_a_widget">Install a widget</string>
-    <string name="install_widget"><![CDATA[Go to <b>home screen</b> &gt; <b>touch & hold</b> to show menu &gt; choose <b>widgets</b> &gt; find <b>Car Widget</b> and put it on available screen.]]></string>
-    <string name="configure_text"><![CDATA[Inside settings of the widget you can define <b>shortcuts</b>, configure its look by changing <b>skin</b> and applying <b>effects</b>]]></string>
-    <string name="open_settings_description"><![CDATA[Press <b>Settings</b> button in order to open configuration screen]]></string>
+    <string name="install_a_widget">Add a widget to homescreen</string>
+    <string name="install_widget"><![CDATA[Go to <b>home screen</b> &gt; <img src=\"Icons.Default.TouchApp\"></img><b>touch & hold</b> to show menu &gt; choose <img src=\"Icons.Default.Widgets\"></img><b>widgets</b> &gt; find <b>Car Widget</b> and put it on the screen.]]></string>
     <string name="incar_mode">InCar mode</string>
-    <string name="detect_incar_description"><![CDATA[<b>Detects</b> when you\'re inside the car]]></string>
-    <string name="adjust_incar_description"><![CDATA[<b>Adjust</b> common settings]]></string>
-    <string name="enable_incar_description"><![CDATA[<b>Enable</b> InCar mode in the settings dialog.]]></string>
-    <string name="swipe_continue">Swipe to continue →</string>
     <string name="use_gms_for_activity">Use Google Play services to detect activity</string>
     <string name="gms_service_missing">Google Play services is missing on this device.</string>
     <string name="gms_service_update_required">The installed version of Google Play services is out of date.</string>
@@ -130,10 +119,7 @@
     <string name="more">More…</string>
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
-    <string name="configure">Configure</string>
-    <string name="finish">Finish</string>
     <string name="skip">Skip</string>
-    <string name="next">Next</string>
     <string-array name="brightness_mode_titles">
         <item>System</item>
         <item>Auto</item>
@@ -233,6 +219,9 @@
     <string name="download">Download</string>
     <string name="incar_service_is_not_running">InCar detector service is not running.</string>
     <string name="disable_battery_optimization_warning">Disable battery optimization</string>
+    <string name="music">Music</string>
+    <string name="call">Call</string>
+    <string name="maps">Maps</string>
 
     <array name="adaptive_icon_style_names">
         <item>Default</item>

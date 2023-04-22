@@ -15,7 +15,6 @@
     <string name="pref_detection">זיהוי</string>
     <string name="pref_blutooth_device_title">מכשיר Bluetooth</string>
     <string name="pref_blutooth_device_summary"> בחרו מכשיר Bluetooth המאפשר מצב ברכב</string>
-    <string name="bluetooth">Bluetooth</string>
     <string name="turn_on_bluetooth_summary">הפעל את Bluetooth</string>
     <string name="bluetooth_device_category_title">אפשר מצב \"ברכב\" על קישור עם:</string>
     <string name="no_paired_devices_found_summary">לפני שיהיה ניתן לבחור המכשיר, הוא צריך להיות מחובר ו-Bluetooth צריך להיות מופעל</string>
@@ -31,7 +30,6 @@
     <string name="pref_change_media_volume_summary">כוון עוצמת מדיה לרמה מסוימת</string>
     <string name="pref_media_volume_level">עוצמת המוזיקה</string>
     <string name="pref_phone_volume_level">עוצמת צלצול</string>
-    <string name="notif_expired">תקופת נסיון הסתיימה</string>
     <string name="incar_mode_enabled">מצב ברכב מופעל</string>
     <string name="version_title">%1$s גרסה %2$s</string>
     <string name="version_summary">נא דרג את הוודג\'ט במרקט</string>
@@ -66,22 +64,13 @@
 
     <string name="pref_volume_level_summary">לשנות את הרמה הרצויה של עוצמת הקול</string>
 
-    <string name="notif_consider">תשקלו להתקין גרסת פרו</string>
     <string name="pref_rotate_icon_title">לסובב איקונים</string>
     <string name="pref_titles_hide_title">להסתיר כותרות</string>
     <string name="pref_titles_hide_summary">לא להציג כותרות לקיצורי דרך</string>
     <string name="not_active">לא פעיל</string>
-    <string name="welcome">ברוך הבא</string>
-    <string name="welcome_text"><![CDATA[<b>ווידג\'ט לרכב</b> מהקל ומיעיל גישה לתכונות של טלפונ במכונית]]></string>
     <string name="install_a_widget">התקנה של הווידג\'ט</string>
     <string name="install_widget"><![CDATA[תעברו <b>למסך הבית</b> &gt; <b>לחיצה ערוכה</b> &gt; תבחרו <b>ווידג\'טים</b> לאחר מכן תבחרו את <b>וודג\'ט לרכב</b> מרשימה תגררו  אותו על המסך הבית.]]></string>
-    <string name="configure_text"><![CDATA[בתוך הגדרות של ווידג\'ט ניתן להגדיר <b>קיצורי דרך</b> ומראה שלו על ידי שינוי <b>סקין</b> והחלת <b>אפקטים</b>]]></string>
-    <string name="open_settings_description"><![CDATA[לחצו על כפתור <b>הגדרות</b> על מנת לפתוח את מסך קונפיגורציה]]></string>
     <string name="incar_mode">מצב \"ברכב\"</string>
-    <string name="detect_incar_description"><![CDATA[<b>מזהה</b> כאשר אתם בתוך הרכב]]></string>
-    <string name="adjust_incar_description"><![CDATA[<b>מתאם</b> את הגדרות נפוצות]]></string>
-    <string name="enable_incar_description"><![CDATA[הפעל מצב ברכב בהגדרות.]]></string>
-    <string name="swipe_continue">עבור למסך הבאה ←</string>
     <string name="use_gms_for_activity">להשתמש ב-Google Play services לזיהוי פעילות</string>
     <string name="gms_service_missing">Google Play services חסרים במכשיר זה.</string>
     <string name="gms_service_update_required">הגרסה המותקנת של Google Play services אינה מעודכנת.</string>
@@ -101,10 +90,7 @@
     <string name="none">אין</string>
     <string name="enabled">מופעל</string>
     <string name="disabled">מופסק</string>
-    <string name="configure">הגדרות</string>
-    <string name="finish">סיום</string>
     <string name="skip">דלג</string>
-    <string name="next">הבא</string>
     <string-array name="brightness_mode_titles">
         <item>ללא שינוי</item>
         <item>אוטומטי</item>

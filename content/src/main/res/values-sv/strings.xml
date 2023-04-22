@@ -15,7 +15,6 @@
     <string name="pref_detection">Avtryckare</string>
     <string name="pref_blutooth_device_title">Bluetooth-enhet</string>
     <string name="pref_blutooth_device_summary">Välj Bluetooth-enhet som möjliggör InCar läge</string>
-    <string name="bluetooth">Bluetooth</string>
     <string name="turn_on_bluetooth_summary">Slå på Bluetooth</string>
     <string name="bluetooth_device_category_title">Aktivera InCar läge vid anslutning till:</string>
     <string name="no_paired_devices_found_summary">Innan en enhet kan väljas måste den kopplas ihop och Bluetooth måste aktiveras</string>
@@ -32,8 +31,6 @@
     <string name="pref_media_volume_level">Media nivå</string>
     <string name="pref_volume_level_summary">Ändra önskad volymnivå</string>
     <string name="pref_phone_volume_level">Telefon samtalsnivå</string>
-    <string name="notif_expired">Testperioden har gått ut</string>
-    <string name="notif_consider">Överväg att installera Pro version</string>
     <string name="incar_mode_enabled">InCar läge aktiverad</string>
     <string name="version_title">%1$s ver. %2$s</string>
     <string name="version_summary">Betygsätt denna widget i Play Store</string>
@@ -69,17 +66,9 @@
     <string name="pref_titles_hide_title">Göm titlar</string>
     <string name="pref_titles_hide_summary">Visa inte titlar för genvägar</string>
     <string name="not_active">Ej aktiv</string>
-    <string name="welcome">Välkommen</string>
-    <string name="welcome_text">&lt;b&gt; Bil Widget &lt;/ b&gt; gör tillgången lättare och snabbare till telefonens funktioner när du är i bilen.</string>
     <string name="install_a_widget">Installera en widget</string>
     <string name="install_widget">Gå till &lt;b&gt; startskärmen &lt;/ b&gt; och öppna din &lt;b&gt; app låda &lt;/ b&gt;. Välj &lt;b&gt; widget fliken &lt;/ b&gt; och välj sedan &lt;b&gt; Bil Widget &lt;/ b&gt; och lägg det på tillgängliga skärmen.</string>
-    <string name="configure_text">Inne i dialogrutan med inställningar för widgeten kan du definiera &lt;b&gt; genvägar &lt;/ b&gt;, konfigurera dess utseende genom att ändra &lt;b&gt; skin &lt;/ b&gt; eller tillämpa &lt;b&gt; effekter &lt;/ b&gt;</string>
-    <string name="open_settings_description">Tryck &lt;b&gt; Inställningar &lt;/ b&gt;-knappen för att öppna konfigurationsskärmen</string>
     <string name="incar_mode">InCar läge</string>
-    <string name="detect_incar_description">&lt;b&gt; Upptäcker &lt;/ b&gt; när du är inne i bilen</string>
-    <string name="adjust_incar_description">&lt;b&gt; Justera &lt;/ b&gt; vanliga inställningar</string>
-    <string name="enable_incar_description">&lt;b&gt; Aktivera &lt;/ b&gt; InCar läget i inställningsdialogrutan.</string>
-    <string name="swipe_continue">Svep för att fortsätta →</string>
     <string name="use_gms_for_activity">Använd Google Play tjänster för att upptäcka aktivitet</string>
     <string name="gms_service_missing">Google Play tjänster saknas på den här enheten.</string>
     <string name="gms_service_update_required">Den installerade versionen av Google Play tjänster är inaktuell.</string>
@@ -99,10 +88,7 @@
     <string name="none">Ingen</string>
     <string name="enabled">Aktiverad</string>
     <string name="disabled">Har inaktiverats</string>
-    <string name="configure">Konfigurera</string>
-    <string name="finish">Slutför</string>
     <string name="skip">Hoppa över</string>
-    <string name="next">Nästa</string>
     <string-array name="brightness_mode_titles">
         <item>System</item>
         <item>Auto</item>

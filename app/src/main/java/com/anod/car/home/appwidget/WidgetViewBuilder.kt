@@ -36,9 +36,9 @@ class WidgetViewBuilder(
     private val bitmapTransform = BitmapTransform(context)
 
     override suspend fun create(): RemoteViews = withContext(Dispatchers.Default) {
-        if (widgetSettings.isFirstTime) {
-            shortcutsModel.createDefaultShortcuts()
+        if (widgetSettings.isFirstTime) { // TODO: race condition between multiple views in preview
             widgetSettings.isFirstTime = false
+            shortcutsModel.createDefaultShortcuts()
             widgetSettings.applyPending()
         }
 
