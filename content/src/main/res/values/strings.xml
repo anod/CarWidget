@@ -223,6 +223,7 @@
     <string name="music">Music</string>
     <string name="call">Call</string>
     <string name="maps">Maps</string>
+    <string name="delete">Delete</string>
 
     <array name="adaptive_icon_style_names">
         <item>Default</item>

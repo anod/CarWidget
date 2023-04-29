@@ -8,6 +8,8 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.RadioButtonChecked
@@ -51,7 +53,7 @@ fun MoreMenuIcon() {
 }
 
 @Composable
-fun ExpandMenuIcon() {
+fun ExpandRightIcon() {
     Icon(imageVector = Icons.Default.ArrowRight, contentDescription = null)
 }
 
@@ -136,6 +138,24 @@ fun WidgetsIcon(modifier: Modifier = Modifier, tint: Color = LocalContentColor.c
         contentDescription = null)
 }
 
+@Composable
+fun DeleteIcon(modifier: Modifier = Modifier, tint: Color = LocalContentColor.current) {
+    Icon(
+        imageVector = Icons.Filled.Delete,
+        modifier = modifier,
+        tint = tint,
+        contentDescription = stringResource(id = info.anodsplace.carwidget.content.R.string.delete))
+}
+
+@Composable
+fun EditIcon(modifier: Modifier = Modifier, tint: Color = LocalContentColor.current, contentDescription: String? = null) {
+    Icon(
+        imageVector = Icons.Filled.Edit,
+        modifier = modifier,
+        tint = tint,
+        contentDescription = contentDescription)
+}
+
 @Preview(widthDp = 200)
 @Composable
 fun IconsResourcesPreview() {
@@ -145,7 +165,7 @@ fun IconsResourcesPreview() {
                 { RadioIcon(isChecked = true) },
                 { RadioIcon(isChecked = false) },
                 { MoreMenuIcon() },
-                { ExpandMenuIcon() },
+                { ExpandRightIcon() },
                 { BackArrowIcon() },
                 { StoreVersionSignIcon() },
                 { RefreshIcon() },
@@ -160,6 +180,7 @@ fun IconsResourcesPreview() {
                 { ExpandIcon() },
                 { CollapseIcon() },
                 { ExpandMoreIcon() },
+                { DeleteIcon() }
             )
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = 20.dp),

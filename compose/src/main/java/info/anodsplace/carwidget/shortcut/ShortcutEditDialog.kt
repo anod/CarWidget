@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.shortcut
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -13,9 +14,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
+import info.anodsplace.carwidget.BackArrowIcon
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.CollapseIcon
-import info.anodsplace.carwidget.ExpandIcon
+import info.anodsplace.carwidget.DeleteIcon
+import info.anodsplace.carwidget.EditIcon
+import info.anodsplace.carwidget.ExpandRightIcon
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.iconUri
@@ -47,18 +50,70 @@ fun ShortcutEditScreen(state: ShortcutEditViewState, onEvent: (ShortcutEditViewE
 @Composable
 fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (ShortcutEditViewEvent) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader, widgetSettings: WidgetInterface = WidgetInterface.NoOp()) {
     Column {
-        TopAppBar(title = { Text(text = stringResource(id = R.string.shortcut_edit_title)) })
+        TopAppBar(
+            title = { Text(text = stringResource(id = R.string.shortcut_edit_title)) },
+            navigationIcon = {
+                IconButton(onClick = {
+                    if (expanded) {
+                        onEvent(ShortcutEditViewEvent.ToggleAdvanced(expanded = false))
+                    } else {
+                        onDismissRequest()
+                    }
+                }) {
+                    BackArrowIcon()
+                }
+            }
+        )
         if (!expanded) {
-            ShortcutInfo(
-                shortcut,
-                onEvent,
-                onDismissRequest,
+            AsyncImage(
+                model = shortcut.iconUri(LocalContext.current, widgetSettings.adaptiveIconStyle),
+                contentDescription = shortcut.title.toString(),
                 imageLoader = imageLoader,
-                widgetSettings = widgetSettings
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(96.dp)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
             )
-            AdvancedButton(expanded, onEvent)
+            SectionCard() {
+                TextField(
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .fillMaxWidth(),
+                    label = { Text(stringResource(id = R.string.title)) },
+                    value = shortcut.title.toString(),
+                    onValueChange = {},
+                    singleLine = true
+                )
+            }
+            SectionCard() {
+                TextButton(onClick = {
+                    onEvent(ShortcutEditViewEvent.Drop)
+                    onDismissRequest()
+                }) {
+                    DeleteIcon()
+                    Text(text = stringResource(R.string.delete))
+                }
+            }
+            SectionCard() {
+                TextButton(onClick ={ onEvent(ShortcutEditViewEvent.ToggleAdvanced(expanded = true)) }) {
+                    EditIcon(contentDescription = stringResource(id = R.string.advanced))
+                    Text(text = stringResource(id = R.string.advanced))
+                    Spacer(modifier = Modifier.weight(1.0f))
+                    ExpandRightIcon()
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                Spacer(modifier = Modifier.weight(1.0f))
+                Button(onClick = {
+                    onDismissRequest()
+                }, modifier = Modifier.align(Alignment.CenterVertically)) {
+                    Text(text = "OK")
+                }
+            }
         } else {
-            AdvancedButton(expanded, onEvent)
             IntentEditScreen(
                 intent = shortcut.intent,
                 updateField = { onEvent(ShortcutEditViewEvent.UpdateField(it.field)) },
@@ -69,67 +124,15 @@ fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (Shortcu
 }
 
 @Composable
-fun AdvancedButton(expanded: Boolean, onEvent: (ShortcutEditViewEvent) -> Unit) {
-    OutlinedButton(
+private fun SectionCard(content: @Composable ColumnScope.() -> Unit) {
+    Card(
         modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp)
             .defaultMinSize(minHeight = 48.dp),
-        onClick = { onEvent(ShortcutEditViewEvent.ToggleAdvanced(expanded = !expanded)) }
-    ) {
-        Text(text = stringResource(id = R.string.advanced))
-        if (expanded) {
-            ExpandIcon()
-        } else {
-            CollapseIcon()
-        }
-    }
+        content = content
+    )
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ShortcutInfo(shortcut: Shortcut, onEvent: (ShortcutEditViewEvent) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader, widgetSettings: WidgetInterface = WidgetInterface.NoOp()) {
-    Column (
-        modifier = Modifier
-            .fillMaxWidth()
-            .defaultMinSize(minHeight = 144.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        AsyncImage(
-            model = shortcut.iconUri(LocalContext.current, widgetSettings.adaptiveIconStyle),
-            contentDescription = shortcut.title.toString(),
-            imageLoader = imageLoader,
-            modifier = Modifier
-                .size(96.dp)
-                .padding(4.dp)
-        )
-        TextField(
-            modifier = Modifier.padding(vertical = 8.dp),
-            label = { Text(stringResource(id = R.string.title)) },
-            value = shortcut.title.toString(),
-            onValueChange = {},
-            singleLine = true
-        )
-    }
-    Row(
-        modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-    ) {
-        Button(onClick = {
-            onEvent(ShortcutEditViewEvent.Drop)
-            onDismissRequest()
-        }, modifier = Modifier.align(Alignment.CenterVertically)) {
-            Text(text = "Delete")
-        }
-        Spacer(modifier = Modifier.weight(1.0f))
-        Button(onClick = {
-            onDismissRequest()
-        }, modifier = Modifier.align(Alignment.CenterVertically)) {
-            Text(text = "OK")
-        }
-    }
-}
-
 
 @SuppressLint("UnrememberedMutableState")
 @Preview("Preview Shortcut Edit")
