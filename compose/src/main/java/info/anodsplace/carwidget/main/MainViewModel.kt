@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.main
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -28,6 +29,7 @@ import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 
+@Immutable
 data class MainViewState(
     val isWidget: Boolean = false,
     val appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,

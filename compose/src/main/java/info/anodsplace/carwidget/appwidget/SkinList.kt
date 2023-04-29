@@ -1,12 +1,14 @@
 package info.anodsplace.carwidget.appwidget
 
 import android.content.Context
+import androidx.compose.runtime.Immutable
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 
+@Immutable
 data class SkinList(
-        val values: List<String>,
-        val titles: List<String>,
-        val selectedSkinPosition: Int
+    val values: List<String>,
+    val titles: List<String>,
+    val selectedSkinPosition: Int
 ) {
     data class Item(val title: String, val value: String)
 

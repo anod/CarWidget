@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.main
 import android.content.Context
 import android.os.PowerManager
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.WidgetIds
@@ -24,6 +25,7 @@ import org.koin.core.component.get
 import org.koin.core.component.inject
 
 interface WidgetItem {
+    @Immutable
     data class Large(
         val appWidgetId: Int,
         val shortcuts: Map<Int, info.anodsplace.carwidget.content.db.Shortcut?>,
@@ -31,6 +33,7 @@ interface WidgetItem {
         val skinName: String
     ) : WidgetItem
 
+    @Immutable
     data class Shortcut(
         val appWidgetId: Int
     ) : WidgetItem
@@ -39,9 +42,11 @@ interface WidgetItem {
 sealed interface WidgetListLoadState {
     object Loading: WidgetListLoadState
     object Ready: WidgetListLoadState
+    @Immutable
     data class Error(val message: String, val cause: Exception? = null): WidgetListLoadState
 }
 
+@Immutable
 data class WidgetListScreenState(
     val loadState: WidgetListLoadState = WidgetListLoadState.Loading,
     val items: List<WidgetItem> = emptyList(),

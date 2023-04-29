@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.incar
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import info.anodsplace.carwidget.chooser.ChooserEntry
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
+@Immutable
 data class InCarViewState(
     val items: List<PreferenceItem> = emptyList(),
     val notificationShortcuts: Map<Int, Shortcut?>? = null,

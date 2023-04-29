@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.appwidget
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.view.View
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -29,6 +30,7 @@ import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
 
+@Immutable
 data class SkinPreviewViewState(
     val skinList: SkinList = SkinList(WidgetInterface.skins, WidgetInterface.skins, 0),
     val widgetSettings: WidgetInterface.NoOp = WidgetInterface.NoOp(),

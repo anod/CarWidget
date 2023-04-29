@@ -1,6 +1,7 @@
 package info.anodsplace.carwidget.shortcut
 
 import android.content.Intent
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -19,6 +20,7 @@ import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.scope.Scope
 
+@Immutable
 data class ShortcutEditViewState(
     val shortcut: Shortcut? = null,
     val position: Int = -1,

@@ -64,12 +64,12 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
                 MainScreen(
                     screenState = screenState,
                     windowSizeClass = windowSizeClass,
-                    onEvent = { mainViewModel.handleEvent(it) },
-                    onViewAction = { onViewAction(it) },
+                    onEvent = mainViewModel::handleEvent,
+                    onViewAction = ::onViewAction,
                     viewActions = mainViewModel.viewActions,
                     appWidgetIdScope = mainViewModel.appWidgetIdScope,
                     imageLoader = mainViewModel.imageLoader,
-                    onActivityAction = { onCommonActivityAction(it) }
+                    onActivityAction = ::onCommonActivityAction
                 )
             }
         }

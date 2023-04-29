@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.appwidget
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -28,6 +29,7 @@ import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
 
+@Immutable
 data class WidgetCustomizeState(
     val items: List<PreferenceItem> = listOf(),
     val widgetSettings: WidgetInterface.NoOp = WidgetInterface.NoOp(),

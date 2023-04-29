@@ -1,6 +1,7 @@
 package info.anodsplace.carwidget.shortcut
 
 import android.content.Intent
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
@@ -18,6 +19,7 @@ import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.inject
 import org.koin.core.scope.Scope
 
+@Immutable
 data class ShortcutPickerViewState(
     val position: Int = -1
 )

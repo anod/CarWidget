@@ -20,7 +20,7 @@ fun EditShortcut(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWi
         val state by viewModel.viewStates.collectAsState(initial = viewModel.viewState)
         ShortcutEditScreen(
             state = state,
-            onEvent = { viewModel.handleEvent(it) } ,
+            onEvent = viewModel::handleEvent,
             onDismissRequest = onDismissRequest,
             widgetSettings = viewModel.widgetSettings,
             imageLoader = viewModel.imageLoader
@@ -34,7 +34,7 @@ fun EditShortcut(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWi
         )
         ShortcutPickerScreen(
             viewModel.viewActions,
-            onEvent = { viewModel.handleEvent(it) },
+            onEvent = viewModel::handleEvent,
             onDismissRequest = onDismissRequest,
             shortcutResources = viewModel.shortcutResources,
             imageLoader = viewModel.imageLoader

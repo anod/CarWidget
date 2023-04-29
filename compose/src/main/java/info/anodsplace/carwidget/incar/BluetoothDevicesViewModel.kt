@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.IntentFilter
 import android.os.Build
 import androidx.collection.ArrayMap
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -33,9 +34,11 @@ sealed class BluetoothDevicesListState {
     object Initial: BluetoothDevicesListState()
     object SwitchedOff: BluetoothDevicesListState()
     object RequiresPermissions: BluetoothDevicesListState()
+    @Immutable
     class Devices(val list: List<BluetoothDevice>): BluetoothDevicesListState()
 }
 
+@Immutable
 data class BluetoothDevicesViewState(
     val btAdapterState: Int,
     val listState: BluetoothDevicesListState,

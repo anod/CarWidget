@@ -1,6 +1,7 @@
 package info.anodsplace.carwidget.permissions
 
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
@@ -22,6 +23,7 @@ fun PermissionDescriptionItem.toPermissionDescription(): PermissionDescription =
     descRes = this.descRes
 )
 
+@Immutable
 data class PermissionsViewState(
     val screenDescription: RequestPermissionsScreenDescription,
     val missingPermissions: List<PermissionDescription>

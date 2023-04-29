@@ -251,7 +251,7 @@ fun NavHost(
             val aboutScreenState by aboutViewModel.viewStates.collectAsState(initial = aboutViewModel.viewState)
             AboutScreen(
                 screenState = aboutScreenState,
-                onEvent = { aboutViewModel.handleEvent(it) },
+                onEvent = aboutViewModel::handleEvent,
                 actions = aboutViewModel.viewActions,
                 onActivityAction = onActivityAction,
                 innerPadding = innerPadding,
@@ -286,7 +286,7 @@ fun NavHost(
                 val screenState by customizeViewModel.viewStates.collectAsState(initial = customizeViewModel.viewState)
                 WidgetCustomizeScreen(
                     screenState = screenState,
-                    onEvent = { customizeViewModel.handleEvent(it) },
+                    onEvent = customizeViewModel::handleEvent,
                     innerPadding = innerPadding,
                     isCompact = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact,
                     skinViewFactory = customizeViewModel,
@@ -305,7 +305,7 @@ fun NavHost(
                 val screenState by inCarViewModel.viewStates.collectAsState(initial = inCarViewModel.viewState)
                 InCarMainScreen(
                     screenState = screenState,
-                    onEvent = { inCarViewModel.handleEvent(it) },
+                    onEvent = inCarViewModel::handleEvent,
                     innerPadding = innerPadding,
                     appsLoader = inCarViewModel.appsLoader,
                     imageLoader = imageLoader
@@ -327,7 +327,7 @@ fun NavHost(
                 val screenState by bluetoothDevicesViewModel.viewStates.collectAsState(initial = bluetoothDevicesViewModel.viewState)
                 BluetoothDevicesScreen(
                     screenState = screenState,
-                    onEvent = { bluetoothDevicesViewModel.handleEvent(it) },
+                    onEvent = bluetoothDevicesViewModel::handleEvent,
                     innerPadding = innerPadding
                 )
             }

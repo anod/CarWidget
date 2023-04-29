@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.appwidget
 
 import android.app.Application
 import android.content.Context
+import androidx.compose.runtime.Immutable
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +18,7 @@ import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
 
+@Immutable
 data class EditWidgetViewState(
     val buttonId: Any?,
     val items: List<ChooserEntry>
