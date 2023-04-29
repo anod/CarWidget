@@ -32,7 +32,7 @@ import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
 import info.anodsplace.carwidget.permissions.PermissionChecker
-import info.anodsplace.carwidget.preferences.DefaultsResourceProvider
+import info.anodsplace.carwidget.utils.DefaultsResourceProvider
 import info.anodsplace.carwidget.skin.SkinPropertiesFactory
 import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.app.ApplicationInstance

@@ -18,11 +18,11 @@ import androidx.core.view.WindowCompat
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import info.anodsplace.carwidget.extensions.extras
-import info.anodsplace.carwidget.screens.main.MainScreen
-import info.anodsplace.carwidget.screens.main.MainViewAction
-import info.anodsplace.carwidget.screens.main.MainViewModel
+import info.anodsplace.carwidget.main.MainScreen
+import info.anodsplace.carwidget.main.MainViewAction
+import info.anodsplace.carwidget.main.MainViewModel
 import info.anodsplace.framework.content.onCommonActivityAction
+import info.anodsplace.ktx.extras
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject

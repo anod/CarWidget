@@ -9,7 +9,6 @@ import info.anodsplace.applog.AppLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-
 suspend fun RemoteViews.render(context: Context): View = withContext(Dispatchers.Default) {
     try {
         return@withContext apply(context, null)

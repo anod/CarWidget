@@ -28,12 +28,10 @@ import info.anodsplace.carwidget.chooser.MediaListLoader
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
-import info.anodsplace.carwidget.extensions.extras
-import info.anodsplace.carwidget.screens.NavItem
-import info.anodsplace.carwidget.screens.WidgetAwareViewModel
-import info.anodsplace.carwidget.screens.shortcuts.EditShortcut
-import info.anodsplace.carwidget.screens.widget.EditWidgetButton
+import info.anodsplace.carwidget.shortcut.EditShortcut
+import info.anodsplace.carwidget.appwidget.EditWidgetButton
 import info.anodsplace.framework.media.MediaKeyEvent
+import info.anodsplace.ktx.extras
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
