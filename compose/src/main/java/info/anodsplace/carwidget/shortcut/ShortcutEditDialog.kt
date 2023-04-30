@@ -2,12 +2,16 @@ package info.anodsplace.carwidget.shortcut
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,7 +23,9 @@ import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.DeleteIcon
 import info.anodsplace.carwidget.EditIcon
 import info.anodsplace.carwidget.ExpandRightIcon
+import info.anodsplace.carwidget.ImageIcon
 import info.anodsplace.carwidget.content.R
+import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.iconUri
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
@@ -30,7 +36,7 @@ fun ShortcutEditScreen(state: ShortcutEditViewState, onEvent: (ShortcutEditViewE
     Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .defaultMinSize(minHeight = 352.dp),
+                .defaultMinSize(minHeight = 436.dp),
             shape = MaterialTheme.shapes.medium,
     ) {
         if (state.shortcut != null) {
@@ -65,37 +71,80 @@ fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (Shortcu
             }
         )
         if (!expanded) {
-            AsyncImage(
-                model = shortcut.iconUri(LocalContext.current, widgetSettings.adaptiveIconStyle),
-                contentDescription = shortcut.title.toString(),
-                imageLoader = imageLoader,
+            Row(
                 modifier = Modifier
-                    .padding(16.dp)
-                    .size(96.dp)
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-            )
-            SectionCard() {
-                TextField(
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .fillMaxWidth()
+                    .height(96.dp),
+            ) {
+                AsyncImage(
+                    model = shortcut.iconUri(LocalContext.current, widgetSettings.adaptiveIconStyle),
+                    contentDescription = shortcut.title.toString(),
+                    imageLoader = imageLoader,
                     modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .fillMaxWidth(),
-                    label = { Text(stringResource(id = R.string.title)) },
-                    value = shortcut.title.toString(),
-                    onValueChange = {},
-                    singleLine = true
+                        .size(96.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.shapes.medium)
                 )
+                Spacer(modifier = Modifier.width(16.dp))
+                Card(
+                    modifier = Modifier
+                        .height(96.dp)
+                        .weight(1.0f),
+                    border = CardBorder(),
+                ) {
+                    SectionHeader {
+                        EditIcon(contentDescription = stringResource(R.string.edit_title), modifier = Modifier.size(16.dp))
+                        Text(text = stringResource(R.string.edit_title), modifier = Modifier.padding(start = 8.dp))
+                    }
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                            .fillMaxWidth(),
+                        value = shortcut.title.toString(),
+                        shape = MaterialTheme.shapes.medium,
+                        onValueChange = {},
+                        singleLine = true,
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = cardBorderColor,
+                            unfocusedBorderColor = cardBorderColor
+                        )
+                    )
+                }
             }
-            SectionCard() {
-                TextButton(onClick = {
-                    onEvent(ShortcutEditViewEvent.Drop)
-                    onDismissRequest()
-                }) {
+            SectionCard {
+                SectionHeader {
+                    ImageIcon()
+                    Text(text = stringResource(R.string.customize_icon), )
+                }
+                SectionCard {
+                    SectionAction {
+                        Text(text = stringResource(R.string.icon_custom))
+                    }
+                }
+                SectionCard {
+                    SectionAction {
+                        Text(text = stringResource(R.string.icon_adw_icon_pack))
+                    }
+                }
+                if (shortcut.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
+                    SectionCard {
+                        SectionAction {
+                            Text(text = stringResource(R.string.icon_default))
+                        }
+                    }
+                }
+            }
+            SectionCard(onClick = {
+                onEvent(ShortcutEditViewEvent.Drop)
+                onDismissRequest()
+            }) {
+                SectionAction {
                     DeleteIcon()
                     Text(text = stringResource(R.string.delete))
                 }
             }
-            SectionCard() {
-                TextButton(onClick ={ onEvent(ShortcutEditViewEvent.ToggleAdvanced(expanded = true)) }) {
+            SectionCard(onClick ={ onEvent(ShortcutEditViewEvent.ToggleAdvanced(expanded = true)) }) {
+                SectionAction {
                     EditIcon(contentDescription = stringResource(id = R.string.advanced))
                     Text(text = stringResource(id = R.string.advanced))
                     Spacer(modifier = Modifier.weight(1.0f))
@@ -124,14 +173,64 @@ fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (Shortcu
 }
 
 @Composable
-private fun SectionCard(content: @Composable ColumnScope.() -> Unit) {
+private fun SectionCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null, onClickLabel: String? = null, content: @Composable ColumnScope.() -> Unit = {}) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp)
-            .defaultMinSize(minHeight = 48.dp),
+            .let {
+                if (onClick != null) {
+                    it.clickable(onClick = onClick, onClickLabel = onClickLabel)
+                } else {
+                    it
+                }
+            }
+        ,
+        border = CardBorder(),
         content = content
     )
+}
+
+private val cardBorderColor: Color
+    @Composable
+    get() = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+
+@Composable
+private fun CardBorder(color: Color = cardBorderColor) = BorderStroke(1.dp, color)
+
+@Composable
+private fun SectionAction(content: @Composable RowScope.() -> Unit = {}) {
+    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.primary) {
+        ProvideTextStyle(value = MaterialTheme.typography.labelLarge) {
+            Row(
+                modifier = Modifier
+                    .defaultMinSize(
+                        minWidth = ButtonDefaults.MinWidth,
+                        minHeight = ButtonDefaults.MinHeight
+                    )
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                content = content
+            )
+        }
+    }
+}
+
+@Composable
+private fun SectionHeader(content: @Composable RowScope.() -> Unit = {}) {
+    ProvideTextStyle(value = MaterialTheme.typography.labelMedium) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 0.dp)
+                .padding(top = 8.dp),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+            content = content
+        )
+    }
 }
 
 @SuppressLint("UnrememberedMutableState")

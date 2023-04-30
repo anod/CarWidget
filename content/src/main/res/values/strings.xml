@@ -183,6 +183,7 @@
 
     <string name="app_preferences" tools:ignore="MissingTranslation">App Preferences</string>
     <string name="title" tools:ignore="MissingTranslation">Title</string>
+    <string name="edit_title" tools:ignore="MissingTranslation">Edit title</string>
     <string name="info" tools:ignore="MissingTranslation">Info</string>
     <string name="notification_mode_detector_title" tools:ignore="MissingTranslation">InCar mode detector.</string>
     <string name="notification_mode_detector_content" tools:ignore="MissingTranslation">Can be minimized in notification settings</string>
@@ -224,7 +225,10 @@
     <string name="call">Call</string>
     <string name="maps">Maps</string>
     <string name="delete">Delete</string>
-
+    <string name="customize_icon">Customize icon</string>
+    <string name="icon_custom">Custom</string>
+    <string name="icon_adw_icon_pack">Icon Pack</string>
+    <string name="icon_default">Default</string>
     <array name="adaptive_icon_style_names">
         <item>Default</item>
         <item>Square</item>

@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
@@ -151,6 +152,15 @@ fun DeleteIcon(modifier: Modifier = Modifier, tint: Color = LocalContentColor.cu
 fun EditIcon(modifier: Modifier = Modifier, tint: Color = LocalContentColor.current, contentDescription: String? = null) {
     Icon(
         imageVector = Icons.Filled.Edit,
+        modifier = modifier,
+        tint = tint,
+        contentDescription = contentDescription)
+}
+
+@Composable
+fun ImageIcon(modifier: Modifier = Modifier, tint: Color = LocalContentColor.current, contentDescription: String? = null) {
+    Icon(
+        imageVector = Icons.Filled.Image,
         modifier = modifier,
         tint = tint,
         contentDescription = contentDescription)
