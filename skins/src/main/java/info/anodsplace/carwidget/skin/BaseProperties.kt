@@ -51,6 +51,8 @@ abstract class BaseProperties : SkinProperties {
     override val containerId: Int
         get() = R.id.container
 
+    override val backgroundId: Int = 0
+
     override fun shortcutIdAt(position: Int): Int = btnIds[position]
 
     override fun shortcutTextIdAt(position: Int): Int = textIds[position]

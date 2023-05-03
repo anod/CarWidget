@@ -20,6 +20,9 @@ class YouProperties(context: Context) : BaseProperties() {
 
     }
 
+    override val backgroundId: Int
+        get() = R.id.background
+
     override val inCarButtonExitRes: Int
         get() = R.drawable.you_wheel_exit
 

@@ -19,6 +19,7 @@ interface SkinProperties {
     val widgetButton1Id: Int
     val widgetButton2Id: Int
     val containerId: Int
+    val backgroundId: Int
     val inCarButtonExitRes: Int
     val inCarButtonEnterRes: Int
     val setShortcutRes: Int

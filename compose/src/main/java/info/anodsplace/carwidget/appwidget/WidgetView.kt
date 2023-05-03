@@ -81,7 +81,15 @@ class SkinWidgetView(
 
         widgetButtonViewBuilder.apply(views)
 
-        views.setInt(skinProperties.containerId, "setBackgroundColor", widgetSettings.backgroundColor)
+        if (skinProperties.backgroundId != 0) {
+            views.setInt(skinProperties.backgroundId, "setBackgroundColor", widgetSettings.backgroundColor)
+        } else {
+            views.setInt(
+                skinProperties.containerId,
+                "setBackgroundColor",
+                widgetSettings.backgroundColor
+            )
+        }
         bitmapTransform.iconProcessor = skinProperties.iconProcessor
 
         val themePackage = widgetSettings.iconsTheme
