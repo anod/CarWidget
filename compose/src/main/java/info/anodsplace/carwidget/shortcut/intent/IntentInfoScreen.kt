@@ -243,9 +243,7 @@ fun EditSection(intent: Intent, editState: IntentField, updateField: (UpdateFiel
                 }
             }
 
-            CheckBoxScreen(
-                titleText = stringResource(id = info.anodsplace.carwidget.content.R.string.flags),
-                saveText = stringResource(id = info.anodsplace.carwidget.content.R.string.save),
+            CheckBoxLazyList(
                 items = flagsItems,
                 onCheckedChange = { item ->
                     val newFlags = intent.flagNames.toMutableList()
@@ -255,9 +253,6 @@ fun EditSection(intent: Intent, editState: IntentField, updateField: (UpdateFiel
                         newFlags.remove(item.key)
                     }
                     updateField(UpdateField(IntentField.Flags(flagNamesToInt(newFlags))))
-                },
-                onDismissRequest = {
-                    onClose()
                 }
             )
         }
@@ -273,9 +268,7 @@ fun EditSection(intent: Intent, editState: IntentField, updateField: (UpdateFiel
                 }
             }
 
-            CheckBoxScreen(
-                titleText = stringResource(id = info.anodsplace.carwidget.content.R.string.categories),
-                saveText = stringResource(id = info.anodsplace.carwidget.content.R.string.save),
+            CheckBoxLazyList(
                 items = categoriesItems,
                 onCheckedChange = { item ->
                     val newCategories = intent.categoryNames.toMutableSet()
@@ -285,9 +278,6 @@ fun EditSection(intent: Intent, editState: IntentField, updateField: (UpdateFiel
                         newCategories.remove(item.key)
                     }
                     updateField(UpdateField(IntentField.Categories(newCategories)))
-                },
-                onDismissRequest = {
-                    onClose()
                 }
             )
         }
@@ -339,23 +329,13 @@ fun IntentEditScreen(
 
     when (suggestionsState) {
         IntentField.Suggestions.Action -> {
-            SingleListScreen(
-                    state = SingleScreenState(
-                            title = stringResource(id = info.anodsplace.carwidget.content.R.string.action),
-                            items = IntentActions
-                    ),
-            ) { _, value ->
+            SingleSelectLazyList(state = SingleSelectListState(items = IntentActions)) { _, value ->
                 updateField(UpdateField(IntentField.Action(value, "")))
                 suggestionsState = IntentField.Suggestions.None
             }
         }
         IntentField.Suggestions.MimeType -> {
-            SingleListScreen(
-                    state = SingleScreenState(
-                            title = stringResource(id = info.anodsplace.carwidget.content.R.string.mime_type),
-                            items = MediaTypes
-                    ),
-            ) { _, value ->
+            SingleSelectLazyList(state = SingleSelectListState(items = MediaTypes)) { _, value ->
                 updateField(UpdateField(IntentField.MimeType(value, "")))
                 suggestionsState = IntentField.Suggestions.None
             }

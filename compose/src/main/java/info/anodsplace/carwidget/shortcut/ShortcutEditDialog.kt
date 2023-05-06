@@ -75,7 +75,9 @@ fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (Shortcu
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1.0f, fill = false)
-                .verticalScroll(scrollState)
+                .let {
+                    if (expanded) it else it.verticalScroll(scrollState)
+                }
         ) {
             if (!expanded) {
                 ShortcutDetails(shortcut, widgetSettings, imageLoader, onEvent, onDismissRequest)
