@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.shortcut
 
+import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.content.shortcuts.ShortcutInfoFactory
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.shortcut.intent.IntentField
 import info.anodsplace.viewmodel.BaseFlowViewModel
@@ -25,13 +27,18 @@ data class ShortcutEditViewState(
     val shortcut: Shortcut? = null,
     val position: Int = -1,
     val shortcutId: Long = -1,
-    val expanded: Boolean = false
+    val expanded: Boolean = false,
+    val showIconChooser: Boolean = false,
+    val showIconPackChooser: Boolean = false,
 )
 
 sealed interface ShortcutEditViewEvent {
     class UpdateField(val field: IntentField) : ShortcutEditViewEvent
     class ToggleAdvanced(val expanded: Boolean) : ShortcutEditViewEvent
     object Drop : ShortcutEditViewEvent
+    object CustomIcon : ShortcutEditViewEvent
+    object IconPack : ShortcutEditViewEvent
+    object DefaultIcon : ShortcutEditViewEvent
 }
 
 sealed interface ShortcutEditViewAction
@@ -56,6 +63,7 @@ class ShortcutEditViewModel(
     private val appScope: AppCoroutineScope by inject()
     private val shortcutsDatabase: ShortcutsDatabase = get()
     private val model: WidgetShortcutsModel by inject()
+    private val context: Context by inject()
     val widgetSettings: WidgetInterface by inject()
     val imageLoader: ImageLoader by inject()
 
@@ -86,6 +94,21 @@ class ShortcutEditViewModel(
                 appScope.launch {
                     val intent = updateIntentField(event.field, shortcut.intent)
                     shortcutsDatabase.updateIntent(shortcut.id, intent)
+                }
+            }
+            ShortcutEditViewEvent.CustomIcon -> {
+                viewState = viewState.copy(showIconChooser = true)
+            }
+            ShortcutEditViewEvent.IconPack -> {
+                viewState = viewState.copy(showIconPackChooser = false)
+            }
+            ShortcutEditViewEvent.DefaultIcon -> {
+                val shortcut = viewState.shortcut ?: return
+                val component = shortcut.intent.component ?: return
+                appScope.launch {
+                    val resolveInfo = context.packageManager.resolveActivity(shortcut.intent, 0)
+                    val defaultIcon = ShortcutInfoFactory.resolveAppIcon(resolveInfo, component, context)
+                    shortcutsDatabase.updateIcon(shortcut.id, defaultIcon)
                 }
             }
         }

@@ -13,16 +13,14 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Build
 import android.os.Parcelable
-import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
-import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIcon
-import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.extentions.toBitmap
+import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 
 sealed interface CreateShortcutResult {
     object None : CreateShortcutResult
@@ -182,7 +180,7 @@ object ShortcutInfoFactory {
         )
     }
 
-    private fun resolveAppIcon(resolveInfo: ResolveInfo?, componentName: ComponentName?, context: Context): ShortcutIcon {
+    fun resolveAppIcon(resolveInfo: ResolveInfo?, componentName: ComponentName?, context: Context): ShortcutIcon {
         var bitmap: Bitmap?
         if (resolveInfo != null) {
             bitmap = getIcon(componentName, resolveInfo, context.packageManager, context)

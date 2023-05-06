@@ -1,11 +1,12 @@
 package info.anodsplace.carwidget.shortcut
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -23,7 +24,6 @@ import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.DeleteIcon
 import info.anodsplace.carwidget.EditIcon
 import info.anodsplace.carwidget.ExpandRightIcon
-import info.anodsplace.carwidget.ImageIcon
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.Shortcut
@@ -70,104 +70,125 @@ fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (Shortcu
                 }
             }
         )
-        if (!expanded) {
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .fillMaxWidth()
-                    .height(96.dp),
-            ) {
-                AsyncImage(
-                    model = shortcut.iconUri(LocalContext.current, widgetSettings.adaptiveIconStyle),
-                    contentDescription = shortcut.title.toString(),
-                    imageLoader = imageLoader,
+        val scrollState = rememberScrollState()
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(scrollState)
+        ) {
+            if (!expanded) {
+                ShortcutDetails(shortcut, widgetSettings, imageLoader, onEvent, onDismissRequest)
+            } else {
+                IntentEditScreen(
+                    intent = shortcut.intent,
+                    updateField = { onEvent(ShortcutEditViewEvent.UpdateField(it.field)) },
                     modifier = Modifier
-                        .size(96.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.shapes.medium)
                 )
-                Spacer(modifier = Modifier.width(16.dp))
-                Card(
-                    modifier = Modifier
-                        .height(96.dp)
-                        .weight(1.0f),
-                    border = CardBorder(),
-                ) {
-                    SectionHeader {
-                        EditIcon(contentDescription = stringResource(R.string.edit_title), modifier = Modifier.size(16.dp))
-                        Text(text = stringResource(R.string.edit_title), modifier = Modifier.padding(start = 8.dp))
-                    }
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 4.dp)
-                            .fillMaxWidth(),
-                        value = shortcut.title.toString(),
-                        shape = MaterialTheme.shapes.medium,
-                        onValueChange = {},
-                        singleLine = true,
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = cardBorderColor,
-                            unfocusedBorderColor = cardBorderColor
-                        )
-                    )
-                }
             }
-            SectionCard {
-                SectionHeader {
-                    ImageIcon()
-                    Text(text = stringResource(R.string.customize_icon), )
-                }
-                SectionCard {
-                    SectionAction {
-                        Text(text = stringResource(R.string.icon_custom))
-                    }
-                }
-                SectionCard {
-                    SectionAction {
-                        Text(text = stringResource(R.string.icon_adw_icon_pack))
-                    }
-                }
-                if (shortcut.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
-                    SectionCard {
-                        SectionAction {
-                            Text(text = stringResource(R.string.icon_default))
-                        }
-                    }
-                }
-            }
-            SectionCard(onClick = {
-                onEvent(ShortcutEditViewEvent.Drop)
+        }
+
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            Spacer(modifier = Modifier.weight(1.0f))
+            Button(onClick = {
                 onDismissRequest()
-            }) {
-                SectionAction {
-                    DeleteIcon()
-                    Text(text = stringResource(R.string.delete))
-                }
+            }, modifier = Modifier.align(Alignment.CenterVertically)) {
+                Text(text = "OK")
             }
-            SectionCard(onClick ={ onEvent(ShortcutEditViewEvent.ToggleAdvanced(expanded = true)) }) {
-                SectionAction {
-                    EditIcon(contentDescription = stringResource(id = R.string.advanced))
-                    Text(text = stringResource(id = R.string.advanced))
-                    Spacer(modifier = Modifier.weight(1.0f))
-                    ExpandRightIcon()
-                }
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun ShortcutDetails(
+    shortcut: Shortcut,
+    widgetSettings: WidgetInterface,
+    imageLoader: ImageLoader,
+    onEvent: (ShortcutEditViewEvent) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .fillMaxWidth()
+            .height(96.dp),
+    ) {
+        AsyncImage(
+            model = shortcut.iconUri(LocalContext.current, widgetSettings.adaptiveIconStyle),
+            contentDescription = shortcut.title.toString(),
+            imageLoader = imageLoader,
+            modifier = Modifier
+                .size(96.dp)
+                .background(
+                    MaterialTheme.colorScheme.surfaceVariant,
+                    MaterialTheme.shapes.medium
+                )
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Card(
+            modifier = Modifier
+                .height(96.dp)
+                .weight(1.0f),
+            border = CardBorder(),
+        ) {
+            SectionHeader {
+                Text(text = stringResource(R.string.edit_title), modifier = Modifier.padding(start = 8.dp))
             }
-            Row(
+            OutlinedTextField(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-            ) {
-                Spacer(modifier = Modifier.weight(1.0f))
-                Button(onClick = {
-                    onDismissRequest()
-                }, modifier = Modifier.align(Alignment.CenterVertically)) {
-                    Text(text = "OK")
-                }
-            }
-        } else {
-            IntentEditScreen(
-                intent = shortcut.intent,
-                updateField = { onEvent(ShortcutEditViewEvent.UpdateField(it.field)) },
-                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 4.dp)
+                    .fillMaxWidth(),
+                value = shortcut.title.toString(),
+                shape = MaterialTheme.shapes.medium,
+                onValueChange = {},
+                singleLine = true,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = cardBorderColor,
+                    unfocusedBorderColor = cardBorderColor
+                )
             )
+        }
+    }
+    SectionCard {
+        SectionHeader {
+            Text(text = stringResource(R.string.customize_icon))
+        }
+        SectionCard {
+            SectionAction {
+                Text(text = stringResource(R.string.icon_custom))
+            }
+        }
+        SectionCard {
+            SectionAction {
+                Text(text = stringResource(R.string.icon_adw_icon_pack))
+            }
+        }
+        if (shortcut.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
+            SectionCard {
+                SectionAction {
+                    Text(text = stringResource(R.string.icon_default))
+                }
+            }
+        }
+    }
+    SectionCard(onClick = {
+        onEvent(ShortcutEditViewEvent.Drop)
+        onDismissRequest()
+    }) {
+        SectionAction {
+            DeleteIcon()
+            Text(text = stringResource(R.string.delete))
+        }
+    }
+    SectionCard(onClick = { onEvent(ShortcutEditViewEvent.ToggleAdvanced(expanded = true)) }) {
+        SectionAction {
+            EditIcon(contentDescription = stringResource(id = R.string.advanced))
+            Text(text = stringResource(id = R.string.advanced))
+            Spacer(modifier = Modifier.weight(1.0f))
+            ExpandRightIcon()
         }
     }
 }
@@ -199,7 +220,9 @@ private val cardBorderColor: Color
 private fun CardBorder(color: Color = cardBorderColor) = BorderStroke(1.dp, color)
 
 @Composable
-private fun SectionAction(content: @Composable RowScope.() -> Unit = {}) {
+private fun SectionAction(
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
+    content: @Composable RowScope.() -> Unit = {}) {
     CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.primary) {
         ProvideTextStyle(value = MaterialTheme.typography.labelLarge) {
             Row(
@@ -210,7 +233,7 @@ private fun SectionAction(content: @Composable RowScope.() -> Unit = {}) {
                     )
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.Start,
+                horizontalArrangement = horizontalArrangement,
                 verticalAlignment = Alignment.CenterVertically,
                 content = content
             )
@@ -233,7 +256,6 @@ private fun SectionHeader(content: @Composable RowScope.() -> Unit = {}) {
     }
 }
 
-@SuppressLint("UnrememberedMutableState")
 @Preview("Preview Shortcut Edit")
 @Composable
 fun PreviewShortcutEditContent() {
