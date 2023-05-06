@@ -74,6 +74,7 @@ fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (Shortcu
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .weight(1.0f, fill = false)
                 .verticalScroll(scrollState)
         ) {
             if (!expanded) {
