@@ -84,6 +84,19 @@ class ShortcutsDatabase(private val db: Database) {
         )
     }
 
+    suspend fun updateIcon(shortcutId: Long, icon: ShortcutIcon) = withContext(Dispatchers.IO) {
+        val values = ContentValues().also {
+            it.putIcon(icon)
+        }
+        db.shortcutsQueries.updateShortcutIcon(
+            iconType = values.getAsInteger(LauncherSettings.Favorites.ICON_TYPE),
+            icon = values.getAsByteArray(LauncherSettings.Favorites.ICON),
+            iconPackage = values.getAsString(LauncherSettings.Favorites.ICON_PACKAGE),
+            iconResource = values.getAsString(LauncherSettings.Favorites.ICON_RESOURCE),
+            isCustomIcon = values.getAsBoolean(LauncherSettings.Favorites.IS_CUSTOM_ICON),
+            shortcutId = shortcutId
+        )
+    }
     suspend fun restoreTarget(targetId: Int, items: SparseArray<ShortcutWithIcon>) = withContext(Dispatchers.IO) {
         db.transaction {
             db.shortcutsQueries.deleteTarget(targetId)
@@ -160,26 +173,29 @@ class ShortcutsDatabase(private val db: Database) {
 
             val uri = item.intent.toUri(0)
             values.put(LauncherSettings.Favorites.INTENT, uri)
+            values.putIcon(icon)
+            return values
+        }
 
+        private fun ContentValues.putIcon(icon: ShortcutIcon) {
             if (icon.isCustom) {
-                values.put(LauncherSettings.Favorites.ICON_TYPE,
-                        LauncherSettings.Favorites.ICON_TYPE_BITMAP)
-                writeBitmap(values, icon.bitmap)
+                put(LauncherSettings.Favorites.ICON_TYPE,
+                    LauncherSettings.Favorites.ICON_TYPE_BITMAP)
+                writeBitmap(this, icon.bitmap)
             } else {
                 if (!icon.isFallback) {
-                    writeBitmap(values, icon.bitmap)
+                    writeBitmap(this, icon.bitmap)
                 }
-                values.put(LauncherSettings.Favorites.ICON_TYPE,
-                        LauncherSettings.Favorites.ICON_TYPE_RESOURCE)
+                put(LauncherSettings.Favorites.ICON_TYPE,
+                    LauncherSettings.Favorites.ICON_TYPE_RESOURCE)
                 if (icon.resource != null) {
-                    values.put(LauncherSettings.Favorites.ICON_PACKAGE,
-                            icon.resource.packageName)
-                    values.put(LauncherSettings.Favorites.ICON_RESOURCE,
-                            icon.resource.resourceName)
+                    put(LauncherSettings.Favorites.ICON_PACKAGE,
+                        icon.resource.packageName)
+                    put(LauncherSettings.Favorites.ICON_RESOURCE,
+                        icon.resource.resourceName)
                 }
             }
-            values.put(LauncherSettings.Favorites.IS_CUSTOM_ICON, if (icon.isCustom) 1 else 0)
-            return values
+            put(LauncherSettings.Favorites.IS_CUSTOM_ICON, if (icon.isCustom) 1 else 0)
         }
 
         private fun writeBitmap(values: ContentValues, bitmap: Bitmap?) {
