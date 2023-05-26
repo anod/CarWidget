@@ -25,7 +25,7 @@ dependencies {
     // AppLog, Bundle extensions
     implementation(project(":content"))
     implementation(project(":lib:applog"))
-    implementation("androidx.palette:palette-ktx:1.0.0")
-    implementation("com.google.android.material:material:1.8.0") // Theme.Material3.DynamicColors.DayNight
+    implementation(libs.palette.ktx)
+    implementation(libs.material) // Theme.Material3.DynamicColors.DayNight
     implementation(libs.kotlin.stdlib)
 }

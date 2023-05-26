@@ -20,26 +20,26 @@ dependencies {
     implementation(libs.coroutines.android)
 
     // Activity recognition
-    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation(libs.play.services.location)
 
-    implementation("androidx.appcompat:appcompat:1.6.1") // AppCompatActivity
-    implementation("androidx.core:core-ktx:1.10.0")
-    implementation("androidx.activity:activity:1.7.1")
-    implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.collection:collection-ktx:1.2.0")
-    implementation("androidx.sqlite:sqlite-ktx:2.3.1")
+    implementation(libs.appcompat) // AppCompatActivity
+    implementation(libs.core.ktx)
+    implementation(libs.activity)
+    implementation(libs.core.splashscreen)
+    implementation(libs.collection.ktx)
+    implementation(libs.sqlite.ktx)
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.6.1")
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.lifecycle.common.java8)
 
-    implementation("ch.acra:acra-core:5.9.7")
-    implementation("ch.acra:acra-notification:5.9.7")
-    implementation("ch.acra:acra-limiter:5.9.7")
+    implementation(libs.acra.core)
+    implementation(libs.acra.notification)
+    implementation(libs.acra.limiter)
 
-    compileOnly("com.google.auto.service:auto-service-annotations:1.0.1")
-    kapt("com.google.auto.service:auto-service:1.0.1")
+    compileOnly(libs.auto.service.annotations)
+    kapt(libs.auto.service)
 
     implementation(libs.kotlin.stdlib)
 }

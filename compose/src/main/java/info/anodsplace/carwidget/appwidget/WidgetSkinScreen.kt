@@ -66,7 +66,7 @@ fun WidgetSkinScreen(
     windowSizeClass: WindowSizeClass
 ) {
     val skinList = screenState.skinList
-    val pagerState = rememberPagerState(initialPage = skinList.selectedSkinPosition)
+    val pagerState = rememberPagerState(initialPage = skinList.selectedSkinPosition, pageCount = { skinList.count })
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(pagerState) {
@@ -108,7 +108,6 @@ fun WidgetSkinScreen(
             }
 
             HorizontalPager(
-                pageCount = skinList.count,
                 state = pagerState,
                 modifier = Modifier.padding(16.dp)
             ) { page ->

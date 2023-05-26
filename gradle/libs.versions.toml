@@ -1,0 +1,62 @@
+[versions]
+acra-limiter = "5.9.7"
+acra-notification = "5.9.7"
+acra-core = "5.9.7"
+auto-service = "1.0.1"
+auto-service-annotations = "1.0.1"
+activity = "1.7.2"
+appcompat = "1.6.1"
+core-ktx = "1.10.1"
+coil = "2.4.0"
+collection-ktx = "1.2.0"
+core-splashscreen = "1.0.1"
+coroutines = "1.7.1"
+kotlin = "1.8.21"
+koin = "3.4.0"
+lifecycle-common-java8 = "2.6.1"
+lifecycle-viewmodel-compose = "2.6.1"
+lifecycle-viewmodel-ktx = "2.6.1"
+material = "1.8.0"
+navigation-compose = "2.5.3"
+palette-ktx = "1.0.0"
+play-services-location = "21.0.1"
+preference-ktx = "1.2.0"
+sqlite-ktx = "2.3.1"
+sqldelight = "1.5.5"
+
+[libraries]
+acra-limiter = { module = "ch.acra:acra-limiter", version.ref = "acra-limiter" }
+acra-notification = { module = "ch.acra:acra-notification", version.ref = "acra-notification" }
+acra-core = { module = "ch.acra:acra-core", version.ref = "acra-core" }
+activity = { module = "androidx.activity:activity", version.ref = "activity" }
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
+auto-service = { module = "com.google.auto.service:auto-service", version.ref = "auto-service" }
+auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service-annotations" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+coil-compose-base = { module = "io.coil-kt:coil-compose-base", version.ref = "coil" }
+collection-ktx = { module = "androidx.collection:collection-ktx", version.ref = "collection-ktx" }
+core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-splashscreen" }
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "lifecycle-common-java8" }
+lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-viewmodel-compose" }
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle-viewmodel-ktx" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+palette-ktx = { module = "androidx.palette:palette-ktx", version.ref = "palette-ktx" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play-services-location" }
+preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preference-ktx" }
+sqlite-ktx = { module = "androidx.sqlite:sqlite-ktx", version.ref = "sqlite-ktx" }
+sqldelight-driver-android = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqldelight" }
+sqldelight-coroutines-extensions-jvm = { module = "com.squareup.sqldelight:coroutines-extensions-jvm", version.ref = "sqldelight" }
+sqldelight-gradle-plugin = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sqldelight" }
+
+[plugins]
+kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqldelight" }
+
+
