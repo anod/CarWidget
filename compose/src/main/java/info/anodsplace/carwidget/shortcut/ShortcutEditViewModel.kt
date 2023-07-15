@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.shortcut
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,12 +10,15 @@ import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.db.Shortcut
+import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.shortcuts.ShortcutInfoFactory
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.shortcut.intent.IntentField
+import info.anodsplace.graphics.DrawableUri
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinScopeComponent
@@ -28,17 +32,19 @@ data class ShortcutEditViewState(
     val position: Int = -1,
     val shortcutId: Long = -1,
     val expanded: Boolean = false,
-    val showIconChooser: Boolean = false,
-    val showIconPackChooser: Boolean = false,
+    val showIconPicker: Boolean = false,
+    val showIconPackPicker: Boolean = false,
 )
 
 sealed interface ShortcutEditViewEvent {
     class UpdateField(val field: IntentField) : ShortcutEditViewEvent
     class ToggleAdvanced(val expanded: Boolean) : ShortcutEditViewEvent
     object Drop : ShortcutEditViewEvent
-    object CustomIcon : ShortcutEditViewEvent
-    object IconPack : ShortcutEditViewEvent
-    object DefaultIcon : ShortcutEditViewEvent
+    class CustomIconPicker(val show: Boolean) : ShortcutEditViewEvent
+    class CustomIconResult(val intent: Intent?, val resolveProperties: DrawableUri.ResolveProperties) : ShortcutEditViewEvent
+    class IconPackPicker(val show: Boolean) : ShortcutEditViewEvent
+    class IconPackResult(val intent: Intent?, val resolveProperties: DrawableUri.ResolveProperties) : ShortcutEditViewEvent
+    object DefaultIconReset : ShortcutEditViewEvent
 }
 
 sealed interface ShortcutEditViewAction
@@ -54,6 +60,7 @@ class ShortcutEditViewModel(
             private val shortcutId: Long,
             private val appWidgetIdScope: AppWidgetIdScope
     ): ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return ShortcutEditViewModel(position, shortcutId, appWidgetIdScope) as T
         }
@@ -96,13 +103,24 @@ class ShortcutEditViewModel(
                     shortcutsDatabase.updateIntent(shortcut.id, intent)
                 }
             }
-            ShortcutEditViewEvent.CustomIcon -> {
-                viewState = viewState.copy(showIconChooser = true)
+            is ShortcutEditViewEvent.CustomIconPicker -> {
+                viewState = viewState.copy(showIconPicker = event.show)
             }
-            ShortcutEditViewEvent.IconPack -> {
-                viewState = viewState.copy(showIconPackChooser = false)
+            is ShortcutEditViewEvent.IconPackPicker -> {
+                viewState = viewState.copy(showIconPackPicker = event.show)
             }
-            ShortcutEditViewEvent.DefaultIcon -> {
+            is ShortcutEditViewEvent.CustomIconResult -> {
+                viewState = viewState.copy(showIconPicker = false)
+                updateCustomIcon(event.intent, event.resolveProperties)
+            }
+            is ShortcutEditViewEvent.IconPackResult -> {
+                viewState = viewState.copy(showIconPackPicker = false)
+                val bitmap = getBitmapIconPackIntent(event.intent , event.resolveProperties)
+                if (bitmap != null) {
+                    setCustomIcon(bitmap)
+                }
+            }
+            ShortcutEditViewEvent.DefaultIconReset -> {
                 val shortcut = viewState.shortcut ?: return
                 val component = shortcut.intent.component ?: return
                 appScope.launch {
@@ -112,6 +130,38 @@ class ShortcutEditViewModel(
                 }
             }
         }
+    }
+
+    private fun setCustomIcon(bitmap: Bitmap) {
+        val shortcutIcon = ShortcutIcon.forCustomIcon(viewState.shortcutId, bitmap)
+        viewModelScope.launch {
+            shortcutsDatabase.updateIcon(viewState.shortcutId, shortcutIcon)
+        }
+    }
+
+    private fun getBitmapIconPackIntent(intent: Intent?, resolveProperties: DrawableUri.ResolveProperties): Bitmap? {
+        if (intent == null) {
+            return null
+        }
+        var bitmap: Bitmap? = null
+        if (intent.hasExtra("icon")) {
+            bitmap = intent.getParcelableExtra("icon")
+        } else {
+            val imageUri = intent.data ?: return null
+            val icon = DrawableUri(context).resolve(imageUri, resolveProperties)
+            if (icon != null) {
+                bitmap = UtilitiesBitmap.createHiResIconBitmap(icon, context)
+            }
+        }
+        return bitmap
+    }
+
+    private fun updateCustomIcon(intent: Intent?, resolveProperties: DrawableUri.ResolveProperties): Boolean {
+        val imageUri = intent?.data ?: return false
+        val icon = DrawableUri(context).resolve(imageUri, resolveProperties) ?: return false
+        val bitmap = UtilitiesBitmap.createMaxSizeIcon(icon, context)
+        setCustomIcon(bitmap)
+        return true
     }
 
     private fun updateIntentField(field: IntentField, intent: Intent): Intent {

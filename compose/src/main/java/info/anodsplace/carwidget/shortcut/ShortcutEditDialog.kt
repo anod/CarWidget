@@ -28,11 +28,21 @@ import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.iconUri
+import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.shortcut.intent.IntentEditScreen
+import info.anodsplace.framework.content.forCustomImage
+import info.anodsplace.framework.content.forIconPack
+import info.anodsplace.graphics.DrawableUri
 
 @Composable
-fun ShortcutEditScreen(state: ShortcutEditViewState, onEvent: (ShortcutEditViewEvent) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader, widgetSettings: WidgetInterface = WidgetInterface.NoOp()) {
+fun ShortcutEditScreen(
+        state: ShortcutEditViewState,
+        onEvent: (ShortcutEditViewEvent) -> Unit,
+        onDismissRequest: () -> Unit,
+        imageLoader: ImageLoader,
+        widgetSettings: WidgetInterface = WidgetInterface.NoOp()
+) {
     Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -42,7 +52,7 @@ fun ShortcutEditScreen(state: ShortcutEditViewState, onEvent: (ShortcutEditViewE
         if (state.shortcut != null) {
             ShortcutEditContent(
                 shortcut = state.shortcut,
-                isReadonly = true,
+                isIntentReadonly = true,
                 onEvent = onEvent,
                 onDismissRequest = onDismissRequest,
                 expanded = state.expanded,
@@ -51,22 +61,56 @@ fun ShortcutEditScreen(state: ShortcutEditViewState, onEvent: (ShortcutEditViewE
             )
         }
     }
+
+    if (state.showIconPackPicker) {
+        val context = LocalContext.current
+        IntentChooser(
+            intent = Intent().forIconPack(),
+            onChoose = { onEvent(ShortcutEditViewEvent.IconPackResult(
+                    intent = it.intent,
+                    resolveProperties = DrawableUri.ResolveProperties(
+                            maxIconSize = UtilitiesBitmap.getIconMaxSize(context),
+                            targetDensity = UtilitiesBitmap.getTargetDensity(context),
+                            context = context
+                    )
+            )) },
+            onDismissRequest = { onEvent(ShortcutEditViewEvent.IconPackPicker(show = false)) },
+            imageLoader = imageLoader
+        )
+    }
+
+    if (state.showIconPicker) {
+        val context = LocalContext.current
+        IntentChooser(
+            intent = Intent().forCustomImage(context = context),
+            onChoose = { onEvent(ShortcutEditViewEvent.CustomIconResult(
+                intent = it.intent,
+                resolveProperties = DrawableUri.ResolveProperties(
+                    maxIconSize = UtilitiesBitmap.getIconMaxSize(context),
+                    targetDensity = UtilitiesBitmap.getTargetDensity(context),
+                    context = context
+                )
+            )) },
+            onDismissRequest = { onEvent(ShortcutEditViewEvent.CustomIconPicker(show = false)) },
+            imageLoader = imageLoader
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShortcutEditContent(
-    shortcut: Shortcut,
-    expanded: Boolean,
-    isReadonly: Boolean,
-    onEvent: (ShortcutEditViewEvent) -> Unit,
-    onDismissRequest: () -> Unit,
-    imageLoader: ImageLoader,
-    widgetSettings: WidgetInterface = WidgetInterface.NoOp()
+        shortcut: Shortcut,
+        expanded: Boolean,
+        isIntentReadonly: Boolean,
+        onEvent: (ShortcutEditViewEvent) -> Unit,
+        onDismissRequest: () -> Unit,
+        imageLoader: ImageLoader,
+        widgetSettings: WidgetInterface = WidgetInterface.NoOp()
 ) {
     Column {
         TopAppBar(
-            title = { Text(text = stringResource(id = if (isReadonly) R.string.intent else R.string.shortcut_edit_title)) },
+            title = { Text(text = stringResource(id = if (expanded && isIntentReadonly) R.string.intent else R.string.shortcut_edit_title)) },
             navigationIcon = {
                 IconButton(onClick = {
                     if (expanded) {
@@ -95,7 +139,7 @@ fun ShortcutEditContent(
                     intent = shortcut.intent,
                     updateField = { onEvent(ShortcutEditViewEvent.UpdateField(it.field)) },
                     modifier = Modifier,
-                    isReadonly = isReadonly
+                    isReadonly = isIntentReadonly
                 )
             }
         }
@@ -168,18 +212,18 @@ private fun ShortcutDetails(
         SectionHeader {
             Text(text = stringResource(R.string.customize_icon))
         }
-        SectionCard {
+        SectionCard(onClick = { onEvent(ShortcutEditViewEvent.CustomIconPicker(show = true)) }) {
             SectionAction {
                 Text(text = stringResource(R.string.icon_custom))
             }
         }
-        SectionCard {
+        SectionCard(onClick = { onEvent(ShortcutEditViewEvent.IconPackPicker(show = true)) }) {
             SectionAction {
                 Text(text = stringResource(R.string.icon_adw_icon_pack))
             }
         }
-        if (shortcut.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
-            SectionCard {
+        if (shortcut.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION && shortcut.isCustomIcon) {
+            SectionCard(onClick = { onEvent(ShortcutEditViewEvent.DefaultIconReset) }) {
                 SectionAction {
                     Text(text = stringResource(R.string.icon_default))
                 }

@@ -62,9 +62,6 @@ fun Intent.resolveDirectCall(contactUri: Uri, context: Context): Intent? {
         return null
     }
 
-    val maxIconSize = UtilitiesBitmap.getIconMaxSize(context)
-    val targetDensity = UtilitiesBitmap.getTargetDensity(context)
-
     // If the cursor returned is valid, get the phone number
     if (cursor != null) {
         if (cursor.moveToFirst()) {
@@ -81,7 +78,12 @@ fun Intent.resolveDirectCall(contactUri: Uri, context: Context): Intent? {
 
             val intent = commonPickShortcutIntent(this, name, callIntent)
             if (photoUri.isNotEmpty()) {
-                val d = DrawableUri(context).resolve(Uri.parse(photoUri), maxIconSize, targetDensity)
+                val resolveProperties = DrawableUri.ResolveProperties(
+                    maxIconSize = UtilitiesBitmap.getIconMaxSize(context),
+                    targetDensity = UtilitiesBitmap.getTargetDensity(context),
+                    context = context
+                )
+                val d = DrawableUri(context).resolve(Uri.parse(photoUri), resolveProperties)
                 if (d != null) {
                     val bitmap = UtilitiesBitmap.createHiResIconBitmap(d, context)
                     intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap)
