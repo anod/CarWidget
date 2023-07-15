@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.filled.VolumeDown
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Widgets
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -158,6 +160,15 @@ fun EditIcon(modifier: Modifier = Modifier, tint: Color = LocalContentColor.curr
 }
 
 @Composable
+fun InfoIcon(modifier: Modifier = Modifier, tint: Color = LocalContentColor.current, contentDescription: String? = null) {
+    Icon(
+            imageVector = Icons.Outlined.Info,
+            modifier = modifier,
+            tint = tint,
+            contentDescription = contentDescription)
+}
+
+@Composable
 fun ImageIcon(modifier: Modifier = Modifier, tint: Color = LocalContentColor.current, contentDescription: String? = null) {
     Icon(
         imageVector = Icons.Filled.Image,
@@ -190,7 +201,8 @@ fun IconsResourcesPreview() {
                 { ExpandIcon() },
                 { CollapseIcon() },
                 { ExpandMoreIcon() },
-                { DeleteIcon() }
+                { DeleteIcon() },
+                { InfoIcon() }
             )
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = 20.dp),

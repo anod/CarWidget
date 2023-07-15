@@ -206,6 +206,7 @@
     <string name="screen_on_alternative">Alert on top</string>
     <string name="screen_on_alternative_text">Use alternative way to keep screen on, requires addition permission</string>
     <string name="app_shortcuts_limited">App shortcuts support is limited by Android</string>
+    <string name="intent">Intent</string>
     <string name="advanced">Advanced</string>
     <string name="allow_bluetooth">Allow Bluetooth</string>
     <string name="allow_bluetooth_summary">Access to list of bluetooth devices requires permissions</string>

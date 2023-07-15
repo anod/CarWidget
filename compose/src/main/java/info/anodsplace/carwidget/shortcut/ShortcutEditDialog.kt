@@ -22,8 +22,8 @@ import coil.compose.AsyncImage
 import info.anodsplace.carwidget.BackArrowIcon
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.DeleteIcon
-import info.anodsplace.carwidget.EditIcon
 import info.anodsplace.carwidget.ExpandRightIcon
+import info.anodsplace.carwidget.InfoIcon
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.Shortcut
@@ -42,6 +42,7 @@ fun ShortcutEditScreen(state: ShortcutEditViewState, onEvent: (ShortcutEditViewE
         if (state.shortcut != null) {
             ShortcutEditContent(
                 shortcut = state.shortcut,
+                isReadonly = true,
                 onEvent = onEvent,
                 onDismissRequest = onDismissRequest,
                 expanded = state.expanded,
@@ -54,10 +55,18 @@ fun ShortcutEditScreen(state: ShortcutEditViewState, onEvent: (ShortcutEditViewE
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (ShortcutEditViewEvent) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader, widgetSettings: WidgetInterface = WidgetInterface.NoOp()) {
+fun ShortcutEditContent(
+    shortcut: Shortcut,
+    expanded: Boolean,
+    isReadonly: Boolean,
+    onEvent: (ShortcutEditViewEvent) -> Unit,
+    onDismissRequest: () -> Unit,
+    imageLoader: ImageLoader,
+    widgetSettings: WidgetInterface = WidgetInterface.NoOp()
+) {
     Column {
         TopAppBar(
-            title = { Text(text = stringResource(id = R.string.shortcut_edit_title)) },
+            title = { Text(text = stringResource(id = if (isReadonly) R.string.intent else R.string.shortcut_edit_title)) },
             navigationIcon = {
                 IconButton(onClick = {
                     if (expanded) {
@@ -85,7 +94,8 @@ fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (Shortcu
                 IntentEditScreen(
                     intent = shortcut.intent,
                     updateField = { onEvent(ShortcutEditViewEvent.UpdateField(it.field)) },
-                    modifier = Modifier
+                    modifier = Modifier,
+                    isReadonly = isReadonly
                 )
             }
         }
@@ -105,7 +115,6 @@ fun ShortcutEditContent(shortcut: Shortcut, expanded: Boolean, onEvent: (Shortcu
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun ShortcutDetails(
     shortcut: Shortcut,
     widgetSettings: WidgetInterface,
@@ -135,7 +144,7 @@ private fun ShortcutDetails(
             modifier = Modifier
                 .height(96.dp)
                 .weight(1.0f),
-            border = CardBorder(),
+            border = cardBorder(),
         ) {
             SectionHeader {
                 Text(text = stringResource(R.string.edit_title), modifier = Modifier.padding(start = 8.dp))
@@ -148,9 +157,9 @@ private fun ShortcutDetails(
                 shape = MaterialTheme.shapes.medium,
                 onValueChange = {},
                 singleLine = true,
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = cardBorderColor,
-                    unfocusedBorderColor = cardBorderColor
+                colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = cardBorderColor,
+                        unfocusedBorderColor = cardBorderColor,
                 )
             )
         }
@@ -188,8 +197,8 @@ private fun ShortcutDetails(
     }
     SectionCard(onClick = { onEvent(ShortcutEditViewEvent.ToggleAdvanced(expanded = true)) }) {
         SectionAction {
-            EditIcon(contentDescription = stringResource(id = R.string.advanced))
-            Text(text = stringResource(id = R.string.advanced))
+            InfoIcon(contentDescription = stringResource(id = R.string.intent))
+            Text(text = stringResource(id = R.string.intent))
             Spacer(modifier = Modifier.weight(1.0f))
             ExpandRightIcon()
         }
@@ -210,7 +219,7 @@ private fun SectionCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = 
                 }
             }
         ,
-        border = CardBorder(),
+        border = cardBorder(),
         content = content
     )
 }
@@ -220,7 +229,7 @@ private val cardBorderColor: Color
     get() = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
 
 @Composable
-private fun CardBorder(color: Color = cardBorderColor) = BorderStroke(1.dp, color)
+private fun cardBorder(color: Color = cardBorderColor) = BorderStroke(1.dp, color)
 
 @Composable
 private fun SectionAction(

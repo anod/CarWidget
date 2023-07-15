@@ -183,7 +183,13 @@ fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: Co
 }
 
 @Composable
-fun FieldEditDialog(title: String, initial: IntentField.StringValue, initialValid: Boolean = true, onSuggestions: () -> Unit, onClick: (IntentField.StringValue?) -> Unit) {
+fun FieldEditDialog(
+    title: String,
+    initial: IntentField.StringValue,
+    initialValid: Boolean = true,
+    onSuggestions: () -> Unit,
+    onClick: (IntentField.StringValue?) -> Unit
+) {
     var field by remember { mutableStateOf(initial) }
     EditDialog(
         confirmText = stringResource(id = R.string.save),

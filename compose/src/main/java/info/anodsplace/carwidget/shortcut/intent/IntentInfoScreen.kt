@@ -58,11 +58,11 @@ fun IntentFieldValue(value: String?, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun IntentInfoRow(icon: ImageVector, title: String, modifier: Modifier = Modifier, onClick: () -> Unit, content: @Composable () -> Unit) {
+fun IntentInfoRow(icon: ImageVector, title: String, modifier: Modifier = Modifier, isEnabled: Boolean, onClick: () -> Unit, content: @Composable () -> Unit) {
     Row(
         modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickable(enabled = isEnabled, onClick = onClick)
             .padding(8.dp)
     ) {
         Icon(imageVector = icon, contentDescription = title)
@@ -75,11 +75,18 @@ fun IntentInfoRow(icon: ImageVector, title: String, modifier: Modifier = Modifie
 }
 
 @Composable
-fun IntentInfoField(icon: ImageVector, field: IntentField.StringValue, modifier: Modifier = Modifier, onClick: (IntentField) -> Unit) {
+fun IntentInfoField(
+        icon: ImageVector,
+        field: IntentField.StringValue,
+        modifier: Modifier = Modifier,
+        isEnabled: Boolean,
+        onClick: (IntentField) -> Unit
+) {
     IntentInfoRow(
             icon = icon,
             title = field.title,
             modifier = modifier,
+            isEnabled = isEnabled,
             onClick = { onClick(field as IntentField) }
     ) {
         IntentFieldValue(value = field.value, modifier = Modifier.padding(vertical = 8.dp))
@@ -87,13 +94,18 @@ fun IntentInfoField(icon: ImageVector, field: IntentField.StringValue, modifier:
 }
 
 @Composable
-fun IntentExtrasField(intent: Intent, onClick: (IntentField) -> Unit) {
+fun IntentExtrasField(
+    intent: Intent,
+    isEnabled: Boolean,
+    onClick: (IntentField) -> Unit
+) {
     val items = intent.extras ?: Bundle()
     val extraKeys = items.keySet() ?: emptySet()
     val title = stringResource(id = info.anodsplace.carwidget.content.R.string.extras)
     IntentInfoRow(
             icon = Icons.Filled.FormatListBulleted,
             title = title,
+            isEnabled = isEnabled,
             onClick = { onClick(IntentField.Extras(items)) }
     ) {
         if (extraKeys.isEmpty()) {
@@ -110,10 +122,15 @@ fun IntentExtrasField(intent: Intent, onClick: (IntentField) -> Unit) {
 }
 
 @Composable
-fun IntentComponentField(component: ComponentName?, onClick: (IntentField) -> Unit) {
+fun IntentComponentField(
+        component: ComponentName?,
+        isEnabled: Boolean,
+        onClick: (IntentField) -> Unit
+) {
     IntentInfoRow(
             title = stringResource(id = R.string.component),
             icon = Icons.Filled.LibraryBooks,
+            isEnabled = isEnabled,
             onClick = { onClick(IntentField.Component(component)) }
     ) {
         IntentFieldValue(value = component?.flattenToString(), modifier = Modifier.padding(vertical = 8.dp))
@@ -121,40 +138,49 @@ fun IntentComponentField(component: ComponentName?, onClick: (IntentField) -> Un
 }
 
 @Composable
-fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick: (IntentField) -> Unit) {
+private fun IntentDetailsView(
+        intent: Intent,
+        modifier: Modifier = Modifier,
+        onItemClick: (IntentField) -> Unit,
+        isReadonly: Boolean
+) {
     rememberScrollState(0)
     LazyColumn(modifier = modifier) {
         // use `item` for separate elements like headers
         // and `items` for lists of identical elements
         item {
-
             IntentInfoField(
                     icon = Icons.Outlined.PlayForWork,
                     field = IntentField.Action(intent.action, stringResource(id = R.string.action)),
-                    onClick = onItemClick
+                    onClick = onItemClick,
+                    isEnabled = !isReadonly
             )
 
             IntentComponentField(
                     component = intent.component,
-                    onClick = onItemClick
+                    onClick = onItemClick,
+                    isEnabled = !isReadonly
             )
 
             IntentInfoField(
                     icon = Icons.Filled.OpenWith,
                     field = IntentField.Data(intent.data, stringResource(id = R.string.data)),
-                    onClick = onItemClick
+                    onClick = onItemClick,
+                    isEnabled = !isReadonly
             )
 
             IntentInfoField(
                     icon = Icons.Filled.Description,
                     field = IntentField.MimeType(intent.type, stringResource(id = R.string.mime_type)),
-                    onClick = onItemClick
+                    onClick = onItemClick,
+                    isEnabled = !isReadonly
             )
 
             IntentInfoRow(
                     icon = Icons.Filled.Flag,
                     title = stringResource(id = R.string.flags),
-                    onClick = { onItemClick(IntentField.Flags(intent.flags)) }
+                    isEnabled = !isReadonly,
+                    onClick = { onItemClick(IntentField.Flags(intent.flags)) },
             ) {
                 val flagNames = intent.flagNames
                 if (flagNames.isEmpty()) {
@@ -171,6 +197,7 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
             IntentInfoRow(
                     icon = Icons.Filled.Category,
                     title = stringResource(id = R.string.categories),
+                    isEnabled = !isReadonly,
                     onClick = { onItemClick(IntentField.Categories(intent.categories)) }
             ) {
                 val categoryNames = intent.categoryNames
@@ -183,7 +210,11 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
                 }
             }
 
-            IntentExtrasField(intent, onClick = onItemClick)
+            IntentExtrasField(
+                    intent,
+                    isEnabled = !isReadonly,
+                    onClick = onItemClick
+            )
             Spacer(modifier = Modifier.height(16.dp))
             Surface(
                     modifier = Modifier.fillMaxWidth(), //.align(Alignment.CenterHorizontally),
@@ -195,7 +226,7 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
                         text = intent.toUri(0).toString(),
                         style = MaterialTheme.typography.labelMedium,
                         modifier = Modifier.padding(16.dp),
-                        softWrap = true
+                        softWrap = true,
                 )
             }
         }
@@ -203,7 +234,13 @@ fun IntentDetailsView(intent: Intent, modifier: Modifier = Modifier, onItemClick
 }
 
 @Composable
-fun EditSection(intent: Intent, editState: IntentField, updateField: (UpdateField) -> Unit, onSuggestions: (IntentField.Suggestions) -> Unit, onClose: () -> Unit) {
+fun EditSection(
+    intent: Intent,
+    editState: IntentField,
+    updateField: (UpdateField) -> Unit,
+    onSuggestions: (IntentField.Suggestions) -> Unit,
+    onClose: () -> Unit
+) {
     when (editState) {
         is IntentField.StringValue -> {
             FieldEditDialog(editState.title, editState,
@@ -292,6 +329,7 @@ fun IntentEditScreen(
     updateField: (UpdateField) -> Unit,
     modifier: Modifier = Modifier,
     initialEditValue: IntentField = IntentField.None,
+    isReadonly: Boolean = false
 ) {
     var editState by remember { mutableStateOf(initialEditValue) }
     val editVisible: Boolean = editState !is IntentField.None
@@ -313,11 +351,14 @@ fun IntentEditScreen(
                 color = MaterialTheme.colorScheme.background,
         ) {
             Box {
-                IntentDetailsView(intent, modifier = Modifier
+                IntentDetailsView(
+                    intent = intent,
+                    modifier = Modifier
                         .padding(16.dp)
-                        .fillMaxSize()) {
-                    editState = it
-                }
+                        .fillMaxSize(),
+                    isReadonly = isReadonly,
+                    onItemClick = { editState = it }
+                )
                 OverlayScrim(
                         color = DefaultFrontLayerScrimColor,
                         onDismiss = { editState = IntentField.None },
