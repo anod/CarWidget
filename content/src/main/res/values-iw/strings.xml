@@ -150,7 +150,7 @@
     <string name="notification_mode_detector_title">זיהוי מצב ברכב</string>
     <string name="allow_permissions_brightness">לאפשר לכתוב הגדרות המערכת לשינוי הבהירות</string>
     <string name="allow_permission_overlay">לאפשר תצוגה מעל אפליקציות כדי לשנות כיוון</string>
-    <string name="needs_permissions_to_work">צריך הרשאות לעבודה</string>
+    <string name="missing_required_permissions">צריך הרשאות לעבודה</string>
     <string name="allow_access">לאפשר גישה</string>
 
     <string name="permission_write_settings">שינוי הגדרות מערכת</string>

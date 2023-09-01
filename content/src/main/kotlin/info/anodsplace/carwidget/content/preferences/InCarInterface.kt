@@ -62,7 +62,7 @@ interface InCarInterface {
 
         companion object {
             const val defaultX = 25
-            const val defaultY = 160
+            const val defaultY = 260
         }
     }
 

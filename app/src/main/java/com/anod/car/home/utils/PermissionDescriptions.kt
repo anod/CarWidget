@@ -1,13 +1,21 @@
 package com.anod.car.home.utils
 
+import android.annotation.SuppressLint
 import com.anod.car.home.R
 import info.anodsplace.carwidget.content.PermissionDescriptionItem
 import info.anodsplace.permissions.AppPermission
 
+@SuppressLint("NewApi")
 val permissionDescriptions = listOf(
+    PermissionDescriptionItem(
+        permission = AppPermission.PostNotification.value,
+        iconsRes = R.drawable.baseline_notifications_none_24,
+        titleRes = info.anodsplace.carwidget.content.R.string.notifications,
+        descRes = info.anodsplace.carwidget.content.R.string.permission_notification_desc
+    ),
    PermissionDescriptionItem(
         permission = AppPermission.WriteSettings.value,
-        iconsRes = info.anodsplace.carwidget.R.drawable.ic_action_brightness_medium,
+        iconsRes = R.drawable.ic_action_brightness_medium,
         titleRes = info.anodsplace.carwidget.content.R.string.permission_write_settings,
         descRes = info.anodsplace.carwidget.content.R.string.adjust_brightness
     ),
@@ -19,7 +27,7 @@ val permissionDescriptions = listOf(
     ),
     PermissionDescriptionItem(
         permission = AppPermission.AnswerPhoneCalls.value,
-        iconsRes = info.anodsplace.carwidget.R.drawable.ic_action_ring_volume,
+        iconsRes = R.drawable.ic_action_ring_volume,
         titleRes = info.anodsplace.carwidget.content.R.string.permission_answer_calls,
         descRes = info.anodsplace.carwidget.content.R.string.allow_answer_phone_calls
     ),

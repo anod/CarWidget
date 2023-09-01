@@ -18,7 +18,7 @@ import org.koin.core.qualifier.named
 
 fun PermissionDescriptionItem.toPermissionDescription(): PermissionDescription = PermissionDescription(
     permission = AppPermissions.fromValue(this.permission),
-    iconsRes = this.iconsRes,
+    iconRes = this.iconsRes,
     titleRes = this.titleRes,
     descRes = this.descRes
 )
@@ -46,9 +46,8 @@ class PermissionsViewModel(
     ) : ViewModelProvider.Factory, KoinComponent {
 
         private val permissionChecker: PermissionChecker by inject()
-        private val permissionDescriptions: List<PermissionDescriptionItem> by inject(
-            named("permissionDescriptions")
-        )
+        private val permissionDescriptions: List<PermissionDescriptionItem> by inject(named("permissionDescriptions"))
+        @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
             return PermissionsViewModel(
                 permissionChecker.check(requiredPermissions, activity),
@@ -61,8 +60,7 @@ class PermissionsViewModel(
     init {
         viewState = PermissionsViewState(
             screenDescription = RequestPermissionsScreenDescription(
-                descRes = R.string.needs_permissions_to_work,
-                titleRes = R.string.app_name,
+                titleRes = R.string.missing_required_permissions,
                 allowAccessRes = R.string.allow_access
             ),
             missingPermissions = initialPermission

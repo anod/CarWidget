@@ -1,24 +1,20 @@
 package com.anod.car.home.acra
 
-import com.anod.car.home.BuildConfig
-
-import org.acra.ReportField
-import org.acra.data.CrashReportData
-
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-
+import com.anod.car.home.BuildConfig
 import info.anodsplace.applog.AppLog
+import org.acra.ReportField
+import org.acra.data.CrashReportData
+import org.acra.sender.ReportSender
 
-class BrowserUrlSender {
+class BrowserUrlSender : ReportSender {
     private val baseUri = Uri.parse("https://anodsplace.info/acra/report/adapter.php")
 
-    init {
-        AppLog.d("BrowserUrlSender registered")
-    }
+    override fun requiresForeground(): Boolean = true
 
-    fun send(context: Context, errorContent: CrashReportData) {
+    override fun send(context: Context, errorContent: CrashReportData) {
         var appId = 0x00
         if (BuildConfig.DEBUG) {
             appId = appId or 0x10

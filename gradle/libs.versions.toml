@@ -1,35 +1,36 @@
 [versions]
-acra-limiter = "5.9.7"
-acra-notification = "5.9.7"
-acra-core = "5.9.7"
-auto-service = "1.0.1"
-auto-service-annotations = "1.0.1"
+acra = "5.11.1"
+auto-service-ksp= "1.1.0"
+auto-service = "1.1.1"
+auto-service-annotations = "1.1.1"
 activity = "1.7.2"
 appcompat = "1.6.1"
 core-ktx = "1.10.1"
 coil = "2.4.0"
 collection-ktx = "1.2.0"
 core-splashscreen = "1.0.1"
-coroutines = "1.7.1"
-kotlin = "1.8.21"
-koin = "3.4.0"
+coroutines = "1.7.2"
+kotlin = "1.9.10"
+koin = "3.4.2"
 lifecycle-common-java8 = "2.6.1"
 lifecycle-viewmodel-compose = "2.6.1"
 lifecycle-viewmodel-ktx = "2.6.1"
-material = "1.8.0"
-navigation-compose = "2.6.0"
+material = "1.9.0"
+navigation-compose = "2.7.1"
 palette-ktx = "1.0.0"
 play-services-location = "21.0.1"
-preference-ktx = "1.2.0"
+preference-ktx = "1.2.1"
 sqlite-ktx = "2.3.1"
 sqldelight = "1.5.5"
+plugin-ksp = "1.9.10-1.0.13"
 
 [libraries]
-acra-limiter = { module = "ch.acra:acra-limiter", version.ref = "acra-limiter" }
-acra-notification = { module = "ch.acra:acra-notification", version.ref = "acra-notification" }
-acra-core = { module = "ch.acra:acra-core", version.ref = "acra-core" }
+acra-limiter = { module = "ch.acra:acra-limiter", version.ref = "acra" }
+acra-notification = { module = "ch.acra:acra-notification", version.ref = "acra" }
+acra-core = { module = "ch.acra:acra-core", version.ref = "acra" }
 activity = { module = "androidx.activity:activity", version.ref = "activity" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
+auto-service-ksp = { module = "dev.zacsweers.autoservice:auto-service-ksp", version.ref = "auto-service-ksp" }
 auto-service = { module = "com.google.auto.service:auto-service", version.ref = "auto-service" }
 auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service-annotations" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -56,5 +57,5 @@ sqldelight-coroutines-extensions-jvm = { module = "com.squareup.sqldelight:corou
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqldelight" }
-
+ksp = { id = "com.google.devtools.ksp", version.ref = "plugin-ksp" }
 

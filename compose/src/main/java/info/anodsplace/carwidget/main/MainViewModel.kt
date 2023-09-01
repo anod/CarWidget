@@ -70,13 +70,12 @@ class MainViewModel(
     class Factory(
         private val appWidgetId: Int,
         private val activity: ComponentActivity,
-        private val permissionChecker: PermissionChecker,
-        private val inCarStatus: InCarStatus
+        private val permissionChecker: PermissionChecker
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
             return MainViewModel(
-                requiredPermissions = if (inCarStatus.isEnabled) permissionChecker.check(activity) else emptyList(),
+                requiredPermissions = permissionChecker.check(activity),
                 appWidgetIdScope = if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) AppWidgetIdScope(appWidgetId) else null
             ) as T
         }

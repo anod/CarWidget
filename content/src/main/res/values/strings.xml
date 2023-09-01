@@ -189,8 +189,11 @@
     <string name="notification_mode_detector_content" tools:ignore="MissingTranslation">Can be minimized in notification settings</string>
     <string name="allow_permissions_brightness" tools:ignore="MissingTranslation">Allow write system settings to change brightness</string>
     <string name="allow_permission_overlay" tools:ignore="MissingTranslation">Allow app overlay to change orientation</string>
-    <string name="needs_permissions_to_work" tools:ignore="MissingTranslation">Needs permissions to work</string>
+    <string name="missing_required_permissions" tools:ignore="MissingTranslation">The app is missing required permissions</string>
     <string name="allow_access" tools:ignore="MissingTranslation">Allow access</string>
+
+    <string name="notifications" tools:ignore="MissingTranslation">Notifications</string>
+    <string name="permission_notification_desc" tools:ignore="MissingTranslation">InCar mode and diagnostics notifications</string>
 
     <string name="permission_write_settings" tools:ignore="MissingTranslation">Write system settings</string>
     <string name="adjust_brightness" tools:ignore="MissingTranslation">Adjust brightness</string>

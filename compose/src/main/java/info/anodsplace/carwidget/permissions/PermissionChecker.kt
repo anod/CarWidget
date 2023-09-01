@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.permissions
 
+import android.os.Build
 import androidx.activity.ComponentActivity
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.preferences.InCarInterface
@@ -12,24 +13,29 @@ class PermissionChecker(
     private val inCarSettings: InCarInterface
 ) {
     fun check(activity: ComponentActivity): List<AppPermission> {
-        return check(listOf(
-            AppPermission.CanDrawOverlay,
-            AppPermission.WriteSettings,
-            AppPermission.AnswerPhoneCalls,
-            AppPermission.ActivityRecognition
-        ), activity = activity)
+        return check(
+            list = mutableListOf(
+                AppPermission.CanDrawOverlay,
+                AppPermission.WriteSettings,
+                AppPermission.AnswerPhoneCalls,
+                AppPermission.ActivityRecognition
+            ).apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    add(AppPermission.PostNotification)
+                }
+            },
+            activity = activity)
     }
 
+    @Suppress("NewApi")
     fun check(list: List<AppPermission>, activity: ComponentActivity): List<AppPermission> {
-        if (!inCarStatus.isEnabled) {
-            return emptyList()
-        }
         return list.filterRequired(activity) {
             return@filterRequired when (it) {
-                is AppPermission.CanDrawOverlay -> inCarSettings.screenOrientation != ScreenOrientation.DISABLED
-                is AppPermission.WriteSettings -> inCarSettings.brightness != InCarInterface.BRIGHTNESS_DISABLED
-                is AppPermission.AnswerPhoneCalls -> inCarSettings.autoAnswer != InCarInterface.AUTOANSWER_DISABLED
-                is AppPermission.ActivityRecognition -> inCarSettings.isActivityRequired
+                is AppPermission.CanDrawOverlay -> inCarStatus.isEnabled && inCarSettings.screenOrientation != ScreenOrientation.DISABLED
+                is AppPermission.WriteSettings -> inCarStatus.isEnabled && inCarSettings.brightness != InCarInterface.BRIGHTNESS_DISABLED
+                is AppPermission.AnswerPhoneCalls -> inCarStatus.isEnabled && inCarSettings.autoAnswer != InCarInterface.AUTOANSWER_DISABLED
+                is AppPermission.ActivityRecognition -> inCarStatus.isEnabled && inCarSettings.isActivityRequired
+                is AppPermission.PostNotification -> true
                 else -> throw IllegalStateException("Unknown $it")
             }
         }

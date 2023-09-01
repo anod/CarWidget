@@ -32,10 +32,11 @@ import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
 import info.anodsplace.carwidget.permissions.PermissionChecker
-import info.anodsplace.carwidget.utils.DefaultsResourceProvider
 import info.anodsplace.carwidget.skin.SkinPropertiesFactory
+import info.anodsplace.carwidget.utils.DefaultsResourceProvider
 import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.framework.app.ApplicationInstance
+import org.acra.ACRA
 import org.acra.ReportField
 import org.acra.config.limiter
 import org.acra.config.notification
@@ -64,9 +65,11 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
 
     private fun initCrashReporter() {
         val androidCrashHandler = Thread.getDefaultUncaughtExceptionHandler() ?: return
+        ACRA.DEV_LOGGING = BuildConfig.DEBUG
         initAcra {
             buildConfigClass = BuildConfig::class.java
             reportSendSuccessToast = getString(info.anodsplace.carwidget.content.R.string.crash_dialog_toast)
+            sendReportsInDevMode = true
             reportContent = listOf(
                 ReportField.APP_VERSION_NAME,
                 ReportField.APP_VERSION_CODE,
@@ -87,6 +90,7 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                 sendButtonText = getString(info.anodsplace.carwidget.content.R.string.crash_dialog_report_button)
             }
             limiter {
+                enabled = !BuildConfig.DEBUG
                 overallLimit = 3
                 exceptionClassLimit = 1
                 failedReportLimit = 1

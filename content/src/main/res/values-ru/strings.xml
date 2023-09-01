@@ -136,7 +136,7 @@
     <string name="app_theme">Тема приложения</string>
     <string name="no_active_widget">Активные виджеты не найдены. Убедитесь что виджет добавлент на домашний экран.</string>
     <string name="allow_permission_overlay">Разрешите отображение поверх для поворота экрана</string>
-	<string name="needs_permissions_to_work">Нет разрешений для работы</string>
+	<string name="missing_required_permissions">Нет разрешений для работы</string>
 	<string name="allow_access">Разрешить доступ</string>
 	<string name="permission_write_settings">Изменение системных настроек</string>
 	<string name="adjust_brightness">Регулировка ярк</string>

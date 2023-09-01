@@ -6,6 +6,7 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import androidx.core.content.res.ResourcesCompat
 import info.anodsplace.carwidget.R
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.framework.app.AlertWindow
@@ -32,7 +33,7 @@ class ScreenOnAlert(private val context: Context, private val prefs: InCarInterf
 
         alertWindow.show(params) { view ->
             view.alpha = 0.5f
-            view.background = context.resources.getDrawable(R.drawable.screen_on, null)
+            view.background = ResourcesCompat.getDrawable(context.resources, R.drawable.screen_on, null)
             view.setOnTouchListener(this)
         }
     }

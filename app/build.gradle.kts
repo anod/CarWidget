@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
 }
 
 dependencies {
@@ -39,13 +39,14 @@ dependencies {
     implementation(libs.acra.limiter)
 
     compileOnly(libs.auto.service.annotations)
-    kapt(libs.auto.service)
+    ksp(libs.auto.service.ksp)
+    ksp(libs.auto.service)
 
     implementation(libs.kotlin.stdlib)
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
 
     buildFeatures {
         aidl = true

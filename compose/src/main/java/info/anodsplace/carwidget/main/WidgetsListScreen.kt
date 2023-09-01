@@ -175,7 +175,10 @@ private fun WidgetsLisItems(
                     hasLargeItem = true
                     LargeWidgetItem(
                         item = item,
-                        onClick = { onEvent(MainViewEvent.OpenWidgetConfig(item.appWidgetId)) },
+                        onClick = {
+                            throw IllegalStateException("test exception")
+                            onEvent(MainViewEvent.OpenWidgetConfig(item.appWidgetId))
+                        },
                         iconShape = iconShape,
                         imageLoader = imageLoader,
                     )
