@@ -63,6 +63,10 @@ android {
         vectorDrawables.generatedDensities("hdpi", "xxhdpi")
     }
 
+    androidResources {
+        generateLocaleConfig = true
+    }
+
     signingConfigs {
         getByName("debug") {
             storeFile = file("../debug.keystore")
