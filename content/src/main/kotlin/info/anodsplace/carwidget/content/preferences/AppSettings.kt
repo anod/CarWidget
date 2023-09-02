@@ -52,6 +52,10 @@ class AppSettings(context: Context, appScope: AppCoroutineScope) : ChangeableSha
         get() = prefs.getInt(APP_THEME, system)
         set(value) = applyChange(APP_THEME, value)
 
+    var checkPermissionsOnStart: Boolean
+        get() = prefs.getBoolean(CHECK_PERMISSIONS, true)
+        set(value) = applyChange(CHECK_PERMISSIONS, value)
+
     companion object {
         const val light = 0
         const val dark = 1
@@ -59,6 +63,7 @@ class AppSettings(context: Context, appScope: AppCoroutineScope) : ChangeableSha
 
         const val MUSIC_APP = "music-app"
         const val APP_THEME = "app_theme"
+        const val CHECK_PERMISSIONS = "check_permissions_on_start"
 
         private fun getSharedPreferences(context: Context): SharedPreferences {
             return PreferenceManager.getDefaultSharedPreferences(context)

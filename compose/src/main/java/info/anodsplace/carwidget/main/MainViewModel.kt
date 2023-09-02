@@ -9,18 +9,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import coil.ImageLoader
+import info.anodsplace.carwidget.NavItem
+import info.anodsplace.carwidget.WidgetAwareViewModel
+import info.anodsplace.carwidget.appwidget.SkinList
 import info.anodsplace.carwidget.appwidget.WidgetIds
-import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.isValid
 import info.anodsplace.carwidget.content.di.unaryPlus
+import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.permissions.PermissionChecker
-import info.anodsplace.carwidget.NavItem
-import info.anodsplace.carwidget.WidgetAwareViewModel
-import info.anodsplace.carwidget.appwidget.SkinList
 import info.anodsplace.framework.content.CommonActivityAction
 import info.anodsplace.framework.content.forHomeScreen
 import info.anodsplace.permissions.AppPermission
@@ -50,13 +50,13 @@ sealed interface MainViewAction {
 }
 
 sealed interface MainViewEvent {
-    object PermissionAcquired : MainViewEvent
+    data object PermissionAcquired : MainViewEvent
     class ApplyWidget(val appWidgetId: Int, val currentSkinValue: String) : MainViewEvent
     class OpenWidgetConfig(val appWidgetId: Int) : MainViewEvent
     class WidgetUpdateShortcuts(val number: Int) : MainViewEvent
     class WidgetUpdateSkin(val skinIdx: Int) : MainViewEvent
 
-    object OnBackNav : MainViewEvent
+    data object OnBackNav : MainViewEvent
     object CloseWizard : MainViewEvent
     object ShowWizard : MainViewEvent
     object GotToHomeScreen : MainViewEvent
@@ -65,18 +65,21 @@ sealed interface MainViewEvent {
 class MainViewModel(
     requiredPermissions: List<AppPermission>,
     appWidgetIdScope: AppWidgetIdScope?,
+    private val appSettings: AppSettings
 ) : WidgetAwareViewModel<MainViewState, MainViewEvent, MainViewAction>(appWidgetIdScope), KoinScopeComponent {
 
     class Factory(
         private val appWidgetId: Int,
         private val activity: ComponentActivity,
-        private val permissionChecker: PermissionChecker
+        private val permissionChecker: PermissionChecker,
+        private val appSettings: AppSettings
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
             return MainViewModel(
-                requiredPermissions = permissionChecker.check(activity),
-                appWidgetIdScope = if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) AppWidgetIdScope(appWidgetId) else null
+                requiredPermissions = if (appSettings.checkPermissionsOnStart) permissionChecker.check(activity) else emptyList(),
+                appWidgetIdScope = if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) AppWidgetIdScope(appWidgetId) else null,
+                appSettings = appSettings
             ) as T
         }
     }
@@ -111,6 +114,7 @@ class MainViewModel(
     override fun handleEvent(event: MainViewEvent) {
         when (event) {
             is MainViewEvent.PermissionAcquired -> {
+                appSettings.checkPermissionsOnStart = false
                 viewState = viewState.copy(topDestination = if (appWidgetIdScope.isValid) NavItem.Tab.CurrentWidget else NavItem.Tab.Widgets)
             }
             is MainViewEvent.OnBackNav -> emitAction(MainViewAction.OnBackNav)

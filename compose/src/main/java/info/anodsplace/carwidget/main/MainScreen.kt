@@ -10,11 +10,20 @@ import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,27 +34,31 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import coil.ImageLoader
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.CheckIcon
-import info.anodsplace.carwidget.content.di.AppWidgetIdScope
-import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.NavItem
 import info.anodsplace.carwidget.about.AboutScreen
 import info.anodsplace.carwidget.about.AboutViewModel
+import info.anodsplace.carwidget.appwidget.SkinList
+import info.anodsplace.carwidget.appwidget.SkinPreviewViewModel
+import info.anodsplace.carwidget.appwidget.WidgetCustomizeScreen
+import info.anodsplace.carwidget.appwidget.WidgetCustomizeViewModel
+import info.anodsplace.carwidget.appwidget.WidgetSkinScreen
+import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.incar.BluetoothDevicesScreen
 import info.anodsplace.carwidget.incar.BluetoothDevicesViewModel
 import info.anodsplace.carwidget.incar.InCarMainScreen
 import info.anodsplace.carwidget.incar.InCarViewModel
 import info.anodsplace.carwidget.permissions.PermissionsScreen
 import info.anodsplace.carwidget.shortcut.EditShortcut
-import info.anodsplace.carwidget.appwidget.SkinList
-import info.anodsplace.carwidget.appwidget.SkinPreviewViewModel
-import info.anodsplace.carwidget.appwidget.WidgetCustomizeScreen
-import info.anodsplace.carwidget.appwidget.WidgetCustomizeViewModel
-import info.anodsplace.carwidget.appwidget.WidgetSkinScreen
+import info.anodsplace.compose.findActivity
 import info.anodsplace.framework.content.CommonActivityAction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -301,7 +314,7 @@ fun NavHost(
         }
         navigation(route = NavItem.Tab.InCar.route, startDestination = NavItem.Tab.InCar.Main.route) {
             composable(route = NavItem.Tab.InCar.Main.route) {
-                val inCarViewModel: InCarViewModel = viewModel()
+                val inCarViewModel: InCarViewModel = viewModel(factory = InCarViewModel.Factory(context.findActivity()))
                 val screenState by inCarViewModel.viewStates.collectAsState(initial = inCarViewModel.viewState)
                 InCarMainScreen(
                     screenState = screenState,
@@ -312,7 +325,7 @@ fun NavHost(
                 )
                 LaunchedEffect(true) {
                     inCarViewModel.viewActions.collect {
-                        inCarViewModel.handleAction(it, navController, activityContext = context)
+                        inCarViewModel.handleAction(it, navController, context.findActivity())
                     }
                 }
             }

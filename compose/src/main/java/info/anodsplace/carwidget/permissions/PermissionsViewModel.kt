@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import info.anodsplace.carwidget.content.PermissionDescriptionItem
 import info.anodsplace.carwidget.content.R
+import info.anodsplace.carwidget.utils.toPermissionDescription
 import info.anodsplace.compose.PermissionDescription
 import info.anodsplace.compose.RequestPermissionsScreenDescription
 import info.anodsplace.permissions.AppPermission
@@ -16,13 +17,6 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 
-fun PermissionDescriptionItem.toPermissionDescription(): PermissionDescription = PermissionDescription(
-    permission = AppPermissions.fromValue(this.permission),
-    iconRes = this.iconsRes,
-    titleRes = this.titleRes,
-    descRes = this.descRes
-)
-
 @Immutable
 data class PermissionsViewState(
     val screenDescription: RequestPermissionsScreenDescription,
@@ -30,6 +24,7 @@ data class PermissionsViewState(
 )
 
 sealed interface PermissionsViewEvent {
+    class RequestPermissionResult(val activity: ComponentActivity) : PermissionsViewEvent
 }
 
 sealed interface PermissionsViewAction
@@ -61,16 +56,21 @@ class PermissionsViewModel(
         viewState = PermissionsViewState(
             screenDescription = RequestPermissionsScreenDescription(
                 titleRes = R.string.missing_required_permissions,
-                allowAccessRes = R.string.allow_access
+                allowAccessRes = R.string.allow_access,
+                cancelRes = android.R.string.cancel
             ),
             missingPermissions = initialPermission
                 .mapNotNull { permissionDescriptionsMap[it] }
         )
     }
 
-    override fun handleEvent(event: PermissionsViewEvent) { }
+    override fun handleEvent(event: PermissionsViewEvent) {
+        when (event) {
+            is PermissionsViewEvent.RequestPermissionResult -> updatePermissions(event.activity)
+        }
+    }
 
-    fun updatePermissions(activity: ComponentActivity): Boolean {
+    private fun updatePermissions(activity: ComponentActivity): Boolean {
         val requiredPermissions = permissionChecker.check(activity)
         if (requiredPermissions.isNotEmpty()) {
             viewState = viewState.copy(

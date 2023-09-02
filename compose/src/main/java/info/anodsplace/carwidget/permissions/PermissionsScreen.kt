@@ -25,7 +25,6 @@ import info.anodsplace.carwidget.main.MainViewState
 import info.anodsplace.compose.RequestPermissionsScreen
 import info.anodsplace.compose.findActivity
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PermissionsScreen(screenState: MainViewState, onEvent: (MainViewEvent) -> Unit) {
     val context = LocalContext.current
@@ -36,6 +35,20 @@ fun PermissionsScreen(screenState: MainViewState, onEvent: (MainViewEvent) -> Un
         )
     )
     val viewState by permissionsViewModel.viewStates.collectAsState(initial = permissionsViewModel.viewState)
+    RequestPermissions(
+        viewState = viewState,
+        onEvent = {
+            permissionsViewModel.handleEvent(it)
+            if (it is PermissionsViewEvent.RequestPermissionResult) {
+                onEvent(MainViewEvent.PermissionAcquired)
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun RequestPermissions(viewState: PermissionsViewState, onEvent: (PermissionsViewEvent) -> Unit) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -56,14 +69,13 @@ fun PermissionsScreen(screenState: MainViewState, onEvent: (MainViewEvent) -> Un
             modifier = Modifier.padding(paddingValues),
             contentAlignment = Alignment.TopCenter
         ) {
+            val context = LocalContext.current
             RequestPermissionsScreen(
                 modifier = Modifier.padding(16.dp).align(Alignment.TopCenter),
                 input = viewState.missingPermissions,
                 screenDescription = viewState.screenDescription,
                 onResult = {
-                    if (permissionsViewModel.updatePermissions(context.findActivity())) {
-                        onEvent(MainViewEvent.PermissionAcquired)
-                    }
+                    onEvent(PermissionsViewEvent.RequestPermissionResult(context.findActivity()))
                 }
             )
         }

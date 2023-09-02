@@ -35,7 +35,8 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
         MainViewModel.Factory(
             appWidgetId = appWidgetId,
             activity = this@MainComposeActivity,
-            permissionChecker = get()
+            permissionChecker = get(),
+            appSettings = get()
         )
     }
 

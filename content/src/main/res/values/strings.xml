@@ -158,6 +158,7 @@
     <string name="car_dock_summary">Enable InCar mode when phone is docked into car dock</string>
     <string name="widgets">Widgets</string>
     <string name="show_choice">Show choice</string>
+    <string name="show">Show</string>
     <string name="music_app">Music App</string>
     <string name="app_theme">App Theme</string>
     <string name="widgets_hint">Select an item to configure the widget</string>
