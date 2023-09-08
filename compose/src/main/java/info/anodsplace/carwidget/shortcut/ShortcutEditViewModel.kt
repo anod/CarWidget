@@ -34,6 +34,7 @@ data class ShortcutEditViewState(
     val shortcutId: Long = -1,
     val expanded: Boolean = false,
     val showIconPackPicker: Boolean = false,
+    val iconVersion: Int = -1
 )
 
 sealed interface ShortcutEditViewEvent {
@@ -82,6 +83,11 @@ class ShortcutEditViewModel(
         viewModelScope.launch {
             shortcutsDatabase.observeShortcut(shortcutId).collect { shortcut ->
                 viewState = viewState.copy(shortcut = shortcut)
+            }
+        }
+        viewModelScope.launch {
+            shortcutsDatabase.observeIcon(shortcutId).collect { icon ->
+                viewState = viewState.copy(iconVersion = icon.hashCode())
             }
         }
     }

@@ -66,7 +66,10 @@ fun Shortcut.iconUri(context: Context, adaptiveIconStyle: String, skinName: Stri
         .build()
 }
 
-fun Shortcut.toImageRequest(context: Context, adaptiveIconStyle: String, skinName: String = ""): ImageRequest = ImageRequest.Builder(context)
-    .data(iconUri(context, adaptiveIconStyle, skinName))
-    .parameters(Parameters.Builder().set("version", hashCode()).build())
+fun Shortcut.toImageRequest(context: Context, adaptiveIconStyle: String, skinName: String = "", iconVersion: Int = -1): ImageRequest = ImageRequest.Builder(context)
+    .data(iconUri(context, adaptiveIconStyle, skinName)).apply {
+       if (iconVersion > 0) {
+           parameters(Parameters.Builder().set("version", iconVersion).build())
+       }
+    }
     .build()

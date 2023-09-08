@@ -25,8 +25,12 @@ class ShortcutsDatabase(private val db: Database) {
         return db.shortcutsQueries.changes().asFlow().mapToOneOrNull().filterNotNull()
     }
 
-    suspend fun loadByShortcutId(shortcutId: Long): SelectShortcutIcon? = withContext(Dispatchers.IO) {
+    suspend fun loadIcon(shortcutId: Long): SelectShortcutIcon? = withContext(Dispatchers.IO) {
         return@withContext db.shortcutsQueries.selectShortcutIcon(shortcutId).executeAsOneOrNull()
+    }
+
+    fun observeIcon(shortcutId: Long): Flow<SelectShortcutIcon?> {
+        return db.shortcutsQueries.selectShortcutIcon(shortcutId).asFlow().mapToOneOrNull()
     }
 
     fun observeShortcut(shortcutId: Long): Flow<Shortcut?> {

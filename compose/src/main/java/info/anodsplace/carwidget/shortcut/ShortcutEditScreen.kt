@@ -76,6 +76,7 @@ fun ShortcutEditScreen(
         if (state.shortcut != null) {
             ShortcutEditContent(
                 shortcut = state.shortcut,
+                iconVersion = state.iconVersion,
                 isIntentReadonly = true,
                 onEvent = onEvent,
                 onDismissRequest = onDismissRequest,
@@ -88,16 +89,21 @@ fun ShortcutEditScreen(
 
     if (state.showIconPackPicker) {
         val context = LocalContext.current
+        val iconPackImage = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
+            onEvent(ShortcutEditViewEvent.IconPackResult(
+                intent = it.data,
+                resolveProperties = DrawableUri.ResolveProperties(
+                    maxIconSize = UtilitiesBitmap.getIconMaxSize(context),
+                    targetDensity = UtilitiesBitmap.getTargetDensity(context),
+                    context = context
+                )
+            ))
+        }
         IntentChooser(
             intent = Intent().forIconPack(),
-            onChoose = { onEvent(ShortcutEditViewEvent.IconPackResult(
-                    intent = it.intent,
-                    resolveProperties = DrawableUri.ResolveProperties(
-                            maxIconSize = UtilitiesBitmap.getIconMaxSize(context),
-                            targetDensity = UtilitiesBitmap.getTargetDensity(context),
-                            context = context
-                    )
-            )) },
+            onChoose = {
+                iconPackImage.launch(Intent().apply { component = it.componentName }.forIconPack())
+            },
             onDismissRequest = { onEvent(ShortcutEditViewEvent.IconPackPicker(show = false)) },
             imageLoader = imageLoader
         )
@@ -108,6 +114,7 @@ fun ShortcutEditScreen(
 @Composable
 fun ShortcutEditContent(
         shortcut: Shortcut,
+        iconVersion: Int,
         expanded: Boolean,
         isIntentReadonly: Boolean,
         onEvent: (ShortcutEditViewEvent) -> Unit,
@@ -140,7 +147,14 @@ fun ShortcutEditContent(
                 }
         ) {
             if (!expanded) {
-                ShortcutDetails(shortcut, widgetSettings, imageLoader, onEvent, onDismissRequest)
+                ShortcutDetails(
+                    shortcut = shortcut,
+                    iconVersion = iconVersion,
+                    widgetSettings = widgetSettings,
+                    imageLoader = imageLoader,
+                    onEvent = onEvent,
+                    onDismissRequest = onDismissRequest
+                )
             } else {
                 IntentEditScreen(
                     intent = shortcut.intent,
@@ -168,6 +182,7 @@ fun ShortcutEditContent(
 @Composable
 private fun ShortcutDetails(
     shortcut: Shortcut,
+    iconVersion: Int,
     widgetSettings: WidgetInterface,
     imageLoader: ImageLoader,
     onEvent: (ShortcutEditViewEvent) -> Unit,
@@ -192,7 +207,7 @@ private fun ShortcutDetails(
             .height(96.dp),
     ) {
         AsyncImage(
-            model = shortcut.toImageRequest(LocalContext.current, widgetSettings.adaptiveIconStyle),
+            model = shortcut.toImageRequest(LocalContext.current, widgetSettings.adaptiveIconStyle, iconVersion = iconVersion),
             contentDescription = shortcut.title.toString(),
             imageLoader = imageLoader,
             modifier = Modifier

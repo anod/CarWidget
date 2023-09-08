@@ -19,7 +19,7 @@ class ShortcutsJsonWriter {
         for ((pos, value) in shortcuts) {
             val info = value ?: continue
             shortcutsWriter.beginObject()
-            val dbShortcut = db.loadByShortcutId(info.id)
+            val dbShortcut = db.loadIcon(info.id)
             val icon = iconConverter.convert(info.id, dbShortcut)
             val values = ShortcutsDatabase.createShortcutContentValues(info, icon)
             shortcutsWriter.name("pos").value(pos.toLong())
