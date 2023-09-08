@@ -3,13 +3,29 @@ package info.anodsplace.carwidget.about
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,19 +41,17 @@ import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.MediaListLoader
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.backup.Backup
+import info.anodsplace.carwidget.permissions.RequestPermissionsDialog
 import info.anodsplace.compose.PreferenceCategory
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.framework.content.CommonActivityAction
 import info.anodsplace.framework.content.CreateDocument
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import java.util.*
+import java.util.Locale
 
 @Composable
 fun AboutScreen(
     screenState: AboutScreenState,
     onEvent: (AboutScreenStateEvent) -> Unit,
-    actions: Flow<CommonActivityAction> = flowOf(),
     onActivityAction: (CommonActivityAction) -> Unit = {},
     imageLoader: ImageLoader,
     innerPadding: PaddingValues = PaddingValues(0.dp)
@@ -102,12 +116,6 @@ fun AboutScreen(
             AboutButton(title = screenState.appVersion, subtitle = stringResource(id = R.string.version_summary), onClick = {
                 onEvent(AboutScreenStateEvent.OpenPlayStoreDetails)
             })
-        }
-    }
-
-    LaunchedEffect(key1 = true) {
-        actions.collect {
-            onActivityAction(it)
         }
     }
 
@@ -176,6 +184,13 @@ fun AboutScreen(
                 showMusicAppDialog = false
             },
             imageLoader = imageLoader
+        )
+    }
+
+    if (screenState.missingPermissionsDialog.isNotEmpty()) {
+        RequestPermissionsDialog(
+            missingPermissions = screenState.missingPermissionsDialog,
+            onResult = { onEvent(AboutScreenStateEvent.RequestPermissionResult) }
         )
     }
 }

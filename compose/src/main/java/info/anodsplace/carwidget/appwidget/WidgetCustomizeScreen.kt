@@ -17,7 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -42,7 +42,17 @@ import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.QueryIntentLoader
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
-import info.anodsplace.compose.*
+import info.anodsplace.compose.BottomSheet
+import info.anodsplace.compose.ColorDialogContent
+import info.anodsplace.compose.IconShapeSelector
+import info.anodsplace.compose.Preference
+import info.anodsplace.compose.PreferenceItem
+import info.anodsplace.compose.PreferenceSlider
+import info.anodsplace.compose.PreferencesScreen
+import info.anodsplace.compose.checked
+import info.anodsplace.compose.key
+import info.anodsplace.compose.toTextItem
+import info.anodsplace.compose.value
 import info.anodsplace.framework.content.forIconTheme
 
 @Composable
@@ -246,7 +256,7 @@ private fun IconsThemePicker(
     // TODO: Replace with lifecycle.currentStateFlow
     // https://android-review.googlesource.com/c/platform/frameworks/support/+/2472957/3/lifecycle/lifecycle-runtime/src/main/java/androidx/lifecycle/LifecycleRegistry.kt#113
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-    var onResume by remember { mutableStateOf(0) }
+    var onResume by remember { mutableIntStateOf(0) }
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_START) {

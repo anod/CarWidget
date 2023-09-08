@@ -44,6 +44,7 @@ import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.CheckIcon
 import info.anodsplace.carwidget.NavItem
 import info.anodsplace.carwidget.about.AboutScreen
+import info.anodsplace.carwidget.about.AboutScreenAction
 import info.anodsplace.carwidget.about.AboutViewModel
 import info.anodsplace.carwidget.appwidget.SkinList
 import info.anodsplace.carwidget.appwidget.SkinPreviewViewModel
@@ -265,11 +266,20 @@ fun NavHost(
             AboutScreen(
                 screenState = aboutScreenState,
                 onEvent = aboutViewModel::handleEvent,
-                actions = aboutViewModel.viewActions,
                 onActivityAction = onActivityAction,
                 innerPadding = innerPadding,
                 imageLoader = imageLoader
             )
+
+            LaunchedEffect(key1 = true) {
+                aboutViewModel.viewActions.collect {
+                    when (it) {
+                        is AboutScreenAction.CommonActivity -> onActivityAction(it.action)
+                        else -> aboutViewModel.handleAction(it, context.findActivity())
+                    }
+                }
+            }
+
         }
         navigation(route = NavItem.Tab.CurrentWidget.route, startDestination = currentWidgetStartDestination) {
             composable(route = NavItem.Tab.CurrentWidget.Skin.route) {

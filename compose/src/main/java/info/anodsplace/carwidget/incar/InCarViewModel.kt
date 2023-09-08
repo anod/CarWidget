@@ -58,7 +58,7 @@ sealed interface InCarViewAction {
     class Navigate(val route: String) : InCarViewAction
     class RequestPermissions(val permissions: List<AppPermission>) : InCarViewAction
     class CheckPermission(val permission: AppPermission) : InCarViewAction
-    object CheckMissingPermissions : InCarViewAction
+    data object CheckMissingPermissions : InCarViewAction
 }
 
 fun InCarInterface.saveScreenTimeout(disabled: Boolean, disableCharging: Boolean) {

@@ -23,8 +23,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import coil.ImageLoader
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.NavItem
@@ -32,12 +30,11 @@ import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.ChooserLoader
 import info.anodsplace.carwidget.chooser.StaticChooserLoader
 import info.anodsplace.carwidget.content.R
+import info.anodsplace.carwidget.permissions.RequestPermissionsDialog
 import info.anodsplace.compose.PermissionDescription
 import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.compose.PreferencesDefaults
 import info.anodsplace.compose.PreferencesScreen
-import info.anodsplace.compose.RequestPermissionsScreen
-import info.anodsplace.compose.RequestPermissionsScreenDescription
 import info.anodsplace.compose.checked
 import info.anodsplace.compose.findActivity
 import info.anodsplace.compose.key
@@ -130,9 +127,11 @@ fun InCarMainScreen(
     }
 
     if (screenState.missingPermissionsDialog.isNotEmpty()) {
+        val missingPermissions = screenState.missingPermissionsDialog
+        val context = LocalContext.current
         RequestPermissionsDialog(
-            missingPermissions = screenState.missingPermissionsDialog,
-            onEvent = onEvent
+            missingPermissions = missingPermissions,
+            onResult = { onEvent(InCarViewEvent.RequestPermissionResult(emptyList(), missingPermissions, context.findActivity())) }
         )
     }
 }
@@ -159,37 +158,6 @@ private  fun MissingPermissionNotice(
             onClick = { onEvent(InCarViewEvent.RequestPermission(missingPermissions = missingPermissions)) }
         ) {
             Text(text = stringResource(R.string.show))
-        }
-    }
-}
-
-@Composable
-private fun RequestPermissionsDialog(
-    missingPermissions: List<PermissionDescription>,
-    onEvent: (InCarViewEvent) -> Unit
-) {
-    val context = LocalContext.current
-    Dialog(
-        onDismissRequest = {
-            onEvent(InCarViewEvent.RequestPermissionResult(emptyList(), missingPermissions, context.findActivity()))
-        },
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        )
-    ) {
-        Surface {
-            RequestPermissionsScreen(
-                modifier = Modifier.padding(16.dp),
-                input = missingPermissions.map { it },
-                screenDescription = RequestPermissionsScreenDescription(
-                    titleRes = R.string.missing_required_permissions,
-                    allowAccessRes = R.string.allow_access,
-                    cancelRes = android.R.string.cancel
-                ),
-                onResult = { result ->
-                    onEvent(InCarViewEvent.RequestPermissionResult(result, missingPermissions, context.findActivity()))
-                }
-            )
         }
     }
 }
