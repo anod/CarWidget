@@ -1,13 +1,38 @@
 package info.anodsplace.carwidget.shortcut
 
 import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -27,11 +52,10 @@ import info.anodsplace.carwidget.InfoIcon
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.Shortcut
-import info.anodsplace.carwidget.content.db.iconUri
+import info.anodsplace.carwidget.content.db.toImageRequest
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.shortcut.intent.IntentEditScreen
-import info.anodsplace.framework.content.forCustomImage
 import info.anodsplace.framework.content.forIconPack
 import info.anodsplace.graphics.DrawableUri
 
@@ -75,23 +99,6 @@ fun ShortcutEditScreen(
                     )
             )) },
             onDismissRequest = { onEvent(ShortcutEditViewEvent.IconPackPicker(show = false)) },
-            imageLoader = imageLoader
-        )
-    }
-
-    if (state.showIconPicker) {
-        val context = LocalContext.current
-        IntentChooser(
-            intent = Intent().forCustomImage(context = context),
-            onChoose = { onEvent(ShortcutEditViewEvent.CustomIconResult(
-                intent = it.intent,
-                resolveProperties = DrawableUri.ResolveProperties(
-                    maxIconSize = UtilitiesBitmap.getIconMaxSize(context),
-                    targetDensity = UtilitiesBitmap.getTargetDensity(context),
-                    context = context
-                )
-            )) },
-            onDismissRequest = { onEvent(ShortcutEditViewEvent.CustomIconPicker(show = false)) },
             imageLoader = imageLoader
         )
     }
@@ -166,6 +173,18 @@ private fun ShortcutDetails(
     onEvent: (ShortcutEditViewEvent) -> Unit,
     onDismissRequest: () -> Unit
 ) {
+    val context = LocalContext.current
+    val customImage = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) {
+        onEvent(ShortcutEditViewEvent.CustomIconResult(
+            uri = it,
+            resolveProperties = DrawableUri.ResolveProperties(
+                maxIconSize = UtilitiesBitmap.getIconMaxSize(context),
+                targetDensity = UtilitiesBitmap.getTargetDensity(context),
+                context = context
+            )
+        ))
+    }
+
     Row(
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -173,7 +192,7 @@ private fun ShortcutDetails(
             .height(96.dp),
     ) {
         AsyncImage(
-            model = shortcut.iconUri(LocalContext.current, widgetSettings.adaptiveIconStyle),
+            model = shortcut.toImageRequest(LocalContext.current, widgetSettings.adaptiveIconStyle),
             contentDescription = shortcut.title.toString(),
             imageLoader = imageLoader,
             modifier = Modifier
@@ -212,7 +231,7 @@ private fun ShortcutDetails(
         SectionHeader {
             Text(text = stringResource(R.string.customize_icon))
         }
-        SectionCard(onClick = { onEvent(ShortcutEditViewEvent.CustomIconPicker(show = true)) }) {
+        SectionCard(onClick = { customImage.launch("image/*") }) {
             SectionAction {
                 Text(text = stringResource(R.string.icon_custom))
             }

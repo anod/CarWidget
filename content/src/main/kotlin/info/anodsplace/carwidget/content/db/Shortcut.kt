@@ -4,6 +4,8 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import coil.request.ImageRequest
+import coil.request.Parameters
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.ktx.equalsHash
 import info.anodsplace.ktx.hashCodeOf
@@ -63,3 +65,8 @@ fun Shortcut.iconUri(context: Context, adaptiveIconStyle: String, skinName: Stri
         .appendQueryParameter("adaptiveIconStyle", adaptiveIconStyle)
         .build()
 }
+
+fun Shortcut.toImageRequest(context: Context, adaptiveIconStyle: String, skinName: String = ""): ImageRequest = ImageRequest.Builder(context)
+    .data(iconUri(context, adaptiveIconStyle, skinName))
+    .parameters(Parameters.Builder().set("version", hashCode()).build())
+    .build()

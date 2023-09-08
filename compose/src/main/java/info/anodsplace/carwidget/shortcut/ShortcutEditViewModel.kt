@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.shortcut
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -32,22 +33,21 @@ data class ShortcutEditViewState(
     val position: Int = -1,
     val shortcutId: Long = -1,
     val expanded: Boolean = false,
-    val showIconPicker: Boolean = false,
     val showIconPackPicker: Boolean = false,
 )
 
 sealed interface ShortcutEditViewEvent {
     class UpdateField(val field: IntentField) : ShortcutEditViewEvent
     class ToggleAdvanced(val expanded: Boolean) : ShortcutEditViewEvent
-    object Drop : ShortcutEditViewEvent
-    class CustomIconPicker(val show: Boolean) : ShortcutEditViewEvent
-    class CustomIconResult(val intent: Intent?, val resolveProperties: DrawableUri.ResolveProperties) : ShortcutEditViewEvent
+    data object Drop : ShortcutEditViewEvent
     class IconPackPicker(val show: Boolean) : ShortcutEditViewEvent
     class IconPackResult(val intent: Intent?, val resolveProperties: DrawableUri.ResolveProperties) : ShortcutEditViewEvent
-    object DefaultIconReset : ShortcutEditViewEvent
+    class CustomIconResult(val uri: Uri?, val resolveProperties: DrawableUri.ResolveProperties) : ShortcutEditViewEvent
+    data object DefaultIconReset : ShortcutEditViewEvent
 }
 
-sealed interface ShortcutEditViewAction
+sealed interface ShortcutEditViewAction {
+}
 
 class ShortcutEditViewModel(
         position: Int,
@@ -103,15 +103,11 @@ class ShortcutEditViewModel(
                     shortcutsDatabase.updateIntent(shortcut.id, intent)
                 }
             }
-            is ShortcutEditViewEvent.CustomIconPicker -> {
-                viewState = viewState.copy(showIconPicker = event.show)
-            }
             is ShortcutEditViewEvent.IconPackPicker -> {
                 viewState = viewState.copy(showIconPackPicker = event.show)
             }
             is ShortcutEditViewEvent.CustomIconResult -> {
-                viewState = viewState.copy(showIconPicker = false)
-                updateCustomIcon(event.intent, event.resolveProperties)
+                updateCustomIcon(event.uri, event.resolveProperties)
             }
             is ShortcutEditViewEvent.IconPackResult -> {
                 viewState = viewState.copy(showIconPackPicker = false)
@@ -156,8 +152,8 @@ class ShortcutEditViewModel(
         return bitmap
     }
 
-    private fun updateCustomIcon(intent: Intent?, resolveProperties: DrawableUri.ResolveProperties): Boolean {
-        val imageUri = intent?.data ?: return false
+    private fun updateCustomIcon(uri: Uri?, resolveProperties: DrawableUri.ResolveProperties): Boolean {
+        val imageUri =uri ?: return false
         val icon = DrawableUri(context).resolve(imageUri, resolveProperties) ?: return false
         val bitmap = UtilitiesBitmap.createMaxSizeIcon(icon, context)
         setCustomIcon(bitmap)

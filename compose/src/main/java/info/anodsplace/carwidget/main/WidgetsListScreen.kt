@@ -34,7 +34,7 @@ import info.anodsplace.carwidget.WarningIcon
 import info.anodsplace.carwidget.WidgetsIcon
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.R
-import info.anodsplace.carwidget.content.db.iconUri
+import info.anodsplace.carwidget.content.db.toImageRequest
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
 import info.anodsplace.compose.SystemIconShape
@@ -238,7 +238,7 @@ private fun LargeWidgetRow(item: WidgetItem.Large, indexes: List<Int>, iconShape
             ) {
                 if (shortcut != null) {
                     AsyncImage(
-                        model = shortcut.iconUri(context, item.adaptiveIconStyle, item.skinName),
+                        model = shortcut.toImageRequest(context, item.adaptiveIconStyle, item.skinName),
                         contentDescription = shortcut.title.toString(),
                         imageLoader = imageLoader,
                         modifier = Modifier.fillMaxSize(),
