@@ -135,12 +135,12 @@ private fun WidgetsLisItems(
                         modifier = Modifier.padding(start = 16.dp),
                     ) {
                         Text(
-                            text = stringResource(info.anodsplace.carwidget.content.R.string.incar_service_is_not_running),
+                            text = stringResource(R.string.incar_service_is_not_running),
                             color = MaterialTheme.colorScheme.error
                         )
                         if (!screen.ignoringBatteryOptimization) {
                             Text(
-                                text = stringResource(info.anodsplace.carwidget.content.R.string.disable_battery_optimization_warning),
+                                text = stringResource(R.string.disable_battery_optimization_warning),
                                 color = MaterialTheme.colorScheme.error
                             )
                         }
@@ -190,7 +190,7 @@ private fun WidgetsLisItems(
                         .padding(16.dp)
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center,
-                    text = stringResource(id = info.anodsplace.carwidget.content.R.string.widgets_hint)
+                    text = stringResource(id = R.string.widgets_hint)
                 )
             }
         }
@@ -210,7 +210,7 @@ private fun NoWidgetsItem(onClick: () -> Unit) {
     ) {
         Text(
             modifier = Modifier.weight(1f),
-            text = stringResource(id = info.anodsplace.carwidget.content.R.string.no_active_widget),
+            text = stringResource(id = R.string.no_active_widget),
             color = MaterialTheme.colorScheme.onError
         )
         WidgetsIcon(
@@ -268,17 +268,17 @@ fun LargeWidgetItem(item: WidgetItem.Large, onClick: () -> Unit, iconShape: Shap
 @Composable
 fun EventStates(eventsState: List<InCarStatus.EventState>) {
     val titles = listOf(
-            info.anodsplace.carwidget.content.R.string.pref_power_connected_title,
-            info.anodsplace.carwidget.content.R.string.pref_headset_connected_title,
-            info.anodsplace.carwidget.content.R.string.pref_blutooth_device_title,
-            info.anodsplace.carwidget.content.R.string.activity_recognition,
-            info.anodsplace.carwidget.content.R.string.car_dock
+            R.string.pref_power_connected_title,
+            R.string.pref_headset_connected_title,
+            R.string.pref_blutooth_device_title,
+            R.string.activity_recognition,
+            R.string.car_dock
     )
     Column(modifier = Modifier.padding(top = 16.dp)) {
         for (event in eventsState) {
             val title = stringResource(titles[event.id])
-            val enabled = if (event.enabled) stringResource(info.anodsplace.carwidget.content.R.string.enabled) else stringResource(info.anodsplace.carwidget.content.R.string.disabled)
-            val active = if (event.active) stringResource(info.anodsplace.carwidget.content.R.string.active) else stringResource(info.anodsplace.carwidget.content.R.string.not_active)
+            val enabled = if (event.enabled) stringResource(info.anodsplace.carwidget.content.R.string.enabled) else stringResource(R.string.disabled)
+            val active = if (event.active) stringResource(info.anodsplace.carwidget.content.R.string.active) else stringResource(R.string.not_active)
             Text(
                 text = String.format("%s: %s - %s", title, enabled, active),
                 style = MaterialTheme.typography.labelMedium,
@@ -294,7 +294,7 @@ fun InCarHeader(screen: WidgetListScreenState) {
 
     Column(modifier = Modifier.cardStyle()) {
         Text(
-            text = stringResource(id = info.anodsplace.carwidget.content.R.string.pref_incar_mode_title) + " - " + active,
+            text = stringResource(id = R.string.pref_incar_mode_title) + " - " + active,
             color = MaterialTheme.colorScheme.onSecondary
         )
         if (screen.isServiceRequired) {

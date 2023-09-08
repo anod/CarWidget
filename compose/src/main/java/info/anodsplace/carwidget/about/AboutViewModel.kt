@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.AppCoroutineScope
+import info.anodsplace.carwidget.content.BroadcastServiceManager
 import info.anodsplace.carwidget.content.PermissionDescriptionItem
 import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.carwidget.content.backup.BackupCheckResult
@@ -80,6 +81,7 @@ class AboutViewModel(
     private val appScope: AppCoroutineScope,
     private val permissionChecker: PermissionChecker,
     private val permissionDescriptionsMap: Map<AppPermission, PermissionDescription>,
+    private val broadcastServiceManager: BroadcastServiceManager,
 ): BaseFlowViewModel<AboutScreenState, AboutScreenStateEvent, AboutScreenAction>() {
 
     class Factory(private val appWidgetIdScope: AppWidgetIdScope?): ViewModelProvider.Factory, KoinComponent {
@@ -89,6 +91,7 @@ class AboutViewModel(
         private val backupManager: BackupManager by inject()
         private val appSettings: AppSettings by inject()
         private val appScope: AppCoroutineScope by inject()
+        private val broadcastServiceManager: BroadcastServiceManager by inject()
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T = AboutViewModel(
@@ -97,7 +100,8 @@ class AboutViewModel(
             backupManager,
             appSettings,
             appScope,permissionChecker,
-            permissionDescriptionsMap = permissionDescriptions.associateBy({ AppPermissions.fromValue(it.permission)}, { it.toPermissionDescription() })
+            permissionDescriptionsMap = permissionDescriptions.associateBy({ AppPermissions.fromValue(it.permission)}, { it.toPermissionDescription() }),
+            broadcastServiceManager
         ) as T
     }
 
@@ -166,6 +170,7 @@ class AboutViewModel(
                 appScope.launch {
                     val code = backupManager.restore(appWidgetIdScope!!, event.srcUri, restoreInCar = event.restoreInCar)
                     viewState = viewState.copy(restoreProgress = false)
+                    broadcastServiceManager.registerBroadcastService()
                     emitAction(showToast(resId = renderRestoreCode(code), length = Toast.LENGTH_LONG))
                     emitAction(AboutScreenAction.CheckMissingPermissions)
                 }
