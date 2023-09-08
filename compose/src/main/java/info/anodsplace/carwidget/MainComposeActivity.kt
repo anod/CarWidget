@@ -15,7 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.view.WindowCompat
-import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.content.di.getOrCreateAppWidgetScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.main.MainScreen
@@ -84,7 +84,7 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
                     action.appWidgetId
                 )
                 setResult(RESULT_OK, resultValue)
-                AppWidgetIdScope(action.appWidgetId).use {
+                getOrCreateAppWidgetScope(action.appWidgetId).use {
                     val prefs: WidgetInterface = it.scope.get()
                     prefs.skin = action.currentSkinValue
                     prefs.applyPending()

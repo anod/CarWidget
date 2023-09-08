@@ -116,6 +116,7 @@ class RealSkinPreviewViewModel(
                 viewState = viewState.copy(
                     skinList = skinList,
                     widgetSettings = WidgetInterface.NoOp(widgetSettings),
+                    previewVersion = viewState.previewVersion + 1
                 )
             }
         }

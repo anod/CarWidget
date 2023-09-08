@@ -37,6 +37,7 @@ class EditWidgetViewModel(
 ) : BaseFlowViewModel<EditWidgetViewState, EditWidgetViewEvent, EditWidgetViewAction>(), KoinScopeComponent {
 
     class Factory(private val appContext: Context, private val appWidgetIdScope: AppWidgetIdScope, private val buttonId: Int): ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T
             = EditWidgetViewModel(appContext as Application, appWidgetIdScope, buttonId) as T
     }
@@ -69,7 +70,7 @@ class EditWidgetViewModel(
                     componentName = null,
                     title = application.getString(R.string.hidden),
                     intent = null,
-                    iconRes = 0,
+                    iconRes = skinProperties.buttonAlternativeHiddenResId,
                     extras = bundleOf("button" to WidgetInterface.WIDGET_BUTTON_HIDDEN)
                 )
             )

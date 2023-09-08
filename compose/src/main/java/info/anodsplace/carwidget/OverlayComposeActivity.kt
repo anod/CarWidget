@@ -23,13 +23,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import coil.ImageLoader
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.appwidget.EditWidgetButton
 import info.anodsplace.carwidget.chooser.ChooserScreen
 import info.anodsplace.carwidget.chooser.MediaListLoader
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.content.di.getOrCreateAppWidgetScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.shortcut.EditShortcut
-import info.anodsplace.carwidget.appwidget.EditWidgetButton
 import info.anodsplace.framework.media.MediaKeyEvent
 import info.anodsplace.ktx.extras
 import org.koin.core.component.KoinComponent
@@ -41,11 +42,12 @@ class OverlayViewModel(
 
     class Factory(
         private val appWidgetId: Int,
-    ) : ViewModelProvider.Factory {
+    ) : ViewModelProvider.Factory, KoinComponent {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
             return OverlayViewModel(
-                appWidgetIdScope = if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) AppWidgetIdScope(appWidgetId) else null
+                appWidgetIdScope = if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID)
+                    getOrCreateAppWidgetScope(appWidgetId) else null
             ) as T
         }
     }

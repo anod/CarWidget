@@ -38,6 +38,9 @@ class YouProperties(context: Context) : BaseProperties() {
     override val rowLayout: Int
         get() = R.layout.sk_you_row
 
+    override val buttonAlternativeHiddenResId: Int
+        get() = R.drawable.you_clear_24
+
     override val iconPaddingRes: Int
         get() = 0
 

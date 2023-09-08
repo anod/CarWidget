@@ -12,6 +12,7 @@ import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import kotlin.random.Random
 
 /**
  * WorkManager can't be used since it causes updates loop
@@ -42,7 +43,7 @@ class UpdateWidgetJob : JobIntentService(), KoinComponent {
         // Perform this loop procedure for each App Widget that belongs to this
         // provider
         for (appWidgetId in appWidgetIds) {
-            AppWidgetIdScope(appWidgetId).use {
+            AppWidgetIdScope(appWidgetId, instance = Random.nextInt(), existingScope = null).use {
                 val viewBuilder = WidgetViewBuilder(
                     context = context,
                     iconLoader = get(),

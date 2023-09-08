@@ -23,6 +23,7 @@ import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
+import kotlin.random.Random
 
 interface WidgetItem {
     @Immutable
@@ -139,7 +140,7 @@ class WidgetsListViewModel : BaseFlowViewModel<WidgetListScreenState, WidgetList
         newItems.addAll(widgetIds.getShortcutWidgetIds().map { WidgetItem.Shortcut(appWidgetId = it) })
 
         for (appWidgetId in appWidgetIds) {
-            AppWidgetIdScope(appWidgetId).use {
+            AppWidgetIdScope(appWidgetId, instance = Random.nextInt(), existingScope = null).use {
                 val model = it.scope.get<WidgetShortcutsModel>().apply {
                     init()
                 }

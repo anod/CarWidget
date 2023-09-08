@@ -14,6 +14,7 @@ import info.anodsplace.carwidget.WidgetAwareViewModel
 import info.anodsplace.carwidget.appwidget.SkinList
 import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.content.di.getOrCreateAppWidgetScope
 import info.anodsplace.carwidget.content.di.isValid
 import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.AppSettings
@@ -25,6 +26,7 @@ import info.anodsplace.framework.content.CommonActivityAction
 import info.anodsplace.framework.content.forHomeScreen
 import info.anodsplace.permissions.AppPermission
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -73,12 +75,12 @@ class MainViewModel(
         private val activity: ComponentActivity,
         private val permissionChecker: PermissionChecker,
         private val appSettings: AppSettings
-    ) : ViewModelProvider.Factory {
+    ) : ViewModelProvider.Factory, KoinComponent {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
             return MainViewModel(
                 requiredPermissions = if (appSettings.checkPermissionsOnStart) permissionChecker.check(activity) else emptyList(),
-                appWidgetIdScope = if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) AppWidgetIdScope(appWidgetId) else null,
+                appWidgetIdScope = if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) getOrCreateAppWidgetScope(appWidgetId) else null,
                 appSettings = appSettings
             ) as T
         }
