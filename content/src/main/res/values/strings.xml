@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Car Widget</string>
+    <string name="app_name" translatable="false">Car Widget</string>
     <string name="none">None</string>
-    <string name="extras">Extras</string>
-    <string name="action">Action</string>
-    <string name="package_name">Package name</string>
-    <string name="class_name">Class name</string>
-    <string name="data">Data</string>
-    <string name="mime_type">Mime type</string>
-    <string name="flags">Flags</string>
-    <string name="categories">Categories</string>
+    <string name="extras" translatable="false">Extras</string>
+    <string name="action" translatable="false">Action</string>
+    <string name="package_name" translatable="false">Package name</string>
+    <string name="class_name" translatable="false">Class name</string>
+    <string name="data" translatable="false">Data</string>
+    <string name="mime_type" translatable="false">Mime type</string>
+    <string name="flags" translatable="false">Flags</string>
+    <string name="categories" translatable="false">Categories</string>
     <string name="close">Close</string>
     <string name="save">Save</string>
     <string name="key">Key</string>
     <string name="value">Value</string>
     <string name="add">Add</string>
     <string name="value_might_be_not_valid">The value might not be valid</string>
-    <string name="component">Component</string>
+    <string name="component" translatable="false">Component</string>
     <string name="edit_intent">Edit intent</string>
     <string name="back">Back</string>
 
@@ -210,7 +210,7 @@
     <string name="screen_on_alternative">Alert on top</string>
     <string name="screen_on_alternative_text">Use alternative way to keep screen on, requires addition permission</string>
     <string name="app_shortcuts_limited">App shortcuts support is limited by Android</string>
-    <string name="intent">Intent</string>
+    <string name="intent" translatable="false">Intent</string>
     <string name="advanced">Advanced</string>
     <string name="allow_bluetooth">Allow Bluetooth</string>
     <string name="allow_bluetooth_summary">Access to list of bluetooth devices requires permissions</string>
