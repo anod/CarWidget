@@ -13,7 +13,9 @@ class InCarStatus(
     private val settings: InCarInterface
 ) : InCarStatus {
 
-    override val value: Int by lazy { calc(widgetIds.getAllWidgetIds().size, settings) }
+    private val widgetsCount: Int by lazy { widgetIds.getAllWidgetIds().size }
+    override val value: Int
+        get() = calc(widgetsCount, settings)
     override val isEnabled: Boolean
         get() = value == ENABLED
 
