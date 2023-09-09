@@ -40,7 +40,9 @@ class ScreenOnAlert(private val context: Context, private val prefs: InCarInterf
 
     fun hide() {
         alertWindow.hide()
-        prefs.screenOnAlert = prefs.screenOnAlert.withLocation(lastX, lastY)
+        if (lastX > 0 && lastY > 0) {
+            prefs.screenOnAlert = prefs.screenOnAlert.withLocation(lastX, lastY)
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

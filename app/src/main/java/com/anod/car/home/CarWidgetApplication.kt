@@ -46,6 +46,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -146,17 +147,11 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                         factory { (skinName: String) -> get<SkinPropertiesFactory>().create(skinName) }
                         factoryOf(::ScreenOrientation)
                         factoryOf(::AlertWindow)
-                        factoryOf(::ScreenOnAlert)
+                        singleOf(::ScreenOnAlert)
                         factory {
                             BroadcastService.Manager(applicationContext = get(), inCarSettings = get())
                         } bind BroadcastServiceManager::class
-                        factory {
-                            ModeHandler(
-                                context = get(),
-                                screenOrientation = get(),
-                                koin = getKoin()
-                            )
-                        }
+                        singleOf(::ModeHandler)
                         factoryOf(::ModePhoneStateListener)
                         factoryOf(::PermissionChecker)
                         factory(named("permissionDescriptions")) { permissionDescriptions }

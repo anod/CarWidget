@@ -12,14 +12,12 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.incar.ScreenOnAlert
 import info.anodsplace.carwidget.incar.ScreenOrientation
 import info.anodsplace.framework.content.startActivitySafely
-import org.koin.core.Koin
 
 class ModeHandler(
     private val context: Context,
     private val screenOrientation: ScreenOrientation,
-    private val koin: Koin
+    private val alertWindow: ScreenOnAlert
 ) {
-    private val alertWindow: ScreenOnAlert by lazy { koin.get() }
 
     fun enable(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface) {
         if (prefs.isDisableScreenTimeout) {
