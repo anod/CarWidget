@@ -115,7 +115,7 @@ open class QueryIntentLoader(context: Context, private val queryIntent: Intent) 
 
         val apps = packageManager.queryIntentActivities(queryIntent, 0)
         for (appInfo in apps) {
-            if (!appInfo.activityInfo.packageName.startsWith(selfPackage)) {
+            if (!appInfo.activityInfo.packageName.startsWith(selfPackage) && appInfo.activityInfo?.exported == true) {
                 val title = appInfo.activityInfo.loadLabel(packageManager).toString()
                 list.add(ChooserEntry(appInfo, title))
             }
