@@ -24,7 +24,7 @@ data class PermissionsViewState(
 )
 
 sealed interface PermissionsViewEvent {
-    class RequestPermissionResult(val activity: ComponentActivity) : PermissionsViewEvent
+    class RequestPermissionResult(val activity: ComponentActivity, val exception: Exception?) : PermissionsViewEvent
 }
 
 sealed interface PermissionsViewAction

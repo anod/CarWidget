@@ -5,9 +5,11 @@ import android.content.Intent
 import android.media.AudioManager
 import android.os.Bundle
 import android.view.KeyEvent
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.FragmentActivity
 import com.anod.car.home.appwidget.ShortcutPendingIntent
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra.EXTRA_MEDIA_BUTTON
@@ -81,7 +83,12 @@ class ShortcutActivity : FragmentActivity(), KoinComponent {
         }
         if (Intent.ACTION_CALL == action) {
             if (!AppPermissions.isGranted(this, AppPermission.CallPhone)) {
-                callPhonePermission.launch(AppPermissions.Request.Input.Permissions(arrayOf(AppPermission.CallPhone.value)))
+                try {
+                    callPhonePermission.launch(AppPermissions.Request.Input.Permissions(arrayOf(AppPermission.CallPhone.value)))
+                } catch (e: Exception) {
+                    AppLog.e(e)
+                    Toast.makeText(this, "Cannot request cell phone permissions ${e.message}", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 

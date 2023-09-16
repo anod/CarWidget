@@ -58,11 +58,11 @@ sealed interface AboutScreenStateEvent {
     data object ChangeTheme: AboutScreenStateEvent
     data object OpenPlayStoreDetails: AboutScreenStateEvent
     data object OpenDefaultCarDock: AboutScreenStateEvent
-    data object RequestPermissionResult : AboutScreenStateEvent
     class Backup(val dstUri: Uri) : AboutScreenStateEvent
     class Restore(val srcUri: Uri) : AboutScreenStateEvent
     class ChangeMusicApp(val component: ComponentName?) : AboutScreenStateEvent
     class RestoreInCar(val srcUri: Uri, val restoreInCar: Boolean) : AboutScreenStateEvent
+    class RequestPermissionResult(val ex: Exception?) : AboutScreenStateEvent
 }
 
 sealed interface AboutScreenAction {
@@ -183,7 +183,18 @@ class AboutViewModel(
                     context.startActivitySafely(Intent().forApplicationDetails(packageName))
                 }
             }
-            AboutScreenStateEvent.RequestPermissionResult -> viewState = viewState.copy(missingPermissionsDialog = emptyList())
+            is AboutScreenStateEvent.RequestPermissionResult -> {
+                viewState = viewState.copy(missingPermissionsDialog = emptyList())
+                if (event.ex != null) {
+                    AppLog.e(event.ex)
+                    emitAction(
+                        AboutScreenAction.CommonActivity(
+                            action = CommonActivityAction.ShowToast(text = "An error occurred during requesting permission")
+                        )
+                    )
+                }
+
+            }
         }
     }
 

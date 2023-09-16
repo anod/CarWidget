@@ -74,8 +74,8 @@ private fun RequestPermissions(viewState: PermissionsViewState, onEvent: (Permis
                 modifier = Modifier.padding(16.dp).align(Alignment.TopCenter),
                 input = viewState.missingPermissions,
                 screenDescription = viewState.screenDescription,
-                onResult = {
-                    onEvent(PermissionsViewEvent.RequestPermissionResult(context.findActivity()))
+                onResult = { _, exception ->
+                    onEvent(PermissionsViewEvent.RequestPermissionResult(context.findActivity(), exception))
                 }
             )
         }

@@ -1,6 +1,7 @@
 package info.anodsplace.carwidget.shortcut
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +14,7 @@ import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.shortcuts.CreateShortcutResult
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
+import info.anodsplace.framework.content.CommonActivityAction
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinScopeComponent
@@ -26,10 +28,11 @@ data class ShortcutPickerViewState(
 
 sealed interface ShortcutPickerViewEvent {
     class Save(val intent: Intent, val isApp: Boolean) : ShortcutPickerViewEvent
+    class LaunchShortcutError(val exception: Exception) : ShortcutPickerViewEvent
 }
 
 sealed interface ShortcutPickerViewAction {
-    data class CreateResult(val result: CreateShortcutResult) : ShortcutPickerViewAction
+    class ActivityAction(val action: CommonActivityAction.ShowToast) : ShortcutPickerViewAction
 }
 
 class ShortcutPickerViewModel(
@@ -63,6 +66,12 @@ class ShortcutPickerViewModel(
     override fun handleEvent(event: ShortcutPickerViewEvent) {
         when(event) {
             is ShortcutPickerViewEvent.Save -> save(event.intent, event.isApp)
+            is ShortcutPickerViewEvent.LaunchShortcutError -> {
+                AppLog.e(event.exception)
+                emitAction(ShortcutPickerViewAction.ActivityAction(
+                    action = CommonActivityAction.ShowToast(text = "Cannot launch shortcut ${event.exception.message}")
+                ))
+            }
         }
     }
 
@@ -71,7 +80,16 @@ class ShortcutPickerViewModel(
             try {
                 val result = model.saveIntent(viewState.position, intent, isApp)
                 update.request(intArrayOf(+appWidgetIdScope))
-                emitAction(ShortcutPickerViewAction.CreateResult(result.second))
+
+                if (result.second == CreateShortcutResult.SuccessAppShortcut) {
+                    emitAction(ShortcutPickerViewAction.ActivityAction(
+                        action = CommonActivityAction.ShowToast(resId = info.anodsplace.carwidget.content.R.string.app_shortcuts_limited)
+                    ))
+                } else if (result.second == CreateShortcutResult.FailedAppShortcut) {
+                    emitAction(ShortcutPickerViewAction.ActivityAction(
+                        action = CommonActivityAction.ShowToast(resId = info.anodsplace.carwidget.content.R.string.app_shortcuts_limited, length = Toast.LENGTH_LONG)
+                    ))
+                }
             } catch (e: Exception) {
                 AppLog.e(e)
             }

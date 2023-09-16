@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIcon
@@ -19,6 +20,7 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.shortcuts.ShortcutInfoFactory
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.shortcut.intent.IntentField
+import info.anodsplace.framework.content.CommonActivityAction
 import info.anodsplace.graphics.DrawableUri
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.launch
@@ -44,10 +46,13 @@ sealed interface ShortcutEditViewEvent {
     class IconPackPicker(val show: Boolean) : ShortcutEditViewEvent
     class IconPackResult(val intent: Intent?, val resolveProperties: DrawableUri.ResolveProperties) : ShortcutEditViewEvent
     class CustomIconResult(val uri: Uri?, val resolveProperties: DrawableUri.ResolveProperties) : ShortcutEditViewEvent
+    class LaunchCustomizeError(val exception: Exception) : ShortcutEditViewEvent
+
     data object DefaultIconReset : ShortcutEditViewEvent
 }
 
 sealed interface ShortcutEditViewAction {
+    class ActivityAction(val action: CommonActivityAction) : ShortcutEditViewAction
 }
 
 class ShortcutEditViewModel(
@@ -130,6 +135,13 @@ class ShortcutEditViewModel(
                     val defaultIcon = ShortcutInfoFactory.resolveAppIcon(resolveInfo, component, context)
                     shortcutsDatabase.updateIcon(shortcut.id, defaultIcon)
                 }
+            }
+
+            is ShortcutEditViewEvent.LaunchCustomizeError -> {
+                AppLog.e(event.exception)
+                emitAction(ShortcutEditViewAction.ActivityAction(
+                    action = CommonActivityAction.ShowToast(text = "Cannot launch ${event.exception}")
+                ))
             }
         }
     }

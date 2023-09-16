@@ -301,6 +301,7 @@ fun NavHost(
                 EditShortcut(
                     appWidgetIdScope = appWidgetIdScope!!,
                     args = NavItem.Tab.CurrentWidget.EditShortcut.Args(it.arguments),
+                    onActivityAction = onActivityAction,
                     onDismissRequest = { onEvent(MainViewEvent.OnBackNav) }
                 )
             }
@@ -351,6 +352,7 @@ fun NavHost(
                 BluetoothDevicesScreen(
                     screenState = screenState,
                     onEvent = bluetoothDevicesViewModel::handleEvent,
+                    onActivityAction = onActivityAction,
                     innerPadding = innerPadding
                 )
             }

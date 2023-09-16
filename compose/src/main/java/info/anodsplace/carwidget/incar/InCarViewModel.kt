@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.navigation.NavHostController
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.chooser.ChooserLoader
 import info.anodsplace.carwidget.chooser.QueryIntentLoader
@@ -23,7 +24,9 @@ import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.utils.toPermissionDescription
 import info.anodsplace.compose.PermissionDescription
 import info.anodsplace.compose.PreferenceItem
+import info.anodsplace.framework.content.CommonActivityAction
 import info.anodsplace.framework.content.forLauncher
+import info.anodsplace.framework.content.onCommonActivityAction
 import info.anodsplace.permissions.AppPermission
 import info.anodsplace.permissions.AppPermissions
 import info.anodsplace.viewmodel.BaseFlowViewModel
@@ -49,7 +52,7 @@ sealed interface InCarViewEvent {
     class NotificationShortcutUpdate(val shortcutIndex: Int, val entry: ChooserEntry) :
         InCarViewEvent
     class SetAutorunApp(val componentName: ComponentName?) : InCarViewEvent
-    class RequestPermissionResult(val result: List<AppPermission>, val missingPermissions: List<PermissionDescription>, val activity: ComponentActivity) :
+    class RequestPermissionResult(val result: List<AppPermission>, val missingPermissions: List<PermissionDescription>, val activity: ComponentActivity, val ex: Exception?) :
         InCarViewEvent
     class RequestPermission(val missingPermissions: List<PermissionDescription>) : InCarViewEvent
 }
@@ -58,6 +61,8 @@ sealed interface InCarViewAction {
     class Navigate(val route: String) : InCarViewAction
     class RequestPermissions(val permissions: List<AppPermission>) : InCarViewAction
     class CheckPermission(val permission: AppPermission) : InCarViewAction
+    class ActivityAction(val action: CommonActivityAction) : InCarViewAction
+
     data object CheckMissingPermissions : InCarViewAction
 }
 
@@ -153,6 +158,12 @@ class InCarViewModel(
                     missingPermissionsDialog = emptyList(),
                     requiredPermissionsNotice = requiredPermissions.mapNotNull { permissionDescriptionsMap[it] }
                 )
+                if (event.ex != null) {
+                    AppLog.e(event.ex)
+                    emitAction(InCarViewAction.ActivityAction(
+                        action = CommonActivityAction.ShowToast(text = "An error occurred during requesting permission")
+                    ))
+                }
             }
 
             is InCarViewEvent.RequestPermission -> viewState = viewState.copy(
@@ -218,6 +229,7 @@ class InCarViewModel(
                     requiredPermissionsNotice = permissionChecker.check(activity).mapNotNull { permissionDescriptionsMap[it] }
                 )
             }
+            is InCarViewAction.ActivityAction -> activity.onCommonActivityAction(action.action)
         }
     }
 }

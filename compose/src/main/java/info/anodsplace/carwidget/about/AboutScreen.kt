@@ -108,7 +108,12 @@ fun AboutScreen(
                     loader = screenState.restoreProgress,
                     enabled = screenState.isValidWidget,
                     onClick = {
-                        openDocumentLauncher.launch(arrayOf("application/json", "text/plain", "*/*"))
+                        try {
+                            openDocumentLauncher.launch(arrayOf("application/json", "text/plain", "*/*"))
+                        } catch (e: Exception) {
+                            AppLog.e(e)
+                            onActivityAction(CommonActivityAction.ShowToast(text = "Error - cannot perform ACTION_OPEN_DOCUMENT"))
+                        }
                     }
                 )
             }
@@ -190,7 +195,7 @@ fun AboutScreen(
     if (screenState.missingPermissionsDialog.isNotEmpty()) {
         RequestPermissionsDialog(
             missingPermissions = screenState.missingPermissionsDialog,
-            onResult = { onEvent(AboutScreenStateEvent.RequestPermissionResult) }
+            onResult = { _, ex -> onEvent(AboutScreenStateEvent.RequestPermissionResult(ex)) }
         )
     }
 }

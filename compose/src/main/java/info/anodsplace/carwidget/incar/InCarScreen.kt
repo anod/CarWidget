@@ -131,7 +131,7 @@ fun InCarMainScreen(
         val context = LocalContext.current
         RequestPermissionsDialog(
             missingPermissions = missingPermissions,
-            onResult = { onEvent(InCarViewEvent.RequestPermissionResult(emptyList(), missingPermissions, context.findActivity())) }
+            onResult = { _, ex -> onEvent(InCarViewEvent.RequestPermissionResult(emptyList(), missingPermissions, context.findActivity(), ex)) }
         )
     }
 }

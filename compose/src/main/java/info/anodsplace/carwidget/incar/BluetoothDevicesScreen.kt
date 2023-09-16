@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.incar
 
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -25,10 +26,16 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.compose.PreferenceCheckbox
 import info.anodsplace.compose.PreferenceItem
+import info.anodsplace.framework.content.CommonActivityAction
 import info.anodsplace.permissions.AppPermission
 
 @Composable
-fun BluetoothDevicesScreen(screenState: BluetoothDevicesViewState, onEvent: (BluetoothDevicesViewEvent) -> Unit, innerPadding: PaddingValues = PaddingValues(0.dp),) {
+fun BluetoothDevicesScreen(
+    screenState: BluetoothDevicesViewState,
+    onEvent: (BluetoothDevicesViewEvent) -> Unit,
+    onActivityAction: (CommonActivityAction) -> Unit,
+    innerPadding: PaddingValues = PaddingValues(0.dp)
+) {
     val screenModifier = Modifier.padding(innerPadding).padding(16.dp)
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -45,20 +52,26 @@ fun BluetoothDevicesScreen(screenState: BluetoothDevicesViewState, onEvent: (Blu
                     list = listState.list,
                     btState = screenState.btAdapterState,
                     onChecked = { device, checked -> onEvent(BluetoothDevicesViewEvent.UpdateDevice(device, checked)) },
+                    onActivityAction = onActivityAction,
                     modifier = screenModifier)
             }
             BluetoothDevicesListState.SwitchedOff -> {
                 BluetoothDeviceEmpty(
                     btState = screenState.btAdapterState,
                     modifier = screenModifier,
+                    onActivityAction = onActivityAction
                 )
             }
         }
     }
 }
 
+@SuppressLint("NewApi") // Permission for S checked in VM
 @Composable
-fun BluetoothPermissions(onEvent: (BluetoothDevicesViewEvent) -> Unit, modifier: Modifier = Modifier) {
+fun BluetoothPermissions(
+    onEvent: (BluetoothDevicesViewEvent) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val bluetoothPermissions = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestMultiplePermissions()) { results ->
         val requiresPermission = results.values.any { !it }
         onEvent(BluetoothDevicesViewEvent.PermissionResult(requires = requiresPermission))
@@ -75,10 +88,15 @@ fun BluetoothPermissions(onEvent: (BluetoothDevicesViewEvent) -> Unit, modifier:
 }
 
 @Composable
-fun BluetoothDeviceList(list: List<BluetoothDevice>, btState: Int, onChecked: (device: BluetoothDevice, checked: Boolean) -> Unit, modifier: Modifier = Modifier) {
-
+fun BluetoothDeviceList(
+    list: List<BluetoothDevice>,
+    btState: Int,
+    onChecked: (device: BluetoothDevice, checked: Boolean) -> Unit,
+    onActivityAction: (CommonActivityAction) -> Unit,
+    modifier: Modifier = Modifier
+) {
     if (list.isEmpty()) {
-        BluetoothDeviceEmpty(btState, modifier = modifier)
+        BluetoothDeviceEmpty(btState, onActivityAction = onActivityAction, modifier = modifier)
     } else {
         LazyColumn(modifier = modifier.fillMaxSize()) {
             item {
@@ -103,7 +121,11 @@ fun BluetoothDeviceList(list: List<BluetoothDevice>, btState: Int, onChecked: (d
 }
 
 @Composable
-fun BluetoothDeviceEmpty(btState: Int, modifier: Modifier = Modifier) {
+fun BluetoothDeviceEmpty(
+    btState: Int,
+    onActivityAction: (CommonActivityAction) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val turnOnBluetooth = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
         AppLog.d("Bluetooth turned on: ${result.resultCode}")
     }
@@ -126,7 +148,12 @@ fun BluetoothDeviceEmpty(btState: Int, modifier: Modifier = Modifier) {
                     modifier = Modifier.padding(start = 16.dp),
                     checked = false,
                     onCheckedChange = {
-                        turnOnBluetooth.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
+                        try {
+                            turnOnBluetooth.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
+                        } catch (e: Exception) {
+                            AppLog.e(e)
+                            onActivityAction(CommonActivityAction.ShowToast(text = "Error - cannot turn on bluetooth"))
+                        }
                     },
                     enabled = btState == BluetoothAdapter.STATE_OFF
                 )
@@ -144,6 +171,7 @@ fun BluetoothDeviceEmptyScreen() {
                 listState = BluetoothDevicesListState.SwitchedOff,
                 btAdapterState = BluetoothAdapter.STATE_OFF,
             ),
+            onActivityAction = { },
             onEvent = { }
         )
     }
@@ -160,6 +188,7 @@ fun BluetoothDevicesListScreen() {
                 )),
                 btAdapterState = BluetoothAdapter.STATE_ON,
             ),
+            onActivityAction = { },
             onEvent = { }
         )
     }
@@ -174,6 +203,7 @@ fun BluetoothDevicesListOffScreen() {
                 listState = BluetoothDevicesListState.Devices(listOf()),
                 btAdapterState = BluetoothAdapter.STATE_OFF,
             ),
+            onActivityAction = { },
             onEvent = { }
         )
     }

@@ -3,14 +3,12 @@ package info.anodsplace.carwidget.shortcut
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,22 +24,23 @@ import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.QueryIntentLoader
 import info.anodsplace.carwidget.chooser.StaticChooserLoader
-import info.anodsplace.carwidget.content.shortcuts.CreateShortcutResult
 import info.anodsplace.carwidget.content.shortcuts.InternalShortcut
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.utils.forPickShortcutLocal
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 
-sealed class ShortcutPickerState {
-    object Initial: ShortcutPickerState()
-    object Apps: ShortcutPickerState()
-    object CarWidget: ShortcutPickerState()
+sealed interface ShortcutPickerState {
+    data object Initial: ShortcutPickerState
+    data object Apps: ShortcutPickerState
+    data object CarWidget: ShortcutPickerState
 }
 
 @Composable
-fun ShortcutPickerScreen(viewActions: Flow<ShortcutPickerViewAction> = emptyFlow(), onEvent: (ShortcutPickerViewEvent) -> Unit, onDismissRequest: () -> Unit, shortcutResources: ShortcutResources, imageLoader: ImageLoader) {
-    val context = LocalContext.current
+fun ShortcutPickerScreen(
+    onEvent: (ShortcutPickerViewEvent) -> Unit,
+    onDismissRequest: () -> Unit,
+    shortcutResources: ShortcutResources,
+    imageLoader: ImageLoader
+) {
     var screenState by remember { mutableStateOf<ShortcutPickerState>(ShortcutPickerState.Initial) }
     val activityLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult(), onResult = { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
@@ -50,20 +49,16 @@ fun ShortcutPickerScreen(viewActions: Flow<ShortcutPickerViewAction> = emptyFlow
             onDismissRequest()
     })
 
-    LaunchedEffect(true) {
-        viewActions.collect { action ->
-            when (action) {
-                is ShortcutPickerViewAction.CreateResult -> {
-                    makeToast(action.result, context)
-                }
-            }
-        }
-    }
-
     when (screenState) {
         ShortcutPickerState.Initial -> CreateShortcutChooser(
             onNewState = { screenState = it },
-            onIntent = { activityLauncher.launch(it) },
+            onIntent = {
+                try {
+                    activityLauncher.launch(it)
+                } catch (e: Exception) {
+                    onEvent(ShortcutPickerViewEvent.LaunchShortcutError(exception = e))
+                }
+            },
             onDismissRequest = onDismissRequest,
             imageLoader = imageLoader
         )
@@ -165,12 +160,4 @@ private fun createCarWidgetShortcuts(context: Context, shortcutResources: Shortc
         ChooserEntry(componentName = null, title = title, intent = intent, iconRes = icon)
     }
     return StaticChooserLoader(list)
-}
-
-private fun makeToast(resultCode: CreateShortcutResult, context: Context) {
-    if (resultCode == CreateShortcutResult.SuccessAppShortcut) {
-        Toast.makeText(context, info.anodsplace.carwidget.content.R.string.app_shortcuts_limited, Toast.LENGTH_SHORT).show()
-    } else if (resultCode == CreateShortcutResult.FailedAppShortcut) {
-        Toast.makeText(context, info.anodsplace.carwidget.content.R.string.app_shortcuts_limited, Toast.LENGTH_LONG).show()
-    }
 }

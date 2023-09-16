@@ -31,9 +31,9 @@ class BluetoothDevice(var address: String, var name: String, var btClassName: St
 }
 
 sealed class BluetoothDevicesListState {
-    object Initial: BluetoothDevicesListState()
-    object SwitchedOff: BluetoothDevicesListState()
-    object RequiresPermissions: BluetoothDevicesListState()
+    data object Initial: BluetoothDevicesListState()
+    data object SwitchedOff: BluetoothDevicesListState()
+    data object RequiresPermissions: BluetoothDevicesListState()
     @Immutable
     class Devices(val list: List<BluetoothDevice>): BluetoothDevicesListState()
 }
@@ -49,7 +49,7 @@ sealed interface BluetoothDevicesViewEvent {
         BluetoothDevicesViewEvent
     class PermissionResult(val requires: Boolean) : BluetoothDevicesViewEvent
 
-    object LoadDevices : BluetoothDevicesViewEvent
+    data object LoadDevices : BluetoothDevicesViewEvent
 }
 
 sealed interface BluetoothDevicesViewAction

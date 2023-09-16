@@ -17,10 +17,10 @@ import info.anodsplace.permissions.AppPermission
 @Composable
 fun RequestPermissionsDialog(
     missingPermissions: List<PermissionDescription>,
-    onResult: (List<AppPermission>) -> Unit
+    onResult: (List<AppPermission>, exception: Exception?) -> Unit
 ) {
     Dialog(
-        onDismissRequest = { onResult(emptyList()) },
+        onDismissRequest = { onResult(emptyList(), null) },
         properties = DialogProperties(
             usePlatformDefaultWidth = false
         )

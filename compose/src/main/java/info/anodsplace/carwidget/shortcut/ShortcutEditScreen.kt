@@ -246,7 +246,13 @@ private fun ShortcutDetails(
         SectionHeader {
             Text(text = stringResource(R.string.customize_icon))
         }
-        SectionCard(onClick = { customImage.launch("image/*") }) {
+        SectionCard(onClick = {
+            try {
+                customImage.launch("image/*")
+            } catch (e: Exception) {
+                onEvent(ShortcutEditViewEvent.LaunchCustomizeError(e))
+            }
+        }) {
             SectionAction {
                 Text(text = stringResource(R.string.icon_custom))
             }
