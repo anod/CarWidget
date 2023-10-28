@@ -225,7 +225,9 @@ class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowVie
 
     override fun onCleared() {
         super.onCleared()
-        bitmapMemoryCache.evictAll()
+        if (scope.isNotClosed()) {
+            bitmapMemoryCache.evictAll()
+        }
     }
 
     override suspend fun create(overrideSkin: SkinList.Item): View {

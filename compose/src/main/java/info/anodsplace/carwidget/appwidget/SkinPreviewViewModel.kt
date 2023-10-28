@@ -7,6 +7,7 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.BitmapLruCache
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
@@ -27,6 +28,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
+import org.koin.core.error.ClosedScopeException
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
 
@@ -130,7 +132,9 @@ class RealSkinPreviewViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        bitmapMemoryCache.evictAll()
+        if (scope.isNotClosed()) {
+            bitmapMemoryCache.evictAll()
+        }
     }
 
     override fun handleEvent(event: SkinPreviewViewEvent) {
@@ -138,6 +142,10 @@ class RealSkinPreviewViewModel(
     }
 
     override suspend fun create(overrideSkin: SkinList.Item): View {
+        if (scope.closed) {
+            AppLog.e("Scope is closed", ClosedScopeException("RealSkinPreviewViewModel - scope #${scope.id}"))
+            return View(context)
+        }
         val intentFactory: PendingIntentFactory = get<PreviewPendingIntentFactory>()
         val widgetView: WidgetView = get(parameters = { parametersOf(bitmapMemoryCache, intentFactory, true, overrideSkin.value, null) })
         return widgetView.create().render(context)
