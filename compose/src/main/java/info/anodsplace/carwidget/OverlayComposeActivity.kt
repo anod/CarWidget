@@ -69,7 +69,11 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            uiModeManager.setApplicationNightMode(appSettings.uiMode)
+            try {
+                uiModeManager.setApplicationNightMode(appSettings.uiMode)
+            } catch (e: Exception) {
+                AppLog.e(e)
+            }
         }
         super.onCreate(savedInstanceState)
         appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
