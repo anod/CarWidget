@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -199,77 +198,74 @@ private fun ShortcutDetails(
             )
         ))
     }
-
-    Row(
-        modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .fillMaxWidth()
-            .height(96.dp),
-    ) {
-        AsyncImage(
-            model = shortcut.toImageRequest(LocalContext.current, widgetSettings.adaptiveIconStyle, iconVersion = iconVersion),
-            contentDescription = shortcut.title.toString(),
-            imageLoader = imageLoader,
-            modifier = Modifier
-                .size(96.dp)
-                .background(
-                    MaterialTheme.colorScheme.surfaceVariant,
-                    MaterialTheme.shapes.medium
-                )
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Card(
-            modifier = Modifier
-                .height(96.dp)
-                .weight(1.0f),
-            border = cardBorder(),
-        ) {
-            SectionHeader {
-                Text(text = stringResource(R.string.edit_title), modifier = Modifier.padding(start = 8.dp))
-            }
-            OutlinedTextField(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 4.dp)
-                    .fillMaxWidth(),
-                value = shortcut.title.toString(),
-                shape = MaterialTheme.shapes.medium,
-                onValueChange = {},
-                singleLine = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = cardBorderColor,
-                        unfocusedBorderColor = cardBorderColor,
-                )
-            )
-        }
-    }
     SectionCard {
+        SectionHeader {
+            Text(text = stringResource(R.string.edit_title), modifier = Modifier.padding(start = 8.dp))
+        }
+        OutlinedTextField(
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .fillMaxWidth(),
+            value = shortcut.title.toString(),
+            shape = MaterialTheme.shapes.medium,
+            onValueChange = {},
+            singleLine = true,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = cardBorderColor,
+                unfocusedBorderColor = cardBorderColor,
+            )
+        )
+    }
+
+    SectionCard(
+        modifier = Modifier.defaultMinSize(minHeight = 120.dp)
+    ) {
         SectionHeader {
             Text(text = stringResource(R.string.customize_icon))
         }
-        SectionCard(onClick = {
-            try {
-                customImage.launch("image/*")
-            } catch (e: Exception) {
-                onEvent(ShortcutEditViewEvent.LaunchCustomizeError(e))
-            }
-        }) {
-            SectionAction {
-                Text(text = stringResource(R.string.icon_custom))
-            }
-        }
-        SectionCard(onClick = { onEvent(ShortcutEditViewEvent.IconPackPicker(show = true)) }) {
-            SectionAction {
-                Text(text = stringResource(R.string.icon_adw_icon_pack))
-            }
-        }
-        if (shortcut.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION && shortcut.isCustomIcon) {
-            SectionCard(onClick = { onEvent(ShortcutEditViewEvent.DefaultIconReset) }) {
-                SectionAction {
-                    Text(text = stringResource(R.string.icon_default))
+        Row(
+            modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
+        ) {
+            AsyncImage(
+                model = shortcut.toImageRequest(LocalContext.current, widgetSettings.adaptiveIconStyle, iconVersion = iconVersion),
+                contentDescription = shortcut.title.toString(),
+                imageLoader = imageLoader,
+                modifier = Modifier
+                    .size(96.dp)
+                    .background(
+                        MaterialTheme.colorScheme.surfaceVariant,
+                        MaterialTheme.shapes.medium
+                    )
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column {
+                SectionCard(onClick = {
+                    try {
+                        customImage.launch("image/*")
+                    } catch (e: Exception) {
+                        onEvent(ShortcutEditViewEvent.LaunchCustomizeError(e))
+                    }
+                }) {
+                    SectionAction {
+                        Text(text = stringResource(R.string.icon_custom))
+                    }
+                }
+                SectionCard(onClick = { onEvent(ShortcutEditViewEvent.IconPackPicker(show = true)) }) {
+                    SectionAction {
+                        Text(text = stringResource(R.string.icon_adw_icon_pack))
+                    }
+                }
+                if (shortcut.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION && shortcut.isCustomIcon) {
+                    SectionCard(onClick = { onEvent(ShortcutEditViewEvent.DefaultIconReset) }) {
+                        SectionAction {
+                            Text(text = stringResource(R.string.icon_default))
+                        }
+                    }
                 }
             }
         }
     }
+
     SectionCard(onClick = {
         onEvent(ShortcutEditViewEvent.Drop)
         onDismissRequest()
