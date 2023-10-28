@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.media.AudioManager
 import android.os.DeadSystemException
+import android.telephony.TelephonyManager
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
 import com.anod.car.home.appwidget.WidgetHelper
@@ -139,6 +140,7 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                         factory { get<Context>().getSystemService(BluetoothManager::class.java) }
                         factory { get<Context>().getSystemService(AudioManager::class.java) }
                         factory { get<Context>().getSystemService(WindowManager::class.java) }
+                        factory { get<Context>().getSystemService(TelephonyManager::class.java) }
 
                         factory<WidgetSettings.DefaultsProvider> { DefaultsResourceProvider(get<Context>()) }
                         factory<ShortcutResources> { WidgetShortcutResource() }

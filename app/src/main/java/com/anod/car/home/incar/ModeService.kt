@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import android.telephony.PhoneStateListener
@@ -12,10 +13,13 @@ import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.notifications.InCarModeNotificationFactory
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.preferences.InCarSettings
+import info.anodsplace.permissions.AppPermission
+import info.anodsplace.permissions.AppPermissions
 import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
+
 
 class ModeService : Service(), KoinComponent {
     private var phoneListener: ModePhoneStateListener? = null
@@ -109,13 +113,30 @@ class ModeService : Service(), KoinComponent {
     private fun attachPhoneListener() {
         AppLog.i("Attach phone listener")
         phoneListener = get()
-        get<TelephonyManager>().listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (AppPermissions.isGranted(get(), AppPermission.PhoneStateRead)) {
+                get<TelephonyManager>().listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE)
+            }
+        } else {
+            get<TelephonyManager>().listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE)
+        }
     }
 
     private fun detachPhoneListener() {
         AppLog.i("Detach phone listener")
-        get<TelephonyManager>().listen(phoneListener, PhoneStateListener.LISTEN_NONE)
-        phoneListener!!.cancelActions()
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (AppPermissions.isGranted(get(), AppPermission.PhoneStateRead)) {
+                    get<TelephonyManager>().listen(phoneListener, PhoneStateListener.LISTEN_NONE)
+                    phoneListener?.cancelActions()
+                }
+            } else {
+                get<TelephonyManager>().listen(phoneListener, PhoneStateListener.LISTEN_NONE)
+                phoneListener?.cancelActions()
+            }
+        } catch (e: Exception) {
+            AppLog.e(e)
+        }
         phoneListener = null
     }
 

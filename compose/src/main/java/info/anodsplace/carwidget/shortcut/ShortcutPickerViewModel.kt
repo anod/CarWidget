@@ -18,6 +18,7 @@ import info.anodsplace.framework.content.CommonActivityAction
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.getScopeOrNull
 import org.koin.core.component.inject
 import org.koin.core.scope.Scope
 
@@ -53,7 +54,6 @@ class ShortcutPickerViewModel(
 
     private val appScope: AppCoroutineScope by inject()
     private val update: WidgetUpdate by inject()
-    private val model by inject<WidgetShortcutsModel>()
     val shortcutResources: ShortcutResources by inject()
     val imageLoader: ImageLoader by inject()
 
@@ -76,6 +76,8 @@ class ShortcutPickerViewModel(
     }
 
     private fun save(intent: Intent, isApp: Boolean) {
+        // org.koin.core.error.ClosedScopeException
+        val model = getScopeOrNull()?.get<WidgetShortcutsModel>() ?: return
         appScope.launch {
             try {
                 val result = model.saveIntent(viewState.position, intent, isApp)

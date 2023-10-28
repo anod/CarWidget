@@ -106,7 +106,7 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
 
     @SuppressLint("MissingPermission")
     private fun answerPhoneHeadsethook(context: Context) {
-        if (AppPermissions.isGranted(context, AppPermission.AnswerPhoneCalls) || AppPermissions.isGranted(context, AppPermission.ModifyPhoneState)) {
+        if (AppPermissions.isGranted(context, AppPermission.AnswerPhoneCalls) || AppPermissions.isGranted(context, AppPermission.PhoneStateModify)) {
             val telecomManager = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
             telecomManager.acceptRingingCall()
             if (autoSpeaker && !audioManager.isSpeakerphoneOn) {

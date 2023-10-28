@@ -201,6 +201,7 @@
     <string name="permission_draw_overlay" tools:ignore="MissingTranslation">Draw over other appps</string>
     <string name="change_screen_orientation" tools:ignore="MissingTranslation">Change screen orientation</string>
     <string name="permission_answer_calls" tools:ignore="MissingTranslation">Answer phone calls</string>
+    <string name="permission_read_phone_state" tools:ignore="MissingTranslation">Read phone state</string>
     <string name="allow_answer_phone_calls" tools:ignore="MissingTranslation">Allow to answer calls</string>
     <string name="adaptive_icon_style" tools:ignore="MissingTranslation">Adaptive icon style</string>
     <string name="answer_error_oreo" tools:ignore="MissingTranslation">CarWidget: Allow permission to answer calls</string>

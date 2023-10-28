@@ -21,6 +21,9 @@ class PermissionChecker(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             add(AppPermission.PostNotification)
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            add(AppPermission.PhoneStateRead)
+        }
     }
 
     fun check(activity: ComponentActivity): List<AppPermission> {
@@ -37,6 +40,7 @@ class PermissionChecker(
                     )
                 is AppPermission.WriteSettings -> inCarStatus.isEnabled && inCarSettings.brightness != InCarInterface.BRIGHTNESS_DISABLED
                 is AppPermission.AnswerPhoneCalls -> inCarStatus.isEnabled && inCarSettings.autoAnswer != InCarInterface.AUTOANSWER_DISABLED
+                is AppPermission.PhoneStateRead -> inCarStatus.isEnabled && inCarSettings.autoAnswer != InCarInterface.AUTOANSWER_DISABLED
                 is AppPermission.ActivityRecognition -> inCarStatus.isEnabled && inCarSettings.isActivityRequired
                 is AppPermission.PostNotification -> true
                 else -> throw IllegalStateException("Unknown $it")

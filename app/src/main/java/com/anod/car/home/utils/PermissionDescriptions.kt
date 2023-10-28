@@ -32,6 +32,12 @@ val permissionDescriptions = listOf(
         descRes = info.anodsplace.carwidget.content.R.string.allow_answer_phone_calls
     ),
     PermissionDescriptionItem(
+        permission = AppPermission.PhoneStateRead.value,
+        iconsRes = R.drawable.ic_action_ring_volume,
+        titleRes = info.anodsplace.carwidget.content.R.string.permission_read_phone_state,
+        descRes = info.anodsplace.carwidget.content.R.string.allow_answer_phone_calls
+    ),
+    PermissionDescriptionItem(
         permission = AppPermission.ActivityRecognition.value,
         iconsRes = R.drawable.ic_action_directions_run_24,
         titleRes = info.anodsplace.carwidget.content.R.string.activity_recognition,
