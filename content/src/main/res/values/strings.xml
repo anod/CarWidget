@@ -19,7 +19,7 @@
     <string name="component" translatable="false">Component</string>
     <string name="edit_intent">Edit intent</string>
     <string name="back">Back</string>
-
+    <string name="refresh">Refresh</string>
     <string name="pref_tile_color_title">Tile color</string>
     <string name="pref_bg_color_title">Background color</string>
     <string name="pref_bg_color_summary">Widget background color</string>

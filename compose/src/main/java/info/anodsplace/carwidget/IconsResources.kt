@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Image
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
@@ -115,7 +114,7 @@ fun StoreVersionSignIcon(modifier: Modifier = Modifier, tint: Color = LocalConte
 
 @Composable
 fun RefreshIcon() {
-    Icon(imageVector = Icons.Default.Refresh, contentDescription = stringResource(id = info.anodsplace.framework.R.string.menu_refresh))
+    Icon(imageVector = Icons.Default.Refresh, contentDescription = stringResource(id = info.anodsplace.carwidget.content.R.string.refresh))
 }
 
 @Composable

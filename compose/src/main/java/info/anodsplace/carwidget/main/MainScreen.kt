@@ -59,7 +59,7 @@ import info.anodsplace.carwidget.incar.InCarMainScreen
 import info.anodsplace.carwidget.incar.InCarViewModel
 import info.anodsplace.carwidget.permissions.PermissionsScreen
 import info.anodsplace.carwidget.shortcut.EditShortcut
-import info.anodsplace.compose.findActivity
+import info.anodsplace.framework.app.findActivity
 import info.anodsplace.framework.content.CommonActivityAction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow

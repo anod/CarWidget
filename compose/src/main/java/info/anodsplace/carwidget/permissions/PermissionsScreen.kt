@@ -23,7 +23,7 @@ import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.main.MainViewEvent
 import info.anodsplace.carwidget.main.MainViewState
 import info.anodsplace.compose.RequestPermissionsScreen
-import info.anodsplace.compose.findActivity
+import info.anodsplace.framework.app.findActivity
 
 @Composable
 fun PermissionsScreen(screenState: MainViewState, onEvent: (MainViewEvent) -> Unit) {

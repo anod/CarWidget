@@ -40,7 +40,7 @@ class InCarSettings(context: Context, appScope: AppCoroutineScope)
             return devices
         }
         set(btDevices) {
-            if (btDevices.isEmpty) {
+            if (btDevices.isEmpty()) {
                 applyChange(BLUETOOTH_DEVICE_ADDRESSES, null)
             } else {
                 val addrStr = TextUtils.join(",", btDevices.values)

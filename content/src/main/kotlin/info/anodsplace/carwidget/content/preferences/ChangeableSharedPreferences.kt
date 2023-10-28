@@ -45,7 +45,7 @@ open class ChangeableSharedPreferences(prefs: SharedPreferences, private val app
     }
 
     fun applyPending() {
-        if (pendingChanges.isEmpty) {
+        if (pendingChanges.isEmpty()) {
             return
         }
         val edit = prefs.edit()

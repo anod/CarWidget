@@ -36,9 +36,9 @@ import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.compose.PreferencesDefaults
 import info.anodsplace.compose.PreferencesScreen
 import info.anodsplace.compose.checked
-import info.anodsplace.compose.findActivity
 import info.anodsplace.compose.key
 import info.anodsplace.compose.value
+import info.anodsplace.framework.app.findActivity
 
 @Composable
 fun InCarMainScreen(
