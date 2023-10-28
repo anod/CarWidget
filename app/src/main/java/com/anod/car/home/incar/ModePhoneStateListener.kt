@@ -31,53 +31,52 @@ class ModePhoneStateListener(private val context: Context, private val audioMana
         cancelAnswerTimer()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCallStateChanged(state: Int, incomingNumber: String) {
         super.onCallStateChanged(state, incomingNumber)
         this.state = state
         when (state) {
             TelephonyManager.CALL_STATE_IDLE -> {
-                AppLog.i("Call state idle")
+                AppLog.i("Call state idle", tag = "ModePhoneStateListener")
                 audioManager.isSpeakerphoneOn = false
                 cancelAnswerTimer()
                 answered = false
             }
             TelephonyManager.CALL_STATE_OFFHOOK -> {
-                AppLog.i("Call state off hook")
+                AppLog.i("Call state off hook", tag = "ModePhoneStateListener")
                 if (autoSpeaker && !audioManager.isSpeakerphoneOn) {
-                    AppLog.d("Enable speakerphone while off hook")
+                    AppLog.i("Enable speakerphone while off hook", tag = "ModePhoneStateListener")
                     audioManager.isSpeakerphoneOn = true
                 }
             }
             TelephonyManager.CALL_STATE_RINGING -> {
-                AppLog.i("Call state ringing")
+                AppLog.i("Call state ringing", tag = "ModePhoneStateListener")
                 if (answerMode == info.anodsplace.carwidget.content.preferences.InCarInterface.AUTOANSWER_IMMEDIATLY) {
-                    AppLog.d("Check if already answered")
+                    AppLog.i("Check if already answered", tag = "ModePhoneStateListener")
                     if (!answered) {
-                        AppLog.d("Answer immediately")
+                        AppLog.i("Answer immediately", tag = "ModePhoneStateListener")
                         answerCall()
                         answered = true
                     }
                 } else if (answerMode == info.anodsplace.carwidget.content.preferences.InCarInterface.AUTOANSWER_DELAY_5) {
-                    AppLog.d("Check if already answered")
+                    AppLog.i("Check if already answered", tag = "ModePhoneStateListener")
                     if (!answered) {
-                        AppLog.i("Answer delayed")
+                        AppLog.i("Answer delayed", tag = "ModePhoneStateListener")
                         answerCallDelayed()
                         answered = true
                     }
                 } else {
-                    AppLog.i("Cancel answer timer")
+                    AppLog.i("Cancel answer timer", tag = "ModePhoneStateListener")
                     cancelAnswerTimer()
                 }
             }
+            else -> AppLog.e("Call state <unknown>: $state")
         }
-        AppLog.e("Call state <unknown>: $state")
     }
 
     private fun cancelAnswerTimer() {
-        if (answerTimer != null) {
-            answerTimer!!.cancel()
-            answerTimer = null
-        }
+        answerTimer?.cancel()
+        answerTimer = null
     }
 
     private fun answerCallDelayed() {

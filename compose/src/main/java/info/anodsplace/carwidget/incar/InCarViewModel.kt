@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.incar
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
@@ -49,20 +50,19 @@ sealed interface InCarViewEvent {
     class SaveScreenTimeout(val disabled: Boolean, val disableCharging: Boolean) : InCarViewEvent
     class ToggleScreenAlert(val useAlert: Boolean) : InCarViewEvent
     class ApplyChange(val key: String, val value: Any?) : InCarViewEvent
-    class NotificationShortcutUpdate(val shortcutIndex: Int, val entry: ChooserEntry) :
-        InCarViewEvent
+    class NotificationShortcutUpdate(val shortcutIndex: Int, val entry: ChooserEntry) : InCarViewEvent
     class SetAutorunApp(val componentName: ComponentName?) : InCarViewEvent
-    class RequestPermissionResult(val result: List<AppPermission>, val missingPermissions: List<PermissionDescription>, val activity: ComponentActivity, val ex: Exception?) :
-        InCarViewEvent
+    class RequestPermissionResult(val result: List<AppPermission>, val missingPermissions: List<PermissionDescription>, val activity: ComponentActivity, val ex: Exception?) : InCarViewEvent
     class RequestPermission(val missingPermissions: List<PermissionDescription>) : InCarViewEvent
 }
 
 sealed interface InCarViewAction {
     class Navigate(val route: String) : InCarViewAction
     class RequestPermissions(val permissions: List<AppPermission>) : InCarViewAction
-    class CheckPermission(val permission: AppPermission) : InCarViewAction
+    class CheckPermissions(val permissions: List<AppPermission>) : InCarViewAction {
+        constructor(permission: AppPermission) : this(listOf(permission))
+    }
     class ActivityAction(val action: CommonActivityAction) : InCarViewAction
-
     data object CheckMissingPermissions : InCarViewAction
 }
 
@@ -176,10 +176,14 @@ class InCarViewModel(
         inCar.applyChange(key, value)
 
         when (key) {
-            InCarSettings.SCREEN_ORIENTATION -> emitAction(InCarViewAction.CheckPermission(permission = AppPermission.CanDrawOverlay))
-            InCarSettings.BRIGHTNESS -> emitAction(InCarViewAction.CheckPermission(permission = AppPermission.WriteSettings))
-            InCarSettings.AUTO_ANSWER -> emitAction(InCarViewAction.CheckPermission(permission = AppPermission.AnswerPhoneCalls))
-            InCarSettings.ACTIVITY_RECOGNITION -> emitAction(InCarViewAction.CheckPermission(permission = AppPermission.ActivityRecognition))
+            InCarSettings.SCREEN_ORIENTATION -> emitAction(InCarViewAction.CheckPermissions(permission = AppPermission.CanDrawOverlay))
+            InCarSettings.BRIGHTNESS -> emitAction(InCarViewAction.CheckPermissions(permission = AppPermission.WriteSettings))
+            InCarSettings.AUTO_ANSWER -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                emitAction(InCarViewAction.CheckPermissions(permissions = listOf(AppPermission.AnswerPhoneCalls, AppPermission.PhoneStateRead)))
+            } else {
+                emitAction(InCarViewAction.CheckPermissions(permission = AppPermission.AnswerPhoneCalls))
+            }
+            InCarSettings.ACTIVITY_RECOGNITION -> emitAction(InCarViewAction.CheckPermissions(permission = AppPermission.ActivityRecognition))
             InCarSettings.INCAR_MODE_ENABLED -> emitAction(InCarViewAction.CheckMissingPermissions)
         }
     }
@@ -187,7 +191,7 @@ class InCarViewModel(
     private fun toggleScreenAlert(useAlert: Boolean) {
         if (useAlert) {
             inCar.screenOnAlert = InCarInterface.ScreenOnAlertSettings(true, inCar.screenOnAlert)
-            emitAction(InCarViewAction.CheckPermission(AppPermission.CanDrawOverlay))
+            emitAction(InCarViewAction.CheckPermissions(AppPermission.CanDrawOverlay))
         } else {
             inCar.screenOnAlert = InCarInterface.ScreenOnAlertSettings(false, inCar.screenOnAlert)
         }
@@ -211,8 +215,8 @@ class InCarViewModel(
     fun handleAction(action: InCarViewAction, navController: NavHostController, activity: ComponentActivity) {
         when (action) {
             is InCarViewAction.Navigate -> navController.navigate(action.route)
-            is InCarViewAction.CheckPermission -> {
-                val required = permissionChecker.check(listOf(action.permission), activity).mapNotNull { permissionDescriptionsMap[it] }
+            is InCarViewAction.CheckPermissions -> {
+                val required = permissionChecker.check(action.permissions, activity).mapNotNull { permissionDescriptionsMap[it] }
                 if (required.isNotEmpty()) {
                     handleEvent(InCarViewEvent.RequestPermission(missingPermissions = required))
                 } else if (viewState.requiredPermissionsNotice.isNotEmpty()) {
