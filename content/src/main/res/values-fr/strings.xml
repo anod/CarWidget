@@ -203,7 +203,7 @@
     <string name="edit_title">Modifier le titre</string>
     <string name="info">Info</string>
     <string name="allow_permissions_brightness">Autoriser les paramètres du système d\'écriture pour modifier la luminosité</string>
-    <string name="allow_permission_overlay">Autoriser la superposition de l\'application pour modifier l'orientation</string>
+    <string name="allow_permission_overlay">Autoriser la superposition de l\'application pour modifier l\'orientation</string>
     <string name="missing_required_permissions">L\'application est manquante obligatoire les autorisations</string>
     <string name="allow_access">Permettre l\'accès</string>
     <string name="notifications">Notifications</string>
@@ -211,7 +211,7 @@
     <string name="permission_write_settings">Écrire des paramètres du système</string>
     <string name="adjust_brightness">Ajuster la luminosité</string>
     <string name="permission_draw_overlay">Dessiner d\'autres apppps</string>
-    <string name="change_screen_orientation">Modifier l\'orientation de l'écran</string>
+    <string name="change_screen_orientation">Modifier l\'orientation de l\'écran</string>
     <string name="permission_answer_calls">Répondre aux appels téléphoniques</string>
     <string name="permission_read_phone_state">Lire l\'état du téléphone</string>
     <string name="allow_answer_phone_calls">Autoriser les appels à répondre</string>
