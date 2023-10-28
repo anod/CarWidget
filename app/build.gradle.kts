@@ -58,9 +58,8 @@ android {
         targetSdk = 33 // 29 wifi switch not working
         applicationId = "com.anod.car.home.free"
 
-        versionCode = 33100
+        versionCode = 33101
         versionName = "3.0.1"
-        vectorDrawables.generatedDensities("hdpi", "xxhdpi")
     }
 
     androidResources {
