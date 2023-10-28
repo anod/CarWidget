@@ -174,6 +174,7 @@
     <string name="value">ערך</string>
     <string name="add">להוסיף</string>
     <string name="value_might_be_not_valid">ייתכן שהערך אינו חוקי</string>
+    <string name="component">קומפוננטה</string>
     <string name="edit_intent">ערוך Intent</string>
     <string name="back">חזור</string>
     <string name="pref_bg_color_summary">צבע רקע של ווידג\'ט</string>
@@ -217,4 +218,6 @@
     <string name="icon_adw_icon_pack">חבילת אייקונים</string>
     <string name="icon_default">בְּרִירַת מֶחדָל</string>
     <string name="show">הופעה</string>
+    <string name="refresh">לְרַעֲנֵן</string>
+    <string name="permission_read_phone_state">לקרוא מצב טלפון</string>
 </resources>

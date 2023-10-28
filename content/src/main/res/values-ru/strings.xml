@@ -173,6 +173,7 @@
 	<string name="value">Значение</string>
 	<string name="add">Добавить</string>
 	<string name="value_might_be_not_valid">Возможно, значение недействительно</string>
+	<string name="component">Компонента</string>
 	<string name="edit_intent">Изменить Intent</string>
 	<string name="back">Назад</string>
 	<string name="pref_bg_color_summary">Цвет фона виджета</string>
@@ -215,4 +216,6 @@
 	<string name="icon_custom">Пользовательский</string>
 	<string name="icon_adw_icon_pack">Набор значков</string>
 	<string name="icon_default">По умолчанию</string>
+	<string name="refresh">Обновить</string>
+	<string name="permission_read_phone_state">Читать состояние телефона</string>
 </resources>

@@ -16,7 +16,7 @@
     <string name="value">Value</string>
     <string name="add">Add</string>
     <string name="value_might_be_not_valid">The value might not be valid</string>
-    <string name="component" translatable="false">Component</string>
+    <string name="component">Component</string>
     <string name="edit_intent">Edit intent</string>
     <string name="back">Back</string>
     <string name="refresh">Refresh</string>
@@ -74,7 +74,7 @@
     <string name="restore_done">Restore is done.</string>
     <string name="restore_deserialize_failed">Failed to deserialize backup.</string>
     <string name="failed_to_read_file">Failed to read the file.</string>
-    <string name="backup_unknown_format" tools:ignore="MissingTranslation">Unknown file format. Make sure to restore specific widget</string>
+    <string name="backup_unknown_format">Unknown file format. Make sure to restore specific widget</string>
     <string name="pref_auto_answer">Auto Answer</string>
     <string name="pref_auto_answer_summary">Auto answer to incoming calls immediately or with 5 seconds delay. (Experimental)</string>
     <string name="pref_autorun_app_title">App Autorun</string>
@@ -93,7 +93,7 @@
     <string name="pref_titles_hide_title">Hide titles</string>
     <string name="pref_titles_hide_summary">Do not display titles for the shortcuts</string>
     <string name="not_active">Not active</string>
-    <string name="active" tools:ignore="MissingTranslation">Active</string>
+    <string name="active">Active</string>
     <string name="install_a_widget">Add a widget to homescreen</string>
     <string name="install_widget"><![CDATA[Go to <b>home screen</b> &gt; <img src=\"Icons.Default.TouchApp\"></img><b>touch & hold</b> to show menu &gt; choose <img src=\"Icons.Default.Widgets\"></img><b>widgets</b> &gt; find <b>Car Widget</b> and put it on the screen.]]></string>
     <string name="go_to_homescreen">Go to homescreen</string>
@@ -171,42 +171,42 @@
         <item>Landscape (reverse)</item>
     </string-array>
 
-    <string name="unavailable_bt_device" tools:ignore="MissingTranslation">Not available</string>
-    <string name="hidden" tools:ignore="MissingTranslation">Hidden</string>
-    <string name="crash_dialog_report_button" tools:ignore="MissingTranslation">Report</string>
-    <string name="crash_dialog_title" tools:ignore="MissingTranslation">Car Widget has stopped</string>
-    <string name="crash_dialog_toast" tools:ignore="MissingTranslation">Browser will be opened</string>
-    <string name="crash_dialog_text" tools:ignore="MissingTranslation">Please report the crash</string>
+    <string name="unavailable_bt_device">Not available</string>
+    <string name="hidden">Hidden</string>
+    <string name="crash_dialog_report_button">Report</string>
+    <string name="crash_dialog_title">Car Widget has stopped</string>
+    <string name="crash_dialog_toast">Browser will be opened</string>
+    <string name="crash_dialog_text">Please report the crash</string>
 
-    <string name="in_car_mode_switch" tools:ignore="MissingTranslation">InCar mode switch</string>
-    <string name="general" tools:ignore="MissingTranslation">General</string>
-    <string name="mode_detector_channel" tools:ignore="MissingTranslation">InCar detector</string>
+    <string name="in_car_mode_switch">InCar mode switch</string>
+    <string name="general">General</string>
+    <string name="mode_detector_channel">InCar detector</string>
 
-    <string name="app_preferences" tools:ignore="MissingTranslation">App Preferences</string>
-    <string name="title" tools:ignore="MissingTranslation">Title</string>
-    <string name="edit_title" tools:ignore="MissingTranslation">Edit title</string>
-    <string name="info" tools:ignore="MissingTranslation">Info</string>
-    <string name="notification_mode_detector_title" tools:ignore="MissingTranslation">InCar mode detector.</string>
-    <string name="notification_mode_detector_content" tools:ignore="MissingTranslation">Can be minimized in notification settings</string>
-    <string name="allow_permissions_brightness" tools:ignore="MissingTranslation">Allow write system settings to change brightness</string>
-    <string name="allow_permission_overlay" tools:ignore="MissingTranslation">Allow app overlay to change orientation</string>
-    <string name="missing_required_permissions" tools:ignore="MissingTranslation">The app is missing required permissions</string>
-    <string name="allow_access" tools:ignore="MissingTranslation">Allow access</string>
+    <string name="app_preferences">App Preferences</string>
+    <string name="title">Title</string>
+    <string name="edit_title">Edit title</string>
+    <string name="info">Info</string>
+    <string name="notification_mode_detector_title">InCar mode detector.</string>
+    <string name="notification_mode_detector_content">Can be minimized in notification settings</string>
+    <string name="allow_permissions_brightness">Allow write system settings to change brightness</string>
+    <string name="allow_permission_overlay">Allow app overlay to change orientation</string>
+    <string name="missing_required_permissions">The app is missing required permissions</string>
+    <string name="allow_access">Allow access</string>
 
-    <string name="notifications" tools:ignore="MissingTranslation">Notifications</string>
-    <string name="permission_notification_desc" tools:ignore="MissingTranslation">InCar mode and diagnostics notifications</string>
+    <string name="notifications">Notifications</string>
+    <string name="permission_notification_desc">InCar mode and diagnostics notifications</string>
 
-    <string name="permission_write_settings" tools:ignore="MissingTranslation">Write system settings</string>
-    <string name="adjust_brightness" tools:ignore="MissingTranslation">Adjust brightness</string>
-    <string name="permission_draw_overlay" tools:ignore="MissingTranslation">Draw over other appps</string>
-    <string name="change_screen_orientation" tools:ignore="MissingTranslation">Change screen orientation</string>
-    <string name="permission_answer_calls" tools:ignore="MissingTranslation">Answer phone calls</string>
-    <string name="permission_read_phone_state" tools:ignore="MissingTranslation">Read phone state</string>
-    <string name="allow_answer_phone_calls" tools:ignore="MissingTranslation">Allow to answer calls</string>
-    <string name="adaptive_icon_style" tools:ignore="MissingTranslation">Adaptive icon style</string>
-    <string name="answer_error_oreo" tools:ignore="MissingTranslation">CarWidget: Allow permission to answer calls</string>
-    <string name="auto_color" tools:ignore="MissingTranslation">Auto color</string>
-    <string name="cannot_generate_preview" tools:ignore="MissingTranslation">Cannot generate preview</string>
+    <string name="permission_write_settings">Write system settings</string>
+    <string name="adjust_brightness">Adjust brightness</string>
+    <string name="permission_draw_overlay">Draw over other appps</string>
+    <string name="change_screen_orientation">Change screen orientation</string>
+    <string name="permission_answer_calls">Answer phone calls</string>
+    <string name="permission_read_phone_state">Read phone state</string>
+    <string name="allow_answer_phone_calls">Allow to answer calls</string>
+    <string name="adaptive_icon_style">Adaptive icon style</string>
+    <string name="answer_error_oreo">CarWidget: Allow permission to answer calls</string>
+    <string name="auto_color">Auto color</string>
+    <string name="cannot_generate_preview">Cannot generate preview</string>
     <string name="while_charging">While charging</string>
     <string name="screen_on_alternative">Alert on top</string>
     <string name="screen_on_alternative_text">Use alternative way to keep screen on, requires addition permission</string>
