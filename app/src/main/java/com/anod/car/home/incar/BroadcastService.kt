@@ -39,20 +39,25 @@ class BroadcastService : Service(), KoinComponent {
     }
     
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // Start once
-        if (receiver == null) {
-            startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this))
-            if (register(this)) {
+        try {
+            // Start once
+            if (receiver == null) {
+                startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this))
+                if (register(this)) {
+                    return START_STICKY
+                }
+            } else {
+                startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this))
                 return START_STICKY
             }
-        } else {
-            startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this))
-            return START_STICKY
-        }
 
-        stopForeground(true)
-        stopSelf()
-        return START_NOT_STICKY
+            stopForeground(true)
+            stopSelf()
+            return START_NOT_STICKY
+        } catch (e: Exception) {
+            AppLog.e(e)
+            return START_NOT_STICKY
+        }
     }
 
     override fun onDestroy() {
