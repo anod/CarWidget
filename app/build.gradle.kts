@@ -23,7 +23,7 @@ dependencies {
     implementation(libs.play.services.location)
 
     implementation(libs.appcompat) // AppCompatActivity
-    implementation(libs.core.ktx)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.activity)
     implementation(libs.core.splashscreen)
     implementation(libs.collection.ktx)

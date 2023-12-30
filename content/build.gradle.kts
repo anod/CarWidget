@@ -46,7 +46,7 @@ dependencies {
     implementation(libs.sqldelight.driver.android)
     implementation(libs.sqldelight.coroutines.extensions.jvm)
     implementation(libs.preference.ktx) // for androidx.preference.PreferenceManager
-    implementation(libs.core.ktx)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.collection.ktx)
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)

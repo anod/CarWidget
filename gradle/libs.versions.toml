@@ -29,7 +29,8 @@ acra-limiter = { module = "ch.acra:acra-limiter", version.ref = "acra" }
 acra-notification = { module = "ch.acra:acra-notification", version.ref = "acra" }
 acra-core = { module = "ch.acra:acra-core", version.ref = "acra" }
 activity = { module = "androidx.activity:activity", version.ref = "activity" }
-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 auto-service-ksp = { module = "dev.zacsweers.autoservice:auto-service-ksp", version.ref = "auto-service-ksp" }
 auto-service = { module = "com.google.auto.service:auto-service", version.ref = "auto-service" }
 auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service-annotations" }
@@ -37,7 +38,6 @@ appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat"
 coil-compose-base = { module = "io.coil-kt:coil-compose-base", version.ref = "coil" }
 collection-ktx = { module = "androidx.collection:collection-ktx", version.ref = "collection-ktx" }
 core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-splashscreen" }
-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }

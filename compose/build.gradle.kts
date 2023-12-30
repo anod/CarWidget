@@ -51,7 +51,7 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.compose)
 
     implementation(libs.navigation.compose)
-    implementation(libs.activity.compose)
+    implementation(libs.androidx.activity.compose)
 
     implementation(libs.kotlin.stdlib)
 }
