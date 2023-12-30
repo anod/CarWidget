@@ -44,7 +44,7 @@ fun createCarScreenItems(inCar: InCarInterface, context: Context): List<Preferen
         PreferenceItem.Text(titleRes = R.string.pref_blutooth_device_title, summaryRes = R.string.pref_blutooth_device_summary, key = "bt-device-screen"),
         PreferenceItem.CheckBox(checked = inCar.isHeadsetRequired, key = "headset-required", summaryRes = R.string.pref_headset_connected_summary, titleRes = R.string.pref_headset_connected_title),
         PreferenceItem.CheckBox(checked = inCar.isPowerRequired, key = "power-required", summaryRes = R.string.pref_power_connected_summary, titleRes = R.string.pref_power_connected_title),
-        PreferenceItem.CheckBox(checked = inCar.isActivityRequired, key = "activity-recognition", summaryRes = info.anodsplace.framework.R.string.gms_service_missing, titleRes = R.string.activity_recognition),
+        PreferenceItem.CheckBox(checked = inCar.isActivityRequired, key = "activity-recognition", summaryRes = R.string.gms_service_missing, titleRes = R.string.activity_recognition),
         PreferenceItem.CheckBox(checked = inCar.isCarDockRequired, key = "car-dock", summaryRes = R.string.car_dock_summary, titleRes = R.string.car_dock),
         PreferenceItem.Spacer(),
         PreferenceItem.Category(titleRes = R.string.pref_actions),

@@ -16,9 +16,9 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.ExpandMoreIcon
 import info.anodsplace.carwidget.content.R
-import info.anodsplace.framework.util.isScalar
-import info.anodsplace.framework.util.put
-import info.anodsplace.framework.util.putAny
+import info.anodsplace.ktx.isScalar
+import info.anodsplace.ktx.put
+import info.anodsplace.ktx.putAny
 import java.util.*
 
 @Composable

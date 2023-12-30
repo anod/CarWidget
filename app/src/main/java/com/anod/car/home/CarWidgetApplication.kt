@@ -36,7 +36,7 @@ import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.skin.SkinPropertiesFactory
 import info.anodsplace.carwidget.utils.DefaultsResourceProvider
 import info.anodsplace.framework.app.AlertWindow
-import info.anodsplace.framework.app.ApplicationInstance
+import info.anodsplace.context.ApplicationInstance
 import org.acra.ACRA
 import org.acra.ReportField
 import org.acra.config.limiter

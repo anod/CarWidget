@@ -1,7 +1,7 @@
 plugins {
-    id("com.android.library")
-    id("com.squareup.sqldelight")
-    kotlin("android")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.sqldelight)
+    alias(libs.plugins.kotlin)
 }
 
 android {

@@ -1,4 +1,5 @@
 [versions]
+agp = "8.2.0"
 acra = "5.11.3"
 auto-service-ksp= "1.1.0"
 auto-service = "1.1.1"
@@ -58,4 +59,5 @@ sqldelight-coroutines-extensions-jvm = { module = "com.squareup.sqldelight:corou
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqldelight" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "plugin-ksp" }
-
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }

@@ -22,6 +22,7 @@ include(
     ":lib:applog",
     ":lib:compose",
     ":lib:graphics",
+    ":lib:context",
     ":lib:framework",
     ":lib:ktx",
     ":lib:permissions",

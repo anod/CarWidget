@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin)
     alias(libs.plugins.ksp)
 }
 
@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":skins"))
     implementation(project(":lib:applog"))
     implementation(project(":lib:graphics"))
+    implementation(project(":lib:context"))
     implementation(project(":lib:framework"))
     implementation(project(":lib:permissions"))
 
