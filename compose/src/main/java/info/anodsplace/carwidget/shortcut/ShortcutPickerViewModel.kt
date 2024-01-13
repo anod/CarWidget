@@ -75,12 +75,12 @@ class ShortcutPickerViewModel(
     }
 
     private fun save(intent: Intent, isApp: Boolean) {
+        if (scope.closed) {
+            return
+        }
         // org.koin.core.error.ClosedScopeException
         appScope.launch {
             try {
-                if (scope.closed) {
-                    return@launch
-                }
                 val result = scope.get<WidgetShortcutsModel>().saveIntent(viewState.position, intent, isApp)
                 update.request(intArrayOf(+appWidgetIdScope))
 
