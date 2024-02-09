@@ -3,10 +3,12 @@ package info.anodsplace.carwidget
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowRight
+import androidx.compose.material.icons.automirrored.filled.VolumeDown
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
-import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -19,8 +21,6 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Shop2
 import androidx.compose.material.icons.filled.TextDecrease
 import androidx.compose.material.icons.filled.TextIncrease
-import androidx.compose.material.icons.filled.VolumeDown
-import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material.icons.outlined.Info
@@ -56,7 +56,7 @@ fun MoreMenuIcon() {
 
 @Composable
 fun ExpandRightIcon() {
-    Icon(imageVector = Icons.Default.ArrowRight, contentDescription = null)
+    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowRight, contentDescription = null)
 }
 
 @Composable
@@ -77,7 +77,7 @@ fun ExpandMoreIcon() {
 @Composable
 fun BackArrowIcon() {
     Icon(
-        imageVector = Icons.Default.ArrowBack,
+        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
         contentDescription = stringResource(id = info.anodsplace.carwidget.content.R.string.back)
     )
 }
@@ -94,12 +94,12 @@ fun TextDecreaseIcon() {
 
 @Composable
 fun VolumeIncreaseIcon() {
-    Icon(imageVector = Icons.Filled.VolumeUp, contentDescription = stringResource(id = info.anodsplace.carwidget.content.R.string.increase))
+    Icon(imageVector = Icons.AutoMirrored.Filled.VolumeUp, contentDescription = stringResource(id = info.anodsplace.carwidget.content.R.string.increase))
 }
 
 @Composable
 fun VolumeDecreaseIcon() {
-    Icon(imageVector = Icons.Default.VolumeDown, contentDescription = stringResource(id = info.anodsplace.carwidget.content.R.string.decrease))
+    Icon(imageVector = Icons.AutoMirrored.Filled.VolumeDown, contentDescription = stringResource(id = info.anodsplace.carwidget.content.R.string.decrease))
 }
 
 @Composable
