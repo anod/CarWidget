@@ -17,6 +17,8 @@ class GlossyProperties : BaseProperties() {
             4 -> R.layout.sk_glass_4
             8 -> R.layout.sk_glass_8
             10 -> R.layout.sk_glass_10
+            12 -> R.layout.sk_glass_12
+            14 -> R.layout.sk_glass_14
             else -> R.layout.sk_glass_6
         }
     }

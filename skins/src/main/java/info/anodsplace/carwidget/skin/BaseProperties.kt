@@ -65,7 +65,9 @@ abstract class BaseProperties : SkinProperties {
             R.id.btn_text2, R.id.btn_text3, //4
             R.id.btn_text4, R.id.btn_text5, //6
             R.id.btn_text6, R.id.btn_text7, //8
-            R.id.btn_text8, R.id.btn_text9  //10
+            R.id.btn_text8, R.id.btn_text9, //10
+            R.id.btn_text10, R.id.btn_text11, //12
+            R.id.btn_text12, R.id.btn_text13, //14
         )
 
         internal val btnIds = intArrayOf(
@@ -73,7 +75,9 @@ abstract class BaseProperties : SkinProperties {
             R.id.btn2, R.id.btn3, //4
             R.id.btn4, R.id.btn5, //6
             R.id.btn6, R.id.btn7, //8
-            R.id.btn8, R.id.btn9  //10
+            R.id.btn8, R.id.btn9, //10
+            R.id.btn10, R.id.btn11, //12
+            R.id.btn12, R.id.btn13, //14
         )
 
         val internalShortcutResourcesPrimary = InternalShortcutResources(

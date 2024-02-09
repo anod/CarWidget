@@ -34,6 +34,8 @@ class CardsProperties : BaseProperties() {
             4 -> R.layout.sk_material_4
             8 -> R.layout.sk_material_8
             10 -> R.layout.sk_material_10
+            12 -> R.layout.sk_material_12
+            14 -> R.layout.sk_material_14
             else -> R.layout.sk_material_6
         }
     }

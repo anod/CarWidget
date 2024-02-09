@@ -31,6 +31,8 @@ class MetroProperties : BaseProperties() {
             4 -> R.layout.sk_windows7_4
             8 -> R.layout.sk_windows7_8
             10 -> R.layout.sk_windows7_10
+            12 -> R.layout.sk_windows7_12
+            14 -> R.layout.sk_windows7_14
             else -> R.layout.sk_windows7_6
         }
     }

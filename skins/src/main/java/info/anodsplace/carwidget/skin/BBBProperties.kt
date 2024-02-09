@@ -37,6 +37,8 @@ class BBBProperties : BaseProperties() {
             4 -> R.layout.sk_blackbearblanc_4
             8 -> R.layout.sk_blackbearblanc_8
             10 -> R.layout.sk_blackbearblanc_10
+            12 -> R.layout.sk_blackbearblanc_12
+            14 -> R.layout.sk_blackbearblanc_14
             else -> R.layout.sk_blackbearblanc_6
         }
     }

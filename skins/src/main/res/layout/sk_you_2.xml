@@ -39,8 +39,8 @@
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginEnd="2dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:layout_marginEnd="2dp">
 
                     <ImageButton
                         android:id="@+id/btn0"
@@ -54,18 +54,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal|bottom"
+                        android:ellipsize="end"
+                        android:gravity="center_horizontal"
+                        android:maxLines="1"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="4dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="8dp"
                         android:background="@drawable/you_title_background"
-                        android:ellipsize="end"
-                        android:gravity="center_horizontal"
-                        android:maxLines="1"
-                        android:paddingStart="4dp"
-                        android:paddingEnd="4dp"
-                        android:text="@string/set_shortcut"
                         android:textColor="?android:attr/textColorPrimaryInverse"
                         android:textSize="@dimen/text_size"
+                        android:text="@string/set_shortcut"
                         tools:ignore="SpUsage" />
                 </FrameLayout>
 
@@ -73,8 +73,8 @@
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginStart="2dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp">
 
                     <ImageButton
                         android:id="@+id/btn1"
@@ -88,22 +88,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal|bottom"
+                        android:ellipsize="end"
+                        android:gravity="center_horizontal"
+                        android:maxLines="1"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="4dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="8dp"
                         android:background="@drawable/you_title_background"
-                        android:ellipsize="end"
-                        android:gravity="center_horizontal"
-                        android:maxLines="1"
-                        android:paddingStart="4dp"
-                        android:paddingEnd="4dp"
-                        android:text="@string/set_shortcut"
                         android:textColor="?android:attr/textColorPrimaryInverse"
                         android:textSize="@dimen/text_size"
+                        android:text="@string/set_shortcut"
                         tools:ignore="SpUsage" />
                 </FrameLayout>
             </LinearLayout>
-
         </LinearLayout>
 
         <include

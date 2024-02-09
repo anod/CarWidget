@@ -18,6 +18,8 @@ class CarHomeProperties : BaseProperties() {
             4 -> R.layout.sk_carhome_4
             8 -> R.layout.sk_carhome_8
             10 -> R.layout.sk_carhome_10
+            12 -> R.layout.sk_carhome_12
+            14 -> R.layout.sk_carhome_14
             else -> R.layout.sk_carhome_6
         }
     }

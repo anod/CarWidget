@@ -120,7 +120,7 @@ interface WidgetInterface {
             return convertIconsScale(scaleString.toInt())
         }
 
-        fun convertIconsScale(scale: Int): Float {
+        private fun convertIconsScale(scale: Int): Float {
             return 1.0f + 0.1f * scale
         }
     }

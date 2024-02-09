@@ -78,7 +78,6 @@
                     android:textSize="@dimen/text_size" />
             </FrameLayout>
         </LinearLayout>
-
     </LinearLayout>
 
     <include layout="@layout/sk_glass_buttons" />

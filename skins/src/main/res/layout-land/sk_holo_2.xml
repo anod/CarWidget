@@ -34,8 +34,8 @@
 
                 <TextView
                     android:id="@+id/btn_text1"
-                    style="@style/holo_btn_text"
-                    android:text="@string/set_shortcut" />
+                    android:text="@string/set_shortcut"
+                    style="@style/holo_btn_text" />
             </FrameLayout>
 
             <FrameLayout
@@ -52,12 +52,11 @@
 
                 <TextView
                     android:id="@+id/btn_text0"
-                    style="@style/holo_btn_text"
-                    android:text="@string/set_shortcut" />
+                    android:text="@string/set_shortcut"
+                    style="@style/holo_btn_text" />
             </FrameLayout>
 
         </LinearLayout>
-
     </LinearLayout>
 
     <include layout="@layout/sk_holo_buttons" />

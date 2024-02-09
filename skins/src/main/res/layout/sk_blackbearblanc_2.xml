@@ -50,7 +50,6 @@
                     android:src="@drawable/ic_add_shortcut_holo" />
             </FrameLayout>
         </LinearLayout>
-
     </LinearLayout>
 
     <include layout="@layout/sk_blackbearblank_buttons" />

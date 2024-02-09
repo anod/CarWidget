@@ -1,5 +1,5 @@
 [versions]
-agp = "8.2.0"
+agp = "8.2.2"
 acra = "5.11.3"
 auto-service-ksp= "1.1.0"
 auto-service = "1.1.1"
@@ -8,22 +8,20 @@ activity = "1.8.2"
 appcompat = "1.6.1"
 core-ktx = "1.12.0"
 coil = "2.5.0"
-collection-ktx = "1.3.0"
+collection-ktx = "1.4.0"
 core-splashscreen = "1.0.1"
 coroutines = "1.7.3"
-kotlin = "1.9.21"
+kotlin = "1.9.22"
 koin = "3.5.3"
-lifecycle-common-java8 = "2.6.2"
-lifecycle-viewmodel-compose = "2.6.2"
-lifecycle-viewmodel-ktx = "2.6.2"
+lifecycle = "2.7.0"
 material = "1.11.0"
-navigation-compose = "2.7.6"
+navigation-compose = "2.7.7"
 palette-ktx = "1.0.0"
-play-services-location = "21.0.1"
+play-services-location = "21.1.0"
 preference-ktx = "1.2.1"
 sqlite-ktx = "2.4.0"
 sqldelight = "1.5.5"
-plugin-ksp = "1.9.21-1.0.16"
+plugin-ksp = "1.9.22-1.0.16"
 
 [libraries]
 acra-limiter = { module = "ch.acra:acra-limiter", version.ref = "acra" }
@@ -43,9 +41,9 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
-lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "lifecycle-common-java8" }
-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-viewmodel-compose" }
-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle-viewmodel-ktx" }
+lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "lifecycle" }
+lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 palette-ktx = { module = "androidx.palette:palette-ktx", version.ref = "palette-ktx" }

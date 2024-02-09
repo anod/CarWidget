@@ -337,6 +337,240 @@
                         tools:ignore="SpUsage" />
                 </FrameLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="140dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:baselineAligned="false"
+                android:orientation="vertical"
+                android:paddingEnd="4dp"
+                android:theme="@style/AppWidgetContainer">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="2dp">
+
+                    <ImageButton
+                        android:id="@+id/btn9"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/you_background"
+                        android:src="@drawable/you_add_24" />
+
+                    <TextView
+                        android:id="@+id/btn_text9"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:ellipsize="end"
+                        android:gravity="center_horizontal"
+                        android:maxLines="1"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="4dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/you_title_background"
+                        android:textColor="?android:attr/textColorPrimaryInverse"
+                        android:textSize="@dimen/text_size"
+                        android:text="@string/set_shortcut"
+                        tools:ignore="SpUsage" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginTop="2dp">
+
+                    <ImageButton
+                        android:id="@+id/btn8"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/you_background"
+                        android:src="@drawable/you_add_24" />
+
+                    <TextView
+                        android:id="@+id/btn_text8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:ellipsize="end"
+                        android:gravity="center_horizontal"
+                        android:maxLines="1"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="4dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/you_title_background"
+                        android:textColor="?android:attr/textColorPrimaryInverse"
+                        android:textSize="@dimen/text_size"
+                        android:text="@string/set_shortcut"
+                        tools:ignore="SpUsage" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="140dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:baselineAligned="false"
+                android:orientation="vertical"
+                android:paddingEnd="4dp"
+                android:theme="@style/AppWidgetContainer">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="2dp">
+
+                    <ImageButton
+                        android:id="@+id/btn11"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/you_background"
+                        android:src="@drawable/you_add_24" />
+
+                    <TextView
+                        android:id="@+id/btn_text11"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:ellipsize="end"
+                        android:gravity="center_horizontal"
+                        android:maxLines="1"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="4dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/you_title_background"
+                        android:textColor="?android:attr/textColorPrimaryInverse"
+                        android:textSize="@dimen/text_size"
+                        android:text="@string/set_shortcut"
+                        tools:ignore="SpUsage" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginTop="2dp">
+
+                    <ImageButton
+                        android:id="@+id/btn10"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/you_background"
+                        android:src="@drawable/you_add_24" />
+
+                    <TextView
+                        android:id="@+id/btn_text10"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:ellipsize="end"
+                        android:gravity="center_horizontal"
+                        android:maxLines="1"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="4dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/you_title_background"
+                        android:textColor="?android:attr/textColorPrimaryInverse"
+                        android:textSize="@dimen/text_size"
+                        android:text="@string/set_shortcut"
+                        tools:ignore="SpUsage" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="140dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:baselineAligned="false"
+                android:orientation="vertical"
+                android:paddingEnd="4dp"
+                android:theme="@style/AppWidgetContainer">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="2dp">
+
+                    <ImageButton
+                        android:id="@+id/btn13"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/you_background"
+                        android:src="@drawable/you_add_24" />
+
+                    <TextView
+                        android:id="@+id/btn_text13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:ellipsize="end"
+                        android:gravity="center_horizontal"
+                        android:maxLines="1"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="4dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/you_title_background"
+                        android:textColor="?android:attr/textColorPrimaryInverse"
+                        android:textSize="@dimen/text_size"
+                        android:text="@string/set_shortcut"
+                        tools:ignore="SpUsage" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginTop="2dp">
+
+                    <ImageButton
+                        android:id="@+id/btn12"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/you_background"
+                        android:src="@drawable/you_add_24" />
+
+                    <TextView
+                        android:id="@+id/btn_text12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:ellipsize="end"
+                        android:gravity="center_horizontal"
+                        android:maxLines="1"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="4dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/you_title_background"
+                        android:textColor="?android:attr/textColorPrimaryInverse"
+                        android:textSize="@dimen/text_size"
+                        android:text="@string/set_shortcut"
+                        tools:ignore="SpUsage" />
+                </FrameLayout>
+            </LinearLayout>
         </LinearLayout>
 
         <include

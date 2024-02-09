@@ -205,6 +205,198 @@
                     android:textSize="@dimen/text_size" />
             </FrameLayout>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/btn6"
+                    style="@style/WidgetSkin.W7.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/win7_container"
+                    android:src="@drawable/ic_add_shortcut" />
+
+                <TextView
+                    android:id="@+id/btn_text6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/title_padding_bottom_win7"
+                    android:text="@string/set_shortcut"
+                    android:textColor="@color/default_font_color"
+                    android:textSize="@dimen/text_size" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/btn7"
+                    style="@style/WidgetSkin.W7.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/win7_container"
+                    android:src="@drawable/ic_add_shortcut" />
+
+                <TextView
+                    android:id="@+id/btn_text7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/title_padding_bottom_win7"
+                    android:text="@string/set_shortcut"
+                    android:textColor="@color/default_font_color"
+                    android:textSize="@dimen/text_size" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/btn8"
+                    style="@style/WidgetSkin.W7.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/win7_container"
+                    android:src="@drawable/ic_add_shortcut" />
+
+                <TextView
+                    android:id="@+id/btn_text8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/title_padding_bottom_win7"
+                    android:text="@string/set_shortcut"
+                    android:textColor="@color/default_font_color"
+                    android:textSize="@dimen/text_size" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/btn9"
+                    style="@style/WidgetSkin.W7.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/win7_container"
+                    android:src="@drawable/ic_add_shortcut" />
+
+                <TextView
+                    android:id="@+id/btn_text9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/title_padding_bottom_win7"
+                    android:text="@string/set_shortcut"
+                    android:textColor="@color/default_font_color"
+                    android:textSize="@dimen/text_size" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/btn10"
+                    style="@style/WidgetSkin.W7.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/win7_container"
+                    android:src="@drawable/ic_add_shortcut" />
+
+                <TextView
+                    android:id="@+id/btn_text10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/title_padding_bottom_win7"
+                    android:text="@string/set_shortcut"
+                    android:textColor="@color/default_font_color"
+                    android:textSize="@dimen/text_size" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/btn11"
+                    style="@style/WidgetSkin.W7.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/win7_container"
+                    android:src="@drawable/ic_add_shortcut" />
+
+                <TextView
+                    android:id="@+id/btn_text11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/title_padding_bottom_win7"
+                    android:text="@string/set_shortcut"
+                    android:textColor="@color/default_font_color"
+                    android:textSize="@dimen/text_size" />
+            </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <include layout="@layout/sk_windows7_buttons" />

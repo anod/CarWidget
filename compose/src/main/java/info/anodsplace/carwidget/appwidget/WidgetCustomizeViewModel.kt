@@ -64,8 +64,8 @@ fun createItems(settings: WidgetInterface, skinList: SkinList, iconsThemeAppName
     PreferenceItem.Pick(
         titleRes = info.anodsplace.carwidget.content.R.string.number_shortcuts_title,
         key = "cmp-number",
-        entries = arrayOf("4","6","8","10"),
-        entryValues = arrayOf("4","6","8","10"),
+        entries = arrayOf("4","6","8","10","12","14"),
+        entryValues = arrayOf("4","6","8","10","12","14"),
         value = settings.shortcutsNumber.toString()
     ),
     Color(settings.backgroundColor).let { backgroundColor ->

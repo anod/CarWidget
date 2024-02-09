@@ -53,6 +53,8 @@ class YouProperties(context: Context) : BaseProperties() {
             4 -> R.layout.sk_you_4
             8 -> R.layout.sk_you_8
             10 -> R.layout.sk_you_10
+            12 -> R.layout.sk_you_12
+            14 -> R.layout.sk_you_14
             else -> R.layout.sk_you_6
         }
     }

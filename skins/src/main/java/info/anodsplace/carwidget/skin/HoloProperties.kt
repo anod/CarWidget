@@ -26,6 +26,8 @@ class HoloProperties : BaseProperties() {
             4 -> R.layout.sk_holo_4
             8 -> R.layout.sk_holo_8
             10 -> R.layout.sk_holo_10
+            12 -> R.layout.sk_holo_12
+            14 -> R.layout.sk_holo_14
             else -> R.layout.sk_holo_6
         }
     }

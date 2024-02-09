@@ -8,10 +8,10 @@ import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.util.*
+import java.util.Locale
 
 object WidgetStorage {
-    const val LAUNCH_COMPONENT_NUMBER_MAX = 10
+    const val LAUNCH_COMPONENT_NUMBER_MAX = 14
     const val LAUNCH_COMPONENT_NUMBER_DEFAULT = 6
 
     internal const val CMP_NUMBER = "cmp-number"

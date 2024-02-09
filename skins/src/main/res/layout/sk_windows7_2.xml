@@ -17,23 +17,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dip"
-            android:layout_weight="1"
             android:layout_margin="2dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <FrameLayout
-                android:layout_weight="1"
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
-                android:layout_margin="2dp">
+                android:layout_margin="2dp"
+                android:layout_weight="1">
 
                 <ImageButton
                     android:id="@+id/btn0"
+                    style="@style/WidgetSkin.W7.Button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/win7_container"
-                    android:src="@drawable/ic_add_shortcut"
-                    style="@style/WidgetSkin.W7.Button" />
+                    android:src="@drawable/ic_add_shortcut" />
 
                 <TextView
                     android:id="@+id/btn_text0"
@@ -50,17 +50,17 @@
             </FrameLayout>
 
             <FrameLayout
-                android:layout_weight="1"
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
-                android:layout_margin="2dp">
+                android:layout_margin="2dp"
+                android:layout_weight="1">
 
                 <ImageButton
                     android:id="@+id/btn1"
+                    style="@style/WidgetSkin.W7.Button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/win7_container"
-                    style="@style/WidgetSkin.W7.Button"
                     android:src="@drawable/ic_add_shortcut" />
 
                 <TextView

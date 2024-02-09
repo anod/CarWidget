@@ -103,7 +103,6 @@
                         tools:ignore="SpUsage" />
                 </FrameLayout>
             </LinearLayout>
-
         </LinearLayout>
 
         <include

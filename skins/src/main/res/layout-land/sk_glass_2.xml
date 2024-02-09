@@ -39,9 +39,9 @@
                     android:layout_gravity="center_horizontal|bottom"
                     android:gravity="center_horizontal"
                     android:maxLines="2"
+                    android:paddingBottom="@dimen/title_padding_bottom"
                     android:paddingLeft="3.0dp"
                     android:paddingRight="3.0dp"
-                    android:paddingBottom="@dimen/title_padding_bottom"
                     android:text="@string/set_shortcut"
                     android:textColor="@color/default_font_color"
                     android:textSize="@dimen/text_size" />
@@ -66,16 +66,15 @@
                     android:layout_gravity="center_horizontal|bottom"
                     android:gravity="center_horizontal"
                     android:maxLines="2"
+                    android:paddingBottom="@dimen/title_padding_bottom"
                     android:paddingLeft="3.0dp"
                     android:paddingRight="3.0dp"
-                    android:paddingBottom="@dimen/title_padding_bottom"
                     android:text="@string/set_shortcut"
                     android:textColor="@color/default_font_color"
                     android:textSize="@dimen/text_size" />
             </FrameLayout>
 
         </LinearLayout>
-
     </LinearLayout>
 
     <include layout="@layout/sk_glass_buttons" />
