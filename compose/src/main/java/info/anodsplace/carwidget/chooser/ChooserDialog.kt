@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
@@ -176,7 +177,7 @@ fun ChooserScreenPreview() {
             ChooserEntry(componentName = null, title = "Very long name title of entry"),
         )),
         headers = listOf(
-            Header(0, "Show choice", Icons.Filled.List),
+            Header(0, "Show choice", Icons.AutoMirrored.Filled.List),
             Header(0, "Very long name title of entry", Icons.Filled.Alarm)
         ),
         onClick = {  },

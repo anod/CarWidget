@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -178,7 +178,7 @@ fun AboutScreen(
         ChooserDialog(
             modifier = Modifier.padding(16.dp),
             headers = listOf(
-                Header(0, stringResource(info.anodsplace.carwidget.content.R.string.show_choice), iconVector = Icons.Filled.List)
+                Header(0, stringResource(R.string.show_choice), iconVector = Icons.AutoMirrored.Filled.List)
             ),
             loader = loader,
             onDismissRequest = {

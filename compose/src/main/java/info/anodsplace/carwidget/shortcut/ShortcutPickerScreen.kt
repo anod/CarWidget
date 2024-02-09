@@ -7,7 +7,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -91,8 +91,8 @@ fun CreateShortcutChooser(onNewState: (ShortcutPickerState) -> Unit, onIntent: (
         modifier = Modifier.padding(horizontal = 16.dp),
         loader = loader,
         headers = listOf(
-            Header(0, stringResource(info.anodsplace.carwidget.content.R.string.applications), iconVector = Icons.Filled.List),
-            Header(1, stringResource(info.anodsplace.carwidget.content.R.string.car_widget_shortcuts), iconVector = Icons.Filled.List),
+            Header(0, stringResource(info.anodsplace.carwidget.content.R.string.applications), iconVector = Icons.AutoMirrored.Filled.List),
+            Header(1, stringResource(info.anodsplace.carwidget.content.R.string.car_widget_shortcuts), iconVector = Icons.AutoMirrored.Filled.List),
         ),
         onDismissRequest = onDismissRequest,
         onClick = { entry ->

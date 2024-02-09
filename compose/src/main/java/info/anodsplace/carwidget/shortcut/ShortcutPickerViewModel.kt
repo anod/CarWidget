@@ -44,6 +44,7 @@ class ShortcutPickerViewModel(
         private val position: Int,
         private val appWidgetIdScope: AppWidgetIdScope,
     ): ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return ShortcutPickerViewModel(position, appWidgetIdScope) as T
         }
