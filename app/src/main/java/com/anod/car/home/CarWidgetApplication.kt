@@ -23,6 +23,7 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.carwidget.appwidget.WidgetUpdate
 import info.anodsplace.carwidget.content.BroadcastServiceManager
+import info.anodsplace.carwidget.content.BuildProperties
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.di.createAppModule
@@ -35,8 +36,8 @@ import info.anodsplace.carwidget.incar.ScreenOrientation
 import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.skin.SkinPropertiesFactory
 import info.anodsplace.carwidget.utils.DefaultsResourceProvider
-import info.anodsplace.framework.app.AlertWindow
 import info.anodsplace.context.ApplicationInstance
+import info.anodsplace.framework.app.AlertWindow
 import org.acra.ACRA
 import org.acra.ReportField
 import org.acra.config.limiter
@@ -134,6 +135,11 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                         single<Context> { this@CarWidgetApplication }
                         single<Application> { this@CarWidgetApplication }
                         single<WidgetIds> { WidgetHelper(context = get()) }
+                        single {
+                            BuildProperties(
+                                isDebug = BuildConfig.DEBUG
+                            )
+                        }
                         factory { createInCarStatus() } bind InCarStatus::class
 
                         factory { get<Context>().getSystemService(UiModeManager::class.java) }

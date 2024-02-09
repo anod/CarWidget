@@ -13,7 +13,7 @@ android {
     buildFeatures {
         // Enables Jetpack Compose for this module
         compose = true
-        buildConfig = true
+        buildConfig = false
     }
 
     compileOptions {
@@ -26,7 +26,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.8"
+        kotlinCompilerExtensionVersion = "1.5.9"
     }
     namespace = "info.anodsplace.carwidget"
 }

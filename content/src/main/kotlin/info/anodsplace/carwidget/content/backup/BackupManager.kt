@@ -15,15 +15,21 @@ import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
-import java.io.*
+import java.io.FileNotFoundException
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
+import java.io.OutputStreamWriter
 
 sealed interface BackupCheckResult {
     class Error(val errorCode: Int) : BackupCheckResult
     class Success(val hasInCar: Boolean) : BackupCheckResult
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class BackupManager(
     private val context: Context,
     private val database: ShortcutsDatabase,

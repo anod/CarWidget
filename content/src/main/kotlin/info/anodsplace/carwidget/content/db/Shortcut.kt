@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import coil.request.ImageRequest
 import coil.request.Parameters
+import info.anodsplace.carwidget.content.extentions.isDebugBuild
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.ktx.equalsHash
 import info.anodsplace.ktx.hashCodeOf
@@ -59,15 +60,15 @@ data class Shortcut(
     )
 }
 
-fun Shortcut.iconUri(context: Context, adaptiveIconStyle: String, skinName: String = ""): Uri {
-    return LauncherSettings.Favorites.getContentUri(context.packageName, id).buildUpon()
+fun Shortcut.iconUri(isDebug: Boolean, adaptiveIconStyle: String, skinName: String = ""): Uri {
+    return LauncherSettings.Favorites.getContentUri(isDebug, id).buildUpon()
         .appendQueryParameter("skin", skinName)
         .appendQueryParameter("adaptiveIconStyle", adaptiveIconStyle)
         .build()
 }
 
 fun Shortcut.toImageRequest(context: Context, adaptiveIconStyle: String, skinName: String = "", iconVersion: Int = -1): ImageRequest = ImageRequest.Builder(context)
-    .data(iconUri(context, adaptiveIconStyle, skinName)).apply {
+    .data(iconUri(context.isDebugBuild, adaptiveIconStyle, skinName)).apply {
        if (iconVersion > 0) {
            parameters(Parameters.Builder().set("version", iconVersion).build())
        }

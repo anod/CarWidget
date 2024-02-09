@@ -12,7 +12,6 @@ import androidx.annotation.DrawableRes
 import androidx.collection.SimpleArrayMap
 import androidx.compose.ui.graphics.vector.ImageVector
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.BuildConfig
 import info.anodsplace.carwidget.content.graphics.AppIconFetcher
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.framework.content.forLauncher
@@ -147,7 +146,7 @@ class MediaListLoader(context: Context) : ChooserLoader {
             }
 
             val title = appInfo.activityInfo.applicationInfo.loadLabel(packageManager)
-            if (BuildConfig.DEBUG) {
+            if (AppLog.isDebug) {
                 AppLog.d(appInfo.activityInfo.packageName + "/"
                         + appInfo.activityInfo.applicationInfo.className)
             }

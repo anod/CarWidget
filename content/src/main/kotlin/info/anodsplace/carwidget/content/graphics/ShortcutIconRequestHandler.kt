@@ -9,6 +9,7 @@ import coil.fetch.FetchResult
 import coil.fetch.Fetcher
 import coil.fetch.SourceResult
 import coil.request.Options
+import info.anodsplace.carwidget.content.BuildProperties
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.ShortcutIcon
@@ -33,10 +34,11 @@ class ShortcutIconRequestHandler(
         private val db: ShortcutsDatabase,
         private val iconLoader: ShortcutIconLoader,
         private val skinPropertiesFactory: SkinProperties.Factory,
+        private val buildProps: BuildProperties
     ) : Fetcher.Factory<Uri> {
 
         override fun create(data: Uri, options: Options, imageLoader: ImageLoader): Fetcher? {
-            return if (data.scheme == ContentResolver.SCHEME_CONTENT && data.authority == LauncherSettings.Favorites.AUTHORITY)
+            return if (data.scheme == ContentResolver.SCHEME_CONTENT && data.authority == LauncherSettings.Favorites.authority(buildProps.isDebug))
                 ShortcutIconRequestHandler(db, iconLoader, skinPropertiesFactory, data, options)
             else null
         }

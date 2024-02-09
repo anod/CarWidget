@@ -2,7 +2,6 @@ package info.anodsplace.carwidget.content.db
 
 import android.net.Uri
 import android.provider.BaseColumns
-import info.anodsplace.carwidget.content.BuildConfig
 
 
 /**
@@ -27,13 +26,13 @@ class LauncherSettings {
             const val ICON_TYPE_RESOURCE = 0
             const val ICON_TYPE_BITMAP = 1
 
-            val AUTHORITY = if (BuildConfig.DEBUG)
+            fun authority(isDebug: Boolean) = if (isDebug)
                 "com.anod.car.home.free.debug.shortcutsprovider"
             else
                 "com.anod.car.home.free.shortcutsprovider"
 
-            fun getContentUri(packageName: String, id: Long): Uri {
-                return Uri.parse("$CONTENT_PREFIX$AUTHORITY/$TABLE_FAVORITES/$id")
+            fun getContentUri(isDebug: Boolean, id: Long): Uri {
+                return Uri.parse("$CONTENT_PREFIX${authority(isDebug = isDebug)}/$TABLE_FAVORITES/$id")
             }
 
             private const val CONTENT_PREFIX = "content://"

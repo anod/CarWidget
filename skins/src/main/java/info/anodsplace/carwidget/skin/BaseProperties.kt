@@ -70,7 +70,7 @@ abstract class BaseProperties : SkinProperties {
             R.id.btn_text12, R.id.btn_text13, //14
         )
 
-        internal val btnIds = intArrayOf(
+        private val btnIds = intArrayOf(
             R.id.btn0, R.id.btn1, //2
             R.id.btn2, R.id.btn3, //4
             R.id.btn4, R.id.btn5, //6

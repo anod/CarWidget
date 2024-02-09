@@ -15,7 +15,7 @@ android {
         getByName("main").java.srcDirs("src/main/kotlin")
     }
     buildFeatures {
-        buildConfig = true
+        buildConfig = false
     }
     kotlinOptions {
         jvmTarget = "11"
