@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.baselineprofile)
 }
 
 dependencies {
@@ -38,6 +39,8 @@ dependencies {
     implementation(libs.acra.core)
     implementation(libs.acra.notification)
     implementation(libs.acra.limiter)
+    implementation(libs.androidx.profileinstaller)
+    "baselineProfile"(project(":baselineprofile"))
 
     compileOnly(libs.auto.service.annotations)
     ksp(libs.auto.service.ksp)

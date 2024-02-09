@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import coil.ImageLoader
 import info.anodsplace.carwidget.NavItem
@@ -20,12 +19,10 @@ import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
-import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.framework.content.CommonActivityAction
 import info.anodsplace.framework.content.forHomeScreen
 import info.anodsplace.permissions.AppPermission
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.get
@@ -44,7 +41,7 @@ data class MainViewState(
 )
 
 sealed interface MainViewAction {
-    object OnBackNav : MainViewAction
+    data object OnBackNav : MainViewAction
     class ApplyWidget(val appWidgetId: Int, val currentSkinValue: String) : MainViewAction
     class OpenWidgetConfig(val appWidgetId: Int) : MainViewAction
     class ShowDialog(val route: String) : MainViewAction
@@ -55,13 +52,12 @@ sealed interface MainViewEvent {
     data object PermissionAcquired : MainViewEvent
     class ApplyWidget(val appWidgetId: Int, val currentSkinValue: String) : MainViewEvent
     class OpenWidgetConfig(val appWidgetId: Int) : MainViewEvent
-    class WidgetUpdateShortcuts(val number: Int) : MainViewEvent
     class WidgetUpdateSkin(val skinIdx: Int) : MainViewEvent
 
     data object OnBackNav : MainViewEvent
-    object CloseWizard : MainViewEvent
-    object ShowWizard : MainViewEvent
-    object GotToHomeScreen : MainViewEvent
+    data object CloseWizard : MainViewEvent
+    data object ShowWizard : MainViewEvent
+    data object GotToHomeScreen : MainViewEvent
 }
 
 class MainViewModel(
@@ -141,15 +137,6 @@ class MainViewModel(
                         )
                     )
                 )
-            }
-            is MainViewEvent.WidgetUpdateShortcuts -> {
-                val settings = get<WidgetSettings>()
-                settings.shortcutsNumber = event.number
-                val shortcutsModel = get<WidgetShortcutsModel>()
-                viewModelScope.launch {
-                    shortcutsModel.init()
-                    viewState = viewState.copy(widgetSettings = WidgetInterface.NoOp(settings))
-                }
             }
             is MainViewEvent.WidgetUpdateSkin -> {
                 val newList = viewState.skinList.copy(selectedSkinPosition = event.skinIdx)

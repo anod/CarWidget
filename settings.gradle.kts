@@ -28,3 +28,4 @@ include(
     ":lib:permissions",
     ":lib:viewmodel"
 )
+include(":baselineprofile")
