@@ -4,9 +4,9 @@ import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
 import android.util.SparseArray
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
-import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
+import app.cash.sqldelight.coroutines.mapToOneOrNull
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,7 @@ typealias ShortcutWithIcon = Pair<Shortcut, ShortcutIcon?>
 class ShortcutsDatabase(private val db: Database) {
 
     fun observeChanges(): Flow<Long> {
-        return db.shortcutsQueries.changes().asFlow().mapToOneOrNull().filterNotNull()
+        return db.shortcutsQueries.changes().asFlow().mapToOneOrNull(Dispatchers.IO).filterNotNull()
     }
 
     suspend fun loadIcon(shortcutId: Long): SelectShortcutIcon? = withContext(Dispatchers.IO) {
@@ -30,18 +30,18 @@ class ShortcutsDatabase(private val db: Database) {
     }
 
     fun observeIcon(shortcutId: Long): Flow<SelectShortcutIcon?> {
-        return db.shortcutsQueries.selectShortcutIcon(shortcutId).asFlow().mapToOneOrNull()
+        return db.shortcutsQueries.selectShortcutIcon(shortcutId).asFlow().mapToOneOrNull(Dispatchers.IO)
     }
 
     fun observeShortcut(shortcutId: Long): Flow<Shortcut?> {
         return db.shortcutsQueries.selectShortcut(shortcutId, mapper = ::mapShortcut).asFlow()
-                .mapToOneOrNull()
+                .mapToOneOrNull(Dispatchers.IO)
                 .filter { it?.isValid == true }
     }
 
     fun observeTarget(targetId: Int): Flow<Map<Int, Shortcut?>> {
         return db.shortcutsQueries.selectTarget(targetId, mapper = ::mapShortcut).asFlow()
-                .mapToList()
+                .mapToList(Dispatchers.IO)
                 .map { list ->
                     list.associate { sh -> sh.position to if (sh.isValid) sh else null }
                 }

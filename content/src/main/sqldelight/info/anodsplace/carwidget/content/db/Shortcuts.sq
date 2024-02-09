@@ -1,3 +1,6 @@
+import kotlin.Boolean;
+import kotlin.Int;
+
 CREATE TABLE favorites (
     _id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     targetId INTEGER AS Int NOT NULL DEFAULT 0, -- "-1" - notification

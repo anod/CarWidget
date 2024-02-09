@@ -20,7 +20,7 @@ palette-ktx = "1.0.0"
 play-services-location = "21.1.0"
 preference-ktx = "1.2.1"
 sqlite-ktx = "2.4.0"
-sqldelight = "1.5.5"
+sqldelight = "2.0.1"
 plugin-ksp = "1.9.22-1.0.16"
 
 [libraries]
@@ -50,12 +50,13 @@ palette-ktx = { module = "androidx.palette:palette-ktx", version.ref = "palette-
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play-services-location" }
 preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preference-ktx" }
 sqlite-ktx = { module = "androidx.sqlite:sqlite-ktx", version.ref = "sqlite-ktx" }
-sqldelight-driver-android = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqldelight" }
-sqldelight-coroutines-extensions-jvm = { module = "com.squareup.sqldelight:coroutines-extensions-jvm", version.ref = "sqldelight" }
+sqldelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
+sqldelight-coroutines-extensions-jvm = { module = "app.cash.sqldelight:coroutines-extensions-jvm", version.ref = "sqldelight" }
+sqldelight-primitive-adapters = { module = "app.cash.sqldelight:primitive-adapters", version.ref = "sqldelight" }
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqldelight" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "plugin-ksp" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }

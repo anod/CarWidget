@@ -2,14 +2,16 @@ package info.anodsplace.carwidget.content.di
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
+import app.cash.sqldelight.adapter.primitive.IntColumnAdapter
+import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import coil.ImageLoader
-import com.squareup.sqldelight.android.AndroidSqliteDriver
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.BitmapLruCache
 import info.anodsplace.carwidget.content.backup.BackupManager
 import info.anodsplace.carwidget.content.db.Database
 import info.anodsplace.carwidget.content.db.DbShortcutIconLoader
+import info.anodsplace.carwidget.content.db.Favorites
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.graphics.AppIconFetcher
@@ -56,11 +58,19 @@ fun createAppModule(): Module = module {
     factoryOf(::BitmapLruCache)
     single {
         val driver = AndroidSqliteDriver(
-                schema = Database.Schema,
-                context = get(),
-                name = "carhomewidget.db"
+            schema = Database.Schema,
+            context = get(),
+            name = "carhomewidget.db"
         )
-        Database(driver)
+        Database(
+            driver = driver,
+            favoritesAdapter = Favorites.Adapter(
+                targetIdAdapter = IntColumnAdapter,
+                iconTypeAdapter = IntColumnAdapter,
+                itemTypeAdapter = IntColumnAdapter,
+                positionAdapter = IntColumnAdapter
+            )
+        )
     }
     singleOf(::ShortcutsDatabase)
     singleOf(::DbShortcutIconLoader) bind ShortcutIconLoader::class

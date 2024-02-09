@@ -28,10 +28,14 @@ android {
 }
 
 sqldelight {
-    database("Database") {
-        packageName = "info.anodsplace.carwidget.content.db"
-        sourceFolders = listOf("sqldelight")
-        schemaOutputDirectory = file("src/main/sqldelight/schema")
+    databases {
+        create("Database") {
+            packageName.set("info.anodsplace.carwidget.content.db")
+            srcDirs("src/main/sqldelight")
+            schemaOutputDirectory.set(file("src/main/sqldelight/schema"))
+            verifyMigrations.set(false) // migrations not handle autoincrement and unique index
+            deriveSchemaFromMigrations.set(false)
+        }
     }
 }
 
@@ -45,6 +49,7 @@ dependencies {
 
     implementation(libs.sqldelight.driver.android)
     implementation(libs.sqldelight.coroutines.extensions.jvm)
+    implementation(libs.sqldelight.primitive.adapters)
     implementation(libs.preference.ktx) // for androidx.preference.PreferenceManager
     implementation(libs.androidx.core.ktx)
     implementation(libs.collection.ktx)

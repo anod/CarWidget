@@ -1,1 +1,0 @@
-ALTER TABLE favorites ADD COLUMN isCustomIcon INTEGER DEFAULT 0;
