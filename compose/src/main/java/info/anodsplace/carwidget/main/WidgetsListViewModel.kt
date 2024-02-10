@@ -41,8 +41,8 @@ interface WidgetItem {
 }
 
 sealed interface WidgetListLoadState {
-    object Loading: WidgetListLoadState
-    object Ready: WidgetListLoadState
+    data object Loading: WidgetListLoadState
+    data object Ready: WidgetListLoadState
     @Immutable
     data class Error(val message: String, val cause: Exception? = null): WidgetListLoadState
 }
@@ -59,7 +59,7 @@ data class WidgetListScreenState(
 )
 
 sealed interface WidgetListScreenEvent {
-    object LoadWidgetList : WidgetListScreenEvent
+    data object LoadWidgetList : WidgetListScreenEvent
 }
 
 sealed interface WidgetListScreenAction

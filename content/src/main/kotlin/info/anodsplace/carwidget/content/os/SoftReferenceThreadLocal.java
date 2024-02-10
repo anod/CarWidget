@@ -3,7 +3,7 @@ package info.anodsplace.carwidget.content.os;
 import java.lang.ref.SoftReference;
 
 public abstract class SoftReferenceThreadLocal<T> {
-    private ThreadLocal<SoftReference<T>> mThreadLocal;
+    private final ThreadLocal<SoftReference<T>> mThreadLocal;
 
     public SoftReferenceThreadLocal() {
         mThreadLocal = new ThreadLocal<>();

@@ -123,7 +123,7 @@ class AcceptCallActivity : Activity() {
         i.putExtra("name", "mysms")
         try {
             sendOrderedBroadcast(i, null)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
         }
 
     }

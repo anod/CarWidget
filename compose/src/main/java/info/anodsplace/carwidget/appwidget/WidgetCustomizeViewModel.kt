@@ -43,7 +43,7 @@ data class WidgetCustomizeState(
 )
 
 sealed interface WidgetCustomizeEvent {
-    object DownloadIconsTheme : WidgetCustomizeEvent
+    data object DownloadIconsTheme : WidgetCustomizeEvent
     class UpdateShortcutsNumber(val size: Int) : WidgetCustomizeEvent
     class ApplyChange(val key: String, val value: Any?) : WidgetCustomizeEvent
     class ShowBackgroundColorPicker(val show: Boolean) : WidgetCustomizeEvent

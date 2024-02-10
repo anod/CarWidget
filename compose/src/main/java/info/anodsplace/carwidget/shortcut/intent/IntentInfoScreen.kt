@@ -69,7 +69,7 @@ fun IntentFieldTitle(text: String) = Text(text = text, style = MaterialTheme.typ
 
 @Composable
 fun IntentFieldValue(value: String?, modifier: Modifier = Modifier) {
-    val text = if (value.isNullOrBlank()) stringResource(id = info.anodsplace.carwidget.content.R.string.none) else value
+    val text = if (value.isNullOrBlank()) stringResource(id = R.string.none) else value
     Text(
             text = text,
             style = MaterialTheme.typography.bodyMedium,
@@ -123,7 +123,7 @@ fun IntentExtrasField(
 ) {
     val items = intent.extras ?: Bundle()
     val extraKeys = items.keySet() ?: emptySet()
-    val title = stringResource(id = info.anodsplace.carwidget.content.R.string.extras)
+    val title = stringResource(id = R.string.extras)
     IntentInfoRow(
             icon = Icons.AutoMirrored.Filled.FormatListBulleted,
             title = title,
@@ -151,7 +151,7 @@ fun IntentComponentField(
 ) {
     IntentInfoRow(
             title = stringResource(id = R.string.component),
-            icon = Icons.Filled.LibraryBooks,
+            icon = Icons.AutoMirrored.Filled.LibraryBooks,
             isEnabled = isEnabled,
             onClick = { onClick(IntentField.Component(component)) }
     ) {

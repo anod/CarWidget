@@ -23,12 +23,12 @@ import info.anodsplace.carwidget.content.extentions.toBitmap
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 
 sealed interface CreateShortcutResult {
-    object None : CreateShortcutResult
-    object SuccessApp : CreateShortcutResult
-    object SuccessCustom : CreateShortcutResult
-    object SuccessAppShortcut : CreateShortcutResult
-    object FailedApp : CreateShortcutResult
-    object FailedAppShortcut : CreateShortcutResult
+    data object None : CreateShortcutResult
+    data object SuccessApp : CreateShortcutResult
+    data object SuccessCustom : CreateShortcutResult
+    data object SuccessAppShortcut : CreateShortcutResult
+    data object FailedApp : CreateShortcutResult
+    data object FailedAppShortcut : CreateShortcutResult
 }
 
 object ShortcutInfoFactory {

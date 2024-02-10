@@ -29,7 +29,6 @@ fun CarWidgetToolbar(onBackNav: () -> Unit) {
         })
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview("Dark AppBar")
 @Composable
 fun PreviewAppBarDark() {

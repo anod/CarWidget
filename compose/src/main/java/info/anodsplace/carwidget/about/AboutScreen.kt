@@ -127,9 +127,9 @@ fun AboutScreen(
     if (screenState.restoreInCarDialog != null) {
         AlertDialog(
             modifier = Modifier.padding(16.dp),
-            title = { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.update_incar_settings)) },
+            title = { Text(text = stringResource(id = R.string.update_incar_settings)) },
             text = {
-                Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.incar_backup_question))
+                Text(text = stringResource(id = R.string.incar_backup_question))
             },
             confirmButton = {
                 Button(
@@ -139,7 +139,7 @@ fun AboutScreen(
                             restoreInCar = true
                         )
                     ) }
-                ) { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.update)) }
+                ) { Text(text = stringResource(id = R.string.update)) }
             },
             dismissButton = {
                 Button(
@@ -149,7 +149,7 @@ fun AboutScreen(
                             restoreInCar = false
                         )
                     ) }
-                ) { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.skip)) }
+                ) { Text(text = stringResource(id = R.string.skip)) }
             },
             onDismissRequest = { })
     }
@@ -157,15 +157,15 @@ fun AboutScreen(
     if (showOpenCarDock) {
         AlertDialog(
             modifier = Modifier.padding(16.dp),
-            title = { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.default_car_dock_app)) },
+            title = { Text(text = stringResource(id = R.string.default_car_dock_app)) },
             text = {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.cardock_text1))
+                    Text(text = stringResource(id = R.string.cardock_text1))
                     Button(
                         modifier = Modifier.padding(16.dp),
                         onClick = { onEvent(AboutScreenStateEvent.OpenDefaultCarDock) }
-                    ) { Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.cardock_btn_1)) }
-                    Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.cardock_text2))
+                    ) { Text(text = stringResource(id = R.string.cardock_btn_1)) }
+                    Text(text = stringResource(id = R.string.cardock_text2))
                 }
             },
             confirmButton = { },

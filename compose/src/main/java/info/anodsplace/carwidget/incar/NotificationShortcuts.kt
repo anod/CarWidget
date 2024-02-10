@@ -18,7 +18,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -47,7 +47,7 @@ fun NotificationShortcuts(
     appsLoader: ChooserLoader = StaticChooserLoader(emptyList()),
 ) {
     val context = LocalContext.current
-    var shortcutIndex: Int by remember { mutableStateOf(-1) }
+    var shortcutIndex: Int by remember { mutableIntStateOf(-1) }
     Row(
         modifier = modifier
             .clip(shape = RoundedCornerShape(16.dp))

@@ -142,10 +142,10 @@ class BluetoothDevicesViewModel(
                     selectedDevices.remove(addr)
                 }
                 val res = when (device.bluetoothClass?.classType) {
-                        BtClassType.COMPUTER -> info.anodsplace.carwidget.content.R.string.bluetooth_device_laptop
-                        BtClassType.PHONE -> info.anodsplace.carwidget.content.R.string.bluetooth_device_cellphone
-                        BtClassType.HEADPHONES -> info.anodsplace.carwidget.content.R.string.bluetooth_device_headphones
-                        BtClassType.HEADSET -> info.anodsplace.carwidget.content.R.string.bluetooth_device_headset
+                        BtClassType.COMPUTER -> R.string.bluetooth_device_laptop
+                        BtClassType.PHONE -> R.string.bluetooth_device_cellphone
+                        BtClassType.HEADPHONES -> R.string.bluetooth_device_headphones
+                        BtClassType.HEADSET -> R.string.bluetooth_device_headset
                         null -> 0
                 }
                 var btClassName = ""

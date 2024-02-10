@@ -31,7 +31,7 @@ sealed interface Deeplink {
         override fun toUri(): Uri = build("widgets", listOf(appWidgetId, "button", buttonId, "edit")).toUri()
     }
 
-    object PlayMediaButton : Deeplink {
+    data object PlayMediaButton : Deeplink {
         const val uriPattern = "carwidget://music/play"
         override fun toUri(): Uri = build("music", listOf("play")).toUri()
     }
