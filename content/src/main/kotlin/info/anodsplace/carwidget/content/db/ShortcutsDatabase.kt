@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.content.db
 
 import android.content.ContentValues
 import android.content.Intent
+import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Bitmap
 import android.util.SparseArray
 import app.cash.sqldelight.coroutines.asFlow
@@ -116,7 +117,8 @@ class ShortcutsDatabase(private val db: Database) {
 
     private fun insert(targetId: Int, position: Int, item: Shortcut, icon: ShortcutIcon)  {
         val values = createShortcutContentValues(item, icon)
-        db.shortcutsQueries.insert(
+        try {
+            db.shortcutsQueries.insert(
                 targetId = targetId,
                 position = position,
                 itemType = values.getAsInteger(LauncherSettings.Favorites.ITEM_TYPE),
@@ -127,7 +129,22 @@ class ShortcutsDatabase(private val db: Database) {
                 iconPackage = values.getAsString(LauncherSettings.Favorites.ICON_PACKAGE),
                 iconResource = values.getAsString(LauncherSettings.Favorites.ICON_RESOURCE),
                 isCustomIcon = values.getAsBoolean(LauncherSettings.Favorites.IS_CUSTOM_ICON)
-        )
+            )
+        } catch (e: SQLiteConstraintException) {
+            AppLog.e(e)
+            db.shortcutsQueries.update(
+                targetId = targetId,
+                position = position,
+                itemType = values.getAsInteger(LauncherSettings.Favorites.ITEM_TYPE),
+                title = values.getAsString(LauncherSettings.Favorites.TITLE),
+                intent = values.getAsString(LauncherSettings.Favorites.INTENT),
+                iconType = values.getAsInteger(LauncherSettings.Favorites.ICON_TYPE),
+                icon = values.getAsByteArray(LauncherSettings.Favorites.ICON),
+                iconPackage = values.getAsString(LauncherSettings.Favorites.ICON_PACKAGE),
+                iconResource = values.getAsString(LauncherSettings.Favorites.ICON_RESOURCE),
+                isCustomIcon = values.getAsBoolean(LauncherSettings.Favorites.IS_CUSTOM_ICON)
+            )
+        }
     }
 
     suspend fun deleteTargetPosition(targetId: Int, position: Int) = withContext(Dispatchers.IO) {

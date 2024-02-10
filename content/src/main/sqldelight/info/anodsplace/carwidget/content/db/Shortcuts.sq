@@ -35,6 +35,18 @@ insert:
 INSERT INTO favorites (targetId, position, itemType, title, intent, iconType, icon, iconPackage, iconResource, isCustomIcon)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
+update:
+UPDATE favorites SET
+    itemType = :itemType,
+    title = :title,
+    intent = :intent,
+    iconType = :iconType,
+    icon = :icon,
+    iconPackage = :iconPackage,
+    iconResource = :iconResource,
+    isCustomIcon = :isCustomIcon
+ WHERE targetId = :targetId AND position = :position;
+
 updateTargetPosition:
 UPDATE favorites SET position = :newPosition WHERE targetId = :targetId AND position = :position;
 

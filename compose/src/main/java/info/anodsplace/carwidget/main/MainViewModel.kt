@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import coil.ImageLoader
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.NavItem
 import info.anodsplace.carwidget.WidgetAwareViewModel
 import info.anodsplace.carwidget.appwidget.SkinList
@@ -140,8 +141,12 @@ class MainViewModel(
             }
             is MainViewEvent.WidgetUpdateSkin -> {
                 val newList = viewState.skinList.copy(selectedSkinPosition = event.skinIdx)
-                val settings = get<WidgetSettings>()
-                settings.skin = newList.current.value
+                if (scope.closed) {
+                    AppLog.e("Scope is closed when calling WidgetUpdateSkin")
+                } else {
+                    val settings = get<WidgetSettings>()
+                    settings.skin = newList.current.value
+                }
                 viewState = viewState.copy(skinList = newList)
             }
         }
