@@ -20,10 +20,10 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.FormatListBulleted
+import androidx.compose.material.icons.automirrored.filled.LibraryBooks
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Flag
-import androidx.compose.material.icons.filled.LibraryBooks
 import androidx.compose.material.icons.filled.OpenWith
 import androidx.compose.material.icons.outlined.PlayForWork
 import androidx.compose.material3.Icon
