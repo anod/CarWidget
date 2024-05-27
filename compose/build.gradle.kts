@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -25,9 +26,6 @@ android {
         jvmTarget = "11"
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.9"
-    }
     namespace = "info.anodsplace.carwidget"
 }
 

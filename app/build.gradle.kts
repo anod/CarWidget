@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin)
@@ -26,7 +28,7 @@ dependencies {
 
     implementation(libs.appcompat) // AppCompatActivity
     implementation(libs.androidx.core.ktx)
-    implementation(libs.activity)
+    implementation(libs.androidx.activity.compose)
     implementation(libs.core.splashscreen)
     implementation(libs.collection.ktx)
     implementation(libs.sqlite.ktx)
@@ -113,8 +115,7 @@ android {
 // https://youtrack.jetbrains.com/issue/KT-55947
 kotlin {
     jvmToolchain(17)
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java) {
-    kotlinOptions.jvmTarget = "11"
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
+    }
 }
