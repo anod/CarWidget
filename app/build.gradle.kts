@@ -17,27 +17,12 @@ dependencies {
     implementation(project(":lib:framework"))
     implementation(project(":lib:permissions"))
 
+    // AppCompatActivity
+    implementation(libs.appcompat)
+    implementation(libs.core.splashscreen)
     implementation(libs.koin.core)
-    implementation(libs.coil.compose.base)
-
-    implementation(libs.coroutines.core)
-    implementation(libs.coroutines.android)
-
     // Activity recognition
     implementation(libs.play.services.location)
-
-    implementation(libs.appcompat) // AppCompatActivity
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.core.splashscreen)
-    implementation(libs.collection.ktx)
-    implementation(libs.sqlite.ktx)
-
-    // ViewModel
-    implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.lifecycle.viewmodel.compose)
-    implementation(libs.lifecycle.common.java8)
-
     implementation(libs.acra.core)
     implementation(libs.acra.notification)
     implementation(libs.acra.limiter)

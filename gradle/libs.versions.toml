@@ -12,7 +12,7 @@ collection-ktx = "1.4.0"
 compose-bom = "2024.05.00"
 compose-material3 = "1.2.1"
 core-splashscreen = "1.0.1"
-coroutines = "1.7.3"
+coroutines = "1.8.0"
 kotlin = "2.0.0"
 koin = "3.5.6"
 lifecycle = "2.8.0"
@@ -20,7 +20,6 @@ material = "1.12.0"
 navigation-compose = "2.7.7"
 play-services-location = "21.2.0"
 preference-ktx = "1.2.1"
-sqlite-ktx = "2.4.0"
 sqldelight = "2.0.2"
 plugin-ksp = "2.0.0-1.0.21"
 junit = "1.1.5"
@@ -62,14 +61,12 @@ coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-androi
 androidx-window = { module = "androidx.window:window", version.ref = "window" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
-lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "lifecycle" }
 lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play-services-location" }
 preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preference-ktx" }
-sqlite-ktx = { module = "androidx.sqlite:sqlite-ktx", version.ref = "sqlite-ktx" }
 sqldelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-coroutines-extensions-jvm = { module = "app.cash.sqldelight:coroutines-extensions-jvm", version.ref = "sqldelight" }
 sqldelight-primitive-adapters = { module = "app.cash.sqldelight:primitive-adapters", version.ref = "sqldelight" }
