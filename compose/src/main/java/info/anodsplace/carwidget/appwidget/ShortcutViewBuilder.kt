@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.LruCache
+import android.util.TypedValue.COMPLEX_UNIT_PX
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.content.ContextCompat
@@ -37,7 +38,6 @@ class ShortcutViewBuilder(
 ) : ShortcutViewBuilderInstance {
     private val backgroundProcessor: IconBackgroundProcessor? = skinProperties.backgroundProcessor
 
-    override var scaledDensity: Float = 1.0f
     override var iconTheme: IconTheme? = null
 
     override suspend fun fill(views: RemoteViews, position: Int, resBtn: Int, resText: Int) {
@@ -53,7 +53,7 @@ class ShortcutViewBuilder(
         if (prefs.isTitlesHide) {
             views.setViewVisibility(resText, View.GONE)
         } else {
-            setFont(resText, scaledDensity, views)
+            setFont(resText, views)
         }
         if (backgroundProcessor != null) {
             setIconBackground(icon, resBtn, views)
@@ -81,7 +81,7 @@ class ShortcutViewBuilder(
         views.setOnClickPendingIntent(resText, configIntent)
     }
 
-    private fun setFont(resText: Int, scaledDensity: Float, views: RemoteViews) {
+    private fun setFont(resText: Int, views: RemoteViews) {
         if (prefs.fontColor != null) {
             views.setTextColor(resText, prefs.fontColor!!)
         } else if (skinProperties.fontColorRes != 0) {
@@ -92,15 +92,7 @@ class ShortcutViewBuilder(
             if (prefs.fontSize == 0) {
                 views.setViewVisibility(resText, View.GONE)
             } else {
-                /*
-                 * Limitation of RemoteViews to use setTextSize with only one
-                 * argument (without providing scale unit) size already in
-                 * scaled pixel format so we revert it to pixels to get properly
-                 * converted after re-applying setTextSize function
-                 */
-                val cSize = prefs.fontSize.toFloat() / scaledDensity
-
-                views.setFloat(resText, "setTextSize", cSize)
+                views.setTextViewTextSize(resText, COMPLEX_UNIT_PX, prefs.fontSize.toFloat())
                 views.setViewVisibility(resText, View.VISIBLE)
             }
         }

@@ -22,7 +22,6 @@ interface DummyWidgetView {
 interface WidgetView : DummyWidgetView
 
 interface ShortcutViewBuilderInstance {
-    var scaledDensity: Float
     var iconTheme: IconTheme?
     suspend fun fill(views: RemoteViews, position: Int, resBtn: Int, resText: Int)
 }
@@ -68,12 +67,9 @@ class SkinWidgetView(
 
         applyIconTransform(bitmapTransform, widgetSettings)
 
-        val r = context.resources
-        val scaledDensity = r.displayMetrics.scaledDensity
-
         val iconPaddingRes = skinProperties.iconPaddingRes
         if (iconPaddingRes > 0 && !widgetSettings.isTitlesHide) {
-            val iconPadding = r.getDimension(iconPaddingRes).toInt()
+            val iconPadding = context.resources.getDimension(iconPaddingRes).toInt()
             bitmapTransform.paddingBottom = iconPadding
         }
 
@@ -95,7 +91,6 @@ class SkinWidgetView(
         val themePackage = widgetSettings.iconsTheme
         val themeIcons = if (themePackage.isEmpty()) null else loadThemeIcons(themePackage, shortcuts, context)
 
-        shortcutViewBuilder.scaledDensity = scaledDensity
         shortcutViewBuilder.iconTheme = themeIcons
 
         val totalRows = shortcuts.size / 2

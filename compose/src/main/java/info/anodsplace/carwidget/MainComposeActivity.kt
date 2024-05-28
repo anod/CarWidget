@@ -92,7 +92,7 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
                 requestWidgetUpdate(action.appWidgetId)
                 finish()
             }
-            is MainViewAction.OnBackNav -> onBackPressed()
+            is MainViewAction.OnBackNav -> onBackPressedDispatcher.onBackPressed()
             is MainViewAction.ShowDialog -> { }
             is MainViewAction.ActivityAction -> { }
         }

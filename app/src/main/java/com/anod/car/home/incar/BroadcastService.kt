@@ -51,7 +51,7 @@ class BroadcastService : Service(), KoinComponent {
                 return START_STICKY
             }
 
-            stopForeground(true)
+            stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
             return START_NOT_STICKY
         } catch (e: Exception) {
