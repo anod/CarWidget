@@ -26,6 +26,8 @@
 
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
     <queries>
         <intent>
             <action android:name="android.intent.action.MAIN" />
@@ -144,13 +146,32 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <service android:name="com.anod.car.home.incar.ModeService" />
-        <service android:name="com.anod.car.home.incar.BroadcastService" />
+        <service android:name="com.anod.car.home.incar.ModeService" android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Upon detection of InCar mode, a dedicated service is initiated.
+                This service is activated exclusively when the user manually enables In-Car mode through the application's settings.
+                Once active, the service applies a series of selected by the user configurations as detailed in the InCar mode section of the widget settings (keep screen on, dynamic brightness adjustment, volume level modification, alteration of screen orientation, etc...)
+                These settings are designed to optimize the user experience while the device is operating in a vehicle environment."/>
+        </service>
+        <service android:name="com.anod.car.home.incar.BroadcastService" android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="The application monitors a set of user-selected In-Car mode triggers (power connection, docking events, headset plug-in events, etc).
+                 This monitoring functionality is activated only when the user explicitly enables In-Car mode and selects a trigger that necessitates the execution of the BroadcastService.
+                 BroadcastService registers ModeBroadcastReceiver which runs checks to start or stop ModeService.
+                 This ensures that the application responds appropriately to the user's preferred In-Car mode activation method."/>
+        </service>
 
         <receiver
             android:name="com.anod.car.home.incar.ModeBroadcastReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:foregroundServiceType="specialUse"
+            >
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Used by BroadcastService to monitor a set of user-selected In-Car mode triggers (power connection, docking events, headset plug-in events, etc).
+                 This monitoring functionality is activated only when the user explicitly enables In-Car mode and selects a trigger that necessitates the execution of the BroadcastService.
+                 Upon detection of a configured trigger, the ModeBroadcastReceiver which runs checks to start or stop ModeService.
+                 This ensures that the application responds appropriately to the user's preferred In-Car mode activation method."/>
             <intent-filter>
                 <action android:name="android.intent.action.HEADSET_PLUG" />
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
@@ -197,7 +218,12 @@
         <service
             android:name=".UpdateWidgetJob"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:foregroundServiceType="specialUse"
+            >
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="JobIntentService work service to update app widget when settings are changed"/>
+        </service>
 
         <receiver
             android:name=".BootCompleted"
@@ -233,15 +259,31 @@
                 android:resource="@xml/backup_paths" />
         </provider>
 
+        <!-- acra //-->
         <service
-            android:name=".incar.NotificationReceiverService"
-            android:enabled="@bool/notification_receiver_enabled"
-            android:exported="true"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-            <intent-filter>
-                <action android:name="android.service.notification.NotificationListenerService" />
-            </intent-filter>
+            android:name="org.acra.sender.LegacySenderService"
+            android:enabled="@bool/acra_enable_legacy_service"
+            android:exported="false"
+            android:process=":acra"
+            android:foregroundServiceType="specialUse"
+            >
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Disabled for modern api (22+). This service facilitates the transmission of crash reports generated by the ACRA (Application Crash Reports for Android) library.
+                It functions as a dedicated sender service, responsible for packaging and transmitting crash report data to a designated endpoint for analysis and debugging purposes.
+                The service operates in the background, ensuring minimal impact on the user experience while reliably relaying critical crash information."/>
+        </service>
+        <service
+            android:name="org.acra.sender.JobSenderService"
+            android:enabled="@bool/acra_enable_job_service"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":acra"
+            android:foregroundServiceType="specialUse"
+            >
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="his service facilitates the transmission of crash reports generated by the ACRA (Application Crash Reports for Android) library.
+                It functions as a dedicated sender service, responsible for packaging and transmitting crash report data to a designated endpoint for analysis and debugging purposes.
+                The service operates in the background, ensuring minimal impact on the user experience while reliably relaying critical crash information."/>
         </service>
     </application>
-
 </manifest>
