@@ -51,8 +51,8 @@ android {
         targetSdk = 34 // 29 wifi switch not working
         applicationId = "com.anod.car.home.free"
 
-        versionCode = 3_31002
-        versionName = "3.1.0"
+        versionCode = 3_32001
+        versionName = "3.2.0"
     }
 
     androidResources {
