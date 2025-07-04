@@ -21,7 +21,7 @@ import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.permissions.PermissionChecker
-import info.anodsplace.framework.content.CommonActivityAction
+import info.anodsplace.framework.content.StartActivityAction
 import info.anodsplace.framework.content.forHomeScreen
 import info.anodsplace.permissions.AppPermission
 import org.koin.core.component.KoinComponent
@@ -46,7 +46,7 @@ sealed interface MainViewAction {
     class ApplyWidget(val appWidgetId: Int, val currentSkinValue: String) : MainViewAction
     class OpenWidgetConfig(val appWidgetId: Int) : MainViewAction
     class ShowDialog(val route: String) : MainViewAction
-    class ActivityAction(val action: CommonActivityAction) : MainViewAction
+    class StartActivity(override val intent: Intent) : MainViewAction, StartActivityAction
 }
 
 sealed interface MainViewEvent {
@@ -132,10 +132,8 @@ class MainViewModel(
             }
             is MainViewEvent.GotToHomeScreen -> {
                 emitAction(
-                    MainViewAction.ActivityAction(
-                        action = CommonActivityAction.StartActivity(
-                            Intent().forHomeScreen().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        )
+                    MainViewAction.StartActivity(
+                        intent =  Intent().forHomeScreen().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     )
                 )
             }

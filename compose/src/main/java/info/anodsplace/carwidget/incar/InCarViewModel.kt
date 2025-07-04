@@ -25,9 +25,9 @@ import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.utils.toPermissionDescription
 import info.anodsplace.compose.PermissionDescription
 import info.anodsplace.compose.PreferenceItem
-import info.anodsplace.framework.content.CommonActivityAction
+import info.anodsplace.framework.content.ShowToastActionDefaults
 import info.anodsplace.framework.content.forLauncher
-import info.anodsplace.framework.content.onCommonActivityAction
+import info.anodsplace.framework.content.showToast
 import info.anodsplace.permissions.AppPermission
 import info.anodsplace.permissions.AppPermissions
 import info.anodsplace.viewmodel.BaseFlowViewModel
@@ -62,7 +62,7 @@ sealed interface InCarViewAction {
     class CheckPermissions(val permissions: List<AppPermission>) : InCarViewAction {
         constructor(permission: AppPermission) : this(listOf(permission))
     }
-    class ActivityAction(val action: CommonActivityAction) : InCarViewAction
+    class ShowToast(text: String) : ShowToastActionDefaults(text = text), InCarViewAction
     data object CheckMissingPermissions : InCarViewAction
 }
 
@@ -160,9 +160,7 @@ class InCarViewModel(
                 )
                 if (event.ex != null) {
                     AppLog.e(event.ex)
-                    emitAction(InCarViewAction.ActivityAction(
-                        action = CommonActivityAction.ShowToast(text = "An error occurred during requesting permission")
-                    ))
+                    emitAction(InCarViewAction.ShowToast(text = "An error occurred during requesting permission"))
                 }
             }
 
@@ -233,7 +231,7 @@ class InCarViewModel(
                     requiredPermissionsNotice = permissionChecker.check(activity).mapNotNull { permissionDescriptionsMap[it] }
                 )
             }
-            is InCarViewAction.ActivityAction -> activity.onCommonActivityAction(action.action)
+            is InCarViewAction.ShowToast -> activity.showToast(action)
         }
     }
 }

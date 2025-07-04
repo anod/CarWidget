@@ -1,11 +1,19 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.sqldelight)
     alias(libs.plugins.kotlin)
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_11
+    }
+}
+
 android {
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 29
@@ -17,9 +25,7 @@ android {
     buildFeatures {
         buildConfig = false
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -55,6 +61,4 @@ dependencies {
     implementation(libs.collection.ktx)
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
-
-    implementation(libs.kotlin.stdlib)
 }

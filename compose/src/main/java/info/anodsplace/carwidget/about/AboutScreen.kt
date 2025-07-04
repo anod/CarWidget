@@ -44,15 +44,15 @@ import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.carwidget.permissions.RequestPermissionsDialog
 import info.anodsplace.compose.PreferenceCategory
 import info.anodsplace.compose.PreferenceItem
-import info.anodsplace.framework.content.CommonActivityAction
 import info.anodsplace.framework.content.CreateDocument
+import info.anodsplace.framework.content.ScreenCommonAction
+import info.anodsplace.framework.content.showToast
 import java.util.Locale
 
 @Composable
 fun AboutScreen(
     screenState: AboutScreenState,
     onEvent: (AboutScreenStateEvent) -> Unit,
-    onActivityAction: (CommonActivityAction) -> Unit = {},
     imageLoader: ImageLoader,
     innerPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -70,6 +70,8 @@ fun AboutScreen(
             onEvent(AboutScreenStateEvent.Backup(destUri))
         }
     }
+
+    val context = LocalContext.current
 
     Surface {
         Column(
@@ -100,7 +102,7 @@ fun AboutScreen(
                             )
                         } catch (e: Exception) {
                             AppLog.e(e)
-                            onActivityAction(CommonActivityAction.ShowToast(text = "Error - cannot perform ACTION_CREATE_DOCUMENT"))
+                            context.showToast(ScreenCommonAction.ShowToast(text = "Error - cannot perform ACTION_CREATE_DOCUMENT"))
                         }
                     })
                 AboutButton(
@@ -112,7 +114,7 @@ fun AboutScreen(
                             openDocumentLauncher.launch(arrayOf("application/json", "text/plain", "*/*"))
                         } catch (e: Exception) {
                             AppLog.e(e)
-                            onActivityAction(CommonActivityAction.ShowToast(text = "Error - cannot perform ACTION_OPEN_DOCUMENT"))
+                            context.showToast(ScreenCommonAction.ShowToast(text = "Error - cannot perform ACTION_OPEN_DOCUMENT"))
                         }
                     }
                 )

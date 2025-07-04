@@ -38,31 +38,31 @@ import info.anodsplace.carwidget.content.db.toImageRequest
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
 import info.anodsplace.compose.SystemIconShape
-import info.anodsplace.framework.content.CommonActivityAction
+import info.anodsplace.framework.content.ScreenCommonAction
 import info.anodsplace.framework.content.forRequestIgnoreBatteryOptimization
+import info.anodsplace.framework.content.startActivity
 
 private val IconSize = 52.dp
 
-private fun Modifier.cardStyle(backgroundColor: Color? = null): Modifier = composed { then(
-    fillMaxWidth()
+private fun Modifier.cardStyle(backgroundColor: Color? = null): Modifier = composed {
+    this.fillMaxWidth()
         .clip(shape = MaterialTheme.shapes.large)
         .background(backgroundColor ?: MaterialTheme.colorScheme.secondary)
         .padding(16.dp)
-) }
+}
 
 private fun Modifier.iconContainer(iconShape: Shape): Modifier = composed {
     val widgetSystemTheme = LocalWidgetSystemTheme.current
-    then(
-        padding(2.dp)
-            .clip(shape = iconShape)
-            .background(widgetSystemTheme.colorScheme.colorDynamicWidgetBackground)
-            .border(
-                1.dp,
-                widgetSystemTheme.colorScheme.colorDynamicWidgetPrimary,
-                shape = iconShape
-            )
-            .size(IconSize)
-    ) }
+    this.padding(2.dp)
+        .clip(shape = iconShape)
+        .background(widgetSystemTheme.colorScheme.colorDynamicWidgetBackground)
+        .border(
+            1.dp,
+            widgetSystemTheme.colorScheme.colorDynamicWidgetPrimary,
+            shape = iconShape
+        )
+        .size(IconSize)
+}
 
 
 @Composable
@@ -70,8 +70,7 @@ fun WidgetsListScreen(
     screen: WidgetListScreenState,
     onEvent: (MainViewEvent) -> Unit,
     imageLoader: ImageLoader,
-    innerPadding: PaddingValues = PaddingValues(0.dp),
-    onActivityAction: (CommonActivityAction) -> Unit = { }
+    innerPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     when (val loadState = screen.loadState) {
         is WidgetListLoadState.Ready -> {
@@ -82,7 +81,6 @@ fun WidgetsListScreen(
                     .padding(innerPadding)
                     .fillMaxSize()
                     .padding(16.dp),
-                onActivityAction = onActivityAction,
                 imageLoader = imageLoader
             )
         }
@@ -97,8 +95,7 @@ private fun WidgetsLisItems(
     screen: WidgetListScreenState,
     onEvent: (MainViewEvent) -> Unit,
     modifier: Modifier = Modifier,
-    imageLoader: ImageLoader,
-    onActivityAction: (CommonActivityAction) -> Unit
+    imageLoader: ImageLoader
 ) {
     val iconSizePx = with(LocalDensity.current) { IconSize.roundToPx() }
     val iconShape = SystemIconShape(iconSizePx)
@@ -119,11 +116,7 @@ private fun WidgetsLisItems(
                 Row(modifier = Modifier
                     .clickable {
                         if (!screen.ignoringBatteryOptimization) {
-                            onActivityAction(
-                                CommonActivityAction.StartActivity(
-                                    Intent().forRequestIgnoreBatteryOptimization(context.packageName)
-                                )
-                            )
+                            context.startActivity(ScreenCommonAction.StartActivity(Intent().forRequestIgnoreBatteryOptimization(context.packageName)))
                         }
                     }
                     .cardStyle(backgroundColor = MaterialTheme.colorScheme.errorContainer)
@@ -277,8 +270,8 @@ fun EventStates(eventsState: List<InCarStatus.EventState>) {
     Column(modifier = Modifier.padding(top = 16.dp)) {
         for (event in eventsState) {
             val title = stringResource(titles[event.id])
-            val enabled = if (event.enabled) stringResource(info.anodsplace.carwidget.content.R.string.enabled) else stringResource(R.string.disabled)
-            val active = if (event.active) stringResource(info.anodsplace.carwidget.content.R.string.active) else stringResource(R.string.not_active)
+            val enabled = if (event.enabled) stringResource(R.string.enabled) else stringResource(R.string.disabled)
+            val active = if (event.active) stringResource(R.string.active) else stringResource(R.string.not_active)
             Text(
                 text = String.format("%s: %s - %s", title, enabled, active),
                 style = MaterialTheme.typography.labelMedium,
@@ -336,8 +329,7 @@ fun PreviewWidgetsScreen() {
                 ignoringBatteryOptimization = true
             ),
             onEvent = { },
-            imageLoader = ImageLoader.Builder(LocalContext.current).build(),
-            onActivityAction =  {  }
+            imageLoader = ImageLoader.Builder(LocalContext.current).build()
         )
     }
 }
@@ -357,8 +349,7 @@ fun PreviewWidgetsEmptyScreen() {
                 ignoringBatteryOptimization = false
             ),
             onEvent = { },
-            imageLoader = ImageLoader.Builder(LocalContext.current).build(),
-            onActivityAction = {  }
+            imageLoader = ImageLoader.Builder(LocalContext.current).build()
         )
     }
 }

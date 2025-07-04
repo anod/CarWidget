@@ -31,7 +31,6 @@ import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.getOrCreateAppWidgetScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.shortcut.EditShortcut
-import info.anodsplace.framework.content.onCommonActivityAction
 import info.anodsplace.framework.media.MediaKeyEvent
 import info.anodsplace.ktx.extras
 import org.koin.core.component.KoinComponent
@@ -105,7 +104,6 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
                             shortcutId = deeplink.shortcutId,
                             position = deeplink.position
                         ),
-                        onActivityAction = { onCommonActivityAction(it) },
                         onDismissRequest = { finish() }
                     )
                     is Deeplink.EditWidgetButton -> EditWidgetButton(

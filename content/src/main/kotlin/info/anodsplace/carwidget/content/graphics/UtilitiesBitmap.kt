@@ -226,7 +226,7 @@ object UtilitiesBitmap {
         return byteCount <= candidate.allocationByteCount
     }
 
-    private fun getBytesPerPixel(config: Bitmap.Config): Int {
+    private fun getBytesPerPixel(config: Bitmap.Config?): Int {
         return when (config) {
             Bitmap.Config.ARGB_8888 -> 4
             Bitmap.Config.RGB_565 -> 2

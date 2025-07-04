@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,14 +27,14 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.compose.PreferenceCheckbox
 import info.anodsplace.compose.PreferenceItem
-import info.anodsplace.framework.content.CommonActivityAction
+import info.anodsplace.framework.content.ScreenCommonAction
+import info.anodsplace.framework.content.showToast
 import info.anodsplace.permissions.AppPermission
 
 @Composable
 fun BluetoothDevicesScreen(
     screenState: BluetoothDevicesViewState,
     onEvent: (BluetoothDevicesViewEvent) -> Unit,
-    onActivityAction: (CommonActivityAction) -> Unit,
     innerPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     val screenModifier = Modifier.padding(innerPadding).padding(16.dp)
@@ -52,14 +53,12 @@ fun BluetoothDevicesScreen(
                     list = listState.list,
                     btState = screenState.btAdapterState,
                     onChecked = { device, checked -> onEvent(BluetoothDevicesViewEvent.UpdateDevice(device, checked)) },
-                    onActivityAction = onActivityAction,
                     modifier = screenModifier)
             }
             BluetoothDevicesListState.SwitchedOff -> {
                 BluetoothDeviceEmpty(
                     btState = screenState.btAdapterState,
                     modifier = screenModifier,
-                    onActivityAction = onActivityAction
                 )
             }
         }
@@ -92,11 +91,10 @@ fun BluetoothDeviceList(
     list: List<BluetoothDevice>,
     btState: Int,
     onChecked: (device: BluetoothDevice, checked: Boolean) -> Unit,
-    onActivityAction: (CommonActivityAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (list.isEmpty()) {
-        BluetoothDeviceEmpty(btState, onActivityAction = onActivityAction, modifier = modifier)
+        BluetoothDeviceEmpty(btState, modifier = modifier)
     } else {
         LazyColumn(modifier = modifier.fillMaxSize()) {
             item {
@@ -110,7 +108,7 @@ fun BluetoothDeviceList(
                 PreferenceCheckbox(
                     checked = device.selected,
                     item = PreferenceItem.Text(
-                        title = if (device.name.isEmpty()) device.address else device.name,
+                        title = device.name.ifEmpty { device.address },
                         summary = device.btClassName
                     ),
                     onCheckedChange = { onChecked(device, it) }
@@ -123,12 +121,12 @@ fun BluetoothDeviceList(
 @Composable
 fun BluetoothDeviceEmpty(
     btState: Int,
-    onActivityAction: (CommonActivityAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val turnOnBluetooth = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
         AppLog.d("Bluetooth turned on: ${result.resultCode}")
     }
+    val context = LocalContext.current
     Column(modifier = modifier) {
         Text(text = stringResource(id = info.anodsplace.carwidget.content.R.string.bluetooth_device_category_title))
         Text(
@@ -152,7 +150,7 @@ fun BluetoothDeviceEmpty(
                             turnOnBluetooth.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
                         } catch (e: Exception) {
                             AppLog.e(e)
-                            onActivityAction(CommonActivityAction.ShowToast(text = "Error - cannot turn on bluetooth"))
+                            context.showToast(ScreenCommonAction.ShowToast(text = "Error - cannot turn on bluetooth"))
                         }
                     },
                     enabled = btState == BluetoothAdapter.STATE_OFF
@@ -171,7 +169,6 @@ fun BluetoothDeviceEmptyScreen() {
                 listState = BluetoothDevicesListState.SwitchedOff,
                 btAdapterState = BluetoothAdapter.STATE_OFF,
             ),
-            onActivityAction = { },
             onEvent = { }
         )
     }
@@ -188,7 +185,6 @@ fun BluetoothDevicesListScreen() {
                 )),
                 btAdapterState = BluetoothAdapter.STATE_ON,
             ),
-            onActivityAction = { },
             onEvent = { }
         )
     }
@@ -203,7 +199,6 @@ fun BluetoothDevicesListOffScreen() {
                 listState = BluetoothDevicesListState.Devices(listOf()),
                 btAdapterState = BluetoothAdapter.STATE_OFF,
             ),
-            onActivityAction = { },
             onEvent = { }
         )
     }

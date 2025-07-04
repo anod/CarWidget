@@ -34,12 +34,16 @@ dependencies {
     compileOnly(libs.auto.service.annotations)
     ksp(libs.auto.service.ksp)
     ksp(libs.auto.service)
+}
 
-    implementation(libs.kotlin.stdlib)
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_11
+    }
 }
 
 android {
-    compileSdk = 34
+    compileSdk = 36
 
     buildFeatures {
         aidl = true
@@ -87,10 +91,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = "11"
     }
 
     lint {

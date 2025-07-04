@@ -4,16 +4,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import info.anodsplace.carwidget.NavItem
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
-import info.anodsplace.framework.content.CommonActivityAction
+import info.anodsplace.framework.content.showToast
 
 @Composable
 fun EditShortcut(
     appWidgetIdScope: AppWidgetIdScope,
     args: NavItem.Tab.CurrentWidget.EditShortcut.Args,
-    onActivityAction: (CommonActivityAction) -> Unit,
     onDismissRequest: () -> Unit
 ) {
     if (args.shortcutId > 0) {
@@ -32,10 +32,11 @@ fun EditShortcut(
             widgetSettings = viewModel.widgetSettings,
             imageLoader = viewModel.imageLoader
         )
+        val context = LocalContext.current
         LaunchedEffect(key1 = true) {
             viewModel.viewActions.collect {
                 when (it) {
-                    is ShortcutEditViewAction.ActivityAction -> onActivityAction(it.action)
+                    is ShortcutEditViewAction.ShowToast -> context.showToast(it)
                 }
             }
         }
@@ -52,11 +53,11 @@ fun EditShortcut(
             shortcutResources = viewModel.shortcutResources,
             imageLoader = viewModel.imageLoader
         )
-
+        val context = LocalContext.current
         LaunchedEffect(true) {
             viewModel.viewActions.collect { action ->
                 when (action) {
-                    is ShortcutPickerViewAction.ActivityAction -> onActivityAction(action.action)
+                    is ShortcutPickerViewAction.ShowToast -> context.showToast(action)
                 }
             }
         }

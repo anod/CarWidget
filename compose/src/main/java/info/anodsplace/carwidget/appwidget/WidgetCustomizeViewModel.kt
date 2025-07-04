@@ -18,7 +18,7 @@ import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.compose.isNotVisible
 import info.anodsplace.compose.isVisible
 import info.anodsplace.compose.toColorHex
-import info.anodsplace.framework.content.CommonActivityAction
+import info.anodsplace.framework.content.ScreenCommonAction
 import info.anodsplace.framework.content.forStoreSearch
 import info.anodsplace.framework.content.getAppTitle
 import info.anodsplace.viewmodel.BaseFlowViewModel
@@ -154,7 +154,7 @@ fun createItems(settings: WidgetInterface, skinList: SkinList, iconsThemeAppName
     ),
 )
 
-class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowViewModel<WidgetCustomizeState, WidgetCustomizeEvent, CommonActivityAction>(), KoinScopeComponent,
+class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowViewModel<WidgetCustomizeState, WidgetCustomizeEvent, ScreenCommonAction>(), KoinScopeComponent,
     SkinViewFactory {
 
     class Factory(private val appWidgetIdScope: AppWidgetIdScope) : ViewModelProvider.Factory {
@@ -218,7 +218,7 @@ class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowVie
             }
 
             WidgetCustomizeEvent.DownloadIconsTheme -> {
-                emitAction(CommonActivityAction.StartActivity(Intent().forStoreSearch(query = "Icons Pack")))
+                emitAction(ScreenCommonAction.StartActivity(Intent().forStoreSearch(query = "Icons Pack")))
             }
         }
     }

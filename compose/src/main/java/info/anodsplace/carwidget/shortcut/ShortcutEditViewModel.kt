@@ -20,7 +20,7 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.shortcuts.ShortcutInfoFactory
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.shortcut.intent.IntentField
-import info.anodsplace.framework.content.CommonActivityAction
+import info.anodsplace.framework.content.ShowToastActionDefaults
 import info.anodsplace.graphics.DrawableUri
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.launch
@@ -52,7 +52,7 @@ sealed interface ShortcutEditViewEvent {
 }
 
 sealed interface ShortcutEditViewAction {
-    class ActivityAction(val action: CommonActivityAction) : ShortcutEditViewAction
+    class ShowToast(text: String) : ShowToastActionDefaults(text = text), ShortcutEditViewAction
 }
 
 class ShortcutEditViewModel(
@@ -139,9 +139,7 @@ class ShortcutEditViewModel(
 
             is ShortcutEditViewEvent.LaunchCustomizeError -> {
                 AppLog.e(event.exception)
-                emitAction(ShortcutEditViewAction.ActivityAction(
-                    action = CommonActivityAction.ShowToast(text = "Cannot launch ${event.exception}")
-                ))
+                emitAction(ShortcutEditViewAction.ShowToast(text = "Cannot launch ${event.exception}"))
             }
         }
     }

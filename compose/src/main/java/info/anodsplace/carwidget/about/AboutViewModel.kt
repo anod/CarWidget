@@ -25,10 +25,11 @@ import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.utils.toPermissionDescription
 import info.anodsplace.compose.PermissionDescription
-import info.anodsplace.framework.content.CommonActivityAction
+import info.anodsplace.framework.content.ShowToastActionDefaults
 import info.anodsplace.framework.content.forApplicationDetails
 import info.anodsplace.framework.content.playStoreDetails
 import info.anodsplace.framework.content.resolveDefaultCarDock
+import info.anodsplace.framework.content.showToast
 import info.anodsplace.framework.content.startActivitySafely
 import info.anodsplace.permissions.AppPermission
 import info.anodsplace.permissions.AppPermissions
@@ -66,12 +67,12 @@ sealed interface AboutScreenStateEvent {
 }
 
 sealed interface AboutScreenAction {
-    class CommonActivity(val action: CommonActivityAction) : AboutScreenAction
+    class ShowToast(@StringRes resId: Int = 0, text: String = "", length: Int = Toast.LENGTH_SHORT) : ShowToastActionDefaults(resId, text, length), AboutScreenAction
     data object CheckMissingPermissions : AboutScreenAction
 }
 
 fun showToast(@StringRes resId: Int = 0, text: String = "", length: Int = Toast.LENGTH_SHORT)
-    = AboutScreenAction.CommonActivity(CommonActivityAction.ShowToast(resId = resId, text = text, length = length))
+    = AboutScreenAction.ShowToast(resId = resId, text = text, length = length)
 
 class AboutViewModel(
     private val appWidgetIdScope: AppWidgetIdScope?,
@@ -188,9 +189,7 @@ class AboutViewModel(
                 if (event.ex != null) {
                     AppLog.e(event.ex)
                     emitAction(
-                        AboutScreenAction.CommonActivity(
-                            action = CommonActivityAction.ShowToast(text = "An error occurred during requesting permission")
-                        )
+                        action = AboutScreenAction.ShowToast(text = "An error occurred during requesting permission")
                     )
                 }
 
@@ -216,10 +215,9 @@ class AboutViewModel(
 
     private fun renderVersion(): String {
         val appName = context.getString(info.anodsplace.carwidget.content.R.string.app_name)
-        var versionName = ""
-        try {
-            versionName = context.packageManager
-                .getPackageInfo(context.packageName, 0).versionName
+        val versionName = try {
+            context.packageManager
+                .getPackageInfo(context.packageName, 0).versionName ?: ""
         } catch (e: PackageManager.NameNotFoundException) {
             AppLog.e(e)
         }
@@ -256,7 +254,7 @@ class AboutViewModel(
                     missingPermissionsDialog = permissionChecker.check(activity).mapNotNull { permissionDescriptionsMap[it] }
                 )
             }
-            is AboutScreenAction.CommonActivity -> {}
+            is AboutScreenAction.ShowToast -> activity.showToast(action)
         }
     }
 }

@@ -21,7 +21,6 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.main.MainScreen
 import info.anodsplace.carwidget.main.MainViewAction
 import info.anodsplace.carwidget.main.MainViewModel
-import info.anodsplace.framework.content.onCommonActivityAction
 import info.anodsplace.ktx.extras
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -69,7 +68,6 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
                     viewActions = mainViewModel.viewActions,
                     appWidgetIdScope = mainViewModel.appWidgetIdScope,
                     imageLoader = mainViewModel.imageLoader,
-                    onActivityAction = ::onCommonActivityAction
                 )
             }
         }
@@ -94,7 +92,7 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
             }
             is MainViewAction.OnBackNav -> onBackPressedDispatcher.onBackPressed()
             is MainViewAction.ShowDialog -> { }
-            is MainViewAction.ActivityAction -> { }
+            is MainViewAction.StartActivity -> { }
         }
     }
 }

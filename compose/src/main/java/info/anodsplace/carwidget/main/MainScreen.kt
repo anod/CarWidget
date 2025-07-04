@@ -60,7 +60,8 @@ import info.anodsplace.carwidget.incar.InCarViewModel
 import info.anodsplace.carwidget.permissions.PermissionsScreen
 import info.anodsplace.carwidget.shortcut.EditShortcut
 import info.anodsplace.framework.app.findActivity
-import info.anodsplace.framework.content.CommonActivityAction
+import info.anodsplace.framework.content.onScreenCommonAction
+import info.anodsplace.framework.content.startActivity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import org.koin.java.KoinJavaComponent.getKoin
@@ -74,18 +75,15 @@ fun MainScreen(
     viewActions: Flow<MainViewAction> = emptyFlow(),
     appWidgetIdScope: AppWidgetIdScope? = null,
     imageLoader: ImageLoader,
-    onActivityAction: (CommonActivityAction) -> Unit = { },
 ) {
+    val context = LocalContext.current
     when (screenState.topDestination) {
         NavItem.Wizard -> {
             WizardScreen(onEvent = onEvent)
             LaunchedEffect(key1 = true) {
                 viewActions.collect { action ->
                     when (action) {
-                        is MainViewAction.ActivityAction -> {
-                            onActivityAction(action.action)
-                        }
-
+                        is MainViewAction.StartActivity -> context.startActivity(action)
                         else -> onViewAction(action)
                     }
                 }
@@ -104,8 +102,7 @@ fun MainScreen(
                     windowSizeClass = windowSizeClass,
                     onEvent = onEvent,
                     appWidgetIdScope = appWidgetIdScope,
-                    imageLoader = imageLoader,
-                    onActivityAction = onActivityAction
+                    imageLoader = imageLoader
                 )
             } else {
                 Tabs(
@@ -114,8 +111,7 @@ fun MainScreen(
                     windowSizeClass = windowSizeClass,
                     onEvent = onEvent,
                     appWidgetIdScope = appWidgetIdScope,
-                    imageLoader = imageLoader,
-                    onActivityAction = onActivityAction
+                    imageLoader = imageLoader
                 )
             }
 
@@ -125,9 +121,7 @@ fun MainScreen(
                         is MainViewAction.ShowDialog -> {
                             navController.navigate(action.route)
                         }
-                        is MainViewAction.ActivityAction -> {
-                            onActivityAction(action.action)
-                        }
+                        is MainViewAction.StartActivity -> context.startActivity(action)
                         else -> onViewAction(action)
                     }
                 }
@@ -143,8 +137,7 @@ fun NavRail(
     windowSizeClass: WindowSizeClass,
     onEvent: (event: MainViewEvent) -> Unit,
     appWidgetIdScope: AppWidgetIdScope?,
-    imageLoader: ImageLoader,
-    onActivityAction: (CommonActivityAction) -> Unit
+    imageLoader: ImageLoader
 ) {
     val navRailInset = WindowInsets(0.dp, 0.dp, 80.dp, 0.dp)
     Box {
@@ -162,7 +155,6 @@ fun NavRail(
             routeNS = screenState.routeNS,
             imageLoader = imageLoader,
             windowSizeClass = windowSizeClass,
-            onActivityAction = onActivityAction
         )
         NavRailMenu(
             modifier = Modifier.align(Alignment.CenterEnd),
@@ -186,8 +178,7 @@ fun Tabs(
     windowSizeClass: WindowSizeClass,
     onEvent: (event: MainViewEvent) -> Unit,
     appWidgetIdScope: AppWidgetIdScope? = null,
-    imageLoader: ImageLoader,
-    onActivityAction: (CommonActivityAction) -> Unit
+    imageLoader: ImageLoader
 ) {
     Scaffold(
         containerColor = if (screenState.isWidget) Color.Transparent else MaterialTheme.colorScheme.background,
@@ -226,8 +217,7 @@ fun Tabs(
                 startDestination = screenState.topDestination.route,
                 routeNS = screenState.routeNS,
                 imageLoader = imageLoader,
-                windowSizeClass = windowSizeClass,
-                onActivityAction = onActivityAction
+                windowSizeClass = windowSizeClass
             )
         }
     )
@@ -244,7 +234,6 @@ fun NavHost(
     currentWidgetStartDestination: String = NavItem.Tab.CurrentWidget.Skin.route,
     imageLoader: ImageLoader,
     windowSizeClass: WindowSizeClass,
-    onActivityAction: (CommonActivityAction) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -256,7 +245,6 @@ fun NavHost(
                 screen = widgetsState,
                 onEvent = onEvent,
                 innerPadding = innerPadding,
-                onActivityAction = onActivityAction,
                 imageLoader = imageLoader
             )
         }
@@ -266,17 +254,13 @@ fun NavHost(
             AboutScreen(
                 screenState = aboutScreenState,
                 onEvent = aboutViewModel::handleEvent,
-                onActivityAction = onActivityAction,
                 innerPadding = innerPadding,
                 imageLoader = imageLoader
             )
 
             LaunchedEffect(key1 = true) {
                 aboutViewModel.viewActions.collect {
-                    when (it) {
-                        is AboutScreenAction.CommonActivity -> onActivityAction(it.action)
-                        else -> aboutViewModel.handleAction(it, context.findActivity())
-                    }
+                    aboutViewModel.handleAction(it, context.findActivity())
                 }
             }
 
@@ -301,7 +285,6 @@ fun NavHost(
                 EditShortcut(
                     appWidgetIdScope = appWidgetIdScope!!,
                     args = NavItem.Tab.CurrentWidget.EditShortcut.Args(it.arguments),
-                    onActivityAction = onActivityAction,
                     onDismissRequest = { onEvent(MainViewEvent.OnBackNav) }
                 )
             }
@@ -316,9 +299,10 @@ fun NavHost(
                     skinViewFactory = customizeViewModel,
                     imageLoader = imageLoader
                 )
+                val context = LocalContext.current
                 LaunchedEffect(true) {
-                    customizeViewModel.viewActions.collect { activityAction ->
-                        onActivityAction(activityAction)
+                    customizeViewModel.viewActions.collect { action ->
+                        context.onScreenCommonAction(action, navigateBack = {})
                     }
                 }
             }
@@ -352,7 +336,6 @@ fun NavHost(
                 BluetoothDevicesScreen(
                     screenState = screenState,
                     onEvent = bluetoothDevicesViewModel::handleEvent,
-                    onActivityAction = onActivityAction,
                     innerPadding = innerPadding
                 )
             }
