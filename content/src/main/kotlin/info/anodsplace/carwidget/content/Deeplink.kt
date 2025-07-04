@@ -19,14 +19,14 @@ sealed interface Deeplink {
 
     data class EditShortcut(override val appWidgetId: Int, val shortcutId: Long, val position: Int) : Deeplink, AppWidgetIdAware {
         companion object {
-            const val uriPattern = "carwidget://widgets/{app_widget_id}/edit/{shortcut_id}/{pos_id}"
+            const val uriPattern = "carwidget://widgets/{appWidgetId}/edit/{shortcutId}/{position}"
         }
         override fun toUri(): Uri = build("widgets", listOf(appWidgetId, "edit", shortcutId, position)).toUri()
     }
 
     data class EditWidgetButton(override val appWidgetId: Int, val buttonId: Int) : Deeplink, AppWidgetIdAware {
         companion object {
-            const val uriPattern = "carwidget://widgets/{app_widget_id}/button/{btn_id}/edit"
+            const val uriPattern = "carwidget://widgets/{appWidgetId}/button/{buttonId}/edit"
         }
         override fun toUri(): Uri = build("widgets", listOf(appWidgetId, "button", buttonId, "edit")).toUri()
     }
@@ -38,14 +38,14 @@ sealed interface Deeplink {
 
     data class OpenWidgetShortcut(override val appWidgetId: Int, val position: Int) : Deeplink, AppWidgetIdAware {
         companion object {
-            const val uriPattern = "carwidget://widgets/{app_widget_id}/open/{pos_id}"
+            const val uriPattern = "carwidget://widgets/{appWidgetId}/open/{position}"
         }
         override fun toUri(): Uri = build("widgets", listOf(appWidgetId, "open", position)).toUri()
     }
 
     data class OpenNotificationShortcut(val position: Int) : Deeplink {
         companion object {
-            const val uriPattern = "carwidget://notification/open/{pos_id}"
+            const val uriPattern = "carwidget://notification/open/{position}"
         }
         override fun toUri(): Uri = build("notification", listOf("open", position)).toUri()
     }

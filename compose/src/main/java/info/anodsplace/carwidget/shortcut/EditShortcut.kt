@@ -6,14 +6,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import info.anodsplace.carwidget.NavItem
+import info.anodsplace.carwidget.SceneNavKey
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.framework.content.showToast
 
 @Composable
 fun EditShortcut(
     appWidgetIdScope: AppWidgetIdScope,
-    args: NavItem.Tab.CurrentWidget.EditShortcut.Args,
+    args: SceneNavKey.EditShortcut,
     onDismissRequest: () -> Unit
 ) {
     if (args.shortcutId > 0) {

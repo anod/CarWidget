@@ -12,10 +12,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import info.anodsplace.carwidget.chooser.ChooserGridList
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
-import info.anodsplace.carwidget.NavItem
+import info.anodsplace.carwidget.SceneNavKey
 
 @Composable
-fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: NavItem.Tab.CurrentWidget.EditWidgetButton.Args, onDismissRequest: () -> Unit) {
+fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: SceneNavKey.EditWidgetButton, onDismissRequest: () -> Unit) {
     val appContext = LocalContext.current.applicationContext as Application
 
     val viewModel: EditWidgetViewModel = viewModel(

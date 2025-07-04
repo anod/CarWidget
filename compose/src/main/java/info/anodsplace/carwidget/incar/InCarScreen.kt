@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.NavItem
+import info.anodsplace.carwidget.SceneNavKey
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.ChooserLoader
 import info.anodsplace.carwidget.chooser.StaticChooserLoader
@@ -60,7 +60,7 @@ fun InCarMainScreen(
             onClick = { item ->
                 when (item.key) {
                     "bt-device-screen" -> {
-                        onEvent(InCarViewEvent.Navigate(route = NavItem.Tab.InCar.Bluetooth.route))
+                        onEvent(InCarViewEvent.Navigate(route = SceneNavKey.Bluetooth))
                     }
                     "screen-timeout-list" -> {
                         onEvent(

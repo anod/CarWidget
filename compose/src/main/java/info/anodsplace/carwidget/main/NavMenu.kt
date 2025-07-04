@@ -19,10 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import info.anodsplace.carwidget.CheckIcon
-import info.anodsplace.carwidget.NavItem
+import info.anodsplace.carwidget.SceneNavKey
+import info.anodsplace.carwidget.TabNavKey
 
-fun NavHostController.navigate(item: NavItem.Tab) {
-    navigate(item.route) {
+fun NavHostController.navigate(item: TabNavKey) {
+    navigate(item) {
         // Pop up to the start destination of the graph to
         // avoid building up a large stack of destinations
         // on the back stack as users select items
@@ -38,21 +39,21 @@ fun NavHostController.navigate(item: NavItem.Tab) {
 }
 
 @Composable
-fun BottomTabsMenu(items: List<NavItem.Tab>, currentRoute: String?, onClick: (NavItem.Tab) -> Unit) {
+fun BottomTabsMenu(items: List<TabNavKey>, currentRoute: TabNavKey?, onClick: (TabNavKey) -> Unit) {
     NavigationBar {
         items.forEachIndexed { _, item ->
             NavigationBarItem(
                 icon = { Icon(item.icon, contentDescription = null) },
                 label = {
                     Text(
-                        text = stringResource(id = item.resourceId),
+                        text = stringResource(id = item.title),
                         overflow = TextOverflow.Ellipsis,
                         softWrap = true,
                         maxLines = 1,
                         textAlign = TextAlign.Center
                     )
                 },
-                selected = currentRoute?.startsWith(item.route) == true,
+                selected = currentRoute == item,
                 onClick = {
                     onClick(item)
                 }
@@ -63,10 +64,10 @@ fun BottomTabsMenu(items: List<NavItem.Tab>, currentRoute: String?, onClick: (Na
 
 @Composable
 fun NavRailMenu(
-    items: List<NavItem.Tab>,
+    items: List<TabNavKey>,
     showApply: Boolean,
-    currentRoute: String?,
-    onClick: (NavItem.Tab) -> Unit,
+    currentRoute: SceneNavKey?,
+    onClick: (SceneNavKey) -> Unit,
     onApply: () -> Unit,
     windowInsets: WindowInsets,
     modifier: Modifier = Modifier
@@ -88,11 +89,11 @@ fun NavRailMenu(
             Spacer(Modifier.weight(1f))
             items.forEachIndexed { _, item ->
                 NavigationRailItem(
-                    selected = currentRoute?.startsWith(item.route) == true,
+                    selected = currentRoute == item,
                     icon = { Icon(item.icon, contentDescription = null) },
                     label = {
                         Text(
-                            text = stringResource(id = item.resourceId),
+                            text = stringResource(id = item.title),
                             overflow = TextOverflow.Ellipsis,
                             softWrap = true,
                             maxLines = 1,

@@ -9,7 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import coil.ImageLoader
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.NavItem
+import info.anodsplace.carwidget.RouteNameSpace
+import info.anodsplace.carwidget.SceneNavKey
+import info.anodsplace.carwidget.TabNavKey
 import info.anodsplace.carwidget.WidgetAwareViewModel
 import info.anodsplace.carwidget.appwidget.SkinList
 import info.anodsplace.carwidget.appwidget.WidgetIds
@@ -33,9 +35,9 @@ import org.koin.core.component.inject
 data class MainViewState(
     val isWidget: Boolean = false,
     val appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
-    val tabs: List<NavItem.Tab> = emptyList(),
-    val routeNS: String = "default",
-    val topDestination: NavItem = NavItem.Tab.About,
+    val tabs: List<TabNavKey> = emptyList(),
+    val routeNS: RouteNameSpace = RouteNameSpace.Default,
+    val topDestination: SceneNavKey = SceneNavKey.About,
     val requiredPermissions: List<AppPermission> = emptyList(),
     val widgetSettings: WidgetInterface.NoOp = WidgetInterface.NoOp(),
     val skinList: SkinList = SkinList(values = WidgetInterface.skins, titles = WidgetInterface.skins, 0)
@@ -93,16 +95,16 @@ class MainViewModel(
             isWidget = isWidget,
             appWidgetId = +appWidgetIdScope,
             tabs = if (isWidget) listOf(
-                NavItem.Tab.CurrentWidget,
-                NavItem.Tab.WidgetCustomize,
-                NavItem.Tab.InCar,
-                NavItem.Tab.About
+                SceneNavKey.CurrentWidget,
+                SceneNavKey.WidgetCustomize,
+                SceneNavKey.InCar,
+                SceneNavKey.About
             ) else listOf(
-                NavItem.Tab.Widgets,
-                NavItem.Tab.InCar,
-                NavItem.Tab.About
+                SceneNavKey.Widgets,
+                SceneNavKey.InCar,
+                SceneNavKey.About
             ),
-            routeNS = if (appWidgetIdScope.isValid) "carwidget/current" else "carwidget/main",
+            routeNS = if (isWidget) RouteNameSpace.AppWidget else RouteNameSpace.Default,
             topDestination = startDestination(requiredPermissions, allowWizard = true),
             requiredPermissions = requiredPermissions,
             widgetSettings = widgetSettings,
@@ -114,7 +116,7 @@ class MainViewModel(
         when (event) {
             is MainViewEvent.PermissionAcquired -> {
                 appSettings.checkPermissionsOnStart = false
-                viewState = viewState.copy(topDestination = if (appWidgetIdScope.isValid) NavItem.Tab.CurrentWidget else NavItem.Tab.Widgets)
+                viewState = viewState.copy(topDestination = if (appWidgetIdScope.isValid) SceneNavKey.CurrentWidget else SceneNavKey.Widgets)
             }
             is MainViewEvent.OnBackNav -> emitAction(MainViewAction.OnBackNav)
             is MainViewEvent.ApplyWidget -> emitAction(
@@ -125,7 +127,7 @@ class MainViewModel(
             )
             is MainViewEvent.OpenWidgetConfig -> emitAction(MainViewAction.OpenWidgetConfig(event.appWidgetId))
             is MainViewEvent.ShowWizard -> {
-                viewState = viewState.copy(topDestination = NavItem.Wizard)
+                viewState = viewState.copy(topDestination = SceneNavKey.Wizard)
             }
             is MainViewEvent.CloseWizard -> {
                 viewState = viewState.copy(topDestination = startDestination(viewState.requiredPermissions, allowWizard = false))
@@ -150,13 +152,13 @@ class MainViewModel(
         }
     }
 
-    private fun startDestination(requiredPermissions: List<AppPermission>, allowWizard: Boolean): NavItem {
+    private fun startDestination(requiredPermissions: List<AppPermission>, allowWizard: Boolean): SceneNavKey {
         val appWidgetIds = widgetIds.getAllWidgetIds()
         return when {
-            appWidgetIds.isEmpty() && allowWizard -> NavItem.Wizard
-            requiredPermissions.isNotEmpty() -> NavItem.PermissionsRequest
-            appWidgetIdScope.isValid -> NavItem.Tab.CurrentWidget
-            else -> NavItem.Tab.Widgets
+            appWidgetIds.isEmpty() && allowWizard -> SceneNavKey.Wizard
+            requiredPermissions.isNotEmpty() -> SceneNavKey.PermissionsRequest
+            appWidgetIdScope.isValid -> SceneNavKey.CurrentWidget
+            else -> SceneNavKey.Widgets
         }
     }
 

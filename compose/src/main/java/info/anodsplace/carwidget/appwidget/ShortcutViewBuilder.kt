@@ -47,7 +47,7 @@ class ShortcutViewBuilder(
         if (info == null) {
             setNoShortcut(resBtn, resText, views, position, skinProperties)
         } else {
-            AppLog.i(info.intent.component?.toShortString() ?: info.intent.toString(), tag = "ShortcutViewBuilder")
+            AppLog.i(info.intent.toString(), tag = "ShortcutViewBuilder")
             icon = applyShortcut(resBtn, resText, info, views, position, iconTheme)
         }
         if (prefs.isTitlesHide) {

@@ -39,13 +39,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import coil.ImageLoader
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.CheckIcon
-import info.anodsplace.carwidget.NavItem
+import info.anodsplace.carwidget.RouteNameSpace
+import info.anodsplace.carwidget.SceneNavKey
+import info.anodsplace.carwidget.TabNavKey
 import info.anodsplace.carwidget.about.AboutScreen
-import info.anodsplace.carwidget.about.AboutScreenAction
 import info.anodsplace.carwidget.about.AboutViewModel
+import info.anodsplace.carwidget.appwidget.RealSkinPreviewViewModel
 import info.anodsplace.carwidget.appwidget.SkinList
 import info.anodsplace.carwidget.appwidget.SkinPreviewViewModel
 import info.anodsplace.carwidget.appwidget.WidgetCustomizeScreen
@@ -78,7 +81,7 @@ fun MainScreen(
 ) {
     val context = LocalContext.current
     when (screenState.topDestination) {
-        NavItem.Wizard -> {
+        SceneNavKey.Wizard -> {
             WizardScreen(onEvent = onEvent)
             LaunchedEffect(key1 = true) {
                 viewActions.collect { action ->
@@ -89,7 +92,7 @@ fun MainScreen(
                 }
             }
         }
-        NavItem.PermissionsRequest -> {
+        SceneNavKey.PermissionsRequest -> {
             PermissionsScreen(screenState = screenState, onEvent = onEvent)
         }
         else -> {
@@ -142,7 +145,7 @@ fun NavRail(
     val navRailInset = WindowInsets(0.dp, 0.dp, 80.dp, 0.dp)
     Box {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
+        val currentRoute = null // TODO: navBackStackEntry?.toRoute()
         NavHost(
             navController = navController,
             onEvent = onEvent,
@@ -151,7 +154,7 @@ fun NavRail(
                 .add(WindowInsets.statusBars.only(WindowInsetsSides.Vertical))
                 .add(WindowInsets.navigationBars)
                 .add(navRailInset).asPaddingValues(),
-            startDestination = screenState.topDestination.route,
+            startDestination = screenState.topDestination,
             routeNS = screenState.routeNS,
             imageLoader = imageLoader,
             windowSizeClass = windowSizeClass,
@@ -201,7 +204,7 @@ fun Tabs(
         },
         bottomBar = {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentRoute = navBackStackEntry?.destination?.route
+            val currentRoute = null // TODO: navBackStackEntry?.destination?.route
             BottomTabsMenu(
                 items = screenState.tabs,
                 currentRoute = currentRoute,
@@ -214,7 +217,7 @@ fun Tabs(
                 onEvent = onEvent,
                 appWidgetIdScope = appWidgetIdScope,
                 innerPadding = innerPadding,
-                startDestination = screenState.topDestination.route,
+                startDestination = screenState.topDestination,
                 routeNS = screenState.routeNS,
                 imageLoader = imageLoader,
                 windowSizeClass = windowSizeClass
@@ -229,16 +232,16 @@ fun NavHost(
     onEvent: (MainViewEvent) -> Unit,
     appWidgetIdScope: AppWidgetIdScope? = null,
     innerPadding: PaddingValues,
-    startDestination: String,
-    routeNS: String,
-    currentWidgetStartDestination: String = NavItem.Tab.CurrentWidget.Skin.route,
+    startDestination: SceneNavKey,
+    routeNS: RouteNameSpace,
+    currentWidgetStartDestination: SceneNavKey = SceneNavKey.Skin,
     imageLoader: ImageLoader,
     windowSizeClass: WindowSizeClass,
 ) {
     val context = LocalContext.current
 
-    NavHost(navController, startDestination = startDestination, route = routeNS) {
-        composable(route = NavItem.Tab.Widgets.route) {
+    NavHost(navController, startDestination = startDestination, route = routeNS::class) {
+        composable<SceneNavKey.Widgets> {
             val widgetsListViewModel: WidgetsListViewModel = viewModel()
             val widgetsState by widgetsListViewModel.viewStates.collectAsState(initial = widgetsListViewModel.viewState)
             WidgetsListScreen(
@@ -248,7 +251,7 @@ fun NavHost(
                 imageLoader = imageLoader
             )
         }
-        composable(route = NavItem.Tab.About.route) {
+        composable<SceneNavKey.About> {
             val aboutViewModel: AboutViewModel = viewModel(factory = AboutViewModel.Factory(appWidgetIdScope))
             val aboutScreenState by aboutViewModel.viewStates.collectAsState(initial = aboutViewModel.viewState)
             AboutScreen(
@@ -265,9 +268,11 @@ fun NavHost(
             }
 
         }
-        navigation(route = NavItem.Tab.CurrentWidget.route, startDestination = currentWidgetStartDestination) {
-            composable(route = NavItem.Tab.CurrentWidget.Skin.route) {
-                val skinViewModel: SkinPreviewViewModel = viewModel(factory = SkinPreviewViewModel.Factory(appWidgetIdScope!!))
+        navigation<SceneNavKey.CurrentWidget>(startDestination = currentWidgetStartDestination) {
+            composable<SceneNavKey.Skin> {
+                val skinViewModel: RealSkinPreviewViewModel = viewModel(
+                    factory = SkinPreviewViewModel.Factory(appWidgetIdScope!!),
+                    key = SceneNavKey.Skin.toString())
                 val screenState by skinViewModel.viewStates.collectAsState(initial = skinViewModel.viewState)
                 WidgetSkinScreen(
                     screenState = screenState,
@@ -277,18 +282,16 @@ fun NavHost(
                     onMainEvent = onEvent
                 )
             }
-            composable(
-                route = NavItem.Tab.CurrentWidget.EditShortcut.route,
-                arguments = NavItem.Tab.CurrentWidget.EditShortcut.arguments,
-                deepLinks = NavItem.Tab.CurrentWidget.EditShortcut.deepLinks
-            ) {
+            composable<SceneNavKey.EditShortcut>(
+                deepLinks = SceneNavKey.EditShortcut.deepLinks
+            ) { navBackStackEntry ->
                 EditShortcut(
                     appWidgetIdScope = appWidgetIdScope!!,
-                    args = NavItem.Tab.CurrentWidget.EditShortcut.Args(it.arguments),
+                    args = navBackStackEntry.toRoute(),
                     onDismissRequest = { onEvent(MainViewEvent.OnBackNav) }
                 )
             }
-            composable(route = NavItem.Tab.WidgetCustomize.route) {
+            composable<SceneNavKey.WidgetCustomize> {
                 val customizeViewModel: WidgetCustomizeViewModel = viewModel(factory = WidgetCustomizeViewModel.Factory(appWidgetIdScope!!))
                 val screenState by customizeViewModel.viewStates.collectAsState(initial = customizeViewModel.viewState)
                 WidgetCustomizeScreen(
@@ -307,8 +310,8 @@ fun NavHost(
                 }
             }
         }
-        navigation(route = NavItem.Tab.InCar.route, startDestination = NavItem.Tab.InCar.Main.route) {
-            composable(route = NavItem.Tab.InCar.Main.route) {
+        navigation<SceneNavKey.InCar>(startDestination = SceneNavKey.Main) {
+            composable<SceneNavKey.Main> {
                 val inCarViewModel: InCarViewModel = viewModel(factory = InCarViewModel.Factory(context.findActivity()))
                 val screenState by inCarViewModel.viewStates.collectAsState(initial = inCarViewModel.viewState)
                 InCarMainScreen(
@@ -324,7 +327,7 @@ fun NavHost(
                     }
                 }
             }
-            composable(route = NavItem.Tab.InCar.Bluetooth.route) {
+            composable<SceneNavKey.Bluetooth> {
                 val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel(
                     factory =
                     BluetoothDevicesViewModel.Factory(

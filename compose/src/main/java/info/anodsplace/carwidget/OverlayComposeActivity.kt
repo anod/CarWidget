@@ -100,7 +100,7 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
                 when (deeplink) {
                     is Deeplink.EditShortcut -> EditShortcut(
                         appWidgetIdScope = overlayViewModel.appWidgetIdScope!!,
-                        args = NavItem.Tab.CurrentWidget.EditShortcut.Args(
+                        args = SceneNavKey.EditShortcut(
                             shortcutId = deeplink.shortcutId,
                             position = deeplink.position
                         ),
@@ -108,7 +108,7 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
                     )
                     is Deeplink.EditWidgetButton -> EditWidgetButton(
                         appWidgetIdScope = overlayViewModel.appWidgetIdScope!!,
-                        args = NavItem.Tab.CurrentWidget.EditWidgetButton.Args(buttonId = deeplink.buttonId),
+                        args = SceneNavKey.EditWidgetButton(buttonId = deeplink.buttonId),
                         onDismissRequest = { finish() },
                     )
                     is Deeplink.PlayMediaButton -> PlayMediaButton(

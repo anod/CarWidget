@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.navigation.NavHostController
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.SceneNavKey
 import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.chooser.ChooserLoader
 import info.anodsplace.carwidget.chooser.QueryIntentLoader
@@ -46,7 +47,7 @@ data class InCarViewState(
 )
 
 sealed interface InCarViewEvent {
-    class Navigate(val route: String) : InCarViewEvent
+    class Navigate(val route: SceneNavKey) : InCarViewEvent
     class SaveScreenTimeout(val disabled: Boolean, val disableCharging: Boolean) : InCarViewEvent
     class ToggleScreenAlert(val useAlert: Boolean) : InCarViewEvent
     class ApplyChange(val key: String, val value: Any?) : InCarViewEvent
@@ -57,7 +58,7 @@ sealed interface InCarViewEvent {
 }
 
 sealed interface InCarViewAction {
-    class Navigate(val route: String) : InCarViewAction
+    class Navigate(val route: SceneNavKey) : InCarViewAction
     class RequestPermissions(val permissions: List<AppPermission>) : InCarViewAction
     class CheckPermissions(val permissions: List<AppPermission>) : InCarViewAction {
         constructor(permission: AppPermission) : this(listOf(permission))
