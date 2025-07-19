@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.currentStateAsState
 import coil.ImageLoader
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.TextDecreaseIcon
@@ -253,23 +253,9 @@ private fun IconsThemePicker(
     onDownloadRequest: () -> Unit
 ) {
     val context = LocalContext.current
-    // TODO: Replace with lifecycle.currentStateFlow
-    // https://android-review.googlesource.com/c/platform/frameworks/support/+/2472957/3/lifecycle/lifecycle-runtime/src/main/java/androidx/lifecycle/LifecycleRegistry.kt#113
-    val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-    var onResume by remember { mutableIntStateOf(0) }
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_START) {
-                onResume++
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
-    }
-
-    val loader = remember(onResume) { QueryIntentLoader(context, Intent().forIconTheme()) }
+    val lifecycleOwner: LifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    val currentState by lifecycleOwner.lifecycle.currentStateAsState()
+    val loader = remember(currentState) { QueryIntentLoader(context, Intent().forIconTheme()) }
     ChooserDialog(
         modifier = Modifier.padding(16.dp),
         headers = listOf(

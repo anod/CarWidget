@@ -54,7 +54,7 @@ data class WidgetListScreenState(
     val isServiceRequired: Boolean = false,
     val isServiceRunning: Boolean = false,
     val eventsState: List<InCarStatus.EventState> = emptyList(),
-    @StringRes val statusResId: Int = 0,
+    @param:StringRes val statusResId: Int = 0,
     val ignoringBatteryOptimization: Boolean = false
 )
 

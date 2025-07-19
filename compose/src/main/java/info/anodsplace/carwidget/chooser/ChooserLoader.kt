@@ -27,7 +27,7 @@ class Header(val headerId: Int, title: String, val iconVector: ImageVector) :
 open class ChooserEntry(
     val componentName: ComponentName?,
     var title: String,
-    @DrawableRes val iconRes: Int = 0,
+    @param:DrawableRes val iconRes: Int = 0,
     val icon: Drawable? = null,
     var intent: Intent? = null,
     var extras: Bundle? = null
