@@ -88,7 +88,6 @@ android {
         }
     }
 
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -98,12 +97,4 @@ android {
         warning.add("InvalidFragmentVersionForActivityResult")
     }
     namespace = "com.anod.car.home"
-}
-
-// https://youtrack.jetbrains.com/issue/KT-55947
-kotlin {
-    jvmToolchain(17)
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_11)
-    }
 }
