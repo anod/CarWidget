@@ -190,7 +190,7 @@ class WidgetSettings(context: Context, appWidgetIdScope: AppWidgetIdScope, priva
     }
 
     companion object {
-        private const val SKIN = "skin"
+        const val SKIN = "skin"
         const val BG_COLOR = "bg-color"
         const val BUTTON_COLOR = "button-color"
         const val PALETTE_BG = "palette-background"

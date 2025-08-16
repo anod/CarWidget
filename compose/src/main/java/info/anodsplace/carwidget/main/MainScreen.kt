@@ -65,6 +65,7 @@ import info.anodsplace.carwidget.shortcut.EditShortcut
 import info.anodsplace.framework.app.findActivity
 import info.anodsplace.framework.content.onScreenCommonAction
 import info.anodsplace.framework.content.startActivity
+import info.anodsplace.ktx.put
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import org.koin.java.KoinJavaComponent.getKoin
@@ -204,7 +205,7 @@ fun Tabs(
         },
         bottomBar = {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentRoute = null // TODO: navBackStackEntry?.destination?.route
+            val currentRoute = navBackStackEntry?.toRoute<TabNavKey>()
             BottomTabsMenu(
                 items = screenState.tabs,
                 currentRoute = currentRoute,
@@ -241,7 +242,8 @@ fun NavHost(
     val context = LocalContext.current
 
     NavHost(navController, startDestination = startDestination, route = routeNS::class) {
-        composable<SceneNavKey.Widgets> {
+        composable<SceneNavKey.Widgets> { navEntry ->
+            navEntry.arguments?.putString("routeId", SceneNavKey.Widgets.routeId)
             val widgetsListViewModel: WidgetsListViewModel = viewModel()
             val widgetsState by widgetsListViewModel.viewStates.collectAsState(initial = widgetsListViewModel.viewState)
             WidgetsListScreen(
@@ -251,7 +253,8 @@ fun NavHost(
                 imageLoader = imageLoader
             )
         }
-        composable<SceneNavKey.About> {
+        composable<SceneNavKey.About> { navEntry ->
+            navEntry.arguments?.putString("routeId", SceneNavKey.About.routeId)
             val aboutViewModel: AboutViewModel = viewModel(factory = AboutViewModel.Factory(appWidgetIdScope))
             val aboutScreenState by aboutViewModel.viewStates.collectAsState(initial = aboutViewModel.viewState)
             AboutScreen(

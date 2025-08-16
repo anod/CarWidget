@@ -12,8 +12,8 @@ import androidx.navigation.navDeepLink
 import info.anodsplace.carwidget.content.Deeplink
 import kotlinx.serialization.Serializable
 
-
 interface TabNavKey : SceneNavKey {
+    val routeId: String
     @get:StringRes
     val title: Int
     val icon: ImageVector
@@ -40,6 +40,7 @@ sealed interface SceneNavKey {
 
     @Serializable
     data object Widgets : TabNavKey {
+        override val routeId: String = "Widgets"
         override val title: Int
             get() = info.anodsplace.carwidget.content.R.string.widgets
         override val icon: ImageVector
@@ -48,6 +49,7 @@ sealed interface SceneNavKey {
 
     @Serializable
     data object CurrentWidget : TabNavKey {
+        override val routeId: String = "CurrentWidget"
         override val title: Int
             get() = info.anodsplace.carwidget.content.R.string.widgets
         override val icon: ImageVector
@@ -56,6 +58,7 @@ sealed interface SceneNavKey {
 
     @Serializable
     data object WidgetCustomize: TabNavKey {
+        override val routeId: String = "WidgetCustomize"
         override val title: Int
             get() = info.anodsplace.carwidget.content.R.string.customize
         override val icon: ImageVector
@@ -64,6 +67,7 @@ sealed interface SceneNavKey {
 
     @Serializable
     data object InCar : TabNavKey {
+        override val routeId: String = "InCar"
         override val title: Int
             get() = info.anodsplace.carwidget.content.R.string.pref_incar_mode_title
         override val icon: ImageVector
@@ -72,6 +76,7 @@ sealed interface SceneNavKey {
 
     @Serializable
     data object About : TabNavKey {
+        override val routeId: String = "About"
         override val title: Int
             get() = info.anodsplace.carwidget.content.R.string.info
         override val icon: ImageVector

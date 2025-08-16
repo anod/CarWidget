@@ -7,7 +7,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.automirrored.filled.AltRoute
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,15 +23,13 @@ import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.QueryIntentLoader
-import info.anodsplace.carwidget.chooser.StaticChooserLoader
 import info.anodsplace.carwidget.content.shortcuts.InternalShortcut
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.utils.forPickShortcutLocal
 
 sealed interface ShortcutPickerState {
-    data object Initial: ShortcutPickerState
     data object Apps: ShortcutPickerState
-    data object CarWidget: ShortcutPickerState
+    data object Shortcuts: ShortcutPickerState
 }
 
 @Composable
@@ -41,7 +39,7 @@ fun ShortcutPickerScreen(
     shortcutResources: ShortcutResources,
     imageLoader: ImageLoader
 ) {
-    var screenState by remember { mutableStateOf<ShortcutPickerState>(ShortcutPickerState.Initial) }
+    var screenState by remember { mutableStateOf<ShortcutPickerState>(ShortcutPickerState.Apps) }
     val activityLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult(), onResult = { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 onEvent(ShortcutPickerViewEvent.Save(result.data!!, isApp = false))
@@ -50,8 +48,16 @@ fun ShortcutPickerScreen(
     })
 
     when (screenState) {
-        ShortcutPickerState.Initial -> CreateShortcutChooser(
+        ShortcutPickerState.Apps -> AppChooser(
             onNewState = { screenState = it },
+            onChoose = { entry ->
+                onEvent(ShortcutPickerViewEvent.Save(entry.getIntent(baseIntent = null), isApp = true))
+                onDismissRequest()
+            },
+            onDismissRequest = { screenState = ShortcutPickerState.Apps },
+            imageLoader = imageLoader
+        )
+        ShortcutPickerState.Shortcuts -> CreateShortcutChooser(
             onIntent = {
                 try {
                     activityLauncher.launch(it)
@@ -59,51 +65,36 @@ fun ShortcutPickerScreen(
                     onEvent(ShortcutPickerViewEvent.LaunchShortcutError(exception = e))
                 }
             },
-            onDismissRequest = onDismissRequest,
-            imageLoader = imageLoader
-        )
-        ShortcutPickerState.Apps -> AppChooser(
-            onChoose = { entry ->
-                onEvent(ShortcutPickerViewEvent.Save(entry.getIntent(baseIntent = null), isApp = true))
-                onDismissRequest()
-            },
-            onDismissRequest = { screenState = ShortcutPickerState.Initial },
-            imageLoader = imageLoader
-        )
-        ShortcutPickerState.CarWidget -> CarWidgetChooser(
-            shortcutResources,
-            onChoose = { entry ->
+            onChooseHeader = { entry ->
                 onEvent(ShortcutPickerViewEvent.Save(entry.getIntent(baseIntent = null), isApp = false))
                 onDismissRequest()
             },
-            onDismissRequest = { screenState = ShortcutPickerState.Initial },
-            imageLoader = imageLoader
+            onDismissRequest = onDismissRequest,
+            imageLoader = imageLoader,
+            shortcutResources = shortcutResources
         )
     }
 }
 
 @Composable
-fun CreateShortcutChooser(onNewState: (ShortcutPickerState) -> Unit, onIntent: (Intent) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
+fun CreateShortcutChooser(
+    onIntent: (Intent) -> Unit,
+    onDismissRequest: () -> Unit,
+    imageLoader: ImageLoader,
+    shortcutResources: ShortcutResources,
+    onChooseHeader: (ChooserEntry) -> Unit
+) {
     val context = LocalContext.current
     val baseIntent = remember { Intent(Intent.ACTION_CREATE_SHORTCUT) }
     val loader = remember { QueryIntentLoader(context, baseIntent) }
     ChooserDialog(
         modifier = Modifier.padding(horizontal = 16.dp),
         loader = loader,
-        headers = listOf(
-            Header(0, stringResource(info.anodsplace.carwidget.content.R.string.applications), iconVector = Icons.AutoMirrored.Filled.List),
-            Header(1, stringResource(info.anodsplace.carwidget.content.R.string.car_widget_shortcuts), iconVector = Icons.AutoMirrored.Filled.List),
-        ),
+        headers = createCarWidgetShortcuts(context, shortcutResources),
         onDismissRequest = onDismissRequest,
         onClick = { entry ->
             when(entry) {
-                is Header -> {
-                    if (entry.headerId == 0) {
-                        onNewState(ShortcutPickerState.Apps)
-                    } else if (entry.headerId == 1) {
-                        onNewState(ShortcutPickerState.CarWidget)
-                    }
-                }
+                is Header -> onChooseHeader(entry)
                 else -> onIntent(entry.getIntent(baseIntent = baseIntent))
             }
         },
@@ -112,27 +103,29 @@ fun CreateShortcutChooser(onNewState: (ShortcutPickerState) -> Unit, onIntent: (
 }
 
 @Composable
-fun AppChooser(onChoose: (ChooserEntry) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
+fun AppChooser(onNewState: (ShortcutPickerState) -> Unit, onChoose: (ChooserEntry) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
     val context = LocalContext.current
     val loader = remember { AllAppsIntentLoader(context) }
     ChooserDialog(
         modifier = Modifier.padding(horizontal = 16.dp),
         loader = loader,
+        headers = listOf(
+            Header(0,
+                stringResource(info.anodsplace.carwidget.content.R.string.shortcuts),
+                iconVector = Icons.AutoMirrored.Filled.AltRoute
+            ),
+        ),
         onDismissRequest = onDismissRequest,
-        onClick = onChoose,
-        imageLoader = imageLoader
-    )
-}
-
-@Composable
-fun CarWidgetChooser(shortcutResources: ShortcutResources, onChoose: (ChooserEntry) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
-    val context = LocalContext.current
-    val loader = remember { createCarWidgetShortcuts(context, shortcutResources) }
-    ChooserDialog(
-        modifier = Modifier.padding(horizontal = 16.dp),
-        loader = loader,
-        onDismissRequest = onDismissRequest,
-        onClick = onChoose,
+        onClick = { entry ->
+            when(entry) {
+                is Header -> {
+                    if (entry.headerId == 0) {
+                        onNewState(ShortcutPickerState.Shortcuts)
+                    }
+                }
+                else -> onChoose(entry)
+            }
+        },
         imageLoader = imageLoader
     )
 }
@@ -150,14 +143,13 @@ fun IntentChooser(intent: Intent, onChoose: (ChooserEntry) -> Unit, onDismissReq
     )
 }
 
-private fun createCarWidgetShortcuts(context: Context, shortcutResources: ShortcutResources): StaticChooserLoader {
+private fun createCarWidgetShortcuts(context: Context, shortcutResources: ShortcutResources): List<Header> {
     val shortcuts = InternalShortcut.all
     val titles = InternalShortcut.titles(context)
-    val list = shortcuts.map { shortcut ->
+    return shortcuts.map { shortcut ->
         val title = titles[shortcut.index]
         val icon = shortcutResources.internalShortcuts.icons[shortcut.index]
         val intent = Intent().forPickShortcutLocal(shortcut, title, icon, context, shortcutResources)
-        ChooserEntry(componentName = null, title = title, intent = intent, iconRes = icon)
+        Header(headerId = shortcut.index, title = title, iconRes = icon, intent = intent)
     }
-    return StaticChooserLoader(list)
 }

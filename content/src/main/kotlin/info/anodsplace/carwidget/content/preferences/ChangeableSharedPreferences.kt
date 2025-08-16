@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import androidx.core.content.edit
 
 /**
  * @author algavris
@@ -32,30 +33,30 @@ open class ChangeableSharedPreferences(prefs: SharedPreferences, private val app
     }
 
     fun applyChange(key: String, value: Any?) {
-        val edit = prefs.edit()
-        putChange(edit, key, value)
-        edit.apply()
+        prefs.edit {
+            putChange(this, key, value)
+        }
         appScope.launch { _changes.emit(Pair(key, value)) }
     }
 
     fun <T : Any?> observe(key: String): Flow<T> = changes.filter { it.first == key }.map { it.second as T }
 
     fun clear() {
-        prefs.edit().clear().apply()
+        prefs.edit { clear() }
     }
 
     fun applyPending() {
         if (pendingChanges.isEmpty()) {
             return
         }
-        val edit = prefs.edit()
-        for (i in 0 until pendingChanges.size()) {
-            val key = pendingChanges.keyAt(i)
-            putChange(edit, key, pendingChanges.get(key))
-            appScope.launch {  _changes.emit(Pair(key, pendingChanges.get(key))) }
+        prefs.edit {
+            for (i in 0 until pendingChanges.size()) {
+                val key = pendingChanges.keyAt(i)
+                putChange(this, key, pendingChanges[key])
+                appScope.launch { _changes.emit(Pair(key, pendingChanges[key])) }
+            }
+            putBoolean("migrated", true)
         }
-        edit.putBoolean("migrated", true)
-        edit.apply()
         pendingChanges = SimpleArrayMap()
     }
 

@@ -21,8 +21,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 
-class Header(val headerId: Int, title: String, val iconVector: ImageVector) :
-    ChooserEntry(null, title)
+class Header(val headerId: Int, title: String, val iconVector: ImageVector? = null, iconRes: Int = 0, intent: Intent? = null) :
+    ChooserEntry(null, title, iconRes, intent = intent)
+
 
 open class ChooserEntry(
     val componentName: ComponentName?,

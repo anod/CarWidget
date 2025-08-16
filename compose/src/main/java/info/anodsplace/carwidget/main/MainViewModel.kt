@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import coil.ImageLoader
 import info.anodsplace.applog.AppLog
@@ -26,6 +27,7 @@ import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.framework.content.StartActivityAction
 import info.anodsplace.framework.content.forHomeScreen
 import info.anodsplace.permissions.AppPermission
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.get
@@ -110,6 +112,11 @@ class MainViewModel(
             widgetSettings = widgetSettings,
             skinList = SkinList(widgetSettings.skin, get())
         )
+        viewModelScope.launch {
+            widgetSettings.observe<String>(WidgetSettings.SKIN).collect { skin ->
+                viewState = viewState.copy(skinList = viewState.skinList.copy(selectedSkinPosition = WidgetInterface.skins.indexOf(skin)))
+            }
+        }
     }
 
     override fun handleEvent(event: MainViewEvent) {

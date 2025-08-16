@@ -35,6 +35,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.ImageLoader
 import coil.compose.AsyncImage
+import info.anodsplace.carwidget.content.R
+import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.compose.SystemIconShape
 
 private val iconSize = 56.dp
@@ -83,15 +85,24 @@ fun ChooserGridList(
                 entry,
                 onClick = onClick,
                 icon = {
-                    Icon(
-                        imageVector = entry.iconVector,
-                        contentDescription = entry.title,
-                        modifier = Modifier
-                            .size(iconSize)
-                            .background(MaterialTheme.colorScheme.primary, shape = headerShape)
-                        ,
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
+                    if (entry.iconVector != null) {
+                        Icon(
+                            imageVector = entry.iconVector,
+                            contentDescription = entry.title,
+                            modifier = Modifier
+                                .size(iconSize)
+                                .background(MaterialTheme.colorScheme.primary, shape = headerShape)
+                            ,
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    } else {
+                        AsyncImage(
+                            model = context.iconUri(iconRes = entry.iconRes),
+                            contentDescription = entry.title,
+                            imageLoader = imageLoader,
+                            modifier = Modifier.size(iconSize)
+                        )
+                    }
                 }
             )
         }
@@ -176,7 +187,7 @@ fun ChooserScreenPreview() {
             ChooserEntry(componentName = null, title = "Very long name title of entry"),
         )),
         headers = listOf(
-            Header(0, "Show choice", Icons.AutoMirrored.Filled.List),
+            Header(0, "Show choice", iconRes = info.anodsplace.carwidget.skin.R.drawable.ic_shortcut_play),
             Header(0, "Very long name title of entry", Icons.Filled.Alarm)
         ),
         onClick = {  },
