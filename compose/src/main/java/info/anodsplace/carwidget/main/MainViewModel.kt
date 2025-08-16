@@ -39,7 +39,7 @@ data class MainViewState(
     val appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
     val tabs: List<TabNavKey> = emptyList(),
     val routeNS: RouteNameSpace = RouteNameSpace.Default,
-    val topDestination: SceneNavKey = SceneNavKey.About,
+    val topDestination: SceneNavKey = SceneNavKey.AboutTab,
     val requiredPermissions: List<AppPermission> = emptyList(),
     val widgetSettings: WidgetInterface.NoOp = WidgetInterface.NoOp(),
     val skinList: SkinList = SkinList(values = WidgetInterface.skins, titles = WidgetInterface.skins, 0)
@@ -97,14 +97,14 @@ class MainViewModel(
             isWidget = isWidget,
             appWidgetId = +appWidgetIdScope,
             tabs = if (isWidget) listOf(
-                SceneNavKey.CurrentWidget,
+                SceneNavKey.CurrentWidgetTab,
                 SceneNavKey.WidgetCustomize,
-                SceneNavKey.InCar,
-                SceneNavKey.About
+                SceneNavKey.InCarTab,
+                SceneNavKey.AboutTab
             ) else listOf(
-                SceneNavKey.Widgets,
-                SceneNavKey.InCar,
-                SceneNavKey.About
+                SceneNavKey.WidgetsTab,
+                SceneNavKey.InCarTab,
+                SceneNavKey.AboutTab
             ),
             routeNS = if (isWidget) RouteNameSpace.AppWidget else RouteNameSpace.Default,
             topDestination = startDestination(requiredPermissions, allowWizard = true),
@@ -123,7 +123,7 @@ class MainViewModel(
         when (event) {
             is MainViewEvent.PermissionAcquired -> {
                 appSettings.checkPermissionsOnStart = false
-                viewState = viewState.copy(topDestination = if (appWidgetIdScope.isValid) SceneNavKey.CurrentWidget else SceneNavKey.Widgets)
+                viewState = viewState.copy(topDestination = if (appWidgetIdScope.isValid) SceneNavKey.CurrentWidgetTab else SceneNavKey.WidgetsTab)
             }
             is MainViewEvent.OnBackNav -> emitAction(MainViewAction.OnBackNav)
             is MainViewEvent.ApplyWidget -> emitAction(
@@ -164,8 +164,8 @@ class MainViewModel(
         return when {
             appWidgetIds.isEmpty() && allowWizard -> SceneNavKey.Wizard
             requiredPermissions.isNotEmpty() -> SceneNavKey.PermissionsRequest
-            appWidgetIdScope.isValid -> SceneNavKey.CurrentWidget
-            else -> SceneNavKey.Widgets
+            appWidgetIdScope.isValid -> SceneNavKey.CurrentWidgetTab
+            else -> SceneNavKey.WidgetsTab
         }
     }
 

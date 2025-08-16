@@ -39,7 +39,7 @@ fun NavHostController.navigate(item: TabNavKey) {
 }
 
 @Composable
-fun BottomTabsMenu(items: List<TabNavKey>, currentRoute: TabNavKey?, onClick: (TabNavKey) -> Unit) {
+fun BottomTabsMenu(items: List<TabNavKey>, currentTab: TabNavKey?, onClick: (TabNavKey) -> Unit) {
     NavigationBar {
         items.forEachIndexed { _, item ->
             NavigationBarItem(
@@ -53,7 +53,7 @@ fun BottomTabsMenu(items: List<TabNavKey>, currentRoute: TabNavKey?, onClick: (T
                         textAlign = TextAlign.Center
                     )
                 },
-                selected = currentRoute == item,
+                selected = currentTab == item,
                 onClick = {
                     onClick(item)
                 }
@@ -102,7 +102,7 @@ fun NavRailMenu(
                     },
                     alwaysShowLabel = false,
                     onClick = {
-                        onClick(item)
+                        onClick(item as SceneNavKey)
                     }
                 )
             }

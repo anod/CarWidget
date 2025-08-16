@@ -60,7 +60,7 @@ fun InCarMainScreen(
             onClick = { item ->
                 when (item.key) {
                     "bt-device-screen" -> {
-                        onEvent(InCarViewEvent.Navigate(route = SceneNavKey.Bluetooth))
+                        onEvent(InCarViewEvent.Navigate(route = SceneNavKey.InCarBluetooth))
                     }
                     "screen-timeout-list" -> {
                         onEvent(

@@ -43,6 +43,7 @@ import androidx.navigation.toRoute
 import coil.ImageLoader
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.CheckIcon
+import info.anodsplace.carwidget.InnerSceneNavKey
 import info.anodsplace.carwidget.RouteNameSpace
 import info.anodsplace.carwidget.SceneNavKey
 import info.anodsplace.carwidget.TabNavKey
@@ -62,10 +63,10 @@ import info.anodsplace.carwidget.incar.InCarMainScreen
 import info.anodsplace.carwidget.incar.InCarViewModel
 import info.anodsplace.carwidget.permissions.PermissionsScreen
 import info.anodsplace.carwidget.shortcut.EditShortcut
+import info.anodsplace.carwidget.toSceneNavKey
 import info.anodsplace.framework.app.findActivity
 import info.anodsplace.framework.content.onScreenCommonAction
 import info.anodsplace.framework.content.startActivity
-import info.anodsplace.ktx.put
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import org.koin.java.KoinJavaComponent.getKoin
@@ -146,7 +147,7 @@ fun NavRail(
     val navRailInset = WindowInsets(0.dp, 0.dp, 80.dp, 0.dp)
     Box {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = null // TODO: navBackStackEntry?.toRoute()
+        val currentRoute = navBackStackEntry?.toSceneNavKey()
         NavHost(
             navController = navController,
             onEvent = onEvent,
@@ -205,10 +206,10 @@ fun Tabs(
         },
         bottomBar = {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentRoute = navBackStackEntry?.toRoute<TabNavKey>()
+            val currentRoute = navBackStackEntry?.toSceneNavKey()
             BottomTabsMenu(
                 items = screenState.tabs,
-                currentRoute = currentRoute,
+                currentTab = currentRoute as? TabNavKey ?: (currentRoute as? InnerSceneNavKey)?.parent as? TabNavKey,
                 onClick = { item -> navController.navigate(item) }
             )
         },
@@ -235,15 +236,14 @@ fun NavHost(
     innerPadding: PaddingValues,
     startDestination: SceneNavKey,
     routeNS: RouteNameSpace,
-    currentWidgetStartDestination: SceneNavKey = SceneNavKey.Skin,
+    currentWidgetStartDestination: SceneNavKey = SceneNavKey.Shortcuts,
     imageLoader: ImageLoader,
     windowSizeClass: WindowSizeClass,
 ) {
     val context = LocalContext.current
 
     NavHost(navController, startDestination = startDestination, route = routeNS::class) {
-        composable<SceneNavKey.Widgets> { navEntry ->
-            navEntry.arguments?.putString("routeId", SceneNavKey.Widgets.routeId)
+        composable<SceneNavKey.WidgetsTab> { navEntry ->
             val widgetsListViewModel: WidgetsListViewModel = viewModel()
             val widgetsState by widgetsListViewModel.viewStates.collectAsState(initial = widgetsListViewModel.viewState)
             WidgetsListScreen(
@@ -253,8 +253,7 @@ fun NavHost(
                 imageLoader = imageLoader
             )
         }
-        composable<SceneNavKey.About> { navEntry ->
-            navEntry.arguments?.putString("routeId", SceneNavKey.About.routeId)
+        composable<SceneNavKey.AboutTab> { navEntry ->
             val aboutViewModel: AboutViewModel = viewModel(factory = AboutViewModel.Factory(appWidgetIdScope))
             val aboutScreenState by aboutViewModel.viewStates.collectAsState(initial = aboutViewModel.viewState)
             AboutScreen(
@@ -271,11 +270,11 @@ fun NavHost(
             }
 
         }
-        navigation<SceneNavKey.CurrentWidget>(startDestination = currentWidgetStartDestination) {
-            composable<SceneNavKey.Skin> {
+        navigation<SceneNavKey.CurrentWidgetTab>(startDestination = currentWidgetStartDestination) {
+            composable<SceneNavKey.Shortcuts> {
                 val skinViewModel: RealSkinPreviewViewModel = viewModel(
                     factory = SkinPreviewViewModel.Factory(appWidgetIdScope!!),
-                    key = SceneNavKey.Skin.toString())
+                    key = SceneNavKey.Shortcuts.toString())
                 val screenState by skinViewModel.viewStates.collectAsState(initial = skinViewModel.viewState)
                 WidgetSkinScreen(
                     screenState = screenState,
@@ -313,8 +312,8 @@ fun NavHost(
                 }
             }
         }
-        navigation<SceneNavKey.InCar>(startDestination = SceneNavKey.Main) {
-            composable<SceneNavKey.Main> {
+        navigation<SceneNavKey.InCarTab>(startDestination = SceneNavKey.InCarMain) {
+            composable<SceneNavKey.InCarMain> {
                 val inCarViewModel: InCarViewModel = viewModel(factory = InCarViewModel.Factory(context.findActivity()))
                 val screenState by inCarViewModel.viewStates.collectAsState(initial = inCarViewModel.viewState)
                 InCarMainScreen(
@@ -330,7 +329,7 @@ fun NavHost(
                     }
                 }
             }
-            composable<SceneNavKey.Bluetooth> {
+            composable<SceneNavKey.InCarBluetooth> {
                 val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel(
                     factory =
                     BluetoothDevicesViewModel.Factory(

@@ -22,6 +22,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.core.splashscreen)
     implementation(libs.koin.core)
+    implementation(libs.kotlinx.serialization.json)
     // Use the AndroidX Preference Library for consistent behavior across all device
     implementation(libs.preference.ktx)
     // Activity recognition
