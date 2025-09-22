@@ -89,17 +89,15 @@ object ChooserGridListDefaults {
         )
     }
 
-    // Style tuned for single-select dialogs: no dimming, grayscale or outline
     @Composable
-    fun singleSelectDialogStyle(): ChooserGridListStyle = style(
+    fun singleSelect(): ChooserGridListStyle = style(
         grayscaleUnselectedIcons = false,
         dimUnselectedIcons = false,
         showSelectionOutline = false
     )
 
-    // Style tuned for multi-select dialogs: keep defaults (dimming + outline)
     @Composable
-    fun multiSelectDialogStyle(): ChooserGridListStyle = style()
+    fun multiSelect(): ChooserGridListStyle = style()
 }
 
 @Composable
@@ -223,7 +221,7 @@ fun ChooserDialog(
     onDismissRequest: () -> Unit,
     imageLoader: ImageLoader,
     onClick: (ChooserEntry) -> Unit,
-    style: ChooserGridListStyle = ChooserGridListDefaults.singleSelectDialogStyle(),
+    style: ChooserGridListStyle = ChooserGridListDefaults.singleSelect(),
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -251,7 +249,7 @@ fun ChooserScreen(
     imageLoader: ImageLoader,
     selectedComponents: Set<ComponentName> = emptySet(),
     onSelect: (ChooserEntry) -> Unit = { },
-    style: ChooserGridListStyle = ChooserGridListDefaults.singleSelectDialogStyle(),
+    style: ChooserGridListStyle = ChooserGridListDefaults.singleSelect(),
 ) {
     val appsList by loader.load().collectAsState(initial = emptyList())
     val iconSizePx = with(LocalDensity.current) { iconSize.roundToPx() }
@@ -288,7 +286,7 @@ fun MultiSelectChooserDialog(
     minHeight: Dp = 420.dp,
     topContent: @Composable () -> Unit = {},
     bottomContent: @Composable (List<ChooserEntry>) -> Unit = {},
-    style: ChooserGridListStyle = ChooserGridListDefaults.multiSelectDialogStyle(),
+    style: ChooserGridListStyle = ChooserGridListDefaults.multiSelect(),
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -320,7 +318,7 @@ private fun MultiSelectChooserContent(
     minHeight: Dp = 420.dp,
     topContent: @Composable () -> Unit = {},
     bottomContent: @Composable (List<ChooserEntry>) -> Unit = {},
-    style: ChooserGridListStyle = ChooserGridListDefaults.multiSelectDialogStyle(),
+    style: ChooserGridListStyle = ChooserGridListDefaults.multiSelect(),
 ) {
     val appsList by loader.load().collectAsState(initial = emptyList())
     val iconSizePx = with(LocalDensity.current) { iconSize.roundToPx() }
@@ -366,7 +364,7 @@ fun ChooserScreenPreview() {
                 Header(0, "More", Icons.Filled.Alarm)
             ),
             imageLoader = ImageLoader(LocalContext.current),
-            style = ChooserGridListDefaults.multiSelectDialogStyle().copy(
+            style = ChooserGridListDefaults.multiSelect().copy(
                 grayscaleUnselectedIcons = true,
                 dimUnselectedIcons = true,
                 dimAlpha = 0.4f,
@@ -390,7 +388,7 @@ fun MultiSelectChooserContentPreview() {
             selectedComponents = setOf(app2.componentName!!),
             onSelect = { },
             imageLoader = ImageLoader(ctx),
-            style = ChooserGridListDefaults.multiSelectDialogStyle().copy(
+            style = ChooserGridListDefaults.multiSelect().copy(
                 grayscaleUnselectedIcons = true,
                 dimUnselectedIcons = true,
                 dimAlpha = 0.4f,

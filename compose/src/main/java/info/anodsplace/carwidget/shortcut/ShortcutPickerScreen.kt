@@ -122,7 +122,7 @@ fun FolderChooser(
         loader = loader,
         headers = emptyList(),
         selectedComponents = selected,
-        style = ChooserGridListDefaults.style(grayscaleUnselectedIcons = true),
+        style = ChooserGridListDefaults.multiSelect().copy(grayscaleUnselectedIcons = true),
         onSelect = { entry ->
             val component = entry.componentName ?: return@MultiSelectChooserDialog
             selected = if (selected.contains(component)) selected - component else selected + component

@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.chooser
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.graphics.drawable.Drawable
@@ -24,21 +25,24 @@ import kotlinx.coroutines.withContext
 class Header(val headerId: Int, title: String, val iconVector: ImageVector? = null, iconRes: Int = 0, intent: Intent? = null) :
     ChooserEntry(null, title, iconRes, intent = intent)
 
-
 open class ChooserEntry(
     val componentName: ComponentName?,
     var title: String,
-    @param:DrawableRes val iconRes: Int = 0,
+    @param:DrawableRes
+    val iconRes: Int = 0,
     val icon: Drawable? = null,
     var intent: Intent? = null,
-    var extras: Bundle? = null
+    var extras: Bundle? = null,
+    // Android application category or fallback category
+    val category: Int = ApplicationInfo.CATEGORY_UNDEFINED
 ) {
 
     constructor(info: ResolveInfo, title: String?):
             this(
                 ComponentName(
                 info.activityInfo.applicationInfo.packageName,
-                info.activityInfo.name), title ?: info.activityInfo.name ?: ""
+                info.activityInfo.name), title ?: info.activityInfo.name ?: "",
+                category = info.category()
             )
 
     constructor(title: String, icon: Drawable?)
@@ -51,7 +55,8 @@ open class ChooserEntry(
             resolveInfo.activityInfo.name
         ),
         title = resolveInfo.loadLabel(pm).toString(),
-        icon = resolveInfo.loadIcon(pm)
+        icon = resolveInfo.loadIcon(pm),
+        category = resolveInfo.category()
     )
 
     /**
@@ -81,6 +86,46 @@ open class ChooserEntry(
         }
         return intent
     }
+}
+
+// Human readable label for both framework and fallback categories
+fun ChooserEntry.categoryLabel(): String = when (category) {
+    ApplicationInfo.CATEGORY_GAME -> "Game"
+    ApplicationInfo.CATEGORY_AUDIO -> "Audio"
+    ApplicationInfo.CATEGORY_VIDEO -> "Video"
+    ApplicationInfo.CATEGORY_IMAGE -> "Image"
+    ApplicationInfo.CATEGORY_SOCIAL -> "Social"
+    ApplicationInfo.CATEGORY_NEWS -> "News"
+    ApplicationInfo.CATEGORY_MAPS -> "Maps"
+    ApplicationInfo.CATEGORY_PRODUCTIVITY -> "Productivity"
+    ApplicationInfo.CATEGORY_ACCESSIBILITY -> "Accessibility"
+    else -> "Other"
+}
+
+// Lightweight fallback derivation; O(1) per app (small iteration over intent filter categories)
+private fun ResolveInfo.category(): Int {
+    val manifestCategory = activityInfo.applicationInfo.category
+    if (manifestCategory != ApplicationInfo.CATEGORY_UNDEFINED) {
+        return manifestCategory
+    }
+    val filter = this.filter ?: return ApplicationInfo.CATEGORY_UNDEFINED
+    val it = try { filter.categoriesIterator() } catch (_: Exception) { null } ?: return ApplicationInfo.CATEGORY_UNDEFINED
+    while (it.hasNext()) {
+        when (val cat = it.next()) {
+            Intent.CATEGORY_APP_MUSIC -> return ApplicationInfo.CATEGORY_AUDIO
+            Intent.CATEGORY_APP_MAPS -> return ApplicationInfo.CATEGORY_MAPS
+            Intent.CATEGORY_APP_BROWSER -> return ApplicationInfo.CATEGORY_PRODUCTIVITY
+            Intent.CATEGORY_APP_EMAIL -> return ApplicationInfo.CATEGORY_SOCIAL
+            Intent.CATEGORY_APP_GALLERY -> return ApplicationInfo.CATEGORY_IMAGE
+            Intent.CATEGORY_APP_MESSAGING -> return ApplicationInfo.CATEGORY_SOCIAL
+            // Ignore other categories
+            else -> if (AppLog.isDebug) {
+                // Only log rarely; not performance critical
+                AppLog.v("Unhandled intent category $cat for ${activityInfo.packageName}")
+            }
+        }
+    }
+    return ApplicationInfo.CATEGORY_UNDEFINED
 }
 
 internal fun ChooserEntry.iconUri(context: Context): Uri {
@@ -113,15 +158,17 @@ open class QueryIntentLoader(context: Context, private val queryIntent: Intent) 
     private suspend fun loadAll(): List<ChooserEntry> = withContext(Dispatchers.Default) {
         val list = mutableListOf<ChooserEntry>()
 
-        val apps = packageManager.queryIntentActivities(queryIntent, 0)
+        // Request resolved filters so we can inspect intent categories (minimal overhead)
+        val apps = packageManager.queryIntentActivities(queryIntent, PackageManager.GET_RESOLVED_FILTER)
         for (appInfo in apps) {
-            if (!appInfo.activityInfo.packageName.startsWith(selfPackage) && appInfo.activityInfo?.exported == true) {
+            if (!appInfo.activityInfo.packageName.startsWith(selfPackage) && appInfo.activityInfo.exported) {
                 val title = appInfo.activityInfo.loadLabel(packageManager).toString()
-                list.add(ChooserEntry(appInfo, title))
+                val entry = ChooserEntry(appInfo, title)
+                list.add(entry)
             }
         }
 
-        list.sortBy { it.title }
+        list.sortWith(compareBy<ChooserEntry> { it.categoryLabel() }.thenBy { it.title })
         return@withContext list
     }
 }
@@ -136,25 +183,22 @@ class MediaListLoader(context: Context) : ChooserLoader {
     private suspend fun loadAll(): List<ChooserEntry> = withContext(Dispatchers.Default) {
         val apps = packageManager
             .queryBroadcastReceivers(Intent(Intent.ACTION_MEDIA_BUTTON), PackageManager.GET_RESOLVED_FILTER)
-        // filter duplicate receivers
         val receivers = SimpleArrayMap<String, Boolean>(apps.size)
         val list = mutableListOf<ChooserEntry>()
         for (appInfo in apps) {
             val pkg = appInfo.activityInfo.packageName
-            // App title
             if (sExcludePackages.contains(pkg) || receivers.containsKey(pkg)) {
                 continue
             }
-
             val title = appInfo.activityInfo.applicationInfo.loadLabel(packageManager)
             if (AppLog.isDebug) {
-                AppLog.d(appInfo.activityInfo.packageName + "/"
-                        + appInfo.activityInfo.applicationInfo.className)
+                AppLog.d(appInfo.activityInfo.packageName + "/" + appInfo.activityInfo.applicationInfo.className)
             }
             receivers.put(pkg, true)
-            list.add(ChooserEntry(appInfo, title.toString()))
+            val entry = ChooserEntry(appInfo, title.toString())
+            list.add(entry)
         }
-        list.sortBy { it.title }
+        list.sortWith(compareBy<ChooserEntry> { it.categoryLabel() }.thenBy { it.title })
         return@withContext list
     }
 
