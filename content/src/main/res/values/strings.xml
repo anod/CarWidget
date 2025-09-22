@@ -244,4 +244,5 @@
         <item>Teardrop</item>
     </array>
     <string name="folder">Folder</string>
+    <string name="create">Create</string>
 </resources>

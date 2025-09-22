@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,13 +18,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.AltRoute
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,21 +30,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import coil.ImageLoader
 import info.anodsplace.carwidget.chooser.AllAppsIntentLoader
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.ChooserEntry
-import info.anodsplace.carwidget.chooser.ChooserScreen
 import info.anodsplace.carwidget.chooser.Header
+import info.anodsplace.carwidget.chooser.MultiSelectChooserDialog
 import info.anodsplace.carwidget.chooser.QueryIntentLoader
+import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.shortcuts.InternalShortcut
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.shortcut.ShortcutPickerViewEvent.LaunchShortcutError
 import info.anodsplace.carwidget.shortcut.ShortcutPickerViewEvent.Save
 import info.anodsplace.carwidget.utils.forPickShortcutLocal
-import info.anodsplace.carwidget.content.R as ContentR
 
 sealed interface ShortcutPickerState {
     data object Apps: ShortcutPickerState
@@ -119,72 +113,63 @@ fun FolderChooser(
 ) {
     val context = LocalContext.current
     val loader = remember { AllAppsIntentLoader(context) }
-    val apps by loader.load().collectAsState(initial = emptyList())
+    var title by remember { mutableStateOf("") }
+    var selected by remember { mutableStateOf(setOf<ComponentName>()) }
 
-    val defaultTitle = stringResource(id = ContentR.string.folder)
-    var title by remember { mutableStateOf(defaultTitle) }
-    val selected = remember { mutableSetOf<ComponentName>() }
-
-    Dialog(
+    MultiSelectChooserDialog(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        loader = loader,
+        headers = emptyList(),
+        selectedComponents = selected,
+        onSelect = { entry ->
+            val component = entry.componentName ?: return@MultiSelectChooserDialog
+            selected = if (selected.contains(component)) selected - component else selected + component
+        },
         onDismissRequest = onDismissRequest,
-        properties = DialogProperties(usePlatformDefaultWidth = false)
-    ) {
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .defaultMinSize(minHeight = 420.dp),
-            shape = MaterialTheme.shapes.medium,
-            color = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+        imageLoader = imageLoader,
+        topContent = {
+            Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = title,
                     onValueChange = { title = it },
-                    label = { Text(stringResource(id = ContentR.string.title)) },
+                    label = { Text(stringResource(id = R.string.title)) },
                     singleLine = true
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                // Reused chooser screen with multi-select
-                ChooserScreen(
-                    loader = loader,
-                    headers = emptyList(),
-                    imageLoader = imageLoader,
-                    isMultiselect = true,
-                    selectedComponents = selected,
-                    onSelect = { entry ->
-                        if (entry.componentName == null) return@ChooserScreen
-                        selected.add(entry.componentName)
+            }
+        },
+        bottomContent = { apps ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = onDismissRequest) {
+                    Text(stringResource(id = android.R.string.cancel))
+                }
+                Spacer(modifier = Modifier.size(8.dp))
+                Button(
+                    onClick = {
+                        val selectedEntries = apps.filter { it.componentName != null && selected.contains(it.componentName) }
+                        val folderIntent = Intent(ACTION_FOLDER).apply {
+                            @Suppress("DEPRECATION")
+                            putExtra(Intent.EXTRA_SHORTCUT_NAME, title) // Deprecated but still required for legacy shortcuts
+                            val intents = ArrayList<Intent>()
+                            selectedEntries.forEach { intents.add(it.getIntent(null)) }
+                            putParcelableArrayListExtra(EXTRA_FOLDER_ITEMS, intents)
+                        }
+                        val folderEntry = ChooserEntry(componentName = null, title = title, iconRes = 0, icon = null, intent = folderIntent)
+                        onChoose(folderEntry)
                     },
-                    modifier = Modifier.weight(1f, fill = true)
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                    TextButton(onClick = onDismissRequest) {
-                        Text(stringResource(id = android.R.string.cancel))
-                    }
-                    Spacer(modifier = Modifier.size(8.dp))
-                    Button(
-                        onClick = {
-                            val selectedEntries = apps.filter { it.componentName != null && selected.contains(it.componentName) }
-                            val folderIntent = Intent(ACTION_FOLDER).apply {
-                                putExtra(Intent.EXTRA_SHORTCUT_NAME, title)
-                                val intents = ArrayList<Intent>()
-                                selectedEntries.forEach { intents.add(it.getIntent(null)) }
-                                putParcelableArrayListExtra(EXTRA_FOLDER_ITEMS, intents)
-                            }
-                            val folderEntry = ChooserEntry(componentName = null, title = title, iconRes = 0, icon = null, intent = folderIntent)
-                            onChoose(folderEntry)
-                        },
-                        enabled = selected.isNotEmpty()
-                    ) {
-                        Text(stringResource(id = android.R.string.ok))
-                    }
+                    enabled = selected.isNotEmpty()
+                ) {
+                    Text(stringResource(id = R.string.create))
                 }
             }
         }
-    }
+    )
 }
 
 @Composable
@@ -226,11 +211,11 @@ private fun AppChooser(
         loader = loader,
         headers = listOf(
             Header(0,
-                stringResource(ContentR.string.shortcuts),
+                stringResource(R.string.shortcuts),
                 iconVector = Icons.AutoMirrored.Filled.AltRoute
             ),
             Header(1,
-                stringResource(ContentR.string.folder),
+                stringResource(R.string.folder),
                 iconVector = Icons.Outlined.Folder
             ),
         ),

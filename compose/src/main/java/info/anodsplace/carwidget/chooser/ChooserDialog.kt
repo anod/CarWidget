@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -199,6 +200,52 @@ fun ChooserScreen(
             selectedComponents = selectedComponents,
             onSelect = onSelect
         )
+    }
+}
+
+@Composable
+fun MultiSelectChooserDialog(
+    loader: ChooserLoader,
+    modifier: Modifier = Modifier,
+    headers: List<ChooserEntry> = emptyList(),
+    selectedComponents: Set<ComponentName> = emptySet(),
+    onSelect: (ChooserEntry) -> Unit = { },
+    onDismissRequest: () -> Unit,
+    imageLoader: ImageLoader,
+    minHeight: Dp = 420.dp,
+    topContent: @Composable () -> Unit = {},
+    bottomContent: @Composable (List<ChooserEntry>) -> Unit = {},
+) {
+    val appsList by loader.load().collectAsState(initial = emptyList())
+    val iconSizePx = with(LocalDensity.current) { iconSize.roundToPx() }
+    val headerShape = SystemIconShape(iconSizePx)
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Surface(
+            modifier = modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = minHeight),
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        ) {
+            Column {
+                topContent()
+                // Grid list
+                ChooserGridList(
+                    headers = headers,
+                    list = appsList,
+                    imageLoader = imageLoader,
+                    headerShape = headerShape,
+                    isMultiselect = true,
+                    selectedComponents = selectedComponents,
+                    onSelect = onSelect
+                )
+                bottomContent(appsList)
+            }
+        }
     }
 }
 
