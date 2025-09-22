@@ -34,6 +34,7 @@ import coil.ImageLoader
 import info.anodsplace.carwidget.chooser.AllAppsIntentLoader
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.ChooserEntry
+import info.anodsplace.carwidget.chooser.ChooserGridListDefaults
 import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.MultiSelectChooserDialog
 import info.anodsplace.carwidget.chooser.QueryIntentLoader
@@ -121,6 +122,7 @@ fun FolderChooser(
         loader = loader,
         headers = emptyList(),
         selectedComponents = selected,
+        style = ChooserGridListDefaults.style(grayscaleUnselectedIcons = true),
         onSelect = { entry ->
             val component = entry.componentName ?: return@MultiSelectChooserDialog
             selected = if (selected.contains(component)) selected - component else selected + component
