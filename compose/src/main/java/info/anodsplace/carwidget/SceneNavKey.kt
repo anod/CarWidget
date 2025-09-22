@@ -30,6 +30,8 @@ sealed interface RouteNameSpace {
     data object Default: RouteNameSpace
     @Serializable
     data object AppWidget: RouteNameSpace
+    @Serializable
+    data object Overlay: RouteNameSpace
 }
 
 private val pathToNavKeyMap = listOf(
@@ -47,6 +49,8 @@ private val pathToNavKeyMap = listOf(
     SceneNavKey.EditWidgetButton.serializer().descriptor.serialName to SceneNavKey.EditWidgetButton::class,
     SceneNavKey.Wizard.serializer().descriptor.serialName to SceneNavKey.Wizard::class,
     SceneNavKey.PermissionsRequest.serializer().descriptor.serialName to SceneNavKey.PermissionsRequest::class,
+
+    SceneNavKey.PlayMediaButton.serializer().descriptor.serialName to SceneNavKey.PlayMediaButton::class
 )
 
 @Suppress("UNCHECKED_CAST")
@@ -128,6 +132,19 @@ sealed interface SceneNavKey {
         val buttonId: Int
     ) : SceneNavKey, InnerSceneNavKey {
         override val parent: SceneNavKey? get() = CurrentWidgetTab
+        companion object {
+            val deepLinks: List<NavDeepLink> = listOf(
+                navDeepLink { uriPattern = Deeplink.EditWidgetButton.uriPattern }
+            )
+        }
+    }
+
+    @Serializable
+    data object PlayMediaButton : SceneNavKey, InnerSceneNavKey {
+        override val parent: SceneNavKey? get() = CurrentWidgetTab
+        val deepLinks: List<NavDeepLink> = listOf(
+            navDeepLink { uriPattern = Deeplink.PlayMediaButton.uriPattern }
+        )
     }
 
     @Serializable
@@ -139,4 +156,5 @@ sealed interface SceneNavKey {
     data object InCarBluetooth : SceneNavKey, InnerSceneNavKey {
         override val parent: SceneNavKey? get() = InCarTab
     }
+
 }

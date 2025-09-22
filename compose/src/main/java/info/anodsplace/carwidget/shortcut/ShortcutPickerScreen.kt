@@ -54,7 +54,7 @@ fun ShortcutPickerScreen(
                 onEvent(ShortcutPickerViewEvent.Save(entry.getIntent(baseIntent = null), isApp = true))
                 onDismissRequest()
             },
-            onDismissRequest = { screenState = ShortcutPickerState.Apps },
+            onDismissRequest = onDismissRequest,
             imageLoader = imageLoader
         )
         ShortcutPickerState.Shortcuts -> CreateShortcutChooser(
@@ -69,7 +69,7 @@ fun ShortcutPickerScreen(
                 onEvent(ShortcutPickerViewEvent.Save(entry.getIntent(baseIntent = null), isApp = false))
                 onDismissRequest()
             },
-            onDismissRequest = onDismissRequest,
+            onDismissRequest = { screenState = ShortcutPickerState.Apps },
             imageLoader = imageLoader,
             shortcutResources = shortcutResources
         )

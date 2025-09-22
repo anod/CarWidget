@@ -4,41 +4,35 @@ import android.app.UiModeManager
 import android.appwidget.AppWidgetManager
 import android.os.Build
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import coil.ImageLoader
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.EditWidgetButton
-import info.anodsplace.carwidget.chooser.ChooserScreen
-import info.anodsplace.carwidget.chooser.MediaListLoader
+import info.anodsplace.carwidget.appwidget.PlayMediaButton
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.getOrCreateAppWidgetScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
+import info.anodsplace.carwidget.main.MainViewAction
+import info.anodsplace.carwidget.main.MainViewEvent
 import info.anodsplace.carwidget.shortcut.EditShortcut
-import info.anodsplace.framework.media.MediaKeyEvent
 import info.anodsplace.ktx.extras
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class OverlayViewModel(
     appWidgetIdScope: AppWidgetIdScope?
-) : WidgetAwareViewModel<Unit, Unit, Unit>(appWidgetIdScope) {
+) : WidgetAwareViewModel<Unit, MainViewEvent, MainViewAction>(appWidgetIdScope) {
 
     class Factory(
         private val appWidgetId: Int,
@@ -52,7 +46,18 @@ class OverlayViewModel(
         }
     }
 
-    override fun handleEvent(event: Unit) {}
+    override fun handleEvent(event: MainViewEvent) {
+        when (event) {
+            is MainViewEvent.ApplyWidget -> {}
+            MainViewEvent.CloseWizard -> {}
+            MainViewEvent.GotToHomeScreen -> {}
+            MainViewEvent.OnBackNav -> {}
+            is MainViewEvent.OpenWidgetConfig -> {}
+            MainViewEvent.PermissionAcquired -> {}
+            MainViewEvent.ShowWizard -> {}
+            is MainViewEvent.WidgetUpdateSkin -> {}
+        }
+    }
 }
 
 open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
@@ -65,6 +70,7 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
             appWidgetId = appWidgetId
         )
     }
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -120,26 +126,4 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
             }
         }
     }
-}
-
-@Composable
-fun PlayMediaButton(onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
-    val context = LocalContext.current
-    val loader = remember { MediaListLoader(context) }
-    ChooserScreen(
-        modifier = Modifier.padding(16.dp),
-        headers = listOf(),
-        loader = loader,
-        onClick = { entry ->
-            if (entry.componentName != null) {
-                MediaKeyEvent(context).sendToComponent(
-                    KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE,
-                    entry.componentName,
-                    false
-                )
-            }
-            onDismissRequest()
-        },
-        imageLoader = imageLoader
-    )
 }
