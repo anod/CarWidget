@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import info.anodsplace.carwidget.SceneNavKey
 import info.anodsplace.carwidget.chooser.ChooserGridList
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
-import info.anodsplace.carwidget.SceneNavKey
 
 @Composable
 fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: SceneNavKey.EditWidgetButton, onDismissRequest: () -> Unit) {
@@ -37,7 +37,7 @@ fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: SceneNavKey.EditW
         ChooserGridList(
             headers = emptyList(),
             list = viewModel.viewState.items,
-            onClick = { entry ->
+            onSelect = { entry ->
                 viewModel.handleEvent(EditWidgetViewEvent.Select(entry))
                 onDismissRequest()
             },

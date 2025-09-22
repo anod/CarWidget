@@ -60,8 +60,8 @@
     <string name="icons_theme">Thème d\'icônes</string>
     <string name="default_car_dock_app">Fonction socle de voiture par défaut</string>
     <string name="cardock_btn_1">Ouvrir l\'application Info</string>
-    <string name="cardock_text1">Pour effacer l\'application par défaut actuelle :\n1. Ouvrir l\'application Info par défaut\n2. Cliquer sur le bouton \"Supprimer par défaut\"</string>
-    <string name="cardock_text2">La prochaine fois que le Socle de voiture est activé, choisissez \"Widget Voiture\" comme application par défaut.</string>
+    <string name="cardock_text1">Pour effacer l\'application par défaut actuelle :\n1. Ouvrir l\'application Info par défaut\n2. Cliquer sur le bouton "Supprimer par défaut"</string>
+    <string name="cardock_text2">La prochaine fois que le Socle de voiture est activé, choisissez "Widget Voiture" comme application par défaut.</string>
     <string name="pref_rotate_icon_title">Rotation des icônes</string>
     <string name="pref_titles_hide_title">Masquer les titres</string>
     <string name="pref_titles_hide_summary">Ne pas afficher de titres pour les raccourcis</string>
@@ -221,4 +221,5 @@
     <string name="cannot_generate_preview">Impossible de générer un aperçu</string>
     <string name="backup_unknown_format">Format de fichier inconnu. Assurez-vous de restaurer un widget spécifique</string>
     <string name="active">Actif</string>
+    <string name="folder">Dossier</string>
 </resources>

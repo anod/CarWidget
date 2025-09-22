@@ -1,0 +1,40 @@
+-- Rebuild favorites table to match Shortcuts.sq definition (add NOT NULL/defaults, UNIQUE constraint, column order, AUTOINCREMENT)
+BEGIN TRANSACTION;
+
+CREATE TABLE favorites_new (
+    _id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    targetId INTEGER NOT NULL DEFAULT 0, -- "-1" - notification
+    position INTEGER NOT NULL DEFAULT 0,
+    title TEXT NOT NULL DEFAULT "",
+    intent TEXT NOT NULL DEFAULT "",
+    itemType INTEGER NOT NULL,
+    iconType INTEGER NOT NULL,
+    iconPackage TEXT,
+    iconResource TEXT,
+    icon BLOB,
+    isCustomIcon INTEGER NOT NULL DEFAULT 0,
+    UNIQUE(targetId, position)
+);
+
+-- Use OR IGNORE to drop any duplicates created before unique constraint (keeping lowest _id)
+INSERT OR IGNORE INTO favorites_new (
+    _id, targetId, position, title, intent, itemType, iconType, iconPackage, iconResource, icon, isCustomIcon
+) SELECT
+    _id,
+    COALESCE(targetId, 0),
+    COALESCE(position, 0),
+    COALESCE(title, ""),
+    COALESCE(intent, ""),
+    COALESCE(itemType, 0),
+    COALESCE(iconType, 0),
+    iconPackage,
+    iconResource,
+    icon,
+    COALESCE(isCustomIcon, 0)
+FROM favorites
+ORDER BY _id;
+
+DROP TABLE favorites;
+ALTER TABLE favorites_new RENAME TO favorites;
+
+COMMIT;

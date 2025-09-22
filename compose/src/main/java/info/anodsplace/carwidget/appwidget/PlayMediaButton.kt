@@ -30,7 +30,7 @@ fun PlayMediaButton(onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
             }
             onDismissRequest()
         },
-        imageLoader = imageLoader,
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
+        imageLoader = imageLoader
     )
 }

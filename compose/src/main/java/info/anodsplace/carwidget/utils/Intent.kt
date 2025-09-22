@@ -8,6 +8,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
 import android.provider.Settings
+import androidx.core.net.toUri
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.shortcuts.InternalShortcut
@@ -18,7 +19,7 @@ import info.anodsplace.graphics.DrawableUri
 fun Intent.forSettings(context: Context, appWidgetId: Int, target: ShortcutResources): Intent {
     component = ComponentName(context, target.activity.settings)
     putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-    data = Uri.withAppendedPath(Uri.parse("com.anod.car.home://widget/id/"), appWidgetId.toString())
+    data = Uri.withAppendedPath("com.anod.car.home://widget/id/".toUri(), appWidgetId.toString())
     action = AppWidgetManager.ACTION_APPWIDGET_CONFIGURE
     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     return this
@@ -42,7 +43,7 @@ private fun commonPickShortcutIntent(thisIntent: Intent, title: String, shortcut
 
 fun Intent.forAppSettings(context: Context): Intent {
     action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-    data = Uri.parse("package:${context.packageName}")
+    data = "package:${context.packageName}".toUri()
     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     return this
 }
@@ -74,7 +75,7 @@ fun Intent.resolveDirectCall(contactUri: Uri, context: Context): Intent? {
             val photoUri = cursor.getString(photoIndex)
 
             val callIntent = Intent(Intent.ACTION_CALL)
-            callIntent.data = Uri.parse("tel:$number")
+            callIntent.data = "tel:$number".toUri()
 
             val intent = commonPickShortcutIntent(this, name, callIntent)
             if (photoUri.isNotEmpty()) {
@@ -83,7 +84,7 @@ fun Intent.resolveDirectCall(contactUri: Uri, context: Context): Intent? {
                     targetDensity = UtilitiesBitmap.getTargetDensity(context),
                     context = context
                 )
-                val d = DrawableUri(context).resolve(Uri.parse(photoUri), resolveProperties)
+                val d = DrawableUri(context).resolve(photoUri.toUri(), resolveProperties)
                 if (d != null) {
                     val bitmap = UtilitiesBitmap.createHiResIconBitmap(d, context)
                     intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap)

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Bitmap
 import android.util.SparseArray
+import androidx.core.util.size
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneOrNull
@@ -106,7 +107,7 @@ class ShortcutsDatabase(private val db: Database) {
         db.transaction {
             db.shortcutsQueries.deleteTarget(targetId)
 
-            for (position in 0 until items.size()) {
+            for (position in 0 until items.size) {
                 val item = items.get(position)
                 if (item?.first != null) {
                     insert(targetId, position, item.first, item.second!!)

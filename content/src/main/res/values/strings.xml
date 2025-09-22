@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name" translatable="false">Car Widget</string>
     <string name="none">None</string>
     <string name="extras" translatable="false">Extras</string>
@@ -87,15 +87,15 @@
     <string name="icon_style">Icon style</string>
     <string name="default_car_dock_app">Default Car Dock app</string>
     <string name="cardock_btn_1">Open App Info</string>
-    <string name="cardock_text1">To clear current default application:\n1. Open default App Info\n2. Click on \"Clear defaults\" button</string>
-    <string name="cardock_text2">Next time Car Dock enabled, choose \"Car Widget\" as a default application.</string>
+    <string name="cardock_text1">To clear current default application:\n1. Open default App Info\n2. Click on "Clear defaults" button</string>
+    <string name="cardock_text2">Next time Car Dock enabled, choose "Car Widget" as a default application.</string>
     <string name="pref_rotate_icon_title">Rotate icons</string>
     <string name="pref_titles_hide_title">Hide titles</string>
     <string name="pref_titles_hide_summary">Do not display titles for the shortcuts</string>
     <string name="not_active">Not active</string>
     <string name="active">Active</string>
     <string name="install_a_widget">Add a widget to homescreen</string>
-    <string name="install_widget"><![CDATA[Go to <b>home screen</b> &gt; <img src=\"Icons.Default.TouchApp\"></img><b>touch & hold</b> to show menu &gt; choose <img src=\"Icons.Default.Widgets\"></img><b>widgets</b> &gt; find <b>Car Widget</b> and put it on the screen.]]></string>
+    <string name="install_widget"><![CDATA[Go to <b>home screen</b> &gt; <img src="Icons.Default.TouchApp"></img><b>touch &amp; hold</b> to show menu &gt; choose <img src="Icons.Default.Widgets"></img><b>widgets</b> &gt; find <b>Car Widget</b> and put it on the screen.]]></string>
     <string name="go_to_homescreen">Go to homescreen</string>
     <string name="incar_mode">InCar mode</string>
     <string name="use_gms_for_activity">Use Google Play services to detect activity</string>
@@ -243,4 +243,5 @@
         <item>Circle</item>
         <item>Teardrop</item>
     </array>
+    <string name="folder">Folder</string>
 </resources>

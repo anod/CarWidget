@@ -60,8 +60,8 @@
     <string name="icons_theme">Symbol-Thema</string>
     <string name="default_car_dock_app">Standard Autodock-App</string>
     <string name="cardock_btn_1">App-Info öffnen</string>
-    <string name="cardock_text1">Um die aktuellen Standard-Anwendung zu löschen:\n1. Standard App-Info öffnen\n2. \"Clear Defaults\" drücken</string>
-    <string name="cardock_text2">Wählen Sie bei der nächsten Car Dock-Aktivierung \"Car Widget\" als Standard-Anwendung.</string>
+    <string name="cardock_text1">Um die aktuellen Standard-Anwendung zu löschen:\n1. Standard App-Info öffnen\n2. "Clear Defaults" drücken</string>
+    <string name="cardock_text2">Wählen Sie bei der nächsten Car Dock-Aktivierung "Car Widget" als Standard-Anwendung.</string>
     <string name="pref_rotate_icon_title">Symbole drehen</string>
     <string name="pref_titles_hide_title">Titel verbergen</string>
     <string name="pref_titles_hide_summary">Keine Titel für die Verknüpfungen anzeigen</string>
@@ -221,4 +221,5 @@
     <string name="cannot_generate_preview">Kann keine Vorschau erzeugen</string>
     <string name="backup_unknown_format">Unbekanntes Dateiformat. Stellen Sie sicher, dass Sie bestimmtes Widget wiederherstellen</string>
     <string name="active">Aktiv</string>
+    <string name="folder">Ordner</string>
 </resources>
