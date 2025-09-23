@@ -18,13 +18,12 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import coil.ImageLoader
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.EditWidgetButton
+import info.anodsplace.carwidget.appwidget.FolderDialog
 import info.anodsplace.carwidget.appwidget.PlayMediaButton
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.getOrCreateAppWidgetScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
-import info.anodsplace.carwidget.main.MainViewAction
-import info.anodsplace.carwidget.main.MainViewEvent
 import info.anodsplace.carwidget.shortcut.EditShortcut
 import info.anodsplace.ktx.extras
 import org.koin.core.component.KoinComponent
@@ -32,8 +31,7 @@ import org.koin.core.component.inject
 
 class OverlayViewModel(
     appWidgetIdScope: AppWidgetIdScope?
-) : WidgetAwareViewModel<Unit, MainViewEvent, MainViewAction>(appWidgetIdScope) {
-
+) : WidgetAwareViewModel<Unit, Unit, Unit>(appWidgetIdScope) {
     class Factory(
         private val appWidgetId: Int,
     ) : ViewModelProvider.Factory, KoinComponent {
@@ -46,18 +44,7 @@ class OverlayViewModel(
         }
     }
 
-    override fun handleEvent(event: MainViewEvent) {
-        when (event) {
-            is MainViewEvent.ApplyWidget -> {}
-            MainViewEvent.CloseWizard -> {}
-            MainViewEvent.GotToHomeScreen -> {}
-            MainViewEvent.OnBackNav -> {}
-            is MainViewEvent.OpenWidgetConfig -> {}
-            MainViewEvent.PermissionAcquired -> {}
-            MainViewEvent.ShowWizard -> {}
-            is MainViewEvent.WidgetUpdateSkin -> {}
-        }
-    }
+    override fun handleEvent(event: Unit) { }
 }
 
 open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
@@ -83,7 +70,7 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
         super.onCreate(savedInstanceState)
         appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
 
-        val deeplink = Deeplink.match(intent.data!!)
+        val deeplink = Deeplink.match(intent)
         if (deeplink == null) {
             AppLog.e("Not recognized ${intent.data.toString()}")
             finish()
@@ -118,6 +105,12 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
                         onDismissRequest = { finish() },
                     )
                     is Deeplink.PlayMediaButton -> PlayMediaButton(
+                        onDismissRequest = { finish() },
+                        imageLoader = imageLoader
+                    )
+                    is Deeplink.OpenFolder -> FolderDialog(
+                        appWidgetIdScope = overlayViewModel.appWidgetIdScope!!,
+                        args = deeplink,
                         onDismissRequest = { finish() },
                         imageLoader = imageLoader
                     )

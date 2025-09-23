@@ -35,8 +35,6 @@ class ShortcutActivity : FragmentActivity(), KoinComponent {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         execute(intent)
-
-
     }
 
     private fun execute(intent: Intent) {

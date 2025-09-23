@@ -65,7 +65,9 @@ class InCarModeNotificationFactory(
             } else {
                 val icon = iconLoader.load(info, "")
                 contentView.setImageViewBitmap(resId, icon.bitmap)
-                spi.createShortcut(info.intent, uri = { Deeplink.OpenNotificationShortcut(position).toUri() })?.let {
+                spi.createShortcut(info.intent, uri = { action ->
+                    Deeplink.OpenNotificationShortcut(position).toUri()
+                })?.let {
                     contentView.setOnClickPendingIntent(resId, it)
                 }
             }

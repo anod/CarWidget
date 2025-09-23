@@ -1,7 +1,10 @@
 package info.anodsplace.carwidget.content
 
+import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import androidx.core.net.toUri
+import okhttp3.internal.toHexString
 
 sealed interface Deeplink {
     fun toUri(): Uri
@@ -36,6 +39,20 @@ sealed interface Deeplink {
         override fun toUri(): Uri = build("music", listOf("play")).toUri()
     }
 
+    data class OpenFolder(
+        override val appWidgetId: Int,
+        val position: Int,
+        val extras: Bundle
+    ) : Deeplink, AppWidgetIdAware {
+        companion object {
+            const val uriPattern = "carwidget://widgets/{appWidgetId}/folder/{position}/open/{contentId}"
+        }
+        // Add a hash fragment to avoid intent caching (unique each call)
+        override fun toUri(): Uri {
+            return build("widgets", listOf(appWidgetId, "folder", position, "open", extras.hashCode().toHexString())).toUri()
+        }
+    }
+
     data class OpenWidgetShortcut(override val appWidgetId: Int, val position: Int) : Deeplink, AppWidgetIdAware {
         companion object {
             const val uriPattern = "carwidget://widgets/{appWidgetId}/open/{position}"
@@ -54,7 +71,8 @@ sealed interface Deeplink {
         private const val SCHEME = "carwidget"
         private fun build(authority: String, path: List<Any>): String = "$SCHEME://$authority/${path.joinToString("/")}"
 
-        fun match(uri: Uri): Deeplink? {
+        fun match(intent: Intent): Deeplink? {
+            val uri = intent.data ?: return null
             if (uri.scheme != SCHEME) {
                 return null
             }
@@ -74,7 +92,12 @@ sealed interface Deeplink {
                     val buttonId = uri.pathSegments[2].toInt()
                     return EditWidgetButton(appWidgetId, buttonId)
                 }
-            }
+                // {appWidgetId}/folder/{position}/open/{contentId}
+                if (uri.pathSegments[1] == "folder") {
+                    val position = uri.pathSegments[2].toInt()
+                    return OpenFolder(appWidgetId, position, intent.extras ?: Bundle())
+                }
+        }
             if (uri.authority == "music") {
                 if (uri.pathSegments[0] == "play") {
                     return PlayMediaButton

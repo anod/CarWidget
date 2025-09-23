@@ -1,14 +1,13 @@
 package com.anod.car.home.appwidget
 
-import com.anod.car.home.ShortcutActivity
-import com.anod.car.home.incar.ModeService
-
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.anod.car.home.OverlayActivity
+import com.anod.car.home.ShortcutActivity
+import com.anod.car.home.incar.ModeService
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra
@@ -57,19 +56,33 @@ class ShortcutPendingIntent(private val context: Context, private val shortcutRe
     }
 
     override fun createShortcut(intent: Intent, appWidgetId: Int, position: Int, shortcutId: Long): PendingIntent? {
-        return createShortcut(intent) { Deeplink.OpenWidgetShortcut(appWidgetId, position).toUri() }
+        return createShortcut(intent) {
+            when (it) {
+                ShortcutExtra.ACTION_FOLDER ->
+                    Deeplink.OpenFolder(appWidgetId, position, intent.extras ?: Intent().extras ?: return@createShortcut Uri.EMPTY).toUri()
+                ShortcutExtra.ACTION_MEDIA_BUTTON ->
+                    Deeplink.PlayMediaButton.toUri()
+                else ->
+                    Deeplink.OpenWidgetShortcut(appWidgetId, position).toUri()
+            }
+        }
     }
 
-    fun createShortcut(intent: Intent, uri: () -> Uri): PendingIntent? {
+    fun createShortcut(intent: Intent, uri: (String) -> Uri): PendingIntent? {
         val action = intent.action ?: ""
         val isCall = INTENT_ACTION_CALL_PRIVILEGED == action || Intent.ACTION_CALL == action
         if (intent.extras == null && !isCall) { // Samsung s3 bug
             return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
 
-        val data = uri()
+        val data = uri(action)
 
         if (action == ShortcutExtra.ACTION_MEDIA_BUTTON) {
+            intent.data = data
+            return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        }
+
+        if (action == ShortcutExtra.ACTION_FOLDER) {
             intent.data = data
             return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }

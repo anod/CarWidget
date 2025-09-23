@@ -12,12 +12,13 @@ class ShortcutTargetActivity(
     val settings: Class<*>,  // LookAndFeelActivity::class.java
     val switchInCar: Class<*>, //SwitchInCarActivity::class.java
     val runShortcut: Class<*>,  //ShortcutActivity::class.java
-    val folder: Class<*> // FolderActivity::class.java
+    val overlay: Class<*> // OverlayActivity::class.java
 )
 
 interface ShortcutResources {
     val activity: ShortcutTargetActivity
     val internalShortcuts: InternalShortcutResources
+    val folderShortcutIcon: Int
 }
 
 sealed class InternalShortcut(val index: Int) {
@@ -44,6 +45,8 @@ sealed class InternalShortcut(val index: Int) {
 object ShortcutExtra {
     const val EXTRA_MEDIA_BUTTON = "media_button"
     const val ACTION_MEDIA_BUTTON = "action_media_button"
+    const val ACTION_FOLDER = "info.anodsplace.carwidget.action.FOLDER"
+    const val EXTRA_FOLDER_ITEM_URIS_JSON = "info.anodsplace.carwidget.extra.FOLDER_ITEM_URIS_JSON" // String (JSON Array)
 }
 
 fun InternalShortcut.fillIntent(intent: Intent, context: Context, resources: ShortcutResources): Intent {

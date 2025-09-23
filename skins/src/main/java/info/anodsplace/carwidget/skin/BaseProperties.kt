@@ -60,6 +60,7 @@ abstract class BaseProperties : SkinProperties {
     override fun iconResourceTint(iconResource: Intent.ShortcutIconResource?): Int = 0
 
     companion object {
+        val folderIconResId: Int = R.drawable.ic_shortcut_folder
         private val textIds = intArrayOf(
             R.id.btn_text0, R.id.btn_text1, //2
             R.id.btn_text2, R.id.btn_text3, //4
@@ -81,13 +82,13 @@ abstract class BaseProperties : SkinProperties {
         )
 
         val internalShortcutResourcesPrimary = InternalShortcutResources(
-                icons = listOf(
-                        R.drawable.ic_launcher_carwidget,
-                        R.drawable.ic_shortcut_call_primary,
-                        R.drawable.ic_shortcut_play_primary,
-                        R.drawable.ic_shortcut_next_primary,
-                        R.drawable.ic_shortcut_previous_primary
-                )
+            icons = listOf(
+                R.drawable.ic_launcher_carwidget,
+                R.drawable.ic_shortcut_call_primary,
+                R.drawable.ic_shortcut_play_primary,
+                R.drawable.ic_shortcut_next_primary,
+                R.drawable.ic_shortcut_previous_primary
+            )
         )
     }
 }

@@ -12,12 +12,11 @@ import androidx.core.net.toUri
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.shortcuts.InternalShortcut
+import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.content.shortcuts.fillIntent
 import info.anodsplace.graphics.DrawableUri
-
-private const val ACTION_FOLDER = "info.anodsplace.carwidget.action.FOLDER"
-private const val EXTRA_FOLDER_ITEMS = "info.anodsplace.carwidget.extra.FOLDER_ITEMS" // ArrayList<Intent>
+import org.json.JSONArray
 
 fun Intent.forSettings(context: Context, appWidgetId: Int, target: ShortcutResources): Intent {
     component = ComponentName(context, target.activity.settings)
@@ -40,14 +39,22 @@ fun Intent.forPickShortcutLocal(shortcut: InternalShortcut, title: String, icnRe
 }
 
 fun Intent.forFolder(title: String, items: List<Intent>, ctx: Context, target: ShortcutResources): Intent {
-    action = ACTION_FOLDER
-    component = ComponentName(ctx, target.activity.folder)
-    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
+    val folderIntent = Intent().apply {
+        action = ShortcutExtra.ACTION_FOLDER
+        component = ComponentName(ctx, target.activity.overlay)
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
+        @Suppress("DEPRECATION")
+        putExtra(Intent.EXTRA_SHORTCUT_NAME, title)
+        val uriStrings = items.map { it.toUri(0).toString() }
+        // JSON representation (preferred - survives toUri/parseUri reliably)
+        val json = JSONArray().apply { uriStrings.forEach { put(it) } }.toString()
+        putExtra(ShortcutExtra.EXTRA_FOLDER_ITEM_URIS_JSON, json)
+    }
+    val intent = commonPickShortcutIntent(this, title, folderIntent)
+    val iconResource = Intent.ShortcutIconResource.fromContext(ctx, target.folderShortcutIcon)
     @Suppress("DEPRECATION")
-    putExtra(Intent.EXTRA_SHORTCUT_NAME, title)
-    // Wrap List<Intent> into concrete ArrayList required by putParcelableArrayListExtra
-    putParcelableArrayListExtra(EXTRA_FOLDER_ITEMS, ArrayList(items))
-    return this
+    intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource)
+    return intent
 }
 
 private fun commonPickShortcutIntent(thisIntent: Intent, title: String, shortcutIntent: Intent): Intent {

@@ -62,6 +62,14 @@ class ShortcutsDatabase(private val db: Database) {
         return@withContext list.associate { sh -> sh.position to if (sh.isValid) sh else null }
     }
 
+    suspend fun loadShortcut(targetId: Int, position: Int): Shortcut? = withContext(Dispatchers.IO) {
+        val shortcut = db.shortcutsQueries.selectTargetPosition(targetId, position, mapper = ::mapShortcut).executeAsOneOrNull()
+        if (shortcut?.isValid == true) {
+            return@withContext shortcut
+        }
+        return@withContext null
+    }
+
     /**
      * Add an item to the database in a specified container. Sets the container,
      * screen, cellX and cellY fields of the item. Also assigns an ID to the

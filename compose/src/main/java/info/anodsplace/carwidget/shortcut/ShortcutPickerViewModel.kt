@@ -27,8 +27,8 @@ data class ShortcutPickerViewState(
 )
 
 sealed interface ShortcutPickerViewEvent {
-    class Save(val intent: Intent, val isApp: Boolean) : ShortcutPickerViewEvent
-    class LaunchShortcutError(val exception: Exception) : ShortcutPickerViewEvent
+    data class Save(val intent: Intent, val isApp: Boolean) : ShortcutPickerViewEvent
+    data class LaunchShortcutError(val exception: Exception) : ShortcutPickerViewEvent
 }
 
 sealed interface ShortcutPickerViewAction {

@@ -1,8 +1,14 @@
 package info.anodsplace.carwidget.chooser
 
 import android.content.ComponentName
+import android.provider.Settings
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,10 +17,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -26,9 +35,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -37,8 +49,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
@@ -52,6 +68,8 @@ import coil.compose.AsyncImage
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.compose.SystemIconShape
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.onEach
 
 private val iconSize = 56.dp
 
@@ -142,6 +160,47 @@ private fun EntryItem(
 }
 
 @Composable
+private fun rememberReducedMotionPreference(): Boolean {
+    val context = LocalContext.current
+    return remember {
+        try {
+            val scale = Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f)
+            scale == 0f
+        } catch (_: Exception) { false }
+    }
+}
+
+@Composable
+private fun GlowPlaceholderItem(glow: Float, animated: Boolean, baseColor: Color, highlightColor: Color) {
+    val surface = MaterialTheme.colorScheme.surface
+    val blendedBase = baseColor.copy(alpha = 0.60f).compositeOver(surface)
+    val blendedHighlight = highlightColor.copy(alpha = 0.85f)
+    val fill = if (animated) lerp(blendedBase, blendedHighlight, glow) else lerp(blendedBase, blendedHighlight, 0.5f)
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(4.dp)
+            .widthIn(min = 64.dp)
+            .semantics { contentDescription = "loading" }
+    ) {
+        Box(
+            modifier = Modifier
+                .size(iconSize)
+                .clip(MaterialTheme.shapes.medium)
+                .background(fill)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Box(
+            modifier = Modifier
+                .height(12.dp)
+                .fillMaxWidth()
+                .clip(MaterialTheme.shapes.small)
+                .background(fill)
+        )
+    }
+}
+
+@Composable
 fun ChooserGridList(
     headers: List<ChooserEntry>,
     list: List<ChooserEntry>,
@@ -150,65 +209,92 @@ fun ChooserGridList(
     selectedComponents: Set<ComponentName> = emptySet(),
     onSelect: (ChooserEntry) -> Unit = { },
     style: ChooserGridListStyle = ChooserGridListDefaults.style(),
+    isLoading: Boolean = false,
+    reduceMotion: Boolean = false
 ) {
+    val base = MaterialTheme.colorScheme.surfaceVariant
+    val highlight = MaterialTheme.colorScheme.primary
+    // Single glow animation for all placeholders
+    val glow by if (isLoading && !reduceMotion) rememberInfiniteTransition(label = "glow-transition")
+        .animateFloat(
+            initialValue = 0f,
+            targetValue = 1f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(1800, easing = LinearEasing),
+                repeatMode = RepeatMode.Reverse
+            ), label = "glow-value"
+        ) else remember { mutableStateOf(0.5f) }
+
+    val placeholderCount = 12
+
     LazyVerticalGrid(
         contentPadding = PaddingValues(16.dp),
         columns = GridCells.Adaptive(64.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        state = rememberLazyGridState()
+        state = rememberLazyGridState(),
+        userScrollEnabled = !isLoading
     ) {
-        items(headers.size) { index ->
-            val entry = headers[index] as Header
-            EntryItem(
-                entry,
-                onClick = { onSelect(entry) },
-                icon = { _ ->
-                    if (entry.iconVector != null) {
-                        Icon(
-                            imageVector = entry.iconVector,
-                            contentDescription = entry.title,
-                            modifier = Modifier
-                                .size(iconSize)
-                                .background(MaterialTheme.colorScheme.primary, shape = headerShape)
-                                .padding(2.dp),
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    } else {
+        if (isLoading) {
+            items(placeholderCount) {
+                GlowPlaceholderItem(
+                    glow = glow,
+                    animated = !reduceMotion,
+                    baseColor = base,
+                    highlightColor = highlight
+                )
+            }
+        } else {
+            items(headers.size) { index ->
+                val entry = headers[index] as Header
+                EntryItem(
+                    entry,
+                    onClick = { onSelect(entry) },
+                    icon = { _ ->
+                        if (entry.iconVector != null) {
+                            Icon(
+                                imageVector = entry.iconVector,
+                                contentDescription = entry.title,
+                                modifier = Modifier
+                                    .size(iconSize)
+                                    .background(MaterialTheme.colorScheme.primary, shape = headerShape)
+                                    .padding(2.dp),
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        } else {
+                            AsyncImage(
+                                model = LocalContext.current.iconUri(iconRes = entry.iconRes),
+                                contentDescription = entry.title,
+                                imageLoader = imageLoader,
+                                modifier = Modifier.size(iconSize)
+                            )
+                        }
+                    },
+                    isSelected = true,
+                    style = style
+                )
+            }
+            items(list.size) { index ->
+                val entry = list[index]
+                val component = entry.componentName
+                val isSelected = component != null && selectedComponents.contains(component)
+                EntryItem(
+                    entry,
+                    onClick = { onSelect(entry) },
+                    icon = { saturation ->
+                        val colorMatrix = remember(saturation) { ColorMatrix().apply { setToSaturation(saturation) } }
                         AsyncImage(
-                            model = LocalContext.current.iconUri(iconRes = entry.iconRes),
+                            model = entry.iconUri(LocalContext.current),
                             contentDescription = entry.title,
                             imageLoader = imageLoader,
-                            modifier = Modifier.size(iconSize)
+                            modifier = Modifier.size(iconSize),
+                            colorFilter = ColorFilter.colorMatrix(colorMatrix)
                         )
-                    }
-                },
-                isSelected = true,
-                style = style
-            )
-        }
-        items(list.size) { index ->
-            val entry = list[index]
-            val component = entry.componentName
-            val isSelected = component != null && selectedComponents.contains(component)
-            EntryItem(
-                entry,
-                onClick = { onSelect(entry) },
-                icon = { saturation ->
-                    val colorMatrix = remember(saturation) {
-                        ColorMatrix().apply { setToSaturation(saturation) }
-                    }
-                    AsyncImage(
-                        model = entry.iconUri(LocalContext.current),
-                        contentDescription = entry.title,
-                        imageLoader = imageLoader,
-                        modifier = Modifier.size(iconSize),
-                        colorFilter = ColorFilter.colorMatrix(colorMatrix)
-                    )
-                },
-                isSelected = isSelected,
-                style = style
-            )
+                    },
+                    isSelected = isSelected,
+                    style = style
+                )
+            }
         }
     }
 }
@@ -222,6 +308,7 @@ fun ChooserDialog(
     imageLoader: ImageLoader,
     onClick: (ChooserEntry) -> Unit,
     style: ChooserGridListStyle = ChooserGridListDefaults.singleSelect(),
+    topContent: @Composable (List<ChooserEntry>) -> Unit = {},
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -236,7 +323,8 @@ fun ChooserDialog(
             imageLoader = imageLoader,
             selectedComponents = emptySet(),
             onSelect = onClick,
-            style = style
+            style = style,
+            topContent = topContent
         )
     }
 }
@@ -250,10 +338,23 @@ fun ChooserScreen(
     selectedComponents: Set<ComponentName> = emptySet(),
     onSelect: (ChooserEntry) -> Unit = { },
     style: ChooserGridListStyle = ChooserGridListDefaults.singleSelect(),
+    topContent: @Composable (List<ChooserEntry>) -> Unit = {},
+    showLoadingInPreview: Boolean = false,
 ) {
-    val appsList by loader.load().collectAsState(initial = emptyList())
+    var emitted by remember { mutableStateOf(false) }
+    val appsList by loader.load().onEach { emitted = true }.collectAsState(initial = emptyList())
+    var minTimePassed by remember { mutableStateOf(false) }
+    val isPreview = LocalInspectionMode.current
+    LaunchedEffect(Unit) {
+        if (!isPreview) {
+            delay(250)
+        }
+        minTimePassed = true
+    }
+    val showLoading = if (isPreview && !showLoadingInPreview) false else !emitted || !minTimePassed
     val iconSizePx = with(LocalDensity.current) { iconSize.roundToPx() }
     val headerShape = SystemIconShape(iconSizePx)
+    val reduceMotion = rememberReducedMotionPreference()
     Surface(
         modifier = modifier
             .fillMaxWidth()
@@ -262,15 +363,20 @@ fun ChooserScreen(
         color = MaterialTheme.colorScheme.surfaceVariant,
         contentColor = MaterialTheme.colorScheme.onSurfaceVariant
     ) {
-        ChooserGridList(
-            headers = headers,
-            list = appsList,
-            imageLoader = imageLoader,
-            headerShape = headerShape,
-            selectedComponents = selectedComponents,
-            onSelect = onSelect,
-            style = style
-        )
+        Column {
+            topContent(appsList)
+            ChooserGridList(
+                headers = headers,
+                list = appsList,
+                imageLoader = imageLoader,
+                headerShape = headerShape,
+                selectedComponents = selectedComponents,
+                onSelect = onSelect,
+                style = style,
+                isLoading = showLoading,
+                reduceMotion = reduceMotion
+            )
+        }
     }
 }
 
@@ -323,12 +429,14 @@ private fun MultiSelectChooserContent(
     topContent: @Composable (List<ChooserEntry>) -> Unit = {},
     bottomContent: @Composable (List<ChooserEntry>) -> Unit = {},
     style: ChooserGridListStyle = ChooserGridListDefaults.multiSelect(),
-    listFilter: (List<ChooserEntry>) -> List<ChooserEntry> = { it }
+    listFilter: (List<ChooserEntry>) -> List<ChooserEntry> = { it },
 ) {
-    val appsList by loader.load().collectAsState(initial = emptyList())
+    var emitted by remember { mutableStateOf(false) }
+    val appsList by loader.load().onEach { emitted = true }.collectAsState(initial = emptyList())
     val filteredList = remember(appsList, listFilter) { listFilter(appsList) }
     val iconSizePx = with(LocalDensity.current) { iconSize.roundToPx() }
     val headerShape = SystemIconShape(iconSizePx)
+    val reduceMotion = rememberReducedMotionPreference()
     Surface(
         modifier = modifier
             .fillMaxWidth()
@@ -347,7 +455,9 @@ private fun MultiSelectChooserContent(
                     headerShape = headerShape,
                     selectedComponents = selectedComponents,
                     onSelect = onSelect,
-                    style = style
+                    style = style,
+                    isLoading = !emitted,
+                    reduceMotion = reduceMotion
                 )
             }
             // Pass original unfiltered list to bottomContent so selection works even if item hidden by filter
@@ -404,6 +514,22 @@ fun MultiSelectChooserContentPreview() {
             ),
             topContent = { all -> Text("Select apps (${all.size})", modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.titleMedium) },
             bottomContent = { list -> Text("${list.size} apps", modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodySmall) }
+        )
+    }
+}
+
+@Preview(name = "Chooser Screen Loading", showBackground = true, widthDp = 360, heightDp = 640)
+@Composable
+private fun ChooserScreenLoadingPreview() {
+    CarWidgetTheme {
+        val loader = object : ChooserLoader { override fun load() = kotlinx.coroutines.flow.flow<List<ChooserEntry>> { /* never emit */ } }
+        ChooserScreen(
+            loader = loader,
+            imageLoader = ImageLoader(LocalContext.current),
+            onSelect = {},
+            headers = emptyList(),
+            topContent = { _ -> Text("Loading...", modifier = Modifier.padding(16.dp)) },
+            showLoadingInPreview = true
         )
     }
 }
