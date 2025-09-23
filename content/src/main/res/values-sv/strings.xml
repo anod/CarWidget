@@ -221,4 +221,5 @@
     <string name="backup_unknown_format">Okänt filformat. Se till att återställa en specifik widget</string>
     <string name="active">Aktiva</string>
     <string name="folder">Mapp</string>
+    <string name="all">Alla</string>
 </resources>

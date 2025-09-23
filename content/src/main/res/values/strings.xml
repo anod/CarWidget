@@ -245,4 +245,5 @@
     </array>
     <string name="folder">Folder</string>
     <string name="create">Create</string>
+    <string name="all">All</string>
 </resources>
