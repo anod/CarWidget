@@ -3,7 +3,7 @@ package info.anodsplace.carwidget.content.extentions
 import android.app.ActivityManager
 import android.content.Context
 import info.anodsplace.carwidget.content.BuildProperties
-import org.koin.java.KoinJavaComponent.getKoin
+import org.koin.mp.KoinPlatformTools
 
 val Context.isLowMemoryDevice: Boolean
     get() {
@@ -12,7 +12,7 @@ val Context.isLowMemoryDevice: Boolean
     }
 
 val Context.isDebugBuild: Boolean
-    get() = getKoin().get<BuildProperties>().isDebug
+    get() = KoinPlatformTools.defaultContext().getOrNull()?.get<BuildProperties>()?.isDebug ?: false
 
 //val Context.isHighPerformingDevice: Boolean
 //    get() {

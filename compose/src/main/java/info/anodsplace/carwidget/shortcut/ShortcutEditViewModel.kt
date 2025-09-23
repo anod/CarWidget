@@ -49,6 +49,7 @@ sealed interface ShortcutEditViewEvent {
     class LaunchCustomizeError(val exception: Exception) : ShortcutEditViewEvent
 
     data object DefaultIconReset : ShortcutEditViewEvent
+    class UpdateTitle(val title: String): ShortcutEditViewEvent
 }
 
 sealed interface ShortcutEditViewAction {
@@ -112,6 +113,15 @@ class ShortcutEditViewModel(
                 appScope.launch {
                     val intent = updateIntentField(event.field, shortcut.intent)
                     shortcutsDatabase.updateIntent(shortcut.id, intent)
+                }
+            }
+            is ShortcutEditViewEvent.UpdateTitle -> {
+                val shortcut = viewState.shortcut ?: return
+                val newTitle = event.title
+                // Optimistically update local state for immediate UI feedback
+                viewState = viewState.copy(shortcut = shortcut.copy(title = newTitle))
+                appScope.launch {
+                    shortcutsDatabase.updateTitle(shortcut.id, newTitle)
                 }
             }
             is ShortcutEditViewEvent.IconPackPicker -> {

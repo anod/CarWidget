@@ -111,6 +111,11 @@ class ShortcutsDatabase(private val db: Database) {
             shortcutId = shortcutId
         )
     }
+
+    suspend fun updateTitle(shortcutId: Long, title: String) = withContext(Dispatchers.IO) {
+        db.shortcutsQueries.updateShortcutTitle(title = title, shortcutId = shortcutId)
+    }
+
     suspend fun restoreTarget(targetId: Int, items: SparseArray<ShortcutWithIcon>) = withContext(Dispatchers.IO) {
         db.transaction {
             db.shortcutsQueries.deleteTarget(targetId)

@@ -59,6 +59,9 @@ UPDATE favorites SET intent = ? WHERE _id = :shortcutId;
 updateShortcutIcon:
 UPDATE favorites SET iconType = :iconType, icon = :icon, iconPackage = :iconPackage, iconResource = :iconResource, isCustomIcon = :isCustomIcon WHERE _id = :shortcutId;
 
+updateShortcutTitle:
+UPDATE favorites SET title = :title WHERE _id = :shortcutId;
+
 lastInsertId:
 SELECT last_insert_rowid();
 

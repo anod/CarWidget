@@ -208,7 +208,7 @@ private fun ShortcutDetails(
                 .fillMaxWidth(),
             value = shortcut.title.toString(),
             shape = MaterialTheme.shapes.medium,
-            onValueChange = {},
+            onValueChange = { onEvent(ShortcutEditViewEvent.UpdateTitle(it)) },
             singleLine = true,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = cardBorderColor,
