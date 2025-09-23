@@ -221,5 +221,6 @@
     <string name="refresh">לְרַעֲנֵן</string>
     <string name="permission_read_phone_state">לקרוא מצב טלפון</string>
     <string name="folder">תיקיה</string>
+    <string name="create">צור</string>
     <string name="all">הכל</string>
 </resources>

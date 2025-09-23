@@ -222,5 +222,6 @@
     <string name="backup_unknown_format">Unbekanntes Dateiformat. Stellen Sie sicher, dass Sie bestimmtes Widget wiederherstellen</string>
     <string name="active">Aktiv</string>
     <string name="folder">Ordner</string>
+    <string name="create">Erstellen</string>
     <string name="all">Alle</string>
 </resources>

@@ -219,5 +219,6 @@
 	<string name="refresh">Обновить</string>
 	<string name="permission_read_phone_state">Читать состояние телефона</string>
     <string name="folder">Папка</string>
+    <string name="create">Создать</string>
     <string name="all">Все</string>
 </resources>

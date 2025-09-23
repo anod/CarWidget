@@ -222,5 +222,6 @@
     <string name="backup_unknown_format">Formato di file sconosciuto. Assicurati di ripristinare un widget specifico</string>
     <string name="active">Attivo</string>
     <string name="folder">Cartella</string>
+    <string name="create">Crea</string>
     <string name="all">Tutte</string>
 </resources>

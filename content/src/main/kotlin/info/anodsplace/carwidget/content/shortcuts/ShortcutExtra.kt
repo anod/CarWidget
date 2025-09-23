@@ -9,9 +9,10 @@ import info.anodsplace.carwidget.content.InternalShortcutResources
 import info.anodsplace.carwidget.content.R
 
 class ShortcutTargetActivity(
-    val settings: Class<*>,  // LookAndFeelActivity::class.java)
-    val switchInCar: Class<*>, //SwitchInCarActivity::class.java)
-    val runShortcut: Class<*>  //ShortcutActivity::class.java)
+    val settings: Class<*>,  // LookAndFeelActivity::class.java
+    val switchInCar: Class<*>, //SwitchInCarActivity::class.java
+    val runShortcut: Class<*>,  //ShortcutActivity::class.java
+    val folder: Class<*> // FolderActivity::class.java
 )
 
 interface ShortcutResources {

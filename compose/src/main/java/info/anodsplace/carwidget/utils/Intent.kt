@@ -16,6 +16,9 @@ import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.content.shortcuts.fillIntent
 import info.anodsplace.graphics.DrawableUri
 
+private const val ACTION_FOLDER = "info.anodsplace.carwidget.action.FOLDER"
+private const val EXTRA_FOLDER_ITEMS = "info.anodsplace.carwidget.extra.FOLDER_ITEMS" // ArrayList<Intent>
+
 fun Intent.forSettings(context: Context, appWidgetId: Int, target: ShortcutResources): Intent {
     component = ComponentName(context, target.activity.settings)
     putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
@@ -31,12 +34,26 @@ fun Intent.forPickShortcutLocal(shortcut: InternalShortcut, title: String, icnRe
 
     val intent = commonPickShortcutIntent(this, title, shortcutIntent)
     val iconResource = Intent.ShortcutIconResource.fromContext(ctx, icnResId)
+    @Suppress("DEPRECATION")
     intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource)
     return intent
 }
 
+fun Intent.forFolder(title: String, items: List<Intent>, ctx: Context, target: ShortcutResources): Intent {
+    action = ACTION_FOLDER
+    component = ComponentName(ctx, target.activity.folder)
+    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
+    @Suppress("DEPRECATION")
+    putExtra(Intent.EXTRA_SHORTCUT_NAME, title)
+    // Wrap List<Intent> into concrete ArrayList required by putParcelableArrayListExtra
+    putParcelableArrayListExtra(EXTRA_FOLDER_ITEMS, ArrayList(items))
+    return this
+}
+
 private fun commonPickShortcutIntent(thisIntent: Intent, title: String, shortcutIntent: Intent): Intent {
+    @Suppress("DEPRECATION")
     thisIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent)
+    @Suppress("DEPRECATION")
     thisIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, title)
     return thisIntent
 }
@@ -87,6 +104,7 @@ fun Intent.resolveDirectCall(contactUri: Uri, context: Context): Intent? {
                 val d = DrawableUri(context).resolve(photoUri.toUri(), resolveProperties)
                 if (d != null) {
                     val bitmap = UtilitiesBitmap.createHiResIconBitmap(d, context)
+                    @Suppress("DEPRECATION")
                     intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap)
                 }
             }

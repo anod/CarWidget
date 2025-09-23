@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -43,16 +44,16 @@ import info.anodsplace.carwidget.content.shortcuts.InternalShortcut
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.shortcut.ShortcutPickerViewEvent.LaunchShortcutError
 import info.anodsplace.carwidget.shortcut.ShortcutPickerViewEvent.Save
+import info.anodsplace.carwidget.utils.forFolder
 import info.anodsplace.carwidget.utils.forPickShortcutLocal
+import info.anodsplace.compose.PickGroup
+import info.anodsplace.ktx.sortAndReorder
 
 sealed interface ShortcutPickerState {
     data object Apps: ShortcutPickerState
     data object Shortcuts: ShortcutPickerState
     data object Folder: ShortcutPickerState
 }
-
-private const val ACTION_FOLDER = "info.anodsplace.carwidget.action.FOLDER"
-private const val EXTRA_FOLDER_ITEMS = "info.anodsplace.carwidget.extra.FOLDER_ITEMS" // ArrayList<Intent>
 
 @Composable
 fun ShortcutPickerScreen(
@@ -96,26 +97,29 @@ fun ShortcutPickerScreen(
             shortcutResources = shortcutResources
         )
         ShortcutPickerState.Folder -> FolderChooser(
-            onChoose = { folder ->
-                onEvent(Save(folder.getIntent(baseIntent = null), isApp = false))
+            onCreate = { entry ->
+                onEvent(Save(entry.getIntent(baseIntent = null), isApp = false))
                 onDismissRequest()
             },
             onDismissRequest = { screenState = ShortcutPickerState.Apps },
-            imageLoader = imageLoader
+            imageLoader = imageLoader,
+            shortcutResources = shortcutResources
         )
     }
 }
 
 @Composable
 fun FolderChooser(
-    onChoose: (ChooserEntry) -> Unit,
+    onCreate: (ChooserEntry) -> Unit,
     onDismissRequest: () -> Unit,
-    imageLoader: ImageLoader
+    imageLoader: ImageLoader,
+    shortcutResources: ShortcutResources
 ) {
     val context = LocalContext.current
     val loader = remember { AllAppsIntentLoader(context) }
     var title by remember { mutableStateOf("") }
     var selected by remember { mutableStateOf(setOf<ComponentName>()) }
+    var selectedCategory by remember { mutableStateOf<Int?>(null) }
 
     MultiSelectChooserDialog(
         modifier = Modifier.padding(horizontal = 16.dp),
@@ -129,7 +133,7 @@ fun FolderChooser(
         },
         onDismissRequest = onDismissRequest,
         imageLoader = imageLoader,
-        topContent = {
+        topContent = { apps ->
             Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
@@ -139,6 +143,11 @@ fun FolderChooser(
                     singleLine = true
                 )
                 Spacer(modifier = Modifier.height(12.dp))
+                CategoryFilterChips(
+                    apps = apps,
+                    selectedCategory = selectedCategory,
+                    onCategorySelected = { selectedCategory = it }
+                )
             }
         },
         bottomContent = { apps ->
@@ -155,23 +164,49 @@ fun FolderChooser(
                 Button(
                     onClick = {
                         val selectedEntries = apps.filter { it.componentName != null && selected.contains(it.componentName) }
-                        val folderIntent = Intent(ACTION_FOLDER).apply {
-                            @Suppress("DEPRECATION")
-                            putExtra(Intent.EXTRA_SHORTCUT_NAME, title) // Deprecated but still required for legacy shortcuts
-                            val intents = ArrayList<Intent>()
-                            selectedEntries.forEach { intents.add(it.getIntent(null)) }
-                            putParcelableArrayListExtra(EXTRA_FOLDER_ITEMS, intents)
-                        }
-                        val folderEntry = ChooserEntry(componentName = null, title = title, iconRes = 0, icon = null, intent = folderIntent)
-                        onChoose(folderEntry)
+                        val folderIntent = Intent().forFolder(
+                            title = title,
+                            items = selectedEntries.map { it.getIntent(baseIntent = null) },
+                            ctx = context,
+                            target = shortcutResources
+                        )
+                        onCreate(ChooserEntry(null, title, intent = folderIntent))
                     },
                     enabled = selected.isNotEmpty()
                 ) {
                     Text(stringResource(id = R.string.create))
                 }
             }
+        },
+        listFilter = if (selectedCategory == null) { { it } } else {
+            { list -> list.filter { it.category == selectedCategory } }
         }
     )
+}
+
+@Composable
+private fun CategoryFilterChips(
+    apps: List<ChooserEntry>,
+    selectedCategory: Int?,
+    onCategorySelected: (Int?) -> Unit
+) {
+    val context = LocalContext.current
+    val (categoryNames, orderedCategoryIds) = categoryNamesAndIds(context, apps)
+    if (categoryNames.isNotEmpty()) {
+        val allText = stringResource(id = R.string.all)
+        val options = remember(categoryNames) { arrayOf(allText) + categoryNames.toTypedArray() }
+        val selectedIndex = remember(selectedCategory, orderedCategoryIds) {
+            if (selectedCategory == null) 0 else (orderedCategoryIds.indexOf(selectedCategory) + 1).coerceAtLeast(0)
+        }
+        PickGroup(
+            options = options,
+            selectedIndex = selectedIndex,
+            onValueChanged = { idx ->
+                onCategorySelected(if (idx == 0) null else orderedCategoryIds.getOrNull(idx - 1))
+            }
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+    }
 }
 
 @Composable
@@ -259,5 +294,13 @@ private fun createCarWidgetShortcuts(context: Context, shortcutResources: Shortc
         val icon = shortcutResources.internalShortcuts.icons[shortcut.index]
         val intent = Intent().forPickShortcutLocal(shortcut, title, icon, context, shortcutResources)
         Header(headerId = shortcut.index, title = title, iconRes = icon, intent = intent)
+    }
+}
+
+// Extracted helper producing category names (display order) and ordered category ids from the provided apps list
+private fun categoryNamesAndIds(context: Context, apps: List<ChooserEntry>): Pair<List<String>, List<Int>> {
+    val categoryIds = apps.map { it.category }.distinct()
+    return categoryIds.sortAndReorder(categoryIds) { id ->
+        ApplicationInfo.getCategoryTitle(context, id)?.toString()
     }
 }

@@ -284,9 +284,12 @@ fun MultiSelectChooserDialog(
     onDismissRequest: () -> Unit,
     imageLoader: ImageLoader,
     minHeight: Dp = 420.dp,
-    topContent: @Composable () -> Unit = {},
+    // Provide original (unfiltered) list of apps to top content so it can build filters (chips)
+    topContent: @Composable (List<ChooserEntry>) -> Unit = {},
     bottomContent: @Composable (List<ChooserEntry>) -> Unit = {},
     style: ChooserGridListStyle = ChooserGridListDefaults.multiSelect(),
+    // List transformation applied before displaying in grid (selection still works with original components)
+    listFilter: (List<ChooserEntry>) -> List<ChooserEntry> = { it }
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -302,7 +305,8 @@ fun MultiSelectChooserDialog(
             minHeight = minHeight,
             topContent = topContent,
             bottomContent = bottomContent,
-            style = style
+            style = style,
+            listFilter = listFilter
         )
     }
 }
@@ -316,11 +320,13 @@ private fun MultiSelectChooserContent(
     onSelect: (ChooserEntry) -> Unit = { },
     imageLoader: ImageLoader,
     minHeight: Dp = 420.dp,
-    topContent: @Composable () -> Unit = {},
+    topContent: @Composable (List<ChooserEntry>) -> Unit = {},
     bottomContent: @Composable (List<ChooserEntry>) -> Unit = {},
     style: ChooserGridListStyle = ChooserGridListDefaults.multiSelect(),
+    listFilter: (List<ChooserEntry>) -> List<ChooserEntry> = { it }
 ) {
     val appsList by loader.load().collectAsState(initial = emptyList())
+    val filteredList = remember(appsList, listFilter) { listFilter(appsList) }
     val iconSizePx = with(LocalDensity.current) { iconSize.roundToPx() }
     val headerShape = SystemIconShape(iconSizePx)
     Surface(
@@ -332,11 +338,11 @@ private fun MultiSelectChooserContent(
         contentColor = MaterialTheme.colorScheme.onSurfaceVariant
     ) {
         Column {
-            topContent()
+            topContent(appsList)
             Box(modifier = Modifier.weight(1f, fill = true)) {
                 ChooserGridList(
                     headers = headers,
-                    list = appsList,
+                    list = filteredList,
                     imageLoader = imageLoader,
                     headerShape = headerShape,
                     selectedComponents = selectedComponents,
@@ -344,6 +350,7 @@ private fun MultiSelectChooserContent(
                     style = style
                 )
             }
+            // Pass original unfiltered list to bottomContent so selection works even if item hidden by filter
             bottomContent(appsList)
         }
     }
@@ -382,11 +389,12 @@ fun MultiSelectChooserContentPreview() {
         val app1 = ChooserEntry(componentName = ComponentName("pkg.sample", "pkg.sample.App1"), title = "App One")
         val app2 = ChooserEntry(componentName = ComponentName("pkg.sample", "pkg.sample.App2"), title = "App Two")
         val app3 = ChooserEntry(componentName = ComponentName("pkg.sample", "pkg.sample.App3"), title = "App Three")
-        MultiSelectChooserContent(
+        MultiSelectChooserDialog(
             loader = StaticChooserLoader(listOf(app1, app2, app3)),
             headers = listOf(Header(0, "Actions", iconRes = info.anodsplace.carwidget.skin.R.drawable.ic_shortcut_play_primary)),
             selectedComponents = setOf(app2.componentName!!),
             onSelect = { },
+            onDismissRequest = { },
             imageLoader = ImageLoader(ctx),
             style = ChooserGridListDefaults.multiSelect().copy(
                 grayscaleUnselectedIcons = true,
@@ -394,7 +402,7 @@ fun MultiSelectChooserContentPreview() {
                 dimAlpha = 0.4f,
                 selectionOutlineColor = MaterialTheme.colorScheme.secondary
             ),
-            topContent = { Text("Select apps", modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.titleMedium) },
+            topContent = { all -> Text("Select apps (${all.size})", modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.titleMedium) },
             bottomContent = { list -> Text("${list.size} apps", modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodySmall) }
         )
     }
