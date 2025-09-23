@@ -4,9 +4,11 @@ import android.app.Application
 import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -30,6 +32,7 @@ import info.anodsplace.framework.content.startActivitySafely
  *  - EXTRA_FOLDER_ITEM_URIS (ArrayList<String>) new format, OR
  *  - EXTRA_FOLDER_ITEMS (ArrayList<Intent>) legacy fallback
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FolderDialog(
     args: Deeplink.OpenFolder,
@@ -62,18 +65,16 @@ fun FolderDialog(
             onDismissRequest()
         },
         style = ChooserGridListDefaults.singleSelect(),
+        modifier = Modifier.padding(16.dp),
         topContent = { _ ->
-            Surface(
+            CenterAlignedTopAppBar(
                 modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.surfaceVariant
-            ) {
-                Text(
-                    text = viewState.title,
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                title = { Text(text = viewState.title, style = MaterialTheme.typography.titleLarge) },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-            }
+            )
         }
     )
 }
