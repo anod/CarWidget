@@ -15,11 +15,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,8 +26,6 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.currentStateAsState
 import coil.ImageLoader
@@ -39,7 +34,7 @@ import info.anodsplace.carwidget.TextDecreaseIcon
 import info.anodsplace.carwidget.TextIncreaseIcon
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.Header
-import info.anodsplace.carwidget.chooser.QueryIntentLoader
+import info.anodsplace.carwidget.chooser.QueryIntentChooserLoader
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.compose.BottomSheet
@@ -255,7 +250,7 @@ private fun IconsThemePicker(
     val context = LocalContext.current
     val lifecycleOwner: LifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
     val currentState by lifecycleOwner.lifecycle.currentStateAsState()
-    val loader = remember(currentState) { QueryIntentLoader(context, Intent().forIconTheme()) }
+    val loader = remember(currentState) { QueryIntentChooserLoader(context, Intent().forIconTheme()) }
     ChooserDialog(
         modifier = Modifier.padding(16.dp),
         headers = listOf(

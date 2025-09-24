@@ -77,7 +77,6 @@ fun createAppModule(): Module = module {
                 positionAdapter = IntColumnAdapter
             ),
             FolderItemAdapter = FolderItem.Adapter(
-                shortcutIdAdapter = IntColumnAdapter,
                 iconTypeAdapter = IntColumnAdapter,
                 itemTypeAdapter = IntColumnAdapter,
             ),

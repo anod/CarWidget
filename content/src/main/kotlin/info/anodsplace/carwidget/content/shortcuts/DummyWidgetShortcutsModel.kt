@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.content.shortcuts
 
 import android.content.Context
-import android.content.Intent
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.Shortcuts
@@ -37,16 +36,15 @@ class DummyWidgetShortcutsModel(private val context: Context, size: Int) : Short
 
     override suspend fun saveIntent(
         position: Int,
-        data: Intent,
-        isApplicationShortcut: Boolean
+        intent: ShortcutIntent,
     ): CreateShortcutResult {
         return CreateShortcutResult.None
     }
 
     override suspend fun saveFolder(
         position: Int,
-        data: Intent,
-        items: List<Intent>
+        intent: ShortcutIntent,
+        items: List<ShortcutIntent>
     ): CreateShortcutResult {
         return CreateShortcutResult.None
     }

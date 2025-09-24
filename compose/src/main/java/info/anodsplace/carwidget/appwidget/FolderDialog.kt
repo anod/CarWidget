@@ -20,7 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.ImageLoader
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.ChooserGridListDefaults
-import info.anodsplace.carwidget.chooser.IntentsChooserLoader
+import info.anodsplace.carwidget.chooser.ShortcutsChooserLoader
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.framework.content.startActivitySafely
@@ -51,7 +51,7 @@ fun FolderDialog(
     )
     val context = LocalContext.current
     val viewState by viewModel.viewStates.collectAsState()
-    val loader = remember(viewState.intents) { IntentsChooserLoader(context, viewState.intents) }
+    val loader = remember(viewState.items) { ShortcutsChooserLoader(context, viewState.items) }
 
     ChooserDialog(
         loader = loader,

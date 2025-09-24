@@ -3,7 +3,7 @@ import kotlin.Int;
 
 CREATE TABLE FolderItem (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    shortcutId INTEGER AS Int NOT NULL DEFAULT 0, -- "-1" - notification
+    shortcutId INTEGER NOT NULL DEFAULT 0, -- "-1" - notification
     itemId TEXT NOT NULL DEFAULT "",
     title TEXT NOT NULL DEFAULT "",
     intent TEXT NOT NULL DEFAULT "",
@@ -13,7 +13,8 @@ CREATE TABLE FolderItem (
     iconResource TEXT,
     icon BLOB,
     isCustomIcon INTEGER AS Boolean NOT NULL DEFAULT 0,
-    UNIQUE(shortcutId, itemId)
+    UNIQUE(shortcutId, itemId),
+    FOREIGN KEY (shortcutId) REFERENCES favorites(_id) ON DELETE CASCADE
 );
 
 selectFolder:

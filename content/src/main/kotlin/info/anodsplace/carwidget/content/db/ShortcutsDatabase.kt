@@ -70,6 +70,11 @@ class ShortcutsDatabase(private val db: Database) {
         return@withContext null
     }
 
+    suspend fun loadFolderItems(shortcutId: Long): List<Shortcut> = withContext(Dispatchers.IO) {
+        val list = db.folderItemQueries.selectFolderShortcut(shortcutId, mapper = ::mapFolderItem).executeAsList()
+        return@withContext list.filter { it.isValid }
+    }
+
     /**
      * Add an item to the database in a specified container. Sets the container,
      * screen, cellX and cellY fields of the item. Also assigns an ID to the
@@ -85,7 +90,7 @@ class ShortcutsDatabase(private val db: Database) {
             insert(targetId, position, item, icon)
             val shortcutId = db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: return@transactionWithResult Shortcut.ID_UNKNOWN
             items.forEach { (shortcut, icon) ->
-                insertFolderItem(shortcutId.toInt(), shortcut, icon)
+                insertFolderItem(shortcutId, shortcut, icon)
             }
             shortcutId
         }
@@ -172,7 +177,7 @@ class ShortcutsDatabase(private val db: Database) {
         }
     }
 
-    private fun insertFolderItem(shortcutId: Int, item: Shortcut, icon: ShortcutIcon) {
+    private fun insertFolderItem(shortcutId: Long, item: Shortcut, icon: ShortcutIcon) {
         val values = createShortcutContentValues(item, icon)
         try {
             db.folderItemQueries.insertFolder(
@@ -240,6 +245,30 @@ class ShortcutsDatabase(private val db: Database) {
         }
 
         return Shortcut(shortcutId, position, itemType, title, isCustomIcon, parsedIntent)
+    }
+
+    private fun mapFolderItem(
+        id: Long,
+        shortcutId: Long,
+        itemId: String,
+        title: String,
+        itemType: Int,
+        intent: String,
+        isCustomIcon: Boolean
+    ): Shortcut {
+        if (intent.isEmpty()) {
+            AppLog.e("Intent is empty for id:${itemId} title:${title}")
+            return Shortcut(id, -1, itemType, title, isCustomIcon, Intent())
+        }
+
+        val parsedIntent: Intent = try {
+            Intent.parseUri(intent, 0)
+        } catch (e: URISyntaxException) {
+            AppLog.e(e)
+            Intent()
+        }
+
+        return Shortcut(id, -1, itemType, title, isCustomIcon, parsedIntent)
     }
 
     companion object {

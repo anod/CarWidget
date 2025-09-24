@@ -1,7 +1,7 @@
 package info.anodsplace.carwidget.content.db
 
-import android.content.Intent
 import info.anodsplace.carwidget.content.shortcuts.CreateShortcutResult
+import info.anodsplace.carwidget.content.shortcuts.ShortcutIntent
 
 interface Shortcuts {
     val shortcuts: Map<Int, Shortcut?>
@@ -17,9 +17,9 @@ interface Shortcuts {
 
     fun get(position: Int): Shortcut?
 
-    suspend fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): CreateShortcutResult
+    suspend fun saveIntent(position: Int, intent: ShortcutIntent): CreateShortcutResult
 
-    suspend fun saveFolder(position: Int, data: Intent, items: List<Intent>): CreateShortcutResult
+    suspend fun saveFolder(position: Int, intent: ShortcutIntent, items: List<ShortcutIntent>): CreateShortcutResult
 
     suspend fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?)
 

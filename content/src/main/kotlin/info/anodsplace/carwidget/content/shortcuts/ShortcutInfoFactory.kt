@@ -29,7 +29,6 @@ sealed interface CreateShortcutResult {
     }
 
     data object None : CreateShortcutResult
-
     data class SuccessApp(override val info: Shortcut, override val icon: ShortcutIcon) : CreateShortcutResult, CreateShortcutResultSuccess
     data class SuccessCustom(override val info: Shortcut, override val icon: ShortcutIcon) : CreateShortcutResult, CreateShortcutResultSuccess
     data class SuccessAppShortcut(override val info: Shortcut, override val icon: ShortcutIcon) : CreateShortcutResult, CreateShortcutResultSuccess
@@ -37,35 +36,48 @@ sealed interface CreateShortcutResult {
     data object FailedAppShortcut : CreateShortcutResult
 }
 
-object ShortcutInfoFactory {
+class ShortcutIntent(val data: Intent, val isApp: Boolean) {
+    val isPinItemRequest: Boolean
+        get() = data.hasExtra(LauncherApps.EXTRA_PIN_ITEM_REQUEST)
+    val hasIntent: Boolean
+        get() = data.hasExtra(Intent.EXTRA_SHORTCUT_INTENT)
+    val intent: Intent?
+        get() = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT)
+    val name: String?
+        get() = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME)
+    val icon: Parcelable?
+        get() = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON)
+    val iconResource: Parcelable?
+        get() = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)
+    val pinItemRequest: LauncherApps.PinItemRequest?
+        get() = data.getParcelableExtra(LauncherApps.EXTRA_PIN_ITEM_REQUEST)
+}
 
+object ShortcutInfoFactory {
 
     internal fun createShortcut(
         context: Context,
         position: Int,
-        data: Intent,
-        isAppShortcut: Boolean
+        intent: ShortcutIntent
     ): CreateShortcutResult {
-        return if (isAppShortcut) {
-            infoFromApplicationIntent(context, position, data)
+        return if (intent.isApp) {
+            infoFromApplicationIntent(context, position, intent.data)
         } else {
-            infoFromShortcutIntent(context, position, data)
+            infoFromShortcutIntent(context, position, intent)
         }
     }
 
-    private fun infoFromShortcutIntent(context: Context, position: Int, data: Intent): CreateShortcutResult {
+    private fun infoFromShortcutIntent(context: Context, position: Int, data: ShortcutIntent): CreateShortcutResult {
 
         // Use fully supported EXTRA_SHORTCUT_INTENT when available
-        if (!data.hasExtra(Intent.EXTRA_SHORTCUT_INTENT) && data.hasExtra(LauncherApps.EXTRA_PIN_ITEM_REQUEST)) {
-            val item =
-                data.getParcelableExtra<LauncherApps.PinItemRequest>(LauncherApps.EXTRA_PIN_ITEM_REQUEST)
-                    ?: return CreateShortcutResult.FailedAppShortcut
+        if (!data.hasIntent && data.isPinItemRequest) {
+            val item = data.pinItemRequest ?: return CreateShortcutResult.FailedAppShortcut
             return shortcutFromPinItemRequest(item, context, position)
         }
 
-        val intent = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT) ?: Intent()
-        val name = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME) ?: ""
-        val extraIcon = data.getParcelableExtra<Parcelable>(Intent.EXTRA_SHORTCUT_ICON)
+        val intent = data.intent ?: Intent()
+        val name =  data.name ?: ""
+        val extraIcon = data.icon
         var bitmap: Bitmap? = null
         var icon: ShortcutIcon? = null
 
@@ -77,7 +89,7 @@ object ShortcutInfoFactory {
             )
             icon = ShortcutIcon.forCustomIcon(0, bitmap)
         } else {
-            val extra = data.getParcelableExtra<Parcelable>(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)
+            val extra = data.iconResource
             if (extra is ShortcutIconResource) {
                 AppLog.d("Custom shortcut with Icon Resource")
                 try {

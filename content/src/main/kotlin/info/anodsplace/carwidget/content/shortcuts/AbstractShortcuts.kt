@@ -1,7 +1,6 @@
 package info.anodsplace.carwidget.content.shortcuts
 
 import android.content.Context
-import android.content.Intent
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.Shortcuts
@@ -75,9 +74,9 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
         shortcutsDatabase.moveShortcut(targetId, from, to)
     }
 
-    override suspend fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): CreateShortcutResult = withContext(Dispatchers.IO) {
+    override suspend fun saveIntent(position: Int, intent: ShortcutIntent): CreateShortcutResult = withContext(Dispatchers.IO) {
         lazyInit()
-        val createResult = ShortcutInfoFactory.createShortcut(context, position, data, isApplicationShortcut)
+        val createResult = ShortcutInfoFactory.createShortcut(context, position, intent)
         if (createResult is CreateShortcutResult.CreateShortcutResultSuccess) {
             save(position, createResult.info, createResult.icon)
         }
@@ -86,14 +85,14 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
 
     override suspend fun saveFolder(
         position: Int,
-        data: Intent,
-        items: List<Intent>
+        intent: ShortcutIntent,
+        items: List<ShortcutIntent>
     ): CreateShortcutResult = withContext(Dispatchers.IO) {
         lazyInit()
-        val createResult = ShortcutInfoFactory.createShortcut(context, position, data, false)
+        val createResult = ShortcutInfoFactory.createShortcut(context, position, intent)
         if (createResult is CreateShortcutResult.CreateShortcutResultSuccess) {
             val itemShortcuts = items.mapNotNull { intent ->
-                val itemResult = ShortcutInfoFactory.createShortcut(context, position, intent, false)
+                val itemResult = ShortcutInfoFactory.createShortcut(context, position, intent)
                 if (itemResult is CreateShortcutResult.CreateShortcutResultSuccess) {
                     Pair(itemResult.info, itemResult.icon)
                 } else {

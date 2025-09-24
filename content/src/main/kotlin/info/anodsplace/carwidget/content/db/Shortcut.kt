@@ -22,7 +22,8 @@ data class Shortcut(
     val itemType: Int,
     val title: CharSequence,
     val isCustomIcon: Boolean,
-    val intent: Intent
+    val intent: Intent,
+    val itemId: String = intent.component?.toShortString() ?: intent.toUri(0).hashCode().toHexString()
 ) {
 
     val isApp: Boolean
@@ -30,9 +31,6 @@ data class Shortcut(
 
     val isValid: Boolean
         get() = id != ID_UNKNOWN
-
-    val itemId: String
-        get() = intent.component?.toShortString() ?: intent.toUri(0).hashCode().toHexString()
 
     constructor(id: Long, item: Shortcut) : this(
         id,

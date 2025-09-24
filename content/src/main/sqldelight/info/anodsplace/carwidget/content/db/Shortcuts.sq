@@ -31,8 +31,6 @@ SELECT _id AS shortcutId, position, title, itemType, intent, isCustomIcon FROM f
 selectShortcutIcon:
 SELECT iconType, icon, iconPackage, iconResource, itemType, isCustomIcon FROM favorites WHERE _id = :shortcutId;
 
-
-
 insert:
 INSERT INTO favorites (targetId, position, itemType, title, intent, iconType, icon, iconPackage, iconResource, isCustomIcon)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);

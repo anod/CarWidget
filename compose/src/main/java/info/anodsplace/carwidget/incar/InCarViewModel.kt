@@ -15,7 +15,8 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.SceneNavKey
 import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.chooser.ChooserLoader
-import info.anodsplace.carwidget.chooser.QueryIntentLoader
+import info.anodsplace.carwidget.chooser.QueryIntentChooserLoader
+import info.anodsplace.carwidget.chooser.toShortcutIntent
 import info.anodsplace.carwidget.content.PermissionDescriptionItem
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
@@ -85,7 +86,7 @@ class InCarViewModel(
     private val shortcutsModel = NotificationShortcutsModel(context, database)
 
     val appsLoader: ChooserLoader
-        get() = QueryIntentLoader(context, Intent().forLauncher())
+        get() = QueryIntentChooserLoader(context, Intent().forLauncher())
 
     class Factory(
         private val activity: ComponentActivity,
@@ -203,9 +204,8 @@ class InCarViewModel(
                 shortcutsModel.drop(shortcutIndex)
             } else {
                 shortcutsModel.saveIntent(
-                    shortcutIndex,
-                    entry.getIntent(baseIntent = null),
-                    isApplicationShortcut = true
+                    position = shortcutIndex,
+                    intent = entry.toShortcutIntent(isApp = true)
                 )
             }
         }

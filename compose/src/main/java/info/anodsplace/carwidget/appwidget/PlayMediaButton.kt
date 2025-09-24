@@ -9,13 +9,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import info.anodsplace.carwidget.chooser.ChooserDialog
-import info.anodsplace.carwidget.chooser.MediaListLoader
+import info.anodsplace.carwidget.chooser.MediaListChooserLoader
 import info.anodsplace.framework.media.MediaKeyEvent
 
 @Composable
 fun PlayMediaButton(onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
     val context = LocalContext.current
-    val loader = remember { MediaListLoader(context) }
+    val loader = remember { MediaListChooserLoader(context) }
     ChooserDialog(
         modifier = Modifier.padding(16.dp),
         headers = listOf(),

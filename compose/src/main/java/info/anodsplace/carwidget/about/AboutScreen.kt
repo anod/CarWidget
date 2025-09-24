@@ -38,7 +38,7 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.Header
-import info.anodsplace.carwidget.chooser.MediaListLoader
+import info.anodsplace.carwidget.chooser.MediaListChooserLoader
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.carwidget.permissions.RequestPermissionsDialog
@@ -176,7 +176,7 @@ fun AboutScreen(
 
     if (showMusicAppDialog) {
         val context = LocalContext.current
-        val loader = remember { MediaListLoader(context) }
+        val loader = remember { MediaListChooserLoader(context) }
         ChooserDialog(
             modifier = Modifier.padding(16.dp),
             headers = listOf(

@@ -13,6 +13,7 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.shortcuts.InternalShortcut
 import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra
+import info.anodsplace.carwidget.content.shortcuts.ShortcutIntent
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.content.shortcuts.fillIntent
 import info.anodsplace.graphics.DrawableUri
@@ -37,7 +38,7 @@ fun Intent.forPickShortcutLocal(shortcut: InternalShortcut, title: String, icnRe
     return intent
 }
 
-fun Intent.forFolder(title: String,ctx: Context, target: ShortcutResources): Intent {
+fun Intent.forFolder(title: String,ctx: Context, target: ShortcutResources): ShortcutIntent {
     val folderIntent = Intent().apply {
         action = ShortcutExtra.ACTION_FOLDER
         component = ComponentName(ctx, target.activity.overlay)
@@ -49,7 +50,7 @@ fun Intent.forFolder(title: String,ctx: Context, target: ShortcutResources): Int
     val iconResource = Intent.ShortcutIconResource.fromContext(ctx, target.folderShortcutIcon)
     @Suppress("DEPRECATION")
     intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource)
-    return intent
+    return ShortcutIntent(intent, isApp = false)
 }
 
 private fun commonPickShortcutIntent(thisIntent: Intent, title: String, shortcutIntent: Intent): Intent {
