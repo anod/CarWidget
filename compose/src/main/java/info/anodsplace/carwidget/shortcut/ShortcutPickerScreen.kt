@@ -119,6 +119,7 @@ fun FolderChooser(
     val context = LocalContext.current
     val loader = remember { AllAppsIntentChooserLoader(context) }
     var title by remember { mutableStateOf("") }
+    var titleManuallyChanged by remember { mutableStateOf(false) }
     var selected by remember { mutableStateOf(setOf<ComponentName>()) }
     var selectedCategory by remember { mutableStateOf<Int?>(null) }
 
@@ -135,19 +136,34 @@ fun FolderChooser(
         onDismissRequest = onDismissRequest,
         imageLoader = imageLoader,
         topContent = { apps ->
+            val (categoryNames, orderedCategoryIds) = categoryNamesAndIds(context, apps)
             Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = title,
-                    onValueChange = { title = it },
+                    onValueChange = {
+                        title = it
+                        // Mark that user changed title manually so future category selections won't override it
+                        titleManuallyChanged = true
+                    },
                     label = { Text(stringResource(id = R.string.title)) },
                     singleLine = true
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 CategoryFilterChips(
-                    apps = apps,
+                    categoryNames = categoryNames,
+                    orderedCategoryIds = orderedCategoryIds,
                     selectedCategory = selectedCategory,
-                    onCategorySelected = { selectedCategory = it }
+                    onCategorySelected = { cat ->
+                        selectedCategory = cat
+                        // Autofill folder title with category name if user hasn't manually changed title yet and category is not "All"
+                        if (cat != null && !titleManuallyChanged) {
+                            val idx = orderedCategoryIds.indexOf(cat)
+                            if (idx >= 0) {
+                                title = categoryNames[idx]
+                            }
+                        }
+                    }
                 )
             }
         },
@@ -188,12 +204,11 @@ fun FolderChooser(
 
 @Composable
 private fun CategoryFilterChips(
-    apps: List<ChooserEntry>,
+    categoryNames: List<String>,
+    orderedCategoryIds: List<Int>,
     selectedCategory: Int?,
     onCategorySelected: (Int?) -> Unit
 ) {
-    val context = LocalContext.current
-    val (categoryNames, orderedCategoryIds) = categoryNamesAndIds(context, apps)
     if (categoryNames.isNotEmpty()) {
         val allText = stringResource(id = R.string.all)
         val options = remember(categoryNames) { arrayOf(allText) + categoryNames.toTypedArray() }
