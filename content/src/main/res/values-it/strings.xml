@@ -10,18 +10,18 @@
     <string name="pref_font_size_title">Dimensioni carattere</string>
     <string name="pref_font_size_summary">Scegli le dimensioni del titolo</string>
     <string name="set_shortcut">Imposta scorciatoia</string>
-    <string name="pref_incar_mode_title">Modalità \"alla guida\"</string>
-    <string name="pref_incar_mode_enabled">Attiva modalità \"alla guida\"</string>
+    <string name="pref_incar_mode_title">Modalità "alla guida"</string>
+    <string name="pref_incar_mode_enabled">Attiva modalità "alla guida"</string>
     <string name="pref_detection">Attivazione</string>
     <string name="pref_blutooth_device_title">Dispositivo Bluetooth</string>
-    <string name="pref_blutooth_device_summary">Scegli un dispositivo bluetooth che abiliti la modalità \"alla guida\"</string>
+    <string name="pref_blutooth_device_summary">Scegli un dispositivo bluetooth che abiliti la modalità "alla guida"</string>
     <string name="turn_on_bluetooth_summary">Attiva Bluetooth</string>
-    <string name="bluetooth_device_category_title">Attiva modalità \"alla guida\" durante la connessione a:</string>
+    <string name="bluetooth_device_category_title">Attiva modalità "alla guida" durante la connessione a:</string>
     <string name="no_paired_devices_found_summary">Prima che un dispositivo possa essere selezionato deve essere associato e il Bluetooth deve essere attivato</string>
     <string name="pref_headset_connected_title">Auricolare collegato</string>
-    <string name="pref_headset_connected_summary">Attiva modalità \"alla guida\" quando il jack audio è collegato</string>
+    <string name="pref_headset_connected_summary">Attiva modalità "alla guida" quando il jack audio è collegato</string>
     <string name="pref_power_connected_title">Alimentatore collegato</string>
-    <string name="pref_power_connected_summary">Attiva modalità \"alla guida\" quando il cavo di alimentazione è collegato</string>
+    <string name="pref_power_connected_summary">Attiva modalità "alla guida" quando il cavo di alimentazione è collegato</string>
     <string name="pref_screen_timeout">Disabilita il timeout dello schermo</string>
     <string name="pref_screen_timeout_summary">Quando è selezionata, impedisce schermo di spegnersi automaticamente</string>
     <string name="pref_brightness_mode">Modalità luminosità</string>
@@ -31,17 +31,17 @@
     <string name="pref_media_volume_level">Volume dei media</string>
     <string name="pref_volume_level_summary">Imposta il livello del volume</string>
     <string name="pref_phone_volume_level">Volume chiamata</string>
-    <string name="incar_mode_enabled">Modalità \"alla guida\" abilitata</string>
+    <string name="incar_mode_enabled">Modalità "alla guida" abilitata</string>
     <string name="version_title">%1$s ver. %2$s</string>
     <string name="version_summary">Vota questo widget nel Play Store</string>
     <string name="shortcut_edit_title">Modifica scorciatoia</string>
-    <string name="pref_route_to_speaker">Inoltra all\'altoparlante</string>
+    <string name="pref_route_to_speaker">Inoltra all'altoparlante</string>
     <string name="pref_route_to_speaker_summary">Inoltra tutte le chiamate in arrivo agli altoparlanti del telefono</string>
     <string name="pref_scale_icon">Ridimensiona icone</string>
     <string name="pref_settings_transparent">Pulsante Impostazioni</string>
-    <string name="pref_incar_transparent">Pulsante \"alla guida\"</string>
-    <string name="pref_activate_car_mode">Modalità \"alla guida\" incorporata</string>
-    <string name="pref_activate_car_mode_summary">Sarà attivata la modalità \"alla guida\" di Android e verrà visualizzata un\'icona di notifica supplementare.</string>
+    <string name="pref_incar_transparent">Pulsante "alla guida"</string>
+    <string name="pref_activate_car_mode">Modalità "alla guida" incorporata</string>
+    <string name="pref_activate_car_mode_summary">Sarà attivata la modalità "alla guida" di Android e verrà visualizzata un'icona di notifica supplementare.</string>
     <string name="pref_backup_title">Copia / Ripristina</string>
     <string name="backup_current_widget">Widget attuale</string>
     <string name="backup_done">Copia eseguita.</string>
@@ -52,24 +52,24 @@
     <string name="pref_auto_answer">Risposta automatica</string>
     <string name="pref_auto_answer_summary">Risposta automatica alle chiamate in arrivo immediatamente o con 5 secondi di ritardo. (Sperimentale)</string>
     <string name="pref_autorun_app_title">Esecuzione automatica applicazione</string>
-    <string name="switch_in_car_activity">Attiva \"alla guida\"</string>
-    <string name="incar_mode_disabled">Modalità \"alla guida\" disabilitata.\nAbilitala nelle impostazioni del Widget per utilizzare la scorciatoia.</string>
+    <string name="switch_in_car_activity">Attiva "alla guida"</string>
+    <string name="incar_mode_disabled">Modalità "alla guida" disabilitata.\nAbilitala nelle impostazioni del Widget per utilizzare la scorciatoia.</string>
     <string name="set_shortcut_short">SET</string>
     <string name="notification">Notifica</string>
     <string name="shortcuts_summary">È possibile inserire fino a 3 scorciatoie sulla barra di stato</string>
     <string name="icons_theme">Tema icone</string>
     <string name="default_car_dock_app">Applicazione Car Dock predefinita</string>
     <string name="cardock_btn_1">Apri Informazioni applicazione</string>
-    <string name="cardock_text1">Per cancellare l\'applicazione predefinita:\n1. Aprire le informazioni sulle applicazioni predefinite\n2. Cliccare sul pulsante \"Cancella predefinite\"</string>
-    <string name="cardock_text2">La prossima volta che Car Dock verrà abilitato, scegliere \"Widget Car\" come applicazione predefinita.</string>
+    <string name="cardock_text1">Per cancellare l'applicazione predefinita:\n1. Aprire le informazioni sulle applicazioni predefinite\n2. Cliccare sul pulsante "Cancella predefinite"</string>
+    <string name="cardock_text2">La prossima volta che Car Dock verrà abilitato, scegliere "Widget Car" come applicazione predefinita.</string>
     <string name="pref_rotate_icon_title">Ruota le icone</string>
     <string name="pref_titles_hide_title">Nascondi i titoli</string>
     <string name="pref_titles_hide_summary">Non visualizzare i titoli per le scorciatoie</string>
     <string name="not_active">Non attivo</string>
     <string name="install_a_widget">Installa un widget</string>
     <string name="install_widget">Vai alla &lt;b&gt;schermata iniziale&lt;/b&gt; e apri la &lt;b&gt;lista delle applicazioni&lt;/b&gt;. Scegliere la &lt;b&gt;scheda widget&lt;/b&gt;, quindi scegliere &lt;b&gt;Car Widget&lt;/b&gt; e inserirlo in una schermata disponibile.</string>
-    <string name="incar_mode">Modalità \"alla guida\"</string>
-    <string name="use_gms_for_activity">Utilizza i servizi di Google Play per rilevare l\'attività</string>
+    <string name="incar_mode">Modalità "alla guida"</string>
+    <string name="use_gms_for_activity">Utilizza i servizi di Google Play per rilevare l'attività</string>
     <string name="gms_service_missing">I servizi di Google Play sono assenti su questo dispositivo.</string>
     <string name="gms_service_update_required">La versione installata dei servizi di Google Play non è aggiornata.</string>
     <string name="gms_service_disabled">La versione installata dei servizi di Google Play è stata disabilitata su questo dispositivo.</string>
@@ -108,7 +108,7 @@
     </string-array>
 
     <string-array name="carwidget_shortcuts">
-        <item>Attiva \"alla guida\"</item>
+        <item>Attiva "alla guida"</item>
         <item>Chiamata diretta</item>
         <item>Riproduci/Pausa</item>
         <item>Avanti</item>
@@ -150,7 +150,7 @@
     <string name="show">Fammi vedere</string>
     <string name="advanced">Impostazioni avanzate</string>
     <string name="allow_bluetooth">Consenti Bluetooth</string>
-    <string name="allow_bluetooth_summary">L\'accesso all\'elenco dei dispositivi Bluetooth richiede autorizzazioni</string>
+    <string name="allow_bluetooth_summary">L'accesso all'elenco dei dispositivi Bluetooth richiede autorizzazioni</string>
     <string name="widget_description_switch">Widget per cambiare modalità "Incar"</string>
     <string name="widget_description_large">Widget con grandi pulsanti configurabili</string>
     <string name="pref_screen_orientation_summary">Forzare qualsiasi app a ruotare in un orientamento. Avviso: non tutte le app possono funzionare correttamente</string>
@@ -162,7 +162,7 @@
     <string name="collapse">Crollare tutto</string>
     <string name="download">Scaricamento</string>
     <string name="incar_service_is_not_running">Il servizio di rilevatore "Incar" non è in esecuzione.</string>
-    <string name="disable_battery_optimization_warning">Disabilita l\'ottimizzazione della batteria</string>
+    <string name="disable_battery_optimization_warning">Disabilita l'ottimizzazione della batteria</string>
     <string name="music">Musica</string>
     <string name="call">Chiamata</string>
     <string name="maps">Mappe</string>
@@ -195,23 +195,23 @@
     <string name="crash_dialog_report_button">Rapporto</string>
     <string name="crash_dialog_title">Car Widget si è fermato</string>
     <string name="crash_dialog_toast">Il browser verrà aperto</string>
-    <string name="crash_dialog_text">Si prega di segnalare l\'incidente</string>
+    <string name="crash_dialog_text">Si prega di segnalare l'incidente</string>
     <string name="in_car_mode_switch">Interruttore in modalità Incar</string>
     <string name="general">Generale</string>
-    <string name="app_preferences">Preferenze dell\'app</string>
+    <string name="app_preferences">Preferenze dell'app</string>
     <string name="title">Titolo</string>
     <string name="edit_title">Modifica titolo</string>
     <string name="info">Informazioni</string>
     <string name="allow_permissions_brightness">Consenti alle impostazioni del sistema di scrittura di modificare la luminosità</string>
-    <string name="allow_permission_overlay">Consenti all\'overlay di app di modificare l\'orientamento</string>
-    <string name="missing_required_permissions">L\'app mancano le autorizzazioni richieste</string>
-    <string name="allow_access">Consentire l\'accesso</string>
+    <string name="allow_permission_overlay">Consenti all'overlay di app di modificare l'orientamento</string>
+    <string name="missing_required_permissions">L'app mancano le autorizzazioni richieste</string>
+    <string name="allow_access">Consentire l'accesso</string>
     <string name="notifications">Notifiche</string>
     <string name="permission_notification_desc">Notifiche in modalità e diagnostica Incar</string>
     <string name="permission_write_settings">Scrivi le impostazioni del sistema</string>
     <string name="adjust_brightness">Regola la luminosità</string>
     <string name="permission_draw_overlay">Disegna su altri Appps</string>
-    <string name="change_screen_orientation">Modificare l\'orientamento dello schermo</string>
+    <string name="change_screen_orientation">Modificare l'orientamento dello schermo</string>
     <string name="permission_answer_calls">Rispondi alle telefonate</string>
     <string name="permission_read_phone_state">Leggi lo stato del telefono</string>
     <string name="allow_answer_phone_calls">Consenti di rispondere alle chiamate</string>
@@ -224,4 +224,12 @@
     <string name="folder">Cartella</string>
     <string name="create">Crea</string>
     <string name="all">Tutte</string>
+    <string name="game">Gioco</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
+    <string name="image">Immagine</string>
+    <string name="social">Sociale</string>
+    <string name="news">Notizie</string>
+    <string name="navigation">Navigazione</string>
+    <string name="productivity">Produttività</string>
 </resources>

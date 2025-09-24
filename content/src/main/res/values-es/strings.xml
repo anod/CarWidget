@@ -224,4 +224,12 @@
     <string name="folder">Carpeta</string>
     <string name="create">Crear</string>
     <string name="all">Todos</string>
+    <string name="game">Juego</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
+    <string name="image">Imagen</string>
+    <string name="social">Social</string>
+    <string name="news">Noticias</string>
+    <string name="navigation">Navegación</string>
+    <string name="productivity">Productividad</string>
 </resources>

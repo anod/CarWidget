@@ -246,4 +246,12 @@
     <string name="folder">Folder</string>
     <string name="create">Create</string>
     <string name="all">All</string>
+    <string name="game">Game</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
+    <string name="image">Image</string>
+    <string name="social">Social</string>
+    <string name="news">News</string>
+    <string name="navigation">Navigation</string>
+    <string name="productivity">Productivity</string>
 </resources>

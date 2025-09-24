@@ -224,4 +224,12 @@
     <string name="folder">Dossier</string>
     <string name="create">Créer</string>
     <string name="all">Tous</string>
+    <string name="game">Jeu</string>
+    <string name="audio">Audio</string>
+    <string name="video">Vidéo</string>
+    <string name="image">Image</string>
+    <string name="social">Social</string>
+    <string name="news">Actualités</string>
+    <string name="navigation">Navigation</string>
+    <string name="productivity">Productivité</string>
 </resources>

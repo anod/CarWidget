@@ -221,4 +221,12 @@
     <string name="folder">Папка</string>
     <string name="create">Создать</string>
     <string name="all">Все</string>
+    <string name="game">Игра</string>
+    <string name="audio">Аудио</string>
+    <string name="video">Видео</string>
+    <string name="image">Изображение</string>
+    <string name="social">Социальные</string>
+    <string name="news">Новости</string>
+    <string name="navigation">Навигация</string>
+    <string name="productivity">Продуктивность</string>
 </resources>

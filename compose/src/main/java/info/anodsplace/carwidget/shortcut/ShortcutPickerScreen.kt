@@ -49,7 +49,6 @@ import info.anodsplace.carwidget.shortcut.ShortcutPickerViewEvent.Save
 import info.anodsplace.carwidget.utils.forFolder
 import info.anodsplace.carwidget.utils.forPickShortcutLocal
 import info.anodsplace.compose.PickGroup
-import info.anodsplace.ktx.sortAndReorder
 
 sealed interface ShortcutPickerState {
     data object Apps: ShortcutPickerState
@@ -300,10 +299,23 @@ private fun createCarWidgetShortcuts(context: Context, shortcutResources: Shortc
     }
 }
 
-// Extracted helper producing category names (display order) and ordered category ids from the provided apps list
 private fun categoryNamesAndIds(context: Context, apps: List<ChooserEntry>): Pair<List<String>, List<Int>> {
-    val categoryIds = apps.map { it.category }.distinct()
-    return categoryIds.sortAndReorder(categoryIds) { id ->
-        ApplicationInfo.getCategoryTitle(context, id)?.toString()
-    }
+    val presentIds = apps.map { it.category }.distinct().toSet()
+
+    val ordered = listOf(
+        ApplicationInfo.CATEGORY_GAME to R.string.game,
+        ApplicationInfo.CATEGORY_AUDIO to R.string.audio,
+        ApplicationInfo.CATEGORY_VIDEO to R.string.video,
+        ApplicationInfo.CATEGORY_IMAGE to R.string.image,
+        ApplicationInfo.CATEGORY_SOCIAL to R.string.social,
+        ApplicationInfo.CATEGORY_NEWS to R.string.news,
+        ApplicationInfo.CATEGORY_MAPS to R.string.navigation,
+        ApplicationInfo.CATEGORY_PRODUCTIVITY to R.string.productivity,
+    )
+
+    val filtered = ordered.filter { presentIds.contains(it.first) }
+    if (filtered.isEmpty()) return emptyList<String>() to emptyList()
+    val names = filtered.map { (_, resId) -> context.getString(resId) }
+    val ids = filtered.map { it.first }
+    return names to ids
 }

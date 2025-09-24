@@ -223,4 +223,12 @@
     <string name="folder">תיקיה</string>
     <string name="create">צור</string>
     <string name="all">הכל</string>
+    <string name="game">משחק</string>
+    <string name="audio">שמע</string>
+    <string name="video">וידאו</string>
+    <string name="image">תמונה</string>
+    <string name="social">חברתי</string>
+    <string name="news">חדשות</string>
+    <string name="navigation">ניווט</string>
+    <string name="productivity">פרודוקטיביות</string>
 </resources>

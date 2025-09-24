@@ -223,4 +223,12 @@
     <string name="folder">Mapp</string>
     <string name="create">Skapa</string>
     <string name="all">Alla</string>
+    <string name="game">Spel</string>
+    <string name="audio">Ljud</string>
+    <string name="video">Video</string>
+    <string name="image">Bild</string>
+    <string name="social">Socialt</string>
+    <string name="news">Nyheter</string>
+    <string name="navigation">Navigation</string>
+    <string name="productivity">Produktivitet</string>
 </resources>
