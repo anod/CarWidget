@@ -1,8 +1,6 @@
 package info.anodsplace.carwidget.content.shortcuts
 
 import android.content.Context
-import info.anodsplace.carwidget.content.db.Shortcut
-import info.anodsplace.carwidget.content.db.ShortcutIcon
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.preferences.InCarStorage
 import kotlinx.coroutines.flow.Flow
@@ -10,6 +8,7 @@ import kotlinx.coroutines.flow.flow
 
 class NotificationShortcutsModel(context: Context, database: ShortcutsDatabase) : AbstractShortcuts(context, database) {
 
+    override val targetId: Int = NOTIFICATION_TARGET_ID
     val filledCount: Int
         get() {
             var result = 0
@@ -27,32 +26,18 @@ class NotificationShortcutsModel(context: Context, database: ShortcutsDatabase) 
         // Nothing
     }
 
-    override suspend fun loadShortcuts(): Map<Int, Shortcut?> {
-        return shortcutsDatabase.loadTarget(notificationTargetId)
-    }
 
-    override suspend fun dropShortcut(position: Int) {
-        shortcutsDatabase.deleteTargetPosition(notificationTargetId, position)
-    }
-
-    override suspend fun saveShortcut(position: Int, shortcut: Shortcut, icon: ShortcutIcon) {
-        shortcutsDatabase.addItem(notificationTargetId, position, shortcut, icon)
-    }
-
-    override suspend fun moveShortcut(from: Int, to: Int) {
-        shortcutsDatabase.moveShortcut(notificationTargetId, from, to)
-    }
 
     override suspend fun runDbMigration() {
         val ids = InCarStorage.getMigrateIds(context)
-        shortcutsDatabase.migrateShortcutPosition(notificationTargetId, ids)
+        shortcutsDatabase.migrateShortcutPosition(targetId, ids)
         InCarStorage.launcherComponentsMigrated(context)
     }
 
     override fun isMigrated(): Boolean = InCarStorage.isDbMigrated(context)
 
     companion object {
-        const val notificationTargetId = -1
+        const val NOTIFICATION_TARGET_ID = -1
         fun request(context: Context, database: ShortcutsDatabase): Flow<NotificationShortcutsModel> = flow {
             emit(init(context, database))
         }

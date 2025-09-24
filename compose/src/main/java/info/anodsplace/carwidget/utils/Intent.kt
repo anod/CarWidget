@@ -16,7 +16,6 @@ import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.content.shortcuts.fillIntent
 import info.anodsplace.graphics.DrawableUri
-import org.json.JSONArray
 
 fun Intent.forSettings(context: Context, appWidgetId: Int, target: ShortcutResources): Intent {
     component = ComponentName(context, target.activity.settings)
@@ -38,17 +37,13 @@ fun Intent.forPickShortcutLocal(shortcut: InternalShortcut, title: String, icnRe
     return intent
 }
 
-fun Intent.forFolder(title: String, items: List<Intent>, ctx: Context, target: ShortcutResources): Intent {
+fun Intent.forFolder(title: String,ctx: Context, target: ShortcutResources): Intent {
     val folderIntent = Intent().apply {
         action = ShortcutExtra.ACTION_FOLDER
         component = ComponentName(ctx, target.activity.overlay)
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
         @Suppress("DEPRECATION")
         putExtra(Intent.EXTRA_SHORTCUT_NAME, title)
-        val uriStrings = items.map { it.toUri(0).toString() }
-        // JSON representation (preferred - survives toUri/parseUri reliably)
-        val json = JSONArray().apply { uriStrings.forEach { put(it) } }.toString()
-        putExtra(ShortcutExtra.EXTRA_FOLDER_ITEM_URIS_JSON, json)
     }
     val intent = commonPickShortcutIntent(this, title, folderIntent)
     val iconResource = Intent.ShortcutIconResource.fromContext(ctx, target.folderShortcutIcon)

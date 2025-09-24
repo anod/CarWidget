@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.WidgetUpdate
+import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.unaryPlus
@@ -29,6 +30,7 @@ data class ShortcutPickerViewState(
 sealed interface ShortcutPickerViewEvent {
     data class Save(val intent: Intent, val isApp: Boolean) : ShortcutPickerViewEvent
     data class LaunchShortcutError(val exception: Exception) : ShortcutPickerViewEvent
+    data class SaveFolder(val intent: Intent, val items: List<ChooserEntry>) : ShortcutPickerViewEvent
 }
 
 sealed interface ShortcutPickerViewAction {
@@ -70,6 +72,24 @@ class ShortcutPickerViewModel(
                 AppLog.e(event.exception)
                 emitAction(ShortcutPickerViewAction.ShowToast(text = "Cannot launch shortcut ${event.exception.message}",))
             }
+
+            is ShortcutPickerViewEvent.SaveFolder -> saveFolder(event.intent, event.items)
+        }
+    }
+
+    private fun saveFolder(intent: Intent, items: List<ChooserEntry>) {
+        if (scope.closed) {
+            return
+        }
+        // org.koin.core.error.ClosedScopeException
+        appScope.launch {
+            try {
+                val result = scope.get<WidgetShortcutsModel>().saveFolder(viewState.position, intent, items.map { i -> i.getIntent(null) })
+                update.request(intArrayOf(+appWidgetIdScope))
+                onSaveResult(result)
+            } catch (e: Exception) {
+                AppLog.e(e)
+            }
         }
     }
 
@@ -82,15 +102,18 @@ class ShortcutPickerViewModel(
             try {
                 val result = scope.get<WidgetShortcutsModel>().saveIntent(viewState.position, intent, isApp)
                 update.request(intArrayOf(+appWidgetIdScope))
-
-                if (result.second == CreateShortcutResult.SuccessAppShortcut) {
-                    emitAction(ShortcutPickerViewAction.ShowToast(resId = info.anodsplace.carwidget.content.R.string.app_shortcuts_limited,))
-                } else if (result.second == CreateShortcutResult.FailedAppShortcut) {
-                    emitAction(ShortcutPickerViewAction.ShowToast(resId = info.anodsplace.carwidget.content.R.string.app_shortcuts_limited,))
-                }
+                onSaveResult(result)
             } catch (e: Exception) {
                 AppLog.e(e)
             }
+        }
+    }
+
+    private fun onSaveResult(result: CreateShortcutResult) {
+        if (result is CreateShortcutResult.SuccessAppShortcut) {
+            emitAction(ShortcutPickerViewAction.ShowToast(resId = info.anodsplace.carwidget.content.R.string.app_shortcuts_limited,))
+        } else if (result == CreateShortcutResult.FailedAppShortcut) {
+            emitAction(ShortcutPickerViewAction.ShowToast(resId = info.anodsplace.carwidget.content.R.string.app_shortcuts_limited,))
         }
     }
 }

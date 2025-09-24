@@ -1,9 +1,10 @@
 import kotlin.Boolean;
 import kotlin.Int;
 
-CREATE TABLE Folders (
+CREATE TABLE FolderItem (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    originTargetId INTEGER NOT NULL DEFAULT 0, -- "-1" - notification
+    shortcutId INTEGER NOT NULL DEFAULT 0, -- "-1" - notification
+    itemId TEXT NOT NULL DEFAULT "",
     title TEXT NOT NULL DEFAULT "",
     intent TEXT NOT NULL DEFAULT "",
     itemType INTEGER NOT NULL,
@@ -12,5 +13,5 @@ CREATE TABLE Folders (
     iconResource TEXT,
     icon BLOB,
     isCustomIcon INTEGER NOT NULL DEFAULT 0,
-    UNIQUE(originTargetId)
+    UNIQUE(shortcutId, itemId)
 );

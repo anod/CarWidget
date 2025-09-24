@@ -97,8 +97,8 @@ fun ShortcutPickerScreen(
             shortcutResources = shortcutResources
         )
         ShortcutPickerState.Folder -> FolderChooser(
-            onCreate = { entry ->
-                onEvent(Save(entry.getIntent(baseIntent = null), isApp = false))
+            onCreate = { folderIntent, items ->
+                onEvent(ShortcutPickerViewEvent.SaveFolder(folderIntent, items))
                 onDismissRequest()
             },
             onDismissRequest = { screenState = ShortcutPickerState.Apps },
@@ -110,7 +110,7 @@ fun ShortcutPickerScreen(
 
 @Composable
 fun FolderChooser(
-    onCreate: (ChooserEntry) -> Unit,
+    onCreate: (Intent, List<ChooserEntry>) -> Unit,
     onDismissRequest: () -> Unit,
     imageLoader: ImageLoader,
     shortcutResources: ShortcutResources
@@ -166,11 +166,10 @@ fun FolderChooser(
                         val selectedEntries = apps.filter { it.componentName != null && selected.contains(it.componentName) }
                         val folderIntent = Intent().forFolder(
                             title = title,
-                            items = selectedEntries.map { it.getIntent(baseIntent = null) },
                             ctx = context,
                             target = shortcutResources
                         )
-                        onCreate(ChooserEntry(null, title, intent = folderIntent))
+                        onCreate(folderIntent, selectedEntries)
                     },
                     enabled = selected.isNotEmpty()
                 ) {

@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 abstract class AbstractShortcuts(internal val context: Context, protected val shortcutsDatabase: ShortcutsDatabase) : Shortcuts {
     private var isInitialized = false
     private var _shortcuts: MutableMap<Int, Shortcut?> = mutableMapOf()
-
+    abstract val targetId: Int
     override val shortcuts: Map<Int, Shortcut?>
         get() {
             require(isInitialized)
@@ -24,14 +24,6 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
     override fun equals(other: Any?): Boolean = equalsHash(this, other)
 
     override fun hashCode(): Int = hashCodeOf(_shortcuts.hashCode())
-
-    abstract suspend fun loadShortcuts(): Map<Int, Shortcut?>
-
-    abstract suspend fun dropShortcut(position: Int)
-
-    abstract suspend fun saveShortcut(position: Int, shortcut: Shortcut, icon: ShortcutIcon)
-
-    abstract suspend fun moveShortcut(from: Int, to: Int)
 
     abstract suspend fun runDbMigration()
 
@@ -50,7 +42,9 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
             runDbMigration()
         }
         val size = count
-        _shortcuts = loadShortcuts().filterKeys { it < size }.toMutableMap()
+        _shortcuts = shortcutsDatabase.loadTarget(targetId)
+            .filterKeys { it < size }
+            .toMutableMap()
         for (i in 0 until size) {
             if (!_shortcuts.containsKey(i)) {
                 _shortcuts[i] = null
@@ -65,7 +59,7 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
 
     override suspend fun reloadShortcut(position: Int, shortcutId: Long) {
         lazyInit()
-        if (shortcutId == Shortcut.idUnknown) {
+        if (shortcutId == Shortcut.ID_UNKNOWN) {
             _shortcuts[position] = null
         } else {
             val info = shortcutsDatabase.loadShortcut(shortcutId)
@@ -78,28 +72,56 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
         if (from == to) {
             return
         }
-        moveShortcut(from, to)
+        shortcutsDatabase.moveShortcut(targetId, from, to)
     }
 
-    override suspend fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Pair<Shortcut?, CreateShortcutResult> = withContext(Dispatchers.IO) {
+    override suspend fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): CreateShortcutResult = withContext(Dispatchers.IO) {
         lazyInit()
-        val shortcut = ShortcutInfoFactory.createShortcut(context, position, data, isApplicationShortcut)
-        save(position, shortcut.info, shortcut.icon)
-        return@withContext Pair(shortcuts[position], shortcut.result)
+        val createResult = ShortcutInfoFactory.createShortcut(context, position, data, isApplicationShortcut)
+        if (createResult is CreateShortcutResult.CreateShortcutResultSuccess) {
+            save(position, createResult.info, createResult.icon)
+        }
+        return@withContext createResult
+    }
+
+    override suspend fun saveFolder(
+        position: Int,
+        data: Intent,
+        items: List<Intent>
+    ): CreateShortcutResult = withContext(Dispatchers.IO) {
+        lazyInit()
+        val createResult = ShortcutInfoFactory.createShortcut(context, position, data, false)
+        if (createResult is CreateShortcutResult.CreateShortcutResultSuccess) {
+            val itemShortcuts = items.mapNotNull { intent ->
+                val itemResult = ShortcutInfoFactory.createShortcut(context, position, intent, false)
+                if (itemResult is CreateShortcutResult.CreateShortcutResultSuccess) {
+                    Pair(itemResult.info, itemResult.icon)
+                } else {
+                    null
+                }
+            }
+            shortcutsDatabase.saveFolder(targetId,
+                position = position,
+                item = createResult.info,
+                icon = createResult.icon,
+                items = itemShortcuts
+            )
+        }
+        return@withContext createResult
     }
 
     override suspend fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?) {
         lazyInit()
         if (shortcut == null) {
             _shortcuts[position] = null
-            dropShortcut(position)
+            shortcutsDatabase.deleteTargetPosition(targetId, position)
         } else {
-            saveShortcut(position, shortcut, icon!!)
+            shortcutsDatabase.addItem(targetId, position, shortcut, icon!!)
         }
     }
 
     override suspend fun drop(position: Int) {
         lazyInit()
-        dropShortcut(position)
+        shortcutsDatabase.deleteTargetPosition(targetId, position)
     }
 }

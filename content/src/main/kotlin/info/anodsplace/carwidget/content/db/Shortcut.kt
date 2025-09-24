@@ -10,32 +10,44 @@ import info.anodsplace.carwidget.content.extentions.isDebugBuild
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.ktx.equalsHash
 import info.anodsplace.ktx.hashCodeOf
+import okhttp3.internal.toHexString
 
 /**
  * @author algavris
  * @date 22/08/2016.
  */
 data class Shortcut(
-        val id: Long,
-        val position: Int,
-        val itemType: Int,
-        val title: CharSequence,
-        val isCustomIcon: Boolean,
-        val intent: Intent
+    val id: Long,
+    val position: Int,
+    val itemType: Int,
+    val title: CharSequence,
+    val isCustomIcon: Boolean,
+    val intent: Intent
 ) {
 
     val isApp: Boolean
         get() = itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
 
     val isValid: Boolean
-        get() = id != idUnknown
+        get() = id != ID_UNKNOWN
 
-    constructor(id: Long, item: Shortcut) : this(id, item.position, item.itemType, item.title, item.isCustomIcon, item.intent)
+    val itemId: String
+        get() = intent.component?.toShortString() ?: intent.toUri(0).hashCode().toHexString()
+
+    constructor(id: Long, item: Shortcut) : this(
+        id,
+        item.position,
+        item.itemType,
+        item.title,
+        item.isCustomIcon,
+        item.intent
+    )
 
     companion object {
-        const val idUnknown: Long = WidgetInterface.idUnknown
+        const val ID_UNKNOWN: Long = WidgetInterface.idUnknown
 
-        val unknown: Shortcut = Shortcut(idUnknown, 0, 0, "", false, Intent())
+        val unknown: Shortcut = Shortcut(ID_UNKNOWN, 0, 0, "", false, Intent())
+
         /**
          * Creates the application intent based on a component name and various launch flags.
          * Sets [.itemType] to [LauncherSettings.Favorites.ITEM_TYPE_APPLICATION].
@@ -44,12 +56,26 @@ data class Shortcut(
          * @param className   the class name of the component representing the intent
          * @param launchFlags the launch flags
          */
-        fun forActivity(id: Long, position: Int, title: CharSequence, isCustomIcon: Boolean, className: ComponentName, launchFlags: Int): Shortcut {
+        fun forActivity(
+            id: Long,
+            position: Int,
+            title: CharSequence,
+            isCustomIcon: Boolean,
+            className: ComponentName,
+            launchFlags: Int
+        ): Shortcut {
             val intent = Intent(Intent.ACTION_MAIN)
             intent.addCategory(Intent.CATEGORY_LAUNCHER)
             intent.component = className
             intent.flags = launchFlags
-            return Shortcut(id, position, LauncherSettings.Favorites.ITEM_TYPE_APPLICATION, title, isCustomIcon, intent)
+            return Shortcut(
+                id,
+                position,
+                LauncherSettings.Favorites.ITEM_TYPE_APPLICATION,
+                title,
+                isCustomIcon,
+                intent
+            )
         }
     }
 
@@ -67,10 +93,15 @@ fun Shortcut.iconUri(isDebug: Boolean, adaptiveIconStyle: String, skinName: Stri
         .build()
 }
 
-fun Shortcut.toImageRequest(context: Context, adaptiveIconStyle: String, skinName: String = "", iconVersion: Int = -1): ImageRequest = ImageRequest.Builder(context)
+fun Shortcut.toImageRequest(
+    context: Context,
+    adaptiveIconStyle: String,
+    skinName: String = "",
+    iconVersion: Int = -1
+): ImageRequest = ImageRequest.Builder(context)
     .data(iconUri(context.isDebugBuild, adaptiveIconStyle, skinName)).apply {
-       if (iconVersion > 0) {
-           parameters(Parameters.Builder().set("version", iconVersion).build())
-       }
+        if (iconVersion > 0) {
+            parameters(Parameters.Builder().set("version", iconVersion).build())
+        }
     }
     .build()

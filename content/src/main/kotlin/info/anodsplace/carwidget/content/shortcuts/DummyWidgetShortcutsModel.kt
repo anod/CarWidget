@@ -16,8 +16,8 @@ class DummyWidgetShortcutsModel(private val context: Context, size: Int) : Short
     override val count: Int = size
 
     override suspend fun createDefaultShortcuts() {
-        DefaultShortcuts.load(context).forEachIndexed { index, result ->
-            _shortcuts[index] = result.info
+        DefaultShortcuts.load(context).forEachIndexed { index, shortcut ->
+            _shortcuts[index] = shortcut.info
         }
     }
 
@@ -39,8 +39,16 @@ class DummyWidgetShortcutsModel(private val context: Context, size: Int) : Short
         position: Int,
         data: Intent,
         isApplicationShortcut: Boolean
-    ): Pair<Shortcut?, CreateShortcutResult> {
-        return Pair(null, CreateShortcutResult.None)
+    ): CreateShortcutResult {
+        return CreateShortcutResult.None
+    }
+
+    override suspend fun saveFolder(
+        position: Int,
+        data: Intent,
+        items: List<Intent>
+    ): CreateShortcutResult {
+        return CreateShortcutResult.None
     }
 
     override suspend fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?) {

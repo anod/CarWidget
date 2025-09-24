@@ -123,7 +123,7 @@ class BackupManager(
             inCarSettings.clear()
             inCarSettings.applyPending()
 
-            database.restoreTarget(NotificationShortcutsModel.notificationTargetId, notificationShortcuts)
+            database.restoreTarget(NotificationShortcutsModel.NOTIFICATION_TARGET_ID, notificationShortcuts)
         }
 
         return Backup.RESULT_DONE

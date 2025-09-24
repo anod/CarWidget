@@ -131,16 +131,16 @@ class ShortcutsJsonReader(private val context: Context) {
             }
         }
 
-        val info = Shortcut(Shortcut.idUnknown, pos, itemType, title, isCustomIcon, intent ?: Intent())
+        val info = Shortcut(Shortcut.ID_UNKNOWN, pos, itemType, title, isCustomIcon, intent ?: Intent())
 
         var bitmap: Bitmap? = null
         var icon: ShortcutIcon? = null
         if (itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
             bitmap = decodeIcon(iconData, unusedBitmap)
             icon = if (isCustomIcon) {
-                ShortcutIcon.forCustomIcon(Shortcut.idUnknown, bitmap!!)
+                ShortcutIcon.forCustomIcon(Shortcut.ID_UNKNOWN, bitmap!!)
             } else {
-                ShortcutIcon.forActivity(Shortcut.idUnknown, bitmap!!)
+                ShortcutIcon.forActivity(Shortcut.ID_UNKNOWN, bitmap!!)
             }
         } else {
             if (iconType == LauncherSettings.Favorites.ICON_TYPE_RESOURCE) {
@@ -166,19 +166,19 @@ class ShortcutsJsonReader(private val context: Context) {
                     bitmap = decodeIcon(iconData, unusedBitmap)
                 }
                 if (bitmap != null) {
-                    icon = ShortcutIcon.forIconResource(Shortcut.idUnknown, bitmap, iconResource)
+                    icon = ShortcutIcon.forIconResource(Shortcut.ID_UNKNOWN, bitmap, iconResource)
                 }
             } else if (iconType == LauncherSettings.Favorites.ICON_TYPE_BITMAP) {
                 bitmap = decodeIcon(iconData, unusedBitmap)
                 if (bitmap != null) {
-                    icon = ShortcutIcon.forCustomIcon(Shortcut.idUnknown, bitmap)
+                    icon = ShortcutIcon.forCustomIcon(Shortcut.ID_UNKNOWN, bitmap)
                 }
             }
         }
 
         if (bitmap == null) {
             bitmap = UtilitiesBitmap.makeDefaultIcon(context.packageManager)
-            icon = ShortcutIcon.forFallbackIcon(Shortcut.idUnknown, bitmap)
+            icon = ShortcutIcon.forFallbackIcon(Shortcut.ID_UNKNOWN, bitmap)
         }
 
         reader.endObject()

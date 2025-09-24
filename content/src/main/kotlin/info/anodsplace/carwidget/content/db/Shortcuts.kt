@@ -17,7 +17,9 @@ interface Shortcuts {
 
     fun get(position: Int): Shortcut?
 
-    suspend fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): Pair<Shortcut?, CreateShortcutResult>
+    suspend fun saveIntent(position: Int, data: Intent, isApplicationShortcut: Boolean): CreateShortcutResult
+
+    suspend fun saveFolder(position: Int, data: Intent, items: List<Intent>): CreateShortcutResult
 
     suspend fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?)
 

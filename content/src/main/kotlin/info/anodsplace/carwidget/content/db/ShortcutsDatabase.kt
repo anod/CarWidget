@@ -77,7 +77,18 @@ class ShortcutsDatabase(private val db: Database) {
      */
     suspend fun addItem(targetId: Int, position: Int, item: Shortcut, icon: ShortcutIcon): Long = withContext(Dispatchers.IO) {
         insert(targetId, position, item, icon)
-        return@withContext db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: Shortcut.idUnknown
+        return@withContext db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: Shortcut.ID_UNKNOWN
+    }
+
+    suspend fun saveFolder(targetId: Int, position: Int, item: Shortcut, icon: ShortcutIcon, items: List<Pair<Shortcut, ShortcutIcon>>): Long = withContext(Dispatchers.IO) {
+        return@withContext db.transactionWithResult {
+            insert(targetId, position, item, icon)
+            val shortcutId = db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: return@transactionWithResult Shortcut.ID_UNKNOWN
+            items.forEach { (shortcut, icon) ->
+                insertFolderItem(shortcutId.toInt(), shortcut, icon)
+            }
+            shortcutId
+        }
     }
 
     /**
@@ -161,6 +172,38 @@ class ShortcutsDatabase(private val db: Database) {
         }
     }
 
+    private fun insertFolderItem(shortcutId: Int, item: Shortcut, icon: ShortcutIcon) {
+        val values = createShortcutContentValues(item, icon)
+        try {
+            db.folderItemQueries.insertFolder(
+                shortcutId = shortcutId,
+                itemId = item.itemId,
+                itemType = values.getAsInteger(LauncherSettings.Favorites.ITEM_TYPE),
+                title = values.getAsString(LauncherSettings.Favorites.TITLE),
+                intent = values.getAsString(LauncherSettings.Favorites.INTENT),
+                iconType = values.getAsInteger(LauncherSettings.Favorites.ICON_TYPE),
+                icon = values.getAsByteArray(LauncherSettings.Favorites.ICON),
+                iconPackage = values.getAsString(LauncherSettings.Favorites.ICON_PACKAGE),
+                iconResource = values.getAsString(LauncherSettings.Favorites.ICON_RESOURCE),
+                isCustomIcon = values.getAsBoolean(LauncherSettings.Favorites.IS_CUSTOM_ICON)
+            )
+        } catch (e: SQLiteConstraintException) {
+            AppLog.e(e)
+            db.folderItemQueries.updateFolder(
+                shortcutId = shortcutId,
+                itemId = item.itemId,
+                itemType = values.getAsInteger(LauncherSettings.Favorites.ITEM_TYPE),
+                title = values.getAsString(LauncherSettings.Favorites.TITLE),
+                intent = values.getAsString(LauncherSettings.Favorites.INTENT),
+                iconType = values.getAsInteger(LauncherSettings.Favorites.ICON_TYPE),
+                icon = values.getAsByteArray(LauncherSettings.Favorites.ICON),
+                iconPackage = values.getAsString(LauncherSettings.Favorites.ICON_PACKAGE),
+                iconResource = values.getAsString(LauncherSettings.Favorites.ICON_RESOURCE),
+                isCustomIcon = values.getAsBoolean(LauncherSettings.Favorites.IS_CUSTOM_ICON)
+            )
+        }
+    }
+
     suspend fun deleteTargetPosition(targetId: Int, position: Int) = withContext(Dispatchers.IO) {
         db.shortcutsQueries.deleteTargetPosition(targetId, position)
     }
@@ -176,7 +219,7 @@ class ShortcutsDatabase(private val db: Database) {
     suspend fun migrateShortcutPosition(targetId: Int, positionIds: ArrayList<Long>) = withContext(Dispatchers.IO) {
         db.transaction {
             positionIds.forEachIndexed { index, shortcutId ->
-                if (shortcutId != Shortcut.idUnknown) {
+                if (shortcutId != Shortcut.ID_UNKNOWN) {
                     db.shortcutsQueries.migrateShortcutPosition(shortcutId = shortcutId, targetId = targetId, position = index)
                 }
             }

@@ -133,7 +133,7 @@ class InCarViewModel(
         }
 
         viewModelScope.launch {
-            database.observeTarget(NotificationShortcutsModel.notificationTargetId).collect {
+            database.observeTarget(NotificationShortcutsModel.NOTIFICATION_TARGET_ID).collect {
                 shortcutsModel.init()
                 viewState = viewState.copy(notificationShortcuts = shortcutsModel.shortcuts)
             }

@@ -12,6 +12,7 @@ import info.anodsplace.carwidget.content.backup.BackupManager
 import info.anodsplace.carwidget.content.db.Database
 import info.anodsplace.carwidget.content.db.DbShortcutIconLoader
 import info.anodsplace.carwidget.content.db.Favorites
+import info.anodsplace.carwidget.content.db.FolderItem
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.graphics.AppIconFetcher
@@ -74,7 +75,12 @@ fun createAppModule(): Module = module {
                 iconTypeAdapter = IntColumnAdapter,
                 itemTypeAdapter = IntColumnAdapter,
                 positionAdapter = IntColumnAdapter
-            )
+            ),
+            FolderItemAdapter = FolderItem.Adapter(
+                shortcutIdAdapter = IntColumnAdapter,
+                iconTypeAdapter = IntColumnAdapter,
+                itemTypeAdapter = IntColumnAdapter,
+            ),
         )
     }
     singleOf(::ShortcutsDatabase)

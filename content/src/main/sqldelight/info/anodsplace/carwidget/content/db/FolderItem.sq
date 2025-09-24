@@ -1,0 +1,69 @@
+import kotlin.Boolean;
+import kotlin.Int;
+
+CREATE TABLE FolderItem (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    shortcutId INTEGER AS Int NOT NULL DEFAULT 0, -- "-1" - notification
+    itemId TEXT NOT NULL DEFAULT "",
+    title TEXT NOT NULL DEFAULT "",
+    intent TEXT NOT NULL DEFAULT "",
+    itemType INTEGER AS Int NOT NULL,
+    iconType INTEGER AS Int NOT NULL,
+    iconPackage TEXT,
+    iconResource TEXT,
+    icon BLOB,
+    isCustomIcon INTEGER AS Boolean NOT NULL DEFAULT 0,
+    UNIQUE(shortcutId, itemId)
+);
+
+selectFolder:
+SELECT id, shortcutId, itemId, title, itemType, intent, isCustomIcon FROM FolderItem WHERE id = :folderId;
+
+selectFolderShortcut:
+SELECT id, shortcutId, itemId, title, itemType, intent, isCustomIcon FROM FolderItem WHERE shortcutId = ?;
+
+selectFolderShortcutByItemId:
+SELECT id, shortcutId, itemId, title, itemType, intent, isCustomIcon FROM FolderItem WHERE shortcutId = ? AND itemId = ?;
+
+selectFolderShortcutIcon:
+SELECT iconType, icon, iconPackage, iconResource, itemType, isCustomIcon FROM FolderItem WHERE id = :folderId;
+
+insertFolder:
+INSERT INTO FolderItem (shortcutId, itemId, itemType, title, intent, iconType, icon, iconPackage, iconResource, isCustomIcon)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+updateFolder:
+UPDATE FolderItem SET
+    itemType = :itemType,
+    title = :title,
+    intent = :intent,
+    iconType = :iconType,
+    icon = :icon,
+    iconPackage = :iconPackage,
+    iconResource = :iconResource,
+    isCustomIcon = :isCustomIcon
+ WHERE shortcutId = :shortcutId AND itemId = :itemId;
+
+updateFolderShortcutIntent:
+UPDATE FolderItem SET intent = ? WHERE id = :folderId;
+
+updateFolderShortcutIcon:
+UPDATE FolderItem SET iconType = :iconType, icon = :icon, iconPackage = :iconPackage, iconResource = :iconResource, isCustomIcon = :isCustomIcon WHERE id = :folderId;
+
+updateFolderShortcutTitle:
+UPDATE FolderItem SET title = :title WHERE id = :folderId;
+
+folderLastInsertId:
+SELECT last_insert_rowid();
+
+deleteFolderShortcut:
+DELETE FROM FolderItem WHERE id = :folderId;
+
+deleteFolderTarget:
+DELETE FROM FolderItem WHERE shortcutId = ?;
+
+deleteFolderTargets:
+DELETE FROM FolderItem WHERE shortcutId IN ?;
+
+deleteFolderShortcutByItemId:
+DELETE FROM FolderItem WHERE shortcutId = ? AND itemId = ?;

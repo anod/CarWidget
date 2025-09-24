@@ -6,7 +6,7 @@ import android.content.Intent
 import info.anodsplace.carwidget.content.extentions.isAvailable
 
 object DefaultShortcuts {
-    suspend fun load(context: Context, maxItems: Int = 5): List<ShortcutInfoFactory.Result> {
+    suspend fun load(context: Context, maxItems: Int = 5): List<CreateShortcutResult.CreateShortcutResultSuccess> {
         val list = arrayOf(
             ComponentName("com.google.android.dialer", "com.google.android.dialer.extensions.GoogleDialtactsActivity"),
             ComponentName("com.android.contacts", "com.android.contacts.DialtactsActivity"),
@@ -28,15 +28,15 @@ object DefaultShortcuts {
 
         var position = 0
         val data = Intent()
-        val result = mutableListOf<ShortcutInfoFactory.Result>()
+        val result = mutableListOf<CreateShortcutResult.CreateShortcutResultSuccess>()
         for (i in list.indices) {
             data.component = list[i]
             if (!data.isAvailable(context)) {
                 continue
             }
-            val shortcut = ShortcutInfoFactory.infoFromApplicationIntent(context, position, data)
-            if (shortcut.info != null) {
-                result.add(shortcut)
+            val createResult = ShortcutInfoFactory.infoFromApplicationIntent(context, position, data)
+            if (createResult is CreateShortcutResult.CreateShortcutResultSuccess) {
+                result.add(createResult)
                 position++
             }
             if (position == maxItems) {
