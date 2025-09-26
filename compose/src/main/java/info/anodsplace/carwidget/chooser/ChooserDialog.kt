@@ -38,6 +38,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -223,9 +224,9 @@ fun ChooserGridList(
                 animation = tween(1800, easing = LinearEasing),
                 repeatMode = RepeatMode.Reverse
             ), label = "glow-value"
-        ) else remember { mutableStateOf(0.5f) }
+        ) else remember { mutableFloatStateOf(0.5f) }
 
-    val placeholderCount = 12
+    val placeholderCount = 7
 
     LazyVerticalGrid(
         contentPadding = PaddingValues(16.dp),
