@@ -18,6 +18,7 @@ import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.shortcuts.ShortcutInfoFactory
+import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.shortcut.intent.IntentField
 import info.anodsplace.framework.content.ShowToastActionDefaults
@@ -78,6 +79,7 @@ class ShortcutEditViewModel(
     private val shortcutsDatabase: ShortcutsDatabase = get()
     private val model: WidgetShortcutsModel by inject()
     private val context: Context by inject()
+    private val shortcutResources: ShortcutResources by inject()
     val widgetSettings: WidgetInterface by inject()
     val imageLoader: ImageLoader by inject()
 
@@ -141,6 +143,12 @@ class ShortcutEditViewModel(
                 val shortcut = viewState.shortcut ?: return
                 val component = shortcut.intent.component ?: return
                 appScope.launch {
+                    if (shortcut.isFolder) {
+                        val iconResource = Intent.ShortcutIconResource.fromContext(context, shortcutResources.folderShortcutIcon)
+                        val defaultIcon = ShortcutInfoFactory.resolveIconResource(iconResource, context)
+                        shortcutsDatabase.updateIcon(shortcut.id, defaultIcon)
+                        return@launch
+                    }
                     val resolveInfo = context.packageManager.resolveActivity(shortcut.intent, 0)
                     val defaultIcon = ShortcutInfoFactory.resolveAppIcon(resolveInfo, component, context)
                     shortcutsDatabase.updateIcon(shortcut.id, defaultIcon)

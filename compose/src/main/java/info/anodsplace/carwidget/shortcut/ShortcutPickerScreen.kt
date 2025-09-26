@@ -290,19 +290,6 @@ private fun AppChooser(
     )
 }
 
-@Composable
-fun IntentChooser(intent: Intent, onChoose: (ChooserEntry) -> Unit, onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
-    val context = LocalContext.current
-    val loader = remember { QueryIntentChooserLoader(context, intent) }
-    ChooserDialog(
-        modifier = Modifier.padding(horizontal = 16.dp),
-        loader = loader,
-        onDismissRequest = onDismissRequest,
-        onClick = onChoose,
-        imageLoader = imageLoader
-    )
-}
-
 private fun createCarWidgetShortcuts(context: Context, shortcutResources: ShortcutResources): List<Header> {
     val shortcuts = InternalShortcut.all
     val titles = InternalShortcut.titles(context)

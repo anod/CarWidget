@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.content.db
 
 import android.net.Uri
 import android.provider.BaseColumns
+import androidx.core.net.toUri
 
 
 /**
@@ -32,7 +33,7 @@ class LauncherSettings {
                 "com.anod.car.home.free.shortcutsprovider"
 
             fun getContentUri(isDebug: Boolean, id: Long): Uri {
-                return Uri.parse("$CONTENT_PREFIX${authority(isDebug = isDebug)}/$TABLE_FAVORITES/$id")
+                return "$CONTENT_PREFIX${authority(isDebug = isDebug)}/$TABLE_FAVORITES/$id".toUri()
             }
 
             private const val CONTENT_PREFIX = "content://"

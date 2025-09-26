@@ -92,15 +92,10 @@ object ShortcutInfoFactory {
             val extra = data.iconResource
             if (extra is ShortcutIconResource) {
                 AppLog.d("Custom shortcut with Icon Resource")
-                try {
-                    bitmap = getPackageIcon(context, extra)
-                    icon = ShortcutIcon.forIconResource(Shortcut.ID_UNKNOWN, bitmap!!, extra)
-                } catch (e: Resources.NotFoundException) {
-                    AppLog.e(e)
-                } catch (e: PackageManager.NameNotFoundException) {
-                    AppLog.e(e)
-                }
-
+                icon = resolveIconResource(
+                    iconResource = extra,
+                    context = context
+                )
             }
         }
 
@@ -174,7 +169,7 @@ object ShortcutInfoFactory {
     }
 
     @Throws(PackageManager.NameNotFoundException::class)
-    private fun getPackageIcon(context: Context, iconResource: ShortcutIconResource): Bitmap? {
+    fun getPackageIcon(context: Context, iconResource: ShortcutIconResource): Bitmap? {
         val packageManager = context.packageManager
         val resources = packageManager.getResourcesForApplication(iconResource.packageName)
         val id = resources.getIdentifier(iconResource.resourceName, null, null)
@@ -241,6 +236,22 @@ object ShortcutInfoFactory {
         }
         // the fallback icon
         bitmap = UtilitiesBitmap.makeDefaultIcon(context.packageManager)
+        return ShortcutIcon.forFallbackIcon(Shortcut.ID_UNKNOWN, bitmap)
+    }
+
+    fun resolveIconResource(
+        iconResource: ShortcutIconResource,
+        context: Context
+    ): ShortcutIcon {
+        try {
+            val bitmap = getPackageIcon(context, iconResource)
+            return ShortcutIcon.forIconResource(Shortcut.ID_UNKNOWN, bitmap!!, iconResource)
+        } catch (e: Resources.NotFoundException) {
+            AppLog.e(e)
+        } catch (e: PackageManager.NameNotFoundException) {
+            AppLog.e(e)
+        }
+        val bitmap = UtilitiesBitmap.makeDefaultIcon(context.packageManager)
         return ShortcutIcon.forFallbackIcon(Shortcut.ID_UNKNOWN, bitmap)
     }
 

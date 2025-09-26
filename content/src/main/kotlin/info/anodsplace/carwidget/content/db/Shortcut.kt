@@ -8,6 +8,7 @@ import coil.request.ImageRequest
 import coil.request.Parameters
 import info.anodsplace.carwidget.content.extentions.isDebugBuild
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra
 import info.anodsplace.ktx.equalsHash
 import info.anodsplace.ktx.hashCodeOf
 import okhttp3.internal.toHexString
@@ -28,6 +29,9 @@ data class Shortcut(
 
     val isApp: Boolean
         get() = itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
+
+    val isFolder: Boolean
+        get() = intent.action == ShortcutExtra.ACTION_FOLDER
 
     val isValid: Boolean
         get() = id != ID_UNKNOWN

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -34,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,14 +50,18 @@ import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.DeleteIcon
 import info.anodsplace.carwidget.ExpandRightIcon
 import info.anodsplace.carwidget.InfoIcon
+import info.anodsplace.carwidget.chooser.ChooserDialog
+import info.anodsplace.carwidget.chooser.Header
+import info.anodsplace.carwidget.chooser.QueryIntentChooserLoader
 import info.anodsplace.carwidget.content.R
-import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.toImageRequest
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.shortcut.intent.IntentEditScreen
 import info.anodsplace.framework.content.forIconPack
+import info.anodsplace.framework.content.forStoreSearch
+import info.anodsplace.framework.content.startActivitySafely
 import info.anodsplace.graphics.DrawableUri
 
 @Composable
@@ -98,12 +104,31 @@ fun ShortcutEditScreen(
                 )
             ))
         }
-        IntentChooser(
-            intent = Intent().forIconPack(),
-            onChoose = {
-                iconPackImage.launch(Intent().apply { component = it.componentName }.forIconPack())
-            },
+        val loader = remember { QueryIntentChooserLoader(context, Intent().forIconPack()) }
+        val headers = remember {
+            listOf(
+                Header(
+                    headerId = 0,
+                    title = context.getString(R.string.download),
+                    iconVector = androidx.compose.material.icons.Icons.Filled.Download,
+                    intent = Intent().forStoreSearch(query = "icon pack", category = "apps")
+                )
+            )
+        }
+        ChooserDialog(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            loader = loader,
+            headers = headers,
             onDismissRequest = { onEvent(ShortcutEditViewEvent.IconPackPicker(show = false)) },
+            onClick = { entry ->
+                if (entry is Header && entry.intent != null) {
+                    context.startActivitySafely(entry.intent!!)
+                }
+                // Launch icon pack picker for selected component
+                entry.componentName?.let { comp ->
+                    iconPackImage.launch(Intent().apply { component = comp }.forIconPack())
+                }
+            },
             imageLoader = imageLoader
         )
     }
@@ -255,7 +280,7 @@ private fun ShortcutDetails(
                         Text(text = stringResource(R.string.icon_adw_icon_pack))
                     }
                 }
-                if (shortcut.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION && shortcut.isCustomIcon) {
+                if ((shortcut.isApp || shortcut.isFolder) && shortcut.isCustomIcon) {
                     SectionCard(onClick = { onEvent(ShortcutEditViewEvent.DefaultIconReset) }) {
                         SectionAction {
                             Text(text = stringResource(R.string.icon_default))

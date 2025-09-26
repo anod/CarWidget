@@ -218,7 +218,7 @@ class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowVie
             }
 
             WidgetCustomizeEvent.DownloadIconsTheme -> {
-                emitAction(ScreenCommonAction.StartActivity(Intent().forStoreSearch(query = "Icons Pack")))
+                emitAction(ScreenCommonAction.StartActivity(Intent().forStoreSearch(query = "icon pack", category = "apps")))
             }
         }
     }
