@@ -254,4 +254,5 @@
     <string name="news">News</string>
     <string name="navigation">Navigation</string>
     <string name="productivity">Productivity</string>
+    <string name="edit_folder">Edit folder</string>
 </resources>

@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.TextDecrease
 import androidx.compose.material.icons.filled.TextIncrease
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Widgets
+import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -176,6 +177,15 @@ fun ImageIcon(modifier: Modifier = Modifier, tint: Color = LocalContentColor.cur
         contentDescription = contentDescription)
 }
 
+@Composable
+fun FolderIcon(modifier: Modifier = Modifier, tint: Color = LocalContentColor.current) {
+    Icon(
+        imageVector = Icons.Outlined.Folder,
+        modifier = modifier,
+        tint = tint,
+        contentDescription = stringResource(id = info.anodsplace.carwidget.content.R.string.delete))
+}
+
 @Preview(widthDp = 200)
 @Composable
 fun IconsResourcesPreview() {
@@ -201,7 +211,8 @@ fun IconsResourcesPreview() {
                 { CollapseIcon() },
                 { ExpandMoreIcon() },
                 { DeleteIcon() },
-                { InfoIcon() }
+                { InfoIcon() },
+                { FolderIcon() }
             )
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = 20.dp),

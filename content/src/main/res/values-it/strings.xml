@@ -232,4 +232,5 @@
     <string name="news">Notizie</string>
     <string name="navigation">Navigazione</string>
     <string name="productivity">Produttività</string>
+    <string name="edit_folder">Modifica cartella</string>
 </resources>

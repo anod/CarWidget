@@ -20,6 +20,7 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.shortcuts.ShortcutInfoFactory
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
+import info.anodsplace.carwidget.shortcut.ShortcutEditViewAction.ShowToast
 import info.anodsplace.carwidget.shortcut.intent.IntentField
 import info.anodsplace.framework.content.ShowToastActionDefaults
 import info.anodsplace.graphics.DrawableUri
@@ -37,20 +38,22 @@ data class ShortcutEditViewState(
     val shortcutId: Long = -1,
     val expanded: Boolean = false,
     val showIconPackPicker: Boolean = false,
-    val iconVersion: Int = -1
+    val iconVersion: Int = -1,
+    val showFolderEditor: Boolean = false,
 )
 
 sealed interface ShortcutEditViewEvent {
-    class UpdateField(val field: IntentField) : ShortcutEditViewEvent
-    class ToggleAdvanced(val expanded: Boolean) : ShortcutEditViewEvent
+    data class UpdateField(val field: IntentField) : ShortcutEditViewEvent
+    data class ToggleAdvanced(val expanded: Boolean) : ShortcutEditViewEvent
     data object Drop : ShortcutEditViewEvent
-    class IconPackPicker(val show: Boolean) : ShortcutEditViewEvent
-    class IconPackResult(val intent: Intent?, val resolveProperties: DrawableUri.ResolveProperties) : ShortcutEditViewEvent
-    class CustomIconResult(val uri: Uri?, val resolveProperties: DrawableUri.ResolveProperties) : ShortcutEditViewEvent
-    class LaunchCustomizeError(val exception: Exception) : ShortcutEditViewEvent
-
+    data class IconPackPicker(val show: Boolean) : ShortcutEditViewEvent
+    data class IconPackResult(val intent: Intent?, val resolveProperties: DrawableUri.ResolveProperties) : ShortcutEditViewEvent
+    data class CustomIconResult(val uri: Uri?, val resolveProperties: DrawableUri.ResolveProperties) : ShortcutEditViewEvent
+    data class LaunchCustomizeError(val exception: Exception) : ShortcutEditViewEvent
     data object DefaultIconReset : ShortcutEditViewEvent
-    class UpdateTitle(val title: String): ShortcutEditViewEvent
+    data class ShowFolderEditor(val show: Boolean) : ShortcutEditViewEvent
+    data class UpdateTitle(val title: String): ShortcutEditViewEvent
+    data class UpdateFolderItems(val json: String): ShortcutEditViewEvent
 }
 
 sealed interface ShortcutEditViewAction {
@@ -90,12 +93,12 @@ class ShortcutEditViewModel(
         )
         viewModelScope.launch {
             shortcutsDatabase.observeShortcut(shortcutId).collect { shortcut ->
-                viewState = viewState.copy(shortcut = shortcut)
+                viewState = viewState.copy(shortcut = shortcut,)
             }
         }
         viewModelScope.launch {
             shortcutsDatabase.observeIcon(shortcutId).collect { icon ->
-                viewState = viewState.copy(iconVersion = icon.hashCode())
+                viewState = viewState.copy(iconVersion = icon.hashCode(),)
             }
         }
     }
@@ -108,7 +111,7 @@ class ShortcutEditViewModel(
                 }
             }
             is ShortcutEditViewEvent.ToggleAdvanced -> {
-                viewState = viewState.copy(expanded = event.expanded)
+                viewState = viewState.copy(expanded = event.expanded,)
             }
             is ShortcutEditViewEvent.UpdateField -> {
                 val shortcut = viewState.shortcut ?: return
@@ -121,19 +124,19 @@ class ShortcutEditViewModel(
                 val shortcut = viewState.shortcut ?: return
                 val newTitle = event.title
                 // Optimistically update local state for immediate UI feedback
-                viewState = viewState.copy(shortcut = shortcut.copy(title = newTitle))
+                viewState = viewState.copy(shortcut = shortcut.copy(title = newTitle),)
                 appScope.launch {
                     shortcutsDatabase.updateTitle(shortcut.id, newTitle)
                 }
             }
             is ShortcutEditViewEvent.IconPackPicker -> {
-                viewState = viewState.copy(showIconPackPicker = event.show)
+                viewState = viewState.copy(showIconPackPicker = event.show,)
             }
             is ShortcutEditViewEvent.CustomIconResult -> {
                 updateCustomIcon(event.uri, event.resolveProperties)
             }
             is ShortcutEditViewEvent.IconPackResult -> {
-                viewState = viewState.copy(showIconPackPicker = false)
+                viewState = viewState.copy()
                 val bitmap = getBitmapIconPackIntent(event.intent , event.resolveProperties)
                 if (bitmap != null) {
                     setCustomIcon(bitmap)
@@ -154,10 +157,21 @@ class ShortcutEditViewModel(
                     shortcutsDatabase.updateIcon(shortcut.id, defaultIcon)
                 }
             }
-
+            is ShortcutEditViewEvent.UpdateFolderItems -> {
+                val shortcut = viewState.shortcut ?: return
+                if (!shortcut.isFolder) return
+                appScope.launch {
+//                    val intent = Intent(shortcut.intent) // copy
+//                    intent.putExtra(ShortcutExtra.EXTRA_FOLDER_ITEM_URIS_JSON, event.json)
+//                    shortcutsDatabase.updateIntent(shortcut.id, intent)
+                }
+            }
+            is ShortcutEditViewEvent.ShowFolderEditor -> {
+                viewState = viewState.copy(showFolderEditor = event.show)
+            }
             is ShortcutEditViewEvent.LaunchCustomizeError -> {
                 AppLog.e(event.exception)
-                emitAction(ShortcutEditViewAction.ShowToast(text = "Cannot launch ${event.exception}"))
+                emitAction(ShowToast(text = "Cannot launch ${event.exception}"))
             }
         }
     }

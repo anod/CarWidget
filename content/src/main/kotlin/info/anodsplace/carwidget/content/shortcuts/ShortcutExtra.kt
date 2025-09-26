@@ -30,15 +30,15 @@ sealed class InternalShortcut(val index: Int) {
 
     companion object {
         val all = listOf(
-                SwitchInCar,
-                DirectCall,
-                PlayPause,
-                Next,
-                Previous
+            SwitchInCar,
+            DirectCall,
+            PlayPause,
+            Next,
+            Previous
         )
 
         fun titles(context: Context): Array<String> =
-                context.resources.getStringArray(R.array.carwidget_shortcuts)
+            context.resources.getStringArray(R.array.carwidget_shortcuts)
     }
 }
 
@@ -46,24 +46,52 @@ object ShortcutExtra {
     const val EXTRA_MEDIA_BUTTON = "media_button"
     const val ACTION_MEDIA_BUTTON = "action_media_button"
     const val ACTION_FOLDER = "info.anodsplace.carwidget.action.FOLDER"
-    const val EXTRA_FOLDER_ITEM_URIS_JSON = "info.anodsplace.carwidget.extra.FOLDER_ITEM_URIS_JSON" // String (JSON Array)
 }
 
-fun InternalShortcut.fillIntent(intent: Intent, context: Context, resources: ShortcutResources): Intent {
+fun InternalShortcut.fillIntent(
+    intent: Intent,
+    context: Context,
+    resources: ShortcutResources
+): Intent {
     when (this) {
-        InternalShortcut.SwitchInCar -> intent.component = ComponentName(context, resources.activity.switchInCar)
+        InternalShortcut.SwitchInCar -> intent.component =
+            ComponentName(context, resources.activity.switchInCar)
+
         InternalShortcut.DirectCall -> {
             intent.action = Intent.ACTION_PICK
             intent.data = ContactsContract.Contacts.CONTENT_URI
         }
-        InternalShortcut.PlayPause -> fillMediaButtonIntent(intent, context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, resources.activity.runShortcut)
-        InternalShortcut.Next -> fillMediaButtonIntent(intent, context, KeyEvent.KEYCODE_MEDIA_NEXT, resources.activity.runShortcut)
-        InternalShortcut.Previous -> fillMediaButtonIntent(intent, context, KeyEvent.KEYCODE_MEDIA_PREVIOUS, resources.activity.runShortcut)
+
+        InternalShortcut.PlayPause -> fillMediaButtonIntent(
+            intent,
+            context,
+            KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE,
+            resources.activity.runShortcut
+        )
+
+        InternalShortcut.Next -> fillMediaButtonIntent(
+            intent,
+            context,
+            KeyEvent.KEYCODE_MEDIA_NEXT,
+            resources.activity.runShortcut
+        )
+
+        InternalShortcut.Previous -> fillMediaButtonIntent(
+            intent,
+            context,
+            KeyEvent.KEYCODE_MEDIA_PREVIOUS,
+            resources.activity.runShortcut
+        )
     }
     return intent
 }
 
-private fun fillMediaButtonIntent(intent: Intent, context: Context, keyCode: Int, runShortcut: Class<*>) {
+private fun fillMediaButtonIntent(
+    intent: Intent,
+    context: Context,
+    keyCode: Int,
+    runShortcut: Class<*>
+) {
     intent.component = ComponentName(context, runShortcut)
     intent.action = ShortcutExtra.ACTION_MEDIA_BUTTON
     intent.putExtra(ShortcutExtra.EXTRA_MEDIA_BUTTON, keyCode)

@@ -49,6 +49,7 @@ import info.anodsplace.carwidget.BackArrowIcon
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.DeleteIcon
 import info.anodsplace.carwidget.ExpandRightIcon
+import info.anodsplace.carwidget.FolderIcon
 import info.anodsplace.carwidget.InfoIcon
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.Header
@@ -58,6 +59,7 @@ import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.toImageRequest
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra
 import info.anodsplace.carwidget.shortcut.intent.IntentEditScreen
 import info.anodsplace.framework.content.forIconPack
 import info.anodsplace.framework.content.forStoreSearch
@@ -93,45 +95,77 @@ fun ShortcutEditScreen(
     }
 
     if (state.showIconPackPicker) {
-        val context = LocalContext.current
-        val iconPackImage = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-            onEvent(ShortcutEditViewEvent.IconPackResult(
-                intent = it.data,
-                resolveProperties = DrawableUri.ResolveProperties(
-                    maxIconSize = UtilitiesBitmap.getIconMaxSize(context),
-                    targetDensity = UtilitiesBitmap.getTargetDensity(context),
-                    context = context
-                )
-            ))
-        }
-        val loader = remember { QueryIntentChooserLoader(context, Intent().forIconPack()) }
-        val headers = remember {
-            listOf(
-                Header(
-                    headerId = 0,
-                    title = context.getString(R.string.download),
-                    iconVector = androidx.compose.material.icons.Icons.Filled.Download,
-                    intent = Intent().forStoreSearch(query = "icon pack", category = "apps")
-                )
-            )
-        }
-        ChooserDialog(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            loader = loader,
-            headers = headers,
-            onDismissRequest = { onEvent(ShortcutEditViewEvent.IconPackPicker(show = false)) },
-            onClick = { entry ->
-                if (entry is Header && entry.intent != null) {
-                    context.startActivitySafely(entry.intent!!)
-                }
-                // Launch icon pack picker for selected component
-                entry.componentName?.let { comp ->
-                    iconPackImage.launch(Intent().apply { component = comp }.forIconPack())
-                }
-            },
-            imageLoader = imageLoader
+        IconPackPicker(onEvent = onEvent, imageLoader = imageLoader)
+    }
+
+    if (state.showFolderEditor) {
+        ShortcutFolderEditDialog(
+            shortcut = state.shortcut!!,
+            onEvent = onEvent,
+            onDismissRequest = { onEvent(ShortcutEditViewEvent.ShowFolderEditor(show = false)) },
+            imageLoader = imageLoader,
+            widgetSettings = widgetSettings
         )
     }
+}
+
+@Composable
+fun ShortcutFolderEditDialog(
+    shortcut: Shortcut,
+    onEvent: (ShortcutEditViewEvent) -> Unit,
+    onDismissRequest: () -> Unit,
+    imageLoader: ImageLoader,
+    widgetSettings: WidgetInterface
+) {
+    //
+}
+
+@Composable
+private fun IconPackPicker(
+    onEvent: (ShortcutEditViewEvent) -> Unit,
+    imageLoader: ImageLoader
+) {
+    val context = LocalContext.current
+    val iconPackImage = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
+        onEvent(ShortcutEditViewEvent.IconPackResult(
+            intent = it.data,
+            resolveProperties = DrawableUri.ResolveProperties(
+                maxIconSize = UtilitiesBitmap.getIconMaxSize(context),
+                targetDensity = UtilitiesBitmap.getTargetDensity(context),
+                context = context
+            )
+        ))
+    }
+    val loader = remember { QueryIntentChooserLoader(
+        context = context,
+        queryIntent = Intent().forIconPack()
+    ) }
+    val headers = remember {
+        listOf(
+            Header(
+                headerId = 0,
+                title = context.getString(R.string.download),
+                iconVector = androidx.compose.material.icons.Icons.Filled.Download,
+                intent = Intent().forStoreSearch(query = "icon pack", category = "apps")
+            )
+        )
+    }
+    ChooserDialog(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        loader = loader,
+        headers = headers,
+        onDismissRequest = { onEvent(ShortcutEditViewEvent.IconPackPicker(show = false)) },
+        onClick = { entry ->
+            if (entry is Header && entry.intent != null) {
+                context.startActivitySafely(entry.intent!!)
+            }
+            // Launch icon pack picker for selected component
+            entry.componentName?.let { comp ->
+                iconPackImage.launch(Intent().apply { component = comp }.forIconPack())
+            }
+        },
+        imageLoader = imageLoader
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -291,6 +325,18 @@ private fun ShortcutDetails(
         }
     }
 
+    if (shortcut.isFolder) {
+        SectionCard(onClick = {
+            onEvent(ShortcutEditViewEvent.ShowFolderEditor(show = true))
+            onDismissRequest()
+        }) {
+            SectionAction {
+                FolderIcon()
+                Text(text = stringResource(R.string.edit_folder))
+            }
+        }
+    }
+
     SectionCard(onClick = {
         onEvent(ShortcutEditViewEvent.Drop)
         onDismissRequest()
@@ -379,7 +425,16 @@ fun PreviewShortcutEditContent() {
     CarWidgetTheme {
         ShortcutEditScreen(
             state = ShortcutEditViewState(
-                shortcut = Shortcut(0,0, 0, "Title", false, Intent())
+                shortcut = Shortcut(
+                    id = 0,
+                    position = 0,
+                    itemType = 0,
+                    title = "Title",
+                    isCustomIcon = false,
+                    intent = Intent().apply {
+                        action = ShortcutExtra.ACTION_FOLDER
+                    }
+                ),
             ),
             onEvent = { },
             onDismissRequest = { },

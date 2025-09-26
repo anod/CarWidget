@@ -229,4 +229,5 @@
     <string name="news">Новости</string>
     <string name="navigation">Навигация</string>
     <string name="productivity">Продуктивность</string>
+	<string name="edit_folder">Редактировать папку</string>
 </resources>
