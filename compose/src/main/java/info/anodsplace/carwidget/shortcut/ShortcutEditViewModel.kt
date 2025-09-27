@@ -57,7 +57,7 @@ sealed interface ShortcutEditViewEvent {
     data object DefaultIconReset : ShortcutEditViewEvent
     data class ShowFolderEditor(val show: Boolean) : ShortcutEditViewEvent
     data class UpdateTitle(val title: String): ShortcutEditViewEvent
-    data class UpdateFolderItems(val folderIntent: ShortcutIntent, val items: List<ShortcutIntent>): ShortcutEditViewEvent
+    data class UpdateFolderItems(val items: List<ShortcutIntent>): ShortcutEditViewEvent
 }
 
 sealed interface ShortcutEditViewAction {

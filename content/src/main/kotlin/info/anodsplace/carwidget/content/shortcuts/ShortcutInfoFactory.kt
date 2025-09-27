@@ -78,12 +78,11 @@ object ShortcutInfoFactory {
         val intent = data.intent ?: Intent()
         val name =  data.name ?: ""
         val extraIcon = data.icon
-        var bitmap: Bitmap? = null
         var icon: ShortcutIcon? = null
 
         if (extraIcon is Bitmap) {
             AppLog.d("Custom shortcut with Bitmap")
-            bitmap = UtilitiesBitmap.createMaxSizeIcon(
+            val bitmap = UtilitiesBitmap.createMaxSizeIcon(
                 extraIcon.toDrawable(context.resources),
                 context
             )
@@ -99,9 +98,8 @@ object ShortcutInfoFactory {
             }
         }
 
-        if (bitmap == null) {
-            val packageManager = context.packageManager
-            bitmap = UtilitiesBitmap.makeDefaultIcon(packageManager)
+        if (icon == null) {
+            val bitmap = UtilitiesBitmap.makeDefaultIcon(context.packageManager)
             icon = ShortcutIcon.forFallbackIcon(Shortcut.ID_UNKNOWN, bitmap)
         }
 
@@ -111,7 +109,7 @@ object ShortcutInfoFactory {
                 position = position,
                 itemType = LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT,
                 title = name,
-                isCustomIcon = icon!!.isCustom,
+                isCustomIcon = icon.isCustom,
                 intent = intent
             ),
             icon = icon

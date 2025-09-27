@@ -123,8 +123,8 @@ fun ShortcutFolderEditDialog(
     shortcutResources: ShortcutResources
 ) {
     FolderChooser(
-        onSave = { folderIntent, items ->
-            onEvent(ShortcutEditViewEvent.UpdateFolderItems(folderIntent, items))
+        onSave = { _, items ->
+            onEvent(ShortcutEditViewEvent.UpdateFolderItems(items))
         },
         initialSelectedComponents = folderItems.toSet(),
         onDismissRequest = onDismissRequest,
