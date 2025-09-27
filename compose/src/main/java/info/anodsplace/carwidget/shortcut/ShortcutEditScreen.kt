@@ -60,6 +60,7 @@ import info.anodsplace.carwidget.content.db.toImageRequest
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra
+import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.shortcut.intent.IntentEditScreen
 import info.anodsplace.framework.content.forIconPack
 import info.anodsplace.framework.content.forStoreSearch
@@ -72,7 +73,8 @@ fun ShortcutEditScreen(
         onEvent: (ShortcutEditViewEvent) -> Unit,
         onDismissRequest: () -> Unit,
         imageLoader: ImageLoader,
-        widgetSettings: WidgetInterface = WidgetInterface.NoOp()
+        widgetSettings: WidgetInterface = WidgetInterface.NoOp(),
+        shortcutResources: ShortcutResources
 ) {
     Surface(
             modifier = Modifier
@@ -104,7 +106,7 @@ fun ShortcutEditScreen(
             onEvent = onEvent,
             onDismissRequest = { onEvent(ShortcutEditViewEvent.ShowFolderEditor(show = false)) },
             imageLoader = imageLoader,
-            widgetSettings = widgetSettings
+            shortcutResources = shortcutResources
         )
     }
 }
@@ -115,9 +117,18 @@ fun ShortcutFolderEditDialog(
     onEvent: (ShortcutEditViewEvent) -> Unit,
     onDismissRequest: () -> Unit,
     imageLoader: ImageLoader,
-    widgetSettings: WidgetInterface
+    shortcutResources: ShortcutResources
 ) {
-    //
+    FolderChooser(
+        onSave = { folderIntent, items ->
+            onEvent(ShortcutEditViewEvent.UpdateFolderItems(folderIntent, items))
+        },
+        onDismissRequest = onDismissRequest,
+        imageLoader = imageLoader,
+        shortcutResources = shortcutResources,
+        initialTitle = shortcut.title.toString(),
+        isEdit = true
+    )
 }
 
 @Composable
@@ -328,7 +339,6 @@ private fun ShortcutDetails(
     if (shortcut.isFolder) {
         SectionCard(onClick = {
             onEvent(ShortcutEditViewEvent.ShowFolderEditor(show = true))
-            onDismissRequest()
         }) {
             SectionAction {
                 FolderIcon()
@@ -423,6 +433,19 @@ private fun SectionHeader(content: @Composable RowScope.() -> Unit = {}) {
 @Composable
 fun PreviewShortcutEditContent() {
     CarWidgetTheme {
+        // Provide a dummy ShortcutResources implementation for preview
+        val previewResources = object : ShortcutResources {
+            override val activity: info.anodsplace.carwidget.content.shortcuts.ShortcutTargetActivity = info.anodsplace.carwidget.content.shortcuts.ShortcutTargetActivity(
+                settings = Any::class.java,
+                switchInCar = Any::class.java,
+                runShortcut = Any::class.java,
+                overlay = Any::class.java
+            )
+            override val internalShortcuts: info.anodsplace.carwidget.content.InternalShortcutResources = info.anodsplace.carwidget.content.InternalShortcutResources(
+                icons = emptyList()
+            )
+            override val folderShortcutIcon: Int = android.R.drawable.ic_menu_agenda
+        }
         ShortcutEditScreen(
             state = ShortcutEditViewState(
                 shortcut = Shortcut(
@@ -431,14 +454,13 @@ fun PreviewShortcutEditContent() {
                     itemType = 0,
                     title = "Title",
                     isCustomIcon = false,
-                    intent = Intent().apply {
-                        action = ShortcutExtra.ACTION_FOLDER
-                    }
+                    intent = Intent().apply { action = ShortcutExtra.ACTION_FOLDER }
                 ),
             ),
             onEvent = { },
             onDismissRequest = { },
-            imageLoader = ImageLoader.Builder(LocalContext.current).build()
+            imageLoader = ImageLoader.Builder(LocalContext.current).build(),
+            shortcutResources = previewResources
         )
     }
 }

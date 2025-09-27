@@ -246,6 +246,7 @@
     <string name="folder">Folder</string>
     <string name="create">Create</string>
     <string name="all">All</string>
+    <string name="selected_items">Selected</string>
     <string name="game">Game</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>

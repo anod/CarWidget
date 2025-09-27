@@ -230,4 +230,5 @@
     <string name="navigation">Навигация</string>
     <string name="productivity">Продуктивность</string>
 	<string name="edit_folder">Редактировать папку</string>
+	<string name="selected_items">Выбранные</string>
 </resources>

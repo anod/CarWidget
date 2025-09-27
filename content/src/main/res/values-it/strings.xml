@@ -233,4 +233,5 @@
     <string name="navigation">Navigazione</string>
     <string name="productivity">Produttività</string>
     <string name="edit_folder">Modifica cartella</string>
+    <string name="selected_items">Selezionati</string>
 </resources>

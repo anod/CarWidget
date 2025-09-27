@@ -223,6 +223,7 @@
     <string name="folder">Mapp</string>
     <string name="create">Skapa</string>
     <string name="all">Alla</string>
+    <string name="selected_items">Valda</string>
     <string name="game">Spel</string>
     <string name="audio">Ljud</string>
     <string name="video">Video</string>

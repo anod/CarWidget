@@ -61,7 +61,7 @@
     <string name="default_car_dock_app">Aplicación predeterminada Car Dock</string>
     <string name="cardock_btn_1">Abrir la información de la aplicación</string>
     <string name="cardock_text1">Para borrar la aplicación actual por defecto:\n1. Abra la información de la aplicación actual\n2. Haga clic en la tecla  \"Borrar configuraciones predeterminadas\"</string>
-    <string name="cardock_text2">La próxima vez que active Car Dock, seleccione \"Widget Car\" como aplicación por defecto.</string>
+    <string name="cardock_text2">La próxima vez que active Car Dock, seleccione "Widget Car" como aplicación por defecto.</string>
     <string name="pref_rotate_icon_title">Girar iconos</string>
     <string name="pref_titles_hide_title">Ocultar títulos</string>
     <string name="pref_titles_hide_summary">No mostrar títulos para los accesos directos</string>
@@ -233,4 +233,5 @@
     <string name="navigation">Navegación</string>
     <string name="productivity">Productividad</string>
     <string name="edit_folder">Editar carpeta</string>
+    <string name="selected_items">Seleccionados</string>
 </resources>

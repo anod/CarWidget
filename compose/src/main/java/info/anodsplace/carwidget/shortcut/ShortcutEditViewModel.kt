@@ -18,6 +18,7 @@ import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.shortcuts.ShortcutInfoFactory
+import info.anodsplace.carwidget.content.shortcuts.ShortcutIntent
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.shortcut.ShortcutEditViewAction.ShowToast
@@ -53,7 +54,7 @@ sealed interface ShortcutEditViewEvent {
     data object DefaultIconReset : ShortcutEditViewEvent
     data class ShowFolderEditor(val show: Boolean) : ShortcutEditViewEvent
     data class UpdateTitle(val title: String): ShortcutEditViewEvent
-    data class UpdateFolderItems(val json: String): ShortcutEditViewEvent
+    data class UpdateFolderItems(val folderIntent: ShortcutIntent, val items: List<ShortcutIntent>): ShortcutEditViewEvent
 }
 
 sealed interface ShortcutEditViewAction {
@@ -82,7 +83,7 @@ class ShortcutEditViewModel(
     private val shortcutsDatabase: ShortcutsDatabase = get()
     private val model: WidgetShortcutsModel by inject()
     private val context: Context by inject()
-    private val shortcutResources: ShortcutResources by inject()
+    val shortcutResources: ShortcutResources by inject()
     val widgetSettings: WidgetInterface by inject()
     val imageLoader: ImageLoader by inject()
 

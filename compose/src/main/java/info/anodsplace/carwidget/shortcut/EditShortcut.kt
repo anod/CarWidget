@@ -30,7 +30,8 @@ fun EditShortcut(
             onEvent = viewModel::handleEvent,
             onDismissRequest = onDismissRequest,
             widgetSettings = viewModel.widgetSettings,
-            imageLoader = viewModel.imageLoader
+            imageLoader = viewModel.imageLoader,
+            shortcutResources = viewModel.shortcutResources
         )
         val context = LocalContext.current
         LaunchedEffect(key1 = true) {
