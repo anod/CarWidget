@@ -27,12 +27,13 @@ open class QueryIntentChooserLoader(context: Context, private val queryIntent: I
         val list = mutableListOf<ChooserEntry>()
 
         val audioPkgs = mediaListLoader.loadAll().mapNotNull { entry -> entry.componentName?.packageName }.toSet()
+        val includeSelfPackage = queryIntent.hasCategory("com.anddoes.launcher.THEME")
 
         // Request resolved filters so we can inspect intent categories (minimal overhead)
         val apps = packageManager.queryIntentActivities(queryIntent, PackageManager.GET_RESOLVED_FILTER)
         for (appInfo in apps) {
             val pkg = appInfo.activityInfo.packageName
-            if (!pkg.startsWith(selfPackage) && appInfo.activityInfo.exported) {
+            if ((includeSelfPackage || !pkg.startsWith(selfPackage)) && appInfo.activityInfo.exported) {
                 val title = appInfo.activityInfo.loadLabel(packageManager).toString()
                 var category = appInfo.category()
                 if (category != ApplicationInfo.CATEGORY_AUDIO && audioPkgs.contains(pkg)) {

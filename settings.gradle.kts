@@ -20,12 +20,13 @@ include(
     ":content",
     ":skins",
     ":lib:applog",
-    ":lib:compose",
     ":lib:graphics",
     ":lib:context",
     ":lib:framework",
-    ":lib:ktx",
     ":lib:permissions",
-    ":lib:viewmodel"
+    ":lib:ktx",
+    ":lib:compose",
+    ":lib:viewmodel",
+    ":iconpack"
 )
 include(":baselineprofile")

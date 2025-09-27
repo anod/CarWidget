@@ -150,6 +150,17 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
+        <activity
+            android:name="com.anod.car.home.IconPackActivity"
+            android:label="@string/icon_pack_label"
+            android:exported="true"
+            android:theme="@style/BrightnessTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="com.anddoes.launcher.THEME" />
+            </intent-filter>
+        </activity>
+
         <service android:name="com.anod.car.home.incar.ModeService" android:foregroundServiceType="specialUse">
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="Upon detection of InCar mode, a dedicated service is initiated.

@@ -17,6 +17,7 @@ dependencies {
     implementation(project(":lib:context"))
     implementation(project(":lib:framework"))
     implementation(project(":lib:permissions"))
+    implementation(project(":iconpack"))
 
     // AppCompatActivity
     implementation(libs.appcompat)

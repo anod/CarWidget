@@ -45,6 +45,7 @@ dependencies {
     implementation(project(":lib:viewmodel"))
     implementation(project(":content"))
     implementation(project(":skins"))
+    implementation(project(":iconpack"))
 
     implementation(libs.koin.core)
     implementation(libs.coil.compose.base)

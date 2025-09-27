@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TODO: Translate icon pack strings -->
+    <string name="icon_pack_label">Icon Pack</string>
+    <string name="icon_category_travel">Travel</string>
+    <string name="icon_category_audio">Audio</string>
+    <string name="icon_category_books">Books</string>
+    <string name="icon_category_authenticator">Authenticator</string>
+    <string name="icon_category_cars">Cars</string>
+    <string name="icon_category_camera">Camera</string>
+    <string name="icon_category_children">Children</string>
+    <string name="icon_category_sleep">Sleep</string>
+    <string name="icon_category_cloud_storage">Cloud storage</string>
+    <string name="icon_category_contacts">Contacts</string>
+    <string name="icon_category_comics">Comics</string>
+    <string name="icon_category_crypto">Crypto</string>
+    <string name="icon_category_dating">Dating</string>
+    <string name="icon_category_download">Download</string>
+    <string name="icon_category_education">Education</string>
+    <string name="icon_category_email">Email</string>
+    <string name="icon_category_files">Files</string>
+    <string name="icon_category_finance">Finance</string>
+    <string name="icon_category_fitness">Fitness</string>
+    <string name="icon_category_food">Food</string>
+    <string name="icon_category_health">Health</string>
+    <string name="icon_category_home">Home</string>
+    <string name="icon_category_humor">Humor</string>
+    <string name="icon_category_image">Image</string>
+    <string name="icon_category_jobs">Jobs</string>
+    <string name="icon_category_language_education">Language education</string>
+    <string name="icon_category_maps">Maps</string>
+    <string name="icon_category_movies">Movies</string>
+    <string name="icon_category_network_connection">Network connection</string>
+    <string name="icon_category_news">News</string>
+    <string name="icon_category_office">Office</string>
+    <string name="icon_category_painting">Painting</string>
+    <string name="icon_category_password_manager">Password Manager</string>
+    <string name="icon_category_personal_assistant">Personal Assistant</string>
+    <string name="icon_category_privacy_security">Privacy and Security</string>
+    <string name="icon_category_programming">Programming</string>
+    <string name="icon_category_public_transport">Public Transport</string>
+    <string name="icon_category_radio">Radio</string>
+    <string name="icon_category_religious_text">Religious text</string>
+    <string name="icon_category_remote_control">Remote control</string>
+    <string name="icon_category_scanner">Scanner</string>
+    <string name="icon_category_settings">Settings</string>
+    <string name="icon_category_shopping">Shopping</string>
+    <string name="icon_category_social_media">Social media</string>
+    <string name="icon_category_sport">Sport</string>
+    <string name="icon_category_stickers">Stickers</string>
+    <string name="icon_category_taxi">Taxi</string>
+    <string name="icon_category_text_messaging">Text messaging</string>
+    <string name="icon_category_theme">Theme</string>
+    <string name="icon_category_tips">Tips</string>
+    <string name="icon_category_todo_list">Todo list</string>
+    <string name="icon_category_tools">Tools</string>
+    <string name="icon_category_trading">Trading</string>
+    <string name="icon_category_virtual_reality">Virtual reality</string>
+    <string name="icon_category_vpn">VPN</string>
+    <string name="icon_category_watch">Watch</string>
+    <string name="icon_category_weather">Weather</string>
+    <string name="icon_category_web_browser">Web browser</string>
+</resources>
+
