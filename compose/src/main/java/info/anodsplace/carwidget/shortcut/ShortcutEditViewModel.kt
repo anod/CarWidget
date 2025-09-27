@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.shortcut
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -26,6 +27,7 @@ import info.anodsplace.carwidget.shortcut.intent.IntentField
 import info.anodsplace.framework.content.ShowToastActionDefaults
 import info.anodsplace.graphics.DrawableUri
 import info.anodsplace.viewmodel.BaseFlowViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.get
@@ -41,6 +43,7 @@ data class ShortcutEditViewState(
     val showIconPackPicker: Boolean = false,
     val iconVersion: Int = -1,
     val showFolderEditor: Boolean = false,
+    val folderItems: List<ComponentName> = emptyList(),
 )
 
 sealed interface ShortcutEditViewEvent {
@@ -86,6 +89,7 @@ class ShortcutEditViewModel(
     val shortcutResources: ShortcutResources by inject()
     val widgetSettings: WidgetInterface by inject()
     val imageLoader: ImageLoader by inject()
+    private var folderJob: Job? = null
 
     init {
         viewState = ShortcutEditViewState(
@@ -94,7 +98,15 @@ class ShortcutEditViewModel(
         )
         viewModelScope.launch {
             shortcutsDatabase.observeShortcut(shortcutId).collect { shortcut ->
-                viewState = viewState.copy(shortcut = shortcut,)
+                viewState = viewState.copy(shortcut = shortcut)
+                if (shortcut?.isFolder == true) {
+                    folderJob?.cancel()
+                    folderJob = launch {
+                        shortcutsDatabase.observeFolder(shortcutId).collect { items ->
+                            viewState = viewState.copy(folderItems = items.mapNotNull { it.intent.component })
+                        }
+                    }
+                }
             }
         }
         viewModelScope.launch {
@@ -131,13 +143,13 @@ class ShortcutEditViewModel(
                 }
             }
             is ShortcutEditViewEvent.IconPackPicker -> {
-                viewState = viewState.copy(showIconPackPicker = event.show,)
+                viewState = viewState.copy(showIconPackPicker = event.show)
             }
             is ShortcutEditViewEvent.CustomIconResult -> {
                 updateCustomIcon(event.uri, event.resolveProperties)
             }
             is ShortcutEditViewEvent.IconPackResult -> {
-                viewState = viewState.copy()
+                viewState = viewState.copy(showIconPackPicker = false)
                 val bitmap = getBitmapIconPackIntent(event.intent , event.resolveProperties)
                 if (bitmap != null) {
                     setCustomIcon(bitmap)
@@ -162,9 +174,8 @@ class ShortcutEditViewModel(
                 val shortcut = viewState.shortcut ?: return
                 if (!shortcut.isFolder) return
                 appScope.launch {
-//                    val intent = Intent(shortcut.intent) // copy
-//                    intent.putExtra(ShortcutExtra.EXTRA_FOLDER_ITEM_URIS_JSON, event.json)
-//                    shortcutsDatabase.updateIntent(shortcut.id, intent)
+                    model.updateFolderItems(shortcut.id, event.items)
+                    viewState = viewState.copy(showFolderEditor = false)
                 }
             }
             is ShortcutEditViewEvent.ShowFolderEditor -> {

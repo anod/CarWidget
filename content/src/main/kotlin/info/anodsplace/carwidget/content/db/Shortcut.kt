@@ -37,12 +37,12 @@ data class Shortcut(
         get() = id != ID_UNKNOWN
 
     constructor(id: Long, item: Shortcut) : this(
-        id,
-        item.position,
-        item.itemType,
-        item.title,
-        item.isCustomIcon,
-        item.intent
+        id = id,
+        position = item.position,
+        itemType = item.itemType,
+        title = item.title,
+        isCustomIcon = item.isCustomIcon,
+        intent = item.intent
     )
 
     companion object {

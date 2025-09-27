@@ -49,6 +49,13 @@ class DummyWidgetShortcutsModel(private val context: Context, size: Int) : Short
         return CreateShortcutResult.None
     }
 
+    override suspend fun updateFolderItems(
+        shortcutId: Long,
+        items: List<ShortcutIntent>
+    ) {
+
+    }
+
     override suspend fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?) {
 
     }

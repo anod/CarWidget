@@ -92,7 +92,7 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
         val createResult = ShortcutInfoFactory.createShortcut(context, position, intent)
         if (createResult is CreateShortcutResult.CreateShortcutResultSuccess) {
             val itemShortcuts = items.mapNotNull { intent ->
-                val itemResult = ShortcutInfoFactory.createShortcut(context, position, intent)
+                val itemResult = ShortcutInfoFactory.createShortcut(context, position = 0, intent)
                 if (itemResult is CreateShortcutResult.CreateShortcutResultSuccess) {
                     Pair(itemResult.info, itemResult.icon)
                 } else {
@@ -108,6 +108,20 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
         }
         return@withContext createResult
     }
+
+    override suspend fun updateFolderItems(shortcutId: Long, items: List<ShortcutIntent>) {
+        lazyInit()
+        val itemShortcuts = items.mapNotNull { intent ->
+            val itemResult = ShortcutInfoFactory.createShortcut(context, position = 0, intent)
+            if (itemResult is CreateShortcutResult.CreateShortcutResultSuccess) {
+                Pair(itemResult.info, itemResult.icon)
+            } else {
+                null
+            }
+        }
+        shortcutsDatabase.updateFolder(shortcutId, itemShortcuts)
+    }
+
 
     override suspend fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?) {
         lazyInit()

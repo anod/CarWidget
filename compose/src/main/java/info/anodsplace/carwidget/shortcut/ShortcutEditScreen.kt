@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.shortcut
 
+import android.content.ComponentName
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -69,18 +70,18 @@ import info.anodsplace.graphics.DrawableUri
 
 @Composable
 fun ShortcutEditScreen(
-        state: ShortcutEditViewState,
-        onEvent: (ShortcutEditViewEvent) -> Unit,
-        onDismissRequest: () -> Unit,
-        imageLoader: ImageLoader,
-        widgetSettings: WidgetInterface = WidgetInterface.NoOp(),
-        shortcutResources: ShortcutResources
+    state: ShortcutEditViewState,
+    onEvent: (ShortcutEditViewEvent) -> Unit,
+    onDismissRequest: () -> Unit,
+    imageLoader: ImageLoader,
+    widgetSettings: WidgetInterface = WidgetInterface.NoOp(),
+    shortcutResources: ShortcutResources
 ) {
     Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .defaultMinSize(minHeight = 436.dp),
-            shape = MaterialTheme.shapes.medium,
+        modifier = Modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 436.dp),
+        shape = MaterialTheme.shapes.medium,
     ) {
         if (state.shortcut != null) {
             ShortcutEditContent(
@@ -103,6 +104,7 @@ fun ShortcutEditScreen(
     if (state.showFolderEditor) {
         ShortcutFolderEditDialog(
             shortcut = state.shortcut!!,
+            folderItems = state.folderItems,
             onEvent = onEvent,
             onDismissRequest = { onEvent(ShortcutEditViewEvent.ShowFolderEditor(show = false)) },
             imageLoader = imageLoader,
@@ -114,6 +116,7 @@ fun ShortcutEditScreen(
 @Composable
 fun ShortcutFolderEditDialog(
     shortcut: Shortcut,
+    folderItems: List<ComponentName>,
     onEvent: (ShortcutEditViewEvent) -> Unit,
     onDismissRequest: () -> Unit,
     imageLoader: ImageLoader,
@@ -123,11 +126,13 @@ fun ShortcutFolderEditDialog(
         onSave = { folderIntent, items ->
             onEvent(ShortcutEditViewEvent.UpdateFolderItems(folderIntent, items))
         },
+        initialSelectedComponents = folderItems.toSet(),
         onDismissRequest = onDismissRequest,
         imageLoader = imageLoader,
         shortcutResources = shortcutResources,
         initialTitle = shortcut.title.toString(),
-        isEdit = true
+        isEdit = true,
+        showTitle = false
     )
 }
 
@@ -137,20 +142,25 @@ private fun IconPackPicker(
     imageLoader: ImageLoader
 ) {
     val context = LocalContext.current
-    val iconPackImage = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-        onEvent(ShortcutEditViewEvent.IconPackResult(
-            intent = it.data,
-            resolveProperties = DrawableUri.ResolveProperties(
-                maxIconSize = UtilitiesBitmap.getIconMaxSize(context),
-                targetDensity = UtilitiesBitmap.getTargetDensity(context),
-                context = context
+    val iconPackImage =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
+            onEvent(
+                ShortcutEditViewEvent.IconPackResult(
+                    intent = it.data,
+                    resolveProperties = DrawableUri.ResolveProperties(
+                        maxIconSize = UtilitiesBitmap.getIconMaxSize(context),
+                        targetDensity = UtilitiesBitmap.getTargetDensity(context),
+                        context = context
+                    )
+                )
             )
-        ))
+        }
+    val loader = remember {
+        QueryIntentChooserLoader(
+            context = context,
+            queryIntent = Intent().forIconPack()
+        )
     }
-    val loader = remember { QueryIntentChooserLoader(
-        context = context,
-        queryIntent = Intent().forIconPack()
-    ) }
     val headers = remember {
         listOf(
             Header(
@@ -182,14 +192,14 @@ private fun IconPackPicker(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShortcutEditContent(
-        shortcut: Shortcut,
-        iconVersion: Int,
-        expanded: Boolean,
-        isIntentReadonly: Boolean,
-        onEvent: (ShortcutEditViewEvent) -> Unit,
-        onDismissRequest: () -> Unit,
-        imageLoader: ImageLoader,
-        widgetSettings: WidgetInterface = WidgetInterface.NoOp()
+    shortcut: Shortcut,
+    iconVersion: Int,
+    expanded: Boolean,
+    isIntentReadonly: Boolean,
+    onEvent: (ShortcutEditViewEvent) -> Unit,
+    onDismissRequest: () -> Unit,
+    imageLoader: ImageLoader,
+    widgetSettings: WidgetInterface = WidgetInterface.NoOp()
 ) {
     Column {
         TopAppBar(
@@ -258,19 +268,25 @@ private fun ShortcutDetails(
     onDismissRequest: () -> Unit
 ) {
     val context = LocalContext.current
-    val customImage = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) {
-        onEvent(ShortcutEditViewEvent.CustomIconResult(
-            uri = it,
-            resolveProperties = DrawableUri.ResolveProperties(
-                maxIconSize = UtilitiesBitmap.getIconMaxSize(context),
-                targetDensity = UtilitiesBitmap.getTargetDensity(context),
-                context = context
+    val customImage =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) {
+            onEvent(
+                ShortcutEditViewEvent.CustomIconResult(
+                    uri = it,
+                    resolveProperties = DrawableUri.ResolveProperties(
+                        maxIconSize = UtilitiesBitmap.getIconMaxSize(context),
+                        targetDensity = UtilitiesBitmap.getTargetDensity(context),
+                        context = context
+                    )
+                )
             )
-        ))
-    }
+        }
     SectionCard {
         SectionHeader {
-            Text(text = stringResource(R.string.edit_title), modifier = Modifier.padding(start = 8.dp))
+            Text(
+                text = stringResource(R.string.edit_title),
+                modifier = Modifier.padding(start = 8.dp)
+            )
         }
         OutlinedTextField(
             modifier = Modifier
@@ -297,7 +313,11 @@ private fun ShortcutDetails(
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
         ) {
             AsyncImage(
-                model = shortcut.toImageRequest(LocalContext.current, widgetSettings.adaptiveIconStyle, iconVersion = iconVersion),
+                model = shortcut.toImageRequest(
+                    LocalContext.current,
+                    widgetSettings.adaptiveIconStyle,
+                    iconVersion = iconVersion
+                ),
                 contentDescription = shortcut.title.toString(),
                 imageLoader = imageLoader,
                 modifier = Modifier
@@ -367,7 +387,12 @@ private fun ShortcutDetails(
 }
 
 @Composable
-private fun SectionCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null, onClickLabel: String? = null, content: @Composable ColumnScope.() -> Unit = {}) {
+private fun SectionCard(
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
+    onClickLabel: String? = null,
+    content: @Composable ColumnScope.() -> Unit = {}
+) {
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -378,8 +403,7 @@ private fun SectionCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = 
                 } else {
                     it
                 }
-            }
-        ,
+            },
         border = cardBorder(),
         content = content
     )
@@ -395,7 +419,8 @@ private fun cardBorder(color: Color = cardBorderColor) = BorderStroke(1.dp, colo
 @Composable
 private fun SectionAction(
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
-    content: @Composable RowScope.() -> Unit = {}) {
+    content: @Composable RowScope.() -> Unit = {}
+) {
     CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.primary) {
         ProvideTextStyle(value = MaterialTheme.typography.labelLarge) {
             Row(
@@ -435,15 +460,17 @@ fun PreviewShortcutEditContent() {
     CarWidgetTheme {
         // Provide a dummy ShortcutResources implementation for preview
         val previewResources = object : ShortcutResources {
-            override val activity: info.anodsplace.carwidget.content.shortcuts.ShortcutTargetActivity = info.anodsplace.carwidget.content.shortcuts.ShortcutTargetActivity(
-                settings = Any::class.java,
-                switchInCar = Any::class.java,
-                runShortcut = Any::class.java,
-                overlay = Any::class.java
-            )
-            override val internalShortcuts: info.anodsplace.carwidget.content.InternalShortcutResources = info.anodsplace.carwidget.content.InternalShortcutResources(
-                icons = emptyList()
-            )
+            override val activity: info.anodsplace.carwidget.content.shortcuts.ShortcutTargetActivity =
+                info.anodsplace.carwidget.content.shortcuts.ShortcutTargetActivity(
+                    settings = Any::class.java,
+                    switchInCar = Any::class.java,
+                    runShortcut = Any::class.java,
+                    overlay = Any::class.java
+                )
+            override val internalShortcuts: info.anodsplace.carwidget.content.InternalShortcutResources =
+                info.anodsplace.carwidget.content.InternalShortcutResources(
+                    icons = emptyList()
+                )
             override val folderShortcutIcon: Int = android.R.drawable.ic_menu_agenda
         }
         ShortcutEditScreen(

@@ -75,6 +75,11 @@ class ShortcutsDatabase(private val db: Database) {
         return@withContext list.filter { it.isValid }
     }
 
+    fun observeFolder(shortcutId: Long): Flow<List<Shortcut>> {
+        return db.folderItemQueries.selectFolderShortcut(shortcutId, mapper = ::mapFolderItem).asFlow()
+            .mapToList(Dispatchers.IO)
+    }
+
     /**
      * Add an item to the database in a specified container. Sets the container,
      * screen, cellX and cellY fields of the item. Also assigns an ID to the
@@ -89,6 +94,16 @@ class ShortcutsDatabase(private val db: Database) {
         return@withContext db.transactionWithResult {
             insert(targetId, position, item, icon)
             val shortcutId = db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: return@transactionWithResult Shortcut.ID_UNKNOWN
+            items.forEach { (shortcut, icon) ->
+                insertFolderItem(shortcutId, shortcut, icon)
+            }
+            shortcutId
+        }
+    }
+
+    suspend fun updateFolder(shortcutId: Long, items: List<Pair<Shortcut, ShortcutIcon>>): Long = withContext(Dispatchers.IO) {
+        return@withContext db.transactionWithResult {
+            db.folderItemQueries.deleteFolderTarget(shortcutId)
             items.forEach { (shortcut, icon) ->
                 insertFolderItem(shortcutId, shortcut, icon)
             }

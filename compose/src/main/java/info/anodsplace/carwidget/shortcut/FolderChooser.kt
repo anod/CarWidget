@@ -48,13 +48,14 @@ fun FolderChooser(
     onDismissRequest: () -> Unit,
     imageLoader: ImageLoader,
     shortcutResources: ShortcutResources,
+    showTitle: Boolean = true,
     initialTitle: String = "",
     initialSelectedComponents: Set<ComponentName> = emptySet(),
     isEdit: Boolean = false
 ) {
     val context = LocalContext.current
     val loader = remember { AllAppsIntentChooserLoader(context) }
-    var title by remember { mutableStateOf(initialTitle) }
+    var title by remember { mutableStateOf("") }
     var titleManuallyChanged by remember { mutableStateOf(initialTitle.isNotEmpty()) }
     var selected by remember { mutableStateOf(initialSelectedComponents) }
     var categoryFilter by remember { mutableStateOf(if (isEdit) CategoryFilterState.Selected else CategoryFilterState.All ) }
@@ -74,26 +75,27 @@ fun FolderChooser(
         topContent = { apps ->
             val (categoryNames, orderedCategoryIds) = categoryNamesAndIds(context, apps)
             Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = title,
-                    onValueChange = {
-                        title = it
-                        titleManuallyChanged = true
-                    },
-                    label = { Text(stringResource(id = R.string.title)) },
-                    singleLine = true
-                )
-                Spacer(modifier = Modifier.height(12.dp))
+                if (showTitle) {
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = title,
+                        onValueChange = {
+                            title = it
+                            titleManuallyChanged = true
+                        },
+                        label = { Text(stringResource(id = R.string.title)) },
+                        singleLine = true
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
                 CategoryFilterChips(
                     categoryNames = categoryNames,
                     orderedCategoryIds = orderedCategoryIds,
                     categoryFilter = categoryFilter,
                     showSelectedCategory = isEdit,
                     onCategorySelected = { cat ->
-                        // regular category
                         categoryFilter = cat
-                        if (cat is CategoryFilterState.Category && !titleManuallyChanged) {
+                        if (showTitle && cat is CategoryFilterState.Category && !titleManuallyChanged) {
                             val idx = orderedCategoryIds.indexOf(cat.categoryId)
                             if (idx >= 0) {
                                 title = categoryNames[idx]

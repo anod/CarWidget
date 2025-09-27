@@ -21,6 +21,8 @@ interface Shortcuts {
 
     suspend fun saveFolder(position: Int, intent: ShortcutIntent, items: List<ShortcutIntent>): CreateShortcutResult
 
+    suspend fun updateFolderItems(shortcutId: Long, items: List<ShortcutIntent>)
+
     suspend fun save(position: Int, shortcut: Shortcut?, icon: ShortcutIcon?)
 
     suspend fun drop(position: Int)
