@@ -1,6 +1,7 @@
 package info.anodsplace.carwidget
 
 import android.app.UiModeManager
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,7 +9,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.lifecycleScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
+import info.anodsplace.carwidget.iconpack.IconPackScreen
+import info.anodsplace.carwidget.utils.forIconPackResult
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -27,7 +32,18 @@ open class IconPackComposeActivity : ComponentActivity(), KoinComponent {
                 LaunchedEffect(uiMode) { uiModeManager.nightMode = uiMode }
             }
             CarWidgetTheme(uiMode = uiMode) {
-                IconPackScreen()
+                IconPackScreen { bitmap ->
+                    lifecycleScope.launch {
+                        val data = Intent().forIconPackResult(
+                            icon = bitmap,
+                            iconResourceId = null,
+                            uri = null,
+                            context = this@IconPackComposeActivity
+                        )
+                        setResult(RESULT_OK, data)
+                        finish()
+                    }
+                }
             }
         }
     }

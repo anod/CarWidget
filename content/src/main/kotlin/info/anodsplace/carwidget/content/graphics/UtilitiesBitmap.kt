@@ -2,12 +2,18 @@ package info.anodsplace.carwidget.content.graphics
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.PaintFlagsDrawFilter
+import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.PaintDrawable
 import android.util.DisplayMetrics
 import android.util.Log
+import androidx.core.graphics.createBitmap
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import kotlin.math.max
@@ -101,8 +107,7 @@ object UtilitiesBitmap {
 
     fun makeDefaultIcon(manager: PackageManager): Bitmap {
         val d = manager.defaultActivityIcon
-        val b = Bitmap.createBitmap(max(d.intrinsicWidth, 1),
-                max(d.intrinsicHeight, 1), Bitmap.Config.ARGB_8888)
+        val b = createBitmap(max(d.intrinsicWidth, 1), max(d.intrinsicHeight, 1))
         val c = Canvas(b)
         d.setBounds(0, 0, b.width, b.height)
         d.draw(c)
@@ -164,7 +169,7 @@ object UtilitiesBitmap {
             val sourceWidth = icon.intrinsicWidth
             val sourceHeight = icon.intrinsicHeight
 
-            if (sourceWidth > 0 && sourceWidth > 0) {
+            if (sourceWidth > 0) {
                 // There are intrinsic sizes.
                 if (width < sourceWidth || height < sourceHeight) {
                     // It's too big, scale it down.
@@ -187,7 +192,7 @@ object UtilitiesBitmap {
             }
 
             val bitmapSize = getSize(size, width, height)
-            val bitmap = Bitmap.createBitmap(bitmapSize, bitmapSize, Bitmap.Config.ARGB_8888)
+            val bitmap = createBitmap(bitmapSize, bitmapSize)
             val canvas = sCanvas
             canvas.setBitmap(bitmap)
 
@@ -246,10 +251,9 @@ object UtilitiesBitmap {
             out.flush()
             out.close()
             out.toByteArray()
-        } catch (e: IOException) {
-            Log.w("Favorite", "Could not write icon")
+        } catch (_: IOException) {
+            Log.w("flattenBitmap", "Could not write icon")
             null
         }
-
     }
 }

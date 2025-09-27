@@ -156,8 +156,7 @@
             android:exported="true"
             android:theme="@style/BrightnessTheme" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="com.anddoes.launcher.THEME" />
+                <action android:name="org.adw.launcher.icons.ACTION_PICK_ICON" />
             </intent-filter>
         </activity>
 

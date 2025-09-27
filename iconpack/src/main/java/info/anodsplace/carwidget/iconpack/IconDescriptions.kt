@@ -1,0 +1,125 @@
+package info.anodsplace.carwidget.iconpack
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ListAlt
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.automirrored.filled.Message
+import androidx.compose.material.icons.automirrored.filled.ShowChart
+import androidx.compose.material.icons.filled.AccountBalance
+import androidx.compose.material.icons.filled.Apartment
+import androidx.compose.material.icons.filled.Article
+import androidx.compose.material.icons.filled.AutoStories
+import androidx.compose.material.icons.filled.Bedtime
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.ChildCare
+import androidx.compose.material.icons.filled.Cloud
+import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.Collections
+import androidx.compose.material.icons.filled.ColorLens
+import androidx.compose.material.icons.filled.Contacts
+import androidx.compose.material.icons.filled.DirectionsBus
+import androidx.compose.material.icons.filled.DirectionsCar
+import androidx.compose.material.icons.filled.DocumentScanner
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.EmojiEmotions
+import androidx.compose.material.icons.filled.Fastfood
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FileDownload
+import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.Flight
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.HealthAndSafety
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.LocalTaxi
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.MonetizationOn
+import androidx.compose.material.icons.filled.Movie
+import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.Radio
+import androidx.compose.material.icons.filled.School
+import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.SettingsRemote
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.SportsSoccer
+import androidx.compose.material.icons.filled.SupportAgent
+import androidx.compose.material.icons.filled.TipsAndUpdates
+import androidx.compose.material.icons.filled.Translate
+import androidx.compose.material.icons.filled.VerifiedUser
+import androidx.compose.material.icons.filled.ViewInAr
+import androidx.compose.material.icons.filled.VpnKey
+import androidx.compose.material.icons.filled.WatchLater
+import androidx.compose.material.icons.filled.WbSunny
+import androidx.compose.material.icons.filled.Wifi
+import androidx.compose.material.icons.filled.Work
+import androidx.compose.ui.graphics.vector.ImageVector
+
+data class IconDescription(val labelRes: Int, val icon: ImageVector)
+
+val IconDescriptions: List<IconDescription> = listOf(
+    IconDescription(R.string.icon_category_travel, Icons.Default.Flight),
+    IconDescription(R.string.icon_category_audio, Icons.Default.MusicNote),
+    IconDescription(R.string.icon_category_books, Icons.AutoMirrored.Filled.MenuBook),
+    IconDescription(R.string.icon_category_authenticator, Icons.Default.VerifiedUser),
+    IconDescription(R.string.icon_category_cars, Icons.Default.DirectionsCar),
+    IconDescription(R.string.icon_category_camera, Icons.Default.PhotoCamera),
+    IconDescription(R.string.icon_category_children, Icons.Default.ChildCare),
+    IconDescription(R.string.icon_category_sleep, Icons.Default.Bedtime),
+    IconDescription(R.string.icon_category_cloud_storage, Icons.Default.Cloud),
+    IconDescription(R.string.icon_category_contacts, Icons.Default.Contacts),
+    IconDescription(R.string.icon_category_comics, Icons.Default.AutoStories),
+    IconDescription(R.string.icon_category_crypto, Icons.Default.MonetizationOn),
+    IconDescription(R.string.icon_category_dating, Icons.Default.Favorite),
+    IconDescription(R.string.icon_category_download, Icons.Default.FileDownload),
+    IconDescription(R.string.icon_category_education, Icons.Default.School),
+    IconDescription(R.string.icon_category_email, Icons.Default.Email),
+    IconDescription(R.string.icon_category_files, Icons.Default.Folder),
+    IconDescription(R.string.icon_category_finance, Icons.Default.AccountBalance),
+    IconDescription(R.string.icon_category_fitness, Icons.Default.FitnessCenter),
+    IconDescription(R.string.icon_category_food, Icons.Default.Fastfood),
+    IconDescription(R.string.icon_category_health, Icons.Default.HealthAndSafety),
+    IconDescription(R.string.icon_category_home, Icons.Default.Home),
+    IconDescription(R.string.icon_category_humor, Icons.Default.EmojiEmotions),
+    IconDescription(R.string.icon_category_image, Icons.Default.Image),
+    IconDescription(R.string.icon_category_jobs, Icons.Default.Work),
+    IconDescription(R.string.icon_category_language_education, Icons.Default.Translate),
+    IconDescription(R.string.icon_category_maps, Icons.Default.Map),
+    IconDescription(R.string.icon_category_movies, Icons.Default.Movie),
+    IconDescription(R.string.icon_category_network_connection, Icons.Default.Wifi),
+    IconDescription(R.string.icon_category_news, Icons.Default.Article),
+    IconDescription(R.string.icon_category_office, Icons.Default.Apartment),
+    IconDescription(R.string.icon_category_painting, Icons.Default.ColorLens),
+    IconDescription(R.string.icon_category_password_manager, Icons.Default.Lock),
+    IconDescription(R.string.icon_category_personal_assistant, Icons.Default.SupportAgent),
+    IconDescription(R.string.icon_category_privacy_security, Icons.Default.Security),
+    IconDescription(R.string.icon_category_programming, Icons.Default.Code),
+    IconDescription(R.string.icon_category_public_transport, Icons.Default.DirectionsBus),
+    IconDescription(R.string.icon_category_radio, Icons.Default.Radio),
+    IconDescription(R.string.icon_category_religious_text, Icons.AutoMirrored.Filled.MenuBook),
+    IconDescription(R.string.icon_category_remote_control, Icons.Default.SettingsRemote),
+    IconDescription(R.string.icon_category_scanner, Icons.Default.DocumentScanner),
+    IconDescription(R.string.icon_category_settings, Icons.Default.Settings),
+    IconDescription(R.string.icon_category_shopping, Icons.Default.ShoppingCart),
+    IconDescription(R.string.icon_category_social_media, Icons.Default.People),
+    IconDescription(R.string.icon_category_sport, Icons.Default.SportsSoccer),
+    IconDescription(R.string.icon_category_stickers, Icons.Default.Collections),
+    IconDescription(R.string.icon_category_taxi, Icons.Default.LocalTaxi),
+    IconDescription(R.string.icon_category_text_messaging, Icons.AutoMirrored.Filled.Message),
+    IconDescription(R.string.icon_category_theme, Icons.Default.Palette),
+    IconDescription(R.string.icon_category_tips, Icons.Default.TipsAndUpdates),
+    IconDescription(R.string.icon_category_todo_list, Icons.AutoMirrored.Filled.ListAlt),
+    IconDescription(R.string.icon_category_tools, Icons.Default.Build),
+    IconDescription(R.string.icon_category_trading, Icons.AutoMirrored.Filled.ShowChart),
+    IconDescription(R.string.icon_category_virtual_reality, Icons.Default.ViewInAr),
+    IconDescription(R.string.icon_category_vpn, Icons.Default.VpnKey),
+    IconDescription(R.string.icon_category_watch, Icons.Default.WatchLater),
+    IconDescription(R.string.icon_category_weather, Icons.Default.WbSunny),
+    IconDescription(R.string.icon_category_web_browser, Icons.Default.Public),
+)
+

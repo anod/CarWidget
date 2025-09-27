@@ -4,7 +4,9 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.ShortcutIconResource
 import android.database.Cursor
+import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.ContactsContract
 import android.provider.Settings
@@ -52,6 +54,22 @@ fun Intent.forFolder(title: String,ctx: Context, target: ShortcutResources): Sho
     intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource)
     return ShortcutIntent(intent, isApp = false)
 }
+
+fun Intent.forIconPackResult(icon: Bitmap?, iconResourceId: Int?, uri: Uri?, context: Context): Intent {
+    if (icon != null) {
+        putExtra("icon", icon)
+    }
+    // Also add the direct icon resource ID to the intent for launchers that support it
+    if (iconResourceId != null) {
+        val iconRes = ShortcutIconResource.fromContext(context, iconResourceId)
+        putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes)
+    }
+    data = uri
+    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+    setDataAndType(uri, "image/png")
+    return this
+}
+
 
 private fun commonPickShortcutIntent(thisIntent: Intent, title: String, shortcutIntent: Intent): Intent {
     @Suppress("DEPRECATION")

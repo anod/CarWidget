@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 
 class AllAppsIntentChooserLoader(context: Context) : QueryIntentChooserLoader(context, Intent().forLauncher())
 
-open class QueryIntentChooserLoader(context: Context, private val queryIntent: Intent) : ChooserLoader {
+open class QueryIntentChooserLoader(context: Context, private val queryIntent: Intent, private val includeSelfPackage: Boolean = false) : ChooserLoader {
 
     private val packageManager = context.packageManager
     private val selfPackage = context.packageName
@@ -27,7 +27,6 @@ open class QueryIntentChooserLoader(context: Context, private val queryIntent: I
         val list = mutableListOf<ChooserEntry>()
 
         val audioPkgs = mediaListLoader.loadAll().mapNotNull { entry -> entry.componentName?.packageName }.toSet()
-        val includeSelfPackage = queryIntent.hasCategory("com.anddoes.launcher.THEME")
 
         // Request resolved filters so we can inspect intent categories (minimal overhead)
         val apps = packageManager.queryIntentActivities(queryIntent, PackageManager.GET_RESOLVED_FILTER)

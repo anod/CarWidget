@@ -158,7 +158,8 @@ private fun IconPackPicker(
     val loader = remember {
         QueryIntentChooserLoader(
             context = context,
-            queryIntent = Intent().forIconPack()
+            queryIntent = Intent().forIconPack(),
+            includeSelfPackage = true
         )
     }
     val headers = remember {

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
     <external-path name="external_files" path="./data/com.anod.car.home"/>
+    <!-- Added to allow sharing icon images generated in cache/icons -->
+    <cache-path name="icons" path="icons/"/>
 </paths>
