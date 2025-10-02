@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.AppWidget.AppWidgetContainerParent" parent="@style/Theme.Material3.DynamicColors.DayNight">
-        <item name="appWidgetRadius">16dp</item>
-        <item name="appWidgetInnerRadius">8dp</item>
+    <style name="Theme.AppWidget.AppWidgetContainerParent" parent="Theme.Material3.DynamicColors.DayNight">
+        <item name="appWidgetRadius">@android:dimen/system_app_widget_background_radius</item>
+        <item name="appWidgetInnerRadius">@android:dimen/system_app_widget_inner_radius</item>
     </style>
 
     <style name="AppWidgetContainer" parent="Theme.AppWidget.AppWidgetContainerParent">
-        <item name="appWidgetInnerRadius">16dp</item>
+        <item name="appWidgetInnerRadius">@android:dimen/system_app_widget_inner_radius</item>
     </style>
 </resources>

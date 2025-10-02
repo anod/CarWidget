@@ -13,7 +13,7 @@ kotlin {
 android {
     namespace = "info.anodsplace.carwidget.iconpack"
     compileSdk = 36
-    defaultConfig { minSdk = 29 }
+    defaultConfig { minSdk = 31 }
     buildFeatures { compose = true }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -29,6 +29,8 @@ dependencies {
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.ui.tooling.preview)
+
+    implementation(libs.accompanist.drawablepainter)
 
     api(libs.androidx.compose.ui)
     api(libs.androidx.compose.material3)

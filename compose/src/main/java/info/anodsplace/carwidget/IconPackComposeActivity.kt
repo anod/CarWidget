@@ -2,7 +2,6 @@ package info.anodsplace.carwidget
 
 import android.app.UiModeManager
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,17 +21,13 @@ open class IconPackComposeActivity : ComponentActivity(), KoinComponent {
     private val uiModeManager: UiModeManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            uiModeManager.setApplicationNightMode(appSettings.uiMode)
-        }
+        uiModeManager.setApplicationNightMode(appSettings.uiMode)
         super.onCreate(savedInstanceState)
         setContent {
             val uiMode by appSettings.uiModeChange.collectAsState(initial = appSettings.uiMode)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                LaunchedEffect(uiMode) { uiModeManager.nightMode = uiMode }
-            }
+            LaunchedEffect(uiMode) { uiModeManager.nightMode = uiMode }
             CarWidgetTheme(uiMode = uiMode) {
-                IconPackScreen { bitmap ->
+                IconPackScreen(onSelect = { bitmap ->
                     lifecycleScope.launch {
                         val data = Intent().forIconPackResult(
                             icon = bitmap,
@@ -43,7 +38,7 @@ open class IconPackComposeActivity : ComponentActivity(), KoinComponent {
                         setResult(RESULT_OK, data)
                         finish()
                     }
-                }
+                })
             }
         }
     }

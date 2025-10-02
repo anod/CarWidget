@@ -17,29 +17,49 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import dev.shreyaspatil.capturable.capturable
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun IconPackScreen(onSelect: (Bitmap) -> Unit) {
+fun IconPackScreen(onSelect: (Bitmap) -> Unit, initialFolderMode: Boolean = false) {
     val scope = rememberCoroutineScope()
+    var folderMode by rememberSaveable { mutableStateOf(initialFolderMode) }
     Scaffold(
-        topBar = { TopAppBar(title = { Text(text = stringResource(id = R.string.icon_pack_label)) }) }
+        topBar = { TopAppBar(
+            title = { Text(text = stringResource(id = R.string.icon_pack_label)) },
+            actions = {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier.padding(end = 8.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.icon_pack_toggle_show_folders), style = MaterialTheme.typography.labelSmall)
+                    Switch(checked = folderMode, onCheckedChange = { folderMode = it })
+                }
+            }
+        ) }
     ) { inner ->
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 96.dp),
@@ -66,29 +86,27 @@ fun IconPackScreen(onSelect: (Bitmap) -> Unit) {
                     }
                 ) {
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                        horizontalAlignment = Alignment.Start,
                         verticalArrangement = Arrangement.Center,
                         modifier = Modifier.padding(12.dp)
                     ) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                        val context = LocalContext.current
+                        val resId = if (folderMode) iconDesc.folderIconRes else iconDesc.iconRes
+                        val drawable = remember(resId) { context.getDrawable(resId) }
+                        if (drawable != null) {
                             Icon(
-                                imageVector = iconDesc.icon,
+                                painter = rememberDrawablePainter(drawable = drawable),
                                 contentDescription = null,
                                 modifier = Modifier.size(48.dp)
-                            )
-                            Icon(
-                                painter = painterResource(id = iconDesc.iconRes),
-                                contentDescription = null,
-                                modifier = Modifier.size(48.dp)
+                                    .capturable(captureController)
                             )
                         }
                         Text(
                             text = stringResource(id = iconDesc.labelRes),
                             style = MaterialTheme.typography.labelMedium,
-                            textAlign = TextAlign.Center,
+                            textAlign = TextAlign.Start,
                             modifier = Modifier
                                 .padding(top = 8.dp)
-                                .capturable(captureController)
                         )
                     }
                 }
@@ -101,5 +119,11 @@ fun IconPackScreen(onSelect: (Bitmap) -> Unit) {
 @Preview(name = "IconPack Light", showBackground = true)
 @Composable
 private fun IconPackScreenPreviewLight() {
-    MaterialTheme { IconPackScreen { } }
+    MaterialTheme { IconPackScreen(onSelect = {}) }
+}
+
+@Preview(name = "IconPack Folders Light", showBackground = true)
+@Composable
+private fun IconPackScreenPreviewFolders() {
+    MaterialTheme { IconPackScreen(onSelect = {}, initialFolderMode = true) }
 }

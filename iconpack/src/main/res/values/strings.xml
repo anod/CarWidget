@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- TODO: Translate icon pack strings -->
-    <string name="icon_pack_label">Icon Pack</string>
+    <string name="icon_pack_label">Icons</string>
+    <string name="icon_pack_toggle_show_folders">Folders</string> <!-- TODO: Provide translations -->
     <string name="icon_category_travel">Travel</string>
     <string name="icon_category_audio">Audio</string>
     <string name="icon_category_books">Books</string>
@@ -61,4 +62,3 @@
     <string name="icon_category_weather">Weather</string>
     <string name="icon_category_web_browser">Web browser</string>
 </resources>
-

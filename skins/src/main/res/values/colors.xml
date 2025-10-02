@@ -36,28 +36,30 @@
     <color name="md_surfaceTint">#006782</color>
     <color name="md_surfaceTintColor">#006782</color>
 
-    <color name="systemColorPrimary">@color/md_primary</color>
-    <color name="systemColorOnPrimary">@color/md_onPrimary</color>
-    <color name="systemColorPrimaryContainer">@color/md_primary</color>
-    <color name="systemColorOnPrimaryContainer">@color/md_onPrimaryContainer</color>
+    <color name="systemColorPrimary">@android:color/system_accent1_600</color>
+    <color name="systemColorOnPrimary">@android:color/system_accent1_0</color>
+    <color name="systemColorPrimaryContainer">@android:color/system_accent1_100</color>
+    <color name="systemColorOnPrimaryContainer">@android:color/system_accent1_900</color>
 
-    <color name="systemColorPrimaryInverse">@color/md_inversePrimary</color>
+    <color name="systemColorPrimaryInverse">@android:color/system_accent1_200</color>
 
-    <color name="systemColorSecondary">@color/md_secondary</color>
-    <color name="systemColorOnSecondary">@color/md_onSecondary</color>
-    <color name="systemColorSecondaryContainer">@color/md_secondaryContainer</color>
-    <color name="systemColorOnSecondaryContainer">@color/md_onSecondaryContainer</color>
+    <color name="systemColorSecondary">@android:color/system_accent2_600</color>
+    <color name="systemColorOnSecondary">@android:color/system_accent2_0</color>
+    <color name="systemColorSecondaryContainer">@android:color/system_accent2_100</color>
+    <color name="systemColorOnSecondaryContainer">@android:color/system_accent2_900</color>
 
-    <color name="systemColorTertiary">@color/md_tertiary</color>
-    <color name="systemColorOnTertiary">@color/md_onTertiary</color>
-    <color name="systemColorTertiaryContainer">@color/md_tertiaryContainer</color>
-    <color name="systemColorOnTertiaryContainer">@color/md_onTertiaryContainer</color>
+    <color name="systemColorTertiary">@android:color/system_accent3_600</color>
+    <color name="systemColorOnTertiary">@android:color/system_accent3_0</color>
+    <color name="systemColorTertiaryContainer">@android:color/system_accent3_100</color>
+    <color name="systemColorOnTertiaryContainer">@android:color/system_accent3_900</color>
 
-    <color name="colorDynamicWidgetBackground">@color/systemColorSecondaryContainer</color>
+    <color name="systemColorSecondaryContainerAlt">@android:color/system_accent2_50</color>
+
+    <color name="colorDynamicWidgetBackground">@color/systemColorSecondaryContainerAlt</color>
     <color name="colorDynamicWidgetOnBackground">@color/systemColorOnSecondaryContainer</color>
     <color name="colorDynamicWidgetPrimary">@color/systemColorPrimary</color>
     <color name="colorDynamicWidgetPrimaryInverse">@color/systemColorPrimaryInverse</color>
-    <color name="colorDynamicWidgetOnWallpaper">@color/systemColorSecondaryContainer</color>
+    <color name="colorDynamicWidgetOnWallpaper">@color/systemColorSecondaryContainerAlt</color>
 </resources>
 
     <!--    Primary                | systemColorPrimary              | #ff6750a4</br>(system_accent1_600)   | #ffd0bcff</br>(system_accent1_200)-->

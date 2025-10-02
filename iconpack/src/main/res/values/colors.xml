@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="systemColorPrimary">@android:color/system_accent1_600</color>
-    <color name="colorDynamicWidgetPrimary">@color/systemColorPrimary</color>
+    <color name="colorDynamicWidgetPrimary">@android:color/system_accent1_600</color>
 </resources>
