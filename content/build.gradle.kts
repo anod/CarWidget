@@ -17,6 +17,7 @@ android {
 
     defaultConfig {
         minSdk = 31
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     sourceSets {
@@ -61,4 +62,10 @@ dependencies {
     implementation(libs.collection.ktx)
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
+
+    // Instrumentation testing
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.uiautomator)
+    androidTestImplementation(libs.coroutines.android)
 }
