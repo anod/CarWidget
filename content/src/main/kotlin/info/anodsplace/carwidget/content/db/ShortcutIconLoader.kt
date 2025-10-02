@@ -71,6 +71,6 @@ class DbShortcutIconLoader(
         }
 
         val dbShortcut = db.loadIcon(shortcut.id)
-        return iconConverter.convert(shortcut.id, dbShortcut)
+        return iconConverter.toShortcutIcon(shortcut.id, dbShortcut)
     }
 }

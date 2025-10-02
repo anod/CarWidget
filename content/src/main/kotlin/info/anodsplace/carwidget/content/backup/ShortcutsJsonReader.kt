@@ -2,88 +2,34 @@ package info.anodsplace.carwidget.content.backup
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.PorterDuff
-import android.text.TextUtils
 import android.util.JsonReader
 import android.util.SparseArray
-import androidx.core.content.res.ResourcesCompat
 import info.anodsplace.carwidget.content.db.LauncherSettings
 import info.anodsplace.carwidget.content.db.Shortcut
-import info.anodsplace.carwidget.content.db.ShortcutIcon
-import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.db.ShortcutIconConverter
+import info.anodsplace.carwidget.content.db.ShortcutWithFolderItems
 import info.anodsplace.carwidget.content.db.ShortcutWithIcon
-import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
-import info.anodsplace.carwidget.content.os.SoftReferenceThreadLocal
-import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.lang.ref.SoftReference
-import java.net.URISyntaxException
-import java.util.*
 
 /**
  * @author algavris
  * @date 08/04/2016.
  */
-class ShortcutsJsonReader(private val context: Context) {
-
-    private val iconBitmapSize: Int = UtilitiesBitmap.getIconMaxSize(context)
-    private val unusedBitmaps: ArrayList<SoftReference<Bitmap>> = ArrayList()
-
-    private val cachedIconCanvas = object : SoftReferenceThreadLocal<Canvas>() {
-        override fun initialValue(): Canvas {
-            return Canvas()
-        }
-    }
-
-    private val cachedBitmapFactoryOptions = object : SoftReferenceThreadLocal<BitmapFactory.Options>() {
-        override fun initialValue(): BitmapFactory.Options {
-            return BitmapFactory.Options()
-        }
-    }
+class ShortcutsJsonReader(context: Context) {
+    private val iconConverter = ShortcutIconConverter.Default(context)
 
     @Throws(IOException::class)
-    fun readList(reader: JsonReader): SparseArray<ShortcutWithIcon> {
-        val shortcuts = SparseArray<ShortcutWithIcon>()
-        reader.beginArray()
-
-        while (reader.hasNext()) {
-            var unusedBitmap: Bitmap? = null
-            synchronized(sLock) {
-                // not in cache; we need to load it from the db
-                while ((unusedBitmap == null || !unusedBitmap!!.isMutable ||
-                                unusedBitmap!!.width != iconBitmapSize ||
-                                unusedBitmap!!.height != iconBitmapSize) && unusedBitmaps.size > 0) {
-                    unusedBitmap = unusedBitmaps.removeAt(0).get()
-                }
-                if (unusedBitmap != null) {
-                    val canvas = cachedIconCanvas.get()
-                    canvas.setBitmap(unusedBitmap)
-                    canvas.drawColor(0, PorterDuff.Mode.CLEAR)
-                    canvas.setBitmap(null)
-                }
-
-                if (unusedBitmap == null) {
-                    unusedBitmap = Bitmap.createBitmap(iconBitmapSize, iconBitmapSize, Bitmap.Config.ARGB_8888)
-                }
-            }
-
-            val shortcutWithIcon = readShortcut(reader, unusedBitmap!!)
+    suspend fun readList(reader: JsonReader): SparseArray<ShortcutWithFolderItems> {
+        val shortcuts = SparseArray<ShortcutWithFolderItems>()
+        reader.readArray {
+            val shortcutWithIcon = readShortcut(reader, hasFolderItems = true)
             shortcuts.put(shortcutWithIcon.first.position, shortcutWithIcon)
         }
-
-        reader.endArray()
         return shortcuts
     }
 
     @Throws(IOException::class)
-    private fun readShortcut(reader: JsonReader, unusedBitmap: Bitmap): ShortcutWithIcon {
-        reader.beginObject()
-
+    private suspend fun readShortcut(reader: JsonReader, hasFolderItems: Boolean): ShortcutWithFolderItems {
         var pos = -1
         var iconType = 0
         var itemType = 0
@@ -93,122 +39,53 @@ class ShortcutsJsonReader(private val context: Context) {
         var title: CharSequence = ""
         var isCustomIcon = false
         var intent: Intent? = null
+        var folderItems: List<ShortcutWithIcon>? = null
 
-        while (reader.hasNext()) {
-            val name = reader.nextName()
-            if (name == "pos") {
-                pos = reader.nextInt()
-            } else if (name == LauncherSettings.Favorites.ITEM_TYPE) {
-                itemType = reader.nextInt()
-            } else if (name == LauncherSettings.Favorites.TITLE) {
-                title = reader.nextString()
-            } else if (name == LauncherSettings.Favorites.INTENT) {
-                val intentDescription = reader.nextString()
-                if (!TextUtils.isEmpty(intentDescription)) {
-                    try {
-                        intent = Intent.parseUri(intentDescription, 0)
-                    } catch (e: URISyntaxException) {
-                        AppLog.e(e)
+        reader.forEachName { name ->
+            when (name) {
+                "pos" -> pos = reader.nextInt()
+                LauncherSettings.Favorites.ITEM_TYPE -> itemType = reader.nextInt()
+                LauncherSettings.Favorites.TITLE -> title = reader.nextString()
+                LauncherSettings.Favorites.INTENT -> intent = reader.readIntent()
+                LauncherSettings.Favorites.ICON_TYPE -> iconType = reader.nextInt()
+                LauncherSettings.Favorites.ICON -> iconData = reader.readIntArrayAsBytes()
+                LauncherSettings.Favorites.ICON_PACKAGE -> iconPackageName = reader.nextString()
+                LauncherSettings.Favorites.ICON_RESOURCE -> iconResourceName = reader.nextString()
+                LauncherSettings.Favorites.IS_CUSTOM_ICON -> isCustomIcon = reader.nextInt() == 1
+                "folderItems" -> if (hasFolderItems) {
+                    folderItems = mutableListOf()
+                    reader.readArray {
+                        val folderItem = readShortcut(reader, hasFolderItems = false)
+                        folderItems.add(Pair(folderItem.first, folderItem.second))
                     }
-
+                } else {
+                    reader.skipValue()
                 }
-            } else if (name == LauncherSettings.Favorites.ICON_TYPE) {
-                iconType = reader.nextInt()
-            } else if (name == LauncherSettings.Favorites.ICON) {
-                val baos = ByteArrayOutputStream()
-                reader.beginArray()
-                while (reader.hasNext()) {
-                    baos.write(reader.nextInt())
-                }
-                reader.endArray()
-                iconData = baos.toByteArray()
-            } else if (name == LauncherSettings.Favorites.ICON_PACKAGE) {
-                iconPackageName = reader.nextString()
-            } else if (name == LauncherSettings.Favorites.ICON_RESOURCE) {
-                iconResourceName = reader.nextString()
-            } else if (name == LauncherSettings.Favorites.IS_CUSTOM_ICON) {
-                isCustomIcon = reader.nextInt() == 1
+                else -> reader.skipValue()
             }
         }
 
-        val info = Shortcut(Shortcut.ID_UNKNOWN, pos, itemType, title, isCustomIcon, intent ?: Intent())
+        val shortcut = Shortcut(
+            id = Shortcut.ID_UNKNOWN,
+            position = pos,
+            itemType = itemType,
+            title = title,
+            isCustomIcon = isCustomIcon,
+            intent = intent ?: Intent()
+        )
 
-        var bitmap: Bitmap? = null
-        var icon: ShortcutIcon? = null
-        if (itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
-            bitmap = decodeIcon(iconData, unusedBitmap)
-            icon = if (isCustomIcon) {
-                ShortcutIcon.forCustomIcon(Shortcut.ID_UNKNOWN, bitmap!!)
-            } else {
-                ShortcutIcon.forActivity(Shortcut.ID_UNKNOWN, bitmap!!)
+        val shortcutIcon = iconConverter.convert(
+            shortcutId = Shortcut.ID_UNKNOWN,
+            itemType = itemType,
+            iconType = iconType,
+            icon = iconData,
+            isCustomIcon = isCustomIcon,
+            iconResource = Intent.ShortcutIconResource().apply {
+                packageName = iconPackageName
+                resourceName = iconResourceName
             }
-        } else {
-            if (iconType == LauncherSettings.Favorites.ICON_TYPE_RESOURCE) {
-                val iconResource = Intent.ShortcutIconResource()
-                iconResource.packageName = iconPackageName
-                iconResource.resourceName = iconResourceName
-                // the resource
-                try {
-                    val resources = context.packageManager.getResourcesForApplication(iconPackageName)
-                    val resId = resources.getIdentifier(iconResourceName, null, null)
-                    if (resId > 0) {
-                        bitmap = UtilitiesBitmap.createHiResIconBitmap(ResourcesCompat.getDrawable(resources, resId, null)!!, context)
-                    }
-                } catch (e: PackageManager.NameNotFoundException) {
-                    // drop this. we have other places to look for icons
-                    AppLog.e(e)
-                } catch (e: Resources.NotFoundException) {
-                    AppLog.e(e)
-                }
+        )
 
-                // the db
-                if (bitmap == null) {
-                    bitmap = decodeIcon(iconData, unusedBitmap)
-                }
-                if (bitmap != null) {
-                    icon = ShortcutIcon.forIconResource(Shortcut.ID_UNKNOWN, bitmap, iconResource)
-                }
-            } else if (iconType == LauncherSettings.Favorites.ICON_TYPE_BITMAP) {
-                bitmap = decodeIcon(iconData, unusedBitmap)
-                if (bitmap != null) {
-                    icon = ShortcutIcon.forCustomIcon(Shortcut.ID_UNKNOWN, bitmap)
-                }
-            }
-        }
-
-        if (bitmap == null) {
-            bitmap = UtilitiesBitmap.makeDefaultIcon(context.packageManager)
-            icon = ShortcutIcon.forFallbackIcon(Shortcut.ID_UNKNOWN, bitmap)
-        }
-
-        reader.endObject()
-        return ShortcutWithIcon(info, icon)
-    }
-
-
-    private fun decodeIcon(data: ByteArray?, unusedBitmap: Bitmap): Bitmap? {
-        if (data == null || data.isEmpty()) {
-            return null
-        }
-        val opts = cachedBitmapFactoryOptions.get()
-        opts.outWidth = iconBitmapSize
-        opts.outHeight = iconBitmapSize
-        opts.inSampleSize = 1
-        //        opts.inMutable = true;
-        if (UtilitiesBitmap.canUseForInBitmap(unusedBitmap, opts)) {
-            opts.inBitmap = unusedBitmap
-        }
-        return try {
-            BitmapFactory.decodeByteArray(data, 0, data.size, opts)
-        } catch (e: Exception) {
-            AppLog.e(e)
-            // throw new RuntimeException(e.getMessage(), e);
-            null
-        }
-
-    }
-
-    companion object {
-        private val sLock = Any()
+        return ShortcutWithFolderItems(shortcut, shortcutIcon, folderItems)
     }
 }

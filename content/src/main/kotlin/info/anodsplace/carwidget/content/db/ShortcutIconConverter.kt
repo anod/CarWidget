@@ -1,72 +1,57 @@
 package info.anodsplace.carwidget.content.db
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.core.content.res.ResourcesCompat
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.extentions.isLowMemoryDevice
 import info.anodsplace.carwidget.content.graphics.UtilitiesBitmap
-import info.anodsplace.graphics.toBitmap
+import info.anodsplace.graphics.BitmapCachedDecoder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-
 interface ShortcutIconConverter {
-    suspend fun convert(shortcutId: Long, row: SelectShortcutIcon?) : ShortcutIcon
+    suspend fun defaultFallbackIcon(): ShortcutIcon
+    suspend fun convert(shortcutId: Long, itemType: Int, icon: ByteArray?, isCustomIcon: Boolean, iconType: Int, iconResource: Intent.ShortcutIconResource?) : ShortcutIcon
 
     class Default(private val context: Context) : ShortcutIconConverter {
         private val packageManager: PackageManager = context.packageManager
-        private val bitmapOptions: BitmapFactory.Options
+        private val decoder = BitmapCachedDecoder(
+            iconBitmapSize = UtilitiesBitmap.getIconMaxSize(context),
+            isLowMemoryDevice = context.isLowMemoryDevice
+        )
 
-        init {
-            val iconMaxSize = UtilitiesBitmap.getIconMaxSize(context)
-
-            bitmapOptions = BitmapFactory.Options()
-            bitmapOptions.outWidth = iconMaxSize
-            bitmapOptions.outHeight = iconMaxSize
-            bitmapOptions.inSampleSize = 1
-            if (context.isLowMemoryDevice) {
-                // Always prefer RGB_565 config for low res. If the bitmap has transparency, it will
-                // automatically be loaded as ALPHA_8888.
-                bitmapOptions.inPreferredConfig = Bitmap.Config.RGB_565
-            } else {
-                bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888
-            }
+        override suspend fun defaultFallbackIcon(): ShortcutIcon {
+            val icon = UtilitiesBitmap.makeDefaultIcon(packageManager)
+            return ShortcutIcon.forFallbackIcon(0, icon)
         }
 
-        override suspend fun convert(shortcutId: Long, row: SelectShortcutIcon?): ShortcutIcon = withContext(Dispatchers.Default) {
-            if (row == null) {
-                val icon = UtilitiesBitmap.makeDefaultIcon(packageManager)
-                return@withContext ShortcutIcon.forFallbackIcon(shortcutId, icon)
-            }
-
+        override suspend fun convert(shortcutId: Long, itemType: Int, icon: ByteArray?, isCustomIcon: Boolean, iconType: Int, iconResource: Intent.ShortcutIconResource?): ShortcutIcon = withContext(Dispatchers.Default) {
             var shortcutIcon: ShortcutIcon? = null
             try {
                 shortcutIcon = when {
-                    row.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION -> {
-                        row.icon
-                            ?.toBitmap(bitmapOptions)
-                            ?.let { icon ->
-                                if (row.isCustomIcon) {
-                                    ShortcutIcon.forCustomIcon(shortcutId, icon)
+                    itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION -> {
+                        decoder.toBitmap(icon)
+                            ?.let { bitmap ->
+                                if (isCustomIcon) {
+                                    ShortcutIcon.forCustomIcon(shortcutId, bitmap)
                                 } else {
-                                    ShortcutIcon.forActivity(shortcutId, icon)
+                                    ShortcutIcon.forActivity(shortcutId, bitmap)
                                 }
                             }
                     }
-                    row.iconType == LauncherSettings.Favorites.ICON_TYPE_RESOURCE -> {
-                        val iconResource = row.shortcutIconResource
-                        var icon: Bitmap? = null
+                    iconType == LauncherSettings.Favorites.ICON_TYPE_RESOURCE && iconResource != null -> {
+                        var bitmap: Bitmap? = null
                         // the resource
                         try {
                             val resources = packageManager.getResourcesForApplication(iconResource.packageName)
                             val resId = resources.getIdentifier(iconResource.resourceName, null, null)
                             if (resId != 0) {
                                 val iconDrawable = ResourcesCompat.getDrawable(resources, resId, null)!!
-                                icon = UtilitiesBitmap.createHiResIconBitmap(iconDrawable, context)
+                                bitmap = UtilitiesBitmap.createHiResIconBitmap(iconDrawable, context)
                             }
                         } catch (e: PackageManager.NameNotFoundException) {
                             // drop this. we have other places to look for icons
@@ -76,15 +61,14 @@ interface ShortcutIconConverter {
                         }
 
                         // the db
-                        if (icon == null) {
-                            icon = row.icon?.toBitmap(bitmapOptions)
+                        if (bitmap == null) {
+                            bitmap = decoder.toBitmap(icon)
                         }
-                        icon?.let { ShortcutIcon.forIconResource(shortcutId, it, iconResource) }
+                        bitmap?.let { ShortcutIcon.forIconResource(shortcutId, it, iconResource) }
                     }
-                    row.iconType == LauncherSettings.Favorites.ICON_TYPE_BITMAP -> {
-                        row.icon
-                            ?.toBitmap(bitmapOptions)
-                            ?.let { icon -> ShortcutIcon.forCustomIcon(shortcutId, icon) }
+                    iconType == LauncherSettings.Favorites.ICON_TYPE_BITMAP -> {
+                        decoder.toBitmap(icon)
+                            ?.let { bitmap -> ShortcutIcon.forCustomIcon(shortcutId, bitmap) }
                     }
                     else -> null
                 }
@@ -100,6 +84,36 @@ interface ShortcutIconConverter {
             return@withContext shortcutIcon
         }
     }
+}
+
+suspend fun ShortcutIconConverter.toShortcutIcon(shortcutId: Long, row: SelectShortcutIcon?): ShortcutIcon {
+    if (row == null) {
+        return defaultFallbackIcon()
+    }
+    return convert(
+        shortcutId = shortcutId,
+        itemType = row.itemType,
+        icon = row.icon,
+        isCustomIcon = row.isCustomIcon,
+        iconType = row.iconType,
+        iconResource = row.shortcutIconResource
+    )
+}
 
 
+suspend fun ShortcutIconConverter.toShortcutIcon(
+    shortcutId: Long,
+    row: SelectFolderShortcutIcon?
+): ShortcutIcon {
+    if (row == null) {
+        return defaultFallbackIcon()
+    }
+    return convert(
+        shortcutId = shortcutId,
+        itemType = row.itemType,
+        icon = row.icon,
+        isCustomIcon = row.isCustomIcon,
+        iconType = row.iconType,
+        iconResource = row.shortcutIconResource
+    )
 }

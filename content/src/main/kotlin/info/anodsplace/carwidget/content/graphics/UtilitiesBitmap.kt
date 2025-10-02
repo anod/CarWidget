@@ -3,7 +3,6 @@ package info.anodsplace.carwidget.content.graphics
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PaintFlagsDrawFilter
@@ -218,26 +217,6 @@ object UtilitiesBitmap {
             if (width > height) width else height
         } else {
             sIconSystem
-        }
-    }
-
-    fun canUseForInBitmap(candidate: Bitmap, targetOptions: BitmapFactory.Options): Boolean {
-        // From Android 4.4 (KitKat) onward we can re-use if the byte size of
-        // the new bitmap is smaller than the reusable bitmap candidate
-        // allocation byte count.
-        val width = targetOptions.outWidth / targetOptions.inSampleSize
-        val height = targetOptions.outHeight / targetOptions.inSampleSize
-        val byteCount = width * height * getBytesPerPixel(candidate.config)
-        return byteCount <= candidate.allocationByteCount
-    }
-
-    private fun getBytesPerPixel(config: Bitmap.Config?): Int {
-        return when (config) {
-            Bitmap.Config.ARGB_8888 -> 4
-            Bitmap.Config.RGB_565 -> 2
-            Bitmap.Config.ARGB_4444 -> 2
-            Bitmap.Config.ALPHA_8 -> 1
-            else -> 1
         }
     }
 

@@ -5,45 +5,34 @@ import android.util.JsonWriter
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutIconConverter
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
+import info.anodsplace.carwidget.content.db.toShortcutIcon
 
-/**
- * @author algavris
- * @date 08/04/2016.
- */
-class ShortcutsJsonWriter {
+suspend fun JsonWriter.writeShortcuts(shortcuts: Map<Int, Shortcut?>, db: ShortcutsDatabase, context: Context) {
+    val iconConverter = ShortcutIconConverter.Default(context)
 
-    @Suppress("BlockingMethodInNonBlockingContext")
-    suspend fun writeList(shortcutsWriter: JsonWriter, shortcuts: Map<Int, Shortcut?>, db: ShortcutsDatabase, context: Context) {
-        val iconConverter = ShortcutIconConverter.Default(context)
+    for (pos in shortcuts.keys.sorted()) {
+        val shortcut = shortcuts[pos] ?: continue
+        val dbIcon = db.loadIcon(shortcut.id)
+        val icon = iconConverter.toShortcutIcon(shortcut.id, dbIcon)
+        val values = ShortcutsDatabase.createShortcutContentValues(shortcut, icon)
 
-        for ((pos, value) in shortcuts) {
-            val info = value ?: continue
-            shortcutsWriter.beginObject()
-            val dbShortcut = db.loadIcon(info.id)
-            val icon = iconConverter.convert(info.id, dbShortcut)
-            val values = ShortcutsDatabase.createShortcutContentValues(info, icon)
-            shortcutsWriter.name("pos").value(pos.toLong())
+        obj {
+            field("pos", pos)
+            contentValues(values)
 
-            for (key in values.keySet()) {
-                val current = values.get(key)
-                if (current != null) {
-                    when (current) {
-                        is String -> shortcutsWriter.name(key).value(current)
-                        is Int -> shortcutsWriter.name(key).value(current)
-                        is Boolean -> shortcutsWriter.name(key).value(current)
-                        is ByteArray -> {
-                            shortcutsWriter.name(key).beginArray()
-                            for (i in current.indices) {
-                                shortcutsWriter.value(current[i].toLong())
-                            }
-                            shortcutsWriter.endArray()
+            if (shortcut.isFolder) {
+                val folderItems = db.loadFolderItems(shortcut.id)
+                array("folderItems") {
+                    for (item in folderItems) {
+                        val folderDbIcon = db.loadFolderIcon(item.id)
+                        val icon = iconConverter.toShortcutIcon(item.id, folderDbIcon)
+                        val itemValues = ShortcutsDatabase.createShortcutContentValues(item, icon)
+                        obj {
+                            contentValues(itemValues)
                         }
-                        else -> throw RuntimeException("Not implemented: $current")
                     }
                 }
             }
-            shortcutsWriter.endObject()
         }
     }
 }
-

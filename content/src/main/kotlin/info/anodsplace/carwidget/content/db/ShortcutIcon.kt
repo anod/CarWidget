@@ -55,3 +55,11 @@ val SelectShortcutIcon.shortcutIconResource: Intent.ShortcutIconResource
             resourceName = iconResource
         }
     }
+
+val SelectFolderShortcutIcon.shortcutIconResource: Intent.ShortcutIconResource
+    get() {
+        return Intent.ShortcutIconResource().apply {
+            packageName = iconPackage
+            resourceName = iconResource
+        }
+    }

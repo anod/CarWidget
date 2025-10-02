@@ -19,7 +19,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.net.URISyntaxException
 
-typealias ShortcutWithIcon = Pair<Shortcut, ShortcutIcon?>
+typealias ShortcutWithIcon = Pair<Shortcut, ShortcutIcon>
+typealias ShortcutWithFolderItems = Triple<Shortcut, ShortcutIcon, List<ShortcutWithIcon>?>
 
 class ShortcutsDatabase(private val db: Database) {
 
@@ -73,6 +74,10 @@ class ShortcutsDatabase(private val db: Database) {
     suspend fun loadFolderItems(shortcutId: Long): List<Shortcut> = withContext(Dispatchers.IO) {
         val list = db.folderItemQueries.selectFolderShortcut(shortcutId, mapper = ::mapFolderItem).executeAsList()
         return@withContext list.filter { it.isValid }
+    }
+
+    suspend fun loadFolderIcon(folderId: Long): SelectFolderShortcutIcon? = withContext(Dispatchers.IO) {
+        return@withContext db.folderItemQueries.selectFolderShortcutIcon(folderId).executeAsOneOrNull()
     }
 
     fun observeFolder(shortcutId: Long): Flow<List<Shortcut>> {
@@ -147,14 +152,21 @@ class ShortcutsDatabase(private val db: Database) {
         db.shortcutsQueries.updateShortcutTitle(title = title, shortcutId = shortcutId)
     }
 
-    suspend fun restoreTarget(targetId: Int, items: SparseArray<ShortcutWithIcon>) = withContext(Dispatchers.IO) {
+    suspend fun restoreTarget(targetId: Int, items: SparseArray<ShortcutWithFolderItems>) = withContext(Dispatchers.IO) {
         db.transaction {
             db.shortcutsQueries.deleteTarget(targetId)
+            db.folderItemQueries.deleteFolderTarget(targetId.toLong())
 
             for (position in 0 until items.size) {
                 val item = items.get(position)
-                if (item?.first != null) {
-                    insert(targetId, position, item.first, item.second!!)
+                val shortcut = item?.first ?: continue
+                insert(targetId, position, item.first, item.second!!)
+                if (shortcut.isFolder) {
+                    val shortcutId = db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: continue
+                    val folderItems = item.third
+                    folderItems?.forEach { (folderShortcut, folderIcon) ->
+                        insertFolderItem(shortcutId, folderShortcut, folderIcon)
+                    }
                 }
             }
         }

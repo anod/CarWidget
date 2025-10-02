@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.about
 
+import android.app.Application
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
@@ -76,7 +77,7 @@ fun showToast(@StringRes resId: Int = 0, text: String = "", length: Int = Toast.
 
 class AboutViewModel(
     private val appWidgetIdScope: AppWidgetIdScope?,
-    private val context: Context,
+    private val app: Application,
     private val backupManager: BackupManager,
     private val appSettings: AppSettings,
     private val appScope: AppCoroutineScope,
@@ -97,7 +98,7 @@ class AboutViewModel(
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T = AboutViewModel(
             appWidgetIdScope,
-            context,
+            context.applicationContext as Application,
             backupManager,
             appSettings,
             appScope,permissionChecker,
@@ -106,6 +107,8 @@ class AboutViewModel(
         ) as T
     }
 
+    private val context: Context
+        get() = app.applicationContext
     private val themes = context.resources.getStringArray(info.anodsplace.carwidget.content.R.array.app_themes)
 
     init {

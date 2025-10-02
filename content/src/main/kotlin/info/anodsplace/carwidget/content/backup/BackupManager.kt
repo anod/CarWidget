@@ -5,8 +5,9 @@ import android.net.Uri
 import android.util.JsonReader
 import android.util.JsonWriter
 import android.util.SparseArray
+import androidx.core.util.size
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.content.db.ShortcutWithIcon
+import info.anodsplace.carwidget.content.db.ShortcutWithFolderItems
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.unaryPlus
@@ -73,8 +74,8 @@ class BackupManager(
         val widget = appWidgetIdScope.scope.get<WidgetSettings>()
 
         val shortcutsJsonReader = ShortcutsJsonReader(context)
-        var shortcuts = SparseArray<ShortcutWithIcon>()
-        var notificationShortcuts = SparseArray<ShortcutWithIcon>()
+        var shortcuts = SparseArray<ShortcutWithFolderItems>()
+        var notificationShortcuts = SparseArray<ShortcutWithFolderItems>()
         var found = 0
         try {
                 val reader = JsonReader(inputStream.bufferedReader())
@@ -113,8 +114,8 @@ class BackupManager(
         widget.clear()
         widget.applyPending()
         // small check
-        if (shortcuts.size() % 2 == 0) {
-            widget.shortcutsNumber = shortcuts.size()
+        if (shortcuts.size % 2 == 0) {
+            widget.shortcutsNumber = shortcuts.size
         }
 
         database.restoreTarget(+appWidgetIdScope, shortcuts)
@@ -147,12 +148,11 @@ class BackupManager(
             inCarSettings.writeJson(inCarWriter)
 
             val arrayWriter = writer.name("shortcuts").beginArray()
-            val shortcutsJsonWriter = ShortcutsJsonWriter()
-            shortcutsJsonWriter.writeList(arrayWriter, widgetShortcuts.shortcuts, database, context)
+            arrayWriter.writeShortcuts( widgetShortcuts.shortcuts, database, context)
             arrayWriter.endArray()
 
             val arrayNotificationWriter = writer.name("notificationShortcuts").beginArray()
-            ShortcutsJsonWriter().writeList(arrayNotificationWriter, notificationShortcuts.shortcuts, database, context)
+            arrayNotificationWriter.writeShortcuts( notificationShortcuts.shortcuts, database, context)
             arrayNotificationWriter.endArray()
 
             writer.endObject()
