@@ -20,6 +20,10 @@ open class IconPackComposeActivity : ComponentActivity(), KoinComponent {
     private val appSettings: AppSettings by inject()
     private val uiModeManager: UiModeManager by inject()
 
+    companion object {
+        const val EXTRA_FOLDER_MODE = "extra_folder_mode"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         uiModeManager.setApplicationNightMode(appSettings.uiMode)
         super.onCreate(savedInstanceState)
@@ -38,7 +42,7 @@ open class IconPackComposeActivity : ComponentActivity(), KoinComponent {
                         setResult(RESULT_OK, data)
                         finish()
                     }
-                })
+                }, initialFolderMode = intent.getBooleanExtra(EXTRA_FOLDER_MODE, false))
             }
         }
     }

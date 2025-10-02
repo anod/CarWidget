@@ -4,13 +4,10 @@ import android.app.UiModeManager
 import android.content.Context
 import androidx.annotation.ColorRes
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.dp
 
 data class WidgetColorScheme(
     val colorDynamicWidgetBackground: Color,
@@ -59,47 +56,30 @@ fun WidgetSystemTheme(uiMode: Int = UiModeManager.MODE_NIGHT_AUTO, content: @Com
         isSystemInDarkTheme()
     else uiMode == UiModeManager.MODE_NIGHT_YES
     val context = LocalContext.current
-    val widgetColorScheme = if (supportsDynamic()) {
-        if (darkTheme)
-            WidgetColorScheme(
-                context = context,
-                colorDynamicWidgetBackground = android.R.color.system_accent2_800,
-                colorDynamicWidgetOnBackground = android.R.color.system_accent2_100,
-                colorDynamicWidgetPrimary = android.R.color.system_accent1_200,
-                colorDynamicWidgetPrimaryInverse = android.R.color.system_accent1_600,
-                colorDynamicWidgetOnWallpaper = android.R.color.system_accent1_200,
-            )
-        else
-            WidgetColorScheme(
-                context = context,
-                colorDynamicWidgetBackground = android.R.color.system_accent2_50,
-                colorDynamicWidgetOnBackground = android.R.color.system_accent2_900,
-                colorDynamicWidgetPrimary = android.R.color.system_accent1_600,
-                colorDynamicWidgetPrimaryInverse = android.R.color.system_accent1_200,
-                colorDynamicWidgetOnWallpaper = android.R.color.system_accent2_50,
-            )
-    } else {
-        WidgetColorScheme(
-            colorDynamicWidgetBackground = MaterialTheme.colorScheme.secondaryContainer,
-            colorDynamicWidgetOnBackground = MaterialTheme.colorScheme.onSecondaryContainer,
-            colorDynamicWidgetPrimary = MaterialTheme.colorScheme.primary,
-            colorDynamicWidgetPrimaryInverse = MaterialTheme.colorScheme.inversePrimary,
-            colorDynamicWidgetOnWallpaper = MaterialTheme.colorScheme.secondaryContainer,
-        )
-    }
 
-    val widgetRadius = if (supportsDynamic()) {
-        WidgetRadius(
-            background = context.resources.getDimension(android.R.dimen.system_app_widget_background_radius),
-            inner = context.resources.getDimension(android.R.dimen.system_app_widget_inner_radius)
+    val widgetColorScheme = if (darkTheme)
+        WidgetColorScheme(
+            context = context,
+            colorDynamicWidgetBackground = android.R.color.system_accent2_800,
+            colorDynamicWidgetOnBackground = android.R.color.system_accent2_100,
+            colorDynamicWidgetPrimary = android.R.color.system_accent1_200,
+            colorDynamicWidgetPrimaryInverse = android.R.color.system_accent1_600,
+            colorDynamicWidgetOnWallpaper = android.R.color.system_accent1_200,
         )
-    } else {
-        val size = with(LocalDensity.current) { 16.dp.toPx() }
-        WidgetRadius(
-            background = size,
-            inner = size
+    else
+        WidgetColorScheme(
+            context = context,
+            colorDynamicWidgetBackground = android.R.color.system_accent2_50,
+            colorDynamicWidgetOnBackground = android.R.color.system_accent2_900,
+            colorDynamicWidgetPrimary = android.R.color.system_accent1_600,
+            colorDynamicWidgetPrimaryInverse = android.R.color.system_accent1_200,
+            colorDynamicWidgetOnWallpaper = android.R.color.system_accent2_50,
         )
-    }
+
+    val widgetRadius = WidgetRadius(
+        background = context.resources.getDimension(android.R.dimen.system_app_widget_background_radius),
+        inner = context.resources.getDimension(android.R.dimen.system_app_widget_inner_radius)
+    )
 
     val widgetSystemTheme = WidgetSystemTheme(
         colorScheme = widgetColorScheme,

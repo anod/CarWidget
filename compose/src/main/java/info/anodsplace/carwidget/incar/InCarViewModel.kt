@@ -3,7 +3,6 @@ package info.anodsplace.carwidget.incar
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
@@ -178,11 +177,7 @@ class InCarViewModel(
         when (key) {
             InCarSettings.SCREEN_ORIENTATION -> emitAction(InCarViewAction.CheckPermissions(permission = AppPermission.CanDrawOverlay))
             InCarSettings.BRIGHTNESS -> emitAction(InCarViewAction.CheckPermissions(permission = AppPermission.WriteSettings))
-            InCarSettings.AUTO_ANSWER -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                emitAction(InCarViewAction.CheckPermissions(permissions = listOf(AppPermission.AnswerPhoneCalls, AppPermission.PhoneStateRead)))
-            } else {
-                emitAction(InCarViewAction.CheckPermissions(permission = AppPermission.AnswerPhoneCalls))
-            }
+            InCarSettings.AUTO_ANSWER -> emitAction(InCarViewAction.CheckPermissions(permissions = listOf(AppPermission.AnswerPhoneCalls, AppPermission.PhoneStateRead)))
             InCarSettings.ACTIVITY_RECOGNITION -> emitAction(InCarViewAction.CheckPermissions(permission = AppPermission.ActivityRecognition))
             InCarSettings.INCAR_MODE_ENABLED -> emitAction(InCarViewAction.CheckMissingPermissions)
         }

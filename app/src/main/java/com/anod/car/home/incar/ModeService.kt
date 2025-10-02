@@ -4,7 +4,6 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Binder
-import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import android.telephony.PhoneStateListener
@@ -113,11 +112,7 @@ class ModeService : Service(), KoinComponent {
     private fun attachPhoneListener() {
         AppLog.i("Attach phone listener")
         phoneListener = get()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (AppPermissions.isGranted(get(), AppPermission.PhoneStateRead)) {
-                get<TelephonyManager>().listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE)
-            }
-        } else {
+        if (AppPermissions.isGranted(get(), AppPermission.PhoneStateRead)) {
             get<TelephonyManager>().listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE)
         }
     }
@@ -125,12 +120,7 @@ class ModeService : Service(), KoinComponent {
     private fun detachPhoneListener() {
         AppLog.i("Detach phone listener")
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                if (AppPermissions.isGranted(get(), AppPermission.PhoneStateRead)) {
-                    get<TelephonyManager>().listen(phoneListener, PhoneStateListener.LISTEN_NONE)
-                    phoneListener?.cancelActions()
-                }
-            } else {
+            if (AppPermissions.isGranted(get(), AppPermission.PhoneStateRead)) {
                 get<TelephonyManager>().listen(phoneListener, PhoneStateListener.LISTEN_NONE)
                 phoneListener?.cancelActions()
             }

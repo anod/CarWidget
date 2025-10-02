@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.IntentFilter
-import android.os.Build
 import androidx.collection.ArrayMap
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
@@ -118,11 +117,8 @@ class BluetoothDevicesViewModel(
     }
 
     private fun checkPermission(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            return (!AppPermissions.isGranted(context, AppPermission.BluetoothScan)
-                    || !AppPermissions.isGranted(context, AppPermission.BluetoothConnect))
-        }
-        return false
+        return (!AppPermissions.isGranted(context, AppPermission.BluetoothScan)
+                || !AppPermissions.isGranted(context, AppPermission.BluetoothConnect))
     }
 
     @SuppressLint("MissingPermission")

@@ -16,13 +16,11 @@ class PermissionChecker(
         AppPermission.CanDrawOverlay,
         AppPermission.WriteSettings,
         AppPermission.AnswerPhoneCalls,
-        AppPermission.ActivityRecognition
+        AppPermission.ActivityRecognition,
+        AppPermission.PhoneStateRead // Always required for auto answer logic (minSdk >= 31)
     ).apply {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             add(AppPermission.PostNotification)
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            add(AppPermission.PhoneStateRead)
         }
     }
 

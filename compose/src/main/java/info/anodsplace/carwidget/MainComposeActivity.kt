@@ -3,7 +3,6 @@ package info.anodsplace.carwidget
 import android.app.UiModeManager
 import android.appwidget.AppWidgetManager
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -50,10 +49,8 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
         appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
         setContent {
             val uiMode by appSettings.uiModeChange.collectAsState(initial = appSettings.uiMode)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                LaunchedEffect(uiMode) {
-                    uiModeManager.nightMode = uiMode
-                }
+            LaunchedEffect(uiMode) {
+                uiModeManager.nightMode = uiMode
             }
             CarWidgetTheme(
                 uiMode = uiMode

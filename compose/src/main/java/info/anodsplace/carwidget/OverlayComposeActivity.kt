@@ -2,7 +2,6 @@ package info.anodsplace.carwidget
 
 import android.app.UiModeManager
 import android.appwidget.AppWidgetManager
-import android.os.Build
 import android.os.Bundle
 import android.view.Window
 import androidx.activity.ComponentActivity
@@ -60,12 +59,10 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            try {
-                uiModeManager.setApplicationNightMode(appSettings.uiMode)
-            } catch (e: Exception) {
-                AppLog.e(e)
-            }
+        try {
+            uiModeManager.setApplicationNightMode(appSettings.uiMode)
+        } catch (e: Exception) {
+            AppLog.e(e)
         }
         super.onCreate(savedInstanceState)
         appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
@@ -81,10 +78,8 @@ open class OverlayComposeActivity : ComponentActivity(), KoinComponent {
 
         setContent {
             val uiMode by appSettings.uiModeChange.collectAsState(initial = appSettings.uiMode)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                LaunchedEffect(uiMode) {
-                    uiModeManager.nightMode = uiMode
-                }
+            LaunchedEffect(uiMode) {
+                uiModeManager.nightMode = uiMode
             }
 
             CarWidgetTheme(

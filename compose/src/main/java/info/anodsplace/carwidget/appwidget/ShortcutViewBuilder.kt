@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.util.LruCache
 import android.util.TypedValue.COMPLEX_UNIT_PX
 import android.view.View
@@ -117,12 +116,11 @@ class ShortcutViewBuilder(
 
         views.setImageViewBitmap(res, iconBitmap)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (iconResource != 0) {
-                views.setColorStateList(res, "setImageTintList", iconResource)
-            } else {
-                views.setColorStateList(res, "setImageTintList", null)
-            }
+        // API >=31 always; set tint directly
+        if (iconResource != 0) {
+            views.setColorStateList(res, "setImageTintList", iconResource)
+        } else {
+            views.setColorStateList(res, "setImageTintList", null)
         }
 
         if (!prefs.isTitlesHide) {
