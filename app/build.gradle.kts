@@ -55,7 +55,7 @@ android {
 
     defaultConfig {
         minSdk = 31
-        targetSdk = 34 // 29 wifi switch not working
+        targetSdk = 35 // 29 wifi switch not working
         applicationId = "com.anod.car.home.free"
 
         versionCode = 3_32001
