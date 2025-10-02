@@ -34,12 +34,16 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import dev.shreyaspatil.capturable.capturable
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
 import kotlinx.coroutines.launch
+
+// Fixed height so that every card in a grid row has the same background size even if text wraps to two lines.
+private val IconGridItemHeight = 112.dp
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -73,6 +77,8 @@ fun IconPackScreen(onSelect: (Bitmap) -> Unit, initialFolderMode: Boolean = fals
             items(IconDescriptions) { iconDesc ->
                 val captureController = rememberCaptureController()
                 Card(
+                    modifier = Modifier
+                        .then(Modifier),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                     onClick = {
                         scope.launch {
@@ -87,8 +93,10 @@ fun IconPackScreen(onSelect: (Bitmap) -> Unit, initialFolderMode: Boolean = fals
                 ) {
                     Column(
                         horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.padding(12.dp)
+                        verticalArrangement = Arrangement.Top,
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .fillMaxSize() // Fill the fixed card height so background is uniform
                     ) {
                         val context = LocalContext.current
                         val resId = if (folderMode) iconDesc.folderIconRes else iconDesc.iconRes
@@ -105,8 +113,11 @@ fun IconPackScreen(onSelect: (Bitmap) -> Unit, initialFolderMode: Boolean = fals
                             text = stringResource(id = iconDesc.labelRes),
                             style = MaterialTheme.typography.labelMedium,
                             textAlign = TextAlign.Start,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
                                 .padding(top = 8.dp)
+                                .align(Alignment.Start)
                         )
                     }
                 }
