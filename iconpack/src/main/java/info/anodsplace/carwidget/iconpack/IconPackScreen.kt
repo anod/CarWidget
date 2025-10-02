@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -68,18 +70,25 @@ fun IconPackScreen(onSelect: (Bitmap) -> Unit) {
                         verticalArrangement = Arrangement.Center,
                         modifier = Modifier.padding(12.dp)
                     ) {
-                        Icon(
-                            imageVector = iconDesc.icon,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .capturable(captureController)
-                                .size(48.dp)
-                        )
+                        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Icon(
+                                imageVector = iconDesc.icon,
+                                contentDescription = null,
+                                modifier = Modifier.size(48.dp)
+                            )
+                            Icon(
+                                painter = painterResource(id = iconDesc.iconRes),
+                                contentDescription = null,
+                                modifier = Modifier.size(48.dp)
+                            )
+                        }
                         Text(
                             text = stringResource(id = iconDesc.labelRes),
                             style = MaterialTheme.typography.labelMedium,
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(top = 8.dp)
+                            modifier = Modifier
+                                .padding(top = 8.dp)
+                                .capturable(captureController)
                         )
                     }
                 }
