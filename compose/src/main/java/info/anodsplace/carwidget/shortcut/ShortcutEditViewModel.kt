@@ -3,6 +3,7 @@ package info.anodsplace.carwidget.shortcut
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.ShortcutIconResource
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.runtime.Immutable
@@ -111,7 +112,7 @@ class ShortcutEditViewModel(
         }
         viewModelScope.launch {
             shortcutsDatabase.observeIcon(shortcutId).collect { icon ->
-                viewState = viewState.copy(iconVersion = icon.hashCode(),)
+                viewState = viewState.copy(iconVersion = icon.hashCode())
             }
         }
     }
@@ -146,13 +147,16 @@ class ShortcutEditViewModel(
                 viewState = viewState.copy(showIconPackPicker = event.show)
             }
             is ShortcutEditViewEvent.CustomIconResult -> {
-                updateCustomIcon(event.uri, event.resolveProperties)
+                val shortcutIcon = iconFromUri(event.uri, hiRes = false, event.resolveProperties)
+                if (shortcutIcon != null) {
+                    setCustomIcon(shortcutIcon)
+                }
             }
             is ShortcutEditViewEvent.IconPackResult -> {
                 viewState = viewState.copy(showIconPackPicker = false)
-                val bitmap = getBitmapIconPackIntent(event.intent , event.resolveProperties)
-                if (bitmap != null) {
-                    setCustomIcon(bitmap)
+                val shortcutIcon = iconFromIconPackResult(event.intent , event.resolveProperties)
+                if (shortcutIcon != null) {
+                    setCustomIcon(shortcutIcon)
                 }
             }
             ShortcutEditViewEvent.DefaultIconReset -> {
@@ -160,8 +164,9 @@ class ShortcutEditViewModel(
                 val component = shortcut.intent.component ?: return
                 appScope.launch {
                     if (shortcut.isFolder) {
-                        val iconResource = Intent.ShortcutIconResource.fromContext(context, shortcutResources.folderShortcutIcon)
-                        val defaultIcon = ShortcutInfoFactory.resolveIconResource(iconResource, context)
+                        val iconResource = ShortcutIconResource.fromContext(context, shortcutResources.folderShortcutIcon)
+                        val defaultIcon = ShortcutInfoFactory.resolveIconResource(viewState.shortcutId, iconResource, context)
+                            ?: ShortcutInfoFactory.defaultFallbackIcon(viewState.shortcutId, context)
                         shortcutsDatabase.updateIcon(shortcut.id, defaultIcon)
                         return@launch
                     }
@@ -188,36 +193,46 @@ class ShortcutEditViewModel(
         }
     }
 
-    private fun setCustomIcon(bitmap: Bitmap) {
-        val shortcutIcon = ShortcutIcon.forCustomIcon(viewState.shortcutId, bitmap)
+    private fun setCustomIcon(icon: ShortcutIcon) {
         viewModelScope.launch {
-            shortcutsDatabase.updateIcon(viewState.shortcutId, shortcutIcon)
+            shortcutsDatabase.updateIcon(viewState.shortcutId, icon)
         }
     }
 
-    private fun getBitmapIconPackIntent(intent: Intent?, resolveProperties: DrawableUri.ResolveProperties): Bitmap? {
+    private fun iconFromIconPackResult(intent: Intent?, resolveProperties: DrawableUri.ResolveProperties): ShortcutIcon? {
         if (intent == null) {
             return null
         }
-        var bitmap: Bitmap? = null
-        if (intent.hasExtra("icon")) {
-            bitmap = intent.getParcelableExtra("icon")
-        } else {
-            val imageUri = intent.data ?: return null
-            val icon = DrawableUri(context).resolve(imageUri, resolveProperties)
+
+        @Suppress("DEPRECATION")
+        val iconResource = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE) as? ShortcutIconResource
+        if (iconResource != null) {
+            val icon = ShortcutInfoFactory.resolveIconResource(viewState.shortcutId, iconResource, context)
             if (icon != null) {
-                bitmap = UtilitiesBitmap.createHiResIconBitmap(icon, context)
+                return icon
             }
         }
-        return bitmap
+
+        if (intent.hasExtra("icon")) {
+            val bitmap: Bitmap? = intent.getParcelableExtra("icon")
+            if (bitmap != null) {
+                val shortcutIcon = ShortcutIcon.forCustomIcon(viewState.shortcutId, bitmap)
+                return shortcutIcon
+            }
+        }
+
+        return iconFromUri(intent.data, hiRes = true, resolveProperties)
     }
 
-    private fun updateCustomIcon(uri: Uri?, resolveProperties: DrawableUri.ResolveProperties): Boolean {
-        val imageUri =uri ?: return false
-        val icon = DrawableUri(context).resolve(imageUri, resolveProperties) ?: return false
-        val bitmap = UtilitiesBitmap.createMaxSizeIcon(icon, context)
-        setCustomIcon(bitmap)
-        return true
+    private fun iconFromUri(uri: Uri?, hiRes: Boolean, resolveProperties: DrawableUri.ResolveProperties): ShortcutIcon? {
+        val imageUri = uri ?: return null
+        val icon = DrawableUri(context).resolve(imageUri, resolveProperties) ?: return null
+        val bitmap = if (hiRes) {
+            UtilitiesBitmap.createHiResIconBitmap(icon, context)
+        } else {
+            UtilitiesBitmap.createMaxSizeIcon(icon, context)
+        }
+        return ShortcutIcon.forCustomIcon(viewState.shortcutId, bitmap)
     }
 
     private fun updateIntentField(field: IntentField, intent: Intent): Intent {

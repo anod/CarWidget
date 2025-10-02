@@ -27,11 +27,11 @@ open class IconPackComposeActivity : ComponentActivity(), KoinComponent {
             val uiMode by appSettings.uiModeChange.collectAsState(initial = appSettings.uiMode)
             LaunchedEffect(uiMode) { uiModeManager.nightMode = uiMode }
             CarWidgetTheme(uiMode = uiMode) {
-                IconPackScreen(onSelect = { bitmap ->
+                IconPackScreen(onSelect = { bitmap, resId ->
                     lifecycleScope.launch {
                         val data = Intent().forIconPackResult(
                             icon = bitmap,
-                            iconResourceId = null,
+                            iconResourceId = resId,
                             uri = null,
                             context = this@IconPackComposeActivity
                         )

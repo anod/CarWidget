@@ -42,12 +42,9 @@ import dev.shreyaspatil.capturable.capturable
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
 import kotlinx.coroutines.launch
 
-// Fixed height so that every card in a grid row has the same background size even if text wraps to two lines.
-private val IconGridItemHeight = 112.dp
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun IconPackScreen(onSelect: (Bitmap) -> Unit, initialFolderMode: Boolean = false) {
+fun IconPackScreen(onSelect: (Bitmap, resId: Int) -> Unit, initialFolderMode: Boolean = false) {
     val scope = rememberCoroutineScope()
     var folderMode by rememberSaveable { mutableStateOf(initialFolderMode) }
     Scaffold(
@@ -76,6 +73,7 @@ fun IconPackScreen(onSelect: (Bitmap) -> Unit, initialFolderMode: Boolean = fals
         ) {
             items(IconDescriptions) { iconDesc ->
                 val captureController = rememberCaptureController()
+                val resId = if (folderMode) iconDesc.folderIconRes else iconDesc.iconRes
                 Card(
                     modifier = Modifier
                         .then(Modifier),
@@ -85,7 +83,7 @@ fun IconPackScreen(onSelect: (Bitmap) -> Unit, initialFolderMode: Boolean = fals
                             val bitmapAsync = captureController.captureAsync()
                             try {
                                 val image = bitmapAsync.await()
-                                onSelect(image.asAndroidBitmap())
+                                onSelect(image.asAndroidBitmap(), resId)
                             } catch (_: Throwable) {
                             }
                         }
@@ -99,7 +97,6 @@ fun IconPackScreen(onSelect: (Bitmap) -> Unit, initialFolderMode: Boolean = fals
                             .fillMaxSize() // Fill the fixed card height so background is uniform
                     ) {
                         val context = LocalContext.current
-                        val resId = if (folderMode) iconDesc.folderIconRes else iconDesc.iconRes
                         val drawable = remember(resId) { context.getDrawable(resId) }
                         if (drawable != null) {
                             Icon(
@@ -130,11 +127,11 @@ fun IconPackScreen(onSelect: (Bitmap) -> Unit, initialFolderMode: Boolean = fals
 @Preview(name = "IconPack Light", showBackground = true)
 @Composable
 private fun IconPackScreenPreviewLight() {
-    MaterialTheme { IconPackScreen(onSelect = {}) }
+    MaterialTheme { IconPackScreen(onSelect = { _, _ -> }) }
 }
 
 @Preview(name = "IconPack Folders Light", showBackground = true)
 @Composable
 private fun IconPackScreenPreviewFolders() {
-    MaterialTheme { IconPackScreen(onSelect = {}, initialFolderMode = true) }
+    MaterialTheme { IconPackScreen(onSelect = { _, _ -> }, initialFolderMode = true) }
 }

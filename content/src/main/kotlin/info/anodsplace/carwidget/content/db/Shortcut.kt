@@ -102,7 +102,7 @@ fun Shortcut.toImageRequest(
     iconVersion: Int = -1
 ): ImageRequest = ImageRequest.Builder(context)
     .data(iconUri(context.isDebugBuild, adaptiveIconStyle, skinName)).apply {
-        if (iconVersion > 0) {
+        if (iconVersion != -1) {
             parameters(Parameters.Builder().set("version", iconVersion).build())
         }
     }

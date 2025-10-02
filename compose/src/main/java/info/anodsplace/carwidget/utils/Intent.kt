@@ -34,7 +34,7 @@ fun Intent.forPickShortcutLocal(shortcut: InternalShortcut, title: String, icnRe
     shortcutIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
 
     val intent = commonPickShortcutIntent(this, title, shortcutIntent)
-    val iconResource = Intent.ShortcutIconResource.fromContext(ctx, icnResId)
+    val iconResource = ShortcutIconResource.fromContext(ctx, icnResId)
     @Suppress("DEPRECATION")
     intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource)
     return intent
@@ -62,7 +62,9 @@ fun Intent.forIconPackResult(icon: Bitmap?, iconResourceId: Int?, uri: Uri?, con
     // Also add the direct icon resource ID to the intent for launchers that support it
     if (iconResourceId != null) {
         val iconRes = ShortcutIconResource.fromContext(context, iconResourceId)
+        @Suppress("DEPRECATION")
         putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes)
+        putExtra(ShortcutExtra.EXTRA_PREFER_ICON_RESOURCE, true)
     }
     data = uri
     flags = Intent.FLAG_GRANT_READ_URI_PERMISSION

@@ -46,6 +46,7 @@ object ShortcutExtra {
     const val EXTRA_MEDIA_BUTTON = "media_button"
     const val ACTION_MEDIA_BUTTON = "action_media_button"
     const val ACTION_FOLDER = "info.anodsplace.carwidget.action.FOLDER"
+    const val EXTRA_PREFER_ICON_RESOURCE = "info.anodsplace.carwidget.extra.PREFER_ICON_RESOURCE"
 }
 
 fun InternalShortcut.fillIntent(

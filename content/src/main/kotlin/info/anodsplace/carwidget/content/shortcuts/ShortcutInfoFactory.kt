@@ -29,9 +29,15 @@ sealed interface CreateShortcutResult {
     }
 
     data object None : CreateShortcutResult
-    data class SuccessApp(override val info: Shortcut, override val icon: ShortcutIcon) : CreateShortcutResult, CreateShortcutResultSuccess
-    data class SuccessCustom(override val info: Shortcut, override val icon: ShortcutIcon) : CreateShortcutResult, CreateShortcutResultSuccess
-    data class SuccessAppShortcut(override val info: Shortcut, override val icon: ShortcutIcon) : CreateShortcutResult, CreateShortcutResultSuccess
+    data class SuccessApp(override val info: Shortcut, override val icon: ShortcutIcon) :
+        CreateShortcutResult, CreateShortcutResultSuccess
+
+    data class SuccessCustom(override val info: Shortcut, override val icon: ShortcutIcon) :
+        CreateShortcutResult, CreateShortcutResultSuccess
+
+    data class SuccessAppShortcut(override val info: Shortcut, override val icon: ShortcutIcon) :
+        CreateShortcutResult, CreateShortcutResultSuccess
+
     data object FailedApp : CreateShortcutResult
     data object FailedAppShortcut : CreateShortcutResult
 }
@@ -49,6 +55,8 @@ class ShortcutIntent(val data: Intent, val isApp: Boolean) {
         get() = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON)
     val iconResource: Parcelable?
         get() = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)
+    val preferIconResource: Boolean
+        get() = data.getBooleanExtra(ShortcutExtra.EXTRA_PREFER_ICON_RESOURCE, false)
     val pinItemRequest: LauncherApps.PinItemRequest?
         get() = data.getParcelableExtra(LauncherApps.EXTRA_PIN_ITEM_REQUEST)
 }
@@ -67,7 +75,11 @@ object ShortcutInfoFactory {
         }
     }
 
-    private fun infoFromShortcutIntent(context: Context, position: Int, data: ShortcutIntent): CreateShortcutResult {
+    private fun infoFromShortcutIntent(
+        context: Context,
+        position: Int,
+        data: ShortcutIntent
+    ): CreateShortcutResult {
 
         // Use fully supported EXTRA_SHORTCUT_INTENT when available
         if (!data.hasIntent && data.isPinItemRequest) {
@@ -76,27 +88,34 @@ object ShortcutInfoFactory {
         }
 
         val intent = data.intent ?: Intent()
-        val name =  data.name ?: ""
+        val name = data.name ?: ""
         val extraIcon = data.icon
         var icon: ShortcutIcon? = null
+        val iconResource = data.iconResource
 
-        if (extraIcon is Bitmap) {
+        if (data.preferIconResource && iconResource is ShortcutIconResource) {
+            AppLog.d("Custom shortcut with Icon Resource")
+            icon = resolveIconResource(
+                shortcutId = Shortcut.ID_UNKNOWN,
+                iconResource = iconResource,
+                context = context
+            )
+        } else if (extraIcon is Bitmap) {
             AppLog.d("Custom shortcut with Bitmap")
             val bitmap = UtilitiesBitmap.createMaxSizeIcon(
-                extraIcon.toDrawable(context.resources),
-                context
+                icon = extraIcon.toDrawable(context.resources),
+                context = context
             )
             icon = ShortcutIcon.forCustomIcon(0, bitmap)
-        } else {
-            val extra = data.iconResource
-            if (extra is ShortcutIconResource) {
-                AppLog.d("Custom shortcut with Icon Resource")
-                icon = resolveIconResource(
-                    iconResource = extra,
-                    context = context
-                )
-            }
+        } else if (iconResource is ShortcutIconResource) {
+            AppLog.d("Custom shortcut with Icon Resource")
+            icon = resolveIconResource(
+                shortcutId = Shortcut.ID_UNKNOWN,
+                iconResource = iconResource,
+                context = context
+            )
         }
+
 
         if (icon == null) {
             val bitmap = UtilitiesBitmap.makeDefaultIcon(context.packageManager)
@@ -181,7 +200,11 @@ object ShortcutInfoFactory {
      *
      * If c is not null, then it will be used to fill in missing data like the title and icon.
      */
-    fun infoFromApplicationIntent(context: Context, position: Int, intent: Intent): CreateShortcutResult {
+    fun infoFromApplicationIntent(
+        context: Context,
+        position: Int,
+        intent: Intent
+    ): CreateShortcutResult {
         val componentName = intent.component
             ?: return CreateShortcutResult.FailedAppShortcut
         AppLog.d("Component Name - $componentName")
@@ -225,32 +248,34 @@ object ShortcutInfoFactory {
         componentName: ComponentName?,
         context: Context
     ): ShortcutIcon {
-        var bitmap: Bitmap?
         if (resolveInfo != null) {
-            bitmap = getIcon(componentName, resolveInfo, context.packageManager, context)
+            val bitmap = getIcon(componentName, resolveInfo, context.packageManager, context)
             if (bitmap != null) {
                 return ShortcutIcon.forActivity(Shortcut.ID_UNKNOWN, bitmap)
             }
         }
-        // the fallback icon
-        bitmap = UtilitiesBitmap.makeDefaultIcon(context.packageManager)
-        return ShortcutIcon.forFallbackIcon(Shortcut.ID_UNKNOWN, bitmap)
+        return defaultFallbackIcon(Shortcut.ID_UNKNOWN, context)
     }
 
     fun resolveIconResource(
+        shortcutId: Long,
         iconResource: ShortcutIconResource,
         context: Context
-    ): ShortcutIcon {
+    ): ShortcutIcon? {
         try {
             val bitmap = getPackageIcon(context, iconResource)
-            return ShortcutIcon.forIconResource(Shortcut.ID_UNKNOWN, bitmap!!, iconResource)
+            return ShortcutIcon.forIconResource(shortcutId, bitmap!!, iconResource)
         } catch (e: Resources.NotFoundException) {
             AppLog.e(e)
         } catch (e: PackageManager.NameNotFoundException) {
             AppLog.e(e)
         }
+        return null
+    }
+
+    fun defaultFallbackIcon(shortcutId: Long, context: Context): ShortcutIcon {
         val bitmap = UtilitiesBitmap.makeDefaultIcon(context.packageManager)
-        return ShortcutIcon.forFallbackIcon(Shortcut.ID_UNKNOWN, bitmap)
+        return ShortcutIcon.forFallbackIcon(shortcutId, bitmap)
     }
 
     private fun getIcon(
@@ -319,5 +344,4 @@ object ShortcutInfoFactory {
         }
         return drawableAppIcon
     }
-
 }
