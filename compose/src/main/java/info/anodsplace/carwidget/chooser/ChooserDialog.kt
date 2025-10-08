@@ -29,6 +29,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
+import androidx.compose.material.icons.filled.Android
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -52,6 +53,7 @@ import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -263,11 +265,14 @@ fun ChooserGridList(
                                 tint = MaterialTheme.colorScheme.onPrimary
                             )
                         } else {
+                            val fallbackPainter = rememberVectorPainter(Icons.Filled.Android)
                             AsyncImage(
                                 model = LocalContext.current.iconUri(iconRes = entry.iconRes),
                                 contentDescription = entry.title,
                                 imageLoader = imageLoader,
-                                modifier = Modifier.size(iconSize)
+                                modifier = Modifier.size(iconSize),
+                                error = fallbackPainter,
+                                fallback = fallbackPainter
                             )
                         }
                     },
@@ -284,12 +289,15 @@ fun ChooserGridList(
                     onClick = { onSelect(entry) },
                     icon = { saturation ->
                         val colorMatrix = remember(saturation) { ColorMatrix().apply { setToSaturation(saturation) } }
+                        val fallbackPainter = rememberVectorPainter(Icons.Filled.Android)
                         AsyncImage(
                             model = entry.iconUri(LocalContext.current),
                             contentDescription = entry.title,
                             imageLoader = imageLoader,
                             modifier = Modifier.size(iconSize),
-                            colorFilter = ColorFilter.colorMatrix(colorMatrix)
+                            colorFilter = ColorFilter.colorMatrix(colorMatrix),
+                            error = fallbackPainter,
+                            fallback = fallbackPainter
                         )
                     },
                     isSelected = isSelected,
@@ -475,7 +483,8 @@ fun ChooserScreenPreview() {
             loader = StaticChooserLoader(listOf(
                 ChooserEntry(componentName = null, title = "Music", iconRes = info.anodsplace.carwidget.skin.R.drawable.ic_shortcut_play_primary),
                 ChooserEntry(componentName = null, title = "Maps", iconRes = info.anodsplace.carwidget.skin.R.drawable.ic_shortcut_play_primary),
-                ChooserEntry(componentName = null, title = "Calls", iconRes = info.anodsplace.carwidget.skin.R.drawable.ic_shortcut_play_primary)
+                ChooserEntry(componentName = null, title = "Calls", iconRes = info.anodsplace.carwidget.skin.R.drawable.ic_shortcut_play_primary),
+                ChooserEntry(componentName = ComponentName("pkg.sample", "pkg.sample.App1"), title = "App One")
             )),
             headers = listOf(
                 Header(0, "Actions", iconRes = info.anodsplace.carwidget.skin.R.drawable.ic_shortcut_play_primary),
@@ -488,33 +497,6 @@ fun ChooserScreenPreview() {
                 dimAlpha = 0.4f,
                 showSelectionOutline = true
             )
-        )
-    }
-}
-
-@Preview(name = "MultiSelect Content", showBackground = true, widthDp = 360, heightDp = 640)
-@Composable
-fun MultiSelectChooserContentPreview() {
-    CarWidgetTheme {
-        val ctx = LocalContext.current
-        val app1 = ChooserEntry(componentName = ComponentName("pkg.sample", "pkg.sample.App1"), title = "App One")
-        val app2 = ChooserEntry(componentName = ComponentName("pkg.sample", "pkg.sample.App2"), title = "App Two")
-        val app3 = ChooserEntry(componentName = ComponentName("pkg.sample", "pkg.sample.App3"), title = "App Three")
-        MultiSelectChooserDialog(
-            loader = StaticChooserLoader(listOf(app1, app2, app3)),
-            headers = listOf(Header(0, "Actions", iconRes = info.anodsplace.carwidget.skin.R.drawable.ic_shortcut_play_primary)),
-            selectedComponents = setOf(app2.componentName!!),
-            onSelect = { },
-            onDismissRequest = { },
-            imageLoader = ImageLoader(ctx),
-            style = ChooserGridListDefaults.multiSelect().copy(
-                grayscaleUnselectedIcons = true,
-                dimUnselectedIcons = true,
-                dimAlpha = 0.4f,
-                selectionOutlineColor = MaterialTheme.colorScheme.secondary
-            ),
-            topContent = { all -> Text("Select apps (${all.size})", modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.titleMedium) },
-            bottomContent = { list -> Text("${list.size} apps", modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodySmall) }
         )
     }
 }
