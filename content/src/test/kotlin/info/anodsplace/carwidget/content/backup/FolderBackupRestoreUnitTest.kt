@@ -3,12 +3,10 @@ package info.anodsplace.carwidget.content.backup
 import android.content.ComponentName
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Bitmap.Config
 import android.util.JsonReader
 import android.util.JsonWriter
 import android.util.SparseArray
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.core.app.ApplicationProvider
 import app.cash.sqldelight.adapter.primitive.IntColumnAdapter
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import info.anodsplace.carwidget.content.db.Database
@@ -24,19 +22,25 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.io.StringReader
 import java.io.StringWriter
 
-@RunWith(AndroidJUnit4::class)
-class FolderBackupRestoreTest {
+/**
+ * Robolectric migration of instrumentation FolderBackupRestoreTest.
+ */
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [31])
+class FolderBackupRestoreUnitTest {
 
     @Test
     fun folder_shortcuts_backup_and_restore_roundtrip() = runBlocking<Unit> {
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val context = ApplicationProvider.getApplicationContext<android.content.Context>()
         val driver = AndroidSqliteDriver(
             schema = Database.Schema,
             context = context,
-            name = "test-folder-backup-restore.db"
+            name = null
         )
         val database = Database(
             driver = driver,
@@ -54,37 +58,33 @@ class FolderBackupRestoreTest {
         val shortcutsDb = ShortcutsDatabase(database)
 
         val component = ComponentName(context.packageName, "TestActivity")
-        val bmp = Bitmap.createBitmap(1, 1, Config.ARGB_8888)
+        val bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
 
-        // Create folder shortcut (position 0)
         val folderIntent = Intent(ShortcutExtra.ACTION_FOLDER)
         val folderShortcut = Shortcut(
             id = 0,
             position = 0,
-            itemType = LauncherSettings.Favorites.ITEM_TYPE_APPLICATION, // itemType arbitrary; folder detected by intent.action
+            itemType = LauncherSettings.Favorites.ITEM_TYPE_APPLICATION, // arbitrary
             title = "Folder",
             isCustomIcon = false,
             intent = folderIntent
         )
         val folderItems = listOf(
-            Shortcut.forActivity(0, 0, "Child1", false, component, 0),
-            Shortcut.forActivity(0, 0, "Child2", false, component, 0)
+            Shortcut.forActivity(0, 0, "Child1", false, ComponentName(context.packageName, "TestActivityChild1"), 0),
+            Shortcut.forActivity(0, 0, "Child2", false, ComponentName(context.packageName, "TestActivityChild2"), 0)
         )
         val folderItemsWithIcons = folderItems.map { it to ShortcutIcon.forActivity(0, bmp) }
 
         val folderId = shortcutsDb.saveFolder(ORIGINAL_TARGET, 0, folderShortcut, ShortcutIcon.forActivity(0, bmp), folderItemsWithIcons)
-        // Validate pre-backup folder items
         val preFolderItems = shortcutsDb.loadFolderItems(folderId)
         assertEquals(2, preFolderItems.size)
 
-        // Add an app shortcut after folder (position 1)
         val afterShortcut = Shortcut.forActivity(0, 1, "After", false, component, 0)
         shortcutsDb.addItem(ORIGINAL_TARGET, 1, afterShortcut, ShortcutIcon.forActivity(0, bmp))
 
         val originalMap = shortcutsDb.loadTarget(ORIGINAL_TARGET)
-        assertEquals(2, originalMap.size) // positions 0..1
+        assertEquals(2, originalMap.size)
 
-        // Backup JSON
         val stringWriter = StringWriter()
         val writer = JsonWriter(stringWriter)
         writer.beginObject()
@@ -99,7 +99,6 @@ class FolderBackupRestoreTest {
 
         val json = stringWriter.toString()
 
-        // Read back shortcuts (with folder) using reader
         val shortcutsJsonReader = ShortcutsJsonReader(context)
         val reader = JsonReader(StringReader(json))
         var readShortcuts = SparseArray<ShortcutWithFolderItems>()
@@ -113,7 +112,6 @@ class FolderBackupRestoreTest {
         reader.endObject()
         reader.close()
 
-        // Restore into new target
         shortcutsDb.restoreTarget(RESTORE_TARGET, readShortcuts)
         val restoredMap = shortcutsDb.loadTarget(RESTORE_TARGET)
         assertEquals(2, restoredMap.size)
@@ -134,4 +132,3 @@ class FolderBackupRestoreTest {
         private const val RESTORE_TARGET = 31
     }
 }
-

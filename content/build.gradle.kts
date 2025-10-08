@@ -32,6 +32,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     namespace = "info.anodsplace.carwidget.content"
+
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
 }
 
 sqldelight {
@@ -68,4 +72,10 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.uiautomator)
     androidTestImplementation(libs.coroutines.android)
+
+    // Unit testing
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.sqldelight.driver.sqlite)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core)
 }

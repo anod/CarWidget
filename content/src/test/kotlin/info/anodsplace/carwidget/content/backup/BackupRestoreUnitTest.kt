@@ -2,38 +2,36 @@ package info.anodsplace.carwidget.content.backup
 
 import android.content.ComponentName
 import android.graphics.Bitmap
-import android.graphics.Bitmap.Config
 import android.util.JsonReader
 import android.util.JsonWriter
 import android.util.SparseArray
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.core.app.ApplicationProvider
 import app.cash.sqldelight.adapter.primitive.IntColumnAdapter
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
-import info.anodsplace.carwidget.content.db.Database
-import info.anodsplace.carwidget.content.db.Favorites
-import info.anodsplace.carwidget.content.db.FolderItem
-import info.anodsplace.carwidget.content.db.Shortcut
-import info.anodsplace.carwidget.content.db.ShortcutIcon
-import info.anodsplace.carwidget.content.db.ShortcutWithFolderItems
-import info.anodsplace.carwidget.content.db.ShortcutsDatabase
+import info.anodsplace.carwidget.content.db.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.io.StringReader
 import java.io.StringWriter
 
-@RunWith(AndroidJUnit4::class)
-class BackupRestoreTest {
+/**
+ * Robolectric migration of instrumentation BackupRestoreTest.
+ */
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [31])
+class BackupRestoreUnitTest {
 
     @Test
     fun shortcuts_backup_and_restore_roundtrip() = runBlocking<Unit> {
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val context = ApplicationProvider.getApplicationContext<android.content.Context>()
         val driver = AndroidSqliteDriver(
             schema = Database.Schema,
             context = context,
-            name = "test-backup-restore.db"
+            name = "backup-restore-unit.db"
         )
         val database = Database(
             driver = driver,
@@ -50,9 +48,8 @@ class BackupRestoreTest {
         )
         val shortcutsDb = ShortcutsDatabase(database)
 
-        // Seed original shortcuts
         val component = ComponentName(context.packageName, "TestActivity")
-        val bmp = Bitmap.createBitmap(1, 1, Config.ARGB_8888)
+        val bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
 
         val original = listOf(
             Shortcut.forActivity(0, 0, "One", false, component, 0),
@@ -66,12 +63,11 @@ class BackupRestoreTest {
         val originalMap = shortcutsDb.loadTarget(ORIGINAL_TARGET)
         assertEquals(3, originalMap.size)
 
-        // Write backup JSON (only shortcuts section relevant for this test)
         val stringWriter = StringWriter()
         val writer = JsonWriter(stringWriter)
         writer.beginObject()
         writer.name("settings").beginObject().name("first-time").value(true).endObject()
-        writer.name("incar").beginObject().endObject() // empty incar section
+        writer.name("incar").beginObject().endObject()
         writer.name("shortcuts").beginArray()
         writer.writeShortcuts(originalMap, shortcutsDb, context)
         writer.endArray()
@@ -81,7 +77,6 @@ class BackupRestoreTest {
 
         val json = stringWriter.toString()
 
-        // Read back the shortcuts list similar to BackupManager.doRestoreWidget path
         val shortcutsJsonReader = ShortcutsJsonReader(context)
         val reader = JsonReader(StringReader(json))
         var readShortcuts = SparseArray<ShortcutWithFolderItems>()
@@ -97,13 +92,11 @@ class BackupRestoreTest {
         reader.endObject()
         reader.close()
 
-        // Restore into new target id
         shortcutsDb.restoreTarget(RESTORE_TARGET, readShortcuts)
         val restoredMap = shortcutsDb.loadTarget(RESTORE_TARGET)
 
         assertEquals("Restored shortcuts count mismatch", originalMap.size, restoredMap.size)
-        // Compare titles by position
-        for (i in 0 until original.size) {
+        for (i in original.indices) {
             assertEquals(original[i].title, restoredMap[i]?.title)
         }
     }
@@ -113,4 +106,3 @@ class BackupRestoreTest {
         private const val RESTORE_TARGET = 15
     }
 }
-
