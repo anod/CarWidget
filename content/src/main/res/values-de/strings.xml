@@ -234,4 +234,7 @@
     <string name="productivity">Produktivität</string>
     <string name="edit_folder">Ordner bearbeiten</string>
     <string name="selected_items">Ausgewählt</string>
+    <string name="search">Suchen</string>
+    <string name="chooser_empty_list">Keine Einträge verfügbar</string>
+    <string name="chooser_empty_filtered_list">Keine passenden Einträge</string>
 </resources>

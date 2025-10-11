@@ -233,12 +233,12 @@ object ShortcutInfoFactory {
         return CreateShortcutResult.SuccessApp(
             icon = icon,
             info = Shortcut.forActivity(
-                Shortcut.ID_UNKNOWN,
-                position,
-                title,
-                icon.isCustom,
-                componentName,
-                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+                id = Shortcut.ID_UNKNOWN,
+                position = position,
+                title = title,
+                isCustomIcon = icon.isCustom,
+                className = componentName,
+                launchFlags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
             )
         )
     }

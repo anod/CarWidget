@@ -22,8 +22,10 @@ import coil.ImageLoader
 import info.anodsplace.carwidget.chooser.AllAppsIntentChooserLoader
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.ChooserEntry
-import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.QueryIntentChooserLoader
+import info.anodsplace.carwidget.chooser.headerEntry
+import info.anodsplace.carwidget.chooser.headerId
+import info.anodsplace.carwidget.chooser.isHeader
 import info.anodsplace.carwidget.chooser.toShortcutIntent
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.shortcuts.InternalShortcut
@@ -109,8 +111,8 @@ private fun ShortcutChooser(
         headers = createCarWidgetShortcuts(context, shortcutResources),
         onDismissRequest = onDismissRequest,
         onClick = { entry ->
-            when(entry) {
-                is Header -> onChooseHeader(entry)
+            when {
+                entry.isHeader -> onChooseHeader(entry)
                 else -> onIntent(entry.getIntent(baseIntent = baseIntent))
             }
         },
@@ -130,19 +132,19 @@ private fun AppChooser(
         modifier = Modifier.padding(horizontal = 16.dp),
         loader = loader,
         headers = listOf(
-            Header(0,
+            headerEntry(0,
                 stringResource(R.string.shortcuts),
                 iconVector = Icons.AutoMirrored.Filled.AltRoute
             ),
-            Header(1,
+            headerEntry(1,
                 stringResource(R.string.folder),
                 iconVector = Icons.Outlined.Folder
             ),
         ),
         onDismissRequest = onDismissRequest,
         onClick = { entry ->
-            when(entry) {
-                is Header -> {
+            when {
+                entry.isHeader -> {
                     if (entry.headerId == 0) {
                         onNewState(ShortcutPickerState.Shortcuts)
                     } else if (entry.headerId == 1) {
@@ -155,13 +157,13 @@ private fun AppChooser(
         imageLoader = imageLoader
     )
 }
-private fun createCarWidgetShortcuts(context: Context, shortcutResources: ShortcutResources): List<Header> {
+private fun createCarWidgetShortcuts(context: Context, shortcutResources: ShortcutResources): List<ChooserEntry> {
     val shortcuts = InternalShortcut.all
     val titles = InternalShortcut.titles(context)
     return shortcuts.map { shortcut ->
         val title = titles[shortcut.index]
         val icon = shortcutResources.internalShortcuts.icons[shortcut.index]
         val intent = Intent().forPickShortcutLocal(shortcut, title, icon, context, shortcutResources)
-        Header(headerId = shortcut.index, title = title, iconRes = icon, intent = intent)
+        headerEntry(headerId = shortcut.index, title = title, iconRes = icon, intent = intent)
     }
 }

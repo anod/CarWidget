@@ -37,8 +37,8 @@ import coil.ImageLoader
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.chooser.ChooserDialog
-import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.MediaListChooserLoader
+import info.anodsplace.carwidget.chooser.headerEntry
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.carwidget.permissions.RequestPermissionsDialog
@@ -180,7 +180,7 @@ fun AboutScreen(
         ChooserDialog(
             modifier = Modifier.padding(16.dp),
             headers = listOf(
-                Header(0, stringResource(R.string.show_choice), iconVector = Icons.AutoMirrored.Filled.List)
+                headerEntry(0, stringResource(R.string.show_choice), iconVector = Icons.AutoMirrored.Filled.List)
             ),
             loader = loader,
             onDismissRequest = {

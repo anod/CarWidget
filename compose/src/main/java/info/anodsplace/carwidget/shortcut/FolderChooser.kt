@@ -1,9 +1,9 @@
 package info.anodsplace.carwidget.shortcut
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +12,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -29,13 +33,15 @@ import coil.ImageLoader
 import info.anodsplace.carwidget.chooser.AllAppsIntentChooserLoader
 import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.chooser.ChooserGridListDefaults
+import info.anodsplace.carwidget.chooser.CompositeChooserLoader
 import info.anodsplace.carwidget.chooser.MultiSelectChooserDialog
+import info.anodsplace.carwidget.chooser.ShortcutsChooserLoader
 import info.anodsplace.carwidget.chooser.toShortcutIntent
 import info.anodsplace.carwidget.content.R
+import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.shortcuts.ShortcutIntent
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.utils.forFolder
-import info.anodsplace.compose.PickGroup
 
 /**
  * Folder item picker used both for creating a new folder and editing an existing one.
@@ -50,16 +56,23 @@ fun FolderChooser(
     shortcutResources: ShortcutResources,
     showTitle: Boolean = true,
     initialTitle: String = "",
-    initialSelectedComponents: Set<ComponentName> = emptySet(),
+    initialSelectedItems: List<Shortcut> = emptyList(),
     isEdit: Boolean = false
 ) {
     val context = LocalContext.current
-    val loader = remember { AllAppsIntentChooserLoader(context) }
+    val loader = remember(initialSelectedItems) {
+        CompositeChooserLoader(
+            loaders = listOf(
+                AllAppsIntentChooserLoader(context),
+                ShortcutsChooserLoader(context, initialSelectedItems)
+            )
+        )
+    }
     var title by remember { mutableStateOf("") }
     var titleManuallyChanged by remember { mutableStateOf(initialTitle.isNotEmpty()) }
-    var selected by remember { mutableStateOf(initialSelectedComponents) }
+    var selected by remember(initialSelectedItems) { mutableStateOf(initialSelectedItems.mapNotNull { it.intent.component }.toSet()) }
     var categoryFilter by remember { mutableStateOf(if (isEdit) CategoryFilterState.Selected else CategoryFilterState.All ) }
-
+    var searchQuery by remember { mutableStateOf("") }
     MultiSelectChooserDialog(
         modifier = Modifier.padding(horizontal = 16.dp),
         loader = loader,
@@ -103,6 +116,15 @@ fun FolderChooser(
                         }
                     },
                 )
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
+                    label = { Text(stringResource(id = R.string.search)) },
+                    singleLine = true
+                )
+                Spacer(modifier = Modifier.height(12.dp))
             }
         },
         bottomContent = { apps ->
@@ -131,13 +153,13 @@ fun FolderChooser(
             }
         },
         listFilter = { list ->
-            var filtered = list
-            if (categoryFilter is CategoryFilterState.Selected) {
-                filtered = filtered.filter { it.componentName != null && selected.contains(it.componentName) }
-            } else if (categoryFilter is CategoryFilterState.Category) {
-                filtered = filtered.filter { it.category == (categoryFilter as CategoryFilterState.Category).categoryId }
+            val preFiltered = when (categoryFilter) {
+                is CategoryFilterState.Selected -> list.filter { it.componentName?.let { cn -> selected.contains(cn) } == true || it.sourceLoader == 1 }
+                is CategoryFilterState.Category -> list.filter { it.category == (categoryFilter as CategoryFilterState.Category).categoryId  && it.sourceLoader == 0  }
+                else -> list.filter { it.sourceLoader == 0 }
             }
-            filtered
+            val q = searchQuery.trim()
+            if (q.isEmpty()) preFiltered else preFiltered.filter { it.title.contains(q, ignoreCase = true) }
         }
     )
 }
@@ -163,7 +185,7 @@ private fun CategoryFilterChips(
             if (showSelectedCategory) add(selectedText)
             add(allText)
             addAll(categoryNames)
-        }.toTypedArray()
+        }.toList() // keep order
         val selectedIndex = when {
             categoryFilter is CategoryFilterState.All && !showSelectedCategory -> 0
             categoryFilter is CategoryFilterState.All && showSelectedCategory -> 1
@@ -175,24 +197,45 @@ private fun CategoryFilterChips(
             }
             else -> 0
         }
-        PickGroup(
-            options = options,
-            selectedIndex = selectedIndex,
-            onValueChanged = { idx ->
-                val newState = when {
-                    idx == 0 && !showSelectedCategory -> CategoryFilterState.All
-                    idx == 0 && showSelectedCategory -> CategoryFilterState.Selected
-                    idx == 1 && showSelectedCategory -> CategoryFilterState.All
-                    else -> {
-                        val baseIndex = 1 + if (showSelectedCategory) 1 else 0
-                        val catIdx = idx - baseIndex
-                        val categoryId = orderedCategoryIds.getOrNull(catIdx) ?: 0
-                        CategoryFilterState.Category(categoryId)
-                    }
-                }
-                onCategorySelected(newState)
+        val scrollState = rememberScrollState()
+        Row(
+            modifier = Modifier
+                .horizontalScroll(scrollState),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            options.forEachIndexed { index, text ->
+                val selected = (index == selectedIndex)
+                FilterChip(
+                    selected = selected,
+                    enabled = true,
+                    modifier = Modifier.height(32.dp),
+                    border = FilterChipDefaults.filterChipBorder(
+                        enabled = true,
+                        selected = selected,
+                        borderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                        selectedBorderColor = MaterialTheme.colorScheme.primary,
+                        borderWidth = 1.dp,
+                        selectedBorderWidth = 1.dp
+                    ),
+                    colors = FilterChipDefaults.filterChipColors(),
+                    onClick = {
+                        val newState = when {
+                            index == 0 && !showSelectedCategory -> CategoryFilterState.All
+                            index == 0 && showSelectedCategory -> CategoryFilterState.Selected
+                            index == 1 && showSelectedCategory -> CategoryFilterState.All
+                            else -> {
+                                val baseIndex = 1 + if (showSelectedCategory) 1 else 0
+                                val catIdx = index - baseIndex
+                                val categoryId = orderedCategoryIds.getOrNull(catIdx) ?: 0
+                                CategoryFilterState.Category(categoryId)
+                            }
+                        }
+                        onCategorySelected(newState)
+                    },
+                    label = { Text(text = text, style = MaterialTheme.typography.bodyLarge) }
+                )
             }
-        )
+        }
         Spacer(modifier = Modifier.height(12.dp))
     }
 }

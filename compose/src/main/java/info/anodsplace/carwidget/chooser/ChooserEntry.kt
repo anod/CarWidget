@@ -1,4 +1,5 @@
 package info.anodsplace.carwidget.chooser
+
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -15,26 +16,58 @@ import info.anodsplace.carwidget.content.graphics.AppIconFetcher
 import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.content.shortcuts.ShortcutIntent
 
-class Header(val headerId: Int, title: String, val iconVector: ImageVector? = null, iconRes: Int = 0, intent: Intent? = null) :
-    ChooserEntry(null, title, iconRes, intent = intent)
+fun headerEntry(headerId: Int, title: String, iconVector: ImageVector? = null, iconRes: Int = 0, intent: Intent? = null): ChooserEntry =
+    ChooserEntry(null, title, iconRes = iconRes, iconVector = iconVector, intent = intent).apply {
+        this.headerId = headerId
+    }
 
-open class ChooserEntry(
+var ChooserEntry.headerId: Int
+    get() = extras?.getInt("headerId", 0) ?: 0
+    set(value) = ensureExtras().putInt("headerId", value)
+
+val ChooserEntry.isHeader: Boolean
+    get() = extras?.containsKey("headerId") == true
+
+data class ChooserEntry(
     val componentName: ComponentName?,
     var title: String,
     @param:DrawableRes
     val iconRes: Int = 0,
     val icon: Drawable? = null,
+    val iconVector: ImageVector? = null,
     var intent: Intent? = null,
     var extras: Bundle? = null,
-    // Android application category or fallback category
-    val category: Int = ApplicationInfo.CATEGORY_UNDEFINED
 ) {
+    companion object {
+        private const val KEY_CATEGORY = "category"
+        private const val KEY_SOURCE_LOADER = "sourceLoader"
+    }
+
+    var category: Int
+        get() = extras?.getInt(KEY_CATEGORY, ApplicationInfo.CATEGORY_UNDEFINED) ?: ApplicationInfo.CATEGORY_UNDEFINED
+        set(value) = ensureExtras().putInt(KEY_CATEGORY, value)
+
+    var sourceLoader: Int
+        get() = extras?.getInt(KEY_SOURCE_LOADER, -1) ?: -1
+        set(value) { ensureExtras().putInt(KEY_SOURCE_LOADER, value) }
+
+    constructor(
+        componentName: ComponentName?,
+        title: String,
+        icon: Drawable?,
+        category: Int,
+    ) : this(componentName, title, icon = icon) {
+        this.category = category
+    }
 
     constructor(info: ResolveInfo, title: String?):
             this(
-                ComponentName(
-                info.activityInfo.applicationInfo.packageName,
-                info.activityInfo.name), title ?: info.activityInfo.name ?: "",
+                componentName = ComponentName(
+                    info.activityInfo.applicationInfo.packageName,
+                    info.activityInfo.name
+                ),
+                title = title ?: info.activityInfo.name ?: "",
+                icon = null,
                 category = info.category()
             )
 
@@ -54,7 +87,7 @@ open class ChooserEntry(
 
     /**
      * Build the [Intent] described by this item. If this item
-     * can't create a valid [android.content.ComponentName], it
+     * can't create a valid [ComponentName], it
      * will return [Intent.ACTION_CREATE_SHORTCUT] filled with the
      * item label.
      */
@@ -78,6 +111,11 @@ open class ChooserEntry(
             intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, title)
         }
         return intent
+    }
+
+    fun ensureExtras(): Bundle {
+        if (extras == null) extras = Bundle()
+        return extras!!
     }
 }
 

@@ -1,6 +1,5 @@
 package info.anodsplace.carwidget.shortcut
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ShortcutIconResource
@@ -44,7 +43,7 @@ data class ShortcutEditViewState(
     val showIconPackPicker: Boolean = false,
     val iconVersion: Int = -1,
     val showFolderEditor: Boolean = false,
-    val folderItems: List<ComponentName> = emptyList(),
+    val folderItems: List<Shortcut> = emptyList(),
 )
 
 sealed interface ShortcutEditViewEvent {
@@ -104,7 +103,7 @@ class ShortcutEditViewModel(
                     folderJob?.cancel()
                     folderJob = launch {
                         shortcutsDatabase.observeFolder(shortcutId).collect { items ->
-                            viewState = viewState.copy(folderItems = items.mapNotNull { it.intent.component })
+                            viewState = viewState.copy(folderItems = items)
                         }
                     }
                 }

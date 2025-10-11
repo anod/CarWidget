@@ -233,4 +233,7 @@
     <string name="productivity">פרודוקטיביות</string>
     <string name="edit_folder">ערוך תיקיה</string>
     <string name="selected_items">נבחרים</string>
+    <string name="search">חיפוש</string>
+    <string name="chooser_empty_list">אין פריטים זמינים</string>
+    <string name="chooser_empty_filtered_list">אין פריטים מתאימים</string>
 </resources>

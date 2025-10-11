@@ -33,8 +33,8 @@ import coil.compose.AsyncImage
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.ChooserLoader
-import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.StaticChooserLoader
+import info.anodsplace.carwidget.chooser.headerEntry
 import info.anodsplace.carwidget.content.db.toImageRequest
 import info.anodsplace.carwidget.utils.SystemIconSize
 
@@ -103,7 +103,7 @@ fun NotificationShortcuts(
             ChooserDialog(
                 modifier = Modifier.fillMaxHeight(fraction = 0.8f),
                 headers = listOf(
-                    Header(0, stringResource(info.anodsplace.carwidget.content.R.string.none), iconVector = Icons.Filled.Cancel)
+                    headerEntry(0, stringResource(info.anodsplace.carwidget.content.R.string.none), iconVector = Icons.Filled.Cancel)
                 ),
                 loader = appsLoader,
                 onDismissRequest = { shortcutIndex = -1 },

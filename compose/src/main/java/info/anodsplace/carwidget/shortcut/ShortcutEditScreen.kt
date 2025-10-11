@@ -1,6 +1,5 @@
 package info.anodsplace.carwidget.shortcut
 
-import android.content.ComponentName
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -53,8 +52,9 @@ import info.anodsplace.carwidget.ExpandRightIcon
 import info.anodsplace.carwidget.FolderIcon
 import info.anodsplace.carwidget.InfoIcon
 import info.anodsplace.carwidget.chooser.ChooserDialog
-import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.QueryIntentChooserLoader
+import info.anodsplace.carwidget.chooser.headerEntry
+import info.anodsplace.carwidget.chooser.isHeader
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.toImageRequest
@@ -116,7 +116,7 @@ fun ShortcutEditScreen(
 @Composable
 fun ShortcutFolderEditDialog(
     shortcut: Shortcut,
-    folderItems: List<ComponentName>,
+    folderItems: List<Shortcut>,
     onEvent: (ShortcutEditViewEvent) -> Unit,
     onDismissRequest: () -> Unit,
     imageLoader: ImageLoader,
@@ -126,7 +126,7 @@ fun ShortcutFolderEditDialog(
         onSave = { _, items ->
             onEvent(ShortcutEditViewEvent.UpdateFolderItems(items))
         },
-        initialSelectedComponents = folderItems.toSet(),
+        initialSelectedItems = folderItems,
         onDismissRequest = onDismissRequest,
         imageLoader = imageLoader,
         shortcutResources = shortcutResources,
@@ -164,7 +164,7 @@ private fun IconPackPicker(
     }
     val headers = remember {
         listOf(
-            Header(
+            headerEntry(
                 headerId = 0,
                 title = context.getString(R.string.download),
                 iconVector = androidx.compose.material.icons.Icons.Filled.Download,
@@ -178,7 +178,7 @@ private fun IconPackPicker(
         headers = headers,
         onDismissRequest = { onEvent(ShortcutEditViewEvent.IconPackPicker(show = false)) },
         onClick = { entry ->
-            if (entry is Header && entry.intent != null) {
+            if (entry.isHeader && entry.intent != null) {
                 context.startActivitySafely(entry.intent!!)
             }
             // Launch icon pack picker for selected component

@@ -33,8 +33,10 @@ import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.TextDecreaseIcon
 import info.anodsplace.carwidget.TextIncreaseIcon
 import info.anodsplace.carwidget.chooser.ChooserDialog
-import info.anodsplace.carwidget.chooser.Header
 import info.anodsplace.carwidget.chooser.QueryIntentChooserLoader
+import info.anodsplace.carwidget.chooser.headerEntry
+import info.anodsplace.carwidget.chooser.headerId
+import info.anodsplace.carwidget.chooser.isHeader
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.compose.BottomSheet
@@ -254,14 +256,14 @@ private fun IconsThemePicker(
     ChooserDialog(
         modifier = Modifier.padding(16.dp),
         headers = listOf(
-            Header(0, stringResource(R.string.none), iconVector = Icons.Filled.Cancel),
-            Header(1, stringResource(R.string.download), iconVector = Icons.Filled.Download)
+            headerEntry(0, stringResource(R.string.none), iconVector = Icons.Filled.Cancel),
+            headerEntry(1, stringResource(R.string.download), iconVector = Icons.Filled.Download)
         ),
         loader = loader,
         onDismissRequest = onDismissRequest,
         onClick = { entry ->
-            when (entry) {
-                is Header -> {
+            when {
+                entry.isHeader -> {
                     if (entry.headerId == 0) {
                         onThemeSelected("")
                     } else {

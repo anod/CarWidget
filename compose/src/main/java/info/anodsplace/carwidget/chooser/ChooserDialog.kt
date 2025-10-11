@@ -57,6 +57,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -73,6 +74,7 @@ import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.compose.SystemIconShape
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
+import info.anodsplace.carwidget.content.R as ContentR
 
 private val iconSize = 56.dp
 
@@ -249,7 +251,7 @@ fun ChooserGridList(
             }
         } else {
             items(headers.size) { index ->
-                val entry = headers[index] as Header
+                val entry = headers[index]
                 EntryItem(
                     entry,
                     onClick = { onSelect(entry) },
@@ -339,6 +341,31 @@ fun ChooserDialog(
 }
 
 @Composable
+private fun ChooserEmptyState(message: String, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 32.dp, vertical = 48.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Android,
+            contentDescription = null,
+            modifier = Modifier
+                .size(48.dp)
+                .padding(bottom = 16.dp),
+            tint = MaterialTheme.colorScheme.outline
+        )
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
 fun ChooserScreen(
     loader: ChooserLoader,
     modifier: Modifier = Modifier,
@@ -374,17 +401,37 @@ fun ChooserScreen(
     ) {
         Column {
             topContent(appsList)
-            ChooserGridList(
-                headers = headers,
-                list = appsList,
-                imageLoader = imageLoader,
-                headerShape = headerShape,
-                selectedComponents = selectedComponents,
-                onSelect = onSelect,
-                style = style,
-                isLoading = showLoading,
-                reduceMotion = reduceMotion
-            )
+            when {
+                showLoading -> {
+                    ChooserGridList(
+                        headers = headers,
+                        list = appsList,
+                        imageLoader = imageLoader,
+                        headerShape = headerShape,
+                        selectedComponents = selectedComponents,
+                        onSelect = onSelect,
+                        style = style,
+                        isLoading = true,
+                        reduceMotion = reduceMotion
+                    )
+                }
+                appsList.isEmpty() && headers.isEmpty() -> {
+                    ChooserEmptyState(message = stringResource(id = ContentR.string.chooser_empty_list))
+                }
+                else -> {
+                    ChooserGridList(
+                        headers = headers,
+                        list = appsList,
+                        imageLoader = imageLoader,
+                        headerShape = headerShape,
+                        selectedComponents = selectedComponents,
+                        onSelect = onSelect,
+                        style = style,
+                        isLoading = false,
+                        reduceMotion = reduceMotion
+                    )
+                }
+            }
         }
     }
 }
@@ -457,19 +504,47 @@ private fun MultiSelectChooserContent(
         Column {
             topContent(appsList)
             Box(modifier = Modifier.weight(1f, fill = true)) {
-                ChooserGridList(
-                    headers = headers,
-                    list = filteredList,
-                    imageLoader = imageLoader,
-                    headerShape = headerShape,
-                    selectedComponents = selectedComponents,
-                    onSelect = onSelect,
-                    style = style,
-                    isLoading = !emitted,
-                    reduceMotion = reduceMotion
-                )
+                when {
+                    !emitted -> {
+                        ChooserGridList(
+                            headers = headers,
+                            list = filteredList,
+                            imageLoader = imageLoader,
+                            headerShape = headerShape,
+                            selectedComponents = selectedComponents,
+                            onSelect = onSelect,
+                            style = style,
+                            isLoading = true,
+                            reduceMotion = reduceMotion
+                        )
+                    }
+                    filteredList.isEmpty() && appsList.isNotEmpty() -> {
+                        ChooserEmptyState(
+                            message = stringResource(id = ContentR.string.chooser_empty_filtered_list),
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                    filteredList.isEmpty() && appsList.isEmpty() && headers.isEmpty() -> {
+                        ChooserEmptyState(
+                            message = stringResource(id = ContentR.string.chooser_empty_list),
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                    else -> {
+                        ChooserGridList(
+                            headers = headers,
+                            list = filteredList,
+                            imageLoader = imageLoader,
+                            headerShape = headerShape,
+                            selectedComponents = selectedComponents,
+                            onSelect = onSelect,
+                            style = style,
+                            isLoading = false,
+                            reduceMotion = reduceMotion
+                        )
+                    }
+                }
             }
-            // Pass original unfiltered list to bottomContent so selection works even if item hidden by filter
             bottomContent(appsList)
         }
     }
@@ -487,8 +562,8 @@ fun ChooserScreenPreview() {
                 ChooserEntry(componentName = ComponentName("pkg.sample", "pkg.sample.App1"), title = "App One")
             )),
             headers = listOf(
-                Header(0, "Actions", iconRes = info.anodsplace.carwidget.skin.R.drawable.ic_shortcut_play_primary),
-                Header(0, "More", Icons.Filled.Alarm)
+                headerEntry(0, "Actions", iconRes = info.anodsplace.carwidget.skin.R.drawable.ic_shortcut_play_primary),
+                headerEntry(0, "More", Icons.Filled.Alarm)
             ),
             imageLoader = ImageLoader(LocalContext.current),
             style = ChooserGridListDefaults.multiSelect().copy(

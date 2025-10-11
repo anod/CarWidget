@@ -233,4 +233,7 @@
     <string name="navigation">Navigation</string>
     <string name="productivity">Produktivitet</string>
     <string name="edit_folder">Redigera mapp</string>
+    <string name="search">Sök</string>
+    <string name="chooser_empty_list">Inga objekt tillgängliga</string>
+    <string name="chooser_empty_filtered_list">Inga matchande objekt</string>
 </resources>

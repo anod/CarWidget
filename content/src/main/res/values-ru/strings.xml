@@ -231,4 +231,7 @@
     <string name="productivity">Продуктивность</string>
 	<string name="edit_folder">Редактировать папку</string>
 	<string name="selected_items">Выбранные</string>
+	<string name="search">Поиск</string>
+	<string name="chooser_empty_list">Нет доступных элементов</string>
+	<string name="chooser_empty_filtered_list">Нет подходящих элементов</string>
 </resources>
