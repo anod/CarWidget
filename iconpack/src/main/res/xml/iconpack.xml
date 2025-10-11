@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Icon Pack descriptor for external pickers.
+  Each <icon> maps a drawable resource to a human-readable label (string resource).
+  Folder variants are marked with variant="folder" so a client can decide to show/hide them.
+  This file is optional for many launchers, but can be consumed through R.xml.iconpack.
+-->
+<iconpack name="@string/icon_pack_label">
+    <!-- Base icons -->
+    <icon drawable="@drawable/baseline_flight_24" label="@string/icon_category_travel" />
+    <icon drawable="@drawable/baseline_music_note_24" label="@string/icon_category_audio" />
+    <icon drawable="@drawable/baseline_menu_book_24" label="@string/icon_category_books" />
+    <icon drawable="@drawable/baseline_verified_user_24" label="@string/icon_category_authenticator" />
+    <icon drawable="@drawable/baseline_directions_car_24" label="@string/icon_category_cars" />
+    <icon drawable="@drawable/baseline_photo_camera_24" label="@string/icon_category_camera" />
+    <icon drawable="@drawable/baseline_child_care_24" label="@string/icon_category_children" />
+    <icon drawable="@drawable/baseline_bedtime_24" label="@string/icon_category_sleep" />
+    <icon drawable="@drawable/baseline_cloud_24" label="@string/icon_category_cloud_storage" />
+    <icon drawable="@drawable/baseline_contacts_24" label="@string/icon_category_contacts" />
+    <icon drawable="@drawable/baseline_auto_stories_24" label="@string/icon_category_comics" />
+    <icon drawable="@drawable/baseline_monetization_on_24" label="@string/icon_category_crypto" />
+    <icon drawable="@drawable/baseline_favorite_24" label="@string/icon_category_dating" />
+    <icon drawable="@drawable/baseline_file_download_24" label="@string/icon_category_download" />
+    <icon drawable="@drawable/baseline_school_24" label="@string/icon_category_education" />
+    <icon drawable="@drawable/baseline_email_24" label="@string/icon_category_email" />
+    <icon drawable="@drawable/baseline_folder_24" label="@string/icon_category_files" />
+    <icon drawable="@drawable/baseline_account_balance_24" label="@string/icon_category_finance" />
+    <icon drawable="@drawable/baseline_fitness_center_24" label="@string/icon_category_fitness" />
+    <icon drawable="@drawable/baseline_fastfood_24" label="@string/icon_category_food" />
+    <icon drawable="@drawable/baseline_health_and_safety_24" label="@string/icon_category_health" />
+    <icon drawable="@drawable/baseline_home_24" label="@string/icon_category_home" />
+    <icon drawable="@drawable/baseline_emoji_emotions_24" label="@string/icon_category_humor" />
+    <icon drawable="@drawable/baseline_image_24" label="@string/icon_category_image" />
+    <icon drawable="@drawable/baseline_work_24" label="@string/icon_category_jobs" />
+    <icon drawable="@drawable/baseline_translate_24" label="@string/icon_category_language_education" />
+    <icon drawable="@drawable/baseline_map_24" label="@string/icon_category_maps" />
+    <icon drawable="@drawable/baseline_movie_24" label="@string/icon_category_movies" />
+    <icon drawable="@drawable/baseline_wifi_24" label="@string/icon_category_network_connection" />
+    <icon drawable="@drawable/baseline_article_24" label="@string/icon_category_news" />
+    <icon drawable="@drawable/baseline_apartment_24" label="@string/icon_category_office" />
+    <icon drawable="@drawable/baseline_color_lens_24" label="@string/icon_category_painting" />
+    <icon drawable="@drawable/baseline_lock_24" label="@string/icon_category_password_manager" />
+    <icon drawable="@drawable/baseline_support_agent_24" label="@string/icon_category_personal_assistant" />
+    <icon drawable="@drawable/baseline_security_24" label="@string/icon_category_privacy_security" />
+    <icon drawable="@drawable/baseline_code_24" label="@string/icon_category_programming" />
+    <icon drawable="@drawable/baseline_directions_bus_24" label="@string/icon_category_public_transport" />
+    <icon drawable="@drawable/baseline_radio_24" label="@string/icon_category_radio" />
+    <icon drawable="@drawable/baseline_menu_book_24" label="@string/icon_category_religious_text" />
+    <icon drawable="@drawable/baseline_settings_remote_24" label="@string/icon_category_remote_control" />
+    <icon drawable="@drawable/baseline_document_scanner_24" label="@string/icon_category_scanner" />
+    <icon drawable="@drawable/baseline_settings_24" label="@string/icon_category_settings" />
+    <icon drawable="@drawable/baseline_shopping_cart_24" label="@string/icon_category_shopping" />
+    <icon drawable="@drawable/baseline_people_24" label="@string/icon_category_social_media" />
+    <icon drawable="@drawable/baseline_sports_soccer_24" label="@string/icon_category_sport" />
+    <icon drawable="@drawable/baseline_collections_24" label="@string/icon_category_stickers" />
+    <icon drawable="@drawable/baseline_local_taxi_24" label="@string/icon_category_taxi" />
+    <icon drawable="@drawable/baseline_message_24" label="@string/icon_category_text_messaging" />
+    <icon drawable="@drawable/baseline_palette_24" label="@string/icon_category_theme" />
+    <icon drawable="@drawable/baseline_tips_and_updates_24" label="@string/icon_category_tips" />
+    <icon drawable="@drawable/baseline_list_alt_24" label="@string/icon_category_todo_list" />
+    <icon drawable="@drawable/baseline_build_24" label="@string/icon_category_tools" />
+    <icon drawable="@drawable/baseline_show_chart_24" label="@string/icon_category_trading" />
+    <icon drawable="@drawable/baseline_view_in_ar_24" label="@string/icon_category_virtual_reality" />
+    <icon drawable="@drawable/baseline_vpn_key_24" label="@string/icon_category_vpn" />
+    <icon drawable="@drawable/baseline_watch_later_24" label="@string/icon_category_watch" />
+    <icon drawable="@drawable/baseline_wb_sunny_24" label="@string/icon_category_weather" />
+    <icon drawable="@drawable/baseline_public_24" label="@string/icon_category_web_browser" />
+
+    <!-- Folder variants -->
+    <icon drawable="@drawable/folder_flight_24" label="@string/icon_category_travel" variant="folder" />
+    <icon drawable="@drawable/folder_music_note_24" label="@string/icon_category_audio" variant="folder" />
+    <icon drawable="@drawable/folder_menu_book_24" label="@string/icon_category_books" variant="folder" />
+    <icon drawable="@drawable/folder_verified_user_24" label="@string/icon_category_authenticator" variant="folder" />
+    <icon drawable="@drawable/folder_directions_car_24" label="@string/icon_category_cars" variant="folder" />
+    <icon drawable="@drawable/folder_photo_camera_24" label="@string/icon_category_camera" variant="folder" />
+    <icon drawable="@drawable/folder_child_care_24" label="@string/icon_category_children" variant="folder" />
+    <icon drawable="@drawable/folder_bedtime_24" label="@string/icon_category_sleep" variant="folder" />
+    <icon drawable="@drawable/folder_cloud_24" label="@string/icon_category_cloud_storage" variant="folder" />
+    <icon drawable="@drawable/folder_contacts_24" label="@string/icon_category_contacts" variant="folder" />
+    <icon drawable="@drawable/folder_auto_stories_24" label="@string/icon_category_comics" variant="folder" />
+    <icon drawable="@drawable/folder_monetization_on_24" label="@string/icon_category_crypto" variant="folder" />
+    <icon drawable="@drawable/folder_favorite_24" label="@string/icon_category_dating" variant="folder" />
+    <icon drawable="@drawable/folder_file_download_24" label="@string/icon_category_download" variant="folder" />
+    <icon drawable="@drawable/folder_school_24" label="@string/icon_category_education" variant="folder" />
+    <icon drawable="@drawable/folder_email_24" label="@string/icon_category_email" variant="folder" />
+    <!-- Files category uses same drawable for folder variant -->
+    <icon drawable="@drawable/baseline_folder_24" label="@string/icon_category_files" variant="folder" />
+    <icon drawable="@drawable/folder_account_balance_24" label="@string/icon_category_finance" variant="folder" />
+    <icon drawable="@drawable/folder_fitness_center_24" label="@string/icon_category_fitness" variant="folder" />
+    <icon drawable="@drawable/folder_fastfood_24" label="@string/icon_category_food" variant="folder" />
+    <icon drawable="@drawable/folder_health_and_safety_24" label="@string/icon_category_health" variant="folder" />
+    <icon drawable="@drawable/folder_home_24" label="@string/icon_category_home" variant="folder" />
+    <icon drawable="@drawable/folder_emoji_emotions_24" label="@string/icon_category_humor" variant="folder" />
+    <icon drawable="@drawable/folder_image_24" label="@string/icon_category_image" variant="folder" />
+    <icon drawable="@drawable/folder_work_24" label="@string/icon_category_jobs" variant="folder" />
+    <icon drawable="@drawable/folder_translate_24" label="@string/icon_category_language_education" variant="folder" />
+    <icon drawable="@drawable/folder_map_24" label="@string/icon_category_maps" variant="folder" />
+    <icon drawable="@drawable/folder_movie_24" label="@string/icon_category_movies" variant="folder" />
+    <icon drawable="@drawable/folder_wifi_24" label="@string/icon_category_network_connection" variant="folder" />
+    <icon drawable="@drawable/folder_article_24" label="@string/icon_category_news" variant="folder" />
+    <icon drawable="@drawable/folder_apartment_24" label="@string/icon_category_office" variant="folder" />
+    <icon drawable="@drawable/folder_color_lens_24" label="@string/icon_category_painting" variant="folder" />
+    <icon drawable="@drawable/folder_lock_24" label="@string/icon_category_password_manager" variant="folder" />
+    <icon drawable="@drawable/folder_support_agent_24" label="@string/icon_category_personal_assistant" variant="folder" />
+    <icon drawable="@drawable/folder_security_24" label="@string/icon_category_privacy_security" variant="folder" />
+    <icon drawable="@drawable/folder_code_24" label="@string/icon_category_programming" variant="folder" />
+    <icon drawable="@drawable/folder_directions_bus_24" label="@string/icon_category_public_transport" variant="folder" />
+    <icon drawable="@drawable/folder_radio_24" label="@string/icon_category_radio" variant="folder" />
+    <icon drawable="@drawable/folder_menu_book_24" label="@string/icon_category_religious_text" variant="folder" />
+    <icon drawable="@drawable/folder_settings_remote_24" label="@string/icon_category_remote_control" variant="folder" />
+    <icon drawable="@drawable/folder_document_scanner_24" label="@string/icon_category_scanner" variant="folder" />
+    <icon drawable="@drawable/folder_settings_24" label="@string/icon_category_settings" variant="folder" />
+    <icon drawable="@drawable/folder_shopping_cart_24" label="@string/icon_category_shopping" variant="folder" />
+    <icon drawable="@drawable/folder_people_24" label="@string/icon_category_social_media" variant="folder" />
+    <icon drawable="@drawable/folder_sports_soccer_24" label="@string/icon_category_sport" variant="folder" />
+    <icon drawable="@drawable/folder_collections_24" label="@string/icon_category_stickers" variant="folder" />
+    <icon drawable="@drawable/folder_local_taxi_24" label="@string/icon_category_taxi" variant="folder" />
+    <icon drawable="@drawable/folder_message_24" label="@string/icon_category_text_messaging" variant="folder" />
+    <icon drawable="@drawable/folder_palette_24" label="@string/icon_category_theme" variant="folder" />
+    <icon drawable="@drawable/folder_tips_and_updates_24" label="@string/icon_category_tips" variant="folder" />
+    <icon drawable="@drawable/folder_list_alt_24" label="@string/icon_category_todo_list" variant="folder" />
+    <icon drawable="@drawable/folder_build_24" label="@string/icon_category_tools" variant="folder" />
+    <icon drawable="@drawable/folder_show_chart_24" label="@string/icon_category_trading" variant="folder" />
+    <icon drawable="@drawable/folder_view_in_ar_24" label="@string/icon_category_virtual_reality" variant="folder" />
+    <icon drawable="@drawable/folder_vpn_key_24" label="@string/icon_category_vpn" variant="folder" />
+    <icon drawable="@drawable/folder_watch_later_24" label="@string/icon_category_watch" variant="folder" />
+    <icon drawable="@drawable/folder_wb_sunny_24" label="@string/icon_category_weather" variant="folder" />
+    <icon drawable="@drawable/folder_public_24" label="@string/icon_category_web_browser" variant="folder" />
+</iconpack>

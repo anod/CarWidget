@@ -152,7 +152,6 @@
 
         <activity
             android:name="com.anod.car.home.IconPackActivity"
-            android:label="@string/icon_pack_label"
             android:exported="true"
             android:theme="@style/BrightnessTheme" >
             <intent-filter>

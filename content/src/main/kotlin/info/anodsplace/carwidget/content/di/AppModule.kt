@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.content.di
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
+import androidx.sqlite.db.SupportSQLiteDatabase
 import app.cash.sqldelight.adapter.primitive.IntColumnAdapter
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import coil.ImageLoader
@@ -66,7 +67,12 @@ fun createAppModule(): Module = module {
         val driver = AndroidSqliteDriver(
             schema = Database.Schema,
             context = get(),
-            name = "carhomewidget.db"
+            name = "carhomewidget.db",
+            callback = object : AndroidSqliteDriver.Callback(Database.Schema) {
+                override fun onConfigure(db: SupportSQLiteDatabase) {
+                    db.setForeignKeyConstraintsEnabled(true)
+                }
+            }
         )
         Database(
             driver = driver,

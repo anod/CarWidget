@@ -50,6 +50,7 @@ import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.DeleteIcon
 import info.anodsplace.carwidget.ExpandRightIcon
 import info.anodsplace.carwidget.FolderIcon
+import info.anodsplace.carwidget.IconPackComposeActivity
 import info.anodsplace.carwidget.InfoIcon
 import info.anodsplace.carwidget.chooser.ChooserDialog
 import info.anodsplace.carwidget.chooser.QueryIntentChooserLoader
@@ -98,7 +99,8 @@ fun ShortcutEditScreen(
     }
 
     if (state.showIconPackPicker) {
-        IconPackPicker(onEvent = onEvent, imageLoader = imageLoader)
+        // Pass whether current shortcut is a folder to IconPackPicker
+        IconPackPicker(onEvent = onEvent, imageLoader = imageLoader, isFolder = state.shortcut?.isFolder == true)
     }
 
     if (state.showFolderEditor) {
@@ -139,7 +141,8 @@ fun ShortcutFolderEditDialog(
 @Composable
 private fun IconPackPicker(
     onEvent: (ShortcutEditViewEvent) -> Unit,
-    imageLoader: ImageLoader
+    imageLoader: ImageLoader,
+    isFolder: Boolean
 ) {
     val context = LocalContext.current
     val iconPackImage =
@@ -183,7 +186,12 @@ private fun IconPackPicker(
             }
             // Launch icon pack picker for selected component
             entry.componentName?.let { comp ->
-                iconPackImage.launch(Intent().apply { component = comp }.forIconPack())
+                iconPackImage.launch(Intent().apply {
+                    component = comp
+                    if (comp.packageName == context.packageName) {
+                        putExtra(IconPackComposeActivity.EXTRA_FOLDER_MODE, isFolder)
+                    }
+                }.forIconPack())
             }
         },
         imageLoader = imageLoader

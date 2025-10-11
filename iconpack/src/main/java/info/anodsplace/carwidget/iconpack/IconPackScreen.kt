@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -48,19 +49,24 @@ fun IconPackScreen(onSelect: (Bitmap, resId: Int) -> Unit, initialFolderMode: Bo
     val scope = rememberCoroutineScope()
     var folderMode by rememberSaveable { mutableStateOf(initialFolderMode) }
     Scaffold(
-        topBar = { TopAppBar(
-            title = { Text(text = stringResource(id = R.string.icon_pack_label)) },
-            actions = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier.padding(end = 8.dp)
-                ) {
-                    Text(text = stringResource(id = R.string.icon_pack_toggle_show_folders), style = MaterialTheme.typography.labelSmall)
-                    Switch(checked = folderMode, onCheckedChange = { folderMode = it })
+        topBar = {
+            TopAppBar(
+                title = { Text(text = stringResource(id = R.string.icon_pack_label)) },
+                actions = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = Modifier.padding(end = 8.dp)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.icon_pack_toggle_show_folders),
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                        Switch(checked = folderMode, onCheckedChange = { folderMode = it })
+                    }
                 }
-            }
-        ) }
+            )
+        }
     ) { inner ->
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 96.dp),
@@ -71,12 +77,14 @@ fun IconPackScreen(onSelect: (Bitmap, resId: Int) -> Unit, initialFolderMode: Bo
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(IconDescriptions) { iconDesc ->
+            // Fixed card height to ensure all items have uniform height without forcing square shape.
+            val cardHeight = 108.dp // 48 icon + 12 top + 8 spacer + ~32 text (2 lines) + 12 bottom = 112 -> a little extra.
+            // Added stable key using labelRes (string resource id expected to be unique per item)
+            items(items = IconDescriptions, key = { it.labelRes }) { iconDesc ->
                 val captureController = rememberCaptureController()
                 val resId = if (folderMode) iconDesc.folderIconRes else iconDesc.iconRes
                 Card(
-                    modifier = Modifier
-                        .then(Modifier),
+                    modifier = Modifier.height(cardHeight), // Replaced aspectRatio(1f) with fixed height
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                     onClick = {
                         scope.launch {
@@ -93,8 +101,8 @@ fun IconPackScreen(onSelect: (Bitmap, resId: Int) -> Unit, initialFolderMode: Bo
                         horizontalAlignment = Alignment.Start,
                         verticalArrangement = Arrangement.Top,
                         modifier = Modifier
-                            .padding(12.dp)
-                            .fillMaxSize() // Fill the fixed card height so background is uniform
+                            .padding(horizontal = 12.dp, vertical = 8.dp)
+                            .fillMaxSize()
                     ) {
                         val context = LocalContext.current
                         val drawable = remember(resId) { context.getDrawable(resId) }
@@ -102,7 +110,8 @@ fun IconPackScreen(onSelect: (Bitmap, resId: Int) -> Unit, initialFolderMode: Bo
                             Icon(
                                 painter = rememberDrawablePainter(drawable = drawable),
                                 contentDescription = null,
-                                modifier = Modifier.size(48.dp)
+                                modifier = Modifier
+                                    .size(48.dp)
                                     .capturable(captureController)
                             )
                         }
@@ -124,7 +133,7 @@ fun IconPackScreen(onSelect: (Bitmap, resId: Int) -> Unit, initialFolderMode: Bo
 }
 
 
-@Preview(name = "IconPack Light", showBackground = true)
+@Preview(name = "IconPack Light", showBackground = true, widthDp = 320)
 @Composable
 private fun IconPackScreenPreviewLight() {
     MaterialTheme { IconPackScreen(onSelect = { _, _ -> }) }
