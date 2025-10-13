@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.incar
 
+import android.app.Application
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -17,6 +18,7 @@ import info.anodsplace.carwidget.chooser.ChooserLoader
 import info.anodsplace.carwidget.chooser.QueryIntentChooserLoader
 import info.anodsplace.carwidget.chooser.toShortcutIntent
 import info.anodsplace.carwidget.content.PermissionDescriptionItem
+import info.anodsplace.carwidget.content.PlayServicesAvailability
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.preferences.InCarInterface
@@ -74,14 +76,16 @@ fun InCarInterface.saveScreenTimeout(disabled: Boolean, disableCharging: Boolean
 }
 
 class InCarViewModel(
-    private val context: Context,
+    private val app: Application,
     private val database: ShortcutsDatabase,
     private val inCar: InCarSettings,
     private val permissionChecker: PermissionChecker,
     private val permissionDescriptionsMap: Map<AppPermission, PermissionDescription>,
-    initialMissingPermissions: List<AppPermission>
+    initialMissingPermissions: List<AppPermission>,
+    playServicesAvailability: PlayServicesAvailability
 ) : BaseFlowViewModel<InCarViewState, InCarViewEvent, InCarViewAction>()  {
-
+    private val context: Context
+        get() = app.applicationContext
     private val shortcutsModel = NotificationShortcutsModel(context, database)
 
     val appsLoader: ChooserLoader
@@ -95,25 +99,27 @@ class InCarViewModel(
         private val inCar: InCarSettings by inject()
         private val permissionChecker: PermissionChecker by inject()
         private val permissionDescriptions: List<PermissionDescriptionItem> by inject(named("permissionDescriptions"))
+        private val playServicesAvailability: PlayServicesAvailability by inject()
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
             val permissionDescriptionsMap = permissionDescriptions
                 .associateBy({ AppPermissions.fromValue(it.permission)}, { it.toPermissionDescription() })
             return InCarViewModel(
-                context = context,
+                app = context.applicationContext as Application,
                 database = database,
                 inCar = inCar,
                 permissionChecker = permissionChecker,
                 permissionDescriptionsMap = permissionDescriptionsMap,
-                initialMissingPermissions = permissionChecker.check(activity)
+                initialMissingPermissions = permissionChecker.check(activity),
+                playServicesAvailability = playServicesAvailability
             ) as T
         }
     }
 
     init {
         viewState = InCarViewState(
-            items = createCarScreenItems(inCar = inCar, context = context),
+            items = createCarScreenItems(inCar = inCar, playServicesAvailability = playServicesAvailability,context = context),
             inCar = InCarInterface.NoOp(inCar),
             requiredPermissionsNotice = initialMissingPermissions.mapNotNull { permissionDescriptionsMap[it] }
         )
@@ -126,7 +132,7 @@ class InCarViewModel(
         viewModelScope.launch {
             inCar.changes.collect {
                 viewState = viewState.copy(
-                    items = createCarScreenItems(inCar = inCar, context = context),
+                    items = createCarScreenItems(inCar = inCar, playServicesAvailability = playServicesAvailability, context = context),
                     inCar = InCarInterface.NoOp(inCar)
                 )
             }

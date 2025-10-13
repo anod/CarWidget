@@ -17,6 +17,7 @@ import com.anod.car.home.incar.ModeHandler
 import com.anod.car.home.incar.ModePhoneStateListener
 import com.anod.car.home.notifications.Channels
 import com.anod.car.home.utils.AppUpgrade
+import com.anod.car.home.utils.GoogleServicesAvailability
 import com.anod.car.home.utils.WidgetShortcutResource
 import com.anod.car.home.utils.permissionDescriptions
 import info.anodsplace.applog.AppLog
@@ -25,6 +26,7 @@ import info.anodsplace.carwidget.appwidget.WidgetUpdate
 import info.anodsplace.carwidget.content.BroadcastServiceManager
 import info.anodsplace.carwidget.content.BuildProperties
 import info.anodsplace.carwidget.content.InCarStatus
+import info.anodsplace.carwidget.content.PlayServicesAvailability
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.di.createAppModule
 import info.anodsplace.carwidget.content.preferences.AppSettings
@@ -163,6 +165,7 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                         factoryOf(::ModePhoneStateListener)
                         factoryOf(::PermissionChecker)
                         factory(named("permissionDescriptions")) { permissionDescriptions }
+                        factoryOf(::GoogleServicesAvailability) bind PlayServicesAvailability::class
                     },
                     createWidgetInstanceModule(),
                 ),
