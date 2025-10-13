@@ -41,6 +41,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import coil.ImageLoader
+import info.anodsplace.carwidget.BackArrowIcon
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.CheckIcon
 import info.anodsplace.carwidget.InnerSceneNavKey
@@ -185,6 +186,9 @@ fun Tabs(
     appWidgetIdScope: AppWidgetIdScope? = null,
     imageLoader: ImageLoader
 ) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.toSceneNavKey()
+
     Scaffold(
         containerColor = if (screenState.isWidget) Color.Transparent else MaterialTheme.colorScheme.background,
         topBar = {
@@ -201,12 +205,17 @@ fun Tabs(
                             CheckIcon()
                         }
                     }
+                },
+                navigationIcon = {
+                    if ((currentRoute as? InnerSceneNavKey)?.showBackNavigation == true) {
+                        IconButton(onClick = { onEvent(MainViewEvent.OnBackNav) }) {
+                            BackArrowIcon()
+                        }
+                    }
                 }
             )
         },
         bottomBar = {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentRoute = navBackStackEntry?.toSceneNavKey()
             BottomTabsMenu(
                 items = screenState.tabs,
                 currentTab = currentRoute as? TabNavKey ?: (currentRoute as? InnerSceneNavKey)?.parent as? TabNavKey,

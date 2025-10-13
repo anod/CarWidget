@@ -22,6 +22,7 @@ interface TabNavKey {
 
 interface InnerSceneNavKey {
     val parent: SceneNavKey?
+    val showBackNavigation: Boolean
 }
 
 @Serializable
@@ -112,6 +113,7 @@ sealed interface SceneNavKey {
     @Serializable
     data object Shortcuts : SceneNavKey, InnerSceneNavKey {
         override val parent: SceneNavKey? get() = CurrentWidgetTab
+        override val showBackNavigation: Boolean = false
     }
 
     @Serializable
@@ -125,6 +127,7 @@ sealed interface SceneNavKey {
                 navDeepLink { uriPattern = Deeplink.EditShortcut.uriPattern }
             )
         }
+        override val showBackNavigation: Boolean = true
     }
 
     @Serializable
@@ -137,6 +140,7 @@ sealed interface SceneNavKey {
                 navDeepLink { uriPattern = Deeplink.EditWidgetButton.uriPattern }
             )
         }
+        override val showBackNavigation: Boolean = true
     }
 
     @Serializable
@@ -145,16 +149,19 @@ sealed interface SceneNavKey {
         val deepLinks: List<NavDeepLink> = listOf(
             navDeepLink { uriPattern = Deeplink.PlayMediaButton.uriPattern }
         )
+        override val showBackNavigation: Boolean = true
     }
 
     @Serializable
     data object InCarMain : SceneNavKey, InnerSceneNavKey {
         override val parent: SceneNavKey? get() = InCarTab
+        override val showBackNavigation: Boolean = false
     }
 
     @Serializable
     data object InCarBluetooth : SceneNavKey, InnerSceneNavKey {
         override val parent: SceneNavKey? get() = InCarTab
+        override val showBackNavigation: Boolean = true
     }
 
 }

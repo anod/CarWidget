@@ -42,8 +42,8 @@ class ShortcutIcon(
             return ShortcutIcon(id, isCustom = true, isFallback = false, resource = null, bitmap = icon)
         }
 
-        fun forIconResource(id: Long, icon: Bitmap, res: Intent.ShortcutIconResource): ShortcutIcon {
-            return ShortcutIcon(id, isCustom = false, isFallback = false, resource = res, bitmap = icon)
+        fun forIconResource(id: Long, icon: Bitmap, isCustom: Boolean, res: Intent.ShortcutIconResource): ShortcutIcon {
+            return ShortcutIcon(id, isCustom = isCustom, isFallback = false, resource = res, bitmap = icon)
         }
     }
 }

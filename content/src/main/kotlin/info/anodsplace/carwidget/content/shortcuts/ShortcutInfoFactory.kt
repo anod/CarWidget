@@ -98,6 +98,7 @@ object ShortcutInfoFactory {
             icon = resolveIconResource(
                 shortcutId = Shortcut.ID_UNKNOWN,
                 iconResource = iconResource,
+                isCustom = false,
                 context = context
             )
         } else if (extraIcon is Bitmap) {
@@ -112,6 +113,7 @@ object ShortcutInfoFactory {
             icon = resolveIconResource(
                 shortcutId = Shortcut.ID_UNKNOWN,
                 iconResource = iconResource,
+                isCustom = false,
                 context = context
             )
         }
@@ -260,11 +262,12 @@ object ShortcutInfoFactory {
     fun resolveIconResource(
         shortcutId: Long,
         iconResource: ShortcutIconResource,
+        isCustom: Boolean,
         context: Context
     ): ShortcutIcon? {
         try {
             val bitmap = getPackageIcon(context, iconResource)
-            return ShortcutIcon.forIconResource(shortcutId, bitmap!!, iconResource)
+            return ShortcutIcon.forIconResource(shortcutId, bitmap!!, isCustom, iconResource)
         } catch (e: Resources.NotFoundException) {
             AppLog.e(e)
         } catch (e: PackageManager.NameNotFoundException) {

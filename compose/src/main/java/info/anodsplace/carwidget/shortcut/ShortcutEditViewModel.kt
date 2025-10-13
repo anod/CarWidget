@@ -148,14 +148,14 @@ class ShortcutEditViewModel(
             is ShortcutEditViewEvent.CustomIconResult -> {
                 val shortcutIcon = iconFromUri(event.uri, hiRes = false, event.resolveProperties)
                 if (shortcutIcon != null) {
-                    setCustomIcon(shortcutIcon)
+                    updateIcon(shortcutIcon)
                 }
             }
             is ShortcutEditViewEvent.IconPackResult -> {
                 viewState = viewState.copy(showIconPackPicker = false)
                 val shortcutIcon = iconFromIconPackResult(event.intent , event.resolveProperties)
                 if (shortcutIcon != null) {
-                    setCustomIcon(shortcutIcon)
+                    updateIcon(shortcutIcon)
                 }
             }
             ShortcutEditViewEvent.DefaultIconReset -> {
@@ -164,7 +164,7 @@ class ShortcutEditViewModel(
                 appScope.launch {
                     if (shortcut.isFolder) {
                         val iconResource = ShortcutIconResource.fromContext(context, shortcutResources.folderShortcutIcon)
-                        val defaultIcon = ShortcutInfoFactory.resolveIconResource(viewState.shortcutId, iconResource, context)
+                        val defaultIcon = ShortcutInfoFactory.resolveIconResource(viewState.shortcutId, iconResource, isCustom = false, context)
                             ?: ShortcutInfoFactory.defaultFallbackIcon(viewState.shortcutId, context)
                         shortcutsDatabase.updateIcon(shortcut.id, defaultIcon)
                         return@launch
@@ -192,7 +192,7 @@ class ShortcutEditViewModel(
         }
     }
 
-    private fun setCustomIcon(icon: ShortcutIcon) {
+    private fun updateIcon(icon: ShortcutIcon) {
         viewModelScope.launch {
             shortcutsDatabase.updateIcon(viewState.shortcutId, icon)
         }
@@ -206,7 +206,7 @@ class ShortcutEditViewModel(
         @Suppress("DEPRECATION")
         val iconResource = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE) as? ShortcutIconResource
         if (iconResource != null) {
-            val icon = ShortcutInfoFactory.resolveIconResource(viewState.shortcutId, iconResource, context)
+            val icon = ShortcutInfoFactory.resolveIconResource(viewState.shortcutId, iconResource, isCustom = true, context)
             if (icon != null) {
                 return icon
             }

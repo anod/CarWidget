@@ -64,7 +64,7 @@ interface ShortcutIconConverter {
                         if (bitmap == null) {
                             bitmap = decoder.toBitmap(icon)
                         }
-                        bitmap?.let { ShortcutIcon.forIconResource(shortcutId, it, iconResource) }
+                        bitmap?.let { ShortcutIcon.forIconResource(shortcutId, it, isCustom = false, iconResource) }
                     }
                     iconType == LauncherSettings.Favorites.ICON_TYPE_BITMAP -> {
                         decoder.toBitmap(icon)
