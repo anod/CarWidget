@@ -235,5 +235,7 @@
     <string name="edit_folder">Redigera mapp</string>
     <string name="search">Sök</string>
     <string name="chooser_empty_list">Inga objekt tillgängliga</string>
+    <string name="existing_shortcut">Befintlig genväg</string>
+    <string name="widget_header">Widget %1$d</string>
     <string name="chooser_empty_filtered_list">Inga matchande objekt</string>
 </resources>

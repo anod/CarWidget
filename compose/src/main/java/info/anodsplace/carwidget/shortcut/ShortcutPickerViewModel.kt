@@ -66,7 +66,7 @@ class ShortcutPickerViewModel(
 
     override fun handleEvent(event: ShortcutPickerViewEvent) {
         when(event) {
-            is ShortcutPickerViewEvent.Save -> save(event.intent, )
+            is ShortcutPickerViewEvent.Save -> save(event.intent)
             is ShortcutPickerViewEvent.LaunchShortcutError -> {
                 AppLog.e(event.exception)
                 emitAction(ShortcutPickerViewAction.ShowToast(text = "Cannot launch shortcut ${event.exception.message}",))

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -52,10 +53,8 @@ import info.anodsplace.carwidget.ExpandRightIcon
 import info.anodsplace.carwidget.FolderIcon
 import info.anodsplace.carwidget.IconPackComposeActivity
 import info.anodsplace.carwidget.InfoIcon
-import info.anodsplace.carwidget.chooser.ChooserDialog
-import info.anodsplace.carwidget.chooser.QueryIntentChooserLoader
-import info.anodsplace.carwidget.chooser.headerEntry
-import info.anodsplace.carwidget.chooser.isHeader
+import info.anodsplace.carwidget.chooser.ChooserAsyncImage
+import info.anodsplace.carwidget.chooser.ChooserEmptyState
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.toImageRequest
@@ -64,6 +63,10 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.shortcut.intent.IntentEditScreen
+import info.anodsplace.compose.chooser.ChooserDialog
+import info.anodsplace.compose.chooser.QueryIntentChooserLoader
+import info.anodsplace.compose.chooser.headerEntry
+import info.anodsplace.compose.chooser.isHeader
 import info.anodsplace.framework.content.forIconPack
 import info.anodsplace.framework.content.forStoreSearch
 import info.anodsplace.framework.content.startActivitySafely
@@ -170,7 +173,7 @@ private fun IconPackPicker(
             headerEntry(
                 headerId = 0,
                 title = context.getString(R.string.download),
-                iconVector = androidx.compose.material.icons.Icons.Filled.Download,
+                iconVector = Icons.Filled.Download,
                 intent = Intent().forStoreSearch(query = "icon pack", category = "apps")
             )
         )
@@ -194,7 +197,8 @@ private fun IconPackPicker(
                 }.forIconPack())
             }
         },
-        imageLoader = imageLoader
+        asyncImage = { entry, colorFilter -> ChooserAsyncImage(entry, colorFilter, imageLoader) },
+        emptyState = { filterApplied -> ChooserEmptyState(filterApplied) },
     )
 }
 

@@ -235,5 +235,7 @@
     <string name="selected_items">נבחרים</string>
     <string name="search">חיפוש</string>
     <string name="chooser_empty_list">אין פריטים זמינים</string>
-    <string name="chooser_empty_filtered_list">אין פריטים מתאימים</string>
+    <string name="existing_shortcut">קיצור דרך קיים</string>
+    <string name="widget_header">ווידג׳ט %1$d</string>
+    <string name="chooser_empty_filtered_list">אין פריטים תואמים</string>
 </resources>

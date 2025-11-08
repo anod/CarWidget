@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import info.anodsplace.carwidget.SceneNavKey
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.framework.content.showToast
 
 @Composable
@@ -52,7 +53,8 @@ fun EditShortcut(
             onEvent = viewModel::handleEvent,
             onDismissRequest = onDismissRequest,
             shortcutResources = viewModel.shortcutResources,
-            imageLoader = viewModel.imageLoader
+            imageLoader = viewModel.imageLoader,
+            appWidgetId = +appWidgetIdScope
         )
         val context = LocalContext.current
         LaunchedEffect(true) {

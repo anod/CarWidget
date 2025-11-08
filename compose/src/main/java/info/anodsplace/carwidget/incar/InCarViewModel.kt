@@ -13,9 +13,6 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.navigation.NavHostController
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.SceneNavKey
-import info.anodsplace.carwidget.chooser.ChooserEntry
-import info.anodsplace.carwidget.chooser.ChooserLoader
-import info.anodsplace.carwidget.chooser.QueryIntentChooserLoader
 import info.anodsplace.carwidget.chooser.toShortcutIntent
 import info.anodsplace.carwidget.content.PermissionDescriptionItem
 import info.anodsplace.carwidget.content.PlayServicesAvailability
@@ -28,6 +25,9 @@ import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.utils.toPermissionDescription
 import info.anodsplace.compose.PermissionDescription
 import info.anodsplace.compose.PreferenceItem
+import info.anodsplace.compose.chooser.ChooserEntry
+import info.anodsplace.compose.chooser.ChooserLoader
+import info.anodsplace.compose.chooser.QueryIntentChooserLoader
 import info.anodsplace.framework.content.ShowToastActionDefaults
 import info.anodsplace.framework.content.forLauncher
 import info.anodsplace.framework.content.showToast

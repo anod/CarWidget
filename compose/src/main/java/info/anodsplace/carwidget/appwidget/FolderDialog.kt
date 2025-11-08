@@ -19,11 +19,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.ImageLoader
-import info.anodsplace.carwidget.chooser.ChooserDialog
-import info.anodsplace.carwidget.chooser.ChooserGridListDefaults
+import info.anodsplace.carwidget.chooser.ChooserAsyncImage
+import info.anodsplace.carwidget.chooser.ChooserEmptyState
 import info.anodsplace.carwidget.chooser.ShortcutsChooserLoader
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.compose.chooser.ChooserDialog
+import info.anodsplace.compose.chooser.ChooserGridListDefaults
 import info.anodsplace.framework.content.startActivitySafely
 
 /**
@@ -58,7 +60,8 @@ fun FolderDialog(
         loader = loader,
         headers = emptyList(),
         onDismissRequest = onDismissRequest,
-        imageLoader = imageLoader,
+        asyncImage = { entry, colorFilter -> ChooserAsyncImage(entry, colorFilter, imageLoader) },
+        emptyState = { filterApplied -> ChooserEmptyState(filterApplied) },
         onClick = { entry ->
             val launch = entry.getIntent(null)
             launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

@@ -7,11 +7,11 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
-import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.compose.chooser.ChooserEntry
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.inject

@@ -258,5 +258,7 @@
     <string name="edit_folder">Edit folder</string>
     <string name="search">Search</string>
     <string name="chooser_empty_list">No items available</string>
+    <string name="existing_shortcut">Existing shortcut</string>
+    <string name="widget_header">Widget %1$d</string>
     <string name="chooser_empty_filtered_list">No matching items</string>
 </resources>
