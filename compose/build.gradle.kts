@@ -54,7 +54,7 @@ dependencies {
 
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.activity)
 
     testImplementation(libs.kotlin.test)
     testImplementation(libs.robolectric)

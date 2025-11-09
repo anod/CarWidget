@@ -252,7 +252,7 @@ fun NavHost(
     val context = LocalContext.current
 
     NavHost(navController, startDestination = startDestination, route = routeNS::class) {
-        composable<SceneNavKey.WidgetsTab> { navEntry ->
+        composable<SceneNavKey.WidgetsTab> { _ ->
             val widgetsListViewModel: WidgetsListViewModel = viewModel()
             val widgetsState by widgetsListViewModel.viewStates.collectAsState(initial = widgetsListViewModel.viewState)
             WidgetsListScreen(
@@ -262,7 +262,7 @@ fun NavHost(
                 imageLoader = imageLoader
             )
         }
-        composable<SceneNavKey.AboutTab> { navEntry ->
+        composable<SceneNavKey.AboutTab> { _ ->
             val aboutViewModel: AboutViewModel = viewModel(factory = AboutViewModel.Factory(appWidgetIdScope))
             val aboutScreenState by aboutViewModel.viewStates.collectAsState(initial = aboutViewModel.viewState)
             AboutScreen(
@@ -316,7 +316,7 @@ fun NavHost(
                 val context = LocalContext.current
                 LaunchedEffect(true) {
                     customizeViewModel.viewActions.collect { action ->
-                        context.onScreenCommonAction(action, navigateBack = {})
+                        context.onScreenCommonAction(action, navigateBack = {}, navigateTo = { navController.navigate(it) })
                     }
                 }
             }
