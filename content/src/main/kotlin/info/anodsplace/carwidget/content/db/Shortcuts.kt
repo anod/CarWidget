@@ -28,4 +28,6 @@ interface Shortcuts {
     suspend fun drop(position: Int)
 
     suspend fun move(from: Int, to: Int)
+
+    suspend fun copy(position: Int, sourceShortcutId: Long): Boolean
 }

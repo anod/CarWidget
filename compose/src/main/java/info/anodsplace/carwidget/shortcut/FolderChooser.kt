@@ -34,6 +34,7 @@ import info.anodsplace.carwidget.chooser.AllAppsIntentChooserLoader
 import info.anodsplace.carwidget.chooser.ChooserAsyncImage
 import info.anodsplace.carwidget.chooser.ChooserEmptyState
 import info.anodsplace.carwidget.chooser.ShortcutsChooserLoader
+import info.anodsplace.carwidget.chooser.isAppEntry
 import info.anodsplace.carwidget.chooser.toShortcutIntent
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.db.Shortcut
@@ -143,7 +144,10 @@ fun FolderChooser(
                     onClick = {
                         val selectedEntries = apps
                             .filter { it.componentName != null && selected.contains(it.componentName) }
-                            .map { it.toShortcutIntent(isApp = true) }
+                            .map {
+                                it.isAppEntry = true
+                                it.toShortcutIntent()
+                            }
                         val folderIntent = Intent().forFolder(
                             title = title,
                             ctx = context,

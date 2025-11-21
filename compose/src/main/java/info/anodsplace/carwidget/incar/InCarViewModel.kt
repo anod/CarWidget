@@ -206,7 +206,7 @@ class InCarViewModel(
             } else {
                 shortcutsModel.saveIntent(
                     position = shortcutIndex,
-                    intent = entry.toShortcutIntent(isApp = true)
+                    intent = entry.toShortcutIntent()
                 )
             }
         }

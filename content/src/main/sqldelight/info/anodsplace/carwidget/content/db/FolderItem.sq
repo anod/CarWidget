@@ -33,6 +33,11 @@ insertFolder:
 INSERT INTO FolderItem (shortcutId, itemId, itemType, title, intent, iconType, icon, iconPackage, iconResource, isCustomIcon)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
+duplicateFolderItems:
+INSERT INTO FolderItem (shortcutId, itemId, itemType, title, intent, iconType, icon, iconPackage, iconResource, isCustomIcon)
+SELECT :targetShortcutId, itemId, itemType, title, intent, iconType, icon, iconPackage, iconResource, isCustomIcon
+FROM FolderItem WHERE shortcutId = :sourceShortcutId;
+
 updateFolder:
 UPDATE FolderItem SET
     itemType = :itemType,

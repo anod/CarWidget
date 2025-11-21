@@ -33,25 +33,27 @@ class ShortcutsDatabase(private val db: Database) {
     }
 
     fun observeIcon(shortcutId: Long): Flow<SelectShortcutIcon?> {
-        return db.shortcutsQueries.selectShortcutIcon(shortcutId).asFlow().mapToOneOrNull(Dispatchers.IO)
+        return db.shortcutsQueries.selectShortcutIcon(shortcutId).asFlow()
+            .mapToOneOrNull(Dispatchers.IO)
     }
 
     fun observeShortcut(shortcutId: Long): Flow<Shortcut?> {
         return db.shortcutsQueries.selectShortcut(shortcutId, mapper = ::mapShortcut).asFlow()
-                .mapToOneOrNull(Dispatchers.IO)
-                .filter { it?.isValid == true }
+            .mapToOneOrNull(Dispatchers.IO)
+            .filter { it?.isValid == true }
     }
 
     fun observeTarget(targetId: Int): Flow<Map<Int, Shortcut?>> {
         return db.shortcutsQueries.selectTarget(targetId, mapper = ::mapShortcut).asFlow()
-                .mapToList(Dispatchers.IO)
-                .map { list ->
-                    list.associate { sh -> sh.position to if (sh.isValid) sh else null }
-                }
+            .mapToList(Dispatchers.IO)
+            .map { list ->
+                list.associate { sh -> sh.position to if (sh.isValid) sh else null }
+            }
     }
 
     suspend fun loadShortcut(shortcutId: Long): Shortcut? = withContext(Dispatchers.IO) {
-        val shortcut = db.shortcutsQueries.selectShortcut(shortcutId, mapper = ::mapShortcut).executeAsOneOrNull()
+        val shortcut = db.shortcutsQueries.selectShortcut(shortcutId, mapper = ::mapShortcut)
+            .executeAsOneOrNull()
         if (shortcut?.isValid == true) {
             return@withContext shortcut
         }
@@ -59,29 +61,37 @@ class ShortcutsDatabase(private val db: Database) {
     }
 
     suspend fun loadTarget(targetId: Int): Map<Int, Shortcut?> = withContext(Dispatchers.IO) {
-        val list = db.shortcutsQueries.selectTarget(targetId, mapper = ::mapShortcut).executeAsList()
+        val list =
+            db.shortcutsQueries.selectTarget(targetId, mapper = ::mapShortcut).executeAsList()
         return@withContext list.associate { sh -> sh.position to if (sh.isValid) sh else null }
     }
 
-    suspend fun loadShortcut(targetId: Int, position: Int): Shortcut? = withContext(Dispatchers.IO) {
-        val shortcut = db.shortcutsQueries.selectTargetPosition(targetId, position, mapper = ::mapShortcut).executeAsOneOrNull()
-        if (shortcut?.isValid == true) {
-            return@withContext shortcut
+    suspend fun loadShortcut(targetId: Int, position: Int): Shortcut? =
+        withContext(Dispatchers.IO) {
+            val shortcut =
+                db.shortcutsQueries.selectTargetPosition(targetId, position, mapper = ::mapShortcut)
+                    .executeAsOneOrNull()
+            if (shortcut?.isValid == true) {
+                return@withContext shortcut
+            }
+            return@withContext null
         }
-        return@withContext null
-    }
 
     suspend fun loadFolderItems(shortcutId: Long): List<Shortcut> = withContext(Dispatchers.IO) {
-        val list = db.folderItemQueries.selectFolderShortcut(shortcutId, mapper = ::mapFolderItem).executeAsList()
+        val list = db.folderItemQueries.selectFolderShortcut(shortcutId, mapper = ::mapFolderItem)
+            .executeAsList()
         return@withContext list.filter { it.isValid }
     }
 
-    suspend fun loadFolderIcon(folderId: Long): SelectFolderShortcutIcon? = withContext(Dispatchers.IO) {
-        return@withContext db.folderItemQueries.selectFolderShortcutIcon(folderId).executeAsOneOrNull()
-    }
+    suspend fun loadFolderIcon(folderId: Long): SelectFolderShortcutIcon? =
+        withContext(Dispatchers.IO) {
+            return@withContext db.folderItemQueries.selectFolderShortcutIcon(folderId)
+                .executeAsOneOrNull()
+        }
 
     fun observeFolder(shortcutId: Long): Flow<List<Shortcut>> {
-        return db.folderItemQueries.selectFolderShortcut(shortcutId, mapper = ::mapFolderItem).asFlow()
+        return db.folderItemQueries.selectFolderShortcut(shortcutId, mapper = ::mapFolderItem)
+            .asFlow()
             .mapToList(Dispatchers.IO)
     }
 
@@ -90,15 +100,24 @@ class ShortcutsDatabase(private val db: Database) {
      * screen, cellX and cellY fields of the item. Also assigns an ID to the
      * item.
      */
-    suspend fun addItem(targetId: Int, position: Int, item: Shortcut, icon: ShortcutIcon): Long = withContext(Dispatchers.IO) {
-        insert(targetId, position, item, icon)
-        return@withContext db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: Shortcut.ID_UNKNOWN
-    }
+    suspend fun addItem(targetId: Int, position: Int, item: Shortcut, icon: ShortcutIcon): Long =
+        withContext(Dispatchers.IO) {
+            insert(targetId, position, item, icon)
+            return@withContext db.shortcutsQueries.lastInsertId().executeAsOneOrNull()
+                ?: Shortcut.ID_UNKNOWN
+        }
 
-    suspend fun saveFolder(targetId: Int, position: Int, item: Shortcut, icon: ShortcutIcon, items: List<Pair<Shortcut, ShortcutIcon>>): Long = withContext(Dispatchers.IO) {
+    suspend fun saveFolder(
+        targetId: Int,
+        position: Int,
+        item: Shortcut,
+        icon: ShortcutIcon,
+        items: List<Pair<Shortcut, ShortcutIcon>>
+    ): Long = withContext(Dispatchers.IO) {
         return@withContext db.transactionWithResult {
             insert(targetId, position, item, icon)
-            val shortcutId = db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: return@transactionWithResult Shortcut.ID_UNKNOWN
+            val shortcutId = db.shortcutsQueries.lastInsertId().executeAsOneOrNull()
+                ?: return@transactionWithResult Shortcut.ID_UNKNOWN
             items.forEach { (shortcut, icon) ->
                 insertFolderItem(shortcutId, shortcut, icon)
             }
@@ -106,15 +125,16 @@ class ShortcutsDatabase(private val db: Database) {
         }
     }
 
-    suspend fun updateFolder(shortcutId: Long, items: List<Pair<Shortcut, ShortcutIcon>>): Long = withContext(Dispatchers.IO) {
-        return@withContext db.transactionWithResult {
-            db.folderItemQueries.deleteFolderTarget(shortcutId)
-            items.forEach { (shortcut, icon) ->
-                insertFolderItem(shortcutId, shortcut, icon)
+    suspend fun updateFolder(shortcutId: Long, items: List<Pair<Shortcut, ShortcutIcon>>): Long =
+        withContext(Dispatchers.IO) {
+            return@withContext db.transactionWithResult {
+                db.folderItemQueries.deleteFolderTarget(shortcutId)
+                items.forEach { (shortcut, icon) ->
+                    insertFolderItem(shortcutId, shortcut, icon)
+                }
+                shortcutId
             }
-            shortcutId
         }
-    }
 
     /**
      * Removes the specified item from the database
@@ -129,8 +149,8 @@ class ShortcutsDatabase(private val db: Database) {
 
     suspend fun updateIntent(shortcutId: Long, intent: Intent) = withContext(Dispatchers.IO) {
         db.shortcutsQueries.updateShortcutIntent(
-                intent = intent.toUri(0),
-                shortcutId = shortcutId
+            intent = intent.toUri(0),
+            shortcutId = shortcutId
         )
     }
 
@@ -152,27 +172,29 @@ class ShortcutsDatabase(private val db: Database) {
         db.shortcutsQueries.updateShortcutTitle(title = title, shortcutId = shortcutId)
     }
 
-    suspend fun restoreTarget(targetId: Int, items: SparseArray<ShortcutWithFolderItems>) = withContext(Dispatchers.IO) {
-        db.transaction {
-            db.shortcutsQueries.deleteTarget(targetId)
-            db.folderItemQueries.deleteFolderTarget(targetId.toLong())
+    suspend fun restoreTarget(targetId: Int, items: SparseArray<ShortcutWithFolderItems>) =
+        withContext(Dispatchers.IO) {
+            db.transaction {
+                db.shortcutsQueries.deleteTarget(targetId)
+                db.folderItemQueries.deleteFolderTarget(targetId.toLong())
 
-            for (position in 0 until items.size) {
-                val item = items.get(position)
-                val shortcut = item?.first ?: continue
-                insert(targetId, position, item.first, item.second!!)
-                if (shortcut.isFolder) {
-                    val shortcutId = db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: continue
-                    val folderItems = item.third
-                    folderItems?.forEach { (folderShortcut, folderIcon) ->
-                        insertFolderItem(shortcutId, folderShortcut, folderIcon)
+                for (position in 0 until items.size) {
+                    val item = items.get(position)
+                    val shortcut = item?.first ?: continue
+                    insert(targetId, position, item.first, item.second!!)
+                    if (shortcut.isFolder) {
+                        val shortcutId =
+                            db.shortcutsQueries.lastInsertId().executeAsOneOrNull() ?: continue
+                        val folderItems = item.third
+                        folderItems?.forEach { (folderShortcut, folderIcon) ->
+                            insertFolderItem(shortcutId, folderShortcut, folderIcon)
+                        }
                     }
                 }
             }
         }
-    }
 
-    private fun insert(targetId: Int, position: Int, item: Shortcut, icon: ShortcutIcon)  {
+    private fun insert(targetId: Int, position: Int, item: Shortcut, icon: ShortcutIcon) {
         val values = createShortcutContentValues(item, icon)
         try {
             db.shortcutsQueries.insert(
@@ -242,23 +264,65 @@ class ShortcutsDatabase(private val db: Database) {
 
     suspend fun moveShortcut(targetId: Int, from: Int, to: Int) = withContext(Dispatchers.IO) {
         db.transaction {
-            db.shortcutsQueries.updateTargetPosition(targetId = targetId, position = from, newPosition = -1)
-            db.shortcutsQueries.updateTargetPosition(targetId = targetId, position = to, newPosition = from)
-            db.shortcutsQueries.updateTargetPosition(targetId = targetId, position = -1, newPosition = to)
+            db.shortcutsQueries.updateTargetPosition(
+                targetId = targetId,
+                position = from,
+                newPosition = -1
+            )
+            db.shortcutsQueries.updateTargetPosition(
+                targetId = targetId,
+                position = to,
+                newPosition = from
+            )
+            db.shortcutsQueries.updateTargetPosition(
+                targetId = targetId,
+                position = -1,
+                newPosition = to
+            )
         }
     }
 
-    suspend fun migrateShortcutPosition(targetId: Int, positionIds: ArrayList<Long>) = withContext(Dispatchers.IO) {
-        db.transaction {
-            positionIds.forEachIndexed { index, shortcutId ->
-                if (shortcutId != Shortcut.ID_UNKNOWN) {
-                    db.shortcutsQueries.migrateShortcutPosition(shortcutId = shortcutId, targetId = targetId, position = index)
+    suspend fun copyShortcut(targetId: Int, position: Int, sourceShortcutId: Long): Boolean =
+        withContext(Dispatchers.IO) {
+            return@withContext db.transactionWithResult {
+                if (sourceShortcutId != Shortcut.ID_UNKNOWN) {
+                    val result = db.shortcutsQueries.duplicateShortcut(targetId, position, sourceShortcutId)
+                    if (result.value > 0) {
+                        val shortcutId = db.shortcutsQueries.lastInsertId().executeAsOneOrNull()
+                            ?: return@transactionWithResult false
+
+                        db.folderItemQueries.duplicateFolderItems(shortcutId, sourceShortcutId)
+                    }
+
+                    return@transactionWithResult result.value > 0
+                }
+                return@transactionWithResult false
+            }
+        }
+
+    suspend fun migrateShortcutPosition(targetId: Int, positionIds: ArrayList<Long>) =
+        withContext(Dispatchers.IO) {
+            db.transaction {
+                positionIds.forEachIndexed { index, shortcutId ->
+                    if (shortcutId != Shortcut.ID_UNKNOWN) {
+                        db.shortcutsQueries.migrateShortcutPosition(
+                            shortcutId = shortcutId,
+                            targetId = targetId,
+                            position = index
+                        )
+                    }
                 }
             }
         }
-    }
 
-    private fun mapShortcut(shortcutId: Long, position: Int, title: String, itemType: Int, intent: String, isCustomIcon: Boolean): Shortcut {
+    private fun mapShortcut(
+        shortcutId: Long,
+        position: Int,
+        title: String,
+        itemType: Int,
+        intent: String,
+        isCustomIcon: Boolean
+    ): Shortcut {
         if (intent.isEmpty()) {
             AppLog.e("Intent is empty for id:${shortcutId} title:${title}")
             Shortcut(shortcutId, position, itemType, title, isCustomIcon, Intent())
@@ -313,20 +377,28 @@ class ShortcutsDatabase(private val db: Database) {
 
         private fun ContentValues.putIcon(icon: ShortcutIcon) {
             if (icon.isCustom) {
-                put(LauncherSettings.Favorites.ICON_TYPE,
-                    LauncherSettings.Favorites.ICON_TYPE_BITMAP)
+                put(
+                    LauncherSettings.Favorites.ICON_TYPE,
+                    LauncherSettings.Favorites.ICON_TYPE_BITMAP
+                )
                 writeBitmap(this, icon.bitmap)
             } else {
                 if (!icon.isFallback) {
                     writeBitmap(this, icon.bitmap)
                 }
-                put(LauncherSettings.Favorites.ICON_TYPE,
-                    LauncherSettings.Favorites.ICON_TYPE_RESOURCE)
+                put(
+                    LauncherSettings.Favorites.ICON_TYPE,
+                    LauncherSettings.Favorites.ICON_TYPE_RESOURCE
+                )
                 if (icon.resource != null) {
-                    put(LauncherSettings.Favorites.ICON_PACKAGE,
-                        icon.resource.packageName)
-                    put(LauncherSettings.Favorites.ICON_RESOURCE,
-                        icon.resource.resourceName)
+                    put(
+                        LauncherSettings.Favorites.ICON_PACKAGE,
+                        icon.resource.packageName
+                    )
+                    put(
+                        LauncherSettings.Favorites.ICON_RESOURCE,
+                        icon.resource.resourceName
+                    )
                 }
             }
             put(LauncherSettings.Favorites.IS_CUSTOM_ICON, if (icon.isCustom) 1 else 0)

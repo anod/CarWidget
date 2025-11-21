@@ -7,20 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import info.anodsplace.carwidget.content.R
-import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.compose.chooser.ChooserEntry
 import info.anodsplace.compose.chooser.chooserIconSize
 
 @Composable
-fun ChooserAsyncImage(entry: ChooserEntry, colorFilter: ColorFilter?, imageLoader: ImageLoader): Unit {
+fun ChooserAsyncImage(entry: ChooserEntry, colorFilter: ColorFilter?, imageLoader: ImageLoader) {
     val fallbackPainter = rememberVectorPainter(Icons.Filled.Android)
     AsyncImage(
-        model = LocalContext.current.iconUri(iconRes = entry.iconRes),
+        model = entry.iconUri,
         contentDescription = entry.title,
         imageLoader = imageLoader,
         modifier = Modifier.size(chooserIconSize),

@@ -53,23 +53,20 @@ class EditWidgetViewModel(
             buttonId = buttonId,
             items = listOf(
                 ChooserEntry(
-                    componentName = null,
+                    context = application,
                     title = application.getString(R.string.pref_settings_transparent),
-                    intent = null,
                     iconRes = skinProperties.settingsButtonRes,
                     extras = bundleOf("button" to WidgetInterface.WIDGET_BUTTON_SETTINGS)
                 ),
                 ChooserEntry(
-                    componentName = null,
+                    context = application,
                     title = application.getString(R.string.pref_incar_transparent),
-                    intent = null,
                     iconRes = skinProperties.inCarButtonEnterRes,
                     extras = bundleOf("button" to WidgetInterface.WIDGET_BUTTON_INCAR)
                 ),
                 ChooserEntry(
-                    componentName = null,
+                    context = application,
                     title = application.getString(R.string.hidden),
-                    intent = null,
                     iconRes = skinProperties.buttonAlternativeHiddenResId,
                     extras = bundleOf("button" to WidgetInterface.WIDGET_BUTTON_HIDDEN)
                 )

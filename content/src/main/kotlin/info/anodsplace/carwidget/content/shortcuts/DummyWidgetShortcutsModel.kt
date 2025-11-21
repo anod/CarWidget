@@ -67,4 +67,6 @@ class DummyWidgetShortcutsModel(private val context: Context, size: Int) : Short
     override suspend fun move(from: Int, to: Int) {
 
     }
+
+    override suspend fun copy(position: Int, sourceShortcutId: Long): Boolean = false
 }

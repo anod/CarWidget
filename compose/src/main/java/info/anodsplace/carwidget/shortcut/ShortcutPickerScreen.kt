@@ -24,10 +24,9 @@ import info.anodsplace.carwidget.chooser.AllAppsIntentChooserLoader
 import info.anodsplace.carwidget.chooser.AllWidgetShortcutsChooserLoader
 import info.anodsplace.carwidget.chooser.ChooserAsyncImage
 import info.anodsplace.carwidget.chooser.ChooserEmptyState
-import info.anodsplace.carwidget.chooser.toShortcutIntent
+import info.anodsplace.carwidget.chooser.isAppEntry
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.shortcuts.InternalShortcut
-import info.anodsplace.carwidget.content.shortcuts.ShortcutIntent
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.shortcut.ShortcutPickerViewEvent.LaunchShortcutError
 import info.anodsplace.carwidget.shortcut.ShortcutPickerViewEvent.Save
@@ -38,6 +37,7 @@ import info.anodsplace.compose.chooser.QueryIntentChooserLoader
 import info.anodsplace.compose.chooser.headerEntry
 import info.anodsplace.compose.chooser.headerId
 import info.anodsplace.compose.chooser.isHeader
+import info.anodsplace.ktx.resourceUri
 
 sealed interface ShortcutPickerState {
     data object Apps: ShortcutPickerState
@@ -57,7 +57,13 @@ fun ShortcutPickerScreen(
     var screenState by remember { mutableStateOf<ShortcutPickerState>(ShortcutPickerState.Apps) }
     val activityLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult(), onResult = { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                onEvent(Save(ShortcutIntent(result.data!!, isApp = false)))
+                val intent = result.data!!
+                val entry = ChooserEntry(
+                    componentName = intent.component,
+                    title = "",
+                    intent = intent
+                )
+                onEvent(Save(entry))
             }
             onDismissRequest()
     })
@@ -66,7 +72,8 @@ fun ShortcutPickerScreen(
         ShortcutPickerState.Apps -> AppChooser(
             onNewState = { screenState = it },
             onChoose = { entry ->
-                onEvent(Save(entry.toShortcutIntent(isApp = true)))
+                entry.isAppEntry = true
+                onEvent(Save(entry))
                 onDismissRequest()
             },
             onDismissRequest = onDismissRequest,
@@ -81,7 +88,7 @@ fun ShortcutPickerScreen(
                 }
             },
             onChooseHeader = { entry ->
-                onEvent(Save(entry.toShortcutIntent(isApp = false)))
+                onEvent(Save(entry))
                 onDismissRequest()
             },
             onDismissRequest = { screenState = ShortcutPickerState.Apps },
@@ -100,7 +107,7 @@ fun ShortcutPickerScreen(
         ShortcutPickerState.Existing -> ExistingShortcutChooser(
             appWidgetId = appWidgetId,
             onChoose = { entry ->
-                onEvent(Save(entry.toShortcutIntent(isApp = false)))
+                onEvent(Save(entry))
                 onDismissRequest()
             },
             onDismissRequest = { screenState = ShortcutPickerState.Apps },
@@ -210,6 +217,6 @@ private fun createCarWidgetShortcuts(context: Context, shortcutResources: Shortc
         val title = titles[shortcut.index]
         val icon = shortcutResources.internalShortcuts.icons[shortcut.index]
         val intent = Intent().forPickShortcutLocal(shortcut, title, icon, context, shortcutResources)
-        headerEntry(headerId = shortcut.index, title = title, iconRes = icon, intent = intent)
+        headerEntry(headerId = shortcut.index, title = title, iconUri = context.resourceUri(icon), intent = intent)
     }
 }

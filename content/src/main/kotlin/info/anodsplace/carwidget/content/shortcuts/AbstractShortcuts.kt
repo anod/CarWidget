@@ -74,6 +74,11 @@ abstract class AbstractShortcuts(internal val context: Context, protected val sh
         shortcutsDatabase.moveShortcut(targetId, from, to)
     }
 
+    override suspend fun copy(position: Int, sourceShortcutId: Long): Boolean {
+        lazyInit()
+        return shortcutsDatabase.copyShortcut(targetId, position, sourceShortcutId)
+    }
+
     override suspend fun saveIntent(position: Int, intent: ShortcutIntent): CreateShortcutResult = withContext(Dispatchers.IO) {
         lazyInit()
         val createResult = ShortcutInfoFactory.createShortcut(context, position, intent)

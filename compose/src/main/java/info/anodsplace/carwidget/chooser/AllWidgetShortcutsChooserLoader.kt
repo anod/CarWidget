@@ -5,6 +5,10 @@ import info.anodsplace.carwidget.appwidget.WidgetIds
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
+import info.anodsplace.carwidget.content.db.iconUri
+import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.content.extentions.isDebugBuild
+import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.compose.chooser.ChooserEntry
 import info.anodsplace.compose.chooser.ChooserLoader
 import info.anodsplace.compose.chooser.sectionEntry
@@ -14,8 +18,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.text.Collator
-import java.util.Locale
+import kotlin.random.Random
 
 /**
  * Loader that aggregates shortcuts from all widgets. Current widget shortcuts appear first.
@@ -34,8 +37,6 @@ class AllWidgetShortcutsChooserLoader(
         )
     }
 
-    private val collator: Collator = Collator.getInstance(Locale.getDefault()).apply { strength = Collator.PRIMARY }
-
     override fun load(): Flow<List<ChooserEntry>> = flow {
         emit(loadAll())
     }
@@ -43,25 +44,35 @@ class AllWidgetShortcutsChooserLoader(
     private suspend fun loadAll(): List<ChooserEntry> = withContext(Dispatchers.IO) {
         val allWidgetOrder = (listOf(currentWidgetId) + widgetIds.getLargeWidgetIds().filter { it != currentWidgetId }).distinct()
         val result = mutableListOf<ChooserEntry>()
-        for (wid in allWidgetOrder) {
-            result.add(sectionForWidget(widgetId = wid, context = context))
-            val shortcutsMap = db.loadTarget(wid)
-            val shortcuts = shortcutsMap.values.filterNotNull().sortedWith { a, b -> a.position.compareTo(b.position) }
-            shortcuts.forEach { shortcut ->
-                result.add(toEntry(shortcut))
+        for (appWidgetId in allWidgetOrder) {
+            AppWidgetIdScope(appWidgetId, instance = Random.nextInt(), existingScope = null).use {
+                val widgetSettings = it.scope.get<WidgetSettings>()
+                result.add(sectionForWidget(widgetId = appWidgetId, context = context))
+                val shortcutsMap = db.loadTarget(appWidgetId)
+                val shortcuts = shortcutsMap.values.filterNotNull()
+                    .sortedWith { a, b -> a.position.compareTo(b.position) }
+                shortcuts.forEach { shortcut ->
+                    result.add(toEntry(shortcut, widgetSettings))
+                }
             }
         }
         return@withContext result
     }
 
-    private fun toEntry(shortcut: Shortcut): ChooserEntry {
+    private fun toEntry(shortcut: Shortcut, widgetSettings: WidgetSettings): ChooserEntry {
         return ChooserEntry(
             componentName = shortcut.intent.component,
             title = shortcut.title.toString(),
             intent = shortcut.intent,
+            iconUri = shortcut.iconUri(
+                isDebug = context.isDebugBuild,
+                adaptiveIconStyle = widgetSettings.adaptiveIconStyle,
+                skinName = widgetSettings.skin
+            )
         ).apply {
             sourceShortcutId = shortcut.id
         }
     }
+
 }
 

@@ -33,6 +33,7 @@ import coil.compose.AsyncImage
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.chooser.ChooserAsyncImage
 import info.anodsplace.carwidget.chooser.ChooserEmptyState
+import info.anodsplace.carwidget.chooser.isAppEntry
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.db.toImageRequest
 import info.anodsplace.carwidget.utils.SystemIconSize
@@ -111,6 +112,7 @@ fun NotificationShortcuts(
                 loader = appsLoader,
                 onDismissRequest = { shortcutIndex = -1 },
                 onClick = { entry ->
+                    entry.isAppEntry = true
                     onEvent(InCarViewEvent.NotificationShortcutUpdate(shortcutIndex, entry))
                     shortcutIndex = -1
                 },
