@@ -31,17 +31,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import info.anodsplace.carwidget.chooser.AllAppsIntentChooserLoader
-import info.anodsplace.carwidget.chooser.ChooserEntry
-import info.anodsplace.carwidget.chooser.ChooserGridListDefaults
-import info.anodsplace.carwidget.chooser.CompositeChooserLoader
-import info.anodsplace.carwidget.chooser.MultiSelectChooserDialog
+import info.anodsplace.carwidget.chooser.ChooserAsyncImage
+import info.anodsplace.carwidget.chooser.ChooserEmptyState
 import info.anodsplace.carwidget.chooser.ShortcutsChooserLoader
+import info.anodsplace.carwidget.chooser.isAppEntry
 import info.anodsplace.carwidget.chooser.toShortcutIntent
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.db.Shortcut
 import info.anodsplace.carwidget.content.shortcuts.ShortcutIntent
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.utils.forFolder
+import info.anodsplace.compose.chooser.ChooserEntry
+import info.anodsplace.compose.chooser.ChooserGridListDefaults
+import info.anodsplace.compose.chooser.CompositeChooserLoader
+import info.anodsplace.compose.chooser.MultiSelectChooserDialog
 
 /**
  * Folder item picker used both for creating a new folder and editing an existing one.
@@ -84,7 +87,8 @@ fun FolderChooser(
             selected = if (selected.contains(component)) selected - component else selected + component
         },
         onDismissRequest = onDismissRequest,
-        imageLoader = imageLoader,
+        asyncImage = { entry, colorFilter -> ChooserAsyncImage(entry, colorFilter, imageLoader) },
+        emptyState = { filterApplied -> ChooserEmptyState(filterApplied) },
         topContent = { apps ->
             val (categoryNames, orderedCategoryIds) = categoryNamesAndIds(context, apps)
             Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
@@ -140,7 +144,10 @@ fun FolderChooser(
                     onClick = {
                         val selectedEntries = apps
                             .filter { it.componentName != null && selected.contains(it.componentName) }
-                            .map { it.toShortcutIntent(isApp = true) }
+                            .map {
+                                it.isAppEntry = true
+                                it.toShortcutIntent()
+                            }
                         val folderIntent = Intent().forFolder(
                             title = title,
                             ctx = context,

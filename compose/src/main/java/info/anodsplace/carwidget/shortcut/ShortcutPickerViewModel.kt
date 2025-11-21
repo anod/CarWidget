@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.WidgetUpdate
+import info.anodsplace.carwidget.chooser.sourceShortcutId
+import info.anodsplace.carwidget.chooser.toShortcutIntent
 import info.anodsplace.carwidget.content.AppCoroutineScope
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.unaryPlus
@@ -14,6 +16,7 @@ import info.anodsplace.carwidget.content.shortcuts.CreateShortcutResult
 import info.anodsplace.carwidget.content.shortcuts.ShortcutIntent
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
+import info.anodsplace.compose.chooser.ChooserEntry
 import info.anodsplace.framework.content.ShowToastActionDefaults
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.launch
@@ -27,7 +30,7 @@ data class ShortcutPickerViewState(
 )
 
 sealed interface ShortcutPickerViewEvent {
-    data class Save(val intent: ShortcutIntent) : ShortcutPickerViewEvent
+    data class Save(val entry: ChooserEntry) : ShortcutPickerViewEvent
     data class LaunchShortcutError(val exception: Exception) : ShortcutPickerViewEvent
     data class SaveFolder(val intent: ShortcutIntent, val items: List<ShortcutIntent>) : ShortcutPickerViewEvent
 }
@@ -66,7 +69,7 @@ class ShortcutPickerViewModel(
 
     override fun handleEvent(event: ShortcutPickerViewEvent) {
         when(event) {
-            is ShortcutPickerViewEvent.Save -> save(event.intent, )
+            is ShortcutPickerViewEvent.Save -> save(event.entry)
             is ShortcutPickerViewEvent.LaunchShortcutError -> {
                 AppLog.e(event.exception)
                 emitAction(ShortcutPickerViewAction.ShowToast(text = "Cannot launch shortcut ${event.exception.message}",))
@@ -92,16 +95,20 @@ class ShortcutPickerViewModel(
         }
     }
 
-    private fun save(intent: ShortcutIntent) {
+    private fun save(entry: ChooserEntry) {
         if (scope.closed) {
             return
         }
         // org.koin.core.error.ClosedScopeException
         appScope.launch {
             try {
-                val result = scope.get<WidgetShortcutsModel>().saveIntent(viewState.position, intent)
+                 if (entry.sourceShortcutId != -1L) {
+                    scope.get<WidgetShortcutsModel>().copy(viewState.position, entry.sourceShortcutId)
+                } else {
+                    val result = scope.get<WidgetShortcutsModel>().saveIntent(viewState.position, entry.toShortcutIntent())
+                    onSaveResult(result)
+                }
                 update.request(intArrayOf(+appWidgetIdScope))
-                onSaveResult(result)
             } catch (e: Exception) {
                 AppLog.e(e)
             }

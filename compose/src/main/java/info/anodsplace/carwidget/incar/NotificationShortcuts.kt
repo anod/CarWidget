@@ -31,12 +31,16 @@ import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.chooser.ChooserDialog
-import info.anodsplace.carwidget.chooser.ChooserLoader
-import info.anodsplace.carwidget.chooser.StaticChooserLoader
-import info.anodsplace.carwidget.chooser.headerEntry
+import info.anodsplace.carwidget.chooser.ChooserAsyncImage
+import info.anodsplace.carwidget.chooser.ChooserEmptyState
+import info.anodsplace.carwidget.chooser.isAppEntry
+import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.db.toImageRequest
 import info.anodsplace.carwidget.utils.SystemIconSize
+import info.anodsplace.compose.chooser.ChooserDialog
+import info.anodsplace.compose.chooser.ChooserLoader
+import info.anodsplace.compose.chooser.StaticChooserLoader
+import info.anodsplace.compose.chooser.headerEntry
 
 @Composable
 fun NotificationShortcuts(
@@ -103,15 +107,17 @@ fun NotificationShortcuts(
             ChooserDialog(
                 modifier = Modifier.fillMaxHeight(fraction = 0.8f),
                 headers = listOf(
-                    headerEntry(0, stringResource(info.anodsplace.carwidget.content.R.string.none), iconVector = Icons.Filled.Cancel)
+                    headerEntry(0, stringResource(R.string.none), iconVector = Icons.Filled.Cancel)
                 ),
                 loader = appsLoader,
                 onDismissRequest = { shortcutIndex = -1 },
                 onClick = { entry ->
+                    entry.isAppEntry = true
                     onEvent(InCarViewEvent.NotificationShortcutUpdate(shortcutIndex, entry))
                     shortcutIndex = -1
                 },
-                imageLoader = imageLoader
+                asyncImage = { entry, colorFilter -> ChooserAsyncImage(entry, colorFilter, imageLoader) },
+                emptyState = { filterApplied -> ChooserEmptyState(filterApplied) },
             )
         }
     }

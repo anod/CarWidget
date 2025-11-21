@@ -30,7 +30,7 @@ class AppWidgetIdScope(
     }
 
     companion object {
-        const val previewId: Int = -1
+        const val PREVIEW_ID: Int = -1
         fun scopeId(widgetId: Int, instance: Int): ScopeID = "widget-scope-$widgetId-$instance"
     }
 }

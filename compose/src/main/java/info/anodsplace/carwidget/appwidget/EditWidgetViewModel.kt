@@ -7,11 +7,11 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
-import info.anodsplace.carwidget.chooser.ChooserEntry
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
+import info.anodsplace.compose.chooser.ChooserEntry
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.inject
@@ -53,23 +53,20 @@ class EditWidgetViewModel(
             buttonId = buttonId,
             items = listOf(
                 ChooserEntry(
-                    componentName = null,
+                    context = application,
                     title = application.getString(R.string.pref_settings_transparent),
-                    intent = null,
                     iconRes = skinProperties.settingsButtonRes,
                     extras = bundleOf("button" to WidgetInterface.WIDGET_BUTTON_SETTINGS)
                 ),
                 ChooserEntry(
-                    componentName = null,
+                    context = application,
                     title = application.getString(R.string.pref_incar_transparent),
-                    intent = null,
                     iconRes = skinProperties.inCarButtonEnterRes,
                     extras = bundleOf("button" to WidgetInterface.WIDGET_BUTTON_INCAR)
                 ),
                 ChooserEntry(
-                    componentName = null,
+                    context = application,
                     title = application.getString(R.string.hidden),
-                    intent = null,
                     iconRes = skinProperties.buttonAlternativeHiddenResId,
                     extras = bundleOf("button" to WidgetInterface.WIDGET_BUTTON_HIDDEN)
                 )

@@ -26,9 +26,8 @@ import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.SceneNavKey
-import info.anodsplace.carwidget.chooser.ChooserDialog
-import info.anodsplace.carwidget.chooser.ChooserLoader
-import info.anodsplace.carwidget.chooser.StaticChooserLoader
+import info.anodsplace.carwidget.chooser.ChooserAsyncImage
+import info.anodsplace.carwidget.chooser.ChooserEmptyState
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.permissions.RequestPermissionsDialog
 import info.anodsplace.compose.PermissionDescription
@@ -36,6 +35,9 @@ import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.compose.PreferencesDefaults
 import info.anodsplace.compose.PreferencesScreen
 import info.anodsplace.compose.checked
+import info.anodsplace.compose.chooser.ChooserDialog
+import info.anodsplace.compose.chooser.ChooserLoader
+import info.anodsplace.compose.chooser.StaticChooserLoader
 import info.anodsplace.compose.key
 import info.anodsplace.compose.value
 import info.anodsplace.framework.app.findActivity
@@ -122,7 +124,8 @@ fun InCarMainScreen(
                 onEvent(InCarViewEvent.SetAutorunApp(componentName = it.componentName))
                 appChooser = null
             },
-            imageLoader = imageLoader
+            asyncImage = { entry, colorFilter -> ChooserAsyncImage(entry, colorFilter, imageLoader) },
+            emptyState = { filterApplied -> ChooserEmptyState(filterApplied) },
         )
     }
 

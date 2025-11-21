@@ -35,6 +35,11 @@ insert:
 INSERT INTO favorites (targetId, position, itemType, title, intent, iconType, icon, iconPackage, iconResource, isCustomIcon)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
+duplicateShortcut:
+INSERT INTO favorites (targetId, position, itemType, title, intent, iconType, icon, iconPackage, iconResource, isCustomIcon)
+SELECT :targetId, :position, itemType, title, intent, iconType, icon, iconPackage, iconResource, isCustomIcon
+FROM favorites WHERE _id = :shortcutId;
+
 update:
 UPDATE favorites SET
     itemType = :itemType,

@@ -15,6 +15,7 @@ import coil.fetch.SourceResult
 import coil.request.Options
 import info.anodsplace.applog.AppLog
 import info.anodsplace.graphics.toByteArray
+import info.anodsplace.ktx.SCHEME_APPLICATION_ICON
 import okio.Buffer
 
 class AppIconFetcher(private val context: Context, private val data: Uri, private val options: Options) : Fetcher {
@@ -37,7 +38,7 @@ class AppIconFetcher(private val context: Context, private val data: Uri, privat
             if (cmp != null) {
                 d = packageManager.getActivityIcon(cmp)
             }
-        } catch (ignored: PackageManager.NameNotFoundException) {
+        } catch (_: PackageManager.NameNotFoundException) {
         }
 
         if (d == null) {
@@ -57,9 +58,4 @@ class AppIconFetcher(private val context: Context, private val data: Uri, privat
             dataSource = DataSource.DISK
         )
     }
-
-    companion object {
-        const val SCHEME_APPLICATION_ICON = "application.icon"
-    }
-
 }

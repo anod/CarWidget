@@ -60,7 +60,7 @@ fun createWidgetInstanceModule(): Module = module {
         WidgetViewBuilder(
             context = get(),
             iconLoader = get(),
-            appWidgetId = AppWidgetIdScope.previewId,
+            appWidgetId = AppWidgetIdScope.PREVIEW_ID,
             widgetSettings = WidgetInterface.NoOp(),
             inCarSettings = InCarInterface.NoOp(),
             koin = getKoin(),

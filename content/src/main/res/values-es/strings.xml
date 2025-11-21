@@ -236,5 +236,7 @@
     <string name="selected_items">Seleccionados</string>
     <string name="search">Buscar</string>
     <string name="chooser_empty_list">No hay elementos disponibles</string>
+    <string name="existing_shortcut">Acceso directo existente</string>
+    <string name="widget_header">Widget %1$d</string>
     <string name="chooser_empty_filtered_list">No hay elementos coincidentes</string>
 </resources>

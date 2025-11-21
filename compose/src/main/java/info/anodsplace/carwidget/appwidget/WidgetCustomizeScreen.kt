@@ -32,11 +32,8 @@ import coil.ImageLoader
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.TextDecreaseIcon
 import info.anodsplace.carwidget.TextIncreaseIcon
-import info.anodsplace.carwidget.chooser.ChooserDialog
-import info.anodsplace.carwidget.chooser.QueryIntentChooserLoader
-import info.anodsplace.carwidget.chooser.headerEntry
-import info.anodsplace.carwidget.chooser.headerId
-import info.anodsplace.carwidget.chooser.isHeader
+import info.anodsplace.carwidget.chooser.ChooserAsyncImage
+import info.anodsplace.carwidget.chooser.ChooserEmptyState
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.compose.BottomSheet
@@ -47,6 +44,11 @@ import info.anodsplace.compose.PreferenceItem
 import info.anodsplace.compose.PreferenceSlider
 import info.anodsplace.compose.PreferencesScreen
 import info.anodsplace.compose.checked
+import info.anodsplace.compose.chooser.ChooserDialog
+import info.anodsplace.compose.chooser.QueryIntentChooserLoader
+import info.anodsplace.compose.chooser.headerEntry
+import info.anodsplace.compose.chooser.headerId
+import info.anodsplace.compose.chooser.isHeader
 import info.anodsplace.compose.key
 import info.anodsplace.compose.toTextItem
 import info.anodsplace.compose.value
@@ -273,7 +275,8 @@ private fun IconsThemePicker(
                 else -> onThemeSelected(entry.componentName?.packageName ?: "")
             }
         },
-        imageLoader = imageLoader
+        asyncImage = { entry, colorFilter -> ChooserAsyncImage(entry, colorFilter, imageLoader) },
+        emptyState = { filterApplied -> ChooserEmptyState(filterApplied) },
     )
 }
 

@@ -8,7 +8,6 @@ import android.media.AudioManager
 import android.os.DeadSystemException
 import android.telephony.TelephonyManager
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatDelegate
 import com.anod.car.home.appwidget.WidgetHelper
 import com.anod.car.home.appwidget.WidgetUpdateProvider
 import com.anod.car.home.incar.BroadcastService
@@ -29,7 +28,6 @@ import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.PlayServicesAvailability
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.di.createAppModule
-import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
@@ -56,9 +54,6 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
-
-    override val appCompatNightMode: Int
-        get() =  get<AppSettings>().appCompatNightMode
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
@@ -171,8 +166,6 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                 ),
             )
         }
-
-        AppCompatDelegate.setDefaultNightMode(appCompatNightMode)
         Channels.register(this)
     }
 

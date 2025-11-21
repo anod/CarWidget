@@ -44,12 +44,12 @@ import info.anodsplace.carwidget.WidgetsIcon
 import info.anodsplace.carwidget.content.InCarStatus
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.db.toImageRequest
-import info.anodsplace.carwidget.content.iconUri
 import info.anodsplace.carwidget.utils.SystemIconSize
 import info.anodsplace.compose.SystemIconShape
 import info.anodsplace.framework.content.ScreenCommonAction
 import info.anodsplace.framework.content.forRequestIgnoreBatteryOptimization
 import info.anodsplace.framework.content.startActivity
+import info.anodsplace.ktx.resourceUri
 
 private val IconSize = 52.dp
 
@@ -166,7 +166,7 @@ private fun WidgetsLisItems(
                 is WidgetItem.Shortcut -> {
                     Box(modifier = Modifier.cardStyle()) {
                         AsyncImage(
-                            model = LocalContext.current.iconUri("mipmap", "ic_launcher"),
+                            model = LocalContext.current.resourceUri("mipmap", "ic_launcher"),
                             contentDescription = "",
                             imageLoader = imageLoader,
                             modifier = Modifier

@@ -11,8 +11,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import info.anodsplace.carwidget.SceneNavKey
-import info.anodsplace.carwidget.chooser.ChooserGridList
+import info.anodsplace.carwidget.chooser.ChooserAsyncImage
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.compose.chooser.ChooserGridList
 
 @Composable
 fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: SceneNavKey.EditWidgetButton, onDismissRequest: () -> Unit) {
@@ -41,7 +42,13 @@ fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: SceneNavKey.EditW
                 viewModel.handleEvent(EditWidgetViewEvent.Select(entry))
                 onDismissRequest()
             },
-            imageLoader = viewModel.imageLoader
+            asyncImage = { entry, colorFilter ->
+                ChooserAsyncImage(
+                    entry = entry,
+                    colorFilter = colorFilter,
+                    imageLoader = viewModel.imageLoader
+                )
+            },
         )
     }
 }

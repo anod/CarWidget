@@ -2,6 +2,8 @@ package info.anodsplace.carwidget.chooser
 
 import android.content.Context
 import info.anodsplace.carwidget.content.db.Shortcut
+import info.anodsplace.compose.chooser.ChooserEntry
+import info.anodsplace.compose.chooser.ChooserLoader
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import java.text.Collator
@@ -25,6 +27,10 @@ class ShortcutsChooserLoader(
 
     private fun toEntry(shortcut: Shortcut): ChooserEntry? {
         val cmp = shortcut.intent.component ?: return null
-        return ChooserEntry(componentName = cmp, title = shortcut.title.toString(), intent = shortcut.intent)
+        return ChooserEntry(
+            componentName = cmp,
+            title = shortcut.title.toString(),
+            intent = shortcut.intent
+        )
     }
 }

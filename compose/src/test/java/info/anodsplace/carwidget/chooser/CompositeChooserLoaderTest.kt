@@ -1,6 +1,9 @@
 package info.anodsplace.carwidget.chooser
 
 import android.content.ComponentName
+import info.anodsplace.compose.chooser.ChooserEntry
+import info.anodsplace.compose.chooser.CompositeChooserLoader
+import info.anodsplace.compose.chooser.StaticChooserLoader
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.runner.RunWith
@@ -13,10 +16,22 @@ import kotlin.test.assertTrue
 class CompositeChooserLoaderTest {
     @Test
     fun duplicatesPreferEarlierLoaderAndSourceIndexSet() = runBlocking {
-        val entry1a = ChooserEntry(componentName = ComponentName("pkg.one", "ActivityA"), title = "Activity A")
-        val entry1b = ChooserEntry(componentName = ComponentName("pkg.one", "ActivityB"), title = "Activity B")
-        val entry2aDuplicate = ChooserEntry(componentName = ComponentName("pkg.one", "ActivityA"), title = "Activity A (Alt)")
-        val entry2c = ChooserEntry(componentName = ComponentName("pkg.two", "ActivityC"), title = "Activity C")
+        val entry1a = ChooserEntry(
+            componentName = ComponentName("pkg.one", "ActivityA"),
+            title = "Activity A"
+        )
+        val entry1b = ChooserEntry(
+            componentName = ComponentName("pkg.one", "ActivityB"),
+            title = "Activity B"
+        )
+        val entry2aDuplicate = ChooserEntry(
+            componentName = ComponentName("pkg.one", "ActivityA"),
+            title = "Activity A (Alt)"
+        )
+        val entry2c = ChooserEntry(
+            componentName = ComponentName("pkg.two", "ActivityC"),
+            title = "Activity C"
+        )
         val loader1 = StaticChooserLoader(listOf(entry1a, entry1b))
         val loader2 = StaticChooserLoader(listOf(entry2aDuplicate, entry2c))
 

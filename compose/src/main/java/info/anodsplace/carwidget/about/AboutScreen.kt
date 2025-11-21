@@ -36,14 +36,16 @@ import androidx.compose.ui.unit.sp
 import coil.ImageLoader
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.chooser.ChooserDialog
-import info.anodsplace.carwidget.chooser.MediaListChooserLoader
-import info.anodsplace.carwidget.chooser.headerEntry
+import info.anodsplace.carwidget.chooser.ChooserAsyncImage
+import info.anodsplace.carwidget.chooser.ChooserEmptyState
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.backup.Backup
 import info.anodsplace.carwidget.permissions.RequestPermissionsDialog
 import info.anodsplace.compose.PreferenceCategory
 import info.anodsplace.compose.PreferenceItem
+import info.anodsplace.compose.chooser.ChooserDialog
+import info.anodsplace.compose.chooser.MediaListChooserLoader
+import info.anodsplace.compose.chooser.headerEntry
 import info.anodsplace.framework.content.CreateDocument
 import info.anodsplace.framework.content.ScreenCommonAction
 import info.anodsplace.framework.content.showToast
@@ -190,7 +192,8 @@ fun AboutScreen(
                 onEvent(AboutScreenStateEvent.ChangeMusicApp(entry.componentName))
                 showMusicAppDialog = false
             },
-            imageLoader = imageLoader
+            asyncImage = { entry, colorFilter -> ChooserAsyncImage(entry, colorFilter, imageLoader) },
+            emptyState = { filterApplied -> ChooserEmptyState(filterApplied) }
         )
     }
 
