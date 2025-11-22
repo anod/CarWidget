@@ -361,7 +361,7 @@ fun NavHost(
             }
         }
         entry<SceneNavKey.InCarTab> {
-             // Redirect to InCarMain
+            // Redirect to InCarMain
              LaunchedEffect(Unit) {
                 navigator.navigate(SceneNavKey.InCarMain)
              }
