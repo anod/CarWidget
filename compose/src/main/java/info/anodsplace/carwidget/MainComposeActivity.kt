@@ -61,7 +61,7 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
                 startRoute = screenState.topDestination,
                 topLevelRoutes = screenState.tabs as Set<NavKey>
             )
-            val navigator = remember { Navigator(navigationState) }
+            val navigator = remember(navigationState) { Navigator(navigationState) }
 
             CarWidgetTheme(
                 uiMode = uiMode
