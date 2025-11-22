@@ -218,7 +218,7 @@ fun Tabs(
         bottomBar = {
             BottomTabsMenu(
                 items = screenState.tabs,
-                currentTab = currentRoute as? TabNavKey ?: (currentRoute as? InnerSceneNavKey)?.parent as? TabNavKey,
+                currentTab = navigationState.topLevelRoute as? TabNavKey,
                 onClick = { item -> navigator.navigate(item as SceneNavKey) }
             )
         },
