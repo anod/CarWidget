@@ -314,7 +314,7 @@ fun NavHost(
                         context.onScreenCommonAction(
                             action,
                             navigateBack = {},
-                            navigateTo = { navigator.navigate(SceneNavKey.WidgetCustomize) })
+                            navigateTo = { route -> navigator.navigate(route) })
                     }
                 }
         }
