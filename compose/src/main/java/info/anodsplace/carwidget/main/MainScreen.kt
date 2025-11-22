@@ -42,7 +42,6 @@ import coil.ImageLoader
 import info.anodsplace.carwidget.BackArrowIcon
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.CheckIcon
-import info.anodsplace.carwidget.InnerSceneNavKey
 import info.anodsplace.carwidget.NavigationState
 import info.anodsplace.carwidget.SceneNavKey
 import info.anodsplace.carwidget.TabNavKey
@@ -148,8 +147,6 @@ fun NavRail(
 ) {
     val navRailInset = WindowInsets(0.dp, 0.dp, 80.dp, 0.dp)
     Box {
-        val currentRoute = navigationState.backStacks[navigationState.topLevelRoute]?.last() as? SceneNavKey
-
         NavHost(
             navigator = navigator,
             navigationState = navigationState,
@@ -165,7 +162,7 @@ fun NavRail(
         NavRailMenu(
             modifier = Modifier.align(Alignment.CenterEnd),
             items = screenState.tabs,
-            currentRoute = currentRoute,
+            currentRoute = navigationState.topLevelRoute as? SceneNavKey,
             onClick = { item -> navigator.navigate(item) },
             showApply = screenState.isWidget,
             onApply = { onEvent(MainViewEvent.ApplyWidget(screenState.appWidgetId, screenState.skinList.current.value)) },
@@ -187,8 +184,6 @@ fun Tabs(
     appWidgetIdScope: AppWidgetIdScope? = null,
     imageLoader: ImageLoader
 ) {
-    val currentRoute = navigationState.backStacks[navigationState.topLevelRoute]?.last() as? SceneNavKey
-
     Scaffold(
         containerColor = if (screenState.isWidget) Color.Transparent else MaterialTheme.colorScheme.background,
         topBar = {
@@ -207,9 +202,11 @@ fun Tabs(
                     }
                 },
                 navigationIcon = {
-                    if ((currentRoute as? InnerSceneNavKey)?.showBackNavigation == true) {
-                        IconButton(onClick = { onEvent(MainViewEvent.OnBackNav) }) {
-                            BackArrowIcon()
+                    navigationState.backStacks[navigationState.topLevelRoute]?.size?.let {
+                        if (it > 1) {
+                            IconButton(onClick = { onEvent(MainViewEvent.OnBackNav) }) {
+                                BackArrowIcon()
+                            }
                         }
                     }
                 }
@@ -275,11 +272,10 @@ fun NavHost(
                     }
                 }
         }
-        entry<SceneNavKey.Shortcuts> {
-
+        entry<SceneNavKey.CurrentWidgetTab> {
                 val skinViewModel: RealSkinPreviewViewModel = viewModel(
                     factory = SkinPreviewViewModel.Factory(appWidgetIdScope!!),
-                    key = SceneNavKey.Shortcuts.toString()
+                    key = SceneNavKey.CurrentWidgetTab.toString()
                 )
                 val screenState by skinViewModel.viewStates.collectAsState(initial = skinViewModel.viewState)
                 WidgetSkinScreen(
@@ -319,7 +315,7 @@ fun NavHost(
                     }
                 }
         }
-        entry<SceneNavKey.InCarMain> {
+        entry<SceneNavKey.InCarTab> {
                 val inCarViewModel: InCarViewModel =
                     viewModel(factory = InCarViewModel.Factory(context.findActivity()))
                 val screenState by inCarViewModel.viewStates.collectAsState(initial = inCarViewModel.viewState)
@@ -354,18 +350,6 @@ fun NavHost(
                 onEvent = bluetoothDevicesViewModel::handleEvent,
                 innerPadding = innerPadding
             )
-        }
-        entry<SceneNavKey.CurrentWidgetTab> {
-            // Redirect to Shortcuts
-            LaunchedEffect(Unit) {
-                navigator.navigate(SceneNavKey.Shortcuts)
-            }
-        }
-        entry<SceneNavKey.InCarTab> {
-            // Redirect to InCarMain
-             LaunchedEffect(Unit) {
-                navigator.navigate(SceneNavKey.InCarMain)
-             }
         }
     }
 

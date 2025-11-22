@@ -17,11 +17,6 @@ interface TabNavKey {
     val icon: ImageVector
 }
 
-interface InnerSceneNavKey {
-    val parent: SceneNavKey?
-    val showBackNavigation: Boolean
-}
-
 @Serializable
 sealed interface RouteNameSpace {
     @Serializable
@@ -88,44 +83,19 @@ sealed interface SceneNavKey : NavKey {
     }
 
     @Serializable
-    data object Shortcuts : SceneNavKey, InnerSceneNavKey {
-        override val parent: SceneNavKey? get() = CurrentWidgetTab
-        override val showBackNavigation: Boolean = false
-    }
-
-    @Serializable
     data class EditShortcut(
         val shortcutId: Long,
         val position: Int
-    ) : SceneNavKey, InnerSceneNavKey {
-        override val parent: SceneNavKey? get() = CurrentWidgetTab
-        override val showBackNavigation: Boolean = true
-    }
+    ) : SceneNavKey
 
     @Serializable
     data class EditWidgetButton(
         val buttonId: Int
-    ) : SceneNavKey, InnerSceneNavKey {
-        override val parent: SceneNavKey? get() = CurrentWidgetTab
-        override val showBackNavigation: Boolean = true
-    }
+    ) : SceneNavKey
 
     @Serializable
-    data object PlayMediaButton : SceneNavKey, InnerSceneNavKey {
-        override val parent: SceneNavKey? get() = CurrentWidgetTab
-        override val showBackNavigation: Boolean = true
-    }
+    data object PlayMediaButton : SceneNavKey
 
     @Serializable
-    data object InCarMain : SceneNavKey, InnerSceneNavKey {
-        override val parent: SceneNavKey? get() = InCarTab
-        override val showBackNavigation: Boolean = false
-    }
-
-    @Serializable
-    data object InCarBluetooth : SceneNavKey, InnerSceneNavKey {
-        override val parent: SceneNavKey? get() = InCarTab
-        override val showBackNavigation: Boolean = true
-    }
-
+    data object InCarBluetooth : SceneNavKey
 }
