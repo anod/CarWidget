@@ -8,7 +8,7 @@ import info.anodsplace.carwidget.NavigationState
  */
 class Navigator(val state: NavigationState) {
     fun navigate(route: NavKey) {
-        if (route in state.backStacks.keys){
+        if (route in state.backStacks.keys) {
             // This is a top level route, just switch to it.
             state.topLevelRoute = route
         } else {
