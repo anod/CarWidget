@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import info.anodsplace.carwidget.SceneNavKey
 import info.anodsplace.carwidget.chooser.ChooserAsyncImage
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.navigation.SceneNavKey
 import info.anodsplace.compose.chooser.ChooserGridList
 
 @Composable

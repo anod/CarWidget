@@ -1,7 +1,6 @@
-package info.anodsplace.carwidget.main
+package info.anodsplace.carwidget.navigation
 
 import androidx.navigation3.runtime.NavKey
-import info.anodsplace.carwidget.NavigationState
 
 /**
  * Handles navigation events (forward and back) by updating the navigation state.

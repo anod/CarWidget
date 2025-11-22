@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget
+package info.anodsplace.carwidget.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation3.runtime.NavKey
+import info.anodsplace.carwidget.content.R
 import info.anodsplace.framework.content.ScreenCommonNavKey
 import kotlinx.serialization.Serializable
 
@@ -45,7 +46,7 @@ sealed interface SceneNavKey : NavKey {
     @Serializable
     data object WidgetsTab : SceneNavKey, TabNavKey {
         override val title: Int
-            get() = info.anodsplace.carwidget.content.R.string.widgets
+            get() = R.string.widgets
         override val icon: ImageVector
             get() = Icons.Filled.Widgets
     }
@@ -53,7 +54,7 @@ sealed interface SceneNavKey : NavKey {
     @Serializable
     data object CurrentWidgetTab : SceneNavKey, TabNavKey {
         override val title: Int
-            get() = info.anodsplace.carwidget.content.R.string.shortcuts
+            get() = R.string.shortcuts
         override val icon: ImageVector
             get() = Icons.Filled.Widgets
     }
@@ -61,7 +62,7 @@ sealed interface SceneNavKey : NavKey {
     @Serializable
     data object WidgetCustomize: SceneNavKey, TabNavKey {
         override val title: Int
-            get() = info.anodsplace.carwidget.content.R.string.customize
+            get() = R.string.customize
         override val icon: ImageVector
             get() = Icons.Filled.Palette
     }
@@ -69,7 +70,7 @@ sealed interface SceneNavKey : NavKey {
     @Serializable
     data object InCarTab : SceneNavKey, TabNavKey {
         override val title: Int
-            get() = info.anodsplace.carwidget.content.R.string.pref_incar_mode_title
+            get() = R.string.pref_incar_mode_title
         override val icon: ImageVector
             get() = Icons.Filled.DirectionsCar
     }
@@ -77,7 +78,7 @@ sealed interface SceneNavKey : NavKey {
     @Serializable
     data object AboutTab : SceneNavKey, TabNavKey {
         override val title: Int
-            get() = info.anodsplace.carwidget.content.R.string.info
+            get() = R.string.info
         override val icon: ImageVector
             get() = Icons.Outlined.Info
     }

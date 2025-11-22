@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.SceneNavKey
 import info.anodsplace.carwidget.chooser.toShortcutIntent
 import info.anodsplace.carwidget.content.PermissionDescriptionItem
 import info.anodsplace.carwidget.content.PlayServicesAvailability
@@ -20,7 +19,8 @@ import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
-import info.anodsplace.carwidget.main.Navigator
+import info.anodsplace.carwidget.navigation.Navigator
+import info.anodsplace.carwidget.navigation.SceneNavKey
 import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.utils.toPermissionDescription
 import info.anodsplace.compose.PermissionDescription

@@ -17,8 +17,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.CheckIcon
-import info.anodsplace.carwidget.SceneNavKey
-import info.anodsplace.carwidget.TabNavKey
+import info.anodsplace.carwidget.navigation.SceneNavKey
+import info.anodsplace.carwidget.navigation.TabNavKey
 
 @Composable
 fun BottomTabsMenu(items: Set<TabNavKey>, currentTab: TabNavKey?, onClick: (TabNavKey) -> Unit) {

@@ -6,9 +6,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import info.anodsplace.carwidget.SceneNavKey
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.unaryPlus
+import info.anodsplace.carwidget.navigation.SceneNavKey
 import info.anodsplace.framework.content.showToast
 
 @Composable

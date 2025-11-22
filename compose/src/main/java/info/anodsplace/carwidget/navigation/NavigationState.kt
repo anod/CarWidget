@@ -1,4 +1,4 @@
-package info.anodsplace.carwidget
+package info.anodsplace.carwidget.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState

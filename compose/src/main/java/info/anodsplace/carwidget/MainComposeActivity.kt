@@ -22,7 +22,8 @@ import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.main.MainScreen
 import info.anodsplace.carwidget.main.MainViewAction
 import info.anodsplace.carwidget.main.MainViewModel
-import info.anodsplace.carwidget.main.Navigator
+import info.anodsplace.carwidget.navigation.Navigator
+import info.anodsplace.carwidget.navigation.rememberNavigationState
 import info.anodsplace.ktx.extras
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get

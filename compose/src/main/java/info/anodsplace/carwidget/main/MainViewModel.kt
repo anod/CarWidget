@@ -10,9 +10,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import coil.ImageLoader
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.RouteNameSpace
-import info.anodsplace.carwidget.SceneNavKey
-import info.anodsplace.carwidget.TabNavKey
 import info.anodsplace.carwidget.WidgetAwareViewModel
 import info.anodsplace.carwidget.appwidget.SkinList
 import info.anodsplace.carwidget.appwidget.WidgetIds
@@ -23,6 +20,9 @@ import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
+import info.anodsplace.carwidget.navigation.RouteNameSpace
+import info.anodsplace.carwidget.navigation.SceneNavKey
+import info.anodsplace.carwidget.navigation.TabNavKey
 import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.framework.content.StartActivityAction
 import info.anodsplace.framework.content.forHomeScreen
