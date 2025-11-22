@@ -369,6 +369,7 @@ fun NavHost(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     NavDisplay(
         entries = navigationState.toEntries(entryProvider as (NavKey) -> NavEntry<NavKey>),
         onBack = { navigator.goBack() }
