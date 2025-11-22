@@ -7,7 +7,7 @@ import info.anodsplace.carwidget.NavigationState
  * Handles navigation events (forward and back) by updating the navigation state.
  */
 class Navigator(val state: NavigationState){
-    fun navigate(route: NavKey){
+    fun navigate(route: NavKey) {
         if (route in state.backStacks.keys){
             // This is a top level route, just switch to it.
             state.topLevelRoute = route
