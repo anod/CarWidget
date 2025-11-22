@@ -22,7 +22,7 @@ class Navigator(val state: NavigationState) {
         val currentRoute = currentStack.last()
 
         // If we're at the base of the current route, go back to the start route stack.
-        if (currentRoute == state.topLevelRoute){
+        if (currentRoute == state.topLevelRoute) {
             if (state.topLevelRoute != state.startRoute) {
                 state.topLevelRoute = state.startRoute
             }
