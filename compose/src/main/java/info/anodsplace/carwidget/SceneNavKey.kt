@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation3.runtime.NavKey
+import info.anodsplace.framework.content.ScreenCommonNavKey
 import kotlinx.serialization.Serializable
 
 interface TabNavKey {
@@ -30,6 +31,12 @@ sealed interface RouteNameSpace {
     @Serializable
     data object Overlay: RouteNameSpace
 }
+
+val ScreenCommonNavKey.asNavKey: NavKey
+    get() = when (this) {
+        is SceneNavKey -> this
+        else -> throw IllegalArgumentException("Unknown ScreenCommonNavKey: $this")
+    }
 
 @Serializable
 sealed interface SceneNavKey : NavKey {

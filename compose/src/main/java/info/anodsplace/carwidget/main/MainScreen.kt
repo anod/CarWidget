@@ -54,6 +54,7 @@ import info.anodsplace.carwidget.appwidget.SkinPreviewViewModel
 import info.anodsplace.carwidget.appwidget.WidgetCustomizeScreen
 import info.anodsplace.carwidget.appwidget.WidgetCustomizeViewModel
 import info.anodsplace.carwidget.appwidget.WidgetSkinScreen
+import info.anodsplace.carwidget.asNavKey
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.incar.BluetoothDevicesScreen
@@ -314,7 +315,7 @@ fun NavHost(
                         context.onScreenCommonAction(
                             action,
                             navigateBack = {},
-                            navigateTo = { route -> navigator.navigate(route) })
+                            navigateTo = { route -> navigator.navigate(route.asNavKey) })
                     }
                 }
         }

@@ -21,6 +21,7 @@ import info.anodsplace.compose.toColorHex
 import info.anodsplace.framework.content.ScreenCommonAction
 import info.anodsplace.framework.content.forStoreSearch
 import info.anodsplace.framework.content.getAppTitle
+import info.anodsplace.framework.content.startActivityAction
 import info.anodsplace.viewmodel.BaseFlowViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinScopeComponent
@@ -218,7 +219,7 @@ class WidgetCustomizeViewModel(appWidgetIdScope: AppWidgetIdScope) : BaseFlowVie
             }
 
             WidgetCustomizeEvent.DownloadIconsTheme -> {
-                emitAction(ScreenCommonAction.StartActivity(Intent().forStoreSearch(query = "icon pack", category = "apps")))
+                emitAction(startActivityAction(Intent().forStoreSearch(query = "icon pack", category = "apps")))
             }
         }
     }
