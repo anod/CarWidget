@@ -247,7 +247,7 @@ fun NavHost(
 ) {
     val context = LocalContext.current
 
-    val entryProvider = entryProvider {
+    val sceneEntryProvider = entryProvider {
         entry<SceneNavKey.WidgetsTab> {
                 val widgetsListViewModel: WidgetsListViewModel = viewModel()
                 val widgetsState by widgetsListViewModel.viewStates.collectAsState(initial = widgetsListViewModel.viewState)
@@ -368,8 +368,16 @@ fun NavHost(
         }
     }
 
+    // Wrapper to safely convert SceneNavKey-specific provider to NavKey provider
+    // Runtime validation ensures type safety despite the cast
+    val entryProvider: (NavKey) -> NavEntry<NavKey> = { key ->
+        require(key is SceneNavKey) { "Expected SceneNavKey but got ${key::class.simpleName}" }
+        @Suppress("UNCHECKED_CAST")
+        sceneEntryProvider(key) as NavEntry<NavKey>
+    }
+
     NavDisplay(
-        entries = navigationState.toEntries(entryProvider as (NavKey) -> NavEntry<NavKey>),
+        entries = navigationState.toEntries(entryProvider),
         onBack = { navigator.goBack() }
     )
 }
