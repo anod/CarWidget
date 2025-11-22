@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,19 +34,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navigation
-import androidx.navigation.toRoute
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.NavDisplay
 import coil.ImageLoader
 import info.anodsplace.carwidget.BackArrowIcon
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.CheckIcon
 import info.anodsplace.carwidget.InnerSceneNavKey
-import info.anodsplace.carwidget.RouteNameSpace
+import info.anodsplace.carwidget.NavigationState
 import info.anodsplace.carwidget.SceneNavKey
 import info.anodsplace.carwidget.TabNavKey
 import info.anodsplace.carwidget.about.AboutScreen
@@ -63,8 +61,9 @@ import info.anodsplace.carwidget.incar.BluetoothDevicesViewModel
 import info.anodsplace.carwidget.incar.InCarMainScreen
 import info.anodsplace.carwidget.incar.InCarViewModel
 import info.anodsplace.carwidget.permissions.PermissionsScreen
+import info.anodsplace.carwidget.rememberNavigationState
 import info.anodsplace.carwidget.shortcut.EditShortcut
-import info.anodsplace.carwidget.toSceneNavKey
+import info.anodsplace.carwidget.toEntries
 import info.anodsplace.framework.app.findActivity
 import info.anodsplace.framework.content.onScreenCommonAction
 import info.anodsplace.framework.content.startActivity
@@ -81,6 +80,8 @@ fun MainScreen(
     viewActions: Flow<MainViewAction> = emptyFlow(),
     appWidgetIdScope: AppWidgetIdScope? = null,
     imageLoader: ImageLoader,
+    navigator: Navigator,
+    navigationState: NavigationState
 ) {
     val context = LocalContext.current
     when (screenState.topDestination) {
@@ -99,11 +100,11 @@ fun MainScreen(
             PermissionsScreen(screenState = screenState, onEvent = onEvent)
         }
         else -> {
-            val navController = rememberNavController()
             val isCompact = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
             if (isCompact) {
                 NavRail(
-                    navController = navController,
+                    navigator = navigator,
+                    navigationState = navigationState,
                     screenState = screenState,
                     windowSizeClass = windowSizeClass,
                     onEvent = onEvent,
@@ -112,7 +113,8 @@ fun MainScreen(
                 )
             } else {
                 Tabs(
-                    navController = navController,
+                    navigator = navigator,
+                    navigationState = navigationState,
                     screenState = screenState,
                     windowSizeClass = windowSizeClass,
                     onEvent = onEvent,
@@ -124,9 +126,6 @@ fun MainScreen(
             LaunchedEffect(key1 = true) {
                 viewActions.collect { action ->
                     when (action) {
-                        is MainViewAction.ShowDialog -> {
-                            navController.navigate(action.route)
-                        }
                         is MainViewAction.StartActivity -> context.startActivity(action)
                         else -> onViewAction(action)
                     }
@@ -138,7 +137,8 @@ fun MainScreen(
 
 @Composable
 fun NavRail(
-    navController: NavHostController,
+    navigator: Navigator,
+    navigationState: NavigationState,
     screenState: MainViewState,
     windowSizeClass: WindowSizeClass,
     onEvent: (event: MainViewEvent) -> Unit,
@@ -147,18 +147,17 @@ fun NavRail(
 ) {
     val navRailInset = WindowInsets(0.dp, 0.dp, 80.dp, 0.dp)
     Box {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.toSceneNavKey()
+        val currentRoute = navigationState.backStacks[navigationState.topLevelRoute]?.last() as? SceneNavKey
+
         NavHost(
-            navController = navController,
+            navigator = navigator,
+            navigationState = navigationState,
             onEvent = onEvent,
             appWidgetIdScope = appWidgetIdScope,
             innerPadding = WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal)
                 .add(WindowInsets.statusBars.only(WindowInsetsSides.Vertical))
                 .add(WindowInsets.navigationBars)
                 .add(navRailInset).asPaddingValues(),
-            startDestination = screenState.topDestination,
-            routeNS = screenState.routeNS,
             imageLoader = imageLoader,
             windowSizeClass = windowSizeClass,
         )
@@ -166,7 +165,7 @@ fun NavRail(
             modifier = Modifier.align(Alignment.CenterEnd),
             items = screenState.tabs,
             currentRoute = currentRoute,
-            onClick = { item -> navController.navigate(item) },
+            onClick = { item -> navigator.navigate(item) },
             showApply = screenState.isWidget,
             onApply = { onEvent(MainViewEvent.ApplyWidget(screenState.appWidgetId, screenState.skinList.current.value)) },
             windowInsets = WindowInsets.statusBars.only(WindowInsetsSides.Vertical)
@@ -179,15 +178,15 @@ fun NavRail(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Tabs(
-    navController: NavHostController,
+    navigator: Navigator,
+    navigationState: NavigationState,
     screenState: MainViewState,
     windowSizeClass: WindowSizeClass,
     onEvent: (event: MainViewEvent) -> Unit,
     appWidgetIdScope: AppWidgetIdScope? = null,
     imageLoader: ImageLoader
 ) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.toSceneNavKey()
+    val currentRoute = navigationState.backStacks[navigationState.topLevelRoute]?.last() as? SceneNavKey
 
     Scaffold(
         containerColor = if (screenState.isWidget) Color.Transparent else MaterialTheme.colorScheme.background,
@@ -219,17 +218,16 @@ fun Tabs(
             BottomTabsMenu(
                 items = screenState.tabs,
                 currentTab = currentRoute as? TabNavKey ?: (currentRoute as? InnerSceneNavKey)?.parent as? TabNavKey,
-                onClick = { item -> navController.navigate(item) }
+                onClick = { item -> navigator.navigate(item as SceneNavKey) }
             )
         },
         content = { innerPadding ->
             NavHost(
-                navController = navController,
+                navigator = navigator,
+                navigationState = navigationState,
                 onEvent = onEvent,
                 appWidgetIdScope = appWidgetIdScope,
                 innerPadding = innerPadding,
-                startDestination = screenState.topDestination,
-                routeNS = screenState.routeNS,
                 imageLoader = imageLoader,
                 windowSizeClass = windowSizeClass
             )
@@ -239,51 +237,49 @@ fun Tabs(
 
 @Composable
 fun NavHost(
-    navController: NavHostController,
+    navigator: Navigator,
+    navigationState: NavigationState,
     onEvent: (MainViewEvent) -> Unit,
     appWidgetIdScope: AppWidgetIdScope? = null,
     innerPadding: PaddingValues,
-    startDestination: SceneNavKey,
-    routeNS: RouteNameSpace,
-    currentWidgetStartDestination: SceneNavKey = SceneNavKey.Shortcuts,
     imageLoader: ImageLoader,
     windowSizeClass: WindowSizeClass,
 ) {
     val context = LocalContext.current
 
-    NavHost(navController, startDestination = startDestination, route = routeNS::class) {
-        composable<SceneNavKey.WidgetsTab> { _ ->
-            val widgetsListViewModel: WidgetsListViewModel = viewModel()
-            val widgetsState by widgetsListViewModel.viewStates.collectAsState(initial = widgetsListViewModel.viewState)
-            WidgetsListScreen(
-                screen = widgetsState,
-                onEvent = onEvent,
-                innerPadding = innerPadding,
-                imageLoader = imageLoader
-            )
+    val entryProvider = entryProvider {
+        entry<SceneNavKey.WidgetsTab> {
+                val widgetsListViewModel: WidgetsListViewModel = viewModel()
+                val widgetsState by widgetsListViewModel.viewStates.collectAsState(initial = widgetsListViewModel.viewState)
+                WidgetsListScreen(
+                    screen = widgetsState,
+                    onEvent = onEvent,
+                    innerPadding = innerPadding,
+                    imageLoader = imageLoader
+                )
         }
-        composable<SceneNavKey.AboutTab> { _ ->
-            val aboutViewModel: AboutViewModel = viewModel(factory = AboutViewModel.Factory(appWidgetIdScope))
-            val aboutScreenState by aboutViewModel.viewStates.collectAsState(initial = aboutViewModel.viewState)
-            AboutScreen(
-                screenState = aboutScreenState,
-                onEvent = aboutViewModel::handleEvent,
-                innerPadding = innerPadding,
-                imageLoader = imageLoader
-            )
+        entry<SceneNavKey.AboutTab> {
+                val aboutViewModel: AboutViewModel = viewModel(factory = AboutViewModel.Factory(appWidgetIdScope))
+                val aboutScreenState by aboutViewModel.viewStates.collectAsState(initial = aboutViewModel.viewState)
+                AboutScreen(
+                    screenState = aboutScreenState,
+                    onEvent = aboutViewModel::handleEvent,
+                    innerPadding = innerPadding,
+                    imageLoader = imageLoader
+                )
 
-            LaunchedEffect(key1 = true) {
-                aboutViewModel.viewActions.collect {
-                    aboutViewModel.handleAction(it, context.findActivity())
+                LaunchedEffect(key1 = true) {
+                    aboutViewModel.viewActions.collect {
+                        aboutViewModel.handleAction(it, context.findActivity())
+                    }
                 }
-            }
-
         }
-        navigation<SceneNavKey.CurrentWidgetTab>(startDestination = currentWidgetStartDestination) {
-            composable<SceneNavKey.Shortcuts> {
+        entry<SceneNavKey.Shortcuts> {
+
                 val skinViewModel: RealSkinPreviewViewModel = viewModel(
                     factory = SkinPreviewViewModel.Factory(appWidgetIdScope!!),
-                    key = SceneNavKey.Shortcuts.toString())
+                    key = SceneNavKey.Shortcuts.toString()
+                )
                 val screenState by skinViewModel.viewStates.collectAsState(initial = skinViewModel.viewState)
                 WidgetSkinScreen(
                     screenState = screenState,
@@ -292,18 +288,17 @@ fun NavHost(
                     skinViewFactory = skinViewModel,
                     onMainEvent = onEvent
                 )
-            }
-            composable<SceneNavKey.EditShortcut>(
-                deepLinks = SceneNavKey.EditShortcut.deepLinks
-            ) { navBackStackEntry ->
-                EditShortcut(
-                    appWidgetIdScope = appWidgetIdScope!!,
-                    args = navBackStackEntry.toRoute(),
-                    onDismissRequest = { onEvent(MainViewEvent.OnBackNav) }
-                )
-            }
-            composable<SceneNavKey.WidgetCustomize> {
-                val customizeViewModel: WidgetCustomizeViewModel = viewModel(factory = WidgetCustomizeViewModel.Factory(appWidgetIdScope!!))
+        }
+        entry<SceneNavKey.EditShortcut> { entry ->
+            EditShortcut(
+                appWidgetIdScope = appWidgetIdScope!!,
+                args = entry,
+                onDismissRequest = { onEvent(MainViewEvent.OnBackNav) }
+            )
+        }
+        entry<SceneNavKey.WidgetCustomize> {
+                val customizeViewModel: WidgetCustomizeViewModel =
+                    viewModel(factory = WidgetCustomizeViewModel.Factory(appWidgetIdScope!!))
                 val screenState by customizeViewModel.viewStates.collectAsState(initial = customizeViewModel.viewState)
                 WidgetCustomizeScreen(
                     screenState = screenState,
@@ -316,14 +311,16 @@ fun NavHost(
                 val context = LocalContext.current
                 LaunchedEffect(true) {
                     customizeViewModel.viewActions.collect { action ->
-                        context.onScreenCommonAction(action, navigateBack = {}, navigateTo = { navController.navigate(it) })
+                        context.onScreenCommonAction(
+                            action,
+                            navigateBack = {},
+                            navigateTo = { navigator.navigate(SceneNavKey.WidgetCustomize) })
                     }
                 }
-            }
         }
-        navigation<SceneNavKey.InCarTab>(startDestination = SceneNavKey.InCarMain) {
-            composable<SceneNavKey.InCarMain> {
-                val inCarViewModel: InCarViewModel = viewModel(factory = InCarViewModel.Factory(context.findActivity()))
+        entry<SceneNavKey.InCarMain> {
+                val inCarViewModel: InCarViewModel =
+                    viewModel(factory = InCarViewModel.Factory(context.findActivity()))
                 val screenState by inCarViewModel.viewStates.collectAsState(initial = inCarViewModel.viewState)
                 InCarMainScreen(
                     screenState = screenState,
@@ -334,39 +331,76 @@ fun NavHost(
                 )
                 LaunchedEffect(true) {
                     inCarViewModel.viewActions.collect {
-                        inCarViewModel.handleAction(it, navController, context.findActivity())
+                        inCarViewModel.handleAction(
+                            action = it,
+                            navigator = navigator,
+                            activity = context.findActivity()
+                        )
                     }
                 }
-            }
-            composable<SceneNavKey.InCarBluetooth> {
-                val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel(
-                    factory =
-                    BluetoothDevicesViewModel.Factory(
-                        bluetoothManager = getKoin().get(),
-                        settings = getKoin().get(),
-                    )
+        }
+        entry<SceneNavKey.InCarBluetooth> {
+            val bluetoothDevicesViewModel: BluetoothDevicesViewModel = viewModel(
+                factory =
+                BluetoothDevicesViewModel.Factory(
+                    bluetoothManager = getKoin().get(),
+                    settings = getKoin().get(),
                 )
-                val screenState by bluetoothDevicesViewModel.viewStates.collectAsState(initial = bluetoothDevicesViewModel.viewState)
-                BluetoothDevicesScreen(
-                    screenState = screenState,
-                    onEvent = bluetoothDevicesViewModel::handleEvent,
-                    innerPadding = innerPadding
-                )
+            )
+            val screenState by bluetoothDevicesViewModel.viewStates.collectAsState(initial = bluetoothDevicesViewModel.viewState)
+            BluetoothDevicesScreen(
+                screenState = screenState,
+                onEvent = bluetoothDevicesViewModel::handleEvent,
+                innerPadding = innerPadding
+            )
+        }
+        entry<SceneNavKey.CurrentWidgetTab> {
+            // Redirect to Shortcuts
+            LaunchedEffect(Unit) {
+                navigator.navigate(SceneNavKey.Shortcuts)
             }
         }
+        entry<SceneNavKey.InCarTab> {
+             // Redirect to InCarMain
+             LaunchedEffect(Unit) {
+                navigator.navigate(SceneNavKey.InCarMain)
+             }
+        }
     }
+
+    NavDisplay(
+        entries = navigationState.toEntries(entryProvider as (NavKey) -> NavEntry<NavKey>),
+        onBack = { navigator.goBack() }
+    )
 }
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Preview("Main Screen Light")
 @Composable
 fun PreviewMainScreenLight() {
+    val topLevelRoutes = setOf(
+        SceneNavKey.CurrentWidgetTab,
+        SceneNavKey.WidgetCustomize,
+        SceneNavKey.InCarTab,
+        SceneNavKey.AboutTab
+    )
+    val navigationState = rememberNavigationState(
+        startRoute = SceneNavKey.CurrentWidgetTab,
+        topLevelRoutes = topLevelRoutes as Set<NavKey>
+    )
+    val navigator = remember { Navigator(navigationState) }
     CarWidgetTheme {
         Surface {
             MainScreen(
-                screenState = MainViewState(skinList = SkinList(WidgetInterface.SKIN_YOU, LocalContext.current)),
+                screenState = MainViewState(skinList = SkinList(
+                    WidgetInterface.SKIN_YOU,
+                    LocalContext.current
+                )
+                ),
                 windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(600.dp, 480.dp)),
                 imageLoader = ImageLoader.Builder(LocalContext.current).build(),
+                navigator = navigator,
+                navigationState = navigationState
             )
         }
     }
@@ -376,12 +410,25 @@ fun PreviewMainScreenLight() {
 @Preview("Main Screen Compact")
 @Composable
 fun PreviewMainScreenCompact() {
+    val topLevelRoutes = setOf(
+        SceneNavKey.CurrentWidgetTab,
+        SceneNavKey.WidgetCustomize,
+        SceneNavKey.InCarTab,
+        SceneNavKey.AboutTab
+    )
+    val navigationState = rememberNavigationState(
+        startRoute = SceneNavKey.CurrentWidgetTab,
+        topLevelRoutes = topLevelRoutes as Set<NavKey>
+    )
+    val navigator = remember { Navigator(navigationState) }
     CarWidgetTheme {
         Surface {
             MainScreen(
                 screenState = MainViewState(skinList = SkinList(WidgetInterface.SKIN_YOU, LocalContext.current)),
                 windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(480.dp, 600.dp)),
                 imageLoader = ImageLoader.Builder(LocalContext.current).build(),
+                navigator = navigator,
+                navigationState = navigationState
             )
         }
     }

@@ -7,11 +7,7 @@ import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavDeepLink
-import androidx.navigation.navDeepLink
-import androidx.navigation.toRoute
-import info.anodsplace.carwidget.content.Deeplink
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 interface TabNavKey {
@@ -35,34 +31,8 @@ sealed interface RouteNameSpace {
     data object Overlay: RouteNameSpace
 }
 
-private val pathToNavKeyMap = listOf(
-    SceneNavKey.WidgetsTab.serializer().descriptor.serialName to SceneNavKey.WidgetsTab::class,
-    SceneNavKey.InCarTab.serializer().descriptor.serialName to SceneNavKey.InCarTab::class,
-    SceneNavKey.InCarMain.serializer().descriptor.serialName to SceneNavKey.InCarMain::class,
-    SceneNavKey.InCarBluetooth.serializer().descriptor.serialName to SceneNavKey.InCarBluetooth::class,
-    SceneNavKey.AboutTab.serializer().descriptor.serialName to SceneNavKey.AboutTab::class,
-
-    SceneNavKey.CurrentWidgetTab.serializer().descriptor.serialName to SceneNavKey.CurrentWidgetTab::class,
-    SceneNavKey.WidgetCustomize.serializer().descriptor.serialName to SceneNavKey.WidgetCustomize::class,
-    SceneNavKey.Shortcuts.serializer().descriptor.serialName to SceneNavKey.Shortcuts::class,
-
-    SceneNavKey.EditShortcut.serializer().descriptor.serialName to SceneNavKey.EditShortcut::class,
-    SceneNavKey.EditWidgetButton.serializer().descriptor.serialName to SceneNavKey.EditWidgetButton::class,
-    SceneNavKey.Wizard.serializer().descriptor.serialName to SceneNavKey.Wizard::class,
-    SceneNavKey.PermissionsRequest.serializer().descriptor.serialName to SceneNavKey.PermissionsRequest::class,
-
-    SceneNavKey.PlayMediaButton.serializer().descriptor.serialName to SceneNavKey.PlayMediaButton::class
-)
-
-@Suppress("UNCHECKED_CAST")
-fun NavBackStackEntry.toSceneNavKey(): SceneNavKey? {
-    val route = this.destination.route ?: return null
-    val kclass = pathToNavKeyMap.firstOrNull { route.startsWith(it.first, ignoreCase = true) }?.second ?: return null
-    return this.toRoute(kclass)
-}
-
 @Serializable
-sealed interface SceneNavKey {
+sealed interface SceneNavKey : NavKey {
 
     @Serializable
     data object Wizard : SceneNavKey
@@ -121,12 +91,7 @@ sealed interface SceneNavKey {
         val shortcutId: Long,
         val position: Int
     ) : SceneNavKey, InnerSceneNavKey {
-        override val parent: SceneNavKey? get() = CurrentWidgetTab
-        companion object {
-            val deepLinks: List<NavDeepLink> = listOf(
-                navDeepLink { uriPattern = Deeplink.EditShortcut.uriPattern }
-            )
-        }
+        override val parent: SceneNavKey get() = CurrentWidgetTab
         override val showBackNavigation: Boolean = true
     }
 
@@ -134,33 +99,25 @@ sealed interface SceneNavKey {
     data class EditWidgetButton(
         val buttonId: Int
     ) : SceneNavKey, InnerSceneNavKey {
-        override val parent: SceneNavKey? get() = CurrentWidgetTab
-        companion object {
-            val deepLinks: List<NavDeepLink> = listOf(
-                navDeepLink { uriPattern = Deeplink.EditWidgetButton.uriPattern }
-            )
-        }
+        override val parent: SceneNavKey get() = CurrentWidgetTab
         override val showBackNavigation: Boolean = true
     }
 
     @Serializable
     data object PlayMediaButton : SceneNavKey, InnerSceneNavKey {
-        override val parent: SceneNavKey? get() = CurrentWidgetTab
-        val deepLinks: List<NavDeepLink> = listOf(
-            navDeepLink { uriPattern = Deeplink.PlayMediaButton.uriPattern }
-        )
+        override val parent: SceneNavKey get() = CurrentWidgetTab
         override val showBackNavigation: Boolean = true
     }
 
     @Serializable
     data object InCarMain : SceneNavKey, InnerSceneNavKey {
-        override val parent: SceneNavKey? get() = InCarTab
+        override val parent: SceneNavKey get() = InCarTab
         override val showBackNavigation: Boolean = false
     }
 
     @Serializable
     data object InCarBluetooth : SceneNavKey, InnerSceneNavKey {
-        override val parent: SceneNavKey? get() = InCarTab
+        override val parent: SceneNavKey get() = InCarTab
         override val showBackNavigation: Boolean = true
     }
 
