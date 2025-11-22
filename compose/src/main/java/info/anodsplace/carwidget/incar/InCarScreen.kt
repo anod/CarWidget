@@ -25,10 +25,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import info.anodsplace.carwidget.CarWidgetTheme
-import info.anodsplace.carwidget.SceneNavKey
 import info.anodsplace.carwidget.chooser.ChooserAsyncImage
 import info.anodsplace.carwidget.chooser.ChooserEmptyState
 import info.anodsplace.carwidget.content.R
+import info.anodsplace.carwidget.navigation.SceneNavKey
 import info.anodsplace.carwidget.permissions.RequestPermissionsDialog
 import info.anodsplace.compose.PermissionDescription
 import info.anodsplace.compose.PreferenceItem

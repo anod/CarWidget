@@ -10,9 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.navigation.NavHostController
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.SceneNavKey
 import info.anodsplace.carwidget.chooser.toShortcutIntent
 import info.anodsplace.carwidget.content.PermissionDescriptionItem
 import info.anodsplace.carwidget.content.PlayServicesAvailability
@@ -21,6 +19,8 @@ import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
+import info.anodsplace.carwidget.navigation.Navigator
+import info.anodsplace.carwidget.navigation.SceneNavKey
 import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.carwidget.utils.toPermissionDescription
 import info.anodsplace.compose.PermissionDescription
@@ -212,9 +212,9 @@ class InCarViewModel(
         }
     }
 
-    fun handleAction(action: InCarViewAction, navController: NavHostController, activity: ComponentActivity) {
+    fun handleAction(action: InCarViewAction, navigator: Navigator, activity: ComponentActivity) {
         when (action) {
-            is InCarViewAction.Navigate -> navController.navigate(action.route)
+            is InCarViewAction.Navigate -> navigator.navigate(action.route)
             is InCarViewAction.CheckPermissions -> {
                 val required = permissionChecker.check(action.permissions, activity).mapNotNull { permissionDescriptionsMap[it] }
                 if (required.isNotEmpty()) {

@@ -23,6 +23,7 @@ import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.di.getOrCreateAppWidgetScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
+import info.anodsplace.carwidget.navigation.SceneNavKey
 import info.anodsplace.carwidget.shortcut.EditShortcut
 import info.anodsplace.ktx.extras
 import org.koin.core.component.KoinComponent

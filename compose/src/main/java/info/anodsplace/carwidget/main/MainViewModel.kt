@@ -10,9 +10,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import coil.ImageLoader
 import info.anodsplace.applog.AppLog
-import info.anodsplace.carwidget.RouteNameSpace
-import info.anodsplace.carwidget.SceneNavKey
-import info.anodsplace.carwidget.TabNavKey
 import info.anodsplace.carwidget.WidgetAwareViewModel
 import info.anodsplace.carwidget.appwidget.SkinList
 import info.anodsplace.carwidget.appwidget.WidgetIds
@@ -23,6 +20,9 @@ import info.anodsplace.carwidget.content.di.unaryPlus
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
+import info.anodsplace.carwidget.navigation.RouteNameSpace
+import info.anodsplace.carwidget.navigation.SceneNavKey
+import info.anodsplace.carwidget.navigation.TabNavKey
 import info.anodsplace.carwidget.permissions.PermissionChecker
 import info.anodsplace.framework.content.StartActivityAction
 import info.anodsplace.framework.content.forHomeScreen
@@ -37,7 +37,7 @@ import org.koin.core.component.inject
 data class MainViewState(
     val isWidget: Boolean = false,
     val appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
-    val tabs: List<TabNavKey> = emptyList(),
+    val tabs: Set<TabNavKey> = emptySet(),
     val routeNS: RouteNameSpace = RouteNameSpace.Default,
     val topDestination: SceneNavKey = SceneNavKey.AboutTab,
     val requiredPermissions: List<AppPermission> = emptyList(),
@@ -49,7 +49,6 @@ sealed interface MainViewAction {
     data object OnBackNav : MainViewAction
     class ApplyWidget(val appWidgetId: Int, val currentSkinValue: String) : MainViewAction
     class OpenWidgetConfig(val appWidgetId: Int) : MainViewAction
-    class ShowDialog(val route: String) : MainViewAction
     class StartActivity(override val intent: Intent) : MainViewAction, StartActivityAction
 }
 
@@ -96,12 +95,12 @@ class MainViewModel(
         viewState = MainViewState(
             isWidget = isWidget,
             appWidgetId = +appWidgetIdScope,
-            tabs = if (isWidget) listOf(
+            tabs = if (isWidget) setOf(
                 SceneNavKey.CurrentWidgetTab,
                 SceneNavKey.WidgetCustomize,
                 SceneNavKey.InCarTab,
                 SceneNavKey.AboutTab
-            ) else listOf(
+            ) else setOf(
                 SceneNavKey.WidgetsTab,
                 SceneNavKey.InCarTab,
                 SceneNavKey.AboutTab

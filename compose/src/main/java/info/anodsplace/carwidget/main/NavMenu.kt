@@ -16,30 +16,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import info.anodsplace.carwidget.CheckIcon
-import info.anodsplace.carwidget.SceneNavKey
-import info.anodsplace.carwidget.TabNavKey
-
-fun NavHostController.navigate(item: TabNavKey) {
-    navigate(item) {
-        // Pop up to the start destination of the graph to
-        // avoid building up a large stack of destinations
-        // on the back stack as users select items
-        popUpTo(graph.findStartDestination().id) {
-            saveState = true
-        }
-        // Avoid multiple copies of the same destination when
-        // reselecting the same item
-        launchSingleTop = true
-        // Restore state when reselecting a previously selected item
-        restoreState = false
-    }
-}
+import info.anodsplace.carwidget.navigation.SceneNavKey
+import info.anodsplace.carwidget.navigation.TabNavKey
 
 @Composable
-fun BottomTabsMenu(items: List<TabNavKey>, currentTab: TabNavKey?, onClick: (TabNavKey) -> Unit) {
+fun BottomTabsMenu(items: Set<TabNavKey>, currentTab: TabNavKey?, onClick: (TabNavKey) -> Unit) {
     NavigationBar {
         items.forEachIndexed { _, item ->
             NavigationBarItem(
@@ -64,7 +46,7 @@ fun BottomTabsMenu(items: List<TabNavKey>, currentTab: TabNavKey?, onClick: (Tab
 
 @Composable
 fun NavRailMenu(
-    items: List<TabNavKey>,
+    items: Set<TabNavKey>,
     showApply: Boolean,
     currentRoute: SceneNavKey?,
     onClick: (SceneNavKey) -> Unit,

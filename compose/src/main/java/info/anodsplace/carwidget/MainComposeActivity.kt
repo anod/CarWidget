@@ -13,13 +13,17 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.core.view.WindowCompat
+import androidx.navigation3.runtime.NavKey
 import info.anodsplace.carwidget.content.di.getOrCreateAppWidgetScope
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.main.MainScreen
 import info.anodsplace.carwidget.main.MainViewAction
 import info.anodsplace.carwidget.main.MainViewModel
+import info.anodsplace.carwidget.navigation.Navigator
+import info.anodsplace.carwidget.navigation.rememberNavigationState
 import info.anodsplace.ktx.extras
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -52,11 +56,18 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
             LaunchedEffect(uiMode) {
                 uiModeManager.nightMode = uiMode
             }
+
+            val screenState by mainViewModel.viewStates.collectAsState(initial = mainViewModel.viewState)
+            val navigationState = rememberNavigationState(
+                startRoute = screenState.topDestination,
+                topLevelRoutes = screenState.tabs as Set<NavKey>
+            )
+            val navigator = remember(navigationState) { Navigator(navigationState) }
+
             CarWidgetTheme(
                 uiMode = uiMode
             ) {
                 val windowSizeClass = calculateWindowSizeClass(this)
-                val screenState by mainViewModel.viewStates.collectAsState(initial = mainViewModel.viewState)
                 MainScreen(
                     screenState = screenState,
                     windowSizeClass = windowSizeClass,
@@ -65,6 +76,8 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
                     viewActions = mainViewModel.viewActions,
                     appWidgetIdScope = mainViewModel.appWidgetIdScope,
                     imageLoader = mainViewModel.imageLoader,
+                    navigator = navigator,
+                    navigationState = navigationState
                 )
             }
         }
@@ -88,7 +101,6 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
                 finish()
             }
             is MainViewAction.OnBackNav -> onBackPressedDispatcher.onBackPressed()
-            is MainViewAction.ShowDialog -> { }
             is MainViewAction.StartActivity -> { }
         }
     }
