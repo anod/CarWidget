@@ -1,28 +1,26 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.multiplatform.android.library)
     alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
-    compilerOptions { jvmTarget = JvmTarget.JVM_11 }
-}
-
-android {
-    namespace = "info.anodsplace.carwidget.iconpack"
-    compileSdk = 36
-    defaultConfig { minSdk = 31 }
-    buildFeatures { compose = true }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+    androidLibrary {
+        namespace = "info.anodsplace.carwidget.iconpack"
+        compileSdk = 36
+        minSdk = 31
+        androidResources {
+            enable = true
+        }
     }
-}
 
-dependencies {
-    implementation(project(":lib:compose"))
-    implementation(libs.capturable)
-    implementation(libs.accompanist.drawablepainter)
+    sourceSets {
+        androidMain {
+            dependencies {
+                implementation(project(":lib:compose"))
+                implementation(libs.capturable)
+                implementation(libs.accompanist.drawablepainter)
+            }
+        }
+    }
 }
