@@ -46,7 +46,7 @@ kotlin {
                 implementation(libs.androidx.activity)
             }
         }
-        androidUnitTest {
+        getByName("androidHostTest") {
             dependencies {
                 implementation(libs.kotlin.test)
                 implementation(libs.robolectric)
