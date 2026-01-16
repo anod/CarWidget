@@ -5,10 +5,7 @@ plugins {
 
 android {
     namespace = "info.anodsplace.carwidget.baselineprofile"
-    compileSdk {
-        version = release(36)
-    }
-
+    compileSdk = 36
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
