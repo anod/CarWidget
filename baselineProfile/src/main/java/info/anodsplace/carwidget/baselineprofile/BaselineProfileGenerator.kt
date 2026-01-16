@@ -3,8 +3,7 @@ package info.anodsplace.carwidget.baselineprofile
 import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.uiautomator.By
-import androidx.test.uiautomator.Until
+import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -41,9 +40,10 @@ class BaselineProfileGenerator {
 
     @Test
     fun generate() {
-        // This example works only with the variant with application id `com.anod.car.home.free`."
+        // The application id for the running build variant is read from the instrumentation arguments.
         rule.collect(
-            packageName = "com.anod.car.home.free",
+            packageName = InstrumentationRegistry.getArguments().getString("targetAppId")
+                ?: throw Exception("targetAppId not passed as instrumentation runner arg"),
 
             // See: https://d.android.com/topic/performance/baselineprofiles/dex-layout-optimizations
             includeInStartupProfile = true
@@ -55,20 +55,11 @@ class BaselineProfileGenerator {
             pressHome()
             startActivityAndWait()
 
-            val closeButton = device.findObject(By.text("Close"))
-            closeButton?.click()
-
-            val cancelButton = device.findObject(By.text("Cancel"))
-            cancelButton?.click()
-            device.waitForIdle()
-
-            val inCarMode = device.findObject(By.text("InCar mode"))
-            inCarMode?.click()
-            device.wait(Until.hasObject(By.text("Enable InCar mode")), 1000)
-
-            val about = device.findObject(By.text("Info"))
-            about?.click()
-            device.wait(Until.hasObject(By.text("INFORMATION")), 1000)
+            // TODO Write more interactions to optimize advanced journeys of your app.
+            // For example:
+            // 1. Wait until the content is asynchronously loaded
+            // 2. Scroll the feed content
+            // 3. Navigate to detail screen
 
             // Check UiAutomator documentation for more information how to interact with the app.
             // https://d.android.com/training/testing/other-components/ui-automator

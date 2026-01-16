@@ -1,42 +1,57 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.multiplatform.android.library)
     alias(libs.plugins.sqldelight)
-    alias(libs.plugins.kotlin)
 }
 
 kotlin {
-    compilerOptions {
-        jvmTarget = JvmTarget.JVM_11
-    }
-}
 
-android {
-    compileSdk = 36
+    androidLibrary {
+        compileSdk = 36
+        namespace = "info.anodsplace.carwidget.content"
 
-    defaultConfig {
-        minSdk = 31
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        androidResources {
+            enable = true
+        }
+
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
     }
 
     sourceSets {
-        getByName("main").java.srcDirs("src/main/kotlin")
-    }
-    buildFeatures {
-        buildConfig = false
-    }
+        androidMain {
+            dependencies {
+                implementation(project(":lib:applog"))
+                implementation(project(":lib:graphics"))
+                implementation(project(":lib:ktx"))
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    namespace = "info.anodsplace.carwidget.content"
+                implementation(libs.koin.core)
+                implementation(libs.coil.compose.base)
 
-    testOptions {
-        unitTests.isIncludeAndroidResources = true
+                implementation(libs.sqldelight.driver.android)
+                implementation(libs.sqldelight.coroutines.extensions.jvm)
+                implementation(libs.sqldelight.primitive.adapters)
+                implementation(libs.preference.ktx) // for androidx.preference.PreferenceManager
+                implementation(libs.androidx.core.ktx)
+                implementation(libs.collection.ktx)
+                implementation(libs.coroutines.core)
+                implementation(libs.coroutines.android)
+
+
+            }
+            androidUnitTest {
+                dependencies {
+                    implementation(libs.kotlin.test)
+                    implementation(libs.sqldelight.driver.sqlite)
+                    implementation(libs.robolectric)
+                    implementation(libs.androidx.test.core)
+                }
+            }
+        }
     }
 }
+
 
 sqldelight {
     databases {
@@ -48,34 +63,4 @@ sqldelight {
             deriveSchemaFromMigrations.set(false)
         }
     }
-}
-
-dependencies {
-    implementation(project(":lib:applog"))
-    implementation(project(":lib:graphics"))
-    implementation(project(":lib:ktx"))
-
-    implementation(libs.koin.core)
-    implementation(libs.coil.compose.base)
-
-    implementation(libs.sqldelight.driver.android)
-    implementation(libs.sqldelight.coroutines.extensions.jvm)
-    implementation(libs.sqldelight.primitive.adapters)
-    implementation(libs.preference.ktx) // for androidx.preference.PreferenceManager
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.collection.ktx)
-    implementation(libs.coroutines.core)
-    implementation(libs.coroutines.android)
-
-    // Instrumentation testing
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.uiautomator)
-    androidTestImplementation(libs.coroutines.android)
-
-    // Unit testing
-    testImplementation(libs.kotlin.test)
-    testImplementation(libs.sqldelight.driver.sqlite)
-    testImplementation(libs.robolectric)
-    testImplementation(libs.androidx.test.core)
 }

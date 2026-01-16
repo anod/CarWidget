@@ -1,35 +1,27 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.multiplatform.android.library)
 }
 
 kotlin {
-    compilerOptions {
-        jvmTarget = JvmTarget.JVM_11
-    }
-}
-
-android {
-    compileSdk = 36
-
-    defaultConfig {
+    androidLibrary {
+        namespace = "info.anodsplace.carwidget.skin"
+        compileSdk = 36
         minSdk = 31
+        androidResources {
+            enable = true
+        }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+    sourceSets {
+        androidMain {
+            dependencies {
+                // AppLog, Bundle extensions
+                implementation(project(":content"))
+                implementation(project(":lib:applog"))
+                implementation(libs.androidx.palette.ktx)
+                implementation(libs.material) // Theme.Material3.DynamicColors.DayNight
+            }
+        }
     }
-
-    namespace = "info.anodsplace.carwidget.skin"
-}
-
-dependencies {
-    // AppLog, Bundle extensions
-    implementation(project(":content"))
-    implementation(project(":lib:applog"))
-    implementation(libs.androidx.palette.ktx)
-    implementation(libs.material) // Theme.Material3.DynamicColors.DayNight
 }
