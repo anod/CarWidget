@@ -49,6 +49,7 @@ import info.anodsplace.compose.chooser.headerEntry
 import info.anodsplace.framework.content.CreateDocument
 import info.anodsplace.framework.content.ScreenCommonAction
 import info.anodsplace.framework.content.showToast
+import kotlinx.collections.immutable.persistentListOf
 import java.util.Locale
 
 @Composable
@@ -181,7 +182,7 @@ fun AboutScreen(
         val loader = remember { MediaListChooserLoader(context) }
         ChooserDialog(
             modifier = Modifier.padding(16.dp),
-            headers = listOf(
+            headers = persistentListOf(
                 headerEntry(0, stringResource(R.string.show_choice), iconVector = Icons.AutoMirrored.Filled.List)
             ),
             loader = loader,

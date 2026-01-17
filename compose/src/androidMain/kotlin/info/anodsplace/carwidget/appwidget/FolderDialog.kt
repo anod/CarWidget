@@ -27,6 +27,7 @@ import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.compose.chooser.ChooserDialog
 import info.anodsplace.compose.chooser.ChooserGridListDefaults
 import info.anodsplace.framework.content.startActivitySafely
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Displays a dialog listing intents contained in a folder shortcut.
@@ -58,7 +59,7 @@ fun FolderDialog(
 
     ChooserDialog(
         loader = loader,
-        headers = emptyList(),
+        headers = persistentListOf(),
         onDismissRequest = onDismissRequest,
         asyncImage = { entry, colorFilter -> ChooserAsyncImage(entry, colorFilter, imageLoader) },
         emptyState = { filterApplied -> ChooserEmptyState(filterApplied) },

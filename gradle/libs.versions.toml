@@ -9,7 +9,7 @@ activity-compose = "1.12.2"
 appcompat = "1.7.1"
 capturable = "3.0.1"
 core-ktx = "1.17.0"
-coil = "2.7.0"
+coil = "3.3.0"
 collection-ktx = "1.5.0"
 compose-bom = "2026.01.00"
 compose-material3 = "1.4.0"
@@ -17,9 +17,10 @@ compose-material-icons = "1.7.8"
 core-splashscreen = "1.2.0"
 coroutines = "1.10.2"
 kotlin = "2.3.0"
+kotlinx-collections-immutable = "0.4.0"
 kotlinx-datetime = "0.7.1"
 kotlinx-serialization = "1.9.0"
-koin = "4.1.1"
+koin = "4.2.0-beta3"
 ksp = "2.3.4"
 lifecycle = "2.10.0"
 material = "1.13.0"
@@ -62,13 +63,14 @@ auto-service = { module = "com.google.auto.service:auto-service", version.ref = 
 auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service-annotations" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 capturable = { module = "dev.shreyaspatil:capturable", version.ref = "capturable" }
-coil-compose-base = { module = "io.coil-kt:coil-compose-base", version.ref = "coil" }
+coil-compose-base = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil" }
 collection-ktx = { module = "androidx.collection:collection-ktx", version.ref = "collection-ktx" }
 core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-splashscreen" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 androidx-window = { module = "androidx.window:window", version.ref = "window" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }

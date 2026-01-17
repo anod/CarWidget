@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.runtime.Immutable
 import coil.request.ImageRequest
 import coil.request.Parameters
 import info.anodsplace.carwidget.content.extentions.isDebugBuild
@@ -17,6 +18,7 @@ import okhttp3.internal.toHexString
  * @author algavris
  * @date 22/08/2016.
  */
+@Immutable
 data class Shortcut(
     val id: Long,
     val position: Int,

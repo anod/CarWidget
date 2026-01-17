@@ -27,10 +27,12 @@ import info.anodsplace.carwidget.shortcut.intent.IntentField
 import info.anodsplace.framework.content.ShowToastActionDefaults
 import info.anodsplace.graphics.DrawableUri
 import info.anodsplace.viewmodel.BaseFlowViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinScopeComponent
-import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.scope.Scope
 
@@ -43,7 +45,7 @@ data class ShortcutEditViewState(
     val showIconPackPicker: Boolean = false,
     val iconVersion: Int = -1,
     val showFolderEditor: Boolean = false,
-    val folderItems: List<Shortcut> = emptyList(),
+    val folderItems: ImmutableList<Shortcut> = persistentListOf(),
 )
 
 sealed interface ShortcutEditViewEvent {
@@ -83,7 +85,7 @@ class ShortcutEditViewModel(
 
     override val scope: Scope = appWidgetIdScope.scope
     private val appScope: AppCoroutineScope by inject()
-    private val shortcutsDatabase: ShortcutsDatabase = get()
+    private val shortcutsDatabase: ShortcutsDatabase by inject() //= org.koin.core.component.get()
     private val model: WidgetShortcutsModel by inject()
     private val context: Context by inject()
     val shortcutResources: ShortcutResources by inject()
@@ -103,7 +105,7 @@ class ShortcutEditViewModel(
                     folderJob?.cancel()
                     folderJob = launch {
                         shortcutsDatabase.observeFolder(shortcutId).collect { items ->
-                            viewState = viewState.copy(folderItems = items)
+                            viewState = viewState.copy(folderItems = items.toImmutableList())
                         }
                     }
                 }

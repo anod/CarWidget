@@ -13,6 +13,8 @@ import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.compose.chooser.ChooserEntry
 import info.anodsplace.viewmodel.BaseFlowViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
@@ -21,7 +23,7 @@ import org.koin.core.scope.Scope
 @Immutable
 data class EditWidgetViewState(
     val buttonId: Any?,
-    val items: List<ChooserEntry>
+    val items: ImmutableList<ChooserEntry>
 )
 
 sealed interface EditWidgetViewEvent {
@@ -51,7 +53,7 @@ class EditWidgetViewModel(
     init {
         viewState = EditWidgetViewState(
             buttonId = buttonId,
-            items = listOf(
+            items = persistentListOf(
                 ChooserEntry(
                     context = application,
                     title = application.getString(R.string.pref_settings_transparent),

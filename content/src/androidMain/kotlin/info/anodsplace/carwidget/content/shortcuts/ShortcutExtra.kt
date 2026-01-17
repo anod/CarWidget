@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.provider.ContactsContract
 import android.view.KeyEvent
+import androidx.compose.runtime.Stable
 import info.anodsplace.carwidget.content.InternalShortcutResources
 import info.anodsplace.carwidget.content.R
 
@@ -15,6 +16,7 @@ class ShortcutTargetActivity(
     val overlay: Class<*> // OverlayActivity::class.java
 )
 
+@Stable
 interface ShortcutResources {
     val activity: ShortcutTargetActivity
     val internalShortcuts: InternalShortcutResources

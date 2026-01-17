@@ -33,18 +33,19 @@ kotlin {
                 implementation(project(":skins"))
                 implementation(project(":iconpack"))
 
-                implementation(libs.koin.core)
-                implementation(libs.coil.compose.base)
-
                 implementation(libs.appcompat)
 
                 implementation(libs.androidx.navigation3.ui)
                 implementation(libs.androidx.navigation3.runtime)
                 implementation(libs.androidx.lifecycle.viewmodel.navigation3)
 
-                implementation(libs.kotlinx.serialization.json)
                 implementation(libs.androidx.activity)
             }
+        }
+        commonMain.dependencies {
+            implementation(libs.koin.core)
+            implementation(libs.coil.compose.base)
+            implementation(libs.kotlinx.serialization.json)
         }
         getByName("androidHostTest") {
             dependencies {

@@ -45,6 +45,10 @@ import info.anodsplace.compose.chooser.ChooserEntry
 import info.anodsplace.compose.chooser.ChooserGridListDefaults
 import info.anodsplace.compose.chooser.CompositeChooserLoader
 import info.anodsplace.compose.chooser.MultiSelectChooserDialog
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableSet
 
 /**
  * Folder item picker used both for creating a new folder and editing an existing one.
@@ -59,7 +63,7 @@ fun FolderChooser(
     shortcutResources: ShortcutResources,
     showTitle: Boolean = true,
     initialTitle: String = "",
-    initialSelectedItems: List<Shortcut> = emptyList(),
+    initialSelectedItems: ImmutableList<Shortcut> = persistentListOf(),
     isEdit: Boolean = false
 ) {
     val context = LocalContext.current
@@ -71,7 +75,7 @@ fun FolderChooser(
             )
         )
     }
-    var title by remember { mutableStateOf("") }
+    var title by remember { mutableStateOf(initialTitle) }
     var titleManuallyChanged by remember { mutableStateOf(initialTitle.isNotEmpty()) }
     var selected by remember(initialSelectedItems) { mutableStateOf(initialSelectedItems.mapNotNull { it.intent.component }.toSet()) }
     var categoryFilter by remember { mutableStateOf(if (isEdit) CategoryFilterState.Selected else CategoryFilterState.All ) }
@@ -79,8 +83,8 @@ fun FolderChooser(
     MultiSelectChooserDialog(
         modifier = Modifier.padding(horizontal = 16.dp),
         loader = loader,
-        headers = emptyList(),
-        selectedComponents = selected,
+        headers = persistentListOf(),
+        selectedComponents = selected.toImmutableSet(),
         style = ChooserGridListDefaults.multiSelect().copy(grayscaleUnselectedIcons = true),
         onSelect = { entry ->
             val component = entry.componentName ?: return@MultiSelectChooserDialog
@@ -166,7 +170,8 @@ fun FolderChooser(
                 else -> list.filter { it.sourceLoader == 0 }
             }
             val q = searchQuery.trim()
-            if (q.isEmpty()) preFiltered else preFiltered.filter { it.title.contains(q, ignoreCase = true) }
+            val result = if (q.isEmpty()) preFiltered else preFiltered.filter { it.title.contains(q, ignoreCase = true) }
+            result.toImmutableList()
         }
     )
 }
@@ -193,15 +198,16 @@ private fun CategoryFilterChips(
             add(allText)
             addAll(categoryNames)
         }.toList() // keep order
-        val selectedIndex = when {
-            categoryFilter is CategoryFilterState.All && !showSelectedCategory -> 0
-            categoryFilter is CategoryFilterState.All && showSelectedCategory -> 1
-            categoryFilter is CategoryFilterState.Selected -> 0
-            categoryFilter is CategoryFilterState.Category -> {
+        val selectedIndex = when (categoryFilter) {
+            is CategoryFilterState.All if !showSelectedCategory -> 0
+            is CategoryFilterState.All if showSelectedCategory -> 1
+            is CategoryFilterState.Selected -> 0
+            is CategoryFilterState.Category -> {
                 val baseIndex = 1 + if (showSelectedCategory) 1 else 0
                 val catPos = orderedCategoryIds.indexOf(categoryFilter.categoryId)
                 if (catPos >= 0) baseIndex + catPos else 0
             }
+
             else -> 0
         }
         val scrollState = rememberScrollState()
@@ -226,10 +232,10 @@ private fun CategoryFilterChips(
                     ),
                     colors = FilterChipDefaults.filterChipColors(),
                     onClick = {
-                        val newState = when {
-                            index == 0 && !showSelectedCategory -> CategoryFilterState.All
-                            index == 0 && showSelectedCategory -> CategoryFilterState.Selected
-                            index == 1 && showSelectedCategory -> CategoryFilterState.All
+                        val newState = when (index) {
+                            0 if !showSelectedCategory -> CategoryFilterState.All
+                            0 if showSelectedCategory -> CategoryFilterState.Selected
+                            1 if showSelectedCategory -> CategoryFilterState.All
                             else -> {
                                 val baseIndex = 1 + if (showSelectedCategory) 1 else 0
                                 val catIdx = index - baseIndex

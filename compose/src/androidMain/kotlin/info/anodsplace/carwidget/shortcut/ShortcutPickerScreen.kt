@@ -38,6 +38,9 @@ import info.anodsplace.compose.chooser.headerEntry
 import info.anodsplace.compose.chooser.headerId
 import info.anodsplace.compose.chooser.isHeader
 import info.anodsplace.ktx.resourceUri
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 sealed interface ShortcutPickerState {
     data object Apps: ShortcutPickerState
@@ -155,7 +158,7 @@ private fun AppChooser(
     ChooserDialog(
         modifier = Modifier.padding(horizontal = 16.dp),
         loader = loader,
-        headers = listOf(
+        headers = persistentListOf(
             headerEntry(0,
                 stringResource(R.string.shortcuts),
                 iconVector = Icons.AutoMirrored.Filled.AltRoute
@@ -201,7 +204,7 @@ private fun ExistingShortcutChooser(
     ChooserDialog(
         modifier = Modifier.padding(horizontal = 16.dp),
         loader = loader,
-        headers = emptyList(), // headers produced by loader as entries with headerId
+        headers = persistentListOf(), // headers produced by loader as entries with headerId
         onDismissRequest = onDismissRequest,
         onClick = { entry -> if (!entry.isHeader) onChoose(entry) },
         loadingSection = AllWidgetShortcutsChooserLoader.sectionForWidget(appWidgetId, context),
@@ -210,7 +213,7 @@ private fun ExistingShortcutChooser(
     )
 }
 
-private fun createCarWidgetShortcuts(context: Context, shortcutResources: ShortcutResources): List<ChooserEntry> {
+private fun createCarWidgetShortcuts(context: Context, shortcutResources: ShortcutResources): ImmutableList<ChooserEntry> {
     val shortcuts = InternalShortcut.all
     val titles = InternalShortcut.titles(context)
     return shortcuts.map { shortcut ->
@@ -218,5 +221,5 @@ private fun createCarWidgetShortcuts(context: Context, shortcutResources: Shortc
         val icon = shortcutResources.internalShortcuts.icons[shortcut.index]
         val intent = Intent().forPickShortcutLocal(shortcut, title, icon, context, shortcutResources)
         headerEntry(headerId = shortcut.index, title = title, iconUri = context.resourceUri(icon), intent = intent)
-    }
+    }.toImmutableList()
 }

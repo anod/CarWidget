@@ -53,6 +53,7 @@ import info.anodsplace.compose.key
 import info.anodsplace.compose.toTextItem
 import info.anodsplace.compose.value
 import info.anodsplace.framework.content.forIconTheme
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun FontSize(
@@ -257,7 +258,7 @@ private fun IconsThemePicker(
     val loader = remember(currentState) { QueryIntentChooserLoader(context, Intent().forIconTheme()) }
     ChooserDialog(
         modifier = Modifier.padding(16.dp),
-        headers = listOf(
+        headers = persistentListOf(
             headerEntry(0, stringResource(R.string.none), iconVector = Icons.Filled.Cancel),
             headerEntry(1, stringResource(R.string.download), iconVector = Icons.Filled.Download)
         ),

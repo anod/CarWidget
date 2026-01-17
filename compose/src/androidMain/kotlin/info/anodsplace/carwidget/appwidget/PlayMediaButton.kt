@@ -13,6 +13,7 @@ import info.anodsplace.carwidget.chooser.ChooserEmptyState
 import info.anodsplace.compose.chooser.ChooserDialog
 import info.anodsplace.compose.chooser.MediaListChooserLoader
 import info.anodsplace.framework.media.MediaKeyEvent
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun PlayMediaButton(onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
@@ -20,7 +21,7 @@ fun PlayMediaButton(onDismissRequest: () -> Unit, imageLoader: ImageLoader) {
     val loader = remember { MediaListChooserLoader(context) }
     ChooserDialog(
         modifier = Modifier.padding(16.dp),
-        headers = listOf(),
+        headers = persistentListOf(),
         loader = loader,
         onClick = { entry ->
             if (entry.componentName != null) {
