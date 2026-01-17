@@ -5,14 +5,15 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import coil3.ImageLoader
+import coil3.Uri
 import coil3.decode.DataSource
 import coil3.decode.ImageSource
 import coil3.fetch.FetchResult
 import coil3.fetch.Fetcher
 import coil3.fetch.SourceFetchResult
 import coil3.request.Options
+import coil3.toAndroidUri
 import info.anodsplace.applog.AppLog
 import info.anodsplace.graphics.toByteArray
 import info.anodsplace.ktx.SCHEME_APPLICATION_ICON
@@ -32,7 +33,7 @@ class AppIconFetcher(private val context: Context, private val data: Uri, privat
     override suspend fun fetch(): FetchResult? {
         var d: Drawable? = null
 
-        val part = data.schemeSpecificPart
+        val part = data.toAndroidUri().schemeSpecificPart
         AppLog.d("Get Activity Info: $part")
         val cmp = ComponentName.unflattenFromString(part)
         try {

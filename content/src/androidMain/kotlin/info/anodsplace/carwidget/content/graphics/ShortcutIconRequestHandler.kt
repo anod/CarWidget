@@ -1,14 +1,16 @@
 package info.anodsplace.carwidget.content.graphics
 
 import android.content.ContentResolver
-import android.net.Uri
 import coil3.ImageLoader
+import coil3.Uri
 import coil3.decode.DataSource
 import coil3.decode.ImageSource
 import coil3.fetch.FetchResult
 import coil3.fetch.Fetcher
 import coil3.fetch.SourceFetchResult
+import coil3.pathSegments
 import coil3.request.Options
+import coil3.toAndroidUri
 import info.anodsplace.carwidget.content.BuildProperties
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.db.LauncherSettings
@@ -46,11 +48,12 @@ class ShortcutIconRequestHandler(
     }
 
     override suspend fun fetch(): FetchResult? {
-        val shortcutId = data.lastPathSegment?.toLong() ?: return null
+        val shortcutId = data.pathSegments.lastOrNull()?.toLong() ?: return null
         val shortcut = db.loadShortcut(shortcutId) ?: return null
-        val adaptiveIconStyle = data.getQueryParameter("adaptiveIconStyle") ?: ""
+        val androidUri = data.toAndroidUri()
+        val adaptiveIconStyle = androidUri.getQueryParameter("adaptiveIconStyle") ?: ""
         val icon = iconLoader.load(shortcut, adaptiveIconStyle)
-        val iconTintColor = getIconTint(icon = icon, skinName = data.getQueryParameter("skin"))
+        val iconTintColor = getIconTint(icon = icon, skinName = androidUri.getQueryParameter("skin"))
 
         var bitmap = icon.bitmap
         if (iconTintColor != null) {

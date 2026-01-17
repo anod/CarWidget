@@ -17,6 +17,7 @@ import info.anodsplace.carwidget.content.db.FolderItem
 import info.anodsplace.carwidget.content.db.ShortcutIconLoader
 import info.anodsplace.carwidget.content.db.ShortcutsDatabase
 import info.anodsplace.carwidget.content.graphics.AppIconFetcher
+import info.anodsplace.carwidget.content.graphics.ResourceUriMapper
 import info.anodsplace.carwidget.content.graphics.ShortcutIconRequestHandler
 import info.anodsplace.carwidget.content.preferences.AppSettings
 import info.anodsplace.carwidget.content.preferences.InCarInterface
@@ -50,7 +51,10 @@ fun createAppModule(): Module = module {
     factory {
         val context: Context = get()
         ImageLoader.Builder(context)
+            //.serviceLoaderEnabled(false)
             .components {
+                //add(ContentUriFetcher())
+                add(ResourceUriMapper())
                 add(AppIconFetcher.Factory(context))
                 add(ShortcutIconRequestHandler.Factory(
                     db = get(),

@@ -43,6 +43,7 @@ import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.utils.forFolder
 import info.anodsplace.compose.chooser.ChooserEntry
 import info.anodsplace.compose.chooser.ChooserGridListDefaults
+import info.anodsplace.compose.chooser.ChooserSelectedComponents
 import info.anodsplace.compose.chooser.CompositeChooserLoader
 import info.anodsplace.compose.chooser.MultiSelectChooserDialog
 import kotlinx.collections.immutable.ImmutableList
@@ -77,18 +78,19 @@ fun FolderChooser(
     }
     var title by remember { mutableStateOf(initialTitle) }
     var titleManuallyChanged by remember { mutableStateOf(initialTitle.isNotEmpty()) }
-    var selected by remember(initialSelectedItems) { mutableStateOf(initialSelectedItems.mapNotNull { it.intent.component }.toSet()) }
+    var selected by remember(initialSelectedItems) { mutableStateOf(ChooserSelectedComponents(initialSelectedItems.mapNotNull { it.intent.component }.toImmutableSet())) }
     var categoryFilter by remember { mutableStateOf(if (isEdit) CategoryFilterState.Selected else CategoryFilterState.All ) }
     var searchQuery by remember { mutableStateOf("") }
     MultiSelectChooserDialog(
         modifier = Modifier.padding(horizontal = 16.dp),
         loader = loader,
         headers = persistentListOf(),
-        selectedComponents = selected.toImmutableSet(),
+        selectedComponents = selected,
         style = ChooserGridListDefaults.multiSelect().copy(grayscaleUnselectedIcons = true),
         onSelect = { entry ->
             val component = entry.componentName ?: return@MultiSelectChooserDialog
-            selected = if (selected.contains(component)) selected - component else selected + component
+            val entries = if (selected.entries.contains(component)) selected.entries - component else selected.entries + component
+            selected = selected.copy(entries = entries.toImmutableSet())
         },
         onDismissRequest = onDismissRequest,
         asyncImage = { entry, colorFilter -> ChooserAsyncImage(entry, colorFilter, imageLoader) },
@@ -147,7 +149,7 @@ fun FolderChooser(
                 Button(
                     onClick = {
                         val selectedEntries = apps
-                            .filter { it.componentName != null && selected.contains(it.componentName) }
+                            .filter { it.componentName != null && selected.entries.contains(it.componentName) }
                             .map {
                                 it.isAppEntry = true
                                 it.toShortcutIntent()
@@ -159,13 +161,13 @@ fun FolderChooser(
                         )
                         onSave(folderIntent, selectedEntries)
                     },
-                    enabled = selected.isNotEmpty()
+                    enabled = selected.entries.isNotEmpty()
                 ) { Text(stringResource(id = if (isEdit) R.string.save else R.string.create)) }
             }
         },
         listFilter = { list ->
             val preFiltered = when (categoryFilter) {
-                is CategoryFilterState.Selected -> list.filter { it.componentName?.let { cn -> selected.contains(cn) } == true || it.sourceLoader == 1 }
+                is CategoryFilterState.Selected -> list.filter { it.componentName?.let { cn -> selected.entries.contains(cn) } == true || it.sourceLoader == 1 }
                 is CategoryFilterState.Category -> list.filter { it.category == (categoryFilter as CategoryFilterState.Category).categoryId  && it.sourceLoader == 0  }
                 else -> list.filter { it.sourceLoader == 0 }
             }
