@@ -1,5 +1,5 @@
 [versions]
-agp = "9.0.0"
+agp = "8.13.2"
 acra = "5.13.1"
 accompanist-drawablepainter = "0.37.3"
 auto-service-ksp= "1.2.0"
@@ -96,6 +96,7 @@ androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecy
 [plugins]
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 android-application = { id = "com.android.application", version.ref = "agp" }

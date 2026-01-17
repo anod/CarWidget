@@ -26,19 +26,20 @@ kotlin {
                 implementation(project(":lib:graphics"))
                 implementation(project(":lib:ktx"))
 
-                implementation(libs.koin.core)
-                implementation(libs.coil.compose.base)
-
                 implementation(libs.sqldelight.driver.android)
                 implementation(libs.sqldelight.coroutines.extensions.jvm)
                 implementation(libs.sqldelight.primitive.adapters)
                 implementation(libs.preference.ktx) // for androidx.preference.PreferenceManager
                 implementation(libs.androidx.core.ktx)
                 implementation(libs.collection.ktx)
-                implementation(libs.coroutines.core)
                 implementation(libs.coroutines.android)
-
-
+            }
+            commonMain {
+                dependencies {
+                    implementation(libs.koin.core)
+                    implementation(libs.coil.compose.base)
+                    implementation(libs.coroutines.core)
+                }
             }
             getByName("androidHostTest") {
                 dependencies {

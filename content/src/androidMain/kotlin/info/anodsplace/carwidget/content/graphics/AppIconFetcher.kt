@@ -6,17 +6,18 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import coil.ImageLoader
-import coil.decode.DataSource
-import coil.decode.ImageSource
-import coil.fetch.FetchResult
-import coil.fetch.Fetcher
-import coil.fetch.SourceResult
-import coil.request.Options
+import coil3.ImageLoader
+import coil3.decode.DataSource
+import coil3.decode.ImageSource
+import coil3.fetch.FetchResult
+import coil3.fetch.Fetcher
+import coil3.fetch.SourceFetchResult
+import coil3.request.Options
 import info.anodsplace.applog.AppLog
 import info.anodsplace.graphics.toByteArray
 import info.anodsplace.ktx.SCHEME_APPLICATION_ICON
-import okio.Buffer
+import okio.buffer
+import okio.source
 
 class AppIconFetcher(private val context: Context, private val data: Uri, private val options: Options) : Fetcher {
 
@@ -52,8 +53,12 @@ class AppIconFetcher(private val context: Context, private val data: Uri, privat
         }
         val icon: Bitmap = UtilitiesBitmap.createHiResIconBitmap(d, context)
         val source = icon.toByteArray() ?: return null
-        return SourceResult(
-            source = ImageSource(Buffer().apply { write(source) }, options.context),
+        return SourceFetchResult(
+            source = ImageSource(
+                source = source.inputStream().source().buffer(),
+                fileSystem = options.fileSystem,
+                metadata = null
+            ),
             mimeType = null,
             dataSource = DataSource.DISK
         )

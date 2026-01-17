@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import coil.ImageLoader
+import coil3.ImageLoader
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.WidgetAwareViewModel
 import info.anodsplace.carwidget.appwidget.SkinList
@@ -30,7 +30,6 @@ import info.anodsplace.permissions.AppPermission
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.KoinScopeComponent
-import org.koin.core.component.get
 import org.koin.core.component.inject
 
 @Immutable

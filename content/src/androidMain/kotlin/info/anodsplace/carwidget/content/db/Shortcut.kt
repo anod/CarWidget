@@ -5,14 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.runtime.Immutable
-import coil.request.ImageRequest
-import coil.request.Parameters
+import coil3.request.ImageRequest
 import info.anodsplace.carwidget.content.extentions.isDebugBuild
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
 import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra
 import info.anodsplace.ktx.equalsHash
 import info.anodsplace.ktx.hashCodeOf
-import okhttp3.internal.toHexString
 
 /**
  * @author algavris
@@ -105,7 +103,7 @@ fun Shortcut.toImageRequest(
 ): ImageRequest = ImageRequest.Builder(context)
     .data(iconUri(context.isDebugBuild, adaptiveIconStyle, skinName)).apply {
         if (iconVersion != -1) {
-            parameters(Parameters.Builder().set("version", iconVersion).build())
+//            parameters(Parameters.Builder().set("version", iconVersion).build())
         }
     }
     .build()

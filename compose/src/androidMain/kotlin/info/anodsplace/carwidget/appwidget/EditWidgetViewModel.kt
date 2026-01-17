@@ -6,7 +6,7 @@ import androidx.compose.runtime.Immutable
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import coil.ImageLoader
+import coil3.ImageLoader
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.SkinProperties
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
