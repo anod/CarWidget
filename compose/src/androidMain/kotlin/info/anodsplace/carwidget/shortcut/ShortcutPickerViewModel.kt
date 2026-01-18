@@ -4,7 +4,7 @@ import android.widget.Toast
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import coil.ImageLoader
+import coil3.ImageLoader
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.WidgetUpdate
 import info.anodsplace.carwidget.chooser.sourceShortcutId

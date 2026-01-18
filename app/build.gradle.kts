@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.ksp)
@@ -39,8 +40,10 @@ dependencies {
 }
 
 kotlin {
-    compilerOptions {
-        jvmTarget = JvmTarget.JVM_11
+    target {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
     }
 }
 
@@ -57,7 +60,7 @@ android {
         targetSdk = 35 // 29 wifi switch not working
         applicationId = "com.anod.car.home.free"
 
-        versionCode = 3_41002
+        versionCode = 3_41003
         versionName = "3.4.1"
     }
 

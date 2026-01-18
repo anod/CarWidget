@@ -44,8 +44,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.ImageLoader
-import coil.compose.AsyncImage
+import coil3.ImageLoader
+import coil3.compose.AsyncImage
 import info.anodsplace.carwidget.BackArrowIcon
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.DeleteIcon
@@ -71,6 +71,8 @@ import info.anodsplace.framework.content.forIconPack
 import info.anodsplace.framework.content.forStoreSearch
 import info.anodsplace.framework.content.startActivitySafely
 import info.anodsplace.graphics.DrawableUri
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ShortcutEditScreen(
@@ -121,7 +123,7 @@ fun ShortcutEditScreen(
 @Composable
 fun ShortcutFolderEditDialog(
     shortcut: Shortcut,
-    folderItems: List<Shortcut>,
+    folderItems: ImmutableList<Shortcut>,
     onEvent: (ShortcutEditViewEvent) -> Unit,
     onDismissRequest: () -> Unit,
     imageLoader: ImageLoader,
@@ -169,7 +171,7 @@ private fun IconPackPicker(
         )
     }
     val headers = remember {
-        listOf(
+        persistentListOf(
             headerEntry(
                 headerId = 0,
                 title = context.getString(R.string.download),

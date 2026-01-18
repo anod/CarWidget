@@ -28,8 +28,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.ImageLoader
-import coil.compose.AsyncImage
+import coil3.ImageLoader
+import coil3.compose.AsyncImage
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.chooser.ChooserAsyncImage
 import info.anodsplace.carwidget.chooser.ChooserEmptyState
@@ -41,6 +41,7 @@ import info.anodsplace.compose.chooser.ChooserDialog
 import info.anodsplace.compose.chooser.ChooserLoader
 import info.anodsplace.compose.chooser.StaticChooserLoader
 import info.anodsplace.compose.chooser.headerEntry
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun NotificationShortcuts(
@@ -106,7 +107,7 @@ fun NotificationShortcuts(
         if (shortcutIndex >= 0) {
             ChooserDialog(
                 modifier = Modifier.fillMaxHeight(fraction = 0.8f),
-                headers = listOf(
+                headers = persistentListOf(
                     headerEntry(0, stringResource(R.string.none), iconVector = Icons.Filled.Cancel)
                 ),
                 loader = appsLoader,

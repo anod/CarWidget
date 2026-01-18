@@ -14,6 +14,7 @@ import info.anodsplace.carwidget.chooser.ChooserAsyncImage
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
 import info.anodsplace.carwidget.navigation.SceneNavKey
 import info.anodsplace.compose.chooser.ChooserGridList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: SceneNavKey.EditWidgetButton, onDismissRequest: () -> Unit) {
@@ -36,7 +37,7 @@ fun EditWidgetButton(appWidgetIdScope: AppWidgetIdScope, args: SceneNavKey.EditW
         contentColor = MaterialTheme.colorScheme.onSurface
     ) {
         ChooserGridList(
-            headers = emptyList(),
+            headers = persistentListOf(),
             list = viewModel.viewState.items,
             onSelect = { entry ->
                 viewModel.handleEvent(EditWidgetViewEvent.Select(entry))

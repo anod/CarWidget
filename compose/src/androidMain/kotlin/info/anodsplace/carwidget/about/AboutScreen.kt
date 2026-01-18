@@ -33,7 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.ImageLoader
+import coil3.ImageLoader
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.chooser.ChooserAsyncImage
@@ -49,6 +49,7 @@ import info.anodsplace.compose.chooser.headerEntry
 import info.anodsplace.framework.content.CreateDocument
 import info.anodsplace.framework.content.ScreenCommonAction
 import info.anodsplace.framework.content.showToast
+import kotlinx.collections.immutable.persistentListOf
 import java.util.Locale
 
 @Composable
@@ -181,7 +182,7 @@ fun AboutScreen(
         val loader = remember { MediaListChooserLoader(context) }
         ChooserDialog(
             modifier = Modifier.padding(16.dp),
-            headers = listOf(
+            headers = persistentListOf(
                 headerEntry(0, stringResource(R.string.show_choice), iconVector = Icons.AutoMirrored.Filled.List)
             ),
             loader = loader,

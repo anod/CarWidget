@@ -38,7 +38,7 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
-import coil.ImageLoader
+import coil3.ImageLoader
 import info.anodsplace.carwidget.BackArrowIcon
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.CheckIcon

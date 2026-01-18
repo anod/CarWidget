@@ -14,7 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import coil.ImageLoader
+import coil3.ImageLoader
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.appwidget.EditWidgetButton
 import info.anodsplace.carwidget.appwidget.FolderDialog
