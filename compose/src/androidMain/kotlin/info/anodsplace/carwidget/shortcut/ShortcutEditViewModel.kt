@@ -85,7 +85,7 @@ class ShortcutEditViewModel(
 
     override val scope: Scope = appWidgetIdScope.scope
     private val appScope: AppCoroutineScope by inject()
-    private val shortcutsDatabase: ShortcutsDatabase by inject() //= org.koin.core.component.get()
+    private val shortcutsDatabase: ShortcutsDatabase by inject()
     private val model: WidgetShortcutsModel by inject()
     private val context: Context by inject()
     val shortcutResources: ShortcutResources by inject()
