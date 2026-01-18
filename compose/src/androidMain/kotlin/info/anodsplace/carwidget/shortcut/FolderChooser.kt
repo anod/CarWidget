@@ -21,6 +21,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.ImageLoader
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.chooser.AllAppsIntentChooserLoader
 import info.anodsplace.carwidget.chooser.ChooserAsyncImage
 import info.anodsplace.carwidget.chooser.ChooserEmptyState
@@ -68,7 +70,19 @@ fun FolderChooser(
     isEdit: Boolean = false
 ) {
     val context = LocalContext.current
-    val loader = remember(initialSelectedItems) {
+    var title by remember { mutableStateOf(initialTitle) }
+    var titleManuallyChanged by remember { mutableStateOf(initialTitle.isNotEmpty()) }
+    var selected by remember(initialSelectedItems) {
+        mutableStateOf(
+            ChooserSelectedComponents(
+                initialSelectedItems.mapNotNull { it.intent.component }.toImmutableSet()
+            )
+        )
+    }
+    var categoryFilter by remember { mutableStateOf(if (isEdit) CategoryFilterState.Selected else CategoryFilterState.All) }
+    var searchQuery by remember { mutableStateOf("") }
+
+    val baseLoader = remember(initialSelectedItems) {
         CompositeChooserLoader(
             loaders = listOf(
                 AllAppsIntentChooserLoader(context),
@@ -76,27 +90,43 @@ fun FolderChooser(
             )
         )
     }
-    var title by remember { mutableStateOf(initialTitle) }
-    var titleManuallyChanged by remember { mutableStateOf(initialTitle.isNotEmpty()) }
-    var selected by remember(initialSelectedItems) { mutableStateOf(ChooserSelectedComponents(initialSelectedItems.mapNotNull { it.intent.component }.toImmutableSet())) }
-    var categoryFilter by remember { mutableStateOf(if (isEdit) CategoryFilterState.Selected else CategoryFilterState.All ) }
-    var searchQuery by remember { mutableStateOf("") }
+    val appsFlow = remember(baseLoader) { baseLoader.load() }
+    val appsList by appsFlow.collectAsState(initial = null)
+    val (categoryNames, orderedCategoryIds) = remember (appsList) { categoryNamesAndIds(context, appsList) }
+    val filteredList = remember(appsList, categoryFilter, searchQuery, selected) {
+        val list = appsList ?: return@remember emptyList()
+        val preFiltered = when (categoryFilter) {
+            // include "shortcuts" loader items (sourceLoader == 1) in the Selected tab
+            is CategoryFilterState.Selected -> list.filter {
+                it.componentName?.let { cn -> selected.entries.contains(cn) } == true || it.sourceLoader == 1
+            }
+            // category filter applies only to apps loader (sourceLoader == 0)
+            is CategoryFilterState.Category -> list.filter {
+                it.category == (categoryFilter as CategoryFilterState.Category).categoryId && it.sourceLoader == 0
+            }
+            else -> list.filter { it.sourceLoader == 0 }
+        }
+        val q = searchQuery.trim()
+        val result = if (q.isEmpty()) preFiltered else preFiltered.filter { it.title.contains(q, ignoreCase = true) }
+        result
+    }
     MultiSelectChooserDialog(
+        list = filteredList.toImmutableList(),
         modifier = Modifier.padding(horizontal = 16.dp),
-        loader = loader,
         headers = persistentListOf(),
         selectedComponents = selected,
         style = ChooserGridListDefaults.multiSelect().copy(grayscaleUnselectedIcons = true),
         onSelect = { entry ->
+            AppLog.d("MultiSelectChooserDialog onSelect $entry")
             val component = entry.componentName ?: return@MultiSelectChooserDialog
             val entries = if (selected.entries.contains(component)) selected.entries - component else selected.entries + component
             selected = selected.copy(entries = entries.toImmutableSet())
+            AppLog.d("MultiSelectChooserDialog onSelect $selected")
         },
         onDismissRequest = onDismissRequest,
         asyncImage = { entry, colorFilter -> ChooserAsyncImage(entry, colorFilter, imageLoader) },
         emptyState = { filterApplied -> ChooserEmptyState(filterApplied) },
-        topContent = { apps ->
-            val (categoryNames, orderedCategoryIds) = categoryNamesAndIds(context, apps)
+        topContent = {
             Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
                 if (showTitle) {
                     OutlinedTextField(
@@ -165,16 +195,6 @@ fun FolderChooser(
                 ) { Text(stringResource(id = if (isEdit) R.string.save else R.string.create)) }
             }
         },
-        listFilter = { list ->
-            val preFiltered = when (categoryFilter) {
-                is CategoryFilterState.Selected -> list.filter { it.componentName?.let { cn -> selected.entries.contains(cn) } == true || it.sourceLoader == 1 }
-                is CategoryFilterState.Category -> list.filter { it.category == (categoryFilter as CategoryFilterState.Category).categoryId  && it.sourceLoader == 0  }
-                else -> list.filter { it.sourceLoader == 0 }
-            }
-            val q = searchQuery.trim()
-            val result = if (q.isEmpty()) preFiltered else preFiltered.filter { it.title.contains(q, ignoreCase = true) }
-            result.toImmutableList()
-        }
     )
 }
 
@@ -255,8 +275,7 @@ private fun CategoryFilterChips(
     }
 }
 
-private fun categoryNamesAndIds(context: Context, apps: List<ChooserEntry>): Pair<List<String>, List<Int>> {
-    val presentIds = apps.map { it.category }.distinct().toSet()
+private fun categoryNamesAndIds(context: Context, apps: List<ChooserEntry>?): Pair<List<String>, List<Int>> {
     val ordered = listOf(
         ApplicationInfo.CATEGORY_GAME to R.string.game,
         ApplicationInfo.CATEGORY_AUDIO to R.string.audio,
@@ -267,6 +286,7 @@ private fun categoryNamesAndIds(context: Context, apps: List<ChooserEntry>): Pai
         ApplicationInfo.CATEGORY_MAPS to R.string.navigation,
         ApplicationInfo.CATEGORY_PRODUCTIVITY to R.string.productivity,
     )
+    val presentIds = apps?.map { it.category }?.distinct()?.toSet() ?: ordered.map { it.first }
     val filtered = ordered.filter { presentIds.contains(it.first) }
     if (filtered.isEmpty()) return emptyList<String>() to emptyList()
     val names = filtered.map { (_, resId) -> context.getString(resId) }
