@@ -218,8 +218,7 @@ private fun CategoryFilterChips(
             addAll(categoryNames)
         }.toList() // keep order
         val selectedIndex = when (categoryFilter) {
-            is CategoryFilterState.All if !showSelectedCategory -> 0
-            is CategoryFilterState.All if showSelectedCategory -> 1
+            is CategoryFilterState.All -> if (showSelectedCategory) 1 else 0
             is CategoryFilterState.Selected -> 0
             is CategoryFilterState.Category -> {
                 val baseIndex = 1 + if (showSelectedCategory) 1 else 0
