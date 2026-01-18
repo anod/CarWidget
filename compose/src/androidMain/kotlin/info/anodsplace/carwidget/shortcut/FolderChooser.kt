@@ -167,7 +167,7 @@ fun FolderChooser(
                 Spacer(modifier = Modifier.height(12.dp))
             }
         },
-        bottomContent = { apps ->
+        bottomContent = { displayedList ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -178,7 +178,7 @@ fun FolderChooser(
                 Spacer(modifier = Modifier.size(8.dp))
                 Button(
                     onClick = {
-                        val selectedEntries = apps
+                        val selectedEntries = displayedList
                             .filter { it.componentName != null && selected.entries.contains(it.componentName) }
                             .map {
                                 it.isAppEntry = true
