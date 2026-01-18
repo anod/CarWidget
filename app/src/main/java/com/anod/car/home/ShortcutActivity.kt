@@ -79,7 +79,6 @@ class ShortcutActivity : FragmentActivity(), KoinComponent {
 
         // Use IntentSanitizer to sanitize the nested intent
         return try {
-            @Suppress("DEPRECATION")
             IntentSanitizer.Builder()
                 // Standard Android actions
                 .allowAction(Intent.ACTION_MAIN)
