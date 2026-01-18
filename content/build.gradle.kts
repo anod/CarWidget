@@ -8,6 +8,7 @@ kotlin {
 
     androidLibrary {
         compileSdk = 36
+        minSdk = 31
         namespace = "info.anodsplace.carwidget.content"
 
         androidResources {
