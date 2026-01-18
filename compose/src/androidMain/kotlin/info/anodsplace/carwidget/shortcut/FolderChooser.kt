@@ -31,7 +31,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.ImageLoader
-import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.chooser.AllAppsIntentChooserLoader
 import info.anodsplace.carwidget.chooser.ChooserAsyncImage
 import info.anodsplace.carwidget.chooser.ChooserEmptyState
@@ -117,11 +116,9 @@ fun FolderChooser(
         selectedComponents = selected,
         style = ChooserGridListDefaults.multiSelect().copy(grayscaleUnselectedIcons = true),
         onSelect = { entry ->
-            AppLog.d("MultiSelectChooserDialog onSelect $entry")
             val component = entry.componentName ?: return@MultiSelectChooserDialog
             val entries = if (selected.entries.contains(component)) selected.entries - component else selected.entries + component
             selected = selected.copy(entries = entries.toImmutableSet())
-            AppLog.d("MultiSelectChooserDialog onSelect $selected")
         },
         onDismissRequest = onDismissRequest,
         asyncImage = { entry, colorFilter -> ChooserAsyncImage(entry, colorFilter, imageLoader) },
