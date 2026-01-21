@@ -17,6 +17,7 @@ dependencies {
     implementation(project(":lib:context"))
     implementation(project(":lib:framework"))
     implementation(project(":lib:permissions"))
+    implementation(project(":lib:ktx"))
     implementation(project(":iconpack"))
 
     // AppCompatActivity
