@@ -6,8 +6,8 @@ plugins {
 
 kotlin {
 
-    androidLibrary {
-        compileSdk = 36
+    android {
+        compileSdk = 37
         minSdk = 31
         namespace = "info.anodsplace.carwidget.content"
 
