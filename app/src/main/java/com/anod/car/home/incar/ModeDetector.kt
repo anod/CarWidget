@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.Intent
+import androidx.core.content.IntentCompat
 import com.anod.car.home.BuildConfig
 import com.anod.car.home.getKoin
 import com.anod.car.home.utils.Power
@@ -172,7 +173,7 @@ object ModeDetector {
         if (BluetoothDevice.ACTION_ACL_CONNECTED == action) {
             val devices = prefs.btDevices
             if (devices.isNotEmpty()) {
-                val device: BluetoothDevice? = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
+                val device: BluetoothDevice? = IntentCompat.getParcelableExtra(intent, BluetoothDevice.EXTRA_DEVICE, BluetoothDevice::class.java)
                 if (device != null && devices.containsKey(device.address)) {
                     sEventState[FLAG_BLUETOOTH] = true
                     return
@@ -189,7 +190,7 @@ object ModeDetector {
         if (BluetoothDevice.ACTION_ACL_DISCONNECTED == action) {
             val devices = prefs.btDevices
             if (devices.isNotEmpty()) {
-                val device: BluetoothDevice? = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
+                val device: BluetoothDevice? = IntentCompat.getParcelableExtra(intent, BluetoothDevice.EXTRA_DEVICE, BluetoothDevice::class.java)
                 if (device != null && devices.containsKey(device.address)) {
                     sEventState[FLAG_BLUETOOTH] = false
                     return

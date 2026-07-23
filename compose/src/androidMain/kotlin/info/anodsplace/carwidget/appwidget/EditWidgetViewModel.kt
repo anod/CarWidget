@@ -2,8 +2,8 @@ package info.anodsplace.carwidget.appwidget
 
 import android.app.Application
 import android.content.Context
+import android.os.Bundle
 import androidx.compose.runtime.Immutable
-import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import coil3.ImageLoader
@@ -58,19 +58,19 @@ class EditWidgetViewModel(
                     context = application,
                     title = application.getString(R.string.pref_settings_transparent),
                     iconRes = skinProperties.settingsButtonRes,
-                    extras = bundleOf("button" to WidgetInterface.WIDGET_BUTTON_SETTINGS)
+                    extras = Bundle().apply { putInt("button", WidgetInterface.WIDGET_BUTTON_SETTINGS) }
                 ),
                 ChooserEntry(
                     context = application,
                     title = application.getString(R.string.pref_incar_transparent),
                     iconRes = skinProperties.inCarButtonEnterRes,
-                    extras = bundleOf("button" to WidgetInterface.WIDGET_BUTTON_INCAR)
+                    extras = Bundle().apply { putInt("button", WidgetInterface.WIDGET_BUTTON_INCAR) }
                 ),
                 ChooserEntry(
                     context = application,
                     title = application.getString(R.string.hidden),
                     iconRes = skinProperties.buttonAlternativeHiddenResId,
-                    extras = bundleOf("button" to WidgetInterface.WIDGET_BUTTON_HIDDEN)
+                    extras = Bundle().apply { putInt("button", WidgetInterface.WIDGET_BUTTON_HIDDEN) }
                 )
             )
         )

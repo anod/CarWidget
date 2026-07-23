@@ -11,7 +11,6 @@ import android.os.Build
 import android.os.Bundle
 import android.telephony.TelephonyManager
 import android.view.KeyEvent
-import android.view.WindowManager
 import info.anodsplace.applog.AppLog
 import java.io.IOException
 
@@ -68,15 +67,12 @@ class AcceptCallActivity : Activity() {
 
     private fun updateWindowFlags() {
         if (keyguardManager!!.isKeyguardLocked) {
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or
-                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
-                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+            keyguardManager!!.requestDismissKeyguard(this, null)
         } else {
-            window.clearFlags(
-                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or
-                            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
-                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+            setShowWhenLocked(false)
+            setTurnScreenOn(false)
         }
     }
 

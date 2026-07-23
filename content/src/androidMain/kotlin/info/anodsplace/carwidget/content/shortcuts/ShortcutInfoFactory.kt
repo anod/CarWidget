@@ -12,6 +12,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Parcelable
+import androidx.core.content.IntentCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
@@ -48,17 +49,17 @@ class ShortcutIntent(val data: Intent, val isApp: Boolean) {
     val hasIntent: Boolean
         get() = data.hasExtra(Intent.EXTRA_SHORTCUT_INTENT)
     val intent: Intent?
-        get() = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT)
+        get() = IntentCompat.getParcelableExtra(data, Intent.EXTRA_SHORTCUT_INTENT, Intent::class.java)
     val name: String?
         get() = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME)
     val icon: Parcelable?
-        get() = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON)
+        get() = IntentCompat.getParcelableExtra(data, Intent.EXTRA_SHORTCUT_ICON, Parcelable::class.java)
     val iconResource: Parcelable?
-        get() = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)
+        get() = IntentCompat.getParcelableExtra(data, Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Parcelable::class.java)
     val preferIconResource: Boolean
         get() = data.getBooleanExtra(ShortcutExtra.EXTRA_PREFER_ICON_RESOURCE, false)
     val pinItemRequest: LauncherApps.PinItemRequest?
-        get() = data.getParcelableExtra(LauncherApps.EXTRA_PIN_ITEM_REQUEST)
+        get() = IntentCompat.getParcelableExtra(data, LauncherApps.EXTRA_PIN_ITEM_REQUEST, LauncherApps.PinItemRequest::class.java)
 }
 
 object ShortcutInfoFactory {
