@@ -4,9 +4,9 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "info.anodsplace.carwidget.skin"
-        compileSdk = 36
+        compileSdk = 37
         minSdk = 31
         androidResources {
             enable = true

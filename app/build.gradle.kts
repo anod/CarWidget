@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.ksp)
@@ -41,15 +40,13 @@ dependencies {
 }
 
 kotlin {
-    target {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
     }
 }
 
 android {
-    compileSdk = 36
+    compileSdk = 37
 
     buildFeatures {
         aidl = true
