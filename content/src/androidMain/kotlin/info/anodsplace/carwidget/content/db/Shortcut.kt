@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.runtime.Immutable
-import coil3.Extras
 import coil3.request.ImageRequest
 import info.anodsplace.carwidget.content.extentions.isDebugBuild
 import info.anodsplace.carwidget.content.preferences.WidgetInterface
@@ -104,7 +103,9 @@ fun Shortcut.toImageRequest(
 ): ImageRequest = ImageRequest.Builder(context)
     .data(iconUri(context.isDebugBuild, adaptiveIconStyle, skinName)).apply {
         if (iconVersion != -1) {
-            extras[Extras.Key("version")] = iconVersion
+            // Route the version into the memory cache key so a changed icon busts
+            // Coil's cache. Generic request extras are ignored when computing the key.
+            memoryCacheKeyExtra("version", iconVersion.toString())
         }
     }
     .build()
