@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -44,9 +43,10 @@ class ShortcutImageRequestUnitTest {
     }
 
     @Test
-    fun toImageRequest_differentIconVersionsProduceDifferentCacheKeys() {
+    fun toImageRequest_differentIconVersionsProduceDifferentCacheKeyExtras() {
         val first = shortcut().toImageRequest(context, adaptiveIconStyle = "", iconVersion = 1)
         val second = shortcut().toImageRequest(context, adaptiveIconStyle = "", iconVersion = 2)
-        assertNotEquals(first.memoryCacheKeyExtras, second.memoryCacheKeyExtras)
+        assertEquals("1", first.memoryCacheKeyExtras["version"])
+        assertEquals("2", second.memoryCacheKeyExtras["version"])
     }
 }

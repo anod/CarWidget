@@ -206,8 +206,10 @@ class ShortcutEditViewModel(
             return null
         }
 
+        // EXTRA_SHORTCUT_ICON_RESOURCE is deprecated by the platform but is still what icon
+        // packs return; read it with the typed IntentCompat API for correct behavior on API 33+.
         @Suppress("DEPRECATION")
-        val iconResource = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE) as? ShortcutIconResource
+        val iconResource = IntentCompat.getParcelableExtra(intent, Intent.EXTRA_SHORTCUT_ICON_RESOURCE, ShortcutIconResource::class.java)
         if (iconResource != null) {
             val icon = ShortcutInfoFactory.resolveIconResource(viewState.shortcutId, iconResource, isCustom = true, context)
             if (icon != null) {
