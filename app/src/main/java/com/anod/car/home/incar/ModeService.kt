@@ -8,6 +8,7 @@ import android.os.IBinder
 import android.os.PowerManager
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
+import androidx.core.app.ServiceCompat
 import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.notifications.InCarModeNotificationFactory
 import info.anodsplace.applog.AppLog
@@ -26,7 +27,7 @@ class ModeService : Service(), KoinComponent {
     private var forceState: Boolean = false
 
     override fun onDestroy() {
-        stopForeground(true)
+        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
 
         val prefs = get<InCarSettings>()
         if (forceState) {

@@ -6,6 +6,7 @@ import android.content.Intent.ShortcutIconResource
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.runtime.Immutable
+import androidx.core.content.IntentCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -215,7 +216,7 @@ class ShortcutEditViewModel(
         }
 
         if (intent.hasExtra("icon")) {
-            val bitmap: Bitmap? = intent.getParcelableExtra("icon")
+            val bitmap: Bitmap? = IntentCompat.getParcelableExtra(intent, "icon", Bitmap::class.java)
             if (bitmap != null) {
                 val shortcutIcon = ShortcutIcon.forCustomIcon(viewState.shortcutId, bitmap)
                 return shortcutIcon
