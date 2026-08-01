@@ -1,5 +1,6 @@
 package com.anod.car.home.incar
 
+import android.app.Notification
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
@@ -9,8 +10,10 @@ import android.os.IBinder
 import android.os.PowerManager
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
+import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import com.anod.car.home.appwidget.Provider
+import com.anod.car.home.notifications.Channels
 import com.anod.car.home.notifications.InCarModeNotificationFactory
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.preferences.InCarSettings
@@ -26,6 +29,7 @@ import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
+import org.koin.core.context.GlobalContext
 
 
 class ModeService : Service(), KoinComponent {
@@ -46,18 +50,29 @@ class ModeService : Service(), KoinComponent {
     override fun onDestroy() {
         serviceScope.cancel()
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
-
-        val prefs = get<InCarSettings>()
-        if (forceState) {
-            ModeDetector.forceState(prefs, false)
-        }
-        ModeDetector.switchOff(prefs, modeHandler)
-        if (phoneListener != null) {
-            detachPhoneListener()
-        }
-
         sInCarMode = false
-        requestWidgetsUpdate()
+
+        // If Koin never started for this (restarted) process, skip all DI-dependent teardown
+        // instead of crashing again with "KoinApplication has not been started".
+        if (GlobalContext.getOrNull() == null) {
+            AppLog.e("Koin is not started, skipping ModeService teardown")
+            super.onDestroy()
+            return
+        }
+
+        try {
+            val prefs = get<InCarSettings>()
+            if (forceState) {
+                ModeDetector.forceState(prefs, false)
+            }
+            ModeDetector.switchOff(prefs, modeHandler)
+            if (phoneListener != null) {
+                detachPhoneListener()
+            }
+            requestWidgetsUpdate()
+        } catch (e: Exception) {
+            AppLog.e(e)
+        }
 
         super.onDestroy()
     }
@@ -72,10 +87,18 @@ class ModeService : Service(), KoinComponent {
         AppLog.i("Start InCar Mode service, sInCarMode = " + sInCarMode + ", redelivered = "
                 + redelivered)
 
-        // Enter the foreground immediately with a lightweight notification. Building the rich
-        // notification touches the database, PackageManager and decodes icons, so it must not
-        // run on the main thread (ANR / foreground-service start-timeout risk).
-        startForeground(InCarModeNotificationFactory.id, notificationFactory.createBasic())
+        // Enter the foreground immediately with a dependency-free notification so we never miss
+        // the foreground-service start deadline, even if the OS restarted us before the app
+        // (Koin/DB) finished initializing.
+        startForeground(InCarModeNotificationFactory.id, createSafeNotification())
+
+        // If the OS restarted this service into a process where Koin isn't ready yet, stop
+        // cleanly instead of crashing on the first get<>() ("KoinApplication has not been started").
+        if (GlobalContext.getOrNull() == null) {
+            AppLog.e("Koin is not started, stopping ModeService")
+            stopSelf()
+            return START_NOT_STICKY
+        }
 
         if (intent == null) {
             AppLog.e("ModeService started without intent")
@@ -111,6 +134,20 @@ class ModeService : Service(), KoinComponent {
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.
         return START_REDELIVER_INTENT
+    }
+
+    /**
+     * Minimal, dependency-free notification used to satisfy the foreground-service start deadline
+     * before (or without) Koin. Building the rich notification requires Koin-injected collaborators
+     * and database access, which may not be available when the OS restarts the service.
+     */
+    private fun createSafeNotification(): Notification {
+        return NotificationCompat.Builder(this, Channels.inCarMode)
+            .setSmallIcon(info.anodsplace.carwidget.skin.R.drawable.ic_stat_incar)
+            .setContentTitle(getString(info.anodsplace.carwidget.content.R.string.incar_mode_enabled))
+            .setOngoing(true)
+            .setPriority(NotificationCompat.PRIORITY_MIN)
+            .build()
     }
 
     private fun updateNotification() {

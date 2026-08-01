@@ -124,6 +124,11 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
         AppLog.tag = "CarWidget"
         AppLog.setDebug(BuildConfig.DEBUG, "CarWidget")
 
+        // Register notification channels before Koin so a foreground-service notification can
+        // always be posted (and never hit "Bad notification for startForeground"), even if DI
+        // initialization fails.
+        Channels.register(this)
+
         startKoin {
             koin.loadModules(
                 modules = listOf(
@@ -166,7 +171,6 @@ class CarWidgetApplication : Application(), ApplicationInstance, KoinComponent {
                 ),
             )
         }
-        Channels.register(this)
     }
 
     private fun createInCarStatus(): InCarStatus {
