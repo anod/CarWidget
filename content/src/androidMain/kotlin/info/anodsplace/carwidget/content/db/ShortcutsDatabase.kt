@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.net.URISyntaxException
@@ -94,6 +95,7 @@ class ShortcutsDatabase(private val db: Database) {
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { list -> list.filter { it.isValid } }
+            .flowOn(Dispatchers.IO)
     }
 
     /**
@@ -278,6 +280,14 @@ class ShortcutsDatabase(private val db: Database) {
         withContext(Dispatchers.IO) {
             return@withContext db.transactionWithResult {
                 if (sourceShortcutId != Shortcut.ID_UNKNOWN) {
+                    // Copying a shortcut onto the slot it already occupies is a no-op. Skip the
+                    // delete-then-insert below, which would otherwise drop the source row and turn
+                    // duplicateShortcut (which copies FROM that same row) into a silent failure.
+                    val occupantId = db.shortcutsQueries.selectTargetPosition(targetId, position)
+                        .executeAsOneOrNull()?.shortcutId
+                    if (occupantId == sourceShortcutId) {
+                        return@transactionWithResult true
+                    }
                     // Free the destination slot first: duplicateShortcut does an INSERT that would
                     // otherwise violate UNIQUE(targetId, position) and throw when the slot is taken.
                     db.shortcutsQueries.deleteTargetPosition(targetId, position)

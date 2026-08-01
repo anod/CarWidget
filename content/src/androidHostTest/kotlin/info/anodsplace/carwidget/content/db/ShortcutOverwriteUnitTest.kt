@@ -175,6 +175,49 @@ class ShortcutOverwriteUnitTest {
         }
     }
 
+    @Test
+    fun copyShortcut_ontoOwnPosition_isNoOpAndKeepsSource() = runBlocking<Unit> {
+        val (db, driver) = createDb()
+        driver.use {
+            val sourceId = db.addItem(TARGET, 1, activity("Source", "SourceActivity"), icon())
+
+            // Copying a shortcut onto the slot it already occupies must not destroy it.
+            val result = db.copyShortcut(TARGET, 1, sourceId)
+
+            assertTrue(result)
+            val kept = db.loadShortcut(TARGET, 1)
+            assertNotNull(kept)
+            assertEquals(sourceId, kept!!.id)
+            assertEquals("Source", kept.title)
+            assertEquals(1, db.loadTarget(TARGET).size)
+        }
+    }
+
+    @Test
+    fun copyShortcut_folderOntoOwnPosition_keepsChildren() = runBlocking<Unit> {
+        val (db, driver) = createDb()
+        driver.use {
+            val folderId = db.saveFolder(
+                TARGET, 1, folder("Source"), icon(),
+                listOf(
+                    activity("SrcA", "SrcAActivity") to icon(),
+                    activity("SrcB", "SrcBActivity") to icon()
+                )
+            )
+
+            val result = db.copyShortcut(TARGET, 1, folderId)
+
+            assertTrue(result)
+            val kept = db.loadShortcut(TARGET, 1)
+            assertNotNull(kept)
+            assertEquals(folderId, kept!!.id)
+            val items = db.loadFolderItems(folderId)
+            assertEquals(2, items.size)
+            assertEquals("SrcA", items[0].title)
+            assertEquals("SrcB", items[1].title)
+        }
+    }
+
     private fun assertNotEqualsId(unexpected: Long, actual: Long) =
         assertFalse("expected a new row id, got reused id $actual", unexpected == actual)
 
