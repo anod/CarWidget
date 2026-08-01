@@ -131,9 +131,12 @@ class ModeService : Service(), KoinComponent {
 
         updateNotification()
 
-        // We want this service to continue running until it is explicitly
-        // stopped, so return sticky.
-        return START_REDELIVER_INTENT
+        // START_NOT_STICKY on purpose: letting the OS auto-restart this foreground service from the
+        // background (START_STICKY/START_REDELIVER_INTENT) is the top Play vitals crash on API 31+
+        // (ForegroundServiceDidNotStartInTimeException) because a slow cold start misses the
+        // startForeground() deadline. In-car mode is re-triggered on demand by ModeBroadcastReceiver
+        // and settings changes, so it does not depend on the OS restarting this service.
+        return START_NOT_STICKY
     }
 
     /**

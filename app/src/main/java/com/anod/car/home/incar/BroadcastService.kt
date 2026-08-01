@@ -50,6 +50,16 @@ class BroadcastService : Service(), KoinComponent {
             return START_NOT_STICKY
         }
 
+        // If the OS restarted this service into a process where Koin isn't ready yet, stop cleanly
+        // instead of relying on downstream get<InCarSettings>() to throw ("KoinApplication has not
+        // been started"). Mirrors the guard in ModeService.
+        if (GlobalContext.getOrNull() == null) {
+            AppLog.e("Koin is not started, stopping BroadcastService")
+            stopForeground(STOP_FOREGROUND_REMOVE)
+            stopSelf()
+            return START_NOT_STICKY
+        }
+
         try {
             if (receiver != null || register(this)) {
                 // START_NOT_STICKY on purpose: allowing the OS to auto-restart this foreground
