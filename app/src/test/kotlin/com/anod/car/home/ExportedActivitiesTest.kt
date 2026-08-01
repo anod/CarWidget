@@ -36,8 +36,9 @@ class ExportedActivitiesTest {
     }
 
     @Test
-    fun switchInCarActivityIsReExportedInDebugForSwitchScript() {
+    fun switchInCarActivityExportedOnlyInDebugBuilds() {
         val exported = exportedByActivityName()
-        assertEquals(true, exported["com.anod.car.home.incar.SwitchInCarActivity"])
+        // Debug re-exports it for the adb switch script; release keeps it exported=false.
+        assertEquals(BuildConfig.DEBUG, exported["com.anod.car.home.incar.SwitchInCarActivity"])
     }
 }

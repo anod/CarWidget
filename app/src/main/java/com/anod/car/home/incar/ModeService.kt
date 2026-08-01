@@ -16,6 +16,7 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.permissions.AppPermission
 import info.anodsplace.permissions.AppPermissions
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -120,6 +121,8 @@ class ModeService : Service(), KoinComponent {
                     getSystemService(NotificationManager::class.java)
                         ?.notify(InCarModeNotificationFactory.id, notification)
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 AppLog.e(e)
             }
