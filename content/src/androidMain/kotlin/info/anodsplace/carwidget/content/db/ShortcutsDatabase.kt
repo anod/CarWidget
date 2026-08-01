@@ -93,6 +93,7 @@ class ShortcutsDatabase(private val db: Database) {
         return db.folderItemQueries.selectFolderShortcut(shortcutId, mapper = ::mapFolderItem)
             .asFlow()
             .mapToList(Dispatchers.IO)
+            .map { list -> list.filter { it.isValid } }
     }
 
     /**
@@ -102,9 +103,11 @@ class ShortcutsDatabase(private val db: Database) {
      */
     suspend fun addItem(targetId: Int, position: Int, item: Shortcut, icon: ShortcutIcon): Long =
         withContext(Dispatchers.IO) {
-            insert(targetId, position, item, icon)
-            return@withContext db.shortcutsQueries.lastInsertId().executeAsOneOrNull()
-                ?: Shortcut.ID_UNKNOWN
+            return@withContext db.transactionWithResult {
+                insert(targetId, position, item, icon)
+                db.shortcutsQueries.lastInsertId().executeAsOneOrNull()
+                    ?: Shortcut.ID_UNKNOWN
+            }
         }
 
     suspend fun saveFolder(
@@ -196,34 +199,23 @@ class ShortcutsDatabase(private val db: Database) {
 
     private fun insert(targetId: Int, position: Int, item: Shortcut, icon: ShortcutIcon) {
         val values = createShortcutContentValues(item, icon)
-        try {
-            db.shortcutsQueries.insert(
-                targetId = targetId,
-                position = position,
-                itemType = values.getAsInteger(LauncherSettings.Favorites.ITEM_TYPE),
-                title = values.getAsString(LauncherSettings.Favorites.TITLE),
-                intent = values.getAsString(LauncherSettings.Favorites.INTENT),
-                iconType = values.getAsInteger(LauncherSettings.Favorites.ICON_TYPE),
-                icon = values.getAsByteArray(LauncherSettings.Favorites.ICON),
-                iconPackage = values.getAsString(LauncherSettings.Favorites.ICON_PACKAGE),
-                iconResource = values.getAsString(LauncherSettings.Favorites.ICON_RESOURCE),
-                isCustomIcon = values.getAsBoolean(LauncherSettings.Favorites.IS_CUSTOM_ICON)
-            )
-        } catch (e: SQLiteConstraintException) {
-            AppLog.e(e)
-            db.shortcutsQueries.update(
-                targetId = targetId,
-                position = position,
-                itemType = values.getAsInteger(LauncherSettings.Favorites.ITEM_TYPE),
-                title = values.getAsString(LauncherSettings.Favorites.TITLE),
-                intent = values.getAsString(LauncherSettings.Favorites.INTENT),
-                iconType = values.getAsInteger(LauncherSettings.Favorites.ICON_TYPE),
-                icon = values.getAsByteArray(LauncherSettings.Favorites.ICON),
-                iconPackage = values.getAsString(LauncherSettings.Favorites.ICON_PACKAGE),
-                iconResource = values.getAsString(LauncherSettings.Favorites.ICON_RESOURCE),
-                isCustomIcon = values.getAsBoolean(LauncherSettings.Favorites.IS_CUSTOM_ICON)
-            )
-        }
+        // Replace any existing row at (targetId, position) so the INSERT always creates a new
+        // row. This keeps last_insert_rowid() valid for callers (folder children were being
+        // attached to a stale id when an UPDATE fallback was used) and lets the FK ON DELETE
+        // CASCADE drop the previous shortcut's folder items.
+        db.shortcutsQueries.deleteTargetPosition(targetId, position)
+        db.shortcutsQueries.insert(
+            targetId = targetId,
+            position = position,
+            itemType = values.getAsInteger(LauncherSettings.Favorites.ITEM_TYPE),
+            title = values.getAsString(LauncherSettings.Favorites.TITLE),
+            intent = values.getAsString(LauncherSettings.Favorites.INTENT),
+            iconType = values.getAsInteger(LauncherSettings.Favorites.ICON_TYPE),
+            icon = values.getAsByteArray(LauncherSettings.Favorites.ICON),
+            iconPackage = values.getAsString(LauncherSettings.Favorites.ICON_PACKAGE),
+            iconResource = values.getAsString(LauncherSettings.Favorites.ICON_RESOURCE),
+            isCustomIcon = values.getAsBoolean(LauncherSettings.Favorites.IS_CUSTOM_ICON)
+        )
     }
 
     private fun insertFolderItem(shortcutId: Long, item: Shortcut, icon: ShortcutIcon) {
@@ -286,6 +278,9 @@ class ShortcutsDatabase(private val db: Database) {
         withContext(Dispatchers.IO) {
             return@withContext db.transactionWithResult {
                 if (sourceShortcutId != Shortcut.ID_UNKNOWN) {
+                    // Free the destination slot first: duplicateShortcut does an INSERT that would
+                    // otherwise violate UNIQUE(targetId, position) and throw when the slot is taken.
+                    db.shortcutsQueries.deleteTargetPosition(targetId, position)
                     val result = db.shortcutsQueries.duplicateShortcut(targetId, position, sourceShortcutId)
                     if (result.value > 0) {
                         val shortcutId = db.shortcutsQueries.lastInsertId().executeAsOneOrNull()
@@ -325,14 +320,14 @@ class ShortcutsDatabase(private val db: Database) {
     ): Shortcut {
         if (intent.isEmpty()) {
             AppLog.e("Intent is empty for id:${shortcutId} title:${title}")
-            Shortcut(shortcutId, position, itemType, title, isCustomIcon, Intent())
+            return Shortcut(Shortcut.ID_UNKNOWN, position, itemType, title, isCustomIcon, Intent())
         }
 
         val parsedIntent: Intent = try {
             Intent.parseUri(intent, 0)
         } catch (e: URISyntaxException) {
             AppLog.e(e)
-            Intent()
+            return Shortcut(Shortcut.ID_UNKNOWN, position, itemType, title, isCustomIcon, Intent())
         }
 
         return Shortcut(shortcutId, position, itemType, title, isCustomIcon, parsedIntent)
@@ -349,14 +344,14 @@ class ShortcutsDatabase(private val db: Database) {
     ): Shortcut {
         if (intent.isEmpty()) {
             AppLog.e("Intent is empty for id:${itemId} title:${title}")
-            return Shortcut(id, -1, itemType, title, isCustomIcon, Intent())
+            return Shortcut(Shortcut.ID_UNKNOWN, -1, itemType, title, isCustomIcon, Intent())
         }
 
         val parsedIntent: Intent = try {
             Intent.parseUri(intent, 0)
         } catch (e: URISyntaxException) {
             AppLog.e(e)
-            Intent()
+            return Shortcut(Shortcut.ID_UNKNOWN, -1, itemType, title, isCustomIcon, Intent())
         }
 
         return Shortcut(id, -1, itemType, title, isCustomIcon, parsedIntent)

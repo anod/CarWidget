@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.graphics.Bitmap
 import android.util.LruCache
+import kotlin.math.max
 
 /**
  * @author alex
@@ -16,7 +17,7 @@ class BitmapLruCache(context: Context) : LruCache<String, Bitmap>(calculateMemor
         // The cache size will be measured in kilobytes rather than
         // number of items.
 
-        return bitmap.byteCount / 1024
+        return max(1, bitmap.byteCount / 1024)
     }
 
     companion object {
@@ -24,8 +25,8 @@ class BitmapLruCache(context: Context) : LruCache<String, Bitmap>(calculateMemor
             val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
             val largeHeap = context.applicationInfo?.flags?.and(ApplicationInfo.FLAG_LARGE_HEAP)
             val memoryClass = if (largeHeap != 0) am.largeMemoryClass else am.memoryClass
-            // Target ~15% of the available heap.
-            return 1024 * 1024 * memoryClass / 7
+            // Target ~15% of the available heap, measured in kilobytes to match sizeOf().
+            return memoryClass * 1024 / 7
         }
     }
 }

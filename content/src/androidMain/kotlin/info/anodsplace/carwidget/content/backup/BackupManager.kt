@@ -15,9 +15,7 @@ import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.carwidget.content.preferences.WidgetSettings
 import info.anodsplace.carwidget.content.shortcuts.NotificationShortcutsModel
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -30,15 +28,13 @@ sealed interface BackupCheckResult {
     class Success(val hasInCar: Boolean) : BackupCheckResult
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class BackupManager(
     private val context: Context,
     private val database: ShortcutsDatabase,
     private val inCarSettings: InCarSettings
 ) {
 
-    @OptIn(DelicateCoroutinesApi::class)
-    suspend fun backup(appWidgetIdScope: AppWidgetIdScope, uri: Uri): Int = withContext(newSingleThreadContext("BackupWidget")) {
+    suspend fun backup(appWidgetIdScope: AppWidgetIdScope, uri: Uri): Int = withContext(Dispatchers.IO) {
         return@withContext try {
             val outputStream = context.contentResolver.openOutputStream(uri) ?: return@withContext Backup.ERROR_UNEXPECTED
             writeBackup(outputStream, appWidgetIdScope)
@@ -48,8 +44,7 @@ class BackupManager(
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
-    suspend fun checkSrcUri(srcUri: Uri): BackupCheckResult = withContext(newSingleThreadContext("RestoreWidget")) {
+    suspend fun checkSrcUri(srcUri: Uri): BackupCheckResult = withContext(Dispatchers.IO) {
         return@withContext try {
             val inputStream: InputStream = context.contentResolver.openInputStream(srcUri) ?: return@withContext BackupCheckResult.Error(errorCode = Backup.ERROR_FILE_READ)
             checkBackup(inputStream)
@@ -59,8 +54,7 @@ class BackupManager(
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
-    suspend fun restore(appWidgetIdScope: AppWidgetIdScope, uri: Uri, restoreInCar: Boolean): Int = withContext(newSingleThreadContext("RestoreWidget")) {
+    suspend fun restore(appWidgetIdScope: AppWidgetIdScope, uri: Uri, restoreInCar: Boolean): Int = withContext(Dispatchers.IO) {
         return@withContext  try {
             val inputStream = context.contentResolver.openInputStream(uri) ?: return@withContext Backup.ERROR_FILE_READ
             doRestoreWidget(inputStream, appWidgetIdScope, restoreInCar)

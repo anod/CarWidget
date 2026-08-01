@@ -37,6 +37,11 @@ dependencies {
     compileOnly(libs.auto.service.annotations)
     ksp(libs.auto.service.ksp)
     ksp(libs.auto.service)
+
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.junit4)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core)
 }
 
 kotlin {
@@ -97,6 +102,13 @@ android {
 
     lint {
         warning.add("InvalidFragmentVersionForActivityResult")
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            isReturnDefaultValues = true
+        }
     }
     namespace = "com.anod.car.home"
 }

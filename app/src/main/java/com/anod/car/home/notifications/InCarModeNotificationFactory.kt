@@ -26,19 +26,32 @@ class InCarModeNotificationFactory(
         private val buttonIds = intArrayOf(R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3)
     }
 
-    suspend fun create(): Notification {
+    private fun baseBuilder(): NotificationCompat.Builder {
         val notificationIntent = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_OFF)
         notificationIntent.data = Deeplink.SwitchMode(false).toUri()
 
-        val r = context.resources
         val contentIntent = PendingIntent.getService(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
 
-        val notification = NotificationCompat.Builder(context, Channels.inCarMode)
+        return NotificationCompat.Builder(context, Channels.inCarMode)
                 .setSmallIcon(info.anodsplace.carwidget.skin.R.drawable.ic_stat_incar)
                 .setOngoing(true)
                 .addAction(0, context.getString(info.anodsplace.carwidget.content.R.string.disable), contentIntent)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
+    }
+
+    /**
+     * Lightweight notification with no database or icon access, safe to build on the main thread.
+     * Used to satisfy the foreground-service start deadline before the rich notification is ready.
+     */
+    fun createBasic(): Notification {
+        return baseBuilder()
+                .setContentTitle(context.getString(info.anodsplace.carwidget.content.R.string.incar_mode_enabled))
+                .build()
+    }
+
+    suspend fun create(): Notification {
+        val notification = baseBuilder()
                 .setStyle(NotificationCompat.DecoratedCustomViewStyle())
 
         val model = NotificationShortcutsModel.init(context, database)
@@ -47,7 +60,7 @@ class InCarModeNotificationFactory(
             contentView.setTextViewText(android.R.id.text1, "")
             notification.setContent(contentView)
         } else {
-            notification.setContentTitle(r.getString(info.anodsplace.carwidget.content.R.string.incar_mode_enabled))
+            notification.setContentTitle(context.getString(info.anodsplace.carwidget.content.R.string.incar_mode_enabled))
         }
 
         return notification.build()
