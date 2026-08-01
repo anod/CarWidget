@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.R
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.framework.bluetooth.BtClassType
@@ -75,7 +76,7 @@ class BluetoothDevicesViewModel(
     init {
         viewState = BluetoothDevicesViewState(
             btAdapterState = bluetoothManager.adapter?.state ?: BluetoothAdapter.STATE_OFF,
-            listState = if (checkPermission()) {
+            listState = if (isBluetoothPermissionMissing()) {
                 BluetoothDevicesListState.RequiresPermissions
             } else {
                 if (isBluetoothEnabled) BluetoothDevicesListState.Initial else BluetoothDevicesListState.SwitchedOff
@@ -91,7 +92,11 @@ class BluetoothDevicesViewModel(
                     val state = intent?.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR) ?: BluetoothAdapter.ERROR
                     viewState = viewState.copy(btAdapterState = state)
                     if (state == BluetoothAdapter.STATE_ON) {
-                        handleEvent(BluetoothDevicesViewEvent.LoadDevices)
+                        if (isBluetoothPermissionMissing()) {
+                            viewState = viewState.copy(listState = BluetoothDevicesListState.RequiresPermissions)
+                        } else {
+                            handleEvent(BluetoothDevicesViewEvent.LoadDevices)
+                        }
                     }
                 }
         }
@@ -116,17 +121,29 @@ class BluetoothDevicesViewModel(
         }
     }
 
-    private fun checkPermission(): Boolean {
+    /** Returns true when the Bluetooth runtime permissions are NOT granted (i.e. missing). */
+    private fun isBluetoothPermissionMissing(): Boolean {
         return (!AppPermissions.isGranted(context, AppPermission.BluetoothScan)
                 || !AppPermissions.isGranted(context, AppPermission.BluetoothConnect))
     }
 
     @SuppressLint("MissingPermission")
     private suspend fun loadDevices(selectedDevices: ArrayMap<String, String>): List<BluetoothDevice> = withContext(Dispatchers.Default) {
+        if (isBluetoothPermissionMissing()) {
+            // BLUETOOTH_CONNECT / BLUETOOTH_SCAN not granted at runtime.
+            return@withContext emptyList<BluetoothDevice>()
+        }
         val btAdapter = bluetoothManager.adapter ?: return@withContext emptyList<BluetoothDevice>()
 
-        // Get a set of currently paired devices
-        val pairedDevices = btAdapter.bondedDevices
+        // Get a set of currently paired devices. Guard against SecurityException: on API 31+
+        // getBondedDevices() requires the BLUETOOTH_CONNECT runtime permission, which can be
+        // revoked between the check above and this call (e.g. via the BT state-changed path).
+        val pairedDevices = try {
+            btAdapter.bondedDevices ?: emptySet()
+        } catch (e: SecurityException) {
+            AppLog.e(e)
+            return@withContext emptyList<BluetoothDevice>()
+        }
         val pairedList = mutableListOf<BluetoothDevice>()
 
         // If there are paired devices, add each one to the ArrayAdapter

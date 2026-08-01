@@ -228,16 +228,6 @@
                 android:resource="@xml/carhome_appwidget_info_1x1" />
         </receiver>
 
-        <service
-            android:name=".UpdateWidgetJob"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:foregroundServiceType="specialUse"
-            >
-            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="JobIntentService work service to update app widget when settings are changed"/>
-        </service>
-
         <receiver
             android:name=".BootCompleted"
             android:exported="true"

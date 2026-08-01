@@ -15,6 +15,7 @@ import info.anodsplace.carwidget.content.preferences.InCarInterface
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import org.koin.core.context.GlobalContext
 
 class BroadcastService : Service(), KoinComponent {
 
@@ -39,25 +40,41 @@ class BroadcastService : Service(), KoinComponent {
     }
     
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        // Enter the foreground immediately and unconditionally, before any other work, so we never
+        // miss the start deadline (RemoteServiceException$ForegroundServiceDidNotStartInTimeException).
         try {
-            // Start once
-            if (receiver == null) {
-                startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this))
-                if (register(this)) {
-                    return START_STICKY
-                }
-            } else {
-                startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this))
-                return START_STICKY
-            }
+            startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this))
+        } catch (e: Exception) {
+            AppLog.e(e)
+            stopSelf()
+            return START_NOT_STICKY
+        }
 
+        // If the OS restarted this service into a process where Koin isn't ready yet, stop cleanly
+        // instead of relying on downstream get<InCarSettings>() to throw ("KoinApplication has not
+        // been started"). Mirrors the guard in ModeService.
+        if (GlobalContext.getOrNull() == null) {
+            AppLog.e("Koin is not started, stopping BroadcastService")
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
             return START_NOT_STICKY
+        }
+
+        try {
+            if (receiver != null || register(this)) {
+                // START_NOT_STICKY on purpose: allowing the OS to auto-restart this foreground
+                // service from the background (START_STICKY) leads to repeated foreground-start
+                // timeout crashes on API 31+. It is re-started on demand by ModeBroadcastReceiver
+                // and settings changes when actually required.
+                return START_NOT_STICKY
+            }
         } catch (e: Exception) {
             AppLog.e(e)
-            return START_NOT_STICKY
         }
+
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
+        return START_NOT_STICKY
     }
 
     override fun onDestroy() {
@@ -87,21 +104,38 @@ class BroadcastService : Service(), KoinComponent {
         filter.addAction(UiModeManager.ACTION_ENTER_CAR_MODE)
         filter.addAction(UiModeManager.ACTION_EXIT_CAR_MODE)
 
-        receiver = ModeBroadcastReceiver()
-        context.registerReceiver(receiver, filter)
+        // Assign the field only after registration succeeds so a failed registerReceiver()
+        // does not leave a non-null-but-unregistered receiver that later crashes unregister().
+        val modeReceiver = ModeBroadcastReceiver()
+        context.registerReceiver(modeReceiver, filter)
+        receiver = modeReceiver
         return true
     }
 
     private fun unregister(context: Context) {
         AppLog.i("Unregister BroadcastService")
         if (receiver != null) {
-            context.unregisterReceiver(receiver)
+            try {
+                context.unregisterReceiver(receiver)
+            } catch (e: IllegalArgumentException) {
+                // Receiver was already unregistered (e.g. double unregister) or was registered
+                // against a different context.
+                AppLog.e(e)
+            }
             receiver = null
         }
-        val prefs = get<InCarSettings>()
 
-        if (!prefs.isActivityRequired) {
-            ActivityTransitionTracker(context).stop()
+        // Skip DI-dependent cleanup when Koin isn't available to avoid crashing in teardown.
+        if (GlobalContext.getOrNull() == null) {
+            return
+        }
+        try {
+            val prefs = get<InCarSettings>()
+            if (!prefs.isActivityRequired) {
+                ActivityTransitionTracker(context).stop()
+            }
+        } catch (e: Exception) {
+            AppLog.e(e)
         }
     }
 
@@ -117,7 +151,14 @@ class BroadcastService : Service(), KoinComponent {
 
         private fun startService(context: Context) {
             val service = Intent(context.applicationContext, BroadcastService::class.java)
-            ContextCompat.startForegroundService(context, service)
+            try {
+                ContextCompat.startForegroundService(context, service)
+            } catch (e: Exception) {
+                // API 31+: ForegroundServiceStartNotAllowedException when started from the
+                // background without an exemption (the triggering broadcasts - headset plug,
+                // power, Bluetooth ACL - are not exempt). Nothing actionable; skip rather than crash.
+                AppLog.e(e)
+            }
         }
 
         private fun stopService(context: Context) {
