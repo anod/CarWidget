@@ -115,7 +115,7 @@ class ModeService : Service(), KoinComponent {
     private fun updateNotification() {
         serviceScope.launch {
             try {
-                val notification = withContext(Dispatchers.Default) { notificationFactory.create() }
+                val notification = withContext(Dispatchers.IO) { notificationFactory.create() }
                 if (sInCarMode) {
                     getSystemService(NotificationManager::class.java)
                         ?.notify(InCarModeNotificationFactory.id, notification)
