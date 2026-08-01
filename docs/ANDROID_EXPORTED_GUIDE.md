@@ -180,15 +180,11 @@ Let me analyze each exported component in your app:
 
 ---
 
-#### 8. **UpdateWidgetJob** (Line 233-241)
-```xml
-<service
-    android:name=".UpdateWidgetJob"
-    android:exported="true"
-    android:permission="android.permission.BIND_JOB_SERVICE">
-```
-**Why exported?** JobIntentService needs to be bindable by system.  
-**Security:** Protected by `BIND_JOB_SERVICE` permission ✅
+#### 8. **UpdateWidgetJob** — REMOVED
+The `UpdateWidgetJob` `JobIntentService` (and its exported `<service>` entry) was removed.
+Widget updates now run via `AppWidgetProvider.onUpdate()` using `goAsync()` plus the app's
+Koin `AppCoroutineScope`, so there is no longer an exported service to protect. This also
+eliminates a legacy `JobIntentService` crash (`IllegalArgumentException: Given work is not active`).
 
 ---
 
