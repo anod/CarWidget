@@ -118,7 +118,8 @@ class BroadcastService : Service(), KoinComponent {
             try {
                 context.unregisterReceiver(receiver)
             } catch (e: IllegalArgumentException) {
-                // Receiver was created but never successfully registered.
+                // Receiver was already unregistered (e.g. double unregister) or was registered
+                // against a different context.
                 AppLog.e(e)
             }
             receiver = null

@@ -75,9 +75,11 @@ open class Provider : AppWidgetProvider(), KoinComponent {
 
     companion object : KoinComponent {
 
-        // Serializes widget rebuilds so two concurrent updates of the same widget can't race
-        // (WidgetViewBuilder.firstTimeInit performs a check-then-write on shared storage). The
-        // mutex is held across suspension points, which limitedParallelism(1) would not do.
+        // Serializes all widget rebuilds process-wide: a single shared mutex, locked per widget
+        // in performUpdate. WidgetViewBuilder.firstTimeInit performs a check-then-write on shared
+        // storage, so overlapping rebuilds -- even of different widgets -- must not run
+        // concurrently. The lock is held across the suspending create() call, so it also guards
+        // work that runs on other dispatchers, which limitedParallelism(1) alone would not.
         private val updateMutex = Mutex()
 
         fun requestUpdate(

@@ -42,17 +42,31 @@ class ScreenOrientation(private val context: Context, private val windowManager:
         // updateViewLayout() on it throws IllegalArgumentException ("View not attached to window
         // manager") because that new view was never added.
         val currentView = overlayView
-        if (viewAdded && currentView != null) {
-            layoutParams?.screenOrientation = orientation
+        val currentParams = layoutParams
+        if (viewAdded && currentView != null && currentParams != null) {
+            currentParams.screenOrientation = orientation
             try {
-                windowManager.updateViewLayout(currentView, layoutParams)
+                windowManager.updateViewLayout(currentView, currentParams)
+                return
             } catch (e: IllegalArgumentException) {
                 AppLog.e(e)
                 overlayView = null
                 layoutParams = null
                 viewAdded = false
+                // Stale/detached view: fall through and re-add the overlay below.
             }
-            return
+        } else if (viewAdded && currentView != null) {
+            // Inconsistent state (view present but params missing). Remove the stale overlay
+            // before re-adding so we don't orphan an attached view or pass null params to
+            // updateViewLayout() (which would crash with an NPE that the catch above misses).
+            try {
+                windowManager.removeView(currentView)
+            } catch (e: IllegalArgumentException) {
+                AppLog.e(e)
+            }
+            overlayView = null
+            layoutParams = null
+            viewAdded = false
         }
 
         val view = View(context)
