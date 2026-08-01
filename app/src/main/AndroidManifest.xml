@@ -74,7 +74,7 @@
         <activity android:name="com.anod.car.home.OverlayActivity"
             android:clearTaskOnLaunch="true"
             android:excludeFromRecents="true"
-            android:exported="true"
+            android:exported="false"
             android:launchMode="singleInstance"
             android:taskAffinity="com.anod.car.home.overlay"
             android:theme="@style/BrightnessTheme" />
@@ -83,7 +83,7 @@
             android:name="com.anod.car.home.ShortcutActivity"
             android:clearTaskOnLaunch="true"
             android:excludeFromRecents="true"
-            android:exported="true"
+            android:exported="false"
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:taskAffinity="com.anod.car.home.shortcut"
@@ -128,7 +128,7 @@
             android:name="com.anod.car.home.incar.SwitchInCarActivity"
             android:clearTaskOnLaunch="true"
             android:excludeFromRecents="true"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/switch_in_car_activity"
             android:launchMode="singleInstance"
             android:noHistory="true"
@@ -253,14 +253,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
-        <activity
-            android:name=".incar.AcceptCallActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTop"
-            android:taskAffinity=""
-            android:theme="@style/BrightnessTheme" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

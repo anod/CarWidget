@@ -38,7 +38,7 @@ object ModeDetector {
 
     val prefState: BooleanArray
         get() = synchronized(sLock) {
-            return sPrefState
+            return sPrefState.copyOf()
         }
 
     fun eventsState(): List<InCarStatus.EventState> {
@@ -54,7 +54,9 @@ object ModeDetector {
     }
 
     fun onRegister(context: Context) {
-        sEventState[FLAG_POWER] = Power.isConnected(context)
+        synchronized(sLock) {
+            sEventState[FLAG_POWER] = Power.isConnected(context)
+        }
     }
 
     fun updatePrefState(prefs: InCarInterface) {
@@ -68,21 +70,23 @@ object ModeDetector {
     }
 
     fun forceState(prefs: InCarInterface, forceMode: Boolean) {
-        updatePrefState(prefs)
-        if (sPrefState[FLAG_POWER]) {
-            sEventState[FLAG_POWER] = forceMode
-        }
-        if (sPrefState[FLAG_HEADSET]) {
-            sEventState[FLAG_HEADSET] = forceMode
-        }
-        if (sPrefState[FLAG_BLUETOOTH]) {
-            sEventState[FLAG_BLUETOOTH] = forceMode
-        }
-        if (sPrefState[FLAG_ACTIVITY]) {
-            sEventState[FLAG_ACTIVITY] = forceMode
-        }
-        if (sPrefState[FLAG_CAR_DOCK]) {
-            sEventState[FLAG_CAR_DOCK] = forceMode
+        synchronized(sLock) {
+            updatePrefState(prefs)
+            if (sPrefState[FLAG_POWER]) {
+                sEventState[FLAG_POWER] = forceMode
+            }
+            if (sPrefState[FLAG_HEADSET]) {
+                sEventState[FLAG_HEADSET] = forceMode
+            }
+            if (sPrefState[FLAG_BLUETOOTH]) {
+                sEventState[FLAG_BLUETOOTH] = forceMode
+            }
+            if (sPrefState[FLAG_ACTIVITY]) {
+                sEventState[FLAG_ACTIVITY] = forceMode
+            }
+            if (sPrefState[FLAG_CAR_DOCK]) {
+                sEventState[FLAG_CAR_DOCK] = forceMode
+            }
         }
     }
 
@@ -99,15 +103,16 @@ object ModeDetector {
             onPowerConnected(prefs, context)
         }
 
-        updatePrefState(prefs)
-        updateEventState(prefs, intent)
-        if (BuildConfig.DEBUG) {
-            for (i in sPrefState.indices) {
-                AppLog.d(sTitles[i] + ": pref - " + sPrefState[i] + ", event - " + sEventState[i])
+        val newMode = synchronized(sLock) {
+            updatePrefState(prefs)
+            updateEventState(prefs, intent)
+            if (BuildConfig.DEBUG) {
+                for (i in sPrefState.indices) {
+                    AppLog.d(sTitles[i] + ": pref - " + sPrefState[i] + ", event - " + sEventState[i])
+                }
             }
+            detectNewMode()
         }
-
-        val newMode = detectNewMode()
         AppLog.i("New mode: " + newMode + " Car Mode: " + ModeService.sInCarMode)
         if (!ModeService.sInCarMode && newMode) {
             val service = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_ON)
@@ -231,12 +236,16 @@ object ModeDetector {
     }
 
     fun switchOn(prefs: InCarInterface, modeHandler: ModeHandler) {
-        sMode = true
+        synchronized(sLock) {
+            sMode = true
+        }
         modeHandler.enable(prefs)
     }
 
     fun switchOff(prefs: InCarInterface, modeHandler: ModeHandler) {
-        sMode = false
+        synchronized(sLock) {
+            sMode = false
+        }
         modeHandler.disable(prefs)
     }
 }

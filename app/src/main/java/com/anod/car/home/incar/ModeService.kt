@@ -1,5 +1,6 @@
 package com.anod.car.home.incar
 
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -15,7 +16,13 @@ import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.permissions.AppPermission
 import info.anodsplace.permissions.AppPermissions
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -25,8 +32,19 @@ class ModeService : Service(), KoinComponent {
     private var phoneListener: ModePhoneStateListener? = null
     private val modeHandler: ModeHandler by inject()
     private var forceState: Boolean = false
+    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+
+    private val notificationFactory: InCarModeNotificationFactory by lazy {
+        InCarModeNotificationFactory(
+            context = this,
+            database = get(),
+            iconLoader = get(),
+            shortcutResources = get()
+        )
+    }
 
     override fun onDestroy() {
+        serviceScope.cancel()
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
 
         val prefs = get<InCarSettings>()
@@ -54,14 +72,10 @@ class ModeService : Service(), KoinComponent {
         AppLog.i("Start InCar Mode service, sInCarMode = " + sInCarMode + ", redelivered = "
                 + redelivered)
 
-        val notificationFactory = InCarModeNotificationFactory(
-            context = this,
-            database = get(),
-            iconLoader = get(),
-            shortcutResources = get()
-        )
-        val notification = runBlocking { notificationFactory.create() }
-        startForeground(InCarModeNotificationFactory.id, notification)
+        // Enter the foreground immediately with a lightweight notification. Building the rich
+        // notification touches the database, PackageManager and decodes icons, so it must not
+        // run on the main thread (ANR / foreground-service start-timeout risk).
+        startForeground(InCarModeNotificationFactory.id, notificationFactory.createBasic())
 
         if (intent == null) {
             AppLog.e("ModeService started without intent")
@@ -92,9 +106,27 @@ class ModeService : Service(), KoinComponent {
         initPhoneListener(prefs)
         requestWidgetsUpdate()
 
+        updateNotification()
+
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.
         return START_REDELIVER_INTENT
+    }
+
+    private fun updateNotification() {
+        serviceScope.launch {
+            try {
+                val notification = withContext(Dispatchers.IO) { notificationFactory.create() }
+                if (sInCarMode) {
+                    getSystemService(NotificationManager::class.java)
+                        ?.notify(InCarModeNotificationFactory.id, notification)
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                AppLog.e(e)
+            }
+        }
     }
 
     private fun initPhoneListener(prefs: info.anodsplace.carwidget.content.preferences.InCarInterface) {
@@ -151,6 +183,7 @@ class ModeService : Service(), KoinComponent {
         const val MODE_SWITCH_OFF = 1
         const val MODE_SWITCH_ON = 0
 
+        @Volatile
         var sInCarMode: Boolean = false
 
         @Volatile
