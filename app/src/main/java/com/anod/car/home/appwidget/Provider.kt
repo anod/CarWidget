@@ -15,8 +15,11 @@ import info.anodsplace.carwidget.content.preferences.WidgetStorage
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.random.Random
 
 open class Provider : AppWidgetProvider(), KoinComponent {
@@ -27,8 +30,17 @@ open class Provider : AppWidgetProvider(), KoinComponent {
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         val pendingResult = goAsync()
+        val finished = AtomicBoolean(false)
         requestUpdate(context, appWidgetIds, appWidgetManager) {
-            pendingResult.finish()
+            // Completion may be signalled from the coroutine or a synchronous failure path; keep it
+            // idempotent and swallow a stray finish() so the callback can never crash the process.
+            if (finished.compareAndSet(false, true)) {
+                try {
+                    pendingResult.finish()
+                } catch (e: Exception) {
+                    AppLog.e(e)
+                }
+            }
         }
     }
 
@@ -63,6 +75,11 @@ open class Provider : AppWidgetProvider(), KoinComponent {
 
     companion object : KoinComponent {
 
+        // Serializes widget rebuilds so two concurrent updates of the same widget can't race
+        // (WidgetViewBuilder.firstTimeInit performs a check-then-write on shared storage). The
+        // mutex is held across suspension points, which limitedParallelism(1) would not do.
+        private val updateMutex = Mutex()
+
         fun requestUpdate(
             context: Context,
             appWidgetIds: IntArray,
@@ -70,25 +87,34 @@ open class Provider : AppWidgetProvider(), KoinComponent {
             onComplete: (() -> Unit)? = null
         ) {
             AppLog.i("appWidgetIds: ${appWidgetIds.joinToString(",")}", tag = "requestUpdate")
-            val ids = if (appWidgetIds.isEmpty()) {
-                appWidgetManager.getAppWidgetIds(getComponentName(context))
-            } else {
-                appWidgetIds
-            }
-            if (ids.isEmpty()) {
-                AppLog.w("appWidgetIds is empty, skipping update", tag = "requestUpdate")
-                onComplete?.invoke()
-                return
-            }
-            val scope: AppCoroutineScope = get()
-            scope.launch(Dispatchers.Default) {
-                try {
-                    performUpdate(context.applicationContext, appWidgetManager, get(), ids)
-                } catch (e: Exception) {
-                    AppLog.e(e)
-                } finally {
-                    onComplete?.invoke()
+            // Guard the whole hand-off: callers such as onUpdate() have already taken a goAsync()
+            // PendingResult, so a synchronous throw here (e.g. Koin not ready) must never escape
+            // without invoking onComplete, otherwise the broadcast is left unfinished.
+            try {
+                val appContext = context.applicationContext
+                val ids = if (appWidgetIds.isEmpty()) {
+                    appWidgetManager.getAppWidgetIds(getComponentName(appContext))
+                } else {
+                    appWidgetIds
                 }
+                if (ids.isEmpty()) {
+                    AppLog.w("appWidgetIds is empty, skipping update", tag = "requestUpdate")
+                    onComplete?.invoke()
+                    return
+                }
+                val scope: AppCoroutineScope = get()
+                scope.launch(Dispatchers.Default) {
+                    try {
+                        performUpdate(appContext, appWidgetManager, get(), ids)
+                    } catch (e: Exception) {
+                        AppLog.e(e)
+                    } finally {
+                        onComplete?.invoke()
+                    }
+                }
+            } catch (e: Exception) {
+                AppLog.e(e)
+                onComplete?.invoke()
             }
         }
 
@@ -99,25 +125,31 @@ open class Provider : AppWidgetProvider(), KoinComponent {
             appWidgetIds: IntArray
         ) {
             for (appWidgetId in appWidgetIds) {
-                AppWidgetIdScope(appWidgetId, instance = Random.nextInt(), existingScope = null).use {
-                    val viewBuilder = WidgetViewBuilder(
-                        context = context,
-                        iconLoader = get(),
-                        appWidgetId = appWidgetId,
-                        bitmapMemoryCache = null,
-                        pendingIntentFactory = ShortcutPendingIntent(context, shortcutResources),
-                        widgetButtonAlternativeHidden = false,
-                        overrideSkin = null,
-                        overrideCount = null,
-                        widgetSettings = it.scope.get(),
-                        inCarSettings = get(),
-                        shortcutsModel = it.scope.get(),
-                        koin = getKoin(),
-                    )
-                    viewBuilder.firstTimeInit()
-                    val view = viewBuilder.create()
-                    AppLog.i("Performing update for widget #$appWidgetId")
-                    appWidgetManager.updateAppWidget(appWidgetId, view)
+                try {
+                    updateMutex.withLock {
+                        AppWidgetIdScope(appWidgetId, instance = Random.nextInt(), existingScope = null).use {
+                            val viewBuilder = WidgetViewBuilder(
+                                context = context,
+                                iconLoader = get(),
+                                appWidgetId = appWidgetId,
+                                bitmapMemoryCache = null,
+                                pendingIntentFactory = ShortcutPendingIntent(context, shortcutResources),
+                                widgetButtonAlternativeHidden = false,
+                                overrideSkin = null,
+                                overrideCount = null,
+                                widgetSettings = it.scope.get(),
+                                inCarSettings = get(),
+                                shortcutsModel = it.scope.get(),
+                                koin = getKoin(),
+                            )
+                            viewBuilder.firstTimeInit()
+                            val view = viewBuilder.create()
+                            AppLog.i("Performing update for widget #$appWidgetId")
+                            appWidgetManager.updateAppWidget(appWidgetId, view)
+                        }
+                    }
+                } catch (e: Exception) {
+                    AppLog.e(e)
                 }
             }
         }
