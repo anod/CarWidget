@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +25,7 @@ import info.anodsplace.carwidget.chooser.ChooserEmptyState
 import info.anodsplace.carwidget.chooser.ShortcutsChooserLoader
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.di.AppWidgetIdScope
+import info.anodsplace.carwidget.shortcut.FolderViewMaxWidth
 import info.anodsplace.compose.chooser.ChooserDialog
 import info.anodsplace.compose.chooser.ChooserGridListDefaults
 import info.anodsplace.framework.content.startActivitySafely
@@ -70,7 +72,9 @@ fun FolderDialog(
             onDismissRequest()
         },
         style = ChooserGridListDefaults.singleSelect(),
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier
+            .padding(16.dp)
+            .widthIn(max = FolderViewMaxWidth),
         topContent = { _ ->
             CenterAlignedTopAppBar(
                 modifier = Modifier.fillMaxWidth(),
