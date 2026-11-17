@@ -15,6 +15,8 @@ class BrowserUrlSender : ReportSender {
     override fun requiresForeground(): Boolean = true
 
     override fun send(context: Context, errorContent: CrashReportData) {
+        val fullTrace = errorContent.getString(ReportField.STACK_TRACE) ?: ""
+        AppLog.d(fullTrace)
         var appId = 0x00
         if (BuildConfig.DEBUG) {
             appId = appId or 0x10
@@ -34,8 +36,7 @@ class BrowserUrlSender : ReportSender {
             appendQueryParameter("g", errorContent.getString(ReportField.PHONE_MODEL))
             appendQueryParameter("h", errorContent.getString(ReportField.BRAND))
 
-            appendQueryParameter("v", minifyTrace(
-                errorContent.getString(ReportField.STACK_TRACE) ?: ""))
+            appendQueryParameter("v", minifyCrashTrace(fullTrace))
 
             appendQueryParameter("l", errorContent.getString(ReportField.LOGCAT))
         }.build()
@@ -47,31 +48,24 @@ class BrowserUrlSender : ReportSender {
         }
         context.startActivity(intent)
     }
+}
 
-    private fun minifyTrace(fullTrace: String): String {
-        AppLog.d(fullTrace)
-        val lines = fullTrace.split("\n").dropLastWhile { it.isEmpty() }
+internal fun minifyCrashTrace(fullTrace: String): String {
+    val lines = fullTrace.split("\n").dropLastWhile { it.isEmpty() }
 
-        if (lines.isNotEmpty()) {
-            val sb = StringBuilder()
-            sb.append(lines[0])
-            var findLines = 3
-            var causedLines = 2
-            for (i in 1 until lines.size) {
-                if (findLines > 0 && lines[i].contains("at com.anod.car.home")) {
-                    findLines--
-                    sb.append("\n").append(lines[i])
-                } else if (causedLines > 0 && lines[i].contains("Caused by:")) {
-                    causedLines--
-                    sb.append("\n").append(lines[i])
-                }
-
-                if (findLines == 0 && causedLines == 0) {
-                    break
-                }
+    if (lines.isNotEmpty()) {
+        val sb = StringBuilder()
+        sb.append(lines[0])
+        var findLines = 3
+        for (i in 1 until lines.size) {
+            if (findLines > 0 && lines[i].contains("at com.anod.car.home")) {
+                findLines--
+                sb.append("\n").append(lines[i])
+            } else if (lines[i].contains("Caused by:")) {
+                sb.append("\n").append(lines[i])
             }
-            return sb.toString()
         }
-        return ""
+        return sb.toString()
     }
+    return ""
 }
