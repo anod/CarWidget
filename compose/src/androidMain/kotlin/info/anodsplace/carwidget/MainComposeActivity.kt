@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget
 
+import android.app.Activity
 import android.app.UiModeManager
 import android.appwidget.AppWidgetManager
 import android.content.Intent
@@ -51,6 +52,8 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         appWidgetId = extras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
+        // Widget hosts expect the widget ID even when configuration is dismissed.
+        setWidgetConfigResult(RESULT_CANCELED, appWidgetId)
         setContent {
             val uiMode by appSettings.uiModeChange.collectAsState(initial = appSettings.uiMode)
             LaunchedEffect(uiMode) {
@@ -87,11 +90,7 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
         when (action) {
             is MainViewAction.OpenWidgetConfig -> startConfigActivity(action.appWidgetId)
             is MainViewAction.ApplyWidget -> {
-                val resultValue = Intent().putExtra(
-                    AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    action.appWidgetId
-                )
-                setResult(RESULT_OK, resultValue)
+                setWidgetConfigResult(RESULT_OK, action.appWidgetId)
                 getOrCreateAppWidgetScope(action.appWidgetId).use {
                     val prefs: WidgetInterface = it.scope.get()
                     prefs.skin = action.currentSkinValue
@@ -104,4 +103,9 @@ open class MainComposeActivity : AppCompatActivity(), KoinComponent {
             is MainViewAction.StartActivity -> { }
         }
     }
+}
+
+internal fun Activity.setWidgetConfigResult(resultCode: Int, appWidgetId: Int) {
+    if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) return
+    setResult(resultCode, Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId))
 }
