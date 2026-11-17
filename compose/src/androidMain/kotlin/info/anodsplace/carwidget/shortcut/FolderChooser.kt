@@ -1,5 +1,6 @@
 package info.anodsplace.carwidget.shortcut
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
@@ -78,6 +80,8 @@ fun FolderChooser(
             )
         )
     }
+    // Snapshot of selection shown in the "Selected" tab, so unchecking an item there doesn't hide it
+    var selectedTabEntries by remember(initialSelectedItems) { mutableStateOf(selected.entries) }
     var categoryFilter by remember { mutableStateOf(if (isEdit) CategoryFilterState.Selected else CategoryFilterState.All) }
     var searchQuery by remember { mutableStateOf("") }
 
@@ -92,26 +96,19 @@ fun FolderChooser(
     val appsFlow = remember(baseLoader) { baseLoader.load() }
     val appsList by appsFlow.collectAsState(initial = null)
     val (categoryNames, orderedCategoryIds) = remember (appsList) { categoryNamesAndIds(context, appsList) }
-    val filteredList = remember(appsList, categoryFilter, searchQuery, selected) {
-        val list = appsList ?: return@remember emptyList()
-        val preFiltered = when (categoryFilter) {
-            // include "shortcuts" loader items (sourceLoader == 1) in the Selected tab
-            is CategoryFilterState.Selected -> list.filter {
-                it.componentName?.let { cn -> selected.entries.contains(cn) } == true || it.sourceLoader == 1
-            }
-            // category filter applies only to apps loader (sourceLoader == 0)
-            is CategoryFilterState.Category -> list.filter {
-                it.category == (categoryFilter as CategoryFilterState.Category).categoryId && it.sourceLoader == 0
-            }
-            else -> list.filter { it.sourceLoader == 0 }
-        }
-        val q = searchQuery.trim()
-        val result = if (q.isEmpty()) preFiltered else preFiltered.filter { it.title.contains(q, ignoreCase = true) }
-        result
+    val filteredList = remember(appsList, categoryFilter, searchQuery, selectedTabEntries) {
+        filterFolderEntries(
+            list = appsList ?: emptyList(),
+            categoryFilter = categoryFilter,
+            selectedTabEntries = selectedTabEntries,
+            searchQuery = searchQuery
+        )
     }
     MultiSelectChooserDialog(
         list = filteredList.toImmutableList(),
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .widthIn(max = FolderViewMaxWidth),
         headers = persistentListOf(),
         selectedComponents = selected,
         style = ChooserGridListDefaults.multiSelect().copy(grayscaleUnselectedIcons = true),
@@ -144,6 +141,9 @@ fun FolderChooser(
                     categoryFilter = categoryFilter,
                     showSelectedCategory = isEdit,
                     onCategorySelected = { cat ->
+                        if (cat is CategoryFilterState.Selected) {
+                            selectedTabEntries = selected.entries
+                        }
                         categoryFilter = cat
                         if (showTitle && cat is CategoryFilterState.Category && !titleManuallyChanged) {
                             val idx = orderedCategoryIds.indexOf(cat.categoryId)
@@ -164,7 +164,7 @@ fun FolderChooser(
                 Spacer(modifier = Modifier.height(12.dp))
             }
         },
-        bottomContent = { displayedList ->
+        bottomContent = { _ ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -175,8 +175,8 @@ fun FolderChooser(
                 Spacer(modifier = Modifier.size(8.dp))
                 Button(
                     onClick = {
-                        val selectedEntries = displayedList
-                            .filter { it.componentName != null && selected.entries.contains(it.componentName) }
+                        // Use the full list so selections hidden by the current filter/search are kept
+                        val selectedEntries = selectedFolderEntries(appsList ?: emptyList(), selected.entries)
                             .map {
                                 it.isAppEntry = true
                                 it.toShortcutIntent()
@@ -200,6 +200,32 @@ sealed interface CategoryFilterState {
     data class Category(val categoryId: Int) : CategoryFilterState
     data object Selected : CategoryFilterState
 }
+
+internal val FolderViewMaxWidth = 560.dp
+
+internal fun filterFolderEntries(
+    list: List<ChooserEntry>,
+    categoryFilter: CategoryFilterState,
+    selectedTabEntries: Set<ComponentName>,
+    searchQuery: String
+): List<ChooserEntry> {
+    val preFiltered = when (categoryFilter) {
+        // include "shortcuts" loader items (sourceLoader == 1) in the Selected tab
+        is CategoryFilterState.Selected -> list.filter {
+            it.componentName?.let { cn -> selectedTabEntries.contains(cn) } == true || it.sourceLoader == 1
+        }
+        // category filter applies only to apps loader (sourceLoader == 0)
+        is CategoryFilterState.Category -> list.filter {
+            it.category == categoryFilter.categoryId && it.sourceLoader == 0
+        }
+        is CategoryFilterState.All -> list.filter { it.sourceLoader == 0 }
+    }
+    val q = searchQuery.trim()
+    return if (q.isEmpty()) preFiltered else preFiltered.filter { it.title.contains(q, ignoreCase = true) }
+}
+
+internal fun selectedFolderEntries(list: List<ChooserEntry>, selected: Set<ComponentName>): List<ChooserEntry> =
+    list.filter { entry -> entry.componentName?.let { selected.contains(it) } == true }
 
 @Composable
 private fun CategoryFilterChips(
