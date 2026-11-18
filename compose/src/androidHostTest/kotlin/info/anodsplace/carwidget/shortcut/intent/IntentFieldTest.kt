@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import info.anodsplace.carwidget.content.shortcuts.ShortcutIntentPolicy
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -76,6 +77,34 @@ class IntentFieldTest {
         assertFalse(IntentField.MimeType("image/", "MIME type").isValid)
         assertFalse(IntentField.Component(ComponentName("com.example.app", "")).isValid)
         assertTrue(IntentField.Component(ComponentName("com.example.app", "com.example.app.MainActivity")).isValid)
+    }
+
+    @Test
+    fun actionAndMimeEditsAcceptOnlyAllowedValuesOrAnEmptyField() {
+        assertTrue(IntentField.Action(Intent.ACTION_VIEW, "Action").isValid)
+        assertFalse(IntentField.Action(Intent.ACTION_ANSWER, "Action").isValid)
+        assertTrue(IntentField.Action("", "Action").isValid)
+
+        assertTrue(IntentField.MimeType("vnd.android.cursor.item/phone_v2", "MIME type").isValid)
+        assertFalse(IntentField.MimeType("image/png", "MIME type").isValid)
+        assertTrue(IntentField.MimeType("", "MIME type").isValid)
+    }
+
+    @Test
+    fun categoryAndFlagEditorsOfferExactlyTheLauncherOptions() {
+        assertEquals(ShortcutIntentPolicy.categories, editableIntentCategories.values.toSet())
+        assertEquals(ShortcutIntentPolicy.flags, editableIntentFlags.values.toSet())
+        assertFalse(Intent.CATEGORY_HOME in editableIntentCategories.values)
+        assertFalse(Intent.FLAG_GRANT_READ_URI_PERMISSION in editableIntentFlags.values)
+    }
+
+    @Test
+    fun editingAnotherFieldPreservesLegacyActionAndMimeType() {
+        val original = Intent(Intent.ACTION_ANSWER).setType("image/png")
+        val edited = updateIntentField(IntentField.Flags(Intent.FLAG_ACTIVITY_NEW_TASK), original)
+
+        assertEquals(Intent.ACTION_ANSWER, edited.action)
+        assertEquals("image/png", edited.type)
     }
 
     @Test

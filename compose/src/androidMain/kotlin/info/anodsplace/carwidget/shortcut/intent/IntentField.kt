@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.compose.runtime.Immutable
 import androidx.core.os.bundleOf
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.shortcuts.ShortcutIntentPolicy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -72,7 +73,7 @@ val IntentFlags = mapOf(
         "ACTIVITY_BROUGHT_TO_FRONT" to 0x00400000,
         "ACTIVITY_RESET_TASK_IF_NEEDED" to 0x00200000,
         "ACTIVITY_LAUNCHED_FROM_HISTORY" to 0x00100000,
-        "ACTIVITY_NEW_DOCUMENT" to 0x00080000,
+        "ACTIVITY_NEW_DOCUMENT" to Intent.FLAG_ACTIVITY_NEW_DOCUMENT,
         "ACTIVITY_NO_USER_ACTION" to 0x00040000,
         "ACTIVITY_REORDER_TO_FRONT" to 0X00020000,
         "ACTIVITY_NO_ANIMATION" to 0X00010000,
@@ -81,7 +82,11 @@ val IntentFlags = mapOf(
         "ACTIVITY_RETAIN_IN_RECENTS" to 0x00002000,
         "ACTIVITY_LAUNCH_ADJACENT" to 0x00001000,
         "ACTIVITY_MATCH_EXTERNAL" to 0x00000800,
+        "FROM_BACKGROUND" to Intent.FLAG_FROM_BACKGROUND,
 )
+
+internal val editableIntentFlags = IntentFlags.filterValues { it in ShortcutIntentPolicy.flags }
+internal val editableIntentCategories = IntentCategories.filterValues { it in ShortcutIntentPolicy.categories }
 
 val Intent.flagNames: List<String>
     get() {
@@ -103,13 +108,13 @@ val Intent.categoryNames: List<String>
 val packageNameRegex = Regex("(?!^abstract$|^abstract\\..*|.*\\.abstract\\..*|.*\\.abstract$|^assert$|^assert\\..*|.*\\.assert\\..*|.*\\.assert$|^boolean$|^boolean\\..*|.*\\.boolean\\..*|.*\\.boolean$|^break$|^break\\..*|.*\\.break\\..*|.*\\.break$|^byte$|^byte\\..*|.*\\.byte\\..*|.*\\.byte$|^case$|^case\\..*|.*\\.case\\..*|.*\\.case$|^catch$|^catch\\..*|.*\\.catch\\..*|.*\\.catch$|^char$|^char\\..*|.*\\.char\\..*|.*\\.char$|^class$|^class\\..*|.*\\.class\\..*|.*\\.class$|^const$|^const\\..*|.*\\.const\\..*|.*\\.const$|^continue$|^continue\\..*|.*\\.continue\\..*|.*\\.continue$|^default$|^default\\..*|.*\\.default\\..*|.*\\.default$|^do$|^do\\..*|.*\\.do\\..*|.*\\.do$|^double$|^double\\..*|.*\\.double\\..*|.*\\.double$|^else$|^else\\..*|.*\\.else\\..*|.*\\.else$|^enum$|^enum\\..*|.*\\.enum\\..*|.*\\.enum$|^extends$|^extends\\..*|.*\\.extends\\..*|.*\\.extends$|^final$|^final\\..*|.*\\.final\\..*|.*\\.final$|^finally$|^finally\\..*|.*\\.finally\\..*|.*\\.finally$|^float$|^float\\..*|.*\\.float\\..*|.*\\.float$|^for$|^for\\..*|.*\\.for\\..*|.*\\.for$|^goto$|^goto\\..*|.*\\.goto\\..*|.*\\.goto$|^if$|^if\\..*|.*\\.if\\..*|.*\\.if$|^implements$|^implements\\..*|.*\\.implements\\..*|.*\\.implements$|^import$|^import\\..*|.*\\.import\\..*|.*\\.import$|^instanceof$|^instanceof\\..*|.*\\.instanceof\\..*|.*\\.instanceof$|^int$|^int\\..*|.*\\.int\\..*|.*\\.int$|^interface$|^interface\\..*|.*\\.interface\\..*|.*\\.interface$|^long$|^long\\..*|.*\\.long\\..*|.*\\.long$|^native$|^native\\..*|.*\\.native\\..*|.*\\.native$|^new$|^new\\..*|.*\\.new\\..*|.*\\.new$|^package$|^package\\..*|.*\\.package\\..*|.*\\.package$|^private$|^private\\..*|.*\\.private\\..*|.*\\.private$|^protected$|^protected\\..*|.*\\.protected\\..*|.*\\.protected$|^public$|^public\\..*|.*\\.public\\..*|.*\\.public$|^return$|^return\\..*|.*\\.return\\..*|.*\\.return$|^short$|^short\\..*|.*\\.short\\..*|.*\\.short$|^static$|^static\\..*|.*\\.static\\..*|.*\\.static$|^strictfp$|^strictfp\\..*|.*\\.strictfp\\..*|.*\\.strictfp$|^super$|^super\\..*|.*\\.super\\..*|.*\\.super$|^switch$|^switch\\..*|.*\\.switch\\..*|.*\\.switch$|^synchronized$|^synchronized\\..*|.*\\.synchronized\\..*|.*\\.synchronized$|^this$|^this\\..*|.*\\.this\\..*|.*\\.this$|^throw$|^throw\\..*|.*\\.throw\\..*|.*\\.throw$|^throws$|^throws\\..*|.*\\.throws\\..*|.*\\.throws$|^transient$|^transient\\..*|.*\\.transient\\..*|.*\\.transient$|^try$|^try\\..*|.*\\.try\\..*|.*\\.try$|^void$|^void\\..*|.*\\.void\\..*|.*\\.void$|^volatile$|^volatile\\..*|.*\\.volatile\\..*|.*\\.volatile$|^while$|^while\\..*|.*\\.while\\..*|.*\\.while$)(^(?:[a-z_]+(?:\\d*[a-zA-Z_]*)*)(?:\\.[a-z_]+(?:\\d*[a-zA-Z_]*)*)*$)")
 
 internal fun updateIntentFlags(flags: Int, key: String, checked: Boolean): Int {
-    val mask = IntentFlags.getValue(key)
+    val mask = editableIntentFlags.getValue(key)
     return if (checked) flags or mask else flags and mask.inv()
 }
 
 internal fun updateIntentCategories(categories: Set<String>?, key: String, checked: Boolean): Set<String> {
     val existing = categories.orEmpty()
-    val category = IntentCategories.getValue(key)
+    val category = editableIntentCategories.getValue(key)
     return if (checked) existing + category else existing - category
 }
 
@@ -134,7 +139,8 @@ interface IntentField {
         override fun select(intent: Intent): String = intent.action ?: ""
         override val suggestions = Suggestions.Action
         override fun copy(value: String?) = Action(value, title)
-        override val isValid = true
+        override val isValid: Boolean
+            get() = value.isNullOrBlank() || value in ShortcutIntentPolicy.actions
     }
 
     @Immutable
@@ -175,10 +181,10 @@ interface IntentField {
     @Immutable
     class MimeType(override val value: String?, override val title: String) : StringValue {
         override val suggestions = Suggestions.MimeType
-        override fun select(intent: Intent): String = TODO("add media type")
+        override fun select(intent: Intent): String = intent.type.orEmpty()
         override fun copy(value: String?) = MimeType(value, title)
         override val isValid: Boolean
-            get() = value.isNullOrBlank() || value.toMediaTypeOrNull() != null
+            get() = value.isNullOrBlank() || value in ShortcutIntentPolicy.mimeTypes
     }
 
     @Immutable

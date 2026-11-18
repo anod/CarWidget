@@ -46,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.content.R
+import info.anodsplace.carwidget.content.shortcuts.ShortcutIntentPolicy
 import info.anodsplace.compose.CheckBoxItem
 import info.anodsplace.compose.CheckBoxLazyList
 import info.anodsplace.compose.OverlayScrim
@@ -294,7 +295,7 @@ fun EditSection(
         }
         is IntentField.Flags -> {
             val flagsItems = remember(intent.flags) {
-                IntentFlags.map { (key, mask) ->
+                editableIntentFlags.map { (key, mask) ->
                     CheckBoxItem(
                         key = key,
                         checked = (intent.flags and mask) == mask,
@@ -313,7 +314,7 @@ fun EditSection(
         }
         is IntentField.Categories -> {
             val categoriesItems = remember(intent.categories) {
-                IntentCategories.map { (key, category) ->
+                editableIntentCategories.map { (key, category) ->
                     CheckBoxItem(
                         key = key,
                         checked = intent.hasCategory(category),
@@ -388,8 +389,8 @@ fun IntentEditScreen(
     }
 
     val suggestions = when (suggestionsState) {
-        IntentField.Suggestions.Action -> IntentActions
-        IntentField.Suggestions.MimeType -> MediaTypes
+        IntentField.Suggestions.Action -> ShortcutIntentPolicy.actions.associateBy { it }
+        IntentField.Suggestions.MimeType -> ShortcutIntentPolicy.mimeTypes.associateBy { it }
         else -> null
     }
     if (suggestions != null) {
