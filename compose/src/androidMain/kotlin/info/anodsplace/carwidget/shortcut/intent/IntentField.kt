@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.compose.runtime.Immutable
 import androidx.core.os.bundleOf
 import info.anodsplace.applog.AppLog
+import info.anodsplace.carwidget.content.shortcuts.ShortcutIntentPolicy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -72,7 +73,7 @@ val IntentFlags = mapOf(
         "ACTIVITY_BROUGHT_TO_FRONT" to 0x00400000,
         "ACTIVITY_RESET_TASK_IF_NEEDED" to 0x00200000,
         "ACTIVITY_LAUNCHED_FROM_HISTORY" to 0x00100000,
-        "ACTIVITY_NEW_DOCUMENT" to 0x00080000,
+        "ACTIVITY_NEW_DOCUMENT" to Intent.FLAG_ACTIVITY_NEW_DOCUMENT,
         "ACTIVITY_NO_USER_ACTION" to 0x00040000,
         "ACTIVITY_REORDER_TO_FRONT" to 0X00020000,
         "ACTIVITY_NO_ANIMATION" to 0X00010000,
@@ -81,7 +82,11 @@ val IntentFlags = mapOf(
         "ACTIVITY_RETAIN_IN_RECENTS" to 0x00002000,
         "ACTIVITY_LAUNCH_ADJACENT" to 0x00001000,
         "ACTIVITY_MATCH_EXTERNAL" to 0x00000800,
+        "FROM_BACKGROUND" to Intent.FLAG_FROM_BACKGROUND,
 )
+
+internal val editableIntentFlags = IntentFlags.filterValues { it in ShortcutIntentPolicy.flags }
+internal val editableIntentCategories = IntentCategories.filterValues { it in ShortcutIntentPolicy.categories }
 
 val Intent.flagNames: List<String>
     get() {
@@ -102,13 +107,15 @@ val Intent.categoryNames: List<String>
 
 val packageNameRegex = Regex("(?!^abstract$|^abstract\\..*|.*\\.abstract\\..*|.*\\.abstract$|^assert$|^assert\\..*|.*\\.assert\\..*|.*\\.assert$|^boolean$|^boolean\\..*|.*\\.boolean\\..*|.*\\.boolean$|^break$|^break\\..*|.*\\.break\\..*|.*\\.break$|^byte$|^byte\\..*|.*\\.byte\\..*|.*\\.byte$|^case$|^case\\..*|.*\\.case\\..*|.*\\.case$|^catch$|^catch\\..*|.*\\.catch\\..*|.*\\.catch$|^char$|^char\\..*|.*\\.char\\..*|.*\\.char$|^class$|^class\\..*|.*\\.class\\..*|.*\\.class$|^const$|^const\\..*|.*\\.const\\..*|.*\\.const$|^continue$|^continue\\..*|.*\\.continue\\..*|.*\\.continue$|^default$|^default\\..*|.*\\.default\\..*|.*\\.default$|^do$|^do\\..*|.*\\.do\\..*|.*\\.do$|^double$|^double\\..*|.*\\.double\\..*|.*\\.double$|^else$|^else\\..*|.*\\.else\\..*|.*\\.else$|^enum$|^enum\\..*|.*\\.enum\\..*|.*\\.enum$|^extends$|^extends\\..*|.*\\.extends\\..*|.*\\.extends$|^final$|^final\\..*|.*\\.final\\..*|.*\\.final$|^finally$|^finally\\..*|.*\\.finally\\..*|.*\\.finally$|^float$|^float\\..*|.*\\.float\\..*|.*\\.float$|^for$|^for\\..*|.*\\.for\\..*|.*\\.for$|^goto$|^goto\\..*|.*\\.goto\\..*|.*\\.goto$|^if$|^if\\..*|.*\\.if\\..*|.*\\.if$|^implements$|^implements\\..*|.*\\.implements\\..*|.*\\.implements$|^import$|^import\\..*|.*\\.import\\..*|.*\\.import$|^instanceof$|^instanceof\\..*|.*\\.instanceof\\..*|.*\\.instanceof$|^int$|^int\\..*|.*\\.int\\..*|.*\\.int$|^interface$|^interface\\..*|.*\\.interface\\..*|.*\\.interface$|^long$|^long\\..*|.*\\.long\\..*|.*\\.long$|^native$|^native\\..*|.*\\.native\\..*|.*\\.native$|^new$|^new\\..*|.*\\.new\\..*|.*\\.new$|^package$|^package\\..*|.*\\.package\\..*|.*\\.package$|^private$|^private\\..*|.*\\.private\\..*|.*\\.private$|^protected$|^protected\\..*|.*\\.protected\\..*|.*\\.protected$|^public$|^public\\..*|.*\\.public\\..*|.*\\.public$|^return$|^return\\..*|.*\\.return\\..*|.*\\.return$|^short$|^short\\..*|.*\\.short\\..*|.*\\.short$|^static$|^static\\..*|.*\\.static\\..*|.*\\.static$|^strictfp$|^strictfp\\..*|.*\\.strictfp\\..*|.*\\.strictfp$|^super$|^super\\..*|.*\\.super\\..*|.*\\.super$|^switch$|^switch\\..*|.*\\.switch\\..*|.*\\.switch$|^synchronized$|^synchronized\\..*|.*\\.synchronized\\..*|.*\\.synchronized$|^this$|^this\\..*|.*\\.this\\..*|.*\\.this$|^throw$|^throw\\..*|.*\\.throw\\..*|.*\\.throw$|^throws$|^throws\\..*|.*\\.throws\\..*|.*\\.throws$|^transient$|^transient\\..*|.*\\.transient\\..*|.*\\.transient$|^try$|^try\\..*|.*\\.try\\..*|.*\\.try$|^void$|^void\\..*|.*\\.void\\..*|.*\\.void$|^volatile$|^volatile\\..*|.*\\.volatile\\..*|.*\\.volatile$|^while$|^while\\..*|.*\\.while\\..*|.*\\.while$)(^(?:[a-z_]+(?:\\d*[a-zA-Z_]*)*)(?:\\.[a-z_]+(?:\\d*[a-zA-Z_]*)*)*$)")
 
-fun flagNamesToInt(flagNames: List<String>): Int {
-    var flags = 0
-    for (flagName in flagNames) {
-        val flagValue = IntentFlags[flagName] ?: 0
-        flags = flags or flagValue
-    }
-    return flags
+internal fun updateIntentFlags(flags: Int, key: String, checked: Boolean): Int {
+    val mask = editableIntentFlags.getValue(key)
+    return if (checked) flags or mask else flags and mask.inv()
+}
+
+internal fun updateIntentCategories(categories: Set<String>?, key: String, checked: Boolean): Set<String> {
+    val existing = categories.orEmpty()
+    val category = editableIntentCategories.getValue(key)
+    return if (checked) existing + category else existing - category
 }
 
 interface IntentField {
@@ -120,7 +127,7 @@ interface IntentField {
         val title: String
         fun copy(value: String?): StringValue
         val value: String?
-        val isValid: Flow<Boolean>
+        val isValid: Boolean
         val suggestions: Suggestions
     }
 
@@ -132,19 +139,20 @@ interface IntentField {
         override fun select(intent: Intent): String = intent.action ?: ""
         override val suggestions = Suggestions.Action
         override fun copy(value: String?) = Action(value, title)
-        override val isValid get() = flow { emit(value != null && value.isNotBlank()) }
+        override val isValid: Boolean
+            get() = value.isNullOrBlank() || value in ShortcutIntentPolicy.actions
     }
 
     @Immutable
     class Component(val value: ComponentName?) : IntentField {
-        val isValid get() = flow {
-            val result = withContext(Dispatchers.Default) {
-                value != null
-                        && packageNameRegex.matches(value.packageName)
-                        && packageNameRegex.matches(value.className)
-            }
-            emit(result)
-        }
+        val isValid: Boolean
+            get() = value == null
+                    || (value.packageName.isBlank() && value.className.isBlank())
+                    || (packageNameRegex.matches(value.packageName)
+                    && componentClassNameRegex.matches(value.className))
+
+        fun isValidForEditing(allowClear: Boolean): Boolean =
+                isValid && (allowClear || (value?.packageName?.isNotBlank() == true && value.className.isNotBlank()))
     }
 
     @Immutable
@@ -154,32 +162,32 @@ interface IntentField {
         override fun copy(value: String?) = Data(if (value == null) null else Uri.parse(value), title)
         override val value: String?
             get() = uri?.toString()
-        override val isValid: Flow<Boolean> get() = flow {
-            val result = withContext(Dispatchers.Default) {
-                val newValue = uri ?: return@withContext false
-                return@withContext try {
-                    (newValue.authority?.isNotBlank() == true
+        override val isValid: Boolean
+            get() {
+                val newValue = uri ?: return true
+                if (newValue.toString().isBlank()) {
+                    return true
+                }
+                val result = try {
+                    newValue.authority?.isNotBlank() == true
                             || newValue.scheme?.isNotBlank() == true
                             || newValue.path?.isNotBlank() == true
-                            || newValue.query?.isNotBlank() == true)
+                            || newValue.query?.isNotBlank() == true
                 } catch (e: Exception) {
                     false
                 }
+                AppLog.d("Data.isValid: $result")
+                return result
             }
-            AppLog.d("Data.isValid: $result")
-            emit(result)
-        }
     }
 
     @Immutable
     class MimeType(override val value: String?, override val title: String) : StringValue {
         override val suggestions = Suggestions.MimeType
-        override fun select(intent: Intent): String = TODO("add media type")
+        override fun select(intent: Intent): String = intent.type.orEmpty()
         override fun copy(value: String?) = MimeType(value, title)
-        override val isValid get() = flow {
-            val result = withContext(Dispatchers.Default) { value != null && value.toMediaTypeOrNull() != null }
-            emit(result)
-        }
+        override val isValid: Boolean
+            get() = value.isNullOrBlank() || value in ShortcutIntentPolicy.mimeTypes
     }
 
     @Immutable
@@ -189,7 +197,15 @@ interface IntentField {
     class Flags(val value: Int) : IntentField
 
     @Immutable
-    class Extras(val bundle: Bundle) : IntentField {
+    data class FlagToggle(val key: String, val checked: Boolean) : IntentField
+
+    @Immutable
+    data class CategoryToggle(val key: String, val checked: Boolean) : IntentField
+
+    @Immutable
+    class Extras(bundle: Bundle) : IntentField {
+        val bundle = Bundle(bundle)
+
         fun isValid(newValue: Pair<String, Any?>): Flow<Boolean> = flow {
             val result = withContext(Dispatchers.Default) {
                 if (newValue.first.isBlank()) {
@@ -205,5 +221,56 @@ interface IntentField {
             }
             emit(result)
         }
+    }
+}
+
+private val componentClassNameRegex =
+        Regex("\\.?[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*")
+
+internal fun updateIntentField(field: IntentField, intent: Intent): Intent {
+    val updatedIntent = Intent(intent)
+    when (field) {
+        is IntentField.Action -> updatedIntent.action = field.value?.takeIf { it.isNotBlank() }
+        is IntentField.Data -> updatedIntent.setDataAndType(
+                field.uri?.takeIf { it.toString().isNotBlank() },
+                updatedIntent.type
+        )
+        is IntentField.Categories -> {
+            val existing = updatedIntent.categories ?: emptySet()
+            val new = field.value ?: emptySet()
+            (existing - new).forEach { updatedIntent.removeCategory(it) }
+            new.forEach { updatedIntent.addCategory(it) }
+        }
+        is IntentField.FlagToggle -> updatedIntent.flags =
+                updateIntentFlags(updatedIntent.flags, field.key, field.checked)
+        is IntentField.CategoryToggle -> {
+            val categories = updateIntentCategories(updatedIntent.categories, field.key, field.checked)
+            (updatedIntent.categories.orEmpty() - categories).forEach { updatedIntent.removeCategory(it) }
+            (categories - updatedIntent.categories.orEmpty()).forEach { updatedIntent.addCategory(it) }
+        }
+        is IntentField.Component -> {
+            val component = field.value
+            updatedIntent.component = component?.takeIf {
+                it.packageName.isNotBlank() || it.className.isNotBlank()
+            }
+        }
+        is IntentField.Extras -> updatedIntent.replaceExtras(Bundle(field.bundle))
+        is IntentField.Flags -> updatedIntent.flags = field.value
+        is IntentField.MimeType -> updatedIntent.setDataAndType(
+                updatedIntent.data,
+                field.value?.takeIf { it.isNotBlank() }
+        )
+        IntentField.None -> throw IllegalArgumentException("Cannot update an intent with an empty field")
+    }
+    return updatedIntent
+}
+
+internal class PendingIntentEdits(initialIntent: Intent) {
+    var intent: Intent = Intent(initialIntent)
+        private set
+
+    fun apply(field: IntentField): Intent {
+        intent = updateIntentField(field, intent)
+        return intent
     }
 }

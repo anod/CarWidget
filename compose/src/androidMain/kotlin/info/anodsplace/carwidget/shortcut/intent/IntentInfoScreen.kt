@@ -46,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.anodsplace.carwidget.CarWidgetTheme
 import info.anodsplace.carwidget.content.R
+import info.anodsplace.carwidget.content.shortcuts.ShortcutIntentPolicy
 import info.anodsplace.compose.CheckBoxItem
 import info.anodsplace.compose.CheckBoxLazyList
 import info.anodsplace.compose.OverlayScrim
@@ -259,13 +260,16 @@ private fun IntentDetailsView(
 fun EditSection(
     intent: Intent,
     editState: IntentField,
+    onDraftChange: (IntentField.StringValue) -> Unit,
     updateField: (UpdateField) -> Unit,
     onSuggestions: (IntentField.Suggestions) -> Unit,
+    allowComponentClear: Boolean,
     onClose: () -> Unit
 ) {
     when (editState) {
         is IntentField.StringValue -> {
             FieldEditDialog(editState.title, editState,
+                onValueChange = onDraftChange,
                 onSuggestions = { onSuggestions(editState.suggestions) },
                 onClick = { newState ->
                     if (newState != null) {
@@ -275,7 +279,7 @@ fun EditSection(
                 })
         }
         is IntentField.Component -> {
-            ComponentEditDialog(editState, onClose = { newComponent ->
+            ComponentEditDialog(editState, allowClear = allowComponentClear, onClose = { newComponent ->
                 if (newComponent != null) {
                     updateField(UpdateField(IntentField.Component(newComponent)))
                 }
@@ -292,12 +296,11 @@ fun EditSection(
         }
         is IntentField.Flags -> {
             val flagsItems = remember(intent.flags) {
-                val selected = intent.flagNames.toSet()
-                IntentFlags.map {
+                editableIntentFlags.map { (key, mask) ->
                     CheckBoxItem(
-                        key = it.key,
-                        checked = selected.contains(it.key),
-                        title = it.key,
+                        key = key,
+                        checked = (intent.flags and mask) == mask,
+                        title = key,
                     )
                 }
             }
@@ -305,24 +308,17 @@ fun EditSection(
             CheckBoxLazyList(
                 items = flagsItems,
                 onCheckedChange = { item ->
-                    val newFlags = intent.flagNames.toMutableList()
-                    if (item.checked) {
-                        newFlags.add(item.key)
-                    } else {
-                        newFlags.remove(item.key)
-                    }
-                    updateField(UpdateField(IntentField.Flags(flagNamesToInt(newFlags))))
+                    updateField(UpdateField(IntentField.FlagToggle(item.key, item.checked)))
                 }
             )
         }
         is IntentField.Categories -> {
             val categoriesItems = remember(intent.categories) {
-                val selected = intent.categoryNames.toSet()
-                IntentCategories.map {
+                editableIntentCategories.map { (key, category) ->
                     CheckBoxItem(
-                        key = it.key,
-                        checked = selected.contains(it.key),
-                        title = it.key,
+                        key = key,
+                        checked = intent.hasCategory(category),
+                        title = key,
                     )
                 }
             }
@@ -330,13 +326,7 @@ fun EditSection(
             CheckBoxLazyList(
                 items = categoriesItems,
                 onCheckedChange = { item ->
-                    val newCategories = intent.categoryNames.toMutableSet()
-                    if (item.checked) {
-                        newCategories.add(item.key)
-                    } else {
-                        newCategories.remove(item.key)
-                    }
-                    updateField(UpdateField(IntentField.Categories(newCategories)))
+                    updateField(UpdateField(IntentField.CategoryToggle(item.key, item.checked)))
                 }
             )
         }
@@ -351,20 +341,29 @@ fun IntentEditScreen(
     updateField: (UpdateField) -> Unit,
     modifier: Modifier = Modifier,
     initialEditValue: IntentField = IntentField.None,
-    isReadonly: Boolean = false
+    isReadonly: Boolean = false,
+    allowComponentClear: Boolean = true
 ) {
     var editState by remember { mutableStateOf(initialEditValue) }
     val editVisible: Boolean = editState !is IntentField.None
     var suggestionsState by remember { mutableStateOf(IntentField.Suggestions.None) }
+    val closeEditor: () -> Unit = {
+        suggestionsState = IntentField.Suggestions.None
+        editState = IntentField.None
+    }
 
     Column(modifier = modifier) {
         if (editVisible) {
             Surface {
-                EditSection(intent, editState, updateField, onSuggestions = {
-                    suggestionsState = it
-                }) {
-                    editState = IntentField.None
-                }
+                EditSection(
+                    intent = intent,
+                    editState = editState,
+                    onDraftChange = { editState = it },
+                    updateField = updateField,
+                    onSuggestions = { suggestionsState = it },
+                    allowComponentClear = allowComponentClear,
+                    onClose = closeEditor
+                )
             }
         }
 
@@ -383,30 +382,26 @@ fun IntentEditScreen(
                 )
                 OverlayScrim(
                         color = DefaultFrontLayerScrimColor,
-                        onDismiss = { editState = IntentField.None },
+                        onDismiss = closeEditor,
                         visible = editVisible
                 )
             }
         }
     }
 
-    when (suggestionsState) {
-        IntentField.Suggestions.Action -> {
-            SingleSelectLazyList(state = SingleSelectListState(items = IntentActions)) { _, value ->
-                updateField(UpdateField(IntentField.Action(value, "")))
-                suggestionsState = IntentField.Suggestions.None
+    val suggestions = when (suggestionsState) {
+        IntentField.Suggestions.Action -> ShortcutIntentPolicy.actions.associateBy { it }
+        IntentField.Suggestions.MimeType -> ShortcutIntentPolicy.mimeTypes.associateBy { it }
+        else -> null
+    }
+    if (suggestions != null) {
+        SingleSelectLazyList(state = SingleSelectListState(items = suggestions)) { _, value ->
+            val draft = editState as? IntentField.StringValue
+            if (draft != null && draft.suggestions == suggestionsState) {
+                editState = draft.copy(value)
             }
+            suggestionsState = IntentField.Suggestions.None
         }
-        IntentField.Suggestions.MimeType -> {
-            SingleSelectLazyList(state = SingleSelectListState(items = MediaTypes)) { _, value ->
-                updateField(UpdateField(IntentField.MimeType(value, "")))
-                suggestionsState = IntentField.Suggestions.None
-            }
-        }
-        IntentField.Suggestions.Component -> {
-
-        }
-        IntentField.Suggestions.None -> { }
     }
 }
 

@@ -20,7 +20,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +39,12 @@ import info.anodsplace.ktx.putAny
 import java.util.Locale
 
 @Composable
-fun EditDialog(confirmText: String, onClose: (Boolean) -> Unit, content: @Composable () -> Unit) {
+fun EditDialog(
+    confirmText: String,
+    canConfirm: Boolean = true,
+    onClose: (Boolean) -> Unit,
+    content: @Composable () -> Unit
+) {
     Column(Modifier.padding(16.dp)) {
         content()
         Spacer(modifier = Modifier.height(16.dp))
@@ -49,7 +53,7 @@ fun EditDialog(confirmText: String, onClose: (Boolean) -> Unit, content: @Compos
                 Text(text = stringResource(id = R.string.close).uppercase(Locale.getDefault()))
             }
             Spacer(modifier = Modifier.weight(1f))
-            Button(onClick = { onClose(true) }) {
+            Button(onClick = { onClose(true) }, enabled = canConfirm) {
                 Text(text = confirmText.uppercase(Locale.getDefault()))
             }
         }
@@ -155,10 +159,16 @@ fun ExtraEditDialog(initial: IntentField.Extras, onClose: (newExtra: Bundle?) ->
 }
 
 @Composable
-fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: ComponentName?) -> Unit) {
+fun ComponentEditDialog(
+    field: IntentField.Component,
+    allowClear: Boolean = true,
+    onClose: (newComponent: ComponentName?) -> Unit
+) {
     val (newComponent, setNewComponent) = remember { mutableStateOf(field.value) }
+    val isValid = IntentField.Component(newComponent).isValidForEditing(allowClear)
     EditDialog(
         confirmText = stringResource(id = R.string.save),
+        canConfirm = isValid,
         onClose = { onClose(if (it) newComponent else null) }
     ) {
         Text(text = stringResource(id = R.string.component), style = MaterialTheme.typography.titleSmall)
@@ -177,7 +187,7 @@ fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: Co
             label = {
                 Text(text = stringResource(id = R.string.package_name), style = MaterialTheme.typography.titleMedium)
             },
-            isError = newComponent?.packageName.isNullOrBlank() && (newComponent?.className?.isNotBlank() == true)
+            isError = !isValid
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -195,25 +205,33 @@ fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: Co
             label = {
                 Text(text = stringResource(id = R.string.class_name), style = MaterialTheme.typography.titleMedium)
             },
-            isError = newComponent?.packageName.isNullOrBlank() && (newComponent?.className?.isNotBlank() == true)
+            isError = !isValid
         )
+
+        if (!isValid) {
+            Text(
+                text = stringResource(R.string.value_might_be_not_valid),
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+            )
+        }
     }
 }
 
 @Composable
 fun FieldEditDialog(
     title: String,
-    initial: IntentField.StringValue,
-    initialValid: Boolean = true,
+    field: IntentField.StringValue,
+    onValueChange: (IntentField.StringValue) -> Unit,
     onSuggestions: () -> Unit,
     onClick: (IntentField.StringValue?) -> Unit
 ) {
-    var field by remember { mutableStateOf(initial) }
+    val isValid = field.isValid
     EditDialog(
         confirmText = stringResource(id = R.string.save),
+        canConfirm = isValid,
         onClose = { apply -> onClick(if (apply) field else null) }
     ) {
-        val isValid = field.isValid.collectAsState(initial = initialValid)
         val isEmpty = field.value.isNullOrEmpty()
         Box {
             OutlinedTextField(
@@ -227,7 +245,7 @@ fun FieldEditDialog(
                 value = field.value ?: "",
                 onValueChange = { value ->
                     if (value != field.value) {
-                        field = field.copy(value = value)
+                        onValueChange(field.copy(value))
                     }
                 },
                 label = {
@@ -238,9 +256,9 @@ fun FieldEditDialog(
                         Text(text = stringResource(id = R.string.none), style = MaterialTheme.typography.titleMedium)
                     }
                 },
-                isError = !isEmpty && !isValid.value
+                isError = !isEmpty && !isValid
             )
-            if (initial.suggestions != IntentField.Suggestions.None) {
+            if (field.suggestions != IntentField.Suggestions.None) {
                 IconButton(
                     modifier = Modifier.align(Alignment.CenterEnd),
                     onClick = onSuggestions
@@ -250,7 +268,7 @@ fun FieldEditDialog(
             }
         }
 
-        if (!isEmpty && !isValid.value) {
+        if (!isEmpty && !isValid) {
             Text(
                 text = stringResource(R.string.value_might_be_not_valid),
                 color = MaterialTheme.colorScheme.error,
@@ -265,10 +283,12 @@ fun FieldEditDialog(
 @Preview("Intent Edit Dialog")
 @Composable
 fun PreviewIntentEditDialog() {
-    val editState: IntentField.StringValue = IntentField.Action(Intent.ACTION_DIAL, "Action")
+    var editState by remember {
+        mutableStateOf<IntentField.StringValue>(IntentField.Action(Intent.ACTION_DIAL, "Action"))
+    }
     CarWidgetTheme {
         Surface {
-            FieldEditDialog("Action", editState, initialValid = false, onSuggestions = {}, onClick = { })
+            FieldEditDialog("Action", editState, onValueChange = { editState = it }, onSuggestions = {}, onClick = { })
         }
     }
 }

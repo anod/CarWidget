@@ -11,6 +11,7 @@ import com.anod.car.home.incar.ModeService
 import info.anodsplace.carwidget.appwidget.PendingIntentFactory
 import info.anodsplace.carwidget.content.Deeplink
 import info.anodsplace.carwidget.content.shortcuts.ShortcutExtra
+import info.anodsplace.carwidget.content.shortcuts.ShortcutIntentPolicy
 import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.utils.forSettings
 
@@ -102,6 +103,6 @@ class ShortcutPendingIntent(private val context: Context, private val shortcutRe
     }
 
     companion object {
-        const val INTENT_ACTION_CALL_PRIVILEGED = "android.intent.action.CALL_PRIVILEGED"
+        const val INTENT_ACTION_CALL_PRIVILEGED = ShortcutIntentPolicy.ACTION_CALL_PRIVILEGED
     }
 }
