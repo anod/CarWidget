@@ -46,7 +46,7 @@ class IntentFieldTest {
         assertEquals("text/plain", editedData.type)
         assertEquals(setOf("example.category"), editedCategories.categories)
         assertEquals(Intent.FLAG_ACTIVITY_CLEAR_TOP, editedFlags.flags)
-        assertNull(editedExtras.getString("obsolete"))
+        assertFalse(editedExtras.hasExtra("obsolete"))
         assertEquals("value", editedExtras.getStringExtra("current"))
         assertEquals("com.example.app.MainActivity", editedComponent.component?.className)
     }
@@ -73,7 +73,27 @@ class IntentFieldTest {
     @Test
     fun invalidMimeTypeAndPartialComponentAreRejected() {
         assertFalse(IntentField.MimeType("not a mime type", "MIME type").isValid)
+        assertFalse(IntentField.MimeType("image/", "MIME type").isValid)
         assertFalse(IntentField.Component(ComponentName("com.example.app", "")).isValid)
         assertTrue(IntentField.Component(ComponentName("com.example.app", "com.example.app.MainActivity")).isValid)
+    }
+
+    @Test
+    fun categoryCheckboxUsesFullAndroidNameAndPreservesCustomCategories() {
+        val custom = "com.example.category.CUSTOM"
+        val original = setOf(Intent.CATEGORY_BROWSABLE, custom)
+
+        val added = updateIntentCategories(original, "DEFAULT", checked = true)
+        assertEquals(setOf(Intent.CATEGORY_DEFAULT, Intent.CATEGORY_BROWSABLE, custom), added)
+        assertEquals(original, updateIntentCategories(added, "DEFAULT", checked = false))
+    }
+
+    @Test
+    fun flagCheckboxDoesNotClearOtherActivityFlagsOrUriGrantBits() {
+        val original = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
+
+        val added = updateIntentFlags(original, "ACTIVITY_CLEAR_TOP", checked = true)
+        assertEquals(original or Intent.FLAG_ACTIVITY_CLEAR_TOP, added)
+        assertEquals(original, updateIntentFlags(added, "ACTIVITY_CLEAR_TOP", checked = false))
     }
 }

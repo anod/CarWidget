@@ -41,9 +41,9 @@ import java.util.Locale
 @Composable
 fun EditDialog(
     confirmText: String,
+    canConfirm: Boolean = true,
     onClose: (Boolean) -> Unit,
-    content: @Composable () -> Unit,
-    canConfirm: Boolean = true
+    content: @Composable () -> Unit
 ) {
     Column(Modifier.padding(16.dp)) {
         content()
@@ -217,11 +217,11 @@ fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: Co
 @Composable
 fun FieldEditDialog(
     title: String,
-    initial: IntentField.StringValue,
+    field: IntentField.StringValue,
+    onValueChange: (IntentField.StringValue) -> Unit,
     onSuggestions: () -> Unit,
     onClick: (IntentField.StringValue?) -> Unit
 ) {
-    var field by remember { mutableStateOf(initial) }
     val isValid = field.isValid
     EditDialog(
         confirmText = stringResource(id = R.string.save),
@@ -241,7 +241,7 @@ fun FieldEditDialog(
                 value = field.value ?: "",
                 onValueChange = { value ->
                     if (value != field.value) {
-                        field = field.copy(value = value)
+                        onValueChange(field.copy(value))
                     }
                 },
                 label = {
@@ -254,7 +254,7 @@ fun FieldEditDialog(
                 },
                 isError = !isEmpty && !isValid
             )
-            if (initial.suggestions != IntentField.Suggestions.None) {
+            if (field.suggestions != IntentField.Suggestions.None) {
                 IconButton(
                     modifier = Modifier.align(Alignment.CenterEnd),
                     onClick = onSuggestions
@@ -279,10 +279,12 @@ fun FieldEditDialog(
 @Preview("Intent Edit Dialog")
 @Composable
 fun PreviewIntentEditDialog() {
-    val editState: IntentField.StringValue = IntentField.Action(Intent.ACTION_DIAL, "Action")
+    var editState by remember {
+        mutableStateOf<IntentField.StringValue>(IntentField.Action(Intent.ACTION_DIAL, "Action"))
+    }
     CarWidgetTheme {
         Surface {
-            FieldEditDialog("Action", editState, onSuggestions = {}, onClick = { })
+            FieldEditDialog("Action", editState, onValueChange = { editState = it }, onSuggestions = {}, onClick = { })
         }
     }
 }
