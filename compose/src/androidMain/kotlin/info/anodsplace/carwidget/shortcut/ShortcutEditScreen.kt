@@ -254,7 +254,8 @@ fun ShortcutEditContent(
                     intent = shortcut.intent,
                     updateField = { onEvent(ShortcutEditViewEvent.UpdateField(it.field)) },
                     modifier = Modifier,
-                    isReadonly = isIntentReadonly
+                    isReadonly = isIntentReadonly,
+                    allowComponentClear = !shortcut.isApp
                 )
             }
         }

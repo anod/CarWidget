@@ -263,6 +263,7 @@ fun EditSection(
     onDraftChange: (IntentField.StringValue) -> Unit,
     updateField: (UpdateField) -> Unit,
     onSuggestions: (IntentField.Suggestions) -> Unit,
+    allowComponentClear: Boolean,
     onClose: () -> Unit
 ) {
     when (editState) {
@@ -278,7 +279,7 @@ fun EditSection(
                 })
         }
         is IntentField.Component -> {
-            ComponentEditDialog(editState, onClose = { newComponent ->
+            ComponentEditDialog(editState, allowClear = allowComponentClear, onClose = { newComponent ->
                 if (newComponent != null) {
                     updateField(UpdateField(IntentField.Component(newComponent)))
                 }
@@ -307,8 +308,7 @@ fun EditSection(
             CheckBoxLazyList(
                 items = flagsItems,
                 onCheckedChange = { item ->
-                    val newFlags = updateIntentFlags(intent.flags, item.key, item.checked)
-                    updateField(UpdateField(IntentField.Flags(newFlags)))
+                    updateField(UpdateField(IntentField.FlagToggle(item.key, item.checked)))
                 }
             )
         }
@@ -326,8 +326,7 @@ fun EditSection(
             CheckBoxLazyList(
                 items = categoriesItems,
                 onCheckedChange = { item ->
-                    val newCategories = updateIntentCategories(intent.categories, item.key, item.checked)
-                    updateField(UpdateField(IntentField.Categories(newCategories)))
+                    updateField(UpdateField(IntentField.CategoryToggle(item.key, item.checked)))
                 }
             )
         }
@@ -342,7 +341,8 @@ fun IntentEditScreen(
     updateField: (UpdateField) -> Unit,
     modifier: Modifier = Modifier,
     initialEditValue: IntentField = IntentField.None,
-    isReadonly: Boolean = false
+    isReadonly: Boolean = false,
+    allowComponentClear: Boolean = true
 ) {
     var editState by remember { mutableStateOf(initialEditValue) }
     val editVisible: Boolean = editState !is IntentField.None
@@ -361,6 +361,7 @@ fun IntentEditScreen(
                     onDraftChange = { editState = it },
                     updateField = updateField,
                     onSuggestions = { suggestionsState = it },
+                    allowComponentClear = allowComponentClear,
                     onClose = closeEditor
                 )
             }

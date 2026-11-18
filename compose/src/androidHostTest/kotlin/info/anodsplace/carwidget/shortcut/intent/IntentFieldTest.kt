@@ -77,6 +77,8 @@ class IntentFieldTest {
         assertFalse(IntentField.MimeType("image/", "MIME type").isValid)
         assertFalse(IntentField.Component(ComponentName("com.example.app", "")).isValid)
         assertTrue(IntentField.Component(ComponentName("com.example.app", "com.example.app.MainActivity")).isValid)
+        assertFalse(IntentField.Component(null).isValidForEditing(allowClear = false))
+        assertTrue(IntentField.Component(null).isValidForEditing(allowClear = true))
     }
 
     @Test
@@ -124,5 +126,28 @@ class IntentFieldTest {
         val added = updateIntentFlags(original, "ACTIVITY_CLEAR_TOP", checked = true)
         assertEquals(original or Intent.FLAG_ACTIVITY_CLEAR_TOP, added)
         assertEquals(original, updateIntentFlags(added, "ACTIVITY_CLEAR_TOP", checked = false))
+    }
+
+    @Test
+    fun consecutivePendingEditsBuildOnEachOther() {
+        val customCategory = "com.example.CUSTOM"
+        val initial = Intent(Intent.ACTION_VIEW)
+            .addCategory(Intent.CATEGORY_DEFAULT)
+            .addCategory(customCategory)
+            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        val edits = PendingIntentEdits(initial)
+
+        edits.apply(IntentField.Action(Intent.ACTION_DIAL, "Action"))
+        edits.apply(IntentField.FlagToggle("ACTIVITY_CLEAR_TOP", checked = true))
+        edits.apply(IntentField.CategoryToggle("BROWSABLE", checked = true))
+        val updated = edits.apply(IntentField.Extras(Bundle().apply { putString("number", "555") }))
+
+        assertEquals(Intent.ACTION_DIAL, updated.action)
+        assertTrue(updated.flags and Intent.FLAG_ACTIVITY_CLEAR_TOP != 0)
+        assertTrue(updated.flags and Intent.FLAG_GRANT_READ_URI_PERMISSION != 0)
+        assertTrue(updated.hasCategory(Intent.CATEGORY_DEFAULT))
+        assertTrue(updated.hasCategory(Intent.CATEGORY_BROWSABLE))
+        assertTrue(updated.hasCategory(customCategory))
+        assertEquals("555", updated.getStringExtra("number"))
     }
 }

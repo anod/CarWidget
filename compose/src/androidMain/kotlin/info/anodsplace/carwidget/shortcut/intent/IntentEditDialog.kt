@@ -159,9 +159,13 @@ fun ExtraEditDialog(initial: IntentField.Extras, onClose: (newExtra: Bundle?) ->
 }
 
 @Composable
-fun ComponentEditDialog(field: IntentField.Component, onClose: (newComponent: ComponentName?) -> Unit) {
+fun ComponentEditDialog(
+    field: IntentField.Component,
+    allowClear: Boolean = true,
+    onClose: (newComponent: ComponentName?) -> Unit
+) {
     val (newComponent, setNewComponent) = remember { mutableStateOf(field.value) }
-    val isValid = IntentField.Component(newComponent).isValid
+    val isValid = IntentField.Component(newComponent).isValidForEditing(allowClear)
     EditDialog(
         confirmText = stringResource(id = R.string.save),
         canConfirm = isValid,

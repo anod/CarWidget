@@ -150,6 +150,9 @@ interface IntentField {
                     || (value.packageName.isBlank() && value.className.isBlank())
                     || (packageNameRegex.matches(value.packageName)
                     && componentClassNameRegex.matches(value.className))
+
+        fun isValidForEditing(allowClear: Boolean): Boolean =
+                isValid && (allowClear || (value?.packageName?.isNotBlank() == true && value.className.isNotBlank()))
     }
 
     @Immutable
@@ -194,6 +197,12 @@ interface IntentField {
     class Flags(val value: Int) : IntentField
 
     @Immutable
+    data class FlagToggle(val key: String, val checked: Boolean) : IntentField
+
+    @Immutable
+    data class CategoryToggle(val key: String, val checked: Boolean) : IntentField
+
+    @Immutable
     class Extras(bundle: Bundle) : IntentField {
         val bundle = Bundle(bundle)
 
@@ -232,6 +241,13 @@ internal fun updateIntentField(field: IntentField, intent: Intent): Intent {
             (existing - new).forEach { updatedIntent.removeCategory(it) }
             new.forEach { updatedIntent.addCategory(it) }
         }
+        is IntentField.FlagToggle -> updatedIntent.flags =
+                updateIntentFlags(updatedIntent.flags, field.key, field.checked)
+        is IntentField.CategoryToggle -> {
+            val categories = updateIntentCategories(updatedIntent.categories, field.key, field.checked)
+            (updatedIntent.categories.orEmpty() - categories).forEach { updatedIntent.removeCategory(it) }
+            (categories - updatedIntent.categories.orEmpty()).forEach { updatedIntent.addCategory(it) }
+        }
         is IntentField.Component -> {
             val component = field.value
             updatedIntent.component = component?.takeIf {
@@ -247,4 +263,14 @@ internal fun updateIntentField(field: IntentField, intent: Intent): Intent {
         IntentField.None -> throw IllegalArgumentException("Cannot update an intent with an empty field")
     }
     return updatedIntent
+}
+
+internal class PendingIntentEdits(initialIntent: Intent) {
+    var intent: Intent = Intent(initialIntent)
+        private set
+
+    fun apply(field: IntentField): Intent {
+        intent = updateIntentField(field, intent)
+        return intent
+    }
 }

@@ -25,7 +25,7 @@ import info.anodsplace.carwidget.content.shortcuts.ShortcutResources
 import info.anodsplace.carwidget.content.shortcuts.WidgetShortcutsModel
 import info.anodsplace.carwidget.shortcut.ShortcutEditViewAction.ShowToast
 import info.anodsplace.carwidget.shortcut.intent.IntentField
-import info.anodsplace.carwidget.shortcut.intent.updateIntentField
+import info.anodsplace.carwidget.shortcut.intent.PendingIntentEdits
 import info.anodsplace.framework.content.ShowToastActionDefaults
 import info.anodsplace.graphics.DrawableUri
 import info.anodsplace.viewmodel.BaseFlowViewModel
@@ -94,6 +94,8 @@ class ShortcutEditViewModel(
     val widgetSettings: WidgetInterface by inject()
     val imageLoader: ImageLoader by inject()
     private var folderJob: Job? = null
+    private var pendingIntentEdits: PendingIntentEdits? = null
+    private var intentUpdateJob: Job? = null
 
     init {
         viewState = ShortcutEditViewState(
@@ -102,7 +104,19 @@ class ShortcutEditViewModel(
         )
         viewModelScope.launch {
             shortcutsDatabase.observeShortcut(shortcutId).collect { shortcut ->
-                viewState = viewState.copy(shortcut = shortcut)
+                val pendingIntent = pendingIntentEdits?.intent
+                val pendingMatchesObserved = pendingIntent != null
+                        && shortcut?.intent?.toUri(0) == pendingIntent.toUri(0)
+                if (shortcut == null || pendingMatchesObserved) {
+                    pendingIntentEdits = null
+                }
+                viewState = viewState.copy(
+                    shortcut = if (shortcut != null && pendingIntent != null && !pendingMatchesObserved) {
+                        shortcut.copy(intent = pendingIntent)
+                    } else {
+                        shortcut
+                    }
+                )
                 if (shortcut?.isFolder == true) {
                     folderJob?.cancel()
                     folderJob = launch {
@@ -132,8 +146,13 @@ class ShortcutEditViewModel(
             }
             is ShortcutEditViewEvent.UpdateField -> {
                 val shortcut = viewState.shortcut ?: return
-                appScope.launch {
-                    val intent = updateIntentField(event.field, shortcut.intent)
+                val edits = pendingIntentEdits ?: PendingIntentEdits(shortcut.intent)
+                val intent = edits.apply(event.field)
+                pendingIntentEdits = edits
+                viewState = viewState.copy(shortcut = shortcut.copy(intent = intent))
+                val previousUpdate = intentUpdateJob
+                intentUpdateJob = appScope.launch {
+                    previousUpdate?.join()
                     shortcutsDatabase.updateIntent(shortcut.id, intent)
                 }
             }
