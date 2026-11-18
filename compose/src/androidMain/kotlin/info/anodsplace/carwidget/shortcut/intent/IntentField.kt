@@ -120,7 +120,7 @@ interface IntentField {
         val title: String
         fun copy(value: String?): StringValue
         val value: String?
-        val isValid: Flow<Boolean>
+        val isValid: Boolean
         val suggestions: Suggestions
     }
 
@@ -132,19 +132,16 @@ interface IntentField {
         override fun select(intent: Intent): String = intent.action ?: ""
         override val suggestions = Suggestions.Action
         override fun copy(value: String?) = Action(value, title)
-        override val isValid get() = flow { emit(value != null && value.isNotBlank()) }
+        override val isValid = true
     }
 
     @Immutable
     class Component(val value: ComponentName?) : IntentField {
-        val isValid get() = flow {
-            val result = withContext(Dispatchers.Default) {
-                value != null
-                        && packageNameRegex.matches(value.packageName)
-                        && packageNameRegex.matches(value.className)
-            }
-            emit(result)
-        }
+        val isValid: Boolean
+            get() = value == null
+                    || (value.packageName.isBlank() && value.className.isBlank())
+                    || (packageNameRegex.matches(value.packageName)
+                    && componentClassNameRegex.matches(value.className))
     }
 
     @Immutable
@@ -154,21 +151,23 @@ interface IntentField {
         override fun copy(value: String?) = Data(if (value == null) null else Uri.parse(value), title)
         override val value: String?
             get() = uri?.toString()
-        override val isValid: Flow<Boolean> get() = flow {
-            val result = withContext(Dispatchers.Default) {
-                val newValue = uri ?: return@withContext false
-                return@withContext try {
-                    (newValue.authority?.isNotBlank() == true
+        override val isValid: Boolean
+            get() {
+                val newValue = uri ?: return true
+                if (newValue.toString().isBlank()) {
+                    return true
+                }
+                val result = try {
+                    newValue.authority?.isNotBlank() == true
                             || newValue.scheme?.isNotBlank() == true
                             || newValue.path?.isNotBlank() == true
-                            || newValue.query?.isNotBlank() == true)
+                            || newValue.query?.isNotBlank() == true
                 } catch (e: Exception) {
                     false
                 }
+                AppLog.d("Data.isValid: $result")
+                return result
             }
-            AppLog.d("Data.isValid: $result")
-            emit(result)
-        }
     }
 
     @Immutable
@@ -176,10 +175,8 @@ interface IntentField {
         override val suggestions = Suggestions.MimeType
         override fun select(intent: Intent): String = TODO("add media type")
         override fun copy(value: String?) = MimeType(value, title)
-        override val isValid get() = flow {
-            val result = withContext(Dispatchers.Default) { value != null && value.toMediaTypeOrNull() != null }
-            emit(result)
-        }
+        override val isValid: Boolean
+            get() = value.isNullOrBlank() || value.toMediaTypeOrNull() != null
     }
 
     @Immutable
@@ -189,7 +186,9 @@ interface IntentField {
     class Flags(val value: Int) : IntentField
 
     @Immutable
-    class Extras(val bundle: Bundle) : IntentField {
+    class Extras(bundle: Bundle) : IntentField {
+        val bundle = Bundle(bundle)
+
         fun isValid(newValue: Pair<String, Any?>): Flow<Boolean> = flow {
             val result = withContext(Dispatchers.Default) {
                 if (newValue.first.isBlank()) {
@@ -206,4 +205,38 @@ interface IntentField {
             emit(result)
         }
     }
+}
+
+private val componentClassNameRegex =
+        Regex("\\.?[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*")
+
+internal fun updateIntentField(field: IntentField, intent: Intent): Intent {
+    val updatedIntent = Intent(intent)
+    when (field) {
+        is IntentField.Action -> updatedIntent.action = field.value?.takeIf { it.isNotBlank() }
+        is IntentField.Data -> updatedIntent.setDataAndType(
+                field.uri?.takeIf { it.toString().isNotBlank() },
+                updatedIntent.type
+        )
+        is IntentField.Categories -> {
+            val existing = updatedIntent.categories ?: emptySet()
+            val new = field.value ?: emptySet()
+            (existing - new).forEach { updatedIntent.removeCategory(it) }
+            new.forEach { updatedIntent.addCategory(it) }
+        }
+        is IntentField.Component -> {
+            val component = field.value
+            updatedIntent.component = component?.takeIf {
+                it.packageName.isNotBlank() || it.className.isNotBlank()
+            }
+        }
+        is IntentField.Extras -> updatedIntent.replaceExtras(Bundle(field.bundle))
+        is IntentField.Flags -> updatedIntent.flags = field.value
+        is IntentField.MimeType -> updatedIntent.setDataAndType(
+                updatedIntent.data,
+                field.value?.takeIf { it.isNotBlank() }
+        )
+        IntentField.None -> throw IllegalArgumentException("Cannot update an intent with an empty field")
+    }
+    return updatedIntent
 }

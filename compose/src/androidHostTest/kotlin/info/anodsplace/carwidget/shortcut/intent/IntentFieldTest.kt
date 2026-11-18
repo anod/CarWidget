@@ -1,0 +1,79 @@
+package info.anodsplace.carwidget.shortcut.intent
+
+import android.content.ComponentName
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
+
+@RunWith(RobolectricTestRunner::class)
+class IntentFieldTest {
+    @Test
+    fun editingIntentFieldsPreservesUneditedFieldsAndOriginalIntent() {
+        val original = Intent("before")
+            .setDataAndType(Uri.parse("https://example.com"), "text/plain")
+            .addCategory(Intent.CATEGORY_DEFAULT)
+            .putExtra("obsolete", true)
+            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        val editedAction = updateIntentField(IntentField.Action("after", "Action"), original)
+        val editedMimeType = updateIntentField(IntentField.MimeType("image/png", "MIME type"), original)
+        val editedData = updateIntentField(IntentField.Data(Uri.parse("content://example/item"), "Data"), original)
+        val editedCategories = updateIntentField(
+            IntentField.Categories(setOf("example.category")),
+            original
+        )
+        val editedFlags = updateIntentField(IntentField.Flags(Intent.FLAG_ACTIVITY_CLEAR_TOP), original)
+        val editedExtras = updateIntentField(IntentField.Extras(Bundle().apply { putString("current", "value") }), original)
+        val editedComponent = updateIntentField(
+            IntentField.Component(ComponentName("com.example.app", "com.example.app.MainActivity")),
+            original
+        )
+
+        assertEquals("before", original.action)
+        assertEquals(Intent.CATEGORY_DEFAULT, original.categories?.single())
+        assertEquals(true, original.getBooleanExtra("obsolete", false))
+        assertEquals("after", editedAction.action)
+        assertEquals(Uri.parse("https://example.com"), editedMimeType.data)
+        assertEquals("image/png", editedMimeType.type)
+        assertEquals(Uri.parse("content://example/item"), editedData.data)
+        assertEquals("text/plain", editedData.type)
+        assertEquals(setOf("example.category"), editedCategories.categories)
+        assertEquals(Intent.FLAG_ACTIVITY_CLEAR_TOP, editedFlags.flags)
+        assertNull(editedExtras.getString("obsolete"))
+        assertEquals("value", editedExtras.getStringExtra("current"))
+        assertEquals("com.example.app.MainActivity", editedComponent.component?.className)
+    }
+
+    @Test
+    fun extrasEditorUsesADraftAndEmptyValuesClearOptionalFields() {
+        val sourceExtras = Bundle().apply { putString("existing", "value") }
+        val draft = IntentField.Extras(sourceExtras)
+        draft.bundle.remove("existing")
+
+        val original = Intent("before").putExtras(sourceExtras)
+        val edited = updateIntentField(IntentField.Extras(draft.bundle), original)
+        val clearedAction = updateIntentField(IntentField.Action("", "Action"), original)
+        val clearedData = updateIntentField(IntentField.Data(Uri.parse(""), "Data"), original)
+
+        assertTrue(sourceExtras.containsKey("existing"))
+        assertTrue(original.hasExtra("existing"))
+        assertFalse(edited.hasExtra("existing"))
+        assertEquals("before", original.action)
+        assertNull(clearedAction.action)
+        assertNull(clearedData.data)
+    }
+
+    @Test
+    fun invalidMimeTypeAndPartialComponentAreRejected() {
+        assertFalse(IntentField.MimeType("not a mime type", "MIME type").isValid)
+        assertFalse(IntentField.Component(ComponentName("com.example.app", "")).isValid)
+        assertTrue(IntentField.Component(ComponentName("com.example.app", "com.example.app.MainActivity")).isValid)
+    }
+}

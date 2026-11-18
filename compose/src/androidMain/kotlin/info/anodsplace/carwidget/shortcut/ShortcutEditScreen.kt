@@ -93,7 +93,7 @@ fun ShortcutEditScreen(
             ShortcutEditContent(
                 shortcut = state.shortcut,
                 iconVersion = state.iconVersion,
-                isIntentReadonly = true,
+                isIntentReadonly = false,
                 onEvent = onEvent,
                 onDismissRequest = onDismissRequest,
                 expanded = state.expanded,
@@ -218,7 +218,7 @@ fun ShortcutEditContent(
 ) {
     Column {
         TopAppBar(
-            title = { Text(text = stringResource(id = if (expanded && isIntentReadonly) R.string.intent else R.string.shortcut_edit_title)) },
+            title = { Text(text = stringResource(id = if (expanded) R.string.intent else R.string.shortcut_edit_title)) },
             navigationIcon = {
                 IconButton(onClick = {
                     if (expanded) {
