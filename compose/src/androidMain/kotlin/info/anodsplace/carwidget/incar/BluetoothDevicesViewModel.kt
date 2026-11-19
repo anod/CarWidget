@@ -96,12 +96,18 @@ class BluetoothDevicesViewModel(
         when (event) {
             is BluetoothDevicesViewEvent.LoadDevices -> {
                 viewModelScope.launch {
+                    val refreshed = initialState()
+                    if (refreshed.listState !is BluetoothDevicesListState.Initial) {
+                        viewState = refreshed
+                        return@launch
+                    }
+                    viewState = if (viewState.listState is BluetoothDevicesListState.Devices) {
+                        viewState.copy(btAdapterState = refreshed.btAdapterState)
+                    } else {
+                        refreshed
+                    }
                     val state = try {
-                        if (isBluetoothPermissionMissing()) {
-                            BluetoothDevicesListState.RequiresPermissions
-                        } else {
-                            BluetoothDevicesListState.Devices(loadDevices(settings.btDevices))
-                        }
+                        BluetoothDevicesListState.Devices(loadDevices(settings.btDevices))
                     } catch (e: SecurityException) {
                         AppLog.e(e)
                         BluetoothDevicesListState.RequiresPermissions

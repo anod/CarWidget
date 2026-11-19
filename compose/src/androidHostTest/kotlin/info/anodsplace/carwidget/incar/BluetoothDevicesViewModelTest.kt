@@ -2,6 +2,7 @@ package info.anodsplace.carwidget.incar
 
 import android.Manifest
 import android.app.Application
+import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.os.Looper
@@ -86,6 +87,21 @@ class BluetoothDevicesViewModelTest {
     }
 
     @Test
+    fun updatingDeviceKeepsLoadedListVisible() {
+        val device = manager.adapter.getRemoteDevice("00:11:22:33:44:55")
+        shadowOf(manager.adapter).setBondedDevices(setOf(device))
+        val model = createModel()
+        val devices = assertIs<BluetoothDevicesListState.Devices>(awaitLoadedState(model))
+
+        model.handleEvent(BluetoothDevicesViewEvent.UpdateDevice(devices.list.single(), checked = true))
+
+        assertIs<BluetoothDevicesListState.Devices>(model.viewState.listState)
+        awaitState(model) {
+            (it.listState as? BluetoothDevicesListState.Devices)?.list?.singleOrNull()?.selected == true
+        }
+    }
+
+    @Test
     fun missingPermissionDoesNotMasqueradeAsEmptyDeviceList() {
         shadowOf(application).denyPermissions(Manifest.permission.BLUETOOTH_CONNECT)
         val model = createModel()
@@ -93,14 +109,47 @@ class BluetoothDevicesViewModelTest {
         assertIs<BluetoothDevicesListState.RequiresPermissions>(model.viewState.listState)
     }
 
+    @Test
+    fun permissionGrantRefreshesOnAdapterAndLoadsDevices() {
+        shadowOf(application).denyPermissions(Manifest.permission.BLUETOOTH_CONNECT)
+        val model = createModel()
+        assertEquals(BluetoothAdapter.STATE_OFF, model.viewState.btAdapterState)
+        shadowOf(application).grantPermissions(Manifest.permission.BLUETOOTH_CONNECT)
+
+        model.handleEvent(BluetoothDevicesViewEvent.PermissionResult(requires = false))
+
+        awaitState(model) { it.listState is BluetoothDevicesListState.Devices }
+        assertEquals(BluetoothAdapter.STATE_ON, model.viewState.btAdapterState)
+    }
+
+    @Test
+    fun permissionGrantWithAdapterOffDoesNotLoadDevices() {
+        shadowOf(application).denyPermissions(Manifest.permission.BLUETOOTH_CONNECT)
+        shadowOf(manager.adapter).setEnabled(false)
+        val model = createModel()
+        shadowOf(application).grantPermissions(Manifest.permission.BLUETOOTH_CONNECT)
+
+        model.handleEvent(BluetoothDevicesViewEvent.PermissionResult(requires = false))
+
+        awaitState(model) { it.listState is BluetoothDevicesListState.SwitchedOff }
+        assertEquals(BluetoothAdapter.STATE_OFF, model.viewState.btAdapterState)
+    }
+
     private fun createModel() = BluetoothDevicesViewModel(manager, settings).also { store.put("bluetooth", it) }
 
     private fun awaitLoadedState(model: BluetoothDevicesViewModel): BluetoothDevicesListState {
+        return awaitState(model) { it.listState !is BluetoothDevicesListState.Initial }.listState
+    }
+
+    private fun awaitState(
+        model: BluetoothDevicesViewModel,
+        predicate: (BluetoothDevicesViewState) -> Boolean
+    ): BluetoothDevicesViewState {
         val deadline = System.nanoTime() + 5_000_000_000L
         while (System.nanoTime() < deadline) {
             shadowOf(Looper.getMainLooper()).idle()
-            val state = model.viewState.listState
-            if (state !is BluetoothDevicesListState.Initial) {
+            val state = model.viewState
+            if (predicate(state)) {
                 return state
             }
             Thread.sleep(10)

@@ -36,6 +36,7 @@ internal object InCarStartNotification {
                 .putExtra(ModeService.EXTRA_FORCE_STATE, forceState)
         } else {
             Intent(context, MainActivity::class.java)
+                .setAction(MainActivity.ACTION_RETRY_MONITORING)
         }
         val id = if (activate) activationId else detectorId
         val pendingIntent = PendingIntent.getActivity(

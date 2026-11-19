@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
+import com.anod.car.home.MainActivity
 import com.anod.car.home.appwidget.ShortcutPendingIntent
 import com.anod.car.home.notifications.Channels
 import com.anod.car.home.notifications.InCarStartNotification
@@ -162,6 +163,19 @@ class InCarServiceControlTest {
         assertEquals(ModeService.MODE_SWITCH_ON, started.getIntExtra(ModeService.EXTRA_MODE, -1))
         assertFalse(started.getBooleanExtra(ModeService.EXTRA_FORCE_STATE, true))
         assertNull(shadowOf(context).nextStoppedService)
+        assertEquals(1, monitorRegistrations)
+    }
+
+    @Test
+    fun monitoringRecoveryRetriesOnReusedActivityOnlyForRecoveryIntent() {
+        InCarStartNotification.show(context, activate = false)
+        val notification = shadowOf(context.getSystemService(NotificationManager::class.java)).allNotifications.single()
+        val intent = shadowOf(notification.contentIntent).savedIntent
+        val controller = Robolectric.buildActivity(MainActivity::class.java)
+
+        controller.newIntent(Intent(context, MainActivity::class.java))
+        assertEquals(0, monitorRegistrations)
+        controller.newIntent(intent)
         assertEquals(1, monitorRegistrations)
     }
 

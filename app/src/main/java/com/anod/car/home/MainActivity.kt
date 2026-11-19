@@ -12,10 +12,21 @@ import info.anodsplace.carwidget.content.BroadcastServiceManager
  * @date 5/22/13
  */
 class MainActivity : MainComposeActivity() {
+    companion object {
+        internal const val ACTION_RETRY_MONITORING = "com.anod.car.home.action.RETRY_MONITORING"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         getKoin().get<BroadcastServiceManager>().registerBroadcastService()
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        if (intent.action == ACTION_RETRY_MONITORING) {
+            getKoin().get<BroadcastServiceManager>().registerBroadcastService()
+        }
     }
 
     override fun onPause() {
