@@ -123,7 +123,9 @@ class ModeService : Service(), KoinComponent {
                 startForeground(InCarModeNotificationFactory.id, createSafeNotification())
             } catch (e: ForegroundServiceStartNotAllowedException) {
                 AppLog.e(e)
-                InCarStartNotification.show(this, activate = true)
+                InCarStartNotification.show(
+                    this, activate = true, forceState = intent.getBooleanExtra(EXTRA_FORCE_STATE, false)
+                )
                 stopSelf()
                 return START_NOT_STICKY
             }
@@ -296,7 +298,7 @@ class ModeService : Service(), KoinComponent {
                 ContextCompat.startForegroundService(context, intent)
             } catch (e: ForegroundServiceStartNotAllowedException) {
                 AppLog.e(e)
-                InCarStartNotification.show(context, activate = true)
+                InCarStartNotification.show(context, activate = true, forceState = forceState)
             }
         }
 

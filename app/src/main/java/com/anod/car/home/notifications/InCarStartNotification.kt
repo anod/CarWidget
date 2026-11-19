@@ -19,7 +19,7 @@ internal object InCarStartNotification {
     private const val activationId = 4
     private const val detectorId = 5
 
-    fun show(context: Context, activate: Boolean) {
+    fun show(context: Context, activate: Boolean, forceState: Boolean = false) {
         val manager = context.getSystemService(NotificationManager::class.java)
         if (!manager.areNotificationsEnabled() ||
             (Build.VERSION.SDK_INT >= 33 &&
@@ -33,6 +33,7 @@ internal object InCarStartNotification {
         val intent = if (activate) {
             Intent(context, SwitchInCarActivity::class.java)
                 .putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_ON)
+                .putExtra(ModeService.EXTRA_FORCE_STATE, forceState)
         } else {
             Intent(context, MainActivity::class.java)
         }

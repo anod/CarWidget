@@ -22,6 +22,8 @@ activation or trigger monitoring, Car Widget posts a notification that lets you
 resume it with a tap, provided notifications are allowed. A blocked start leaves
 phone settings unchanged. Widget and notification controls can still stop in-car
 mode without starting another foreground service.
+Recovering an automatic activation preserves its trigger state; manual activation
+continues to override triggers.
 
 Actions:
 * Disable screen timeout

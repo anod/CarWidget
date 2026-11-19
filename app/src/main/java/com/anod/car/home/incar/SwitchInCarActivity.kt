@@ -20,7 +20,7 @@ class SwitchInCarActivity : Activity(), KoinComponent {
         when (mode) {
             ModeService.MODE_SWITCH_OFF -> ModeService.stop(this)
             ModeService.MODE_SWITCH_ON -> if (get<InCarSettings>().isInCarEnabled) {
-                ModeService.start(this, forceState = true)
+                ModeService.start(this, forceState = intent.getBooleanExtra(ModeService.EXTRA_FORCE_STATE, true))
                 getKoin().get<BroadcastServiceManager>().registerBroadcastService()
             } else {
                 Toast.makeText(this, info.anodsplace.carwidget.content.R.string.incar_mode_disabled, Toast.LENGTH_LONG).show()

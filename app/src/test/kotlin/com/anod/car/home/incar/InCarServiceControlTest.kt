@@ -18,6 +18,7 @@ import info.anodsplace.carwidget.content.preferences.InCarSettings
 import kotlinx.coroutines.cancel
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -83,7 +84,22 @@ class InCarServiceControlTest {
 
         ModeService.start(recording)
 
-        assertEquals(1, shadowOf(context.getSystemService(NotificationManager::class.java)).size())
+        val notification = shadowOf(context.getSystemService(NotificationManager::class.java)).allNotifications.single()
+        val intent = shadowOf(notification.contentIntent).savedIntent
+        assertFalse(intent.getBooleanExtra(ModeService.EXTRA_FORCE_STATE, true))
+    }
+
+    @Test
+    fun rejectedManualLaunchPreservesForcedActivationThroughRecovery() {
+        ModeService.start(RecordingContext(context).apply { rejectStart = true }, forceState = true)
+        val notification = shadowOf(context.getSystemService(NotificationManager::class.java)).allNotifications.single()
+        val intent = shadowOf(notification.contentIntent).savedIntent
+
+        Robolectric.buildActivity(SwitchInCarActivity::class.java, intent).create().destroy()
+
+        val started = shadowOf(context).nextStartedService
+        assertTrue(started.getBooleanExtra(ModeService.EXTRA_FORCE_STATE, false))
+        assertEquals(1, monitorRegistrations)
     }
 
     @Test
@@ -144,7 +160,19 @@ class InCarServiceControlTest {
 
         val started = shadowOf(context).nextStartedService
         assertEquals(ModeService.MODE_SWITCH_ON, started.getIntExtra(ModeService.EXTRA_MODE, -1))
+        assertFalse(started.getBooleanExtra(ModeService.EXTRA_FORCE_STATE, true))
         assertNull(shadowOf(context).nextStoppedService)
+        assertEquals(1, monitorRegistrations)
+    }
+
+    @Test
+    fun manualShortcutStillForcesActivationWithoutRecoveryExtras() {
+        val intent = Intent(context, SwitchInCarActivity::class.java)
+
+        Robolectric.buildActivity(SwitchInCarActivity::class.java, intent).create().destroy()
+
+        val started = shadowOf(context).nextStartedService
+        assertTrue(started.getBooleanExtra(ModeService.EXTRA_FORCE_STATE, false))
         assertEquals(1, monitorRegistrations)
     }
 
