@@ -1,7 +1,6 @@
 package com.anod.car.home.notifications
 
 import android.app.Notification
-import android.app.PendingIntent
 import android.content.Context
 import android.view.View
 import android.widget.RemoteViews
@@ -27,10 +26,7 @@ class InCarModeNotificationFactory(
     }
 
     private fun baseBuilder(): NotificationCompat.Builder {
-        val notificationIntent = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_OFF)
-        notificationIntent.data = Deeplink.SwitchMode(false).toUri()
-
-        val contentIntent = PendingIntent.getService(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
+        val contentIntent = ModeService.createStopPendingIntent(context)
 
         return NotificationCompat.Builder(context, Channels.inCarMode)
                 .setSmallIcon(info.anodsplace.carwidget.skin.R.drawable.ic_stat_incar)

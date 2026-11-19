@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="incar_service_start_blocked">Android blocked a background service. Tap to resume.</string>
     <string name="app_name" translatable="false">Car Widget</string>
     <string name="none">None</string>
     <string name="extras" translatable="false">Extras</string>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+    <string name="incar_service_start_blocked">Android ha bloccato un servizio in background. Tocca per riprendere.</string>
     <string name="pref_tile_color_title">Colore delle mattonelle</string>
     <string name="pref_bg_color_title">Colore di sfondo</string>
     <string name="pref_icons_mono_title">Icone monocromatiche</string>

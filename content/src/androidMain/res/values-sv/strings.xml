@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+    <string name="incar_service_start_blocked">Android blockerade en bakgrundstjänst. Tryck för att fortsätta.</string>
     <string name="pref_tile_color_title">Tile färg</string>
     <string name="pref_bg_color_title">Bakgrundsfärg</string>
     <string name="pref_icons_mono_title">Monokroma ikoner</string>

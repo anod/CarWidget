@@ -61,10 +61,7 @@ open class Provider : AppWidgetProvider(), KoinComponent {
         AppLog.i( "", tag = "onDisabled")
         getKoin().get<BroadcastServiceManager>().stopService()
 
-        if (ModeService.sInCarMode) {
-            val modeIntent = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_OFF)
-            context.stopService(modeIntent)
-        }
+        ModeService.stop(context)
     }
 
     override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager,
