@@ -1,7 +1,7 @@
 # AI Agent Operations Guide (AGENTS.md)
 
 Author: Maintainers + AI Assistants
-Last Updated: 2025-09-23
+Last Updated: 2026-11-20
 Status: Active
 
 This document defines how automated coding agents (and human contributors) should analyze, change, verify, and ship code in this repository. It codifies project structure, safety rails, quality gates, and repeatable workflows.
@@ -72,7 +72,7 @@ Supporting config:
 Common tasks:
 - Assemble debug: `./gradlew :app:assembleDebug`
 - Full clean build: `./gradlew clean build`
-- Baseline Profile generation (example): `./gradlew :baselineprofile:generateBaselineProfile`
+- Baseline Profile generation: `./gradlew :app:generateReleaseBaselineProfile` (see §9 device setup)
 - Lint (if configured): `./gradlew :app:lint`
 - Dependency insight: `./gradlew :app:dependencyInsight --configuration debugRuntimeClasspath --dependency <name>`
 
@@ -96,7 +96,7 @@ Quality Gate Checklist (MANDATORY for agents):
 
 ---
 ## 7. Performance & Baseline Profiles
-- Modify startup-critical code cautiously; if changed, regenerate baseline profile.
+- Modify startup-critical code cautiously; regenerate the baseline profile after such changes and before every release build (see §9).
 - Avoid heavy I/O or synchronous blocking on main thread.
 - Prefer lazy initialization for non-critical services.
 - Compose performance: Use `remember {}` and stable parameter types; avoid recomposition thrash.
@@ -109,10 +109,28 @@ Quality Gate Checklist (MANDATORY for agents):
 
 ---
 ## 9. Release & Versioning
-- App version set in `app/build.gradle.kts` (`versionCode`, `versionName`). Increment:
-  - `versionCode`: always +1 per release.
-  - `versionName`: semantic (MAJOR.MINOR.PATCH). Patch for bugfix; minor for feature additions; major for breaking API or significant redesign.
-- Tag format suggestion: `v<versionName>` (e.g., `v3.2.0`).
+App version is set in `app/build.gradle.kts` (`versionName`, `versionCode`).
+
+### Versioning
+- `versionName`: semantic (MAJOR.MINOR.PATCH). Change it only when the maintainer decides to ship a new version. A new build of the same release (for example, fixes for a build already in closed testing) keeps the current `versionName`.
+- `versionCode`: the first build of a version encodes it with a three-digit build counter, e.g. 3.5.0 → `3_50000`. Every new build of the same `versionName` increments the counter by 1: `3.5.0 (3_50001)`, `3.5.0 (3_50002)`.
+- Google Play permanently consumes a `versionCode` as soon as a bundle with it is uploaded, even if it is never released. Never reuse one; if it is consumed, use the next.
+- Tag format: `v<versionName>` (e.g. `v3.5.0`). A rebuild keeps the existing version; never invent a new `versionName` or tag just to label a rebuild.
+
+### Pre-publish checklist (mandatory)
+1. Start from up-to-date `origin/main` and run `git submodule update --init --recursive` (`lib` is a submodule).
+2. Set `versionName` / `versionCode` per the rules above.
+3. Regenerate the release baseline profile on a physical device (API 33+):
+   - Install the release-signed profiling build: `./gradlew :app:installNonMinifiedRelease`, then `adb shell pm grant com.anod.car.home.free android.permission.POST_NOTIFICATIONS`.
+   - Place a Car Widget from `com.anod.car.home.free` (not the `.debug` build) on the home screen. Without it, the profile covers only the setup wizard (~15k instead of ~20k rules).
+   - Ensure no other UiAutomation client is connected, or the generator fails with `UiAutomationService ... already registered`. For example, Android CLI `layout`/`input` leaves `com.android.cli.interact.instrumentation` running; stop it with `adb shell am force-stop com.android.cli.interact.instrumentation`.
+   - Run `./gradlew -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true :app:generateReleaseBaselineProfile`. Without the flag, the run uninstalls the app and removes the placed widget.
+   - Windows: output paths over 260 characters make the profile pull fail, and the task then writes empty profiles (`No baseline profile rules were generated`). Run from a short path, e.g. `subst P: <checkout>` and build from `P:\`.
+   - Verify `app/src/release/generated/baselineProfiles/baseline-prof.txt` and `startup-prof.txt` are non-empty (~20k lines) and review the diff.
+4. Run `./gradlew test` and `./gradlew :app:bundleRelease`. Verify the signature (`jarsigner -verify app/build/outputs/bundle/release/app-release.aab`) and the package/version (`android analyze --analysis=basic <aab>`).
+5. Commit the version bump and regenerated profiles together: `chore: release <versionName> (<versionCode>)`.
+6. Publish with the Google Play Developer API using a service account; keep credentials outside the repository. Closed testing is the `alpha` track. Provide release notes for every Play listing language: `en-US`, `de-DE`, `es-ES`, `fr-FR`, `it-IT`, `iw-IL`, `ru-RU`, `sv-SE`. Commit the edit with `changesInReviewBehavior=ERROR_IF_IN_REVIEW`, then read the tracks back to confirm only the intended track changed.
+
 - Keep changelog (if added later) in `CHANGELOG.md` using Keep a Changelog format.
 
 ---
@@ -240,8 +258,11 @@ If an agent detects ambiguous architectural direction, brittle code, or potentia
 # Release build (ensure signing props configured)
 ./gradlew :app:assembleRelease
 
-# Generate baseline profile (example target)
-./gradlew :baselineprofile:generateBaselineProfile
+# Release bundle for Play (ensure signing props configured)
+./gradlew :app:bundleRelease
+
+# Generate release baseline profile (device setup in §9)
+./gradlew -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true :app:generateReleaseBaselineProfile
 
 # Run unit tests
 ./gradlew test
