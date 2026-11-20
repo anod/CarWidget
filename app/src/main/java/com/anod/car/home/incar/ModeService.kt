@@ -1,7 +1,9 @@
 package com.anod.car.home.incar
 
+import android.app.ForegroundServiceStartNotAllowedException
 import android.app.Notification
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -12,9 +14,11 @@ import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
+import androidx.core.content.ContextCompat
 import com.anod.car.home.appwidget.Provider
 import com.anod.car.home.notifications.Channels
 import com.anod.car.home.notifications.InCarModeNotificationFactory
+import com.anod.car.home.notifications.InCarStartNotification
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import info.anodsplace.permissions.AppPermission
@@ -36,6 +40,7 @@ class ModeService : Service(), KoinComponent {
     private var phoneListener: ModePhoneStateListener? = null
     private val modeHandler: ModeHandler by inject()
     private var forceState: Boolean = false
+    private var activationStarted = false
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private val notificationFactory: InCarModeNotificationFactory by lazy {
@@ -50,6 +55,10 @@ class ModeService : Service(), KoinComponent {
     override fun onDestroy() {
         serviceScope.cancel()
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+        if (!activationStarted) {
+            super.onDestroy()
+            return
+        }
         sInCarMode = false
 
         // If Koin never started for this (restarted) process, skip all DI-dependent teardown
@@ -87,19 +96,6 @@ class ModeService : Service(), KoinComponent {
         AppLog.i("Start InCar Mode service, sInCarMode = " + sInCarMode + ", redelivered = "
                 + redelivered)
 
-        // Enter the foreground immediately with a dependency-free notification so we never miss
-        // the foreground-service start deadline, even if the OS restarted us before the app
-        // (Koin/DB) finished initializing.
-        startForeground(InCarModeNotificationFactory.id, createSafeNotification())
-
-        // If the OS restarted this service into a process where Koin isn't ready yet, stop
-        // cleanly instead of crashing on the first get<>() ("KoinApplication has not been started").
-        if (GlobalContext.getOrNull() == null) {
-            AppLog.e("Koin is not started, stopping ModeService")
-            stopSelf()
-            return START_NOT_STICKY
-        }
-
         if (intent == null) {
             AppLog.e("ModeService started without intent")
             stopSelf()
@@ -116,15 +112,44 @@ class ModeService : Service(), KoinComponent {
             stopSelf()
             return START_NOT_STICKY
         }
-        // mode == MODE_SWITCH_ON
-        forceState = intent.getBooleanExtra(EXTRA_FORCE_STATE, false)
-
-        val prefs = get<InCarSettings>()
-        sInCarMode = true
-        if (forceState) {
-            ModeDetector.forceState(prefs, true)
+        if (mode != MODE_SWITCH_ON) {
+            AppLog.e("ModeService, unknown start mode: $mode")
+            stopSelf()
+            return START_NOT_STICKY
         }
 
+        if (!activationStarted) {
+            try {
+                startForeground(InCarModeNotificationFactory.id, createSafeNotification())
+            } catch (e: ForegroundServiceStartNotAllowedException) {
+                AppLog.e(e)
+                InCarStartNotification.show(
+                    this, activate = true, forceState = intent.getBooleanExtra(EXTRA_FORCE_STATE, false)
+                )
+                stopSelf()
+                return START_NOT_STICKY
+            }
+        }
+
+        if (GlobalContext.getOrNull() == null) {
+            AppLog.e("Koin is not started, stopping ModeService")
+            stopSelf()
+            return START_NOT_STICKY
+        }
+        InCarStartNotification.cancel(this, activate = true)
+
+        // mode == MODE_SWITCH_ON
+        val prefs = get<InCarSettings>()
+        if (intent.getBooleanExtra(EXTRA_FORCE_STATE, false)) {
+            forceState = true
+            ModeDetector.forceState(prefs, true)
+        }
+        if (activationStarted) {
+            return START_NOT_STICKY
+        }
+
+        activationStarted = true
+        sInCarMode = true
         ModeDetector.switchOn(prefs, modeHandler)
         initPhoneListener(prefs)
         requestWidgetsUpdate()
@@ -149,7 +174,7 @@ class ModeService : Service(), KoinComponent {
             .setSmallIcon(info.anodsplace.carwidget.skin.R.drawable.ic_stat_incar)
             .setContentTitle(getString(info.anodsplace.carwidget.content.R.string.incar_mode_enabled))
             .setOngoing(true)
-            .setPriority(NotificationCompat.PRIORITY_MIN)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
             .build()
     }
 
@@ -266,5 +291,29 @@ class ModeService : Service(), KoinComponent {
                 Intent(context, ModeService::class.java).apply {
                     putExtra(EXTRA_MODE, mode)
                 }
+
+        fun start(context: Context, forceState: Boolean = false) {
+            val intent = createStartIntent(context, MODE_SWITCH_ON).putExtra(EXTRA_FORCE_STATE, forceState)
+            try {
+                ContextCompat.startForegroundService(context, intent)
+            } catch (e: ForegroundServiceStartNotAllowedException) {
+                AppLog.e(e)
+                InCarStartNotification.show(context, activate = true, forceState = forceState)
+            }
+        }
+
+        fun stop(context: Context) {
+            InCarStartNotification.cancel(context, activate = true)
+            context.stopService(createStartIntent(context, MODE_SWITCH_OFF))
+        }
+
+        fun createStopPendingIntent(context: Context): PendingIntent {
+            val intent = Intent(context, SwitchInCarActivity::class.java)
+                .setAction(Intent.ACTION_MAIN)
+                .putExtra(EXTRA_MODE, MODE_SWITCH_OFF)
+            return PendingIntent.getActivity(
+                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        }
     }
 }

@@ -1,10 +1,9 @@
 package com.anod.car.home.incar
 
 import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
+import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.BroadcastServiceManager
 import info.anodsplace.carwidget.content.preferences.InCarSettings
 import org.koin.core.component.KoinComponent
@@ -14,27 +13,20 @@ class SwitchInCarActivity : Activity(), KoinComponent {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val isInCarEnabled = get<InCarSettings>().isInCarEnabled
-        if (isInCarEnabled) {
-            val service = Intent(this, ModeService::class.java)
-            val data: Uri = if (ModeService.sInCarMode) {
-                service.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_OFF)
-                service.putExtra(ModeService.EXTRA_FORCE_STATE, true)
-                Uri.parse("com.anod.car.home://mode/0/2")
+        val mode = intent.getIntExtra(
+            ModeService.EXTRA_MODE,
+            if (ModeService.sInCarMode) ModeService.MODE_SWITCH_OFF else ModeService.MODE_SWITCH_ON
+        )
+        when (mode) {
+            ModeService.MODE_SWITCH_OFF -> ModeService.stop(this)
+            ModeService.MODE_SWITCH_ON -> if (get<InCarSettings>().isInCarEnabled) {
+                ModeService.start(this, forceState = intent.getBooleanExtra(ModeService.EXTRA_FORCE_STATE, true))
+                getKoin().get<BroadcastServiceManager>().registerBroadcastService()
             } else {
-                service.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_ON)
-                service.putExtra(ModeService.EXTRA_FORCE_STATE, true)
-                Uri.parse("com.anod.car.home://mode/1/2")
+                Toast.makeText(this, info.anodsplace.carwidget.content.R.string.incar_mode_disabled, Toast.LENGTH_LONG).show()
             }
-            service.data = data
-            startService(service)
-        } else {
-            Toast.makeText(this, info.anodsplace.carwidget.content.R.string.incar_mode_disabled, Toast.LENGTH_LONG).show()
-//
-//            val intent = ConfigurationActivity.createFragmentIntent(this, ConfigurationInCar::class.java)
-//            startActivity(intent)
+            else -> AppLog.e("Unknown in-car mode action: $mode")
         }
-        getKoin().get<BroadcastServiceManager>().registerBroadcastService()
         finish()
     }
 }

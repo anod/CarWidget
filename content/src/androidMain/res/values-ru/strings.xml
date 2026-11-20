@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="incar_service_start_blocked">Android заблокировал фоновую службу. Нажмите, чтобы продолжить.</string>
     <string name="pref_tile_color_title">Цвет плитки</string>
 	<string name="pref_bg_color_title">Цвет фона</string>
 	<string name="pref_icons_mono_title">Монохромные иконки</string>

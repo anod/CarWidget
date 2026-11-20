@@ -1,5 +1,6 @@
 package com.anod.car.home.incar
 
+import android.app.ForegroundServiceStartNotAllowedException
 import android.app.Service
 import android.app.UiModeManager
 import android.content.Context
@@ -8,6 +9,7 @@ import android.content.IntentFilter
 import android.os.IBinder
 import androidx.core.content.ContextCompat
 import com.anod.car.home.notifications.ModeDetectorNotification
+import com.anod.car.home.notifications.InCarStartNotification
 import info.anodsplace.applog.AppLog
 import info.anodsplace.carwidget.content.BroadcastServiceManager
 import info.anodsplace.carwidget.content.extentions.isServiceRunning
@@ -28,7 +30,7 @@ class BroadcastService : Service(), KoinComponent {
 
         override fun registerBroadcastService() = Companion.registerBroadcastService(applicationContext, inCarSettings)
 
-        override fun startService() = Companion.startService(applicationContext)
+        override fun startService() = Companion.registerBroadcastService(applicationContext, inCarSettings)
 
         override fun stopService() = Companion.stopService(applicationContext)
     }
@@ -44,6 +46,11 @@ class BroadcastService : Service(), KoinComponent {
         // miss the start deadline (RemoteServiceException$ForegroundServiceDidNotStartInTimeException).
         try {
             startForeground(ModeDetectorNotification.id, ModeDetectorNotification.create(this))
+        } catch (e: ForegroundServiceStartNotAllowedException) {
+            AppLog.e(e)
+            InCarStartNotification.show(this, activate = false)
+            stopSelf()
+            return START_NOT_STICKY
         } catch (e: Exception) {
             AppLog.e(e)
             stopSelf()
@@ -62,6 +69,7 @@ class BroadcastService : Service(), KoinComponent {
 
         try {
             if (receiver != null || register(this)) {
+                InCarStartNotification.cancel(this, activate = false)
                 // START_NOT_STICKY on purpose: allowing the OS to auto-restart this foreground
                 // service from the background (START_STICKY) leads to repeated foreground-start
                 // timeout crashes on API 31+. It is re-started on demand by ModeBroadcastReceiver
@@ -153,15 +161,16 @@ class BroadcastService : Service(), KoinComponent {
             val service = Intent(context.applicationContext, BroadcastService::class.java)
             try {
                 ContextCompat.startForegroundService(context, service)
+            } catch (e: ForegroundServiceStartNotAllowedException) {
+                AppLog.e(e)
+                InCarStartNotification.show(context, activate = false)
             } catch (e: Exception) {
-                // API 31+: ForegroundServiceStartNotAllowedException when started from the
-                // background without an exemption (the triggering broadcasts - headset plug,
-                // power, Bluetooth ACL - are not exempt). Nothing actionable; skip rather than crash.
                 AppLog.e(e)
             }
         }
 
         private fun stopService(context: Context) {
+            InCarStartNotification.cancel(context, activate = false)
             val service = Intent(context.applicationContext, BroadcastService::class.java)
             context.stopService(service)
         }

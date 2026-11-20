@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+    <string name="incar_service_start_blocked">Android a bloqué un service en arrière-plan. Appuyez pour reprendre.</string>
     <string name="pref_tile_color_title">Couleur de mosaïque</string>
     <string name="pref_bg_color_title">Couleur d\'arrière-plan</string>
     <string name="pref_icons_mono_title">Icônes monochromes</string>

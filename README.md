@@ -17,6 +17,14 @@ Trigger (possible to combine all of the options):
 * Bluetooth device connected
 * Activity recognition
 
+Android 12 and newer restrict background service starts. If Android blocks in-car
+activation or trigger monitoring, Car Widget posts a notification that lets you
+resume it with a tap, provided notifications are allowed. A blocked start leaves
+phone settings unchanged. Widget and notification controls can still stop in-car
+mode without starting another foreground service.
+Recovering an automatic activation preserves its trigger state; manual activation
+continues to override triggers.
+
 Actions:
 * Disable screen timeout
 * Adjust screen brightness

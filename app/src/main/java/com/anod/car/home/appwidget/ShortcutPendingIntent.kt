@@ -23,17 +23,11 @@ class ShortcutPendingIntent(private val context: Context, private val shortcutRe
             onIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_ON)
             onIntent.putExtra(ModeService.EXTRA_FORCE_STATE, true)
             onIntent.data = Deeplink.SwitchMode(true).toUri()
-            return PendingIntent.getService(context, 0, onIntent, PendingIntent.FLAG_IMMUTABLE)
+            return PendingIntent.getForegroundService(context, 0, onIntent, PendingIntent.FLAG_IMMUTABLE)
         }
 
     private val inCarOffIntent: PendingIntent
-        get() {
-            val offIntent = Intent(context, ModeService::class.java)
-            offIntent.putExtra(ModeService.EXTRA_MODE, ModeService.MODE_SWITCH_OFF)
-            offIntent.putExtra(ModeService.EXTRA_FORCE_STATE, true)
-            offIntent.data = Deeplink.SwitchMode(false).toUri()
-            return PendingIntent.getService(context, 0, offIntent, PendingIntent.FLAG_IMMUTABLE)
-        }
+        get() = ModeService.createStopPendingIntent(context)
 
     override fun createNew(appWidgetId: Int, position: Int): PendingIntent {
         val editIntent = Intent(

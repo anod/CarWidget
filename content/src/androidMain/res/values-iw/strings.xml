@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="incar_service_start_blocked">Android חסם שירות ברקע. יש להקיש כדי להמשיך.</string>
     <string name="pref_tile_color_title">צבע של משבצת</string>
     <string name="pref_bg_color_title">צבע רקע</string>
     <string name="pref_icons_mono_title">אייקונים בשחור-לבן</string>

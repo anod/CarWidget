@@ -8,6 +8,7 @@ import android.content.Intent
 import androidx.core.content.IntentCompat
 import com.anod.car.home.BuildConfig
 import com.anod.car.home.getKoin
+import com.anod.car.home.notifications.InCarStartNotification
 import com.anod.car.home.utils.Power
 import com.google.android.gms.location.ActivityTransitionResult
 import info.anodsplace.applog.AppLog
@@ -115,11 +116,12 @@ object ModeDetector {
         }
         AppLog.i("New mode: " + newMode + " Car Mode: " + ModeService.sInCarMode)
         if (!ModeService.sInCarMode && newMode) {
-            val service = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_ON)
-            context.startService(service)
-        } else if (ModeService.sInCarMode && !newMode) {
-            val service = ModeService.createStartIntent(context, ModeService.MODE_SWITCH_OFF)
-            context.stopService(service)
+            ModeService.start(context)
+        } else if (!newMode) {
+            InCarStartNotification.cancel(context, activate = true)
+            if (ModeService.sInCarMode) {
+                ModeService.stop(context)
+            }
         }
 
         val inCarEnabled = ModeService.sInCarMode && newMode

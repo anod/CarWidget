@@ -70,18 +70,8 @@ class BluetoothDevicesViewModel(
     }
 
     private val context: Context by inject()
-    private val isBluetoothEnabled: Boolean
-        get() = bluetoothManager.adapter?.isEnabled == true
-
     init {
-        viewState = BluetoothDevicesViewState(
-            btAdapterState = bluetoothManager.adapter?.state ?: BluetoothAdapter.STATE_OFF,
-            listState = if (isBluetoothPermissionMissing()) {
-                BluetoothDevicesListState.RequiresPermissions
-            } else {
-                if (isBluetoothEnabled) BluetoothDevicesListState.Initial else BluetoothDevicesListState.SwitchedOff
-            }
-        )
+        viewState = initialState()
         if (viewState.listState is BluetoothDevicesListState.Initial) {
             handleEvent(BluetoothDevicesViewEvent.LoadDevices)
         }
@@ -106,8 +96,23 @@ class BluetoothDevicesViewModel(
         when (event) {
             is BluetoothDevicesViewEvent.LoadDevices -> {
                 viewModelScope.launch {
-                    val list = loadDevices(settings.btDevices)
-                    viewState = viewState.copy(listState = BluetoothDevicesListState.Devices(list))
+                    val refreshed = initialState()
+                    if (refreshed.listState !is BluetoothDevicesListState.Initial) {
+                        viewState = refreshed
+                        return@launch
+                    }
+                    viewState = if (viewState.listState is BluetoothDevicesListState.Devices) {
+                        viewState.copy(btAdapterState = refreshed.btAdapterState)
+                    } else {
+                        refreshed
+                    }
+                    val state = try {
+                        BluetoothDevicesListState.Devices(loadDevices(settings.btDevices))
+                    } catch (e: SecurityException) {
+                        AppLog.e(e)
+                        BluetoothDevicesListState.RequiresPermissions
+                    }
+                    viewState = viewState.copy(listState = state)
                 }
             }
             is BluetoothDevicesViewEvent.UpdateDevice -> updateDevice(event.device, event.checked)
@@ -128,22 +133,29 @@ class BluetoothDevicesViewModel(
     }
 
     @SuppressLint("MissingPermission")
-    private suspend fun loadDevices(selectedDevices: ArrayMap<String, String>): List<BluetoothDevice> = withContext(Dispatchers.Default) {
+    private fun initialState(): BluetoothDevicesViewState {
         if (isBluetoothPermissionMissing()) {
-            // BLUETOOTH_CONNECT / BLUETOOTH_SCAN not granted at runtime.
-            return@withContext emptyList<BluetoothDevice>()
+            return BluetoothDevicesViewState(BluetoothAdapter.STATE_OFF, BluetoothDevicesListState.RequiresPermissions)
         }
-        val btAdapter = bluetoothManager.adapter ?: return@withContext emptyList<BluetoothDevice>()
-
-        // Get a set of currently paired devices. Guard against SecurityException: on API 31+
-        // getBondedDevices() requires the BLUETOOTH_CONNECT runtime permission, which can be
-        // revoked between the check above and this call (e.g. via the BT state-changed path).
-        val pairedDevices = try {
-            btAdapter.bondedDevices ?: emptySet()
+        return try {
+            val state = bluetoothManager.adapter?.state ?: BluetoothAdapter.STATE_OFF
+            BluetoothDevicesViewState(
+                state,
+                if (state == BluetoothAdapter.STATE_ON) BluetoothDevicesListState.Initial
+                else BluetoothDevicesListState.SwitchedOff
+            )
         } catch (e: SecurityException) {
             AppLog.e(e)
-            return@withContext emptyList<BluetoothDevice>()
+            BluetoothDevicesViewState(BluetoothAdapter.STATE_OFF, BluetoothDevicesListState.RequiresPermissions)
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private suspend fun loadDevices(selectedDevices: ArrayMap<String, String>): List<BluetoothDevice> = withContext(Dispatchers.Default) {
+        val btAdapter = bluetoothManager.adapter ?: return@withContext emptyList<BluetoothDevice>()
+
+        // The caller handles permission revocation across enumeration and every device property read.
+        val pairedDevices = btAdapter.bondedDevices ?: emptySet()
         val pairedList = mutableListOf<BluetoothDevice>()
 
         // If there are paired devices, add each one to the ArrayAdapter
