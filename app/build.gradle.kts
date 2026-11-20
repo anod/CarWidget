@@ -63,8 +63,8 @@ android {
         targetSdk = 37
         applicationId = "com.anod.car.home.free"
 
-        versionCode = 3_50001
-        versionName = "3.5.1"
+        versionCode = 3_50002
+        versionName = "3.5.0"
     }
 
     androidResources {
